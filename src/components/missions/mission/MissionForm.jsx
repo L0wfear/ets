@@ -58,27 +58,33 @@ export class MissionForm extends Form {
     }
   }
 
-  async handleTechnicalOperationChange(v) {
-    this.handleChange('technical_operation_id', v);
-    this.handleRouteIdChange(undefined);
+  // Зачем тут таймаут?
+  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
+  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
+  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
+  handleTechnicalOperationChange(v) {
+    setTimeout(async () => {
+      this.handleChange('technical_operation_id', v);
+      this.handleRouteIdChange(undefined);
 
-    if (!this.props.formState.status && !this.props.fromWaybill) {
-      this.handleChange('car_id', undefined);
-      const carsList = await this.context.flux.getActions('cars')
-                                            .getCarsByTechnicalOperation(v);
-      this.setState({ carsList });
-    }
-
-    try {
-      const routesList = await this.context.flux.getActions('routes')
-                                              .getRoutesByTechnicalOperation(v);
-      if (routesList.length === 1) {
-        this.handleRouteIdChange(routesList[0].id);
+      if (!this.props.formState.status && !this.props.fromWaybill) {
+        this.handleChange('car_id', undefined);
+        const carsList = await this.context.flux.getActions('cars')
+                                              .getCarsByTechnicalOperation(v);
+        this.setState({ carsList });
       }
-      this.setState({ routesList });
-    } catch (e) {
-      console.error(e);
-    }
+
+      try {
+        const routesList = await this.context.flux.getActions('routes')
+                                                .getRoutesByTechnicalOperation(v);
+        if (routesList.length === 1) {
+          this.handleRouteIdChange(routesList[0].id);
+        }
+        this.setState({ routesList });
+      } catch (e) {
+        console.error(e);
+      }
+    }, 60);
   }
 
   handleStructureIdChange(v) {

@@ -109,7 +109,7 @@ export const changeCompanyStructureIdNotyfication = {
   dismissible: true,
   position: 'tr',
   autoDismiss: 5,
-}
+};
 
 export const notifications = {
   missionCreateSuccessNotification,

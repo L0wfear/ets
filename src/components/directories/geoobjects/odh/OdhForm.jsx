@@ -12,7 +12,7 @@ const STATIC_VAL = {
   readOnly: true,
 };
 const INPUT_VAL = {
-  company_structure_id: 'custom',
+  company_structure_name: 'custom',
 };
 
 @connectToStores(['geoObjects', 'companyStructure'])

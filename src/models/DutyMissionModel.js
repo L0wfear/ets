@@ -1,6 +1,6 @@
 import { diffDates } from 'utils/dates.js';
 
-export const dutyMissionSchema = {
+const dutyMissionSchema = {
   properties: [
     {
       key: 'technical_operation_id',
@@ -30,6 +30,18 @@ export const dutyMissionSchema = {
       key: 'mission_source_id',
       title: 'Источник получения задания',
       type: 'number',
+      required: true,
+    },
+    {
+      key: 'plan_date_start',
+      title: 'Плановая дата начала',
+      type: 'date',
+      required: true,
+    },
+    {
+      key: 'plan_date_end',
+      title: 'Плановая дата окончания',
+      type: 'date',
       required: true,
     },
     {
@@ -103,3 +115,5 @@ export const dutyMissionSchema = {
     ],
   },
 };
+
+export default dutyMissionSchema;

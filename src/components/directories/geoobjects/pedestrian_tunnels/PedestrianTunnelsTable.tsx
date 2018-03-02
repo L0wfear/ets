@@ -8,9 +8,17 @@ import DataTableComponent from 'components/ui/table/DataTable';
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
+  isKgh = false,
 } = {}) {
   const meta: IDataTableSchema = {
     cols: [
+      {
+        name: 'company_name',
+        displayName: 'Наименование ГБУ',
+        type: 'string',
+        display: isKgh,
+        filter: (isKgh) ? { type: 'multiselect' } : false,
+      },
       {
         name: 'name',
         displayName: 'Наименование',

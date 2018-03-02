@@ -11,123 +11,124 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 export function tableMeta({
   isOkrug = false,
+  isKgh = false,
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
-    {
-      name: 'company_name',
-      displayName: 'Учреждение',
-      type: 'string',
-      display: isOkrug,
-      filter: isOkrug && { type: 'multiselect' } || false,
-    },
-    {
-      name: 'full_name',
-      displayName: 'Фамилия Имя Отчество',
-      type: 'string',
-      cssClassName: 'width300justify',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'birthday',
-      displayName: 'Дата рождения',
-      type: 'date',
-      filter: {
-        type: 'date',
-      },
-    },
-    {
-      name: 'personnel_number',
-      displayName: 'Табельный номер',
-      type: 'string',
-      filter: {
+      {
+        name: 'company_name',
+        displayName: isKgh ? 'Наименование ГБУ' : 'Учреждение',
         type: 'string',
+        display: isOkrug || isKgh,
+        filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
       },
-    },
-    {
-      name: 'position_name',
-      displayName: 'Должность',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
+      {
+        name: 'full_name',
+        displayName: 'Фамилия Имя Отчество',
+        type: 'string',
+        cssClassName: 'width300justify',
+        filter: {
+          type: 'multiselect',
+        },
       },
-    },
-    {
-      name: 'drivers_license',
-      displayName: 'Водительское удостоверение',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'special_license',
-      displayName: 'Специальное удостоверение',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'company_structure_name',
-      displayName: 'Подразделение',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'active',
-      displayName: 'Текущее состояние',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-        labelFunction: l => l ? 'Работает' : 'Не работает',
-      },
-    },
-    {
-      name: 'phone',
-      displayName: 'Телефон',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'medical_certificate',
-      displayName: 'Медицинская справка',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'medical_certificate_date',
-      displayName: 'Срок действия мед. справки',
-      type: 'date',
-      filter: {
+      {
+        name: 'birthday',
+        displayName: 'Дата рождения',
         type: 'date',
+        filter: {
+          type: 'date',
+        },
       },
-    },
-    {
-      name: 'snils',
-      displayName: 'СНИЛС №',
-      type: 'string',
-      filter: {
-        type: 'multiselect',
+      {
+        name: 'personnel_number',
+        displayName: 'Табельный номер',
+        type: 'string',
+        filter: {
+          type: 'string',
+        },
       },
-    },
-    {
-      name: 'is_common',
-      displayName: 'Общее',
-      type: 'select',
-      filter: {
-        type: 'multiselect',
-        options: [{ value: +true, label: 'Да' }, { value: +false, label: 'Нет' }],
+      {
+        name: 'position_name',
+        displayName: 'Должность',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
       },
-    },
+      {
+        name: 'drivers_license',
+        displayName: 'Водительское удостоверение',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'special_license',
+        displayName: 'Специальное удостоверение',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'company_structure_name',
+        displayName: 'Подразделение',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'active',
+        displayName: 'Текущее состояние',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          labelFunction: l => l ? 'Работает' : 'Не работает',
+        },
+      },
+      {
+        name: 'phone',
+        displayName: 'Телефон',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'medical_certificate',
+        displayName: 'Медицинская справка',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'medical_certificate_date',
+        displayName: 'Срок действия мед. справки',
+        type: 'date',
+        filter: {
+          type: 'date',
+        },
+      },
+      {
+        name: 'snils',
+        displayName: 'СНИЛС №',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'is_common',
+        displayName: 'Общее',
+        type: 'select',
+        filter: {
+          type: 'multiselect',
+          options: [{ value: +true, label: 'Да' }, { value: +false, label: 'Нет' }],
+        },
+      },
     ],
   };
 
@@ -135,7 +136,7 @@ export function tableMeta({
 }
 
 const Table: React.SFC<any> = props  => {
-
+  console.log(props)
   const renderers: ISchemaRenderer = {
     full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
     birthday: ({ data }) => <DateFormatter date={data} />,

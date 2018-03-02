@@ -27,7 +27,7 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    const { time = true, disabled, className = '', style = {} } = this.props;
+    const { time = true, disabled, className = '', style = {}, id } = this.props;
     let { date, min, max } = this.props;
     const DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
     const TIME_FORMAT = 'HH:mm';
@@ -52,6 +52,7 @@ export default class DatePicker extends Component {
 
     return (
       <DateTimePicker
+        id={id}
         onChange={this.props.onChange}
         format={DATE_FORMAT}
         timeFormat={TIME_FORMAT}

@@ -194,10 +194,10 @@ export default class Taxes extends Component {
             <h5>{noDataMessage}</h5>
           </Div>
           <Div className="waybills-buttons" hidden={this.props.readOnly || !fuelRates.length}>
-            <Button bsSize="xsmall" onClick={this.addOperation} disabled={this.state.operations.length === taxes.length}>
+            <Button id="add-operation" bsSize="xsmall" onClick={this.addOperation} disabled={this.state.operations.length === taxes.length}>
               Добавить операцию
             </Button>
-            <Button bsSize="xsmall" disabled={this.state.selectedOperation === null || taxes.length === 0} onClick={this.removeOperation}>
+            <Button id="remove-operation" bsSize="xsmall" disabled={this.state.selectedOperation === null || taxes.length === 0} onClick={this.removeOperation}>
               Удалить операцию
             </Button>
           </Div>

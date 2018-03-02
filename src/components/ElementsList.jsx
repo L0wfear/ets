@@ -280,6 +280,7 @@ class ElementsList extends React.Component {
       const isEmptyList = this.props[this.mainListName] && this.props[this.mainListName].length === 0;
       buttons.push(
         <Button
+          id="regestry-download-alt"
           disabled={isEmptyList}
           key={buttons.length}
           bsSize="small"

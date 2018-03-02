@@ -138,6 +138,8 @@ export function getDefaultDutyMission() {
 
 export function getDefaultDutyMissionTemplate() {
   return {
+    date_create: new Date(),
+    is_new: true,
   };
 }
 

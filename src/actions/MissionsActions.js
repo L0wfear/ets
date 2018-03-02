@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import _ from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDate, createValidDateTime } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionReportsService,
@@ -268,11 +268,17 @@ export default class MissionsActions extends Actions {
 
   createDutyMissionTemplate(mission) {
     const payload = _.cloneDeep(mission);
+    payload.created_at = createValidDate(payload.created_at);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
+
     return DutyMissionTemplateService.post(payload, null, 'json');
   }
 
   updateDutyMissionTemplate(mission) {
     const payload = _.cloneDeep(mission);
+    payload.created_at = createValidDate(payload.created_at);
+    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
+
     delete payload.number;
     delete payload.technical_operation_name;
     delete payload.route_name;
@@ -300,6 +306,7 @@ export default class MissionsActions extends Actions {
       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
       }
+
       delete payload.company_id;
       delete payload.id;
       delete payload.number;

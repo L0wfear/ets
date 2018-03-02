@@ -11,7 +11,8 @@ import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { saveData } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
-import { dutyMissionSchema } from 'models/DutyMissionModel.js';
+import dutyMissionSchema from 'models/DutyMissionModel.js';
+
 import DutyMissionForm from './DutyMissionForm.jsx';
 import DutyMissionFormOld from './DutyMissionFormOld.jsx';
 
@@ -82,7 +83,7 @@ class DutyMissionFormWrap extends FormWrap {
     }
   }
 
-  async handleFormPrint() {
+  handleFormPrint = async () => {
     const mission = cloneDeep(this.state.formState);
 
     let response;
@@ -186,7 +187,7 @@ class DutyMissionFormWrap extends FormWrap {
           <DutyMissionForm
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
-            onPrint={this.handleFormPrint.bind(this)}
+            onPrint={this.handleFormPrint}
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}
@@ -199,7 +200,7 @@ class DutyMissionFormWrap extends FormWrap {
           <DutyMissionFormOld
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
-            onPrint={this.handleFormPrint.bind(this)}
+            onPrint={this.handleFormPrint}
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}

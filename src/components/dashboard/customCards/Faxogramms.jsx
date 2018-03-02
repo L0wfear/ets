@@ -95,11 +95,4 @@ export default class Faxogramms extends DashboardCardMedium {
       </Div>
     );
   }
-
-  renderCustomCardForm() {
-    return (
-      <div />
-    );
-  }
-
 }

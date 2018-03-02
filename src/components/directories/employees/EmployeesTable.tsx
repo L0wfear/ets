@@ -136,7 +136,6 @@ export function tableMeta({
 }
 
 const Table: React.SFC<any> = props  => {
-  console.log(props)
   const renderers: ISchemaRenderer = {
     full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
     birthday: ({ data }) => <DateFormatter date={data} />,

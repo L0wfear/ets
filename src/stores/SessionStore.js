@@ -22,7 +22,6 @@ export const getSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
-  permissions.push('nsi_company_column_show');
 
   return permissions;
 };

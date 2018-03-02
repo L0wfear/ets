@@ -11,13 +11,21 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 export function tableMeta({
   isOkrug = false,
+  isKgh = false,
   sensorTypesList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
+        name: 'company_name',
+        displayName: 'Наименование ГБУ',
+        type: 'string',
+        display: isKgh,
+        filter: isKgh && { type: 'multiselect' } || false,
+      },
+      {
         name: 'okrug_name',
-        displayName: 'Округ',
+        displayName: 'Учреждение',
         type: 'string',
         display: isOkrug,
         filter: isOkrug && { type: 'multiselect' } || false,
@@ -41,7 +49,7 @@ export function tableMeta({
         displayName: 'Заказчик/Подрядчик',
         type: 'string',
         display: false,
-        filter: isOkrug && { type: 'multiselect' } || false,
+        filter: isOkrug && !isKgh && { type: 'multiselect' } || false,
       },
       {
         name: 'owner_name',

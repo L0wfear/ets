@@ -74,10 +74,16 @@ export class MissionForm extends Form {
     }
   }
 
+  // Зачем тут таймаут?
+  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
+  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
+  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
   handleTechnicalOperationChange(v) {
-    this.handleChange('technical_operation_id', v);
-    this.handleChange('municipal_facility_id', null);
-    this.handleRouteIdChange(undefined);
+    setTimeout(() => {
+      this.handleChange('technical_operation_id', v);
+      this.handleChange('municipal_facility_id', null);
+      this.handleRouteIdChange(undefined);
+    }, 60);
   }
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
@@ -10,15 +9,16 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 export function tableMeta({
   isOkrug = false,
+  isKgh = false,
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
         name: 'company_name',
-        displayName: 'Учреждение',
+        displayName: isKgh ? 'Наименование ГБУ' : 'Учреждение',
         type: 'string',
-        display: isOkrug,
-        filter: isOkrug ? { type: 'multiselect' } : false,
+        display: isOkrug || isKgh,
+        filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
       },
       {
         name: 'object_address',
@@ -66,14 +66,10 @@ export function tableMeta({
   return meta;
 }
 const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-  };
-
   return (
     <DataTable
       title="Реестр ДТ"
       results={props.data}
-      renderers={renderers}
       tableMeta={tableMeta(props)}
       initialSort={'name'}
       {...props}

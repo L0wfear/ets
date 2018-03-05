@@ -72,6 +72,12 @@ export default class EstSelect extends Component {
 
     this.props.onChange(onChangeSelectLegacy(objectValue === '' ? emptyValue : objectValue, objectValue), objectValue);
   }
+  optionRenderer = (obj) => {
+    if (this.props.optionRenderer && typeof this.props.optionRenderer === 'function') {
+      return <div id={obj.value}>{this.props.optionRenderer(obj)}</div>;
+    }
+    return <div id={obj.value}><span>{obj.label}</span></div>;
+  }
   render() {
     const {
       placeholder = 'Выберите...',
@@ -90,6 +96,7 @@ export default class EstSelect extends Component {
           options={sortedOptions}
           placeholder={placeholder}
           noResultsText={noResultsText}
+          optionRenderer={this.optionRenderer}
         />
       </div>
     );

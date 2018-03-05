@@ -36,9 +36,17 @@ export default class MissionFormWrap extends FormWrap {
       return r;
     });
 
+  async getTimeStart() {
+    const { date: date_start } = await this.context.flux.getActions('dashboard').getMoscowTime();
+    this.handleFormStateChange('date_start', date_start);
+  }
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       const mission = props.element === null ? getDefaultMission() : clone(props.element);
+      if (props.element === null && !props.fromOrder) {
+        this.getTimeStart();
+      }
+
       const waybillsActions = this.context.flux.getActions('waybills');
       const ordersActions = this.context.flux.getActions('objects');
 

@@ -130,14 +130,8 @@ export class MissionForm extends Form {
     }
 
     const {
-      norm_id,
       id,
     } = mission;
-    if (norm_id) {
-      await this.getDataByNormId(norm_id);
-      carsList = await this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
-        .then(({ result: { rows = [] } }) => rows);
-    }
 
     // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
     const kind_task_ids = getKindTaskIds(id, false);

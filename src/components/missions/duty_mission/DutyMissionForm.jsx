@@ -63,7 +63,6 @@ export class DutyMissionForm extends Form {
       }
       flux.getActions('missions').getMissions(v);
     }, 60);
-    
   }
   isActiveEmployee(id) {
     return this.props.employeesList
@@ -110,6 +109,7 @@ export class DutyMissionForm extends Form {
     const missionsActions = flux.getActions('missions');
     const isTemplate = this.props.template || false;
 
+    let kind_task_ids = null;
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
 
@@ -123,25 +123,29 @@ export class DutyMissionForm extends Form {
 
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
-
     }
 
     // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
-    const kind_task_ids = getKindTaskIds(id, false);
 
     missionsActions.getMissions(mission.technical_operation_id);
-    missionsActions.getMissionSources();
+    await missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids });
     const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     const {
       is_new,
+      mission_source_id,
     } = mission;
+    const { missionSourcesList = [] } = this.props;
+    if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
+      kind_task_ids = getKindTaskIds(id, false);
+    }
+
     if (is_new) {
-      TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id, name }) => ({ value: id, label: name }));
+      TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id: value, name }) => ({ value, label: name }));
     } else {
-      TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+      TECH_OPERATIONS = technicalOperationsList.map(({ id: value, name }) => ({ value, label: name }));
     }
 
     this.setState({
@@ -293,7 +297,7 @@ export class DutyMissionForm extends Form {
       label: `№${number} (${technical_operation_name})`,
     }));
 
-    const IS_CREATING = !!!state.number;
+    const IS_CREATING = !state.number;
     const IS_CLOSING = state.status && state.status === 'assigned';
     const IS_COMPLETED = state.status && state.status === 'complete';
     const IS_CLOSED = state.status === 'complete' || state.status === 'fail';

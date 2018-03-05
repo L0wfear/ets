@@ -67,7 +67,7 @@ export const formValidationSchema: IValidationSchema = {
     },
     {
       key: 'status',
-      title: 'Статус',
+      title: 'Итог проведенного ремонта',
       type: 'array',
     },
   ],
@@ -112,7 +112,7 @@ export const formValidationSchema: IValidationSchema = {
       {
         validator(value = null, { fact_date_start = null, fact_date_end = null }) {
           if (fact_date_start && fact_date_end && !value) {
-            return getRequiredFieldMessage('Статус');
+            return getRequiredFieldMessage('Итог проведенного ремонта');
           }
 
           return '';

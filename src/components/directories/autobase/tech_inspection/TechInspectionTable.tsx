@@ -31,8 +31,8 @@ export function tableMeta({
       },
       {
         name: 'reg_number',
-        displayName: 'Номер диагностической карты',
-        type: 'number',
+        displayName: 'Номер диагностической карты/ Талона ГТО',
+        type: 'string',
         filter: {
           type: 'multiselect',
         },

@@ -49,7 +49,6 @@ class FaxogrammMissionsFormWrap extends FormWrap {
     const { missionJournalState } = this.state;
     const { missionJournalState: missionJournalState_new } = state;
 
-    console.log(missionJournalState_new, missionJournalState)
     if (element_old !== element_new || showForm_old !== showForm_new || missionJournalState !== missionJournalState_new) {
       return true;
     }

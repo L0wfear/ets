@@ -70,7 +70,7 @@ export default class SessionStore extends Store {
     this.state = {
       currentUser,
       isOkrug: currentUser.okrug_id !== null,
-      isKgh: currentUser.permissions.includes('nsi_company_column_show'),
+      isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       session: storedSession,
       userPermissions: currentUser.permissions,
     };
@@ -113,7 +113,7 @@ export default class SessionStore extends Store {
       currentUser,
       session,
       isOkrug: data.payload.okrug_id !== null,
-      isKgh: currentUser.permissions.includes('nsi_company_column_show'),
+      isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       userPermissions: currentUser.permissions,
     });
   }

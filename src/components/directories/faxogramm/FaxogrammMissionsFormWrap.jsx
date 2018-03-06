@@ -10,6 +10,14 @@ import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
 
 @autobind
 class FaxogrammMissionsFormWrap extends FormWrap {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
+      missionJournalState: null,
+    };
+  }
 
   componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
@@ -27,17 +35,22 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       });
     }
   }
-  shouldComponentUpdate(props) {
+  shouldComponentUpdate(props, state) {
     const {
       showForm: showForm_old,
       element: element_old,
     } = this.props;
+
     const {
       showForm: showForm_new,
       element: element_new,
     } = props;
 
-    if (element_old !== element_new || showForm_old !== showForm_new) {
+    const { missionJournalState } = this.state;
+    const { missionJournalState: missionJournalState_new } = state;
+
+    console.log(missionJournalState_new, missionJournalState)
+    if (element_old !== element_new || showForm_old !== showForm_new || missionJournalState !== missionJournalState_new) {
       return true;
     }
     return false;
@@ -46,7 +59,11 @@ class FaxogrammMissionsFormWrap extends FormWrap {
 
   async handleFormSubmit() {
     const { flux } = this.context;
-    const { formState } = this.state;
+    const {
+      formState,
+      missionJournalState,
+    } = this.state;
+
     const initPayload = {
       mission_source_id: '4',
       faxogramm_id: formState.id,
@@ -120,8 +137,8 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       return error;
     };
 
-    const missions = _.keys(formState.missionJournalState.checkedElements)
-      .map(key => formState.missionJournalState.checkedElements[key]);
+    const missions = _.keys(missionJournalState.checkedElements)
+      .map(key => missionJournalState.checkedElements[key]);
 
     let closeForm = true;
 
@@ -133,6 +150,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
     closeForm && this.props.onFormHide();
     return;
   }
+  onListStateChange = missionJournalState => this.setState({ missionJournalState });
 
   render() {
     return (
@@ -143,6 +161,8 @@ class FaxogrammMissionsFormWrap extends FormWrap {
           handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
+          onListStateChange={this.onListStateChange}
+          missionJournalState={this.state.missionJournalState}
           {...this.state}
         />
       </Div>

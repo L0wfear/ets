@@ -46,10 +46,12 @@ export default class MissionFormWrap extends FormWrap {
         });
       } else {
         const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
+        const formErrors = this.validate(defaultMissionsCreationTemplate, {});
+
         this.setState({
           formState: defaultMissionsCreationTemplate,
           canSave: true,
-          formErrors: validateMissionsCreationTemplate(defaultMissionsCreationTemplate, {}),
+          formErrors,
         });
       }
     }

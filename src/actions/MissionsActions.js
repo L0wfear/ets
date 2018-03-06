@@ -296,13 +296,15 @@ export default class MissionsActions extends Actions {
     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
     const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map((query) => {
       const payload = _.cloneDeep(query);
+      const { brigade_employee_id_list = [] } = payload;
+
       payload.status = 'not_assigned';
       payload.plan_date_start = date_start;
       payload.plan_date_end = date_end;
       payload.fact_date_start = date_start;
       payload.fact_date_end = date_end;
       payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
-      payload.brigade_employee_id_list = [];
+      payload.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
       }

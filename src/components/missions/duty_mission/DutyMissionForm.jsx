@@ -37,21 +37,27 @@ export class DutyMissionForm extends Form {
     }
   }
 
-  async handleTechnicalOperationChange(v) {
-    this.handleChange('technical_operation_id', v);
-    this.handleChange('route_id', undefined);
-    if (!isEmpty(this.props.formState.car_mission_id)) {
-      this.handleChange('car_mission_id', 0);
-    }
-    this.context.flux.getActions('missions').getMissions(v);
+  // Зачем тут таймаут?
+  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
+  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
+  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
+  handleTechnicalOperationChange(v) {
+    setTimeout(async () => {
+      this.handleChange('technical_operation_id', v);
+      this.handleChange('route_id', undefined);
+      if (!isEmpty(this.props.formState.car_mission_id)) {
+        this.handleChange('car_mission_id', 0);
+      }
+      this.context.flux.getActions('missions').getMissions(v);
 
-    const routesList = await this.context.flux.getActions('routes')
-      .getRoutesByTechnicalOperation(v);
-    if (routesList.length === 1) {
-      this.handleRouteIdChange(routesList[0].id);
-    }
+      const routesList = await this.context.flux.getActions('routes')
+        .getRoutesByTechnicalOperation(v);
+      if (routesList.length === 1) {
+        this.handleRouteIdChange(routesList[0].id);
+      }
 
-    this.setState({ routesList });
+      this.setState({ routesList });
+    }, 60);
   }
   isActiveEmployee(id) {
     return this.props.employeesList
@@ -253,6 +259,7 @@ export class DutyMissionForm extends Form {
 
             <Col md={6}>
               <Field
+                id="dm-technical-operation-id"
                 type="select"
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
@@ -269,6 +276,7 @@ export class DutyMissionForm extends Form {
                   <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
                   <Div>
                     <Field
+                      id="plan-date-start"
                       type="date"
                       label="Время выполнения, планируемое:"
                       error={errors.plan_date_start}
@@ -281,6 +289,7 @@ export class DutyMissionForm extends Form {
                 <Col md={6}>
                   <Div>
                     <Field
+                      id="plan-date-end"
                       type="date"
                       label=""
                       error={errors.plan_date_end}
@@ -297,6 +306,7 @@ export class DutyMissionForm extends Form {
                     <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
                     <Div>
                       <Field
+                        id="fact-date-start"
                         type="date"
                         label="Время выполнения, фактическое:"
                         error={errors.fact_date_start}
@@ -309,6 +319,7 @@ export class DutyMissionForm extends Form {
                   <Col md={6}>
                     <Div>
                       <Field
+                        id="fact-date-end"
                         type="date"
                         label=""
                         error={errors.fact_date_end}
@@ -329,6 +340,7 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field
+                id="foreman-id"
                 type="select"
                 label="Бригадир"
                 error={errors.foreman_id}
@@ -340,7 +352,11 @@ export class DutyMissionForm extends Form {
             </Col>
 
             <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
-              <Field type="select" label="Бригада" error={errors.brigade_employee_id_list}
+              <Field
+                id="brigade-employee-id-list"
+                type="select"
+                label="Бригада"
+                error={errors.brigade_employee_id_list}
                 multi
                 disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
@@ -349,7 +365,9 @@ export class DutyMissionForm extends Form {
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>
-              <Field type="select"
+              <Field
+                id="dm-structure-id"
+                type="select"
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY || (!IS_CREATING && state.status !== 'not_assigned') || readOnly}
@@ -365,7 +383,11 @@ export class DutyMissionForm extends Form {
 
           <Row>
             <Col md={state.order_number != null ? 3 : 6}>
-              <Field type="select" label="Источник получения задания" error={errors.mission_source_id}
+              <Field
+                id="mission-source-id"
+                type="select"
+                label="Источник получения задания"
+                error={errors.mission_source_id}
                 disabled={IS_DISPLAY || readOnly}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
@@ -374,6 +396,7 @@ export class DutyMissionForm extends Form {
             </Col>
             {state.order_number != null && <Col md={3}>
               <Field
+                id="order-number"
                 type="string"
                 label="Номер факсограммы"
                 readOnly
@@ -382,6 +405,7 @@ export class DutyMissionForm extends Form {
             </Col>}
             <Col md={6}>
               <Field
+                id="dm-comment"
                 type="string"
                 label="Комментарий"
                 value={state.comment}
@@ -395,7 +419,10 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6} />
             <Col md={6}>
-              <Field type="select" label="Задание на ТС" error={errors.car_mission_id}
+              <Field
+                id="car-mission-id"
+                type="select"
+                label="Задание на ТС" error={errors.car_mission_id}
                 disabled={IS_DISPLAY || readOnly}
                 options={MISSIONS}
                 value={state.car_mission_id}
@@ -407,6 +434,7 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field
+                id="dm-route-id"
                 type="select"
                 label="Маршрут"
                 error={errors.route_id}
@@ -417,6 +445,7 @@ export class DutyMissionForm extends Form {
               />
               <Div hidden={state.route_id}>
                 <Button
+                  id="dm-create-route"
                   onClick={this.createNewRoute.bind(this)}
                   disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
                 >Создать новый</Button>
@@ -434,8 +463,8 @@ export class DutyMissionForm extends Form {
         <Modal.Footer>
           <Div className="inline-block" >
             <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
-              <Glyphicon glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
+              <Glyphicon id="dm-download-all" glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
+            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

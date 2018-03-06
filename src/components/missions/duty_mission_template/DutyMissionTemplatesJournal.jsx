@@ -32,6 +32,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissionTemplates(payload);
     flux.getActions('missions').getMissionSources();
+    flux.getActions('employees').getEmployees({ 'active': true });
   }
 
   showForm() {

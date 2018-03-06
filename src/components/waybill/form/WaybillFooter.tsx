@@ -27,7 +27,7 @@ interface IPropsWaybillFooter {
 const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
   <Div>
     <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft)}>
-      <Button title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
+      <Button id="waybill-refresh" title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
       <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
@@ -43,7 +43,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
       </Dropdown>
       <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
         <Dropdown.Toggle disabled={!props.canSave}>
-          <Glyphicon glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
+          <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <MenuItem eventKey={'plate_special'}>Форма 3-С</MenuItem>
@@ -54,10 +54,10 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
       </Dropdown>&nbsp;
     </Div>
     <Div oneOfPermissions={['waybill.update_closed', 'waybill.update']} className={'inline-block'} hidden={props.state.status === 'closed' && !props.canEditIfClose}>
-      <Button onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
+      <Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
     </Div>
     <Div className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
-      <Button onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
+      <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
     </Div>
   </Div>;
 

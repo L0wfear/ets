@@ -179,41 +179,44 @@ export default class CurrentMission extends DashboardCardMedium {
       <Div>
         <Div hidden={Object.keys(selectedMission) === 0}>
           <ul>
-            <li><b>Задание:</b>
-              {mission_data.name}
+            <li><b>Задание: </b>
+              №{mission_data.number}
             </li>
-            <li><b>Тех. операция:</b>
+            <li><b>Тех. операция: </b>
               {technical_operation_data.name}
             </li>
-            <li><b>Элемент:</b>
+            <li><b>Элемент: </b>
               {mission_data.element}
             </li>
-            <li><b>Водитель:</b>
+            <li><b>Водитель: </b>
               {car_data.driver_fio}
             </li>
             {medLabelVisibility && <MedViewLabel>Не пройден внеплановый мед. осмотр</MedViewLabel>}
-            <li><b>Рег. номер ТС:</b>
+            <li><b>Номер телефона: </b>
+              {car_data.driver_phone || 'нет данных'}
+            </li>
+            <li><b>Рег. номер ТС: </b>
               {car_data.gov_number}
             </li>
-            <li><b>Начало задания:</b>
+            <li><b>Начало задания: </b>
               {getFormattedDateTimeSeconds(mission_data.date_start)}
             </li>
-            <li><b>Окончание задания:</b>
+            <li><b>Окончание задания: </b>
               {getFormattedDateTimeSeconds(mission_data.date_end)}
             </li>
-            <li><b>Расчетное время выполнения:</b>
+            <li><b>Расчетное время выполнения: </b>
               {getEstimatedFinishTime(report_data.estimated_finish_time || 'Подсчет')}
             </li>
-            <li><b>Пройдено в рабочем режиме:</b>
+            <li><b>Пройдено в рабочем режиме: </b>
               {getDataTraveledYet(traveledAndCheck_unit)}
             </li>
-            <li><b>Пройдено с рабочей скоростью:</b>
+            <li><b>Пройдено с рабочей скоростью: </b>
               {getDataTraveledYet([...traveledAndCheck_unit, report_data.time_work_speed])}
             </li>
-            <li><b>Пройдено с превышением рабочей скорости:</b>
+            <li><b>Пройдено с превышением рабочей скорости: </b>
               {getDataTraveledYet([...traveled_high_speedAndCheck_unit, report_data.time_high_speed])}
             </li>
-            <li><b>Общий пробег с работающим оборудованием:</b>
+            <li><b>Общий пробег с работающим оборудованием: </b>
               {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
             </li>
             {this.canView ? <div><a className="pointer" onClick={(e) => { e.preventDefault(); this.missionAction(selectedMission); }}>Подробнее...</a></div> : ''}

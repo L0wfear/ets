@@ -37,9 +37,7 @@ export default class ProgramRegistryForm extends Form {
       } = {},
     } = this.props;
 
-    const slug = technicalOperationsObjectsList.find(({ id }) => id === val) ?
-                 technicalOperationsObjectsList.find(({ id }) => id === val) :
-                 undefined;
+    const { slug } = technicalOperationsObjectsList.find(({ id }) => id === val);
     const REPAIR_TYPES_OPTIONS = setTypeOptionsBySlug(slug, repairTypeOptions);
 
     this.setState({

@@ -38,7 +38,7 @@ class FaxogrammMissionsForm extends Form {
             payload={payload}
             noTitle
             noCustomButton
-            onListStateChange={this.handleChange.bind(this, 'missionJournalState')}
+            onListStateChange={this.props.onListStateChange}
           />
         </ModalBody>
 
@@ -54,7 +54,7 @@ class FaxogrammMissionsForm extends Form {
             />
             {/* <Input type="checkbox" value={state.assign_to_waybill} onClick={this.handleChange.bind(this, 'assign_to_waybill', !!!state.assign_to_waybill)}/>*/}
           </Div>
-          <Button disabled={!state.missionJournalState || !_.keys(state.missionJournalState.checkedElements).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button disabled={!this.props.missionJournalState || !_.keys(this.props.missionJournalState.checkedElements).length} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
         </Modal.Footer>
 
       </Modal>

@@ -1012,6 +1012,7 @@ class WaybillForm extends Form {
             handleSubmit={this.handleSubmit}
             handleClose={this.props.handleClose}
             handlePrint={this.props.handlePrint}
+            handlePrintFromMiniButton={this.props.handlePrintFromMiniButton}
             entity={entity}
           />
         </Modal.Footer>

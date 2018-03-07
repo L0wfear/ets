@@ -319,6 +319,8 @@ export default class MissionsActions extends Actions {
     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
     const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map((query) => {
       const payload = cloneDeep(query);
+      const { brigade_employee_id_list = [] } = payload;
+
       payload.status = 'not_assigned';
       payload.plan_date_start = date_start;
       payload.plan_date_end = date_end;

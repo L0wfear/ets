@@ -192,8 +192,9 @@ export default class ObjectsStore extends Store {
     this.setState({ technicalOperationsRegistryList: techOperations.result });
   }
 
-  handleGetWorkKinds({ result: { rows = [] } }) {
-    this.setState({ workKindsList: rows });
+  // Убрать второй вариант
+  handleGetWorkKinds(workKinds) {
+    this.setState({ workKindsList: workKinds.result.rows || workKinds.result });
   }
 
   handleGetOrganizations(organizations) {

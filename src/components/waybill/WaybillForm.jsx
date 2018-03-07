@@ -1177,7 +1177,7 @@ class WaybillForm extends Form {
                 <Field
                   type="number"
                   label="Общий расход топлива, л"
-                  value={taxesTotal}
+                  value={taxesTotal.toFixed(3)}
                   hidden={taxeTotalHidden}
                   disabled
                 />

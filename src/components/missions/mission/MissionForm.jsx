@@ -426,7 +426,7 @@ export class MissionForm extends Form {
       };
     }
 
-    const canSave = this.props.canSave && error_date;
+    const canSave = this.props.canSave && !error_date;
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">

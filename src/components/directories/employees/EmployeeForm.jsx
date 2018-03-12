@@ -232,9 +232,9 @@ export default class EmployeeForm extends Form {
               <FileField
                 label="Медицинские справки"
                 multiple
-                value={state.medical_certificate}
+                value={state.medical_certificate_files}
                 onChange={this.handleChange}
-                boundKeys={['medical_certificate']}
+                boundKeys={['medical_certificate_files']}
                 isLoading={onOverlayLoading}
                 disabled={!isPermitted}
               />
@@ -243,9 +243,9 @@ export default class EmployeeForm extends Form {
               <FileField
                 label="Водительские удостоверения"
                 multiple
-                value={state.driver_license}
+                value={state.driver_license_files}
                 onChange={this.handleChange}
-                boundKeys={['driver_license']}
+                boundKeys={['driver_license_files']}
                 isLoading={onOverlayLoading}
                 disabled={!isPermitted}
               />

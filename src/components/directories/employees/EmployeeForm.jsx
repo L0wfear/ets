@@ -3,10 +3,14 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
 import Field from 'components/ui/Field.jsx';
-import Form from '../../compositions/Form.jsx';
+import { loadingOverlay } from 'components/ui/LoadingOverlay';
+import { FileField } from 'components/ui/input/fields';
 import { connectToStores } from 'utils/decorators';
 
+import Form from '../../compositions/Form.jsx';
+
 @connectToStores(['objects', 'companyStructure'])
+@loadingOverlay
 export default class EmployeeForm extends Form {
   handleSave = () => {
     if (Object.keys(this.props.location.query).length > 0) {
@@ -22,6 +26,7 @@ export default class EmployeeForm extends Form {
       positionsList = [],
       companyStructureList = [],
       isPermitted = false,
+      onOverlayLoading,
     } = this.props;
 
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
@@ -178,7 +183,9 @@ export default class EmployeeForm extends Form {
           </Row>
           <Row>
             <Col md={6}>
-              <Field type="select" label="Подразделение"
+              <Field
+                type="select"
+                label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
                 disabled={!isPermitted}
@@ -217,6 +224,30 @@ export default class EmployeeForm extends Form {
                 error={errors.snils}
                 disabled={!isPermitted}
                 onChange={this.handleChange.bind(this, 'snils')}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <FileField
+                label="Файл"
+                multiple
+                value={state.medical_certificate}
+                onChange={this.handleChange}
+                boundKeys={['medical_certificate']}
+                isLoading={onOverlayLoading}
+                disabled={!isPermitted}
+              />
+            </Col>
+            <Col md={6}>
+              <FileField
+                label="Файл"
+                multiple
+                value={state.driver_license}
+                onChange={this.handleChange}
+                boundKeys={['driver_license']}
+                isLoading={onOverlayLoading}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

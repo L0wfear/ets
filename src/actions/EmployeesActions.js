@@ -6,15 +6,15 @@ import { mapKeys, cloneDeep } from 'lodash';
 
 const makeFilesToBackendOne = (formState) => {
   const payload = cloneDeep(formState)
-  const { driver_license, medical_certificate } = payload;
+  const { driver_license_files, medical_certificate_files } = payload;
 
   payload.files = [
-    ...driver_license.map(obj => ({ ...obj, kind: 'driver_license' })),
-    ...medical_certificate.map(obj => ({ ...obj, kind: 'medical_certificate' })),
+    ...driver_license_files.map(obj => ({ ...obj, kind: 'driver_license' })),
+    ...medical_certificate_files.map(obj => ({ ...obj, kind: 'medical_certificate' })),
   ];
 
-  delete payload.driver_license;
-  delete payload.medical_certificate;
+  delete payload.driver_license_files;
+  delete payload.medical_certificate_files;
 
   return payload;
 };
@@ -22,8 +22,8 @@ const makeFilesToBackendOne = (formState) => {
 const makeFilesToFrontendAll = rows =>
   rows.map(({ files = [], ...other }) => ({
     ...other,
-    driver_license: files.filter(file => file.kind === 'driver_license'),
-    medical_certificate: files.filter(file => file.kind === 'medical_certificate'),
+    driver_license_files: files.filter(file => file.kind === 'driver_license'),
+    medical_certificate_files: files.filter(file => file.kind === 'medical_certificate'),
   }));
 
 function getEmployees(payload = {}) {

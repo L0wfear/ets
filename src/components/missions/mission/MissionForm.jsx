@@ -147,12 +147,7 @@ export class MissionForm extends Form {
       kind_task_ids = getKindTaskIds(id, false);
     }
 
-    /**
-     * DITETS-2359
-     * GET /technical_operation?only=new
-     * GET /technical_operation?only=old
-     */
-    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations();
+    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations({ kind_task_ids });
 
     let type_id = 0;
     if (mission.status === 'not_assigned') {

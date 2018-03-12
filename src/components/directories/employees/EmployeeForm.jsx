@@ -230,7 +230,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <FileField
-                label="Файл"
+                label="Медицинские справки"
                 multiple
                 value={state.medical_certificate}
                 onChange={this.handleChange}
@@ -241,7 +241,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <FileField
-                label="Файл"
+                label="Водительские удостоверения"
                 multiple
                 value={state.driver_license}
                 onChange={this.handleChange}

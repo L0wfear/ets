@@ -8,7 +8,7 @@ const DOMAIN_FOR_PROD = (PROTO_FOR_PROD === 'http:') ? 'ets.tech.mos.ru' : 'ets.
 const STAND = process.env.STAND;
 
 export const PROTO_FOR_ODS_MOS_RU = (STAND === 'prod') ? PROTO_FOR_PROD : (STAND === 'stage') ? PROTO_FOR_STAGE : 'http:';
-const WS_PROTO = `ws${/s/.test(window.location.protocol) ? 's' : ''}:`;
+const WS_PROTO = 'wss:';
 
 const DOC_URL = {
   dev: 'http://dev-ets.gost-group.com/docs/',
@@ -17,7 +17,7 @@ const DOC_URL = {
 };
 
 const config = {
-  ws: `${WS_PROTO}//ods.mos.ru/ssd/city-dashboard/stream`,
+  ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
   images: `${PROTO_FOR_ODS_MOS_RU}//ods.mos.ru/ssd/ets/data/images/`,
   docs: DOC_URL[process.env.STAND],
 };

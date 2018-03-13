@@ -8,18 +8,19 @@ import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 const DataPicker: any = Datepicker;
 
-export interface IPropsMissionPrintForm {
+export interface IPropsPrintForm {
   show: boolean;
   onHide(): void;
   onExport(payload: any);
+  title: string;
 }
 
-export interface IStateMissionPrintForm {
+export interface IStatePrintForm {
   date_from: Date;
   date_to: Date;
 }
 
-class MissionPrintForm extends React.Component<IPropsMissionPrintForm, IStateMissionPrintForm> {
+class PrintForm extends React.Component<IPropsPrintForm, IStatePrintForm> {
   constructor(props) {
     super(props);
 
@@ -62,7 +63,7 @@ class MissionPrintForm extends React.Component<IPropsMissionPrintForm, IStateMis
       <Modal {...this.props} bsSize="small" >
 
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">Печать журнала заданий</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{`${this.props.title}`}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>
@@ -89,4 +90,4 @@ class MissionPrintForm extends React.Component<IPropsMissionPrintForm, IStateMis
 
 }
 
-export default MissionPrintForm;
+export default PrintForm;

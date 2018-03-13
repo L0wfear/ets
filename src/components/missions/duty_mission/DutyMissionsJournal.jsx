@@ -9,6 +9,8 @@ import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
 import Paginator from 'components/ui/Paginator.jsx';
+import PrintForm from 'components/missions/common/PrintForm.tsx';
+
 import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
@@ -39,6 +41,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     this.state = {
       ...this.state,
+      showPrintForm: false,
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
@@ -203,15 +206,23 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   getForms() {
-    return (
-      <DutyMissionFormWrap
-        onFormHide={this.onFormHide}
-        showForm={this.state.showForm}
-        element={this.state.selectedElement}
-        refreshTableList={this.refreshList}
-        {...this.props}
-      />
-    );
+    return [
+      <div key={'forms'}>
+        <DutyMissionFormWrap
+          onFormHide={this.onFormHide}
+          showForm={this.state.showForm}
+          element={this.state.selectedElement}
+          refreshTableList={this.refreshList}
+          {...this.props}
+        />
+        <PrintForm
+          onExport={this.processExport.bind(this)}
+          show={this.state.showPrintForm}
+          onHide={() => this.setState({ showPrintForm: false })}
+          title={'Печать журнала наряд-заданий'}
+        />
+      </div>,
+    ];
   }
 
   getAdditionalProps() {
@@ -229,6 +240,10 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       filterValues: this.state.filter,
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
     };
+  }
+
+  export() {
+    this.setState({ showPrintForm: true });
   }
 
   additionalRender() {

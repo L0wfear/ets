@@ -73,7 +73,7 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'gov_number',
+        name: 'car_id',
         displayName: 'Рег. номер ТС',
         cssClassName: 'width-nowrap',
         type: 'string',

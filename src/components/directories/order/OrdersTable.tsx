@@ -46,7 +46,7 @@ export function tableMeta({
         filter: false,
       },
       {
-        name: 'order_type_name',
+        name: 'order_type_id',
         displayName: 'Тип',
         type: 'string',
         filter: {

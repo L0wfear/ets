@@ -38,7 +38,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-        name: 'mission_source_name',
+        name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',
         filter: {
@@ -64,7 +64,7 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'car_gov_number',
+        name: 'car_id',
         displayName: 'Рег. номер ТС',
         type: 'number',
         filter: {
@@ -74,7 +74,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'type_name',
+        name: 'type_id',
         displayName: 'Тип техники',
         type: 'number',
         filter: {
@@ -110,7 +110,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'technical_operation_name',
+        name: 'technical_operation_id',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {

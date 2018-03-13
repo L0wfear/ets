@@ -18,7 +18,7 @@ const DOC_URL = {
 
 const config = {
   ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
-  images: `${PROTO_FOR_ODS_MOS_RU}//ods.mos.ru/ssd/ets/data/images/`,
+  images: `${PROTO_FOR_ODS_MOS_RU}//ets.mos.ru/ets/data/images/`,
   docs: DOC_URL[process.env.STAND],
 };
 

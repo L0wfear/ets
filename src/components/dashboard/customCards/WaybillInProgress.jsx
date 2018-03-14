@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  groupBy,
-  sortBy,
   flatten,
 } from 'lodash';
 import moment from 'moment';

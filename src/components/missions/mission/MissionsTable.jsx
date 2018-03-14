@@ -43,7 +43,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.missionSourcesList.map(({ name }) => ({ value: name, label: name })),
+          options: props.missionSourcesList.map(missonsource => ({ value: missonsource.id, label: missonsource.name })),
         },
         cssClassName: 'width150',
       },
@@ -69,7 +69,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.carsList.map(e => ({ label: e.gov_number, value: e.gov_number })),
+          options: props.carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },
@@ -79,7 +79,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: uniqBy(props.carsList.map(e => ({ label: e.type_name, value: e.type_name })), 'value'),
+          options: uniqBy(props.carsList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
         },
         cssClassName: 'width120',
       },
@@ -115,7 +115,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
+          options: props.technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
         },
       },
       {
@@ -183,6 +183,10 @@ export default (props) => {
       );
     },
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    car_id: ({ data }) => <div>{props.carsList.find(car => car.asuods_id === data) ? props.carsList.find(car => car.asuods_id === data).gov_number : ''}</div>,
+    mission_source_id: ({ data }) => <div>{props.missionSourcesList.find(missonsource => missonsource.id === data) ? props.missionSourcesList.find(missonsource => missonsource.id === data).name : ''}</div>,
+    type_id: ({ data }) => <div>{props.carsList.find(car => car.type_id === data) ? props.carsList.find(car => car.type_id === data).type_name : ''}</div>,
+    technical_operation_id: ({ data }) => <div>{props.technicalOperationsList.find(operation => operation.id === data) ? props.technicalOperationsList.find(operation => operation.id === data).name : ''}</div>,
   };
 
   return (

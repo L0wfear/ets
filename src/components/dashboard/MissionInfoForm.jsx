@@ -68,7 +68,13 @@ class MissionInfoForm extends Form {
 
   async componentDidMount() {
     const { formState } = this.props;
-    const { mission_data, car_data, report_data, route_data } = formState;
+    const {
+      mission_data,
+      car_data,
+      report_data,
+      route_data,
+    } = formState;
+    
     const { flux } = this.context;
     await flux.getActions('objects').getCars();
     flux.getActions('points').createConnection();
@@ -109,8 +115,17 @@ class MissionInfoForm extends Form {
 
   render() {
     const state = this.props.formState;
-    const { car_data, report_data, route_data,
-      technical_operation_data } = state;
+    const {
+      car_data,
+      report_data,
+      route_data,
+      technical_operation_data,
+      mission_data: {
+        current_percentage = null,
+        sensor_traveled_working = null,
+      },
+    } = state;
+
     const routeType = route_data.type;
     const { route = {} } = this.state;
     const { geozonePolys = {} } = this.props;
@@ -135,7 +150,6 @@ class MissionInfoForm extends Form {
     });
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
-    const { element: { mission_data: { sensor_traveled_working = null } } } = this.props;
 
     const traveled_rawAndCheck_unit = checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F');
     const traveled_high_speedCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
@@ -217,6 +231,9 @@ class MissionInfoForm extends Form {
             </li>
             <li><b>Общий пробег с работающим оборудованием:</b>
               {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
+            </li>
+            <li><b>Процент выполнения заданияб %:</b>
+              {Math.floor(current_percentage) || '-'}
             </li>
           </Div>
 

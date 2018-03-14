@@ -72,13 +72,13 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'gov_number',
+        name: 'car_id',
         displayName: 'Рег. номер ТС',
         cssClassName: 'width-nowrap',
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: carsList.map(e => ({ label: e.gov_number, value: e.gov_number })),
+          options: carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
       },
       {
@@ -297,6 +297,7 @@ export default (props) => {
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
     all_missions_completed_or_failed: ({ data }) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>,
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    car_id: ({ data }) => <div>{props.carsList.find(car => car.asuods_id === data) ? props.carsList.find(car => car.asuods_id === data).gov_number : ''}</div>,
   };
 
   const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);

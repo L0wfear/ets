@@ -33,22 +33,22 @@ export const getTableMeta = ({
         cssClassName: 'width60',
       },
       {
-        name: 'mission_source_name',
+        name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map(({ name }) => ({ value: name, label: name })),
+          options: missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
         },
         cssClassName: 'width120',
       },
       {
-        name: 'technical_operation_name',
+        name: 'technical_operation_id',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
+          options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
         },
       },
       {
@@ -132,6 +132,8 @@ export default (props) => {
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    mission_source_id: ({ data }) => <div>{props.missionSourcesList.find(missionSource => missionSource.id === data) ? props.missionSourcesList.find(missionSource => missionSource.id === data).name : ''}</div>,
+    technical_operation_id: ({ data }) => <div>{props.technicalOperationsList.find(operation => operation.id === data) ? props.technicalOperationsList.find(operation => operation.id === data).name : ''}</div>,
   };
 
   return (<Table title="Журнал наряд-заданий"

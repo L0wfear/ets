@@ -1,6 +1,7 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
+import { uniqBy } from 'lodash';
 
 const getTableMeta = (props) => {
   const tableMeta = {
@@ -12,7 +13,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
         filter: {
           type: 'advanced-number',
-        }
+        },
       },
       {
         name: 'create_date',
@@ -39,15 +40,12 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'order_type_name',
+        name: 'order_type_id',
         displayName: 'Тип',
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [
-            { label: 'Зима', value: 'Зима' },
-            { label: 'Лето', value: 'Лето' },
-          ],
+          options: uniqBy(props.faxogrammsList, 'order_type_name').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
         },
         cssClassName: 'width60',
       },
@@ -86,6 +84,7 @@ export default (props) => {
     order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
+    order_type_id: ({ data }) => <div>{props.faxogrammsList.find(faxogramm => faxogramm.order_type_id === data) ? props.faxogrammsList.find(faxogramm => faxogramm.order_type_id === data).order_type_name : ''}</div>,
   };
 
   return (<Table

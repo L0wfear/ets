@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import * as moment from 'moment';
+import { diffDates } from 'utils/dates.js';
 
 import { IVehicle } from 'api/@types/services/index.h';
 
@@ -100,13 +100,7 @@ export function validateTaxesControl(taxes: Array<Array<any>>): boolean {
     ).includes(true);
 }
 
+// хе хе
 export function checkDateMission({ date_start, date_end, dateWaybill: { plan_departure_date, plan_arrival_date } }) {
-  if (
-    moment(date_end).format(`${global.APP_DATE_FORMAT} HH:mm`) < moment(plan_departure_date).format(`${global.APP_DATE_FORMAT} HH:mm`)
-    ||
-    moment(plan_arrival_date).format(`${global.APP_DATE_FORMAT} HH:mm`) < moment(date_start).format(`${global.APP_DATE_FORMAT} HH:mm`)
-  ) {
-    return true;
-  }
-  return false;
+  return diffDates(date_end, plan_departure_date) < 0 || diffDates(plan_arrival_date, date_start) < 0;
 }

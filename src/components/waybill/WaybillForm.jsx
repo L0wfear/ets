@@ -350,21 +350,22 @@ class WaybillForm extends Form {
       const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);
       let newMissions = [];
-      if (status === 'active') {
+      let { notAvailableMissions = [] } = this.state;
+
+      if (status === 'active' || status === 'draft') {
         newMissions = currentMissions;
-        let { notAvailableMissions = [] } = this.state;
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions
             .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
             .map(id => oldMissionsList.find(el => el.id === id))
           )
           .filter(m => m);
-        this.setState({ notAvailableMissions });
       } else {
         newMissions = currentMissions.filter(el => availableMissions.includes(el));
       }
-      this.setState({ missionsList });
+      this.setState({ missionsList, notAvailableMissions });
       this.props.handleFormChange('mission_id_list', newMissions);
+
       availableMissions.length > 0 && notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
   }

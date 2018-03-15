@@ -232,7 +232,7 @@ class MissionInfoForm extends Form {
             <li><b>Общий пробег с работающим оборудованием:</b>
               {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
             </li>
-            <li><b>Процент выполнения заданияб %:</b>
+            <li><b>Процент выполнения задания, %:</b>
               {Math.floor(current_percentage) || '-'}
             </li>
           </Div>

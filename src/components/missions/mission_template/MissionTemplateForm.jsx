@@ -37,11 +37,6 @@ class MissionTemplateForm extends MissionForm {
     }
   }
 
-
-  handleStructureIdChange = (v) => {
-    super.handleStructureIdChange.call(this, v);
-  }
-
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -90,7 +85,10 @@ class MissionTemplateForm extends MissionForm {
       newCarList = newCarList.filter(({ type_id }) => car_func_types_ids.includes(type_id));
     }
 
-    const CARS = newCarList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]` }));
+    const CARS = newCarList.map(c => ({
+      value: c.asuods_id,
+      label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
+    }));
 
     const IS_CREATING = true;
 
@@ -129,7 +127,7 @@ class MissionTemplateForm extends MissionForm {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleStructureIdChange}
+                onChange={this.handleStructureIdChange.bind(this)}
               />
             </Col>}
           </Row>

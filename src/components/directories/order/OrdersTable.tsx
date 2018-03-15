@@ -7,7 +7,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
 import { ORDER_STATUS_LABELS } from 'constants/dictionary';
-import { uniqBy } from 'lodash';
+import { get, uniqBy, find } from 'lodash';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -79,7 +79,7 @@ const Table: React.SFC<any> = props  => {
     status: ({ data }) => <div>{ORDER_STATUS_LABELS[data]}</div>,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
-    order_type_id: ({ data }) => <div>{props.OrdersList.find(faxogramm => faxogramm.order_type_id === data) ? props.OrdersList.find(faxogramm => faxogramm.order_type_id === data).order_type_name : ''}</div>,
+    order_type_id: ({ data }) => <div>{get(find(props.OrdersList, { 'order_type_id': data }), 'order_type_name', '')}</div>,
   };
 
   return (

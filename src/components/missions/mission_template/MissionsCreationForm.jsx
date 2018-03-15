@@ -10,12 +10,9 @@ import Form from 'components/compositions/Form.jsx';
 
 class MissionsCreationForm extends Form {
 
-  async componentDidMount() {
+  componentDidMount() {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources();
-
-    const { date: date_start } = await this.context.flux.getActions('dashboard').getMoscowTime();
-    this.handleChange('date_start', date_start);
   }
 
   render() {

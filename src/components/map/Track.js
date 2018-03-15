@@ -86,7 +86,6 @@ export default class Track {
       return;
     }
     if (this.points !== null && (this.points.length && point.timestamp > this.points[this.points.length - 1].timestamp)) {
-      console.log('inApdate', point)
       this.points.push(point);
       // this.render();
       this.onUpdateCallback();

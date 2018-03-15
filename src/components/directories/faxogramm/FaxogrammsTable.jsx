@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
-import { uniqBy } from 'lodash';
+import { uniqBy, find, get } from 'lodash';
 
 const getTableMeta = (props) => {
   const tableMeta = {
@@ -84,7 +84,7 @@ export default (props) => {
     order_date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
-    order_type_id: ({ data }) => <div>{props.faxogrammsList.find(faxogramm => faxogramm.order_type_id === data) ? props.faxogrammsList.find(faxogramm => faxogramm.order_type_id === data).order_type_name : ''}</div>,
+    order_type_id: ({ data }) => <div>{get(find(props.faxogrammsList, { 'order_type_id': data }), 'order_type_name', '')}</div>,
   };
 
   return (<Table

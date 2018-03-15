@@ -1,6 +1,6 @@
 import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
-import { get, uniqBy } from 'lodash';
+import { get, uniqBy, find } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
@@ -166,10 +166,10 @@ export default (props) => {
       );
     },
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-    car_id: ({ data }) => <div>{props.carsList.find(car => car.asuods_id === data) ? props.carsList.find(car => car.asuods_id === data).gov_number : ''}</div>,
-    mission_source_id: ({ data }) => <div>{props.missionSourcesList.find(missonsource => missonsource.id === data) ? props.missionSourcesList.find(missonsource => missonsource.id === data).name : ''}</div>,
-    type_id: ({ data }) => <div>{props.carsList.find(car => car.type_id === data) ? props.carsList.find(car => car.type_id === data).type_name : ''}</div>,
-    technical_operation_id: ({ data }) => <div>{props.technicalOperationsList.find(operation => operation.id === data) ? props.technicalOperationsList.find(operation => operation.id === data).name : ''}</div>,
+    car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
+    mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
+    type_id: ({ data }) => <div>{get(find(props.carsList, { 'type_id': data }), 'type_name', '')}</div>,
+    technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
   };
 
   return (

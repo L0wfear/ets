@@ -3,6 +3,7 @@ import React from 'react';
 import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
+import { get, find } from 'lodash';
 
 export const getTableMeta = ({
   structures = [],
@@ -132,8 +133,8 @@ export default (props) => {
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-    mission_source_id: ({ data }) => <div>{props.missionSourcesList.find(missionSource => missionSource.id === data) ? props.missionSourcesList.find(missionSource => missionSource.id === data).name : ''}</div>,
-    technical_operation_id: ({ data }) => <div>{props.technicalOperationsList.find(operation => operation.id === data) ? props.technicalOperationsList.find(operation => operation.id === data).name : ''}</div>,
+    mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
+    technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
   };
 
   return (<Table title="Журнал наряд-заданий"

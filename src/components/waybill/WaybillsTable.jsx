@@ -3,6 +3,7 @@ import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { get, find } from 'lodash';
 
 function waybillMissionsCompleteStatusLabelFunction(status) {
   return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
@@ -297,7 +298,7 @@ export default (props) => {
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
     all_missions_completed_or_failed: ({ data }) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>,
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-    car_id: ({ data }) => <div>{props.carsList.find(car => car.asuods_id === data) ? props.carsList.find(car => car.asuods_id === data).gov_number : ''}</div>,
+    car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
   };
 
   const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);

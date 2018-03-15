@@ -375,7 +375,7 @@ export default class WaybillFormWrap extends FormWrap {
     .catch(() => {});
   }
 
-  handlePrintFromMiniButton = (ev, print_form_type = 'plate_special') => {
+  handlePrintFromMiniButton = (print_form_type = 'plate_special') => {
     const { formState: { id: waybill_id } } = this.state;
 
     this.context.flux.getActions('waybills').printWaybill(print_form_type, waybill_id)

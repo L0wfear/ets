@@ -21,7 +21,7 @@ import Form from 'components/compositions/Form.jsx';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
-import { getKindTaskIds, checkDateByRoyteType } from 'components/missions/utils/utils.ts';
+import { getKindTaskIds } from 'components/missions/utils/utils.ts';
 
 export const checkRouteByNew = (state, route) => {
   const { is_new = true } = state;
@@ -275,9 +275,9 @@ export class MissionForm extends Form {
       </div>
     );
   }
-  handleChangeDateStart = date_start => this.handleChange('date_start', date_start);
-  handleChangeDateEnd = date_end => this.handleChange('date_end', date_end);
-
+  handleChangeDateStart = (v) => {
+    this.handleChange('date_start', v);
+  }
   getDataByNormId = async (norm_id) => {
     this.handleChange('norm_id', norm_id);
 
@@ -327,13 +327,12 @@ export class MissionForm extends Form {
 
   render() {
     const state = this.props.formState;
-    let errors = this.props.formErrors;
+    const errors = this.props.formErrors;
 
     const {
       missionSourcesList = [],
       fromOrder = false,
     } = this.props;
-
     const {
       TECH_OPERATIONS = [],
       routesList = [],
@@ -416,26 +415,6 @@ export class MissionForm extends Form {
     // Старые задания нельзя редактирвоать
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
-
-    const {
-      date_start,
-      date_end,
-    } = state;
-    const { object_type = null } = route || {};
-    const {
-      error_date,
-      type,
-      time,
-    } = checkDateByRoyteType({ date_start, date_end }, object_type );
-
-    if (error_date) {
-      errors = {
-        ...errors,
-        date_end: `Время выполнения задания для ${type} должно составлять не более ${time} часов`,
-      };
-    }
-
-    const canSave = this.props.canSave && !error_date;
 
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
@@ -541,7 +520,7 @@ export class MissionForm extends Form {
                   disabled={((IS_DISPLAY) && !IS_ASSIGNED)}
                   min={state.date_start}
                   max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-                  onChange={this.handleChangeDateEnd}
+                  onChange={this.handleChange.bind(this, 'date_end')}
                 />
               </Div>
             </Col>
@@ -631,8 +610,8 @@ export class MissionForm extends Form {
             />
           </Div>
           <Div className="inline-block">
-            <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !canSave || !state.route_id} onSelect={this.props.handlePrint}>
-              <Dropdown.Toggle disabled={!state.status || !canSave || !state.route_id}>
+            <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
+              <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
                 <Glyphicon id="m-print" glyph="print" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -640,7 +619,7 @@ export class MissionForm extends Form {
                 <MenuItem eventKey={2}>Печать</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
-            <Button id="m-submit" onClick={this.handleSubmit} disabled={!canSave}>Сохранить</Button>
+            <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

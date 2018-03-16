@@ -27,7 +27,7 @@ export default class TechnicalOperationForm extends Form {
     this.props.handleFormChange('car_func_types', types);
   }
 
-  handleObjectsChange(v) {
+  handleObjectsChange(v) {  // нужен ли этот обработчик теперь ?
     const data = v.split(',');
     const objects = this.props.technicalOperationsObjectsList.filter((obj) => data.includes(obj.id.toString()));
     this.props.handleFormChange('objects', objects);
@@ -42,8 +42,6 @@ export default class TechnicalOperationForm extends Form {
 
   render() {
     const state = this.props.formState;
-    console.log('стейт', state);
-    console.log('props', this.props); 
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
     const {
@@ -54,16 +52,13 @@ export default class TechnicalOperationForm extends Form {
     } = this.props;
     const isPermitted = true;  // ВЕРНУТЬ
 
-   // const WORK_KINDS = workKindsList.map(defaultSelectListMapper);
     const SEASONS = seasonsList.map(defaultSelectListMapper);
     const ELEMENTS = state.elements.map(defaultSelectListMapper);
     const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
-    const  objectsIds = state.objects.map(object => object.id);
+    const objectsIds = state.objects.map(object => object.id);
     const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList
                                         .map(({ id, full_name }) => ({ value: id, label: full_name }))
                                         .filter(operation => (objectsIds.includes(operation.value)));
-      console.log('TECHNICAL_OPERATION_OBJECTS', TECHNICAL_OPERATION_OBJECTS);
-      console.log('objectsIds', objectsIds);
 
     const NEEDS_BRIGADE_OPTIONS = [{ value: 1, label: 'Да' }, { value: 0, label: 'Нет' }];
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
@@ -190,9 +185,10 @@ export default class TechnicalOperationForm extends Form {
                 type="select"
                 label="Учёт в отчетах"
                 options={NEEDS_BRIGADE_OPTIONS}
-                value={+state.use_in_reports}
+                value={state.use_in_reports}
                 onChange={this.handleChange.bind(this, 'use_in_reports')}
                 disabled={!isPermitted}
+                clearable={false}
               />
             </Col>
           </Row>

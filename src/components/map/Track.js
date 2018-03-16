@@ -81,11 +81,10 @@ export default class Track {
     return this.isLoaded() && this.points[this.points.length - 1];
   }
 
-  addPoint(point) {
+  addPoint = (point) => {
     if (!this.continuousUpdating) {
       return;
     }
-
     if (this.points !== null && (this.points.length && point.timestamp > this.points[this.points.length - 1].timestamp)) {
       this.points.push(point);
       // this.render();
@@ -249,7 +248,7 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(first.x, first.y);
 
-    for (let i = 1, till = track.length - 1; i < till; i++) {
+    for (let i = 1, till = track.length; i < till; i++) {
       const coords = this.map.projectToPixel(track[i].coords_msk);
       ctx.lineTo(coords.x, coords.y);
     }
@@ -352,7 +351,7 @@ export default class Track {
 
     ctx.strokeStyle = prevRgbaColor;
 
-    for (let i = 1, till = track.length - 1; i < till; i++) {
+    for (let i = 1, till = track.length; i < till; i++) {
       const prevPoint = track[i - 1];
       const p = track[i];
 

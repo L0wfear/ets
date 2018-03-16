@@ -7,12 +7,14 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
 import { ORDER_STATUS_LABELS } from 'constants/dictionary';
+import { get, uniqBy, find } from 'lodash';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 const STATUS_OPTIONS = Object.entries(ORDER_STATUS_LABELS).map(([value, label]) => ({ value, label }));
 
 export function tableMeta({
+   OrdersList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
@@ -46,11 +48,12 @@ export function tableMeta({
         filter: false,
       },
       {
-        name: 'order_type_name',
+        name: 'order_type_id',
         displayName: 'Тип',
         type: 'string',
         filter: {
           type: 'multiselect',
+          options: uniqBy(OrdersList, 'order_type_name').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
         },
         cssClassName: 'width60',
       },
@@ -76,6 +79,7 @@ const Table: React.SFC<any> = props  => {
     status: ({ data }) => <div>{ORDER_STATUS_LABELS[data]}</div>,
     create_date: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
+    order_type_id: ({ data }) => <div>{get(find(props.OrdersList, { 'order_type_id': data }), 'order_type_name', '')}</div>,
   };
 
   return (

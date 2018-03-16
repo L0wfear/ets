@@ -30,26 +30,26 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
       <Button id="waybill-refresh" title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
-      <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
+      <Dropdown id="waybill-print-dropdown_ptint" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem eventKey={'plate_special'}>Форма 3-С</MenuItem>
-          <MenuItem eventKey={'plate_truck'}>Форма 4-П</MenuItem>
-          <MenuItem eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
-          <MenuItem eventKey={'plate_car'}>Форма №3</MenuItem>
+          <MenuItem id="print-3C" eventKey={'plate_special'}>Форма 3-С</MenuItem>
+          <MenuItem id="print-4P" eventKey={'plate_truck'}>Форма 4-П</MenuItem>
+          <MenuItem id="print-6" eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
+          <MenuItem id="print-3" eventKey={'plate_car'}>Форма №3</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
-      <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
+      <Dropdown id="waybill-print-dropdown_save" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem eventKey={'plate_special'}>Форма 3-С</MenuItem>
-          <MenuItem eventKey={'plate_truck'}>Форма 4-П</MenuItem>
-          <MenuItem eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
-          <MenuItem eventKey={'plate_car'}>Форма №3</MenuItem>
+          <MenuItem id="save-3C" eventKey={'plate_special'}>Форма 3-С</MenuItem>
+          <MenuItem id="save-4P" eventKey={'plate_truck'}>Форма 4-П</MenuItem>
+          <MenuItem id="save-6" eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
+          <MenuItem id="save-3" eventKey={'plate_car'}>Форма №3</MenuItem>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>

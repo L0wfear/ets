@@ -13,10 +13,10 @@ import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import PrintForm from 'components/missions/common/PrintForm.tsx';
 
 import Paginator from 'components/ui/Paginator.jsx';
 import MissionsTable from './MissionsTable.jsx';
-import MissionPrintForm from './MissionPrintForm';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
@@ -53,14 +53,15 @@ export default class MissionsJournal extends CheckableElementsList {
       return this.state.selectedElement.status !== 'assigned';
     };
 
-    this.state = Object.assign(this.state, {
+    this.state = {
+      ...this.state,
       showPrintForm: false,
       showMissionRejectForm: false,
       showMissionInfoForm: false,
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
-    });
+    };
   }
 
   async componentDidMount() {
@@ -243,10 +244,11 @@ export default class MissionsJournal extends CheckableElementsList {
           showForm={this.state.showMissionInfoForm}
           element={this.state.mission}
         />
-        <MissionPrintForm
+        <PrintForm
           onExport={this.processExport.bind(this)}
           show={this.state.showPrintForm}
           onHide={() => this.setState({ showPrintForm: false })}
+          title={'Печать журнала заданий'}
         />
       </div>,
     ];

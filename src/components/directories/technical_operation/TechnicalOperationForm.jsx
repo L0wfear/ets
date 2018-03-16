@@ -4,6 +4,7 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 
@@ -41,6 +42,8 @@ export default class TechnicalOperationForm extends Form {
 
   render() {
     const state = this.props.formState;
+    console.log('стейт', state);
+    console.log('props', this.props); 
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
     const {
@@ -49,12 +52,19 @@ export default class TechnicalOperationForm extends Form {
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
     } = this.props;
-    const isPermitted = false;
+    const isPermitted = true;  // ВЕРНУТЬ
 
-    const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
-    const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));
+   // const WORK_KINDS = workKindsList.map(defaultSelectListMapper);
+    const SEASONS = seasonsList.map(defaultSelectListMapper);
+    const ELEMENTS = state.elements.map(defaultSelectListMapper);
     const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
-    const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({ id, full_name }) => ({ value: id, label: full_name }));
+    const  objectsIds = state.objects.map(object => object.id);
+    const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList
+                                        .map(({ id, full_name }) => ({ value: id, label: full_name }))
+                                        .filter(operation => (objectsIds.includes(operation.value)));
+      console.log('TECHNICAL_OPERATION_OBJECTS', TECHNICAL_OPERATION_OBJECTS);
+      console.log('objectsIds', objectsIds);
+
     const NEEDS_BRIGADE_OPTIONS = [{ value: 1, label: 'Да' }, { value: 0, label: 'Нет' }];
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
 
@@ -68,8 +78,10 @@ export default class TechnicalOperationForm extends Form {
         <ModalBody>
 
           <Row>
-            <Col md={6}>
-              <Field type="string" label="Наименование"
+            <Col md={3}>
+              <Field
+                type="string"
+                label="Наименование"
                 value={state.name}
                 onChange={this.handleChange.bind(this, 'name')}
                 disabled={!isPermitted}
@@ -78,11 +90,13 @@ export default class TechnicalOperationForm extends Form {
             </Col>
 
             <Col md={3}>
-              <Field type="select" label="Объект"
-                multi
-                value={state.objects.map(cft => cft.id).join(',')}
-                options={TECHNICAL_OPERATION_OBJECTS}
-                onChange={this.handleObjectsChange.bind(this)}
+              <Field
+                type="select"
+                label="Элемент"
+                options={ELEMENTS}
+                value={state.elements_text}
+                onChange={this.handleChange.bind(this, 'elements_text')}
+                error={errors[name]}
                 disabled={!isPermitted}
               />
             </Col>
@@ -90,6 +104,7 @@ export default class TechnicalOperationForm extends Form {
             <Col md={3}>
               <Field
                 type="select"
+                multi
                 label="Сезон"
                 value={state.season_id}
                 options={SEASONS}
@@ -98,37 +113,56 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-          </Row>
 
-          <Row>
             <Col md={3}>
-              <Field type="select" label="Вид работ"
-                options={WORK_KINDS}
-                value={state.work_kind_id}
-                onChange={this.handleChange.bind(this, 'work_kind_id')}
+              <Field
+                type="string"
+                label="Способ уборки"
+                value={state.work_type_name}
+                onChange={this.handleChange.bind(this, 'work_type_name')}
                 error={errors[name]}
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
-              <Field type="select" label="C участием РКУ"
-                options={NEEDS_BRIGADE_OPTIONS}
-                value={+state.needs_brigade}
-                onChange={this.handleChange.bind(this, 'needs_brigade')}
+          </Row>
+
+          <Row>
+
+            <Col md={3}>
+              <Field
+                type="string"
+                label="Условия"
+                value={state.conditions}
+                onChange={this.handleChange.bind(this, 'conditions')}
+                error={errors[name]}
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
-              <Field type="number" label="Максимальная скорость"
+
+            <Col md={3}>
+              <Field
+                type="string"
+                label="Число операций в сутки (норматив)"
+                value={state.norm_period}
+                onChange={this.handleChange.bind(this, 'norm_period')}
+                error={errors[name]}
+                disabled={!isPermitted}
+              />
+            </Col>
+            <Col md={3}>
+              <Field
+                type="number"
+                label="Максимальная скорость"
                 value={state.max_speed}
                 onChange={this.handleChange.bind(this, 'max_speed')}
                 error={errors[name]}
                 disabled={!isPermitted}
               />
             </Col>
-
             <Col md={3}>
-              <Field type="select" label="Тип проверки"
+              <Field
+                type="select"
+                label="Тип проверки"
                 options={TECHNICAL_OPERATION_TYPES}
                 value={state.check_type}
                 clearable={false}
@@ -136,8 +170,25 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
-              <Field type="select" label="Учитывать в отчетах"
+          </Row>
+
+          <Row>
+            <Col md={3}>
+              <Field
+                type="select"
+                label="Объект"
+                multi
+                value={state.objects_text}
+                options={TECHNICAL_OPERATION_OBJECTS}
+                onChange={this.handleChange.bind(this, 'objects_text')}
+                disabled={!isPermitted}
+              />
+            </Col>
+
+            <Col md={3}>
+              <Field
+                type="select"
+                label="Учёт в отчетах"
                 options={NEEDS_BRIGADE_OPTIONS}
                 value={+state.use_in_reports}
                 onChange={this.handleChange.bind(this, 'use_in_reports')}
@@ -148,7 +199,9 @@ export default class TechnicalOperationForm extends Form {
 
           <Row>
             <Col md={3} className="vehicle-types-container">
-              <Field type="select" label="Типы ТС"
+              <Field
+                type="select"
+                label="Типы ТС"
                 multi
                 value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
                 options={CAR_TYPES}

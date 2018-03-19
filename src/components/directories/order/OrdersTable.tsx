@@ -53,7 +53,7 @@ export function tableMeta({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: uniqBy(OrdersList, 'order_type_name').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
+          options: uniqBy(OrdersList, 'order_type_id').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
         },
         cssClassName: 'width60',
       },

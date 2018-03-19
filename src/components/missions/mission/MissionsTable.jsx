@@ -43,7 +43,7 @@ const getTableMeta = (props) => {
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.missionSourcesList.map(missonsource => ({ value: missonsource.id, label: missonsource.name })),
+          options: props.missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
         },
         cssClassName: 'width150',
       },

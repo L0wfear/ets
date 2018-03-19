@@ -3,6 +3,7 @@ import React from 'react';
 import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
+import { get, find } from 'lodash';
 
 export const getTableMeta = ({
   structures = [],
@@ -34,22 +35,22 @@ export const getTableMeta = ({
         cssClassName: 'width60',
       },
       {
-        name: 'mission_source_name',
+        name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map(({ name }) => ({ value: name, label: name })),
+          options: missionSourcesList.map(missonsource => ({ value: missonsource.id, label: missonsource.name })),
         },
         cssClassName: 'width120',
       },
       {
-        name: 'technical_operation_name',
+        name: 'technical_operation_id',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
+          options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
         },
       },
       {
@@ -150,6 +151,8 @@ export default (props) => {
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
+    technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
   };
 
   return (<Table title="Журнал наряд-заданий"

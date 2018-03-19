@@ -1,6 +1,6 @@
 import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
-import { get, uniqBy } from 'lodash';
+import { get, uniqBy, find } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
@@ -38,12 +38,12 @@ const getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-        name: 'mission_source_name',
+        name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.missionSourcesList.map(({ name }) => ({ value: name, label: name })),
+          options: props.missionSourcesList.map(missonsource => ({ value: missonsource.id, label: missonsource.name })),
         },
         cssClassName: 'width150',
       },
@@ -64,22 +64,22 @@ const getTableMeta = (props) => {
         },
       },
       {
-        name: 'car_gov_number',
+        name: 'car_id',
         displayName: 'Рег. номер ТС',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.carsList.map(e => ({ label: e.gov_number, value: e.gov_number })),
+          options: props.carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },
       {
-        name: 'type_name',
+        name: 'type_id',
         displayName: 'Тип техники',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: uniqBy(props.carsList.map(e => ({ label: e.type_name, value: e.type_name })), 'value'),
+          options: uniqBy(props.carsList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
         },
         cssClassName: 'width120',
       },
@@ -110,12 +110,12 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'technical_operation_name',
+        name: 'technical_operation_id',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
+          options: props.technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
         },
       },
       {
@@ -183,6 +183,10 @@ export default (props) => {
       );
     },
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
+    mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
+    type_id: ({ data }) => <div>{get(find(props.carsList, { 'type_id': data }), 'type_name', '')}</div>,
+    technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
   };
 
   return (

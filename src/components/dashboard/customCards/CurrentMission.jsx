@@ -85,7 +85,7 @@ export default class CurrentMission extends DashboardCardMedium {
     let mission = await this.context.flux.getActions('missions').getMissionById(id);
     mission = mission.result.rows[0];
     mission.status = 'complete';
-    await this.context.flux.getActions('missions').updateMission(mission);
+    await this.context.flux.getActions('missions').updateMission(mission, false);
     this.selectItem(null);
     this.props.refreshCard();
   }

@@ -240,11 +240,11 @@ export default class CarMarker extends Marker {
     }
   }
 
-  createTrack() {
+  createTrack = () => {
     this.track = new Track(this);
   }
 
-  hasTrackLoaded() {
+  hasTrackLoaded = () => {
     return this.track !== null && this.track.isLoaded();
   }
 
@@ -317,7 +317,7 @@ export default class CarMarker extends Marker {
     return getBigIcon(icon);
   }
 
-  setPoint(point) {
+  setPoint = (point) => {
     this.point = point;
     this.coords = swapCoords(point.coords_msk);
 

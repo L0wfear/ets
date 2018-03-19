@@ -45,7 +45,7 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: uniqBy(props.faxogrammsList, 'order_type_name').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
+          options: uniqBy(props.faxogrammsList, 'order_type_id').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
         },
         cssClassName: 'width60',
       },

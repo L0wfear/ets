@@ -21,6 +21,7 @@ import autobase from './AutobaseStore.js';
 import userNotifications from './UserNotificationStore.js';
 import repair from './RepairStore';
 import stream from './StreamStore';
+import companyStructure from './CompanyStructureStore.js';
 
 export {
   dashboard,

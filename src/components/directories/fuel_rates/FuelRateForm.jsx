@@ -5,7 +5,7 @@ import Field from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
-@connectToStores(['fuelRates', 'objects'])
+@connectToStores(['fuelRates', 'objects', 'companyStructure'])
 export default class FuelRateForm extends Form {
 
   componentDidMount() {
@@ -30,12 +30,14 @@ export default class FuelRateForm extends Form {
     ];
 
     const {
+      companyStructureList = [],
       modelsList = [],
       operations = [],
       specialModelsList = [],
       isPermitted = false,
     } = this.props;
 
+    const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.full_name }));
     const SPECIALMODELS = specialModelsList.map(m => ({ value: m.id, label: m.name }));
     const OPERATIONS = operations
@@ -113,6 +115,16 @@ export default class FuelRateForm extends Form {
                 value={state.car_model_id}
                 onChange={this.handleChange.bind(this, 'car_model_id')}
                 disabled={!isPermitted || !state.car_special_model_id}
+              />
+
+              <Field
+                label="Подразделение"
+                type="select"
+                options={COMPANY_ELEMENTS}
+                value={state.company_structure_id}
+                emptyValue={null}
+                onChange={this.handleChange.bind(this, 'company_structure_id')}
+                disabled={!isPermitted}
               />
 
             </Col>

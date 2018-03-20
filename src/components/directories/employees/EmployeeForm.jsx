@@ -183,7 +183,7 @@ export default class EmployeeForm extends Form {
           </Row>
           <Row>
             <Col md={6}>
-              <Field
+              <Field 
                 type="select"
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}

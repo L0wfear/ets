@@ -7,10 +7,13 @@ import { connectToStores } from 'utils/decorators';
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
+import { loadingOverlay } from 'components/ui/LoadingOverlay';
+import { FileField } from 'components/ui/input/fields';
 
 import Form from '../../compositions/Form.jsx';
 
 @connectToStores(['objects'])
+@loadingOverlay
 export default class EmployeeForm extends Form {
   handleSave = () => this.handleSubmit();
 
@@ -21,6 +24,7 @@ export default class EmployeeForm extends Form {
       positionsList = [],
       companyStructureLinearForUserList = [],
       isPermitted = false,
+      onOverlayLoading,
     } = this.props;
 
     const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
@@ -235,6 +239,30 @@ export default class EmployeeForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['snils']}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <FileField
+                label="Медицинские справки"
+                multiple
+                value={state.medical_certificate_files}
+                onChange={this.handleChange}
+                boundKeys={['medical_certificate_files']}
+                isLoading={onOverlayLoading}
+                disabled={!isPermitted}
+              />
+            </Col>
+            <Col md={6}>
+              <FileField
+                label="Водительские удостоверения"
+                multiple
+                value={state.driver_license_files}
+                onChange={this.handleChange}
+                boundKeys={['driver_license_files']}
+                isLoading={onOverlayLoading}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

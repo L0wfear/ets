@@ -42,16 +42,17 @@ export default class APIService {
         throw new RequestWarningError(r.warnings);
       }
     }
-    if (r.errrors && r.errrors.length) {
-      // Show errrors
-      if (Array.isArray(r.errrors)) {
-        r.errrors.forEach(w => {
+
+    if (r.errors && r.errors.length) {
+      // Show errors
+      if (Array.isArray(r.errors)) {
+        r.errors.forEach(w => {
           !w.hidden && this.errrorNotificationFunction(w.message || w);
           throw new RequestWarningError(w);
         });
-      } else if (r.errrors && r.errrors.message || typeof r.errrors === 'string') {
-        !r.errrors.hidden && this.errrorNotificationFunction(r.errrors.message || r.errrors);
-        throw new RequestWarningError(r.errrors);
+      } else if (r.errors && r.errors.message || typeof r.errors === 'string') {
+        !r.errors.hidden && this.errrorNotificationFunction(r.errors.message || r.errors);
+        throw new RequestWarningError(r.errors);
       }
     }
     if (typeof callback === 'function') {

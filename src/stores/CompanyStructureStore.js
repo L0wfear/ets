@@ -11,6 +11,6 @@ export default class CompanyStructureStore extends Store {
   }
 
   handleGetList(res) {
-    this.setState({ 'companyStructureList': res });
+    this.setState({ 'companyStructureList': res.data.result });
   }
 }

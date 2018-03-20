@@ -27,5 +27,6 @@ export default class FuelRatesDirectory extends ElementsList {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations();
     flux.getActions('fuelRates').getFuelRates();
+    flux.getActions('companyStructure').getCompanyStructure();
   }
 }

@@ -43,4 +43,5 @@ export {
   userNotifications,
   repair,
   stream,
+  companyStructure,
 };

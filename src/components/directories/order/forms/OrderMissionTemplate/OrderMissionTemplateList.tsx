@@ -16,7 +16,7 @@ import { createDutyMissions } from 'components/missions/duty_mission_template/Du
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { diffDates } from 'utils/dates.js';
 
-import { checkStructureByTypeClick } from '/home/uoiasfy/all/chch/ets-frontend/src/components/directories/order/forms/utils/customValidate';
+import { checkStructureByTypeClick } from 'components/directories/order/forms/utils/customValidate';
 import {
   getFilterDateOrder,
   getMissionListByFilter,

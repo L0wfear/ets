@@ -106,6 +106,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getForms() {
     const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
+    const { carsIndex = {} } = this.props;
 
     return [
       <MissionTemplateFormWrap
@@ -115,6 +116,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={missions}
+        _carsIndex={carsIndex}
       />,
     ];
   }

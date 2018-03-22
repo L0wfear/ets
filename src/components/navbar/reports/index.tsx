@@ -60,10 +60,15 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       title="Регламентированные отчеты"
     >
       <MenuItem id="link-fuel-consumption-report" permissions={[PERMISSIONS.reportAll.fuel_consumption_report.list]} active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
-      <MenuItem id="link-fuel-consumption-summary-report" permissions={[PERMISSIONS.reportAll.fuel_consumption_summary_report.list]} active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
-      <MenuItem id="link-daily-cleaning-reports-ets" permissions={[PERMISSIONS.reportAll.cleaning_status_report.list]} active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
-      <MenuItem id="link-daily-cleaning-reports-cafap" permissions={[PERMISSIONS.reportAll.cleaning_status_cafap_report.list]} active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
-      <MenuItem id="link-cleaning-status-tech-op-report" permissions={[PERMISSIONS.reportAll.cleaning_status_tech_op_report.list]} active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
+      <MenuItem id="link-fuel-consumption-summary-report" permissions={[PERMISSIONS.reportAll.fuel_consumption_summary_report.false]} active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
+      <MenuItem id="link-daily-cleaning-reports-ets" permissions={[PERMISSIONS.reportAll.cleaning_status_report.false]} active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
+      <MenuItem id="link-daily-cleaning-reports-cafap" permissions={[PERMISSIONS.reportAll.cleaning_status_cafap_report.false]} active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
+      <MenuItem id="link-cleaning-status-tech-op-report" permissions={[PERMISSIONS.reportAll.cleaning_status_tech_op_report.false]} active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
+    </NavDropdown>
+    */
+    }
+    <NavDropdown id="show-reglament" title="Регламентированные отчеты" >
+      <MenuItem id="link-fuel-consumption-report" active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
     </NavDropdown>
     {
       // <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">

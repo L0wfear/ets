@@ -1,17 +1,16 @@
 import * as React from 'react';
-import {
-  clone,
-  filter,
-} from 'lodash';
-
+import clone from 'lodash/clone';
+import filter from 'lodash/filter';
 import Div from 'components/ui/Div.jsx';
-import DutyMissionTemplateForm from './DutyMissionTemplateForm.jsx';
-import DutyMissionsCreationForm from './DutyMissionsCreationForm.jsx';
+
 import { getDefaultDutyMissionTemplate, getDefaultDutyMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
 import dutyMissionTemplateSchema from 'models/DutyMissionTemplateModel.js';
 import dutyMissionsCreationTemplateSchema from 'models/DutyMissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
+import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/customValidate.ts';
+import DutyMissionTemplateForm from './DutyMissionTemplateForm.jsx';
+import DutyMissionsCreationForm from './DutyMissionsCreationForm.jsx';
 
 export const createDutyMissions = async (flux, element, payload) =>
   flux.getActions('missions').createDutyMissions(element, payload);
@@ -52,6 +51,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
   async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
+    const { _employeesIndex = {} } = this.props;
 
     if (this.props.formType === 'ViewForm') {
       try {
@@ -66,7 +66,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
       this.props.updateTable();
 
       this.props.onFormHide();
-    } else {
+    } else if (!checkMissionsOnStructureIdBrigade(Object.values(this.props.missions), _employeesIndex)) {
       createDutyMissions(flux, this.props.missions, formState).then(() => {
         this.props.onFormHide(true);
       });

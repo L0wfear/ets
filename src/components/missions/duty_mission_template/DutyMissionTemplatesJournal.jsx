@@ -71,6 +71,8 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
 
   getForms() {
+    const { employeesIndex = {} } = this.props;
+
     return [
       <DutyMissionTemplateFormWrap
         key={'form'}
@@ -80,11 +82,17 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
         formType={this.state.formType}
         missions={this.state.checkedElements}
         updateTable={this.updateTable}
+        _employeesIndex={employeesIndex}
       />,
     ];
   }
 
-  canCreateMission = () => this.state.selectedElement !== null && this.state.selectedElement.kind_task_ids.includes(3);
+  canCreateMission = () => {
+    const { checkedElements = {} } = this.state;
+    const missions = Object.values(checkedElements);
+
+    return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
+  }
 
   /**
    * @override

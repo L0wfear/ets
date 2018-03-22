@@ -1,4 +1,5 @@
 import { Store } from 'flummox';
+import keyBy from 'lodash/keyBy';
 
 export default class EmployeeStore extends Store {
 
@@ -23,7 +24,10 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetEmployees({ result }) {
-    this.setState({ employeesList: result });
+    this.setState({
+      employeesList: result,
+      employeesIndex: keyBy(result, 'id'),
+    });
   }
 
   handleGetDrivers({ result }) {

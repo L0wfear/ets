@@ -16,85 +16,24 @@ import { createDutyMissions } from 'components/missions/duty_mission_template/Du
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { diffDates } from 'utils/dates.js';
 
-const ASSIGN_OPTIONS = [
-  { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
-  { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
-  { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
-];
+import { checkStructureByTypeClick } from '/home/uoiasfy/all/chch/ets-frontend/src/components/directories/order/forms/utils/customValidate';
+import {
+  getFilterDateOrder,
+  getMissionListByFilter,
+} from 'components/directories/order/forms/utils/filtersData';
 
+import {
+  ASSIGN_OPTIONS,
+  typeTemplate,
+} from 'components/directories/order/forms/utils/constant';
+
+import {
+  IStateOrderMissionTemplate,
+} from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
 const ModalTSX: any = RB.Modal;
 const EtsSelectTSX: any = EtsSelect;
 
-export const typeTemplate = {
-  missionDutyTemplate: 'missionDutyTemplate',
-  missionTemplate: 'missionTemplate',
-};
-
-
-function getFilterDateOrder(technical_operations, { order_date, order_date_to }) {
-  return technical_operations.reduce((newObj, to) => {
-    const {
-      norm_id,
-      date_from,
-      date_to,
-      num_exec,
-      order_operation_id,
-    } = to;
-
-    if (diffDates(new Date(), date_to || order_date_to) < 0) {
-      newObj[norm_id] = {
-        date_to: date_to || order_date_to,
-        date_from: date_from || order_date,
-        num_exec,
-        order_operation_id,
-      };
-    }
-
-    return newObj;
-  }, {});
-}
-
-function getMissionListByFilter(missionsList, filterData, typeClick) {
-  return missionsList.reduce((arr, m) => {
-    const { norm_id, passes_count} = m;
-
-    if (filterData[norm_id]) {
-      const {
-        date_to,
-        date_from,
-        num_exec,
-        order_operation_id,
-      } = filterData[norm_id];
-
-      if ((typeClick === typeTemplate.missionDutyTemplate || passes_count <= num_exec) && diffDates(new Date(), date_to, 'minutes') < 0) {
-          arr.push({
-          ...m,
-          date_to,
-          date_from,
-          order_operation_id,
-        });
-      }
-    }
-
-    return arr;
-  }, []);
-}
-
-interface ICheckedElements {
-  [id: number]: any;
-}
-
-interface IStateOrderMissionTemplate {
-  assign_to_waybill: string;
-  missionsList: any[];
-  selectedElement: void | any;
-  checkedElements: ICheckedElements;
-  structures: any[];
-  timeInterval: number | NodeJS.Timer;
-  canSubmit: boolean;
-}
-
-@connectToStores(['missions', 'session', 'employees'])
+@connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
 class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTemplate> {
   state: any = {
@@ -171,52 +110,52 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     } = this.state;
     const {
       mission_source_id,
-      orderDates: {
-        faxogramm_id,
-      },
+      orderDates: { faxogramm_id },
       technical_operations: [],
       typeClick,
     } = this.props;
 
-    this.setState({ canSubmit: false });
+    if (!checkStructureByTypeClick(typeClick, this.props, Object.values(checkedElements))) {
+      this.setState({ canSubmit: false });
 
-    const queryList = Object.entries(checkedElements).map(([id, value]) => {
-      const {
-        date_from: date_start,
-        date_to: date_end,
-        num_exec: passes_count,
-      } = value;
+      const queryList = Object.entries(checkedElements).map(([id, value]) => {
+        const {
+          date_from: date_start,
+          date_to: date_end,
+          num_exec: passes_count,
+        } = value;
 
-      const externalPayload = {
-        mission_source_id,
-        passes_count,
-        date_start,
-        date_end,
-        assign_to_waybill,
-      };
-      const newElement = {
-        ...value,
-        faxogramm_id,
-      };
+        const externalPayload = {
+          mission_source_id,
+          passes_count,
+          date_start,
+          date_end,
+          assign_to_waybill,
+        };
+        const newElement = {
+          ...value,
+          faxogramm_id,
+        };
 
-      if (typeClick === typeTemplate.missionDutyTemplate) {
-        delete externalPayload.assign_to_waybill;
-      }
+        if (typeClick === typeTemplate.missionDutyTemplate) {
+          delete externalPayload.assign_to_waybill;
+        }
 
-      switch (typeClick) {
-        case typeTemplate.missionTemplate: return createMissions(this.context.flux, { [id]: newElement }, externalPayload);
-        case typeTemplate.missionDutyTemplate: return createDutyMissions(this.context.flux, { [id]: newElement }, externalPayload);
-        default: return Promise.reject({ error: 'no typeClick' });
-      }
-    });
-
-    Promise.all(queryList).then(() => {
-      this.setState({
-        selectedElement: undefined,
-        checkedElements: {},
-        canSubmit: true,
+        switch (typeClick) {
+          case typeTemplate.missionTemplate: return createMissions(this.context.flux, { [id]: newElement }, externalPayload);
+          case typeTemplate.missionDutyTemplate: return createDutyMissions(this.context.flux, { [id]: newElement }, externalPayload);
+          default: return Promise.reject({ error: 'no typeClick' });
+        }
       });
-    });
+
+      Promise.all(queryList).then(() => {
+        this.setState({
+          selectedElement: undefined,
+          checkedElements: {},
+          canSubmit: true,
+        });
+      });
+    }
   }
 
   onRowSelected = ({ props: { data: { id } } }) => {

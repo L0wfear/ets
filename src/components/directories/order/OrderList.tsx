@@ -20,7 +20,8 @@ import OrderAssignmentsList from 'components/directories/order/order_assignment/
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 
 import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.js';
-import { typeTemplate } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
+
+import { typeTemplate } from 'components/directories/order/forms/utils/constant';
 
 const PaginatorTsx: any = Paginator;
 
@@ -77,6 +78,7 @@ class OrderList extends React.Component<any, any> {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources();
     flux.getActions('employees').getEmployees({ active: true });
+    flux.getActions('objects').getCars();
 
     const { match: { params: { idOrder = '' } } } = this.props;
     const outerIdFax = Number.parseInt(idOrder, 0);

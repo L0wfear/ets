@@ -221,7 +221,7 @@ export default class WaybillFormWrap extends FormWrap {
    * @param {number 1|2} print_form_type - Идентификатор печатной формы
    * @return {undefined}
    */
-  handlePrint(printonly, print_form_type) {
+  handlePrint = async (printonly, print_form_type) => {
     const { flux } = this.context;
     const { formState } = this.state;
 
@@ -241,25 +241,19 @@ export default class WaybillFormWrap extends FormWrap {
         </div>
       ),
     });
-
-    const callback = (createdWaybillId) => {
-      const waybill_id = createdWaybillId || currentWaybillId;
-      flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then(({ blob, fileName }) => {
-          saveData(blob, fileName);
-          global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
-          this.setState({ canSave: true });
-        })
-        .catch(() => {
-          global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
-          this.setState({ canSave: true });
-        });
+    const callback = (waybill_id = currentWaybillId) => {
+      return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
+        .then(({ blob, fileName }) => saveData(blob, fileName));
     };
+
     if (printonly) {
-      callback();
+      await callback();
     } else {
-      this.handleFormSubmit(formState, callback);
+      await this.handleFormSubmit(formState, callback);
     }
+
+    global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
+    this.setState({ canSave: true });
   }
 
   /**

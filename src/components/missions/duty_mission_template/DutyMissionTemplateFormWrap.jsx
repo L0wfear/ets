@@ -55,7 +55,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
         flux.getActions('missions').updateDutyMissionTemplate(formState);
       }
       this.props.onFormHide();
-    } else if (checkMissionsOnStructureIdBrigade(Object.values(this.props.missions), _employeesIndex)) {
+    } else if (!checkMissionsOnStructureIdBrigade(Object.values(this.props.missions), _employeesIndex)) {
       flux.getActions('missions').createDutyMissions(this.props.missions, formState).then(() => {
         this.props.onFormHide(true);
       });

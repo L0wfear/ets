@@ -1,6 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { autobind } from 'core-decorators';
-import _ from 'lodash';
+import clone from 'lodash/clone';
+import keys from 'lodash/keys';
+import filter from 'lodash/filter';
 import Div from 'components/ui/Div.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
@@ -9,6 +11,8 @@ import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
+import { checkMissionsOnStructureIdCar } from 'components/missions/utils/customValidate.ts';
+
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
 
@@ -91,7 +95,7 @@ export default class MissionFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === 'ViewForm') {
         this.schema = missionTemplateSchema;
-        const mission = props.element === null ? getDefaultMissionTemplate() : _.clone(props.element);
+        const mission = props.element === null ? getDefaultMissionTemplate() : clone(props.element);
 
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {
@@ -99,7 +103,7 @@ export default class MissionFormWrap extends FormWrap {
         }
         this.setState({
           formState: mission,
-          canSave: !_.filter(formErrors).length, // false,
+          canSave: !filter(formErrors).length, // false,
           formErrors,
         });
       } else {
@@ -109,7 +113,7 @@ export default class MissionFormWrap extends FormWrap {
 
         this.setState({
           formState: defaultMissionsCreationTemplate,
-          canSave: !_.filter(formErrors).length, // false,
+          canSave: !filter(formErrors).length, // false,
           formErrors,
         });
       }
@@ -119,6 +123,8 @@ export default class MissionFormWrap extends FormWrap {
   async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
+    const { _carsIndex = {} } = this.props;
+
     if (this.props.formType === 'ViewForm') {
       if (isEmpty(formState.id)) {
         try {
@@ -134,7 +140,7 @@ export default class MissionFormWrap extends FormWrap {
         }
       }
       this.props.onFormHide();
-    } else {
+    } else if (!checkMissionsOnStructureIdCar(Object.values(this.props.missions), _carsIndex)) {
       const externalPayload = {
         mission_source_id: formState.mission_source_id,
         passes_count: formState.passes_count,
@@ -143,7 +149,7 @@ export default class MissionFormWrap extends FormWrap {
         assign_to_waybill: formState.assign_to_waybill,
       };
 
-      const missions = _.keys(this.props.missions)
+      const missions = keys(this.props.missions)
         .map(key => this.props.missions[key]);
 
       let closeForm = true;

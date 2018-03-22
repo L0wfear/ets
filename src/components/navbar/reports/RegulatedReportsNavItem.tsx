@@ -26,9 +26,6 @@ const RegulatedReportsNavItemNavItem: React.SFC<IPropsRegulatedReportsNavItemNav
 const RegulatedReportsNavItemNavItem: React.SFC<IPropsRegulatedReportsNavItemNavItem> = ({ path }) =>
 <NavDropdown title="Регламентированные отчеты" id="nav-dropdown-3-2">
   <MenuItem active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
-  <MenuItem active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
-  <MenuItem active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
-  <MenuItem active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
 </NavDropdown>;
 
 export default RegulatedReportsNavItemNavItem;

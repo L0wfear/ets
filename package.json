@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "1.0.15.52",
+    "version": "1.0.15.53",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -19,6 +19,7 @@
         "babel-runtime": "^6.11.6",
         "classnames": "^2.2.3",
         "clean-webpack-plugin": "^0.1.10",
+        "closure-util": "^1.26.0",
         "copy-webpack-plugin": "^3.0.1",
         "core-decorators": "^0.12.3",
         "css-loader": "^0.15.6",

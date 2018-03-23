@@ -32,7 +32,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   constructor(props, context) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('missions').removeDutyMission;
+    this.removeElementAction = id => context.flux.getActions('missions').removeDutyMission(id);
+
     this.removeDisabled = () => {
       if (Object.keys(this.state.checkedElements).length !== 0) return false;
       if (this.state.selectedElement === null) {
@@ -111,7 +112,26 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     });
   }
 
-  completeCheckedElements() {
+  removeElement = async () => {
+    if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+    const mission = _.cloneDeep(this.state.selectedElement);
+    const query = new Promise((res, rej) => {
+      if (mission.status === 'not_assigned') {
+        return this.removeElementAction(mission.id).then(() => res());
+      }
+      return rej();
+    });
+
+    query.then(() => {
+      this.refreshList(this.state);
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
+    }).catch(() => global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!')));
+  }
+
+  completeCheckedElements = async () => {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
 
@@ -140,7 +160,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
-  rejectCheckedElements() {
+  rejectCheckedElements = async () => {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
 
@@ -162,6 +182,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       if (hasNotAssigned) {
         global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
       }
+
+      this.refreshList(this.state);
+      this.setState({ checkedElements: {} });
     } else {
       const mission = this.state.selectedElement;
       if (mission.status === 'assigned') {

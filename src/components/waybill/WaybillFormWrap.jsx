@@ -282,6 +282,7 @@ export default class WaybillFormWrap extends FormWrap {
           await flux.getActions('waybills').updateWaybill(formState);
           callback(id);
         } catch (e) {
+          global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
           this.setState({
             formState: {
               ...formState,
@@ -296,7 +297,7 @@ export default class WaybillFormWrap extends FormWrap {
         try {
           await flux.getActions('waybills').createWaybill(formState);
         } catch (e) {
-          console.log(e);
+          console.log(e); // eslint-disable-line
           return;
         }
       }
@@ -325,7 +326,7 @@ export default class WaybillFormWrap extends FormWrap {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
       } catch (e) {
-        console.log(e);
+        console.log(e); // eslint-disable-line
         return;
       }
       this.props.onCallback();
@@ -333,7 +334,7 @@ export default class WaybillFormWrap extends FormWrap {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
       } catch (e) {
-        console.log(e);
+        console.log(e); // eslint-disable-line
         return;
       }
       this.props.onCallback();

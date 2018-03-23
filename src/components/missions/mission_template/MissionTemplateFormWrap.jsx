@@ -8,7 +8,6 @@ import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 's
 import { isEmpty } from 'utils/functions';
 import { getToday9am, getTomorrow9am } from 'utils/dates.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
-import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import { checkMissionsOnStructureIdCar } from 'components/missions/utils/customValidate.ts';
@@ -152,7 +151,7 @@ export default class MissionFormWrap extends FormWrap {
       const missions = keys(this.props.missions)
         .map(key => this.props.missions[key]);
 
-      let closeForm = true;
+        let closeForm = true;
 
       for (const m of missions) {
         const e = await createMissions(flux, { [m.id]: m }, externalPayload);

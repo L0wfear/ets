@@ -121,9 +121,11 @@ export default class FuelRateForm extends Form {
                 type="select"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
+                emptyValue={null}
                 onChange={this.handleChange.bind(this, 'company_structure_id')}
                 disabled={!isPermitted}
               />
+
             </Col>
 
           </Row>

@@ -45,7 +45,7 @@ class Toolbar extends Component {
     return true;
   }
   componentDidMount() {
-    this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
+    this.context.flux.getActions('companyStructure').getCompanyStructure(true);
   }
   focusOnLonelyCar() {
     const store = this.context.flux.getStore('points');

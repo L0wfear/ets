@@ -26,7 +26,7 @@ import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import { isNumeric } from 'utils/validate/dataTypes';
 
-import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl, checkDateMission } from './utils';
+import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl, checkDateMission, getDatesToByOrderOperationId } from './utils';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import WaybillFooter from './form/WaybillFooter';
@@ -258,32 +258,50 @@ class WaybillForm extends Form {
     const missionsList = [...oldMissionsList];
 
     const idOrder = (missionSourcesList.find(({ auto }) => auto) || {}).id;
-    const missionsWithSourceOrder = missionsList.concat(...notAvailableMissions).reduce((missions, { id, number, mission_source_id, date_end, date_start }) => {
-      if (!missions[id] && mission_id_list.includes(id) && checkDateMission({ date_end, date_start, dateWaybill }) && idOrder === mission_source_id) {
-        missions[id] = number;
+
+    const missionsFromOrder = uniqBy(missionsList.concat(...notAvailableMissions), 'id').reduce((missions, mission) => {
+      if (mission_id_list.includes(mission.id) && idOrder === mission.mission_source_id) {
+        missions.push(mission);
       }
       return missions;
     },
-    {});
+    []);
 
-    const missionsNum = Object.values(missionsWithSourceOrder).map(num => `задание ${num}`);
-    const missionIds = Object.keys(missionsWithSourceOrder);
-
-    this.confirmDialogChangeDate(missionsNum).then(() => {
-      if (missionIds.length) {
-        const newMission_id_list = mission_id_list.filter(id => !missionsWithSourceOrder[id]);
-        const newMissionList = oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]);
-        this.handleChange('mission_id_list', newMission_id_list);
-        this.setState({
-          ...this.state,
-          missionsList: newMissionList,
-        });
+    Promise.all(missionsFromOrder.map(mission =>
+      this.context.flux.getActions('objects').getOrderById(mission.order_id)
+        .then(({ result: [order] }) => ({
+          ...mission,
+          ...getDatesToByOrderOperationId(order, mission.order_operation_id),
+        }))
+    ))
+    .then(missions => missions.reduce((newObj, { id, number, dateTo }) => {
+      if (checkDateMission({ dateTo, dateWaybill })) {
+        newObj[id] = number;
       }
-      this.getWaybillDrivers({
-        [field]: value,
-      });
-      this.handleChange(field, value);
-    }).catch(() => {});
+
+      return newObj;
+    }, {}))
+    .then((missionsWithSourceOrder) => {
+      const missionsNum = Object.values(missionsWithSourceOrder).map(num => `задание ${num}`);
+      const missionIds = Object.keys(missionsWithSourceOrder);
+
+      return this.confirmDialogChangeDate(missionsNum).then(() => {
+        if (missionIds.length) {
+          const newMission_id_list = mission_id_list.filter(id => !missionsWithSourceOrder[id]);
+          const newMissionList = oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]);
+          this.handleChange('mission_id_list', newMission_id_list);
+          this.setState({
+            ...this.state,
+            missionsList: newMissionList,
+          });
+        }
+        this.getWaybillDrivers({
+          [field]: value,
+        });
+        this.handleChange(field, value);
+      })
+      .catch(() => {});
+    });
   }
 
   confirmDialogChangeDate(missionsNum) {

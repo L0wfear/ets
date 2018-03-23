@@ -1,4 +1,32 @@
-export const checkMissionsOnStructureIdCar = (missionsArr, carsIndex) => {
+interface IMission {
+  structure_id: number | void;
+  car_id: number;
+  number: number;
+}
+interface IDutyMission {
+  structure_id: number | void;
+  number: number;
+  foreman_id: number;
+  brigade_employee_id_list: { employee_id: number }[];
+}
+
+interface ICar {
+  company_structure_id: number | void;
+}
+interface ICarsIndex {
+  [asuods_id: number]: ICar;
+}
+interface IEmployee {
+  company_structure_id: number | void;
+}
+interface IEmployeesIndex {
+  [id: number]: IEmployee;
+}
+
+type ICheckMissionsOnStructureIdCar = (missionsArr: IMission[], carsIndex: ICarsIndex) => boolean;
+type ICheckMissionsOnStructureIdBrigade = (missionsArr: IDutyMission[], employeesIndex: IEmployeesIndex) => boolean;
+
+export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (missionsArr, carsIndex) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {
@@ -21,7 +49,7 @@ export const checkMissionsOnStructureIdCar = (missionsArr, carsIndex) => {
   return false;
 };
 
-export const checkMissionsOnStructureIdBrigade = (missionsArr, employeesIndex) => {
+export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBrigade = (missionsArr, employeesIndex) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {

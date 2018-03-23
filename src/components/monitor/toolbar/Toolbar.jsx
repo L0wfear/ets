@@ -44,6 +44,9 @@ class Toolbar extends Component {
     // сделать обновление только во время изменений!
     return true;
   }
+  componentDidMount() {
+    this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
+  }
   focusOnLonelyCar() {
     const store = this.context.flux.getStore('points');
     const carPoint = store.getVisiblePoints()[0];
@@ -77,7 +80,6 @@ class Toolbar extends Component {
         filtersCount += filters[key].length;
       }
     }
-
     const byStatus = storeState.byStatus;
     const byConnectionStatus = storeState.byConnectionStatus;
     const carsCount = Object.keys(byConnectionStatus)

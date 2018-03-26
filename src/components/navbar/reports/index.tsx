@@ -33,12 +33,19 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem id="link-tech-maintenance-schedule" active={path === '/tech-maintenance-schedule'} href="#/tech-maintenance-schedule">График проведения технического обслуживания транспортных средств</MenuItem>
       <MenuItem id="link-inquiry-expiring-date" active={path === '/inquiry-expiring-date'} href="#/inquiry-expiring-date">Перечень справок, по которым подходит дата окончания действия</MenuItem>
     </NavDropdown>
+    {
+      /*
     <NavDropdown id="show-reglament" title="Регламентированные отчеты" >
       <MenuItem id="link-fuel-consumption-report" active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
       <MenuItem id="link-fuel-consumption-summary-report" active={path === '/fuel-consumption-summary-report'} href="#/fuel-consumption-summary-report">Сводный отчет расхода топлива</MenuItem>
       <MenuItem id="link-daily-cleaning-reports-ets" active={path === '/daily-cleaning-reports-ets'} href="#/daily-cleaning-reports-ets">Статус по уборке</MenuItem>
       <MenuItem id="link-daily-cleaning-reports-cafap" active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
       <MenuItem id="link-cleaning-status-tech-op-report" active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
+    </NavDropdown>
+    */
+    }
+    <NavDropdown id="show-reglament" title="Регламентированные отчеты" >
+      <MenuItem id="link-fuel-consumption-report" active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
     </NavDropdown>
     {
       // <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">

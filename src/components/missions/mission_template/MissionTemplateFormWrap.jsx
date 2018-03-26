@@ -8,6 +8,8 @@ import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 's
 import { isEmpty } from 'utils/functions';
 import { getToday9am, getTomorrow9am } from 'utils/dates.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
+import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
+
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import { checkMissionsOnStructureIdCar } from 'components/missions/utils/customValidate.ts';

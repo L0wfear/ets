@@ -18,20 +18,22 @@ export default class DashboardPageHeader extends React.Component {
     this.context.flux.getActions('dashboard').getMoscowTime().then(({ date }) => {
       this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
 
+      const backDate = moment(date);
+
       this.setState({
-        time: moment(date).format('HH:mm:ss'),
-        date: moment(date).format('DD MMMM YYYY'),
+        time: backDate.format('HH:mm:ss').utcOffset(180),
+        date: backDate.format('DD MMMM YYYY'),
         prevDate: date,
         backDate: date,
       });
     }).catch(() => {
       this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
 
-      const date = new Date();
+      const date = moment(new Date()).utcOffset(180);
 
       this.setState({
-        time: moment(date).format('HH:mm:ss'),
-        date: moment(date).format('DD MMMM YYYY'),
+        time: date.format('HH:mm:ss'),
+        date: date.format('DD MMMM YYYY'),
         prevDate: date,
         backDate: null,
       });
@@ -44,7 +46,7 @@ export default class DashboardPageHeader extends React.Component {
   }
 
   updateClock() {
-    const prevDate = moment(this.state.prevDate).add(1, 'seconds');
+    const prevDate = moment(this.state.prevDate).add(1, 'seconds').utcOffset(180);
     const time = prevDate.format('HH:mm:ss');
     const date = prevDate.format('DD MMMM YYYY');
 

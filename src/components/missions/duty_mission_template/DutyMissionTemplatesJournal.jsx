@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
@@ -55,6 +55,8 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
 
   getForms() {
+    const { employeesIndex = {} } = this.props;
+
     return [
       <DutyMissionTemplateFormWrap
         key={'form'}
@@ -63,6 +65,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={this.state.checkedElements}
+        _employeesIndex={employeesIndex}
       />,
     ];
   }

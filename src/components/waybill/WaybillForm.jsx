@@ -18,6 +18,7 @@ import {
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
+import { diffDates } from 'utils/dates';
 
 import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 import Form from '../compositions/Form.jsx';
@@ -199,22 +200,29 @@ class WaybillForm extends Form {
     loadingFields.distance = true;
     loadingFields.consumption = true;
     this.setState({ loadingFields });
-    flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
-      .then(({ distance, consumption }) => {
-        this.props.handleFormChange('distance', distance);
-        this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
-        const { loadingFields } = this.state;
-        loadingFields.distance = false;
-        loadingFields.consumption = false;
-        this.setState({ loadingFields });
-      })
-      .catch(() => {
-        // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
-        const { loadingFields } = this.state;
-        loadingFields.distance = false;
-        loadingFields.consumption = false;
-        this.setState({ loadingFields });
-      });
+    const {
+      fact_departure_date,
+      fact_arrival_date,
+    } = formState;
+
+    if (car.gps_code && fact_departure_date && fact_arrival_date && diffDates(fact_arrival_date, fact_departure_date) > 0) {
+      flux.getActions('cars').getInfoFromCar(car.gps_code, fact_departure_date, fact_arrival_date)
+        .then(({ distance, consumption }) => {
+          this.props.handleFormChange('distance', distance);
+          this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
+          const { loadingFields } = this.state;
+          loadingFields.distance = false;
+          loadingFields.consumption = false;
+          this.setState({ loadingFields });
+        })
+        .catch(() => {
+          // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
+          const { loadingFields } = this.state;
+          loadingFields.distance = false;
+          loadingFields.consumption = false;
+          this.setState({ loadingFields });
+        });
+    }
   }
 
   getLatestWaybillDriver(formState) {

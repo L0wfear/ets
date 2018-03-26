@@ -23,6 +23,7 @@ export default class User extends Model {
       user_id: 'integer',
       structures: 'array',
       structure_id: 'integer',
+      structure_name: 'string',
       map_config: 'object',
       fio: 'string',
       okrug_id: 'integer',
@@ -47,6 +48,7 @@ export default class User extends Model {
     this.role = user.role;
     this.user_id = user.user_id;
     this.structure_id = user.structure_id;
+    this.structure_name = user.structure_name || '';
     this.structures = user.structures || [];
     this.map_config = user.map_config || {};
     this.fio = user.fio;

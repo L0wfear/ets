@@ -128,6 +128,27 @@ export function getWarningNotification(message) {
   };
 }
 
+export function getErrorNotificationFromBack(message) {
+  return {
+    title: 'Внимание',
+    level: 'error',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+    children: makeReactMessange(message),
+  };
+}
+
+export function getInfoNotification(message) {
+  return {
+    title: 'Ифнормация',
+    message: `${message}`,
+    level: 'info',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+  }
+}
 export function noItemsInfoNotification(msg = 'По данному запросу нет записей') {
   global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }

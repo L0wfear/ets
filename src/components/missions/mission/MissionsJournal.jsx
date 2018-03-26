@@ -181,11 +181,18 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  removeCheckedElements() {
+  async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+      try {
+        await confirmDialog({
+          title: 'Внимание!',
+          body: 'Вы уверены, что хотите удалить выбранные элементы?',
+        });
+      } catch (er) {
+        return;
+      }
 
       let isNotDeleted = false;
 

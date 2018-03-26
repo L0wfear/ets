@@ -137,13 +137,20 @@ export default class CheckableElementsList extends ElementsList {
    * метод вызывает {@link ElementsList#removeElement} в случае отсутствия выбранных элементов
    */
   @autobind
-  removeCheckedElements() {
+  async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') {
       return;
     }
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+      try {
+        await confirmDialog({
+          title: 'Внимание!',
+          body: 'Вы уверены, что хотите удалить выбранные элементы?',
+        });
+      } catch (er) {
+        return;
+      }
 
       const removeCallback = this.removeElementCallback || (() => {});
       each(this.state.checkedElements, (element) => {

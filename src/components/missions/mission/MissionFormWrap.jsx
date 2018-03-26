@@ -1,14 +1,11 @@
 import React from 'react';
 import {
   clone,
-  each,
   isEmpty,
   filter,
 } from 'lodash';
-import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { validateField } from 'utils/validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';

@@ -29,7 +29,7 @@ export default class DashboardPageHeader extends React.Component {
     }).catch(() => {
       this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
 
-      const date = moment(new Date()).utcOffset(180);
+      const date = moment().utcOffset(180);
 
       this.setState({
         time: date.format('HH:mm:ss'),

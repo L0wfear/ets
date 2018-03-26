@@ -555,13 +555,12 @@ class WaybillForm extends Form {
         car_id,
         structure_id,
         plan_arrival_date,
-        plan_departure_date,
       },
     } = this.props;
 
     const { type_id } = carsList.find(({ asuods_id }) => asuods_id === car_id) || { type_id: null };
 
-    const newMission = getDefaultMission(plan_departure_date, plan_arrival_date);
+    const newMission = getDefaultMission(undefined, plan_arrival_date);
     newMission.car_id = car_id;
     newMission.type_id = type_id;
     newMission.structure_id = structure_id;

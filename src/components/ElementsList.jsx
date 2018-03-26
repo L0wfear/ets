@@ -181,7 +181,7 @@ class ElementsList extends React.Component {
     const removeCallback = this.removeElementCallback || (() => {});
 
     confirmDialog({
-      title: 'Внимание',
+      title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => {

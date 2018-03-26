@@ -1,14 +1,14 @@
 import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
 
 export const loginErrorNotification = {
-  title: 'Ошибка',
-  message: 'Ошибка авторизации: время действия сессии истекло',
+  title: 'Ошибка!',
+  message: 'Ошибка авторизации: время действия сессии истекло.',
   level: 'error',
   dismissible: false,
   position: 'tc',
   autoDismiss: 5,
   action: {
-    label: 'Перейти на страницу авторизации',
+    label: 'Перейти на страницу авторизации.',
     callback() {
       window.location.hash = '/login';
       window.location.reload();
@@ -17,8 +17,8 @@ export const loginErrorNotification = {
 };
 
 export const missionsCreationSuccessNotification = {
-  title: 'Формирование заданий',
-  message: 'Задания сформированы успешно',
+  title: 'Формирование заданий.',
+  message: 'Задания сформированы успешно.',
   level: 'success',
   dismissible: false,
   position: 'tc',
@@ -27,7 +27,7 @@ export const missionsCreationSuccessNotification = {
 
 export function getErrorNotification(error) {
   return {
-    title: 'Ошибка',
+    title: 'Ошибка!',
     message: `Ошибка инициализации приложения: (${error})`,
     level: 'error',
     dismissible: false,
@@ -42,7 +42,7 @@ export function getErrorNotification(error) {
 
 export function getServerErrorNotification(errorService) {
   return {
-    title: 'Ошибка',
+    title: 'Ошибка!',
     message: `Ошибка при получении данных с сервера, сервис ${errorService}`,
     level: 'error',
     dismissible: true,
@@ -57,8 +57,8 @@ export function getServerErrorNotification(errorService) {
 
 export function getReportNotReadyNotification2() {
   return {
-    title: 'Внимание',
-    message: 'Отчет еще не обработан',
+    title: 'Внимание!',
+    message: 'Отчет еще не обработан.',
     level: 'info',
     dismissible: true,
     position: 'tc',
@@ -68,7 +68,7 @@ export function getReportNotReadyNotification2() {
 
 const missionCreateSuccessNotification = {
   title: '',
-  message: 'Задание создано успешно',
+  message: 'Задание создано успешно.',
   level: 'success',
   dismissible: false,
   position: 'tc',
@@ -77,7 +77,7 @@ const missionCreateSuccessNotification = {
 
 const missionsByCarAndDateUpdateNotification = {
   title: '',
-  message: 'Список заданий обновлён',
+  message: 'Список заданий обновлён.',
   level: 'info',
   dismissible: true,
   position: 'tr',
@@ -86,7 +86,7 @@ const missionsByCarAndDateUpdateNotification = {
 
 export const saveDataSuccessNotification = {
   title: '',
-  message: 'Данные успешно сохранены',
+  message: 'Данные успешно сохранены.',
   level: 'success',
   dismissible: true,
   position: 'tc',
@@ -95,7 +95,7 @@ export const saveDataSuccessNotification = {
 
 export const reassignMissionSuccessNotification = {
   title: '',
-  message: 'Запись успешно сохранена',
+  message: 'Запись успешно сохранена.',
   level: 'success',
   dismissible: true,
   position: 'tc',
@@ -104,7 +104,7 @@ export const reassignMissionSuccessNotification = {
 
 export const changeCompanyStructureIdNotyfication = {
   title: '',
-  message: 'Обращаем Ваше внимание, что для корректной работы системы после изменения подразделения, соответствующие правки необходимо внести в маршрутах, шаблонах заданий и наряд-заданий, в которых использовался данный объект',
+  message: 'Обращаем Ваше внимание, что для корректной работы системы после изменения подразделения, соответствующие правки необходимо внести в маршрутах, шаблонах заданий и наряд-заданий, в которых использовался данный объект.',
   level: 'info',
   dismissible: true,
   position: 'tr',
@@ -119,7 +119,7 @@ export const notifications = {
 
 export function getWarningNotification(message) {
   return {
-    title: 'Внимание',
+    title: 'Внимание!',
     level: 'warning',
     dismissible: true,
     position: 'tr',
@@ -130,7 +130,7 @@ export function getWarningNotification(message) {
 
 export function getErrorNotificationFromBack(message) {
   return {
-    title: 'Внимание',
+    title: 'Внимание!',
     level: 'error',
     dismissible: true,
     position: 'tr',
@@ -141,7 +141,7 @@ export function getErrorNotificationFromBack(message) {
 
 export function getInfoNotification(message) {
   return {
-    title: 'Ифнормация',
+    title: 'Ифнормация.',
     message: `${message}`,
     level: 'info',
     dismissible: true,
@@ -149,7 +149,7 @@ export function getInfoNotification(message) {
     autoDismiss: 0,
   }
 }
-export function noItemsInfoNotification(msg = 'По данному запросу нет записей') {
+export function noItemsInfoNotification(msg = 'По данному запросу нет записей.') {
   global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }
 

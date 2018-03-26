@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
+import { getToday9am } from 'utils/dates';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { FluxContext } from 'utils/decorators';
@@ -292,7 +293,7 @@ class OrderList extends React.Component<any, any> {
     const { missionSourcesList = [] } = this.props;
 
     const mElement = {
-      ...getDefaultMission(),
+      ...getDefaultMission(getToday9am()),
       technical_operation_id,
       municipal_facility_id,
       faxogramm_id,

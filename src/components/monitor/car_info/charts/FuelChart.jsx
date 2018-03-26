@@ -15,7 +15,7 @@ const EventTable = props => {
       <td>{d.type_name}</td>
       <td>{Math.abs(d.event_val)}</td>
     </tr>
-  ));
+    ));
 
   return (
     <table className="car-info-event-table">
@@ -74,7 +74,7 @@ const FuelChartSFC = props => {
       date: `${makeDate(new Date(e.start_point.timestamp * 1000))} ${makeTime(new Date(e.start_point.timestamp * 1000), true)}`,
       type_name: e.type === 'leak' ? 'Слив' : 'Заправка',
       value: `${Math.abs(e.val)} л`,
-    }));
+    })).sort((a, b) => (a.start_point.timestamp - b.start_point.timestamp));
 
   return (
     <div>

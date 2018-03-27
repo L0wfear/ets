@@ -1,7 +1,11 @@
+import { routeTypesBySlug } from 'constants/route';
+import { diffDates } from 'utils/dates';
+
 interface IMission {
   structure_id: number | void;
   car_id: number;
   number: number;
+  route_type: string;
 }
 interface IDutyMission {
   structure_id: number | void;
@@ -23,8 +27,14 @@ interface IEmployeesIndex {
   [id: number]: IEmployee;
 }
 
+interface IFormState {
+  date_start: string;
+  date_end: string;
+}
+
 type ICheckMissionsOnStructureIdCar = (missionsArr: IMission[], carsIndex: ICarsIndex) => boolean;
 type ICheckMissionsOnStructureIdBrigade = (missionsArr: IDutyMission[], employeesIndex: IEmployeesIndex) => boolean;
+type ICheckMissionsByRouteType = (missionsArr: IMission[], formState: IFormState ) => boolean;
 
 export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (missionsArr, carsIndex) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
@@ -72,6 +82,40 @@ export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBriga
 
     if (notPermitedMissionsNumber.length) {
       global.NOTIFICATION_SYSTEM.notify(`Подразделение выбранного шаблона наряд-задания № ${notPermitedMissionsNumber.join(', ')} не соответствует подразделению сотрудника. Необходимо скорректировать шаблон наряд-задания, либо выбрать другой шаблон.`, 'error');
+      return true;
+    }
+  }
+
+  return false;
+};
+
+/**
+ * Проверка длительности задания по типу маршрута
+ * Если тест пройдет,
+ * @param missionsArr массив заданий
+ * @param dates - объект с датами date_start и date_end
+ * @returns flag: boolean - false, если нет ошибки
+ */
+export const checkMissionsByRouteType: ICheckMissionsByRouteType = (missionsArr, { date_start, date_end }) => {
+  let type = '';
+
+  const isDt = missionsArr.some(({ route_type }) => route_type === routeTypesBySlug.dt.key);
+  if (!isDt) {
+    if (missionsArr.some(({ route_type }) => route_type === routeTypesBySlug.odh.key)) {
+      type = 'odh';
+    }
+  } else {
+    type = 'dt';
+  }
+
+  if (type) {
+    const {
+      time,
+      title,
+    } = routeTypesBySlug[type];
+
+    if (diffDates(date_end, date_start, 'hours') > time) {
+      global.NOTIFICATION_SYSTEM.notify(`Время выполнения задания для ${title} должно составлять не более ${time} часов`, 'error');
       return true;
     }
   }

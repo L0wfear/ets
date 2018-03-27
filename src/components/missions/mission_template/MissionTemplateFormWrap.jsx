@@ -12,7 +12,10 @@ import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateM
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
-import { checkMissionsOnStructureIdCar } from 'components/missions/utils/customValidate.ts';
+import {
+  checkMissionsByRouteType,
+  checkMissionsOnStructureIdCar,
+} from 'components/missions/utils/customValidate.ts';
 
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
@@ -124,7 +127,10 @@ export default class MissionFormWrap extends FormWrap {
   async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
-    const { _carsIndex = {} } = this.props;
+    const {
+      _carsIndex = {},
+      missions = {},
+    } = this.props;
 
     if (this.props.formType === 'ViewForm') {
       if (isEmpty(formState.id)) {
@@ -141,27 +147,31 @@ export default class MissionFormWrap extends FormWrap {
         }
       }
       this.props.onFormHide();
-    } else if (!checkMissionsOnStructureIdCar(Object.values(this.props.missions), _carsIndex)) {
-      const externalPayload = {
-        mission_source_id: formState.mission_source_id,
-        passes_count: formState.passes_count,
-        date_start: formState.date_start,
-        date_end: formState.date_end,
-        assign_to_waybill: formState.assign_to_waybill,
-      };
+    } else {
+      const missionsArr = Object.values(missions);
 
-      const missions = keys(this.props.missions)
-        .map(key => this.props.missions[key]);
+      if (!checkMissionsOnStructureIdCar(missionsArr, _carsIndex) && !checkMissionsByRouteType(missionsArr, formState)) {
+        const externalPayload = {
+          mission_source_id: formState.mission_source_id,
+          passes_count: formState.passes_count,
+          date_start: formState.date_start,
+          date_end: formState.date_end,
+          assign_to_waybill: formState.assign_to_waybill,
+        };
 
-        let closeForm = true;
+        const missions = keys(this.props.missions)
+          .map(key => this.props.missions[key]);
 
-      for (const m of missions) {
-        const e = await createMissions(flux, { [m.id]: m }, externalPayload);
-        if (e) closeForm = false;
+          let closeForm = true;
+
+        for (const m of missions) {
+          const e = await createMissions(flux, { [m.id]: m }, externalPayload);
+          if (e) closeForm = false;
+        }
+
+        closeForm && this.props.onFormHide(true);
+        return;
       }
-
-      closeForm && this.props.onFormHide(true);
-      return;
     }
   }
 

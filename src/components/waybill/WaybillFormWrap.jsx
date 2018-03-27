@@ -246,10 +246,14 @@ export default class WaybillFormWrap extends FormWrap {
         .then(({ blob, fileName }) => saveData(blob, fileName));
     };
 
-    if (printonly) {
-      await callback();
-    } else {
-      await this.handleFormSubmit(formState, callback);
+    try {
+      if (printonly) {
+        await callback();
+      } else {
+        await this.handleFormSubmit(formState, callback);
+      }
+    } catch (e) {
+      //
     }
 
     global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');

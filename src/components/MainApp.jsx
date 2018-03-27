@@ -203,6 +203,13 @@ class MainApp extends React.Component {
   }
 
   render() {
+    const {
+      user: {
+        structure_name = '',
+        company_name,
+      },
+    } = this.state;
+
     return (
       <div className="app">
         <div className="app-navigation">{this.renderHeader()}</div>
@@ -231,7 +238,7 @@ class MainApp extends React.Component {
             </Div>
           </Col>
           <Col md={6}>
-            {this.state.user.company_name}
+            <span>{`${company_name} ${structure_name}`}</span>
           </Col>
           <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>

@@ -163,3 +163,6 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  */
 export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
   moment(dataA).diff(moment(dataB), typeDiff);
+
+
+export const getDateWithMoscowTz = date => moment(date).utcOffset(180);

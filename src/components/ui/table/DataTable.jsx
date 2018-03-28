@@ -428,7 +428,12 @@ export default class DataTable extends React.Component {
           if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
             isValid = false;
           }
-        } else if (value.findIndex(d => d.toLowerCase() === obj[key].toString().toLowerCase()) === -1) {
+        } else if (value.findIndex((d) => {
+          if (isNaN(Number(d))) {
+            return (d || '').toLowerCase() === obj[key].toString().toLowerCase();
+          }
+          return d === obj[key];
+        }) === -1) {
           isValid = false;
         }
         /**

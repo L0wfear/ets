@@ -165,4 +165,10 @@ export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
   moment(dataA).diff(moment(dataB), typeDiff);
 
 
-export const getDateWithMoscowTz = date => moment(date).utcOffset(180);
+export const getDateWithMoscowTz = (...dateProps) => {
+  const newDate = new Date(...dateProps);
+
+  newDate.setUTCHours(3);
+
+  return newDate;
+};

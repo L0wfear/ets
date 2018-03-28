@@ -56,6 +56,7 @@ export default class DashboardPage extends React.Component {
   init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozones();
+    flux.getActions('objects').getCars();
     const actions = flux.getActions('dashboard');
     const components = flux.getStore('dashboard').getComponentsByPermissionsAll();
     this.componentsInterval = {};

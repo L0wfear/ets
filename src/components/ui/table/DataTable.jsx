@@ -429,11 +429,13 @@ export default class DataTable extends React.Component {
             isValid = false;
           }
         } else if (value.findIndex((d) => {
-            if (isNaN(Number(d))) {
-              return (d || '').toLowerCase() === obj[key].toString().toLowerCase();
-            }
-            return d === obj[key];
-          }) === -1) {
+          if (isNaN(Number(d))) {
+            return (d || '').toLowerCase() === obj[key].toString().toLowerCase();
+          }
+          return d === obj[key];
+        }) === -1) {
+          isValid = false;
+        }
         /**
          * Фильтр: строка
          * Значение: массив строк

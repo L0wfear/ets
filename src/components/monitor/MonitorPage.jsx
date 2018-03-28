@@ -52,6 +52,7 @@ class MonitorPage extends Component {
             points: store => ({
               points: store.state.points,
               selected: store.getSelectedPoint(),
+              filter: store.state.filter,
             }),
             settings: store => ({
               showPlates: store.state.showPlates,

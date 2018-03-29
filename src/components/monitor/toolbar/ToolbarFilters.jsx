@@ -33,6 +33,7 @@ export default class ToolbarFilters extends Component {
     const filters = [];
     const carTypes = toArray(this.props.typesIndex).map(t => ({ title: t.short_name, ...t }));
     const STRUCTURE_OPTIONS = this.props.companyStructureLinearList.map(t => ({ title: t.name, ...t }));
+    const isEmpty = !STRUCTURE_OPTIONS.length;
 
     filters.push(
       <Filter
@@ -51,8 +52,9 @@ export default class ToolbarFilters extends Component {
         key={'structureFilter'}
         name="structure"
         valueField={'id'}
-        title="Подразделение"
+        title={`Подразделение ${isEmpty ? '(нет данных)' : ''}`}
         options={STRUCTURE_OPTIONS}
+        disabled={isEmpty}
         search
         itemComponent={TypeComponent}
         valueComponent={TypeComponent}

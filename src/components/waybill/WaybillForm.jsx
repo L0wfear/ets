@@ -555,12 +555,25 @@ class WaybillForm extends Form {
         car_id,
         structure_id,
         plan_arrival_date,
+        plan_departure_date,
+        fact_departure_date,
+        status,
       },
     } = this.props;
 
     const { type_id } = carsList.find(({ asuods_id }) => asuods_id === car_id) || { type_id: null };
 
-    const newMission = getDefaultMission(undefined, plan_arrival_date);
+    const IS_ACTIVE = status === 'active';
+    const IS_DRAFT = status === 'draft';
+    let date_start;
+
+    if (IS_DRAFT && diffDates(plan_departure_date, new Date()) > 0) {
+      date_start = plan_departure_date;
+    } else if (IS_ACTIVE && diffDates(fact_departure_date, new Date()) > 0) {
+      date_start = fact_departure_date;
+    }
+
+    const newMission = getDefaultMission(date_start, plan_arrival_date);
     newMission.car_id = car_id;
     newMission.type_id = type_id;
     newMission.structure_id = structure_id;

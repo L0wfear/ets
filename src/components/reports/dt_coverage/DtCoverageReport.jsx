@@ -7,6 +7,7 @@ import { saveData } from 'utils/functions';
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
 // import DtCoverageReportHeader from './DtCoverageReportHeader.jsx';
+import DataPicker from 'components/ui/input/DatePicker';
 
 // const TWO_MINUTES = 1000 * 60 * 2;
 
@@ -91,8 +92,9 @@ export default class DtCoverageReport extends Component {
         <DtCoverageReportTable data={dtCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
-            <Input type="text" readOnly value={getFormattedDateTime(date_start)} /> —
-            <Input type="text" readOnly value={getFormattedDateTime(date_end)} />
+            <DataPicker date={date_start} onChange={this.handleChangeDateStart} />-
+            <DataPicker date={date_end} onChange={this.handleChangeDateEnd} />
+            <Button onClick={this.getReport}>Сформировать</Button>
           </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">

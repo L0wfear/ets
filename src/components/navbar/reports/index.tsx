@@ -65,11 +65,6 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem id="link-daily-cleaning-reports-cafap" permissions={[PERMISSIONS.reportAll.cleaning_status_cafap_report.false]} active={path === '/daily-cleaning-reports-cafap'} href="#/daily-cleaning-reports-cafap">Статус по уборке (ЦАФАП)</MenuItem>
       <MenuItem id="link-cleaning-status-tech-op-report" permissions={[PERMISSIONS.reportAll.cleaning_status_tech_op_report.false]} active={path === '/cleaning-status-tech-op-report'} href="#/cleaning-status-tech-op-report">Статус по выполнению городских заданий</MenuItem>
     </NavDropdown>
-    */
-    }
-    <NavDropdown id="show-reglament" title="Регламентированные отчеты" >
-      <MenuItem id="link-fuel-consumption-report" active={path === '/fuel-consumption-report'} href="#/fuel-consumption-report">Расход топлива</MenuItem>
-    </NavDropdown>
     {
       // <NavDropdown title="Графические отчеты" id="nav-dropdown-3-3">
       //   <MenuItem id="link-" active={path === '/coverage-report'} href="#/coverage-report">

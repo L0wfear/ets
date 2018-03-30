@@ -172,11 +172,13 @@ export default (props) => {
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,
-    id: (meta) => {
-      if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
+    id: ({ data, rowData }) => {
+      if (rowData.status === 'not_assigned') return <div>Нет данных</div>;
+      const className = Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
+
       return (
-        <div>
-          <span onClick={() => props.mapView(meta.data)}>
+        <div className={className} style={{ width: '100%', heigth: '100%' }}>
+          <span onClick={() => props.mapView(data)}>
             <Glyphicon glyph="info-sign" />
           </span>
         </div>

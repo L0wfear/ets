@@ -3036,6 +3036,9 @@ div.none {
 .map-view {
   vertical-align: middle !important;
   text-align: center;
+  .td-red {
+    color: red;
+  }
   .glyphicon {
     font-size: 32px;
   }

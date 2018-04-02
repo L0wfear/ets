@@ -22,16 +22,16 @@ export default class MissionFormWrap extends FormWrap {
   }
 
   createAction = formState =>
-      this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
-        if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
-          try {
-            this.props.refreshTableList();
-          } catch (e) {
-            // function refreshTableList not in father modules
-          }
-        }
-        return r;
-      });
+  this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
+    if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
+      try {
+        this.props.refreshTableList();
+      } catch (e) {
+        // function refreshTableList not in father modules
+      }
+    }
+    return r;
+  });
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {

@@ -37,6 +37,11 @@ export function createValidDateTime(date) {
   return moment(date).format('YYYY-MM-DDTHH:mm:ss');
 }
 
+export function createValidDateTimeWithoutSeconds(date) {
+  if (!date) return null;
+  return moment(date).format('YYYY-MM-DDTHH:mm');
+}
+
 export function getFormattedDateTime(date) {
   if (!date) return '';
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm`);

@@ -8,7 +8,7 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates, createValidDateTimeWithoutSeconds } from 'utils/dates.js';
 import { missionSchema } from 'models/MissionModel.js';
 import MissionForm from './MissionForm.jsx';
 import MissionFormOld from './MissionFormOld.jsx';
@@ -22,16 +22,16 @@ export default class MissionFormWrap extends FormWrap {
   }
 
   createAction = formState =>
-    this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
-      if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
-        try {
-          this.props.refreshTableList();
-        } catch (e) {
-          // function refreshTableList not in father modules
+      this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
+        if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
+          try {
+            this.props.refreshTableList();
+          } catch (e) {
+            // function refreshTableList not in father modules
+          }
         }
-      }
-      return r;
-    });
+        return r;
+      });
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
@@ -128,12 +128,16 @@ export default class MissionFormWrap extends FormWrap {
       inWaybill = othInWaybill,
       order = othOrder,
     } = this.state;
+    const date_start = createValidDateTimeWithoutSeconds(formState.date_start);
+    const date_end = createValidDateTimeWithoutSeconds(formState.date_end);
+    const waybillStartDate = createValidDateTimeWithoutSeconds(this.props.waybillStartDate);
+    const waybillEndDate = createValidDateTimeWithoutSeconds(this.props.waybillEndDate);
 
-    if (this.props.fromWaybill && (this.props.waybillStartDate || this.props.waybillEndDate)) {
-      if (diffDates(formState.date_start, this.props.waybillStartDate) < 0) {
+    if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
+      if (diffDates(date_start, waybillStartDate, 'minutes') < 0) {
         formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-      if (diffDates(formState.date_end, this.props.waybillEndDate) > 0) {
+      if (diffDates(date_end, waybillEndDate, 'minutes') > 0) {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }

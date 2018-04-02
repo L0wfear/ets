@@ -26,6 +26,15 @@ const getTypeRoute = (type) => {
   }
 };
 
+const makeRoutesListForRender = (routesListFromStore, technicalOperationsList, STRUCTURES) => {
+  routesListFromStore.forEach((r) => {
+    r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
+    r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
+    r.type_name = getTypeRoute(r.type);
+  });
+  return routesListFromStore;
+};
+
 class RoutesList extends Component {
 
   static get propTypes() {
@@ -63,12 +72,8 @@ class RoutesList extends Component {
     await flux.getActions('technicalOperation').getTechnicalOperations();
     const { technicalOperationsList = [] } = this.props;
 
-    const routesList = await flux.getActions('routes').getRoutes().then(({ result }) => result);
-    routesList.forEach((r) => {
-      r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
-      r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
-      r.type_name = getTypeRoute(r.type);
-    });
+    const routesListFromStore = await flux.getActions('routes').getRoutes().then(({ result }) => result);
+    const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
 
     const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
@@ -188,8 +193,12 @@ class RoutesList extends Component {
       return;
     }
     const { flux } = this.context;
-    flux.getActions('routes').removeRoute(this.state.selectedRoute);
-    this.setState({ selectedRoute: null });
+    await flux.getActions('routes').removeRoute(this.state.selectedRoute);
+
+    const routesListFromStore = await flux.getStore('routes').state.routesList;
+    const routesListAfterDeleteRoute = makeRoutesListForRender(routesListFromStore, this.props.technicalOperationsList, this.getStructures());
+
+    this.setState({ selectedRoute: null, routesList: routesListAfterDeleteRoute });
   }
 
   editRoute = (route) => {

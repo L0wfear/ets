@@ -56,11 +56,12 @@ export default class OdhCoverageReport extends Component {
     const { flux } = this.context;
     const res = await flux.getActions('reports').getOdhCoverageReport(this.state.date_start, this.state.date_end);
     const dates = res.result.meta;
-    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: new Date() });
+
+    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: dates.date_end });
   }
 
-  handleChangeDateStart = (value) => this.setState({ value });
-  handleChangeDateEnd = (value) => this.setState({ value });
+  handleChangeDateStart = date_start => this.setState({ date_start });
+  handleChangeDateEnd = date_end => this.setState({ date_end });
 
   showForm(exportType) {
     this.setState({ showForm: true, exportType });

@@ -167,8 +167,10 @@ export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
 
 export const getDateWithMoscowTz = (...dateProps) => {
   const newDate = new Date(...dateProps);
-
-  newDate.setUTCHours(3);
+  const isNotMoscowTz = newDate.getTimezoneOffset() + 180;
+  if (isNotMoscowTz) {
+    newDate.setUTCHours(12 + (isNotMoscowTz / 60));
+  }
 
   return newDate;
 };

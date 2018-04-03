@@ -193,9 +193,7 @@ class RoutesList extends Component {
       return;
     }
     const { flux } = this.context;
-    await flux.getActions('routes').removeRoute(this.state.selectedRoute);
-
-    const routesListFromStore = await flux.getStore('routes').state.routesList;
+    const routesListFromStore = await flux.getActions('routes').removeRoute(this.state.selectedRoute).then(({ result }) => result);
     const routesListAfterDeleteRoute = makeRoutesListForRender(routesListFromStore, this.props.technicalOperationsList, this.getStructures());
 
     this.setState({ selectedRoute: null, routesList: routesListAfterDeleteRoute });

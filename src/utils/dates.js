@@ -174,3 +174,5 @@ export const getDateWithMoscowTz = (...dateProps) => {
 
   return newDate;
 };
+
+export const setZeroSecondsToDate = date => moment(date).seconds(0);

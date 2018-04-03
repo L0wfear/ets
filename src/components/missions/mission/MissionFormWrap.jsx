@@ -8,7 +8,7 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
-import { diffDates, createValidDateTimeWithoutSeconds } from 'utils/dates.js';
+import { diffDates, createValidDateTime } from 'utils/dates.js';
 import { missionSchema } from 'models/MissionModel.js';
 import MissionForm from './MissionForm.jsx';
 import MissionFormOld from './MissionFormOld.jsx';
@@ -128,10 +128,10 @@ export default class MissionFormWrap extends FormWrap {
       inWaybill = othInWaybill,
       order = othOrder,
     } = this.state;
-    const date_start = createValidDateTimeWithoutSeconds(formState.date_start);
-    const date_end = createValidDateTimeWithoutSeconds(formState.date_end);
-    const waybillStartDate = createValidDateTimeWithoutSeconds(this.props.waybillStartDate);
-    const waybillEndDate = createValidDateTimeWithoutSeconds(this.props.waybillEndDate);
+    const date_start = createValidDateTime(formState.date_start);
+    const date_end = createValidDateTime(formState.date_end);
+    const waybillStartDate = createValidDateTime(this.props.waybillStartDate);
+    const waybillEndDate = createValidDateTime(this.props.waybillEndDate);
 
     if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
       if (diffDates(date_start, waybillStartDate, 'minutes') < 0) {

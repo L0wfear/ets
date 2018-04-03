@@ -34,12 +34,7 @@ export function createValidDate(date) {
 
 export function createValidDateTime(date) {
   if (!date) return null;
-  return moment(date).format('YYYY-MM-DDTHH:mm:ss');
-}
-
-export function createValidDateTimeWithoutSeconds(date) {
-  if (!date) return null;
-  return moment(date).format('YYYY-MM-DDTHH:mm');
+  return moment(date).seconds(0).format('YYYY-MM-DDTHH:mm:ss');
 }
 
 export function getFormattedDateTime(date) {
@@ -166,8 +161,8 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  * @param {date | string} dataB - date end compare
  * @param {string} typeDiff - type compare (see moment .diff())
  */
-export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
-  moment(dataA).diff(moment(dataB), typeDiff);
+export const diffDates = (dataA, dataB, typeDiff = 'seconds', non_rounded_number = true) =>
+  moment(dataA).diff(moment(dataB), typeDiff, non_rounded_number);
 
 
 export const getDateWithMoscowTz = (...dateProps) => {

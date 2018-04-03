@@ -5,8 +5,8 @@ import { isEmpty } from 'utils/functions';
 import { mapKeys, cloneDeep } from 'lodash';
 
 const makeFilesToBackendOne = (formState) => {
-  const payload = cloneDeep(formState)
-  const { driver_license_files, medical_certificate_files } = payload;
+  const payload = cloneDeep(formState);
+  const { driver_license_files = [], medical_certificate_files = [] } = payload;
 
   payload.files = [
     ...driver_license_files.map(obj => ({ ...obj, kind: 'driver_license' })),

@@ -132,6 +132,7 @@ class RoutesList extends Component {
 
   selectRoute = (id) => {
     const { flux } = this.context;
+    this.setState({ selectedRoute: null });
     flux.getActions('routes').getRouteById(id).then((route) => {
       this.setState({ selectedRoute: route });
     });

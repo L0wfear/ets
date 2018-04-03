@@ -25,8 +25,8 @@ export default class ReportsActions extends Actions {
     return CoverageReportService.get(payload);
   }
 
-  getOdhCoverageReport(date_start, date_end) {
-    const payload = {};
+  getOdhCoverageReport(date_start, date_end, query) {
+    const payload = { ...query };
     if (date_start) {
       payload.date_start = createValidDateTime(date_start);
     }
@@ -51,8 +51,8 @@ export default class ReportsActions extends Actions {
     return OdhCoverageReportService.getBlob(payload);
   }
 
-  getDtCoverageReport(date_start, date_end) {
-    const payload = {};
+  getDtCoverageReport(date_start, date_end, query) {
+    const payload = { ...query };
     if (date_start) {
       payload.date_start = createValidDateTime(date_start);
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, Input } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
+
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
@@ -54,7 +55,9 @@ export default class OdhCoverageReport extends Component {
 
   getReport = async () => {
     const { flux } = this.context;
-    const res = await flux.getActions('reports').getOdhCoverageReport(this.state.date_start, this.state.date_end);
+    const { location: { query } } = this.props;
+    
+    const res = await flux.getActions('reports').getOdhCoverageReport(this.state.date_start, this.state.date_end, query);
     const dates = res.result.meta;
 
     if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: dates.date_end });

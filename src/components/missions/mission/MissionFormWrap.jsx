@@ -134,10 +134,10 @@ export default class MissionFormWrap extends FormWrap {
     const waybillEndDate = createValidDateTime(this.props.waybillEndDate);
 
     if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
-      if (diffDates(date_start, waybillStartDate, 'minutes') < 0) {
+      if (diffDates(date_start, waybillStartDate) < 0) {
         formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-      if (diffDates(date_end, waybillEndDate, 'minutes') > 0) {
+      if (diffDates(date_end, waybillEndDate) > 0) {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }

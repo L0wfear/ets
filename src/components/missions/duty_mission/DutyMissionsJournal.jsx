@@ -116,7 +116,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   removeElement = async () => {
-    if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+    try {
+      await confirmDialog({
+        title: 'Внимание!',
+        body: 'Вы уверены, что хотите удалить выбранный элемент?',
+      });
+    } catch (er) {
+      return;
+    }
     const mission = _.cloneDeep(this.state.selectedElement);
     const query = new Promise((res, rej) => {
       if (mission.status === 'not_assigned') {
@@ -188,7 +195,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+      try {
+        await confirmDialog({
+          title: 'Внимание!',
+          body: 'Вы уверены, что хотите удалить выбранные элементы?',
+        });
+      } catch (er) {
+        return;
+      }
       const allQuerys = Object.values(this.state.checkedElements).map((mission) => {
         if (mission.status === 'not_assigned') {
           return this.removeElementAction(mission.id);

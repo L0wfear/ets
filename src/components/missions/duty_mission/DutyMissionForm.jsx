@@ -121,11 +121,10 @@ export class DutyMissionForm extends Form {
         }
       }
     }
-
-    missionsActions.getMissions(mission.technical_operation_id);
     missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
+
     this.setState({
       selectedRoute,
       technicalOperationsList,
@@ -206,7 +205,7 @@ export class DutyMissionForm extends Form {
       label: `№${number} (${technical_operation_name})`,
     }));
 
-    const IS_CREATING = !!!state.number;
+    const IS_CREATING = !state.number;
     const IS_CLOSING = state.status && state.status === 'assigned';
     const IS_COMPLETED = state.status && state.status === 'complete';
     const IS_CLOSED = state.status === 'complete' || state.status === 'fail';

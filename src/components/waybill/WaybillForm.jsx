@@ -148,6 +148,7 @@ class WaybillForm extends Form {
       canEditIfClose: null,
       loadingFields: {},
       fuelRateAllList: [],
+      tooLongFactDates: false,
     };
 
     this.employeeFIOLabelFunction = () => {};
@@ -371,18 +372,22 @@ class WaybillForm extends Form {
   }
 
   getCarDistance(formState) {
+    if (diffDates(formState.fact_arrival_date, formState.fact_departure_date, 'days') > 3) {
+      this.setState({ tooLongFactDates: true });
+      return;
+    }
     const { flux } = this.context;
     const { loadingFields } = this.state;
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
-      this.setState({ loadingFields });
+      this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
     const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
     loadingFields.consumption = true;
-    this.setState({ loadingFields });
+    this.setState({ loadingFields, tooLongFactDates: false });
     flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
       .then(({ distance, consumption }) => {
         this.props.handleFormChange('distance', distance);
@@ -1290,8 +1295,8 @@ class WaybillForm extends Form {
                   id="distance-by-glonass"
                   type="string"
                   label="Пройдено по Глонасс, км"
-                  error={errors.distance}
-                  value={distanceOrTrackOrNodata}
+                  error={!this.state.tooLongFactDates && errors.distance}
+                  value={this.state.tooLongFactDates ? 'Слишком большой период действия ПЛ' : distanceOrTrackOrNodata}
                   isLoading={loadingFields.distance}
                   disabled
                 />

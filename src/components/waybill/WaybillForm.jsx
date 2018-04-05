@@ -18,6 +18,7 @@ import {
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
+import { diffDates } from 'utils/dates';
 
 import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 import Form from '../compositions/Form.jsx';
@@ -53,6 +54,7 @@ class WaybillForm extends Form {
       selectedMission: null,
       canEditIfClose: null,
       loadingFields: {},
+      tooLongFactDates: false,
     };
 
     this.employeeFIOLabelFunction = () => {};
@@ -187,18 +189,22 @@ class WaybillForm extends Form {
   }
 
   getCarDistance(formState) {
+    if (diffDates(formState.fact_arrival_date, formState.fact_departure_date, 'days') > 3) {
+      this.setState({ tooLongFactDates: true });
+      return;
+    }
     const { flux } = this.context;
     const { loadingFields } = this.state;
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
-      this.setState({ loadingFields });
+      this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
     const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
     loadingFields.consumption = true;
-    this.setState({ loadingFields });
+    this.setState({ loadingFields, tooLongFactDates: false });
     flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
       .then(({ distance, consumption }) => {
         this.props.handleFormChange('distance', distance);
@@ -966,8 +972,8 @@ class WaybillForm extends Form {
                   id="distance-by-glonass"
                   type="string"
                   label="Пройдено по Глонасс, км"
-                  error={errors.distance}
-                  value={getGoOnGLONASS(state)}
+                  error={!this.state.tooLongFactDates && errors.distance}
+                  value={this.state.tooLongFactDates ? 'Слишком большой период действия ПЛ' : getGoOnGLONASS(state)}
                   isLoading={loadingFields.distance}
                   disabled
                 />

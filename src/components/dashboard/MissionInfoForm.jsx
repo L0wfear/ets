@@ -1,6 +1,6 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { secondsToTime } from 'utils/dates';
+import { diffDates, secondsToTime } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -11,6 +11,7 @@ import FluxComponent from 'flummox/component';
 import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
 import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
 import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
+
 import Form from '../compositions/Form.jsx';
 
 const VALUE_FOR_FIXED = {
@@ -56,6 +57,7 @@ class MissionInfoForm extends Form {
 
   constructor(props) {
     super(props);
+    const { formState: { mission_data: { date_end, date_start } } } = props;
 
     this.state = {
       missionReport: [],
@@ -64,6 +66,7 @@ class MissionInfoForm extends Form {
       selectedPointNum: null,
       selectedPoint: null,
       parkingCount: null,
+      tooLongDates: diffDates(date_end, date_start, 'days') > 3,
     };
   }
 
@@ -78,9 +81,12 @@ class MissionInfoForm extends Form {
     
     const { flux } = this.context;
     await flux.getActions('objects').getCars();
-    flux.getActions('points').createConnection();
-    flux.getActions('points').setSingleCarTrack(car_data.gov_number);
-    flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
+    if (!this.state.tooLongDates) {
+      flux.getActions('points').createConnection();
+      flux.getActions('points').setSingleCarTrack(car_data.gov_number);
+      flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
+    }
+
     await flux.getActions('geoObjects').getGeozones();
     const route = await flux.getActions('routes').getRouteById(route_data.id, true);
     let missionReport = report_data.entries;
@@ -132,7 +138,7 @@ class MissionInfoForm extends Form {
     } = state;
 
     const routeType = route_data.type;
-    const { route = {} } = this.state;
+    const { route = {}, tooLongDates } = this.state;
     const { geozonePolys = {} } = this.props;
 
     const { object_list = [], draw_object_list = [] } = route;
@@ -206,25 +212,32 @@ class MissionInfoForm extends Form {
             </Col>
 
             <Col md={6}>
-              <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
-                <Div hidden={routeType !== 'mixed'}>
-                  <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+              <Div hidden={tooLongDates}>
+                <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
+                  <Div hidden={routeType !== 'mixed'}>
+                    <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+                  </Div>
+                  <Div hidden={routeType !== 'simple_dt'}>
+                    <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+                  </Div>
+                  <Div hidden={routeType !== 'points'}>
+                    <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} onElementChange={this.handleSelectedPointChange} selectedField={'customId'} />
+                  </Div>
                 </Div>
-                <Div hidden={routeType !== 'simple_dt'}>
-                  <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
-                </Div>
-                <Div hidden={routeType !== 'points'}>
-                  <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} onElementChange={this.handleSelectedPointChange} selectedField={'customId'} />
+                <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
+                  <h5>Нет данных о прохождении задания</h5>
                 </Div>
               </Div>
-              <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
-                <h5>Нет данных о прохождении задания</h5>
+              <Div hidden={!tooLongDates}>
+                <Col md={9} mdOffset={3}>
+                  <span>{'Слишком большой период действия задания'}</span>
+                </Col>
               </Div>
             </Col>
 
           </Row>
 
-          <Div>
+          <Div hidden={tooLongDates}>
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
             <ul className="listStyleTypeNone" >

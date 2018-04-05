@@ -457,11 +457,12 @@ class WaybillForm extends Form {
   }
 
   async onCarChange(car_id, selectedCar = {}) {
+    console.log(car_id)
     const { flux } = this.context;
 
     let fieldsToChange = {
       car_id,
-      gov_number: selectedCar.gov_number,
+      gov_number: '',
     };
     if (!isEmpty(car_id)) {
       const { fuelRateAllList = [] } = this.state;
@@ -477,6 +478,7 @@ class WaybillForm extends Form {
       fieldsToChange = {
         ...fieldsToChange,
         ...additionalFields,
+        gov_number: selectedCar.gov_number,
       };
     } else {
       /**

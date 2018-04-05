@@ -23,19 +23,22 @@ class DutyMissionFormWrap extends FormWrap {
     let response;
 
     if (mission.id) {
-      response = await this.updateAction(mission);
+      response = await this.context.flux.getActions('missions').updateDutyMission(mission);
     } else {
-      response = await this.createAction(mission);
+      response = await this.context.flux.getActions('missions').createDutyMission(mission);
     }
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
+    if (!this.props.fromOrder && !this.props.fromDashboard) {
+      await this.props.refreshTableList();
+    }
     this.props.onFormHide();
   }
 
   createAction = async (formState) => {
     try {
-      await this.context.flux.getActions('missions').createDutyMission(formState, false);
+      await this.context.flux.getActions('missions').createDutyMission(formState);
       if (!this.props.fromOrder && !this.props.fromDashboard) {
         await this.props.refreshTableList();
       }

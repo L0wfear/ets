@@ -46,7 +46,7 @@ class MissionsStore extends Store {
 
   handleGetMissions(missions) {
     if (!missions.result.meta) return;
-    this.setState({ missionsList: missions.result.rows, totalCount: missions.result.meta.total_count });
+    this.setState({ missionsList: missions.result.rows, missionsTotalCount: missions.result.meta.total_count });
   }
 
   handleGetMissionSources(missionSources) {
@@ -59,7 +59,7 @@ class MissionsStore extends Store {
 
   handleGetDutyMissions(dutyMissions) {
     if (!dutyMissions.result.meta) return;
-    this.setState({ dutyMissionsList: dutyMissions.result.rows, totalCount: dutyMissions.result.meta.total_count });
+    this.setState({ dutyMissionsList: dutyMissions.result.rows, dutyMissionsTotalCount: dutyMissions.result.meta.total_count });
   }
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {

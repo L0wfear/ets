@@ -91,9 +91,9 @@ export default class DashboardPage extends React.Component {
       loadingComponents.push(key);
     }
     this.setState({ loadingComponents });
-    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(({ key: dashboardKey }) => {
+    this.context.flux.getActions('dashboard').getDashboardComponent(key).then((result) => {
       const { loadingComponents: dashboardLoadingComponents } = this.state;
-      dashboardLoadingComponents.splice(dashboardLoadingComponents.indexOf(dashboardKey), 1);
+      dashboardLoadingComponents.splice(dashboardLoadingComponents.indexOf(result.key), 1);
       setTimeout(() => this.setState({ dashboardLoadingComponents }), 500);
     }).catch(() => {
     });

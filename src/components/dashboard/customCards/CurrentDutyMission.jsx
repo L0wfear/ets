@@ -169,7 +169,6 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     );
   }
 
-  Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />
 
   render() {
     const selectedItemIndex = this.state.selectedItem;
@@ -191,10 +190,12 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     }
     // let dashboardCardClass = cx('dashboard-card', {'visibilityHidden'});
     // отрефакторить
+    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />;
+
     return (
       <Div md={12}>
 
-        <Panel className="dashboard-card" header={this.Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
+        <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             <ItemsCentralized
               items={this.props.items_centralized}

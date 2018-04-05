@@ -54,6 +54,7 @@ class WaybillForm extends Form {
       selectedMission: null,
       canEditIfClose: null,
       loadingFields: {},
+      tooLongFactDates: false,
     };
 
     this.employeeFIOLabelFunction = () => {};
@@ -188,12 +189,16 @@ class WaybillForm extends Form {
   }
 
   getCarDistance(formState) {
+    if (diffDates(formState.fact_arrival_date, formState.fact_departure_date, 'days') > 3) {
+      this.setState({ tooLongFactDates: true });
+      return;
+    }
     const { flux } = this.context;
     const { loadingFields } = this.state;
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
-      this.setState({ loadingFields });
+      this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
     const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
@@ -974,8 +979,8 @@ class WaybillForm extends Form {
                   id="distance-by-glonass"
                   type="string"
                   label="Пройдено по Глонасс, км"
-                  error={errors.distance}
-                  value={getGoOnGLONASS(state)}
+                  error={!this.state.tooLongFactDates && errors.distance}
+                  value={this.state.tooLongFactDates ? 'Слишком большой период действия ПЛ' : getGoOnGLONASS(state)}
                   isLoading={loadingFields.distance}
                   disabled
                 />

@@ -97,8 +97,10 @@ class MissionInfoForm extends Form {
   }
 
   componentWillUnmount() {
-    this.context.flux.getActions('points').closeConnection();
-    this.context.flux.getActions('points').setSingleCarTrack(null);
+    if (!this.state.tooLongDates) {
+      this.context.flux.getActions('points').closeConnection();
+      this.context.flux.getActions('points').setSingleCarTrack(null);
+    }
   }
 
   handleSelectedElementChange(id) {

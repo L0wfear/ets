@@ -41,6 +41,8 @@ class MissionsStore extends Store {
       dutyMissionsList: [],
       carDutyMissionList: [],
       dutyMissionTemplatesList: [],
+      missionsTotalCount: 0,
+      dutyMissionsTotalCount: 0,
     };
   }
 

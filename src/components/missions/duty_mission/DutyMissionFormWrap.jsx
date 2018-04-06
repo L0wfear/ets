@@ -15,7 +15,19 @@ class DutyMissionFormWrap extends FormWrap {
     this.schema = dutyMissionSchema;
     this.defaultElement = getDefaultDutyMission();
     this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
+    this.createAction = async (formState) => {
+      await context.flux.getActions('missions').createDutyMission(formState);
+      context.flux.getActions('missions').getDutyMissions();
+    };
   }
+
+  createAction = formState =>
+    this.context.flux.getActions('missions').createDutyMission(formState).then(() => {
+      if (!this.props.fromOrder && !this.props.fromDashboard) {
+        return this.context.flux.getActions('missions').getDutyMissions();
+      }
+      return Promise.resolve();
+    });
 
   handleFormPrint = async () => {
     const mission = _.cloneDeep(this.state.formState);
@@ -30,21 +42,8 @@ class DutyMissionFormWrap extends FormWrap {
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
-    if (!this.props.fromOrder && !this.props.fromDashboard) {
-      await this.props.refreshTableList();
-    }
+    this.context.flux.getActions('missions').getDutyMissions();
     this.props.onFormHide();
-  }
-
-  createAction = async (formState) => {
-    try {
-      await this.context.flux.getActions('missions').createDutyMission(formState);
-      if (!this.props.fromOrder && !this.props.fromDashboard) {
-        await this.props.refreshTableList();
-      }
-    } catch (error) {
-      throw error;
-    }
   }
 
   /**

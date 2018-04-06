@@ -12,12 +12,12 @@ export default class WaybillsStore extends Store {
 
     this.state = {
       waybillsList: [],
-      waybillstotalCount: 0,
+      totalCount: 0,
     };
   }
 
   handleGetWaybills(waybills) {
-    this.setState({ waybillsList: waybills.result, waybillstotalCount: waybills.total_count });
+    this.setState({ waybillsList: waybills.result, totalCount: waybills.total_count });
   }
 
 }

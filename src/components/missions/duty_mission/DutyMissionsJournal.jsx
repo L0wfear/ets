@@ -113,7 +113,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   removeElement = async () => {
-    if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+    try {
+      await confirmDialog({
+        title: 'Внимание!',
+        body: 'Вы уверены, что хотите удалить выбранный элемент?',
+      });
+    } catch (er) {
+      return;
+    }
     const mission = _.cloneDeep(this.state.selectedElement);
     const query = new Promise((res, rej) => {
       if (mission.status === 'not_assigned') {
@@ -221,36 +228,34 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
         await confirmDialog({
-          title: 'Внимание',
+          title: 'Внимание!',
           body: 'Вы уверены, что хотите удалить выбранные элементы ?',
         });
-
-        let isNotDeleted = false;
-
-        const allQuery = Object.values(this.state.checkedElements).map((mission) => {
-          if (mission.status === 'not_assigned') {
-            return this.removeElementAction(mission.id);
-          } else {
-            isNotDeleted = true;
-            return Promise.resolve();
-          }
-        });
-        await Promise.all(allQuery);
-        this.refreshList();
-
-        if (isNotDeleted) {
-          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
-        } else {
-          global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
-        }
-
-        this.setState({
-          checkedElements: {},
-          selectedElement: null,
-        });
       } catch (err) {
-        // отмена
+        return;
       }
+      let isNotDeleted = false;
+      const allQuery = Object.values(this.state.checkedElements).map((mission) => {
+        if (mission.status === 'not_assigned') {
+          return this.removeElementAction(mission.id);
+        } else {
+          isNotDeleted = true;
+          return Promise.resolve();
+        }
+      });
+      await Promise.all(allQuery);
+      this.refreshList();
+
+      if (isNotDeleted) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+      } else {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
+      }
+
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
     } else {
       this.removeElement().then(() => this.refreshList());
     }

@@ -159,13 +159,10 @@ export default class MissionFormWrap extends FormWrap {
           assign_to_waybill: formState.assign_to_waybill,
         };
 
-        const missions = keys(this.props.missions)
-          .map(key => this.props.missions[key]);
+        let closeForm = true;
 
-          let closeForm = true;
-
-        for (const m of missions) {
-          const e = await createMissions(flux, { [m.id]: m }, externalPayload);
+        for (const mission of missionsArr) {
+          const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
           if (e) closeForm = false;
         }
 

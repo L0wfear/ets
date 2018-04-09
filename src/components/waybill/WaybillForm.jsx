@@ -1256,7 +1256,7 @@ class WaybillForm extends Form {
                     id="create-mission"
                     style={{ marginTop: 10 }}
                     onClick={this.createMission}
-                    disabled={isEmpty(state.car_id) || IS_CLOSED || (IS_ACTIVE && state.fact_arrival_date)}
+                    disabled={isEmpty(state.car_id) || IS_CLOSED}
                   >
                     Создать задание
                   </Button>

@@ -559,8 +559,8 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(v) {
+    /*
     const { formState } = this.props;
-    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
     const oldFormData = formState.mission_id_list;
     const IS_CREATING = !formState.status;
 
@@ -574,6 +574,9 @@ class WaybillForm extends Form {
     );
 
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
+    */
+    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
+    this.handleChange('mission_id_list', newFormData);
   }
 
   handleStructureIdChange(v) {

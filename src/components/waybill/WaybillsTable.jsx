@@ -6,7 +6,7 @@ import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/lab
 import { get, find } from 'lodash';
 import { missionsStatusBySlag } from 'components/waybill/constant/table.ts';
 
-const ALL_MISSIONS_COMPLETED_OR_FAILED_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
+const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
 
 export const getTableMeta = ({
   employeeFIOLabelFunction = () => {},
@@ -36,12 +36,12 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'all_missions_completed_or_failed',
+        name: 'all_missions_status',
         displayName: 'Статус заданий',
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: ALL_MISSIONS_COMPLETED_OR_FAILED_OPTIONS,
+          options: ALL_MISSIONS_STATUS_OPTIONS,
         },
       },
       {
@@ -302,7 +302,7 @@ export default (props) => {
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
-    all_missions_completed_or_failed: ({ data }) => <div>{get(missionsStatusBySlag, data, '')}</div>,
+    all_missions_status: ({ data }) => <div>{get(missionsStatusBySlag, data, '')}</div>,
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name', '')}</div>,
     comment: ({ data }) => <div>{data ? data.split('\n').map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>) : data}</div>,
     car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '')}</div>,

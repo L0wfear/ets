@@ -295,7 +295,7 @@ export default class MissionsJournal extends CheckableElementsList {
     return (
       <Paginator
         currentPage={this.state.page}
-        maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)}
+        maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
         setPage={page => this.setState({ page })}
         firstLastButtons
       />

@@ -621,7 +621,7 @@ class WaybillForm extends Form {
     );
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
     */
-    this.handleChange('mission_id_list',newFormData);
+    this.handleChange('mission_id_list', newFormData);
   }
 
   handleStructureIdChange(v) {
@@ -739,7 +739,7 @@ class WaybillForm extends Form {
 
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
-    const countMissionMoreOne = true;
+    const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
     const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));

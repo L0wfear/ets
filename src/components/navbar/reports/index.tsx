@@ -20,7 +20,7 @@ const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 interface IPropsReportsNavItem extends IPropsNavbarItem {}
 
 const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
-  <NavDropdown id="show-report" oneOfPermissions={[PERMISSIONS.reportAll.list]} title="Отчеты" >
+  <NavDropdown id="show-report" oneOfPermissions={PERMISSIONS.reportAll.list} title="Отчеты" >
     <NavDropdown
       oneOfPermissions={[
         'route_odh_coverage_report.list',

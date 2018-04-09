@@ -364,9 +364,8 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(v) {
-    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
-    /*
     const { formState } = this.props;
+    const newFormData = !isEmpty(v) ? v.split(',').map(d => parseInt(d, 10)) : [];
     const oldFormData = formState.mission_id_list;
     const IS_CREATING = !formState.status;
 
@@ -378,9 +377,8 @@ class WaybillForm extends Form {
         formState.can_delete_missions
       )
     );
+
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
-    */
-    this.handleChange('mission_id_list', newFormData);
   }
 
   handleStructureIdChange(v) {
@@ -887,6 +885,7 @@ class WaybillForm extends Form {
                   options={MISSIONS.concat(OUTSIDEMISSIONS)}
                   value={state.mission_id_list}
                   disabled={isEmpty(state.car_id) || IS_CLOSED}
+                  clearable={false}
                   onChange={this.handleMissionsChange}
                 />
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (

@@ -6,6 +6,7 @@ interface IMission {
   car_id: number;
   number: number;
   route_type: string;
+  is_cleaning_norm: boolean;
 }
 interface IDutyMission {
   structure_id: number | void;
@@ -98,10 +99,10 @@ export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBriga
  */
 export const checkMissionsByRouteType: ICheckMissionsByRouteType = (missionsArr, { date_start, date_end }) => {
   let type = '';
-
-  const isDt = missionsArr.some(({ route_type }) => route_type === routeTypesBySlug.dt.key);
+  const missionList = missionsArr.filter(({ is_cleaning_norm }) => is_cleaning_norm);
+  const isDt = missionList.some(({ route_type }) => route_type === routeTypesBySlug.dt.key);
   if (!isDt) {
-    if (missionsArr.some(({ route_type }) => route_type === routeTypesBySlug.odh.key)) {
+    if (missionList.some(({ route_type }) => route_type === routeTypesBySlug.odh.key)) {
       type = 'odh';
     }
   } else {

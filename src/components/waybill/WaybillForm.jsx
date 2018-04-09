@@ -45,7 +45,7 @@ const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: 
       Время выполнения привязанного к ПЛ закрытого задания: 
       № ${fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
     `, 'error', 'tr');
-    return new Promise((res, rej) => rej());
+    return Promise.reject();
   }
   if (!lodashIsEmpty(fax_confirmDialogList)) {
     return confirmDialog({
@@ -63,9 +63,9 @@ const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: 
       Время выполнения привязанного к ПЛ закрытого задания: 
       № ${not_fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
     `, 'error', 'tr');
-    return new Promise((res, rej) => rej());
+    return Promise.reject();
   }
-  return new Promise(res => res());
+  return Promise.resolve();
 };
 const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSourcesList, objectActions) => {
   const arrayQuerySync = [...mission_id_list].fill(false);
@@ -74,60 +74,64 @@ const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSou
   const checkAQS = () => !arrayQuerySync.some(f => !f);
 
   return new Promise((res) => {
-    mission_id_list.forEach((m, i) => {
-      const dataMission = missionsList.find(({ id }) => m === id);
-      const {
-        mission_source_id: msi,
-        date_start: date_start_mission,
-        date_end: date_end_mission,
-        status,
-        number,
-        order_id,
-        order_operation_id,
-      } = dataMission;
+    if (mission_id_list.length) {
+      mission_id_list.forEach((m, i) => {
+        const dataMission = missionsList.find(({ id }) => m === id);
+        const {
+          mission_source_id: msi,
+          date_start: date_start_mission,
+          date_end: date_end_mission,
+          status,
+          number,
+          order_id,
+          order_operation_id,
+        } = dataMission;
 
-      missionsData[i] = {
-        date_start_mission,
-        date_end_mission,
-        status,
-        number,
-        isOrderSource: false,
-      };
+        missionsData[i] = {
+          date_start_mission,
+          date_end_mission,
+          status,
+          number,
+          isOrderSource: false,
+        };
 
-      const isOrderSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
-      if (isOrderSource) {
-        objectActions.getOrderById(order_id).then(({ result: [order] }) => {
-          const {
-            order_date,
-            order_date_to,
-            technical_operations = [],
-          } = order;
+        const isOrderSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
+        if (isOrderSource) {
+          objectActions.getOrderById(order_id).then(({ result: [order] }) => {
+            const {
+              order_date,
+              order_date_to,
+              technical_operations = [],
+            } = order;
 
-          const toMission = technical_operations.find(({ id: to_id }) => to_id === order_operation_id) || {};
-          const {
-            date_from: date_from_to,
-            date_to: date_to_to,
-          } = toMission;
+            const toMission = technical_operations.find(({ id: to_id }) => to_id === order_operation_id) || {};
+            const {
+              date_from: date_from_to,
+              date_to: date_to_to,
+            } = toMission;
 
-          missionsData[i] = {
-            ...missionsData[i],
-            isOrderSource,
-            date_from: date_from_to || order_date,
-            date_to: date_to_to || order_date_to,
-          };
+            missionsData[i] = {
+              ...missionsData[i],
+              isOrderSource,
+              date_from: date_from_to || order_date,
+              date_to: date_to_to || order_date_to,
+            };
 
+            arrayQuerySync[i] = true;
+            if (checkAQS()) {
+              res(missionsData);
+            }
+          });
+        } else {
           arrayQuerySync[i] = true;
           if (checkAQS()) {
             res(missionsData);
           }
-        });
-      } else {
-        arrayQuerySync[i] = true;
-        if (checkAQS()) {
-          res(missionsData);
         }
-      }
-    });
+      });
+    } else {
+      return res([]);
+    }
   });
 };
 
@@ -602,6 +606,7 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(newFormData) {
+    /*
     const { formState } = this.props;
     const oldFormData = formState.mission_id_list;
     const IS_CREATING = !formState.status;
@@ -616,6 +621,8 @@ class WaybillForm extends Form {
     );
 
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
+    */
+    this.handleChange('mission_id_list', newFormData);
   }
 
   handleStructureIdChange(v) {
@@ -732,7 +739,7 @@ class WaybillForm extends Form {
 
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
-    const countMissionMoreOne = state.mission_id_list.length > 1;
+    const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
     const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));

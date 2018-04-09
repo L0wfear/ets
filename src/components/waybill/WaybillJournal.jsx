@@ -144,6 +144,6 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   additionalRender() {
-    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.totalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />;
+    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />;
   }
 }

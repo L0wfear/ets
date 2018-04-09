@@ -168,7 +168,7 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  * @param {date | string} dataB - date end compare
  * @param {string} typeDiff - type compare (see moment .diff())
  */
-export const diffDates = (dataA, dataB, typeDiff = 'seconds', non_rounded_number = true) =>
-  moment(dataA).diff(moment(dataB), typeDiff, non_rounded_number);
-
 export const setZeroSecondsToDate = date => moment(date).seconds(0);
+
+export const diffDates = (dataA, dataB, typeDiff = 'seconds', float = true) =>
+  moment(dataA).diff(moment(dataB), typeDiff, float);

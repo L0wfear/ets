@@ -7,7 +7,11 @@ import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader.jsx';
+
+const FORMATION_PERIOD_OPTIONS = [
+  { value: 'date', label: 'Дневной' },
+  { value: 'mounth', label: 'Месячный' }
+];
 
 class WaybillPrintForm extends Component {
 
@@ -27,6 +31,8 @@ class WaybillPrintForm extends Component {
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
       DISABLE_SUBMIT: false,
+      formationPeriod: 'mounth',
+      date: new Date(),
     };
   }
 
@@ -51,7 +57,13 @@ class WaybillPrintForm extends Component {
       this.setState({ DISABLE_SUBMIT: true });
       await this.context.flux.getActions('waybills')
         .getWaybillJournalReport(this.state)
-        .then(({ blob }) => { saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`); });
+        .then(({ blob }) => {
+          switch (this.state.formationPeriod) {
+            case 'mounth': return saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`);
+            case 'date': return saveData(blob, `Отчет по журналу ПЛ за ${makeDate(this.state.date)}.xls`);
+            default: return false;
+          }
+        });
     } else {
       this.setState({ DISABLE_SUBMIT: true });
       await this.context.flux.getActions('waybills')
@@ -74,6 +86,8 @@ class WaybillPrintForm extends Component {
   handleChange(field, value) {
     this.setState({ [field]: value });
   }
+  handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
+  handleChangeDate = date => this.setState({ date });
 
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
@@ -100,27 +114,48 @@ class WaybillPrintForm extends Component {
           {this.props.show === 1 ?
             <div>
               <Field
-                type="select"
-                label="Месяц"
-                options={MONTHS}
-                sortingFunction={(a, b) => a.value - b.value}
-                value={this.state.month}
+                type={'select'}
+                label={'Период формирования'}
+                options={FORMATION_PERIOD_OPTIONS}
+                value={this.state.formationPeriod}
                 clearable={false}
-                onChange={v => this.handleChange('month', v)}
-                error={errors.month}
                 disabled={this.state.DISABLE_SUBMIT}
+                onChange={this.handleChangeFormationPeriod}
               />
               <br />
-              <Field
-                type="select"
-                label="Год"
-                options={YEARS}
-                value={this.state.year}
-                clearable={false}
-                onChange={v => this.handleChange('year', v)}
-                error={errors.year}
-                disabled={this.state.DISABLE_SUBMIT}
-              />
+              <Div hidden={this.state.formationPeriod !== 'mounth'}>
+                <Field
+                  type="select"
+                  label="Месяц"
+                  options={MONTHS}
+                  sortingFunction={(a, b) => a.value - b.value}
+                  value={this.state.month}
+                  clearable={false}
+                  onChange={v => this.handleChange('month', v)}
+                  error={errors.month}
+                  disabled={this.state.DISABLE_SUBMIT}
+                />
+                <Field
+                  type="select"
+                  label="Год"
+                  options={YEARS}
+                  value={this.state.year}
+                  clearable={false}
+                  onChange={v => this.handleChange('year', v)}
+                  error={errors.year}
+                  disabled={this.state.DISABLE_SUBMIT}
+                />
+              </Div>
+              <Div hidden={this.state.formationPeriod !== 'date'}>
+                <Field
+                  type="date"
+                  time={false}
+                  label="Дата"
+                  value={this.state.date}
+                  onChange={this.handleChangeDate}
+                  disabled={this.state.DISABLE_SUBMIT}
+                />
+              </Div>
             </div>
             :
             <div>

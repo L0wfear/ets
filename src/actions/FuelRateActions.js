@@ -8,6 +8,7 @@ import {
 import { isEmpty } from 'utils/functions';
 
 function getFuelOperations(payload = {}) {
+  console.log(payload)
   return FuelOperationsService.get(payload).then(r => ({ result: r.result.rows }));
 }
 
@@ -77,8 +78,8 @@ export default class FuelRateActions extends Actions {
     return FuelConsumptionRateService.delete(payload, getFuelRates, 'json');
   }
 
-  getFuelOperations() {
-    return getFuelOperations();
+  getFuelOperations(payload) {
+    return getFuelOperations(payload);
   }
 
   createFuelOperation(formState) {

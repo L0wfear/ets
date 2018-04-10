@@ -6,7 +6,7 @@ import filter from 'lodash/filter';
 import Div from 'components/ui/Div.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
-import { getToday9am, getTomorrow9am } from 'utils/dates.js';
+import { getToday9am, getTomorrow9am, addTime } from 'utils/dates.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 
@@ -114,11 +114,17 @@ export default class MissionFormWrap extends FormWrap {
         this.schema = missionsCreationTemplateSchema;
         const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
         const formErrors = this.validate(defaultMissionsCreationTemplate, {});
+        const dataTestRoute = checkMissionsByRouteType(Object.values(this.props.missions), defaultMissionsCreationTemplate);
+        if (dataTestRoute.error) {
+          defaultMissionsCreationTemplate.date_end = addTime(defaultMissionsCreationTemplate.date_start, dataTestRoute.time, 'hours');
+        }
 
         this.setState({
           formState: defaultMissionsCreationTemplate,
           canSave: !filter(formErrors).length, // false,
           formErrors,
+          needMoveDateEnd: dataTestRoute.error,
+          countBumpDateEnd: dataTestRoute.time,
         });
       }
     }
@@ -151,26 +157,32 @@ export default class MissionFormWrap extends FormWrap {
       const missionsArr = Object.values(missions);
 
       if (!checkMissionsOnStructureIdCar(missionsArr, _carsIndex) && !checkMissionsByRouteType(missionsArr, formState)) {
-        const externalPayload = {
-          mission_source_id: formState.mission_source_id,
-          passes_count: formState.passes_count,
-          date_start: formState.date_start,
-          date_end: formState.date_end,
-          assign_to_waybill: formState.assign_to_waybill,
-        };
+        const dataTestRoute = checkMissionsByRouteType(missionsArr, formState);
 
-        const missions = keys(this.props.missions)
-          .map(key => this.props.missions[key]);
+        if (dataTestRoute.error) {
+          global.NOTIFICATION_SYSTEM.notify(`Время выполнения задания для ${dataTestRoute.title} должно составлять не более ${dataTestRoute.time} часов`, 'error');
+        } else {
+          const externalPayload = {
+            mission_source_id: formState.mission_source_id,
+            passes_count: formState.passes_count,
+            date_start: formState.date_start,
+            date_end: formState.date_end,
+            assign_to_waybill: formState.assign_to_waybill,
+          };
 
-          let closeForm = true;
+          const missions = keys(this.props.missions)
+            .map(key => this.props.missions[key]);
 
-        for (const m of missions) {
-          const e = await createMissions(flux, { [m.id]: m }, externalPayload);
-          if (e) closeForm = false;
+            let closeForm = true;
+
+          for (const m of missions) {
+            const e = await createMissions(flux, { [m.id]: m }, externalPayload);
+            if (e) closeForm = false;
+          }
+
+          closeForm && this.props.onFormHide(true);
+          return;
         }
-
-        closeForm && this.props.onFormHide(true);
-        return;
       }
     }
   }

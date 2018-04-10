@@ -7,12 +7,20 @@ import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/input/DatePicker.jsx';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
+import { addTime } from 'utils/dates.js';
 
 class MissionsCreationForm extends Form {
 
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources();
+  }
+
+  handleChangeDateStart = v => {
+    this.handleChange('date_start', v);
+    if (v && this.props.needMoveDateEnd) {
+      this.handleChange('date_end', addTime(v, this.props.countBumpDateEnd, 'hours'));
+    }
   }
 
   render() {
@@ -48,7 +56,7 @@ class MissionsCreationForm extends Form {
             <Row>
               <Col md={6}>
                 <label>Время выполнения</label>
-                <Div>c <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} /></Div>
+                <Div>c <Datepicker date={state.date_start} onChange={this.handleChangeDateStart} /></Div>
               </Col>
               <Col md={6}>
                 <label style={{ minHeight: 15 }} />

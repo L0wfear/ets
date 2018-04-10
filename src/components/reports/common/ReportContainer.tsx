@@ -49,6 +49,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   async componentWillReceiveProps(nextProps: IPropsReportContainer) {
     const { query } = this.props.location;
+    const { useServerFilter = false } = this.props;
+
     const nextQuery = nextProps.location.query;
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
@@ -64,11 +66,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       if (Object.keys(nextQuery).length > 0) {
         await this.getReportData(nextQuery);
-        this.setState({ filterResetting: true });
+        this.setState({ filterResetting: useServerFilter ? false : true });
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
-        this.setState({ filterResetting: true });
+        this.setState({ filterResetting: useServerFilter ? false : true });
       }
     } else {
       this.setState({ filterResetting: false });
@@ -180,6 +182,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
+  externalFilter = (filter: any) => {
+    this.handleReportSubmit({
+      ...this.props.location.query,
+      filter: JSON.stringify(filter),
+    });
+  }
+
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
@@ -199,6 +208,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...headerState,
       level: lowerLevel,
       ...lowerLevelSelectors,
+      filter: '{}',
     };
 
     const filterDifference = difference(currentLevelFilters, lowerLevelFilters);
@@ -223,6 +233,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const query = {
       ...headerState,
       level: higherLevel,
+      filter: '{}',
     };
 
     const filteredQuery = omit(query, currentLevelSelectors);
@@ -238,16 +249,28 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta) {
     const cols = tableMetaInfo.fields.map(field => {
-      const fieldName = Object.keys(field)[0];
-      const fieldValue = field[fieldName];
+      const [[fieldName, { name: displayName, filter_field }]] = Object.entries(field);
+      let initialSchema: IDataTableColSchema;
 
-      const initialSchema: IDataTableColSchema = {
-        name: fieldName,
-        displayName: fieldValue.name,
-        filter: {
-          type: 'multiselect',
-        },
-      };
+      if (filter_field) {
+        initialSchema = {
+          name: fieldName,
+          displayName,
+          filter: {
+            type: 'multiselect',
+            byKey: filter_field,
+            byLabel: fieldName,
+          },
+        };
+      } else {
+        initialSchema = {
+          name: fieldName,
+          displayName,
+          filter: {
+            type: 'multiselect',
+          },
+        };
+      }
 
       const renderer = schemaMakers[fieldName] || identity;
       const finalSchema = renderer(initialSchema, this.props);
@@ -266,6 +289,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       schemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
+      useServerFilter = false,
+      location: { query: { filter = "{}"} },
     } = this.props;
 
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
@@ -345,6 +370,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
           initialSort={initialSort || ''}
+          externalFilter={useServerFilter && this.externalFilter}
+          filterValues={useServerFilter && JSON.parse(filter)}
           {...this.props.tableProps}
         >
           <Button

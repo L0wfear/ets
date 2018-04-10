@@ -77,11 +77,20 @@ const getTableMetaInfoReducer = (state: IState, { payload }) => ({
 });
 
 
-export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts = {}, reportType = '') => dispatch =>
+export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: any = {}, reportType = '') => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: GET_REPORT_DATA_START });
-      const response = await reports[serviceName].get(getOpts);
+      const payload = { ...getOpts };
+
+      if (payload.filter) {
+        payload.filter = JSON.stringify(Object.entries(JSON.parse(payload.filter)).reduce((newObj, [key, value]) => ({
+          ...newObj,
+          [`${key}${Array.isArray(value) ? '__in' : ''}`]: value,
+        }), {}));
+      }
+
+      const response = await reports[serviceName].get(payload);
 
       if (hasWarningNotification(response)) {
         dispatch({ type: GET_REPORT_DATA_DONE });

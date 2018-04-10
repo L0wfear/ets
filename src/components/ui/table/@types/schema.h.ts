@@ -30,6 +30,8 @@ interface IDataTableColFilter {
   type: FieldTypes;
   options?: IReactSelectOption[];
   labelFunction?: ILabelFunction;
+  byKey?: string;
+  byLabel?: string;
 }
 
 export interface IDataTableColSchema {

@@ -156,7 +156,7 @@ export default class MissionFormWrap extends FormWrap {
     } else {
       const missionsArr = Object.values(missions);
 
-      if (!checkMissionsOnStructureIdCar(missionsArr, _carsIndex) && !checkMissionsByRouteType(missionsArr, formState)) {
+      if (!checkMissionsOnStructureIdCar(missionsArr, _carsIndex)) {
         const dataTestRoute = checkMissionsByRouteType(missionsArr, formState);
 
         if (dataTestRoute.error) {

@@ -255,6 +255,7 @@ export class MissionForm extends Form {
         technical_operation_id,
         type: available_route_types.join(','),
       });
+
       const { object_type } = selectedRoute;
       if (is_cleaning_norm) {
         if (date_start) {
@@ -262,7 +263,7 @@ export class MissionForm extends Form {
             time,
           } = routeTypesBySlug[object_type];
 
-          date_end = addTime(date_start, time, 'hours');
+          this.handleChange('date_end', addTime(date_start, time, 'hours'));
         }
       }
 

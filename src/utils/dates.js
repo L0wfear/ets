@@ -172,3 +172,6 @@ export const setZeroSecondsToDate = date => moment(date).seconds(0);
 
 export const diffDates = (dataA, dataB, typeDiff = 'seconds', float = true) =>
   moment(dataA).diff(moment(dataB), typeDiff, float);
+
+
+export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();

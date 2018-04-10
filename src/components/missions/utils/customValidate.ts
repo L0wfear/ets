@@ -32,10 +32,15 @@ interface IFormState {
   date_start: string;
   date_end: string;
 }
+interface IReturnCheckMissionsByRouteType {
+  error: boolean;
+  title?: string;
+  time?: number;
+}
 
 type ICheckMissionsOnStructureIdCar = (missionsArr: IMission[], carsIndex: ICarsIndex) => boolean;
 type ICheckMissionsOnStructureIdBrigade = (missionsArr: IDutyMission[], employeesIndex: IEmployeesIndex) => boolean;
-type ICheckMissionsByRouteType = (missionsArr: IMission[], formState: IFormState ) => boolean;
+type ICheckMissionsByRouteType = (missionsArr: IMission[], formState: IFormState ) => IReturnCheckMissionsByRouteType;
 
 export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (missionsArr, carsIndex) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
@@ -116,10 +121,13 @@ export const checkMissionsByRouteType: ICheckMissionsByRouteType = (missionsArr,
     } = routeTypesBySlug[type];
 
     if (diffDates(date_end, date_start, 'hours') > time) {
-      global.NOTIFICATION_SYSTEM.notify(`Время выполнения задания для ${title} должно составлять не более ${time} часов`, 'error');
-      return true;
+      return {
+        error: true,
+        title,
+        time,
+      };
     }
   }
 
-  return false;
+  return { error: false };
 };

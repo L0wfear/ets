@@ -8,7 +8,6 @@ import {
 import { isEmpty } from 'utils/functions';
 
 function getFuelOperations(payload = {}) {
-  console.log(payload)
   return FuelOperationsService.get(payload).then(r => ({ result: r.result.rows }));
 }
 

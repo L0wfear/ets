@@ -95,21 +95,22 @@ export default class Filter extends React.Component {
     
     const filterRows = options.map((option, i) => {
       const { filter = {}, name, displayName } = option;
-      const { type, labelFunction, options } = filter;
+      const { type, labelFunction, options, byKey, byLabel } = filter;
       
       return (
         <FilterRow
           tableData={tableData}
           key={i}
-          value={filterValues[this.getName(name, type)]}
+          value={filterValues[this.getName(byKey || name, type)]}
           type={type}
-          name={this.getName(name, type)}
+          name={this.getName(byKey || name, type)}
+          byLabel={byLabel}
           serverFieldName={filter.serverFieldName}
           labelFunction={labelFunction}
           availableOptions={options}
           displayName={displayName}
-          onChange={(...args) => this.handleFilterValueChange(this.getName(name, type), ...args)}
-          onMultiChange={(...args) => this.handleFilterMultipleValueChange(this.getName(name, type), ...args)}
+          onChange={(...args) => this.handleFilterValueChange(this.getName(byKey || name, type), ...args)}
+          onMultiChange={(...args) => this.handleFilterMultipleValueChange(this.getName(byKey || name, type), ...args)}
         />
       );
     });

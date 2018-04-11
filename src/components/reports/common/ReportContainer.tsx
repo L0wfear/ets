@@ -54,15 +54,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   async componentWillReceiveProps(nextProps: IPropsReportContainer) {
     const {
-      location: {
-        search,
-      },
+      location: { search },
+      useServerFilter = false,
     } = this.props;
-    const {
-      location: {
-        search: search_next,
-      },
-    } = nextProps;
+    const { location: { search: search_next } } = nextProps;
 
     const searchObject = queryString.parse(search);
     const searchNextxObject = queryString.parse(search_next);
@@ -80,11 +75,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       if (Object.keys(searchNextxObject).length > 0) {
         await this.getReportData(searchNextxObject);
-        this.setState({ filterResetting: true });
+        this.setState({ filterResetting: useServerFilter ? false : true });
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
-        this.setState({ filterResetting: true });
+        this.setState({ filterResetting: useServerFilter ? false : true });
       }
     } else {
       this.setState({ filterResetting: false });
@@ -201,6 +196,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
+  externalFilter = (filter: any) => {
+    this.handleReportSubmit({
+      ...this.props.location.query,
+      filter: JSON.stringify(filter),
+    });
+  }
+
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
@@ -225,6 +227,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...searchObject,
       level: lowerLevel,
       ...lowerLevelSelectors,
+      filter: '{}',
     };
 
     const filterDifference = difference(currentLevelFilters, lowerLevelFilters);
@@ -254,6 +257,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const query = {
       ...searchObject,
       level: higherLevel,
+      filter: '{}',
     };
 
     const filteredQuery = omit(query, currentLevelSelectors);
@@ -275,17 +279,31 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema(schemaMakers = {}, additionalSchemaMakers = [], tableMetaInfo: IReportTableMeta) {
-    const cols = tableMetaInfo.fields.map(field => {
-      const fieldName = Object.keys(field)[0];
-      const fieldValue = field[fieldName];
+    const { useServerFilter = false } = this.props;
 
-      const initialSchema: IDataTableColSchema = {
-        name: fieldName,
-        displayName: fieldValue.name,
-        filter: {
-          type: 'multiselect',
-        },
-      };
+    const cols = tableMetaInfo.fields.map(field => {
+      const [[fieldName, { name: displayName, filter_field }]] = Object.entries(field);
+      let initialSchema: IDataTableColSchema;
+
+      if (useServerFilter) {
+        initialSchema = {
+          name: fieldName,
+          displayName,
+          filter: {
+            type: 'multiselect',
+            byKey: filter_field || fieldName,
+            byLabel: fieldName,
+          },
+        };
+      } else {
+        initialSchema = {
+          name: fieldName,
+          displayName,
+          filter: {
+            type: 'multiselect',
+          },
+        };
+      }
 
       const renderer = schemaMakers[fieldName] || identity;
       const finalSchema = renderer(initialSchema, this.props);
@@ -305,6 +323,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       tableMetaInfo,
       summaryTableMetaInfo,
       additionalSchemaMakers,
+      useServerFilter = false,
+      location: { search },
     } = this.props;
 
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
@@ -351,12 +371,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
      * которые должны быть в специальном для каждого элемента ввода формате.
      */
     const stateMaker = this.props.headerStateMaker || identity;
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
-    const queryState = stateMaker(queryString.parse(search));
+    const queryObject = queryString.parse(search);
+    const queryState = stateMaker(queryObject);
+    const { filter } = queryObject;
 
     const mergedTableMetaInfo = {
       ...tableMetaInfo,
@@ -389,6 +406,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
           initialSort={initialSort || ''}
+          externalFilter={useServerFilter && this.externalFilter}
+          filterValues={useServerFilter && JSON.parse(filter)}
           {...this.props.tableProps}
         >
           <Button

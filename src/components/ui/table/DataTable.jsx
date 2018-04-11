@@ -458,7 +458,7 @@ export default class DataTable extends React.Component {
             if (isNaN(Number(d))) {
               return (d || '').toLowerCase() === obj[key].toString().toLowerCase();
             }
-            return d === obj[key];
+            return Number(d) === Number(obj[key]);
           }) === -1) {
             isValid = false;
           }

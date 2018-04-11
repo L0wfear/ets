@@ -248,17 +248,18 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta) {
+    const { useServerFilter = false } = this.props;
     const cols = tableMetaInfo.fields.map(field => {
       const [[fieldName, { name: displayName, filter_field }]] = Object.entries(field);
       let initialSchema: IDataTableColSchema;
 
-      if (filter_field) {
+      if (useServerFilter) {
         initialSchema = {
           name: fieldName,
           displayName,
           filter: {
             type: 'multiselect',
-            byKey: filter_field,
+            byKey: filter_field || fieldName,
             byLabel: fieldName,
           },
         };

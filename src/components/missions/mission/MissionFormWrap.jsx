@@ -133,8 +133,6 @@ export default class MissionFormWrap extends FormWrap {
     const waybillStartDate = setZeroSecondsToDate(this.props.waybillStartDate);
     const waybillEndDate = setZeroSecondsToDate(this.props.waybillEndDate);
 
-    console.table(Array.of(date_start, waybillStartDate, date_end, waybillEndDate));
-
     if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
       if (diffDates(date_start, waybillStartDate) < -1) {
         formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';

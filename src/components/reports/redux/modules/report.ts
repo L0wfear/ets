@@ -84,10 +84,18 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
       const payload = { ...getOpts };
 
       if (payload.filter) {
-        payload.filter = JSON.stringify(Object.entries(JSON.parse(payload.filter)).reduce((newObj, [key, value]) => ({
-          ...newObj,
-          [`${key}${Array.isArray(value) ? '__in' : ''}`]: value,
-        }), {}));
+        payload.filter = JSON.stringify(Object.entries(JSON.parse(payload.filter)).reduce((newObj, [key, value]) => {
+          if (Array.isArray(value)) {
+            newObj[`${key}__in`] = value;
+          } else {
+            newObj = {
+              ...newObj,
+              ...value,
+            };
+          }
+
+          return newObj;
+        }, {}));
       }
 
       const response = await reports[serviceName].get(payload);

@@ -246,9 +246,9 @@ const PERMISSIONS = {
       'update': 'ets_object_properties.update',
       'delete': 'ets_object_properties.delete',
     },
-    repair: {
-      'list': 'repair_program.list',
-    },
+  },
+  repair: {
+    'list': 'repair_program.list',
   },
   'administration': 'administration',
 };

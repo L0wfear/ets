@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router';
 
 import geoobjectRoutes from 'components/directories/geoobjects/indexRoute';
-import repairRoutes from 'components/directories/indexRoute';
+import repairRoutes from 'components/directories/repair/indexRoute';
 import * as directories from './index.js';
 
 const nsiRoutes = (props) => {

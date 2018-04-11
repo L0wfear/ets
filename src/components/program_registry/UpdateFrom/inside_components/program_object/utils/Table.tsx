@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { ExtField } from 'components/ui/Field';
+const TableTSX: any = Table;
 
 class TablePrev extends React.Component<any, any> {
   handleChange = (numRow, field, value) => {
@@ -62,7 +63,7 @@ class TablePrev extends React.Component<any, any> {
         </div>
         {
           !!bodyData.length &&
-          <Table bsClass="custom-table overflow-visible table" responsive>
+          <TableTSX bsClass="custom-table overflow-visible table" responsive>
             <thead>
               <tr>
                 {
@@ -94,7 +95,7 @@ class TablePrev extends React.Component<any, any> {
                 ))
               }
             </tbody>
-          </Table>
+          </TableTSX>
         }
         </div>
     );

@@ -11,6 +11,7 @@ import MonitorPage from 'components/monitor/MonitorPage.jsx';
 import DashboardPage from 'components/dashboard/DashboardPage.jsx';
 import UserNotificationList from 'components/notifications/UserNotificationList';
 import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';
+import ProgramRegistryList from 'components/program_registry/ProgramRegistryList.jsx';
 import * as missions from 'components/missions';
 
 import AppComponent from 'components/App';
@@ -34,10 +35,8 @@ const routes = (props) => {
     <Router history={history}>
       <Redirect from="/" to="monitor" />
       <Route path="/" component={App}>
-        <Route path="monitor/:isFirst" component={MonitorPage} onEnter={requireAuth} />
         <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
         <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
-        <Route path="dashboard/:isFirst" component={DashboardPage} onEnter={requireAuth} />
         <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />
         <Route path="company-structure" component={CompanyStructure} onEnter={requireAuth} />
         <Route path="routes-list" component={RoutesList} onEnter={requireAuth} />
@@ -46,6 +45,7 @@ const routes = (props) => {
         <Route path="mission-templates-journal" component={missions.missionTemplates} onEnter={requireAuth} />
         <Route path="duty-missions-journal" component={missions.dutyMissions} onEnter={requireAuth} />
         <Route path="duty-mission-templates-journal" component={missions.dutyMissionTemplates} onEnter={requireAuth} />
+        <Route path="/program-registry" component={ProgramRegistryList} />,
         {/* Отчёты */}
         {reportRoutes({ requireAuth })}
         {/* НСИ - Реестры и справочники */}

@@ -225,6 +225,30 @@ const PERMISSIONS = {
     'company': {
       'list': 'company.list',
     },
+    repair_contractor: {
+      list: 'repair_contractor.list',
+      'create': 'repair_contractor.create',
+      'read': 'repair_contractor.read',
+      'update': 'repair_contractor.update',
+      'delete': 'repair_contractor.delete',
+    },
+    'repair_state_program': {
+      list: 'repair_state_program.list',
+      'create': 'repair_state_program.create',
+      'read': 'repair_state_program.read',
+      'update': 'repair_state_program.update',
+      'delete': 'repair_state_program.delete',
+    },
+    ets_object_properties: {
+      list: 'ets_object_properties.list',
+      'create': 'ets_object_properties.create',
+      'read': 'ets_object_properties.read',
+      'update': 'ets_object_properties.update',
+      'delete': 'ets_object_properties.delete',
+    },
+    repair: {
+      'list': 'repair_program.list',
+    },
   },
   'administration': 'administration',
 };

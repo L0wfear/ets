@@ -67,27 +67,25 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-    created_at: ({ data }) => (<DateFormatter date={data} />),
-    plan_date_start: ({ data }) => (<DateFormatter date={data} />),
-    plan_date_end: ({ data }) => (<DateFormatter date={data} />),
-    fact_date_start: ({ data }) => (<DateFormatter date={data} />),
-    fact_date_end: ({ data }) => (<DateFormatter date={data} />),
-  };
-
-  return (
-    <DataTable
-      title="Объекты"
-      results={props.data}
-      renderers={renderers}
-      tableMeta={tableMeta(props)}
-      noFilter
-      className="program-object"
-      griddleHidden={!props.displayTable}
-      {...props}
-    />
-  );
+const renderers: ISchemaRenderer = {
+  created_at: ({ data }) => (<DateFormatter date={data} />),
+  plan_date_start: ({ data }) => (<DateFormatter date={data} />),
+  plan_date_end: ({ data }) => (<DateFormatter date={data} />),
+  fact_date_start: ({ data }) => (<DateFormatter date={data} />),
+  fact_date_end: ({ data }) => (<DateFormatter date={data} />),
 };
+
+const Table: React.SFC<any> = props  =>(
+  <DataTable
+    title="Объекты"
+    results={props.data}
+    renderers={renderers}
+    tableMeta={tableMeta(props)}
+    noFilter
+    className="program-object"
+    griddleHidden={!props.displayTable}
+    {...props}
+  />
+);
 
 export default Table;

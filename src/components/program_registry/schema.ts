@@ -1,7 +1,6 @@
-import * as moment from 'moment';
-
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 import { getRequiredFieldMessage } from 'utils/validate';
+import { diffDates } from 'utils/dates';
 
 export const formValidationSchema: IValidationSchema = {
   properties: [
@@ -86,13 +85,8 @@ export const formValidationSchema: IValidationSchema = {
             return getRequiredFieldMessage('Плановая дата окончания');
           }
 
-          if (plan_date_start) {
-            const start = moment(plan_date_start).unix();
-            const end = moment(value).unix();
-
-            return end >= start
-              ? ''
-              : '"Плановая дата окончания" должна быть >= "Плановая дата начала ремонта"';
+          if (plan_date_start && diffDates(value, plan_date_start, 'minutes') < 0) {
+            return '"Плановая дата окончания" должна быть >= "Плановая дата начала ремонта"';
           }
 
           return '';
@@ -102,13 +96,8 @@ export const formValidationSchema: IValidationSchema = {
     fact_date_end: [
       {
         validator(value = null, { fact_date_start = null }) {
-          if (fact_date_start && value) {
-            const start = moment(fact_date_start).unix();
-            const end = moment(value).unix();
-
-            return end >= start
-              ? ''
-              : '"Фактическая дата окончания" должна быть >= "Фактическая дата начала ремонта"';
+          if (fact_date_start && value && diffDates(value, fact_date_start, 'minutes') < 0) {
+            return '"Фактическая дата окончания" должна быть >= "Фактическая дата начала ремонта"';
           }
 
           return '';

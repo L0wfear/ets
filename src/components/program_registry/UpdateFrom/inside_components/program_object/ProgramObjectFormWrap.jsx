@@ -4,10 +4,10 @@ import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField.js';
 
-import ProgramObjectFormDT from './ProgramObjectFormDT';
-import ProgramObjectFormODH from './ProgramObjectFormODH';
+import ProgramObjectFormDT from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
+import ProgramObjectFormODH from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormODH';
 
-import { formValidationSchema, elementsValidationSchema } from './schema';
+import { formValidationSchema, elementsValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_object/schema';
 
 class ProgramObjectFormWrap extends FormWrap {
 
@@ -83,18 +83,12 @@ class ProgramObjectFormWrap extends FormWrap {
         },
       } = this.state;
 
-      const {
-        data: {
-          result: {
-            rows = [],
-          },
-        },
-      } = ans;
+      const { data: { result: { rows: data } } } = ans;
 
       const {
         percent = 1,
         reviewed_at = 2,
-      } = rows.find(d => d.id === id);
+      } = data.find(d => d.id === id);
 
       this.handleMultiChange({
         percent,
@@ -103,6 +97,25 @@ class ProgramObjectFormWrap extends FormWrap {
 
       return ans;
     });
+  }
+
+  switchFormByType() {
+    const { formState: { type_slug } } = this.state;
+
+    let error = false;
+
+    switch (type_slug) {
+      case 'dt': return this.getFormDt();
+      case 'odh': return this.getFormOdh();
+      default: error = true;
+    }
+    if (error) {
+      new Promise(res => res()).then(() => {
+        console.log('нет типа объекта');
+        this.props.onFormHide();
+      });
+    }
+    return <div>{''}</div>;
   }
 
   getFormDt() {
@@ -153,29 +166,6 @@ class ProgramObjectFormWrap extends FormWrap {
         isPermittedByStatus={this.props.isPermittedByStatus}
       />
     );
-  }
-
-  switchFormByType() {
-    const {
-      formState: {
-        type_slug,
-      } = {},
-    } = this.state;
-
-    let error = false;
-
-    switch (type_slug) {
-      case 'dt': return this.getFormDt();
-      case 'odh': return this.getFormOdh();
-      default: error = true;
-    }
-    if (error) {
-      new Promise(res => res()).then(() => {
-        console.log('нет типа объекта');
-        this.props.onFormHide();
-      });
-    }
-    return <div>as</div>;
   }
 
   render() {

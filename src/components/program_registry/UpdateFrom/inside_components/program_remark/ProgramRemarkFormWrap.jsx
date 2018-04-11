@@ -2,8 +2,8 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import ProgramRemarkForm from './ProgramRemarkForm';
-import { formValidationSchema } from './schema';
+import ProgramRemarkForm from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkForm';
+import { formValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_remark/schema';
 
 class ProgramRemarkFormWrap extends FormWrap {
 

@@ -212,7 +212,6 @@ class RouteCreating extends Component {
       polys = {},
     } = route;
     const [draw_list = []] = [route.draw_odh_list];
-
     const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter(o => o.type) || [];
     const polysRT = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;

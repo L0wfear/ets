@@ -1,21 +1,22 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import Form from 'components/compositions/Form.jsx';
 import ModalBody from 'components/ui/Modal';
-import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
-import Form from 'components/compositions/Form.jsx';
+
+import { connectToStores } from 'utils/decorators';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 const PermittedSlug = ['dt', 'odh'];
-function setTypeOptionsBySlug(slug, allOptions) {
+const setTypeOptionsBySlug = (slug, allOptions) => {
   switch (slug) {
     case 'dt': return allOptions.filter(({ label }) => label === 'Капитальный');
     case 'odh': return allOptions;
     default: return [];
   }
-}
+};
 
 @connectToStores(['repair', 'objects'])
 export default class ProgramRegistryForm extends Form {
@@ -31,51 +32,34 @@ export default class ProgramRegistryForm extends Form {
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
   handleChangeObjectType = (fieldName, val) => {
     const {
-      technicalOperationsObjectsList = [],
-      RepairOptions: {
-        repairTypeOptions = [],
-      } = {},
+      technicalOperationsObjectsList,
+      RepairOptions: { repairTypeOptions },
     } = this.props;
 
-    const { slug } = technicalOperationsObjectsList.find(({ id }) => id === val);
-    const REPAIR_TYPES_OPTIONS = setTypeOptionsBySlug(slug, repairTypeOptions);
+    const REPAIR_TYPES_OPTIONS = setTypeOptionsBySlug(
+      technicalOperationsObjectsList.find(({ id }) => id === val).slug,
+      repairTypeOptions
+    );
 
-    this.setState({
-      REPAIR_TYPES_OPTIONS,
-    });
+    this.setState({ REPAIR_TYPES_OPTIONS });
 
     this.handleChange(fieldName, val);
     this.handleChange('repair_type_id', null);
   }
   render() {
-    const [
-      state,
-      errors,
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
-
     const {
+      formState: state,
+      formErrors: errors,
       isPermitted = false,
-      RepairOptions: {
-        stateProgramOptions = [],
-      },
-      technicalOperationsObjectsList = [],
+      RepairOptions: { stateProgramOptions },
+      technicalOperationsObjectsList,
     } = this.props;
-    const {
-      REPAIR_TYPES_OPTIONS = [],
-    } = this.state;
 
-    const OBJECTS = technicalOperationsObjectsList.reduce((arr, object) => {
-      const {
-        id: value,
-        full_name: label,
-        slug,
-      } = object;
+    const { REPAIR_TYPES_OPTIONS = [] } = this.state;
 
+    const OBJECTS = technicalOperationsObjectsList.reduce((arr, { id, full_name, slug }) => {
       if (PermittedSlug.includes(slug)) {
-        arr.push({ value, label, slug });
+        arr.push({ value: id, label: full_name, slug });
       }
 
       return arr;

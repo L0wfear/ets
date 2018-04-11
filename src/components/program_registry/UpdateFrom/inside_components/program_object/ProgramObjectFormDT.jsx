@@ -35,27 +35,20 @@ class ProgramObjectFormDT extends Form {
 
   constructor(props) {
     super(props);
-    const {
-      formState: {
-        id,
-      },
-    } = props;
 
     this.state = {
       manual: false,
       showPercentForm: false,
       selectedObj: {},
-      IS_CREATING: !id,
+      IS_CREATING: !props.formState.id,
       polys: {},
     };
   }
 
   async componentDidMount() {
-    const {
-      IS_CREATING,
-    } = this.state;
-
     this.context.flux.getActions('repair').getObjectProperty({ object_type: 'dt' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
+      const { IS_CREATING } = this.state;
+
       const {
         formState: {
           asuods_id = null,
@@ -283,29 +276,19 @@ class ProgramObjectFormDT extends Form {
   }
 
   pushElement = () => {
-    const {
-      formState: {
-        elements = [],
-      },
-    } = this.props;
-    const newElements = [
-      ...elements,
-      { ...ELEMENT_NULL_OBJECT },
-    ];
-
-    this.handleChange('elements', newElements);
+    this.handleChange(
+      'elements',
+      [
+        ...this.props.formState.elements,
+        { ...ELEMENT_NULL_OBJECT },
+      ]
+    );
   }
 
   render() {
-    const [
-      state,
-      errors,
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
-
     const {
+      formState: state,
+      formErrors: errors,
       tabKey,
       contractorList = [],
       isPermitted: isPermittedDefault,

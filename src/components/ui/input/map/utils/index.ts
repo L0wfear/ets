@@ -42,6 +42,6 @@ export const findIndexDrawObjectById: IFindIndexDrawObjectById = (drawObjectList
   const index = drawObjectList.findIndex(({id: id_do }) => id_do === id);
   return {
     index,
-    isFind: index === -1,
+    isFind: index !== -1,
   };
 };

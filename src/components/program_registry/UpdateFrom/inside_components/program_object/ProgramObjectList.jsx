@@ -4,8 +4,8 @@ import { connectToStores, staticProps } from 'utils/decorators';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
-import ProgramObjectTable from './ProgramObjectTable';
-import ProgramObjectFormWrap from './ProgramObjectFormWrap';
+import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
+import ProgramObjectFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -46,13 +46,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
     }
   }
 
-  removeElementAction = (id) => {
-    const {
-      program_version_id,
-    } = this.props;
-
-    return this.context.flux.getActions('repair').removeProgramRemark(id, { program_version_id });
-  }
+  removeElementAction = id => this.context.flux.getActions('repair').removeProgramRemark(id, { program_version_id: this.props.program_version_id });
 
   removeCheckedElements = () => {
     this.defActionFunc({
@@ -70,17 +64,13 @@ export default class ProgramRemarkList extends CheckableElementsList {
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
-    .then(() => {
-      const {
-        selectedElement = {},
-      } = this.state;
-      const id = selectedElement[this.selectField];
-
-      return this.removeElementAction(id).then(() => {
-        this.setState({ selectedElement: null });
-        global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
-      });
-    })
+    .then(() =>
+      this.removeElementAction(this.state.selectedElement[this.selectField])
+        .then(() => {
+          this.setState({ selectedElement: null });
+          global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
+        })
+    )
     .catch(() => {});
 
   defActionFunc = ({
@@ -102,17 +92,12 @@ export default class ProgramRemarkList extends CheckableElementsList {
         body: bodyConfirmDialog(countCheckEl),
       })
       .then(() => {
-        const elList = Array(countCheckEl).fill(false);
-
-        checkElList.forEach((el, i) => {
-          callbackForCheckedElement(el[this.selectField]).then(() => {
-            elList[i] = true;
-            if (!elList.some(elD => !elD)) {
-              this.updateAction();
-              global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
-            }
-          });
+        Promise.all(checkElList.map(el => callbackForCheckedElement(el[this.selectField])))
+        .then(() => {
+          this.updateAction();
+          global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
         });
+
         this.setState({
           checkedElements: {},
           selectedElement: null,
@@ -120,9 +105,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       })
       .catch(() => {});
     } else {
-      callBackForOneElement().then(() => {
-        this.updateAction();
-      });
+      callBackForOneElement().then(() => this.updateAction());
     }
   }
 
@@ -167,9 +150,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         contract_number,
         contractor_id,
         elements: [],
-        plan_shape_json: {
-          manual: false,
-        },
+        plan_shape_json: { manual: false },
         repair_type_name,
       },
     });

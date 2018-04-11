@@ -4,32 +4,32 @@ import { cloneDeep } from 'lodash';
 import { isEmpty } from 'utils/functions';
 import { validateField } from 'utils/validate/validateField.js';
 
-import { formValidationSchema } from './schema';
-import ProgramRegistryFormCreateWrap from './CreateForm/ProgramRegistryFormCWrap';
-import ProgramRegistryFormUWrap from './UpdateFrom/ProgramRegistryFormUWrap';
+import { formValidationSchema } from 'components/program_registry/schema';
+import ProgramRegistryFormCreateWrap from 'components/program_registry/CreateForm/ProgramRegistryFormCWrap';
+import ProgramRegistryFormUWrap from 'components/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
 
-const defSendFromState = async ({ callback, outFormState }) => {
+const defSendFromState = ({ callback, outFormState }) => {
   const schema = formValidationSchema;
-  const formState = {
-    ...outFormState,
-  };
-  Object.entries(formState).forEach(([key, val]) => {
+  const formState = Object.entries(outFormState).reduce((newFormState, [key, val]) => {
     if (typeof val === 'string') {
-      formState[key] = val.trim();
+      return {
+        ...newFormState,
+        [key]: val.trim(),
+      };
+    }
+
+    return { ...newFormState };
+  }, {});
+
+  schema.properties.forEach(p => {
+    if (p.type === 'number' && p.float) {
+      formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
+    }
+    if (p.type === 'number' && p.integer) {
+      const parsedValue = parseInt(formState[p.key], 10);
+      formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
     }
   });
-
-  if (schema) {
-    schema.properties.forEach(p => {
-      if (p.type === 'number' && p.float) {
-        formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
-      }
-      if (p.type === 'number' && p.integer) {
-        const parsedValue = parseInt(formState[p.key], 10);
-        formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
-      }
-    });
-  }
 
   return callback(formState);
 };
@@ -46,7 +46,7 @@ const getFrowmStateAndErrorAndCanSave = (elementOld = null) => {
   return {
     formState: element,
     formErrors,
-    canSave: Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true),
+    canSave: !Object.values(formErrors).some(value => !!value),
   };
 };
 
@@ -70,9 +70,7 @@ class ProgramRegistrySwitcher extends React.Component<any, any> {
       return null;
     }
 
-    const {
-      element,
-    } = this.props;
+    const { element } = this.props;
 
     if (isEmpty(element)) {
       return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
   Modal,
   Row,
@@ -20,13 +20,14 @@ import Form from 'components/compositions/Form.jsx';
 import {
   ProgramRemarkList,
   ProgramObjectList,
-} from './inside_components';
-import MakeVersionFrom from './MakeVersionFrom.tsx';
+} from 'components/program_registry/UpdateFrom/inside_components';
+import MakeVersionFrom from 'components/program_registry/UpdateFrom/MakeVersionFrom.tsx';
 
+const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
   <Row>
-    <Col md={12} style={{ marginBottom: 5 }}>После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных.</Col>
-    <Col md={12} style={{ marginBottom: 5 }}>Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию документа, на основании которого создается новая версия.</Col>
+    <Col md={12} style={styleTextMakeVersion}>После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных.</Col>
+    <Col md={12} style={styleTextMakeVersion}>Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию документа, на основании которого создается новая версия.</Col>
   </Row>
 );
 
@@ -74,9 +75,7 @@ export default class ProgramRegistryForm extends Form {
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
-  showMakeVersionForm = () => {
-    this.setState({ makeVersionIsVisible: true });
-  }
+  showMakeVersionForm = () => this.setState({ makeVersionIsVisible: true });
 
   hideMakeVersionForm = () => {
     this.setState({ makeVersionIsVisible: false });
@@ -88,49 +87,36 @@ export default class ProgramRegistryForm extends Form {
       ...fileState,
       id: this.props.activeVersionId,
     };
-    return this.props.onSubmitFiles(stateForPatchFile).then(() => {
-      this.props.makeVersion();
-    }).then(() => {
-      this.setState({ makeVersionIsVisible: false });
-    });
+    return this.props.onSubmitFiles(stateForPatchFile)
+      .then(() => this.props.makeVersion())
+      .then(() => this.setState({ makeVersionIsVisible: false }));
   }
   sendToApply = () => {
     this.setState({ mainButtonEnable: false });
-    this.props.sendToApply().then(() => {
-      this.setState({ mainButtonEnable: true });
-    });
+    return this.props.sendToApply()
+      .then(() => this.setState({ mainButtonEnable: true }));
   }
-  updateObjectData = (needVersionUpdate = true) => {
-    const {
-      formState: {
-        id: program_version_id,
-      },
-    } = this.props;
 
+  updateObjectData = (needVersionUpdate = true) => {
     if (needVersionUpdate) {
       this.props.updateVersionOuter();
     }
-    return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id });
+    return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id: this.props.formState.program_version_id });
   }
-  render() {
-    const [
-      state,
-      errors,
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
 
+  render() {
     const {
+      formState: state,
+      formErrors: errors,
       isPermitted = false,
       isPermittedByStatus = false,
       isPermittetForContractorL = false,
       RepairOptions: {
-        stateProgramOptions = [],
-        contractorOptions = [],
+        stateProgramOptions,
+        contractorOptions,
       },
       activeVersionId,
-      versionOptions = [],
+      versionOptions,
       permissionForButton,
     } = this.props;
 

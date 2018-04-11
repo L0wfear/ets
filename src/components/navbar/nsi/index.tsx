@@ -43,10 +43,8 @@ import DataForComputationNavItem from './DataForComputationNavItem';
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
-interface IPropsNsiNavItem extends IPropsNavbarItem {}
-
-const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
-  <NavDropdown id="show-nsi" oneOfPermissions={PERMISSIONS.nsi.list} title="НСИ" >
+const NsiNavItem: React.SFC<IPropsNavbarItem> = ({ path }) =>
+  <NavDropdown id="show-nsi" oneOfPermissions={PERMISSIONS.nsi.list} title="НСИ">
     <MenuItem id="link-employees" permissions={['employee.list']} active={path === '/employees'} href="#/employees">Реестр сотрудников</MenuItem>
     <MenuItem id="link-faxogramms" permissions={['faxogramm.list']} active={path.includes('/orders')} href="#/orders">Реестр централизованных заданий</MenuItem>
     <MenuItem id="link-technical-operations" permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>

@@ -197,8 +197,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   externalFilter = (filter: any) => {
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
+
     this.handleReportSubmit({
-      ...this.props.location.query,
+      ...searchObject,
       filter: JSON.stringify(filter),
     });
   }
@@ -216,11 +219,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       .reduce((prev, next) => ({ ...prev, ...next }));
 
     const currentLevelFilters = this.props.meta.levels.current.filter;
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
+    const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
 
     const query = {

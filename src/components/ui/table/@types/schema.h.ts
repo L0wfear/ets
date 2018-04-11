@@ -35,6 +35,7 @@ interface IDataTableColFilter {
   labelFunction?: ILabelFunction;
   byKey?: string;
   byLabel?: string;
+  filterFunction?: ITypeCustomFilterFunc;
 }
 
 export interface IDataTableColSchema {

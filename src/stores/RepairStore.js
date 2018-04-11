@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import REPAIR from '../constants/repair';
+import REPAIR from 'constants/repair';
 
 export default class RepairStore extends Store {
 

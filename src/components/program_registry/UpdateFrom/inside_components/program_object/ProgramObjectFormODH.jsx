@@ -294,15 +294,9 @@ class ProgramObjectFormodh extends Form {
   }
 
   render() {
-    const [
-      state,
-      errors,
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
-
     const {
+      formState: state,
+      formErrors: errors,
       tabKey,
       contractorList = [],
       isPermitted,
@@ -321,9 +315,7 @@ class ProgramObjectFormodh extends Form {
       id,
       name,
       asuods_id,
-      info: {
-        total_area = null,
-      } = {},
+      info: { total_area = null },
       objectsType,
       object_list: objectList,
       draw_object_list: drawObjectList,

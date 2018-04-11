@@ -16,7 +16,7 @@ export default class StateProgramForm extends Form {
     const [state, errors] = [this.props.formState, this.props.formErrors];
     const { stateProgramStatusList = [] } = this.props;
 
-    const STATE_PROGRAM_STATUS_OPTIONS = stateProgramStatusList.map(defaultSelectListMapper)
+    const STATE_PROGRAM_STATUS_OPTIONS = stateProgramStatusList.map(defaultSelectListMapper);
 
     const title = 'Государственная программа ремонта';
 

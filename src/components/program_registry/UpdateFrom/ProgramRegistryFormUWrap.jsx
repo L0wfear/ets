@@ -1,8 +1,9 @@
-import React from 'react';
+
+import * as React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import ProgramRegistryFormBase from './ProgramRegistryUForm';
+import ProgramRegistryFormBase from 'components/program_registry/UpdateFrom/ProgramRegistryUForm';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -17,7 +18,7 @@ const existButtonInForm = {
 };
 
 const ButtonInFormList = Object.keys(existButtonInForm);
-const ButtonInFormDefPermission = ButtonInFormList.reduce((obj, name) => Object.assign(obj, ({ [name]: false })), {});
+const ButtonInFormDefPermission = ButtonInFormList.reduce((obj, name) => ({ ...obj, [name]: false }), {});
 
 const ProgramRegistryForm = enhanceWithPermissions(ProgramRegistryFormBase);
 const checkIsPermittedByStatus = (status) => {
@@ -55,21 +56,17 @@ class ProgramRegistryFormWrap extends FormWrap {
     };
   }
   componentDidMount() {
-    const {
-      id,
-    } = this.props.element;
+    const { id } = this.props.element;
 
-    const permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => {
-      newObj[buttonName] = this.context.flux.getStore('session').getPermission(buttonPerm);
-      return newObj;
-    }, {});
+    const permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => ({
+      ...newObj,
+      [buttonName]: this.context.flux.getStore('session').getPermission(buttonPerm),
+    }), {});
 
     const data = {
       id,
       activeVersionIdprops: false,
-      additionalState: {
-        permissionForButton,
-      },
+      additionalState: { permissionForButton },
     };
 
     this.updateVersionList(data);
@@ -82,21 +79,19 @@ class ProgramRegistryFormWrap extends FormWrap {
 
   handleFormStateChangeWrap = (...arg) => this.handleFormStateChange(...arg);
 
-  updateVersionList({ id, activeVersionIdprops = false, additionalState }) {
-    this.setState({
-      isLoading: true,
-    });
+  updateVersionList({ id, additionalState }) {
+    this.setState({ isLoading: true });
 
-    return this.context.flux.getActions('repair').getAllVersionsById(id).then(({ result: { rows = [] } }) => {
-      const reduceVersionList = rows.reduce((newObj, d) => Object.assign(newObj, ({ [d.id]: d })), {});
+    return this.context.flux.getActions('repair').getAllVersionsById(id).then(({ result: { rows: versionList } }) => {
+      const reduceVersionList = versionList.reduce((newObj, d) => ({ ...newObj, [d.id]: d }), {});
 
-      const versionOptions = rows
-        .map(d => ({
-          value: d.id,
-          label: `${d.version_name} (${d.is_active ? 'Действующая' : 'Недействующая'})`,
+      const versionOptions = versionList
+        .map(version => ({
+          value: version.id,
+          label: `${version.version_name} (${version.is_active ? 'Действующая' : 'Недействующая'})`,
         }));
 
-      const activeVersionId = activeVersionIdprops || rows.find(d => d.is_active).id;
+      const activeVersionId = versionList.find(d => d.is_active).id;
 
       this.setState({
         isLoading: true,
@@ -134,13 +129,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     return this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
 
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      return this.updateVersionList({ id });
+      return this.updateVersionList({ id: this.props.element.id });
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
     });
@@ -154,15 +143,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     return this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
 
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      const { activeVersionId } = this.state;
-
-      return this.updateVersionList({ id, activeVersionId });
+      return this.updateVersionList({ id: this.props.element.id });
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });
@@ -179,15 +160,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       if (close) {
         return this.props.onFormHide();
       }
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      const { activeVersionId } = this.state;
-
-      return this.updateVersionList({ id, activeVersionId });
+      return this.updateVersionList({ id: this.props.element.id });
     });
   }
   onSubmitFiles = (fileState) => {
@@ -195,17 +168,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     payload.callback = this.context.flux.getActions('repair').programVersionPutOnlyFiles;
     payload.outFormState = { ...fileState };
 
-    return this.props.defSendFromState(payload).then(() => {
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      const { activeVersionId } = this.state;
-
-      return this.updateVersionList({ id, activeVersionId });
-    });
+    return this.props.defSendFromState(payload).then(() => this.updateVersionList({ id: this.props.element.id }));
   }
 
   applyVersion = () => {
@@ -216,15 +179,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия согласована', 'success');
 
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      const { activeVersionId } = this.state;
-
-      return this.updateVersionList({ id, activeVersionId });
+      return this.updateVersionList({ id: this.props.element.id })
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
     });
@@ -238,15 +193,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия отменена', 'success');
 
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      const { activeVersionId } = this.state;
-
-      return this.updateVersionList({ id, activeVersionId });
+      return this.updateVersionList({ id: this.props.element.id })
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
     });
@@ -267,29 +214,14 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
 
-      const {
-        element: {
-          id = 0,
-        } = {},
-      } = this.props;
-
-      const { activeVersionId } = this.state;
-
-      return this.updateVersionList({ id, activeVersionId });
+      return this.updateVersionList({ id: this.props.element.id })
     }).catch(() => {
       global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });
   }
 
   updateVersionOuter = () => {
-    const {
-      element: {
-        id,
-      },
-    } = this.props;
-    const { activeVersionId } = this.state;
-
-    return this.updateVersionList({ id, activeVersionId });
+    return this.updateVersionList({ id: this.props.element.id });
   }
 
   render() {

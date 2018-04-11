@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as RB from 'react-bootstrap';
-import Div from 'components/ui/Div.jsx';
 
+import Div from 'components/ui/Div.jsx';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import ModalBody from 'components/ui/Modal';

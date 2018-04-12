@@ -60,9 +60,8 @@ export default class TechnicalOperationForm extends Form {
                                         .map(({ id, full_name }) => ({ value: id, label: full_name }))
                                         .filter(operation => (objectsIds.includes(operation.value)));
 
-    const NEEDS_BRIGADE_OPTIONS = [{ value: 1, label: 'Да' }, { value: 0, label: 'Нет' }];
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
-
+    const CONDITIONS = state.period_interval_name ? state.norm_period : `${state.norm} в ${state.period_interval_name}`;
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -80,7 +79,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.name}
                 onChange={this.handleChange.bind(this, 'name')}
                 disabled={!isPermitted}
-                error={errors[name]}
+                error={errors.name}
               />
             </Col>
 
@@ -91,20 +90,20 @@ export default class TechnicalOperationForm extends Form {
                 options={ELEMENTS}
                 value={state.elements_text}
                 onChange={this.handleChange.bind(this, 'elements_text')}
-                error={errors[name]}
+                error={errors.elements_text}
                 disabled={!isPermitted}
+                clearable={false}
               />
             </Col>
 
             <Col md={3}>
               <Field
                 type="select"
-                multi
                 label="Сезон"
                 value={state.season_id}
                 options={SEASONS}
                 onChange={this.handleChange.bind(this, 'season_id')}
-                error={errors[name]}
+                error={errors.season_id}
                 disabled={!isPermitted}
               />
             </Col>
@@ -115,7 +114,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Способ уборки"
                 value={state.work_type_name}
                 onChange={this.handleChange.bind(this, 'work_type_name')}
-                error={errors[name]}
+                error={errors.work_type_name}
                 disabled={!isPermitted}
               />
             </Col>
@@ -129,7 +128,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Условия"
                 value={state.conditions}
                 onChange={this.handleChange.bind(this, 'conditions')}
-                error={errors[name]}
+                error={errors.conditions}
                 disabled={!isPermitted}
               />
             </Col>
@@ -138,9 +137,8 @@ export default class TechnicalOperationForm extends Form {
               <Field
                 type="string"
                 label="Число операций в сутки (норматив)"
-                value={state.norm_period}
+                value={CONDITIONS}
                 onChange={this.handleChange.bind(this, 'norm_period')}
-                error={errors[name]}
                 disabled={!isPermitted}
               />
             </Col>
@@ -150,7 +148,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Максимальная скорость"
                 value={state.max_speed}
                 onChange={this.handleChange.bind(this, 'max_speed')}
-                error={errors[name]}
+                error={errors.max_speed}
                 disabled={!isPermitted}
               />
             </Col>
@@ -160,7 +158,6 @@ export default class TechnicalOperationForm extends Form {
                 label="Тип проверки"
                 options={TECHNICAL_OPERATION_TYPES}
                 value={state.check_type}
-                clearable={false}
                 onChange={this.handleChange.bind(this, 'check_type')}
                 disabled={!isPermitted}
               />
@@ -174,6 +171,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Объект"
                 multi
                 value={state.objects_text}
+                clearable={false}
                 options={TECHNICAL_OPERATION_OBJECTS}
                 onChange={this.handleChange.bind(this, 'objects_text')}
                 disabled={!isPermitted}
@@ -182,13 +180,11 @@ export default class TechnicalOperationForm extends Form {
 
             <Col md={3}>
               <Field
-                type="select"
+                type="boolean"
                 label="Учёт в отчетах"
-                options={NEEDS_BRIGADE_OPTIONS}
-                value={state.use_in_reports}
-                onChange={this.handleChange.bind(this, 'use_in_reports')}
+                checked={!!state.use_in_reports}
+                onChange={this.handleChange.bind(this, 'use_in_reports', !state.use_in_reports)}
                 disabled={!isPermitted}
-                clearable={false}
               />
             </Col>
           </Row>

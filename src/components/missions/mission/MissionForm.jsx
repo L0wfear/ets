@@ -20,26 +20,15 @@ import Form from 'components/compositions/Form.jsx';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
-import { getKindTaskIds } from 'components/missions/utils/utils.ts';
+import { checkRouteByNew } from 'components/missions/utils/utils.ts';
 import { routeTypesBySlug } from 'constants/route';
+
 import { addTime, diffDates } from 'utils/dates.js';
-
-export const checkRouteByNew = (state, route) => {
-  const { is_new = true } = state;
-
-  if (is_new) {
-    const {
-      is_new: route_is_new,
-    } = route;
-
-    if (route_is_new) {
-      return true;
-    }
-    return false;
-  }
-  return true;
-};
-
+import {
+  getDataBySelectedRoute,
+  getRoutesByMissionId,
+  getTechnicalOperationData,
+} from 'components/missions/mission/utils';
 @autobind
 export class MissionForm extends Form {
 
@@ -57,19 +46,43 @@ export class MissionForm extends Form {
     };
   }
 
-  handleRouteIdChange(v) {
-    this.handleChange('route_id', v);
+  async componentDidMount() {
     const { flux } = this.context;
-    if (v) {
-      flux.getActions('routes').getRouteById(v, false).then((r) => {
-        if (this.state.is_cleaning_norm) {
-          const { formState: { date_start } } = this.props;
-          if (date_start) {
-            this.handleChange('date_end', addTime(date_start, routeTypesBySlug[r.object_type].time, 'hours'));
+    const technicalOperationsActions = flux.getActions('technicalOperation').getTechnicalOperations;
+    const routesActions = flux.getActions('routes');
+    const missionsActions = flux.getActions('missions').getMissionSources;
+
+    const { formState } = this.props;
+
+    Promise.all([
+      getTechnicalOperationData(formState, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
+      getDataBySelectedRoute(formState, routesActions.getRouteById),
+      getRoutesByMissionId(formState, this.props.isTemplate, routesActions.getRoutesByMissionId, this.props.routesList),
+    ])
+    .then(([technicalOperationsData, selectedRoute, routesList]) =>
+      this.setState({
+        ...technicalOperationsData,
+        selectedRoute,
+        routesList,
+        carsList: this.props.carsList,
+      })
+    );
+  }
+
+  handleRouteIdChange(route_id) {
+    this.handleChange('route_id', route_id);
+    const { flux } = this.context;
+    if (route_id) {
+      flux.getActions('routes').getRouteById(route_id, false)
+        .then((route) => {
+          if (this.state.is_cleaning_norm) {
+            const { formState: { date_start } } = this.props;
+            if (date_start) {
+              this.handleChange('date_end', addTime(date_start, routeTypesBySlug[route.object_type].time, 'hours'));
+            }
           }
-        }
-        this.setState({ selectedRoute: r });
-      });
+          this.setState({ selectedRoute: route });
+        });
     } else {
       this.setState({ selectedRoute: null });
     }
@@ -82,12 +95,8 @@ export class MissionForm extends Form {
     }
   }
 
-  // Зачем тут таймаут?
-  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
-  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
-  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
-  handleTechnicalOperationChange(v) {
-    this.handleChange('technical_operation_id', v);
+  handleTechnicalOperationChange(technical_operation_id) {
+    this.handleChange('technical_operation_id', technical_operation_id);
     this.handleChange('municipal_facility_id', null);
     this.handleRouteIdChange(undefined);
   }
@@ -96,111 +105,17 @@ export class MissionForm extends Form {
     this.handleRouteIdChange(undefined);
   }
 
-  handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
-    const routesList = this.state.routesList.filter(r => !v || r.structure_id === v);
-    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
+  handleStructureIdChange(structure_id) {
+    const { formState } = this.props;
+
+    if (this.props.carsList.find(car => (!structure_id || car.is_common || car.company_structure_id === structure_id) && car.asuods_id === formState.car_id)) {
       this.handleChange('car_id', null);
     }
-    if (!find(routesList, r => r.id === this.props.formState.route_id)) {
+    if (this.state.routesList.find(route => (!structure_id || (structure_id === route.structure_id)) && (route.id === formState.route_id))) {
       this.handleChange('route_id', null);
       this.handleRouteIdChange(undefined);
     }
-    this.handleChange('structure_id', v);
-  }
-
-  async componentDidMount() {
-    const mission = this.props.formState;
-    const { flux } = this.context;
-    const technicalOperationsActions = flux.getActions('technicalOperation');
-    const routesActions = flux.getActions('routes');
-    const missionsActions = flux.getActions('missions');
-    const isTemplate = this.props.template || false;
-
-    let { carsList } = this.props;
-    let kind_task_ids = null;
-    let { selectedRoute } = this.state;
-    let { routesList } = this.props;
-    let TECH_OPERATIONS = [];
-
-    await missionsActions.getMissionSources();
-
-    if (!isEmpty(mission.route_id)) {
-      selectedRoute = await routesActions.getRouteById(mission.route_id, false);
-    }
-
-    if (!isEmpty(mission.id)) {
-      routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
-    }
-    if (!isEmpty(mission.norm_id)) {
-      routesList = await routesActions.getRoutesBySomeData(mission.norm_id, isTemplate);
-    }
-
-    const {
-      id,
-      mission_source_id,
-    } = mission;
-
-    const { missionSourcesList = [] } = this.props;
-    if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
-      kind_task_ids = getKindTaskIds(id, false);
-    }
-
-    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations({ kind_task_ids });
-
-    let type_id = 0;
-    if (mission.status === 'not_assigned') {
-      type_id = (carsList.find(({ asuods_id }) => asuods_id === mission.car_id) || {}).type_id;
-      this.handleChange('type_id', type_id);
-    }
-
-    const {
-      is_new,
-      type_id: m_type_id = type_id,
-    } = mission;
-
-    if ((this.props.fromWaybill || mission.status === 'not_assigned') && m_type_id) {
-      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
-        const {
-          is_new: is_new_to,
-          id: value,
-          name: label,
-          car_func_types,
-        } = to;
-
-        if (is_new_to && car_func_types.find(({ id }) => id === m_type_id)) {
-          newArr.push({ value, label });
-        }
-
-        return newArr;
-      }, []);
-    } else if (is_new) {
-      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
-        const {
-          is_new: is_new_to,
-          id: value,
-          name: label,
-        } = to;
-
-        if (is_new_to) {
-          newArr.push({ value, label });
-        }
-
-        return newArr;
-      }, []);
-    } else {
-      TECH_OPERATIONS = technicalOperationsList.map(({ id: value, name }) => ({ value, label: name }));
-    }
-
-
-    this.setState({
-      kind_task_ids,
-      carsList,
-      TECH_OPERATIONS,
-      technicalOperationsList,
-      routesList,
-      selectedRoute,
-    });
+    this.handleChange('structure_id', structure_id);
   }
 
   createNewRoute() {

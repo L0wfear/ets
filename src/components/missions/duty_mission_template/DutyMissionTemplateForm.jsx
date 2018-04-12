@@ -3,8 +3,7 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { find, uniqBy } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
-import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
+import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils.ts';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';

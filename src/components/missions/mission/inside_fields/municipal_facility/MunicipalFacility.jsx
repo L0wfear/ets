@@ -169,7 +169,6 @@ class MunicipalFacility extends React.Component {
     const {
       disabled = false,
       clearable = true,
-      municipal_facility_name,
     } = this.props;
     const {
       value,
@@ -177,7 +176,7 @@ class MunicipalFacility extends React.Component {
       MUNICIPAL_FACILITY_OPTIONS,
       myDisable,
     } = this.state;
-    console.log(municipal_facility_name)
+
     return (
       <Field
         id={this.props.id}
@@ -186,7 +185,7 @@ class MunicipalFacility extends React.Component {
         error={error}
         disabled={disabled || myDisable}
         options={MUNICIPAL_FACILITY_OPTIONS}
-        value={municipal_facility_name || value}
+        value={value}
         onChange={this.handleChange}
         clearable={clearable}
       />

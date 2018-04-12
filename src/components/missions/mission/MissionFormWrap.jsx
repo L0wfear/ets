@@ -47,6 +47,9 @@ export default class MissionFormWrap extends FormWrap {
       if (mission.structure_id == null) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
+      if (status === 'not_assigned') {
+        this.handleChange('type_id', (this.props.carsIndex[mission.car_id] || {}).type_id);
+      }
 
       if (status === 'assigned') {
         waybillsActions.getWaybill(mission.waybill_id).then(({ result: inWaybill }) => {

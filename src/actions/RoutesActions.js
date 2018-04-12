@@ -23,7 +23,7 @@ export default class RoutesActions extends Actions {
     const payload = {
       ...data,
     };
-
+    console.log(data)
     return RouteService.get(payload).then(({ result = [] }) => result);
   }
 

@@ -6,7 +6,7 @@ import {
   isEmpty as lodashIsEmpty,
 } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/mission/MissionForm.jsx';
+import { checkRouteByNew } from 'components/missions/utils/utils.ts';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';

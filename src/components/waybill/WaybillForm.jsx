@@ -8,7 +8,7 @@ import {
   map,
   find,
   uniqBy,
-  isEmpty as lodashIsEmpty,
+  groupBy,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -26,7 +26,25 @@ import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import { isNumeric } from 'utils/validate/dataTypes';
 
-import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl, checkDateMission, getDatesToByOrderOperationId } from './utils';
+import {
+  checkDateMission,
+  checkMissionSelectBeforeClose,
+  getCars,
+  getDatesToByOrderOperationId,
+  getDrivers,
+  getEquipmentFuelRatesByCarModel,
+  getFuelCorrectionRate,
+  getFuelRatesByCarModel,
+  getTitleByStatus,
+  driverHasLicense,
+  driverHasSpecialLicense,
+  getTrailers,
+  getWaybillDrivers,
+  validateTaxesControl,
+} from 'components/waybill/utils';
+
+import { confirmDialogChangeDate } from 'components/waybill/utils_react';
+
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import WaybillFooter from './form/WaybillFooter';
@@ -38,102 +56,6 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 const Div = enhanceWithPermissions(DivForEnhance);
 
 const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
-
-const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: fax_confirmDialogList }, notFromOrder: { cf_list: not_fax_cf_list } }) => {
-  if (!lodashIsEmpty(fax_cf_list)) {
-    global.NOTIFICATION_SYSTEM.notify(`
-      Время выполнения привязанного к ПЛ закрытого задания: 
-      № ${fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
-    `, 'error', 'tr');
-    return Promise.reject();
-  }
-  if (!lodashIsEmpty(fax_confirmDialogList)) {
-    return confirmDialog({
-      title: 'Внимание!',
-      body: (
-        <div>
-          <p>{`Привязанные задания № ${fax_confirmDialogList.join(', ')} будут исключены из ПЛ, поскольку период действия централизованного задания, по которому задания созданы, выходит за плановый период действия ПЛ.`}</p>
-          <p>Вы уверены, что хотите продолжить?</p>
-        </div>
-      ),
-    });
-  }
-  if (!lodashIsEmpty(not_fax_cf_list)) {
-    global.NOTIFICATION_SYSTEM.notify(`
-      Время выполнения привязанного к ПЛ закрытого задания: 
-      № ${not_fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
-    `, 'error', 'tr');
-    return Promise.reject();
-  }
-  return Promise.resolve();
-};
-const checkMissionSelectBeforeClose = (mission_id_list, missionsList, missionSourcesList, objectActions) => {
-  const arrayQuerySync = [...mission_id_list].fill(false);
-  const missionsData = [...mission_id_list].map(() => ({}));
-
-  const checkAQS = () => !arrayQuerySync.some(f => !f);
-
-  return new Promise((res) => {
-    if (mission_id_list.length) {
-      mission_id_list.forEach((m, i) => {
-        const dataMission = missionsList.find(({ id }) => m === id);
-        const {
-          mission_source_id: msi,
-          date_start: date_start_mission,
-          date_end: date_end_mission,
-          status,
-          number,
-          order_id,
-          order_operation_id,
-        } = dataMission;
-
-        missionsData[i] = {
-          date_start_mission,
-          date_end_mission,
-          status,
-          number,
-          isOrderSource: false,
-        };
-
-        const isOrderSource = !!(missionSourcesList.find(({ id: id_mission_source }) => id_mission_source === msi) || {}).auto;
-        if (isOrderSource) {
-          objectActions.getOrderById(order_id).then(({ result: [order] }) => {
-            const {
-              order_date,
-              order_date_to,
-              technical_operations = [],
-            } = order;
-
-            const toMission = technical_operations.find(({ id: to_id }) => to_id === order_operation_id) || {};
-            const {
-              date_from: date_from_to,
-              date_to: date_to_to,
-            } = toMission;
-
-            missionsData[i] = {
-              ...missionsData[i],
-              isOrderSource,
-              date_from: date_from_to || order_date,
-              date_to: date_to_to || order_date_to,
-            };
-
-            arrayQuerySync[i] = true;
-            if (checkAQS()) {
-              res(missionsData);
-            }
-          });
-        } else {
-          arrayQuerySync[i] = true;
-          if (checkAQS()) {
-            res(missionsData);
-          }
-        }
-      });
-    } else {
-      return res([]);
-    }
-  });
-};
 
 @autobind
 class WaybillForm extends Form {
@@ -154,8 +76,6 @@ class WaybillForm extends Form {
       fuelRateAllList: [],
       tooLongFactDates: false,
     };
-
-    this.employeeFIOLabelFunction = () => {};
   }
 
   componentWillReceiveProps(props) {
@@ -181,82 +101,120 @@ class WaybillForm extends Form {
     }
   }
 
-  async componentDidMount() {
-    const { formState } = this.props;
+  componentDidMount() {
+    const {
+      formState,
+      formState: { status },
+    } = this.props;
     const { flux } = this.context;
 
-    const IS_CREATING = !formState.status;
-    const IS_DRAFT = formState.status && formState.status === 'draft';
-
-    if (IS_CREATING || IS_DRAFT) {
-      flux.getActions('fuelRates').getFuelRates().then(({ result = [] }) => this.setState({ fuelRateAllList: result.map(d => d.car_model_id) }));
-    }
-
-    this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
-    flux.getActions('missions').getMissionSources();
-    if (formState.status === 'active') {
-      const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
-      const fuel_correction_rate = car.fuel_correction_rate || 1;
-      flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((r) => {
-        const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
-
-        flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
-          const operations = filter(fuelOperations.result, op => find(fuelRates, fr => fr.operation_id === op.id));
-
-          flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((equipmentFuelRatesResponse) => {
-            const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
-
-            const equipmentOperations = filter(fuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
-            this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
-          });
-        });
-      });
-      this.getCarDistance(formState);
-    } else if (formState.status === 'closed') {
-      /* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
-         отобразить их в таксировке как ТС, так и оборудования, так как
-         выбор операций в любом случае недоступен */
-      flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
-        this.setState({
-          operations: fuelOperations.result,
-          equipmentOperations: fuelOperations.result,
-        });
-      });
-      this.getCarDistance(formState);
-    }
+    const IS_CREATING = !status;
+    const IS_DRAFT = status === 'draft';
+    const IS_ACTIVE = status === 'active';
+    const IS_CLOSED = status === 'closed';
 
     this.getMissionsByCarAndDates(formState, false);
-    await flux.getActions('objects').getCars();
-    await flux.getActions('employees').getEmployees();
+    flux.getActions('objects').getCars();
+    flux.getActions('employees').getEmployees();
     flux.getActions('objects').getWorkMode();
+    flux.getActions('missions').getMissionSources();
 
-    this.getWaybillDrivers();
+    if (IS_CREATING || IS_DRAFT) {
+      flux.getActions('fuelRates').getFuelRates()
+        .then(({ result: fuelRateAll }) =>
+          this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) })
+        )
+        .catch((e) => {
+          console.error(e);
+          this.setState({ fuelRateAllList: [] });
+        });
+    }
 
-    if (formState && formState.id) {
-      const waybillInfo = await flux.getActions('waybills').getWaybill(formState.id);
-      const canEditIfClose = waybillInfo.result.closed_editable && flux.getStore('session').getPermission('waybill.update_closed') || false;
-      this.setState({ canEditIfClose, origFormState: formState });
+    if (!IS_CREATING) {
+      flux.getActions('waybills').getWaybill(formState.id)
+        .then(({ result: { closed_editable } }) =>
+          this.setState({
+            canEditIfClose: closed_editable ? flux.getStore('session').getPermission('waybill.update_closed') : false,
+            origFormState: formState,
+          })
+        )
+        .catch((e) => {
+          console.error(e);
+          this.setState({
+            canEditIfClose: false,
+            origFormState: formState,
+          });
+        });
+    }
+
+    if (IS_ACTIVE || IS_CLOSED) {
+      this.getCarDistance(formState);
+      if (IS_ACTIVE) {
+        Promise.all([
+          getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState),
+          flux.getActions('fuelRates').getFuelOperations().then(({ result: fuelOperationsList }) => fuelOperationsList),
+          getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState),
+          getFuelCorrectionRate(this.props.carsList, formState),
+        ])
+        .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
+          this.setState({
+            fuelRates,
+            operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]),
+            fuel_correction_rate,
+            equipmentFuelRates,
+            equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]),
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+          this.setState({
+            fuelRates: [],
+            operations: [],
+            fuel_correction_rate: 1,
+            equipmentFuelRates: [],
+            equipmentOperations: [],
+          });
+        });
+
+        this.getCarDistance(formState);
+      } else {
+        /* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
+          отобразить их в таксировке как ТС, так и оборудования, так как
+          выбор операций в любом случае недоступен */
+        flux.getActions('fuelRates').getFuelOperations()
+          .then(({ result: fuelOperations }) =>
+            this.setState({
+              operations: fuelOperations,
+              equipmentOperations: fuelOperations,
+            })
+          ).catch((e) => {
+            console.error(e);
+            this.setState({
+              operations: [],
+              equipmentOperations: [],
+            });
+          });
+      }
     }
   }
+
+  employeeFIOLabelFunction = (...arg) => employeeFIOLabelFunction(this.context.flux)(...arg);
+
   handlePlanDepartureDates(field, value) {
     if (value === null) {
       return;
     }
     const {
-      notAvailableMissions = [],
       missionsList: oldMissionsList = [],
     } = this.state;
     const {
       missionSourcesList = [],
-      formState: {
-        mission_id_list = [],
-        plan_departure_date,
-        plan_arrival_date,
-      } = {},
+      formState,
+      formState: { mission_id_list = [] },
     } = this.props;
     const dateWaybill = {
-      plan_departure_date,
-      plan_arrival_date,
+      plan_departure_date: formState.plan_departure_date,
+      plan_arrival_date: formState.plan_arrival_date,
       [field]: value,
     };
 
@@ -264,8 +222,8 @@ class WaybillForm extends Form {
 
     const idOrder = (missionSourcesList.find(({ auto }) => auto) || {}).id;
 
-    const missionsFromOrder = uniqBy(missionsList.concat(...notAvailableMissions), 'id').reduce((missions, mission) => {
-      if (mission_id_list.includes(mission.id) && idOrder === mission.mission_source_id) {
+    const missionsFromOrder = uniqBy(missionsList.concat(...this.state.notAvailableMissions), 'id').reduce((missions, mission) => {
+      if (formState.mission_id_list.includes(mission.id) && idOrder === mission.mission_source_id) {
         missions.push(mission);
       }
       return missions;
@@ -286,90 +244,50 @@ class WaybillForm extends Form {
 
       return newObj;
     }, {}))
-    .then((missionsWithSourceOrder) => {
-      const missionsNum = Object.values(missionsWithSourceOrder).map(num => `задание ${num}`);
-      const missionIds = Object.keys(missionsWithSourceOrder);
+    .then(missionsWithSourceOrder =>
+      confirmDialogChangeDate(Object.values(missionsWithSourceOrder).map(num => `задание ${num}`))
+        .then(() => {
+          if (Object.keys(missionsWithSourceOrder).length) {
+            this.handleChange('mission_id_list', mission_id_list.filter(id => !missionsWithSourceOrder[id]));
+            this.setState({
+              ...this.state,
+              missionsList: oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]),
+            });
+          }
 
-      return this.confirmDialogChangeDate(missionsNum).then(() => {
-        if (missionIds.length) {
-          const newMission_id_list = mission_id_list.filter(id => !missionsWithSourceOrder[id]);
-          const newMissionList = oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]);
-          this.handleChange('mission_id_list', newMission_id_list);
-          this.setState({
-            ...this.state,
-            missionsList: newMissionList,
-          });
-        }
-        this.getWaybillDrivers({
-          [field]: value,
-        });
-        this.handleChange(field, value);
-      })
-      .catch(() => {});
-    });
+          getWaybillDrivers(
+            this.context.flux.getActions('employees').getWaybillDrivers,
+            {
+              ...this.props.formState,
+              [field]: value,
+            }
+          );
+          this.handleChange(field, value);
+        })
+        .catch(() => {})
+    );
   }
 
-  confirmDialogChangeDate(missionsNum) {
-    if (missionsNum.length) {
-      return confirmDialog({
-        title: 'Внимание!',
-        body: (
-          <div>
-            <p>{`Привязанные ${missionsNum.join(', ')} будут исключены из ПЛ, поскольку выходят за период действия ПЛ.`}</p>
-            <p>Вы уверены, что хотите продолжить?</p>
-          </div>
-        ),
-      });
-    }
-    return new Promise(res => res());
-  }
-
-  getWaybillDrivers({
-    plan_departure_date = this.props.formState.plan_departure_date,
-    plan_arrival_date = this.props.formState.plan_arrival_date,
-  } = {}) {
-    const IS_CREATING = !this.props.formState.status;
-    const IS_DRAFT = this.props.formState.status && this.props.formState.status === 'draft';
-
-    if (IS_CREATING || IS_DRAFT) {
-      this.context.flux.getActions('employees').getWaybillDrivers({
-        company_id: this.props.formState.company_id,
-        date_from: plan_departure_date,
-        date_to: plan_arrival_date,
-      });
-    }
-  }
   getMissionsByCarAndDates(formState, notificate = true) {
-    const { flux } = this.context;
     const {
       missionsList: oldMissionsList = [],
     } = this.state;
     const {
       car_id,
-      fact_departure_date,
-      plan_departure_date,
-      fact_arrival_date,
-      plan_arrival_date,
       mission_id_list: currentMissions,
       status,
     } = formState;
+
     if (!car_id) {
       return;
     }
 
-    const departure_date = status === 'active' ? fact_departure_date : plan_departure_date;
-    const arrival_date = status === 'active' ? fact_arrival_date : plan_arrival_date;
-
-    flux.getActions('missions').getMissionsByCarAndDates(
+    this.context.flux.getActions('missions').getMissionsByCarAndDates(
       car_id,
-      departure_date,
-      arrival_date,
+      status === 'active' ? formState.fact_departure_date : formState.plan_departure_date,
+      status === 'active' ? formState.fact_arrival_date : formState.plan_arrival_date,
       status
-    ).then(({
-      result: {
-        rows: newMissionsList = [],
-      } = {},
-    }) => {
+    ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);
       let newMissions = [];
@@ -398,15 +316,16 @@ class WaybillForm extends Form {
       this.setState({ tooLongFactDates: true });
       return;
     }
-    const { flux } = this.context;
-    const { loadingFields } = this.state;
+    const { loadingFields: { ...loadingFields } } = this.state;
+    // Если ПЛ закрыт,то ничего не получаем
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
-    const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+    const { gps_code = null } = this.props.carsList.find(({ asuods_id }) => asuods_id === formState.car_id) || {};
+
     loadingFields.distance = true;
     loadingFields.consumption = true;
     this.setState({ loadingFields });
@@ -415,35 +334,42 @@ class WaybillForm extends Form {
       fact_arrival_date,
     } = formState;
 
-    if (car.gps_code && fact_departure_date && fact_arrival_date && diffDates(fact_arrival_date, fact_departure_date) > 0) {
-      flux.getActions('cars').getInfoFromCar(car.gps_code, fact_departure_date, fact_arrival_date)
+    if (gps_code && fact_departure_date && fact_arrival_date && diffDates(fact_arrival_date, fact_departure_date) > 0) {
+      this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
         .then(({ distance, consumption }) => {
-          this.props.handleFormChange('distance', distance);
-          this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
-          const { loadingFields: then_loadingFields } = this.state;
-          then_loadingFields.distance = false;
-          then_loadingFields.consumption = false;
-          this.setState({ loadingFields: then_loadingFields });
+          this.props.handleMultipleChange({
+            distance,
+            consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
+          });
+
+          this.setState({
+            loadingFields: {
+              ...this.state.loadingFields,
+              distance: false,
+              consumption: false,
+            },
+          });
         })
         .catch(() => {
           // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
-          const { loadingFields: catch_loadingFields } = this.state;
-          catch_loadingFields.distance = false;
-          catch_loadingFields.consumption = false;
-          this.setState({ loadingFields: catch_loadingFields });
+          this.setState({
+            loadingFields: {
+              ...this.state.loadingFields,
+              distance: false,
+              consumption: false,
+            },
+          });
         });
     }
   }
 
   getLatestWaybillDriver(formState) {
-    const { flux } = this.context;
-    flux.getActions('waybills').getLatestWaybillDriver(
+    this.context.flux.getActions('waybills').getLatestWaybillDriver(
       formState.car_id,
       formState.driver_id
-    ).then((response) => {
-      const newDriverId = response && response.result ? response.result.driver_id : null;
-      if (newDriverId) {
-        const driver = this.props.waybillDriversList.find(item => item.id === newDriverId) || null;
+    ).then(({ result: { driver_id = null } }) => {
+      if (driver_id) {
+        const driver = this.props.waybillDriversList.find(item => item.id === driver_id) || null;
         if (driver === null) return;
 
         const { gov_number } = formState;
@@ -451,7 +377,7 @@ class WaybillForm extends Form {
         const hasSpecialLicense = hasMotohours(gov_number) && driverHasSpecialLicense(driver);
 
         if (hasLicense || hasSpecialLicense) {
-          this.props.handleFormChange('driver_id', newDriverId);
+          this.props.handleFormChange('driver_id', driver_id);
         }
 
         return;
@@ -465,52 +391,42 @@ class WaybillForm extends Form {
     });
   }
 
-  async onCarChange(car_id, selectedCar = {}) {
-    console.log(car_id)
-    const { flux } = this.context;
-
-    let fieldsToChange = {
-      car_id,
-      gov_number: '',
-    };
-    if (!isEmpty(car_id)) {
-      const { fuelRateAllList = [] } = this.state;
-
-      if (!fuelRateAllList.includes(selectedCar.model_id)) {
-        global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
-      }
-
-      const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(car_id);
-      const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
-      const additionalFields = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
-
-      fieldsToChange = {
-        ...fieldsToChange,
-        ...additionalFields,
-        gov_number: selectedCar.gov_number,
+  onCarChange = (car_id, selectedCar = {}) =>
+    new Promise((res) => {
+      const fieldsToChange = {
+        car_id,
+        gov_number: '',
       };
-    } else {
+
+      if (!isEmpty(car_id)) {
+        if (!this.state.fuelRateAllList.includes(selectedCar.model_id)) {
+          global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
+        }
+
+        return this.context.flux.getActions('waybills').getLastClosedWaybill(car_id)
+          .then(({ result: lastCarUsedWaybill }) =>
+            res({
+              ...fieldsToChange,
+              ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
+              gov_number: selectedCar.gov_number,
+            }));
+      }
       /**
        * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
        */
-      fieldsToChange = {
+      return Promise.resolve(res({
         ...fieldsToChange,
         driver_id: '',
-      };
-    }
-
-    this.props.handleMultipleChange(fieldsToChange);
-  }
+      }));
+    })
+    .then(fieldsToChange => this.props.handleMultipleChange(fieldsToChange));
 
 
   async handleEquipmentFuelChange(equipment_fuel) {
-    const { flux } = this.context;
-    const state = this.props.formState;
     const fieldsToChange = {
       equipment_fuel,
     };
-    const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(state.car_id);
-    const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
+    const { result: lastCarUsedWaybill } = await this.context.flux.getActions('waybills').getLastClosedWaybill(this.props.formState.car_id);
 
     if (lastCarUsedWaybill && lastCarUsedWaybill.equipment_fuel) {
       fieldsToChange.equipment_fuel_type = lastCarUsedWaybill.equipment_fuel_type;
@@ -551,7 +467,7 @@ class WaybillForm extends Form {
   onMissionFormHide(result) {
     const id = result && result.result ? result.result.id : null;
     if (id) {
-      const { mission_id_list } = this.props.formState;
+      const { mission_id_list: [...mission_id_list] } = this.props.formState;
       mission_id_list.push(id);
       this.handleChange('mission_id_list', mission_id_list);
     }
@@ -562,10 +478,9 @@ class WaybillForm extends Form {
   createMission() {
     const {
       carsList = [],
+      formState,
       formState: {
         car_id,
-        structure_id,
-        plan_arrival_date,
         plan_departure_date,
         fact_departure_date,
         status,
@@ -584,11 +499,14 @@ class WaybillForm extends Form {
       date_start = fact_departure_date;
     }
 
-    const newMission = getDefaultMission(date_start, plan_arrival_date);
-    newMission.car_id = car_id;
-    newMission.type_id = type_id;
-    newMission.structure_id = structure_id;
-    this.setState({ showMissionForm: true, selectedMission: newMission });
+    this.setState({
+      showMissionForm: true,
+      selectedMission: {
+        ...getDefaultMission(date_start, formState.plan_arrival_date),
+        car_id,
+        type_id,
+        structure_id: formState.structure_id,
+      } });
   }
 
   /**
@@ -598,8 +516,7 @@ class WaybillForm extends Form {
     const state = this.props.formState;
     const { flux } = this.context;
 
-    const lastCarUsedWaybillObject = await flux.getActions('waybills').getLastClosedWaybill(state.car_id);
-    const lastCarUsedWaybill = lastCarUsedWaybillObject.result;
+    const { result: lastCarUsedWaybill } = await flux.getActions('waybills').getLastClosedWaybill(state.car_id);
     const fieldsToChange = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
 
     this.props.handleMultipleChange(fieldsToChange);
@@ -633,69 +550,15 @@ class WaybillForm extends Form {
     }
   }
 
-  handleClose = async (taxesControl) => {
-    const {
-      notAvailableMissions = [],
-      missionsList: oldMissionsList = [],
-    } = this.state;
-
-    const {
-      formState: {
-        mission_id_list = [],
-        fact_departure_date: fdd,
-        fact_arrival_date: fad,
-      } = {},
-      missionSourcesList = [],
-    } = this.props;
-
-    const errors = {
-      notFromOrder: {
-        cf_list: [],
-      },
-      fromOrder: {
-        cf_list: [],
-        confirmDialogList: [],
-      },
-    };
-    console.log(taxesControl)
-    const missionsList = uniqBy([...oldMissionsList].concat(...notAvailableMissions), 'id');
-    const objectActions = this.context.flux.getActions('objects');
-
-    const missionsData = await checkMissionSelectBeforeClose(mission_id_list, missionsList, missionSourcesList, objectActions);
-    console.log(missionsData)
-    missionsData.forEach((mission) => {
-      const {
-        date_start_mission: dsm,
-        date_end_mission: dem,
-        status,
-        number,
-        isOrderSource,
-      } = mission;
-
-      if (!(diffDates(fdd, dsm) <= 0 && diffDates(dem, fad) <= 0)) {
-        if (isOrderSource) {
-          if (status === 'complete' || status === 'fail') {
-            errors.fromOrder.cf_list.push(number);
-          } else if (status === 'assigned') {
-            const {
-              date_from: df_to,
-              date_to: dt_to,
-            } = mission;
-
-            if (diffDates(dt_to, fdd) <= 0 || diffDates(fad, df_to) <= 0) {
-              errors.fromOrder.confirmDialogList.push(number);
-            }
-          }
-        } else if (status === 'complete' || status === 'fail') {
-          errors.notFromOrder.cf_list.push(number);
-        }
-      }
-    });
-    console.log(errors)
-    checkErrorDate(errors).then(() => {
-      this.props.handleClose(taxesControl);
-    }).catch(() => {});
-  }
+  handleClose = taxesControl =>
+    checkMissionSelectBeforeClose(
+      this.props.formState,
+      groupBy([...this.props.oldMissionsList, ...this.props.notAvailableMissions], 'id'),
+      this.props.missionSourcesList.find(({ auto }) => auto).id,
+      this.context.flux.getActions('objects').getOrderById,
+    )
+    .then(() => this.props.handleClose(taxesControl))
+    .catch(() => {});
 
   handleSubmit = () => {
     delete this.props.formState.is_bnso_broken;
@@ -703,8 +566,6 @@ class WaybillForm extends Form {
   }
 
   render() {
-    const state = this.props.formState;
-    const errors = this.props.formErrors;
     const {
       loadingFields,
       origFormState = {},
@@ -713,6 +574,8 @@ class WaybillForm extends Form {
     } = this.state;
 
     const {
+      formState: state,
+      formErrors: errors,
       entity,
       carsList = [],
       carsIndex = {},
@@ -772,23 +635,7 @@ class WaybillForm extends Form {
     const trailer = carsIndex[state.trailer_id];
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
 
-    let title = '';
-
-    if (IS_CREATING) {
-      title = 'Создать новый путевой лист';
-    }
-
-    if (IS_ACTIVE) {
-      title = 'Активный путевой лист';
-    }
-
-    if (IS_CLOSED) {
-      title = 'Просмотр путевого листа ';
-    }
-
-    if (IS_DRAFT) {
-      title = 'Создание нового путевого листа';
-    }
+    const title = getTitleByStatus(state);
 
     const {
       tax_data = [],

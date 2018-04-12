@@ -12,5 +12,6 @@ declare module NodeJS  {
     window: any;
     APP_DATE_FORMAT: string;
     CURRENT_USER2: string;
+    confirmDialog: any;
   }
 }

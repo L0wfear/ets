@@ -204,6 +204,3 @@ export default class WaybillsActions extends Actions {
   }
 
 }
-
-
-console.log('hello')

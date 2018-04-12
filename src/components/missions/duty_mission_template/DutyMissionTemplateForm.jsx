@@ -114,6 +114,7 @@ class MissionTemplateForm extends DutyMissionForm {
             <Col md={12}>
               <InsideField.MunicipalFacility
                 id={'municipal_facility_id'}
+                label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
                 disabled={!!state.route_id}

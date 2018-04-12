@@ -318,7 +318,7 @@ export class MissionForm extends Form {
       const {
         car_func_types = [],
       } = to_data;
-      const car_func_types_ids = car_func_types.map(({ id }) => id);
+      const car_func_types_ids = car_func_types.map(({ asuods_id }) => asuods_id);
 
       this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
       .then(({ result: { rows: carsList } }) => {

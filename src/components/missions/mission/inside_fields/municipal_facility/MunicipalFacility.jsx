@@ -10,6 +10,7 @@ class MunicipalFacility extends React.Component {
   static get propTypes() {
     return {
       id: React.PropTypes.string,
+      label: React.PropTypes.string,
       state: React.PropTypes.object,
       errors: React.PropTypes.object,
       disabled: React.PropTypes.bool,
@@ -26,9 +27,13 @@ class MunicipalFacility extends React.Component {
 
   constructor(props) {
     super(props);
+    let MUNICIPAL_FACILITY_OPTIONS = [];
+    if (props.label && props.state[props.label]) {
+      MUNICIPAL_FACILITY_OPTIONS = [{ value: props.state[props.id], label: props.state[props.label] }];
+    }
     this.state = {
       forseUpdateIsWas: false,
-      MUNICIPAL_FACILITY_OPTIONS: [],
+      MUNICIPAL_FACILITY_OPTIONS,
       myDisable: true,
       ...this.getStateByProps(props),
     };
@@ -154,6 +159,7 @@ class MunicipalFacility extends React.Component {
       MUNICIPAL_FACILITY_OPTIONS = [],
     } = this.state;
     this.props.handleChange('municipal_facility_id', value);
+    this.props.handleChange('municipal_facility_name', '');
     if (value) {
       this.props.getDataByNormId(MUNICIPAL_FACILITY_OPTIONS.find(({ value: m_value }) => m_value === value).norm_id);
     }
@@ -163,6 +169,7 @@ class MunicipalFacility extends React.Component {
     const {
       disabled = false,
       clearable = true,
+      municipal_facility_name,
     } = this.props;
     const {
       value,
@@ -170,7 +177,7 @@ class MunicipalFacility extends React.Component {
       MUNICIPAL_FACILITY_OPTIONS,
       myDisable,
     } = this.state;
-
+    console.log(municipal_facility_name)
     return (
       <Field
         id={this.props.id}
@@ -179,7 +186,7 @@ class MunicipalFacility extends React.Component {
         error={error}
         disabled={disabled || myDisable}
         options={MUNICIPAL_FACILITY_OPTIONS}
-        value={value}
+        value={municipal_facility_name || value}
         onChange={this.handleChange}
         clearable={clearable}
       />

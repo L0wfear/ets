@@ -147,7 +147,7 @@ export function getAdminInfoNotification(notify) {
     dismissible: true,
     position: 'tr',
     autoDismiss: 0,
-    children: makeReactMessange(notify.title),
+    children: makeReactMessange(notify.body),
     onRemove() {
       const notificationReadInfo = JSON.parse(localStorage.getItem(global.NOTIFICATION_READ_ARR)) || [];
       notificationReadInfo.unshift(notify.id);

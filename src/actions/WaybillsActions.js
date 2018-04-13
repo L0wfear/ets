@@ -75,8 +75,9 @@ export default class WaybillsActions extends Actions {
 
   getWaybillJournalReport(state) {
     const payload = {};
-    if (state.formationPeriod === 'mount') {
-      payload.mounth = state.mounth;
+
+    if (state.formationPeriod === 'month') {
+      payload.month = state.month;
       payload.year = state.year;
     }
     if (state.formationPeriod === 'date') {

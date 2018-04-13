@@ -106,10 +106,11 @@ class MunicipalFacility extends React.Component {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
       }
       let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id }));
+      const { type_id } = this.props;
 
-      if (this.props.fromWaybill) {
+      if (this.props.fromWaybill && type_id) {
         MUNICIPAL_FACILITY_OPTIONS = rows.reduce((arr, element) => {
-          if (element.car_func_types.find(({ id }) => id === this.props.type_id)) {
+          if (element.car_func_types.find(({ id }) => id === type_id)) {
             const {
               municipal_facility_id,
               municipal_facility_name,

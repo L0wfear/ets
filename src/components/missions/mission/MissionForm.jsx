@@ -46,7 +46,7 @@ export class MissionForm extends Form {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { flux } = this.context;
     const technicalOperationsActions = flux.getActions('technicalOperation').getTechnicalOperations;
     const routesActions = flux.getActions('routes');

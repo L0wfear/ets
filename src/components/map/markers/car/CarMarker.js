@@ -130,6 +130,7 @@ export default class CarMarker extends Marker {
       });
       pausedMarker.setStyle(getPointStyle('black', 7));
       this.vectorLayer.getSource().addFeature(pausedMarker);
+      return true;
     } else {
       if (this.vectorLayer) {
         this.vectorLayer.getSource().clear();

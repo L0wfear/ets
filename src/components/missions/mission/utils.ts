@@ -59,7 +59,7 @@ export const getDataBySelectedRoute = (formState, routesActions, defaultValue = 
     return routesActions(route_id, false);
   }
 
-  return Promise.resolve(null);
+  return Promise.resolve(defaultValue);
 };
 
 export const getRoutesByMissionId = (formState, isTemplate, routesActions, defaultValue) => {
@@ -70,3 +70,60 @@ export const getRoutesByMissionId = (formState, isTemplate, routesActions, defau
 
   return Promise.resolve(defaultValue);
 };
+
+export const getRoutesBySomeData = (formState, stateData, routeAction) =>
+  routeAction({
+    municipal_facility_id: formState.municipal_facility_id,
+    technical_operation_id: formState.technical_operation_id,
+    type: stateData.available_route_types.join(','),
+  });
+
+export const handleRouteFormHide = (isSubmitted, result, formState, stateData, routeActionGetRouteById, routeActionGetRoutesBySomeData) => {
+  if (isSubmitted) {
+    const { createdRoute: { result: [{ id: route_id }] } } = result;
+
+    return Promise.all([
+      getDataBySelectedRoute({ route_id }, routeActionGetRouteById),
+      getRoutesBySomeData(formState, stateData, routeActionGetRoutesBySomeData),
+    ])
+    .then(([ selectedRoute, routesList ]) => ({
+      showRouteForm: false,
+      selectedRoute,
+      routesList,
+      route_id,
+    }));
+  }
+
+  return Promise.resolve({
+    showRouteForm: false,
+    selectedRoute: null,
+  });
+};
+
+export const getNormDataById = (norm_id, action) =>
+  action({ norm_id }).then(({ result: [normData] }) => normData);
+export const getCarsByNormId = (norm_id, formState, fromWaybill, action) => {
+  if (!formState.status && !fromWaybill) {
+    return action({ norm_id }).then(({ result: { rows: carsList } }) => carsList);
+  }
+
+  return Promise.resolve(null);
+};
+
+export const getDataByNormId = (norm_id, formState, fromWaybill, technicalOperationActionGetOneTechOperationByNormId, routeActionGetRoutesBySomeData, carsActionGetCarsByNormId) =>
+  Promise.all([
+    getNormDataById(norm_id, technicalOperationActionGetOneTechOperationByNormId),
+    getCarsByNormId(norm_id, formState, fromWaybill, carsActionGetCarsByNormId),
+  ])
+  .then(([ normData, carsList ]) => {
+    const { route_types: available_route_types } = normData;
+
+    return getRoutesBySomeData(formState, { available_route_types }, routeActionGetRoutesBySomeData)
+      .then(routesList => ({
+        normData,
+        carsList,
+        routesList,
+        available_route_types,
+        is_cleaning_norm: normData.is_cleaning_norm,
+      }));
+  });

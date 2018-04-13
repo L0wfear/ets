@@ -15,3 +15,5 @@ declare module NodeJS  {
     confirmDialog: any;
   }
 }
+
+declare module '*.png';

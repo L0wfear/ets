@@ -253,6 +253,27 @@ export default class MissionFormWrap extends FormWrap {
     global.map.render();
   }
 
+  handlMultiFormStateChange = (changesObj) => {
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+
+    Object.entries(changesObj).forEach(([field, e]) => {
+      const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      console.info('Form changed', field, value);
+      formState[field] = value;
+    });
+
+    const newState = {};
+    formErrors = this.validate(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+  }
+
   render() {
     const props = {
       show: this.props.showForm,
@@ -271,6 +292,7 @@ export default class MissionFormWrap extends FormWrap {
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
             handleFormChange={this.handleFormStateChange.bind(this)}
+            handleMultiFormChange={this.handlMultiFormStateChange}
             handlePrint={this.handlePrint.bind(this)}
             {...props}
             {...this.state}

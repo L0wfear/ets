@@ -517,8 +517,8 @@ class WaybillForm extends Form {
     const { flux } = this.context;
 
     const { result: lastCarUsedWaybill } = await flux.getActions('waybills').getLastClosedWaybill(state.car_id);
-    const fieldsToChange = this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill);
-
+    const plan_departure_date = (diffDates(new Date(), state.plan_departure_date) > 0) ? new Date() : state.plan_departure_date;
+    const fieldsToChange = { ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill), plan_departure_date };
     this.props.handleMultipleChange(fieldsToChange);
   }
 

@@ -127,6 +127,7 @@ export default class SessionStore extends Store {
     localStorage.removeItem(global.CURRENT_USER2);
     localStorage.removeItem(global.ERROR_GO_TO_ETS2);
     localStorage.removeItem(global.ERROR_IN_COD);
+    localStorage.removeItem(global.NOTIFICATION_READ_ARR);
 
     this.setState({
       session: null,

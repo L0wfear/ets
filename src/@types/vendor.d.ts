@@ -13,6 +13,7 @@ declare module NodeJS  {
     APP_DATE_FORMAT: string;
     CURRENT_USER2: string;
     confirmDialog: any;
+    NOTIFICATION_READ_ARR: string;
   }
 }
 

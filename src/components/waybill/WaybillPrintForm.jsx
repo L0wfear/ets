@@ -10,7 +10,7 @@ import { saveData } from 'utils/functions';
 
 const FORMATION_PERIOD_OPTIONS = [
   { value: 'date', label: 'Дневной' },
-  { value: 'mounth', label: 'Месячный' }
+  { value: 'month', label: 'Месячный' }
 ];
 
 class WaybillPrintForm extends Component {
@@ -31,7 +31,7 @@ class WaybillPrintForm extends Component {
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
       DISABLE_SUBMIT: false,
-      formationPeriod: 'mounth',
+      formationPeriod: 'month',
       date: new Date(),
     };
   }
@@ -59,7 +59,7 @@ class WaybillPrintForm extends Component {
         .getWaybillJournalReport(this.state)
         .then(({ blob }) => {
           switch (this.state.formationPeriod) {
-            case 'mounth': return saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`);
+            case 'month': return saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`);
             case 'date': return saveData(blob, `Отчет по журналу ПЛ за ${makeDate(this.state.date)}.xls`);
             default: return false;
           }
@@ -123,7 +123,7 @@ class WaybillPrintForm extends Component {
                 onChange={this.handleChangeFormationPeriod}
               />
               <br />
-              <Div hidden={this.state.formationPeriod !== 'mounth'}>
+              <Div hidden={this.state.formationPeriod !== 'month'}>
                 <Field
                   type="select"
                   label="Месяц"

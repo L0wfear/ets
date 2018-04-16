@@ -128,6 +128,7 @@ export function getWarningNotification(message) {
   };
 }
 
+<<<<<<< HEAD
 export function getErrorNotificationFromBack(message) {
   return {
     title: 'Внимание',
@@ -139,6 +140,8 @@ export function getErrorNotificationFromBack(message) {
   };
 }
 
+=======
+>>>>>>> zion
 export function getAdminInfoNotification(notify) {
   return {
     title: notify.title,
@@ -157,16 +160,6 @@ export function getAdminInfoNotification(notify) {
   };
 }
 
-export function getInfoNotification(message) {
-  return {
-    title: 'Ифнормация',
-    message: `${message}`,
-    level: 'info',
-    dismissible: true,
-    position: 'tr',
-    autoDismiss: 0,
-  }
-}
 export function noItemsInfoNotification(msg = 'По данному запросу нет записей') {
   global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }

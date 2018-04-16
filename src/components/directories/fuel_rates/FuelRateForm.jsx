@@ -10,7 +10,7 @@ export default class FuelRateForm extends Form {
 
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('fuelRates').getFuelOperations();
+    flux.getActions('fuelRates').getFuelOperations({ is_active: true });
     flux.getActions('objects').getSpecialModels();
     this.context.flux.getActions('objects').getModels(this.props.formState.car_special_model_id);
   }

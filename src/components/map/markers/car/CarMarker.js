@@ -47,6 +47,8 @@ export default class CarMarker extends Marker {
         features: [],
       }),
     });
+    this.vectorLayer.setZIndex(7777777);
+    this.map.addLayer(this.vectorLayer);
   }
 
   isAnimating() {
@@ -75,8 +77,6 @@ export default class CarMarker extends Marker {
     // });
 
     // TODO сделать константный лейер для карты, а то будет каждый раз создаваться
-
-    this.map.addLayer(this.vectorLayer);
     
     const map = this.map;
     const coords = this.animatePoints[0].coords;
@@ -131,9 +131,12 @@ export default class CarMarker extends Marker {
       pausedMarker.setStyle(getPointStyle('black', 7));
       this.vectorLayer.getSource().addFeature(pausedMarker);
       return true;
+    } else {
+      if (this.vectorLayer) {
+        this.vectorLayer.getSource().clear();
+      }
+      this.animate();
     }
-    if (this.vectorLayer) this.map.removeLayer(this.vectorLayer);
-    return this.animate();
   }
 
   animateToTrack(event) {

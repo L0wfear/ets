@@ -83,9 +83,7 @@ export default class WaybillsActions extends Actions {
   }
 
   getWaybillJournalReport(state, filter) {
-    const payload = {
-      filter: makeFilterValues(filter),
-    };
+    const payload = {};
 
     if (state.formationPeriod === 'month') {
       payload.month = state.month;
@@ -95,7 +93,7 @@ export default class WaybillsActions extends Actions {
       payload.date = createValidDate(state.date);
     }
 
-    return WaybillJournalReportService.postBlob(payload);
+    return WaybillJournalReportService.path(`?filter=${makeFilterValues(filter)}`).postBlob(payload);
   }
 
   getWaybillsReport(state, filter) {

@@ -20,8 +20,10 @@ export default class CompanyStructure extends ElementsList {
     flux.getActions('companyStructure').getLinearCompanyStructure();
   }
 
-  editElement = (id, e) => {
+  editElement = async (id, e) => {
     e.stopPropagation();
+
+    await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
 
     const { companyStructureLinearList = [] } = this.props;
     const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);

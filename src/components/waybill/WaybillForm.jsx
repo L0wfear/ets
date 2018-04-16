@@ -369,7 +369,7 @@ class WaybillForm extends Form {
       let newMissions = [];
       let { notAvailableMissions = [] } = this.state;
 
-      if (status === 'active' || status === 'draft') {
+      if (status === 'active') {
         newMissions = currentMissions;
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions
@@ -460,7 +460,6 @@ class WaybillForm extends Form {
   }
 
   async onCarChange(car_id, selectedCar = {}) {
-    console.log(car_id)
     const { flux } = this.context;
 
     let fieldsToChange = {

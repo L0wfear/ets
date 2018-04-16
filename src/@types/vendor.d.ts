@@ -11,6 +11,7 @@ declare module NodeJS  {
     SESSION_KEY2: string;
     window: any;
     APP_DATE_FORMAT: string;
-    CURRENT_USER2: string;
+    CURRENT_USER: string;
+    NOTIFICATION_READ_ARR: string;
   }
 }

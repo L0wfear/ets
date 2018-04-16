@@ -224,4 +224,41 @@ export default class ProgramRemarkList extends CheckableElementsList {
       displayTable: true,
     }
   )
+
+  changeVersionWithObject = ({ program_version_id, object_id }) => {
+    this.props.changeVersion(program_version_id)
+      .then(() => this.props.updateObjectData(false))
+      .then(() => this.setNewSelectedElement(this.props.objectsList.find(({ id }) => id === object_id)))
+  }
+
+  /**
+   * @override
+   */
+  getForms() {
+    const FormComponent = this.constructor.formComponent;
+    const forms = [];
+
+    if (!FormComponent) {
+      return forms;
+    }
+
+    forms.push(
+      <FormComponent
+        key={forms.length}
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        setNewSelectedElement={this.setNewSelectedElement}
+        entity={this.entity}
+        onCallback={this.formCallback}
+        meta={this.constructor.formMeta}
+        renderers={this.constructor.formRenderers}
+        permissions={[`${this.entity}.read`]}
+        changeVersionWithObject={this.changeVersionWithObject}
+        {...this.props}
+      />
+    );
+
+    return forms;
+  }
 }

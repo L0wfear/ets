@@ -128,7 +128,6 @@ export function getWarningNotification(message) {
   };
 }
 
-<<<<<<< HEAD
 export function getErrorNotificationFromBack(message) {
   return {
     title: 'Внимание',
@@ -140,8 +139,6 @@ export function getErrorNotificationFromBack(message) {
   };
 }
 
-=======
->>>>>>> zion
 export function getAdminInfoNotification(notify) {
   return {
     title: notify.title,

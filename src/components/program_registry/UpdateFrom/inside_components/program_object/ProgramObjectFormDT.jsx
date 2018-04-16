@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
+import { Row, Col, Modal, Button, Nav, NavItem, Panel } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
 import { cloneDeep, isEmpty } from 'lodash';
@@ -46,9 +46,9 @@ class ProgramObjectFormDT extends Form {
   }
 
   async componentDidMount() {
-    this.context.flux.getActions('repair').getObjectProperty({ object_type: 'dt' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
-      const { IS_CREATING } = this.state;
+    const { IS_CREATING } = this.state;
 
+    this.context.flux.getActions('repair').getObjectProperty({ object_type: 'dt' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
       const {
         formState: {
           asuods_id = null,
@@ -293,6 +293,7 @@ class ProgramObjectFormDT extends Form {
       contractorList = [],
       isPermitted: isPermittedDefault,
       isPermittedByStatus,
+      prCompanyName,
     } = this.props;
 
     const {
@@ -347,60 +348,85 @@ class ProgramObjectFormDT extends Form {
                 clearable={false}
               />
             </Col>
+            <Col mdOffset={3} md={3}>
+              <ExtField
+                type="select"
+                label="Версия"
+                options={[]}
+                value={1}
+                boundKeys={['version_id']}
+                disabled={true}
+                clearable={false}
+              />
+            </Col>
           </Row>
           <div>
             <Row style={{ marginBottom: 20 }}>
               <Col md={12}>
-                <span style={{ fontWeight: 600 }}>Информация об объекте</span>
-              </Col>
-              <Col md={6}>
-                <Row>
+                <Panel className={'panel-object-info'}>
                   <Col md={12}>
-                    Общая площадь по паспорту, кв.м.: {total_area}
+                    <span style={{ fontWeight: 600 }}>Информация об объекте</span>
                   </Col>
-                  <Col md={12}>
-                    Площадь проезда, кв.м.: {0}
+                  <Col md={4}>
+                    <Col md={12}>
+                      <span>{`Общая площадь по паспорту, кв.м.: ${Number(total_area)}`}</span>
+                    </Col>
+                    <Col md={12}>
+                      <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
+                    </Col>
                   </Col>
-                </Row>
-                <Row>
-                  <Col md={12}>
-                    Площадь пешеходной дорожки, кв.м.: {0}
+                  <Col md={4}>
+                    <Col md={12}>
+                      <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                    </Col>
+                    <Col md={12}>
+                      <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                    </Col>
                   </Col>
-                  <Col md={12}>
-                    Площадь тротуаров, кв.м.: {0}
+                  <Col md={4}>
+                    <Col md={12}>
+                      <span>{`Заказчик: ${company_name || prCompanyName}`}</span>
+                    </Col>
                   </Col>
-                </Row>
-              </Col>
-              <Col md={6}>
-                Заказчик: {company_name}
+                </Panel>
               </Col>
             </Row>
             <Row>
-              <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
-                <span >Подрядчик</span>
-              </Col>
-              <Col md={6}>
-                <ExtField
-                  type="string"
-                  label="Номер контракта"
-                  value={state.contract_number}
-                  error={errors.name}
-                  onChange={this.handleChange}
-                  boundKeys={['contract_number']}
-                  disabled={!isPermitted}
-                />
-              </Col>
-              <Col style={{ marginBottom: 20 }} md={6}>
-                <ExtField
-                  type="select"
-                  label="Подрядчик"
-                  error={errors.contractor_id}
-                  options={CONTRACTOR_OPTIONS}
-                  value={state.contractor_id}
-                  onChange={this.handleChange}
-                  boundKeys={['contractor_id']}
-                  disabled={!isPermitted}
-                />
+              <Col md={12}>
+                <Panel>
+                  <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
+                    <span >Подрядчик</span>
+                  </Col>
+                  <div>
+                    <Col md={2}>
+                      <span className={'span-contractor'}>{'Номер контракта'}</span>
+                    </Col>
+                    <Col md={3}>
+                      <ExtField
+                        type="string"
+                        value={state.contract_number}
+                        error={errors.name}
+                        onChange={this.handleChange}
+                        boundKeys={['contract_number']}
+                        disabled={!isPermitted}
+                      />
+                    </Col>
+                    <Col mdOffset={2} md={1}>
+                      <span className={'span-contractor'}>{'Подрядчик'}</span>
+                    </Col>
+                    <Col style={{ position: 'relative', top: -20 }} md={4}>
+                      <ExtField
+                        type="select"
+                        error={errors.contractor_id}
+                        options={CONTRACTOR_OPTIONS}
+                        value={state.contractor_id}
+                        onChange={this.handleChange}
+                        boundKeys={['contractor_id']}
+                        disabled={!isPermitted}
+                      />
+                    </Col>
+                  </div>
+                </Panel>
               </Col>
             </Row>
             <Nav style={{ marginBottom: 20 }} bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
@@ -418,7 +444,7 @@ class ProgramObjectFormDT extends Form {
                 <Col md={3}>
                   <div className="pr-object-data">
                     <span>Дата осмотра</span>
-                    <span>{moment(state.reviewed_at).format(`${global.APP_DATE_FORMAT} HH:mm`)}</span>
+                    <span>{state.reviewed_at ? moment(state.reviewed_at).format(`${global.APP_DATE_FORMAT} HH:mm`) : '---'}</span>
                   </div>
                 </Col>
                 <Col md={2} xsOffset={1}>

@@ -101,7 +101,7 @@ export default class ProgramRegistryForm extends Form {
     if (needVersionUpdate) {
       this.props.updateVersionOuter();
     }
-    return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id: this.props.formState.program_version_id });
+    return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id: this.props.formState.id });
   }
 
   render() {
@@ -342,6 +342,8 @@ export default class ProgramRegistryForm extends Form {
                     object_type_id={state.object_type_id}
                     contract_number={state.contract_number}
                     contractor_id={state.contractor_id}
+                    company_id={state.company_id}
+                    company_name={state.company_name}
                     repair_type_name={state.repair_type_name}
                     updateObjectData={this.updateObjectData}
                     isPermittedByStatus={isPermittedByStatus}

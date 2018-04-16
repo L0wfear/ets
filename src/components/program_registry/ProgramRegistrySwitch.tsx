@@ -18,7 +18,7 @@ const defSendFromState = ({ callback, outFormState }) => {
       };
     }
 
-    return { ...newFormState };
+    return { ...newFormState,  [key]: val };
   }, {});
 
   schema.properties.forEach(p => {

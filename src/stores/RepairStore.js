@@ -15,18 +15,21 @@ export default class RepairStore extends Store {
     this.register(repairActions.cleartDataAboutObjectById, this.handlerGetDataAboutObjectById)
 
     this.state = {
-      ...this.getDefaultState(),
+      ...this.getDefaultStateList(),
       objectPropertyList: [],
-      RepairOptions: {},
-      dataOboutObjectbyIdList: [],
+      RepairOptions: this.getDefaultOptionsIndex(),
+      dataAboutObjectbyIdList: [],
     };
   }
-  handlerGetDataAboutObjectById({ result: { rows: dataOboutObjectbyIdList } }) {
-    this.setState({ dataOboutObjectbyIdList });
+  handlerGetDataAboutObjectById({ result: { rows: dataAboutObjectbyIdList } }) {
+    this.setState({ dataAboutObjectbyIdList });
   }
 
-  getDefaultState() {
-    return Object.keys(REPAIR).reduce((obj, type) => Object.assign(obj, { [`${type}List`]: [] }), {});
+  getDefaultStateList() {
+    return Object.keys(REPAIR).reduce((obj, type) => ({ ...obj, [`${type}List`]: [] }), {});
+  }
+  getDefaultOptionsIndex() {
+    return Object.keys(REPAIR).reduce((obj, type) => ({ ...obj, [`${type}Options`]: [] }), {});
   }
   handleChangeListActive({ listName, listNameTrue }) {
     const list = this.state[listNameTrue];

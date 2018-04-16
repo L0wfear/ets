@@ -39,7 +39,7 @@ export interface IVehicle {
 }
 
 export interface IVehicleRegister {
-  register_certificate_number: number;
+  register_certificate_number: string;
   register_given_by: string;
   register_given_at: Date;
   register_note: string;

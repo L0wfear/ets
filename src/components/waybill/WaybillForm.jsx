@@ -2,7 +2,13 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Input, Row, Col, Button } from 'react-bootstrap';
-import _ from 'lodash';
+import {
+  isEqual,
+  filter,
+  find,
+  get,
+  map,
+} from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -67,15 +73,15 @@ class WaybillForm extends Form {
 
     // при смене планируемых дат или ТС запрашиваются новые доступные задания
     if (currentState.car_id !== nextState.car_id ||
-        !_.isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
-        !_.isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
+        !isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
+        !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
       this.getMissionsByCarAndDates(nextState);
     }
 
     if (currentState.status === 'active') {
       if (currentState.car_id !== nextState.car_id ||
-          !_.isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
-          !_.isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
+          !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
+          !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
         this.getCarDistance(nextState);
         this.getMissionsByCarAndDates(nextState);
       }
@@ -88,16 +94,16 @@ class WaybillForm extends Form {
     this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
 
     if (formState.status === 'active') {
-      const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+      const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
       const fuel_correction_rate = car.fuel_correction_rate || 1;
       flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((r) => {
         const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
         flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
-          const operations = _.filter(fuelOperations.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+          const operations = filter(fuelOperations.result, op => find(fuelRates, fr => fr.operation_id === op.id));
           flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((equipmentFuelRatesResponse) => {
             const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
             flux.getActions('fuelRates').getFuelOperations().then((equipmentFuelOperations) => {
-              const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+              const equipmentOperations = filter(equipmentFuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
               this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
             });
           });
@@ -195,7 +201,7 @@ class WaybillForm extends Form {
       this.setState({ loadingFields });
       return;
     }
-    const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+    const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
     loadingFields.consumption = true;
     this.setState({ loadingFields });
@@ -375,7 +381,7 @@ class WaybillForm extends Form {
 
   handleStructureIdChange(v) {
     const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
-    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
+    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
       this.props.handleMultipleChange({ car_id: '', driver_id: '', structure_id: v });
     } else {
       this.handleChange('structure_id', v);
@@ -396,7 +402,7 @@ class WaybillForm extends Form {
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
 
-    const FUEL_TYPES = _.map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
+    const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
     // const DRIVERS = waybillDriversList.map((d) => {
     //   const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
@@ -421,7 +427,7 @@ class WaybillForm extends Form {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
@@ -961,7 +967,7 @@ class WaybillForm extends Form {
                   />
                 </Div>
               </Div>
-              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED) || isFourDigitGovNumber(get(state, 'gov_number', ''))}>
                 <Field
                   id="distance-by-glonass"
                   type="string"

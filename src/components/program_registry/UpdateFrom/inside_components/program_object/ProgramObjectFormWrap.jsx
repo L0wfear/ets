@@ -125,6 +125,7 @@ class ProgramObjectFormWrap extends FormWrap {
 
     return (
       <ProgramObjectFormDT
+        prCompanyName={this.props.company_name}
         formState={this.state.formState}
         program_version_status={this.props.program_version_status}
         formErrors={this.state.formErrors}

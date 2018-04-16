@@ -14,7 +14,7 @@ import PercentModalFormWrap from './PercentModalFormWrap';
 @connectToStores(['repair', 'session'])
 @staticProps({
   entity: 'repair_program_version',
-  listName: 'dataOboutObjectbyIdList',
+  listName: 'dataAboutObjectbyIdList',
   tableComponent: PercentModalTable,
   formComponent: PercentModalFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'DELETE'],

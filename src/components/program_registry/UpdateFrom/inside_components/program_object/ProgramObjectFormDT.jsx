@@ -42,6 +42,7 @@ class ProgramObjectFormDT extends Form {
       selectedObj: {},
       IS_CREATING: !props.formState.id,
       polys: {},
+      VERSIONS_OPTIONS: [],
     };
   }
 
@@ -104,7 +105,14 @@ class ProgramObjectFormDT extends Form {
         });
       }
     });
+
+    if (!IS_CREATING) {
+      this.context.flux.getActions('repair').getObjectVersions(this.props.formState.id)
+        .then(ans => this.setState({ VERSIONS_OPTIONS: ans.map(({ object_id, program_version_id }, index) => ({ value: object_id, label: `Версия №${index}`, object_id, program_version_id })) }));
+    }
   }
+
+  handleChangeVersion = (value, versionAllData) => this.props.changeVersionWithObject(versionAllData);
 
   setManualOnFalse = () => {
     const { formState: { draw_object_list = [] } } = this.props;
@@ -303,6 +311,7 @@ class ProgramObjectFormDT extends Form {
       selectedObj,
       IS_CREATING,
       dtPolys = {},
+      VERSIONS_OPTIONS = [],
     } = this.state;
 
     const {
@@ -350,12 +359,12 @@ class ProgramObjectFormDT extends Form {
             </Col>
             <Col mdOffset={3} md={3}>
               <ExtField
+                hidden={!state.id}
                 type="select"
                 label="Версия"
-                options={[]}
-                value={1}
-                boundKeys={['version_id']}
-                disabled={true}
+                options={VERSIONS_OPTIONS}
+                onChange={this.handleChangeVersion}
+                value={state.id}
                 clearable={false}
               />
             </Col>

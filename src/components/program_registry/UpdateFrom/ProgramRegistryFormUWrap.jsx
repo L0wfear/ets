@@ -110,6 +110,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       activeVersionId: version,
       ...this.props.getFrowmStateAndErrorAndCanSave(reduceVersionList[version]),
     });
+    return Promise.resolve();
   }
   handleExportVersion = () => {
     global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');

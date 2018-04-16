@@ -348,6 +348,7 @@ export default class ProgramRegistryForm extends Form {
                     repair_type_name={state.repair_type_name}
                     updateObjectData={this.updateObjectData}
                     isPermittedByStatus={isPermittedByStatus}
+                    changeVersion={this.props.changeVersion}
                   />
                   <ProgramRemarkList
                     isSupervisor={isSupervisor}

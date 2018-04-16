@@ -3,7 +3,7 @@ import { createValidDate, createValidDateTime } from 'utils/dates';
 
 
 export const onChangeWithKeys = withHandlers({
-  onChange: ({ onChange, boundKeys = []}) => e => onChange(...boundKeys, e),
+  onChange: ({ onChange, boundKeys = []}) => (e, ...other) => onChange(...boundKeys, e, ...other),
 });
 
 export const onClickWithKeys = withHandlers({

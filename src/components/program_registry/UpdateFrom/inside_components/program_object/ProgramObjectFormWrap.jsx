@@ -140,6 +140,7 @@ class ProgramObjectFormWrap extends FormWrap {
         isPermitted={isPermitted && (this.props.program_version_status !== 'accepted')}
         updateObjectData={this.updateObjectData}
         isPermittedByStatus={this.props.isPermittedByStatus}
+        changeVersionWithObject={this.props.changeVersionWithObject}
       />
     );
   }

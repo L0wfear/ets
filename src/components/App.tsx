@@ -16,6 +16,7 @@ global.NODE_ENV = process.env.NODE_ENV;
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.SESSION_KEY = `ets-session-${process.env.STAND}`;
 global.CURRENT_USER = `current-user-${process.env.STAND}`;
+global.NOTIFICATION_READ_ARR = `notification-read-arr-${process.env.STAND}2`;
 
 const getLoginPage = props => {
   const {

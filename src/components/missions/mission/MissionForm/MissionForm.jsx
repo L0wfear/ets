@@ -27,7 +27,7 @@ import {
   getRoutesByMissionId,
   getTechnicalOperationData,
   handleRouteFormHide,
-} from 'components/missions/mission/utils';
+} from 'components/missions/mission/MissionForm/utils';
 
 const ASSIGN_OPTIONS = [
   { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -87,7 +87,9 @@ export class MissionForm extends Form {
           if (this.state.is_cleaning_norm) {
             const { formState: { date_start } } = this.props;
             if (date_start) {
-              changesObj.date_end = addTime(date_start, routeTypesBySlug[route.object_type].time, 'hours');
+              this.props.handleMultiFormChange({
+                date_end: addTime(date_start, routeTypesBySlug[route.object_type].time, 'hours'),
+              });
             }
           }
           this.setState({ selectedRoute: route });
@@ -159,6 +161,7 @@ export class MissionForm extends Form {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
     const { formState } = this.props;
+
     return handleRouteFormHide(
       isSubmitted,
       result,

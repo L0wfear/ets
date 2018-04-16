@@ -15,7 +15,7 @@ import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
-import { MissionForm } from '../mission/MissionForm.jsx';
+import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm.jsx';
 
 class MissionTemplateForm extends MissionForm {
   constructor(props) {

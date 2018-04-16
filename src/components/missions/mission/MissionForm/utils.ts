@@ -1,6 +1,34 @@
 import { getKindTaskIds } from 'components/missions/utils/utils';
 
-export const makeTechnicalOperationOptionfFromWaybill = (technicalOperationsList, { type_id }) =>
+interface IFormState {
+  id?: number;
+  is_new?: boolean;
+  mission_source_id?: number;
+  route_id?: number;
+  status?: string | void;
+  type_id?: number;
+}
+interface ITechnicalOperation {
+  car_func_types: { id: number }[];
+  id: number;
+  is_new: boolean;
+  name: string;
+}
+
+interface ITechnicalOperation {
+  value: number;
+  label: any;
+}
+
+type TMakeTechnicalOperationOptionfFromWaybill = (technicalOperationsList: ITechnicalOperation[], formState: IFormState) => ITechnicalOperation[];
+
+/**
+ * Создание TECH_OPERATIONS по type_id
+ * @param technicalOperationsList массив тех операций
+ * @param fromState объект с полем type_id
+ * @returns TECHNICAL_OPERATION
+ */
+export const makeTechnicalOperationOptionfFromWaybill: TMakeTechnicalOperationOptionfFromWaybill = (technicalOperationsList, { type_id }) =>
   technicalOperationsList.reduce((newArr, technicalOperation) => {
     if (technicalOperation.is_new && technicalOperation.car_func_types.find(({ id }) => id === type_id)) {
       return [
@@ -11,7 +39,14 @@ export const makeTechnicalOperationOptionfFromWaybill = (technicalOperationsList
     return [...newArr];
   }, []);
 
-export const makeTechnicalOperationOptionDefault = (technicalOperationsList, { is_new }) =>
+type TMakeTechnicalOperationOptionDefault = (technicalOperationsList: ITechnicalOperation[], formState: IFormState) => ITechnicalOperation[];
+/**
+ * Создание TECH_OPERATIONS по is_new
+ * @param technicalOperationsList массив тех операций
+ * @param fromState объект с полем is_new
+ * @returns TECHNICAL_OPERATION
+ */
+export const makeTechnicalOperationOptionDefault: TMakeTechnicalOperationOptionDefault = (technicalOperationsList, { is_new }) =>
   technicalOperationsList.reduce((newArr, technicalOperation) => {
     if (!is_new || (is_new && technicalOperation.is_new)) {
       return [
@@ -23,7 +58,27 @@ export const makeTechnicalOperationOptionDefault = (technicalOperationsList, { i
     return [...newArr];
   }, []);
 
-export const getTechnicalOperationData = (formState, fromOrder, fromWaybill, missionSourceAction, technicalOperationsActions) =>
+type TGetTechnicalOperationData = (
+  formState: IFormState,
+  fromOrder: boolean,
+  fromWaybill: boolean,
+  missionSourceAction: () => Promise<any>,
+  technicalOperationsActions: ({ kind_task_ids: string }) => Promise<any>,
+) => Promise<{
+  TECH_OPERATIONS: ITechnicalOperation[],
+  kind_task_ids: string | void;
+  technicalOperationsList: ITechnicalOperation[];
+}>;
+
+/**
+ * 
+ * @param formState состояние формы
+ * @param fromOrder создание из реестра факсограмм?
+ * @param fromWaybill создание из реестра ПЛ?
+ * @param missionSourceAction Получение списка источников заданий
+ * @param technicalOperationsActions Получение списка тех операций
+ */
+export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, fromOrder, fromWaybill, missionSourceAction, technicalOperationsActions) =>
   missionSourceAction()
     .then(({ result: missionSourcesList }) => {
       const kind_task_ids =
@@ -53,7 +108,18 @@ export const getTechnicalOperationData = (formState, fromOrder, fromWaybill, mis
       };
     });
 
-export const getDataBySelectedRoute = (formState, routesActions, defaultValue = null) => {
+type TGetDataBySelectedRoute = (
+  formState: IFormState,
+  routesActions: (route_id: number, flag: boolean) => Promise<any>,
+  defaultValue?: any,
+) => Promise<any>;
+/**
+ * Получение информации по выбранному маршруту
+ * @param formState состояние формы
+ * @param routesActions экшн получения маршрутов
+ * @param defaultValue значение по умолчанию (по умолчанию null)
+ */
+export const getDataBySelectedRoute: TGetDataBySelectedRoute = (formState, routesActions, defaultValue = null) => {
   const { route_id } = formState;
   if (route_id) {
     return routesActions(route_id, false);
@@ -62,7 +128,20 @@ export const getDataBySelectedRoute = (formState, routesActions, defaultValue = 
   return Promise.resolve(defaultValue);
 };
 
-export const getRoutesByMissionId = (formState, isTemplate, routesActions, defaultValue) => {
+type IGetRoutesByMissionId = (
+  formState: IFormState,
+  isTemplate: boolean,
+  routeAction: (id: number, isTemplate: boolean) => Promise<any>,
+  defaultValue: any,
+) => Promise<any>;
+/**
+ * Получени списка маршрутов по id задания
+ * @param formState состояние формы
+ * @param isTemplate это шаблон?
+ * @param routesActions экшн получения маршрутов
+ * @param defaultValue значение по умолчанию
+ */
+export const getRoutesByMissionId: IGetRoutesByMissionId = (formState, isTemplate, routesActions, defaultValue) => {
   const { id } = formState;
   if (id) {
     return routesActions(id, isTemplate);

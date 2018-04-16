@@ -293,7 +293,7 @@ class WaybillForm extends Form {
       let newMissions = [];
       let { notAvailableMissions = [] } = this.state;
 
-      if (status === 'active' || status === 'draft') {
+      if (status === 'active') {
         newMissions = currentMissions;
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions

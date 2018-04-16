@@ -599,6 +599,7 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(newFormData) {
+    /*
     const { formState } = this.props;
     const oldFormData = formState.mission_id_list;
     const IS_CREATING = !formState.status;
@@ -613,6 +614,8 @@ class WaybillForm extends Form {
     );
 
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
+    */
+    this.handleChange('mission_id_list', newFormData);
   }
 
   handleStructureIdChange(v) {

@@ -37,6 +37,10 @@ module.exports = {
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
       { test: /^((?!\.module).)*\.s?css$/, loader: ExtractTextPlugin.extract('style','css-loader!resolve-url!sass-loader?sourceMap') },
       { test: /\.module\.s?css$/, loader: ExtractTextPlugin.extract('style','css-loader?modules&importLoaders=2&localIdentName=[path]___[name]__[local]___[hash:base64:5]!resolve-url!sass-loader?sourceMap') },
+      {
+			    test: /\.(ogg|mp3|wav|mpe?g)$/i,
+			    loader: 'file-loader'
+			},
     ]
   },
   resolve: {

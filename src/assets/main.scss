@@ -3240,3 +3240,7 @@ div.none {
 .textarea-field textarea{
   resize: vertical;
 }
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}

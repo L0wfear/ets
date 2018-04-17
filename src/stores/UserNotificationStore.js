@@ -61,14 +61,18 @@ export default class UserNotificationStore extends Store {
       notificationPopupList: [],
       userNotificationList: [],
       countNotRead: 0,
+      hasNewOrderNotifications: false,
     };
   }
   handleGetNotificationsPopup({ result: { rows = [] } }) {
+    const { notificationPopupList: notificationPopupListOld } = this.state;
+    const notificationPopupIndexOld = notificationPopupListOld.reduce((newObj, { id, ...other }) => ({ ...newObj, [id]: { ...other } }), {});
     const notificationPopupList = rows;
 
     this.setState({
       notificationPopupList,
       notificationPopupLast: notificationPopupList.slice(-1),
+      hasNewOrderNotifications: notificationPopupList.some(({ id }) => !notificationPopupIndexOld[id]),
     });
   }
   handleDecNotificationsPopup() {
@@ -77,6 +81,7 @@ export default class UserNotificationStore extends Store {
     this.setState({
       notificationPopupList,
       notificationPopupLast,
+      hasNewOrderNotifications: false,
     });
   }
   handleGetNotifications({ result }) {

@@ -6,9 +6,6 @@ import { connectToStores } from 'utils/decorators';
 @connectToStores(['userNotifications'])
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-  }
   shouldComponentUpdate(nextProps) {
     const { countNotRead: nextCountNotRead } = nextProps;
     const { countNotRead: countNotRead } = this.props;

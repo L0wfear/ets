@@ -15,3 +15,5 @@ declare module NodeJS  {
     NOTIFICATION_READ_ARR: string;
   }
 }
+declare module '*.mp3'
+declare module '*.ogg'

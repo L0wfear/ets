@@ -59,6 +59,7 @@ export default class UserNotificationStore extends Store {
     this.register(userNotificationActions.changesUserNotificationsCount, this.handleChangesUserNotificationsCount)
     this.state = {
       notificationPopupList: [],
+      notificationPopupLast: [],
       userNotificationList: [],
       countNotRead: 0,
       hasNewOrderNotifications: false,

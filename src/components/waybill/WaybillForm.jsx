@@ -19,6 +19,7 @@ import {
   isEmpty,
   hasMotohours,
   isEqualOr,
+  isFourDigitGovNumber,
 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
 

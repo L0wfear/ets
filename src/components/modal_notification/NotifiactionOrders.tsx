@@ -74,7 +74,9 @@ class NotifiactionOrders extends NotificationModal {
    * @override
    */
   getHeader = () => {
-    const { notificationPopupLast: [{ created_at = null }] = [{}] } = this.props;
+    const { notificationPopupLast } = this.props;
+    const [popupData] = notificationPopupLast;
+    const { created_at = null } = popupData || {};
 
     return (
       <Modal.Header closeButton>

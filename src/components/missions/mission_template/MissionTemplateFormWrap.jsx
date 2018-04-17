@@ -1,14 +1,22 @@
-import React from 'react';
+import * as React from 'react';
 import { autobind } from 'core-decorators';
-import _ from 'lodash';
+import clone from 'lodash/clone';
+import keys from 'lodash/keys';
+import filter from 'lodash/filter';
 import Div from 'components/ui/Div.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
-import { getToday9am, getTomorrow9am } from 'utils/dates.js';
+import { getToday9am, getTomorrow9am, addTime } from 'utils/dates.js';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
+
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
+import {
+  checkMissionsByRouteType,
+  checkMissionsOnStructureIdCar,
+} from 'components/missions/utils/customValidate.ts';
+
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
 
@@ -91,7 +99,7 @@ export default class MissionFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === 'ViewForm') {
         this.schema = missionTemplateSchema;
-        const mission = props.element === null ? getDefaultMissionTemplate() : _.clone(props.element);
+        const mission = props.element === null ? getDefaultMissionTemplate() : clone(props.element);
 
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {
@@ -99,18 +107,24 @@ export default class MissionFormWrap extends FormWrap {
         }
         this.setState({
           formState: mission,
-          canSave: !_.filter(formErrors).length, // false,
+          canSave: !filter(formErrors).length, // false,
           formErrors,
         });
       } else {
         this.schema = missionsCreationTemplateSchema;
         const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
         const formErrors = this.validate(defaultMissionsCreationTemplate, {});
+        const dataTestRoute = checkMissionsByRouteType(Object.values(this.props.missions), defaultMissionsCreationTemplate);
+        if (dataTestRoute.error) {
+          defaultMissionsCreationTemplate.date_end = addTime(defaultMissionsCreationTemplate.date_start, dataTestRoute.time, 'hours');
+        }
 
         this.setState({
           formState: defaultMissionsCreationTemplate,
-          canSave: !_.filter(formErrors).length, // false,
+          canSave: !filter(formErrors).length, // false,
           formErrors,
+          needMoveDateEnd: dataTestRoute.error,
+          countBumpDateEnd: dataTestRoute.time,
         });
       }
     }
@@ -119,6 +133,11 @@ export default class MissionFormWrap extends FormWrap {
   async handleFormSubmit() {
     const { flux } = this.context;
     const { formState } = this.state;
+    const {
+      _carsIndex = {},
+      missions = {},
+    } = this.props;
+
     if (this.props.formType === 'ViewForm') {
       if (isEmpty(formState.id)) {
         try {
@@ -135,26 +154,36 @@ export default class MissionFormWrap extends FormWrap {
       }
       this.props.onFormHide();
     } else {
-      const externalPayload = {
-        mission_source_id: formState.mission_source_id,
-        passes_count: formState.passes_count,
-        date_start: formState.date_start,
-        date_end: formState.date_end,
-        assign_to_waybill: formState.assign_to_waybill,
-      };
+      const missionsArr = Object.values(missions);
 
-      const missions = _.keys(this.props.missions)
-        .map(key => this.props.missions[key]);
+      if (!checkMissionsOnStructureIdCar(missionsArr, _carsIndex)) {
+        const dataTestRoute = checkMissionsByRouteType(missionsArr, formState);
 
-      let closeForm = true;
+        if (dataTestRoute.error) {
+          global.NOTIFICATION_SYSTEM.notify(`Время выполнения задания для ${dataTestRoute.title} должно составлять не более ${dataTestRoute.time} часов`, 'error');
+        } else {
+          const externalPayload = {
+            mission_source_id: formState.mission_source_id,
+            passes_count: formState.passes_count,
+            date_start: formState.date_start,
+            date_end: formState.date_end,
+            assign_to_waybill: formState.assign_to_waybill,
+          };
 
-      for (const m of missions) {
-        const e = await createMissions(flux, { [m.id]: m }, externalPayload);
-        if (e) closeForm = false;
+          const missions = keys(this.props.missions)
+            .map(key => this.props.missions[key]);
+
+            let closeForm = true;
+
+          for (const m of missions) {
+            const e = await createMissions(flux, { [m.id]: m }, externalPayload);
+            if (e) closeForm = false;
+          }
+
+          closeForm && this.props.onFormHide(true);
+          return;
+        }
       }
-
-      closeForm && this.props.onFormHide(true);
-      return;
     }
   }
 

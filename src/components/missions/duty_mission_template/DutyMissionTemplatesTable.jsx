@@ -111,6 +111,7 @@ const DataTable = props => (
     initialSort={'number'}
     initialSortAscending={false}
     {...props}
+    multiSelection={true}
   />
 );
 

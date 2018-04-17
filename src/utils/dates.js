@@ -1,6 +1,13 @@
 import moment from 'moment';
 import { isEqualOr } from './functions';
 
+export const getDateWithMoscowTz = (...dateProps) => {
+  const newDate = new Date(...dateProps);
+  newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
+
+  return newDate;
+};
+
 export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
@@ -34,7 +41,7 @@ export function createValidDate(date) {
 
 export function createValidDateTime(date) {
   if (!date) return null;
-  return moment(date).format('YYYY-MM-DDTHH:mm:ss');
+  return moment(date).seconds(0).format('YYYY-MM-DDTHH:mm:ss');
 }
 
 export function getFormattedDateTime(date) {
@@ -161,5 +168,10 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  * @param {date | string} dataB - date end compare
  * @param {string} typeDiff - type compare (see moment .diff())
  */
-export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
-  moment(dataA).diff(moment(dataB), typeDiff);
+export const setZeroSecondsToDate = date => moment(date).seconds(0);
+
+export const diffDates = (dataA, dataB, typeDiff = 'seconds', float = true) =>
+  moment(dataA).diff(moment(dataB), typeDiff, float);
+
+
+export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();

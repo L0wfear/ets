@@ -8,23 +8,9 @@ import * as queryString from 'query-string';
 import Div from 'components/ui/Div.jsx';
 import Filter from 'components/ui/table/filter/Filter.jsx';
 import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
+import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils.js';
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
-
-const getTypeRoute = (type) => {
-  switch (type) {
-    case 'mixed':
-    case 'simple':
-    case 'vector':
-      return 'Маршруты по ОДХ';
-    case 'simple_dt':
-      return 'Маршруты по ДТ';
-    case 'points':
-      return 'Маршруты по пунктам назначения';
-    default:
-      return 'error';
-  }
-};
 
 class RoutesList extends Component {
 
@@ -63,12 +49,8 @@ class RoutesList extends Component {
     await flux.getActions('technicalOperation').getTechnicalOperations();
     const { technicalOperationsList = [] } = this.props;
 
-    const routesList = await flux.getActions('routes').getRoutes().then(({ result }) => result);
-    routesList.forEach((r) => {
-      r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
-      r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
-      r.type_name = getTypeRoute(r.type);
-    });
+    const routesListFromStore = await flux.getActions('routes').getRoutes().then(({ result }) => result);
+    const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
 
     const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
@@ -146,6 +128,7 @@ class RoutesList extends Component {
 
   selectRoute = (id) => {
     const { flux } = this.context;
+    this.setState({ selectedRoute: null });
     flux.getActions('routes').getRouteById(id).then((route) => {
       this.setState({ selectedRoute: route });
     });
@@ -177,18 +160,20 @@ class RoutesList extends Component {
     });
   }
 
-  deleteRoute = async () => {
+  deleteRoute = async() => {
     try {
       await confirmDialog({
-        title: 'Внимание',
+        title: 'Внимание!',
         body: 'Вы уверены, что хотите удалить выбранный маршрут?',
       });
-      const { flux } = this.context;
-      flux.getActions('routes').removeRoute(this.state.selectedRoute);
-      this.setState({ selectedRoute: null });
-    } catch (err) {
-      // отмена
+    } catch (er) {
+      return;
     }
+    const { flux } = this.context;
+    const routesListFromStore = await flux.getActions('routes').removeRoute(this.state.selectedRoute).then(({ result }) => result);
+    const routesListAfterDeleteRoute = makeRoutesListForRender(routesListFromStore, this.props.technicalOperationsList, this.getStructures());
+
+    this.setState({ selectedRoute: null, routesList: routesListAfterDeleteRoute });
   }
 
   editRoute = (route) => {

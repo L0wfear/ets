@@ -215,6 +215,7 @@ export default class RouteForm extends Form {
                 <Col md={6}>
                   <MunicipalFacility
                     id={'municipal_facility_id'}
+                    label={'municipal_facility_name'}
                     errors={errors}
                     state={state}
                     disabled={this.props.fromMission || state.id}

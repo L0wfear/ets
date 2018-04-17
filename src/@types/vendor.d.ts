@@ -8,10 +8,10 @@ declare module NodeJS  {
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
     };
-    SESSION_KEY: string;
+    SESSION_KEY2: string;
     window: any;
     APP_DATE_FORMAT: string;
-    CURRENT_USER: string;
+    CURRENT_USER2: string;
     NOTIFICATION_READ_ARR: string;
   }
 }

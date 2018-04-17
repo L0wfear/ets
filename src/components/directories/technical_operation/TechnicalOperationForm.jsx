@@ -150,7 +150,7 @@ export default class TechnicalOperationForm extends Form {
             <Col md={3} className="vehicle-types-container">
               <Field type="select" label="Типы ТС"
                 multi
-                value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
+                value={_.uniq(state.car_func_types.map(cft => cft.asuods_id)).join(',')}
                 options={CAR_TYPES}
                 onChange={this.handleCarFuncTypesChange}
                 disabled={!isPermitted}

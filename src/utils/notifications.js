@@ -138,6 +138,17 @@ export function getWarningNotification(message) {
   };
 }
 
+export function getErrorNotificationFromBack(message) {
+  return {
+    title: 'Внимание',
+    level: 'error',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+    children: makeReactMessange(message),
+  };
+}
+
 export function getInfoNotification(message) {
   return {
     title: 'Ифнормация',
@@ -153,6 +164,10 @@ export function getAdminInfoNotification(notify) {
   return {
     title: notify.title,
     uid: notify.id,
+    level: 'info',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
     children: makeReactMessange(notify.body),
     onRemove() {
       const notificationReadInfo = JSON.parse(localStorage.getItem(global.NOTIFICATION_READ_ARR)) || [];

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
+import { getToday9am } from 'utils/dates';
 
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { FluxContext } from 'utils/decorators';
@@ -20,7 +21,8 @@ import OrderAssignmentsList from 'components/directories/order/order_assignment/
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 
 import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.js';
-import { typeTemplate } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
+
+import { typeTemplate } from 'components/directories/order/forms/utils/constant';
 
 const PaginatorTsx: any = Paginator;
 
@@ -77,6 +79,7 @@ class OrderList extends React.Component<any, any> {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources();
     flux.getActions('employees').getEmployees({ active: true });
+    flux.getActions('objects').getCars();
 
     const { match: { params: { idOrder = '' } } } = this.props;
     const outerIdFax = Number.parseInt(idOrder, 0);
@@ -290,7 +293,7 @@ class OrderList extends React.Component<any, any> {
     const { missionSourcesList = [] } = this.props;
 
     const mElement = {
-      ...getDefaultMission(),
+      ...getDefaultMission(getToday9am()),
       technical_operation_id,
       municipal_facility_id,
       faxogramm_id,

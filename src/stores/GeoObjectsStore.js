@@ -12,7 +12,6 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.getODHs, this.handleGetList.bind(this, 'odhs'));
     this.register(geoObjectsActions.updateODH, this.handleGetList.bind(this, 'odhs'));
     this.register(geoObjectsActions.updateDT, this.handleGetList.bind(this, 'dts'));
-    this.register(geoObjectsActions.getDTs, this.handleGetList.bind(this, 'dts'));
     this.register(geoObjectsActions.getGeozones, this.handleGetGeozones);
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 
@@ -136,7 +135,13 @@ export default class GeoObjectsStore extends Store {
     const type = response.type || rows[0].type;
     const polys = {};
     rows.forEach((geozone) => {
-      const shape = (geozone.shape.constructor === String) ? JSON.parse(geozone.shape) : geozone.shape;
+      let shape = {};
+      try {
+        shape = JSON.parse(geozone.shape);
+      } catch (e) {
+        shape = geozone.shape;
+      }
+
       geozone.featureType = type || geozone.type;
       delete geozone.shape;
       polys[geozone.global_id || geozone.id || geozone.sensor_id] = Object.assign({}, {

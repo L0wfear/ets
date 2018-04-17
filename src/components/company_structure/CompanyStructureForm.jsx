@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -6,34 +6,42 @@ import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from '../compositions/Form.jsx';
 
+const DEY = { value: 3, label: 'ДЭУ' };
+const DEK = { value: 2, label: 'ДЭК' };
+
+const STRUCTURE_TYPES = {
+  half: [
+    DEY,
+  ],
+  all: [
+    DEY,
+    DEK,
+  ],
+};
+
 class CompanyStructureForm extends Form {
-
-  async componentDidMount() {
-    this.company_id = this.context.flux.getStore('session').getCurrentUser().company_id;
+  handleChangeParentID = (parent_id) => {
+    this.handleChange('type', null);
+    this.handleChange('parent_id', parent_id);
   }
-
   render() {
-    const [
-      state = {},
-      errors = {},
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
+    const {
+      formState: state = {},
+      formErrors: errors = {},
+    } = this.props;
 
     const { companyStructureLinearList = [] } = this.props;
     const { parent_id = false } = state;
 
-    let COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== 3).map(el => ({ value: el.id, label: el.name }));
-    COMPANY_ELEMENTS = [{ value: null, label: 'Предприятие' }, ...COMPANY_ELEMENTS];
-    const STRUCTURE_TYPES = [{ value: 3, label: 'ДЭУ' }];
+    const COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== DEY.value).map(el => ({ value: el.id, label: el.name }));
+    let structureType = 'half';
     let parent_type_is_dek = false;
 
     if (parent_id) {
-      parent_type_is_dek = companyStructureLinearList.find(d => d.id === parent_id).type === 2;
+      parent_type_is_dek = companyStructureLinearList.find(d => d.id === parent_id).type === DEK.value;
     }
     if (!parent_id || !parent_type_is_dek) {
-      STRUCTURE_TYPES.push({ value: 2, label: 'ДЭК' });
+      structureType = 'all';
     }
     const IS_CREATING = !state.id;
 
@@ -56,14 +64,16 @@ class CompanyStructureForm extends Form {
                 error={errors.parent_id}
                 options={COMPANY_ELEMENTS}
                 value={state.parent_id}
-                onChange={this.handleChange.bind(this, 'parent_id')}
+                onChange={this.handleChangeParentID}
                 clearable
+                disabled={COMPANY_ELEMENTS.length === 0}
+                placeholder="Подразделение"
               />
               <Field
                 type="select"
                 label="Тип подразделения"
                 error={errors.type}
-                options={STRUCTURE_TYPES}
+                options={STRUCTURE_TYPES[structureType]}
                 value={state.type}
                 onChange={this.handleChange.bind(this, 'type')}
                 clearable

@@ -65,16 +65,9 @@ class CarForm extends Form {
     }
   }
   async componentDidMount() {
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
-
-    const searchObject = queryString.parse(search);
-
-    if (Object.keys(searchObject).length > 0) {
-      this.props.handleTabSelect(searchObject.active_tab);
+    const { location: { search } } = this.props;
+    if (search) {
+      this.props.handleTabSelect(queryString.parse(search).active_tab);
     }
     const nextState = this.props.formState;
     const linear = true;
@@ -102,18 +95,6 @@ class CarForm extends Form {
     this.handleChange(key, value);
   }
   handleSave = () => {
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
-
-    const searchObject = queryString.parse(search);
-
-    if (Object.keys(searchObject).length > 0) {
-      this.props.history.push(this.props.match.url);
-    }
-
     if (this.props.tabKey !== CAR_TAB_INDEX.main_info) {
       this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
     } else {
@@ -140,7 +121,7 @@ class CarForm extends Form {
     const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
-    
+
     return (
       <Modal {...this.props} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
@@ -210,7 +191,7 @@ class CarForm extends Form {
               propulsionTypeOptions={propulsionTypeOptions}
               carCategoryOptions={carCategoryOptions}
               typesOptions={typesOptions}
-              />
+            />
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
@@ -258,7 +239,7 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             <TechInspectionList
               car_id={state.asuods_id}
-             />
+            />
           </TabContent>
         </ModalBody>
 

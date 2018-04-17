@@ -1879,7 +1879,7 @@ body.application {
 }
 
 .griddle-container {
-  height: 75vh;
+  max-height: calc(100vh - 66px - 21px - 45px - 72px - 30px);  
   border: none !important;
   overflow-x: auto;
   width: 100%;
@@ -2575,6 +2575,9 @@ div.none {
   }
   .dashboard-card {
     z-index: 1000;
+    &.no-margin-bottom {
+      margin-bottom: 0;
+    }
   }
   .card-chevron-right {
     position: absolute;
@@ -3239,4 +3242,16 @@ div.none {
 
 .textarea-field textarea{
   resize: vertical;
+}
+
+.colorRed {
+  color: red;
+}
+
+.colorGreen {
+  color: green;
+}
+
+.listStyleTypeNone{
+  list-style-type: none;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { secondsToTime } from 'utils/dates';
+import { diffDates, secondsToTime } from 'utils/dates';
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -11,6 +11,7 @@ import FluxComponent from 'flummox/component';
 import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
 import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
 import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
+
 import Form from '../compositions/Form.jsx';
 
 const VALUE_FOR_FIXED = {
@@ -56,6 +57,7 @@ class MissionInfoForm extends Form {
 
   constructor(props) {
     super(props);
+    const { formState: { mission_data: { date_end, date_start } } } = props;
 
     this.state = {
       missionReport: [],
@@ -64,17 +66,27 @@ class MissionInfoForm extends Form {
       selectedPointNum: null,
       selectedPoint: null,
       parkingCount: null,
+      tooLongDates: diffDates(date_end, date_start, 'days') > 3,
     };
   }
 
   async componentDidMount() {
     const { formState } = this.props;
-    const { mission_data, car_data, report_data, route_data } = formState;
+    const {
+      mission_data,
+      car_data,
+      report_data,
+      route_data,
+    } = formState;
+    
     const { flux } = this.context;
     await flux.getActions('objects').getCars();
-    flux.getActions('points').createConnection();
-    flux.getActions('points').setSingleCarTrack(car_data.gov_number);
-    flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
+    if (!this.state.tooLongDates) {
+      flux.getActions('points').createConnection();
+      flux.getActions('points').setSingleCarTrack(car_data.gov_number);
+      flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
+    }
+
     await flux.getActions('geoObjects').getGeozones();
     const route = await flux.getActions('routes').getRouteById(route_data.id, true);
     let missionReport = report_data.entries;
@@ -91,8 +103,10 @@ class MissionInfoForm extends Form {
   }
 
   componentWillUnmount() {
-    this.context.flux.getActions('points').closeConnection();
-    this.context.flux.getActions('points').setSingleCarTrack(null);
+    if (!this.state.tooLongDates) {
+      this.context.flux.getActions('points').closeConnection();
+      this.context.flux.getActions('points').setSingleCarTrack(null);
+    }
   }
 
   handleSelectedElementChange(id) {
@@ -119,10 +133,14 @@ class MissionInfoForm extends Form {
       report_data,
       route_data,
       technical_operation_data,
+      mission_data: {
+        current_percentage = null,
+        sensor_traveled_working = null,
+      },
     } = state;
 
     const routeType = route_data.type;
-    const { route = {} } = this.state;
+    const { route = {}, tooLongDates } = this.state;
     const { geozonePolys = {} } = this.props;
 
     const { object_list = [], draw_object_list = [] } = route;
@@ -146,7 +164,6 @@ class MissionInfoForm extends Form {
     });
     if (!car_data.gov_number) return <div />;
     const title = `Информация о задании. Рег. номер ТС: ${car_data.gov_number}`;
-    const { element: { mission_data: { sensor_traveled_working = null } } } = this.props;
 
     const traveled_rawAndCheck_unit = checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F');
     const traveled_high_speedCheck_unit = checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F');
@@ -197,39 +214,51 @@ class MissionInfoForm extends Form {
             </Col>
 
             <Col md={6}>
-              <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
-                <Div hidden={routeType !== 'mixed'}>
-                  <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+              <Div hidden={tooLongDates}>
+                <Div style={{ marginTop: -35 }} hidden={!(this.state.missionReport && this.state.missionReport.length > 0)}>
+                  <Div hidden={routeType !== 'mixed'}>
+                    <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+                  </Div>
+                  <Div hidden={routeType !== 'simple_dt'}>
+                    <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+                  </Div>
+                  <Div hidden={routeType !== 'points'}>
+                    <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} onElementChange={this.handleSelectedPointChange} selectedField={'customId'} />
+                  </Div>
                 </Div>
-                <Div hidden={routeType !== 'simple_dt'}>
-                  <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={this.state.missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
-                </Div>
-                <Div hidden={routeType !== 'points'}>
-                  <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={this.state.missionReport} onElementChange={this.handleSelectedPointChange} selectedField={'customId'} />
+                <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
+                  <h5>Нет данных о прохождении задания</h5>
                 </Div>
               </Div>
-              <Div hidden={this.state.missionReport && this.state.missionReport.length > 0}>
-                <h5>Нет данных о прохождении задания</h5>
+              <Div hidden={!tooLongDates}>
+                <Col md={9} mdOffset={3}>
+                  <span>{'Слишком большой период действия задания'}</span>
+                </Col>
               </Div>
             </Col>
 
           </Row>
 
-          <Div>
+          <Div hidden={tooLongDates}>
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
-            <li><b>Пройдено с рабочей скоростью:</b>
-              {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
-            </li>
-            <li><b>Пройдено с превышением рабочей скорости:</b>
-              {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
-            </li>
-            <li><b>Общее время стоянок:</b>
-              {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
-            </li>
-            <li><b>Общий пробег с работающим оборудованием:</b>
-              {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания'}`}
-            </li>
+            <ul className="listStyleTypeNone" >
+              <li className="colorRed"><b>Пройдено с рабочей скоростью:&nbsp;</b>
+                {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
+              </li>
+              <li className="colorGreen"><b>Пройдено с превышением рабочей скорости:&nbsp;</b>
+                {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
+              </li>
+              <li><b>Общее время стоянок: </b>
+                {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
+              </li>
+              <li><b>Общий пробег с работающим оборудованием: </b>
+                {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания.'}`}
+              </li>
+              <li><b>Процент выполнения задания %:</b>
+                {Math.floor(current_percentage) || '-'}
+              </li>
+            </ul>
           </Div>
 
         </ModalBody>

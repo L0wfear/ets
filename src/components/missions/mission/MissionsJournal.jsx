@@ -149,27 +149,23 @@ export default class MissionsJournal extends CheckableElementsList {
     const countCheckEl = checkElList.length;
 
     if (countCheckEl !== 0) {
-      const elList = Array(countCheckEl).fill(false);
-
-      checkElList.forEach((mission, i) => {
+      const queries = checkElList.map((mission, i) => {
         const updatedMission = _.cloneDeep(mission);
         updatedMission.status = 'complete';
 
-        this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
-          elList[i] = true;
-          if (!elList.some(elD => !elD)) {
-            this.refreshList();
-            global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
-          }
+        return this.context.flux.getActions('missions').updateMission(updatedMission, false);
+      });
+
+      Promise.all(queries)
+        .then(() => {
+          this.refreshList();
+          global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
         })
         .catch(() => {
-          elList[i] = true;
-          if (!elList.some(elD => !elD)) {
-            this.refreshList();
-            global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
-          }
+          this.refreshList();
+          global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
         });
-      });
+
       this.setState({
         checkedElements: {},
         selectedElement: null,

@@ -15,13 +15,14 @@ import Field from 'components/ui/Field.jsx';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
-import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
 import { getKindTaskIds } from 'components/missions/utils/utils.ts';
+import { routeTypesBySlug } from 'constants/route';
+import { addTime, diffDates } from 'utils/dates.js';
 
 export const checkRouteByNew = (state, route) => {
   const { is_new = true } = state;
@@ -52,6 +53,7 @@ export class MissionForm extends Form {
       routesList: [],
       technicalOperationsList: [],
       car_func_types_ids: [],
+      is_cleaning_norm: false,
     };
   }
 
@@ -60,6 +62,12 @@ export class MissionForm extends Form {
     const { flux } = this.context;
     if (v) {
       flux.getActions('routes').getRouteById(v, false).then((r) => {
+        if (this.state.is_cleaning_norm) {
+          const { formState: { date_start } } = this.props;
+          if (date_start) {
+            this.handleChange('date_end', addTime(date_start, routeTypesBySlug[r.object_type].time, 'hours'));
+          }
+        }
         this.setState({ selectedRoute: r });
       });
     } else {
@@ -79,11 +87,9 @@ export class MissionForm extends Form {
   // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
   // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
   handleTechnicalOperationChange(v) {
-    setTimeout(() => {
-      this.handleChange('technical_operation_id', v);
-      this.handleChange('municipal_facility_id', null);
-      this.handleRouteIdChange(undefined);
-    }, 60);
+    this.handleChange('technical_operation_id', v);
+    this.handleChange('municipal_facility_id', null);
+    this.handleRouteIdChange(undefined);
   }
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);
@@ -131,16 +137,9 @@ export class MissionForm extends Form {
     }
 
     const {
-      norm_id,
       id,
       mission_source_id,
     } = mission;
-
-    if (norm_id) {
-      await this.getDataByNormId(norm_id);
-      carsList = await this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
-        .then(({ result: { rows = [] } }) => rows);
-    }
 
     const { missionSourcesList = [] } = this.props;
     if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
@@ -235,9 +234,16 @@ export class MissionForm extends Form {
       formState: {
         technical_operation_id,
         municipal_facility_id,
+        date_start,
+        date_end: date_end_current,
       },
     } = this.props;
-    const { available_route_types = [] } = this.state;
+    let date_end = date_end_current;
+
+    const {
+      available_route_types = [],
+      is_cleaning_norm,
+    } = this.state;
 
     const stateChangeObject = {};
     if (isSubmitted === true) {
@@ -249,10 +255,23 @@ export class MissionForm extends Form {
         technical_operation_id,
         type: available_route_types.join(','),
       });
+
+      const { object_type } = selectedRoute;
+      if (is_cleaning_norm) {
+        if (date_start) {
+          const {
+            time,
+          } = routeTypesBySlug[object_type];
+
+          this.handleChange('date_end', addTime(date_start, time, 'hours'));
+        }
+      }
+
       Object.assign(stateChangeObject, {
         showRouteForm: false,
         selectedRoute,
         routesList,
+        date_end,
       });
     } else {
       Object.assign(stateChangeObject, {
@@ -277,17 +296,17 @@ export class MissionForm extends Form {
   }
   handleChangeDateStart = (v) => {
     this.handleChange('date_start', v);
+    if (v && this.state.is_cleaning_norm) {
+      this.handleChange('date_end', addTime(v, routeTypesBySlug[this.state.selectedRoute.object_type].time, 'hours'));
+    }
   }
   getDataByNormId = async (norm_id) => {
     this.handleChange('norm_id', norm_id);
 
-    const {
-      result: [
-        to_data = {},
-      ],
-    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
+    const { result: [to_data = {}] } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
 
     const {
+      is_cleaning_norm,
       route_types: available_route_types = [],
     } = to_data;
 
@@ -322,7 +341,7 @@ export class MissionForm extends Form {
       this.setState({ routesList });
     });
 
-    this.setState({ available_route_types });
+    this.setState({ available_route_types, is_cleaning_norm });
   }
 
   render() {
@@ -378,7 +397,7 @@ export class MissionForm extends Form {
       'value',
     );
     // является ли задание отложенным
-    const isDeferred = moment(state.date_start).toDate().getTime() > moment().toDate().getTime();
+    const isDeferred = diffDates(state.date_start, new Date()) > 0;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -458,6 +477,7 @@ export class MissionForm extends Form {
             <Col md={12}>
               <InsideField.MunicipalFacility
                 id={'municipal_facility_id'}
+                label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
                 disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}

@@ -50,20 +50,19 @@ export class DutyMissionForm extends Form {
   // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
   // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
   handleTechnicalOperationChange(v) {
-    setTimeout(async () => {
-      const {
-        flux,
-      } = this.context;
+    const {
+      flux,
+    } = this.context;
 
-      this.handleChange('technical_operation_id', v);
-      this.handleChange('municipal_facility_id', null);
-      this.handleChange('route_id', undefined);
-      if (!isEmpty(this.props.formState.car_mission_id)) {
-        this.handleChange('car_mission_id', 0);
-      }
-      flux.getActions('missions').getMissions(v);
-    }, 60);
+    this.handleChange('technical_operation_id', v);
+    this.handleChange('municipal_facility_id', null);
+    this.handleChange('route_id', undefined);
+    if (!isEmpty(this.props.formState.car_mission_id)) {
+      this.handleChange('car_mission_id', 0);
+    }
+    flux.getActions('missions').getMissions(v);
   }
+
   isActiveEmployee(id) {
     return this.props.employeesList
       .filter(employee => employee.active)
@@ -81,8 +80,11 @@ export class DutyMissionForm extends Form {
     this.props.handleFormChange('foreman_id', value);
   }
 
+  // Можно принять второй параметр
+  // Туда попадает вся опция
+  // И не искать каждый раз всех
   handleBrigadeIdListChange(v) {
-    const data = v.split(',');
+    const data = v;
     const lastEmployee = last(data);
 
     if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
@@ -91,7 +93,16 @@ export class DutyMissionForm extends Form {
     }
 
     const { employeesList = [] } = this.props;
-    const brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
+    // временно (надеюсь)
+    const brigade_employee_id_list = data.reduce((newArr, id) => {
+      const br = employeesList.find(({ id: e_id }) => id === e_id);
+      if (br) {
+        newArr.push(br);
+      }
+
+      return newArr;
+    }, []);
+
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 
@@ -432,6 +443,7 @@ export class DutyMissionForm extends Form {
             <Col md={12}>
               <InsideField.MunicipalFacility
                 id={'municipal_facility_id'}
+                label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
                 disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}

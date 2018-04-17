@@ -4,9 +4,9 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import {
   isEqual,
-  filter,
-  map,
   find,
+  get,
+  map,
   uniqBy,
   groupBy,
 } from 'lodash';
@@ -1182,7 +1182,7 @@ class WaybillForm extends Form {
                   />
                 </Div>
               </Div>
-              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED) || isFourDigitGovNumber(get(state, 'gov_number', ''))}>
                 <Field
                   id="distance-by-glonass"
                   type="string"

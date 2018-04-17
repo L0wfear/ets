@@ -3,12 +3,13 @@ import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import {
+  isEmpty as lodashIsEmpty,
   isEqual,
   filter,
-  map,
   find,
+  get,
+  map,
   uniqBy,
-  isEmpty as lodashIsEmpty,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -200,10 +201,10 @@ class WaybillForm extends Form {
       const fuelRatesByCarModelResponse = await flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create });
       const fuelRates = fuelRatesByCarModelResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
       const fuelOperationsResponse = await flux.getActions('fuelRates').getFuelOperations();
-      const operations = _.filter(fuelOperationsResponse.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+      const operations = filter(fuelOperationsResponse.result, op => find(fuelRates, fr => fr.operation_id === op.id));
       const equipmentFuelRatesResponse = await flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create })
       const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
-      const equipmentOperations = _.filter(fuelOperationsResponse.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+      const equipmentOperations = filter(fuelOperationsResponse.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
       this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
       this.getCarDistance(formState);
     } else if (formState.status === 'closed') {
@@ -1328,7 +1329,7 @@ class WaybillForm extends Form {
                   />
                 </Div>
               </Div>
-              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED) || isFourDigitGovNumber(get(state, 'gov_number', ''))}>
                 <Field
                   id="distance-by-glonass"
                   type="string"

@@ -24,6 +24,9 @@ export const parseFilterObject = filter => _.mapKeys(
   (value, key) => _.isArray(value) ? `${key}__in` : key,
 );
 
+// возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
+// если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
+const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
 export default class MissionsActions extends Actions {
 
 
@@ -47,7 +50,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReassignationParameters(payload) {
-    if (!payload.car_id) return;
+    if (!payload.car_id) return Promise.reject();
     return MissionReassignationService.get(payload);
   }
 
@@ -65,10 +68,6 @@ export default class MissionsActions extends Actions {
 
   getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus, inBetween) {
     const payload = {};
-
-    // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
-    // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-    const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
 
     const status = getMissionFilterStatus(waybillStatus);
 
@@ -247,7 +246,7 @@ export default class MissionsActions extends Actions {
 
   removeDutyMission(id) {
     const payload = { id };
-    return DutyMissionService.delete(payload, null, 'json');
+    return DutyMissionService.delete(payload, false, 'json');
   }
 
   printDutyMission(duty_mission_id) {

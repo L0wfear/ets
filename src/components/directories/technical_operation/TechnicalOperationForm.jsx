@@ -142,7 +142,6 @@ export default class TechnicalOperationForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['norm_period']}
                 disabled={!isPermitted}
-                hidden
               />
             </Col>
             <Col md={3}>

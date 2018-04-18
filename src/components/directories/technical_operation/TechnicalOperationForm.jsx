@@ -14,7 +14,7 @@ const seasonsList = [{ id: 1, name: 'Лето' }, { id: 2, name: 'Зима' }, {
 export default class TechnicalOperationForm extends Form {
 
   handleCarFuncTypesChange = (v) => {
-    const data = v.split(',').map(d => +d);
+    const data = v.map(d => +d);
 
     const { typesList = [] } = this.props;
 
@@ -27,9 +27,8 @@ export default class TechnicalOperationForm extends Form {
     this.props.handleFormChange('car_func_types', types);
   }
 
-  handleObjectsChange(v) {  // нужен ли этот обработчик теперь ?
-    const data = v.split(',');
-    const objects = this.props.technicalOperationsObjectsList.filter((obj) => data.includes(obj.id.toString()));
+  handleObjectsChange(arrayOfObjects) {
+    const objects = this.props.technicalOperationsObjectsList.filter((obj) => arrayOfObjects.includes(obj.id));
     this.props.handleFormChange('objects', objects);
   }
 
@@ -45,7 +44,6 @@ export default class TechnicalOperationForm extends Form {
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
     const {
-      workKindsList = [],
       typesList = [],
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
@@ -55,13 +53,11 @@ export default class TechnicalOperationForm extends Form {
     const SEASONS = seasonsList.map(defaultSelectListMapper);
     const ELEMENTS = state.elements.map(defaultSelectListMapper);
     const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
-    const objectsIds = state.objects.map(object => object.id);
     const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList
-                                        .map(({ id, full_name }) => ({ value: id, label: full_name }))
-                                        .filter(operation => (objectsIds.includes(operation.value)));
-
+                                        .map(({ id, full_name }) => ({ value: id, label: full_name }));
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
-    const CONDITIONS = state.period_interval_name ? state.norm_period : `${state.norm} в ${state.period_interval_name}`;
+    const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
+
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -92,7 +88,7 @@ export default class TechnicalOperationForm extends Form {
                 onChange={this.handleChange.bind(this, 'elements_text')}
                 error={errors.elements_text}
                 disabled={!isPermitted}
-                clearable={false}
+                clearable={true}
               />
             </Col>
 
@@ -170,10 +166,9 @@ export default class TechnicalOperationForm extends Form {
                 type="select"
                 label="Объект"
                 multi
-                value={state.objects_text}
-                clearable={false}
+                value={state.objects.map(cft => cft.id)}
                 options={TECHNICAL_OPERATION_OBJECTS}
-                onChange={this.handleChange.bind(this, 'objects_text')}
+                onChange={this.handleObjectsChange.bind(this)}
                 disabled={!isPermitted}
               />
             </Col>

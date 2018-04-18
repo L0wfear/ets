@@ -1,4 +1,6 @@
+import * as React from 'react';
 import { withProps } from 'recompose';
+import { get } from 'lodash';
 
 import { IReportProps } from 'components/reports/@types/common.h';
 
@@ -12,7 +14,10 @@ const serviceName = 'FuelReportService';
 
 const schemaMakers = {};
 
-const renderers = {};
+const renderers = {
+  track_length: ({ rowData }) => <span>{get(rowData, 'track_length', '-')}</span>,
+  length_diff: ({ rowData }) => <span>{get(rowData, 'length_diff', '-')}</span>,
+};
 
 const tableProps = {
   rowNumberLabel: "№ п/п",
@@ -28,6 +33,7 @@ const reportProps: IReportProps = {
   serviceUrl,
   headerComponent: ReportHeader,
   renderers,
+  summaryRenderes: renderers,
   schemaMakers,
 };
 

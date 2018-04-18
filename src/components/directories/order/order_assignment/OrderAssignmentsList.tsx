@@ -23,9 +23,9 @@ class OrderAssignmentsList extends React.Component<any, any> {
         <Col md={8} className="flex-space-beetwen">
           <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
           <div className="flex-button-group">
-            <Button permissions={['mission_template.create']} onClick={this.props.handleClickOnCMTemplate} disabled={this.props.checkDisabledCMЕtemplate()}>Создать задание по шаблону</Button>
-            <Button permissions={['mission_template.create']} onClick={this.props.handleClickOnCDMTemplate} disabled={this.props.checkDisabledCDMTemplate()}>Создать наряд-задание по шаблону</Button>
-          </div>
+            <Button permissions={['mission.create']} onClick={this.props.handleClickOnCM} disabled={this.props.checkDisabledCM()}>Создать задание</Button>
+            <Button permissions={['duty_mission.create']} onClick={this.props.handleClickOnCDM} disabled={this.props.checkDisabledCDM()}>Создать наряд-задание</Button>
+         </div>
         </Col>
         <Col md={8}>
           <OrderAssignmentsInfoTable

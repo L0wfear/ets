@@ -110,15 +110,16 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
+            <Col md={2} hidden>
               <Field type="select" label="C участием РКУ"
                 options={NEEDS_BRIGADE_OPTIONS}
                 value={+state.needs_brigade}
                 onChange={this.handleChange.bind(this, 'needs_brigade')}
                 disabled={!isPermitted}
+                hidden
               />
             </Col>
-            <Col md={2}>
+            <Col md={4} mdOffset={-2}>
               <Field type="number" label="Максимальная скорость"
                 value={state.max_speed}
                 onChange={this.handleChange.bind(this, 'max_speed')}

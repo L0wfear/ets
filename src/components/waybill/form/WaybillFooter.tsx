@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Button, Dropdown, MenuItem, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { isEmpty } from 'utils/functions';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
@@ -22,12 +22,23 @@ interface IPropsWaybillFooter {
   handlePrintFromMiniButton(): void;
   handleClose(taxes: any): void;
   handlePrint(is: boolean): void;
+  message: string;
 }
+
+const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
+
+const popoverHoverFocus = (
+  <Popover id="popover-trigger-hover-focus" title="Внимание!">
+   {message}
+  </Popover>
+);
 
 const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
   <Div>
     <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft)}>
-      <Button id="waybill-refresh" title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
+      <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
+       <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
+      </OverlayTrigger>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
       <Dropdown id="waybill-print-dropdown_ptint" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>

@@ -1,8 +1,12 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button as BootstrapButton } from 'react-bootstrap';
+
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 
 import OrderAssignmentsInfoTable from 'components/directories/order/order_assignment/OrderAssignmentsInfoTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
+
+const Button = enhanceWithPermissions(BootstrapButton);
 
 class OrderAssignmentsList extends React.Component<any, any> {
   render() {
@@ -16,7 +20,13 @@ class OrderAssignmentsList extends React.Component<any, any> {
 
     return (
       <Row>
-        <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
+        <Col md={8} className="flex-space-beetwen">
+          <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
+          <div className="flex-button-group">
+            <Button permissions={['mission_template.create']} onClick={this.props.handleClickOnCMTemplate} disabled={this.props.checkDisabledCMЕtemplate()}>Создать задание по шаблону</Button>
+            <Button permissions={['mission_template.create']} onClick={this.props.handleClickOnCDMTemplate} disabled={this.props.checkDisabledCDMTemplate()}>Создать наряд-задание по шаблону</Button>
+          </div>
+        </Col>
         <Col md={8}>
           <OrderAssignmentsInfoTable
             noHeader

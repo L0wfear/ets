@@ -571,9 +571,7 @@ class OrderList extends React.Component<any, any> {
           {...this.getAdditionalProps()}
         >
           <Button permissions={['mission.create']} onClick={this.handleClickOnCM} disabled={this.checkDisabledCM()}>Создать задание</Button>
-          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCMTemplate} disabled={this.checkDisabledCMЕtemplate()}>Создать задание по шаблону</Button>
           <Button permissions={['duty_mission.create']} onClick={this.handleClickOnCDM} disabled={this.checkDisabledCDM()}>Создать наряд-задание</Button>
-          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCDMTemplate} disabled={this.checkDisabledCDMTemplate()}>Создать наряд-задание по шаблону</Button>
           <div style={marginLeft} >
             <DropdownButton onSelect={this.seclectDownload} pullRight title={title} id="bg-nested-dropdown">
               <MenuItem eventKey={TypeDownload.old} disabled={faxSE === null}>Скан-копия факсограммы</MenuItem>
@@ -589,6 +587,10 @@ class OrderList extends React.Component<any, any> {
             seleted={assSE}
             dataSource={faxSE}
             onRowSelectedAssignment={this.onRowSelectedAssignment}
+            handleClickOnCMTemplate={this.handleClickOnCMTemplate}
+            handleClickOnCDMTemplate={this.handleClickOnCDMTemplate}
+            checkDisabledCMЕtemplate={this.checkDisabledCMЕtemplate}
+            checkDisabledCDMTemplate={this.checkDisabledCDMTemplate}
           />
         </Div>
         <Div hidden={!showHistoryComponent || !faxSE}>

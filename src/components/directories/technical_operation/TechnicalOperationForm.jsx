@@ -195,7 +195,7 @@ export default class TechnicalOperationForm extends Form {
 
           <Row>
             <Col md={3} className="vehicle-types-container">
-              <ExtField
+              <Field
                 type="select"
                 label="Типы ТС"
                 multi

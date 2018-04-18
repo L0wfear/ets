@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
@@ -48,7 +48,7 @@ export default class TechnicalOperationForm extends Form {
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
     } = this.props;
-    const isPermitted = true;  // ВЕРНУТЬ
+    const isPermitted = false;
 
     const SEASONS = seasonsList.map(defaultSelectListMapper);
     const ELEMENTS = state.elements.map(defaultSelectListMapper);
@@ -69,23 +69,25 @@ export default class TechnicalOperationForm extends Form {
 
           <Row>
             <Col md={3}>
-              <Field
+              <ExtField
                 type="string"
                 label="Наименование"
                 value={state.name}
-                onChange={this.handleChange.bind(this, 'name')}
+                onChange={this.handleChange}
+                boundKeys={['name']}
                 disabled={!isPermitted}
                 error={errors.name}
               />
             </Col>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="select"
                 label="Элемент"
                 options={ELEMENTS}
                 value={state.elements_text}
-                onChange={this.handleChange.bind(this, 'elements_text')}
+                onChange={this.handleChange}
+                boundKeys={['elements_text']}
                 error={errors.elements_text}
                 disabled={!isPermitted}
                 clearable={true}
@@ -93,23 +95,25 @@ export default class TechnicalOperationForm extends Form {
             </Col>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="select"
                 label="Сезон"
                 value={state.season_id}
                 options={SEASONS}
-                onChange={this.handleChange.bind(this, 'season_id')}
+                onChange={this.handleChange}
+                boundKeys={['season_id']}
                 error={errors.season_id}
                 disabled={!isPermitted}
               />
             </Col>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="string"
                 label="Способ уборки"
                 value={state.work_type_name}
-                onChange={this.handleChange.bind(this, 'work_type_name')}
+                onChange={this.handleChange}
+                boundKeys={['work_type_name']}
                 error={errors.work_type_name}
                 disabled={!isPermitted}
               />
@@ -119,42 +123,46 @@ export default class TechnicalOperationForm extends Form {
           <Row>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="string"
                 label="Условия"
                 value={state.conditions}
-                onChange={this.handleChange.bind(this, 'conditions')}
+                onChange={this.handleChange}
+                boundKeys={['conditions']}
                 error={errors.conditions}
                 disabled={!isPermitted}
               />
             </Col>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="string"
                 label="Число операций в сутки (норматив)"
                 value={CONDITIONS}
-                onChange={this.handleChange.bind(this, 'norm_period')}
+                onChange={this.handleChange}
+                boundKeys={['norm_period']}
                 disabled={!isPermitted}
               />
             </Col>
             <Col md={3}>
-              <Field
+              <ExtField
                 type="number"
                 label="Максимальная скорость"
                 value={state.max_speed}
-                onChange={this.handleChange.bind(this, 'max_speed')}
+                onChange={this.handleChange}
+                boundKeys={['max_speed']}
                 error={errors.max_speed}
                 disabled={!isPermitted}
               />
             </Col>
             <Col md={3}>
-              <Field
+              <ExtField
                 type="select"
                 label="Тип проверки"
                 options={TECHNICAL_OPERATION_TYPES}
                 value={state.check_type}
-                onChange={this.handleChange.bind(this, 'check_type')}
+                onChange={this.handleChange}
+                boundKeys={['check_type']}
                 disabled={!isPermitted}
               />
             </Col>
@@ -174,11 +182,12 @@ export default class TechnicalOperationForm extends Form {
             </Col>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="boolean"
                 label="Учёт в отчетах"
                 checked={!!state.use_in_reports}
-                onChange={this.handleChange.bind(this, 'use_in_reports', !state.use_in_reports)}
+                onChange={this.handleChange}
+                boundKeys={['use_in_reports', !state.use_in_reports]}
                 disabled={!isPermitted}
               />
             </Col>
@@ -186,7 +195,7 @@ export default class TechnicalOperationForm extends Form {
 
           <Row>
             <Col md={3} className="vehicle-types-container">
-              <Field
+              <ExtField
                 type="select"
                 label="Типы ТС"
                 multi

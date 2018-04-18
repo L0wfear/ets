@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { OrderService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';
-import { FluxContext } from 'utils/decorators';
+import { FluxContext, connectToStores } from 'utils/decorators';
 import { saveData } from 'utils/functions';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import PDFViewModal from './PDFViewModal.jsx';
@@ -14,6 +14,7 @@ const TypeDownload = {
   new: '2',
 };
 
+@connectToStores(['objects'])
 @FluxContext
 export default class Faxogramms extends DashboardCardMedium {
   constructor(props) {

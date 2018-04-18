@@ -12,7 +12,7 @@ const tableMeta = {
       },
     },
     {
-      name: 'property',
+      name: 'property_text',
       displayName: 'Площадная характеристика',
       filter: {
         type: 'multiselect',

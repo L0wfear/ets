@@ -38,12 +38,20 @@ const getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-        name: 'mission_source_id',
+        name: 'current_percentage',
+        displayName: 'Процент выполнения задания (%)',
+        type: 'number',
+        sortable: false,
+        filter: false,
+        cssClassName: 'width120',
+      },
+      {
+        name: 'mission_source_name',
         displayName: 'Источник',
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: props.missionSourcesList.map(missonsource => ({ value: missonsource.id, label: missonsource.name })),
+          options: props.missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
         },
         cssClassName: 'width150',
       },
@@ -102,15 +110,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'current_percentage',
-        displayName: 'Процент выполнения задания (%)',
-        type: 'number',
-        sortable: false,
-        filter: false,
-        cssClassName: 'width120',
-      },
-      {
-        name: 'technical_operation_id',
+        name: 'technical_operation_name',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {
@@ -172,11 +172,13 @@ export default (props) => {
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,
-    id: (meta) => {
-      if (meta.rowData.status === 'not_assigned') return <div>Нет данных</div>;
+    id: ({ data, rowData }) => {
+      if (rowData.status === 'not_assigned') return <div>Нет данных</div>;
+      const className = Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
+
       return (
-        <div>
-          <span onClick={() => props.mapView(meta.data)}>
+        <div className={className} style={{ width: '100%', heigth: '100%' }}>
+          <span onClick={() => props.mapView(data)}>
             <Glyphicon glyph="info-sign" />
           </span>
         </div>

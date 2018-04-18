@@ -142,6 +142,7 @@ export default class TechnicalOperationForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['norm_period']}
                 disabled={!isPermitted}
+                hidden
               />
             </Col>
             <Col md={3}>
@@ -199,7 +200,7 @@ export default class TechnicalOperationForm extends Form {
                 type="select"
                 label="Типы ТС"
                 multi
-                value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
+                value={_.uniq(state.car_func_types.map(cft => cft.asuods_id)).join(',')}
                 options={CAR_TYPES}
                 onChange={this.handleCarFuncTypesChange}
                 disabled={!isPermitted}

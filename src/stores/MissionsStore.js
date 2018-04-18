@@ -1,6 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
-import { getToday9am, getTomorrow9am } from 'utils/dates';
+import { getToday9am, getTomorrow9am, getDateWithMoscowTz } from 'utils/dates';
 
 class MissionsStore extends Store {
 
@@ -42,6 +42,8 @@ class MissionsStore extends Store {
       carDutyMissionList: [],
       dutyMissionTemplatesList: [],
       municipalFacilityList: [],
+      missionsTotalCount: 0,
+      dutyMissionsTotalCount: 0,
     };
   }
   handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
@@ -50,7 +52,7 @@ class MissionsStore extends Store {
 
   handleGetMissions(missions) {
     if (!missions.result.meta) return;
-    this.setState({ missionsList: missions.result.rows, totalCount: missions.result.meta.total_count });
+    this.setState({ missionsList: missions.result.rows, missionsTotalCount: missions.result.meta.total_count });
   }
 
   handleGetMissionSources(missionSources) {
@@ -63,7 +65,7 @@ class MissionsStore extends Store {
 
   handleGetDutyMissions(dutyMissions) {
     if (!dutyMissions.result.meta) return;
-    this.setState({ dutyMissionsList: dutyMissions.result.rows, totalCount: dutyMissions.result.meta.total_count });
+    this.setState({ dutyMissionsList: dutyMissions.result.rows, dutyMissionsTotalCount: dutyMissions.result.meta.total_count });
   }
 
   handleGetDutyMissionTemplates(dutyMissionTemplates) {
@@ -116,7 +118,7 @@ class MissionsStore extends Store {
 
 export default MissionsStore;
 
-export function getDefaultMission(date_start = getToday9am(), date_end = getTomorrow9am()) {
+export function getDefaultMission(date_start = getDateWithMoscowTz(), date_end = getTomorrow9am()) {
   return {
     description: '',
     date_start,
@@ -144,7 +146,7 @@ export function getDefaultDutyMission() {
 
 export function getDefaultDutyMissionTemplate() {
   return {
-    date_create: new Date(),
+    date_create: getDateWithMoscowTz(),
     is_new: true,
     brigade_employee_id_list: [],
   };
@@ -162,14 +164,14 @@ export function getDefaultMissionTemplate() {
   return {
     description: '',
     passes_count: 1,
-    date_create: new Date(),
+    date_create: getDateWithMoscowTz(),
     is_new: true,
   };
 }
 
 export function getDefaultMissionsCreationTemplate() {
   return {
-    date_start: getToday9am(),
+    date_start: getDateWithMoscowTz(),
     date_end: getTomorrow9am(),
     assign_to_waybill: 'assign_to_new_draft',
     mission_source_id: 3,

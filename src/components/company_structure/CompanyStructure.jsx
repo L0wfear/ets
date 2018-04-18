@@ -35,8 +35,9 @@ export default class CompanyStructure extends ElementsList {
     return Promise.all(query);
   }
 
-  editElement = (id, e) => {
+  editElement = async (id, e) => {
     e.stopPropagation();
+    await this.refreshState();
 
     const { companyStructureLinearList = [] } = this.props;
     const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);

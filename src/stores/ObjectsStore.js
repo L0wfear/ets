@@ -90,7 +90,7 @@ export default class ObjectsStore extends Store {
       cleaningRateList: [],
       userActionLogList: [],
       medicalStatsList: [],
-
+      companyStructureLinearList: [],
       appConfig: {},
 
       carsIndex: {},

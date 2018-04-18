@@ -7,7 +7,8 @@ import cx from 'classnames';
 import { sensorTrackColor } from 'constants/sensors';
 import { LOAD_PROCESS_TEXT } from 'constants/statuses';
 import { TRACK_COLORS } from 'constants/track.js';
-import { makeDateFromUnix, getStartOfToday } from 'utils/dates';
+import { diffDates, makeDateFromUnix, getStartOfToday } from 'utils/dates';
+
 import Panel from 'components/ui/Panel.jsx';
 import DatePicker from 'components/ui/input/DatePicker';
 import config from '../../../config.js';
@@ -282,6 +283,21 @@ export default class CarInfo extends Component {
       </Panel>
     );
   }
+  handleChangeDateFromDt = value => this.hadnleChangeDate('from_dt_', value);
+  handleChangeDateToDt = value => this.hadnleChangeDate('to_dt_', value);
+
+  hadnleChangeDate = (field, value) => {
+    const dates = {
+      ...this.state,
+      [field]: value,
+    };
+
+    if (diffDates(dates.to_dt_, dates.from_dt_, 'days') > 3) {
+      return global.NOTIFICATION_SYSTEM.notify('Период формирования трека не должен превышать трое суток', 'warning');
+    }
+
+    return this.setState({ ...dates });
+  }
 
   renderTracking() {
     const marker = this.props.car.marker;
@@ -296,13 +312,13 @@ export default class CarInfo extends Component {
       <div className="car-info-tracking">
         <Panel title="Трекинг" className="chart-datepickers-wrap">
           <DatePicker
-            onChange={date => this.setState({ from_dt_: date })}
+            onChange={this.handleChangeDateFromDt}
             date={this.state.from_dt_}
             disabled={tillNow}
           />
           &nbsp;–&nbsp;
           <DatePicker
-            onChange={date => this.setState({ to_dt_: date })}
+            onChange={this.handleChangeDateToDt}
             date={this.state.to_dt_}
             disabled={tillNow}
           />

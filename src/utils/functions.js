@@ -12,7 +12,7 @@ import { isPlainObject, every, includes } from 'lodash';
  * Если в номере есть 4 числа, то ест одометр
  * DITETSSUP-347 (1 пункт)
  */
-const isFourDigitGovNumberRegexp = /\d{4}/;
+export const isFourDigitGovNumberRegexp = /\d{4}/;
 
 /**
  * Example:
@@ -189,3 +189,6 @@ export function fromIterableListToArray(itetableList) {
 
   return array;
 }
+
+
+export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);

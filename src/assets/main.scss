@@ -1879,7 +1879,7 @@ body.application {
 }
 
 .griddle-container {
-  height: 75vh;
+  max-height: calc(100vh - 66px - 21px - 45px - 72px - 30px);  
   border: none !important;
   overflow-x: auto;
   width: 100%;
@@ -3134,6 +3134,9 @@ div.none {
 .map-view {
   vertical-align: middle !important;
   text-align: center;
+  .td-red {
+    color: red;
+  }
   .glyphicon {
     font-size: 32px;
   }

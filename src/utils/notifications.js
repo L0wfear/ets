@@ -138,6 +138,17 @@ export function getWarningNotification(message) {
   };
 }
 
+export function getErrorNotificationFromBack(message) {
+  return {
+    title: 'Внимание',
+    level: 'error',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+    children: makeReactMessange(message),
+  };
+}
+
 export function getInfoNotification(message) {
   return {
     title: 'Ифнормация',
@@ -148,6 +159,25 @@ export function getInfoNotification(message) {
     autoDismiss: 0,
   }
 }
+
+export function getAdminInfoNotification(notify) {
+  return {
+    title: notify.title,
+    uid: notify.id,
+    level: 'info',
+    dismissible: true,
+    position: 'tr',
+    autoDismiss: 0,
+    children: makeReactMessange(notify.body),
+    onRemove() {
+      const notificationReadInfo = JSON.parse(localStorage.getItem(global.NOTIFICATION_READ_ARR)) || [];
+      notificationReadInfo.unshift(notify.id);
+      notificationReadInfo.length = 10;
+      localStorage.setItem(global.NOTIFICATION_READ_ARR, JSON.stringify(notificationReadInfo));
+    },
+  };
+}
+
 export function noItemsInfoNotification(msg = 'По данному запросу нет записей') {
   global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }

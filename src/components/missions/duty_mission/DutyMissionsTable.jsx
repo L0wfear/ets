@@ -40,7 +40,7 @@ export const getTableMeta = ({
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map(missonsource => ({ value: missonsource.id, label: missonsource.name })),
+          options: missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
         },
         cssClassName: 'width120',
       },

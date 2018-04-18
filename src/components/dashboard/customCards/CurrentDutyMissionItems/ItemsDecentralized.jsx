@@ -50,7 +50,6 @@ export default class CurrentMission extends DashboardCardMedium {
     );
   }
 
-  Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.toggleFullList}/>;
 
   render() {
     const items = this.props.items.map((item, i) => {
@@ -69,13 +68,14 @@ export default class CurrentMission extends DashboardCardMedium {
         </Div>
       );
     });
+    const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.toggleFullList} />;
 
 
     // отрефакторить
 
     return (
       <Div md={12}>
-        <Panel className="dashboard-card no-margin-bottom" header={this.Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
+        <Panel className="dashboard-card no-margin-bottom" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             <Collapse in={this.state.fullListOpen}>
               <Div>

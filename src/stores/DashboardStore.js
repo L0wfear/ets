@@ -13,7 +13,8 @@ const dashboardComponents = [
   },
   {
     id: 4,
-    key: 'odh_not_covered_by_missions_of_current_shift',
+    key: 'odh_not_covered_by_missions_of_current_shift_false',
+    trueKey: 'odh_not_covered_by_missions_of_current_shift',
     itemsTitle: 'Список одх',
   },
   {

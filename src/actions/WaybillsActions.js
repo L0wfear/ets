@@ -74,7 +74,15 @@ export default class WaybillsActions extends Actions {
   }
 
   getWaybillJournalReport(state) {
-    const payload = cloneDeep(state);
+    const payload = {};
+
+    if (state.formationPeriod === 'month') {
+      payload.month = state.month;
+      payload.year = state.year;
+    }
+    if (state.formationPeriod === 'date') {
+      payload.date = createValidDate(state.date);
+    }
     return WaybillJournalReportService.postBlob(payload);
   }
 

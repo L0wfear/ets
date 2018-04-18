@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { connectToStores } from 'utils/decorators';
 
-import { getStartOfToday, createValidDateTime } from 'utils/dates';
+import { getStartOfToday, createValidDateTime, diffDates } from 'utils/dates';
 
 import { ExtField } from 'components/ui/Field.jsx';
 
@@ -11,6 +11,7 @@ class FuelLeak extends React.Component<any, any> {
   state = {
     checkedShowLeak: false,
     showDateInterval: false,
+    disableCheckbox: false,
     date_from: null,
     date_to: null,
   };
@@ -53,13 +54,38 @@ class FuelLeak extends React.Component<any, any> {
       checkedShowLeak,
     } = this.state;
 
+    const actualDates = {
+      date_from,
+      date_to,
+      ...newDataInState,
+    };
+
+    if (diffDates(actualDates.date_from, actualDates.date_to) > 0) {
+      this.setState({
+        disableCheckbox: true,
+        ...newDataInState,
+      });
+
+      global.NOTIFICATION_SYSTEM.notify({
+        title: 'Внимание! Неправильно указан временной интервал.',
+        message: 'Укажите, пожалуйста, время окончания позже времени начала, чтобы обновились объекты на карте',
+        level: 'warning',
+        dismissible: true,
+        autoDismiss: 20,
+      });
+      return;
+    }
+
     const payload = {
       date_from,
       date_to,
       ...newDataInState,
     };
 
-    this.setState(newDataInState);
+    this.setState({
+      disableCheckbox: false,
+      ...newDataInState,
+    });
 
     if (checkedShowLeak && !Object.keys(payload).some(d => !d)) {
       this.getData(payload);
@@ -81,6 +107,7 @@ class FuelLeak extends React.Component<any, any> {
     const {
       checkedShowLeak = false,
       showDateInterval = false,
+      disableCheckbox = false,
     } = this.state;
     return (
       <div className={`app-toolbar-fill app-toolbar-show-fuelleak ${showDateInterval ? 'active' : ''}`} >
@@ -89,6 +116,7 @@ class FuelLeak extends React.Component<any, any> {
             style={{ marginLeft: 0 }}
             type="checkbox"
             checked={checkedShowLeak}
+            disabled={disableCheckbox}
             onChange={this.selectAllGeoobjects}
           />
           <label

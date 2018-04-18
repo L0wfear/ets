@@ -49,7 +49,6 @@ export default class TechMaintForm extends Form {
 
     let title = 'Изменение записи';
     if (IS_CREATING) title = 'Создание записи';
-    console.log(errors)
 
     return (
       <Modal {...this.props} backdrop="static">

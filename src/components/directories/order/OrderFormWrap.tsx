@@ -1,5 +1,11 @@
 import * as React from 'react';
-
+import { connect } from 'react-redux';
+import {
+  setEmptyMissionData,
+  setEmptyDutyMissionData,
+  setEmptyDutyMissionTemplateData,
+} from 'redux/modules/order/action-order';
+  
 import Div from 'components/ui/Div.jsx';
 
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
@@ -11,57 +17,55 @@ import OrderMissionTemplate from 'components/directories/order/forms/OrderMissio
 const MissionFormWrapTSX: any = MissionFormWrap;
 const DutyMissionFormWrapTSX: any = DutyMissionFormWrap;
 
-class OrderMissionController extends React.Component<any, any> {
-  render() {
-    const {
-      missionData: {
-        showForm: sfM = false,
-        mElement,
-        order: m_order,
-      },
-      dutyMissionData: {
-        showForm: sfDM = false,
-        dmElement,
-        order: dm_order,
-      },
-      missionTemplateData: {
-        typeClick,
-        showForm: sfMTemlate = false,
-        technical_operations = [],
-        orderDates = {},
-        mission_source_id,
-      },
-    } = this.props;
+const OrderMissionController: React.SFC<any> = props => {
+  const {
+    missionData,
+    dutyMissionData,
+    missionTemplateData,
+  } = props;
 
-    return (
-      <div>
-        <MissionFormWrapTSX
-          fromOrder={true}
-          showForm={sfM}
-          onFormHide={this.props.onHideCM}
-          element={mElement}
-          order={m_order}
+  return (
+    <div>
+      <MissionFormWrapTSX
+        fromOrder={true}
+        showForm={missionData.sfM}
+        onFormHide={props.onHideCM}
+        element={missionData.mElement}
+        order={missionData.order}
+      />
+      <DutyMissionFormWrapTSX
+        fromOrder={true}
+        showForm={dutyMissionData.showForm}
+        onFormHide={props.onHideCDM}
+        element={dutyMissionData.dmElement}
+        order={dutyMissionData.order}
+      />
+      <Div hidden={!missionTemplateData.showForm} >
+        <OrderMissionTemplate
+          showForm={missionTemplateData.showForm}
+          onFormHide={props.onHideCMTemplate}
+          technical_operations={missionTemplateData.technical_operations}
+          orderDates={missionTemplateData.orderDates}
+          typeClick={missionTemplateData.typeClick}
+          mission_source_id={missionTemplateData.mission_source_id}
         />
-        <DutyMissionFormWrapTSX
-          fromOrder={true}
-          showForm={sfDM}
-          onFormHide={this.props.onHideCDM}
-          element={dmElement}
-          order={dm_order}
-        />
-        <Div hidden={!sfMTemlate} >
-          <OrderMissionTemplate
-            showForm={sfMTemlate}
-            onFormHide={this.props.onHideCMTemplate}
-            technical_operations={technical_operations}
-            orderDates={orderDates}
-            typeClick={typeClick}
-            mission_source_id={mission_source_id}
-          />
-        </Div>
-      </div>
-    );
-  }
+      </Div>
+    </div>
+  );
 }
 
-export default OrderMissionController;
+const mapStateToProps = (state) => ({
+  missionData: state.order.missionData,
+  missionTemplateData: state.order.missionTemplateData,
+  dutyMissionData: state.order.dutyMissionData,
+});
+const mapDispatchToProps = dispatch => ({
+  onHideCM: () => dispatch(setEmptyMissionData()),
+  onHideCDM: () => dispatch(setEmptyDutyMissionData()),
+  onHideCMTemplate: () => dispatch(setEmptyDutyMissionTemplateData()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(OrderMissionController);

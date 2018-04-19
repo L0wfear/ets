@@ -15,8 +15,8 @@ const serviceName = 'FuelReportService';
 const schemaMakers = {};
 
 const renderers = {
-  track_length: ({ rowData }) => <span>{get(rowData, 'track_length', '-')}</span>,
-  length_diff: ({ rowData }) => <span>{get(rowData, 'length_diff', '-')}</span>,
+  track_length: ({ rowData }) => <span>{get(rowData, 'track_length') || '-'}</span>,
+  length_diff: ({ rowData }) => <span>{get(rowData, 'length_diff') || '-'}</span>,
 };
 
 const tableProps = {

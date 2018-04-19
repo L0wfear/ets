@@ -5,6 +5,10 @@ export const onChangeWithKeys = withHandlers({
   onChange: ({ onChange, boundKeys = []}) => (e, ...other) => onChange(...boundKeys, e, ...other),
 });
 
+export const onChangeWithKeyOfObject = withHandlers({
+  onChange: ({ onChange, boundKey = '' }) => (e, ...other) => onChange({ [boundKey]: e, ...other }),
+});
+
 export const onClickWithKeys = withHandlers({
   onClick: ({ onClick, boundKeys = []}) => e => onClick(...boundKeys, e),
 });
@@ -31,3 +35,7 @@ export const multiSelectFormatter = withHandlers({
     onChange(itemList);
   },
 });
+
+export interface IOnChangeWithKeyOfObject {
+  boundKey: string;
+}

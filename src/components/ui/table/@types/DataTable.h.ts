@@ -26,6 +26,11 @@ export interface IPropsDataTable<TResultObject> {
   className?: string;
   filterValue?: IFilterValues;
   multiSelection?: boolean;
-
+  serverPagination?: boolean;
+  externalFilter?: (...arg: any[]) => any;
+  externalChangeSort?: (...arg: any[]) => any;
+  initialSortAscending?: boolean;
+  filterValues?: any;
+  haveMax?: boolean;
   checked?: any;
 }

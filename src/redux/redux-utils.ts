@@ -1,0 +1,1 @@
+export const createPath = rootPath => path => `${rootPath}/${path}`;

@@ -1,0 +1,7 @@
+.flex-space-beetwen {
+  display: flex;
+  justify-content: space-between;
+  & .flex-button-group>button {
+    margin-left: 10px;
+  }
+}

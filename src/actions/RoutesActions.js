@@ -118,7 +118,7 @@ export default class RoutesActions extends Actions {
 
   removeRoute(route) {
     const payload = { id: route.id };
-    return RouteService.delete(payload, null, 'json');
+    return RouteService.delete(payload, false, 'json');
   }
 
   updateRoute(route) {

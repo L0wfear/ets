@@ -101,11 +101,11 @@ class WaybillForm extends Form {
       const fuelRatesByCarModelResponse = await flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create });
       const fuelRates = fuelRatesByCarModelResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
       const fuelOperationsResponse = await flux.getActions('fuelRates').getFuelOperations();
-      const operations = _.filter(fuelOperationsResponse.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+      const operations = filter(fuelOperationsResponse.result, op => find(fuelRates, fr => fr.operation_id === op.id));
       const equipmentFuelRatesResponse = await flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create })
       const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
       const equipmentFuelOperations = await flux.getActions('fuelRates').getFuelOperations();
-      const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+      const equipmentOperations = filter(equipmentFuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
       this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
       this.getCarDistance(formState);
     } else if (formState.status === 'closed') {

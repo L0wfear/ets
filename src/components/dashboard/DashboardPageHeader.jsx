@@ -26,9 +26,7 @@ export default class DashboardPageHeader extends React.Component {
         prevDate: date,
         backDate: date,
       });
-
-      return true;
-    }).catch((e) => {
+    }).catch(() => {
       this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
 
       const date = moment().utcOffset(180);
@@ -48,7 +46,6 @@ export default class DashboardPageHeader extends React.Component {
   }
 
   updateClock() {
-    console.log(new Date())
     const prevDate = moment(this.state.prevDate).add(1, 'seconds').utcOffset(180);
     const time = prevDate.format('HH:mm:ss');
     const date = prevDate.format('DD MMMM YYYY');

@@ -77,8 +77,8 @@ export default class FuelRateActions extends Actions {
     return FuelConsumptionRateService.delete(payload, getFuelRates, 'json');
   }
 
-  getFuelOperations() {
-    return getFuelOperations();
+  getFuelOperations(payload) {
+    return getFuelOperations(payload);
   }
 
   createFuelOperation(formState) {

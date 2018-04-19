@@ -84,7 +84,7 @@ export default class CarActions extends Actions {
     ...restPayload
   }) {
     const payload = {
-      certificate_number: certificate_number ? parseInt(certificate_number, 10) : null,
+      certificate_number,
       given_at: createValidDate(given_at),
       ...restPayload,
     };

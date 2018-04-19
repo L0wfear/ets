@@ -1,6 +1,13 @@
 import moment from 'moment';
 import { isEqualOr } from './functions';
 
+export const getDateWithMoscowTz = (...dateProps) => {
+  const newDate = new Date(...dateProps);
+  newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
+
+  return newDate;
+};
+
 export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
@@ -161,5 +168,5 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  * @param {date | string} dataB - date end compare
  * @param {string} typeDiff - type compare (see moment .diff())
  */
-export const diffDates = (dataA, dataB, typeDiff = 'seconds') =>
-  moment(dataA).diff(moment(dataB), typeDiff);
+export const diffDates = (dataA, dataB, typeDiff = 'seconds', float = true) =>
+  moment(dataA).diff(moment(dataB), typeDiff, float);

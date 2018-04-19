@@ -15,7 +15,7 @@ const serviceName = 'FuelSummaryReportService';
 const schemaMakers = {};
 
 const renderers = {
-  track_length: ({ rowData }) => <span>{get(rowData, 'track_length', '-')}</span>,
+  track_length: ({ rowData }) => <span>{get(rowData, 'track_length') || '-'}</span>,
 };
 
 const tableProps = {

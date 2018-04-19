@@ -141,6 +141,7 @@ export default class GeoObjectsStore extends Store {
       } catch (e) {
         shape = geozone.shape;
       }
+      shape.coordinates.reverse();
 
       geozone.featureType = type || geozone.type;
       delete geozone.shape;

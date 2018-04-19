@@ -53,20 +53,22 @@ class WaybillPrintForm extends Component {
       const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
         'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
       this.setState({ DISABLE_SUBMIT: true });
-      await this.context.flux.getActions('waybills')
-        .getWaybillJournalReport(this.state)
-        .then(({ blob }) => {
-          switch (this.state.formationPeriod) {
-            case 'month': return saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`);
-            case 'date': return saveData(blob, `Отчет по журналу ПЛ за ${makeDate(this.state.date)}.xls`);
-            default: return false;
-          }
-        });
+      await this.props.printData(
+        this.context.flux.getActions('waybills').getWaybillJournalReport,
+        this.state,
+      ).then(({ blob }) => {
+        switch (this.state.formationPeriod) {
+          case 'month': return saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`);
+          case 'date': return saveData(blob, `Отчет по журналу ПЛ за ${makeDate(this.state.date)}.xls`);
+          default: return false;
+        }
+      });
     } else {
       this.setState({ DISABLE_SUBMIT: true });
-      await this.context.flux.getActions('waybills')
-        .getWaybillsReport(this.state)
-        .then(({ blob }) => { saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`); });
+      await this.props.printData(
+        this.context.flux.getActions('waybills').getWaybillsReport,
+        this.state,
+      ).then(({ blob }) => { saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`); });
     }
 
     global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintForm');

@@ -98,6 +98,8 @@ export default class WaybillJournal extends CheckableElementsList {
     };
   }
 
+  printData = (action, state) => action(state, this.state.filter);
+
   /**
    * @override
    */
@@ -132,6 +134,7 @@ export default class WaybillJournal extends CheckableElementsList {
         key={forms.length}
         show={this.state.showPrintForm}
         hide={() => this.setState({ showPrintForm: false })}
+        printData={this.printData}
       />
     );
 

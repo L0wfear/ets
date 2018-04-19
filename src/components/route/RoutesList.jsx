@@ -41,16 +41,11 @@ class RoutesList extends Component {
 
   async componentDidMount() {
     const { flux } = this.context;
-    const STRUCTURES = this.getStructures();
 
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('geoObjects').getGeozones();
 
     await flux.getActions('technicalOperation').getTechnicalOperations();
-    const { technicalOperationsList = [] } = this.props;
-
-    const routesListFromStore = await flux.getActions('routes').getRoutes().then(({ result }) => result);
-    const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
 
     const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
@@ -60,38 +55,46 @@ class RoutesList extends Component {
       _.mapKeys(searchObject, (v, k) => {
         filterValues[k] = [v];
       });
-      this.setState({ filterValues, routesList });
+      this.refreshRoutes({ filterValues });
     } else {
-      this.setState({ routesList });
+      this.refreshRoutes();
     }
   }
 
   onFormHide = () => {
-    this.setState({
-      showForm: false,
-      selectedRoute: null,
-    });
+    this.refreshRoutes({ showForm: false });
   }
 
   getStructures() {
     return this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
   }
 
-  selectedRoute = (selectedRouter) => {
+  refreshRoutes = async (withState = null) => {
+    const STRUCTURES = this.getStructures();
+
+    const { technicalOperationsList = [] } = this.props;
+
+    const routesListFromStore = await this.context.flux.getActions('routes').getRoutes().then(({ result }) => result);
+    const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
+
+    this.setState({ ...withState, routesList });
+  }
+
+  selectedRoute = (selectedRoute) => {
     const { showId } = this.state;
 
     const STRUCTURES = this.getStructures();
     const { technicalOperationsList = [] } = this.props;
 
-    const type = getTypeRoute(selectedRouter.type);
-    const structure_name = type + _.get(STRUCTURES.find(t => t.value === selectedRouter.structure_id), 'label') || 'Без подразделения';
-    const technical_operation_name = structure_name + _.get(technicalOperationsList.find(t => t.id === selectedRouter.technical_operation_id), 'name');
+    const type = getTypeRoute(selectedRoute.type);
+    const structure_name = STRUCTURES.length > 0 ? (type + _.get(STRUCTURES.find(t => t.value === selectedRoute.structure_id), 'label') || 'Без подразделения') : null;
+    const technical_operation_name = (structure_name || type) + _.get(technicalOperationsList.find(t => t.id === selectedRoute.technical_operation_id), 'name');
 
-    [type, structure_name, technical_operation_name].forEach(r => showId.includes(r) ? '' : showId.push(r));
+    [type, structure_name, technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
 
     this.setState({
       showForm: false,
-      selectedRouter,
+      selectedRoute,
       showId,
     });
   }
@@ -169,11 +172,8 @@ class RoutesList extends Component {
     } catch (er) {
       return;
     }
-    const { flux } = this.context;
-    const routesListFromStore = await flux.getActions('routes').removeRoute(this.state.selectedRoute).then(({ result }) => result);
-    const routesListAfterDeleteRoute = makeRoutesListForRender(routesListFromStore, this.props.technicalOperationsList, this.getStructures());
 
-    this.setState({ selectedRoute: null, routesList: routesListAfterDeleteRoute });
+    this.refreshRoutes({ selectedRoute: null });
   }
 
   editRoute = (route) => {

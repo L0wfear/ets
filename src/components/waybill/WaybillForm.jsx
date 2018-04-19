@@ -24,6 +24,7 @@ import {
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
+import { diffDates } from 'utils/dates';
 
 import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 import Form from '../compositions/Form.jsx';
@@ -59,6 +60,7 @@ class WaybillForm extends Form {
       selectedMission: null,
       canEditIfClose: null,
       loadingFields: {},
+      tooLongFactDates: false,
     };
 
     this.employeeFIOLabelFunction = () => {};
@@ -96,19 +98,15 @@ class WaybillForm extends Form {
     if (formState.status === 'active') {
       const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
       const fuel_correction_rate = car.fuel_correction_rate || 1;
-      flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((r) => {
-        const fuelRates = r.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
-        flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
-          const operations = filter(fuelOperations.result, op => find(fuelRates, fr => fr.operation_id === op.id));
-          flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create }).then((equipmentFuelRatesResponse) => {
-            const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
-            flux.getActions('fuelRates').getFuelOperations().then((equipmentFuelOperations) => {
-              const equipmentOperations = filter(equipmentFuelOperations.result, op => find(equipmentFuelRates, fr => fr.operation_id === op.id));
-              this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
-            });
-          });
-        });
-      });
+      const fuelRatesByCarModelResponse = await flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create });
+      const fuelRates = fuelRatesByCarModelResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+      const fuelOperationsResponse = await flux.getActions('fuelRates').getFuelOperations();
+      const operations = _.filter(fuelOperationsResponse.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+      const equipmentFuelRatesResponse = await flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create })
+      const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+      const equipmentFuelOperations = await flux.getActions('fuelRates').getFuelOperations();
+      const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+      this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
       this.getCarDistance(formState);
     } else if (formState.status === 'closed') {
       /* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
@@ -193,34 +191,45 @@ class WaybillForm extends Form {
   }
 
   getCarDistance(formState) {
+    if (diffDates(formState.fact_arrival_date, formState.fact_departure_date, 'days') > 3) {
+      this.setState({ tooLongFactDates: true });
+      return;
+    }
     const { flux } = this.context;
     const { loadingFields } = this.state;
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
-      this.setState({ loadingFields });
+      this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
     const car = find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
     loadingFields.distance = true;
     loadingFields.consumption = true;
     this.setState({ loadingFields });
-    flux.getActions('cars').getInfoFromCar(car.gps_code, formState.fact_departure_date, formState.fact_arrival_date)
-      .then(({ distance, consumption }) => {
-        this.props.handleFormChange('distance', distance);
-        this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
-        const { loadingFields } = this.state;
-        loadingFields.distance = false;
-        loadingFields.consumption = false;
-        this.setState({ loadingFields });
-      })
-      .catch(() => {
-        // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
-        const { loadingFields } = this.state;
-        loadingFields.distance = false;
-        loadingFields.consumption = false;
-        this.setState({ loadingFields });
-      });
+    const {
+      fact_departure_date,
+      fact_arrival_date,
+    } = formState;
+
+    if (car.gps_code && fact_departure_date && fact_arrival_date && diffDates(fact_arrival_date, fact_departure_date) > 0) {
+      flux.getActions('cars').getInfoFromCar(car.gps_code, fact_departure_date, fact_arrival_date)
+        .then(({ distance, consumption }) => {
+          this.props.handleFormChange('distance', distance);
+          this.props.handleFormChange('consumption', consumption !== null ? parseFloat(consumption).toFixed(3) : null);
+          const { loadingFields } = this.state;
+          loadingFields.distance = false;
+          loadingFields.consumption = false;
+          this.setState({ loadingFields });
+        })
+        .catch(() => {
+          // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
+          const { loadingFields } = this.state;
+          loadingFields.distance = false;
+          loadingFields.consumption = false;
+          this.setState({ loadingFields });
+        });
+    }
   }
 
   getLatestWaybillDriver(formState) {
@@ -972,8 +981,8 @@ class WaybillForm extends Form {
                   id="distance-by-glonass"
                   type="string"
                   label="Пройдено по Глонасс, км"
-                  error={errors.distance}
-                  value={getGoOnGLONASS(state)}
+                  error={!this.state.tooLongFactDates && errors.distance}
+                  value={this.state.tooLongFactDates ? 'Слишком большой период действия ПЛ' : getGoOnGLONASS(state)}
                   isLoading={loadingFields.distance}
                   disabled
                 />

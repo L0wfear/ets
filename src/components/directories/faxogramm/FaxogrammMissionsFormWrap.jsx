@@ -7,6 +7,7 @@ import { autobind } from 'core-decorators';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import FaxogrammMissionsForm from './FaxogrammMissionsForm.jsx';
+import { checkMissionsOnStructureIdCar } from 'components/missions/utils/customValidate.ts';
 
 @autobind
 class FaxogrammMissionsFormWrap extends FormWrap {
@@ -60,94 +61,96 @@ class FaxogrammMissionsFormWrap extends FormWrap {
     const { flux } = this.context;
     const {
       formState,
-      missionJournalState,
+      missionJournalState: { checkedElements = {} } = {},
     } = this.state;
 
-    const initPayload = {
-      mission_source_id: '4',
-      faxogramm_id: formState.id,
-      date_start: formState.order_date,
-      date_end: formState.order_date_to,
-      assign_to_waybill: formState.assign_to_waybill,
-    };
+    if (!checkMissionsOnStructureIdCar(Object.values(checkedElements), this.props.carsIndex)) {
+      const initPayload = {
+        mission_source_id: '4',
+        faxogramm_id: formState.id,
+        date_start: formState.order_date,
+        date_end: formState.order_date_to,
+        assign_to_waybill: formState.assign_to_waybill,
+      };
 
-    const createMissions = async (element, payload) => {
-      let error = false;
-      try {
-        await flux.getActions('missions').createMissions(element, payload);
-      } catch (e) {
-        error = true;
-        if (e && e.message.code === 'no_active_waybill') {
-          let cancel = false;
-          try {
-            await confirmDialog({
-              title: 'Для ТС не существует активного ПЛ',
-              body: 'Создать черновик ПЛ?',
-            });
-          } catch (er) {
-            cancel = true;
+      const createMissions = async (element, payload) => {
+        let error = false;
+        try {
+          await flux.getActions('missions').createMissions(element, payload);
+        } catch (e) {
+          error = true;
+          if (e && e.message.code === 'no_active_waybill') {
+            let cancel = false;
+            try {
+              await confirmDialog({
+                title: 'Для ТС не существует активного ПЛ',
+                body: 'Создать черновик ПЛ?',
+              });
+            } catch (er) {
+              cancel = true;
+            }
+            if (!cancel) {
+              const newPayload = {
+                mission_source_id: '4',
+                faxogramm_id: payload.id,
+                date_start: payload.order_date,
+                date_end: payload.order_date_to,
+                assign_to_waybill: 'assign_to_new_draft',
+              };
+              await createMissions(element, newPayload);
+            }
           }
-          if (!cancel) {
-            const newPayload = {
-              mission_source_id: '4',
-              faxogramm_id: payload.id,
-              date_start: payload.order_date,
-              date_end: payload.order_date_to,
-              assign_to_waybill: 'assign_to_new_draft',
-            };
-            await createMissions(element, newPayload);
+          if (e && e.message.code === 'invalid_period') {
+            const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+
+            const body = self => <div>
+              <div>{e.message.message}</div><br />
+              <center>Введите даты задания:</center>
+              <IntervalPicker
+                interval={self.state.interval}
+                onChange={interval => self.setState({ interval })}
+                defDate={[getToday9am(), getTomorrow9am()]}
+              />
+            </div>;
+
+            let cancel = false;
+            let state;
+            try {
+              state = await confirmDialog({
+                title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
+                body,
+              });
+            } catch (er) {
+              cancel = true;
+            }
+            if (!cancel) {
+              const newPayload = {
+                mission_source_id: '4',
+                faxogramm_id: payload.id,
+                date_start: state.interval[0],
+                date_end: state.interval[1],
+                assign_to_waybill: payload.assign_to_waybill,
+              };
+              await createMissions(element, newPayload);
+            }
           }
         }
-        if (e && e.message.code === 'invalid_period') {
-          const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+        return error;
+      };
 
-          const body = self => <div>
-            <div>{e.message.message}</div><br />
-            <center>Введите даты задания:</center>
-            <IntervalPicker
-              interval={self.state.interval}
-              onChange={interval => self.setState({ interval })}
-              defDate={[getToday9am(), getTomorrow9am()]}
-            />
-          </div>;
+      const missions = _.keys(checkedElements)
+        .map(key => checkedElements[key]);
 
-          let cancel = false;
-          let state;
-          try {
-            state = await confirmDialog({
-              title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
-              body,
-            });
-          } catch (er) {
-            cancel = true;
-          }
-          if (!cancel) {
-            const newPayload = {
-              mission_source_id: '4',
-              faxogramm_id: payload.id,
-              date_start: state.interval[0],
-              date_end: state.interval[1],
-              assign_to_waybill: payload.assign_to_waybill,
-            };
-            await createMissions(element, newPayload);
-          }
-        }
+      let closeForm = true;
+
+      for (const m of missions) {
+        const e = await createMissions({ [m.id]: m }, initPayload);
+        if (e) closeForm = false;
       }
-      return error;
-    };
 
-    const missions = _.keys(missionJournalState.checkedElements)
-      .map(key => missionJournalState.checkedElements[key]);
-
-    let closeForm = true;
-
-    for (const m of missions) {
-      const e = await createMissions({ [m.id]: m }, initPayload);
-      if (e) closeForm = false;
+      closeForm && this.props.onFormHide();
+      return;
     }
-
-    closeForm && this.props.onFormHide();
-    return;
   }
   onListStateChange = missionJournalState => this.setState({ missionJournalState });
 

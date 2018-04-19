@@ -75,6 +75,14 @@ export const tableMeta = props => ({
         labelFunction: d => d ? 'Да' : 'Нет',
       },
     },
+    {
+      name: 'company_structure_name',
+      displayName: 'Подразделение',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
   ],
 });
 

@@ -3,7 +3,7 @@ import { DropdownButton, MenuItem, Glyphicon, Button } from 'react-bootstrap';
 
 import { FaxogrammService } from 'api/Services';
 import Div from 'components/ui/Div.jsx';
-import { FluxContext } from 'utils/decorators';
+import { FluxContext, connectToStores } from 'utils/decorators';
 import { saveData } from 'utils/functions';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import FaxogrammMissionsFormWrap from '../../directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
@@ -14,6 +14,7 @@ const TypeDownload = {
   new: '2',
 };
 
+@connectToStores(['objects'])
 @FluxContext
 export default class Faxogramms extends DashboardCardMedium {
 
@@ -102,12 +103,16 @@ export default class Faxogramms extends DashboardCardMedium {
       showFaxogrammForm = false,
       faxogramm = null,
     } = this.state;
+    const {
+      carsIndex,
+    } = this.props;
 
     return (
       <FaxogrammMissionsFormWrap
         onFormHide={this.hideFaxogrammForm}
         showForm={showFaxogrammForm}
         element={faxogramm}
+        carsIndex={carsIndex}
       />
     );
   }

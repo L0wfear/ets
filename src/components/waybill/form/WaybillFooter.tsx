@@ -35,10 +35,10 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem eventKey={'plate_special'}>Форма 1 (автобус)</MenuItem>
+          <MenuItem eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
           <MenuItem eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
-          <MenuItem eventKey={'plate_bus'}>Форма №3 (легковое ТС)</MenuItem>
-          <MenuItem eventKey={'plate_car'}>Форма №4 (самоходная машина(</MenuItem>
+          <MenuItem eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
+          <MenuItem eventKey={'plate_special'}>Форма №4 (самоходная машина(</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>

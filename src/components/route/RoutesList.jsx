@@ -173,6 +173,7 @@ class RoutesList extends Component {
       return;
     }
 
+    await this.context.flux.getActions('routes').removeRoute(this.state.selectedRoute);
     this.refreshRoutes({ selectedRoute: null });
   }
 

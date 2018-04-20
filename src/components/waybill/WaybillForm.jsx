@@ -56,7 +56,7 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
 const Div = enhanceWithPermissions(DivForEnhance);
 
-const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
+// const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
 @autobind
 class WaybillForm extends Form {
@@ -76,6 +76,7 @@ class WaybillForm extends Form {
       loadingFields: {},
       fuelRateAllList: [],
       tooLongFactDates: false,
+      notAvailableMissions: [],
     };
   }
 

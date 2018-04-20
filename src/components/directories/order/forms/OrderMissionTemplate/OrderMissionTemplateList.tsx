@@ -123,7 +123,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           date_from: date_start,
           date_to: date_end,
           num_exec: passes_count,
-        } = value;
+        } = value as any;
 
         const externalPayload = {
           mission_source_id,
@@ -259,7 +259,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
               onRowSelected={this.onRowSelected}
               onAllRowsChecked={this.onAllChecked}
               onRowChecked={this.onRowChecked}
-
+              employeesList={this.props.employeesList}
               flux={this.context.flux}
               structures={structures}
             />

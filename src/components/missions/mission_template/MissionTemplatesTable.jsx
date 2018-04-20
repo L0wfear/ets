@@ -1,9 +1,8 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
+import { get } from 'lodash';
 
-export const getTableMeta = ({ structures = [], data = [] }) => {
-  const structure_id_list = data.map(({ structure_id }) => structure_id);
-
+export const getTableMeta = ({ structures = [] }) => {
   const tableMeta = {
     cols: [
       {
@@ -82,7 +81,7 @@ export const getTableMeta = ({ structures = [], data = [] }) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: structures.filter(({ id }) => structure_id_list.includes(id)).map(({ id, name }) => ({ value: id, label: name })),
+          byLabel: 'structure_name',
         },
         display: structures.length,
       },
@@ -98,10 +97,12 @@ export const getTableMeta = ({ structures = [], data = [] }) => {
   return tableMeta;
 };
 
+const renderers = {
+  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+};
+
 export default (props) => {
-  const renderers = {
-    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-  };
+
   return (
     <Table
       title="Шаблоны заданий"

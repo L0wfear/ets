@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
@@ -16,22 +17,27 @@ export function getTableMeta(props = {}): IDataTableSchema {
       {
         name: 'date_from',
         displayName: 'Начало действия поручения',
-        type: 'date',
-        filter: false,
+        type: 'datetime',
+        filter: {
+          type: 'datetime',
+        },
       },
       {
         name: 'date_to',
         displayName: 'Окончание действия поручения',
-        type: 'date',
-        filter: false,
+        type: 'datetime',
+        filter: {
+          type: 'datetime',
+        },
       },
-      ...getMissionTempalteTableMeta(props).cols.map(({ name, displayName, type, display: displayOuter }) => ({
-        name,
-        displayName,
-        type,
-        filter: false,
-        display: typeof displayOuter === 'boolean' ? displayOuter : true,
-      })),
+      ...getMissionTempalteTableMeta(props).cols.map(({ name, displayName, type, display: displayOuter, filter }: any) => ({
+          name,
+          displayName,
+          type,
+          filter,
+          display: typeof displayOuter === 'boolean' ? displayOuter : true,
+        })
+      ),
     ],
   };
   return meta;
@@ -41,19 +47,17 @@ const getRenders = props => {
   const renderers: ISchemaRenderer = {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
-    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
   };
+
   return renderers;
 };
 
 const Table: React.SFC<any> = props  => {
-  const data = props.data.map(d => ({ ...d }));
-
   return (
     <DataTable
       multiSelection={true}
-      noFilter={true}
-      results={data}
+      results={props.data.map(d => ({ ...d }))}
       renderers={getRenders(props)}
       tableMeta={getTableMeta(props)}
       onRowSelected={props.onRowSelected}

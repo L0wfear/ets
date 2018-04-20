@@ -85,8 +85,7 @@ class OrderList extends React.Component<any, any> {
           <OrderTableChildren order_mission_source_id={this.state.order_mission_source_id} />
         </OrdersTable>
         <Paginator />
-
-        <OrderAssignmentsList/>
+        <OrderAssignmentsList order_mission_source_id={this.state.order_mission_source_id} />
         <HistoryOrderList />
         <OrderFormWrap />
       </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
@@ -7,32 +8,37 @@ import DataTableComponent from 'components/ui/table/DataTable';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-export function tableMeta({
-} = {}): IDataTableSchema {
-  const meta: IDataTableSchema = {
-    cols: [
-      {
-        name: 'order_info',
-        displayName: 'Дополнительная информация',
-        type: 'string',
-        filter: false,
-      },
-    ],
-  };
-  return meta;
-}
+const meta: IDataTableSchema = {
+  cols: [
+    {
+      name: 'order_info',
+      displayName: 'Дополнительная информация',
+      type: 'string',
+      filter: false,
+    },
+  ],
+};
+export const tableMeta = () => meta;
 
 const Table: React.SFC<any> = props  => {
+  const { dataSource: { order_info = '' } } = props;
+
   return (
     <DataTable
+      noHeader
+      preventNoDataMessage
       title="Реестр централизованных заданий"
-      results={props.data}
       tableMeta={tableMeta()}
-      noHeader={props.noHeader}
-      preventNoDataMessage={props.preventNoDataMessage}
       className="order"
+      results={[{ id: 0, order_info }]}
     />
   );
 };
 
-export default Table;
+const mapStateToProps = (state) => ({
+  dataSource: state.order.selectedElementOrder,
+});
+
+export default connect(
+  mapStateToProps,
+)(Table);

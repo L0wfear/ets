@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { bindActionCreators } from 'redux';
-import {
-  getOrders,
-} from 'redux/modules/order/action-order';
-import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/compositions/hoc';
-
 import { connect } from 'react-redux';
+
+import { getOrders } from 'redux/modules/order/action-order';
+import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/compositions/hoc';
 
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
 import Datepicker from 'components/ui/input/DatePicker';
@@ -41,13 +38,9 @@ const mapStateToProps = (state) => ({
   date_start: state.order.pageOptions.date_start,
   date_end: state.order.pageOptions.date_end,
 });
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      getOrders,
-    },
-    dispatch,
-  );
+const mapDispatchToProps = dispatch => ({
+  getOrders: (props) => dispatch(getOrders(props)),
+})
 
 export default connect(
   mapStateToProps,

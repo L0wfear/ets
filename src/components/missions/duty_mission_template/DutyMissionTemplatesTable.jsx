@@ -9,7 +9,7 @@ export const getTableMeta = ({
   structures = [],
   flux = null,
 } = {}) => {
-  console.log(employeesList)
+
   const tableMeta = {
     cols: [
       {

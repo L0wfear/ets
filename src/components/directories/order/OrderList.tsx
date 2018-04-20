@@ -3,40 +3,31 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   getOrders,
-  setMInMissionTemplateData,
-  setDMInMissionTemplateData,
   resetOrder,
 } from 'redux/modules/order/action-order';
-import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
 
 import { FluxContext } from 'utils/decorators';
 
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-
 import OrdersDatepicker from 'components/directories/order/OrdersDatepicker';
 import OrdersTable from 'components/directories/order/OrdersTable';
+import OrderTableChildren from 'components/directories/order/OrderTableChildren';
 import OrderFormWrap from 'components/directories/order/OrderFormWrap';
 
 import OrderAssignmentsList from 'components/directories/order/order_assignment/OrderAssignmentsList';
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 import Paginator from 'components/directories/order/Paginator';
-import { TypeDownload } from 'components/directories/order/constant-order';
-import { getBlobOrder } from 'components/directories/order/utils-order';
-
-const marginLeft = { marginLeft: 10 };
-
-const Button = enhanceWithPermissions(BootstrapButton);
-const title: any = <Glyphicon glyph="download-alt" />;
 
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;
-
+  state = {
+    order_mission_source_id: null,
+  }
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('missions').getMissionSources();
+    flux.getActions('missions').getMissionSources().then(({ order_mission_source_id }) => this.setState({ order_mission_source_id }));
     flux.getActions('employees').getEmployees({ active: true });
     flux.getActions('objects').getCars();
 
@@ -86,28 +77,12 @@ class OrderList extends React.Component<any, any> {
     this.props.resetOrder();
   }
 
-  handleClickOnCMTemplate = () => this.props.setMInMissionTemplateData({ mission_source_id: (this.props.missionSourcesList.find(({ auto }) => auto) || {}).id })
-  handleClickOnCDMTemplate = () => this.props.setDMInMissionTemplateData({ mission_source_id: (this.props.missionSourcesList.find(({ auto }) => auto) || {}).id })
-
-  seclectDownload = eventName => getBlobOrder(this.props.selectedElementOrder, eventName)
-
   render() {
-    const {
-      selectedElementOrder: faxSE,
-    } = this.props;
-
     return (
       <div className="ets-page-wrap">
         <OrdersDatepicker />
         <OrdersTable>
-          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCMTemplate} disabled={this.props.disabledOrderButtonTemplateMission}>Создать задание по шаблону</Button>
-          <Button permissions={['mission_template.create']} onClick={this.handleClickOnCDMTemplate} disabled={this.props.disabledOrderButtonTemplateDutyMission}>Создать наряд-задание по шаблону</Button>
-          <div style={marginLeft} >
-            <DropdownButton onSelect={this.seclectDownload} pullRight title={title} id="bg-nested-dropdown">
-              <MenuItem eventKey={TypeDownload.old} disabled={faxSE === null}>Скан-копия факсограммы</MenuItem>
-              <MenuItem eventKey={TypeDownload.new} disabled={faxSE === null}>Расшифровка централизованного задания</MenuItem>
-            </DropdownButton>
-          </div>
+          <OrderTableChildren order_mission_source_id={this.state.order_mission_source_id} />
         </OrdersTable>
         <Paginator />
 
@@ -122,17 +97,12 @@ class OrderList extends React.Component<any, any> {
 const mapStateToProps = (state) => ({
   OrdersList: state.order.OrdersList,
   selectedElementOrder: state.order.selectedElementOrder,
-
-  disabledOrderButtonTemplateMission: state.order.disabledOrderButton.templateMission,
-  disabledOrderButtonTemplateDutyMission: state.order.disabledOrderButton.templateDutyMission,
 });
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(
     {
       getOrders,
       resetOrder,
-      setMInMissionTemplateData,
-      setDMInMissionTemplateData,
     },
     dispatch,
   ),

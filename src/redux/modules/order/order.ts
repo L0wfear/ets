@@ -63,10 +63,7 @@ export default function(state = initialState, { type, payload }) {
       }
     case SET_SELECTED_ELEMENT_ORDER:
       const { selectedElementOrder: selectedElementOrder_sseo } = payload;
-    
-      const {
-        technical_operations
-      } = selectedElementOrder_sseo;
+      const { technical_operations } = selectedElementOrder_sseo;
 
       const disabledOrderButton = {
         templateMission: status === 'cancelled' || diffDates(new Date(), selectedElementOrder_sseo.order_date_to, 'minutes') > 0 || !technical_operations.some(({ num_exec }) => num_exec > 0),
@@ -82,7 +79,7 @@ export default function(state = initialState, { type, payload }) {
         disabledOrderButton,
       }
     case SET_SELECTED_ELEMENT_ASSIGNMENT:
-      const { selectedElementOrder: selectedElementOrder_ssea } = payload;
+      const { selectedElementOrder: { order_date_to, status: order_status } } = state;
     
       const {
         selectedElementAssignment,
@@ -91,13 +88,13 @@ export default function(state = initialState, { type, payload }) {
           num_exec,
         }
       } = payload;
-      const dateTo = selectedElementAssignment.date_to || selectedElementOrder_ssea.order_date_to;
+      const dateTo = selectedElementAssignment.date_to || order_date_to;
 
       return {
         ...state,
         selectedElementAssignment: selectedElementAssignment,
-        disabledOrderButton: {
-          mission: !num_exec || diffDates(new Date(), dateTo) > 0 || selectedElementOrder_ssea.status === 'cancelled',
+        disabledAssignmentButton: {
+          mission: !num_exec || diffDates(new Date(), dateTo) > 0 || order_status === 'cancelled',
           dutyMission: !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0) || diffDates(new Date(), dateTo) > 0,
         },
       }

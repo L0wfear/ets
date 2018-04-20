@@ -6,6 +6,7 @@ import cx from 'classnames';
 import ClickOutHandler from 'react-onclickout';
 import Griddle from 'griddle-react';
 import { autobind } from 'core-decorators';
+import { diffDates } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 
 import {
@@ -416,9 +417,11 @@ export default class DataTable extends React.Component {
         }
 
         const IS_ARRAY = Array.isArray(value);
-
         if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
-          if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
+          const { filter } = cols.find(({ name }) => name === key);
+          if (filter && filter.type === 'datetime' && diffDates(obj[key], value) !== 0) {
+            isValid = false;
+          } else if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
             isValid = false;
           }
         } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) !== 'date_interval') {

@@ -161,11 +161,18 @@ const closingProperties = [
   },
   {
     key: 'fuel_end',
-    title: 'Топливо.Возврат',
+    title: 'Топливо.Возврат по таксировке',
     type: 'number',
     float: 3,
     min: 0,
     required: true,
+  },
+  {
+    key: 'fact_fuel_end',
+    title: 'Топливо.Возврат фактический',
+    type: 'number',
+    float: 3,
+    min: 0,
   },
   {
     key: 'equipment_fuel_end',

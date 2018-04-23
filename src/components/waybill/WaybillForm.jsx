@@ -11,7 +11,8 @@ import {
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
+
 import DivForEnhance from 'components/ui/Div.jsx';
 import {
   isNotNull,
@@ -42,6 +43,10 @@ const getGoOnGLONASS = ({ distance, track_length }) => {
   if (isNaN(parseFloat(track_length))) return 'Нет данных';
 
   return parseFloat(track_length / 1000).toFixed(3);
+};
+
+const boundKeysObj = {
+  fact_fuel_end: ['fact_fuel_end'],
 };
 
 @autobind
@@ -410,7 +415,6 @@ class WaybillForm extends Form {
 
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
-
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
     // const DRIVERS = waybillDriversList.map((d) => {
@@ -452,6 +456,7 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
+    const IS_KAMAZ = (car.model_name || '').includes('КАМАЗ');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasOdometer(state.gov_number) : null;
 
     let title = '';
@@ -833,11 +838,23 @@ class WaybillForm extends Form {
                   <Field
                     id="fuel-end"
                     type="number"
-                    label="Возврат, л"
+                    label="Возврат по таксировке, л"
                     error={errors.fuel_end}
                     value={state.fuel_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
                     disabled
+                  />
+                  <ExtField
+                    id="fuel-end"
+                    type="number"
+                    label="Возврат фактический, л"
+                    error={errors.fact_fuel_end}
+                    value={state.fact_fuel_end}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={!IS_ACTIVE}
+                    onChange={this.handleChange}
+                    boundKeys={boundKeysObj.fact_fuel_end}
+                    showRedBorder={state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)}
                   />
 
                 </Col>

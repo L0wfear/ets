@@ -102,8 +102,9 @@ export default class Field extends React.Component {
   }
 
   renderNumber() {
-    const { error } = this.props;
-    const inputClassName = cx({ 'has-error': error });
+    const { error, showRedBorder } = this.props;
+    const inputClassName = cx({ 'has-error': error || showRedBorder });
+
     return (
       <Div hidden={this.props.hidden}>
         <Input type="number" className={inputClassName} {...this.props} />

@@ -639,7 +639,7 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
-    const IS_KAMAZ = (car.model_name || '').includes('КАМАЗ');
+    const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
 
     const title = getTitleByStatus(state);

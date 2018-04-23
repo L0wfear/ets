@@ -75,6 +75,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       end_date: new Date(),
     };
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    const linear = true;
+    flux.getActions('companyStructure').getCompanyStructure(linear);
   }
 
   async refreshList(state = this.state) {
@@ -296,15 +298,13 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
-
     const changeSort = (field, direction) =>
       this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
 
     const changeFilter = filter => this.setState({ filter });
 
     return {
-      structures,
+      structures: this.props.companyStructureLinearList,
       changeSort,
       changeFilter,
       filterValues: this.state.filter,

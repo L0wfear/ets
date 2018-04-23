@@ -76,6 +76,8 @@ export default class MissionsJournal extends CheckableElementsList {
       end_date: new Date(),
     };
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    const linear = true;
+    flux.getActions('companyStructure').getCompanyStructure(linear);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -353,12 +355,12 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = filter => this.setState({ filter });
+
     return {
       mapView: this.mapView,
-      structures,
+      structures: this.props.companyStructureLinearList,
       changeSort,
       changeFilter,
       filterValues: this.state.filter,

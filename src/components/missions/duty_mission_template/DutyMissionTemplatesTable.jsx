@@ -77,7 +77,7 @@ export const getTableMeta = ({
         name: 'structure_id',
         displayName: 'Подразделение',
         cssClassName: 'width80',
-        type: 'string',
+        type: 'number',
         filter: {
           type: 'multiselect',
           byLabel: 'structure_name',

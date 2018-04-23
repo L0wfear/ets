@@ -21,7 +21,7 @@ export default class DashboardPageHeader extends React.Component {
       const backDate = moment(date);
 
       this.setState({
-        time: backDate.format('HH:mm:ss').utcOffset(180),
+        time: backDate.utcOffset(180).format('HH:mm:ss'),
         date: backDate.format('DD MMMM YYYY'),
         prevDate: date,
         backDate: date,

@@ -328,10 +328,11 @@ const closingDependencies = {
   ],
   'fact_arrival_date': [
     {
-      validator(value, { plan_arrival_date }) {
-        if (moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
+      validator(value, { plan_arrival_date, status }) {
+        if (status !== 'active' && moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
           return '"Возвращение факт." должно быть не позже "Возвращение план."';
         }
+
         return false;
       },
     },

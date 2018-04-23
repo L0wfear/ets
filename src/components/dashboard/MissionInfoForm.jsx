@@ -243,19 +243,19 @@ class MissionInfoForm extends Form {
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
             <ul className="listStyleTypeNone" >
-              <li className="colorRed"><b>Пройдено с рабочей скоростью:&nbsp;</b>
+              <li className="colorRed"><b>{'Пройдено с рабочей скоростью: '}</b>
                 {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
               </li>
-              <li className="colorGreen"><b>Пройдено с превышением рабочей скорости:&nbsp;</b>
+              <li className="colorGreen"><b>{'Пройдено с превышением рабочей скорости: '}</b>
                 {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
               </li>
-              <li><b>Общее время стоянок: </b>
+              <li><b>{'Общее время стоянок: '}</b>
                 {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
               </li>
-              <li><b>Общий пробег с работающим оборудованием: </b>
+              <li><b>{'Общий пробег с работающим оборудованием: '}</b>
                 {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания.'}`}
               </li>
-              <li><b>Процент выполнения задания %:</b>
+              <li><b>{'Процент выполнения задания %: '}</b>
                 {Math.floor(current_percentage) || '-'}
               </li>
             </ul>

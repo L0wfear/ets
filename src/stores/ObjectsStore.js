@@ -119,7 +119,6 @@ export default class ObjectsStore extends Store {
   handleGetLinearCompanyStructure(companyStructureLinear) {
     this.setState({ companyStructureLinearList: companyStructureLinear });
   }
-  handleGetLinearCompanyStructure
 
   handleGetCars(cars) {
     const carsList = cars.result.map((c) => {

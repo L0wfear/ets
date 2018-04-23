@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 
 const seasonsList = [{ id: 1, name: 'Лето' }, { id: 2, name: 'Зима' }, { id: 3, name: 'Всесезон' }];
+const boundKeysObj = {
+  check_types: ['check_types'],
+};
 
 @connectToStores(['objects', 'employees', 'missions', 'routes'])
 export default class TechnicalOperationForm extends Form {
@@ -128,11 +131,15 @@ export default class TechnicalOperationForm extends Form {
             </Col>
 
             <Col md={3}>
-              <Field type="select" label="Тип проверки"
+              <ExtField
+                label="Тип проверки"
+                type="select"
+                multi
                 options={TECHNICAL_OPERATION_TYPES}
-                value={state.check_type}
+                value={state.check_types}
                 clearable={false}
-                onChange={this.handleChange.bind(this, 'check_type')}
+                onChange={this.handleChange}
+                boundKeys={boundKeysObj.check_types}
                 disabled={!isPermitted}
               />
             </Col>

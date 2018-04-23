@@ -155,7 +155,7 @@ export default class WaybillFormWrap extends FormWrap {
       formErrors = this.validate(formState, formErrors);
     }
 
-    newState.canSave = !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = !_.filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
     newState.canClose = !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formState = formState;

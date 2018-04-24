@@ -71,6 +71,8 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('objects').getCars();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
+    flux.getActions('companyStructure').getLinearCompanyStructure();
+
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -181,11 +183,18 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  removeCheckedElements() {
+  async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') return;
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
-      if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+      try {
+        await confirmDialog({
+          title: 'Внимание!',
+          body: 'Вы уверены, что хотите удалить выбранные элементы?',
+        });
+      } catch (er) {
+        return;
+      }
 
       let isNotDeleted = false;
 
@@ -269,12 +278,12 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = filter => this.setState({ filter });
+
     return {
       mapView: this.mapView,
-      structures,
+      structures: this.props.companyStructureLinearList,
       changeSort,
       changeFilter,
       filterValues: this.state.filter,

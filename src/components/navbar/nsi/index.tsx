@@ -43,9 +43,7 @@ import DataForComputationNavItem from './DataForComputationNavItem';
 const MenuItem = enhanceWithPermissions(BootstrapMenuItem);
 const NavDropdown = enhanceWithPermissions(BootstrapNavDropdown);
 
-interface IPropsNsiNavItem extends IPropsNavbarItem {}
-
-const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
+const NsiNavItem: React.SFC<IPropsNavbarItem> = ({ path }) =>
   <NavDropdown id="show-nsi" oneOfPermissions={PERMISSIONS.nsi.list} title="НСИ">
     <MenuItem id="link-employees" permissions={['employee.list']} active={path === '/employees'} href="#/employees">Реестр сотрудников</MenuItem>
     <MenuItem id="link-faxogramms" permissions={['faxogramm.list']} active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
@@ -85,6 +83,20 @@ const NsiNavItem: React.SFC<IPropsNsiNavItem> = ({ path }) =>
       <MenuItem id="link-tech-inspection" permissions={['autobase_tech_inspection.list']} active={path === '/tech-inspection'} href="#/tech-inspection">Реестр техосмотров</MenuItem>
       <MenuItem id="link-insurance-policyn" permissions={['autobase_insurance_policy.list']} active={path === '/insurance-policyn'} href="#/insurance-policy">Реестр страховок</MenuItem>
       <MenuItem id="link-repair-company" permissions={['autobase_company.list']} active={path === '/repair-company'} href="#/repair-company">Реестр ремонтных организаций</MenuItem>
+    </NavDropdown>
+
+    <NavDropdown
+      id="show-repair"
+      oneOfPermissions={[
+        'repair_contractor.list',
+        'repair_state_program.list',
+        'ets_object_properties.list',
+      ]}
+      title="Планирование работ по техническому содержанию объектов"
+    >
+      <MenuItem id="link-contractor" permissions={['repair_contractor.list']} active={path === '/contractor'} href="#/contractor">Справочник Подрядчиков</MenuItem>
+      <MenuItem id="link-state-program" permissions={['repair_state_program.list']} active={path === '/state-program'} href="#/state-program">Справочник государственных программ ремонта</MenuItem>
+      <MenuItem id="link-object-property" permissions={['ets_object_properties.list']} active={path === '/object-property'} href="#/object-property">Справочник характеристик объектов</MenuItem>
     </NavDropdown>
 
     <NavDropdown id="show-fuel" oneOfPermissions={['material_consumption_rate.list', 'fuel_consumption_rate.list', 'maintenance_rate.list']} title="Нормативные показатели" >

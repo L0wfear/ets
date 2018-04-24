@@ -83,7 +83,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
             let cancel = false;
             try {
               await confirmDialog({
-                title: 'Для ТС не существует активного ПЛ',
+                title: 'Для ТС не существует активного ПЛ.',
                 body: 'Создать черновик ПЛ?',
               });
             } catch (er) {
@@ -117,7 +117,7 @@ class FaxogrammMissionsFormWrap extends FormWrap {
             let state;
             try {
               state = await confirmDialog({
-                title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
+                title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}.`}</b>,
                 body,
               });
             } catch (er) {

@@ -89,7 +89,7 @@ export default class MissionFormWrap extends FormWrap {
               let cancel = false;
               try {
                 await confirmDialog({
-                  title: 'Для ТС не существует активного ПЛ',
+                  title: 'Для ТС не существует активного ПЛ.',
                   body: 'Создать черновик ПЛ?',
                 });
               } catch (err) {
@@ -122,7 +122,7 @@ export default class MissionFormWrap extends FormWrap {
               let state;
               try {
                 state = await confirmDialog({
-                  title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
+                  title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}.`}</b>,
                   body,
                 });
               } catch (err) {

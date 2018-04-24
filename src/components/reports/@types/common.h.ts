@@ -13,5 +13,6 @@ export interface IReportProps {
   renderers?: ISchemaRenderer;
   summaryRenderes?: ISchemaRenderer;
   schemaMakers?: ISchemaMaker;
+  useServerFilter?: boolean;
   headerStateMaker?(state: any): any;
 }

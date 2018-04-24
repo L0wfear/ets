@@ -129,6 +129,15 @@ class ElementsList extends React.Component {
     }
   }
 
+  setNewSelectedElement = (selectedElement) =>
+    Promise.resolve(this.setState({ showForm: false }))
+      .then(() => {
+        this.setState({
+          showForm: true,
+          selectedElement,
+        });
+      });
+
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
    */
@@ -181,7 +190,7 @@ class ElementsList extends React.Component {
     const removeCallback = this.removeElementCallback || (() => {});
 
     confirmDialog({
-      title: 'Внимание',
+      title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => {

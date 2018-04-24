@@ -46,6 +46,16 @@ const getTableMeta = () => {
         displayName: 'Выполнение тех. операций по содержанию лотков и осевых на проезжей части',
         type: 'floatFixed1',
       },
+      {
+        name: 'percentage_four_distance',
+        displayName: 'Содержание проезжей части (общее)',
+        type: 'floatFixed1',
+      },
+      {
+        name: 'percentage_four_passes',
+        displayName: 'Выполнение тех.операций по проезжей части (общее)',
+        type: 'floatFixed1',
+      },
       // {
       //   name: 'total_percentage',
       //   displayName: 'Итого',
@@ -65,6 +75,8 @@ const OdhCoverageReportTable = (props) => {
     percentage_two_passes: floatFixed1Percentage,
     percentage_three_distance: floatFixed1Percentage,
     percentage_three_passes: floatFixed1Percentage,
+    percentage_four_distance: floatFixed1Percentage,
+    percentage_four_passes: floatFixed1Percentage,
     total_percentage: floatFixed1Percentage,
   };
 

@@ -169,6 +169,8 @@ export default class MainPage extends React.Component {
 
             <NavItem id="link-routes-list" hidden={isOkrug} permissions={[PERMISSIONS.route.list]} active={path === '/routes-list'} href="#/routes-list">Маршруты</NavItem>
             <NavItem id="link-company-structure" hidden={isOkrug} permissions={[PERMISSIONS.company_structure.list]} active={path === '/company-structure'} href="#/company-structure">Структура предприятия</NavItem>
+            <NavItem id="link-program-registry" permissions={[PERMISSIONS.repair.list]} active={path === '/program-registry'} href="#/program-registry">Планирование ремонтных работ</NavItem>
+
             <NavItem id="link-notification-registry" title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><div style={{ fontSize: 18 }}><Glyphicon glyph="exclamation-sign" /></div></NavItem>
             <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
@@ -180,7 +182,7 @@ export default class MainPage extends React.Component {
               <MenuItem id="link-okrug" href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>
               <MenuItem id="link-report" href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</MenuItem>
               <MenuItem id="link-engineer" href={`${config.docs}Руководство-Инженер ТО.docx`}>Руководство инженера ТО</MenuItem>
-              </NavDropdown>
+            </NavDropdown>
             <NavItem className="navbar-user">
               <div className="navbar-user__avatar">
                 <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />

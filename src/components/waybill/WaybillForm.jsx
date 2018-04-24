@@ -564,7 +564,7 @@ class WaybillForm extends Form {
   handleClose = taxesControl =>
     checkMissionSelectBeforeClose(
       this.props.formState,
-      groupBy([...this.props.oldMissionsList, ...this.props.notAvailableMissions], 'id'),
+      groupBy([...this.state.missionsList, ...this.state.notAvailableMissions], 'id'),
       this.props.missionSourcesList.find(({ auto }) => auto).id,
       this.context.flux.getActions('objects').getOrderById,
     )

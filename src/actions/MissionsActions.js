@@ -104,7 +104,7 @@ export default class MissionsActions extends Actions {
   getMissionSources(payload) {
     return MissionSourceService.get(payload).then(({ result }) => ({
       result,
-      order_mission_source_id: result.find(({ auto }) => auto),
+      order_mission_source_id: result.find(({ auto }) => auto).id,
     }));
   }
 

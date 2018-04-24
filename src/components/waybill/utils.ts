@@ -132,13 +132,13 @@ export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }
   action({ car_id, datetime })
     .then(({ result: fuelRatesList}) => ({
       fuelRates: fuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
-      fuelRatesIndex: fuelRatesList.reduce((newObj, { id, ...other }) => ({ ...newObj, [id]: { id, ...other }}), {}),
+      fuelRatesIndex: fuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),
     }));
 export const getEquipmentFuelRatesByCarModel = (action, { car_id, date_create: datetime }) =>
   action({ car_id, datetime })
     .then(({ result: equipmentFuelRatesList }) => ({
       equipmentFuelRates: equipmentFuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
-      equipmentFuelRatesIndex: equipmentFuelRatesList.reduce((newObj, { id, ...other }) => ({ ...newObj, [id]: { id, ...other }}), {}),
+      equipmentFuelRatesIndex: equipmentFuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),
     }));
 
 export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mission_source_id, orderAction) =>

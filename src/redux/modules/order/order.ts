@@ -123,7 +123,7 @@ export default function(state = initialState, { type, payload }) {
 
       return {
         ...state,
-        missionData: {
+        dutyMissionData: {
           showForm: true,
           order: state.selectedElementOrder,
           dmElement,

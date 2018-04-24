@@ -28,7 +28,7 @@ const OrderMissionController: React.SFC<any> = props => {
     <div>
       <MissionFormWrapTSX
         fromOrder={true}
-        showForm={missionData.sfM}
+        showForm={missionData.showForm}
         onFormHide={props.onHideCM}
         element={missionData.mElement}
         order={missionData.order}

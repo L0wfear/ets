@@ -128,13 +128,13 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
 };
 
 
-export const sortFunction = (firstRowData, secondRowData) => {
+export const sortFunction = (firstRowData, secondRowData, initialSort) => {
   const [
     first,
     second,
   ] = [
-    firstRowData.item,
-    secondRowData.item,
+    firstRowData[initialSort],
+    secondRowData[initialSort],
   ];
 
   const firstIsNumber = !isNaN(Number(first));
@@ -174,16 +174,13 @@ export const sortFunction = (firstRowData, secondRowData) => {
   return first.localeCompare(second);
 };
 
-export const sortData = (data, { initialSort }) =>
-  data.map(({ [initialSort]: item, ...other }) => ({ item, allData: { [initialSort]: item, ...other } }))
-  .sort(sortFunction)
-  .map(({ allData }) => ({ ...allData }));
+export const sortData = (data, { initialSort }) => data.sort((a, b) => sortFunction(a,b, initialSort));
 
 export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
   if (prevProps.originalData !== nextProps.originalData || prevProps.initialSort !== nextProps.initialSort) {
-    returnData = sortData(returnData, nextProps);
+    returnData = sortData([...returnData], nextProps);
   }
   if (prevProps.initialSortAscending !== nextProps.initialSortAscending) {
     returnData = [...returnData].reverse();

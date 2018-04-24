@@ -10,55 +10,59 @@ import { ExtField } from 'components/ui/Field.jsx';
 class FuelLeak extends React.Component<any, any> {
   state = {
     checkedShowLeak: false,
-    showDateInterval: false,
+    showDatePicker: false,
     disableCheckbox: false,
     date_from: null,
     date_to: null,
+    permitGetData: true,
   };
 
-  selectAllGeoobjects = ({ target: { checked } }) => {
-    const {
-      date_from,
-      date_to,
-    } = this.state;
+  clickOnLeaksCheckbox = ({ target: { checked } }) => {
+    const { date_from, date_to, permitGetData } = this.state;
 
     this.setState({
       checkedShowLeak: checked,
     });
-    if (checked) {
-      if (!this.state.showDateInterval) {
-        this.setShowGeoobjects(checked);
-      }
+
+    if (!(date_from && date_to)) {
+    this.setDefaultDates(date_from, date_to);
+    }
+
+    this.toggleDatePicker(checked);
+
+    if (checked && permitGetData) {
       this.getData({ date_from: date_from || getStartOfToday(), date_to: date_to || new Date() });
     }
 
     this.props.flux.getActions('geoObjects').setSelectedPolysType('leak');
   }
 
-  setShowGeoobjects = e => {
+  setDefaultDates = (date_from, date_to) => {
     this.setState({
-      showDateInterval: !this.state.showDateInterval,
       date_from: getStartOfToday(),
       date_to: new Date(),
     });
   }
 
-  handleChange = (key, val) => {
-    const newDataInState = {
-      [key]: val,
-    };
+  toggleDatePicker = booleanArgument => {
+    this.setState({
+      showDatePicker: booleanArgument,
+    });
+  }
 
-    const {
-      date_from,
-      date_to,
-      checkedShowLeak,
-    } = this.state;
+  clickOnTriangle = () => {
+    const { date_from, date_to, showDatePicker } = this.state;
 
-    const actualDates = {
-      date_from,
-      date_to,
-      ...newDataInState,
-    };
+    if (!(date_from && date_to)) {
+      this.setDefaultDates(date_from, date_to);
+    }
+    this.toggleDatePicker(!showDatePicker);
+  }
+
+  handleChangeDate = (key, val) => {
+    const newDataInState = { [key]: val };
+    const { date_from, date_to, checkedShowLeak } = this.state;
+    const actualDates = { date_from, date_to, ...newDataInState };
 
     if (diffDates(actualDates.date_from, actualDates.date_to) > 0) {
       this.setState({
@@ -76,11 +80,7 @@ class FuelLeak extends React.Component<any, any> {
       return;
     }
 
-    const payload = {
-      date_from,
-      date_to,
-      ...newDataInState,
-    };
+    const payload = { date_from, date_to, ...newDataInState };
 
     this.setState({
       disableCheckbox: false,
@@ -101,39 +101,40 @@ class FuelLeak extends React.Component<any, any> {
 
     // запрос на получение данных по сливам
     this.props.flux.getActions('geoObjects').getGeozoneByTypeWithGeometryLeak(type, payload);
+    this.setState({ permitGetData: false });
   }
 
   render() {
     const {
       checkedShowLeak = false,
-      showDateInterval = false,
+      showDatePicker = false,
       disableCheckbox = false,
     } = this.state;
     return (
-      <div className={`app-toolbar-fill app-toolbar-show-fuelleak ${showDateInterval ? 'active' : ''}`} >
+      <div className={`app-toolbar-fill app-toolbar-show-fuelleak ${showDatePicker ? 'active' : ''}`} >
         <div className="checkbox">
           <input
             style={{ marginLeft: 0 }}
             type="checkbox"
             checked={checkedShowLeak}
             disabled={disableCheckbox}
-            onChange={this.selectAllGeoobjects}
+            onChange={this.clickOnLeaksCheckbox}
           />
           <label
             style={{ fontSize: 13, fontWeight: 200, paddingLeft: 0, marginLeft: 20 }}
-            onClick={this.setShowGeoobjects}
+            onClick={this.clickOnTriangle}
           >
             Сливы
-            <span style={{ fontSize: 10, marginLeft: 3 }}>{showDateInterval ? ' \u25BC' : ' \u25BA'}</span>
+            <span style={{ fontSize: 10, marginLeft: 3 }}>{showDatePicker ? ' \u25BC' : ' \u25BA'}</span>
           </label>
           {
-            showDateInterval &&
+            showDatePicker &&
             <div className="date-interval">
               <ExtField
                 type="date"
                 label="C"
                 date={this.state.date_from}
-                onChange={this.handleChange}
+                onChange={this.handleChangeDate}
                 boundKeys={['date_from']}
                 className="inline-date-fuelleak"
               />
@@ -141,7 +142,7 @@ class FuelLeak extends React.Component<any, any> {
                 type="date"
                 label="По"
                 date={this.state.date_to}
-                onChange={this.handleChange}
+                onChange={this.handleChangeDate}
                 boundKeys={['date_to']}
                 className="inline-date-fuelleak"
               />

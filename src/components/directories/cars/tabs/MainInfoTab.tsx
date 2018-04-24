@@ -28,6 +28,7 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           <Field inline type="string" label="Модель ТС" readOnly value={props.state.special_model_name || 'Не указано'} />
           <Field inline type="string" label="Марка шасси" readOnly value={props.state.model_name || 'Не указано'} />
           <Field inline type="string" label="Тип техники" readOnly value={props.state.type_name || 'Не указано'} />
+          <Field inline type="string" label="Группа техники" readOnly value={props.state.car_group_name || 'Не указано'} />
         </div>
       </Col>
       <Col md={6}>

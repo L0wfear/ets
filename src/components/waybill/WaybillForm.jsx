@@ -125,7 +125,10 @@ class WaybillForm extends Form {
     flux.getActions('employees').getEmployees();
     flux.getActions('objects').getWorkMode();
     flux.getActions('missions').getMissionSources();
-
+    getWaybillDrivers(
+      this.context.flux.getActions('employees').getWaybillDrivers,
+      this.props.formState,
+    );
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
         .then(({ result: fuelRateAll }) =>

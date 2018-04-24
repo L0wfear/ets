@@ -53,7 +53,14 @@ const mapDispatchToProps = dispatch => ({
   ),
 })
 
+const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
+  ...stateProps,
+  handleClickOnCM: () => dispatchProps.setMissionData({ mission_source_id }),
+  handleClickOnCDM: () => dispatchProps.setDutyMissionData({ mission_source_id }),
+});
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+  mergeProps,
 )(connectToStores(OrderAssignmentsList, ['missions']));

@@ -158,15 +158,15 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
   }
 
-  onRowSelected = ({ props: { data: { id } } }) => {
+  onRowSelected = ({ props: { data: { customId } } }) => {
     const { missionsList = [] } = this.state;
 
-    const selectedElement = missionsList.find(m => m.id === id);
+    const selectedElement = missionsList.find(m => m.customId === customId);
 
     this.setState({ selectedElement });
   }
 
-  onRowChecked = (id, state) => {
+  onRowChecked = (customId, state) => {
     const {
       checkedElements: checkedElementsOld = {},
       missionsList = [],
@@ -177,12 +177,12 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       return newObj;
     }, {});
 
-    const selectedElement = missionsList.find(m => m.id === id);
+    const selectedElement = missionsList.find(m => m.customId === customId);
 
     if (state) {
-      checkedElements[id] = selectedElement;
+      checkedElements[customId] = selectedElement;
     } else {
-      delete checkedElements[id];
+      delete checkedElements[customId];
     }
 
     this.setState({ checkedElements });

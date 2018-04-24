@@ -51,6 +51,7 @@ export const getMissionListByFilter = (missionsList, filterData, typeClick) =>
         if ((typeClick === typeTemplate.missionDutyTemplate || passes_count <= num_exec) && diffDates(new Date(), date_to, 'minutes') < 0) {
             arr.push({
             ...m,
+            customId: arr.length,
             date_to,
             date_from,
             order_operation_id,

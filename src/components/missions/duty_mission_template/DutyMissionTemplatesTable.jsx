@@ -66,7 +66,7 @@ const getTableMeta = ({
         name: 'structure_id',
         displayName: 'Подразделение',
         cssClassName: 'width80',
-        type: 'string',
+        type: 'number',
         filter: {
           type: 'multiselect',
           options: structures.map(({ id, name }) => ({ value: id, label: name })),

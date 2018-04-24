@@ -36,6 +36,8 @@ export interface IVehicle {
   exploitation_date_start: string;
   note: string;
   parking_address: string;
+  car_group_id: number;
+  car_group_name: string;
 }
 
 export interface IVehicleRegister {

@@ -193,7 +193,7 @@ export class MissionForm extends Form {
       date_start,
     };
 
-    if (date_start && this.state.is_cleaning_norm) {
+    if (date_start && this.state.is_cleaning_norm && this.state.selectedRoute) {
       changesObj.date_end = addTime(date_start, routeTypesBySlug[this.state.selectedRoute.object_type].time, 'hours');
     }
 

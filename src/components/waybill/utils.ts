@@ -125,7 +125,7 @@ export const getDatesToByOrderOperationId = (order, order_operation_id) => {
 };
 
 export const getFuelCorrectionRate = (carsList, { car_id }) => Promise.resolve(
-  (carsList.find(({ asuods_id }) => asuods_id === car_id ) || { fuel_correction_rate: 1 }).fuel_correction_rate,
+  (carsList.find(({ asuods_id }) => asuods_id === car_id ) || { fuel_correction_rate: 1 }).fuel_correction_rate || 1,
 );
 
 export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }) =>

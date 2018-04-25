@@ -185,21 +185,18 @@ const closingProperties = [
     key: 'odometr_end',
     title: 'Одометр.Возврат',
     type: 'number',
-    float: 3,
     required: 'odometr_start',
   },
   {
     key: 'motohours_end',
     title: 'Счетчик моточасов.Возврат',
     type: 'number',
-    float: 3,
     required: 'motohours_start',
   },
   {
     key: 'motohours_equip_end',
     title: 'Счетчик моточасов оборудования.Возврат',
     type: 'number',
-    float: 3,
     required: 'motohours_equip_start',
   },
   {

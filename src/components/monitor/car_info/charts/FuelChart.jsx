@@ -2,11 +2,19 @@ import React from 'react';
 import { groupBy, flatten, get, isEqual, toArray } from 'lodash';
 import { shouldUpdate } from 'recompose';
 
+import Div from 'components/ui/Div.jsx';
+
 import { LOAD_PROCESS_TEXT, NO_DATA_TEXT } from 'constants/statuses';
 import { makeDate, makeTime } from 'utils/dates';
 import { hasTrackPointsChanged } from 'utils/geo';
 import { sensorsMapOptions } from 'constants/sensors.js';
 import LineChart from './LineChart';
+
+const style = {
+  noData: {
+    textAligne: 'centre',
+  },
+};
 
 const EventTable = props => {
   const rows = props.data.map((d, i) => (
@@ -34,11 +42,13 @@ const EventTable = props => {
 };
 
 const FuelChartSFC = props => {
+  const trackIsLoading = get(props, ['car', 'marker', 'track']).isLoading;
+
   const events = get(props, ['car', 'marker', 'track', 'events'], null);
   const points = props.trackPoints;
   const { rawData } = props;
 
-  if (!points || events === null) return <span>{LOAD_PROCESS_TEXT}</span>;
+  if (trackIsLoading) return <span>{LOAD_PROCESS_TEXT}</span>;
   if (!points.length) return <span>{NO_DATA_TEXT}</span>;
 
   const timestamps = points.filter(p => get(p, 'sensors.level.length', false)).map(p => p.timestamp);
@@ -76,21 +86,29 @@ const FuelChartSFC = props => {
       value: `${Math.abs(e.val)} л`,
     })).sort((a, b) => (a.start_point.timestamp - b.start_point.timestamp));
 
+  const hasData = data.length > 0;
+
   return (
     <div>
-      <LineChart
-        name={rawData ? 'fuelChartRaw' : 'fuelChart'}
-        updateOnly
-        data={data}
-        showX
-        onClick={props.onMapClick}
-        forceUpdate={props.hasTrackChanged}
-      />
-      <div className="chart-checkbox" onClick={props.onSourceDataCheck}>
-        <input readOnly type="checkbox" checked={rawData} />
-        Исходные данные датчиков
-      </div>
-      <EventTable data={sumEvents} showOnMap={props.showOnMap} />
+      <Div hidden={!hasData} >
+        <LineChart
+          name={rawData ? 'fuelChartRaw' : 'fuelChart'}
+          updateOnly
+          data={data}
+          showX
+          onClick={props.onMapClick}
+          forceUpdate={props.hasTrackChanged}
+        />
+        <div className="chart-checkbox" onClick={props.onSourceDataCheck}>
+         <input readOnly type="checkbox" checked={rawData} />
+          Исходные данные датчиков
+        </div>
+        <EventTable data={sumEvents} showOnMap={props.showOnMap} />
+      </Div>
+      <Div hidden={hasData}>
+        <span style={style.noData}>{'Нет датчиков уровня топлива'}</span>
+      </Div>
+      
     </div>
   );
 };

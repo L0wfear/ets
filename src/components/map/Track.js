@@ -70,6 +70,8 @@ export default class Track {
 
     this.continuousUpdating = true;
     this.onUpdateCallback = () => {};
+
+    this.isLoading = false;
   }
 
   isLoaded() {
@@ -171,6 +173,7 @@ export default class Track {
     }
 
     this.continuousUpdating = false;
+    this.isLoading = true;
 
     return flux.getActions('cars').getTrack(id, from_dt, to_dt)
                 .then((obj) => {
@@ -182,6 +185,7 @@ export default class Track {
                   this.render();
                   this.onUpdateCallback();
                   console.log('track fetched for', this.owner);
+                  this.isLoading = false;
 
                   return obj;
                 });

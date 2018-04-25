@@ -296,7 +296,7 @@ export class MissionForm extends Form {
   }
   handleChangeDateStart = (v) => {
     this.handleChange('date_start', v);
-    if (v && this.state.is_cleaning_norm) {
+    if (v && this.state.is_cleaning_norm && this.state.selectedRoute) {
       this.handleChange('date_end', addTime(v, routeTypesBySlug[this.state.selectedRoute.object_type].time, 'hours'));
     }
   }

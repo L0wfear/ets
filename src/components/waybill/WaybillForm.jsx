@@ -1064,7 +1064,8 @@ class WaybillForm extends Form {
                     boundKeys={boundKeysObj.fact_fuel_end}
                     showRedBorder={state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)}
                   />
-
+                  <div>{'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}</div>
+                  <Row />
                 </Col>
               </Div>
             </Div>

@@ -60,7 +60,7 @@ export default class TechnicalOperationForm extends Form {
                                         .map(({ id, full_name }) => ({ value: id, label: full_name }));
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
     const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
-
+    console.log(state.check_types, TECHNICAL_OPERATION_TYPES)
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -161,11 +161,12 @@ export default class TechnicalOperationForm extends Form {
             <Col md={3}>
               <ExtField
                 type="select"
+                multi
                 label="Тип проверки"
                 options={TECHNICAL_OPERATION_TYPES}
-                value={state.check_type}
+                value={state.check_types}
                 onChange={this.handleChange}
-                boundKeys={['check_type']}
+                boundKeys={['check_types']}
                 disabled={!isPermitted}
               />
             </Col>

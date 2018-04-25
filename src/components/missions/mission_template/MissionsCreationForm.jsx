@@ -7,7 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/input/DatePicker.jsx';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Form from 'components/compositions/Form.jsx';
-import { addTime } from 'utils/dates.js';
+import { addTime, diffDates } from 'utils/dates.js';
 
 class MissionsCreationForm extends Form {
 
@@ -16,10 +16,11 @@ class MissionsCreationForm extends Form {
     flux.getActions('missions').getMissionSources();
   }
 
-  handleChangeDateStart = v => {
-    this.handleChange('date_start', v);
-    if (v && this.props.needMoveDateEnd) {
-      this.handleChange('date_end', addTime(v, this.props.countBumpDateEnd, 'hours'));
+  handleChangeDateStart = (date_start) => {
+    const { formState: { date_end }, countBumpDateEnd } = this.props;
+    this.handleChange('date_start', date_start);
+    if (this.props.needMoveDateEnd && date_start && date_end && diffDates(date_end, date_start, 'hours') > countBumpDateEnd) {
+      this.handleChange('date_end', addTime(date_start, countBumpDateEnd, 'hours'));
     }
   }
 

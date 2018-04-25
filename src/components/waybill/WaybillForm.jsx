@@ -452,6 +452,7 @@ class WaybillForm extends Form {
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fuel_end)) {
         fieldsToChange.fuel_start = lastCarUsedWaybill.fuel_end;
+        fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
@@ -467,6 +468,7 @@ class WaybillForm extends Form {
       }
     } else {
       fieldsToChange.fuel_start = 0;
+      fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = 0;
       fieldsToChange.motohours_equip_start = 0;

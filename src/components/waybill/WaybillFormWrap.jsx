@@ -147,6 +147,10 @@ export default class WaybillFormWrap extends FormWrap {
       formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
     }
 
+    if (formState.fuel_end !== this.state.formState.fuel_end) {
+      formState.fact_fuel_end = formState.fuel_end;
+    }
+
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
       formErrors = this.validate(formState, formErrors);
@@ -168,7 +172,7 @@ export default class WaybillFormWrap extends FormWrap {
     const value = _.get(e, ['target', 'value'], e);
     let formState = _.cloneDeep(this.state.formState);
     formState[field] = value;
-
+    console.log(field, value);
     formState = calculateWaybillMetersDiff(formState, field, value);
 
     // TODO при формировании FACT_VALUE считать diff - finalFactValue

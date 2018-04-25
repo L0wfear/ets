@@ -270,21 +270,18 @@ const closingProperties = [
     key: 'odometr_end',
     title: 'Одометр. Возвращение в гараж, км',
     type: 'number',
-    float: 3,
     required: 'odometr_start',
   },
   {
     key: 'motohours_end',
     title: 'Счетчик моточасов.Возвращение в гараж, м/ч',
     type: 'number',
-    float: 3,
     required: 'motohours_start',
   },
   {
     key: 'motohours_equip_end',
     title: 'Счетчик моточасов оборудования. Возвращение в гараж, м/ч',
     type: 'number',
-    float: 3,
     required: 'motohours_equip_start',
   },
   {

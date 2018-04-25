@@ -54,7 +54,6 @@ export default class TechnicalOperationForm extends Form {
     const isPermitted = false;
 
     const SEASONS = seasonsList.map(defaultSelectListMapper);
-    const ELEMENTS = state.elements.map(defaultSelectListMapper);
     const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
     const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList
                                         .map(({ id, full_name }) => ({ value: id, label: full_name }));
@@ -85,9 +84,8 @@ export default class TechnicalOperationForm extends Form {
 
             <Col md={3}>
               <ExtField
-                type="select"
+                type="string"
                 label="Элемент"
-                options={ELEMENTS}
                 value={state.elements_text}
                 onChange={this.handleChange}
                 boundKeys={['elements_text']}

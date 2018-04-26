@@ -17,6 +17,21 @@ import Form from '../../compositions/Form.jsx';
 export default class EmployeeForm extends Form {
   handleSave = () => this.handleSubmit();
 
+  handleChangeWithValidate(field, e) {
+    if (field === 'special_license') {
+      if (!e.target.value) {
+        this.handleChange('drivers_special_date', null);
+      }
+    }
+    if (field === 'drivers_license') {
+      if (!e.target.value) {
+        this.handleChange('drivers_license_date', null);
+      }
+    }
+
+    this.handleChange(field, e);
+  }
+
   render() {
     const [state, errors] = [this.props.formState, this.props.formErrors];
     const {
@@ -86,7 +101,7 @@ export default class EmployeeForm extends Form {
                 value={state.special_license}
                 error={errors.special_license}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.handleChangeWithValidate}
                 boundKeys={['special_license']}
               />
             </Col>
@@ -105,13 +120,14 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="string"
-                label="Водительское удостоверение"
-                value={state.drivers_license}
-                error={errors.drivers_license}
-                disabled={!isPermitted}
+                type="date"
+                label="Срок действия специального удостоверения"
+                date={state.drivers_special_date}
+                time={false}
+                error={errors.drivers_special_date}
+                disabled={!isPermitted || !state.special_license}
                 onChange={this.handleChange}
-                boundKeys={['drivers_license']}
+                boundKeys={['drivers_special_date']}
               />
             </Col>
           </Row>
@@ -130,14 +146,13 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="select"
-                label="Предпочитаемое ТрС"
-                value={state.prefer_car}
-                options={CARS}
-                error={errors.prefer_car}
+                type="string"
+                label="Водительское удостоверение"
+                value={state.drivers_license}
+                error={errors.drivers_license}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['prefer_car']}
+                onChange={this.handleChangeWithValidate}
+                boundKeys={['drivers_license']}
               />
             </Col>
           </Row>
@@ -155,14 +170,14 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="select"
-                label="Состояние"
-                value={state.active ? 1 : 0}
-                options={DRIVER_STATES}
-                error={errors.active}
-                disabled={!isPermitted}
+                type="date"
+                label="Срок действия водительского удостоверения"
+                date={state.drivers_license_date}
+                time={false}
+                error={errors.drivers_license_date}
+                disabled={!isPermitted || !state.drivers_license}
                 onChange={this.handleChange}
-                boundKeys={['active']}
+                boundKeys={['drivers_license_date']}
               />
             </Col>
           </Row>
@@ -178,6 +193,32 @@ export default class EmployeeForm extends Form {
                 onChange={this.handleChange}
                 boundKeys={['position_id']}
                 clearable={false}
+              />
+            </Col>
+            <Col md={6}>
+              <ExtField
+                type="select"
+                label="Предпочитаемое ТрС"
+                value={state.prefer_car}
+                options={CARS}
+                error={errors.prefer_car}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['prefer_car']}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <ExtField
+                type="select"
+                label="Состояние"
+                value={state.active ? 1 : 0}
+                options={DRIVER_STATES}
+                error={errors.active}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['active']}
               />
             </Col>
             <Col md={6}>

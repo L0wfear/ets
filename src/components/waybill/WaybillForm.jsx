@@ -8,6 +8,7 @@ import {
   map,
   uniqBy,
   groupBy,
+  get,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -19,7 +20,6 @@ import {
   isEmpty,
   hasMotohours,
   isEqualOr,
-  isFourDigitGovNumber,
 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
 
@@ -615,7 +615,6 @@ class WaybillForm extends Form {
     const driversEnability = state.car_id !== null && state.car_id !== '';
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
-    const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne, number, className: 'yellow' }));
 
@@ -646,9 +645,8 @@ class WaybillForm extends Form {
     const trailer = carsIndex[state.trailer_id];
     const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state.gov_number, waybillDriversList) : [];
     const title = getTitleByStatus(state);
-
     const {
       tax_data = [],
       equipment_tax_data = [],

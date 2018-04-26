@@ -39,6 +39,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   state: any = {
     assign_to_waybill: 'assign_to_new_draft',
     missionsList: [],
+    missionsIndex: {},
     selectedElement: undefined,
     checkedElements: {},
     structures: [],
@@ -59,7 +60,12 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
       const timeInterval = setTimeout(this.checkMissionsList, new Date(date - (date % 60000) + 60 * 1000).getTime() - date + 1000);
 
-      this.setState({ missionsList, structures, timeInterval });
+      this.setState({
+        missionsList,
+        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+        structures,
+        timeInterval,
+      });
     });
   }
 
@@ -78,6 +84,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     this.setState({
       missionsList,
+      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
       timeInterval,
     });
   }
@@ -158,29 +165,15 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
   }
 
-  onRowSelected = ({ props: { data: { customId } } }) => {
-    const { missionsList = [] } = this.state;
-
-    const selectedElement = missionsList.find(m => m.customId === customId);
-
-    this.setState({ selectedElement });
-  }
+  onRowSelected = ({ props: { data: { customId } } }) => this.setState({ selectedElement: this.state.missionsIndex[customId] });
 
   onRowChecked = (customId, state) => {
     const {
-      checkedElements: checkedElementsOld = {},
-      missionsList = [],
+      checkedElements: { ...checkedElements },
     } = this.state;
 
-    const checkedElements = Object.entries(checkedElementsOld).reduce((newObj, [key, value]) => {
-      newObj[key] = { ...value };
-      return newObj;
-    }, {});
-
-    const selectedElement = missionsList.find(m => m.customId === customId);
-
     if (state) {
-      checkedElements[customId] = selectedElement;
+      checkedElements[customId] = this.state.missionsIndex[customId];
     } else {
       delete checkedElements[customId];
     }
@@ -188,20 +181,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     this.setState({ checkedElements });
   }
 
-  onAllChecked = (rows, state) => {
-    const checkedElements = state ? rows : {};
+  onAllChecked = (rows, state) => this.setState({ checkedElements: state ? this.state.missionsIndex: {} });
 
-    this.setState({ checkedElements });
-  }
-
-  checkDisabledSubmit = () => {
-    const {
-      checkedElements,
-      canSubmit,
-    } = this.state;
-
-    return canSubmit && isEmpty(checkedElements);
-  }
+  checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 
   onFormHide = () => {
     this.componentWillUnmount();

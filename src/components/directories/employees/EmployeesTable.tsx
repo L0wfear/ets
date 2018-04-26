@@ -64,11 +64,27 @@ export function tableMeta({
         },
       },
       {
+        name: 'drivers_license_date',
+        displayName: 'Срок действия водительского удостоверения',
+        type: 'date',
+        filter: {
+          type: 'date',
+        },
+      },
+      {
         name: 'special_license',
         displayName: 'Специальное удостоверение',
         type: 'string',
         filter: {
           type: 'multiselect',
+        },
+      },
+      {
+        name: 'drivers_special_date',
+        displayName: 'Срок действия специального удостоверения',
+        type: 'date',
+        filter: {
+          type: 'date',
         },
       },
       {
@@ -135,25 +151,26 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-    full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
-    birthday: ({ data }) => <DateFormatter date={data} />,
-    active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
-    medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
-    is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
-  };
-
-  return (
-    <DataTable
-      title="Реестр сотрудников"
-      results={props.data}
-      tableMeta={tableMeta(props)}
-      renderers={renderers}
-      initialSort={'full_name'}
-      {...props}
-    />
-  );
+const renderers: ISchemaRenderer = {
+  full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
+  birthday: ({ data }) => <DateFormatter date={data} />,
+  active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
+  medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
+  is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+  drivers_license_date: ({ data }) => <DateFormatter date={data} />,
+  drivers_special_date: ({ data }) => <DateFormatter date={data} />,
 };
+
+
+const Table: React.SFC<any> = props  => (
+  <DataTable
+    title="Реестр сотрудников"
+    results={props.data}
+    tableMeta={tableMeta(props)}
+    renderers={renderers}
+    initialSort={'full_name'}
+    {...props}
+  />
+);
 
 export default Table;

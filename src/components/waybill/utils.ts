@@ -8,6 +8,10 @@ import {
   isFourDigitGovNumber,
 } from 'utils/functions';
 
+import {
+  diffDates,
+} from 'utils/dates';
+
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
   COMPRESSOR: 15,
@@ -54,13 +58,13 @@ export const getTrailers = structure_id => R.pipe(
 );
 
 const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
-export const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
-export const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
+export const driverHasLicenseWithActiveDate = ({ drivers_license, drivers_license_date }) => isNotEmpty(drivers_license) && isNotEmpty(drivers_license_date) && diffDates(new Date(), drivers_license_date) < 0;
+export const driverHasSpecialLicenseWithActiveDate = ({ special_license, drivers_special_date }) => isNotEmpty(special_license) && isNotEmpty(drivers_special_date) && diffDates(new Date(), drivers_special_date) < 0;
 
 export const getDrivers = (gnumber = '', driversList) => {
   const licenceSwitcher = R.cond([
-    [isThreeDigitGovNumber, R.always(driverHasLicense)],
-    [isFourDigitGovNumber, R.always(driverHasSpecialLicense)],
+    [isThreeDigitGovNumber, R.always(driverHasLicenseWithActiveDate)],
+    [isFourDigitGovNumber, R.always(driverHasSpecialLicenseWithActiveDate)],
     [R.T, R.always(R.identity)],
   ]);
 

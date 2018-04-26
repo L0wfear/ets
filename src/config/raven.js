@@ -1,27 +1,17 @@
 import Raven from 'raven-js';
 
-const ACTIVE = process.env.NODE_ENV === 'production';
-// stage // http://79c9fa1b267c454ca680692b9d2d4d25@172.17.31.73:9000/7
-// prod // http://bde014009c3f4c80bd3e840296fd94c9@172.17.31.73:9000/8
-// dev // http://6abe791fb4544929a9845cebb7a194df@46.161.0.203/7
-const SENTRY_KEYS_BY_STAND = {
-  'stage': '79c9fa1b267c454ca680692b9d2d4d25', // http://172.17.31.73:9000/sentry/ets-frontend-dev/
-  'prod': 'bde014009c3f4c80bd3e840296fd94c9', // http://172.17.31.73:9000/sentry/ets-frontend-prod/
-  'dev': '6abe791fb4544929a9845cebb7a194df',
-};
-const SENTRY_PROJECTS_BY_STAND = {
-  'stage': 7,
-  'prod': 8,
-  'dev': 7,
-};
-const SENTRY_HOST_BY_STAND = {
-  'stage': 'ets.tech.mos.ru/sentry',
-  'prod': 'ets.tech.mos.ru/sentry',
-  'dev': '46.161.0.203',
+const ACTIVE = !!__DEVELOPMENT__;
+
+const SENTRY_URL = {
+  'dev': 'https://85e9a02b4661432bb567038c9cfba5db@sentry.gost-group.com/10',
+  'dev2': 'https://33f25c9b9b534c298a90f2726b0fb91b@sentry.gost-group.com/11',
+  'stage': 'https://611069a7669747698ce81d794de548aa@sentry.gost-group.com/12',
+  'stage2': 'https://f0ac8ad0b1984b27b0ccecaa96d0d010@sentry.gost-group.com/13',
+  'prod': 'https://7cad206b538c45d4a70fe9853d40f67d@sentry.gost-group.com/14',
+  'prod2': 'https://2c07fafef3094de880b7ab0db8c9f38c@sentry.gost-group.com/15',
 };
 
-const URL = `http://${SENTRY_KEYS_BY_STAND[process.env.STAND]}@${SENTRY_HOST_BY_STAND[process.env.STAND]}/${SENTRY_PROJECTS_BY_STAND[process.env.STAND]}`;
-
+const URL = SENTRY_URL[`${process.env.STAND}`];
 // export function constructCustomTransportUrl(url, project, key) {
 //   return `${url}/api/${project}/store/?sentry_version=7&sentry_client=raven-js%2F3.7.0&sentry_key=${key}`;
 // }
@@ -36,17 +26,6 @@ export function resetUserContext() {
   if (ACTIVE) {
     Raven.setUserContext();
   }
-}
-
-export function setTransport() {
-  Raven.setTransport((options) => {
-    const url = `http://${SENTRY_HOST_BY_STAND[process.env.STAND]}/api/2/store/?sentry_version=7&sentry_client=raven-js%2F3.7.0&sentry_key=${SENTRY_KEYS_BY_STAND[process.env.STAND]}`;
-    fetch(url, {
-      method: 'post',
-      body: JSON.stringify(options.data),
-      mode: 'no-cors',
-    });
-  });
 }
 
 if (ACTIVE) {

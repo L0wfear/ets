@@ -2,6 +2,7 @@ import Raven from 'raven-js';
 import { Store } from 'flummox';
 import { autobind } from 'core-decorators';
 import cloneDeep from 'lodash/cloneDeep';
+import map from 'lodash/map';
 import statuses from 'constants/statuses';
 import config from '../config.js';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
@@ -170,7 +171,7 @@ export default class PointsStore extends Store {
     const points = Object.assign({}, this.state.points);
     if (this.state.singleCarTrack) {
       if (!this.state.selected) {
-        _.map(points, (p) => {
+        map(points, (p) => {
           const car = p.car;
           if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
             p.marker.createTrack();

@@ -31,6 +31,7 @@ class MonitorPage extends Component {
   componentWillUnmount() {
     const { flux } = this.context;
     flux.getActions('points').closeConnection();
+    flux.getActions('geoObjects').setInitialState();
   }
 
   render() {

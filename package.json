@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.16.193",
+    "version": "2.0.16.194",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -40,7 +40,7 @@
         "openlayers": "^4.2.0",
         "query-string": "^5.0.1",
         "ramda": "^0.24.1",
-        "raven-js": "^3.7.0",
+        "raven-js": "^3.24.2",
         "raw-loader": "^0.5.1",
         "react": "^0.14.3",
         "react-addons-update": "^15.3.1",

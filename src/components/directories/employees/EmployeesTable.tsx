@@ -64,7 +64,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'drivers_license_date',
+        name: 'drivers_license_date_end',
         displayName: 'Срок действия водительского удостоверения',
         type: 'date',
         filter: {
@@ -80,7 +80,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'drivers_special_date',
+        name: 'special_license_date_end',
         displayName: 'Срок действия специального удостоверения',
         type: 'date',
         filter: {
@@ -157,8 +157,8 @@ const renderers: ISchemaRenderer = {
   active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
   medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
   is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
-  drivers_license_date: ({ data }) => <DateFormatter date={data} />,
-  drivers_special_date: ({ data }) => <DateFormatter date={data} />,
+  drivers_license_date_end: ({ data }) => <DateFormatter date={data} />,
+  special_license_date_end: ({ data }) => <DateFormatter date={data} />,
 };
 
 const Table: React.SFC<any> = props  => {

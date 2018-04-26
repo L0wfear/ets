@@ -5,6 +5,7 @@ export interface ICheckedElements {
 export interface IStateOrderMissionTemplate {
   assign_to_waybill: string;
   missionsList: any[];
+  missionsIndex: any,
   selectedElement: void | any;
   checkedElements: ICheckedElements;
   structures: any[];

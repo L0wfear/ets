@@ -23,12 +23,12 @@ export default class EmployeeForm extends Form {
   handleChangeWithValidate(field, e) {
     if (field === 'special_license') {
       if (!e.target.value) {
-        this.handleChange('drivers_special_date', null);
+        this.handleChange('special_license_date_end', null);
       }
     }
     if (field === 'drivers_license') {
       if (!e.target.value) {
-        this.handleChange('drivers_license_date', null);
+        this.handleChange('drivers_license_date_end', null);
       }
     }
 
@@ -120,11 +120,11 @@ export default class EmployeeForm extends Form {
               <Field
                 type="date"
                 label="Срок действия специального удостоверения"
-                date={state.drivers_special_date}
+                date={state.special_license_date_end}
                 time={false}
-                error={errors.drivers_special_date}
+                error={errors.special_license_date_end}
                 disabled={!isPermitted || !state.special_license}
-                onChange={this.handleChange.bind(this, 'drivers_special_date')}
+                onChange={this.handleChange.bind(this, 'special_license_date_end')}
               />
             </Col>
           </Row>
@@ -166,11 +166,11 @@ export default class EmployeeForm extends Form {
               <Field
                 type="date"
                 label="Срок действия водительского удостоверения"
-                date={state.drivers_license_date}
+                date={state.drivers_license_date_end}
                 time={false}
-                error={errors.drivers_license_date}
+                error={errors.drivers_license_date_end}
                 disabled={!isPermitted || !state.drivers_license}
-                onChange={this.handleChange.bind(this, 'drivers_license_date')}
+                onChange={this.handleChange.bind(this, 'drivers_license_date_end')}
               />
             </Col>
           </Row>

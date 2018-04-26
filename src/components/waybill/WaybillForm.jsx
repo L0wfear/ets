@@ -7,7 +7,6 @@ import {
   isEqual,
   filter,
   find,
-  get,
   map,
   uniqBy,
 } from 'lodash';
@@ -1330,7 +1329,7 @@ class WaybillForm extends Form {
                   />
                 </Div>
               </Div>
-              <Div hidden={!(IS_ACTIVE || IS_CLOSED) || isFourDigitGovNumber(get(state, 'gov_number', ''))}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                 <Field
                   id="distance-by-glonass"
                   type="string"

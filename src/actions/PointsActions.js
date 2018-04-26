@@ -34,4 +34,8 @@ export default class PointsActions extends Actions {
     return dates;
   }
 
+  setInitialState() {
+    return true;
+  }
+
 }

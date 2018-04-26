@@ -1,6 +1,6 @@
 import Raven from 'raven-js';
 
-const ACTIVE = !!__DEVELOPMENT__;
+const ACTIVE = !__DEVELOPMENT__;
 
 const SENTRY_URL = {
   'dev': 'https://85e9a02b4661432bb567038c9cfba5db@sentry.gost-group.com/10',

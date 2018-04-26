@@ -19,15 +19,15 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   if (waybill.status) {
     // Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
     if (field === 'odometr_end') {
-      waybill.odometr_diff = value ? parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3) : null;
+      waybill.odometr_diff = value ? waybill.odometr_end - waybill.odometr_start : null;
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
-      waybill.motohours_diff = value ? parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3) : null;
+      waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
     if (field === 'motohours_equip_end') {
-      waybill.motohours_equip_diff = value ? parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3) : null;
+      waybill.motohours_equip_diff = value ? waybill.motohours_equip_end - waybill.motohours_equip_start : null;
     }
   }
   return waybill;
@@ -95,9 +95,9 @@ export default class WaybillFormWrap extends FormWrap {
           }
 
           // Расчет пробегов
-          waybill.odometr_diff = waybill.odometr_end ? parseFloat((waybill.odometr_end || 0) - (waybill.odometr_start || 0)).toFixed(3) : null;
-          waybill.motohours_diff = waybill.motohours_end ? parseFloat((waybill.motohours_end) - (waybill.motohours_start || 0)).toFixed(3) : null;
-          waybill.motohours_equip_diff = waybill.motohours_equip_end ? parseFloat((waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0)).toFixed(3) : null;
+          waybill.odometr_diff = waybill.odometr_end ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0) : null;
+          waybill.motohours_diff = waybill.motohours_end ? (waybill.motohours_end) - (waybill.motohours_start || 0)) : null;
+          waybill.motohours_equip_diff = waybill.motohours_equip_end ? (waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0)) : null;
 
           if (props.element.status === 'active') {
             this.schema = waybillClosingSchema;

@@ -207,15 +207,19 @@ export default class WaybillFormWrap extends FormWrap {
     this.handleFieldsChange(formState);
   }
 
+  clearSomeData = () => {
+    const formState = cloneDeep(this.state.formState);
+
+    delete formState.equipment_fuel_start;
+    delete formState.fuel_start;
+    delete formState.motohours_equip_start;
+    console.log('delete', '----->', 'equipment_fuel_start', 'fuel_start', 'motohours_equip_start')
+
+    this.handleMultipleChange(formState);
+  }
+
   handleMultipleChange(fields) {
     let formState = cloneDeep(this.state.formState);
-    const { car_id = -1 } = fields;
-
-    if (car_id !== formState.car_id) {
-      delete formState.equipment_fuel_start;
-      delete formState.fuel_start;
-      delete formState.motohours_equip_start;
-    }
 
     Object.entries(fields).forEach(([field, value]) => {
       formState[field] = value;
@@ -409,6 +413,7 @@ export default class WaybillFormWrap extends FormWrap {
           onHide={this.props.onFormHide}
           entity={entity || 'waybill'}
           handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+          clearSomeData={this.clearSomeData}
           {...this.state}
         />
       </Div>

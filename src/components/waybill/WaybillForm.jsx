@@ -413,6 +413,7 @@ class WaybillForm extends Form {
           global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
         }
 
+        this.props.clearSomeData();
         return this.context.flux.getActions('waybills').getLastClosedWaybill(car_id)
           .then(({ result: lastCarUsedWaybill }) =>
             res({
@@ -426,6 +427,7 @@ class WaybillForm extends Form {
        */
       return Promise.resolve(res({
         ...fieldsToChange,
+
         driver_id: '',
       }));
     })
@@ -436,6 +438,7 @@ class WaybillForm extends Form {
     const fieldsToChange = {
       equipment_fuel,
     };
+    this.props.clearSomeData();
     const { result: lastCarUsedWaybill } = await this.context.flux.getActions('waybills').getLastClosedWaybill(this.props.formState.car_id);
 
     if (lastCarUsedWaybill && lastCarUsedWaybill.equipment_fuel) {

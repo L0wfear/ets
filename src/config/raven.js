@@ -11,7 +11,7 @@ const SENTRY_URL = {
   'prod2': 'https://2c07fafef3094de880b7ab0db8c9f38c@sentry.gost-group.com/15',
 };
 
-const URL = SENTRY_URL[`${process.env.STAND}`];
+const URL = SENTRY_URL[`${process.env.STAND}2`];
 // export function constructCustomTransportUrl(url, project, key) {
 //   return `${url}/api/${project}/store/?sentry_version=7&sentry_client=raven-js%2F3.7.0&sentry_key=${key}`;
 // }

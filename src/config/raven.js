@@ -15,7 +15,7 @@ const URL = SENTRY_URL[`${process.env.STAND}`];
 // export function constructCustomTransportUrl(url, project, key) {
 //   return `${url}/api/${project}/store/?sentry_version=7&sentry_client=raven-js%2F3.7.0&sentry_key=${key}`;
 // }
-console.log(SENTRY_URL[`${process.env.STAND}`])
+
 export function setUserContext(user) {
   if (ACTIVE) {
     Raven.setUserContext(user);

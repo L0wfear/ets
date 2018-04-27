@@ -17,7 +17,7 @@ import Form from '../../compositions/Form.jsx';
 export default class EmployeeForm extends Form {
   handleSave = () => this.handleSubmit();
 
-  handleChangeWithValidate(field, e) {
+  handleChangeWithValidate = (field, e) => {
     if (field === 'special_license') {
       if (!e.target.value) {
         this.handleChange('special_license_date_end', null);

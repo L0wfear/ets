@@ -1,6 +1,57 @@
 import { Store } from 'flummox';
 import get from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
 import { nameOfFeature } from 'utils/geo';
+
+const initialState = {
+  odhsList: [],
+  sspsList: [],
+  bridgessList: [],
+  pedestrian_tunnelssList: [],
+  pedestrian_tunnel_exitssList: [],
+  fountainssList: [],
+  mspsList: [],
+  pgmsList: [],
+  snowStoragesList: [],
+  dtsList: [],
+  fuelingWaterStationsList: [],
+  carpoolsList: [],
+  dangerZonesList: [],
+
+  bridgessIndex: {},
+  fountainssIndex: {},
+  pedestrian_tunnelssIndex: {},
+  pedestrian_tunnel_exitssIndex: {},
+  odhsIndex: {},
+  dtsIndex: {},
+  sspsIndex: {},
+  pgmsIndex: {},
+  snowStoragesIndex: {},
+  fuelingWaterStationsIndex: {},
+  carpoolsIndex: {},
+  dangerZonesIndex: {},
+
+  /* Геометрии */
+  geozonePolys: {},
+  odhPolys: {},
+  dtPolys: {},
+  sspPolys: {},
+  mspPolys: {},
+  pgmPolys: {},
+  bridgesPolys: {},
+  fountainsPolys: {},
+  pedestrian_tunnelsPolys: {},
+  pedestrian_tunnel_exitsPolys: {},
+  snowStoragePolys: {},
+  fuelingWaterStationPolys: {},
+  carpoolPolys: {},
+
+  selectedPolysTypes: [],
+  selectedPolysTypesLeak: [],
+
+  selectedFeature: null,
+  selectedFeatureLeak: null,
+};
 
 export default class GeoObjectsStore extends Store {
 
@@ -18,56 +69,9 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometryLeak, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
+    this.register(geoObjectsActions.setInitialState, this.handleClearStore);
 
-    this.state = {
-      odhsList: [],
-      sspsList: [],
-      bridgessList: [],
-      pedestrian_tunnelssList: [],
-      pedestrian_tunnel_exitssList: [],
-      fountainssList: [],
-      mspsList: [],
-      pgmsList: [],
-      snowStoragesList: [],
-      dtsList: [],
-      fuelingWaterStationsList: [],
-      carpoolsList: [],
-      dangerZonesList: [],
-
-      bridgessIndex: {},
-      fountainssIndex: {},
-      pedestrian_tunnelssIndex: {},
-      pedestrian_tunnel_exitssIndex: {},
-      odhsIndex: {},
-      dtsIndex: {},
-      sspsIndex: {},
-      pgmsIndex: {},
-      snowStoragesIndex: {},
-      fuelingWaterStationsIndex: {},
-      carpoolsIndex: {},
-      dangerZonesIndex: {},
-
-      /* Геометрии */
-      geozonePolys: {},
-      odhPolys: {},
-      dtPolys: {},
-      sspPolys: {},
-      mspPolys: {},
-      pgmPolys: {},
-      bridgesPolys: {},
-      fountainsPolys: {},
-      pedestrian_tunnelsPolys: {},
-      pedestrian_tunnel_exitsPolys: {},
-      snowStoragePolys: {},
-      fuelingWaterStationPolys: {},
-      carpoolPolys: {},
-
-      selectedPolysTypes: [],
-      selectedPolysTypesLeak: [],
-
-      selectedFeature: null,
-      selectedFeatureLeak: null,
-    };
+    this.state = cloneDeep(initialState);
   }
 
   handleGetList(name, { result }) {
@@ -227,4 +231,7 @@ export default class GeoObjectsStore extends Store {
     return this.state[nameOfSelected];
   }
 
+  handleClearStore() {
+    this.state = cloneDeep(initialState);
+  }
 }

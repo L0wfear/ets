@@ -96,8 +96,8 @@ export default class WaybillFormWrap extends FormWrap {
 
           // Расчет пробегов
           waybill.odometr_diff = waybill.odometr_end ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0) : null;
-          waybill.motohours_diff = waybill.motohours_end ? (waybill.motohours_end) - (waybill.motohours_start || 0)) : null;
-          waybill.motohours_equip_diff = waybill.motohours_equip_end ? (waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0)) : null;
+          waybill.motohours_diff = waybill.motohours_end ? (waybill.motohours_end) - (waybill.motohours_start || 0) : null;
+          waybill.motohours_equip_diff = waybill.motohours_equip_end ? (waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0) : null;
 
           if (props.element.status === 'active') {
             this.schema = waybillClosingSchema;

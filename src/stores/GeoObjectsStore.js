@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 import get from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
 import { nameOfFeature } from 'utils/geo';
 
 const initialState = {
@@ -70,7 +71,7 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
     this.register(geoObjectsActions.setInitialState, this.handleClearStore);
 
-    this.state = { ...initialState };
+    this.state = cloneDeep(initialState);
   }
 
   handleGetList(name, { result }) {
@@ -231,6 +232,6 @@ export default class GeoObjectsStore extends Store {
   }
 
   handleClearStore() {
-    this.state = { ...initialState };
+    this.state = cloneDeep(initialState);
   }
 }

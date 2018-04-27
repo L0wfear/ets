@@ -61,8 +61,8 @@ export const getTrailers = structure_id => R.pipe(
 );
 
 const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
-export const driverHasLicenseWithActiveDate = ({ drivers_license, drivers_license_date_end }) => isNotEmpty(drivers_license) && isNotEmpty(drivers_license_date_end) && diffDates(new Date(), drivers_license_date_end) < 0;
-export const driverHasSpecialLicenseWithActiveDate = ({ special_license, special_license_date_end }) => isNotEmpty(special_license) && isNotEmpty(special_license_date_end) && diffDates(new Date(), special_license_date_end) < 0;
+export const driverHasLicenseWithActiveDate = ({ drivers_license, drivers_license_date_end }) => isNotEmpty(drivers_license) && !isNotEmpty(drivers_license_date_end) || (isNotEmpty(drivers_license_date_end) && diffDates(new Date(), drivers_license_date_end) < 0);
+export const driverHasSpecialLicenseWithActiveDate = ({ special_license, special_license_date_end }) => isNotEmpty(special_license) && !isNotEmpty(special_license_date_end) || (isNotEmpty(special_license_date_end) && diffDates(new Date(), special_license_date_end) < 0);
 
 const hasOdometr = gov_number => !hasMotohours(gov_number);
 

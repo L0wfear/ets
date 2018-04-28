@@ -100,8 +100,11 @@ export default class WaybillsActions extends Actions {
     const payload = {
       date_start: createValidDate(state.date_from),
       date_end: createValidDate(state.date_to),
-      filter: makeFilterValues(filter),
     };
+
+    if (state.with_filter) {
+      payload.filter = makeFilterValues(filter);
+    }
 
     return WaybillsReportService.getBlob(payload);
   }

@@ -398,7 +398,8 @@ export default class DataTable extends React.Component {
       }
 
       const IS_ARRAY = Array.isArray(value);
-
+      if (obj[key] === '197')
+      console.log(value, obj[key])
       if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
           isValid = false;
@@ -432,7 +433,7 @@ export default class DataTable extends React.Component {
           if (isNaN(Number(d))) {
             return (d || '').toLowerCase() === obj[key].toString().toLowerCase();
           }
-          return Number(d) === obj[key];
+          return Number(d) === Number(obj[key]);
         }) === -1) {
           isValid = false;
         }

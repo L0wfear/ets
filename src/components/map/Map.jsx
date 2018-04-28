@@ -183,7 +183,7 @@ export default class OpenLayersMap extends Component {
     for (const key in markers) {
       const marker = markers[key];
 
-      if (marker.contains(coordinate)) {
+      if (marker.contains(coordinate) && marker.isVisible()) {
         changeCursor = true;
         break;
       }
@@ -232,17 +232,13 @@ export default class OpenLayersMap extends Component {
   }
   getSelectedCar(coordinate) {
     // по какому маркеру кликнули?
-    const markers = Object.values(this.markers);
-
-    for (const key in markers) {
-      const marker = markers[key];
-
-      if (marker.contains(coordinate)) {
-        return marker;
+    return Object.values(this.markers).find((marker) => {
+      if (marker.contains(coordinate) && marker.isVisible()) {
+        return true;
       }
-    }
 
-    return null;
+      return false;
+    }) || null;
   }
   onClick(ev) {
     // проверка - активна ли линейка

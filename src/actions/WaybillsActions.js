@@ -19,6 +19,21 @@ import {
 
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
+const makeFilterValues = (filter) => {
+  const filterValues = _.cloneDeep(filter);
+  Object.keys(filterValues).forEach((k) => {
+    if (Array.isArray(filterValues[k])) {
+      filterValues[`${k}__in`] = filterValues[k];
+      delete filterValues[k];
+    }
+    if (typeof filterValues[k] === 'object') {
+      Object.keys(filterValues[k]).forEach(key => (filterValues[key] = filterValues[k][key]));
+      delete filterValues[k];
+    }
+  });
+
+  return JSON.stringify(filterValues);
+};
 
 export default class WaybillsActions extends Actions {
 
@@ -38,7 +53,7 @@ export default class WaybillsActions extends Actions {
       limit,
       offset,
       sort_by,
-      filter: JSON.stringify(filterValues),
+      filter: makeFilterValues(filter),
     };
     return WaybillService.get(payload);
   }
@@ -73,7 +88,7 @@ export default class WaybillsActions extends Actions {
     return WaybillService.path(id).get();
   }
 
-  getWaybillJournalReport(state) {
+  getWaybillJournalReport(state, filter) {
     const payload = {};
 
     if (state.formationPeriod === 'month') {
@@ -83,14 +98,17 @@ export default class WaybillsActions extends Actions {
     if (state.formationPeriod === 'date') {
       payload.date = createValidDate(state.date);
     }
-    return WaybillJournalReportService.postBlob(payload);
+
+    return WaybillJournalReportService.path(`?filter=${makeFilterValues(filter)}`).postBlob(payload);
   }
 
-  getWaybillsReport(state) {
+  getWaybillsReport(state, filter) {
     const payload = {
       date_start: createValidDate(state.date_from),
       date_end: createValidDate(state.date_to),
+      filter: makeFilterValues(filter),
     };
+
     return WaybillsReportService.getBlob(payload);
   }
 

@@ -10,7 +10,7 @@ import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates.js';
 import { missionSchema } from 'models/MissionModel.js';
-import { MissionForm } from 'components/missions/mission/MissionForm/MissionForm.jsx';
+import MissionForm from 'components/missions/mission/MissionForm/MissionForm.jsx';
 import MissionFormOld from 'components/missions/mission/MissionFormOld.jsx';
 
 export default class MissionFormWrap extends FormWrap {
@@ -48,7 +48,7 @@ export default class MissionFormWrap extends FormWrap {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
       if (status === 'not_assigned') {
-        this.handleChange('type_id', (this.props.carsIndex[mission.car_id] || {}).type_id);
+        mission.type_id = (this.props.carsIndex[mission.car_id] || { type_id: null }).type_id;
       }
 
       if (status === 'assigned') {

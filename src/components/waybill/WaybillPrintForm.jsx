@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Div from 'components/ui/Div.jsx';
-import { Modal, Button } from 'react-bootstrap';
+import { get } from 'lodash';
+
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
@@ -24,16 +26,19 @@ class WaybillPrintForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      month: new Date().getMonth() + 1,
-      year: new Date().getYear() + 1900,
-      date_from: getToday9am(),
-      date_to: getTomorrow9am(),
-      DISABLE_SUBMIT: false,
-      formationPeriod: 'month',
-      date: new Date(),
-    };
+    this.state = this.getInitialState();
   }
+
+  getInitialState = () => ({
+    month: new Date().getMonth() + 1,
+    year: new Date().getYear() + 1900,
+    date_from: getToday9am(),
+    date_to: getTomorrow9am(),
+    DISABLE_SUBMIT: false,
+    formationPeriod: 'month',
+    date: new Date(),
+    with_filter: false,
+  })
 
   handleSubmit = async () => {
     global.NOTIFICATION_SYSTEM.notifyWithObject({
@@ -82,12 +87,20 @@ class WaybillPrintForm extends Component {
     }, () => this.props.hide());
   }
 
-  handleChange = (field, value) => {
-    this.setState({ [field]: value });
+  toggleWithFilter = (e) => {
+    this.setState({ with_filter: !this.state.with_filter });
+    e.stopPropagation();
+  }
+  handleChange = (field, e) => {
+    this.setState({ [field]: get(e, ['target', 'value'], e) });
   }
   handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
   handleChangeDate = date => this.setState({ date });
 
+  hide = () => {
+    this.setState(this.getInitialState());
+    this.props.hide();
+  }
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i + 1 }));
@@ -164,6 +177,11 @@ class WaybillPrintForm extends Component {
               <Div className="inline-block reports-date">
                 <Datepicker time={false} min={this.state.date_from} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
               </Div>
+              <Row className={'marginTop10 pointer'}>
+                <Col md={12} onClick={this.toggleWithFilter}>
+                  <input type={'checkbox'} onChange={this.toggleWithFilter} checked={this.state.with_filter} /><span>{'С применением фильтрации'}</span>
+                </Col>
+              </Row>
               {DISABLE_SUBMIT ? <label style={{ color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10 }}>Даты должны быть указаны</label> : ''}
             </div>
           }

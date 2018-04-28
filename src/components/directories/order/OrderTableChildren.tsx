@@ -63,7 +63,7 @@ const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: missio
   disabledTemplateDutyMission: stateProps.disabledTemplateDutyMission,
 
   handleClickOnCMTemplate: () => dispatchProps.setMInMissionTemplateData({ mission_source_id }),
-  handleClickOnCDMTemplate: () => dispatchProps.setMInMissionTemplateData({ mission_source_id }),
+  handleClickOnCDMTemplate: () => dispatchProps.setDMInMissionTemplateData({ mission_source_id }),
   selectDownload: eventName => getBlobOrder(stateProps.selectedElementOrder, eventName)
 });
 

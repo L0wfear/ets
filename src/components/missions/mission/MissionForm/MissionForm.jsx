@@ -85,11 +85,16 @@ export class MissionForm extends Form {
       flux.getActions('routes').getRouteById(route_id, false)
         .then((route) => {
           if (this.state.is_cleaning_norm) {
-            const { formState: { date_start } } = this.props;
-            if (date_start) {
-              this.props.handleMultiFormChange({
-                date_end: addTime(date_start, routeTypesBySlug[route.object_type].time, 'hours'),
-              });
+            const { formState: { date_start, date_end } } = this.props;
+
+            if (date_start && date_end) {
+              const { time } = routeTypesBySlug[route.object_type];
+
+              if (diffDates(date_end, date_start, 'hours') > time) {
+                this.props.handleMultiFormChange({
+                  date_end: addTime(date_start, time, 'hours'),
+                });
+              }
             }
           }
           this.setState({ selectedRoute: route });
@@ -172,14 +177,15 @@ export class MissionForm extends Form {
     )
     .then((newStateData) => {
       const changesObj = {};
-      const { object_type } = newStateData.selectedRoute;
+      const { object_type } = newStateData.selectedRoute || {};
       changesObj.route_id = newStateData.route_id;
 
-      if (this.state.is_cleaning_norm) {
-        const { date_start } = formState;
+      if (this.state.is_cleaning_norm && object_type) {
+        const { date_start, date_end } = formState;
+        const { time } = routeTypesBySlug[object_type];
 
-        if (date_start) {
-          changesObj.date_end = addTime(date_start, routeTypesBySlug[object_type].time, 'hours');
+        if (date_start && date_end && diffDates(date_end, date_start, 'hours') > time) {
+          changesObj.date_end = addTime(date_start, time, 'hours');
         }
       }
 
@@ -189,12 +195,19 @@ export class MissionForm extends Form {
   }
 
   handleChangeDateStart = (date_start) => {
+    const { date_end } = this.props.formState;
+
     const changesObj = {
       date_start,
+      date_end,
     };
 
-    if (date_start && this.state.is_cleaning_norm) {
-      changesObj.date_end = addTime(date_start, routeTypesBySlug[this.state.selectedRoute.object_type].time, 'hours');
+    if (date_start && date_end && this.state.is_cleaning_norm && this.state.selectedRoute) {
+      const { time } = routeTypesBySlug[this.state.selectedRoute.object_type];
+
+      if (diffDates(date_end, date_start, 'hours') > time) {
+        changesObj.date_end = addTime(date_start, time, 'hours');
+      }
     }
 
     this.props.handleMultiFormChange(changesObj);

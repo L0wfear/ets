@@ -61,15 +61,15 @@ export const getTrailers = structure_id => R.pipe(
 );
 
 const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
-export const driverHasLicense = ({ drivers_license }) => isNotEmpty(drivers_license);
-export const driverHasSpecialLicense = ({ special_license }) => isNotEmpty(special_license);
+export const driverHasLicenseWithActiveDate = ({ drivers_license, drivers_license_date_end }) => isNotEmpty(drivers_license) && !isNotEmpty(drivers_license_date_end) || (isNotEmpty(drivers_license_date_end) && diffDates(new Date(), drivers_license_date_end) < 0);
+export const driverHasSpecialLicenseWithActiveDate = ({ special_license, special_license_date_end }) => isNotEmpty(special_license) && !isNotEmpty(special_license_date_end) || (isNotEmpty(special_license_date_end) && diffDates(new Date(), special_license_date_end) < 0);
 
 const hasOdometr = gov_number => !hasMotohours(gov_number);
 
 export const getDrivers = (state: any = {}, driversList) => {
   const licenceSwitcher = R.cond([
-    [hasOdometr, R.always(driverHasLicense)],
-    [hasMotohours, R.always(driverHasSpecialLicense)],
+    [hasOdometr, R.always(driverHasLicenseWithActiveDate)],
+    [hasMotohours, R.always(driverHasSpecialLicenseWithActiveDate)],
     [R.T, R.always(R.identity)],
   ]);
 
@@ -125,20 +125,20 @@ export const getDatesToByOrderOperationId = (order, order_operation_id) => {
 };
 
 export const getFuelCorrectionRate = (carsList, { car_id }) => Promise.resolve(
-  (carsList.find(({ asuods_id }) => asuods_id === car_id ) || { fuel_correction_rate: 1 }).fuel_correction_rate,
+  (carsList.find(({ asuods_id }) => asuods_id === car_id ) || { fuel_correction_rate: 1 }).fuel_correction_rate || 1,
 );
 
 export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }) =>
   action({ car_id, datetime })
     .then(({ result: fuelRatesList}) => ({
       fuelRates: fuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
-      fuelRatesIndex: fuelRatesList.reduce((newObj, { id, ...other }) => ({ ...newObj, [id]: { id, ...other }}), {}),
+      fuelRatesIndex: fuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),
     }));
 export const getEquipmentFuelRatesByCarModel = (action, { car_id, date_create: datetime }) =>
   action({ car_id, datetime })
     .then(({ result: equipmentFuelRatesList }) => ({
       equipmentFuelRates: equipmentFuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
-      equipmentFuelRatesIndex: equipmentFuelRatesList.reduce((newObj, { id, ...other }) => ({ ...newObj, [id]: { id, ...other }}), {}),
+      equipmentFuelRatesIndex: equipmentFuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),
     }));
 
 export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mission_source_id, orderAction) =>

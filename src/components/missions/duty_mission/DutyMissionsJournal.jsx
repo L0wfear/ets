@@ -65,16 +65,20 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
+    const linear = true;
+    const outerPayload = {
+      start_date: new Date(),
+      end_date: new Date(),
+    };
+
+    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
-    const outerPayload = {
-      start_date: new Date(),
-      end_date: new Date(),
-    };
-    this.context.flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    flux.getActions('companyStructure').getCompanyStructure(linear);
   }
 
   async refreshList(state = this.state) {
@@ -296,15 +300,13 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
-
     const changeSort = (field, direction) =>
       this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
 
     const changeFilter = filter => this.setState({ filter });
 
     return {
-      structures,
+      structures: this.props.companyStructureLinearList,
       changeSort,
       changeFilter,
       filterValues: this.state.filter,

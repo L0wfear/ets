@@ -16,6 +16,7 @@ import {
   numberArrayDataMatching,
   parseAdvancedFilter,
   getFilterTypeByKey,
+  makeData,
 } from './utils';
 import ColumnControl from './ColumnControl.jsx';
 import Filter from './filter/Filter.jsx';
@@ -143,6 +144,8 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort: true,
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
+      data: [],
+      originalData: [],
     };
   }
 
@@ -176,37 +179,43 @@ export default class DataTable extends React.Component {
       const el = document.getElementById('checkedColumn');
       if (el) el.checked = checked;
     }
-    let {
-      initialSort, initialSortAscending,
+    const {
+      initialSort,
+      initialSortAscending,
       firstUseExternalInitialSort,
     } = this.state;
 
-    if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== this.state.initialSort) {
-      initialSort = props.initialSort;
-      firstUseExternalInitialSort = false;
+    const changesFields = {
+      initialSort,
+      initialSortAscending,
+      firstUseExternalInitialSort,
+      originalData: this.state.originalData,
+      data: this.state.data,
+    };
+
+    if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
+      changesFields.initialSort = props.initialSort;
+      changesFields.firstUseExternalInitialSort = false;
     }
 
-    if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
-      initialSortAscending = props.initialSortAscending;
+    if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
+      changesFields.initialSortAscending = props.initialSortAscending;
     }
     if (props.externalFilter) {
-      this.setState({
-        initialSort,
-        initialSortAscending,
-        filterValues: props.filterValues,
-        firstUseExternalInitialSort,
-      });
-    } else {
-      this.setState({
-        initialSort,
-        initialSortAscending,
-        firstUseExternalInitialSort,
-      });
+      changesFields.filterValues = props.filterValues;
+    }
+    if (props.filterResetting) {
+      changesFields.filterValues = {};
     }
 
-    if (props.filterResetting) {
-      this.setState({ filterValues: {} });
+    if (Array.isArray(props.results) && props.results !== this.state.originalData) {
+      changesFields.originalData = props.results;
+      changesFields.data = props.results;
     }
+
+    changesFields.data = makeData(changesFields.data, this.state, changesFields);
+
+    this.setState(changesFields);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -333,7 +342,7 @@ export default class DataTable extends React.Component {
         sortable: false,
         cssClassName: 'width25 pointer text-center',
         customComponent: (props) => {
-          const id = props.rowData.id;
+          const id = props.rowData[this.props.selectField];
           return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)} /></div>;
         },
       });
@@ -504,22 +513,6 @@ export default class DataTable extends React.Component {
     return el;
   }
 
-  sortingLoweCase(a, b) {
-    let one = a[this.state.initialSort];
-    let two = b[this.state.initialSort];
-
-    if (typeof one === 'string' && typeof two === 'string') {
-      one = one.toLocaleLowerCase();
-      two = two.toLocaleLowerCase();
-    }
-    if (one > two) {
-      return 1 * Math.pow(-1, this.state.initialSortAscending + 1);
-    } else if (one < two) {
-      return -1 * Math.pow(-1, this.state.initialSortAscending + 1);
-    }
-    return 0;
-  }
-
   processHighlighted(highlight, el) {
     el.isHighlighted = false;
     if (highlight.length > 0) {
@@ -539,82 +532,28 @@ export default class DataTable extends React.Component {
     });
     return el;
   }
-  checkWhatFieldISortin(initialSort) {
-    const {
-      tableMeta: { cols = [] },
-    } = this.props;
-    const myTypeFromCols = (cols.find(col => col.name === initialSort) || {}).type;
-
-    switch (myTypeFromCols) {
-      case 'number': return 'number';
-      case 'string': return 'string';
-      case 'boollean': return 'boollean';
-      default: return this.findMyTypeFromData(initialSort);
-    }
-  }
-  findMyTypeFromData(initialSort) {
-    const { results } = this.props;
-
-    return results.reduce((bool, line) => bool && (typeof line[initialSort] === 'number' || line[initialSort] === null), true) ? 'number' : 'string';
-  }
-
-  sortingData(type, a, b) {
-    let one = this.checkForCorrect(a[this.state.initialSort]);
-    let two = this.checkForCorrect(b[this.state.initialSort]);
-
-    if (type === 'string') {
-      try {
-        one = one.toLocaleLowerCase();
-        two = two.toLocaleLowerCase();
-      } catch (e) {
-        //  is boolean
-      }
-    }
-    if (one > two) {
-      return 1;
-    } else if (one < two) {
-      return -1;
-    }
-    return 0;
-  }
-  // max string - яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя
-  // или как?
-  // поменять, если знаешь что вместо
-  checkForCorrect(val) {
-    if (val === null) return Number.MAX_SAFE_INTEGER;
-    if (val === '') return 'яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя';
-    return val;
-  }
 
   processTableData(data, tableCols, selected, selectField, onRowSelected, highlight = []) {
-    const {
-      initialSort,
-      initialSortAscending,
-    } = this.state;
-
-    const { externalChangeSort = false } = this.props;
-
-    let tempData = data
+    return data
           .map(this.processEmptyCols.bind(this, tableCols))
           .map(this.processHighlighted.bind(this, highlight))
           .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
           .filter(this.shouldBeRendered);
-
-    if (initialSort && !externalChangeSort) {
-      tempData = tempData.sort(this.sortingData.bind(this, this.checkWhatFieldISortin(initialSort)));
-
-      if (!initialSortAscending) {
-        return tempData.reverse();
-      }
-      return tempData;
-    }
-    return tempData;
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {
-    this.setState({
+    const nextProps = {
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
+    };
+    const prevProps = {
+      initialSort: this.state.initialSort,
+      initialSortAscending: this.state.initialSortAscending,
+    };
+
+    this.setState({
+      ...nextProps,
+      data: makeData(this.state.data, prevProps, nextProps),
     });
   }
 
@@ -655,11 +594,7 @@ export default class DataTable extends React.Component {
     const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
 
     const tableMetaCols = (tableMeta.cols);
-    let data = (this.props.results);
-
-    if (typeof this.props.results === 'string') {
-      data = [];
-    }
+    const { data } = this.state;
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
     const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);

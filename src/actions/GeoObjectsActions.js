@@ -70,4 +70,8 @@ export default class GeoObjectsActions extends Actions {
       data: response,
     };
   }
+
+  setInitialState() {
+    return true;
+  }
 }

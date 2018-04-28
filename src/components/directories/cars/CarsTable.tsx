@@ -92,6 +92,14 @@ export function tableMeta({
         },
       },
       {
+        name: 'car_group_name',
+        displayName: 'Группа техники',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
         name: 'type_name',
         displayName: 'Тип',
         type: 'string',

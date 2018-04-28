@@ -5,21 +5,21 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import {
   isEqual,
   find,
-  get,
   map,
   uniqBy,
   groupBy,
+  get,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
+
 import DivForEnhance from 'components/ui/Div.jsx';
 import {
   isNotNull,
   isEmpty,
   hasMotohours,
   isEqualOr,
-  isFourDigitGovNumber,
 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
 
@@ -57,6 +57,10 @@ import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 const Div = enhanceWithPermissions(DivForEnhance);
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
+
+const boundKeysObj = {
+  fact_fuel_end: ['fact_fuel_end'],
+};
 
 @autobind
 class WaybillForm extends Form {
@@ -120,7 +124,10 @@ class WaybillForm extends Form {
     flux.getActions('employees').getEmployees();
     flux.getActions('objects').getWorkMode();
     flux.getActions('missions').getMissionSources();
-
+    getWaybillDrivers(
+      this.context.flux.getActions('employees').getWaybillDrivers,
+      this.props.formState,
+    );
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
         .then(({ result: fuelRateAll }) =>
@@ -340,6 +347,7 @@ class WaybillForm extends Form {
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
+            car_id: this.formState.car_id,
             distance,
             consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
           });
@@ -405,6 +413,7 @@ class WaybillForm extends Form {
           global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
         }
 
+        this.props.clearSomeData();
         return this.context.flux.getActions('waybills').getLastClosedWaybill(car_id)
           .then(({ result: lastCarUsedWaybill }) =>
             res({
@@ -418,6 +427,7 @@ class WaybillForm extends Form {
        */
       return Promise.resolve(res({
         ...fieldsToChange,
+
         driver_id: '',
       }));
     })
@@ -428,6 +438,7 @@ class WaybillForm extends Form {
     const fieldsToChange = {
       equipment_fuel,
     };
+    this.props.clearSomeData();
     const { result: lastCarUsedWaybill } = await this.context.flux.getActions('waybills').getLastClosedWaybill(this.props.formState.car_id);
 
     if (lastCarUsedWaybill && lastCarUsedWaybill.equipment_fuel) {
@@ -443,6 +454,7 @@ class WaybillForm extends Form {
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fuel_end)) {
         fieldsToChange.fuel_start = lastCarUsedWaybill.fuel_end;
+        fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
@@ -458,6 +470,7 @@ class WaybillForm extends Form {
       }
     } else {
       fieldsToChange.fuel_start = 0;
+      fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = 0;
       fieldsToChange.motohours_equip_start = 0;
@@ -555,7 +568,7 @@ class WaybillForm extends Form {
   handleClose = taxesControl =>
     checkMissionSelectBeforeClose(
       this.props.formState,
-      groupBy([...this.props.oldMissionsList, ...this.props.notAvailableMissions], 'id'),
+      groupBy([...this.state.missionsList, ...this.state.notAvailableMissions], 'id'),
       this.props.missionSourcesList.find(({ auto }) => auto).id,
       this.context.flux.getActions('objects').getOrderById,
     )
@@ -594,7 +607,6 @@ class WaybillForm extends Form {
 
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
-
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
     // const DRIVERS = waybillDriversList.map((d) => {
@@ -606,7 +618,6 @@ class WaybillForm extends Form {
     const driversEnability = state.car_id !== null && state.car_id !== '';
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
-    const DRIVERS = getDrivers({ car_id: state.car_id, gov_number: state.gov_number }, waybillDriversList);
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));
     const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne, number, className: 'yellow' }));
 
@@ -635,10 +646,10 @@ class WaybillForm extends Form {
 
     const car = carsIndex[state.car_id];
     const trailer = carsIndex[state.trailer_id];
+    const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state.gov_number, waybillDriversList) : [];
     const title = getTitleByStatus(state);
-
     const {
       tax_data = [],
       equipment_tax_data = [],
@@ -1035,13 +1046,26 @@ class WaybillForm extends Form {
                   <Field
                     id="fuel-end"
                     type="number"
-                    label="Возврат, л"
+                    label="Возврат по таксировке, л"
                     error={errors.fuel_end}
                     value={state.fuel_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
                     disabled
                   />
-
+                  <ExtField
+                    id="fuel-end"
+                    type="number"
+                    label="Возврат фактический, л"
+                    error={errors.fact_fuel_end}
+                    value={state.fact_fuel_end}
+                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    disabled={!IS_ACTIVE}
+                    onChange={this.handleChange}
+                    boundKeys={boundKeysObj.fact_fuel_end}
+                    showRedBorder={state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)}
+                  />
+                  <div>{'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}</div>
+                  <Row />
                 </Col>
               </Div>
             </Div>
@@ -1184,7 +1208,7 @@ class WaybillForm extends Form {
                   />
                 </Div>
               </Div>
-              <Div hidden={!(IS_ACTIVE || IS_CLOSED) || isFourDigitGovNumber(get(state, 'gov_number', ''))}>
+              <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                 <Field
                   id="distance-by-glonass"
                   type="string"

@@ -234,8 +234,9 @@ class WaybillForm extends Form {
     ).then((response) => {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
-        const driver = this.props.waybillDriversList.find(item => item.id === newDriverId) || null;
-        if (driver === null) return;
+        const driver = this.props.employeesIndex[newDriverId] || null;
+
+        if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
 
         const { gov_number } = formState;
         const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);

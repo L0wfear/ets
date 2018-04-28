@@ -26,4 +26,8 @@ export default class SettingsActions extends Actions {
     return showMarkers;
   }
 
+  setInitialState() {
+    return true;
+  }
+
 }

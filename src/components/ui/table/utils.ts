@@ -126,3 +126,65 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
 
   return false;
 };
+
+
+export const sortFunction = (firstRowData, secondRowData, initialSort) => {
+  const [
+    first,
+    second,
+  ] = [
+    firstRowData[initialSort],
+    secondRowData[initialSort],
+  ];
+
+  const firstIsNumber = !isNaN(Number(first));
+  const secondIsNumber = !isNaN(Number(second));
+
+  // оба числа
+  if (firstIsNumber && secondIsNumber) {
+    return first - second;
+  }
+  if (!firstIsNumber || !secondIsNumber) {
+    if (!first && first !== 0) {
+      return -1
+    }
+    if (!second && second !== 0) {
+      return 1;
+    }
+  }
+  // первое - не число
+  if (!firstIsNumber && secondIsNumber) {
+    return -1;
+  }
+  // второе - не число
+  if (firstIsNumber && !secondIsNumber) {
+    return 1;
+  }
+  // оба элемента пусты ('', null, undefined)
+  if (!first && !second) {
+    return 0;
+  }
+  if (!first && second) {
+    return -1;
+  }
+  if (first && !second) {
+    return 1;
+  }
+
+  return first.localeCompare(second);
+};
+
+export const sortData = (data, { initialSort }) => data.sort((a, b) => sortFunction(a,b, initialSort));
+
+export const makeData = (data, prevProps, nextProps) => {
+  let returnData = data;
+
+  if (prevProps.originalData !== nextProps.originalData || prevProps.initialSort !== nextProps.initialSort) {
+    returnData = sortData([...returnData], nextProps);
+  }
+  if (prevProps.initialSortAscending !== nextProps.initialSortAscending) {
+    returnData = [...returnData].reverse();
+  }
+
+  return returnData;
+}

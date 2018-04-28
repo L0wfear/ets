@@ -1,5 +1,12 @@
 import React from 'react';
-import _ from 'lodash';
+import {
+  clone,
+  cloneDeep,
+  filter,
+  get,
+  last,
+  max,
+} from 'lodash';
 import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
@@ -19,15 +26,15 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   if (waybill.status) {
     // Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
     if (field === 'odometr_end') {
-      waybill.odometr_diff = value ? parseFloat(waybill.odometr_end - waybill.odometr_start).toFixed(3) : null;
+      waybill.odometr_diff = value ? waybill.odometr_end - waybill.odometr_start : null;
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
-      waybill.motohours_diff = value ? parseFloat(waybill.motohours_end - waybill.motohours_start).toFixed(3) : null;
+      waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
     if (field === 'motohours_equip_end') {
-      waybill.motohours_equip_diff = value ? parseFloat(waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(3) : null;
+      waybill.motohours_equip_diff = value ? waybill.motohours_equip_end - waybill.motohours_equip_start : null;
     }
   }
   return waybill;
@@ -68,7 +75,7 @@ export default class WaybillFormWrap extends FormWrap {
           formErrors: this.validate(defaultBill, {}),
         });
       } else {
-        const waybill = _.clone(props.element);
+        const waybill = clone(props.element);
         if (!waybill.tax_data) {
           waybill.tax_data = [];
         }
@@ -95,9 +102,9 @@ export default class WaybillFormWrap extends FormWrap {
           }
 
           // Расчет пробегов
-          waybill.odometr_diff = waybill.odometr_end ? parseFloat((waybill.odometr_end || 0) - (waybill.odometr_start || 0)).toFixed(3) : null;
-          waybill.motohours_diff = waybill.motohours_end ? parseFloat((waybill.motohours_end) - (waybill.motohours_start || 0)).toFixed(3) : null;
-          waybill.motohours_equip_diff = waybill.motohours_equip_end ? parseFloat((waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0)).toFixed(3) : null;
+          waybill.odometr_diff = waybill.odometr_end ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0) : null;
+          waybill.motohours_diff = waybill.motohours_end ? (waybill.motohours_end) - (waybill.motohours_start || 0) : null;
+          waybill.motohours_equip_diff = waybill.motohours_equip_end ? (waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0) : null;
 
           if (props.element.status === 'active') {
             this.schema = waybillClosingSchema;
@@ -106,8 +113,8 @@ export default class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
-              canClose: !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
+              canSave: !clone(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
+              canClose: !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
             });
           } else {
             this.setState({
@@ -120,8 +127,8 @@ export default class WaybillFormWrap extends FormWrap {
           this.setState({
             formState: waybill,
             canPrint: true,
-            canSave: !_.filter(this.validate(waybill, {})).length,
-            canClose: !_.filter(this.validate(waybill, {})).length,
+            canSave: !filter(this.validate(waybill, {})).length,
+            canClose: !filter(this.validate(waybill, {})).length,
             formErrors: this.validate(waybill, {}),
           });
         }
@@ -147,6 +154,10 @@ export default class WaybillFormWrap extends FormWrap {
       formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
     }
 
+    if (formState.fuel_end !== this.state.formState.fuel_end) {
+      formState.fact_fuel_end = formState.fuel_end;
+    }
+
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
       formErrors = this.validate(formState, formErrors);
@@ -155,8 +166,8 @@ export default class WaybillFormWrap extends FormWrap {
       formErrors = this.validate(formState, formErrors);
     }
 
-    newState.canSave = !_.filter(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
-    newState.canClose = !_.filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
+    newState.canSave = !filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formState = formState;
     newState.formErrors = formErrors;
@@ -165,15 +176,15 @@ export default class WaybillFormWrap extends FormWrap {
 
 
   handleFormStateChange(field, e) {
-    const value = _.get(e, ['target', 'value'], e);
-    let formState = _.cloneDeep(this.state.formState);
+    const value = get(e, ['target', 'value'], e);
+    let formState = cloneDeep(this.state.formState);
     formState[field] = value;
-
+    console.log(field, value);
     formState = calculateWaybillMetersDiff(formState, field, value);
 
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
-      const lastTax = _.last(formState.tax_data);
+      const lastTax = last(formState.tax_data);
       if (field === 'odometr_end' && formState.odometr_diff > 0) {
         lastTax.FACT_VALUE = formState.odometr_diff;
         lastTax.RESULT = Taxes.getResult(lastTax);
@@ -188,7 +199,7 @@ export default class WaybillFormWrap extends FormWrap {
       }
       if (field === 'motohours_equip_end' && formState.equipment_tax_data
         && formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
-        const lastEquipmentTax = _.last(formState.equipment_tax_data);
+        const lastEquipmentTax = last(formState.equipment_tax_data);
         lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
         lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
       }
@@ -196,15 +207,19 @@ export default class WaybillFormWrap extends FormWrap {
     this.handleFieldsChange(formState);
   }
 
-  handleMultipleChange(fields) {
-    let formState = _.cloneDeep(this.state.formState);
-    const { car_id = -1 } = fields;
+  clearSomeData = () => {
+    const formState = cloneDeep(this.state.formState);
 
-    if (car_id !== formState.car_id) {
-      delete formState.equipment_fuel_start;
-      delete formState.fuel_start;
-      delete formState.motohours_equip_start;
-    }
+    delete formState.equipment_fuel_start;
+    delete formState.fuel_start;
+    delete formState.motohours_equip_start;
+    console.log('delete', '----->', 'equipment_fuel_start', 'fuel_start', 'motohours_equip_start')
+
+    this.handleMultipleChange(formState);
+  }
+
+  handleMultipleChange(fields) {
+    let formState = cloneDeep(this.state.formState);
 
     Object.entries(fields).forEach(([field, value]) => {
       formState[field] = value;
@@ -267,7 +282,7 @@ export default class WaybillFormWrap extends FormWrap {
    * @return {undefined}
    */
   async handleFormSubmit(state = this.state.formState, callback) {
-    const formState = _.cloneDeep(state);
+    const formState = cloneDeep(state);
     const waybillStatus = formState.status;
     const { flux } = this.context;
 
@@ -277,7 +292,7 @@ export default class WaybillFormWrap extends FormWrap {
         const r = await flux.getActions('waybills').createWaybill(formState);
 
         // TODO сейчас возвращается один ПЛ
-        const id = _.max(r.result, res => res.id).id;
+        const id = max(r.result, res => res.id).id;
         try {
           formState.status = 'active';
           formState.id = id;
@@ -398,6 +413,7 @@ export default class WaybillFormWrap extends FormWrap {
           onHide={this.props.onFormHide}
           entity={entity || 'waybill'}
           handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+          clearSomeData={this.clearSomeData}
           {...this.state}
         />
       </Div>

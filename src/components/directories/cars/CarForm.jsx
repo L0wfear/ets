@@ -96,7 +96,7 @@ class CarForm extends Form {
   }
   handleSave = () => {
     if (this.props.tabKey !== CAR_TAB_INDEX.main_info) {
-      this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
+      this.props.handleFormOnlySubmit().then(() => this.props.handleTabSelect(CAR_TAB_INDEX.main_info));
     } else {
       this.handleSubmit();
     }

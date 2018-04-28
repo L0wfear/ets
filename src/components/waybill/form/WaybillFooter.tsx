@@ -49,7 +49,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
           <MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
           <MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
-          <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина(</MenuItem>
+          <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown id="waybill-print-dropdown_save" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
@@ -57,10 +57,10 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem id="save-3C" eventKey={'plate_special'}>Форма 3-С</MenuItem>
-          <MenuItem id="save-4P" eventKey={'plate_truck'}>Форма 4-П</MenuItem>
-          <MenuItem id="save-6" eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
-          <MenuItem id="save-3" eventKey={'plate_car'}>Форма №3</MenuItem>
+          <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
+          <MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
+          <MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
+          <MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>

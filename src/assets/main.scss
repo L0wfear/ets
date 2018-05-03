@@ -2754,13 +2754,6 @@ div.none {
 
 .car-info-tracking {
 
-  .till-now-checkbox {
-    position: absolute;
-    top: -26px;
-    right: 20px;
-    font-weight: 200;
-  }
-
   .reload-button {
     padding: 6px 9px;
     height: 34px;
@@ -3154,4 +3147,23 @@ div.none {
 
 .marginTop10 {
   margin-top: 10px;
+}
+.flex-space-beetwen-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-space-beetwen-baseline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.till-now {
+  font-weight: 200;
+  &>span {
+    margin-top: 2px;
+    margin-left: 5px;
+    color: #000;
+  }
 }

@@ -10,7 +10,8 @@ import { TRACK_COLORS } from 'constants/track.js';
 import { diffDates, makeDateFromUnix, getStartOfToday } from 'utils/dates';
 
 import Panel from 'components/ui/Panel.jsx';
-import DatePicker from 'components/ui/input/DatePicker';
+import { ExtField } from 'components/ui/Field.jsx';
+
 import config from '../../../config.js';
 import Charts from './Charts.jsx';
 import VehicleInfo from './VehicleInfo.jsx';
@@ -67,6 +68,7 @@ export default class CarInfo extends Component {
       from_dt: getStartOfToday(),
       to_dt: new Date(),
       from_dt_: getStartOfToday(),
+      errorDates: '',
       tillNow: true,
       car: {},
       tab: 0,
@@ -120,6 +122,7 @@ export default class CarInfo extends Component {
     if (notTillNow) {
       state.from_dt = state.from_dt_ = getStartOfToday();
       state.to_dt = state.to_dt_ = new Date();
+      state.errorDates = '';
     }
 
     const track = this.props.car.marker.track;
@@ -166,9 +169,7 @@ export default class CarInfo extends Component {
     this.setState({ missions: info.missions, maxSpeed: info.max_speed, imageUrl: car ? car.type_image_name : null });
   }
 
-  fetchVehicleData() {
-    this.setState({ from_dt: this.state.from_dt_, to_dt: this.state.to_dt_ }, this.fetchTrack);
-  }
+  fetchVehicleData = () => this.fetchTrack();
 
   fetchTrack(props = this.props) {
     const { from_dt, to_dt } = this.state;
@@ -265,20 +266,22 @@ export default class CarInfo extends Component {
       </Panel>
     );
   }
-  handleChangeDateFromDt = value => this.hadnleChangeDate('from_dt_', value);
-  handleChangeDateToDt = value => this.hadnleChangeDate('to_dt_', value);
 
-  hadnleChangeDate = (field, value) => {
-    const dates = {
+  handleChangeDate = (field, value) => {
+    const changesState = {
       ...this.state,
       [field]: value,
     };
+    changesState.from_dt = changesState.from_dt_;
+    changesState.to_dt = changesState.to_dt_;
 
-    if (diffDates(dates.to_dt_, dates.from_dt_, 'days') > 3) {
-      return global.NOTIFICATION_SYSTEM.notify('Период формирования трека не должен превышать трое суток', 'warning');
+    if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 3) {
+      changesState.errorDates = 'Период формирования трека не должен превышать трое суток';
+    } else {
+      changesState.errorDates = '';
     }
 
-    return this.setState({ ...dates });
+    this.setState({ ...changesState });
   }
 
   renderTracking() {
@@ -286,40 +289,50 @@ export default class CarInfo extends Component {
     const isTrackLoaded = marker.hasTrackLoaded();
     const tillNow = this.state.tillNow;
     const reloadBtnCN = cx('glyphicon', 'glyphicon-repeat', { 'tracking-animate': false });
+    const { errorDates } = this.state;
 
-    // const store = this.store;
-    // const showGradient = store.state.showTrackingGradient;
+    const Title = (
+      <div className={'flex-space-beetwen-center'}>
+        <span>{'Трекинг'}</span>
+        <div className={'flex-space-beetwen-center till-now'}>
+          <input type="checkbox" checked={tillNow} onChange={this.onTillNowChange} /><span>За сегодня</span>
+        </div>
+      </div>
+    );
 
     return (
       <div className="car-info-tracking">
-        <Panel title="Трекинг" className="chart-datepickers-wrap">
-          <DatePicker
-            onChange={this.handleChangeDateFromDt}
-            date={this.state.from_dt_}
-            disabled={tillNow}
-          />
-          &nbsp;–&nbsp;
-          <DatePicker
-            onChange={this.handleChangeDateToDt}
-            date={this.state.to_dt_}
-            disabled={tillNow}
-          />
-          {/* <label className="gradient-checkbox">
-            <input type="checkbox" checked={showGradient} ref="showGradient" onChange={this.onShowGradientChange}/> С градиентом
-          </label>*/}
-          <label className="till-now-checkbox">
-            <input type="checkbox" checked={tillNow} onChange={this.onTillNowChange} /> За сегодня
-          </label>
-
-          <Button
-            title="Перезагрузить данные"
-            className="reload-button"
-            onClick={this.fetchVehicleData}
-            disabled={tillNow}
-          >
-            <span className={reloadBtnCN} />
-          </Button>
-
+        <Panel title={Title} className="chart-datepickers-wrap">
+          <div className={'flex-space-beetwen-baseline'}>
+            <ExtField
+              type={'date'}
+              time
+              date={this.state.from_dt_}
+              onChange={this.handleChangeDate}
+              boundKeys={['from_dt_']}
+              disabled={tillNow}
+            />
+            &nbsp;–&nbsp;
+            <ExtField
+              type={'date'}
+              time
+              date={this.state.to_dt_}
+              onChange={this.handleChangeDate}
+              boundKeys={['to_dt_']}
+              disabled={tillNow}
+            />
+            <Button
+              title="Перезагрузить данные"
+              className="reload-button"
+              onClick={this.fetchVehicleData}
+              disabled={tillNow || !!errorDates}
+            >
+              <span className={reloadBtnCN} />
+            </Button>
+          </div>
+          <div>
+            <span className={'error'}>{errorDates}</span>
+          </div>
           <div>
             <div className="vehicle-attributes-list__item" style={{ marginLeft: 5, marginTop: 5, marginBottom: 5 }}>
               Протяженность, км: <span className="value">{isTrackLoaded && marker.track.getDistance()}</span>

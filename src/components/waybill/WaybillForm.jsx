@@ -231,13 +231,15 @@ class WaybillForm extends Form {
 
     const idOrder = (missionSourcesList.find(({ auto }) => auto) || {}).id;
 
-    const missionsFromOrder = uniqBy(missionsList.concat(...this.state.notAvailableMissions), 'id').reduce((missions, mission) => {
-      if (formState.mission_id_list.includes(mission.id) && idOrder === mission.mission_source_id) {
-        missions.push(mission);
-      }
-      return missions;
-    },
-    []);
+    const missionsFromOrder = uniqBy(missionsList.concat(...this.state.notAvailableMissions), 'id')
+      .reduce((missions, mission) => {
+        if (formState.mission_id_list.includes(mission.id) && idOrder === mission.mission_source_id) {
+          missions.push(mission);
+        }
+        return missions;
+      },
+      [],
+    );
 
     Promise.all(missionsFromOrder.map(mission =>
       this.context.flux.getActions('objects').getOrderById(mission.order_id)
@@ -299,22 +301,15 @@ class WaybillForm extends Form {
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);
-      let newMissions = [];
       let { notAvailableMissions = [] } = this.state;
 
-      if (status === 'active') {
-        newMissions = currentMissions;
-        notAvailableMissions = notAvailableMissions
-          .concat(currentMissions
-            .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
-            .map(id => oldMissionsList.find(el => el.id === id))
-          )
-          .filter(m => m);
-      } else {
-        newMissions = currentMissions.filter(el => availableMissions.includes(el));
-      }
+      notAvailableMissions = notAvailableMissions
+        .concat(currentMissions
+          .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
+          .map(id => oldMissionsList.find(el => el.id === id))
+        )
+        .filter(m => m);
       this.setState({ missionsList, notAvailableMissions });
-      this.props.handleFormChange('mission_id_list', newMissions);
 
       availableMissions.length > 0 && notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });

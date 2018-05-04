@@ -14,7 +14,7 @@ import config from 'config';
 import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
-import { FluxContext, HistoryContext } from 'utils/decorators';
+import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
@@ -47,6 +47,7 @@ const styleNotificationInfo = {
   flexDirection: 'row-reverse',
 };
 
+@connectToStores(['session'])
 @FluxContext
 @HistoryContext
 export default class MainPage extends React.Component {
@@ -217,6 +218,7 @@ export default class MainPage extends React.Component {
         company_name,
       },
     } = this.state;
+    const { backendVersion } = this.props;
 
     return (
       <div className="app">
@@ -251,7 +253,7 @@ export default class MainPage extends React.Component {
           </Col>
           <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>
-              {VERSION_DESCRIPTION}
+              {`${VERSION_DESCRIPTION} ${(process.env.STAND !== 'prod' && backendVersion) ? `(${backendVersion})` : ''}`}
             </span>
           </Col>
         </div>

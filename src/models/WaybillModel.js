@@ -107,28 +107,24 @@ export const waybillSchema = {
       title: 'Работа',
       required: false,
       type: 'number',
-      float: 1,
     },
     {
       key: 'downtime_hours_duty',
       title: 'Дежурство',
       required: false,
       type: 'number',
-      float: 1,
     },
     {
       key: 'downtime_hours_dinner',
       title: 'Обед',
       required: false,
       type: 'number',
-      float: 1,
     },
     {
       key: 'downtime_hours_repair',
       title: 'Ремонт',
       required: false,
       type: 'number',
-      float: 1,
     },
   ],
   dependencies: {

@@ -145,21 +145,17 @@ export class MissionForm extends Form {
   }
 
   createNewRoute = () => {
-    this.context.flux.getActions('geoObjects').getGeozones()
-      .then(() =>
-        this.setState({
-          showRouteForm: true,
-          selectedRoute: {
-            norm_id: this.props.formState.norm_id,
-            name: '',
-            polys: this.props.geozonePolys,
-            technical_operation_id: this.props.formState.technical_operation_id,
-            municipal_facility_id: this.props.formState.municipal_facility_id,
-            structure_id: this.props.formState.structure_id,
-            object_list: [],
-          },
-        })
-      );
+    this.setState({
+      showRouteForm: true,
+      selectedRoute: {
+        norm_id: this.props.formState.norm_id,
+        name: '',
+        technical_operation_id: this.props.formState.technical_operation_id,
+        municipal_facility_id: this.props.formState.municipal_facility_id,
+        structure_id: this.props.formState.structure_id,
+        object_list: [],
+      },
+    })
   }
 
   onFormHide = (isSubmitted, result) => {

@@ -35,6 +35,7 @@ export default class SessionStore extends Store {
     const sessionActions = flux.getActions('session');
     this.register(sessionActions.login, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
+    this.register(sessionActions.setBackendVersion, this.handleSetBackendVersion)
 
 
     let storedSession;
@@ -57,7 +58,11 @@ export default class SessionStore extends Store {
       isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       session: storedSession,
       userPermissions: currentUser.permissions,
+      backendVersion: null,
     };
+  }
+  handleSetBackendVersion(backendVersion) {
+    this.setState({ backendVersion });
   }
 // TODO
   handleLogin(data) {

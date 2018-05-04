@@ -13,4 +13,8 @@ export default class SessionActions extends Actions {
     return new Promise(res => res());
   }
 
+  setBackendVersion(backendVersion) {
+    return Promise.resolve(backendVersion);
+  }
+
 }

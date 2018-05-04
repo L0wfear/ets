@@ -107,12 +107,15 @@ function httpMethod(url, data = {}, method, type, params = {}) {
     }
     try {
       const responseBody = await r.json();
+      let backendVersion = null;
       try {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);
 
         const servV = r.headers.get('ets-frontend-version');
         const currV = process.env.VERSION;
+        backendVersion = r.headers.get('ets-backend-Version');
+
         if (servV && ((servV.split('.')[3] > +currV.split('.')[3]) || (servV.split('.')[2] > +currV.split('.')[2]))) {
           global.NOTIFICATION_SYSTEM.notifyWithObject({
             title: 'Вышла новая версия',
@@ -131,7 +134,7 @@ function httpMethod(url, data = {}, method, type, params = {}) {
         return new Promise((res, rej) => rej());
       }
       checkOnAdminInfo({ ...responseBody });
-      return new Promise(res => res(responseBody));
+      return new Promise(res => res({ ...responseBody, __other_data: { backendVersion } }));
     } catch (e) {
       console.error('Неверный формат ответа с сервера', url);
       return new Promise((res, rej) => rej());

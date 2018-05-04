@@ -13,10 +13,9 @@ import Div from 'components/ui/Div.jsx';
 import config from 'config';
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
-
 import getRouters from 'components/indexRoute.jsx';
+import { connectToStores, FluxContext } from 'utils/decorators';
 
-import { FluxContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NotificationBage from 'components/notifications/NotificationBadge.tsx';
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
@@ -52,6 +51,7 @@ const styleNotificationInfo = {
   flexDirection: 'row-reverse',
 };
 
+@connectToStores(['session'])
 @FluxContext
 class MainApp extends React.Component {
 
@@ -209,6 +209,7 @@ class MainApp extends React.Component {
         company_name,
       },
     } = this.state;
+    const { backendVersion } = this.props;
 
     return (
       <div className="app">
@@ -242,7 +243,7 @@ class MainApp extends React.Component {
           </Col>
           <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>
-              {VERSION_DESCRIPTION}
+              {`${VERSION_DESCRIPTION} ${(process.env.STAND !== 'prod' && backendVersion) ? `(${backendVersion})` : ''}`}
             </span>
           </Col>
         </div>

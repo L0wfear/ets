@@ -303,20 +303,15 @@ export class MissionForm extends Form {
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
-    let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
-      STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
-      STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
-      STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
-
+    const structureValue = state.structure_id || _.find(STRUCTURES, [0].value);
 
     const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
@@ -358,7 +353,7 @@ export class MissionForm extends Form {
                 clearable={false}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+            {STRUCTURES.length > 0 && <Col md={3}>
               <Field
                 id="m-structure-id"
                 type="select"
@@ -369,7 +364,7 @@ export class MissionForm extends Form {
                 options={STRUCTURES}
                 emptyValue={null}
                 placeholder={''}
-                value={state.structure_id}
+                value={structureValue}
                 onChange={this.handleStructureIdChange}
               />
             </Col>}

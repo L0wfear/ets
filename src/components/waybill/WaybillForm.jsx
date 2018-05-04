@@ -293,6 +293,8 @@ class WaybillForm extends Form {
       return;
     }
 
+    const { formState: oldFormState } = this.props;
+
     this.context.flux.getActions('missions').getMissionsByCarAndDates(
       car_id,
       status === 'active' ? formState.fact_departure_date : formState.plan_departure_date,
@@ -303,14 +305,22 @@ class WaybillForm extends Form {
       const availableMissions = missionsList.map(el => el.id);
       let { notAvailableMissions = [] } = this.state;
 
-      notAvailableMissions = notAvailableMissions
-        .concat(currentMissions
-          .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
-          .map(id => oldMissionsList.find(el => el.id === id))
-        )
-        .filter(m => m);
-      this.setState({ missionsList, notAvailableMissions });
+      let newMissionIdList = formState.mission_id_list;
 
+      if (formState.car_id !== oldFormState.car_id) {
+        newMissionIdList = [];
+      } else {
+        notAvailableMissions = notAvailableMissions
+          .concat(currentMissions
+            .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
+            .map(id => oldMissionsList.find(el => el.id === id))
+          )
+          .filter(m => m);
+      }
+
+      this.handleChange('mission_id_list', newMissionIdList);
+
+      this.setState({ missionsList, notAvailableMissions });
       availableMissions.length > 0 && notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
   }

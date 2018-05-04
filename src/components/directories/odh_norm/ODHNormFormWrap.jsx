@@ -13,6 +13,7 @@ export default class ODHNormFormWrap extends FormWrap {
     super(props);
 
     this.schema = schema;
+    this.preventDefaultNotification = true;
     this.createAction = context.flux.getActions('odh').createODHNorm;
     this.updateAction = context.flux.getActions('odh').updateODHNorm;
   }

@@ -19,7 +19,7 @@ const DeltaTableHeader: React.SFC<IPropsDeltaTableHeader> = ({ tooltip, name }) 
       <OverlayTrigger
         trigger={['hover', 'focus']}
         overlay={popover}
-        placement="top"
+        placement="left"
       >
         <Glyphicon
           glyph="info-sign"

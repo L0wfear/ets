@@ -3259,6 +3259,14 @@ div.none {
   justify-content: space-between;
 }
 
-.marginTop10 {
+.checkbox-print-with-filter {
   margin-top: 10px;
+  cursor: pointer;
+  &>div {
+    display: flex;
+
+    &>span {
+      margin: 0 4px;
+    }
+  }
 }

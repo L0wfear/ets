@@ -243,10 +243,10 @@ class MissionInfoForm extends Form {
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
             <ul className="listStyleTypeNone" >
-              <li className="colorRed"><b>Пройдено с рабочей скоростью:&nbsp;</b>
+              <li className="colorGreen"><b>Пройдено с рабочей скоростью:&nbsp;</b>
                 {getDataTraveledYet([...traveled_rawAndCheck_unit, report_data.time_work_speed])}
               </li>
-              <li className="colorGreen"><b>Пройдено с превышением рабочей скорости:&nbsp;</b>
+              <li className="colorRed"><b>Пройдено с превышением рабочей скорости:&nbsp;</b>
                 {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
               </li>
               <li><b>Общее время стоянок: </b>

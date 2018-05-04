@@ -88,7 +88,12 @@ class App extends React.Component <any, any> {
       return this.setState({ loading: false });
     }
     return AuthCheckService.get()
-          .then(() => flux.getActions('objects').getConfig())
+          .then((ans) => {
+            const { __other_data: { backendVersion } } = ans;
+            flux.getActions('session').setBackendVersion(backendVersion);
+
+            return flux.getActions('objects').getConfig();
+          })
           .then(() => {
             this.setState({ loading: false });
           })

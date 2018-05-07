@@ -280,7 +280,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   async mapView(id) {
     const { result, warnings = false } = await this.context.flux.getActions('missions').getMissionData(id);
-    if (warnings) {
+    if (warnings && warnings.length > 0) {
       global.NOTIFICATION_SYSTEM.notify(warnings[0], 'error');
     } else {
       this.setState({ mission: result, showMissionInfoForm: true });

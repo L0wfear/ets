@@ -308,7 +308,7 @@ class WaybillForm extends Form {
       let newMissionIdList = formState.mission_id_list;
 
       if (formState.car_id !== oldFormState.car_id) {
-        newMissionIdList = [];
+        newMissionIdList = currentMissions.filter(el => availableMissions.includes(el));
       } else {
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions

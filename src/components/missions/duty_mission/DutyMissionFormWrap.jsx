@@ -25,6 +25,55 @@ class DutyMissionFormWrap extends FormWrap {
     this.defaultElement = getDefaultDutyMission();
     this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
   }
+  componentWillReceiveProps(props) {
+    if (props.showForm && (props.showForm !== this.props.showForm)) {
+      const mission = props.element === null ? getDefaultDutyMission() : clone(props.element);
+      const ordersActions = this.context.flux.getActions('objects');
+
+      const {
+       order_id,
+       faxogramm_id,
+      } = mission;
+
+      const id = faxogramm_id || order_id;
+      if (id) {
+        ordersActions.getOrderById(id).then(({ result: [order] }) => {
+          const formErrors = this.validate(mission, {}, { order });
+
+          this.setState({
+            canSave: !filter(formErrors).length,
+            formErrors,
+            order,
+          });
+        });
+      }
+
+      if (props.fromOrder) {
+        const { order } = props;
+
+        const formErrors = this.validate(mission, {}, { order });
+        this.setState({
+          formState: mission,
+          canSave: !filter(formErrors).length,
+          formErrors,
+          order,
+        });
+      } else {
+        const formErrors = this.validate(mission, {});
+
+        this.setState({
+          formState: mission,
+          canSave: !filter(formErrors).length,
+          formErrors,
+        });
+      }
+    }
+    if (!props.showForm && (props.showForm !== this.props.showForm)) {
+      this.setState({
+        order: {},
+      });
+    }
+  }
 
   handleFormPrint = async () => {
     const mission = cloneDeep(this.state.formState);

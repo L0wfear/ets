@@ -25,14 +25,8 @@ export const dateTimeFormatter = withHandlers({
 });
 
 export const multiSelectFormatter = withHandlers({
-  onChange: ({ onChange, delimiter = ',', integer = false }) => (eventValue = '') => {
-    if (eventValue === '') {
-      onChange([]);
-      return;
-    }
-
+  onChange: ({ onChange, delimiter = ',', integer = false }) => (eventValue = []) => {
     const itemList = eventValue
-      .split(delimiter)
       .map(item => integer ? parseInt(item, 10) : item);
     onChange(itemList);
   },

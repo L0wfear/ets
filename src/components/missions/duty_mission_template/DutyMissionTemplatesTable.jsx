@@ -78,7 +78,7 @@ export const getTableMeta = ({
         name: 'structure_id',
         displayName: 'Подразделение',
         cssClassName: 'width80',
-        type: 'string',
+        type: 'number',
         filter: {
           type: 'multiselect',
           options: structures.filter(({ id }) => structure_id_list.includes(id)).map(({ id, name }) => ({ value: id, label: name })),
@@ -111,6 +111,7 @@ const DataTable = props => (
     initialSort={'number'}
     initialSortAscending={false}
     {...props}
+    multiSelection={true}
   />
 );
 

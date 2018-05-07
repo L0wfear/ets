@@ -45,7 +45,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end = getToday859am(),
       geozone_type = 'odh',
       element_type = 'roadway',
-      car_func_types_groups = '',
+      car_func_types_groups = 'pm,pu',
     } = this.props;
 
     return {
@@ -68,6 +68,15 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange('geozone_type', value);
+  }
+  handleChangeElement = (field, value) => {
+    const { element_type } = this.props;
+
+    if (value === 'roadway' && value !== element_type) {
+      this.props.handleChange('car_func_types_groups', 'pm,pu');
+    }
+
+    this.props.handleChange(field, value);
   }
   handleSubmit = () => {
     const {
@@ -118,13 +127,15 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-
     const season = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
-    const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season]);
+    const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season], {});
+    const CAR_TYPES =  Object.keys(carTypes).reduce((newArr, t) => {
+      if (element_type !== 'roadway' || t !== 'tu') {
+        newArr.push({ value: `${t}`, label: carTypes[t] });
+      }
 
-    const CAR_TYPES = carTypes
-      ? Object.keys(carTypes).map(t => ({ value: `${t}`, label: carTypes[t] }))
-      : [];
+      return newArr;
+    }, []);
 
     const isDtGeozone = geozone_type === 'dt';
 
@@ -148,7 +159,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               options={GEOZONE_ELEMENTS[geozone_type]}
               disabled={isDtGeozone || readOnly}
               value={element_type}
-              onChange={this.props.handleChange}
+              onChange={this.handleChangeElement}
               bindOnChange={'element_type'}
               clearable={false}
             />

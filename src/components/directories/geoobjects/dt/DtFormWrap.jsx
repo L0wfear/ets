@@ -7,8 +7,7 @@ export default class DtFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
-
-    this.updateAction = context.flux.getActions('geoObjects').updateDT;
+    this.updateAction = formState => context.flux.getActions('geoObjects').updateDT(formState).then(() => this.context.flux.getActions('geoObjects').getGeozoneByType('dt'));
   }
 
   render() {

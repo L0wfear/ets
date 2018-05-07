@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 
 const seasonsList = [{ id: 1, name: 'Лето' }, { id: 2, name: 'Зима' }, { id: 3, name: 'Всесезон' }];
+const boundKeysObj = {
+  check_types: ['check_types'],
+};
 
 @connectToStores(['objects', 'employees', 'missions', 'routes'])
 export default class TechnicalOperationForm extends Form {
@@ -110,15 +113,16 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
+            <Col md={2} hidden>
               <Field type="select" label="C участием РКУ"
                 options={NEEDS_BRIGADE_OPTIONS}
                 value={+state.needs_brigade}
                 onChange={this.handleChange.bind(this, 'needs_brigade')}
                 disabled={!isPermitted}
+                hidden
               />
             </Col>
-            <Col md={2}>
+            <Col md={4} mdOffset={-2}>
               <Field type="number" label="Максимальная скорость"
                 value={state.max_speed}
                 onChange={this.handleChange.bind(this, 'max_speed')}
@@ -128,11 +132,15 @@ export default class TechnicalOperationForm extends Form {
             </Col>
 
             <Col md={3}>
-              <Field type="select" label="Тип проверки"
+              <ExtField
+                label="Тип проверки"
+                type="select"
+                multi
                 options={TECHNICAL_OPERATION_TYPES}
-                value={state.check_type}
+                value={state.check_types}
                 clearable={false}
-                onChange={this.handleChange.bind(this, 'check_type')}
+                onChange={this.handleChange}
+                boundKeys={boundKeysObj.check_types}
                 disabled={!isPermitted}
               />
             </Col>
@@ -150,7 +158,7 @@ export default class TechnicalOperationForm extends Form {
             <Col md={3} className="vehicle-types-container">
               <Field type="select" label="Типы ТС"
                 multi
-                value={_.uniq(state.car_func_types.map(cft => cft.id)).join(',')}
+                value={_.uniq(state.car_func_types.map(cft => cft.asuods_id)).join(',')}
                 options={CAR_TYPES}
                 onChange={this.handleCarFuncTypesChange}
                 disabled={!isPermitted}

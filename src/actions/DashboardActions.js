@@ -40,6 +40,13 @@ const external_applications = { // мок
   },
 };
 
+const getKeyBackEndByFrontEnd = (key) => {
+  switch (key) {
+    case 'current_duty_missions': return 'current_duty_missions_new';
+    default: return key;
+  }
+};
+
 export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};
@@ -57,8 +64,9 @@ export default class DashboardActions extends Actions {
     if (key === 'external_applications') {
       return ({ component: external_applications, key });
     }
+
     return DashboardService
-      .path(key)
+      .path(getKeyBackEndByFrontEnd(key))
       .get(payload)
       .then(component => ({ component, key }));
   }

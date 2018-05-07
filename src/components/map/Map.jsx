@@ -143,7 +143,7 @@ export default class OpenLayersMap extends Component {
     const selectedCarChanged = !_.isEqual(this.props.selected, nextProps.selected);
 
     if (selectedCarChanged && nextProps.selected !== null) {
-      const clickedMarker = this.getSelectedCar(swapCoords(nextProps.selected.coords_msk));
+      const clickedMarker = this.getSelectedCarByGpsNumber(nextProps.selected.id);
       if (clickedMarker) {
         this.handleCarSelect(clickedMarker);
       }
@@ -183,7 +183,7 @@ export default class OpenLayersMap extends Component {
     for (const key in markers) {
       const marker = markers[key];
 
-      if (marker.contains(coordinate)) {
+      if (marker.contains(coordinate) && marker.isVisible()) {
         changeCursor = true;
         break;
       }
@@ -226,18 +226,19 @@ export default class OpenLayersMap extends Component {
     // прячем попап трэка
     this.hidePopup('popupCar');
   }
+
+  getSelectedCarByGpsNumber(id) {
+    return Object.values(this.markers).find(marker => marker.point.id === id) || null;
+  }
   getSelectedCar(coordinate) {
     // по какому маркеру кликнули?
-    const markers = this.viewportVisibleMarkers;
-    for (const key in markers) {
-      const marker = markers[key];
-
-      if (marker.contains(coordinate)) {
-        return marker;
+    return Object.values(this.markers).find((marker) => {
+      if (marker.contains(coordinate) && marker.isVisible()) {
+        return true;
       }
-    }
 
-    return null;
+      return false;
+    }) || null;
   }
   onClick(ev) {
     // проверка - активна ли линейка

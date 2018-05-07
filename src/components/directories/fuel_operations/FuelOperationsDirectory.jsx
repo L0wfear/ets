@@ -23,6 +23,6 @@ export default class FuelOperationsDirectory extends ElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
-    flux.getActions('fuelRates').getFuelOperations();
+    flux.getActions('fuelRates').getFuelOperations({ is_active: true });
   }
 }

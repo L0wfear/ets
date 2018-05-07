@@ -66,16 +66,19 @@ export default class MissionsJournal extends CheckableElementsList {
   async componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
+    const linear = true;
+    const outerPayload = {
+      start_date: new Date(),
+      end_date: new Date(),
+    };
+
+    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('objects').getCars();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions');
-    const outerPayload = {
-      start_date: new Date(),
-      end_date: new Date(),
-    };
-    this.context.flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -149,27 +152,23 @@ export default class MissionsJournal extends CheckableElementsList {
     const countCheckEl = checkElList.length;
 
     if (countCheckEl !== 0) {
-      const elList = Array(countCheckEl).fill(false);
-
-      checkElList.forEach((mission, i) => {
+      const queries = checkElList.map((mission, i) => {
         const updatedMission = _.cloneDeep(mission);
         updatedMission.status = 'complete';
 
-        this.context.flux.getActions('missions').updateMission(updatedMission, false).then(() => {
-          elList[i] = true;
-          if (!elList.some(elD => !elD)) {
-            this.refreshList();
-            global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
-          }
+        return this.context.flux.getActions('missions').updateMission(updatedMission, false);
+      });
+
+      Promise.all(queries)
+        .then(() => {
+          this.refreshList();
+          global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
         })
         .catch(() => {
-          elList[i] = true;
-          if (!elList.some(elD => !elD)) {
-            this.refreshList();
-            global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
-          }
+          this.refreshList();
+          global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
         });
-      });
+
       this.setState({
         checkedElements: {},
         selectedElement: null,
@@ -357,12 +356,12 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
     const changeFilter = filter => this.setState({ filter });
+
     return {
       mapView: this.mapView,
-      structures,
+      structures: this.props.companyStructureLinearList,
       changeSort,
       changeFilter,
       filterValues: this.state.filter,

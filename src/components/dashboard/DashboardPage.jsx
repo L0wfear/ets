@@ -56,6 +56,7 @@ export default class DashboardPage extends React.Component {
   init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozones();
+    flux.getActions('objects').getCars();
     const actions = flux.getActions('dashboard');
     const components = flux.getStore('dashboard').getComponentsByPermissionsAll();
     this.componentsInterval = {};
@@ -90,9 +91,9 @@ export default class DashboardPage extends React.Component {
       loadingComponents.push(key);
     }
     this.setState({ loadingComponents });
-    this.context.flux.getActions('dashboard').getDashboardComponent(key).then(({ key: dashboardKey }) => {
+    this.context.flux.getActions('dashboard').getDashboardComponent(key).then((result) => {
       const { loadingComponents: dashboardLoadingComponents } = this.state;
-      dashboardLoadingComponents.splice(dashboardLoadingComponents.indexOf(dashboardKey), 1);
+      dashboardLoadingComponents.splice(dashboardLoadingComponents.indexOf(result.key), 1);
       setTimeout(() => this.setState({ dashboardLoadingComponents }), 500);
     }).catch(() => {
     });
@@ -131,7 +132,11 @@ export default class DashboardPage extends React.Component {
               <Col key={j} md={4} className={cardClassname}>
                 <DashboardCard
                   title={c.title}
-                  items={c.items}
+                  title_centralized={c.title_centralized}
+                  title_decentralized={c.title_decentralized}
+                  items={c.items || []}
+                  items_centralized={c.items_centralized}
+                  items_decentralized={c.items_decentralized}
                   meta={c.meta}
                   dashboardKey={c.key}
                   itemsTitle={c.itemsTitle}

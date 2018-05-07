@@ -29,7 +29,7 @@ export default function exportable(options) {
       }
 
       exportFunction(payload = {}, useRouteParams) {
-        const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
+        const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
         let id = '';
         if (useRouteParams) {
           id = this.props.routeParams.id;

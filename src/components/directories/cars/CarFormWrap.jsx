@@ -1,5 +1,4 @@
 import React from 'react';
-import * as queryString from 'query-string';
 
 import { unpackObjectData } from 'api/utils';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
@@ -40,18 +39,16 @@ class CarFormWrap extends FormWrap {
     }
   }
   handleFormHide = () => {
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
-
-    const searchObject = queryString.parse(search);
-
-    if (Object.keys(searchObject).length > 0) {
+    if (this.props.location.search) {
       this.props.history.push(this.props.match.url);
     }
     this.props.onFormHide();
+  }
+  handleFormSubmit = async () => {
+    if (this.props.location.search) {
+      this.props.history.push(this.props.match.url);
+    }
+    return await super.handleFormSubmit();
   }
   render() {
     const { entity, isPermitted = false } = this.props;
@@ -71,7 +68,6 @@ class CarFormWrap extends FormWrap {
         {...this.state}
         canSave={canSave}
         location={this.props.location}
-        history={this.props.history}
       />
       :
       null;

@@ -35,7 +35,7 @@ export class DutyMissionForm extends React.Component {
     allQuery.push(query);
 
     if (indexCurrMission === 0) {
-      this.props.onRejectAll(allQuery, needUpdate);
+      this.props.onRejectAll(allQuery, true);
     } else {
       this.setState({
         allQuery,

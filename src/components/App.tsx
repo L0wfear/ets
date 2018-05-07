@@ -14,8 +14,8 @@ import LoadingPage from './LoadingPage.jsx';
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
-global.SESSION_KEY = `ets-session-${process.env.STAND}`;
-global.CURRENT_USER = `current-user-${process.env.STAND}`;
+global.SESSION_KEY2 = `ets-session-${process.env.STAND}2`;
+global.CURRENT_USER2 = `current-user-${process.env.STAND}2`;
 global.NOTIFICATION_READ_ARR = `notification-read-arr-${process.env.STAND}2`;
 
 const getLoginPage = props => {
@@ -88,7 +88,12 @@ class App extends React.Component <any, any> {
       return this.setState({ loading: false });
     }
     return AuthCheckService.get()
-          .then(() => flux.getActions('objects').getConfig())
+          .then((ans) => {
+            const { __other_data: { backendVersion } } = ans;
+            flux.getActions('session').setBackendVersion(backendVersion);
+
+            return flux.getActions('objects').getConfig();
+          })
           .then(() => {
             this.setState({ loading: false });
           })

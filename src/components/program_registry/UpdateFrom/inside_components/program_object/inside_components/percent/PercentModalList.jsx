@@ -62,6 +62,7 @@ export default class PercentModalList extends ElementsList {
       showForm: true,
       selectedElement: {
         object_id,
+        reviewed_at: new Date(),
       },
     });
   }

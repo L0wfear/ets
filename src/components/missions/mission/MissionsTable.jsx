@@ -38,7 +38,15 @@ const getTableMeta = (props) => {
         cssClassName: 'width60',
       },
       {
-        name: 'mission_source_id',
+        name: 'current_percentage',
+        displayName: 'Процент выполнения задания (%)',
+        type: 'number',
+        sortable: false,
+        filter: false,
+        cssClassName: 'width120',
+      },
+      {
+        name: 'mission_source_name',
         displayName: 'Источник',
         type: 'number',
         filter: {
@@ -102,15 +110,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'current_percentage',
-        displayName: 'Процент выполнения задания (%)',
-        type: 'number',
-        sortable: false,
-        filter: false,
-        cssClassName: 'width120',
-      },
-      {
-        name: 'technical_operation_id',
+        name: 'technical_operation_name',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {

@@ -8,10 +8,6 @@ export default class GeoObjectsActions extends Actions {
     return services.ODHService.get();
   }
 
-  getDTs() {
-    return services.DTService.get();
-  }
-
   updateODH(formState) {
     const payload = {
       id: formState.id,
@@ -26,7 +22,7 @@ export default class GeoObjectsActions extends Actions {
       dt_id: formState.dt_id,
       company_structure_id: formState.company_structure_id || null,
     };
-    return services.DTService.put(payload, null, 'json');
+    return services.DTService.put(payload, false, 'json');
   }
 
   async getGeozones() {

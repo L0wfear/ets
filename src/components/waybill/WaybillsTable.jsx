@@ -4,10 +4,9 @@ import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { get, find } from 'lodash';
+import { missionsStatusBySlag } from 'components/waybill/constant/table.ts';
 
-function waybillMissionsCompleteStatusLabelFunction(status) {
-  return status === true ? 'Все задания завершены' : 'Есть незавершенные задания';
-}
+const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
 
 export const getTableMeta = ({
   employeeFIOLabelFunction = () => {},
@@ -37,15 +36,12 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'all_missions_completed_or_failed',
+        name: 'all_missions_status',
         displayName: 'Статус заданий',
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [
-            { label: 'Все задания завершены', value: 'true' },
-            { label: 'Есть незавершенные задания', value: 'false' },
-          ],
+          options: ALL_MISSIONS_STATUS_OPTIONS,
         },
       },
       {
@@ -306,10 +302,10 @@ export default (props) => {
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
-    all_missions_completed_or_failed: ({ data }) => <div>{waybillMissionsCompleteStatusLabelFunction(data)}</div>,
-    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    all_missions_status: ({ data }) => <div>{get(missionsStatusBySlag, data, '')}</div>,
+    structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name', '')}</div>,
     comment: ({ data }) => <div>{data ? data.split('\n').map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>) : data}</div>,
-    car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
+    car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '')}</div>,
   };
 
   const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);

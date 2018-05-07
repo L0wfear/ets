@@ -55,7 +55,7 @@ class RouteCreating extends Component {
     let { object_list = [] } = this.props.route;
     const { polys = {} } = this.props.route;
     const { geozonePolys = {} } = this.props;
-    const odhs = (v || '').split(',');
+    const odhs = v;
 
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);

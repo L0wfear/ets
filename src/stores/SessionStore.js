@@ -51,14 +51,15 @@ export default class SessionStore extends Store {
     const sessionActions = flux.getActions('session');
     this.register(sessionActions.login, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
+    this.register(sessionActions.setBackendVersion, this.handleSetBackendVersion)
 
 
     let storedSession;
     let currentUser;
 
     try {
-      storedSession = JSON.parse(localStorage.getItem(global.SESSION_KEY));
-      currentUser = JSON.parse(localStorage.getItem(global.CURRENT_USER));
+      storedSession = JSON.parse(localStorage.getItem(global.SESSION_KEY2));
+      currentUser = JSON.parse(localStorage.getItem(global.CURRENT_USER2));
     } catch (e) {
       storedSession = null;
       currentUser = defaultUser;
@@ -73,7 +74,11 @@ export default class SessionStore extends Store {
       isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       session: storedSession,
       userPermissions: currentUser.permissions,
+      backendVersion: null,
     };
+  }
+  handleSetBackendVersion(backendVersion) {
+    this.setState({ backendVersion });
   }
 // TODO
   handleLogin(data) {
@@ -102,8 +107,8 @@ export default class SessionStore extends Store {
     }, {});
     currentUser.stableRedirect = routeVal.path;
 
-    localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
-    localStorage.setItem(global.CURRENT_USER, JSON.stringify(currentUser));
+    localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
+    localStorage.setItem(global.CURRENT_USER2, JSON.stringify(currentUser));
     this.flux.getStore('dashboard').resetState();
     this.flux.getStore('reports').resetState();
     setUserContext(currentUser);
@@ -123,8 +128,8 @@ export default class SessionStore extends Store {
   }
 
   handleLogout(message) {
-    localStorage.removeItem(global.SESSION_KEY);
-    localStorage.removeItem(global.CURRENT_USER);
+    localStorage.removeItem(global.SESSION_KEY2);
+    localStorage.removeItem(global.CURRENT_USER2);
     localStorage.removeItem(global.ERROR_GO_TO_ETS2);
     localStorage.removeItem(global.ERROR_IN_COD);
     localStorage.removeItem(global.NOTIFICATION_READ_ARR);

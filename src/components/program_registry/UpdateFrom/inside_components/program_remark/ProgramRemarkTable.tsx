@@ -55,16 +55,16 @@ export function tableMeta({
   return meta;
 }
 
-const checkPermittedTable = (status, length, iСustomer, iNotСustomer) => {
+const checkPermittedTable = (status, length, isСustomer, isSupervisor) => {
   if (status === 'draft') {
     return false;
   }
 
-  if (iСustomer && (length > 0 || status === 'rejected')) {
+  if (isСustomer && (length > 0 || status === 'rejected')) {
     return true;
   }
 
-  if (iNotСustomer && (length > 0  || status === 'sent_on_review' || status === 'closed')) {
+  if (isSupervisor && (length > 0  || status === 'sent_on_review' || status === 'closed')) {
     return true;
   }
 
@@ -77,7 +77,7 @@ const renderers: ISchemaRenderer = {
 };
 
 const Table: React.SFC<any> = props  => {
-  const showTable = checkPermittedTable(props.program_version_status, props.data.length, props.iСustomer, props.iNotСustomer);
+  const showTable = checkPermittedTable(props.program_version_status, props.data.length, props.isСustomer, props.isSupervisor);
 
   return showTable ?
     <DataTable

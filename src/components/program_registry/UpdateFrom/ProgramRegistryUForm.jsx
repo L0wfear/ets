@@ -50,12 +50,12 @@ export default class ProgramRegistryForm extends Form {
       entity,
     } = props;
 
-    const iNotСustomer = context.flux.getStore('session').getPermission(`${entity}.review`);
-    const iСustomer = context.flux.getStore('session').getPermission(`${entity}.create`);
+    const isSupervisor = context.flux.getStore('session').getPermission(`${entity}.review`);
+    const isСustomer = context.flux.getStore('session').getPermission(`${entity}.create`);
 
     this.state = {
-      iNotСustomer,
-      iСustomer,
+      isSupervisor,
+      isСustomer,
       makeVersionIsVisible: false,
       mainButtonEnable: true,
     };
@@ -137,8 +137,8 @@ export default class ProgramRegistryForm extends Form {
     const {
       makeVersionIsVisible = false,
       mainButtonEnable = true,
-      iNotСustomer,
-      iСustomer,
+      isSupervisor,
+      isСustomer,
     } = this.state;
 
     const {
@@ -361,8 +361,8 @@ export default class ProgramRegistryForm extends Form {
                     isPermittedByStatus={isPermittedByStatus}
                   />
                   <ProgramRemarkList
-                    iNotСustomer={iNotСustomer}
-                    iСustomer={iСustomer}
+                    isSupervisor={isSupervisor}
+                    isСustomer={isСustomer}
                     program_version_id={state.id}
                     program_version_status={state.status}
                     isPermittedByStatus={isPermittedByStatus}

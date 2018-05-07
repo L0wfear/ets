@@ -26,7 +26,7 @@ const RegisterInfoTab: React.SFC<IPropsRegisterInfoTab> = props =>
     <Row>
       <Col md={6}>
         <Field
-          type="number"
+          type="string"
           label="Номер свидетельства о регистрации"
           value={props.state.register_certificate_number}
           onChange={props.onChange}

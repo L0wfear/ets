@@ -101,6 +101,22 @@ export function validateTaxesControl(taxes: Array<Array<any>>): boolean {
 }
 
 // хе хе
-export function checkDateMission({ date_start, date_end, dateWaybill: { plan_departure_date, plan_arrival_date } }) {
+export function checkDateMission({ dateTo: { date_start, date_end }, dateWaybill: { plan_departure_date, plan_arrival_date } }) {
   return diffDates(date_end, plan_departure_date) < 0 || diffDates(plan_arrival_date, date_start) < 0;
 }
+
+export const getDatesToByOrderOperationId = (order, order_operation_id) => {
+  const {
+    date_from = '',
+    date_to = '',
+  } = order.technical_operations.find(({ id }) => id === order_operation_id) || {};
+  const date_start = date_from || order.order_date;
+  const date_end = date_to || order.order_date_to;
+
+  return {
+    dateTo: {
+      date_start,
+      date_end,
+    },
+  };
+};

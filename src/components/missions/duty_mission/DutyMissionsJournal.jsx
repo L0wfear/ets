@@ -32,7 +32,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   constructor(props, context) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('missions').removeDutyMission;
+    this.removeElementAction = id => context.flux.getActions('missions').removeDutyMission(id);
+
     this.removeDisabled = () => {
       if (Object.keys(this.state.checkedElements).length !== 0) return false;
       if (this.state.selectedElement === null) {
@@ -64,16 +65,19 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
+    const linear = true;
+    const outerPayload = {
+      start_date: new Date(),
+      end_date: new Date(),
+    };
+
+    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
-    const outerPayload = {
-      start_date: new Date(),
-      end_date: new Date(),
-    };
-    this.context.flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
   }
 
   async refreshList(state = this.state) {
@@ -111,7 +115,26 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     });
   }
 
-  completeCheckedElements() {
+  removeElement = async () => {
+    if (!confirm('Вы уверены, что хотите удалить выбранные элементы?')) return;
+    const mission = _.cloneDeep(this.state.selectedElement);
+    const query = new Promise((res, rej) => {
+      if (mission.status === 'not_assigned') {
+        return this.removeElementAction(mission.id).then(() => res());
+      }
+      return rej();
+    });
+
+    query.then(() => {
+      this.refreshList(this.state);
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
+    }).catch(() => global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!')));
+  }
+
+  completeCheckedElements = async () => {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
 
@@ -140,7 +163,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
-  rejectCheckedElements() {
+  rejectCheckedElements = async () => {
     if (Object.keys(this.state.checkedElements).length !== 0) {
       let hasNotAssigned = false;
 
@@ -162,6 +185,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       if (hasNotAssigned) {
         global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
       }
+
+      this.refreshList(this.state);
+      this.setState({ checkedElements: {} });
     } else {
       const mission = this.state.selectedElement;
       if (mission.status === 'assigned') {
@@ -268,15 +294,13 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
-
     const changeSort = (field, direction) =>
       this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
 
     const changeFilter = filter => this.setState({ filter });
 
     return {
-      structures,
+      structures: this.props.companyStructureLinearList,
       changeSort,
       changeFilter,
       filterValues: this.state.filter,

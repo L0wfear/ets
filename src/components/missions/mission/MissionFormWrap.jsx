@@ -1,17 +1,14 @@
 import React from 'react';
 import {
   clone,
-  each,
   isEmpty,
   filter,
 } from 'lodash';
-import moment from 'moment';
 import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { validateField } from 'utils/validate/validateField.js';
 import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates, setZeroSecondsToDate } from 'utils/dates.js';
 import { missionSchema } from 'models/MissionModel.js';
 import MissionForm from './MissionForm.jsx';
 import MissionFormOld from './MissionFormOld.jsx';
@@ -131,12 +128,16 @@ export default class MissionFormWrap extends FormWrap {
       inWaybill = othInWaybill,
       order = othOrder,
     } = this.state;
+    const date_start = setZeroSecondsToDate(formState.date_start);
+    const date_end = setZeroSecondsToDate(formState.date_end);
+    const waybillStartDate = setZeroSecondsToDate(this.props.waybillStartDate);
+    const waybillEndDate = setZeroSecondsToDate(this.props.waybillEndDate);
 
-    if (this.props.fromWaybill && (this.props.waybillStartDate || this.props.waybillEndDate)) {
-      if (diffDates(formState.date_start, this.props.waybillStartDate) < 0) {
+    if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
+      if (diffDates(date_start, waybillStartDate) < -1) {
         formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
       }
-      if (diffDates(formState.date_end, this.props.waybillEndDate) > 0) {
+      if (diffDates(date_end, waybillEndDate) > 1) {
         formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
       }
     }

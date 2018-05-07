@@ -28,7 +28,7 @@ function StringField(props) {
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
-        <label className="control-label"><span>{label}</span></label>
+        {label && <label className="control-label"><span>{label}</span></label>}
         <FormControl type="text" disabled={disabled} className={inputClassName} {...props} />
       </div>
       <Div hidden={!error} className="error">{error}</Div>

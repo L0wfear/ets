@@ -106,6 +106,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getForms() {
     const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
+    const { carsIndex = {} } = this.props;
 
     return [
       <MissionTemplateFormWrap
@@ -115,11 +116,17 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={missions}
+        _carsIndex={carsIndex}
       />,
     ];
   }
 
-  canCreateMission = () => this.state.selectedElement !== null && this.state.selectedElement.kind_task_ids.includes(3);
+  canCreateMission = () => {
+    const { checkedElements = {} } = this.state;
+    const missions = Object.values(checkedElements);
+
+    return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
+  }
 
   getButtons() {
     const buttons = super.getButtons();

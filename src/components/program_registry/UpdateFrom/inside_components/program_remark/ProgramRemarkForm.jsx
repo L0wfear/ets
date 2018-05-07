@@ -21,52 +21,65 @@ export default class SparePartForm extends Form {
     const {
       isPermitted = false,
       program_version_status,
-      iNotСustomer,
-      iСustomer,
+      isSupervisor,
+      isСustomer,
     } = this.props;
 
-    const statusIsChanged = state.status ? state.status !== 'created' : false;
 
-    return (
-      <Modal {...this.props} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{'Создание замечания'}</Modal.Title>
-        </Modal.Header>
-        <Div style={{ padding: 15 }}>
-          <Row>
-            <Col md={12}>
-              <ExtField
-                type="text"
-                label="Замечание"
-                value={state.remark}
-                error={errors.remark}
-                onChange={this.handleChange}
-                boundKeys={['remark']}
-                disabled={!isPermitted || statusIsChanged || iСustomer || program_version_status !== 'sent_on_review'}
-              />
-            </Col>
-            <Div hidden={iNotСustomer || program_version_status !== 'rejected'}>
-              <Col md={12}>
-                <ExtField
-                  type="text"
-                  label="Комментарий"
-                  value={state.comment}
-                  error={errors.comment}
-                  onChange={this.handleChange}
-                  boundKeys={['comment']}
-                  disabled={!isPermitted || statusIsChanged || iNotСustomer}
-                />
-              </Col>
-            </Div>
-          </Row>
-        </Div>
-        <ModalBody />
-        <Modal.Footer>
-          <Div hidden={iСustomer && (iNotСustomer || program_version_status !== 'rejected')}>
-            <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+    const IS_CREATING = !state.id;
+    const title = IS_CREATING ? 'Создание замечания' : 'Изменение замечания';
+
+    const allowCreateRemark = isSupervisor && program_version_status === 'sent_on_review';
+    const allowChangeRemark = isPermitted && program_version_status === 'sent_on_review' && state.status === 'created';
+
+    const allowCreateComment = isСustomer && program_version_status === 'rejected';
+    const allowChangeComment = isPermitted && program_version_status === 'rejected' && state.status === 'created';
+
+    if (allowCreateRemark || allowCreateComment) {
+      return (
+        <Modal {...this.props} backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          </Modal.Header>
+          <Div style={{ padding: 15 }}>
+            <Row>
+              <Div hidden={!allowCreateRemark}>
+                <Col md={12}>
+                  <ExtField
+                    type="text"
+                    label="Замечание"
+                    value={state.remark}
+                    error={errors.remark}
+                    onChange={this.handleChange}
+                    boundKeys={['remark']}
+                    disabled={!(IS_CREATING || allowChangeRemark)}
+                  />
+                </Col>
+              </Div>
+              <Div hidden={!allowCreateComment}>
+                <Col md={12}>
+                  <ExtField
+                    type="text"
+                    label="Комментарий"
+                    value={state.comment}
+                    error={errors.comment}
+                    onChange={this.handleChange}
+                    boundKeys={['comment']}
+                    disabled={!(IS_CREATING || allowChangeComment)}
+                  />
+                </Col>
+              </Div>
+            </Row>
           </Div>
-        </Modal.Footer>
-      </Modal>
-    );
+          <ModalBody />
+          <Modal.Footer>
+            <Div hidden={!(IS_CREATING || allowChangeRemark || allowChangeComment)}>
+              <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+            </Div>
+          </Modal.Footer>
+        </Modal>
+      );
+    }
+    return null;
   }
 }

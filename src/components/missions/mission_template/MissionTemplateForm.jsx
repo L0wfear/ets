@@ -25,6 +25,16 @@ class MissionTemplateForm extends MissionForm {
       ...this.state,
       isTemplate: true,
     };
+
+    this.handleStructureIdChange = this.handleStructureIdChange.bind(this);
+  }
+
+  handleStructureIdChange(v) {
+    try {
+      super.handleStructureIdChange.call(this, v);
+    } catch (error) {
+      console.log('Не корректно выызвается метод родительского класса', error);
+    }
   }
 
   render() {
@@ -125,6 +135,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={12}>
               <InsideField.MunicipalFacility
                 id={'municipal_facility_id'}
+                label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
                 disabled={!!state.route_id}

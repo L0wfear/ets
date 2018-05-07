@@ -55,7 +55,7 @@ export default class Filter extends React.Component {
 
   handleFilterMultipleValueChange(key, v) {
     const filterValues = { ...this.state.filterValues };
-    const data = !isEmpty(v) ? v.split('$') : [];
+    const data = !isEmpty(v) ? v : [];
 
     filterValues[key] = data;
     if (data.length === 0) {

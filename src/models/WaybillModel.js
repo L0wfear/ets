@@ -332,11 +332,7 @@ const closingDependencies = {
   'fact_arrival_date': [
     {
       validator(value, { plan_arrival_date, status }) {
-<<<<<<< HEAD
-        if ((status !== 'active' || status !== 'draft') && moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
-=======
         if ((status !== 'active' && status !== 'draft') && moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
->>>>>>> DITETS-3386
           return '"Возвращение факт." должно быть не позже "Возвращение план."';
         }
 

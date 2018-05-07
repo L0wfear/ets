@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.17.33",
+    "version": "2.0.17.34",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -75,7 +75,7 @@
         "ws": "^0.7.1"
     },
     "devDependencies": {
-        "@types/lodash": "^4.14.64",
+        "@types/lodash": "=4.14.64",
         "@types/node": "^8.0.5",
         "@types/openlayers": "^4.1.1",
         "@types/ramda": "=0.24.0",

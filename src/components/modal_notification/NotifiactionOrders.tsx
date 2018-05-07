@@ -7,8 +7,8 @@ import {
 import { isEmpty } from 'lodash';
 import { connectToStores } from 'utils/decorators';
 import { makeDate } from 'utils/dates';
-import * as toastyMp3 from 'assets/audio/toasty.mp3';
-import * as toastyOgg from 'assets/audio/toasty.ogg';
+import * as orderNotifiyMp3 from 'assets/audio/orderNotifiy.mp3';
+import * as orderNotifiyOgg from 'assets/audio/orderNotifiy.ogg';
 
 import NotificationModal from 'components/modal_notification/NotificationModal';
 
@@ -66,6 +66,7 @@ class NotifiactionOrders extends NotificationModal {
   onHide = () => {
     const { flux } = this.context;
     const { notificationPopupLast = [] } = this.props;
+    this.setState({ hasAudio: false });
 
     flux.getActions('userNotifications').decNotificationsPopup(notificationPopupLast.map(d => d.id));
   }
@@ -99,8 +100,8 @@ class NotifiactionOrders extends NotificationModal {
         {
           this.state.hasAudio && (
           <audio autoPlay>
-            <source src={toastyMp3} type={'audio/mpeg; codecs="mp3"'} />
-            <source src={toastyOgg} type={'audio/mpeg; codecs="ogg"'} />
+            <source src={orderNotifiyMp3} type={'audio/mpeg; codecs="mp3"'} />
+            <source src={orderNotifiyOgg} type={'audio/mpeg; codecs="ogg"'} />
           </audio>
           )
         }

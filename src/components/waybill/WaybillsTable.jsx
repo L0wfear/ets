@@ -74,6 +74,9 @@ export const getTableMeta = ({
         displayName: 'Рег. номер ТС',
         cssClassName: 'width-nowrap',
         type: 'string',
+        sort: {
+          serverFieldName: 'gov_number',
+        },
         filter: {
           type: 'multiselect',
           options: carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),

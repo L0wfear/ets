@@ -38,6 +38,9 @@ export const getTableMeta = ({
         name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',
+        sort: {
+          serverFieldName: 'mission_source_name',
+        },
         filter: {
           type: 'multiselect',
           options: missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
@@ -48,6 +51,9 @@ export const getTableMeta = ({
         name: 'technical_operation_id',
         displayName: 'Технологическая операция',
         type: 'number',
+        sort: {
+          serverFieldName: 'technical_operation_name',
+        },
         filter: {
           type: 'multiselect',
           options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),

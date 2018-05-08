@@ -137,9 +137,10 @@ export const sortFunction = (firstRowData, secondRowData, initialSort) => {
     secondRowData[initialSort],
   ];
 
+  console.log(initialSort)
   const firstIsNumber = !isNaN(Number(first));
   const secondIsNumber = !isNaN(Number(second));
-
+  console.log(first, second)
   // оба числа
   if (firstIsNumber && secondIsNumber) {
     return first - second;

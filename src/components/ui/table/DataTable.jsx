@@ -191,6 +191,7 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort,
       originalData: this.state.originalData,
       data: this.state.data,
+      filterValues: this.state.filterValues,
     };
 
     if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
@@ -201,7 +202,7 @@ export default class DataTable extends React.Component {
     if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
       changesFields.initialSortAscending = props.initialSortAscending;
     }
-    if (props.externalFilter) {
+    if (props.useServerFilter) {
       changesFields.filterValues = props.filterValues;
     }
     if (props.filterResetting) {
@@ -213,7 +214,9 @@ export default class DataTable extends React.Component {
       changesFields.data = props.results;
     }
 
-    changesFields.data = makeData(changesFields.data, this.state, changesFields);
+    if (!props.useServerSort || !props.useServerFilter) {
+      changesFields.data = makeData(changesFields.data, this.state, changesFields);
+    }
 
     this.setState(changesFields);
   }

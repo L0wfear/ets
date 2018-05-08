@@ -91,6 +91,8 @@ const Table: React.SFC<any> = props  => (
     enumerated={false}
     externalFilter={props.changeFilter}
     externalChangeSort={props.changeSort}
+    useServerFilter={true}
+    useServerSort={true}
     initialSort={'create_date'}
     initialSortAscending={false}
     className="order"

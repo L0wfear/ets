@@ -311,6 +311,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       changeFilter,
       filterValues: this.state.filter,
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+      useServerFilter: true,
+      useServerSort: true,
     };
   }
 

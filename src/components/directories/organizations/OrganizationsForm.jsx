@@ -1,10 +1,12 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
+const boundKeysObj = {
+  short_name: ['short_name'],
+};
 
 export default class OrganizationsForm extends Form {
 
@@ -19,21 +21,22 @@ export default class OrganizationsForm extends Form {
           <Modal.Title id="contained-modal-title-lg">Карточка организации</Modal.Title>
         </Modal.Header>
         <ModalBody>
-          <Field
+          <ExtField
             type="string"
             label="Наименование"
             value={state.short_name}
             error={errors.short_name}
-            onChange={e => this.handleChange('short_name', e)}
+            onChange={this.handleChange}
+            boundKeys={boundKeysObj.short_name}
             disabled
           />
-          <Field
-            type="select"
+          <ExtField
+            type={'boolean'}
             label="Наличие дистанционного мед. осмотра"
-            value={state.has_remote_checkup ? 'Да' : 'Нет'}
+            value={state.has_remote_checkup}
             error={errors.has_remote_checkup}
-            options={YES_NO_SELECT_OPTIONS_BOOL}
-            onChange={e => this.handleChange('has_remote_checkup', e)}
+            onChange={this.handleChange}
+            boundKeys={['has_remote_checkup', !state.has_remote_checkup]}
             disabled={!isPermitted}
           />
         </ModalBody>

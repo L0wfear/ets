@@ -26,6 +26,7 @@ export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapte
 /* ТС */
 export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car_actual', {});
 export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter('car_info', {});
+export const Car = ETS_API_FACTORY.createApiServiceAdapter('car');
 
 /* Рабочий стол */
 export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');

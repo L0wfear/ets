@@ -16,7 +16,7 @@ export interface IOneDrawObject {
   begin: ICoorXY;
   distance: number;
   end: ICoorXY;
-  id: number;
+  object_id: number;
   state: number;
 }
 

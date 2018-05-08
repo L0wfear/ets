@@ -16,8 +16,6 @@ class RoutesList extends Component {
 
   static get propTypes() {
     return {
-      location: PropTypes.object,
-      routesList: PropTypes.array,
       technicalOperationsList: PropTypes.array,
       technicalOperationsObjectsList: PropTypes.array,
     };
@@ -32,6 +30,7 @@ class RoutesList extends Component {
 
     this.state = {
       selectedRoute: null,
+      selectedRoute_old: null,
       showForm: false,
       filterValues: {},
       filterModalIsOpen: false,
@@ -61,41 +60,34 @@ class RoutesList extends Component {
     }
   }
 
-  onFormHide = () => {
-    this.refreshRoutes({ showForm: false });
+  onFormHide = (isSubmited, result) => {
+    if (isSubmited === true) {
+      this.refreshRoutes({ showForm: false })
+        .then(() => this.selectRoute(result.createdRoute.result[0].id));
+    } else {
+      this.setState({
+        selectedRoute: this.state.selectedRoute_old,
+        showForm: false,
+      });
+    }
   }
 
   getStructures() {
     return this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
   }
 
-  refreshRoutes = async (withState = null) => {
-    const STRUCTURES = this.getStructures();
+  refreshRoutes = (withState = null) => {
+    return Promise.all([
+      this.context.flux.getActions('routes').getRoutes().then(({ result }) => result),
+      Promise.resolve(this.getStructures()),
+    ])
+    .then(([routesListFromStore, STRUCTURES]) => {
+      const { technicalOperationsList = [] } = this.props;
+      const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
 
-    const { technicalOperationsList = [] } = this.props;
+      this.setState({ ...withState, routesList });
 
-    const routesListFromStore = await this.context.flux.getActions('routes').getRoutes().then(({ result }) => result);
-    const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
-
-    this.setState({ ...withState, routesList });
-  }
-
-  selectedRoute = (selectedRoute) => {
-    const { showId } = this.state;
-
-    const STRUCTURES = this.getStructures();
-    const { technicalOperationsList = [] } = this.props;
-
-    const type = getTypeRoute(selectedRoute.type);
-    const structure_name = STRUCTURES.length > 0 ? (type + _.get(STRUCTURES.find(t => t.value === selectedRoute.structure_id), 'label') || 'Без подразделения') : null;
-    const technical_operation_name = (structure_name || type) + _.get(technicalOperationsList.find(t => t.id === selectedRoute.technical_operation_id), 'name');
-
-    [type, structure_name, technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
-
-    this.setState({
-      showForm: false,
-      selectedRoute,
-      showId,
+      return routesList;
     });
   }
 
@@ -120,9 +112,7 @@ class RoutesList extends Component {
     }
   }
 
-  toggleFilter = () => {
-    this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
-  }
+  toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues);
@@ -130,25 +120,41 @@ class RoutesList extends Component {
   }
 
   selectRoute = (id) => {
-    const { flux } = this.context;
     this.setState({ selectedRoute: null });
-    flux.getActions('routes').getRouteById(id).then((route) => {
-      this.setState({ selectedRoute: route });
+
+    return this.context.flux.getActions('routes').getRouteById(id).then((route) => {
+      const { showId } = this.state;
+
+      const STRUCTURES = this.getStructures();
+      const { technicalOperationsList = [] } = this.props;
+
+      const pathTo_type = getTypeRoute(route.type);
+      const pathTo_structure_name = pathTo_type + ((STRUCTURES.length > 0 && route.structure_id) ? (_.get(STRUCTURES.find(t => t.value === route.structure_id), 'label') || 'Без подразделения') : 'Без подразделения');
+      const pathTo_technical_operation_name = pathTo_structure_name + _.get(technicalOperationsList.find(t => t.id === route.technical_operation_id), 'name');
+
+      [pathTo_type, pathTo_structure_name, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
+
+      this.setState({
+        showForm: false,
+        selectedRoute: route,
+        selectedRoute_old: route,
+        showId,
+      });
+
+      return route;
     });
   }
 
   createRoute = () => {
-    const newR = {
-      name: '',
-      polys: {},
-      object_list: [],
-      draw_object_list: [],
-      type: '',
-    };
-
     this.setState({
       showForm: true,
-      selectedRoute: _.cloneDeep(newR),
+      selectedRoute: {
+        name: '',
+        polys: {},
+        object_list: [],
+        draw_object_list: [],
+        type: '',
+      },
     });
   }
 
@@ -157,6 +163,7 @@ class RoutesList extends Component {
     delete copiedRoute.name;
     delete copiedRoute.id;
     copiedRoute.copy = true;
+
     this.setState({
       showForm: true,
       selectedRoute: _.cloneDeep(copiedRoute),
@@ -177,15 +184,8 @@ class RoutesList extends Component {
     this.refreshRoutes({ selectedRoute: null });
   }
 
-  editRoute = (route) => {
-    this.setState({
-      selectedRoute: route,
-    });
-  }
-
-  handleChange = (selectedRoute) => {
-    this.setState({ selectedRoute });
-  }
+  editRoute = route => this.setState({ selectedRoute: route });
+  handleChange = selectedRoute => this.setState({ selectedRoute });
 
   handleDropdown = (name) => {
     const { showId } = this.state;
@@ -287,6 +287,7 @@ class RoutesList extends Component {
         });
       }
     });
+    console.log(route)
 
     return (
       <div className="ets-page-wrap routes-list">
@@ -331,7 +332,6 @@ class RoutesList extends Component {
               <RouteFormWrap
                 element={route}
                 onFormHide={this.onFormHide}
-                selectedRoute={this.selectedRoute}
                 showForm={this.state.showForm}
                 routesList={routesList}
               />

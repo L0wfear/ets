@@ -79,7 +79,7 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
         begin: { x_msk: coordinates[0][0], y_msk: coordinates[0][1] },
         end: { x_msk: coordinates[1][0], y_msk: coordinates[1][1] },
         state: 2,
-        id,
+        object_id: id,
         distance,
       };
 

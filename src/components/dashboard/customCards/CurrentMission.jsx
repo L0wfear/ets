@@ -263,7 +263,6 @@ export default class CurrentMission extends DashboardCardMedium {
       <Div md={12}>
         <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
-            <div>hello</div>
             <ItemsCentralized
               items={this.props.items_centralized}
               title={this.props.title_centralized}

@@ -3,7 +3,9 @@ import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { uniqBy, find, get } from 'lodash';
 
-const getTableMeta = (props) => {
+export const getTableMeta = ({
+  faxogrammsList = [],
+} = {}) => {
   const tableMeta = {
     cols: [
       {
@@ -43,9 +45,12 @@ const getTableMeta = (props) => {
         name: 'order_type_id',
         displayName: 'Тип',
         type: 'string',
+        sort: {
+          serverFieldName: 'order_type_name',
+        },
         filter: {
           type: 'multiselect',
-          options: uniqBy(props.faxogrammsList, 'order_type_id').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
+          options: uniqBy(faxogrammsList, 'order_type_id').map(faxogramm => ({ value: faxogramm.order_type_id, label: faxogramm.order_type_name })),
         },
         cssClassName: 'width60',
       },

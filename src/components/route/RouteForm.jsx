@@ -6,13 +6,20 @@ import {
 import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import { connectToStores } from 'utils/decorators';
 import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
 
 import MunicipalFacility from './inside_fields/MunicipalFacility';
+
+const OBJECTS_BY_TYPE = {
+  points: 3,
+  simple_dt: 2,
+};
+
+const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
 
 @connectToStores(['objects', 'geoObjects'])
 @autobind
@@ -33,9 +40,9 @@ export default class RouteForm extends Form {
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
 
-  handleTypeChange(v, ...arg) {
+  handleTypeChange(type) {
     this.setState({ vector: false });
-    this.handleChange('type', v);
+    this.handleChange('type', type);
     this.props.resetState();
   }
 
@@ -52,7 +59,6 @@ export default class RouteForm extends Form {
 
     const { formState: { type: routeTypeValue } } = this.props;
     let routeTypeValue_new = routeTypeValue;
-    
 
     route_types.forEach((obj) => {
       switch (obj) {
@@ -110,30 +116,26 @@ export default class RouteForm extends Form {
   }
 
   async componentDidMount() {
-    const { flux } = this.context;
     const { formState } = this.props;
-    const technicalOperationsResponse = await flux.getActions('technicalOperation').getTechnicalOperations();
-    let technicalOperationsList = technicalOperationsResponse.result;
 
-    const OBJECTS_BY_TYPE = {
-      points: 3,
-      simple_dt: 2,
-    };
+    this.context.flux.getActions('technicalOperation').getTechnicalOperations()
+      .then(({ result: technicalOperationsList }) => {
+        const changesState = { technicalOperationsList };
 
-    const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
+        if (formState.copy) {
+          changesState.technicalOperationsList = changesState.technicalOperationsList.filter(to => to.objects.find(o => o.id === getObjectIdByType(formState.type)));
+        }
 
-    if (formState.copy) {
-      technicalOperationsList = technicalOperationsList.filter(to =>
-         to.objects.find(o => o.id === getObjectIdByType(formState.type))
-      );
-    }
-
-    this.setState({ technicalOperationsList });
+        this.setState(changesState);
+      });
   }
 
   handleSubmit(isTemplate) {
     this.props.onSubmit(isTemplate);
   }
+
+  handleSaveAsTemplate = () => this.handleSubmit(1);
+  handleSubmitForMission = () => this.handleSubmit(0);
 
   getDataByNormId = (data) => {
     if (!data) {
@@ -176,6 +178,10 @@ export default class RouteForm extends Form {
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
     const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.draw_object_list && state.draw_object_list.length));
 
+    const boundKeys = {
+      name: ['name'],
+      structure_id: ['structure_id'],
+    };
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -187,12 +193,13 @@ export default class RouteForm extends Form {
 
           <Row>
             <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
-              <Field
+              <ExtField
                 id="route-name"
                 type="string"
                 label="Название маршрута"
                 value={state.name}
-                onChange={v => this.handleChange('name', v)}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.name}
                 error={errors.name}
               />
             </Col>
@@ -200,7 +207,7 @@ export default class RouteForm extends Form {
             <Div hidden={this.props.forceTechnicalOperation}>
               <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
                 <Col md={6} style={{ zIndex: 10001 }}>
-                  <Field
+                  <ExtField
                     id="route-technical-operation-id"
                     type="select"
                     label="Технологическая операция"
@@ -219,7 +226,7 @@ export default class RouteForm extends Form {
                     errors={errors}
                     state={state}
                     disabled={this.props.fromMission || state.id}
-                    handleChange={this.handleChange.bind(this)}
+                    handleChange={this.handleChange}
                     getDataByNormId={this.getDataByNormId}
                     clearable={false}
                     technicalOperationsList={technicalOperationsList}
@@ -230,7 +237,7 @@ export default class RouteForm extends Form {
             </Div>
             <Div hidden={!STRUCTURE_FIELD_VIEW}>
               <Col md={2}>
-                <Field
+                <ExtField
                   id="route-structure-id"
                   type="select"
                   label="Подразделение"
@@ -240,13 +247,14 @@ export default class RouteForm extends Form {
                   options={STRUCTURES}
                   emptyValue={null}
                   value={state.structure_id}
-                  onChange={this.handleChange.bind(this, 'structure_id')}
+                  onChange={this.handleChange}
+                  boundKeys={boundKeys.structure_id}
                 />
               </Col>
             </Div>
             <Div hidden={this.props.forceRouteType}>
               <Col md={2}>
-                <Field
+                <ExtField
                   id="type"
                   type="select"
                   label="Тип объекта"
@@ -293,8 +301,8 @@ export default class RouteForm extends Form {
 
         <Modal.Footer>
           <div>
-            <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSubmit.bind(this, 1)}>Сохранить как шаблон</Button>
-            {this.props.fromMission && <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmit.bind(this, 0)}>{state.id ? 'Сохранить' : 'Создать'}</Button>}
+            <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSaveAsTemplate}>Сохранить как шаблон</Button>
+            {this.props.fromMission && <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmitForMission}>{state.id ? 'Сохранить' : 'Создать'}</Button>}
           </div>
         </Modal.Footer>
 

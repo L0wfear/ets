@@ -16,8 +16,6 @@ class RoutesList extends Component {
 
   static get propTypes() {
     return {
-      location: PropTypes.object,
-      routesList: PropTypes.array,
       technicalOperationsList: PropTypes.array,
       technicalOperationsObjectsList: PropTypes.array,
     };
@@ -32,6 +30,7 @@ class RoutesList extends Component {
 
     this.state = {
       selectedRoute: null,
+      selectedRoute_old: null,
       showForm: false,
       filterValues: {},
       filterModalIsOpen: false,
@@ -65,6 +64,11 @@ class RoutesList extends Component {
     if (isSubmited === true) {
       this.refreshRoutes({ showForm: false })
         .then(() => this.selectRoute(result.createdRoute.result[0].id));
+    } else {
+      this.setState({
+        selectedRoute: this.state.selectedRoute_old,
+        showForm: false,
+      });
     }
   }
 
@@ -133,6 +137,7 @@ class RoutesList extends Component {
       this.setState({
         showForm: false,
         selectedRoute: route,
+        selectedRoute_old: route,
         showId,
       });
 
@@ -141,17 +146,15 @@ class RoutesList extends Component {
   }
 
   createRoute = () => {
-    const newR = {
-      name: '',
-      polys: {},
-      object_list: [],
-      draw_object_list: [],
-      type: '',
-    };
-
     this.setState({
       showForm: true,
-      selectedRoute: _.cloneDeep(newR),
+      selectedRoute: {
+        name: '',
+        polys: {},
+        object_list: [],
+        draw_object_list: [],
+        type: '',
+      },
     });
   }
 
@@ -160,6 +163,7 @@ class RoutesList extends Component {
     delete copiedRoute.name;
     delete copiedRoute.id;
     copiedRoute.copy = true;
+
     this.setState({
       showForm: true,
       selectedRoute: _.cloneDeep(copiedRoute),
@@ -180,15 +184,8 @@ class RoutesList extends Component {
     this.refreshRoutes({ selectedRoute: null });
   }
 
-  editRoute = (route) => {
-    this.setState({
-      selectedRoute: route,
-    });
-  }
-
-  handleChange = (selectedRoute) => {
-    this.setState({ selectedRoute });
-  }
+  editRoute = route => this.setState({ selectedRoute: route });
+  handleChange = selectedRoute => this.setState({ selectedRoute });
 
   handleDropdown = (name) => {
     const { showId } = this.state;
@@ -290,6 +287,7 @@ class RoutesList extends Component {
         });
       }
     });
+    console.log(route)
 
     return (
       <div className="ets-page-wrap routes-list">

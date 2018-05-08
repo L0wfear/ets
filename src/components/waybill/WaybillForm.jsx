@@ -161,7 +161,7 @@ class WaybillForm extends Form {
       if (IS_ACTIVE) {
         Promise.all([
           getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState),
-          flux.getActions('fuelRates').getFuelOperations().then(({ result: fuelOperationsList }) => fuelOperationsList),
+          flux.getActions('fuelRates').getFuelOperations({ is_active: true }).then(({ result: fuelOperationsList }) => fuelOperationsList),
           getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState),
           getFuelCorrectionRate(this.props.carsList, formState),
         ])

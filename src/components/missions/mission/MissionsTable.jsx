@@ -46,7 +46,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'mission_source_name',
+        name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',
         filter: {
@@ -110,7 +110,7 @@ const getTableMeta = (props) => {
         cssClassName: 'width120',
       },
       {
-        name: 'technical_operation_name',
+        name: 'technical_operation_id',
         displayName: 'Технологическая операция',
         type: 'number',
         filter: {

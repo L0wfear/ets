@@ -122,7 +122,7 @@ export default class CurrentMission extends DashboardCardMedium {
     this.props.openSubitemsList(this.state.selectedItem === null);
     const missionData = await flux.getActions('missions').getMissionData(id);
 
-    if (missionData.warnings.length) {
+    if (missionData.warnings && missionData.warnings.length) {
       global.NOTIFICATION_SYSTEM.notify(missionData.warnings[0], 'error');
     } else {
       this.setState({ selectedMission: missionData.result, customCardLoading: false });

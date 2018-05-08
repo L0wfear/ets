@@ -158,7 +158,7 @@ export const getRoutesBySomeData = (formState, stateData, routeAction) =>
   });
 
 export const handleRouteFormHide = (isSubmitted, result, formState, stateData, routeActionGetRouteById, routeActionGetRoutesBySomeData) => {
-  if (isSubmitted) {
+  if (isSubmitted === true) {
     const { createdRoute: { result: [{ id: route_id }] } } = result;
 
     return Promise.all([

@@ -6,7 +6,12 @@ import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const getTableMeta = (props) => {
+export const getTableMeta = ({
+  missionSourcesList = [],
+  carsList = [],
+  structures = [],
+  technicalOperationsList = [],
+} = {}) => {
   const tableMeta = {
     cols: [
       {
@@ -49,9 +54,12 @@ const getTableMeta = (props) => {
         name: 'mission_source_name',
         displayName: 'Источник',
         type: 'number',
+        sort: {
+          serverFieldName: 'mission_source_name',
+        },
         filter: {
           type: 'multiselect',
-          options: props.missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
+          options: missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
         },
         cssClassName: 'width150',
       },
@@ -75,9 +83,12 @@ const getTableMeta = (props) => {
         name: 'car_id',
         displayName: 'Рег. номер ТС',
         type: 'number',
+        sort: {
+          serverFieldName: 'car_gov_number',
+        },
         filter: {
           type: 'multiselect',
-          options: props.carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },
@@ -85,9 +96,12 @@ const getTableMeta = (props) => {
         name: 'type_id',
         displayName: 'Тип техники',
         type: 'number',
+        sort: {
+          serverFieldName: 'type_name',
+        },
         filter: {
           type: 'multiselect',
-          options: uniqBy(props.carsList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
+          options: uniqBy(carsList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
         },
         cssClassName: 'width120',
       },
@@ -113,9 +127,12 @@ const getTableMeta = (props) => {
         name: 'technical_operation_name',
         displayName: 'Технологическая операция',
         type: 'number',
+        sort: {
+          serverFieldName: 'technical_operation_name',
+        },
         filter: {
           type: 'multiselect',
-          options: props.technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
+          options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
         },
       },
       {
@@ -137,9 +154,9 @@ const getTableMeta = (props) => {
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: props.structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({ value: id, label: name })),
         },
-        display: props.structures.length,
+        display: structures.length,
       },
     ],
   };

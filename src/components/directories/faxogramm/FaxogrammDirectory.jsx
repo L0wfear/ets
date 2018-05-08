@@ -1,15 +1,18 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { DropdownButton, MenuItem, Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import get from 'lodash/get';
 import ElementsList from 'components/ElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import Div from 'components/ui/Div.jsx';
 import { saveData } from 'utils/functions';
 import { getToday0am, getToday2359 } from 'utils/dates';
+import { staticProps } from 'utils/decorators';
 import { autobind } from 'core-decorators';
+import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
 import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
-import FaxogrammsTable from './FaxogrammsTable.jsx';
+import FaxogrammsTable, { getTableMeta } from './FaxogrammsTable.jsx';
 import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';
 import FaxogrammOperationInfoTable from './FaxogrammOperationInfoTable.jsx';
 
@@ -20,6 +23,10 @@ const TypeDownload = {
   new: '2',
 };
 const marginLeft = { marginLeft: 10 };
+
+@staticProps({
+  tableMeta: extractTableMeta(getTableMeta()),
+})
 
 @autobind
 class FaxogrammDirectory extends ElementsList {
@@ -105,7 +112,8 @@ class FaxogrammDirectory extends ElementsList {
 
   getAdditionalProps() {
     // const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeSort = (field, direction) =>
+    this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
     const changeFilter = (filter) => {
       this.context.flux.getActions('objects').getFaxogramms(
         MAX_ITEMS_PER_PAGE,

@@ -39,9 +39,9 @@ export const checkRouteHasObjectByBegCoor: ICheckRouteHasObjectByBegCoor = (draw
  * @param id id геометрии, индекс которой ищется
  */
 export const findIndexDrawObjectById: IFindIndexDrawObjectById = (drawObjectList, id) => {
-  const index = drawObjectList.findIndex(({id: id_do }) => id_do === id);
+  const index = drawObjectList.findIndex(({ id: id_do }) => id_do === id);
   return {
     index,
-    isFind: index === -1,
+    isFind: index !== -1,
   };
 };

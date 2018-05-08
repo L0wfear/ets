@@ -178,11 +178,7 @@ class RouteCreating extends Component {
     this.props.onChange('draw_object_list', draw_object_list);
   }
   handleDrawFeatureClick = ({ index, nextState }) => {
-    const {
-      route: {
-        draw_object_list: draw_object_list_old,
-      },
-    } = this.props;
+    const { route: { draw_object_list: draw_object_list_old } } = this.props;
     const draw_object_list = _.cloneDeep(draw_object_list_old);
 
     draw_object_list[index].state = nextState;

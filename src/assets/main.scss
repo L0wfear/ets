@@ -3167,11 +3167,14 @@ div.none {
   align-items: baseline;
 }
 
-.till-now {
-  font-weight: 200;
-  &>span {
-    margin-top: 2px;
-    margin-left: 5px;
-    color: #000;
+.checkbox-print-with-filter {
+  margin-top: 10px;
+  cursor: pointer;
+  &>div {
+    display: flex;
+
+    &>span {
+      margin: 0 4px;
+    }
   }
 }

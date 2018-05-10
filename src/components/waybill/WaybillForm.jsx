@@ -113,6 +113,7 @@ class WaybillForm extends Form {
       formState: { status },
     } = this.props;
     const { flux } = this.context;
+<<<<<<< HEAD
 
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
@@ -136,6 +137,32 @@ class WaybillForm extends Form {
         .catch((e) => {
           console.error(e);
           this.setState({ fuelRateAllList: [] });
+=======
+    const { formState } = this.props;
+    this.employeeFIOLabelFunction = employeeFIOLabelFunction(flux);
+
+    if (formState.status === 'active') {
+      const car = _.find(this.props.carsList, c => c.asuods_id === formState.car_id) || {};
+      const fuel_correction_rate = car.fuel_correction_rate || 1;
+      const fuelRatesByCarModelResponse = await flux.getActions('fuelRates').getFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create });
+      const fuelRates = fuelRatesByCarModelResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+      const fuelOperationsResponse = await flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+      const operations = _.filter(fuelOperationsResponse.result, op => _.find(fuelRates, fr => fr.operation_id === op.id));
+      const equipmentFuelRatesResponse = await flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel({ car_id: formState.car_id, datetime: formState.date_create })
+      const equipmentFuelRates = equipmentFuelRatesResponse.result.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date }));
+      const equipmentFuelOperations = await flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+      const equipmentOperations = _.filter(equipmentFuelOperations.result, op => _.find(equipmentFuelRates, fr => fr.operation_id === op.id));
+      this.setState({ fuelRates, operations, fuel_correction_rate, equipmentFuelRates, equipmentOperations });
+      this.getCarDistance(formState);
+    } else if (formState.status === 'closed') {
+      /* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
+         отобразить их в таксировке как ТС, так и оборудования, так как
+         выбор операций в любом случае недоступен */
+      flux.getActions('fuelRates').getFuelOperations().then((fuelOperations) => {
+        this.setState({
+          operations: fuelOperations.result,
+          equipmentOperations: fuelOperations.result,
+>>>>>>> DITETSSUP-1216-zion_stage
         });
     }
 

@@ -11,7 +11,10 @@ export const getTableMeta = ({
   carsList = [],
   structures = [],
   technicalOperationsList = [],
+<<<<<<< HEAD
   municipalFacilityList = [],
+=======
+>>>>>>> DITETSSUP-1216-zion_stage
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -131,6 +134,7 @@ export const getTableMeta = ({
         sort: {
           serverFieldName: 'technical_operation_name',
         },
+<<<<<<< HEAD
         filter: {
           type: 'multiselect',
           options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
@@ -144,6 +148,11 @@ export const getTableMeta = ({
         filter: {
           type: 'multiselect',
           options: municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })),
+=======
+        filter: {
+          type: 'multiselect',
+          options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
+>>>>>>> DITETSSUP-1216-zion_stage
         },
       },
       {

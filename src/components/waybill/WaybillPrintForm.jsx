@@ -184,9 +184,9 @@ class WaybillPrintForm extends Component {
                 <ExtField
                   type={'date'}
                   time
-                  date={this.state.date_from}
+                  date={this.state.date_to}
                   onChange={this.handleChange}
-                  boundKeys={['date_from']}
+                  boundKeys={['date_to']}
                 />
               </Col>
             </Row>

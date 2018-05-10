@@ -331,15 +331,6 @@ const closingDependencies = {
   ],
   'fact_arrival_date': [
     {
-      validator(value, { plan_arrival_date, status }) {
-        if ((status !== 'active' && status !== 'draft') && moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
-          return '"Возвращение факт." должно быть не позже "Возвращение план."';
-        }
-
-        return false;
-      },
-    },
-    {
       validator(value, { fact_departure_date }) {
         if (moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {
           return '"Возвращение факт." должно быть позже "Выезд факт."';

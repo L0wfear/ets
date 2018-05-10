@@ -142,7 +142,7 @@ export default class CarActions extends Actions {
     return Car.get(payload).then(({ result: { rows: [carData] } }) => carData);
   }
 
-  getCarGpsNumberByDateTime(asuods_id, datetime) {
+  getCarGpsNumberByDateTime({ asuods_id, gps_code }, datetime) {
     if (diffDayOfDate(new Date(), datetime, 'days', false) > 0) {
       const payloadToCar = {
         asuods_id,
@@ -152,11 +152,11 @@ export default class CarActions extends Actions {
       return Car.get(payloadToCar).then(({ result: { rows: [carData] } }) => carData);
     }
 
-    return Promise.resolve({ gps_code: asuods_id });
+    return Promise.resolve({ gps_code });
   }
 
-  getTrack(id, from_dt, to_dt) {
-    return this.getCarGpsNumberByDateTime(id, from_dt)
+  getTrack(carData, from_dt, to_dt) {
+    return this.getCarGpsNumberByDateTime(carData, from_dt)
       .then(({ gps_code }) => {
         const payloadToTrack = {
           version: 3,
@@ -164,7 +164,6 @@ export default class CarActions extends Actions {
           from_dt: makeUnixTime(from_dt),
           to_dt: makeUnixTime(to_dt),
           sensors: 1,
-          // test: 1, //временно
         };
 
         return TrackService.get(payloadToTrack);

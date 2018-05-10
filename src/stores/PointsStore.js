@@ -15,8 +15,7 @@ import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
 const initialState = {
   selected: null,
   points: {},
-  availableGpsCodes: [],
-  companyStructureByGspCode: [],
+  carsMapByGpsCode: new Map(),
   filter: {
     status: statuses.map(s => s.id),
     type: [],
@@ -89,32 +88,11 @@ export default class PointsStore extends Store {
 
     this.register(loginActions.login, this.handleLogin);
 
-    let currentUser;
-
-    try {
-      currentUser = JSON.parse(localStorage.getItem(global.CURRENT_USER2)) || {};
-    } catch (e) {
-      currentUser = {};
-    }
-
     this.state = cloneDeep(initialState);
   }
 
   handleGetCars({ result: carsList = [] }) {
-    this.setState({
-      availableGpsCodes: carsList.reduce((newArr, { gps_code }) => {
-        if (gps_code) {
-          newArr.push(gps_code);
-        }
-        return newArr;
-      }, []),
-      companyStructureByGspCode: carsList.reduce((newObj, { company_structure_id, gps_code }) => {
-        if (gps_code) {
-          newObj[gps_code] = company_structure_id;
-        }
-        return newObj;
-      }, []),
-    });
+    this.setState({ carsMapByGpsCode: new Map(carsList.map(car => [car.gps_code, { ...car }])) });
   }
 
   /**
@@ -196,8 +174,7 @@ export default class PointsStore extends Store {
       return;
     }
     const {
-      availableGpsCodes = [],
-      companyStructureByGspCode = {},
+      carsMapByGpsCode,
       selected = null,
     } = this.state;
 
@@ -207,11 +184,11 @@ export default class PointsStore extends Store {
     Object.entries(update).forEach(([key, value]) => {
       if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
-      } else if (availableGpsCodes.includes(key)) {
+      } else if (carsMapByGpsCode.has(key)) {
         points[key] = {
           ...points[key],
           ...value,
-          company_structure_id: companyStructureByGspCode[key],
+          car_actual: carsMapByGpsCode.get(key),
         };
         if (selected && value.id === selected.id) {
           newSelected = points[key];
@@ -422,7 +399,7 @@ export default class PointsStore extends Store {
     }
     // Фильтрация по струтуре подразделения ТС
     if (filter.structure && filter.structure.length > 0) {
-      visible = visible && point.car && filter.structure.includes(point.company_structure_id);
+      visible = visible && point.car && filter.structure.includes(point.car_actual.company_structure_id);
       if (!visible) {
         return false;
       }

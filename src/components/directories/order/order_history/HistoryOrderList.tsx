@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Row, Col, Panel, Glyphicon } from 'react-bootstrap';
 import * as moment from 'moment';
+import { connect } from 'react-redux';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
@@ -15,30 +16,19 @@ class HistoryOrder extends React.Component<any, any> {
     activeData: {},
   };
   componentDidMount() {
-    const {
-      data,
-    } = this.props;
+    const { data } = this.props;
 
     const [activeData] = data;
 
     this.setState({
       haveData: !!activeData,
       activeList: !!activeData ? 1 : null,
-      activeData,
+      activeData: activeData || this.state.activeData,
       VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`})),
       historytableIsOpen: false,
     });
   }
 
-  getEmptyMes() {
-    return (
-    <div>
-      <Col md={12} style={{ marginTop: 20 }}>
-        <span>Для выбранного централизованного задания предыдущих версий нет.</span>
-      </Col>
-    </div>
-    );
-  }
   handleChangeVersion = num => {
     const {
       data,
@@ -55,73 +45,77 @@ class HistoryOrder extends React.Component<any, any> {
 
     this.setState({ historytableIsOpen: !historytableIsOpen });
   }
-  getTables() {
-    const {
-      activeData: {
-        technical_operations: data = [],
-        order_info,
-      },
-    } = this.state;
-    return (
-      <div>
-        <Col md={8}>
-          <OrdeHistoryTable
-            noHeader
-            preventNoDataMessage
-            data={data}
-          />
-        </Col>
-        <Col md={4}>
-          <OrderInfoTable
-            noHeader
-            preventNoDataMessage
-            data={[{ id: 0, order_info }]}
-          />
-        </Col>
-      </div>
-    );
-  }
+
   render() {
     const {
       haveData,
       activeList,
       VERSION_OPTIONS,
       historytableIsOpen,
+      activeData,
     } = this.state;
 
     return (
-      <Row>
-        <Panel>
-          <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 20 : 0, cursor: 'pointer' }}>
-            <h4 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
-              <span>Версионность централизованного задания</span>
-              <Glyphicon glyph={historytableIsOpen ? 'menu-up' : 'menu-down'} />
-            </h4>
-          </Col>
-          <Div hidden={!historytableIsOpen} >
-            <Col style={{ marginBottom: -15, display: 'flex' }} md={12}>
-              <div>Версия централизованного задания</div>
-              <Col md={3}>
-                <EtsSelectTSX
-                  type="select"
-                  options={VERSION_OPTIONS}
-                  value={activeList}
-                  clearable={false}
-                  onChange={this.handleChangeVersion}
-                />
-              </Col>
+      <Div hidden={this.props}>
+        <Row>
+          <Panel>
+            <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 20 : 0, cursor: 'pointer' }}>
+              <h4 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
+                <span>Версионность централизованного задания</span>
+                <Glyphicon glyph={historytableIsOpen ? 'menu-up' : 'menu-down'} />
+              </h4>
             </Col>
-            {
-              haveData ?
-              this.getTables()
-              :
-              this.getEmptyMes()
-            }
-          </Div>
-        </Panel>
-      </Row>
+            <Div hidden={!historytableIsOpen} >
+              <Col style={{ marginBottom: -15, display: 'flex' }} md={12}>
+                <div>Версия централизованного задания</div>
+                <Col md={3}>
+                  <EtsSelectTSX
+                    type="select"
+                    options={VERSION_OPTIONS}
+                    value={activeList}
+                    clearable={false}
+                    onChange={this.handleChangeVersion}
+                  />
+                </Col>
+              </Col>
+              <Div hidden={!haveData}>
+              < div>
+                  <Col md={8}>
+                    <OrdeHistoryTable
+                      noHeader
+                      preventNoDataMessage
+                      data={activeData.technical_operations}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <OrderInfoTable
+                      noHeader
+                      preventNoDataMessage
+                      data={[{ id: 0, order_info: activeData.order_info }]}
+                    />
+                  </Col>
+                </div>
+              </Div>
+              <Div hidden={haveData}>
+                <div>
+                  <Col md={12} style={{ marginTop: 20 }}>
+                    <span>Для выбранного централизованного задания предыдущих версий нет.</span>
+                  </Col>
+                </div>
+              </Div>
+            </Div>
+          </Panel>
+        </Row>
+      </Div>
     );
   }
 }
 
-export default HistoryOrder;
+const mapStateToProps = (state) => ({
+  hidden: !state.order.showHistoryComponent || !state.order.selectedElementOrder,
+  data: state.order.HistoryOrderDataList,
+});
+
+export default connect(
+  mapStateToProps,
+)(HistoryOrder);

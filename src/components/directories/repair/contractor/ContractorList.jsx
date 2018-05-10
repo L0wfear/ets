@@ -1,8 +1,9 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
-import CheckableElementsList from 'components/CheckableElementsList.jsx'
-import ContractorTable from './ContractorTable';
-import ContractorFormWrap from './ContractorFormWrap';
+
+import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import ContractorTable from 'components/directories/repair/contractor/ContractorTable';
+import ContractorFormWrap from 'components/directories/repair/contractor/ContractorFormWrap';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.contractor}` })

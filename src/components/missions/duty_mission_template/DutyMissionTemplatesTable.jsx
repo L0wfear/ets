@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
+import { get } from 'lodash';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
@@ -7,9 +8,7 @@ export const getTableMeta = ({
   employeesList = [],
   structures = [],
   flux = null,
-  data,
 } = {}) => {
-  const structure_id_list = data.map(({ structure_id }) => structure_id);
 
   const tableMeta = {
     cols: [
@@ -81,7 +80,7 @@ export const getTableMeta = ({
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: structures.filter(({ id }) => structure_id_list.includes(id)).map(({ id, name }) => ({ value: id, label: name })),
+          byLabel: 'structure_name',
         },
         display: structures.length,
       },
@@ -99,7 +98,7 @@ export const getTableMeta = ({
 };
 
 export const getRenderers = props => ({
-  structure_id: ({ data }) => <div>{(props.structures.find(s => s.id === data) || { data: '' }).name}</div>,
+  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
 });
 
 const DataTable = props => (

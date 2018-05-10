@@ -10,8 +10,8 @@ import { getDefaultMission } from 'stores/MissionsStore.js';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates.js';
 import { missionSchema } from 'models/MissionModel.js';
-import MissionForm from './MissionForm.jsx';
-import MissionFormOld from './MissionFormOld.jsx';
+import MissionForm from 'components/missions/mission/MissionForm/MissionForm.jsx';
+import MissionFormOld from 'components/missions/mission/MissionFormOld.jsx';
 
 export default class MissionFormWrap extends FormWrap {
 
@@ -46,6 +46,9 @@ export default class MissionFormWrap extends FormWrap {
 
       if (mission.structure_id == null) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+      }
+      if (status === 'not_assigned') {
+        mission.type_id = (this.props.carsIndex[mission.car_id] || { type_id: null }).type_id;
       }
 
       if (status === 'assigned') {
@@ -250,6 +253,27 @@ export default class MissionFormWrap extends FormWrap {
     global.map.render();
   }
 
+  handlMultiFormStateChange = (changesObj) => {
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+
+    Object.entries(changesObj).forEach(([field, e]) => {
+      const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      console.info('Form changed', field, value);
+      formState[field] = value;
+    });
+
+    const newState = {};
+    formErrors = this.validate(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+  }
+
   render() {
     const props = {
       show: this.props.showForm,
@@ -268,6 +292,7 @@ export default class MissionFormWrap extends FormWrap {
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
             handleFormChange={this.handleFormStateChange.bind(this)}
+            handleMultiFormChange={this.handlMultiFormStateChange}
             handlePrint={this.handlePrint.bind(this)}
             {...props}
             {...this.state}

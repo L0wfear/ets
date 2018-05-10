@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
@@ -16,20 +17,24 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
       {
         name: 'date_from',
         displayName: 'Начало действия поручения',
-        type: 'date',
-        filter: false,
+        type: 'datetime',
+        filter: {
+          type: 'datetime',
+        },
       },
       {
         name: 'date_to',
         displayName: 'Окончание действия поручения',
-        type: 'date',
-        filter: false,
+        type: 'datetime',
+        filter: {
+          type: 'datetime',
+        },
       },
-      ...getMissionTempalteTableMeta(props).cols.map(({ name, displayName, type, display: displayOuter }) => ({
+      ...getMissionTempalteTableMeta(props).cols.map(({ name, displayName, type, display: displayOuter, filter }: any) => ({
         name,
         displayName,
         type,
-        filter: false,
+        filter,
         display: typeof displayOuter === 'boolean' ? displayOuter : true,
       })),
     ],
@@ -41,7 +46,7 @@ const getRenders = props => {
   const renderers: ISchemaRenderer = {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
-    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
+    structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
   };
   return renderers;
 };
@@ -49,7 +54,6 @@ const getRenders = props => {
 const Table: React.SFC<any> = props  => (
   <DataTable
     multiSelection={true}
-    noFilter={true}
     results={props.data}
     renderers={getRenders(props)}
     tableMeta={getTableMeta(props)}
@@ -58,6 +62,7 @@ const Table: React.SFC<any> = props  => (
     onAllRowsChecked={props.onAllRowsChecked}
     selected={props.selected}
     checked={props.checked}
+    selectField={'customId'}
   />
 );
 

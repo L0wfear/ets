@@ -45,5 +45,7 @@ ODHList.propTypes = {
   list: PropTypes.array,
   fail_list: PropTypes.array,
   checkRoute: PropTypes.func,
-  showSelectable: PropTypes.bool,
+  name: PropTypes.string,
+  error: PropTypes.bool,
+  draw_list: PropTypes.array,
 };

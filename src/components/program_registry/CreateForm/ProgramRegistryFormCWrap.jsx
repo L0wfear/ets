@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import ProgramRegistryFormCreate from './ProgramRegistryFormC';
+import ProgramRegistryFormCreate from 'components/program_registry/CreateForm/ProgramRegistryFormC';
 
 const firstStepFields = [
   'state_program_id',
@@ -12,11 +12,10 @@ const firstStepFields = [
   'plan_date_end',
 ];
 
-// РЕФАКТОРИНГ
-// Писалось на скорую руку ( отмазка )
 class ProgramRegistryFormCreateWrap extends FormWrap {
   componentDidMount() {
     this.state = {
+      ...this.state,
       ...this.props.getFrowmStateAndErrorAndCanSave(this.props.element),
     };
   }
@@ -33,8 +32,8 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
       callback: this.context.flux.getActions('repair').programRegistryPost,
       outFormState: { ...this.state.formState },
     };
-    this.props.defSendFromState(payload).then((result) => {
-      this.props.setNewSelectedElement(result.result.rows[0]);
+    this.props.defSendFromState(payload).then(({ result: { rows: [createdPr] } }) => {
+      this.props.setNewSelectedElement(createdPr);
 
       this.setState({
         saveButtonLabel: 'Сохранить',

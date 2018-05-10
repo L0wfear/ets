@@ -19,6 +19,7 @@ export default class FilterRow extends React.Component {
       availableOptions: PropTypes.array,
       tableData: PropTypes.array,
       name: PropTypes.string,
+      byLabel: PropTypes.string,
       displayName: PropTypes.string,
       onChange: PropTypes.func,
       onMultiChange: PropTypes.func,
@@ -34,10 +35,19 @@ export default class FilterRow extends React.Component {
 
   // TODO добавить в FilterInput type и поддержку select
   render() {
-    const { name, displayName, type, labelFunction,
-      availableOptions, onChange, onMultiChange, tableData } = this.props;
-
+    const {
+      availableOptions,
+      byLabel = '',
+      displayName,
+      labelFunction,
+      name,
+      onChange,
+      onMultiChange,
+      tableData,
+      type,
+    } = this.props;
     let { value } = this.props;
+
     let input = (
       <div className="form-group">
         <FormControl type="text" value={value} onChange={onChange} />
@@ -49,7 +59,7 @@ export default class FilterRow extends React.Component {
                         .uniqBy(name)
                         .map(d => ({
                           value: typeof d[name] === 'boolean' ? +d[name] : d[name],
-                          label: labelFunction(d[name]),
+                          label: labelFunction(d[byLabel || name]),
                         }))
                         .filter(d => d.label !== null)
                         .value();

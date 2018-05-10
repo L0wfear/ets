@@ -1,7 +1,8 @@
 import Raven from 'raven-js';
 import { Store } from 'flummox';
 import { autobind } from 'core-decorators';
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import map from 'lodash/map';
 import statuses from 'constants/statuses';
 import config from '../config.js';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
@@ -10,6 +11,35 @@ import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
  * Хранилище для объектов точек, отображаемых на карте
  * @extends {Store}
  */
+
+const initialState = {
+  selected: null,
+  points: {},
+  availableGpsCodes: [],
+  companyStructureByGspCode: [],
+  filter: {
+    status: statuses.map(s => s.id),
+    type: [],
+    structure: [],
+    owner: [],
+  },
+  byStatus: {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+  },
+  byConnectionStatus: {
+    0: 0,
+    1: 0,
+  },
+  trackingMode: false,
+  showTrackingGradient: false,
+  isRenderPaused: false,
+  singleCarTrack: null,
+  singleCarTrackDates: [],
+};
+
 @autobind
 export default class PointsStore extends Store {
 
@@ -54,6 +84,7 @@ export default class PointsStore extends Store {
     this.register(pointsActions.closeConnection, this._handleCloseConnection);
     this.register(pointsActions.setSingleCarTrack, this.handleSetSingleCarTrack);
     this.register(pointsActions.setSingleCarTrackDates, this.handleSetSingleCarTrackDates);
+    this.register(pointsActions.setInitialState, this.handleClearStore);
     this.register(objectsActions.getCars, this.handleGetCars);
 
     this.register(loginActions.login, this.handleLogin);
@@ -66,35 +97,7 @@ export default class PointsStore extends Store {
       currentUser = {};
     }
 
-    this.initialState = {
-      selected: null,
-      points: {},
-      availableGpsCodes: [],
-      companyStructureByGspCode: [],
-      filter: {
-        status: statuses.map(s => s.id),
-        type: [],
-        structure: [],
-        owner: [],
-      },
-      byStatus: {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-      },
-      byConnectionStatus: {
-        0: 0,
-        1: 0,
-      },
-      trackingMode: false,
-      showTrackingGradient: false,
-      isRenderPaused: false,
-      singleCarTrack: null,
-      singleCarTrackDates: [],
-    };
-
-    this.state = _.cloneDeep(this.initialState);
+    this.state = cloneDeep(initialState);
   }
 
   handleGetCars({ result: carsList = [] }) {
@@ -152,7 +155,7 @@ export default class PointsStore extends Store {
       this.ws.close();
       this.ws = null;
     }
-    this.setState(_.cloneDeep(this.initialState));
+    this.setState(cloneDeep(initialState));
     this.pauseRendering();
   }
 
@@ -168,7 +171,7 @@ export default class PointsStore extends Store {
     const points = Object.assign({}, this.state.points);
     if (this.state.singleCarTrack) {
       if (!this.state.selected) {
-        _.map(points, (p) => {
+        map(points, (p) => {
           const car = p.car;
           if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
             p.marker.createTrack();
@@ -498,6 +501,10 @@ export default class PointsStore extends Store {
    */
   isRenderPaused() {
     return this.state.isRenderPaused;
+  }
+
+  handleClearStore() {
+    this.state = cloneDeep(initialState);
   }
 
 }

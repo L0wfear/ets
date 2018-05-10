@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 
+let notTime = true;
 export default class LoadingStore extends Store {
 
   constructor(flux) {
@@ -207,6 +208,16 @@ export default class LoadingStore extends Store {
   }
 
   isLoading() {
+    if (__DEVELOPMENT__) {
+      if (this.state.operationsCount > 0 && notTime) {
+        console.time('----> timeLoad');
+        notTime = false;
+      }
+      if (this.state.operationsCount === 0 && !notTime) {
+        console.timeEnd('----> timeLoad');
+        notTime = true;
+      }
+    }
     return this.state.operationsCount > 0;
   }
 

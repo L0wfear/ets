@@ -10,15 +10,9 @@ export default class SparePartForm extends Form {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
-    const [
-      state,
-      errors,
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
-
     const {
+      formState: state,
+      formErrors: errors,
       isPermitted = false,
       program_version_status,
       isSupervisor,

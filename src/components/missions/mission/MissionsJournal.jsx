@@ -11,11 +11,12 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import PrintForm from 'components/missions/common/PrintForm.tsx';
 
 import Paginator from 'components/ui/Paginator.jsx';
-import MissionsTable from './MissionsTable.jsx';
+import MissionsTable, { getTableMeta } from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
@@ -27,6 +28,7 @@ const Button = enhanceWithPermissions(BootstrapButton);
   entity: 'mission',
   listName: 'missionsList',
   tableComponent: MissionsTable,
+  tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
 @autobind
@@ -78,6 +80,7 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions');
+    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
   }
 
@@ -279,7 +282,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   async mapView(id) {
     const { result, warnings = false } = await this.context.flux.getActions('missions').getMissionData(id);
-    if (warnings) {
+    if (warnings && warnings.length > 0) {
       global.NOTIFICATION_SYSTEM.notify(warnings[0], 'error');
     } else {
       this.setState({ mission: result, showMissionInfoForm: true });
@@ -356,7 +359,8 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const changeSort = (field, direction) => this.setState({ sortBy: `${field}:${direction ? 'asc' : 'desc'}` });
+    const changeSort = (field, direction) =>
+    this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
     const changeFilter = filter => this.setState({ filter });
 
     return {
@@ -366,6 +370,8 @@ export default class MissionsJournal extends CheckableElementsList {
       changeFilter,
       filterValues: this.state.filter,
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+      useServerFilter: true,
+      useServerSort: true,
     };
   }
   export() {

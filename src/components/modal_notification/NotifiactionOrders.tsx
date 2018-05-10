@@ -6,11 +6,15 @@ import {
 
 import { isEmpty } from 'lodash';
 import { connectToStores } from 'utils/decorators';
+import { makeDate } from 'utils/dates';
+import * as orderNotifiyMp3 from 'assets/audio/orderNotifiy.mp3';
+import * as orderNotifiyOgg from 'assets/audio/orderNotifiy.ogg';
 
-import NotificationModal from '../../components/modal_notification/NotificationModal';
+import NotificationModal from 'components/modal_notification/NotificationModal';
 
 @connectToStores(['userNotifications'])
 class NotifiactionOrders extends NotificationModal {
+  refAudio: any;
   constructor(props) {
     super(props);
 
@@ -18,10 +22,12 @@ class NotifiactionOrders extends NotificationModal {
     this.state = {
       show: false,
       timerGetNot,
+      hasAudio: false,
     };
   }
   componentDidMount() {
     this.updateNotificationPopup();
+
   }
   componentWillUnmount() {
     clearInterval(this.state.timerGetNot);
@@ -38,12 +44,20 @@ class NotifiactionOrders extends NotificationModal {
   }
 
   componentWillReceiveProps(props) {
-    const { notificationPopupLast = [] } = props;
+    const { notificationPopupLast = [], hasNewOrderNotifications } = props;
 
     if (isEmpty(notificationPopupLast)) {
       this.setState({ show: false });
     } else {
-      this.setState({ show: true });
+      if (hasNewOrderNotifications) {
+        this.setState({
+          show: true,
+          hasAudio: true,
+          audioTimeout: setTimeout(() => this.setState({ hasAudio: false }), 2000),
+        });
+      } else {
+        this.setState({ show: true });
+      }
     }
   }
   /**
@@ -52,6 +66,7 @@ class NotifiactionOrders extends NotificationModal {
   onHide = () => {
     const { flux } = this.context;
     const { notificationPopupLast = [] } = this.props;
+    this.setState({ hasAudio: false });
 
     flux.getActions('userNotifications').decNotificationsPopup(notificationPopupLast.map(d => d.id));
   }
@@ -59,11 +74,20 @@ class NotifiactionOrders extends NotificationModal {
   /**
    * @override
    */
-  getHeader = () => (
-    <Modal.Header>
-     Уведомление
-    </Modal.Header>
-  )
+  getHeader = () => {
+    const { notificationPopupLast } = this.props;
+    const [popupData] = notificationPopupLast;
+    const { created_at = null } = popupData || {};
+
+    return (
+      <Modal.Header closeButton>
+        <div className="flex-space-between">
+          <span>{'Поступление новой факсограммы'}</span>
+          <span>{makeDate(created_at)}</span>
+        </div>
+      </Modal.Header>
+    )
+  }
   /**
    * @override
    */
@@ -73,6 +97,14 @@ class NotifiactionOrders extends NotificationModal {
     return (
       <Modal.Body>
         {notificationPopupLast.map(d => <label key="0">{d.description}</label>)}
+        {
+          this.state.hasAudio && (
+          <audio autoPlay>
+            <source src={orderNotifiyMp3} type={'audio/mpeg; codecs="mp3"'} />
+            <source src={orderNotifiyOgg} type={'audio/mpeg; codecs="ogg"'} />
+          </audio>
+          )
+        }
       </Modal.Body>
     );
   }

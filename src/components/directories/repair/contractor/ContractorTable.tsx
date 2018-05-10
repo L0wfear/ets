@@ -10,7 +10,6 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 export function tableMeta({
   sparePartGroupList = [],
-  measureUnitList = [],
 } = {}): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [

@@ -1,6 +1,5 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import {
   find,
@@ -17,36 +16,32 @@ import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
-import CarAvailableIcon from 'assets/images/car_available.png';
-import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 import InsideField from 'components/missions/mission/inside_fields/index';
-import { getKindTaskIds } from 'components/missions/utils/utils.ts';
+import { checkRouteByNew } from 'components/missions/utils/utils.ts';
 import { routeTypesBySlug } from 'constants/route';
+
 import { addTime, diffDates } from 'utils/dates.js';
+import {
+  getDataByNormId,
+  getDataBySelectedRoute,
+  getRoutesByMissionId,
+  getTechnicalOperationData,
+  handleRouteFormHide,
+} from 'components/missions/mission/MissionForm/utils';
 
-export const checkRouteByNew = (state, route) => {
-  const { is_new = true } = state;
+const ASSIGN_OPTIONS = [
+  { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
+  { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
+  { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
+];
 
-  if (is_new) {
-    const {
-      is_new: route_is_new,
-    } = route;
-
-    if (route_is_new) {
-      return true;
-    }
-    return false;
-  }
-  return true;
-};
-
-@autobind
 export class MissionForm extends Form {
 
   constructor(props) {
     super(props);
 
     this.state = {
+      available_route_types: [],
       selectedRoute: null,
       showRouteForm: false,
       carsList: [],
@@ -57,38 +52,73 @@ export class MissionForm extends Form {
     };
   }
 
-  handleRouteIdChange(v) {
-    this.handleChange('route_id', v);
+  componentDidMount() {
     const { flux } = this.context;
-    if (v) {
-      flux.getActions('routes').getRouteById(v, false).then((r) => {
-        if (this.state.is_cleaning_norm) {
-          const { formState: { date_start } } = this.props;
-          if (date_start) {
-            this.handleChange('date_end', addTime(date_start, routeTypesBySlug[r.object_type].time, 'hours'));
+    const technicalOperationsActions = flux.getActions('technicalOperation').getTechnicalOperations;
+    const routesActions = flux.getActions('routes');
+    const missionsActions = flux.getActions('missions').getMissionSources;
+
+    const { formState } = this.props;
+
+    Promise.all([
+      getTechnicalOperationData(formState, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
+      getDataBySelectedRoute(formState, routesActions.getRouteById),
+      getRoutesByMissionId(formState, this.props.isTemplate, routesActions.getRoutesByMissionId, this.props.routesList),
+    ])
+    .then(([technicalOperationsData, selectedRoute, routesList]) =>
+      this.setState({
+        ...technicalOperationsData,
+        selectedRoute,
+        routesList,
+        carsList: this.props.carsList,
+      })
+    );
+  }
+
+  handleRouteIdChange = (route_id) => {
+    const changesObj = {
+      route_id,
+    };
+
+    const { flux } = this.context;
+    if (route_id) {
+      flux.getActions('routes').getRouteById(route_id, false)
+        .then((route) => {
+          if (this.state.is_cleaning_norm) {
+            const { formState: { date_start, date_end } } = this.props;
+
+            if (date_start && date_end) {
+              const { time } = routeTypesBySlug[route.object_type];
+
+              if (diffDates(date_end, date_start, 'hours') > time) {
+                this.props.handleMultiFormChange({
+                  date_end: addTime(date_start, time, 'hours'),
+                });
+              }
+            }
           }
-        }
-        this.setState({ selectedRoute: r });
-      });
+          this.setState({ selectedRoute: route });
+        });
     } else {
       this.setState({ selectedRoute: null });
     }
+
+    this.props.handleMultiFormChange(changesObj);
   }
 
-  async handleCarIdChange(v) {
-    this.handleChange('car_id', v);
+  handleCarIdChange = (car_id) => {
+    this.handleChange('car_id', car_id);
     if (this.props.formState.status) {
       this.handleRouteIdChange(undefined);
     }
   }
 
-  // Зачем тут таймаут?
-  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
-  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
-  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
-  handleTechnicalOperationChange(v) {
-    this.handleChange('technical_operation_id', v);
-    this.handleChange('municipal_facility_id', null);
+  handleTechnicalOperationChange = (technical_operation_id) => {
+    this.props.handleMultiFormChange({
+      technical_operation_id,
+      municipal_facility_id: null,
+    });
+
     this.handleRouteIdChange(undefined);
   }
   handleChangeMF = (name, value) => {
@@ -96,252 +126,125 @@ export class MissionForm extends Form {
     this.handleRouteIdChange(undefined);
   }
 
-  handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
-    const routesList = this.state.routesList.filter(r => !v || r.structure_id === v);
-    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
-      this.handleChange('car_id', null);
+  handleStructureIdChange = (structure_id) => {
+    const { formState } = this.props;
+    const changesObj = {
+      structure_id,
+    };
+
+    if (this.props.carsList.find(car => (!structure_id || car.is_common || car.company_structure_id === structure_id) && car.asuods_id === formState.car_id)) {
+      changesObj.car_id = null;
     }
-    if (!find(routesList, r => r.id === this.props.formState.route_id)) {
-      this.handleChange('route_id', null);
+    if (this.state.routesList.find(route => (!structure_id || (structure_id === route.structure_id)) && (route.id === formState.route_id))) {
+      changesObj.route_id = null;
+
       this.handleRouteIdChange(undefined);
     }
-    this.handleChange('structure_id', v);
+
+    this.props.handleMultiFormChange(changesObj);
   }
 
-  async componentDidMount() {
-    const mission = this.props.formState;
-    const { flux } = this.context;
-    const technicalOperationsActions = flux.getActions('technicalOperation');
-    const routesActions = flux.getActions('routes');
-    const missionsActions = flux.getActions('missions');
-    const isTemplate = this.props.template || false;
-
-    let { carsList } = this.props;
-    let kind_task_ids = null;
-    let { selectedRoute } = this.state;
-    let { routesList } = this.props;
-    let TECH_OPERATIONS = [];
-
-    await missionsActions.getMissionSources();
-
-    if (!isEmpty(mission.route_id)) {
-      selectedRoute = await routesActions.getRouteById(mission.route_id, false);
-    }
-
-    if (!isEmpty(mission.id)) {
-      routesList = await routesActions.getRoutesByMissionId(mission.id, isTemplate);
-    }
-    if (!isEmpty(mission.norm_id)) {
-      routesList = await routesActions.getRoutesBySomeData(mission.norm_id, isTemplate);
-    }
-
-    const {
-      id,
-      mission_source_id,
-    } = mission;
-
-    const { missionSourcesList = [] } = this.props;
-    if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
-      kind_task_ids = getKindTaskIds(id, false);
-    }
-
-    const { result: technicalOperationsList } = await technicalOperationsActions.getTechnicalOperations({ kind_task_ids });
-
-    let type_id = 0;
-    if (mission.status === 'not_assigned') {
-      type_id = (carsList.find(({ asuods_id }) => asuods_id === mission.car_id) || {}).type_id;
-      this.handleChange('type_id', type_id);
-    }
-
-    const {
-      is_new,
-      type_id: m_type_id = type_id,
-    } = mission;
-
-    if ((this.props.fromWaybill || mission.status === 'not_assigned') && m_type_id) {
-      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
-        const {
-          is_new: is_new_to,
-          id: value,
-          name: label,
-          car_func_types,
-        } = to;
-
-        if (is_new_to && car_func_types.find(({ id }) => id === m_type_id)) {
-          newArr.push({ value, label });
-        }
-
-        return newArr;
-      }, []);
-    } else if (is_new) {
-      TECH_OPERATIONS = technicalOperationsList.reduce((newArr, to) => {
-        const {
-          is_new: is_new_to,
-          id: value,
-          name: label,
-        } = to;
-
-        if (is_new_to) {
-          newArr.push({ value, label });
-        }
-
-        return newArr;
-      }, []);
-    } else {
-      TECH_OPERATIONS = technicalOperationsList.map(({ id: value, name }) => ({ value, label: name }));
-    }
-
-
+  createNewRoute = () => {
     this.setState({
-      kind_task_ids,
-      carsList,
-      TECH_OPERATIONS,
-      technicalOperationsList,
-      routesList,
-      selectedRoute,
-    });
-  }
-
-  createNewRoute() {
-    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
-      const {
-        formState: {
-          norm_id,
-        },
-      } = this.props;
-
-      const newR = {
-        norm_id,
+      showRouteForm: true,
+      selectedRoute: {
+        norm_id: this.props.formState.norm_id,
         name: '',
-        polys: this.props.geozonePolys,
         technical_operation_id: this.props.formState.technical_operation_id,
         municipal_facility_id: this.props.formState.municipal_facility_id,
         structure_id: this.props.formState.structure_id,
         object_list: [],
-      };
-      this.setState({
-        showRouteForm: true,
-        selectedRoute: newR,
-      });
-    });
+      },
+    })
   }
 
-  async onFormHide(isSubmitted, result) {
+  onFormHide = (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
-    const {
-      formState: {
-        technical_operation_id,
-        municipal_facility_id,
-        date_start,
-        date_end: date_end_current,
-      },
-    } = this.props;
-    let date_end = date_end_current;
+    const { formState } = this.props;
 
-    const {
-      available_route_types = [],
-      is_cleaning_norm,
-    } = this.state;
+    return handleRouteFormHide(
+      isSubmitted,
+      result,
+      formState,
+      this.state,
+      routesActions.getRouteById,
+      routesActions.getRoutesBySomeData,
+    )
+    .then((newStateData) => {
+      const changesObj = {};
+      const { object_type } = newStateData.selectedRoute || {};
+      changesObj.route_id = newStateData.route_id;
 
-    const stateChangeObject = {};
-    if (isSubmitted === true) {
-      const createdRouteId = result.createdRoute.result[0].id;
-      this.handleChange('route_id', createdRouteId);
-      const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      const routesList = await routesActions.getRoutesBySomeData({
-        municipal_facility_id,
-        technical_operation_id,
-        type: available_route_types.join(','),
-      });
+      if (this.state.is_cleaning_norm && object_type) {
+        const { date_start, date_end } = formState;
+        const { time } = routeTypesBySlug[object_type];
 
-      const { object_type } = selectedRoute;
-      if (is_cleaning_norm) {
-        if (date_start) {
-          const {
-            time,
-          } = routeTypesBySlug[object_type];
-
-          this.handleChange('date_end', addTime(date_start, time, 'hours'));
+        if (date_start && date_end && diffDates(date_end, date_start, 'hours') > time) {
+          changesObj.date_end = addTime(date_start, time, 'hours');
         }
       }
 
-      Object.assign(stateChangeObject, {
-        showRouteForm: false,
-        selectedRoute,
-        routesList,
-        date_end,
-      });
-    } else {
-      Object.assign(stateChangeObject, {
-        showRouteForm: false,
-        selectedRoute: null,
-      });
-    }
-
-    this.setState(stateChangeObject);
-  }
-
-  renderCarOptions(o) {
-    return (
-      <div>
-        {o.available ?
-          <img role="presentation" height="20" src={CarAvailableIcon} style={{ marginRight: 10, marginTop: -2 }} /> :
-          <img role="presentation" height="20" src={CarNotAvailableIcon} style={{ marginRight: 10, marginTop: -2 }} />
-        }
-        {o.label}
-      </div>
-    );
-  }
-  handleChangeDateStart = (v) => {
-    this.handleChange('date_start', v);
-    if (v && this.state.is_cleaning_norm && this.state.selectedRoute) {
-      this.handleChange('date_end', addTime(v, routeTypesBySlug[this.state.selectedRoute.object_type].time, 'hours'));
-    }
-  }
-  getDataByNormId = async (norm_id) => {
-    this.handleChange('norm_id', norm_id);
-
-    const { result: [to_data = {}] } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
-
-    const {
-      is_cleaning_norm,
-      route_types: available_route_types = [],
-    } = to_data;
-
-    if (!this.props.formState.status && !this.props.fromWaybill) {
-      if (!this.state.isTemplate) {
-        this.handleChange('car_id', undefined);
-      }
-
-      const {
-        car_func_types = [],
-      } = to_data;
-      const car_func_types_ids = car_func_types.map(({ asuods_id }) => asuods_id);
-
-      this.context.flux.getActions('cars').getCarsByNormId({ norm_id })
-      .then(({ result: { rows: carsList } }) => {
-        this.setState({ carsList, car_func_types_ids });
-      });
-    }
-    const {
-      formState: {
-        technical_operation_id,
-        municipal_facility_id,
-      },
-    } = this.props;
-
-    this.context.flux.getActions('routes').getRoutesBySomeData({
-      municipal_facility_id,
-      technical_operation_id,
-      type: available_route_types.join(','),
-    })
-    .then((routesList) => {
-      this.setState({ routesList });
+      this.props.handleMultiFormChange(changesObj);
+      this.setState({ ...newStateData });
     });
+  }
 
-    this.setState({ available_route_types, is_cleaning_norm });
+  handleChangeDateStart = (date_start) => {
+    const { date_end } = this.props.formState;
+
+    const changesObj = {
+      date_start,
+      date_end,
+    };
+
+    if (date_start && date_end && this.state.is_cleaning_norm && this.state.selectedRoute) {
+      const { time } = routeTypesBySlug[this.state.selectedRoute.object_type];
+
+      if (diffDates(date_end, date_start, 'hours') > time) {
+        changesObj.date_end = addTime(date_start, time, 'hours');
+      }
+    }
+
+    this.props.handleMultiFormChange(changesObj);
+  }
+
+  getDataByNormId = (norm_id) => {
+    const { flux } = this.context;
+    const {
+      formState,
+      fromWaybill,
+    } = this.props;
+
+    return getDataByNormId(
+      norm_id,
+      formState,
+      fromWaybill,
+      flux.getActions('technicalOperation').getOneTechOperationByNormId,
+      flux.getActions('routes').getRoutesBySomeData,
+      flux.getActions('cars').getCarsByNormId,
+    )
+    .then((newStateData) => {
+      const changesObj = {
+        norm_id,
+      };
+
+      let { car_func_types_ids } = this.state;
+      if (!formState.status && !fromWaybill) {
+        if (!this.state.isTemplate) {
+          changesObj.car_id = undefined;
+        }
+        car_func_types_ids = newStateData.normData.car_func_types.map(({ asuods_id }) => asuods_id);
+      }
+
+      this.props.handleMultiFormChange(changesObj);
+
+      this.setState({
+        ...newStateData,
+        car_func_types_ids,
+        carsList: newStateData.carsList || this.state.carsList,
+      });
+    });
   }
 
   render() {
@@ -369,12 +272,6 @@ export class MissionForm extends Form {
       }
       return newArr;
     }, []);
-
-    const ASSIGN_OPTIONS = [
-      { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
-      { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
-      { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
-    ];
 
     const CARS = carsList
       .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && (lodashIsEmpty(car_func_types_ids) ? true : car_func_types_ids.includes(c.type_id)))
@@ -507,7 +404,7 @@ export class MissionForm extends Form {
                   isEmpty(state.municipal_facility_id)
                 }
                 options={CARS}
-                optionRenderer={this.renderCarOptions}
+                optionRenderer={InsideField.CarOptionLabel}
                 value={state.car_id}
                 onChange={this.handleCarIdChange}
               />

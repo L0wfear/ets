@@ -23,7 +23,7 @@ export default class CompanyStructureActions extends Actions {
       id,
     };
 
-    return CompanyStructureService.delete(payload, true, 'json');
+    return CompanyStructureService.delete(payload, false, 'json');
   }
 
   async getCompanyStructure(linear = false, descendants_by_user = false) {

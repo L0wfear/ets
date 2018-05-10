@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import Div from 'components/ui/Div.jsx';
-import { Modal, Button } from 'react-bootstrap';
+import { get } from 'lodash';
+
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/input/DatePicker';
+import { ExtField } from 'components/ui/Field.jsx';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
 
@@ -24,16 +25,19 @@ class WaybillPrintForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      month: new Date().getMonth() + 1,
-      year: new Date().getYear() + 1900,
-      date_from: getToday9am(),
-      date_to: getTomorrow9am(),
-      DISABLE_SUBMIT: false,
-      formationPeriod: 'month',
-      date: new Date(),
-    };
+    this.state = this.getInitialState();
   }
+
+  getInitialState = () => ({
+    month: new Date().getMonth() + 1,
+    year: new Date().getYear() + 1900,
+    date_from: getToday9am(),
+    date_to: getTomorrow9am(),
+    DISABLE_SUBMIT: false,
+    formationPeriod: 'month',
+    date: new Date(),
+    with_filter: false,
+  })
 
   handleSubmit = async () => {
     global.NOTIFICATION_SYSTEM.notifyWithObject({
@@ -82,12 +86,20 @@ class WaybillPrintForm extends Component {
     }, () => this.props.hide());
   }
 
-  handleChange = (field, value) => {
-    this.setState({ [field]: value });
+  toggleWithFilter = (e) => {
+    this.setState({ with_filter: !this.state.with_filter });
+    e.stopPropagation();
+  }
+  handleChange = (field, e) => {
+    this.setState({ [field]: get(e, ['target', 'value'], e) });
   }
   handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
   handleChangeDate = date => this.setState({ date });
 
+  hide = () => {
+    this.setState(this.getInitialState());
+    this.props.hide();
+  }
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i + 1 }));
@@ -102,71 +114,91 @@ class WaybillPrintForm extends Component {
     const DISABLE_SUBMIT = (this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from));
 
     return (
-      <Modal {...this.props} show={!!this.props.show} bsSize="small">
+      <Modal {...this.props} show={!!this.props.show}>
 
         <Modal.Header>
           <Modal.Title id="contained-modal-title-lg">Печать журнала ПЛ</Modal.Title>
         </Modal.Header>
 
         <ModalBody>
-          <span style={{ marginBottom: 15, display: 'block' }}>Выберите период:</span>
-          {this.props.show === 1 ?
-            <div>
-              <Field
-                type={'select'}
-                label={'Период формирования'}
-                options={FORMATION_PERIOD_OPTIONS}
-                value={this.state.formationPeriod}
+          <Div hidden={this.props.show !== 1}>
+            <span style={{ marginBottom: 15, display: 'block' }}>Выберите период:</span>
+            <ExtField
+              type={'select'}
+              label={'Период формирования'}
+              options={FORMATION_PERIOD_OPTIONS}
+              value={this.state.formationPeriod}
+              clearable={false}
+              disabled={this.state.DISABLE_SUBMIT}
+              onChange={this.handleChangeFormationPeriod}
+            />
+            <Div hidden={this.state.formationPeriod !== 'month'}>
+              <ExtField
+                type="select"
+                label="Месяц"
+                options={MONTHS}
+                sortingFunction={(a, b) => a.value - b.value}
+                value={this.state.month}
                 clearable={false}
+                onChange={this.handleChange}
+                boundKeys={['year']}
+                error={errors.month}
                 disabled={this.state.DISABLE_SUBMIT}
-                onChange={this.handleChangeFormationPeriod}
               />
-              <br />
-              <Div hidden={this.state.formationPeriod !== 'month'}>
-                <Field
-                  type="select"
-                  label="Месяц"
-                  options={MONTHS}
-                  sortingFunction={(a, b) => a.value - b.value}
-                  value={this.state.month}
-                  clearable={false}
-                  onChange={v => this.handleChange('month', v)}
-                  error={errors.month}
-                  disabled={this.state.DISABLE_SUBMIT}
+              <ExtField
+                type="select"
+                label="Год"
+                options={YEARS}
+                value={this.state.year}
+                clearable={false}
+                onChange={this.handleChange}
+                boundKeys={['year']}
+                error={errors.year}
+                disabled={this.state.DISABLE_SUBMIT}
+              />
+            </Div>
+            <Div hidden={this.state.formationPeriod !== 'date'}>
+              <ExtField
+                type="date"
+                time={false}
+                label="Дата"
+                value={this.state.date}
+                onChange={this.handleChangeDate}
+                disabled={this.state.DISABLE_SUBMIT}
+              />
+            </Div>
+          </Div>
+          <Div hidden={this.props.show === 1}>
+            <Row className={'waybill-print-form'}>
+              <Col md={6}>
+                <ExtField
+                  type={'date'}
+                  time
+                  label={'Выберите период:'}
+                  date={this.state.date_from}
+                  onChange={this.handleChange}
+                  boundKeys={['date_from']}
                 />
-                <Field
-                  type="select"
-                  label="Год"
-                  options={YEARS}
-                  value={this.state.year}
-                  clearable={false}
-                  onChange={v => this.handleChange('year', v)}
-                  error={errors.year}
-                  disabled={this.state.DISABLE_SUBMIT}
+              </Col>
+              <Col md={6}>
+                <ExtField
+                  type={'date'}
+                  time
+                  date={this.state.date_to}
+                  onChange={this.handleChange}
+                  boundKeys={['date_to']}
                 />
-              </Div>
-              <Div hidden={this.state.formationPeriod !== 'date'}>
-                <Field
-                  type="date"
-                  time={false}
-                  label="Дата"
-                  value={this.state.date}
-                  onChange={this.handleChangeDate}
-                  disabled={this.state.DISABLE_SUBMIT}
-                />
-              </Div>
-            </div>
-            :
-            <div>
-              <Div className="inline-block reports-date">
-                <Datepicker time={false} date={this.state.date_from} onChange={v => this.handleChange('date_from', v)} />
-              </Div>
-              <Div className="inline-block reports-date">
-                <Datepicker time={false} min={this.state.date_from} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
-              </Div>
-              {DISABLE_SUBMIT ? <label style={{ color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10 }}>Даты должны быть указаны</label> : ''}
-            </div>
-          }
+              </Col>
+            </Row>
+            <Row className={'checkbox-print-with-filter'}>
+              <Col md={12} onClick={this.toggleWithFilter}>
+                <input type={'checkbox'} onChange={this.toggleWithFilter} checked={this.state.with_filter} /><span>{'С применением фильтрации'}</span>
+              </Col>
+            </Row>
+            <Div hidden={!DISABLE_SUBMIT}>
+              <label style={{ color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10 }}>Даты должны быть указаны</label>
+            </Div>
+          </Div>
         </ModalBody>
 
         <Modal.Footer>

@@ -2,7 +2,7 @@ import { Actions } from 'flummox';
 
 import { createValidDate, createValidDateTime } from 'utils/dates';
 import { Repair, ObjectProperty } from 'api/Services';
-import REPAIR from '../constants/repair';
+import REPAIR from 'constants/repair';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 export default class RepairActions extends Actions {
@@ -43,6 +43,11 @@ export default class RepairActions extends Actions {
     };
 
     return Repair.path(progress).get(payload);
+  }
+  getObjectVersions(id) {
+    const { objects } = REPAIR;
+
+    return Repair.path(`${objects}/${id}/program_versions`).get({}, false, 'json').then(({ result: { rows } }) => rows);
   }
   cleartDataAboutObjectById() {
     return new Promise(res => res({ resolve: { rows: [] } }));

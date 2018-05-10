@@ -170,13 +170,9 @@ export default class MissionFormWrap extends FormWrap {
             assign_to_waybill: formState.assign_to_waybill,
           };
 
-          const missions = keys(this.props.missions)
-            .map(key => this.props.missions[key]);
-
-            let closeForm = true;
-
-          for (const m of missions) {
-            const e = await createMissions(flux, { [m.id]: m }, externalPayload);
+          let closeForm = true;
+          for (const mission of missionsArr) {
+            const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
             if (e) closeForm = false;
           }
 
@@ -185,6 +181,27 @@ export default class MissionFormWrap extends FormWrap {
         }
       }
     }
+  }
+
+  handlMultiFormStateChange = (changesObj) => {
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+
+    Object.entries(changesObj).forEach(([field, e]) => {
+      const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      console.info('Form changed', field, value);
+      formState[field] = value;
+    });
+
+    const newState = {};
+    formErrors = this.validate(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
   }
 
   render() {
@@ -198,6 +215,7 @@ export default class MissionFormWrap extends FormWrap {
             show={this.props.showForm}
             onHide={this.props.onFormHide}
             template
+            handleMultiFormChange={this.handlMultiFormStateChange}
             {...this.state}
           />
         </Div>

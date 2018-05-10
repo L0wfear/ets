@@ -170,8 +170,10 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  */
 export const setZeroSecondsToDate = date => moment(date).seconds(0);
 
-export const diffDates = (dataA, dataB, typeDiff = 'seconds', float = true) =>
-  moment(dataA).diff(moment(dataB), typeDiff, float);
-
+export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
+  moment(dateA).diff(moment(dateB), typeDiff, float);
 
 export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();
+
+export const diffDayOfDate = (dateA, dateB) =>
+  diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');

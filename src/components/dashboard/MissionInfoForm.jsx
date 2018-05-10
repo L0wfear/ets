@@ -249,13 +249,13 @@ class MissionInfoForm extends Form {
               <li className="colorRed"><b>Пройдено с превышением рабочей скорости:&nbsp;</b>
                 {getDataTraveledYet([...traveled_high_speedCheck_unit, report_data.time_high_speed])}
               </li>
-              <li><b>Общее время стоянок: </b>
+              <li><b>{'Общее время стоянок: '}</b>
                 {!isNaN(parseInt(this.state.parkingCount, 0)) ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...' }
               </li>
-              <li><b>Общий пробег с работающим оборудованием: </b>
+              <li><b>{'Общий пробег с работающим оборудованием: '}</b>
                 {`${sensor_traveled_working ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit) : 'Данные будут отображены после выполнения задания.'}`}
               </li>
-              <li><b>Процент выполнения задания %:</b>
+              <li><b>{'Процент выполнения задания %: '}</b>
                 {Math.floor(current_percentage) || '-'}
               </li>
             </ul>

@@ -9,7 +9,17 @@
 @import './media.scss';
 @import './user-notifications.scss';
 @import './version-notifications.scss';
-@import url('https://fonts.googleapis.com/css?family=Roboto:900,700,500,400');
+@import './program-repaier.scss';
+@import './order.scss';
+
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/home/uoiasfy/all/chch/ets-frontend/src/assets/fonts/Roboto-Regular.ttf');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
 
 html, body {
   height: 100%;
@@ -2848,13 +2858,6 @@ div.none {
 
 .car-info-tracking {
 
-  .till-now-checkbox {
-    position: absolute;
-    top: -26px;
-    right: 20px;
-    font-weight: 200;
-  }
-
   .reload-button {
     padding: 6px 9px;
     height: 34px;
@@ -3121,12 +3124,9 @@ div.none {
   position: absolute;
   width: 100%;
   left: 0;
-  z-index: -1;
+  z-index: 99999;
   text-align: center;
   div {
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 150px;
     display: inline-block;
   }
 }
@@ -3254,4 +3254,39 @@ div.none {
 
 .listStyleTypeNone{
   list-style-type: none;
+}
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkbox-print-with-filter {
+  margin-top: 10px;
+  cursor: pointer;
+  &>div {
+    display: flex;
+
+    &>span {
+      margin: 0 4px;
+    }
+  }
+}
+.flex-space-beetwen-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-space-beetwen-baseline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.till-now {
+  font-weight: 200;
+  &>span {
+    margin-top: 2px;
+    margin-left: 5px;
+    color: #000;
+  }
 }

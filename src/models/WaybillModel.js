@@ -78,21 +78,21 @@ export const waybillSchema = {
       key: 'odometr_start',
       title: 'Одометр.Выезд',
       type: 'number',
-      float: 3,
+      integer: true,
       required: false,
     },
     {
       key: 'motohours_start',
       title: 'Счетчик моточасов.Выезд',
       type: 'number',
-      float: 3,
+      integer: true,
       required: false,
     },
     {
       key: 'motohours_equip_start',
       title: 'Счетчик моточасов оборудования.Выезд',
       type: 'number',
-      float: 3,
+      integer: true,
       required: false,
     },
     {
@@ -107,28 +107,24 @@ export const waybillSchema = {
       title: 'Работа',
       required: false,
       type: 'number',
-      float: 1,
     },
     {
       key: 'downtime_hours_duty',
       title: 'Дежурство',
       required: false,
       type: 'number',
-      float: 1,
     },
     {
       key: 'downtime_hours_dinner',
       title: 'Обед',
       required: false,
       type: 'number',
-      float: 1,
     },
     {
       key: 'downtime_hours_repair',
       title: 'Ремонт',
       required: false,
       type: 'number',
-      float: 1,
     },
   ],
   dependencies: {
@@ -246,11 +242,18 @@ const closingProperties = [
   },
   {
     key: 'fuel_end',
-    title: 'Топливо.Возврат',
+    title: 'Топливо.Возврат по таксировке',
     type: 'number',
     float: 3,
     min: 0,
     required: true,
+  },
+  {
+    key: 'fact_fuel_end',
+    title: 'Топливо.Возврат фактический',
+    type: 'number',
+    float: 3,
+    min: 0,
   },
   {
     key: 'equipment_fuel_end',
@@ -263,21 +266,21 @@ const closingProperties = [
     key: 'odometr_end',
     title: 'Одометр. Возвращение в гараж, км',
     type: 'number',
-    float: 3,
+    integer: true,
     required: 'odometr_start',
   },
   {
     key: 'motohours_end',
     title: 'Счетчик моточасов.Возвращение в гараж, м/ч',
     type: 'number',
-    float: 3,
+    integer: true,
     required: 'motohours_start',
   },
   {
     key: 'motohours_equip_end',
     title: 'Счетчик моточасов оборудования. Возвращение в гараж, м/ч',
     type: 'number',
-    float: 3,
+    integer: true,
     required: 'motohours_equip_start',
   },
   {
@@ -327,14 +330,6 @@ const closingDependencies = {
     },
   ],
   'fact_arrival_date': [
-    {
-      validator(value, { plan_arrival_date }) {
-        if (moment(value).diff(moment(plan_arrival_date), 'minutes') > 0) {
-          return '"Возвращение факт." должно быть не позже "Возвращение план."';
-        }
-        return false;
-      },
-    },
     {
       validator(value, { fact_departure_date }) {
         if (moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {

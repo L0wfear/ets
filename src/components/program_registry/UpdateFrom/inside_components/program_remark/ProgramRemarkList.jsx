@@ -6,8 +6,8 @@ import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
 
-import ProgramRemarkTable from './ProgramRemarkTable';
-import ProgramRemarkFormWrap from './ProgramRemarkFormWrap';
+import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
+import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
@@ -85,17 +85,13 @@ export default class ProgramRemarkList extends CheckableElementsList {
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
-    .then(() => {
-      const {
-        selectedElement = {},
-      } = this.state;
-      const id = selectedElement[this.selectField];
-
-      return this.removeElementAction(id).then(() => {
-        this.setState({ selectedElement: null });
-        global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
-      });
-    })
+    .then(() =>
+      this.removeElementAction(this.state.selectedElement[this.selectField])
+        .then(() => {
+          this.setState({ selectedElement: null });
+          global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
+        })
+    )
     .catch(() => {});
   }
 
@@ -112,17 +108,13 @@ export default class ProgramRemarkList extends CheckableElementsList {
       title: 'Внимание',
       body: bodyConfirmDialogs.reject(1),
     })
-    .then(() => {
-      const {
-        selectedElement = {},
-      } = this.state;
-      const id = selectedElement[this.selectField];
-
-      return this.rejectRemarksAction(id).then(() => {
-        this.setState({ selectedElement: null });
-        global.NOTIFICATION_SYSTEM.notify(notifyTexts.reject(1));
-      });
-    })
+    .then(() =>
+      this.rejectRemarksAction(this.state.selectedElement[this.selectField])
+        .then(() => {
+          this.setState({ selectedElement: null });
+          global.NOTIFICATION_SYSTEM.notify(notifyTexts.reject(1));
+        })
+    )
     .catch(() => {});
   }
 
@@ -139,17 +131,13 @@ export default class ProgramRemarkList extends CheckableElementsList {
       title: 'Внимание',
       body: bodyConfirmDialogs.fix(1),
     })
-    .then(() => {
-      const {
-        selectedElement = {},
-      } = this.state;
-      const id = selectedElement[this.selectField];
-
-      return this.fixRemarksAction(id).then(() => {
-        this.setState({ selectedElement: null });
-        global.NOTIFICATION_SYSTEM.notify(notifyTexts.fix(1));
-      });
-    })
+    .then(() =>
+      this.fixRemarksAction(this.state.selectedElement[this.selectField])
+        .then(() => {
+          this.setState({ selectedElement: null });
+          global.NOTIFICATION_SYSTEM.notify(notifyTexts.fix(1));
+        })
+    )
     .catch(() => {});
   }
 
@@ -159,9 +147,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
     callBackForOneElement,
     notifyText,
   }) => {
-    const {
-      checkedElements = {},
-    } = this.state;
+    const { checkedElements = {} } = this.state;
 
     const checkElList = Object.values(checkedElements);
     const countCheckEl = checkElList.length;
@@ -172,16 +158,10 @@ export default class ProgramRemarkList extends CheckableElementsList {
         body: bodyConfirmDialog(countCheckEl),
       })
       .then(() => {
-        const elList = Array(countCheckEl).fill(false);
-
-        checkElList.forEach((el, i) => {
-          callbackForCheckedElement(el[this.selectField]).then(() => {
-            elList[i] = true;
-            if (!elList.some(elD => !elD)) {
-              this.updateAction();
-              global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
-            }
-          });
+        Promise.all(checkElList.map(el => callbackForCheckedElement(el[this.selectField])))
+        .then(() => {
+          this.updateAction();
+          global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
         });
         this.setState({
           checkedElements: {},
@@ -190,9 +170,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
       })
       .catch(() => {});
     } else {
-      callBackForOneElement().then(() => {
-        this.updateAction();
-      });
+      callBackForOneElement().then(() => this.updateAction());
     }
   }
 
@@ -241,12 +219,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
   }
 
   init() {
-    const {
-      program_version_id,
-    } = this.props;
-
-    const { flux } = this.context;
-    flux.getActions('repair').getRepairListByType('programRemarkRegistry', { program_version_id });
+    this.context.flux.getActions('repair').getRepairListByType('programRemarkRegistry', { program_version_id: this.props.program_version_id });
   }
 
   getAdditionalProps = () => ({

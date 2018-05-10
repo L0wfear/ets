@@ -1,4 +1,14 @@
 import { Store } from 'flummox';
+import cloneDeep from 'lodash/cloneDeep';
+
+const initialState = {
+  showPlates: false,
+  showTrack: true,
+  showPolygons: true,
+  showSelectedElement: true,
+  showGeoobjects: false,
+  showMarkers: true,
+};
 
 export default class SettingsStore extends Store {
 
@@ -14,15 +24,9 @@ export default class SettingsStore extends Store {
     this.register(settingsActions.setShowSelectedElement, this.handleSetShowSelectedElement);
     this.register(settingsActions.setShowGeoobjects, this.handleSetShowGeoobjects);
     this.register(settingsActions.setShowMarkers, this.handleSetShowMarkers);
+    this.register(settingsActions.setInitialState, this.handleClearStore);
 
-    this.state = {
-      showPlates: false,
-      showTrack: true,
-      showPolygons: true,
-      showSelectedElement: true,
-      showGeoobjects: false,
-      showMarkers: true,
-    };
+    this.state = cloneDeep(initialState);
   }
 
   handleSetShowPlates(showPlates) {
@@ -70,4 +74,7 @@ export default class SettingsStore extends Store {
     });
   }
 
+  handleClearStore() {
+    this.state = cloneDeep(initialState);
+  }
 }

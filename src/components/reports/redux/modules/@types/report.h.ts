@@ -5,6 +5,7 @@ interface IReportMetaFieldDetails {
    * Table header full name
    */
   name: string;
+  filter_field?: string;
 }
 
 

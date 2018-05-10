@@ -1,4 +1,4 @@
-import { flow } from 'lodash/fp';
+import { flow as flow_fp } from 'lodash/fp';
 import { withProps } from 'recompose';
 
 import {
@@ -13,6 +13,9 @@ import {
 } from 'components/compositions/file-input';
 
 import BaseField from 'components/ui/Field';
+
+// что-то не зашло
+const flow: any = flow_fp;
 
 const BaseDataTimeField = withProps({
   type: 'date',

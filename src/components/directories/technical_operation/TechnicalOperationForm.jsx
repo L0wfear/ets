@@ -4,6 +4,7 @@ import ModalBody from 'components/ui/Modal';
 import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 
@@ -16,7 +17,7 @@ const boundKeysObj = {
 export default class TechnicalOperationForm extends Form {
 
   handleCarFuncTypesChange = (v) => {
-    const data = v.split(',').map(d => +d);
+    const data = v.map(d => +d);
 
     const { typesList = [] } = this.props;
 
@@ -29,9 +30,8 @@ export default class TechnicalOperationForm extends Form {
     this.props.handleFormChange('car_func_types', types);
   }
 
-  handleObjectsChange(v) {
-    const data = v.split(',');
-    const objects = this.props.technicalOperationsObjectsList.filter((obj) => data.includes(obj.id.toString()));
+  handleObjectsChange(arrayOfObjects) {
+    const objects = this.props.technicalOperationsObjectsList.filter((obj) => arrayOfObjects.includes(obj.id));
     this.props.handleFormChange('objects', objects);
   }
 
@@ -47,20 +47,19 @@ export default class TechnicalOperationForm extends Form {
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
     const {
-      workKindsList = [],
       typesList = [],
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
     } = this.props;
     const isPermitted = false;
 
-    const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
-    const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));
+    const SEASONS = seasonsList.map(defaultSelectListMapper);
     const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
-    const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({ id, full_name }) => ({ value: id, label: full_name }));
-    const NEEDS_BRIGADE_OPTIONS = [{ value: 1, label: 'Да' }, { value: 0, label: 'Нет' }];
+    const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList
+                                        .map(({ id, full_name }) => ({ value: id, label: full_name }));
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
-
+    const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
+    console.log(state.check_types, TECHNICAL_OPERATION_TYPES)
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 
@@ -71,66 +70,92 @@ export default class TechnicalOperationForm extends Form {
         <ModalBody>
 
           <Row>
-            <Col md={6}>
-              <Field type="string" label="Наименование"
+            <Col md={3}>
+              <ExtField
+                type="string"
+                label="Наименование"
                 value={state.name}
-                onChange={this.handleChange.bind(this, 'name')}
+                onChange={this.handleChange}
+                boundKeys={['name']}
                 disabled={!isPermitted}
-                error={errors[name]}
+                error={errors.name}
               />
             </Col>
 
             <Col md={3}>
-              <Field type="select" label="Объект"
-                multi
-                value={state.objects.map(cft => cft.id).join(',')}
-                options={TECHNICAL_OPERATION_OBJECTS}
-                onChange={this.handleObjectsChange.bind(this)}
+              <ExtField
+                type="string"
+                label="Элемент"
+                value={state.elements_text}
+                onChange={this.handleChange}
+                boundKeys={['elements_text']}
+                error={errors.elements_text}
                 disabled={!isPermitted}
+                clearable={true}
               />
             </Col>
 
             <Col md={3}>
-              <Field
+              <ExtField
                 type="select"
                 label="Сезон"
                 value={state.season_id}
                 options={SEASONS}
-                onChange={this.handleChange.bind(this, 'season_id')}
-                error={errors[name]}
+                onChange={this.handleChange}
+                boundKeys={['season_id']}
+                error={errors.season_id}
+                disabled={!isPermitted}
+              />
+            </Col>
+
+            <Col md={3}>
+              <ExtField
+                type="string"
+                label="Способ уборки"
+                value={state.work_type_name}
+                onChange={this.handleChange}
+                boundKeys={['work_type_name']}
+                error={errors.work_type_name}
                 disabled={!isPermitted}
               />
             </Col>
           </Row>
 
           <Row>
+
             <Col md={3}>
-              <Field type="select" label="Вид работ"
-                options={WORK_KINDS}
-                value={state.work_kind_id}
-                onChange={this.handleChange.bind(this, 'work_kind_id')}
-                error={errors[name]}
-                disabled={!isPermitted}
-              />
-            </Col>
-            <Col md={2} hidden>
-              <Field type="select" label="C участием РКУ"
-                options={NEEDS_BRIGADE_OPTIONS}
-                value={+state.needs_brigade}
-                onChange={this.handleChange.bind(this, 'needs_brigade')}
-                disabled={!isPermitted}
-                hidden
-              />
-            </Col>
-            <Col md={4} mdOffset={-2}>
-              <Field type="number" label="Максимальная скорость"
-                value={state.max_speed}
-                onChange={this.handleChange.bind(this, 'max_speed')}
-                error={errors[name]}
+              <ExtField
+                type="string"
+                label="Условия"
+                value={state.conditions}
+                onChange={this.handleChange}
+                boundKeys={['conditions']}
+                error={errors.conditions}
                 disabled={!isPermitted}
               />
             </Col>
 
+            <Col md={3}>
+              <ExtField
+                type="string"
+                label="Число операций в сутки (норматив)"
+                value={CONDITIONS}
+                onChange={this.handleChange}
+                boundKeys={['norm_period']}
+                disabled={!isPermitted}
+              />
+            </Col>
+            <Col md={3}>
+              <ExtField
+                type="number"
+                label="Максимальная скорость"
+                value={state.max_speed}
+                onChange={this.handleChange}
+                boundKeys={['max_speed']}
+                error={errors.max_speed}
+                disabled={!isPermitted}
+              />
+            </Col>
             <Col md={3}>
               <ExtField
                 label="Тип проверки"
@@ -138,17 +163,33 @@ export default class TechnicalOperationForm extends Form {
                 multi
                 options={TECHNICAL_OPERATION_TYPES}
                 value={state.check_types}
-                clearable={false}
                 onChange={this.handleChange}
                 boundKeys={boundKeysObj.check_types}
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
-              <Field type="select" label="Учитывать в отчетах"
-                options={NEEDS_BRIGADE_OPTIONS}
-                value={+state.use_in_reports}
-                onChange={this.handleChange.bind(this, 'use_in_reports')}
+          </Row>
+
+          <Row>
+            <Col md={3}>
+              <Field
+                type="select"
+                label="Объект"
+                multi
+                value={state.objects.map(cft => cft.id)}
+                options={TECHNICAL_OPERATION_OBJECTS}
+                onChange={this.handleObjectsChange.bind(this)}
+                disabled={!isPermitted}
+              />
+            </Col>
+
+            <Col md={3}>
+              <ExtField
+                type="boolean"
+                label="Учёт в отчетах"
+                checked={!!state.use_in_reports}
+                onChange={this.handleChange}
+                boundKeys={['use_in_reports', !state.use_in_reports]}
                 disabled={!isPermitted}
               />
             </Col>
@@ -156,7 +197,9 @@ export default class TechnicalOperationForm extends Form {
 
           <Row>
             <Col md={3} className="vehicle-types-container">
-              <Field type="select" label="Типы ТС"
+              <Field
+                type="select"
+                label="Типы ТС"
                 multi
                 value={_.uniq(state.car_func_types.map(cft => cft.asuods_id)).join(',')}
                 options={CAR_TYPES}

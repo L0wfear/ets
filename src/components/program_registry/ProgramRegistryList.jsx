@@ -1,8 +1,8 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import ProgramRegistryTable from './ProgramRegistryTable.tsx';
-import ProgramRegistrySwitch from './ProgramRegistrySwitch.tsx';
+import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTable.tsx';
+import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch.tsx';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })

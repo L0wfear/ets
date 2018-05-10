@@ -1,42 +1,66 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button as BootstrapButton } from 'react-bootstrap';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {
+  setMissionData,
+  setDutyMissionData,
+} from 'redux/modules/order/action-order';
+import Div from 'components/ui/Div.jsx';
+import connectToStores from 'flummox/connect';
+import { missionTemplateListPermission } from 'components/directories/order/constant-order';
+import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 
 import OrderAssignmentsInfoTable from 'components/directories/order/order_assignment/OrderAssignmentsInfoTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
 
-class OrderAssignmentsList extends React.Component<any, any> {
-  render() {
-    const {
-      seleted = null,
-      dataSource: {
-        technical_operations: data = [],
-        order_info,
-      },
-    } = this.props;
+const Button = enhanceWithPermissions(BootstrapButton);
+const style: any = { marginLeft: 20, fontWeight: 'bold' };
 
-    return (
-      <Row>
-        <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка централизованного задания</h4>
-        <Col md={8}>
-          <OrderAssignmentsInfoTable
-            noHeader
-            preventNoDataMessage
-            selected={seleted}
-            selectField={'order_operation_id'}
-            onRowSelected={this.props.onRowSelectedAssignment}
-            data={data}
-          />
-        </Col>
-        <Col md={4}>
-          <OrderInfoTable
-            noHeader
-            preventNoDataMessage
-            data={[{ id: 0, order_info }]}
-          />
+const OrderAssignmentsList: React.SFC<any> = props => (
+  <Div hidden={props.hidden} >
+    <Row>
+      <Col md={8} className="flex-space-beetwen">
+        <h4 style={style}>Расшифровка централизованного задания</h4>
+        <div className="flex-button-group">
+          <Button permisspions={missionTemplateListPermission.mission} onClick={props.handleClickOnCM} disabled={props.disabledAssignmentButtonMission}>Создать задание</Button>
+          <Button permissions={missionTemplateListPermission.dutyMission} onClick={props.handleClickOnCDM} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</Button>
+        </div>
       </Col>
-      </Row>
-    );
-  }
-}
+      <Col md={8}>
+        <OrderAssignmentsInfoTable />
+      </Col>
+      <Col md={4}>
+        <OrderInfoTable />
+      </Col>
+    </Row>
+  </Div>
+);
 
-export default OrderAssignmentsList;
+const mapStateToProps = (state) => ({
+  hidden: !state.order.selectedElementOrder,
+  disabledAssignmentButtonMission: state.order.disabledAssignmentButton.mission,
+  disabledAssignmentButtonDutyMission: state.order.disabledAssignmentButton.dutyMission,
+});
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(
+    {
+      setMissionData,
+      setDutyMissionData,
+    },
+    dispatch,
+  ),
+})
+
+const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
+  ...stateProps,
+  handleClickOnCM: () => dispatchProps.setMissionData({ mission_source_id }),
+  handleClickOnCDM: () => dispatchProps.setDutyMissionData({ mission_source_id }),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps,
+)(connectToStores(OrderAssignmentsList, ['missions']));

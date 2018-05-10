@@ -3,7 +3,7 @@ import { Col, Button } from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import { createValidDate } from 'utils/dates';
 
-import { OBJ_TAB_INDEX } from '../ProgramObjectFormDT.h';
+import { OBJ_TAB_INDEX } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
 import Table from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table';
 import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
@@ -139,25 +139,17 @@ class PlanTab extends React.Component<any, any> {
   handleChangeTable = (numRow, field, e) => {
     const valueNew = e !== undefined && e !== null && !!e.target ? e.target.value : e;
 
-    const {
-      state: {
-        elements = [],
-      },
-      selectedObj,
-      objectPropertyList = [],
-    } = this.props;
-
-    const newElements = elements.map((d, i) => {
+    const newElements = this.props.state.elements.map((d, i) => {
       if (i !== numRow) {
         return { ...d };
       }
       const newLine = { ...d };
 
       if (field === 'object_property_id') {
-        const { measure_unit_name = null, original_name = null } = objectPropertyList.find(({ id }) => id === valueNew) || {};
+        const { measure_unit_name = null, original_name = null } = this.props.objectPropertyList.find(({ id }) => id === valueNew) || {};
 
         newLine.measure_unit_name = measure_unit_name;
-        newLine.value = selectedObj.data[original_name];
+        newLine.value = this.props.selectedObj.data[original_name];
         newLine.object_property_id = valueNew;
 
         return { ...newLine };
@@ -180,16 +172,7 @@ class PlanTab extends React.Component<any, any> {
     this.props.pushElement();
   }
   handleClickOnRemove = () => {
-    const {
-      selectedRow,
-    } = this.state;
-    const {
-      state: {
-        elements = [],
-      },
-    } = this.props;
-
-    const newElement = elements.filter((d, i) => i !== selectedRow);
+    const newElement = this.props.state.elements.filter((d, i) => i !== this.state.selectedRow);
 
     this.props.handleChange('elements', newElement);
     this.setState({ selectedRow: null });
@@ -287,9 +270,7 @@ class PlanTab extends React.Component<any, any> {
                 disabled={!isPermitted}
               />
             </div>
-            <div style={{
-             width: 40,
-            }}>—</div>
+            <div style={{ width: 40 }}>—</div>
             <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
                 type={'date'}

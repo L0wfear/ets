@@ -129,11 +129,13 @@ export default class DrawMap extends PolyMap {
     let id = length > 0 ? length : 0;
     const geometry = feature.getGeometry();
     geometry.forEachSegment((start, end) => {
+      id += 1;
+
       const featureSegment = new ol.Feature({
         geometry: new ol.geom.LineString([start, end]),
         id,
       });
-      id += 1;
+
       this.props.onDrawFeatureAdd(featureSegment, featureSegment.getGeometry().getCoordinates(), featureSegment.getGeometry().getLength());
     });
     this.draw.setActive(false);
@@ -177,6 +179,7 @@ export default class DrawMap extends PolyMap {
     const end = coordinates;
     const startObject = _.last(objectList);
     const start = [startObject.end.x_msk, startObject.end.y_msk];
+
     const featureSegment = new ol.Feature({
       geometry: new ol.geom.LineString([start, end]),
       id: objectList.length,

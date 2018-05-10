@@ -24,7 +24,7 @@ export default class UserNotificationList extends CheckableElementsList {
   }
   handleMarkAllAsRead = () => {
     confirmDialog({
-      title: 'Внимание',
+      title: 'Внимание!',
       body: 'Вы уверены, что хотите отметить все уведомления как прочитанные?',
     })
     .then(() => {

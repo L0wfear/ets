@@ -7,6 +7,7 @@ import { saveData } from 'utils/functions';
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
 // import DtCoverageReportHeader from './DtCoverageReportHeader.jsx';
+import DataPicker from 'components/ui/input/DatePicker';
 
 // const TWO_MINUTES = 1000 * 60 * 2;
 
@@ -50,11 +51,14 @@ export default class DtCoverageReport extends Component {
     // clearInterval(this.refreshInterval);
   }
 
-  async getReport() {
+  getReport = async () => {
     const { flux } = this.context;
-    const res = await flux.getActions('reports').getDtCoverageReport(/*this.state.date_start, this.state.date_end*/);
+    const { location: { query } } = this.props;
+
+    const res = await flux.getActions('reports').getDtCoverageReport(this.state.date_start, this.state.date_end, query);
     const dates = res.result.meta;
-    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: new Date() });
+
+    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: dates.date_end });
   }
 
   // handleDateStartChange(date) {
@@ -63,6 +67,9 @@ export default class DtCoverageReport extends Component {
   //
   //   this.setState({ date_start, date_end });
   // }
+
+  handleChangeDateStart = date_start => this.setState({ date_start });
+  handleChangeDateEnd = date_end => this.setState({ date_end });
 
   showForm(exportType) {
     this.setState({ showForm: true, exportType });

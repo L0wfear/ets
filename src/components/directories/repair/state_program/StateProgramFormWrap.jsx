@@ -2,8 +2,8 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import StateProgramForm from './StateProgramForm';
-import { formValidationSchema } from './schema';
+import StateProgramForm from 'components/directories/repair/state_program/StateProgramForm';
+import { formValidationSchema } from 'components/directories/repair/state_program/schema';
 
 class StateProgramFormWrap extends FormWrap {
 

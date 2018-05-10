@@ -4,7 +4,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
 import ElementsList from 'components/ElementsList.jsx';
-import ObjectPropertyTable from './ObjectPropertyTable.tsx';
+import ObjectPropertyTable from 'components/directories/repair/object_property/ObjectPropertyTable.tsx';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `${REPAIR.objectProperty}` })
@@ -62,20 +62,14 @@ export default class ObjectProperty extends Component {
   state = {
     typeData: 'odh',
   }
-  setNewType = ({ target: { id } }) => {
-    let { typeData } = this.state;
 
-    if (typeData !== id) {
-      typeData = id;
-      this.setState({
-        typeData,
-      });
+  setNewType = ({ target: { id: typeDateNew } }) => {
+    if (this.state.typeData !== typeDateNew) {
+      this.setState({ typeData: typeDateNew });
     }
   }
   render() {
-    const {
-      typeData,
-    } = this.state;
+    const { typeData } = this.state;
 
     return (
       <div>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Button, Dropdown, MenuItem, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { isEmpty } from 'utils/functions';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
@@ -22,12 +22,23 @@ interface IPropsWaybillFooter {
   handlePrintFromMiniButton(): void;
   handleClose(taxes: any): void;
   handlePrint(is: boolean): void;
+  message: string;
 }
+
+const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
+
+const popoverHoverFocus = (
+  <Popover id="popover-trigger-hover-focus" title="Внимание!">
+   {message}
+  </Popover>
+);
 
 const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
   <Div>
     <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft)}>
-      <Button id="waybill-refresh" title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
+      <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
+       <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
+      </OverlayTrigger>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
       <Dropdown id="waybill-print-dropdown_ptint" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
@@ -38,7 +49,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
           <MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
           <MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
-          <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина(</MenuItem>
+          <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown id="waybill-print-dropdown_save" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
@@ -46,10 +57,10 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem id="save-3C" eventKey={'plate_special'}>Форма 3-С</MenuItem>
-          <MenuItem id="save-4P" eventKey={'plate_truck'}>Форма 4-П</MenuItem>
-          <MenuItem id="save-6" eventKey={'plate_bus'}>Форма №6 (спец)</MenuItem>
-          <MenuItem id="save-3" eventKey={'plate_car'}>Форма №3</MenuItem>
+          <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
+          <MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
+          <MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
+          <MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>

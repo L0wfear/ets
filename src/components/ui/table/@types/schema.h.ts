@@ -22,6 +22,8 @@ type FieldTypes =
   'datetime' |
   'advanced-number'|
   'advanced-string' |
+  'advanced-date' |
+  'advanced-datetime' |
   'number' |
   'customFilter';
 
@@ -33,6 +35,8 @@ interface IDataTableColFilter {
   type: FieldTypes;
   options?: IReactSelectOption[];
   labelFunction?: ILabelFunction;
+  byKey?: string;
+  byLabel?: string;
   filterFunction?: ITypeCustomFilterFunc;
 }
 

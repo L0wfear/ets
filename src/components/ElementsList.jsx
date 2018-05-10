@@ -99,29 +99,21 @@ class ElementsList extends React.Component {
         showForm: true,
       });
     }
-
-    // TODO реализовать вызов ошибки в случае пустого айдишника
-    const id = props && props.data ? props.data[this.selectField] : null;
+    const selectedElement = { ...props.data };
 
     if (props.fromKey) {
-      const selectedElement = find(this.state.elementsList, el => el.id ? el.id === id : el[this.selectField] === id);
-      if (selectedElement) {
-        this.setState({ selectedElement });
-      }
+      this.setState({ selectedElement });
       return;
     }
 
     this.clicks += 1;
 
     if (this.clicks === 1) {
-      const selectedElement = find(this.state.elementsList,
-        el => el.id ? el.id === id : el[this.selectField] === id
-      );
       this.setState({ selectedElement });
       setTimeout(() => {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
-          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField] && this.state.readPermission) {
+          if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
             onDoubleClick.call(this);
           }
         }
@@ -130,12 +122,14 @@ class ElementsList extends React.Component {
     }
   }
 
-  setNewSelectedElement = (selectedElement) => {
-    this.setState({
-      showForm: true,
-      selectedElement,
-    });
-  }
+  setNewSelectedElement = (selectedElement) =>
+    Promise.resolve(this.setState({ showForm: false }))
+      .then(() => {
+        this.setState({
+          showForm: true,
+          selectedElement,
+        });
+      });
 
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
@@ -188,8 +182,8 @@ class ElementsList extends React.Component {
 
     const removeCallback = this.removeElementCallback || (() => {});
 
-    return confirmDialog({
-      title: 'Внимание',
+    confirmDialog({
+      title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
     .then(() => {

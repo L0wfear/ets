@@ -33,3 +33,19 @@ export const getKindTaskIds = (id, fromOrder) => {
     }
   }
 };
+
+export const checkRouteByNew = (state, route) => {
+  const { is_new = true } = state;
+
+  if (is_new) {
+    const {
+      is_new: route_is_new,
+    } = route;
+
+    if (route_is_new) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+};

@@ -163,7 +163,7 @@ export default class Track {
 
 
   fetch(flux, from_dt = getStartOfToday(), to_dt = new Date().getTime()) {
-    const id = this.owner.point.id;
+    const carData = this.owner.point.car_actual;
     const updating = this.continuousUpdating;
 
     if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
@@ -174,7 +174,7 @@ export default class Track {
     this.continuousUpdating = false;
     this.isLoading = true;
 
-    return flux.getActions('cars').getTrack(id, from_dt, to_dt)
+    return flux.getActions('cars').getTrack(carData, from_dt, to_dt)
                 .then((obj) => {
                   this.parkings = obj.parkings;
                   this.events = obj.events;

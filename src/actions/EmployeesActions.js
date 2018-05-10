@@ -81,6 +81,12 @@ export default class EmployeesActions extends Actions {
   createEmployee(formState) {
     const payload = makeFilesToBackendOne(formState);
     payload.birthday = createValidDate(payload.birthday);
+    if (payload.drivers_license_date_end) {
+      payload.drivers_license_date_end = createValidDate(payload.drivers_license_date_end);
+    }
+    if (payload.special_license_date_end) {
+      payload.special_license_date_end = createValidDate(payload.special_license_date_end);
+    }
     payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
     delete payload.position_name;
     delete payload.position_key;

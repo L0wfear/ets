@@ -48,9 +48,9 @@ export default class ObjectsActions extends Actions {
     return CarService.get(payload).then(r => ({ result: r.result.rows }));
   }
 
-  async getModels(special_model_id) {
+  getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;
-    return await ModelsService.get(payload);
+    return ModelsService.get(payload);
   }
 
   getSpecialModels() {
@@ -61,8 +61,8 @@ export default class ObjectsActions extends Actions {
     return CustomersService.get();
   }
 
-  async getTypes(payload = {}) {
-    return await TypesService.get(payload);
+  getTypes(payload = {}) {
+    return TypesService.get(payload);
   }
 
   getSensorTypes() {

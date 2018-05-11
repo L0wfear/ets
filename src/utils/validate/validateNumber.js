@@ -15,7 +15,15 @@ const fixedValidators = [
         return undefined;
       }
       let error = '';
-
+      if (config.float) {
+        if (typeof value === 'number') {
+          error = undefined;
+        } else {
+          // old
+          const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${config.float + 1},}$`);
+          error = regexp.test(value) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с ${config.float} знаками после запятой` : undefined;
+        }
+      }
       if (config.integer) {
         error = error || (typeof value !== 'number' && !/^\d+$/.test(value) ? `Поле "${config.title || config.key}" должно быть целочисленным` : undefined);
       }

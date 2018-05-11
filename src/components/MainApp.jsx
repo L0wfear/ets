@@ -239,7 +239,7 @@ class MainApp extends React.Component {
             </Div>
           </Col>
           <Col md={6}>
-            <span>{`${company_name} ${structure_name}`}</span>
+            <span>{`${company_name ? company_name : ''} ${structure_name ? structure_name : ''}`}</span>
           </Col>
           <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>

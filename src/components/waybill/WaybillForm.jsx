@@ -21,7 +21,7 @@ import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import { diffDates } from 'utils/dates';
 
-import { driverHasLicense, driverHasSpecialLicense, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
+import { driverHasLicenseWithActiveDate, driverHasSpecialLicenseWithActiveDate, getCars, getDrivers, getTrailers, validateTaxesControl } from './utils';
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
 import WaybillFooter from './form/WaybillFooter';
@@ -244,8 +244,8 @@ class WaybillForm extends Form {
         if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
 
         const { gov_number } = formState;
-        const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicense(driver);
-        const hasSpecialLicense = isFourDigitGovNumber(gov_number) && driverHasSpecialLicense(driver);
+        const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicenseWithActiveDate(driver);
+        const hasSpecialLicense = isFourDigitGovNumber(gov_number) && driverHasSpecialLicenseWithActiveDate(driver);
 
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', newDriverId);

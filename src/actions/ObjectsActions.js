@@ -49,7 +49,7 @@ export default class ObjectsActions extends Actions {
 
   getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;
-    return ModelsService.get(payload);
+    return ModelsService.get(payload).then(ans => _.get(ans, ['result', 'rows'], ans));
   }
 
   getSpecialModels() {

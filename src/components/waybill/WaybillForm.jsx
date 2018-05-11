@@ -37,8 +37,8 @@ import {
   getFuelCorrectionRate,
   getFuelRatesByCarModel,
   getTitleByStatus,
-  driverHasLicense,
-  driverHasSpecialLicense,
+  driverHasLicenseWithActiveDate,
+  driverHasSpecialLicenseWithActiveDate,
   getTrailers,
   getWaybillDrivers,
   validateTaxesControl,
@@ -389,8 +389,8 @@ class WaybillForm extends Form {
         if (driver === null) return;
 
         const { gov_number } = formState;
-        const hasLicense = !hasMotohours(gov_number) && driverHasLicense(driver);
-        const hasSpecialLicense = hasMotohours(gov_number) && driverHasSpecialLicense(driver);
+        const hasLicense = !hasMotohours(gov_number) && driverHasLicenseWithActiveDate(driver);
+        const hasSpecialLicense = hasMotohours(gov_number) && driverHasSpecialLicenseWithActiveDate(driver);
 
         if (hasLicense || hasSpecialLicense) {
           this.props.handleFormChange('driver_id', driver_id);

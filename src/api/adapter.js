@@ -134,7 +134,14 @@ function httpMethod(url, data = {}, method, type, params = {}) {
         return new Promise((res, rej) => rej());
       }
       checkOnAdminInfo({ ...responseBody });
-      return new Promise(res => res({ ...responseBody, __other_data: { backendVersion } }));
+      return new Promise(res => res(new Proxy(responseBody, {
+        get(target, name) {
+          if (name === '__other_data') {
+            return { backendVersion };
+          }
+          return target[name];
+        },
+      })));
     } catch (e) {
       console.error('Неверный формат ответа с сервера', url);
       return new Promise((res, rej) => rej());

@@ -23,9 +23,9 @@ const getTableMeta = (props) => {
       {
         name: 'work_kind_name',
         displayName: 'Вид работ',
-        type: 'number',
+        type: 'string',
         filter: {
-          type: 'advanced-number',
+          type: 'multiselect',
         },
       },
       {

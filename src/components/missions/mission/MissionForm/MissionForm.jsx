@@ -64,7 +64,7 @@ export class MissionForm extends Form {
     Promise.all([
       getTechnicalOperationData(formState, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
       getDataBySelectedRoute(formState, routesActions.getRouteById),
-      getRoutesByMissionId(formState, this.props.isTemplate, routesActions.getRoutesByMissionId, this.props.routesList),
+      getRoutesByMissionId(formState, this.props.template, routesActions.getRoutesByMissionId, this.props.routesList),
     ])
     .then(([technicalOperationsData, selectedRoute, routesList]) =>
       this.setState({
@@ -232,7 +232,7 @@ export class MissionForm extends Form {
 
       let { car_func_types_ids } = this.state;
       if (!formState.status && !fromWaybill) {
-        if (!this.state.isTemplate) {
+        if (!this.state.template) {
           changesObj.car_id = undefined;
         }
         car_func_types_ids = newStateData.normData.car_func_types.map(({ asuods_id }) => asuods_id);

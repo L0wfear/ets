@@ -35,8 +35,8 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
-          <MenuItem eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
+          <MenuItem eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
+          <MenuItem eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
           <MenuItem eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
           <MenuItem eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
@@ -46,8 +46,8 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <MenuItem eventKey={'plate_bus'}>Форма 1 (автобус)</MenuItem>
-          <MenuItem eventKey={'plate_truck'}>Форма 2 (грузовое ТС)</MenuItem>
+          <MenuItem eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
+          <MenuItem eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
           <MenuItem eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
           <MenuItem eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>

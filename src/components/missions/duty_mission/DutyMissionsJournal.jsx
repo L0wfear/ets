@@ -299,16 +299,19 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     ];
   }
 
+  changeSort(field, direction) {
+    this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });    
+  }
+
+  changeFilter(filter) {
+    this.setState({ filter });
+  }
+
   getAdditionalProps() {
-    const changeSort = (field, direction) =>
-      this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
-
-    const changeFilter = filter => this.setState({ filter });
-
     return {
       structures: this.props.companyStructureLinearList,
-      changeSort,
-      changeFilter,
+      changeSort: this.changeSort,
+      changeFilter: this.changeFilter,
       filterValues: this.state.filter,
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
       useServerFilter: true,

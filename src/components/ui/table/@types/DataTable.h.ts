@@ -33,4 +33,5 @@ export interface IPropsDataTable<TResultObject> {
   filterValues?: any;
   haveMax?: boolean;
   checked?: any;
+  withNormInitialData?: boolean;
 }

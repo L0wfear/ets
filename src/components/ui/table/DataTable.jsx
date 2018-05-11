@@ -83,6 +83,7 @@ export default class DataTable extends React.Component {
       onColumnControlChange: PropTypes.func,
       // TODO перенести на более высокий уровень абстракции
       columnControlStorageName: PropTypes.string,
+      withNormInitialData: PropTypes.boolean,
     };
   }
 
@@ -128,6 +129,7 @@ export default class DataTable extends React.Component {
       onColumnControlChange: () => {},
       // TODO перенести на более высокий уровень абстракции
       columnControlStorageName: 'ets-storage',
+      withNormInitialData: false,
     };
   }
 
@@ -147,6 +149,52 @@ export default class DataTable extends React.Component {
       data: [],
       originalData: [],
     };
+
+    // временно до выпиливания гридла
+    if (props.withNormInitialData) {
+      const {
+        initialSort,
+        initialSortAscending,
+        firstUseExternalInitialSort,
+      } = this.state;
+
+      const changesFields = {
+        initialSort,
+        initialSortAscending,
+        firstUseExternalInitialSort,
+        originalData: this.state.originalData,
+        data: this.state.data,
+        filterValues: this.state.filterValues,
+      };
+
+      if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
+        changesFields.initialSort = props.initialSort;
+        changesFields.firstUseExternalInitialSort = false;
+      }
+
+      if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
+        changesFields.initialSortAscending = props.initialSortAscending;
+      }
+      if (props.useServerFilter) {
+        changesFields.filterValues = props.filterValues;
+      }
+      if (props.filterResetting) {
+        changesFields.filterValues = {};
+      }
+
+      if (Array.isArray(props.results) && props.results !== this.state.originalData) {
+        changesFields.originalData = props.results;
+        changesFields.data = props.results;
+      }
+
+      if (!props.useServerSort || !props.useServerFilter) {
+        changesFields.data = makeData(changesFields.data, this.state, changesFields);
+      }
+      this.state = {
+        ...this.state,
+        ...changesFields,
+      };
+    }
   }
 
   // Сортировка теперь тут

@@ -173,6 +173,7 @@ export default class WaybillFormWrap extends FormWrap {
     let formState = _.cloneDeep(this.state.formState);
     formState[field] = value;
     console.log(field, value);
+
     formState = calculateWaybillMetersDiff(formState, field, value);
 
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
@@ -211,6 +212,8 @@ export default class WaybillFormWrap extends FormWrap {
     }
 
     Object.entries(fields).forEach(([field, value]) => {
+      console.log(field, value)
+
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
     });

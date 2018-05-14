@@ -40,7 +40,16 @@ class RouteFormWrap extends FormWrap {
 
   resetFormState() {
     const { formState } = this.state;
-    formState.polys = formState.type === 'simple_dt' ? _.cloneDeep(this.props.dtPolys) : _.cloneDeep(this.props.odhPolys);
+    formState.polys = {};
+    if (formState.type !== 'mixed') {
+      formState.polys = _.cloneDeep(this.props.dtPolys);
+    }
+    if (formState.type !== 'simple_dt') {
+      formState.polys = {
+        ...formState.polys,
+        ..._.cloneDeep(this.props.odhPolys),
+      };
+    }
     formState.object_list = [];
     formState.draw_object_list = [];
     this.setState({ formState });

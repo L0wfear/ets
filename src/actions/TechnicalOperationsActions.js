@@ -17,11 +17,8 @@ export default class TechnicalOperationsActions extends Actions {
     return TechnicalOperationTypesService.get();
   }
 
-  getTechnicalOperations(all) {
-    const payload = {
-      actual_seasons: all ? 0 : 1,
-    };
-    return getTechnicalOperations(payload);
+  getTechnicalOperations() {
+    return getTechnicalOperations();
   }
 
   async getTechnicalOperationsByCarId(car_id) {

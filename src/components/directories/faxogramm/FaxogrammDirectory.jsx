@@ -110,22 +110,16 @@ class FaxogrammDirectory extends ElementsList {
       .then(({ blob, fileName }) => saveData(blob, fileName));
   }
 
-  getAdditionalProps() {
-    // const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const changeSort = (field, direction) =>
+  changeSort(field, direction) {
     this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
-    const changeFilter = (filter) => {
-      this.context.flux.getActions('objects').getFaxogramms(
-        MAX_ITEMS_PER_PAGE,
-        this.state.page * MAX_ITEMS_PER_PAGE,
-        this.state.sortBy,
-        filter,
-        this.state.create_date_from,
-        this.state.create_date_to,
-      );
-      this.setState({ filter });
-    };
-    return { changeSort, changeFilter, filterValues: this.state.filter };
+  }
+
+  changeFilter(filter) {
+    this.setState({ filter });
+  }
+
+  getAdditionalProps() {
+    return { changeSort: this.changeSort, changeFilter: this.changeFilter, filterValues: this.state.filter };
   }
 
   handleChange(field, value) {

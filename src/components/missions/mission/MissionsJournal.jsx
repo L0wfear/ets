@@ -279,23 +279,29 @@ export default class MissionsJournal extends CheckableElementsList {
     return buttons;
   }
 
-  getAdditionalProps() {
-    const changeSort = (field, direction) =>
+  changeSort(field, direction) {
     this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
-    const changeFilter = filter => this.setState({ filter });
+  }
 
+  changeFilter(filter) {
+    this.setState({ filter });
+  }
+
+  getAdditionalProps() {
     return {
       mapView: this.mapView,
       structures: this.props.companyStructureLinearList,
-      changeSort,
-      changeFilter,
+      changeSort: this.changeSort,
+      changeFilter: this.changeFilter,
       filterValues: this.state.filter,
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
     };
   }
+
   export() {
     this.setState({ showPrintForm: true });
   }
+
   additionalRender() {
     return (
       <Paginator

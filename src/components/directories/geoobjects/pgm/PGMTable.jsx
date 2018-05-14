@@ -48,9 +48,9 @@ export const tableMeta = ({
     {
       name: 'pgm_stores_type_name',
       displayName: 'Тип ПГМ',
-      type: 'number',
+      type: 'string',
       filter: {
-        type: 'advanced-number',
+        type: 'multiselect',
       },
     },
   ],

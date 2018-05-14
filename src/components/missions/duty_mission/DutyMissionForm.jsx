@@ -22,6 +22,8 @@ export class DutyMissionForm extends Form {
       selectedRoute: null,
       showRouteForm: false,
       routesList: [],
+      employeesList: this.props.employeesList,
+      lastBrigade: [],
     };
   }
 
@@ -66,14 +68,17 @@ export class DutyMissionForm extends Form {
       .indexOf(parseInt(id, 10)) !== -1;
   }
 
-  handleForemanIdChange = (foreman_id) => {
-    let value = foreman_id;
-
-    if (value !== '' && !this.isActiveEmployee(value)) {
+  handleForemanIdChange = async (foreman_id) => {
+    if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
       onlyActiveEmployeeNotification();
-      value = this.props.formState.foreman_id;
+      return;
     }
-    this.props.handleFormChange('foreman_id', value);
+
+    if (!isEmpty(foreman_id)) {
+      const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
+      this.setState({ lastBrigade });
+      this.props.handleFormChange('foreman_id', foreman_id);
+    }
   }
 
   handleBrigadeIdListChange(v) {
@@ -100,7 +105,6 @@ export class DutyMissionForm extends Form {
 
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
-
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
     }
@@ -110,10 +114,10 @@ export class DutyMissionForm extends Form {
                                    !this.props.formState.technical_operation_id ||
                                    this.props.readOnly;
 
-      if (isDisabledRouteField) {
+      if (isDisabledRouteField && selectedRoute) {
         routesList = Array.of(selectedRoute);
       }
-      if (!isDisabledRouteField) {
+      if (!isDisabledRouteField && selectedRoute) {
         routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
         const findSelectedRoute_in_routesList = routesList.find(v => v.id === selectedRoute.id);
         if (!findSelectedRoute_in_routesList) {

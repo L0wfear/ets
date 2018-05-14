@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { EmployeeService, DriverService, WaybillDriverService, ForemanService } from 'api/Services';
+import { EmployeeService, DriverService, WaybillDriverService, ForemanService, LastBrigadeService } from 'api/Services';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import { mapKeys, cloneDeep } from 'lodash';
@@ -45,6 +45,10 @@ export default class EmployeesActions extends Actions {
 
   getForemans() {
     return ForemanService.get();
+  }
+
+  getLastBrigade(id) {
+    return LastBrigadeService.path(id).get().then(({ result: { last_brigade } }) => last_brigade);
   }
 
   getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {

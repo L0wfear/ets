@@ -444,6 +444,30 @@ body.application hr {
   z-index: 9999999;
 }
 
+.missions-list {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &>.mission-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    &>div {
+      width: 95%;
+      & .mission-title {
+        white-space: nowrap;
+        display: block;
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      & .mission-timestand {
+        color: #666;
+      }
+    }
+  }
+}
+
 body.application {
   padding: 0;
   margin: 0;
@@ -1820,6 +1844,9 @@ body {
 
 .pointer {
   cursor: pointer;
+}
+.fontSize24 {
+  font-size: 24px;
 }
 
 .pointer_completed {

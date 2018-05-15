@@ -320,8 +320,11 @@ class WaybillForm extends Form {
 
       this.handleChange('mission_id_list', newMissionIdList);
 
+      if (!isEqual(oldMissionsList, missionsList) && availableMissions.length > 0 && notificate) {
+        global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
+      }
+
       this.setState({ missionsList, notAvailableMissions });
-      availableMissions.length > 0 && notificate && global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
     });
   }
 

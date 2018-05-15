@@ -137,8 +137,9 @@ export class DutyMissionForm extends Form {
     }
 
     // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
-
-    missionsActions.getMissions(mission.technical_operation_id);
+    if (mission.technical_operation_id) {
+      missionsActions.getMissions(mission.technical_operation_id);
+    }
     await missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids });

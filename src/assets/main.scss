@@ -510,6 +510,27 @@ body.application {
   cursor: default !important;
 }
 
+.app-toolbar-new {
+  top: 84px;
+  color: #fff;
+  position: absolute;
+  z-index: 1000;
+  left: 20px;
+  & .cars-legend {
+    display: flex;
+  }
+}
+
+.cars-legend {
+  & .cars-filters {
+   & .button-cars-filter {
+     max-width: 20px;
+     max-height: 20px;
+     background-color: red;
+   }
+  }
+}
+
 .app-toolbar {
   .row {
     margin: 0;
@@ -582,8 +603,9 @@ body.application {
   }
 }
 
-
-
+.toolbar-children {
+  padding-left: 15px;
+}
 
 .toolbar-filters-wrap__close-btn {
   position: absolute;
@@ -941,6 +963,30 @@ body.application {
   outline: none;
 }
 
+
+.status-filter_options {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+
+  &.main {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  &.option-with-checkbox {
+    margin-bottom: 4px;
+  }
+  & .toolbar-with-checkbox {
+    margin-top: 4px;
+    transform: translateX(5px);
+  }
+  & .toolbar-children {
+    margin-left: 15px;
+  }
+}
+
 .status-filter-icon {
   width: 13px;
   height: 13px;
@@ -949,9 +995,32 @@ body.application {
   vertical-align: middle;
   margin-right: 5px;
   padding: 4px;
-  border: 2px solid white;
+  border: 2px solid black;
   outline:none;
   margin-top: -3px;
+
+  &.active {
+    background-color: white;
+  }
+  &.in-move {
+    background-color: #2ECC40;
+  }
+  &.half-stop {
+    background-color: #563d7c;
+  }
+  &.stop {
+    background-color: #f34b7d;
+  }
+  &.not-connected {
+    background-color: #888888;
+  }
+
+  &.track {
+    background-color: #3C68FA;
+  }
+  &.geometry {
+    background-color: #f03;
+  }
 }
 
 .type-filter-icon {
@@ -1204,11 +1273,11 @@ body.application {
 
 .app-toolbar-show-geoobjects {
   padding: 1px 16px;
-  ul, li {
-    list-style-type: none;
+  &.hide-options {
+    width: 175px;
   }
-  ul {
-    padding-left: 15px;
+  &.show-options {
+    width: 350px;
   }
   .checkbox {
     margin-top: 5px;

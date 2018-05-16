@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 
 import { toggleShowInNotConnected } from 'redux/modules/toolbar.js';
-import { getIsShowNotActiveValue, getInNotConnectedCarsCount } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowNotActiveValue, getInNotConnectedCarsCount } from 'redux/selectors/toolbar';
 
 @connect(
   state => ({

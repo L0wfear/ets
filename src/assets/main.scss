@@ -1616,6 +1616,18 @@ body.application {
 
     display:inline-block;
   }
+  &-mission-speed {
+    display: flex;
+    align-items: end;
+    cursor: pointer;
+    &>input {
+      margin-top: 0px;
+    }
+    &>span {
+      width: 80px;
+      margin-left: 5px;
+    }
+  }
 }
 
 .openlayers-container {

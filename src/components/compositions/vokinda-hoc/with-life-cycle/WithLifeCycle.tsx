@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { FluxContext } from 'utils/decorators';
 
 const WithLifeCycle: any = lyfeCycleMethods => Component =>
-  FluxContext(
     class WithLifeCycle extends React.Component<any, any> {
       componentDidMount() {
         try {
-          lyfeCycleMethods.componentDidMount({
-            ...this.props,
-            flux: this.context.flux,
-          })
+          lyfeCycleMethods.componentDidMount(this.props);
         } catch (e) {
           //
         }
@@ -17,10 +12,7 @@ const WithLifeCycle: any = lyfeCycleMethods => Component =>
 
       componentWillUnmount() {
         try {
-          lyfeCycleMethods.componentWillUnmount({
-            ...this.props,
-            flux: this.context.flux,
-          })
+          lyfeCycleMethods.componentWillUnmount(this.props);
         } catch (e) {
           //
         }
@@ -28,10 +20,7 @@ const WithLifeCycle: any = lyfeCycleMethods => Component =>
 
       componentWillReceiveProps(props) {
         try {
-          lyfeCycleMethods.componentWillUnmount({
-            ...this.props,
-            flux: this.context.flux,
-          })
+          lyfeCycleMethods.componentWillReceiveProps(this.props);
         } catch (e) {
           //
         }
@@ -46,6 +35,5 @@ const WithLifeCycle: any = lyfeCycleMethods => Component =>
         );
       }
     }
-  );
 
 export default WithLifeCycle;

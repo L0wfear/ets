@@ -7,7 +7,6 @@ import { polyStyles } from 'constants/polygons.js';
 import { pointStyles } from 'constants/points.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
-import { swapCoords } from 'utils/geo';
 
 import Measure from './controls/measure/measure.jsx';
 
@@ -103,7 +102,7 @@ export default class OpenLayersMap extends Component {
       zoom: null,
     };
   }
-  
+
   setMeasureActive = measureActive => this.setState({ measureActive });
 
   /**

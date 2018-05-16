@@ -13,6 +13,8 @@ import missions from './MissionsActions.js';
 import objects from './ObjectsActions.js';
 import odh from './ODHActions.js';
 import points from './PointsActions.js';
+// Временно
+import pointsHybrid from './PointsHybridActions.js';
 import repair from './RepairAction';
 import reports from './ReportsActions.js';
 import routes from './RoutesActions.js';
@@ -34,6 +36,7 @@ export {
   objects,
   odh,
   points,
+  pointsHybrid,
   repair,
   reports,
   routes,

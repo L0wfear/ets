@@ -118,7 +118,7 @@ export default class VehicleInfo extends Component {
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}
           element={this.state.missionInfoData}
-          fromMonitor
+          flux={this.props.flux}
         />
       </div>
     );

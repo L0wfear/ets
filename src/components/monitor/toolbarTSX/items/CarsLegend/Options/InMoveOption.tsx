@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 
 import { toggleShowInMove } from 'redux/modules/toolbar.js';
-import { getIsShowInMoveValue, getInMoveCarsCount } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowInMoveValue, getInMoveCarsCount } from 'redux/selectors/toolbar';
 
 @connect(
   state => ({

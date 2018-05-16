@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 
 import { toggleShowInHalfSTop } from 'redux/modules/toolbar.js';
-import { getIsShowHalfStopValue, getInHalfStopCarsCount } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowHalfStopValue, getInHalfStopCarsCount } from 'redux/selectors/toolbar';
 
 @connect(
   state => ({

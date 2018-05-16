@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import TrackLine from '/home/uoiasfy/all/chch/ets-frontend/src/components/map/markersNew/TrackLine';
+import TrackLine from 'components/map/markersNew/TrackLine';
 import CanvasLayer from 'components/map/layers/base/CanvasLayer';
 import { getTrackLinesByFilter } from 'redux/selectors/oneCarInfo';
 export function containsCoordinateLine(extent, coordinates) {

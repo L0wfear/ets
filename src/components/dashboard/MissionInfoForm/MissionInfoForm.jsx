@@ -78,11 +78,15 @@ class MissionInfoForm extends Form {
       report_data,
       route_data,
     } = formState;
-    
+
     const { flux } = this.context;
-    await flux.getActions('objects').getCars();
+    if (!this.props.fromMonitor) {
+      await flux.getActions('objects').getCars();
+    }
     if (!this.state.tooLongDates) {
-      flux.getActions('points').createConnection();
+      if (!this.props.fromMonitor) {
+        flux.getActions('points').createConnection();
+      }
       flux.getActions('points').setSingleCarTrack(car_data.gov_number);
       flux.getActions('points').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
     }
@@ -104,7 +108,9 @@ class MissionInfoForm extends Form {
 
   componentWillUnmount() {
     if (!this.state.tooLongDates) {
-      this.context.flux.getActions('points').closeConnection();
+      if (!this.props.fromMonitor) {
+        this.context.flux.getActions('points').closeConnection();
+      }
       this.context.flux.getActions('points').setSingleCarTrack(null);
     }
   }

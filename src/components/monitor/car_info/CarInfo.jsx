@@ -53,6 +53,7 @@ const SensorColorLegend = ({ colors }) => {
 
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/label-has-for */
+const initialMaxSpeed = 60;
 
 @autobind
 export default class CarInfo extends Component {
@@ -84,6 +85,7 @@ export default class CarInfo extends Component {
         level: [],
       },
       sensorsInfo: {},
+      maxSpeed: initialMaxSpeed,
     };
   }
 
@@ -150,6 +152,16 @@ export default class CarInfo extends Component {
     store.handleSetShowGradient(!flag);
   }
 
+  toggleMaxSpeed = () => {
+    const maxSpeed = this.state.maxSpeed === initialMaxSpeed ? this.state.maxSpeedMissionInfo : initialMaxSpeed;
+    const track = this.props.car.marker.track;
+    if (track) {
+      track.maxSpeed = maxSpeed;
+    }
+
+    this.setState({ maxSpeed });
+  }
+
   getLegend() {
     const speed = this.state.maxSpeed;
     return (
@@ -161,6 +173,9 @@ export default class CarInfo extends Component {
         <div className="track-legend-item">
           <div className="track-legend-point" style={{ backgroundColor: TRACK_COLORS.red }} />
           <div className="track-legend-text">{speed != null ? `${speed + 1}+ км/ч` : 'нет данных'}</div>
+        </div>
+        <div onClick={this.toggleMaxSpeed} className="track-legend-mission-speed">
+          <input type="checkbox" checked={speed !== initialMaxSpeed} /><span>{'Ограничение по заданию'}</span>
         </div>
       </div>
     );
@@ -178,8 +193,8 @@ export default class CarInfo extends Component {
     }
 
     const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
-    track.maxSpeed = info.max_speed;
-    this.setState({ missions: info.missions, maxSpeed: info.max_speed, imageUrl: car ? car.type_image_name : null });
+    track.maxSpeed = this.state.maxSpeed;
+    this.setState({ missions: info.missions, maxSpeedMissionInfo: info.max_speed, imageUrl: car ? car.type_image_name : null });
   }
 
   fetchVehicleData = () => this.fetchTrack();

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 
 import { toggleShowGeometry } from 'redux/modules/toolbar.js';
-import { getIsShowGeometry } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowGeometry } from 'redux/selectors/toolbar';
 
 @connect(
   state => ({

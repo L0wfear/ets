@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 
 import { toggleShowTrack } from 'redux/modules/toolbar.js';
-import { getIsShowTrack } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowTrack } from 'redux/selectors/toolbar';
 
 @connect(
   state => ({

@@ -5,7 +5,7 @@ import { openWs, closeWs, selectCar } from 'redux/modules/carsPoints.js';
 import { loadCarInfo, loadTrack } from 'redux/modules/oneCarInfo';
 
 import CarMarker from 'components/map/markersNew/CarMarker';
-import { getIsShowGovNumber } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowGovNumber } from 'redux/selectors/toolbar';
 import {
   getcarsDict,
   getFiltredCarsPoint,

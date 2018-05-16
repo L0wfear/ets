@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 
 import { toggleShowGovNumber } from 'redux/modules/toolbar.js';
-import { getIsShowGovNumber } from '/home/uoiasfy/all/chch/ets-frontend/src/redux/selectors/toolbar';
+import { getIsShowGovNumber } from 'redux/selectors/toolbar';
 
 @connect(
   state => ({

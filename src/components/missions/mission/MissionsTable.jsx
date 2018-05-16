@@ -186,7 +186,7 @@ export default (props) => {
   const renderers = {
     current_percentage: ({ data }) => <span>{Math.floor(data) || '-'}</span>,
     rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
-    mission_source_name: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
+    mission_source_id: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,
@@ -204,7 +204,6 @@ export default (props) => {
     },
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
     car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
-    mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
     type_id: ({ data }) => <div>{get(find(props.carsList, { 'type_id': data }), 'type_name', '')}</div>,
     technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
   };

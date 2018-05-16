@@ -10,6 +10,8 @@ export const TRACK_COLORS = {
 
 export const TRACK_LINE_OPACITY = 0.85;
 export const TRACK_LINE_WIDTH = 5;
+export const TRACK_SIMPLE_LINE_WIDTH = 5;
+export const TRACK_COLOR_LINE_WIDTH = 4;
 export const TRACK_POINT_BORDER_WIDTH = 0.4;
 export const TRACK_POINT_RADIUS = 4;
 export const SHOW_ONLY_POINTS_WITH_SPEED_CHANGES = false;

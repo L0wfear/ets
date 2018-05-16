@@ -36,7 +36,7 @@ export interface IRouteData{
   id: number;
   check_unit: string;
   name: string;
-  export type: string;
+  type: string;
 }
 export interface IReportData {
   entries: any[];
@@ -55,7 +55,7 @@ export interface IReportData {
   traveled_raw: number;
 }
 export interface ITechnicalOperationData {
-  check_export type: string;
+  check_type: string;
   id: number;
   max_speed: number;
   name: string;

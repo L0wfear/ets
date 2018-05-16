@@ -14,6 +14,8 @@ function FluxContext(target) {
   target.contextTypes = Object.assign({}, target.contextTypes, {
     flux: PropTypes.object,
   });
+
+  return target;
 }
 
 /**

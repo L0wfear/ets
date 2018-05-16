@@ -8,7 +8,8 @@ import {
 } from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
@@ -254,6 +255,7 @@ export default class MissionsJournal extends CheckableElementsList {
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}
           element={this.state.mission}
+          flux={this.context.flux}
         />
         <PrintForm
           onExport={this.processExport.bind(this)}

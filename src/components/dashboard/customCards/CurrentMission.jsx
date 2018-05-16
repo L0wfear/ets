@@ -9,10 +9,10 @@ import { getFormattedDateTimeSeconds } from 'utils/dates';
 import { wrappedRef } from 'utils/decorators';
 // TODO move to HOC
 import Preloader from 'components/ui/Preloader.jsx';
+import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';
-import MissionInfoFormWrap from '../MissionInfoFormWrap.jsx';
 import MissionRejectForm from '../../missions/mission/MissionRejectForm.jsx';
 
 const VALUE_FOR_FIXED = {
@@ -224,6 +224,7 @@ export default class CurrentMission extends DashboardCardMedium {
         onFormHide={() => this.setState({ showMissionInfoForm: false })}
         showForm={this.state.showMissionInfoForm}
         element={this.state.selectedMission}
+        flux={this.context.flux}
         {...this.props}
       />
     );

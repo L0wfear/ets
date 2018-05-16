@@ -223,8 +223,9 @@ export default class CarInfo extends Component {
   toggleTrackPlaying() {
     const { marker } = this.props.car;
     this.state.trackingMode && this.toggleCarTracking();
-    const success = marker.togglePlay();
+    const success = !marker.track.isLoading;
     if (success) {
+      marker.togglePlay();
       this.setState({ trackPaused: !this.state.trackPaused });
     } else {
       this.stopTrackPlaying();

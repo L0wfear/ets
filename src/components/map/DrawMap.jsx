@@ -215,7 +215,7 @@ export default class DrawMap extends PolyMap {
 
   render() {
     const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
-console.log(this.map.getView().getCenter())
+
     return (
       <div ref={node => (this._container = node)} className="openlayers-container">
         <Div hidden={this.props.disabled || this.props.objectsType === 'points' || !objectList.length}>

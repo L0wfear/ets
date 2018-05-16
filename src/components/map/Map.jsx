@@ -8,7 +8,6 @@ import { pointStyles } from 'constants/points.js';
 import { leakIcon } from 'constants/leakIcon.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { GeoJSON, defaultZoom } from 'utils/ol';
-import { swapCoords } from 'utils/geo';
 
 import Measure from './controls/measure/measure.jsx';
 import { leaks } from '../monitor/FeatureInfo.jsx';

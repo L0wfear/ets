@@ -3,8 +3,7 @@ export const GEOOBJECTS_TYPES = {
   'odh': 'odh',
   'ssp': 'ssp',
   'msp': 'msp',
-  'pgm_store': 'pgm',
-  'pgm': 'pgm',
+  'pgm_store': 'pgmStore',
   'snow_storage': 'snowStorage',
   'danger_zone': 'dangerZone',
   'carpool': 'carpool',
@@ -15,39 +14,46 @@ export const GEOOBJECTS_TYPES = {
   'fountains': 'fountains',
 };
 
+export const GEOOBJECTS_TYPES_REVERSE = Object.entries(GEOOBJECTS_TYPES).reduce((newObj, [key, value]) => ({
+  ...newObj,
+  [value]: key,
+}), {});
+
 export const GEOOBJECTS_TYPES_LABELS = {
   'dt': 'ДТ',
   'odh': 'ОДХ',
   'ssp': 'ССП',
   'msp': 'МСП',
   'pgm_store': 'Пункты отпуска ПГМ',
-  'pgm': 'Пункты отпуска ПГМ',
+  'pgmStore': 'Пункты отпуска ПГМ',
   'danger_zone': 'Особо опасные места',
+  'dangerZone': 'Особо опасное место',
   'snow_storage': 'Пункты временного складирования снега',
   'snowStorage': 'Пункты временного складирования снега',
-  'dangerZone': 'Особо опасное место',
   'carpool': 'Автобазы',
   'fueling_water': 'Базы гидрантов',
   'fuelingWater': 'Базы гидрантов',
   'bridges': 'Мосты',
   'pedestrian_tunnels': 'Пешеходные тоннели',
+  'pedestrianTunnels': 'Пешеходные тоннели',
   'pedestrian_tunnel_exits': 'Выходы из пешеходных тоннелей',
+  'pedestrianTunnelExits': 'Выходы из пешеходных тоннелей',
   'fountains': 'Фонтаны',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'dt': 'ДТ',
   'odh': 'ОДХ',
-  'pgm': 'Пункт отпуска ПГМ',
+  'pgmStore': 'Пункты отпуска ПГМ',
   'snowStorage': 'Пункт временного складирования снега',
   'ssp': 'Стационарный снегоплавильный пункт',
   'msp': 'Мобильный снегоплавильный пункт',
   'dangerZone': 'Особо опасное место',
   'carpool': 'Автобаза',
-  'fuelingWaterStation': 'База гидрантов',
+  'fuelingWater': 'База гидрантов',
   'bridges': 'Мост',
-  'pedestrian_tunnels': 'Пешеходный тоннель',
-  'pedestrian_tunnel_exits': 'Выход из пешеходного тоннеля',
+  'pedestrianTunnels': 'Пешеходный тоннель',
+  'pedestrianTunnelExits': 'Выход из пешеходного тоннеля',
   'fountains': 'Фонтан',
 };
 

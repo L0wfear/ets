@@ -389,7 +389,7 @@ class WaybillForm extends Form {
       if (driver_id) {
         const driver = this.props.employeesIndex[driver_id] || null;
 
-        if (driver === null) return;
+        if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
 
         const { gov_number } = formState;
         const hasLicense = !hasMotohours(gov_number) && driverHasLicenseWithActiveDate(driver);
@@ -436,7 +436,6 @@ class WaybillForm extends Form {
        */
       return Promise.resolve(res({
         ...fieldsToChange,
-
         driver_id: '',
       }));
     })

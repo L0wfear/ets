@@ -127,7 +127,9 @@ export class DutyMissionForm extends Form {
         }
       }
     }
-    missionsActions.getMissions(mission.technical_operation_id);
+    if (mission.technical_operation_id) {
+      missionsActions.getMissions(mission.technical_operation_id);
+    }
     missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();

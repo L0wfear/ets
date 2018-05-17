@@ -19,9 +19,7 @@ export default class HybridMap extends Map {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      zoom: null,
-    };
+    this._pointsStore = this.props.flux.getStore('pointsHybrid');
   }
 
   updatePoints(updatedPoints) {
@@ -47,7 +45,7 @@ export default class HybridMap extends Map {
         });
       }
     }
-    this.props.flux.getStore('points').handleUpdateTrack([]);
+    this._pointsStore.handleUpdateTrack([]);
     this.triggerRender();
   }
 

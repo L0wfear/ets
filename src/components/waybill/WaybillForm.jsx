@@ -1273,6 +1273,7 @@ class WaybillForm extends Form {
               <Div style={{ paddingLeft: 15 }}>
                 <Col md={4}>
                   <Field
+                    id={'downtime-hours-work'}
                     type="string"
                     label="Работа"
                     disabled={IS_CLOSED}
@@ -1283,6 +1284,7 @@ class WaybillForm extends Form {
                 </Col>
                 <Col md={4}>
                   <Field
+                    id={'downtime-hours-duty'}
                     type="string"
                     label="Дежурство"
                     disabled={IS_CLOSED}
@@ -1297,6 +1299,7 @@ class WaybillForm extends Form {
               <Div style={{ paddingLeft: 15 }}>
                 <Col md={4}>
                   <Field
+                    id={'downtime-hours-dinner'}
                     type="string"
                     label="Обед"
                     disabled={IS_CLOSED}
@@ -1307,6 +1310,7 @@ class WaybillForm extends Form {
                 </Col>
                 <Col md={4}>
                   <Field
+                    id={'downtime-hours-repair'}
                     type="string"
                     label="Ремонт"
                     disabled={IS_CLOSED}

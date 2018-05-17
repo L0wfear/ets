@@ -56,7 +56,7 @@ class HistoryOrder extends React.Component<any, any> {
     } = this.state;
 
     return (
-      <Div hidden={this.props}>
+      <Div hidden={this.props.hidden}>
         <Row>
           <Panel>
             <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 20 : 0, cursor: 'pointer' }}>

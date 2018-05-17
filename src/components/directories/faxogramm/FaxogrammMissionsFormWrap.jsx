@@ -119,6 +119,9 @@ class FaxogrammMissionsFormWrap extends FormWrap {
               state = await confirmDialog({
                 title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}.`}</b>,
                 body,
+                defaultState: {
+                  interval: [getToday9am(), getTomorrow9am()],
+                },
               });
             } catch (er) {
               cancel = true;

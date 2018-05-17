@@ -86,6 +86,7 @@ export default class CarInfo extends Component {
       },
       sensorsInfo: {},
       maxSpeed: initialMaxSpeed,
+      maxSpeedMissionInfo: null,
     };
   }
 
@@ -114,6 +115,8 @@ export default class CarInfo extends Component {
           equipment: [],
           level: [],
         },
+        maxSpeed: initialMaxSpeed,
+        maxSpeedMissionInfo: null,
       });
     }
   }
@@ -153,13 +156,15 @@ export default class CarInfo extends Component {
   }
 
   toggleMaxSpeed = () => {
-    const maxSpeed = this.state.maxSpeed === initialMaxSpeed ? this.state.maxSpeedMissionInfo : initialMaxSpeed;
-    const track = this.props.car.marker.track;
-    if (track) {
-      track.maxSpeed = maxSpeed;
-    }
+    if (this.state.maxSpeedMissionInfo) {
+      const maxSpeed = this.state.maxSpeed === initialMaxSpeed ? this.state.maxSpeedMissionInfo : initialMaxSpeed;
+      const track = this.props.car.marker.track;
+      if (track) {
+        track.maxSpeed = maxSpeed;
+      }
 
-    this.setState({ maxSpeed });
+      this.setState({ maxSpeed });
+    }
   }
 
   getLegend() {
@@ -175,7 +180,7 @@ export default class CarInfo extends Component {
           <div className="track-legend-text">{speed != null ? `${speed + 1}+ км/ч` : 'нет данных'}</div>
         </div>
         <div onClick={this.toggleMaxSpeed} className="track-legend-mission-speed">
-          <input type="checkbox" checked={speed !== initialMaxSpeed} /><span>{'Ограничение по заданию'}</span>
+          <input disabled={this.state.maxSpeedMissionInfo === null} type="checkbox" checked={speed !== initialMaxSpeed} /><span>{'Ограничение по заданию'}</span>
         </div>
       </div>
     );

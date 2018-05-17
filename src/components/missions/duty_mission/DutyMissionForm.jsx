@@ -23,7 +23,6 @@ export class DutyMissionForm extends Form {
       showRouteForm: false,
       routesList: [],
       employeesList: this.props.employeesList,
-      lastBrigade: [],
     };
   }
 
@@ -76,8 +75,8 @@ export class DutyMissionForm extends Form {
 
     if (!isEmpty(foreman_id)) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
-      this.setState({ lastBrigade });
       this.props.handleFormChange('foreman_id', foreman_id);
+      this.handleBrigadeIdListChange(lastBrigade.join(','));
     }
   }
 
@@ -85,13 +84,16 @@ export class DutyMissionForm extends Form {
     const data = v.split(',');
     const lastEmployee = last(data);
 
-    if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
+    if (!isEmpty(lastEmployee) && !this.isActiveEmployee(lastEmployee)) {
       onlyActiveEmployeeNotification();
       data.pop();
     }
 
     const { employeesList = [] } = this.props;
-    const brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
+    const brigade_employee_id_list = employeesList.filter(
+        employee => data.includes(employee.id.toString())
+    );
+
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 

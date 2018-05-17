@@ -48,7 +48,7 @@ export default class EmployeesActions extends Actions {
   }
 
   getLastBrigade(id) {
-    return LastBrigadeService.path(id).get().then(({ result: { last_brigade } }) => last_brigade);
+    return LastBrigadeService.path(id).get().then(({ result: { last_brigade } }) => last_brigade || []);
   }
 
   getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {

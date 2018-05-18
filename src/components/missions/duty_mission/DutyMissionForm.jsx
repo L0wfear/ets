@@ -22,6 +22,7 @@ export class DutyMissionForm extends Form {
       selectedRoute: null,
       showRouteForm: false,
       routesList: [],
+      employeesList: this.props.employeesList,
     };
   }
 
@@ -66,7 +67,7 @@ export class DutyMissionForm extends Form {
       .indexOf(parseInt(id, 10)) !== -1;
   }
 
-  handleForemanIdChange = async(foreman_id) => {
+  handleForemanIdChange = async (foreman_id) => {
     if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
       onlyActiveEmployeeNotification();
       return;
@@ -89,6 +90,7 @@ export class DutyMissionForm extends Form {
     }
 
     const { employeesList = [] } = this.props;
+
     const brigade_employee_id_list = data.reduce((newArr, brigade_id) => {
       const br = employeesList.find(({ id }) => brigade_id === id);
       return br ? newArr.concat(br) : newArr;
@@ -107,7 +109,6 @@ export class DutyMissionForm extends Form {
 
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
-
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
     }

@@ -94,7 +94,7 @@ export default function(state = initialState, { type, payload }) {
         ...state,
         selectedElementAssignment: selectedElementAssignment,
         disabledAssignmentButton: {
-          mission: !num_exec || diffDates(new Date(), dateTo) > 0 || order_status === 'cancelled',
+          mission: !num_exec || diffDates(new Date(), dateTo) > 0 || order_status === 'cancelled' || work_type_name === 'Ручные',
           dutyMission: !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0) || diffDates(new Date(), dateTo) > 0,
         },
       }

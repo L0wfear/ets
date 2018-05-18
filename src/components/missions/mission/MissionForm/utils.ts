@@ -58,12 +58,17 @@ export const makeTechnicalOperationOptionDefault: TMakeTechnicalOperationOptionD
     return [...newArr];
   }, []);
 
+interface ITechnicalOperationActionsProps {
+  kind_task_ids?: string;
+  for?: string;
+}
+
 type TGetTechnicalOperationData = (
   formState: IFormState,
   fromOrder: boolean,
   fromWaybill: boolean,
   missionSourceAction: () => Promise<any>,
-  technicalOperationsActions: ({ kind_task_ids: string }) => Promise<any>,
+  technicalOperationsActions: (props: ITechnicalOperationActionsProps) => Promise<any>,
 ) => Promise<{
   TECH_OPERATIONS: ITechnicalOperation[],
   kind_task_ids: string | void;
@@ -88,7 +93,7 @@ export const getTechnicalOperationData: TGetTechnicalOperationData = (formState,
         :
         null;
       return Promise.all([
-        technicalOperationsActions({ kind_task_ids }),
+        technicalOperationsActions({ kind_task_ids, for: 'mission' }),
         Promise.resolve(kind_task_ids),
       ]);
     })

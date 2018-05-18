@@ -78,7 +78,7 @@ export class DutyMissionForm extends Form {
     if (!isEmpty(foreman_id)) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
       this.props.handleFormChange('foreman_id', foreman_id);
-      this.handleBrigadeIdListChange(lastBrigade.join(','));
+      this.handleBrigadeIdListChange(lastBrigade);
     }
   }
 
@@ -86,7 +86,7 @@ export class DutyMissionForm extends Form {
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange(v) {
-    const data = Array.isArray(v) ? v : v.split(',').map(id => Number(id));
+    const data = v.map(id => Number(id));
     const lastEmployee = last(data);
 
     if (!isEmpty(lastEmployee) && !this.isActiveEmployee(lastEmployee)) {

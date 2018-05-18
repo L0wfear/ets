@@ -70,7 +70,7 @@ export class DutyMissionForm extends Form {
       .indexOf(parseInt(id, 10)) !== -1;
   }
 
-  handleForemanIdChange = async(foreman_id) => {
+  handleForemanIdChange = async (foreman_id) => {
     if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
       onlyActiveEmployeeNotification();
       return;

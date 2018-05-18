@@ -117,7 +117,7 @@ class WaybillPrintForm extends Component {
       <Modal {...this.props} show={!!this.props.show}>
 
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">Печать журнала ПЛ</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">Печать отчета по выработке ТС</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

@@ -67,27 +67,35 @@ export class DutyMissionForm extends Form {
       .indexOf(parseInt(id, 10)) !== -1;
   }
 
-  handleForemanIdChange = (foreman_id) => {
-    let value = foreman_id;
-
-    if (value !== '' && !this.isActiveEmployee(value)) {
+  handleForemanIdChange = async (foreman_id) => {
+    if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
       onlyActiveEmployeeNotification();
-      value = this.props.formState.foreman_id;
+      return;
     }
-    this.props.handleFormChange('foreman_id', value);
+
+    if (!isEmpty(foreman_id)) {
+      const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
+      this.props.handleFormChange('foreman_id', foreman_id);
+      this.handleBrigadeIdListChange(lastBrigade.join(','));
+    }
   }
 
   handleBrigadeIdListChange(v) {
-    const data = v.split(',');
+    const data = v.split(',').map(id => Number(id));
     const lastEmployee = last(data);
 
-    if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
+    if (!isEmpty(lastEmployee) && !this.isActiveEmployee(lastEmployee)) {
       onlyActiveEmployeeNotification();
       data.pop();
     }
 
     const { employeesList = [] } = this.props;
-    const brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
+
+    const brigade_employee_id_list = data.reduce((newArr, brigade_id) => {
+      const br = employeesList.find(({ id }) => brigade_id === id);
+      return br ? newArr.concat(br) : newArr;
+    }, []);
+
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 

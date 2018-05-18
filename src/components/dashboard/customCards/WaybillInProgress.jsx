@@ -1,6 +1,9 @@
 import React from 'react';
 import {
   flatten,
+  groupBy,
+  sortBy,
+  cloneDeep,
 } from 'lodash';
 import moment from 'moment';
 import cx from 'classnames';
@@ -10,12 +13,14 @@ import WaybillClosed from './WaybillClosed.jsx';
 export default class WaybillInProgress extends WaybillClosed {
 
   renderSubitems(subItems) {
-    let si = _.groupBy(subItems, e => moment(e.data.create_date).format(global.APP_DATE_FORMAT));
-    si = _.sortBy(si, ar => -moment(ar[0].data.create_date).unix());
+    let si = groupBy(subItems, e => moment(e.data.create_date).format(global.APP_DATE_FORMAT));
+    si = sortBy(si, ar => -moment(ar[0].data.create_date).unix());
     si = si.map((ar) => {
-      ar[0].data.groupStart = true;
-      ar[ar.length - 1].data.groupEnd = true;
-      return ar;
+      const array = cloneDeep(ar);
+
+      array[0].data.groupStart = true;
+      array[array.length - 1].data.groupEnd = true;
+      return array;
     });
     si = flatten(si);
     subItems = si;

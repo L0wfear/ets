@@ -17,7 +17,7 @@ export const getTypeRoute = (type) => {
 export const makeRoutesListForRender = (routesListFromStore, technicalOperationsList, STRUCTURES) => {
   routesListFromStore.forEach((r) => {
     r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
-    r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_id), 'label');
+    r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_name), 'label');
     r.type_name = getTypeRoute(r.type);
   });
   return routesListFromStore;

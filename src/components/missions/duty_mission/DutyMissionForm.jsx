@@ -84,7 +84,7 @@ export class DutyMissionForm extends Form {
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange(v) {
-    const data = Array.isArray(v) ? v : v.split(',').map(id => Number(id));
+    const data = v.map(id => Number(id));
     const lastEmployee = last(data);
 
     if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {

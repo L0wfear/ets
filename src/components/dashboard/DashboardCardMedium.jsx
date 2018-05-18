@@ -82,7 +82,7 @@ export default class DashboardCardMedium extends React.Component {
             </Div>
             :
             <Div className="dashboard-card-item-inner" onClick={this.selectItem.bind(this, i)}>
-              <span className="vokinda" title={item.tooltip}>{item.title}</span>
+              <span title={item.tooltip}>{item.title}</span>
             </Div>
           }
           {

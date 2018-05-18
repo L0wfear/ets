@@ -9,6 +9,20 @@ import DashboardItemChevron from './DashboardItemChevron.jsx';
 
 const Panel = wrappedRef(BootstrapPanel);
 
+const getSubItemsTitle = (itemsTitle, selectedItem) => {
+  let title = itemsTitle;
+  if (selectedItem !== null) {
+    const {
+      subItemsTitle,
+      title: titleInList,
+    } = selectedItem;
+
+    title = subItemsTitle || titleInList;
+  }
+
+  return title;
+};
+
 @autobind
 @FluxContext
 export default class DashboardCardMedium extends React.Component {
@@ -148,7 +162,7 @@ export default class DashboardCardMedium extends React.Component {
               <Div className="card-glyph-remove" onClick={this.selectItem.bind(this, null)}>
                 <Glyphicon glyph="remove" />
               </Div>
-              <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
+              <h5>{getSubItemsTitle(this.props.itemsTitle, selectedItem)}</h5>
               <div style={{ marginTop: 15 }} />
               {this.renderSubitems(subItems)}
               {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}

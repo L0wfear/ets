@@ -75,6 +75,7 @@ export class DutyMissionForm extends Form {
       onlyActiveEmployeeNotification();
       return;
     }
+
     if (!isEmpty(foreman_id)) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
       this.props.handleFormChange('foreman_id', foreman_id);

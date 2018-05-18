@@ -19,7 +19,7 @@ class Prompt extends React.Component {
     window.confirmDialog = global.confirmDialog = this.showConfirm.bind(this);
   }
 
-  showConfirm({ title, body }) {
+  showConfirm({ title, body, defaultState = {} }) {
     const promise = new Promise((res, rej) => {
       this.setState({
         isVisible: true,
@@ -27,6 +27,7 @@ class Prompt extends React.Component {
         body,
         res,
         rej,
+        ...defaultState,
       });
     });
     return promise;

@@ -70,11 +70,12 @@ export class DutyMissionForm extends Form {
       .indexOf(parseInt(id, 10)) !== -1;
   }
 
-  handleForemanIdChange = async(foreman_id) => {
+  handleForemanIdChange = async (foreman_id) => {
     if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
       onlyActiveEmployeeNotification();
       return;
     }
+
     if (!isEmpty(foreman_id)) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
       this.props.handleFormChange('foreman_id', foreman_id);
@@ -140,7 +141,7 @@ export class DutyMissionForm extends Form {
     }
     await missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
-    const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids });
+    const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
     const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     const {

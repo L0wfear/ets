@@ -276,13 +276,7 @@ const carFormSchema: IValidationSchema = {
     },
     {
       key: 'register_note',
-      title: 'Кем выдано свидетельство о регистрации',
-      type: 'string',
-      maxLength: 4000,
-    },
-    {
-      key: 'register_note',
-      title: 'Кем выдано свидетельство о регистрации',
+      title: 'Особые отметки',
       type: 'string',
       maxLength: 4000,
     },

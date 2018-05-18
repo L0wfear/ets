@@ -73,7 +73,7 @@ class RoutesList extends Component {
   }
 
   getStructures() {
-    return this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    return this.context.flux.getStore('session').getCurrentUser().structures.map(({ name }) => ({ value: name, label: name }));
   }
 
   refreshRoutes = (withState = null) => {
@@ -260,7 +260,7 @@ class RoutesList extends Component {
 
     if (STRUCTURES.length) {
       filterOptions = filterOptions.concat({
-        name: 'structure_id',
+        name: 'structure_name',
         displayName: 'Подразделение',
         filter: {
           type: 'multiselect',
@@ -287,7 +287,7 @@ class RoutesList extends Component {
         });
       }
     });
-    console.log(route)
+    console.log(route);
 
     return (
       <div className="ets-page-wrap routes-list">

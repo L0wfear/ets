@@ -4,8 +4,8 @@ const withClassMethods = (methodObjects = {}) => Component =>
   class WithClassMethods extends React.Component<any, any> {
     constructor(props) {
       super(props);
-
-      Object.entries(methodObjects).forEach(([methodName, action]) => this[methodName] = (...arg) => action(props)(...arg));
+      this.state = {};
+      Object.entries(methodObjects).forEach(([methodName, action]) => this.state[methodName] = (...arg) => action(props)(...arg));
     }
 
     render() {
@@ -13,7 +13,7 @@ const withClassMethods = (methodObjects = {}) => Component =>
         <Component
           {
             ...this.props,
-            ...Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key ] }), { withClassMethods: true }),
+            ...this.state,
           }
         />
       );

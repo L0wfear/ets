@@ -31,8 +31,8 @@ export default class ODHStore extends Store {
     this.setState({ odhNormList: result });
   }
 
-  handleGetMeasureUnits({ result }) {
-    this.setState({ measureUnitList: result.rows || [] });
+  handleGetMeasureUnits({ result: { rows: measureUnitList } }) {
+    this.setState({ measureUnitList });
   }
 
   handleGetODHNormDataSummer({ result }) {

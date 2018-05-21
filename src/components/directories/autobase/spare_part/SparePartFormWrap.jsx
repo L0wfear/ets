@@ -2,7 +2,7 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import SparePartForm from './SparePartForm.jsx';
+import SparePartForm from 'components/directories/autobase/spare_part/SparePartForm/SparePartForm.tsx';
 import { formValidationSchema } from './schema';
 
 class SparePartFormWrap extends FormWrap {
@@ -33,6 +33,7 @@ class SparePartFormWrap extends FormWrap {
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        flux={this.props.flux}
       />
       : null;
   }

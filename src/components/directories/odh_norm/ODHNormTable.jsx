@@ -19,15 +19,6 @@ const tableMeta = {
         type: 'multiselect',
       },
     },
-    // {
-    //   name: 'consumable_material',
-    //   display: false,
-    //   displayName: 'Расходный материал',
-    //   filter: {
-    //     type: 'multiselect',
-    //     labelFunction: consumable_material => consumable_material ? 'Да' : 'Нет',
-    //   },
-    // },
   ],
 };
 

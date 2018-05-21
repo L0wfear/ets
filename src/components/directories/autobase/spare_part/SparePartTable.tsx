@@ -9,86 +9,83 @@ import DateFormatter from 'components/ui/DateFormatter';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
+const meta: IDataTableSchema = {
+  cols: [
+    {
+      name: 'company_name',
+      displayName: 'Организация',
+      type: 'string',
+      filter: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'group_name',
+      displayName: 'Группа',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'number',
+      displayName: 'Номер поставки',
+      type: 'string',
+      filter: {
+        type: 'string',
+      },
+    },
+    {
+      name: 'name',
+      displayName: 'Подгруппа',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'measure_unit_name',
+      displayName: 'Единица измерения',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'quantity',
+      displayName: 'Количество',
+      type: 'number',
+      filter: {
+        type: 'advanced-number',
+      },
+    },
+    {
+      name: 'supplied_at',
+      displayName: 'Дата поставки',
+      type: 'date',
+      filter: {
+        type: 'date',
+      },
+    },
+  ],
+};
+
 export function tableMeta({
 } = {}): IDataTableSchema {
-  const meta: IDataTableSchema = {
-    cols: [
-      {
-        name: 'company_name',
-        displayName: 'Организация',
-        type: 'string',
-        filter: {
-          type: 'string',
-        },
-      },
-      {
-        name: 'group_name',
-        displayName: 'Группа',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
-        name: 'number',
-        displayName: 'Номер поставки',
-        type: 'string',
-        filter: {
-          type: 'string',
-        },
-      },
-      {
-        name: 'name',
-        displayName: 'Подгруппа',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
-        name: 'measure_unit_name',
-        displayName: 'Единица измерения',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
-        name: 'quantity',
-        displayName: 'Количество',
-        type: 'number',
-        filter: {
-          type: 'advanced-number',
-        },
-      },
-      {
-        name: 'supplied_at',
-        displayName: 'Дата поставки',
-        type: 'date',
-        filter: {
-          type: 'date',
-        },
-      },
-    ],
-  };
-
   return meta;
 }
-
-const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-    supplied_at: ({ data }) => (<DateFormatter date={data} />),
-  };
-
-  return (
-    <DataTable
-      title="Реестр запчастей"
-      results={props.data}
-      renderers={renderers}
-      tableMeta={tableMeta(props)}
-      {...props}
-    />
-  );
+const renderers: ISchemaRenderer = {
+  supplied_at: ({ data }) => (<DateFormatter date={data} />),
 };
+
+const Table: React.SFC<any> = props  => (
+  <DataTable
+    title="Реестр запчастей"
+    results={props.data}
+    renderers={renderers}
+    tableMeta={tableMeta(props)}
+    {...props}
+  />
+);
 
 export default Table;

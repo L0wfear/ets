@@ -408,6 +408,7 @@ class ElementsList extends React.Component {
         meta={this.constructor.formMeta}
         renderers={this.constructor.formRenderers}
         permissions={[`${this.entity}.read`]}
+        flux={this.context.flux}
         {...this.props}
       />
     );

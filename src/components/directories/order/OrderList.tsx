@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   getOrders,
   resetOrder,
+  setSelectedElementOrder,
 } from 'redux/modules/order/action-order';
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
@@ -102,6 +103,7 @@ const mapDispatchToProps = dispatch => ({
     {
       getOrders,
       resetOrder,
+      setSelectedElementOrder,
     },
     dispatch,
   ),

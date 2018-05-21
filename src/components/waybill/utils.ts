@@ -61,17 +61,20 @@ const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
 export const driverHasLicenseWithActiveDate = ({ drivers_license, drivers_license_date_end }) => isNotEmpty(drivers_license) && !isNotEmpty(drivers_license_date_end) || (isNotEmpty(drivers_license_date_end) && diffDates(new Date(), drivers_license_date_end) < 0);
 export const driverHasSpecialLicenseWithActiveDate = ({ special_license, special_license_date_end }) => isNotEmpty(special_license) && !isNotEmpty(special_license_date_end) || (isNotEmpty(special_license_date_end) && diffDates(new Date(), special_license_date_end) < 0);
 
-export const getDrivers = (gnumber = '', driversList) => {
+export const getDrivers = (state, driversList) => {
   const licenceSwitcher = R.cond([
     [isThreeDigitGovNumber, R.always(driverHasLicenseWithActiveDate)],
     [isFourDigitGovNumber, R.always(driverHasSpecialLicenseWithActiveDate)],
     [R.T, R.always(R.identity)],
   ]);
 
-  const driverFilter = licenceSwitcher(gnumber);
+  const driverFilter = licenceSwitcher(state.gov_number);
 
   return driversList
-    .filter(driverFilter)
+    .filter(driver => (
+      (!state.structure_id ? state.is_common : state.structure_id === driver.company_structure_id) &&
+      driverFilter(driver)
+    ))
     .map(d => {
       const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
       return {

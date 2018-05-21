@@ -141,8 +141,8 @@ export default class ObjectsStore extends Store {
     this.setState({ modelsList, modelsIndex });
   }
 
-  handleGetSpecialModels({ result }) {
-    this.setState({ specialModelsList: result });
+  handleGetSpecialModels({ result: { rows: specialModelsList } }) {
+    this.setState({ specialModelsList });
   }
 
   handleGetTypes({ result }) {
@@ -179,8 +179,8 @@ export default class ObjectsStore extends Store {
     this.setState({ faxogrammsList: faxogramms.result, faxogrammsTotalCount: faxogramms.total_count });
   }
 
-  handleGetPositions(positions) {
-    this.setState({ positionsList: positions.result });
+  handleGetPositions({ result: { rows: positionsList } }) {
+    this.setState({ positionsList });
   }
 
   handleGetConfig(appConfig) {
@@ -192,8 +192,7 @@ export default class ObjectsStore extends Store {
     this.setState({ materialConsumptionRateList });
   }
 
-  handleGetMaintenanceWork(r) {
-    const maintenanceWorkList = r.result.rows || r.result;
+  handleGetMaintenanceWork({ result: { rows: maintenanceWorkList }}) {
     this.setState({ maintenanceWorkList });
   }
   handleUpdateOrganizations(r) {
@@ -211,8 +210,8 @@ export default class ObjectsStore extends Store {
     this.setState({ maintenanceRateList });
   }
 
-  handleGetCleanCategories({ result }) {
-    this.setState({ cleanCategoriesList: result });
+  handleGetCleanCategories({ result: { rows: cleanCategoriesList } }) {
+    this.setState({ cleanCategoriesList });
   }
 
   handleGetUserActionLog(userActionLogList) {

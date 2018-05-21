@@ -3,7 +3,7 @@ import {
   ODHNormService,
   ODHNormDataSummerService,
   EfficiencyService,
-  MeasureUnitService
+  MeasureUnitService,
 } from 'api/Services';
 import _ from 'lodash';
 

@@ -30,7 +30,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
       <Button id="waybill-refresh" title="Обновить" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
-      <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
+      <Dropdown id="waybill-print-dropdown" className="print" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
@@ -41,7 +41,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <MenuItem eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
-      <Dropdown id="waybill-print-dropdown" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
+      <Dropdown id="waybill-print-dropdown" className="pdf" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>

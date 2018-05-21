@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const withClassMethods = methodObjects => Component =>
+const withClassMethods = (methodObjects: any = {}) => Component =>
   class WithClassMethods extends React.Component<any, any> {
     constructor(props) {
       super(props);
@@ -11,8 +11,8 @@ const withClassMethods = methodObjects => Component =>
     render() {
       return (
         <Component
-          {...this.props}
-          {...Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key] }), {}) }
+          { ...this.props }
+          { ...Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key ] }), { withClassMethods: true }) }
         />
       );
     }

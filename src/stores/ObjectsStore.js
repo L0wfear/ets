@@ -164,8 +164,8 @@ export default class ObjectsStore extends Store {
     this.setState({ modelsList: rows, modelsIndex });
   }
 
-  handleGetSpecialModels({ result }) {
-    this.setState({ specialModelsList: result.rows });
+  handleGetSpecialModels({ result: { rows: specialModelsList } }) {
+    this.setState({ specialModelsList });
   }
 
   handleGetTypes({ result: { rows = [] } }) {
@@ -205,8 +205,8 @@ export default class ObjectsStore extends Store {
     this.setState({ OrdersList, ordersTotalCount });
   }
 
-  handleGetPositions({ result: { rows = [] } }) {
-    this.setState({ positionsList: rows });
+  handleGetPositions({ result: { rows: positionsList } }) {
+    this.setState({ positionsList });
   }
 
   handleGetConfig(appConfig) {
@@ -218,8 +218,8 @@ export default class ObjectsStore extends Store {
     this.setState({ materialConsumptionRateList });
   }
 
-  handleGetMaintenanceWork({ result: { rows = [] } }) {
-    this.setState({ maintenanceWorkList: rows });
+  handleGetMaintenanceWork({ result: { rows: maintenanceWorkList }}) {
+    this.setState({ maintenanceWorkList });
   }
   handleUpdateOrganizations(r) {
     const organizations = r.result.rows || r.result;
@@ -236,8 +236,8 @@ export default class ObjectsStore extends Store {
     this.setState({ maintenanceRateList });
   }
 
-  handleGetCleanCategories({ result: { rows = [] } }) {
-    this.setState({ cleanCategoriesList: rows });
+  handleGetCleanCategories({ result: { rows: cleanCategoriesList } }) {
+    this.setState({ cleanCategoriesList });
   }
 
   handleGetUserActionLog(userActionLogList) {

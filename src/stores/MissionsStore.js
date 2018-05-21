@@ -51,8 +51,8 @@ class MissionsStore extends Store {
     this.setState({ missionsList: missions.result.rows, missionsTotalCount: missions.result.meta.total_count });
   }
 
-  handleGetMissionSources(missionSources) {
-    this.setState({ missionSourcesList: missionSources.result });
+  handleGetMissionSources({ result: { rows: missionSourcesList } }) {
+    this.setState({ missionSourcesList });
   }
 
   handleGetMissionTemplates(missionTemplate) {

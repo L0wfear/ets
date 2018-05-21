@@ -169,7 +169,9 @@ export default class CarActions extends Actions {
         return TrackService.get(payloadToTrack);
       })
       .then((obj) => {
-        obj.track = obj.track.map((point) => {
+        const { track = [] } = obj;
+
+        obj.track = track.map((point) => {
             // wrap coords for OpenLayers
           point.coords = swapCoords(point.coords);
           point.coords_msk = swapCoords(point.coords_msk);

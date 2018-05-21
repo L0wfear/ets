@@ -471,7 +471,7 @@ class WaybillForm extends Form {
     if (IS_DRAFT) {
       title = 'Создание нового путевого листа';
     }
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state.gov_number, waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, waybillDriversList) : [];
 
     const {
       tax_data = [],

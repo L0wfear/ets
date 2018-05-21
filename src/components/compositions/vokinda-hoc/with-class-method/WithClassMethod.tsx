@@ -13,7 +13,7 @@ const withClassMethods = (methodObjects = {}) => Component =>
         <Component
           {
             ...this.props,
-            ..Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key ] }), { withClassMethods: true }),
+            ...Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key ] }), { withClassMethods: true }),
           }
         />
       );

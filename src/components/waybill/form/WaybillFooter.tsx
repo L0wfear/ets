@@ -41,7 +41,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
       </OverlayTrigger>
     </Div>
     <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
-      <Dropdown id="waybill-print-dropdown_ptint" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
+      <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
@@ -52,7 +52,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
           <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
         </Dropdown.Menu>
       </Dropdown>
-      <Dropdown id="waybill-print-dropdown_save" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
+      <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
         </Dropdown.Toggle>

@@ -13,6 +13,8 @@ const withClassMethods = (methodObjects = {}) => Component =>
         <Component
           {
             ...this.props,
+          }
+          {
             ...this.state,
           }
         />

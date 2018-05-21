@@ -11,8 +11,10 @@ const withClassMethods = (methodObjects = {}) => Component =>
     render() {
       return (
         <Component
-          {...this.props}
-          {...Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key ] }), { withClassMethods: true }) }
+          {
+            ...this.props,
+            ..Object.keys(methodObjects).reduce((newObj, key) => ({ ...newObj, [key]: this[key ] }), { withClassMethods: true }),
+          }
         />
       );
     }

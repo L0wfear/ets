@@ -296,6 +296,10 @@ body.application hr {
     &-type {
       color: $colorGray;
     }
+
+    &-name {
+      max-width: 150px !important;
+    }
   }
 }
 

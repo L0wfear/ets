@@ -22,10 +22,12 @@ export default class EmployeesList extends ElementsList {
     super.componentDidMount();
 
     const { flux } = this.context;
-    const employees = await flux.getActions('employees').getEmployees();
-    await flux.getActions('objects').getCars();
-    await flux.getActions('objects').getPositions();
-    await flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    const [employees] = await Promise.all([
+      flux.getActions('employees').getEmployees(),
+      flux.getActions('objects').getCars(),
+      flux.getActions('objects').getPositions(),
+      flux.getActions('companyStructure').getLinearCompanyStructureForUser(),
+    ]);
 
     if (this.props.location.query.employee_id) {
       const employee_id = parseInt(this.props.location.query.employee_id, 10);

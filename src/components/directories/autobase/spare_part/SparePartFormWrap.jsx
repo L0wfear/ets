@@ -2,7 +2,7 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import SparePartForm from './SparePartForm.jsx';
+import SparePartForm from './SparePartForm.tsx';
 import { formValidationSchema } from './schema';
 
 class SparePartFormWrap extends FormWrap {

@@ -43,23 +43,7 @@ export default class ODHNormForm extends Form {
               onChange={this.handleChange.bind(this, 'measure_unit_id')}
               disabled={!isPermitted}
             />
-            {/* <Field
-              type="string"
-              label="Единица измерения"
-              value={state.unit}
-              error={errors.unit}
-              onChange={this.handleChange.bind(this, 'unit')}
-            /> */}
           </Div>
-          {/* <Div>
-            <Field
-            type="boolean"
-            label="Расходный материал"
-            value={state.consumable_material}
-            error={errors.consumable_material}
-            onChange={this.handleChange.bind(this, 'consumable_material', !!!state.consumable_material)}
-            />
-          </Div> */}
         </ModalBody>
         <Modal.Footer>
           <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>

@@ -240,8 +240,9 @@ class WaybillForm extends Form {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
         const driver = this.props.employeesIndex[newDriverId] || null;
+        const DRIVERS = getDrivers({ ...formState, driver_id: newDriverId }, this.props.employeesIndex, this.props.waybillDriversList);
 
-        if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
+        if (!driver || !DRIVERS.some(({ value }) => value === newDriverId)) return;
 
         const { gov_number } = formState;
         const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicenseWithActiveDate(driver);
@@ -403,10 +404,11 @@ class WaybillForm extends Form {
     if (carData && !(carData.is_common || carData.company_structure_id === structure_id)) {
       changeObj.car_id = null;
       changeObj.driver_id = null;
-    } else {
+    } else if (driver_id) {
       const driver = this.props.employeesIndex[driver_id];
+      const DRIVERS = getDrivers({ ...this.props.formState, structure_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
-      if (driver_id && driver) {
+      if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
         if (structure_id && !driver.is_common && driver.company_structure_id !== structure_id) {
           changeObj.driver_id = null;
         }
@@ -488,7 +490,7 @@ class WaybillForm extends Form {
     if (IS_DRAFT) {
       title = 'Создание нового путевого листа';
     }
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, waybillDriversList) : [];
 
     const {
       tax_data = [],

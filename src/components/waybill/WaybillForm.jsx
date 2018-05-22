@@ -342,15 +342,16 @@ class WaybillForm extends Form {
     }
     const { gps_code = null } = this.props.carsList.find(({ asuods_id }) => asuods_id === formState.car_id) || {};
 
-    loadingFields.distance = true;
-    loadingFields.consumption = true;
-    this.setState({ loadingFields });
     const {
       fact_departure_date,
       fact_arrival_date,
     } = formState;
 
     if (gps_code && fact_departure_date && fact_arrival_date && diffDates(fact_arrival_date, fact_departure_date) > 0) {
+      loadingFields.distance = true;
+      loadingFields.consumption = true;
+      this.setState({ loadingFields });
+
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({

@@ -19,7 +19,6 @@ import {
   isNotNull,
   isEmpty,
   hasMotohours,
-  isEqualOr,
 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
 
@@ -543,31 +542,33 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(newFormData) {
-    /*
-    const { formState } = this.props;
-    const oldFormData = formState.mission_id_list;
-    const IS_CREATING = !formState.status;
-
-    const shouldBeChanged = (
-      IS_CREATING ||
-      (
-        isEqualOr(MISSIONS_RESTRICTION_STATUS_LIST, formState.status) &&
-        newFormData.length >= 1 &&
-        formState.can_delete_missions
-      )
-    );
-    this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
-    */
     this.handleChange('mission_id_list', newFormData);
   }
 
-  handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
-    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
-      this.props.handleMultipleChange({ car_id: '', driver_id: '', structure_id: v });
+  handleStructureIdChange = (structure_id) => {
+    const {
+      formState: {
+        driver_id,
+        car_id,
+      },
+    } = this.props;
+    const carData = this.props.carsIndex[car_id];
+
+    const changeObj = { structure_id };
+    if (carData && !(carData.is_common || carData.company_structure_id === structure_id)) {
+      changeObj.car_id = null;
+      changeObj.driver_id = null;
     } else {
-      this.handleChange('structure_id', v);
+      const driver = this.props.employeesIndex[driver_id];
+
+      if (driver_id && driver) {
+        if (structure_id && !driver.is_common && driver.company_structure_id !== structure_id) {
+          changeObj.driver_id = null;
+        }
+      }
     }
+
+    this.props.handleMultipleChange(changeObj);
   }
 
   handleClose = taxesControl =>

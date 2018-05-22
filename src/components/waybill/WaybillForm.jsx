@@ -241,8 +241,9 @@ class WaybillForm extends Form {
       const newDriverId = response && response.result ? response.result.driver_id : null;
       if (newDriverId) {
         const driver = this.props.employeesIndex[newDriverId] || null;
+        const DRIVERS = getDrivers({ ...formState, driver_id: newDriverId }, this.props.employeesIndex, this.props.waybillDriversList);
 
-        if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
+        if (!driver || !DRIVERS.some(({ value }) => value === newDriverId)) return;
 
         const { gov_number } = formState;
         const hasLicense = isThreeDigitGovNumber(gov_number) && driverHasLicenseWithActiveDate(driver);
@@ -391,13 +392,31 @@ class WaybillForm extends Form {
     this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
   }
 
-  handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
-    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
-      this.props.handleMultipleChange({ car_id: '', driver_id: '', structure_id: v });
-    } else {
-      this.handleChange('structure_id', v);
+  handleStructureIdChange(structure_id) {
+    const {
+      formState: {
+        driver_id,
+        car_id,
+      },
+    } = this.props;
+    const carData = this.props.carsIndex[car_id];
+
+    const changeObj = { structure_id };
+    if (carData && !(carData.is_common || carData.company_structure_id === structure_id)) {
+      changeObj.car_id = null;
+      changeObj.driver_id = null;
+    } else if (driver_id) {
+      const driver = this.props.employeesIndex[driver_id];
+      const DRIVERS = getDrivers({ ...this.props.formState, structure_id }, this.props.employeesIndex, this.props.waybillDriversList);
+
+      if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
+        if (structure_id && !driver.is_common && driver.company_structure_id !== structure_id) {
+          changeObj.driver_id = null;
+        }
+      }
     }
+
+    this.props.handleMultipleChange(changeObj);
   }
 
   render() {
@@ -472,7 +491,7 @@ class WaybillForm extends Form {
     if (IS_DRAFT) {
       title = 'Создание нового путевого листа';
     }
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, waybillDriversList) : [];
 
     const {
       tax_data = [],

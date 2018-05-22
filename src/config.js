@@ -1,13 +1,13 @@
 
 const PROTO_FOR_STAGE = (window.location.host === 'localhost:3000') ? 'https:' : window.location.protocol;
-const PROTO_FOR_PROD =  (window.location.host === 'localhost:3000') ? 'https:' : window.location.protocol;
+const PROTO_FOR_PROD = (window.location.host === 'localhost:3000') ? 'https:' : window.location.protocol;
 
 const DOMAIN_FOR_STAGE = (PROTO_FOR_STAGE === 'http:') ? 'ets.tech.mos.ru' : 'ets.mos.ru';
 const DOMAIN_FOR_PROD = (PROTO_FOR_PROD === 'http:') ? 'ets.tech.mos.ru' : 'ets.mos.ru';
 
 const STAND = process.env.STAND;
 
-export const PROTO_FOR_ODS_MOS_RU = (STAND === 'prod') ? PROTO_FOR_PROD : (STAND === 'stage') ? PROTO_FOR_STAGE : 'http:';
+export const PROTO_FOR_ODS_MOS_RU = 'https:';
 const WS_PROTO = 'wss:';
 
 const DOC_URL = {

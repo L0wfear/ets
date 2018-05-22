@@ -55,7 +55,6 @@ export function tableMeta({
         type: 'string',
         filter: {
           type: 'multiselect',
-          // options: measureUnitList.map(({ id, name }) => ({ value: id, label: name })),
         },
       },
       {
@@ -81,11 +80,10 @@ export function tableMeta({
 }
 
 const Table: React.SFC<any> = props  => {
-  const { measureUnitList = [], sparePartGroupList = [] } = props;
+  const { sparePartGroupList = [] } = props;
 
   const renderers: ISchemaRenderer = {
     spare_part_group_id: ({ data }) => <div>{get(sparePartGroupList.find(s => s.id === data), 'name', '')}</div>,
-    measure_unit_id: ({ data }) => <div>{get(measureUnitList.find(s => s.id === data), 'name', '')}</div>,
     supplied_at: ({ data }) => (<DateFormatter date={data} />),
   };
 

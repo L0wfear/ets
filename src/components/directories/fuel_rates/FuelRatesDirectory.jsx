@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
 import FuelRateFormWrap from './FuelRateFormWrap.jsx';
-import FuelRatesTable from './FuelRatesTable.jsx';
+import FuelRatesTable from './FuelRatesTable.tsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from './fuelRateSchema.js';

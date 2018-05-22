@@ -380,12 +380,13 @@ class WaybillForm extends Form {
   getLatestWaybillDriver(formState) {
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
       formState.car_id,
-      formState.driver_id,
-    ).then(({ result: { driver_id = null } }) => {
+      formState.driver_id
+    ).then(({ resudlt: { driver_id = null } }) => {
       if (driver_id) {
-        const driver = this.props.employeesIndex[driver_id] || null;
+        const driver = this.props.employeesIndex[newDriverId] || null;
+        const DRIVERS = getDrivers({ ...formState, driver_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
-        if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
+        if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) return;
 
         const { gov_number } = formState;
         const hasLicense = !hasMotohours(gov_number) && driverHasLicenseWithActiveDate(driver);
@@ -558,10 +559,11 @@ class WaybillForm extends Form {
     if (carData && !(carData.is_common || carData.company_structure_id === structure_id)) {
       changeObj.car_id = null;
       changeObj.driver_id = null;
-    } else {
+    } else if (driver_id) {
       const driver = this.props.employeesIndex[driver_id];
+      const DRIVERS = getDrivers({ ...this.props.formState, structure_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
-      if (driver_id && driver) {
+      if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
         if (structure_id && !driver.is_common && driver.company_structure_id !== structure_id) {
           changeObj.driver_id = null;
         }
@@ -654,7 +656,7 @@ class WaybillForm extends Form {
     const trailer = carsIndex[state.trailer_id];
     const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, waybillDriversList) : [];
     const title = getTitleByStatus(state);
     const {
       tax_data = [],

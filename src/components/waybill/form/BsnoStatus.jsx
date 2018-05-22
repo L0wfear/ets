@@ -80,7 +80,7 @@ class BsnoStaus extends React.Component {
 
       if (gps_code) {
         const timestamp = carsTrackState[gps_code] || 0;
-        const is_bnso_broken = diffDates(new Date(), timestamp * 1000, 'hours') !== 0;
+        const is_bnso_broken = diffDates(new Date(), timestamp * 1000, 'hours') > 1;
 
         if (is_bnso_broken !== is_bnso_broken_old) {
           this.props.handleChange('is_bnso_broken', is_bnso_broken);

@@ -351,7 +351,7 @@ class WaybillForm extends Form {
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
-            car_id: this.formState.car_id,
+            car_id: formState.car_id,
             distance,
             consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
           });
@@ -374,6 +374,13 @@ class WaybillForm extends Form {
             },
           });
         });
+    } else {
+      this.setState({
+        loadingFields: {
+          distance: false,
+          consumption: false,
+        },
+      });
     }
   }
 

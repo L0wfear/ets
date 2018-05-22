@@ -72,7 +72,7 @@ export const getDrivers = (state, driversList) => {
 
   return driversList
     .filter(driver => (
-      (!state.structure_id ? state.is_common : state.structure_id === driver.company_structure_id) &&
+      (!state.structure_id || (state.is_common || state.structure_id === driver.company_structure_id)) &&
       driverFilter(driver)
     ))
     .map(d => {

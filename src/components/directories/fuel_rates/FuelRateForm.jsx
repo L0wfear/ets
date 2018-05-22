@@ -7,7 +7,6 @@ import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['fuelRates', 'objects', 'companyStructure'])
 export default class FuelRateForm extends Form {
-
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations({ is_active: true });
@@ -15,8 +14,11 @@ export default class FuelRateForm extends Form {
     this.context.flux.getActions('objects').getModels(this.props.formState.car_special_model_id);
   }
 
-  handleSpecialModelChange(value) {
-    this.context.flux.getActions('objects').getModels(value);
+  handleSpecialModelChange = async (value) => {
+    await this.context.flux.getActions('objects').getModels(value);
+    if (!this.props.modelsList.find(model => model.id === this.props.formState.car_model_id)) {
+      this.handleChange('car_model_id', null);
+    }
     this.handleChange('car_special_model_id', value);
   }
 
@@ -102,7 +104,7 @@ export default class FuelRateForm extends Form {
                 options={SPECIALMODELS}
                 clearable={false}
                 value={state.car_special_model_id}
-                onChange={value => this.handleSpecialModelChange(value)}
+                onChange={this.handleSpecialModelChange}
                 disabled={!isPermitted}
               />
 

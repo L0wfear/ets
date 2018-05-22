@@ -75,20 +75,18 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
-  const renderers: ISchemaRenderer = {
-    supplied_at: ({ data }) => (<DateFormatter date={data} />),
-  };
-
-  return (
-    <DataTable
-      title="Реестр запчастей"
-      results={props.data}
-      renderers={renderers}
-      tableMeta={tableMeta(props)}
-      {...props}
-    />
-  );
+const renderers: ISchemaRenderer = {
+  supplied_at: ({ data }) => (<DateFormatter date={data} />),
 };
+
+const Table: React.SFC<any> = props  => (
+  <DataTable
+    title="Реестр запчастей"
+    results={props.data}
+    renderers={renderers}
+    tableMeta={tableMeta(props)}
+    {...props}
+  />
+);
 
 export default Table;

@@ -72,6 +72,7 @@ export default class VehicleInfo extends Component {
       if (end < start) return 0;
       return end - start;
     }).reduce((a, b) => a + b) : 0;
+    const percentage = mission.traveled_percentage ? `: ${mission.traveled_percentage}` : '—';
 
     return (
       <div key={mission.id} className={'mission-data'}>
@@ -82,7 +83,8 @@ export default class VehicleInfo extends Component {
           >
             {`№${mission.number} - ${mission.technical_operation_name}`}
           </div>
-          <div className={'mission-timestand'}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</div>
+          <div className={'mission-vehicle-info'}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</div>
+          <div className={'mission-vehicle-info'}>{`Процент выполнения задания, % ${percentage}`}</div>
         </div>
         <Glyphicon glyph="info-sign" className="pointer fontSize24" onClick={() => this.mapView(mission.id)} />
       </div>

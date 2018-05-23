@@ -3,61 +3,70 @@ import { makeDate, makeTime } from 'utils/dates';
 import { getStatusById } from 'constants/statuses';
 import { roundCoordinates } from 'utils/geo';
 
-export default class VehicleAttributes extends Component {
+const makeLastPointString = (p) => {
+  const dt = new Date(p.timestamp * 1000);
+  return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(p.coords_msk)}]`;
+};
 
+const addAttributeToTarget = (target, name, value) => {
+  if (typeof value !== 'undefined') {
+    target.push({
+      name,
+      value,
+    });
+  }
+};
+
+const getState = (props) => {
+  const {
+    car,
+    lastPoint,
+  } = props;
+
+  if (!car) {
+    return {};
+  }
+
+  const { point } = props;
+  const attributes = [];
+
+  if (props.isOkrug) {
+    addAttributeToTarget(attributes, 'Организация', car.company_name);
+  }
+  addAttributeToTarget(attributes, 'Рег. номер ТС', car.gov_number);
+  addAttributeToTarget(attributes, 'ID БНСО', point.id);
+  getStatusById(point.status) && addAttributeToTarget(attributes, 'Статус', getStatusById(point.status).title);
+  addAttributeToTarget(attributes, 'Тип техники', car.type_name);
+  addAttributeToTarget(attributes, 'Шасси', car.model_name);
+  addAttributeToTarget(attributes, 'Последняя точка', lastPoint ? makeLastPointString(lastPoint) : 'Загрузка');
+
+  return {
+    attributes,
+    car,
+    lastPoint,
+  };
+};
+
+export default class VehicleAttributes extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       attributes: [],
+      car: null,
+      lastPoint: null,
+      point: null,
+      ...getState(props),
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.car) return;
-    this.setState(state => (state.attributes = this.parseProps(nextProps)));
+    if (this.state.car !== nextProps.car || nextProps.lastPoint !== this.state.lastPoint || nextProps.point !== this.state.point) {
+      this.setState({ ...getState(nextProps) });
+    }
   }
 
-  parseProps(props) {
-    const { point, car } = props;
-    const attributes = [];
-    const addAttribute = (name, value) => {
-      if (typeof value !== 'undefined') {
-        attributes.push({
-          name,
-          value,
-        });
-      }
-    };
-
-    const makeLastPointString = (p) => {
-      const dt = new Date(p.timestamp * 1000);
-      return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(point.coords_msk)}]`;
-    };
-
-    if (this.props.isOkrug) {
-      addAttribute('Организация', car.company_name);
-    }
-    addAttribute('Рег. номер ТС', car.gov_number);
-    addAttribute('ID БНСО', point.id);
-    getStatusById(point.status) && addAttribute('Статус', getStatusById(point.status).title);
-    addAttribute('Тип техники', car.type_name);
-    addAttribute('Шасси', car.model_name);
-
-    if (props.lastPoint) {
-      // todo при клике на "последнюю точку" центрировать по координатам
-      addAttribute('Последняя точка', makeLastPointString(props.lastPoint));
-    } else {
-      addAttribute('Последняя точка', makeLastPointString({
-        timestamp: point.timestamp,
-        coords_msk: point.coords_msk,
-      }));
-    }
-
-    return attributes;
-  }
-
-  renderAttribute({ name, value }) {
+  renderAttribute = ({ name, value }) => {
     return (
       <div key={name} className="vehicle-attributes-list__item">
         {name}: <span className="value">{value}</span>
@@ -68,7 +77,7 @@ export default class VehicleAttributes extends Component {
   render() {
     return (
       <div className="vehicle-attributes-list">
-        {this.state.attributes.length ? this.state.attributes.map(attribute => this.renderAttribute(attribute)) : 'Нет данных'}
+        {this.state.attributes.length ? this.state.attributes.map(this.renderAttribute) : 'Нет данных'}
       </div>
     );
   }

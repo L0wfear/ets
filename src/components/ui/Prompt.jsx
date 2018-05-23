@@ -14,12 +14,13 @@ class Prompt extends React.Component {
 
     this.state = {
       isVisible: false,
+      checkOnOk: () => true,
     };
 
     window.confirmDialog = global.confirmDialog = this.showConfirm.bind(this);
   }
 
-  showConfirm({ title, body, defaultState = {} }) {
+  showConfirm({ title, body, defaultState = {}, checkOnOk = () => true }) {
     const promise = new Promise((res, rej) => {
       this.setState({
         isVisible: true,
@@ -27,6 +28,7 @@ class Prompt extends React.Component {
         body,
         res,
         rej,
+        checkOnOk,
         ...defaultState,
       });
     });
@@ -38,8 +40,10 @@ class Prompt extends React.Component {
   }
 
   ok() {
-    this.state.res(this.state);
-    this.hide();
+    if (this.state.checkOnOk(this)) {
+      this.state.res(this.state);
+      this.hide();
+    }
   }
 
   cancel() {

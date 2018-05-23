@@ -65,6 +65,14 @@ export const createMissions = async (flux, element, payload) => {
         state = await confirmDialog({
           title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
           body,
+          checkOnOk: (self) => {
+            const { state: { interval } } = self;
+            if (!interval || interval.some(date => !date)) {
+              global.NOTIFICATION_SYSTEM.notify('Поля дат задания должны быть заполнены', 'warning');
+              return false;
+            }
+            return true;
+          },
         });
       } catch (err) {
         cancel = true;

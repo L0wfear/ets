@@ -19,7 +19,6 @@ import {
   isNotNull,
   isEmpty,
   hasMotohours,
-  isEqualOr,
 } from 'utils/functions';
 import { diffDates } from 'utils/dates.js';
 
@@ -352,7 +351,7 @@ class WaybillForm extends Form {
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
-            car_id: this.formState.car_id,
+            car_id: formState.car_id,
             distance,
             consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
           });
@@ -375,18 +374,26 @@ class WaybillForm extends Form {
             },
           });
         });
+    } else {
+      this.setState({
+        loadingFields: {
+          distance: false,
+          consumption: false,
+        },
+      });
     }
   }
 
   getLatestWaybillDriver(formState) {
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
       formState.car_id,
-      formState.driver_id,
-    ).then(({ result: { driver_id = null } }) => {
+      formState.driver_id
+    ).then(({ resudlt: { driver_id = null } }) => {
       if (driver_id) {
-        const driver = this.props.employeesIndex[driver_id] || null;
+        const driver = this.props.employeesIndex[newDriverId] || null;
+        const DRIVERS = getDrivers({ ...formState, driver_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
-        if (driver === null || (formState.structure_id && !driver.is_common && driver.company_structure_id !== formState.structure_id)) return;
+        if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) return;
 
         const { gov_number } = formState;
         const hasLicense = !hasMotohours(gov_number) && driverHasLicenseWithActiveDate(driver);
@@ -543,31 +550,34 @@ class WaybillForm extends Form {
   }
 
   handleMissionsChange(newFormData) {
-    /*
-    const { formState } = this.props;
-    const oldFormData = formState.mission_id_list;
-    const IS_CREATING = !formState.status;
-
-    const shouldBeChanged = (
-      IS_CREATING ||
-      (
-        isEqualOr(MISSIONS_RESTRICTION_STATUS_LIST, formState.status) &&
-        newFormData.length >= 1 &&
-        formState.can_delete_missions
-      )
-    );
-    this.handleChange('mission_id_list', shouldBeChanged ? newFormData : oldFormData);
-    */
     this.handleChange('mission_id_list', newFormData);
   }
 
-  handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => v == null ? true : (c.company_structure_id === v || c.is_common));
-    if (!find(carsList, c => c.asuods_id === this.props.formState.car_id)) {
-      this.props.handleMultipleChange({ car_id: '', driver_id: '', structure_id: v });
-    } else {
-      this.handleChange('structure_id', v);
+  handleStructureIdChange = (structure_id) => {
+    const {
+      formState: {
+        driver_id,
+        car_id,
+      },
+    } = this.props;
+    const carData = this.props.carsIndex[car_id];
+
+    const changeObj = { structure_id };
+    if (carData && !(carData.is_common || carData.company_structure_id === structure_id)) {
+      changeObj.car_id = null;
+      changeObj.driver_id = null;
+    } else if (driver_id) {
+      const driver = this.props.employeesIndex[driver_id];
+      const DRIVERS = getDrivers({ ...this.props.formState, structure_id }, this.props.employeesIndex, this.props.waybillDriversList);
+
+      if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
+        if (structure_id && !driver.is_common && driver.company_structure_id !== structure_id) {
+          changeObj.driver_id = null;
+        }
+      }
     }
+
+    this.props.handleMultipleChange(changeObj);
   }
 
   handleClose = taxesControl =>
@@ -653,7 +663,7 @@ class WaybillForm extends Form {
     const trailer = carsIndex[state.trailer_id];
     const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, waybillDriversList) : [];
     const title = getTitleByStatus(state);
     const {
       tax_data = [],

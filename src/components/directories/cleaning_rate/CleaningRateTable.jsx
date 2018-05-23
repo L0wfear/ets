@@ -22,6 +22,9 @@ const tableMeta = {
     {
       name: 'value',
       displayName: 'Коэффициент',
+      filter: {
+        type: 'multiselect',
+      },
       cssClassName: 'width80',
     },
     {

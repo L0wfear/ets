@@ -79,6 +79,9 @@ export default class Track {
     // debugger;
     return this.points !== null && this.points.length > 0;
   }
+  removeAllPoints = () => {
+    this.points = null;
+  }
 
   getLastPoint() {
     return this.isLoaded() && this.points[this.points.length - 1];

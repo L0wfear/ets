@@ -50,18 +50,20 @@ class Toolbar extends Component {
   focusOnLonelyCar() {
     const store = this.context.flux.getStore('points');
     const carPoint = store.getVisiblePoints()[0];
-    const map = global.olmap;
-    const view = map.getView();
-    const size = map.getSize();
+    if (carPoint) {
+      const map = global.olmap;
+      const view = map.getView();
+      const size = map.getSize();
 
-    view.centerOn(carPoint.marker.coords, size, [size[0] / 2, size[1] / 2]);
-    view.setZoom(15);
+      view.centerOn(carPoint.marker.coords, size, [size[0] / 2, size[1] / 2]);
+      view.setZoom(15);
 
-    store.handleSelectPoint(carPoint);
-    // Это очень жёсткий хак. После выпила флюммокса такое делать не придётся.
-    setTimeout(() => {
-      store.setTracking(true);
-    }, 200);
+      store.handleSelectPoint(carPoint);
+      // Это очень жёсткий хак. После выпила флюммокса такое делать не придётся.
+      setTimeout(() => {
+        store.setTracking(true);
+      }, 200);
+    }
   }
 
   render() {

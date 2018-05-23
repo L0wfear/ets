@@ -105,7 +105,7 @@ export default class MissionFormWrap extends FormWrap {
    * @param {*} formState
    */
   updateAction(formState) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       try {
         await this.context.flux.getActions('missions').updateMission(formState, false);
         try {
@@ -115,7 +115,7 @@ export default class MissionFormWrap extends FormWrap {
         }
         resolve();
       } catch (error) {
-        reject(error);
+        // function refreshTableList not in father modules
       }
     });
   }

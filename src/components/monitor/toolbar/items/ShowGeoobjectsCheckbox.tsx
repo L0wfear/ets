@@ -93,7 +93,7 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
     );
 
     return (
-      <div className="app-toolbar-fill app-toolbar-show-geoobjects" >
+      <div className="app-toolbar-fill app-toolbar-show-geoobjects all-list" >
         <div className="checkbox">
           <input
             style={{ marginLeft: 0 }}

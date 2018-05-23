@@ -3,7 +3,8 @@ export const GEOOBJECTS_TYPES = {
   'odh': 'odh',
   'ssp': 'ssp',
   'msp': 'msp',
-  'pgm_store': 'pgmStore',
+  'pgm_store': 'pgm',
+  'pgm': 'pgm',
   'snow_storage': 'snowStorage',
   'danger_zone': 'dangerZone',
   'carpool': 'carpool',
@@ -14,10 +15,7 @@ export const GEOOBJECTS_TYPES = {
   'fountains': 'fountains',
 };
 
-export const GEOOBJECTS_TYPES_REVERSE = Object.entries(GEOOBJECTS_TYPES).reduce((newObj, [key, value]) => ({
-  ...newObj,
-  [value]: key,
-}), {});
+export const GEOOBJECTS_TYPES_REVERSE = {};
 
 export const GEOOBJECTS_TYPES_LABELS = {
   'dt': 'ДТ',
@@ -25,35 +23,33 @@ export const GEOOBJECTS_TYPES_LABELS = {
   'ssp': 'ССП',
   'msp': 'МСП',
   'pgm_store': 'Пункты отпуска ПГМ',
-  'pgmStore': 'Пункты отпуска ПГМ',
+  'pgm': 'Пункты отпуска ПГМ',
   'danger_zone': 'Особо опасные места',
-  'dangerZone': 'Особо опасное место',
   'snow_storage': 'Пункты временного складирования снега',
   'snowStorage': 'Пункты временного складирования снега',
+  'dangerZone': 'Особо опасное место',
   'carpool': 'Автобазы',
   'fueling_water': 'Базы гидрантов',
   'fuelingWater': 'Базы гидрантов',
   'bridges': 'Мосты',
   'pedestrian_tunnels': 'Пешеходные тоннели',
-  'pedestrianTunnels': 'Пешеходные тоннели',
   'pedestrian_tunnel_exits': 'Выходы из пешеходных тоннелей',
-  'pedestrianTunnelExits': 'Выходы из пешеходных тоннелей',
   'fountains': 'Фонтаны',
 };
 
 export const GEOOBJECTS_TYPES_LABELS_SINGLE = {
   'dt': 'ДТ',
   'odh': 'ОДХ',
-  'pgmStore': 'Пункты отпуска ПГМ',
+  'pgm': 'Пункт отпуска ПГМ',
   'snowStorage': 'Пункт временного складирования снега',
   'ssp': 'Стационарный снегоплавильный пункт',
   'msp': 'Мобильный снегоплавильный пункт',
   'dangerZone': 'Особо опасное место',
   'carpool': 'Автобаза',
-  'fuelingWater': 'База гидрантов',
+  'fuelingWaterStation': 'База гидрантов',
   'bridges': 'Мост',
-  'pedestrianTunnels': 'Пешеходный тоннель',
-  'pedestrianTunnelExits': 'Выход из пешеходного тоннеля',
+  'pedestrian_tunnels': 'Пешеходный тоннель',
+  'pedestrian_tunnel_exits': 'Выход из пешеходного тоннеля',
   'fountains': 'Фонтан',
 };
 

@@ -72,7 +72,7 @@ export default class VehicleInfo extends Component {
       if (end < start) return 0;
       return end - start;
     }).reduce((a, b) => a + b) : 0;
-    const percentage = mission.current_percentage ? `:${mission.current_percentage}` : '—';
+    const percentage = mission.traveled_percentage ? `: ${mission.traveled_percentage}` : '—';
 
     return (
       <div key={mission.id} className={'mission-data'}>

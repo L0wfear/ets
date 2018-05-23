@@ -203,6 +203,7 @@ export default class CarInfo extends Component {
         this.setState({ to_dt_: dt }); // обновляем дату "по"
       }
     });
+    track.removeAllPoints();
 
     track.fetch(this.props.flux, from_dt, to_dt).then((trackInfo) => {
       this.setState({

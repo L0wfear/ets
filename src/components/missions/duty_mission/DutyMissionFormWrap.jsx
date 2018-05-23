@@ -30,8 +30,12 @@ class DutyMissionFormWrap extends FormWrap {
 
     const id = mission.id ? mission.id : response.result && response.result[0] ? response.result[0].id : null;
     await this.context.flux.getActions('missions').printDutyMission(id).then(({ blob }) => { saveData(blob, `Печатная форма наряд-задания №${id}.pdf`); });
-    if (!this.props.fromOrder && !this.props.fromDashboard) {
-      await this.props.refreshTableList();
+    try {
+      if (!this.props.fromOrder && !this.props.fromDashboard) {
+        await this.props.refreshTableList();
+      }
+    } catch (e) {
+      // function refreshTableList not in father modules
     }
     this.props.onFormHide();
   }
@@ -43,7 +47,7 @@ class DutyMissionFormWrap extends FormWrap {
         await this.props.refreshTableList();
       }
     } catch (error) {
-      throw error;
+      // function refreshTableList not in father modules
     }
   }
 
@@ -52,13 +56,13 @@ class DutyMissionFormWrap extends FormWrap {
    * @param {*} formState
    */
   updateAction(formState) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       try {
         await this.context.flux.getActions('missions').updateDutyMission(formState, false);
         await this.props.refreshTableList();
         resolve();
       } catch (error) {
-        reject(error);
+        // function refreshTableList not in father modules
       }
     });
   }

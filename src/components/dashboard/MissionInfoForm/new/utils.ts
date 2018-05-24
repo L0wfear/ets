@@ -46,7 +46,6 @@ const getDataTraveledYet = (data) => {
 
 export const componentWillUnmount: IComponentWillUnmount = props => {
   if (!props.tooLongDates) {
-    console.log('asd')
     props.flux.getActions('pointsHybrid').closeConnection();
     props.flux.getActions('pointsHybrid').setSingleCarTrack(null);
   }

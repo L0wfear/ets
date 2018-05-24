@@ -56,7 +56,6 @@ class MissionsStore extends Store {
   }
 
   handleGetMissionSources({ result: { rows: missionSourcesList } }) {
-    console.log(missionSourcesList)
     this.setState({ missionSourcesList });
   }
 

@@ -85,9 +85,9 @@ type TGetTechnicalOperationData = (
  */
 export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, fromOrder, fromWaybill, missionSourceAction, technicalOperationsActions) =>
   missionSourceAction()
-    .then(({ result: missionSourcesList }) => {
+    .then(({ order_mission_source_id }) => {
       const kind_task_ids =
-        (missionSourcesList.find(({ auto }) => auto).id !== formState.mission_source_id && !fromOrder)
+        (order_mission_source_id !== formState.mission_source_id && !fromOrder)
         ?
         getKindTaskIds(formState.id, false)
         :

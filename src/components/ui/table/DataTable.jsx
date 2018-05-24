@@ -300,7 +300,7 @@ export default class DataTable extends React.Component {
         cssClassName: 'width25 pointer text-center',
         customComponent: (props) => {
           const id = props.rowData.id;
-          return <div><input type="checkbox" checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)} /></div>;
+          return <div><input type="checkbox" id={`checkbox-${id}`}checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)} /></div>;
         },
       });
     }

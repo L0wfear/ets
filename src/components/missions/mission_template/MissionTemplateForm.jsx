@@ -36,7 +36,10 @@ class MissionTemplateForm extends MissionForm {
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 
     const ROUTES = routesList
-      .filter(route => route.technical_operation_id === state.technical_operation_id)
+      .filter(route => (
+        (!state.structure_id || route.structure_id === state.structure_id) &&
+        (route.technical_operation_id === state.technical_operation_id)
+      ))
       .map(({ id, name }) => ({ value: id, label: name }));
 
     const CARS = carsList.map(c => ({
@@ -128,7 +131,7 @@ class MissionTemplateForm extends MissionForm {
                 options={ROUTES}
                 value={state.route_id}
                 disabled={!state.technical_operation_id}
-                onChange={this.handleRouteIdChange.bind(this)}
+                onChange={this.handleRouteIdChange}
                 clearable
               />
               <Div hidden={state.route_id}>

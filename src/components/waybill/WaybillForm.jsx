@@ -480,6 +480,9 @@ class WaybillForm extends Form {
       if (isNotNull(lastCarUsedWaybill.fuel_type)) {
         fieldsToChange.fuel_type = lastCarUsedWaybill.fuel_type;
       }
+      if (isNotNull(lastCarUsedWaybill.trailer_id)) {
+        fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
+      }
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;

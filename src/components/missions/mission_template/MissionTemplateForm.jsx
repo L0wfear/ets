@@ -66,7 +66,7 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
       route !== null &&
@@ -187,7 +187,7 @@ class MissionTemplateForm extends MissionForm {
                 options={ROUTES}
                 value={state.route_id}
                 disabled={!state.car_id}
-                onChange={this.handleRouteIdChange.bind(this)}
+                onChange={this.handleRouteIdChange}
                 clearable
               />
               <Div hidden={state.route_id}>

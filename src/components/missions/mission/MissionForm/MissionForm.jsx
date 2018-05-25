@@ -128,19 +128,22 @@ export class MissionForm extends Form {
   }
 
   handleStructureIdChange = (structure_id) => {
-    const { formState } = this.props;
     const changesObj = {
       structure_id,
     };
 
-    if (this.props.carsList.find(car => (!structure_id || car.is_common || car.company_structure_id === structure_id) && car.asuods_id === formState.car_id)) {
-      changesObj.car_id = null;
-    }
-    if (this.state.routesList.find(route => (!structure_id || (structure_id === route.structure_id)) && (route.id === formState.route_id))) {
-      changesObj.route_id = null;
-
-      this.handleRouteIdChange(undefined);
-    }
+    const car = this.props.carsIndex[this.props.formState.car_id];
+    if (!structure_id) {
+      if (!car.is_common) {
+        this.handleChange('car_id', null);
+      }
+    } else {
+      if (car && structure_id !== car.company_structure_id) {
+        changesObj.car_id = null;
+      }
+      if (this.state.selectedRoute && structure_id !== this.state.selectedRoute.structure_id) {
+        this.handleRouteIdChange(undefined);
+      }
 
     this.props.handleMultiFormChange(changesObj);
   }

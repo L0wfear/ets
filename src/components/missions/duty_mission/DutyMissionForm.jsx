@@ -33,7 +33,7 @@ export class DutyMissionForm extends Form {
     };
   }
 
-  handleRouteIdChange(v) {
+  handleRouteIdChange = (v) => {
     this.handleChange('route_id', v);
     const { flux } = this.context;
     if (v) {
@@ -43,6 +43,17 @@ export class DutyMissionForm extends Form {
     } else {
       this.setState({ selectedRoute: null });
     }
+  }
+
+  handleChangeStructureId = (v) => {
+    if (!v) {
+      this.handleChange('brigade_employee_id_list', []);
+      this.handleChange('foreman_id', null);
+    } else if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
+      this.handleRouteIdChange(undefined);
+    }
+
+    this.handleChange('structure_id', v);
   }
 
   // Зачем тут таймаут?
@@ -483,7 +494,7 @@ export class DutyMissionForm extends Form {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleChangeStructureId}
               />
             </Col>}
           </Row>
@@ -551,7 +562,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
                 options={ROUTES}
                 value={state.route_id}
-                onChange={this.handleRouteIdChange.bind(this)}
+                onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
                 <Button

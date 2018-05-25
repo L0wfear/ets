@@ -1287,6 +1287,9 @@ body.application {
     margin-top: 5px;
     margin-bottom: 5px;
   }
+  &.all-list>ul {
+    padding-left: 15px;
+  }
 }
 
 .zoombox-control {
@@ -3296,4 +3299,8 @@ div.none {
       margin: 0 4px;
     }
   }
+}
+
+.display-none {
+  display: none;
 }

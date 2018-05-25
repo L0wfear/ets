@@ -83,7 +83,6 @@ export default class FilterRow extends React.Component {
       }
       if (type === 'date') {
         input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={onChange} single />;
-        // input = <Datepicker className="filter-datepicker" date={value} onChange={v => (console.log(v), onChange(moment(v).format('YYYY-MM-DD')))} time={false} />;
       }
       if (type === 'datetime') {
         input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} single />;

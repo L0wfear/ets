@@ -49,6 +49,10 @@ class TablePrev extends React.Component<any, any> {
       errors,
     } = this.props;
 
+    const tableProps: any = {
+      bsClass: 'custom-ta,ble overflow-visible table'
+    }
+
     return (
       <div style={{
         height: 100 + bodyData.length * 68,
@@ -62,7 +66,7 @@ class TablePrev extends React.Component<any, any> {
         </div>
         {
           !!bodyData.length &&
-          <Table bsClass="custom-table overflow-visible table" responsive>
+          <Table {...tableProps} responsive>
             <thead>
               <tr>
                 {

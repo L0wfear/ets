@@ -15,11 +15,6 @@ import RouteFormWrap from '../../route/RouteFormWrap.jsx';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
 class MissionTemplateForm extends DutyMissionForm {
-  handleChangeStructureId = (v) => {
-    this.handleChange('brigade_employee_id_list', []);
-    this.handleChange('foreman_id', null);
-    this.handleChange('structure_id', v);
-  }
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -34,7 +29,7 @@ class MissionTemplateForm extends DutyMissionForm {
       selectedRoute: route = null,
     } = this.state;
 
-    const routes = routesList.filter(r => r.structure_id === state.structure_id && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
       route !== null &&

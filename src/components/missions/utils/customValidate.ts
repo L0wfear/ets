@@ -17,12 +17,14 @@ interface IDutyMission {
 
 interface ICar {
   company_structure_id: number | void;
+  is_common: boolean;
 }
 interface ICarsIndex {
   [asuods_id: number]: ICar;
 }
 interface IEmployee {
   company_structure_id: number | void;
+  is_common: boolean;
 }
 interface IEmployeesIndex {
   [id: number]: IEmployee;
@@ -47,9 +49,9 @@ export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (mi
 
   if (missionsWithStructureId) {
     const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { structure_id, car_id, number }) => {
-      const { company_structure_id: car_structure_id = null } = carsIndex[car_id] || {};
+      const { company_structure_id: car_structure_id = null, is_common = false } = carsIndex[car_id] || {};
 
-      if (car_structure_id !== structure_id) {
+      if (!is_common && car_structure_id !== structure_id) {
         newArr.push(`<${number}>`);
       }
 
@@ -71,9 +73,9 @@ export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBriga
   if (missionsWithStructureId) {
     const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { foreman_id, brigade_employee_id_list = [], structure_id, number }) => {
       brigade_employee_id_list.forEach(({ employee_id }) => {
-        const { company_structure_id: employee_structure_id = null } = employeesIndex[employee_id] || {};
+        const { company_structure_id: employee_structure_id = null, is_common = false } = employeesIndex[employee_id] || {};
 
-        if (employee_structure_id !== structure_id) {
+        if (!is_common && employee_structure_id !== structure_id) {
           newArr.push(`<${number}>`);
         }
       });

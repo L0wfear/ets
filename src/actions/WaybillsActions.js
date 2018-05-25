@@ -104,8 +104,8 @@ export default class WaybillsActions extends Actions {
 
   getWaybillsReport(state, filter) {
     const payload = {
-      date_start: createValidDate(state.date_from),
-      date_end: createValidDate(state.date_to),
+      date_start: createValidDateTime(state.date_from),
+      date_end: createValidDateTime(state.date_to),
     };
 
     if (state.with_filter) {

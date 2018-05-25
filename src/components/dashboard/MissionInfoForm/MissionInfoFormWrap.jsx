@@ -18,6 +18,7 @@ export default class MissionInfoFormWrap extends FormWrap {
           show={this.props.showForm}
           onHide={this.props.onFormHide}
           {...this.state}
+          title={undefined}
         />
       </Div>
     );

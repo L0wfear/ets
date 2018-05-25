@@ -1302,6 +1302,9 @@ body.application {
     margin-top: 5px;
     margin-bottom: 5px;
   }
+  &.all-list>ul {
+    padding-left: 15px;
+  }
 }
 
 .app-toolbar-show-fuelleak {

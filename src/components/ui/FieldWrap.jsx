@@ -13,7 +13,7 @@ export default class FieldWrap extends React.Component {
   getFieldByPropertyMeta() {
     const { field, value, error, onChange } = this.props;
     let fieldProps = {};
-    console.log(value);
+    console.log(value); // eslint-disable-line
 
     switch (field.form.formType) {
       case 'string':
@@ -49,7 +49,7 @@ export default class FieldWrap extends React.Component {
           onChange,
           options: field.form.formSelectOptions() || [],
         };
-        console.log(fieldProps);
+        console.log(fieldProps); // eslint-disable-line
         break;
     }
 

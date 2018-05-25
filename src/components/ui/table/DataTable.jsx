@@ -186,6 +186,7 @@ export default class DataTable extends React.Component {
     if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== this.state.initialSortAscending) {
       initialSortAscending = props.initialSortAscending;
     }
+
     if (props.externalFilter) {
       this.setState({
         initialSort,
@@ -227,7 +228,8 @@ export default class DataTable extends React.Component {
   }
 
   saveFilter(filterValues) {
-    console.log('SAVE FILTER', filterValues);
+    console.log('SAVE FILTER', filterValues); // eslint-disable-line
+
     if (this.props.externalFilter) {
       this.props.externalFilter(filterValues);
       return;
@@ -384,7 +386,10 @@ export default class DataTable extends React.Component {
   }
 
   shouldBeRendered(obj) {
-    if (this.props.externalFilter) return true;
+    if (this.props.externalFilter && !this.props.needMyFilter) {
+      return true;
+    }
+
     const { filterValues } = this.state;
     // Здесь проводится проверка на то, фильтруется ли объект
     // если в результате isValid === false, то объект не рендерится в таблице
@@ -398,8 +403,7 @@ export default class DataTable extends React.Component {
       }
 
       const IS_ARRAY = Array.isArray(value);
-      if (obj[key] === '197')
-      console.log(value, obj[key])
+
       if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
         if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
           isValid = false;

@@ -174,3 +174,10 @@ export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
 
 export const diffDayOfDate = (dateA, dateB) =>
   diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');
+
+export const diffDatesByDays = (dateA, dateB) =>
+  diffDates(
+    createValidDate(dateA),
+    createValidDate(dateB),
+    'days',
+  );

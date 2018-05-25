@@ -6,7 +6,7 @@ import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
-const serviceUrl = 'fuel_consumption_report';
+const serviceUrl = 'fuel_consumption_new_report';
 const reportUrl = 'fuel-consumption-report';
 const serviceName = 'FuelReportService';
 
@@ -29,6 +29,7 @@ const reportProps: IReportProps = {
   headerComponent: ReportHeader,
   renderers,
   schemaMakers,
+  notUseServerSummerTable: true,
 };
 
 const ExportableReportContainer = exportable({

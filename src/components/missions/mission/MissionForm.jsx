@@ -30,7 +30,7 @@ export class MissionForm extends Form {
     };
   }
 
-  handleRouteIdChange(v) {
+  handleRouteIdChange = (v) => {
     this.handleChange('route_id', v);
     const { flux } = this.context;
     if (v) {
@@ -87,13 +87,20 @@ export class MissionForm extends Form {
     }, 60);
   }
 
-  handleStructureIdChange(v) {
-    const carsList = this.props.carsList.filter(c => !v || c.is_common || c.company_structure_id === v);
-    const routesList = this.state.routesList.filter(r => !v || r.structure_id === v);
-    if (!_.find(carsList, c => c.asuods_id === this.props.formState.car_id)) this.handleChange('car_id', null);
-    if (!_.find(routesList, r => r.id === this.props.formState.route_id)) {
-      this.handleChange('route_id', null);
-      this.handleRouteIdChange(undefined);
+  handleStructureIdChange = (v) => {
+    const car = this.props.carsIndex[this.props.formState.car_id];
+
+    if (!v) {
+      if (!car.is_common) {
+        this.handleChange('car_id', null);
+      }
+    } else {
+      if (car && v !== car.company_structure_id) {
+        this.handleChange('car_id', null);
+      }
+      if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
+        this.handleRouteIdChange(undefined);
+      }
     }
     this.handleChange('structure_id', v);
   }

@@ -13,20 +13,20 @@ export default function Preloader({ style = {}, type = '' }) {
       );
     case 'graph':
       return (
-        <img src={preloaderGif} style={style} alt="Идет загрузка" />
+        <img id="preloader-graph" src={preloaderGif} style={style} alt="Идет загрузка" />
       );
     case 'field':
       return (
-        <img src={preloaderFieldGif} alt="Идет загрузка" />
+        <img id="preloader-field" src={preloaderFieldGif} alt="Идет загрузка" />
       );
     case 'lazy':
       return (
         <div className="gost-weak-loading-overlay">
-          <img src={preloaderFieldGif} alt="Идет загрузка" />Загрузка...
+          <img id="preloader-lazy" src={preloaderFieldGif} alt="Идет загрузка" />Загрузка...
         </div>
       );
     default:
-      return <div className="custom-preloader" />;
+      return <div id="preloader-custom" className="custom-preloader" />;
   }
 }
 

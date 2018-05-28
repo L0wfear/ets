@@ -78,21 +78,21 @@ export default class APIService {
     this.log('GET');
     const url = this.url;
     this.resetPath();
-    return getJSON(url, payload);
+    return getJSON(url, payload).then(r => this.processResponse(r, false));
   }
 
   getBlob(payload = {}) {
     this.log('GET BLOB');
     const url = this.url;
     this.resetPath();
-    return getBlob(url, payload);
+    return getBlob(url, payload).then(r => this.processResponse(r, false));
   }
 
   postBlob(payload = {}) {
     this.log('GET (POST) BLOB');
     const url = this.url;
     this.resetPath();
-    return postBlob(url, payload);
+    return postBlob(url, payload).then(r => this.processResponse(r, false));
   }
 
   post(payload = {}, callback, type = 'form', params = {}) {

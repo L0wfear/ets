@@ -30,7 +30,7 @@ const SparePartForm = props => {
   if (IS_CREATING) title = 'Создание записи';
 
   return (
-    <Modal {...props} backdrop="static">
+    <Modal show={props.show} onHide={props.onHide} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
       </Modal.Header>

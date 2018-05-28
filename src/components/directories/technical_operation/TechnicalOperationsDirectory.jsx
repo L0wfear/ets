@@ -3,11 +3,13 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
 import TechnicalOperationsTable from 'components/directories/technical_operation/TechnicalOperationsTable.jsx';
 import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap.jsx';
+import permissions from 'components/directories/technical_operation/config-data/permissions';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'cleaning/norm_registry' })
 @staticProps({
   entity: 'technical_operation',
+  permissions,
   listName: 'technicalOperationsRegistryList',
   tableComponent: TechnicalOperationsTable,
   formComponent: TechnicalOperationFormWrap,

@@ -1,14 +1,20 @@
 import React, { PropTypes } from 'react';
 import { autobind } from 'core-decorators';
-
-import BaseDiv from 'components/ui/Div.jsx';
 import { Panel, Button } from 'react-bootstrap';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
-import DutyMissionFormWrap from '../missions/duty_mission/DutyMissionFormWrap.jsx';
-import WaybillFormWrap from '../waybill/WaybillFormWrap.jsx';
+import BaseDiv from 'components/ui/Div.jsx';
 
-const Div = enhanceWithPermissions(BaseDiv);
+import permissions from 'components/dashboard/config-data/permissions';
+import permissions_waybill from 'components/waybill/config-data/permissions';
+import permissions_order from 'components/directories/order/config-data/permissions';
+import permissions_mission from 'components/missions/mission/config-data/permissions';
+import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
+
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
+import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';
+import WaybillFormWrap from 'components/waybill/WaybillFormWrap.jsx';
+
+const Div = enhanceWithPermissions({})(BaseDiv);
 
 @autobind
 export default class MasterManagementCard extends React.Component {
@@ -48,27 +54,31 @@ export default class MasterManagementCard extends React.Component {
     this.setState({ showDutyMissionForm: false });
   }
 
+  showWaybillForm = () => this.setState({ showWaybillForm: true });
+  showMissionForm = () => this.setState({ showMissionForm: true });
+  showDutyMissionForm = () => this.setState({ showDutyMissionForm: true });
+
   render() {
     return (
-      <Div permissions={['dashboard.manage']} className="dashboard-card-sm dashboard-management-card" hidden={this.props.hidden}>
+      <Div permission={permissions.manage} className="dashboard-card-sm dashboard-management-card" hidden={this.props.hidden}>
         <Panel header={'Управление'} bsStyle="success">
-          <Div permissions={['waybill.create']} className="dashboard-btn-wrapper">
-            <Button bsSize="small" onClick={() => this.setState({ showWaybillForm: true })}>
+          <Div permissions={permissions_waybill.create} className="dashboard-btn-wrapper">
+            <Button bsSize="small" onClick={this.showWaybillForm}>
               Создать путевой лист
             </Button>
           </Div>
-          <Div permissions={['faxogramm.list']} className="dashboard-btn-wrapper container-button-create-cz">
+          <Div permissions={permissions_order.list} className="dashboard-btn-wrapper container-button-create-cz">
             <Button bsSize="small" onClick={this.props.goToOrders}>
               Исполнение централизованного задания
             </Button>
           </Div>
-          <Div permissions={['mission.create']} className="dashboard-btn-wrapper">
-            <Button bsSize="small" onClick={() => this.setState({ showMissionForm: true })}>
+          <Div permissions={permissions_mission.create} className="dashboard-btn-wrapper">
+            <Button bsSize="small" onClick={this.showMissionForm}>
               Создать децентрализованное задание
             </Button>
           </Div>
-          <Div permissions={['duty_mission.create']} className="dashboard-btn-wrapper">
-            <Button bsSize="small" onClick={() => this.setState({ showDutyMissionForm: true })}>
+          <Div permissions={permissions_duty_mission.create} className="dashboard-btn-wrapper">
+            <Button bsSize="small" onClick={this.showDutyMissionForm}>
               Создать наряд-задание
             </Button>
           </Div>

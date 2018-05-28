@@ -18,7 +18,7 @@ class WaybillPrintForm extends Component {
   static get propTypes() {
     return {
       show: PropTypes.any,
-      hide: PropTypes.func,
+      onHide: PropTypes.func,
     };
   }
 
@@ -114,7 +114,7 @@ class WaybillPrintForm extends Component {
     const DISABLE_SUBMIT = (this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from));
 
     return (
-      <Modal {...this.props} show={!!this.props.show}>
+      <Modal show={!!this.props.show} onHide={this.props.onHide} backdrop="static">
 
         <Modal.Header>
           <Modal.Title id="contained-modal-title-lg">Печать отчета по выработке ТС</Modal.Title>
@@ -204,7 +204,7 @@ class WaybillPrintForm extends Component {
         <Modal.Footer>
           <Div className="inline-block">
             <Button disabled={DISABLE_SUBMIT || this.state.DISABLE_SUBMIT} onClick={this.handleSubmit}>{'OK'}</Button>
-            <Button onClick={this.props.hide}>Отмена</Button>
+            <Button onClick={this.props.onHide}>Отмена</Button>
           </Div>
         </Modal.Footer>
       </Modal>

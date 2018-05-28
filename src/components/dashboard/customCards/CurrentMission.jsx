@@ -260,7 +260,7 @@ export default class CurrentMission extends DashboardCardMedium {
     const Header = <DashboardCardHeader title={this.props.title} loading={this.props.loading} onClick={this.refreshCard} />;
 
     return (
-      <Div md={12}>
+      <Div>
         <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             <ItemsCentralized

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field, { ExtField } from 'components/ui/Field.jsx';
@@ -59,9 +59,9 @@ export default class TechnicalOperationForm extends Form {
                                         .map(({ id, full_name }) => ({ value: id, label: full_name }));
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
     const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
-    console.log(state.check_types, TECHNICAL_OPERATION_TYPES)
+
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
@@ -91,7 +91,6 @@ export default class TechnicalOperationForm extends Form {
                 boundKeys={['elements_text']}
                 error={errors.elements_text}
                 disabled={!isPermitted}
-                clearable={true}
               />
             </Col>
 

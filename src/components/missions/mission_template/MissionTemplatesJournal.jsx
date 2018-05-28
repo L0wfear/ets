@@ -4,6 +4,10 @@ import _ from 'lodash';
 import { Button, Glyphicon } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
+import permissions from 'components/missions/mission_template/config-data/permissions';
+import permissions_mission from 'components/missions/mission/config-data/permissions';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+
 import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
 import MissionTemplatesTable from './MissionTemplatesTable.jsx';
 
@@ -25,10 +29,18 @@ const getMissionList = (checkedItems, selectedItem) => {
   };
 };
 
+const ButtonCreateMissionsByTemplates = enhanceWithPermissions({
+  permission: permissions_mission.create,
+})(Button);
+const ButtonCopyTemplateMission = enhanceWithPermissions({
+  permission: permissions.create,
+})(Button);
+
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
   entity: 'mission_template',
   listName: 'missionTemplatesList',
+  permissions,
   tableComponent: MissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
@@ -131,20 +143,22 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     const buttons = super.getButtons();
     // TODO отображение Сформировать задание в зависимости от прав 
     const additionalButtons = [
-      <Button
-        key={buttons.length + 1}
+      <ButtonCreateMissionsByTemplates
+        key={'create-missions-by-template'}
         bsSize="small"
         onClick={this.createMissions}
         disabled={!this.canCreateMission()}
-      >Сформировать децентрализованное задание</Button>,
-      <Button
-        key={buttons.length + 2}
+      >
+        Сформировать децентрализованное задание
+      </ButtonCreateMissionsByTemplates>,
+      <ButtonCopyTemplateMission
+        key={'copy-template'}
         bsSize="small"
         onClick={this.copyElement}
         disabled={this.state.selectedElement === null}
       >
         <Glyphicon glyph="copy" /> Копировать
-      </Button>,
+      </ButtonCopyTemplateMission>,
     ];
     buttons.push(...additionalButtons);
 

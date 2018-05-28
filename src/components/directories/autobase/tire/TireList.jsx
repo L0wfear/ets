@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import TireFormWrap from './TireFormWrap.jsx';
-import TireTable from './TireTable.jsx';
+import TireFormWrap from 'components/directories/autobase/tire/TireFormWrap.jsx';
+import TireTable from 'components/directories/autobase/tire/TireTable.jsx';
+import permissions from 'components/directories/autobase/tire/config-data/permissions';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
   entity: 'autobase_tire',
+  permissions,
   listName: 'tireList',
   tableComponent: TireTable,
   formComponent: TireFormWrap,

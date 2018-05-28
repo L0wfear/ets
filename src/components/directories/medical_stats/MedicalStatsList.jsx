@@ -3,12 +3,14 @@ import { staticProps, exportable, connectToStores } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
-import MedicalStatsTable from './MedicalStatsTable.jsx';
+import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable.jsx';
+import permissions from 'components/directories/medical_stats/config-data/permissions';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'medical_stats' })
 @staticProps({
   entity: 'medical_stats',
+  permissions,
   listName: 'medicalStatsList',
   tableComponent: MedicalStatsTable,
   operations: ['LIST'],

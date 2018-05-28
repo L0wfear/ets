@@ -46,6 +46,6 @@ ODHList.propTypes = {
   fail_list: PropTypes.array,
   checkRoute: PropTypes.func,
   name: PropTypes.string,
-  error: PropTypes.bool,
+  error: PropTypes.string,
   draw_list: PropTypes.array,
 };

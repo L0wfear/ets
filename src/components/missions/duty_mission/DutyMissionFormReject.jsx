@@ -76,7 +76,7 @@ export class DutyMissionForm extends React.Component {
             <Col md={12}>
               <Field
                 type="string"
-                lable="Причина"
+                label="Причина"
                 value={comment}
                 onChange={this.handleChangeRComment}
               />

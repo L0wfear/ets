@@ -1,5 +1,6 @@
 import { flow as flow_fp } from 'lodash/fp';
 import { withProps } from 'recompose';
+import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 import {
   dateTimeFormatter,
@@ -46,4 +47,12 @@ export const FileField = flow(
   onChangeWithKeys,
 )(BaseFileField);
 
-export const Field = onChangeWithKeys(BaseField);
+export const Field = onChangeWithKeys(withMergeProps(
+  props => Object.keys(props).reduce((newProps, key) => {
+    if (key !== 'boundKeys') {
+      newProps[key] = props[key];
+    }
+
+    return newProps;
+  }, {})
+)(BaseField));

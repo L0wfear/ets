@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import RepairFormWrap from './RepairFormWrap';
-import RepairTable, { tableMeta } from './RepairTable';
+import RepairFormWrap from 'components/directories/autobase/repair/RepairFormWrap';
+import RepairTable, { tableMeta } from 'components/directories/autobase/repair/RepairTable';
+import permissions from 'components/directories/autobase/repair/config-data/permissions';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.repair}` })
 @staticProps({
   entity: 'autobase_repair',
+  permissions,
   listName: 'repairList',
   tableComponent: RepairTable,
   formComponent: RepairFormWrap,

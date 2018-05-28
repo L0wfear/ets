@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import CarpoolTable, { tableMeta } from './CarpoolTable.jsx';
+import CarpoolTable, { tableMeta } from 'components/directories/geoobjects/carpool/CarpoolTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import permissions from 'components/directories/geoobjects/carpool/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'carpool' })
 @staticProps({
   path: 'geozones',
   entity: 'carpool',
+  permissions,
   listName: 'carpoolsList',
   tableComponent: CarpoolTable,
   formComponent: GeoObjectsMapModal,
@@ -16,11 +17,6 @@ import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
   operations: ['READ'],
 })
 export default class CarpoolDirectory extends ElementsList {
-
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;

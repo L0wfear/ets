@@ -25,7 +25,7 @@ export default class OdhForm extends Form {
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">Объект дорожного хозяйства</Modal.Title>

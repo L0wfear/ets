@@ -64,7 +64,7 @@ const Table: React.SFC<any> = props  => {
   return (
     <DataTable
       noHeader
-      withNormInitialData
+      normInitialData
       preventNoDataMessage
       selected={props.seleted}
       selectField={'order_operation_id'}

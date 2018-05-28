@@ -6,7 +6,7 @@ import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Form from 'components/compositions/Form.jsx';
-import { CAR_TAB_INDEX } from 'components/directories/cars/CarForm';
+import { CAR_TAB_INDEX } from 'components/directories/autobase/cars/CarForm';
 
 const TYPE_CODE = {
   carITR: [
@@ -143,7 +143,7 @@ export default class UserNotificationForm extends Form {
     const NotificationDesc = notificationComponents[state.type_code] || 'div';
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
           <div style={{ fontWeight: 'bold' }}>
             <span>{state.title}</span>

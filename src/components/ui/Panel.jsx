@@ -14,6 +14,6 @@ export default function Panel({ title, children }) {
 }
 
 Panel.propTypes = {
-  title: React.PropTypes.string,
+  title: React.PropTypes.any,
   children: React.PropTypes.node,
 };

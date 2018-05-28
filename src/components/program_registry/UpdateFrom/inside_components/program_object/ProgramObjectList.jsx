@@ -6,6 +6,7 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CR
 
 import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
 import ProgramObjectFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
+import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -22,6 +23,7 @@ const notifyTexts = {
 @connectToStores(['repair', 'objects', 'session'])
 @staticProps({
   entity: 'repair_program_version',
+  permissions,
   listName: 'objectsList',
   tableComponent: ProgramObjectTable,
   formComponent: ProgramObjectFormWrap,

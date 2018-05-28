@@ -4,11 +4,13 @@ import REPAIR from 'constants/repair';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import StateProgramTable from 'components/directories/repair/state_program/StateProgramTable.tsx';
 import StateProgramFormWrap from 'components/directories/repair/state_program/StateProgramFormWrap';
+import permissions from 'components/directories/repair/state_program/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.stateProgram}` })
 @staticProps({
   entity: 'repair_state_program',
+  permissions,
   listName: 'stateProgramList',
   formComponent: StateProgramFormWrap,
   tableComponent: StateProgramTable,

@@ -12,14 +12,21 @@ import Paginator from 'components/ui/Paginator.jsx';
 import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject.jsx';
 import Div from 'components/ui/Div';
 import PrintForm from 'components/missions/common/PrintForm.tsx';
+import permissions from 'components/missions/duty_mission/config-data/permissions';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 
 import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
+
+const ButtonUpdateDutyMission = enhanceWithPermissions({
+  permission: permissions.update,
+})(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
 @exportable({ entity: 'duty_mission' })
 @staticProps({
   entity: 'duty_mission',
+  permissions,
   listName: 'dutyMissionsList',
   tableComponent: DutyMissionsTable,
   tableMeta: extractTableMeta(getTableMeta()),
@@ -269,9 +276,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const buttons = super.getButtons();
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
-      <ButtonToolbar key={buttons.length}>
-        <Button bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+      <ButtonToolbar key={'button-group'}>
+        <ButtonUpdateDutyMission bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateDutyMission>
+        <ButtonUpdateDutyMission bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateDutyMission>
         {/* <Button bsSize="small" onClick={this.handleSubmit}><Glyphicon glyph="download-alt" /></Button>*/}
       </ButtonToolbar>
     );
@@ -290,11 +297,17 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           {...this.props}
         />
         <PrintForm
-          onExport={this.processExport.bind(this)}
+          onExport={this.processExport}
           show={this.state.showPrintForm}
           onHide={() => this.setState({ showPrintForm: false })}
           title={'Печать журнала наряд-заданий'}
         />
+        <Div key={'other-render'} hidden={this.state.dutyMissionToRejectList.length === 0} >
+          <DutyMissionFormReject
+            rejectedDutyMission={this.state.dutyMissionToRejectList}
+            onRejectAll={this.handleRejectAll}
+          />
+        </Div>
       </div>,
     ];
   }
@@ -326,18 +339,12 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   additionalRender() {
     return [
       <Paginator
+        key={'paginator'}
         currentPage={this.state.page}
         maxPage={Math.ceil(this.props.dutyMissionsTotalCount / MAX_ITEMS_PER_PAGE)}
         setPage={page => this.setState({ page })}
         firstLastButtons
       />,
-      <Div hidden={this.state.dutyMissionToRejectList.length === 0} >
-        <DutyMissionFormReject
-          rejectedDutyMission={this.state.dutyMissionToRejectList}
-          onRejectAll={this.handleRejectAll}
-        />
-      </Div>,
-
     ];
   }
 }

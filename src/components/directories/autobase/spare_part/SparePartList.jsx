@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import SparePartTable from './SparePartTable';
-import SparePartFormWrap from './SparePartFormWrap';
+import SparePartTable from 'components/directories/autobase/spare_part/SparePartTable';
+import SparePartFormWrap from 'components/directories/autobase/spare_part/SparePartFormWrap';
+import permissions from 'components/directories/autobase/spare_part/config-data/permissions';
 
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.sparePart}` })
 @staticProps({
   entity: 'autobase_spare_part',
+  permissions,
   listName: 'sparePartList',
   formComponent: SparePartFormWrap,
   tableComponent: SparePartTable,

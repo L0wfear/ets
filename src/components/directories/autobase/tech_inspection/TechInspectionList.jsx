@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import TechInspectionFormWrap from './TechInspectionFormWrap';
-import TechInspectionTable, { tableMeta } from './TechInspectionTable.tsx';
+import TechInspectionFormWrap from 'components/directories/autobase/tech_inspection/TechInspectionFormWrap';
+import TechInspectionTable, { tableMeta } from 'components/directories/autobase/tech_inspection/TechInspectionTable.tsx';
+import permissions from 'components/directories/autobase/tech_inspection/config-data/permissions';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
   entity: 'autobase_tech_inspection',
+  permissions,
   listName: 'techInspectionList',
   tableComponent: TechInspectionTable,
   formComponent: TechInspectionFormWrap,

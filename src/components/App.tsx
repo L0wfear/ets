@@ -7,9 +7,11 @@ import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
 import Login from 'components/login/LoginPage.jsx';
-import MainApp from 'components/MainApp.jsx';
+import MainAppTSX from 'components/MainApp.jsx';
 
 import LoadingPage from './LoadingPage.jsx';
+
+const MainApp: any = MainAppTSX;
 
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
@@ -30,6 +32,7 @@ const getLoginPage = props => {
     if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
       return <Redirect to={requireAuth(flux, '/dashboard')} />;
     } else {
+      console.log('here')
       return <Redirect to={requireAuth(flux, '/monitor')} />;
     }
   } else {
@@ -50,7 +53,7 @@ const getMainApp = props => {
     return <Redirect to={permittedPath} />;
   }
 
-  return <MainApp {...props} />;
+  return <MainApp />;
 };
 
 class App extends React.Component <any, any> {

@@ -131,7 +131,7 @@ export default class DashboardCardMedium extends React.Component {
     // отрефакторить
 
     return (
-      <Div md={12}>
+      <Div>
         <Panel className="dashboard-card" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             {firstItems}

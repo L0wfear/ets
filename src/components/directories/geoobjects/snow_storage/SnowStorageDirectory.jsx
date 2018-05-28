@@ -1,13 +1,15 @@
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import SnowStorageTable, { tableMeta } from './SnowStorageTable.jsx';
-import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
+import SnowStorageTable, { tableMeta } from 'components/directories/geoobjects/snow_storage/SnowStorageTable.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import permissions from 'components/directories/geoobjects/snow_storage/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])
 @exportable({ entity: 'geozones/snow_storage' })
 @staticProps({
   path: 'geozones',
   entity: 'snow_storage',
+  permissions,
   listName: 'snowStoragesList',
   tableComponent: SnowStorageTable,
   formComponent: GeoObjectsMapModal,

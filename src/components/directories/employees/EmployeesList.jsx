@@ -2,13 +2,16 @@ import * as queryString from 'query-string';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import EmployeeFormWrap from './EmployeeFormWrap.jsx';
-import EmployeesTable from './EmployeesTable.tsx';
+import EmployeeFormWrap from 'components/directories/employees/EmployeeFormWrap.jsx';
+import EmployeesTable from 'components/directories/employees/EmployeesTable.tsx';
+
+import permissions from 'components/directories/employees/config-data/permissions';
 
 @connectToStores(['employees', 'objects', 'session'])
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
+  permissions,
   listName: 'employeesList',
   tableComponent: EmployeesTable,
   formComponent: EmployeeFormWrap,

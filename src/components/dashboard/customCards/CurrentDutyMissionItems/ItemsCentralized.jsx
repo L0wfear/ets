@@ -72,7 +72,7 @@ export default class CurrentMission extends DashboardCardMedium {
     // отрефакторить
 
     return (
-      <Div md={12}>
+      <Div>
         <Panel className="dashboard-card no-margin-bottom" header={Header} bsStyle="success" wrappedRef={node => (this._card = node)}>
           <Div className="dashboard-card-items">
             <Collapse in={this.state.fullListOpen}>

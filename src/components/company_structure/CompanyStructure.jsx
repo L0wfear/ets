@@ -1,18 +1,21 @@
 import React from 'react';
-import { Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
-
+import { Button, Glyphicon } from 'react-bootstrap';
+import permissions from 'components/company_structure/config-data/permissions';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 
-import CompanyStructureFormWrap from './CompanyStructureFormWrap.jsx';
-import CompanyStructureTable from './CompanyStructureTable.jsx';
+import CompanyStructureFormWrap from 'components/company_structure/CompanyStructureFormWrap.jsx';
+import CompanyStructureTable from 'components/company_structure/CompanyStructureTable.jsx';
 
-const Button = enhanceWithPermissions(BootstrapButton);
+const ButtonAddStructure = enhanceWithPermissions({
+  permission: permissions.create,
+})(Button);
 
 @connectToStores(['objects', 'session'])
 @staticProps({
   entity: 'company_structure',
+  permissions,
   listName: 'companyStructureLinearList',
 })
 export default class CompanyStructure extends ElementsList {
@@ -68,7 +71,7 @@ export default class CompanyStructure extends ElementsList {
           onActionDelete={this.deleteElement}
           entity={this.entity}
         >
-          <Button bsSize="small" permissions={[`${this.entity}.create`]} onClick={this.createElement}><Glyphicon glyph="plus" /> Добавить подразделение</Button>
+          <ButtonAddStructure bsSize="small" onClick={this.createElement} ><Glyphicon glyph="plus" /> Добавить подразделение</ButtonAddStructure>
         </CompanyStructureTable>
         <CompanyStructureFormWrap
           onFormHide={this.onFormHide}

@@ -143,7 +143,7 @@ export default class ProgramRegistryForm extends Form {
           onHide={this.hideMakeVersionForm}
           onSubmit={this.handleMakeVersionClick}
         />
-        <Modal {...this.props} show={this.props.show && !makeVersionIsVisible} bsSize="lg" backdrop="static">
+        <Modal show={this.props.show && !makeVersionIsVisible} onHide={this.props.onHide} bsSize="lg" backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
           </Modal.Header>

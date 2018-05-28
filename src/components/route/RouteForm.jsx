@@ -183,7 +183,7 @@ export default class RouteForm extends Form {
       structure_id: ['structure_id'],
     };
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

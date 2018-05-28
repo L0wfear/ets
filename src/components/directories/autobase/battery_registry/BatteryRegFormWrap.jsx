@@ -2,10 +2,10 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BatteryForm from './BatteryRegForm.jsx';
+import BatteryForm from 'components/directories/autobase/battery_registry/BatteryRegForm';
 import { schema } from 'models/BatteryRegModel.js';
 
-class EmployeeFormWrap extends FormWrap {
+class BatteryRegFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
@@ -21,7 +21,7 @@ class EmployeeFormWrap extends FormWrap {
     const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
-  
+
     return this.props.showForm ?
       <BatteryForm
         formState={this.state.formState}
@@ -39,4 +39,4 @@ class EmployeeFormWrap extends FormWrap {
   }
 }
 
-export default enhanceWithPermissions(EmployeeFormWrap);
+export default enhanceWithPermissions(BatteryRegFormWrap);

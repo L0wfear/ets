@@ -5,12 +5,27 @@ import cx from 'classnames';
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
 
+import permissions from 'components/route/config-data/permissions';
+
 import Div from 'components/ui/Div.jsx';
 import Filter from 'components/ui/table/filter/Filter.jsx';
 import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
 import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils.js';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 import RouteInfo from './RouteInfo.jsx';
 import RouteFormWrap from './RouteFormWrap.jsx';
+
+const ButtonCreateRoute = enhanceWithPermissions({
+  permission: permissions.create,
+})(Button);
+
+const ButtonUpdateRoute = enhanceWithPermissions({
+  permission: permissions.update,
+})(Button);
+
+const ButtonDeleteRoute = enhanceWithPermissions({
+  permission: permissions.delete,
+})(Button);
 
 class RoutesList extends Component {
 
@@ -287,7 +302,6 @@ class RoutesList extends Component {
         });
       }
     });
-    console.log(route);
 
     return (
       <div className="ets-page-wrap routes-list">
@@ -310,10 +324,10 @@ class RoutesList extends Component {
                   active={!!_.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />
-                <Button bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</Button>
-                <Button bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}><Glyphicon glyph="pencil" /> Изменить маршрут</Button>
-                <Button bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</Button>
-                <Button bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</Button>
+                <ButtonCreateRoute bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</ButtonCreateRoute>
+                <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}><Glyphicon glyph="pencil" /> Изменить маршрут</ButtonUpdateRoute>
+                <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
+                <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
               </div>
             </div>
             <Filter

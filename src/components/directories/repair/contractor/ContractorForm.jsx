@@ -18,7 +18,7 @@ export default class SparePartForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>

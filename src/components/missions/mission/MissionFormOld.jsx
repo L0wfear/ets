@@ -78,7 +78,7 @@ class MissionFormOld extends React.Component {
       'value',
     );
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
         </Modal.Header>

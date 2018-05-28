@@ -7,7 +7,7 @@ import {
   find,
 } from 'lodash';
 import ElementsList from './ElementsList.jsx';
-import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
+import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CRUD';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
@@ -91,33 +91,33 @@ export default class CheckableElementsList extends ElementsList {
 
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
-        <ButtonCreate
+        <ButtonCreateNew
+          key={'button-create'}
           buttonName={BCbuttonName}
-          key={buttons.length}
           onClick={this.createElement}
-          permissions={[`${entity}.create`]}
+          permission={this.permissions.create}
         />
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
-        <ButtonRead
+        <ButtonReadNew
+          key={'button-read'}
           buttonName={BRbuttonName}
-          key={buttons.length}
           onClick={this.showForm}
+          permission={this.permissions.read}
           disabled={this.checkDisabledRead()}
-          permissions={[`${entity}.read`]}
         />
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
-        <ButtonDelete
+        <ButtonDeleteNew
+          key={'button-delete'}
           buttonName={BDbuttonName}
-          key={buttons.length}
           onClick={this.removeCheckedElements}
+          permission={this.permissions.delete}
           disabled={this.checkDisabledDelete()}
-          permissions={[`${entity}.delete`]}
         />
       );
     }

@@ -1,0 +1,21 @@
+import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+
+import fuelConsumption from 'components/reports/regulated/fuel_consumption/config-data';
+import fuelConsumptionSummary from 'components/reports/regulated/fuel_consumption_summary/config-data';
+import dailyCleaningEts from 'components/reports/regulated/daily_cleaning_ets/config-data';
+import dailyCleaningCafap from 'components/reports/regulated/daily_cleaning_cafap/config-data';
+import cleaningStatusTechOp from 'components/reports/regulated/cleaning_status_tech_op/config-data';
+
+const children = {
+  fuelConsumption,
+  fuelConsumptionSummary,
+  dailyCleaningEts,
+  dailyCleaningCafap,
+  cleaningStatusTechOp,
+};
+
+export default {
+  title: 'Регламентированные отчеты',
+  children,
+  permissions: getChildrenPermissions(children),
+};

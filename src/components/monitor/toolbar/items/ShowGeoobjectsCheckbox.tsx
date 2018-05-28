@@ -11,12 +11,11 @@ export interface IPropsGeoObjectListItem {
 }
 
 const GeoObjectListItem: React.SFC<IPropsGeoObjectListItem> = ({
-  key,
   selectedPolysTypes,
   type,
   onChange,
 }) =>
-  <li key={key}>
+  <li>
   <div className="checkbox">
     <label style={{ fontSize: 13, fontWeight: 200 }}>
       <input

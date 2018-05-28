@@ -4,12 +4,14 @@ import { Button, ButtonToolbar } from 'react-bootstrap';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import CheckableElementsList from 'components/CheckableElementsList';
-import UserNotificationFormWrap from './UserNotificationFormWrap';
-import UserNotificationTable from './UserNotificationTable';
+import UserNotificationFormWrap from 'components/notifications/UserNotificationFormWrap';
+import UserNotificationTable from 'components/notifications/UserNotificationTable';
+import permissions from 'components/notifications/config-data/permissions';
 
 @connectToStores(['userNotifications'])
 @staticProps({
   entity: 'userNotification',
+  permissions,
   listName: 'userNotificationList',
   tableComponent: UserNotificationTable,
   formComponent: UserNotificationFormWrap,

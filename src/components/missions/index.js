@@ -2,14 +2,14 @@
  * Задания
  * @module components/missions
  */
-import missions from './mission/MissionsJournal.jsx';
-import missionTemplates from './mission_template/MissionTemplatesJournal.jsx';
-import dutyMissions from './duty_mission/DutyMissionsJournal.jsx';
-import dutyMissionTemplates from './duty_mission_template/DutyMissionTemplatesJournal.jsx';
+import MissionsJournal from 'components/missions/mission/MissionsJournal.jsx';
+import MissionTemplatesJournal from 'components/missions/mission_template/MissionTemplatesJournal.jsx';
+import DutyMissionsJournal from 'components/missions/duty_mission/DutyMissionsJournal.jsx';
+import DutyMissionTemplatesJournal from 'components/missions/duty_mission_template/DutyMissionTemplatesJournal.jsx';
 
-export {
-  missions,
-  missionTemplates,
-  dutyMissions,
-  dutyMissionTemplates,
+export default {
+  MissionsJournal,
+  MissionTemplatesJournal,
+  DutyMissionsJournal,
+  DutyMissionTemplatesJournal,
 };

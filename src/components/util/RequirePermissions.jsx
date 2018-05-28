@@ -1,8 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { connectToStores } from 'utils/decorators';
+import { connectToStores, FluxContext } from 'utils/decorators';
+
+const defaultProps = {
+  userPermissions: [],
+  permissions: [],
+  oneOfPermissions: [],
+  addPermissionProp: false,
+  includesPartOfText: false,
+  hidden: false,
+  omitPropsKeys: {},
+};
+
+const defaultPropsKeys = Object.keys(defaultProps).reduce((newData, key) => ({
+  ...newData,
+  [key]: true,
+}), {});
 
 export default function enhanceWithPermissions(ComposedComponent) {
-  return @connectToStores('session') class extends Component {
+  return @connectToStores('session') @FluxContext class extends Component {
 
     static get propTypes() {
       return {
@@ -12,18 +27,12 @@ export default function enhanceWithPermissions(ComposedComponent) {
         includesPartOfText: PropTypes.any,
         addPermissionProp: PropTypes.bool,
         hidden: PropTypes.bool,
+        omitPropsKeys: PropTypes.any,
       };
     }
 
     static get defaultProps() {
-      return {
-        userPermissions: [],
-        permissions: [],
-        oneOfPermissions: [],
-        addPermissionProp: false,
-        includesPartOfText: false,
-        hidden: false,
-      };
+      return { ...defaultProps };
     }
 
     /**
@@ -57,10 +66,30 @@ export default function enhanceWithPermissions(ComposedComponent) {
     render() {
       if (this.props.hidden) return null;
       const isPermitted = this.isPermitted();
+
       if (!isPermitted && !this.props.addPermissionProp) {
         return null;
       }
-      return <ComposedComponent isPermitted={isPermitted} {...this.props} />;
+      const propsWithPermittedFlug = { ...this.props, isPermitted };
+
+      const stateKeys = Object.keys(this.context.flux.getStore('session').state).reduce((newData, key) => ({
+        ...newData,
+        [key]: true,
+      }), {});
+
+      return (
+        <ComposedComponent
+          {
+            ...Object.keys(propsWithPermittedFlug).reduce((newProps, key) => {
+              if (!defaultPropsKeys[key] && !stateKeys[key] && !this.props.omitPropsKeys[key]) {
+                newProps[key] = propsWithPermittedFlug[key];
+              }
+
+              return newProps;
+            }, {})
+          }
+        />
+      );
     }
   };
 }

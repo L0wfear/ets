@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import RoadAccidentFormWrap from './RoadAccidentFormWrap';
-import RoadAccidentTable from './RoadAccidentTable';
+import RoadAccidentFormWrap from 'components/directories/autobase/road_accident/RoadAccidentFormWrap';
+import RoadAccidentTable from 'components/directories/autobase/road_accident/RoadAccidentTable';
+import permissions from 'components/directories/autobase/road_accident/config-data/permissions';
 
 @connectToStores(['autobase', 'employees', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
 @staticProps({
   entity: 'autobase_road_accident',
+  permissions,
   listName: 'roadAccidentRegistryList',
   tableComponent: RoadAccidentTable,
   formComponent: RoadAccidentFormWrap,

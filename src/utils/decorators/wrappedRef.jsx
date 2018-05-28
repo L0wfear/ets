@@ -10,9 +10,11 @@ export default function wrappedRef(ComposedComponent) {
     }
 
     render() {
+      const { wrappedRef: wrappedRefOuter, ...props } = this.props;
+
       return (
-        <div ref={this.props.wrappedRef}>
-          <ComposedComponent {...this.props} />
+        <div ref={wrappedRefOuter}>
+          <ComposedComponent {...props} />
         </div>
       );
     }

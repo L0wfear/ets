@@ -12,7 +12,7 @@ import FuelChart from './charts/FuelChart';
 export default class Charts extends Component {
   static propTypes = {
     car: PropTypes.object,
-    trackPoints: PropTypes.arrayOf({}),
+    trackPoints: PropTypes.array,
   }
   state = {
     chartTab: 0,

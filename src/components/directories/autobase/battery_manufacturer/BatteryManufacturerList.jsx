@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import BatteryManufacturerFormWrap from './BatteryManufacturerFormWrap';
-import BatteryManufacturerTable from './BatteryManufacturerTable.tsx';
+import BatteryManufacturerFormWrap from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerFormWrap';
+import BatteryManufacturerTable from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerTable.tsx';
+import permissions from 'components/directories/autobase/battery_manufacturer/config-data/permissions';
 
 @connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryManufacturer}` })
 @staticProps({
   entity: 'autobase_battery_manufacturer',
+  permissions,
   listName: 'batteryManufacturerList',
   tableComponent: BatteryManufacturerTable,
   formComponent: BatteryManufacturerFormWrap,

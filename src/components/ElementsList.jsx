@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
-import find from 'lodash/find';
 import { autobind } from 'core-decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import * as queryString from 'query-string';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
-import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
+import {
+  ButtonCreateNew, ButtonReadNew, ButtonDeleteNew,
+  ButtonCreate, ButtonRead, ButtonDelete,
+} from './ui/buttons/CRUD';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
@@ -43,7 +45,7 @@ class ElementsList extends React.Component {
     this.entity = this.constructor.entity;
     this.tableMeta = this.constructor.tableMeta || {};
     this.preventUrlFilters = false;
-
+    this.permissions = this.constructor.permissions || {};
     this.clicks = 0;
   }
 
@@ -225,7 +227,7 @@ class ElementsList extends React.Component {
   checkDisabledRead() {
     return this.state.selectedElement === null;
   }
-  async processExport(exportPayload = this.exportPayload) {
+  processExport = async (exportPayload = this.exportPayload) => {
     try {
       this.setState({ exportFetching: true });
       await this.props.export(exportPayload, this.exportUseRouteParams);
@@ -260,34 +262,63 @@ class ElementsList extends React.Component {
 
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
-        <ButtonCreate
-          buttonName={BCbuttonName}
-          key={buttons.length}
-          onClick={this.createElement}
-          permissions={[`${entity}.create`]}
-        />
+        this.permissions.create
+        ?
+          <ButtonCreateNew
+            key={'button-create'}
+            buttonName={BCbuttonName}
+            onClick={this.createElement}
+            permission={this.permissions.create}
+          />
+        :
+          <ButtonCreate
+            buttonName={BCbuttonName}
+            key={buttons.length}
+            onClick={this.createElement}
+            permissions={[`${entity}.create`]}
+          />
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
-        <ButtonRead
-          buttonName={BRbuttonName}
-          key={buttons.length}
-          onClick={this.showForm}
-          disabled={this.checkDisabledRead()}
-          permissions={[`${entity}.read`]}
-        />
+        this.permissions.read
+        ?
+          <ButtonReadNew
+            key={'button-read'}
+            buttonName={BRbuttonName}
+            onClick={this.showForm}
+            permission={this.permissions.read}
+            disabled={this.checkDisabledRead()}
+          />
+        :
+          <ButtonRead
+            buttonName={BRbuttonName}
+            key={buttons.length}
+            onClick={this.showForm}
+            disabled={this.checkDisabledRead()}
+            permissions={[`${entity}.read`]}
+          />
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
-        <ButtonDelete
-          buttonName={BDbuttonName}
-          key={buttons.length}
-          onClick={this.removeElement}
-          disabled={this.checkDisabledDelete()}
-          permissions={[`${entity}.delete`]}
-        />
+        this.permissions.read
+        ?
+          <ButtonDeleteNew
+            key={'button-delete'}
+            buttonName={BDbuttonName}
+            onClick={this.removeCheckedElements}
+            permission={this.permissions.delete}
+            disabled={this.checkDisabledDelete()}
+          />
+        :
+          <ButtonDelete
+            buttonName={BDbuttonName}
+            key={buttons.length}
+            onClick={this.removeElement}
+            disabled={this.checkDisabledDelete()}
+            permissions={[`${entity}.delete`]}
+          />
       );
     }
     if (this.props.exportable) {

@@ -1,0 +1,29 @@
+import FuelOperationFormWrap from 'components/directories/data_for_calculation/fuel_operations/FuelOperationFormWrap.jsx';
+import FuelOperationsTable from 'components/directories/data_for_calculation/fuel_operations/FuelOperationsTable.jsx';
+import ElementsList from 'components/ElementsList.jsx';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import permissions from 'components/directories/data_for_calculation/fuel_operations/config-data/permissions';
+
+@connectToStores(['fuelRates', 'objects'])
+@exportable({ entity: 'fuel_operations' })
+@staticProps({
+  entity: 'fuel_operation',
+  permissions,
+  listName: 'operations',
+  tableComponent: FuelOperationsTable,
+  formComponent: FuelOperationFormWrap,
+  operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
+})
+export default class FuelOperationsDirectory extends ElementsList {
+
+  constructor(props, context) {
+    super(props);
+    this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelOperation;
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    const { flux } = this.context;
+    flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+  }
+}

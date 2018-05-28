@@ -7,26 +7,29 @@ import {
   setDMInMissionTemplateData,
 } from 'redux/modules/order/action-order';
 
-import { TypeDownload, missionTemplateListPermission } from 'components/directories/order/constant-order';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import permissions_mission_template from 'components/missions/mission_template/config-data/permissions';
+import permissions_duty_mission_template from 'components/missions/duty_mission_template/config-data/permissions';
+
+import { TypeDownload } from 'components/directories/order/constant-order';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import { getBlobOrder } from 'components/directories/order/utils-order';
 
 const marginLeft = { marginLeft: 10 };
 
-const Button = enhanceWithPermissions(BootstrapButton);
+const Button = enhanceWithPermissions({})(BootstrapButton);
 const title: any = <Glyphicon glyph="download-alt" />;
 
 const OrderTableChilrend: React.SFC<any> = props => (
   <div>
     <Button
-      permissions={missionTemplateListPermission.missionTemplate}
+      permission={permissions_mission_template.create}
       disabled={props.disabledTemplateMission}
       onClick={props.handleClickOnCMTemplate}
     >
       {'Создать задание по шаблону'}
     </Button>
     <Button
-      permissions={missionTemplateListPermission.dutyMissionTemplate}
+      permission={permissions_duty_mission_template.create}
       disabled={props.disabledTemplateDutyMission}
       onClick={props.handleClickOnCDMTemplate}
     >
@@ -34,8 +37,8 @@ const OrderTableChilrend: React.SFC<any> = props => (
     </Button>
     <span style={marginLeft} >
       <DropdownButton onSelect={props.selectDownload} pullRight title={title} id="bg-nested-dropdown">
-        <MenuItem eventKey={TypeDownload.old} disabled={!props.disabledButtonsMenu}>Скан-копия факсограммы</MenuItem>
-        <MenuItem eventKey={TypeDownload.new} disabled={!props.disabledButtonsMenu}>Расшифровка централизованного задания</MenuItem>
+        <MenuItem eventKey={TypeDownload.old} disabled={props.disabledButtonsMenu}>Скан-копия факсограммы</MenuItem>
+        <MenuItem eventKey={TypeDownload.new} disabled={props.disabledButtonsMenu}>Расшифровка централизованного задания</MenuItem>
       </DropdownButton>
     </span>
   </div>
@@ -58,7 +61,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
-  disabledButtonsMenu: !stateProps.disabledButtonsMenu,
+  disabledButtonsMenu: !stateProps.selectedElementOrder,
   disabledTemplateMission: stateProps.disabledTemplateMission,
   disabledTemplateDutyMission: stateProps.disabledTemplateDutyMission,
 

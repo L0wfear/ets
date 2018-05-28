@@ -1,13 +1,15 @@
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import PGMTable, { tableMeta } from './PGMTable.jsx';
-import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
+import PGMTable, { tableMeta } from 'components/directories/geoobjects/pgm/PGMTable.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import permissions from 'components/directories/geoobjects/pgm/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])
 @exportable({ entity: 'geozones/pgm_store' })
 @staticProps({
   path: 'geozones',
   entity: 'pgm',
+  permissions,
   listName: 'pgmsList',
   tableComponent: PGMTable,
   formComponent: GeoObjectsMapModal,

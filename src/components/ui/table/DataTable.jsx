@@ -83,7 +83,7 @@ export default class DataTable extends React.Component {
       onColumnControlChange: PropTypes.func,
       // TODO перенести на более высокий уровень абстракции
       columnControlStorageName: PropTypes.string,
-      withNormInitialData: PropTypes.boolean,
+      normInitialData: PropTypes.bool,
     };
   }
 
@@ -129,7 +129,7 @@ export default class DataTable extends React.Component {
       onColumnControlChange: () => {},
       // TODO перенести на более высокий уровень абстракции
       columnControlStorageName: 'ets-storage',
-      withNormInitialData: false,
+      normInitialData: false,
     };
   }
 
@@ -151,7 +151,7 @@ export default class DataTable extends React.Component {
     };
 
     // временно до выпиливания гридла
-    if (props.withNormInitialData) {
+    if (props.normInitialData) {
       const {
         initialSort,
         initialSortAscending,

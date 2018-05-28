@@ -3,11 +3,13 @@ import REPAIR from 'constants/repair';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTable.tsx';
 import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch.tsx';
+import permissions from 'components/program_registry/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
 @staticProps({
   entity: 'repair_program',
+  permissions,
   listName: 'programRegistryList',
   tableComponent: ProgramRegistryTable,
   formComponent: ProgramRegistrySwitch,

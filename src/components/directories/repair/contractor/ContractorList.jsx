@@ -4,11 +4,13 @@ import REPAIR from 'constants/repair';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import ContractorTable from 'components/directories/repair/contractor/ContractorTable';
 import ContractorFormWrap from 'components/directories/repair/contractor/ContractorFormWrap';
+import permissions from 'components/directories/repair/contractor/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.contractor}` })
 @staticProps({
   entity: 'repair_contractor',
+  permissions,
   listName: 'contractorList',
   formComponent: ContractorFormWrap,
   tableComponent: ContractorTable,

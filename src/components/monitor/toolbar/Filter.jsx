@@ -29,6 +29,8 @@ export default class Filter extends Component {
       search: PropTypes.bool,
       options: PropTypes.arrayOf(PropTypes.object),
       valueField: PropTypes.string,
+      itemComponent: PropTypes.any,
+      className: PropTypes.any,
     };
   }
 
@@ -90,7 +92,8 @@ export default class Filter extends Component {
           messages={messages}
           placeholder={this.props.title}
           className="map-filter__input"
-          {...this.props}
+          itemComponent={this.props.itemComponent}
+          name={this.props.name}
         />
       </div>
     );
@@ -100,14 +103,13 @@ export default class Filter extends Component {
     return (
       <div>
         <input
-          valueField={this.props.valueField}
-          textField="title"
           defaultValue={[]}
           placeholder={this.props.title}
           onChange={value => this.onChangeQuery(value)}
           filter={filter}
-          messages={messages}
-          {...this.props}
+          className={this.props.className}
+          name={this.props.name}
+          title={this.props.title}
         />
       </div>
     );

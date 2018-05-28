@@ -1,13 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList.jsx';
-import InsurancePolicyFormWrap from './InsurancePolicyFormWrap.jsx';
-import InsurancePolicyTable from './InsurancePolicyTable.tsx';
+import InsurancePolicyFormWrap from 'components/directories/autobase/insurance_policy/InsurancePolicyFormWrap.jsx';
+import InsurancePolicyTable from 'components/directories/autobase/insurance_policy/InsurancePolicyTable.tsx';
+import permissions from 'components/directories/autobase/insurance_policy/config-data/permissions';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })
 @staticProps({
   entity: 'autobase_insurance_policy',
+  permissions,
   listName: 'insurancePolicyList',
   tableComponent: InsurancePolicyTable,
   formComponent: InsurancePolicyFormWrap,

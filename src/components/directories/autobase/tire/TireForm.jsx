@@ -47,7 +47,7 @@ export default class TireForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal {...this.props} bsSize="lg" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>
@@ -71,7 +71,6 @@ export default class TireForm extends Form {
                 type={'string'}
                 label={'Производитель'}
                 value={get(TIRE_MODEL.find(s => s.value === state.tire_model_id), 'tire_manufacturer_name', '')}
-                emptyValue={null}
                 disabled
               />
             </Col>

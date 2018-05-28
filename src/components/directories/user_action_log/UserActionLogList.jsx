@@ -3,12 +3,14 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import Datepicker from 'components/ui/input/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
-import UserActionLogTable from './UserActionLogTable.jsx';
+import UserActionLogTable from 'components/directories/user_action_log/UserActionLogTable.jsx';
+import permissions from 'components/directories/user_action_log/config-data/permissions';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'user_action_log' })
 @staticProps({
   entity: 'user_action_log',
+  permissions,
   listName: 'userActionLogList',
   tableComponent: UserActionLogTable,
   operations: ['LIST'],

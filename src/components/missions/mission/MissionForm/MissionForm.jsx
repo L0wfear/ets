@@ -2,7 +2,6 @@ import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import {
-  find,
   uniqBy,
   isEmpty as lodashIsEmpty,
 } from 'lodash';
@@ -312,7 +311,7 @@ export class MissionForm extends Form {
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_DELETABLE = true;
     }
-    const structureValue = state.structure_id || _.find(STRUCTURES, [0].value);
+    const structureValue = state.structure_id || find(STRUCTURES, [0].value);
 
     const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
@@ -333,7 +332,7 @@ export class MissionForm extends Form {
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>

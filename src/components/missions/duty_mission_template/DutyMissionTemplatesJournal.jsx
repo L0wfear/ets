@@ -5,12 +5,21 @@ import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
+import permissions from 'components/missions/duty_mission_template/config-data/permissions';
+import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+
 import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
 import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
+
+const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
+  permission: permissions_duty_mission.create,
+})(Button);
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @staticProps({
   entity: 'duty_mission_template',
+  permissions,
   listName: 'dutyMissionTemplatesList',
   tableComponent: DutyMissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
@@ -55,9 +64,8 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     this.setState({ showForm: true, formType: 'ViewForm' });
   }
 
-  createDutyMissions() {
+  createDutyMissions = () =>
     this.setState({ showForm: true, formType: 'MissionsCreationForm' });
-  }
 
   /**
    * @override
@@ -101,14 +109,14 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     const buttons = super.getButtons();
     // TODO отображение Сформировать наряд-задание в зависимости от прав
     buttons.push(
-      <Button
-        key={buttons.length + 1}
+      <ButtonCreateDutyMissionByTemplate
+        key={'create-duty-mission-by-template'}
         bsSize="small"
-        onClick={this.createDutyMissions.bind(this)}
+        onClick={this.createDutyMissions}
         disabled={!this.canCreateMission()}
       >
         Сформировать наряд-задание
-      </Button>
+      </ButtonCreateDutyMissionByTemplate>
     );
 
     return buttons;

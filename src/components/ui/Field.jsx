@@ -4,6 +4,7 @@ import { FormControl } from 'react-bootstrap';
 import cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
+import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 import DatePicker from 'components/ui/input/DatePicker';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
@@ -12,8 +13,11 @@ import Div from './Div.jsx';
 import Preloader from './Preloader.jsx';
 
 function StringField(props) {
-  const { error, label = '', readOnly = false, disabled = false, className = '',
-    value, wrapStyle, hidden, isLoading, inline = false, id } = props;
+  const { error, ...mainProps } = props; 
+  const { label = '', readOnly = false, disabled = false, className = '',
+    wrapStyle, hidden, isLoading, inline = false, id } = props;
+  let { value } = props;
+
   const inputClassName = cx({ 'has-error': error });
 
   if (isLoading) {
@@ -25,11 +29,15 @@ function StringField(props) {
     );
   }
 
+  if (value === undefined || value === null) {
+    value = '';
+  }
+
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
         {label && <label className="control-label"><span>{label}</span></label>}
-        <FormControl type="text" disabled={disabled} className={inputClassName} {...props} />
+        <FormControl type="text" disabled={disabled} className={inputClassName} {...mainProps} value={value} />
       </div>
       <Div hidden={!error} className="error">{error}</Div>
     </Div> :
@@ -41,7 +49,11 @@ function StringField(props) {
 }
 
 function TextAreaField(props) {
-  const { error, label = '', readOnly = false, disabled = false, value, hidden, rows = 5, textAreaStyle = {}, id } = props;
+  const { error, label = '', readOnly = false, disabled = false, hidden, rows = 5, textAreaStyle = {}, id } = props;
+  let { value } = props;
+  if (value === undefined || value === null) {
+    value = '';
+  }
 
   const wrapperClassName = cx({
     'textarea-field': true,
@@ -105,14 +117,21 @@ export default class Field extends React.Component {
   }
 
   renderNumber() {
-    const { error, showRedBorder } = this.props;
+    const { error, ...mainProps } = this.props;
+    const { showRedBorder } = mainProps;
+
     const inputClassName = cx({ 'has-error': error || showRedBorder });
+    let { value } = this.props;
+
+    if (value === undefined || value === null) {
+      value = '';
+    }
 
     return (
       <Div hidden={this.props.hidden}>
         <div className="form-group">
           <label className="control-label"><span>{this.props.label}</span></label>
-          <FormControl type="number" className={inputClassName} {...this.props} />
+          <FormControl type="number" className={inputClassName} {...mainProps} value={value} />
         </div>
         <Div hidden={!error} className="error">{error}</Div>
       </Div>
@@ -193,7 +212,10 @@ export default class Field extends React.Component {
 
     return this.renderFieldByType(type);
   }
-
 }
 
-export const ExtField = onChangeWithKeys(Field);
+export const ExtField = onChangeWithKeys(
+  withMergeProps(
+    ({ boundKeys, ...props }) => props
+  )(Field)
+);

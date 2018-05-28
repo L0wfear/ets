@@ -2,10 +2,16 @@ import * as React from 'react';
 import { Button, Dropdown, MenuItem, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { isEmpty } from 'utils/functions';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import DivForEnhance from 'components/ui/Div.jsx';
+import permissions from 'components/waybill/config-data/permissions';
 
-const Div = enhanceWithPermissions(DivForEnhance);
+const Div = enhanceWithPermissions({})(DivForEnhance);
+
+const savePermissions = [
+  permissions.update_closed,
+  permissions.update,
+];
 
 interface IPropsWaybillFooter {
   isCreating: boolean;
@@ -40,8 +46,8 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
        <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
       </OverlayTrigger>
     </Div>
-    <Div className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? [`${props.entity}.plate`] : undefined}>
-      <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave} onSelect={props.handlePrintFromMiniButton}>
+    <Div className="inline-block" permission={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
+      <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="print" />
         </Dropdown.Toggle>
@@ -64,10 +70,10 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>
-    <Div oneOfPermissions={['waybill.update_closed', 'waybill.update']} className={'inline-block'} hidden={props.state.status === 'closed' && !props.canEditIfClose}>
+    <Div permissions={savePermissions} className={'inline-block'} hidden={props.state.status === 'closed' && !props.canEditIfClose}>
       <Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
     </Div>
-    <Div oneOfPermissions={['waybill.update']} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
+    <Div permission={permissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
       <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
     </Div>
   </Div>;

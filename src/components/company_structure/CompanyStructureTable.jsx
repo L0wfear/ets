@@ -1,10 +1,17 @@
 import React from 'react';
-import { Button as BootstrapButton } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Table from 'components/ui/table/DataTable.jsx';
+import permissions from 'components/company_structure/config-data/permissions';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+const ButtonEditStructure = enhanceWithPermissions({
+  permission: permissions.update,
+})(Button);
 
-const Button = enhanceWithPermissions(BootstrapButton);
+const ButtonDeletetructure = enhanceWithPermissions({
+  permission: permissions.delete,
+})(Button);
+
 
 const tableMeta = {
   cols: [
@@ -42,14 +49,12 @@ const tableMeta = {
 
 export default (props) => {
   const renderers = {
-    id: ({ data }) => {
-      return (
-        <div>
-          <Button className="action-button" permissions={[`${props.entity}.update`]} onClick={props.onActionEdit.bind(null, data)}>Редактировать</Button>
-          <Button className="action-button" permissions={[`${props.entity}.delete`]} onClick={props.onActionDelete.bind(null, data)}>Удалить</Button>
-        </div>
-      );
-    },
+    id: ({ data }) => (
+      <div>
+        <ButtonEditStructure className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</ButtonEditStructure>
+        <ButtonDeletetructure className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</ButtonDeletetructure>
+      </div>
+    ),
   };
 
   return (

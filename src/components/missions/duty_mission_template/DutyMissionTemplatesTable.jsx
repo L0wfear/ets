@@ -9,7 +9,6 @@ export const getTableMeta = ({
   structures = [],
   flux = null,
 } = {}) => {
-
   const tableMeta = {
     cols: [
       {
@@ -115,7 +114,7 @@ const DataTable = props => (
 );
 
 DataTable.propTypes = {
-  data: React.PropTypes.object,
+  data: React.PropTypes.array,
 };
 
 export default DataTable;

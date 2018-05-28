@@ -1,12 +1,15 @@
-import routerAndPermission from 'constants/routerAndPermission';
+import permissions_mission from 'components/missions/mission/config-data/permissions';
+import permissions_mission_template from 'components/missions/mission_template/config-data/permissions';
+import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
+import permissions_duty_mission_template from 'components/missions/duty_mission_template/config-data/permissions';
 
 export const TypeDownload = {
   old: '1',
   new: '2',
 };
 export const missionTemplateListPermission = {
-  missionTemplate: [routerAndPermission.missions.children['mission-templates-journal'].permissions.create],
-  dutyMissionTemplate: [routerAndPermission.missions.children['duty-mission-templates-journal'].permissions.create],
-  mission: [routerAndPermission.missions.children['mission-journal'].permissions.create],
-  dutyMission: [routerAndPermission.missions.children['duty-missions-journal'].permissions.create],
+  missionTemplate: [permissions_mission_template.create],
+  dutyMissionTemplate: [permissions_duty_mission_template.create],
+  mission: [permissions_mission.create],
+  dutyMission: [permissions_duty_mission.create],
 };

@@ -1,23 +1,22 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
+import { Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
 import { get } from 'lodash';
 
 import { getServerSortingField, extractTableMeta } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
-import { connectToStores, staticProps, bindable } from 'utils/decorators';
+import { connectToStores, staticProps } from 'utils/decorators';
 import { waybillClosingSchema } from 'models/WaybillModel';
 import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
 import WaybillsTable, { getTableMeta } from './WaybillsTable.jsx';
-
-const MenuItem = bindable(BootstrapMenuItem);
-
+import permissions from 'components/waybill/config-data/permissions';
 @connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
   entity: 'waybill',
+  permissions,
   listName: 'waybillsList',
   schema: waybillClosingSchema,
   tableComponent: WaybillsTable,
@@ -80,17 +79,10 @@ export default class WaybillJournal extends CheckableElementsList {
     }
   }
 
-  showPrintForm(printNumber) {
-    this.setState({ showPrintForm: printNumber });
-  }
-
-  changeSort(field, direction) {
-    this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });    
-  }
-
-  changeFilter(filter) {
-    this.setState({ filter });
-  }
+  showPrintForm = showPrintForm => this.setState({ showPrintForm });
+  changeFilter = filter => this.setState({ filter });
+  changeSort = (field, direction) =>
+    this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
@@ -114,14 +106,14 @@ export default class WaybillJournal extends CheckableElementsList {
     const buttons = super.getButtons();
 
     buttons.push(
-      <ButtonToolbar key={buttons.length} className="waybill-button-toolbar">
+      <ButtonToolbar key={'print-waybil-group'} className="waybill-button-toolbar">
         <Dropdown id="dropdown-print" pullRight>
           <Dropdown.Toggle noCaret bsSize="small">
             <Glyphicon glyph="download-alt" />
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <MenuItem bindOnClick={1} onClick={this.showPrintForm}>Журнал путевых листов (ТМФ №8)</MenuItem>
-            <MenuItem bindOnClick={2} onClick={this.showPrintForm}>Отчет по выработке ТС</MenuItem>
+            <MenuItem eventKey={1} onSelect={this.showPrintForm}>Журнал путевых листов (ТМФ №8)</MenuItem>
+            <MenuItem eventKey={2} onSelect={this.showPrintForm}>Отчет по выработке ТС</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
       </ButtonToolbar>
@@ -129,6 +121,8 @@ export default class WaybillJournal extends CheckableElementsList {
 
     return buttons;
   }
+
+  onHideWaybillPrintForm = () => this.setState({ showPrintForm: false });
 
   /**
    * @override
@@ -138,9 +132,9 @@ export default class WaybillJournal extends CheckableElementsList {
 
     forms.push(
       <WaybillPrintForm
-        key={forms.length}
+        key={'waybill-print-from'}
         show={this.state.showPrintForm}
-        hide={() => this.setState({ showPrintForm: false })}
+        onHide={this.onHideWaybillPrintForm}
         printData={this.printData}
       />
     );

@@ -14,7 +14,7 @@ import {
 import ModalBody from 'components/ui/Modal';
 import Field, { ExtField } from 'components/ui/Field.jsx';
 
-import DivForEnhance from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div.jsx';
 import {
   isNotNull,
   isEmpty,
@@ -42,8 +42,10 @@ import {
   getWaybillDrivers,
   validateTaxesControl,
 } from 'components/waybill/utils';
+import permissions_mission from 'components/missions/mission/config-data/permissions';
 
 import { confirmDialogChangeDate } from 'components/waybill/utils_react';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 import Form from '../compositions/Form.jsx';
 import Taxes from './Taxes.jsx';
@@ -51,9 +53,10 @@ import WaybillFooter from './form/WaybillFooter';
 import BsnoStatus from './form/BsnoStatus';
 import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
 import { getDefaultMission } from '../../stores/MissionsStore.js';
-import enhanceWithPermissions from '../util/RequirePermissions.jsx';
 
-const Div = enhanceWithPermissions(DivForEnhance);
+const ButtonCreateMission = enhanceWithPermissions({
+  permission: permissions_mission.create,
+})(Button);
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -392,9 +395,9 @@ class WaybillForm extends Form {
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
       formState.car_id,
       formState.driver_id
-    ).then(({ resudlt: { driver_id = null } }) => {
+    ).then(({ result: { driver_id = null } }) => {
       if (driver_id) {
-        const driver = this.props.employeesIndex[newDriverId] || null;
+        const driver = this.props.employeesIndex[driver_id] || null;
         const DRIVERS = getDrivers({ ...formState, driver_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
         if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) return;
@@ -692,7 +695,7 @@ class WaybillForm extends Form {
                                     'Нет данных';
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{title} { IS_DRAFT && '(возможна корректировка)'} { (IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}</Modal.Title>
@@ -1146,16 +1149,14 @@ class WaybillForm extends Form {
                 {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
                   <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
                 )}
-                <Div permissions={['mission.create']}>
-                  <Button
-                    id="create-mission"
-                    style={{ marginTop: 10 }}
-                    onClick={this.createMission}
-                    disabled={isEmpty(state.car_id) || IS_CLOSED}
-                  >
-                    Создать задание
-                  </Button>
-                </Div>
+                <ButtonCreateMission
+                  id="create-mission"
+                  style={{ marginTop: 10 }}
+                  onClick={this.createMission}
+                  disabled={isEmpty(state.car_id) || IS_CLOSED}
+                >
+                  Создать задание
+                </ButtonCreateMission>
                 <MissionFormWrap
                   onFormHide={this.onMissionFormHide}
                   showForm={this.state.showMissionForm}

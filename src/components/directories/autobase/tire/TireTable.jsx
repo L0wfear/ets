@@ -1,13 +1,25 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { get } from 'lodash';
+import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
+import permissions from 'components/directories/autobase/tire/config-data/permissions';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 
-const CloneButton = onClickWithKeys(Button);
+const CloneButton = enhanceWithPermissions({
+  permission: permissions.create,
+})(onClickWithKeys(withMergeProps(
+  props => Object.keys(props).reduce((newProps, key) => {
+    if (key !== 'boundKeys') {
+      newProps[key] = props[key];
+    }
+
+    return newProps;
+  }, {})
+)(Button)));
 
 export const tableMeta = ({
   schemaMakers = {},

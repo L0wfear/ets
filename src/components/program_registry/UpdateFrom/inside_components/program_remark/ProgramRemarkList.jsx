@@ -8,6 +8,7 @@ import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
 import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
+import permissions from 'components/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
@@ -44,6 +45,7 @@ const notifyTexts = {
 @connectToStores(['repair', 'session'])
 @staticProps({
   entity: 'repair_program_version',
+  permissions,
   listName: 'programRemarkRegistryList',
   formComponent: ProgramRemarkFormWrap,
   tableComponent: ProgramRemarkTable,

@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import FuelingWaterStationsTable, { tableMeta } from './FuelingWaterStationsTable.jsx';
-import GeoObjectsMapModal from '../GeoObjectsMapModal.jsx';
+import FuelingWaterStationsTable, { tableMeta } from 'components/directories/geoobjects/fueling_water/FuelingWaterStationsTable.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import permissions from 'components/directories/geoobjects/fueling_water/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'fueling_water' })
 @staticProps({
   path: 'geozones',
   entity: 'fueling_water',
+  permissions,
   listName: 'fuelingWaterStationsList',
   tableComponent: FuelingWaterStationsTable,
   formComponent: GeoObjectsMapModal,

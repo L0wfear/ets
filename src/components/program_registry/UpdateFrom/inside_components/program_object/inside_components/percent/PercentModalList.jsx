@@ -10,10 +10,12 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CR
 
 import PercentModalTable from './PercentModalTable';
 import PercentModalFormWrap from './PercentModalFormWrap';
+import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
 @staticProps({
   entity: 'repair_program_version',
+  permissions,
   listName: 'dataAboutObjectbyIdList',
   tableComponent: PercentModalTable,
   formComponent: PercentModalFormWrap,
@@ -166,7 +168,7 @@ export default class PercentModalList extends ElementsList {
 
   render() {
     return (
-      <Modal {...this.props} show bsSize="lg" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{'Проставление процента выполнения работ'}</Modal.Title>
         </Modal.Header>

@@ -11,7 +11,6 @@ import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 @connectToStores(['autobase'])
 export default class TireModelForm extends Form {
-
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -23,7 +22,7 @@ export default class TireModelForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
         </Modal.Header>

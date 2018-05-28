@@ -3,17 +3,18 @@ import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import {
   ButtonToolbar,
-  Button as BootstrapButton,
+  Button,
   Glyphicon,
 } from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
-
+import permissions from 'components/missions/mission/config-data/permissions';
+import order_permissions from 'components/directories/order/config-data/permissions';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 import PrintForm from 'components/missions/common/PrintForm.tsx';
 
 import Paginator from 'components/ui/Paginator.jsx';
@@ -21,12 +22,18 @@ import MissionsTable, { getTableMeta } from './MissionsTable.jsx';
 import MissionFormWrap from './MissionFormWrap.jsx';
 import MissionRejectForm from './MissionRejectForm.jsx';
 
-const Button = enhanceWithPermissions(BootstrapButton);
+const ButtonGoFaxogramm = enhanceWithPermissions({
+  permission: order_permissions.list,
+})(Button);
+const ButtonUpdateMission = enhanceWithPermissions({
+  permission: permissions.update,
+})(Button);
 
 @connectToStores(['missions', 'objects', 'employees', 'routes'])
 @exportable({ entity: 'mission' })
 @staticProps({
   entity: 'mission',
+  permissions,
   listName: 'missionsList',
   tableComponent: MissionsTable,
   tableMeta: extractTableMeta(getTableMeta()),
@@ -316,7 +323,7 @@ export default class MissionsJournal extends CheckableElementsList {
           flux={this.context.flux}
         />
         <PrintForm
-          onExport={this.processExport.bind(this)}
+          onExport={this.processExport}
           show={this.state.showPrintForm}
           onHide={() => this.setState({ showPrintForm: false })}
           title={'Печать журнала заданий'}
@@ -330,10 +337,10 @@ export default class MissionsJournal extends CheckableElementsList {
 
   getbuttonAddCZ() {
     return (
-      <div className="container-button-create-cz">
-        <Button bsSize="small" bsStyle="success" onClick={this.goToOrders} permissions={['faxogramm.list']} disabled={false}>
+      <div key={'00.1'} className="container-button-create-cz">
+        <ButtonGoFaxogramm bsSize="small" bsStyle="success" onClick={this.goToOrders} disabled={false}>
           <Glyphicon glyph="plus" /> Исполнение централизованного задания
-        </Button>
+        </ButtonGoFaxogramm>
       </div>
     );
   }
@@ -349,11 +356,10 @@ export default class MissionsJournal extends CheckableElementsList {
       ...superButtons.slice(1),
     ];
 
-    // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
       <ButtonToolbar key={buttons.length}>
-        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</Button>
-        <Button bsSize="small" permissions={[`${this.entity}.update`]} onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</Button>
+        <ButtonUpdateMission bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateMission>
+        <ButtonUpdateMission bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateMission>
       </ButtonToolbar>
     );
 

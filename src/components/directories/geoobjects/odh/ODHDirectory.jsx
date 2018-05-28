@@ -1,13 +1,14 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import ODHTable, { tableMeta } from './ODHTable.tsx';
-import OdhFormWrap from './OdhFormWrap.jsx';
-import schema from './ODHSchema';
+import ODHTable, { tableMeta } from 'components/directories/geoobjects/odh/ODHTable.tsx';
+import OdhFormWrap from 'components/directories/geoobjects/odh/OdhFormWrap.jsx';
+import permissions from 'components/directories/geoobjects/odh/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])
 @exportable({ path: 'geozones', entity: 'odh' })
 @staticProps({
   path: 'geozones',
+  permissions,
   entity: 'odh',
   listName: 'odhsList',
   tableComponent: ODHTable,

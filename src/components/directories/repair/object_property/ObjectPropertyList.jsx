@@ -5,11 +5,13 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
 import ElementsList from 'components/ElementsList.jsx';
 import ObjectPropertyTable from 'components/directories/repair/object_property/ObjectPropertyTable.tsx';
+import permissions from 'components/directories/repair/object_property/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `${REPAIR.objectProperty}` })
 @staticProps({
   entity: 'ets_object_properties',
+  permissions,
   listName: 'objectPropertyList',
   tableComponent: ObjectPropertyTable,
   operations: ['LIST'],

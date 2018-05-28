@@ -188,7 +188,7 @@ export default class DataTable extends React.Component {
       }
 
       if (!props.useServerSort || !props.useServerFilter) {
-        changesFields.data = makeData(changesFields.data, this.state, changesFields);
+        changesFields.data = makeData(changesFields.data, this.state, { ...props, ...changesFields });
       }
       this.state = {
         ...this.state,
@@ -263,7 +263,7 @@ export default class DataTable extends React.Component {
     }
 
     if (!props.useServerSort || !props.useServerFilter) {
-      changesFields.data = makeData(changesFields.data, this.state, changesFields);
+      changesFields.data = makeData(changesFields.data, this.state, { ...props, ...changesFields });
     }
 
     this.setState(changesFields);
@@ -604,7 +604,7 @@ export default class DataTable extends React.Component {
 
     this.setState({
       ...nextProps,
-      data: makeData(this.state.data, prevProps, nextProps),
+      data: makeData(this.state.data, prevProps, { ...this.props, ...nextProps }),
     });
   }
 

@@ -20,7 +20,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols], aggr_fields) 
         ),
       );
   } else {
-    newArr = [{
+    const newItem = {
       ...data[0],
       ...data.reduce((summObj, row) => ({
         ...summObj,
@@ -29,13 +29,12 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols], aggr_fields) 
           [key]: summRowWithAll(row[key], summObj[key] || 0),
         }), {}),
       }), {}),
-    }].map(row => ({
-      ...row,
-      ...aggr_fields.reduce((newSumm, key) => ({
-          ...newSumm,
-          [key]: removeRedundantNumbers(row[key]),
-      }), {}),
-    }), {});
+    };
+    aggr_fields.forEach(key => {
+      newItem[key] = removeRedundantNumbers(newItem[key])
+    })
+
+    newArr.push(newItem)
   }
 
   return newArr;
@@ -105,5 +104,6 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
       };
     });
 
+    console.log(returnData, aggr_fields)
   return returnData
 }

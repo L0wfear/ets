@@ -34,8 +34,8 @@ export const checkMissionsOnStructureIdBrigade = (missionsArr, employeesIndex) =
         }
       });
 
-      const { company_structure_id: foreman_structure_id = null } = employeesIndex[foreman_id] || {};
-      if (foreman_structure_id !== structure_id) {
+      const { company_structure_id: foreman_structure_id = null, is_common = false } = employeesIndex[foreman_id] || {};
+      if (!is_common && foreman_structure_id !== structure_id) {
         newArr.push(`<${number}>`);
       }
 

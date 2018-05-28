@@ -32,7 +32,6 @@ const getLoginPage = props => {
     if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
       return <Redirect to={requireAuth(flux, '/dashboard')} />;
     } else {
-      console.log('here')
       return <Redirect to={requireAuth(flux, '/monitor')} />;
     }
   } else {

@@ -62,22 +62,22 @@ export default class MasterManagementCard extends React.Component {
     return (
       <Div permission={permissions.manage} className="dashboard-card-sm dashboard-management-card" hidden={this.props.hidden}>
         <Panel header={'Управление'} bsStyle="success">
-          <Div permissions={permissions_waybill.create} className="dashboard-btn-wrapper">
+          <Div permission={permissions_waybill.create} className="dashboard-btn-wrapper">
             <Button bsSize="small" onClick={this.showWaybillForm}>
               Создать путевой лист
             </Button>
           </Div>
-          <Div permissions={permissions_order.list} className="dashboard-btn-wrapper container-button-create-cz">
+          <Div permission={permissions_order.list} className="dashboard-btn-wrapper container-button-create-cz">
             <Button bsSize="small" onClick={this.props.goToOrders}>
               Исполнение централизованного задания
             </Button>
           </Div>
-          <Div permissions={permissions_mission.create} className="dashboard-btn-wrapper">
+          <Div permission={permissions_mission.create} className="dashboard-btn-wrapper">
             <Button bsSize="small" onClick={this.showMissionForm}>
               Создать децентрализованное задание
             </Button>
           </Div>
-          <Div permissions={permissions_duty_mission.create} className="dashboard-btn-wrapper">
+          <Div permission={permissions_duty_mission.create} className="dashboard-btn-wrapper">
             <Button bsSize="small" onClick={this.showDutyMissionForm}>
               Создать наряд-задание
             </Button>

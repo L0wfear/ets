@@ -74,7 +74,6 @@ export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBriga
     const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { foreman_id, brigade_employee_id_list = [], structure_id, number }) => {
       brigade_employee_id_list.forEach(({ employee_id }) => {
         const { company_structure_id: employee_structure_id = null, is_common = false } = employeesIndex[employee_id] || {};
-        console.log(employeesIndex[employee_id])
         if (!is_common && employee_structure_id !== structure_id) {
           newArr.push(`<${number}>`);
         }

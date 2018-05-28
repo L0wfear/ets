@@ -4,7 +4,7 @@ import connectToStores from 'flummox/connect';
 
 const checkShow = props => {
   let isShow = false;
-  console.log('---', props)
+
   if (props.data.hiddenNav) {
     isShow = false;
   } else if (props.data.alwaysShow) {

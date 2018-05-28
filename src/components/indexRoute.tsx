@@ -5,20 +5,22 @@ import routerAndPermission from 'constants/routerAndPermission';
 // TODO сделать модуль containers по аналогии с другими модулями
 
 const renderRoutes = (newRoutesArr, data) => {
-  if (data.path) {
-    newRoutesArr.push(
-      ...data.components.map(componentData =>
-        <PublicRoute
+  if (!data.noRoute) {
+    if (data.path) {
+      newRoutesArr.push(
+        ...data.components.map(componentData =>
+          <PublicRoute
           key={[data.path, componentData.addPath].join('')}
           path={[data.path, componentData.addPath].join('')}
           exact={componentData.exact}
           component={componentData.component}
-        />
-    ));
-  } else if (!data.divider && !data.hiddenNav) {
-    newRoutesArr.push(...Object.values(data.children).reduce(renderRoutes, []));
+          />
+        ));
+    } else if (!data.divider && !data.hiddenNav) {
+      newRoutesArr.push(...Object.values(data.children).reduce(renderRoutes, []));
+    }
   }
-
+      
   return newRoutesArr;
 };
 

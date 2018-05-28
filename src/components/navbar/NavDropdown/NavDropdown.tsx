@@ -4,13 +4,17 @@ import connectToStores from 'flummox/connect';
 
 const checkShow = props => {
   let isShow = false;
-
+  console.log('---', props)
   if (props.data.hiddenNav) {
     isShow = false;
   } else if (props.data.alwaysShow) {
     isShow = true;
   } else if (props.data.permissions) {
-    isShow = props.data.permissions.list.some(perm => props.userPermissions.includes(perm));
+    isShow = props.data.permissions.list.some(perm => perm === true || props.userPermissions.includes(perm));
+  }
+
+  if (props.data.checkHidden) {
+    isShow = props.data.checkHidden(isShow, props);
   }
 
   return isShow;
@@ -20,6 +24,8 @@ const propsToNavDropdown: any = [
   'id',
   'active',
   'eventKey',
+  'activeKey',
+  'activeHref',
   'onSelect',
   'title',
   'children'

@@ -5,7 +5,7 @@ import connectToStores from 'flummox/connect';
 
 const checkShow = props => {
   let isShow = true;
-
+  console.log(props);
   if (props.data.hiddenNav) {
     isShow = false;
   } else {
@@ -21,6 +21,10 @@ const checkShow = props => {
       } else {
         isShow = userPermissions.includes(list);
       }
+    }
+
+    if (props.data.checkHidden) {
+      isShow = props.data.checkHidden(isShow, props);
     }
   }
 

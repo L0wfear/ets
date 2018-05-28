@@ -7,5 +7,6 @@ export default {
   entyity: 'car_travel_report',
   noDotList: false,
   components,
+  hiddenNav: true,
   permissions,
 };

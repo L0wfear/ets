@@ -6,6 +6,7 @@ export default {
   title: 'Рабочий стол',
   entyity: 'dashboard',
   noDotList: true,
+  checkHidden: (isShow, props) => isShow && !props.isOkrug,
   components,
   permissions,
 };

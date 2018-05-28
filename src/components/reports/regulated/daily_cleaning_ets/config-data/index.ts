@@ -6,6 +6,7 @@ export default {
   title: 'Статус по уборке',
   entyity: 'cleaning_status_report',
   noDotList: false,
+  hiddenNav: true,
   components,
   permissions,
 };

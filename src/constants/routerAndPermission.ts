@@ -22,6 +22,17 @@ const routerAndPermission = {
   companyStructure,
   notificationRegistry,
   programRegistry,
+  admin: {
+    path: `http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage2/' : ''}admin`,
+    title: 'Администрирование',
+    entyity: 'administration',
+    noDotList: true,
+    noRoute: true,
+    checkHidden: (isShow, props) => isShow && !props.isOkrug,
+    permissions: {
+      list: 'administration',
+    }
+  }
 };
 
 const getRouterToPermission = (rAp, level) => {

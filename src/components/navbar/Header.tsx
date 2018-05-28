@@ -16,26 +16,31 @@ import config from 'config';
 import rWithP from 'constants/routerAndPermission';
 
 const makeNavDropChildren = ([key, data]) => {
-  if (data.path || data.divider) {
+  if ((data.path || data.divider) && !data.renderNav) {
     return <MenuItem key={key} id={`link-${key}`} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
   }
-  if (data.children) {
+  if (data.children && !data.renderNav) {
     return (
       <NavDropdown key={key} id={`show-${key}`} data={data} title={data.title}>
-       
         {
           Object.entries(data.children).map(makeNavDropChildren)
         }
       </NavDropdown>
     )
   }
+
+  if (data.renderNav){
+    return data.renderNav(key, data);
+  }
+
+  return null;
 }
 
 const makeNavChildren = ([key, data]) => {
-  if (data.path) {
-    return <NavItem key={key} id={`link-${key}`} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data}/>
+  if (data.path && !data.renderNav) {
+    return <NavItem key={key} id={`link-${key}`} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
   }
-  if (data.children) {
+  if (data.children && !data.render) {
     return (
       <NavDropdown key={key} id={`show-${key}`} data={data} title={data.title}>
         {
@@ -44,8 +49,8 @@ const makeNavChildren = ([key, data]) => {
       </NavDropdown>
     )
   }
-  if (data.render){
-    return data.render(key, data);
+  if (data.renderNav){
+    return data.renderNav(key, data);
   }
 
   return null;
@@ -89,10 +94,10 @@ const dataGuide = {
     }
   },
   userData: {
-    render: (key) => <NavItemUser key={'info-user-data'} />,
+    renderNav: (key) => <NavItemUser key={'info-user-data'} />,
   },
   logout: {
-    render: (key) => <NavItemLogout key={'link-logout'} />,
+    renderNav: (key) => <NavItemLogout key={'link-logout'} />,
   }
 };
 

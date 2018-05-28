@@ -6,6 +6,7 @@ export default {
   title: 'Сводный отчет расхода топлива',
   entyity: 'fuel_consumption_summary_report',
   noDotList: false,
+  hiddenNav: true,
   components,
   permissions,
 };

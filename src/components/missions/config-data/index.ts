@@ -16,4 +16,5 @@ export default {
   title: 'Задания',
   children,
   permissions: getChildrenPermissions(children),
+  checkHidden: (isShow, props) => isShow && !props.isOkrug,
 }

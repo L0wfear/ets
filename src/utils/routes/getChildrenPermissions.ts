@@ -4,7 +4,7 @@ const getAllChildrenPermissionListToArr = chidrenArr =>
       newArr.push(...getAllChildrenPermissionListToArr(Object.values(child.children)));
     } else if (!child.divider && !child.hiddenNav) {
       if (child.alwaysShow) {
-        newArr.push(true);
+        newArr.push({ list: [true] });
       } else {
         newArr.push(child.permissions);
       }

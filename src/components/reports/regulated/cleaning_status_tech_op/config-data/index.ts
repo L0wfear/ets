@@ -6,6 +6,7 @@ export default {
   title: 'Статус по выполнению городских заданий',
   entyity: 'cleaning_status_tech_op_report',
   noDotList: false,
+  hiddenNav: true,
   components,
   permissions,
 };

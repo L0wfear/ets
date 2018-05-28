@@ -6,6 +6,7 @@ export default {
   title: 'Статус по уборке (ЦАФАП)',
   entyity: 'cleaning_status_cafap_report',
   noDotList: false,
+  hiddenNav: true,
   components,
   permissions,
 };

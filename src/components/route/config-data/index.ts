@@ -6,6 +6,7 @@ export default {
   title: 'Маршруты',
   entyity: 'route',
   noDotList: false,
+  checkHidden: (isShow, props) => isShow && !props.isOkrug,
   components,
   permissions,
 }

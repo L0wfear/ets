@@ -32,6 +32,10 @@ const checkPermission = props => {
         show = userPermissions.includes(list);
       }
     }
+
+    if (data.checkHidden) {
+      show = data.checkHidden(show, props);
+    }
   }
 
   return show;
@@ -41,7 +45,7 @@ const NavItemCustom: React.SFC<any> = props => (
   checkPermission(props)
   ?
   <NavItem { ...propsToNaItem.reduce((newProps, key) => ({ ...newProps, [key]: props[key] }), {}) }>
-    {props.data.title}
+    {props.data.title ? props.data.title : undefined}
     {props.children}
   </ NavItem>
   :

@@ -6,6 +6,7 @@ export default {
   title: 'Структура предприятия',
   entyity: 'company_structure',
   noDotList: false,
+  checkHidden: (isShow, props) => isShow && !props.isOkrug,
   components,
   permissions,
 }

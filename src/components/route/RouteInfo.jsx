@@ -42,9 +42,10 @@ export default class RouteInfo extends Component {
   }
 
   onFeatureClick(feature, ev, map) {
-    const { name } = feature.getProperties();
+    const { name, type } = feature.getProperties();
+
     if (name) {
-      map.popup.show(ev.coordinate, `<div class="header">ОДХ: ${name}</div>`);
+      map.popup.show(ev.coordinate, `<div class="header">${type === 'dt' ? 'ДТ' : 'ОДХ'}: ${name}</div>`);
     }
   }
 
@@ -52,6 +53,7 @@ export default class RouteInfo extends Component {
     const { route, geozonePolys = {}, mapOnly } = this.props;
     const { object_list = [], draw_object_list = [] } = route;
     const manual = route.type === 'mixed';
+
     const polys = _(_.cloneDeep(object_list))
       .map((object) => {
         if (geozonePolys[object.object_id] && route.type !== 'points') {

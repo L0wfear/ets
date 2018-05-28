@@ -29,6 +29,7 @@ const reportProps: IReportProps = {
   headerComponent: ReportHeader,
   renderers,
   schemaMakers,
+  notUseServerSummerTable: true,
 };
 
 const ExportableReportContainer = exportable({

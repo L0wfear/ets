@@ -79,3 +79,107 @@ th.width-fuel-report-xlarge {
 .overflow-visible {
   overflow-x: visible;
 }
+
+
+.registry-new {
+  &>.header {
+    display: flex;
+    justify-content: space-between;
+    &>.buttons>button {
+      margin: 5px;
+    }
+  }
+  & .custom-table-container {
+    border: none!important;
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 1pc;
+
+    & .custom-data-table {
+      margin-top: 10px;
+      table-layout: auto;
+      word-break: normal;
+      
+      [data-title^="date_"], [data-title="birthday"], [data-title="phone"] {
+        width: 130px;
+      }
+      
+      [data-title^="timestamp_"], [data-title$="_name"] {
+        width: 150px;
+      }
+      
+      [data-title="tk_operation_name"] {
+        width: auto;
+      }
+      
+      .rw-calendar-popup {
+        table {
+          td, th {
+            padding: 0px;
+          }
+          border-collapse: initial;
+          border-spacing: 0px;
+        }
+      }
+      
+      & .flex-row {
+        display: flex;
+      }
+      
+      & th {
+        &>.th-container {
+          display: flex;
+          align-items: flex-end;
+        }
+        cursor: pointer;
+        width: 100%;
+        & .sortfield {
+          &-hidden {
+            visibility: hidden;
+          }
+        }
+      }
+      & thead {
+        & tr>th {
+          word-wrap: normal;
+          width: 200px;
+
+          &[data-title="number"] {
+            white-space: nowrap;
+          }
+        }
+      }
+      
+      & tbody {
+        & .chart-datepicker{
+          position: relative;
+          top: -5px;
+        }
+        & .form-control{
+          position: relative;
+          top: 20px;
+        }
+        
+        & tr {
+          & td {
+            vertical-align: top;
+          }
+          
+          &:hover>td {
+            background-color: $colorLightGreen;
+            cursor: pointer;
+            color: white;
+          }
+          &.selected>td,.checked>td {
+            background-color: $colorGreen;
+            cursor: pointer;
+            color: white;
+          }
+          &.checked>td {
+            background-color: $colorHalfGreen;
+          }
+        }
+      }
+    }
+  }
+}

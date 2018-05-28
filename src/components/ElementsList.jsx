@@ -124,6 +124,21 @@ class ElementsList extends React.Component {
     }
   }
 
+  onRowClick = ({ props: { data } }) => {
+    this.setState({
+      selectedElement: data,
+    });
+  }
+
+  onRowDoubleClick = ({ props: { data } }) => {
+    if (this.state.readPermission) {
+      this.setState({
+        selectedElement: data,
+        showForm: true,
+      });
+    }
+  }
+
   setNewSelectedElement = (selectedElement) =>
     Promise.resolve(this.setState({ showForm: false }))
       .then(() => {
@@ -347,6 +362,9 @@ class ElementsList extends React.Component {
       onRowSelected: this.selectElement,
       selected: this.state.selectedElement,
       selectField: this.selectField,
+      uniqName: this.selectField,
+      onRowClick: this.onRowClick,
+      onRowDoubleClick: this.onRowDoubleClick,
     };
   }
 

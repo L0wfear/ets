@@ -2,12 +2,8 @@ import React, { PropTypes } from 'react';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
-// 78
-const delRouteCheckUnitRender = {
-  'м.': 1000,
-  'кв. м.': 1,
-  'раз': 1,
-};
+import { sortFunc } from 'components/reports/mission/utils/sortFunction.ts';
+import { getDelForUnitRender } from 'components/reports/mission/utils/main';
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -39,8 +35,6 @@ const VALUE_FOR_FIXED = {
   floatFixed: (data, val) => parseFloat(data).toFixed(val),
   intFixed: (data, val) => parseInt(data, val),
 };
-
-const getDelForUnitRender = name => delRouteCheckUnitRender[name] ? delRouteCheckUnitRender[name] : 1;
 
 const checkFixed = (data, key) => {
   const clone = [...data];
@@ -93,6 +87,7 @@ const getTableMeta = (props) => {
         name: 'route_with_speed',
         displayName: `Контроль (${props.data[0] && (props.data[0].route_check_unit === 'м.' ? 'км.' : props.data[0].route_check_unit)})**`,
         type: 'string',
+        sortFunc,
         filter: false,
       },
     ],

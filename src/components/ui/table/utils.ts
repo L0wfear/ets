@@ -180,8 +180,9 @@ export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
   if (prevProps.originalData !== nextProps.originalData || prevProps.initialSort !== nextProps.initialSort) {
-    const colData = nextProps.tableMeta.cols.find(({ name }) => name === nextProps.initialSort);
-    if (colData.sortFunc) {
+    const { tableMeta: { cols = [] } = {} } = nextProps;
+    const colData = cols.find(({ name }) => name === nextProps.initialSort);
+    if (colData && colData.sortFunc) {
       returnData = returnData.sort(colData.sortFunc);
     } else {
       returnData = sortData([...returnData], nextProps);

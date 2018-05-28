@@ -25,7 +25,7 @@ export class DutyMissionForm extends Form {
     };
   }
 
-  handleRouteIdChange(v) {
+  handleRouteIdChange = (v) => {
     this.handleChange('route_id', v);
     const { flux } = this.context;
     if (v) {
@@ -35,6 +35,17 @@ export class DutyMissionForm extends Form {
     } else {
       this.setState({ selectedRoute: null });
     }
+  }
+
+  handleChangeStructureId = (v) => {
+    if (!v) {
+      this.handleChange('brigade_employee_id_list', []);
+      this.handleChange('foreman_id', null);
+    } else if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
+      this.handleRouteIdChange(undefined);
+    }
+
+    this.handleChange('structure_id', v);
   }
 
   // Зачем тут таймаут?
@@ -197,7 +208,10 @@ export class DutyMissionForm extends Form {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
+    const ROUTES = routesList
+        .filter(route => !state.structure_id || route.structure_id === state.structure_id)
+        .map(({ id, name }) => ({ value: id, label: name }));
+
     const EMPLOYEES = employeesList.map(d => ({
       value: d.id,
       label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
@@ -377,7 +391,7 @@ export class DutyMissionForm extends Form {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleChange.bind(this, 'structure_id')}
+                onChange={this.handleChangeStructureId}
               />
             </Col>}
           </Row>
@@ -443,7 +457,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || !state.technical_operation_id || readOnly}
                 options={ROUTES}
                 value={state.route_id}
-                onChange={this.handleRouteIdChange.bind(this)}
+                onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
                 <Button

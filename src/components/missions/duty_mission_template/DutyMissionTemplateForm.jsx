@@ -12,22 +12,22 @@ import RouteFormWrap from '../../route/RouteFormWrap.jsx';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
 class MissionTemplateForm extends DutyMissionForm {
-  handleChangeStructureId = (v) => {
-    this.handleChange('brigade_employee_id_list', []);
-    this.handleChange('foreman_id', null);
-    this.handleChange('structure_id', v);
-  }
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
       employeesList = [],
       technicalOperationsList = [],
-      routesList = [],
     } = this.props;
 
+    const {
+      routesList = [],
+    } = this.state;
+
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
-    const ROUTES = routesList.map(({ id, name }) => ({ value: id, label: name }));
+    const ROUTES = routesList
+      .filter(route => !state.structure_id || route.structure_id === state.structure_id)
+      .map(({ id, name }) => ({ value: id, label: name }));
 
     const IS_CREATING = true;
 

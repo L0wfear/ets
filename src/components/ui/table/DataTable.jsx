@@ -559,7 +559,13 @@ export default class DataTable extends React.Component {
           .filter(this.shouldBeRendered);
 
     if (initialSort && !externalChangeSort) {
-      tempData = tempData.sort(this.sortingData.bind(this, this.checkWhatFieldISortin(initialSort)));
+      const colData = this.props.tableMeta.cols.find(({ name }) => name === initialSort);
+
+      if (colData.sortFunc) {
+        tempData = tempData.sort(colData.sortFunc);
+      } else {
+        tempData = tempData.sort(this.sortingData.bind(this, this.checkWhatFieldISortin(initialSort)));
+      }
 
       if (!initialSortAscending) {
         return tempData.reverse();

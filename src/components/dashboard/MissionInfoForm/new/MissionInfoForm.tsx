@@ -19,9 +19,9 @@ import FluxComponent from 'flummox/component';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
-import MissionReportByODH from 'components/reports/mission/MissionReportByODH.jsx';
-import MissionReportByDT from 'components/reports/mission/MissionReportByDT.jsx';
-import MissionReportByPoints from 'components/reports/mission/MissionReportByPoints.jsx';
+import MissionReportByODH from 'components/reports/operational/mission/MissionReportByODH.jsx';
+import MissionReportByDT from 'components/reports/operational/mission/MissionReportByDT.jsx';
+import MissionReportByPoints from 'components/reports/operational/mission/MissionReportByPoints.jsx';
 
 const HybridMapTSX: any = HybridMap;
 

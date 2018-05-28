@@ -392,9 +392,9 @@ class WaybillForm extends Form {
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
       formState.car_id,
       formState.driver_id
-    ).then(({ resudlt: { driver_id = null } }) => {
+    ).then(({ result: { driver_id = null } }) => {
       if (driver_id) {
-        const driver = this.props.employeesIndex[newDriverId] || null;
+        const driver = this.props.employeesIndex[driver_id] || null;
         const DRIVERS = getDrivers({ ...formState, driver_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
         if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) return;

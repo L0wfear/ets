@@ -180,7 +180,12 @@ export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
   if (prevProps.originalData !== nextProps.originalData || prevProps.initialSort !== nextProps.initialSort) {
-    returnData = sortData([...returnData], nextProps);
+    const colData = nextProps.tableMeta.cols.find(({ name }) => name === nextProps.initialSort);
+    if (colData.sortFunc) {
+      returnData = returnData.sort(colData.sortFunc);
+    } else {
+      returnData = sortData([...returnData], nextProps);
+    }
   }
   if (prevProps.initialSortAscending !== nextProps.initialSortAscending) {
     returnData = [...returnData].reverse();

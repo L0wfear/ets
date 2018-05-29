@@ -32,7 +32,7 @@ class WaybillPrintForm extends Component {
     month: new Date().getMonth() + 1,
     year: new Date().getYear() + 1900,
     date_from: getToday9am(),
-    date_to: new Date((new Date()).setSeconds(0)),
+    date_to: getTomorrow9am(),
     DISABLE_SUBMIT: false,
     formationPeriod: 'month',
     date: new Date(),
@@ -174,7 +174,6 @@ class WaybillPrintForm extends Component {
                 <ExtField
                   type={'date'}
                   time
-                  calendar={false}
                   label={'Время с'}
                   date={this.state.date_from}
                   onChange={this.handleChange}
@@ -185,7 +184,6 @@ class WaybillPrintForm extends Component {
                 <ExtField
                   type={'date'}
                   time
-                  calendar={false}
                   label={'Время по'}
                   date={this.state.date_to}
                   onChange={this.handleChange}

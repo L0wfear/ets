@@ -442,7 +442,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 const mapStateToProps = state => ({
   ...state.reports,
 });
-const mapDispatchToProps = dispatch => bindActionCreators<any>(reportActionCreators, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators<any, any>(reportActionCreators, dispatch);
 
 export default withRouter(connect(
   mapStateToProps,

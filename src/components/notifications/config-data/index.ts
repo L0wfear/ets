@@ -4,7 +4,7 @@ import renderNav from 'components/notifications/config-data/renderNav';
 
 export default {
   path: '/notification-registry',
-  title: 'Уведомления',
+  title: 'Уведомления ',
   entyity: '',
   noDotList: false,
   components,

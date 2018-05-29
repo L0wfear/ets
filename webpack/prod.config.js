@@ -7,7 +7,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var versionUtils = require('./utils/version');
 
-var alias = require('./alias');
 var stand = process.env.STAND || 'production';
 var useSourceMaps = process.env.USE_SOURCE_MAPS || false;
 
@@ -28,29 +27,108 @@ module.exports = {
     // publicPath: '/dist/',
   },
   module: {
-    loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader', 'ts-loader'] },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.hbs?$/, loader: 'handlebars-loader' },
-      { test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
-      { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
-      { test: /^((?!\.module).)*\.s?css$/, loader: ExtractTextPlugin.extract('style','css-loader!resolve-url!sass-loader?sourceMap') },
-      { test: /\.module\.s?css$/, loader: ExtractTextPlugin.extract('style','css-loader?modules&importLoaders=2&localIdentName=[path]___[name]__[local]___[hash:base64:5]!resolve-url!sass-loader?sourceMap') },
+    rules: [
+      { 
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
       {
-			    test: /\.(ogg|mp3|wav|mpe?g)$/i,
-			    loader: 'file-loader'
-			},
-    ]
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          'babel-loader',
+          'ts-loader',
+        ],
+      },
+      { 
+        test: /\.hbs?$/,
+        use: 'handlebars-loader'
+      },
+      { 
+        test: /\.(png|jpe?g|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 1000000,
+              name: 'images/[name].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 100000,
+              name: 'fonts/[name].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /^((?!\.module).)*\.s?css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            'css-loader',
+            'resolve-url-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+          ],
+        }),
+      },
+      {
+        test: /\.module\.s?css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 2,
+                localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+              }
+            },
+            'resolve-url-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+          ]
+        }),
+      },
+      {
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        use: [
+          'file-loader',
+        ]
+      },
+      {
+        test: /\.svg/,
+        use: {
+            loader: 'svg-url-loader',
+            options: {
+              limit: 1000000,
+              encoding: "base64",
+            }
+          }
+      },
+    ],
   },
   resolve: {
-    root: __dirname,
-    alias: alias,
-    modulesDirectories: [
-      'src',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx']
+    modules: [__dirname, 'src', 'node_modules'],
+    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
     new CleanPlugin(['dist'], {
@@ -74,8 +152,7 @@ module.exports = {
       }
     }),
     // optimizations
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         pure_funcs: ['console.log'],

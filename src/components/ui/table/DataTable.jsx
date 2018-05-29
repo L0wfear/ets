@@ -557,7 +557,7 @@ export default class DataTable extends React.Component {
     if (initialSort && !externalChangeSort) {
       const colData = this.props.tableMeta.cols.find(({ name }) => name === initialSort);
 
-      if (colData.sortFunc) {
+      if (colData && colData.sortFunc) {
         tempData = tempData.sort(colData.sortFunc);
       } else {
         tempData = tempData.sort(this.sortingData.bind(this, this.checkWhatFieldISortin(initialSort)));

@@ -22,6 +22,7 @@ export interface IPropsReportContainer extends
   getTableMetaInfo(serviceName: string): Promise<any>;
   setAllData(data: any, func: any): any;
   setReportDataWithSummerData(payload: any): any;
+  data: any;
 }
 
 export interface IStateReportContainer {

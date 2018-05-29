@@ -44,6 +44,8 @@ class MissionsCreationForm extends Form {
       { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
     ];
 
+    console.log('form state is ', state); // eslint-disable-line
+
     const title = 'Формирование заданий из шаблонов';
 
     return (

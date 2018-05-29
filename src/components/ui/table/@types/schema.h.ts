@@ -30,13 +30,15 @@ type FieldTypes =
 
 export type ILabelFunction = (data: number|string) => string;
 
+type ITypeCustomFilterFunc = (value: any, lineData: any) => boolean;
+
 export interface IDataTableColFilter {
   type: FieldTypes;
   options?: IReactSelectOption[];
   labelFunction?: ILabelFunction;
   byKey?: string;
   byLabel?: string;
-  filterFunction?: (...ang: any[]) => any;
+  filterFunction?: ITypeCustomFilterFunc;
   notUse?: boolean;
 }
 

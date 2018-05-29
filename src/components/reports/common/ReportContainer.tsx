@@ -141,18 +141,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportSubmit = async (headerData: object) => {
-    const {
-      location: {
-        search,
-      },
-    } = this.props;
+    const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
 
     try {
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
       if (Object.keys(searchObject).length === 0) {
         const payload: any = { ...headerData };
-
+        
         const data = await this.getReportData(payload);
 
         if (data.result.rows.length === 0) {

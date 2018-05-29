@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { DropdownList, Multiselect } from 'react-widgets';
 
 function filter(item, search) {
@@ -19,7 +21,7 @@ const messages = {
 };
 
 
-export default class Filter extends Component {
+export default class Filter extends React.Component {
 
   static get propTypes() {
     return {

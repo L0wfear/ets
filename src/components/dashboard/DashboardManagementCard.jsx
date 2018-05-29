@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { Panel, Button } from 'react-bootstrap';
 import BaseDiv from 'components/ui/Div.jsx';

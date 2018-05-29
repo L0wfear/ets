@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { FormControl } from 'react-bootstrap';
 import cx from 'classnames';
@@ -83,15 +84,15 @@ export default class Field extends React.Component {
 
   static get propTypes() {
     return {
-      value: React.PropTypes.any,
-      key: React.PropTypes.string,
-      type: React.PropTypes.string.isRequired,
-      label: React.PropTypes.string,
-      hidden: React.PropTypes.bool,
-      onChange: React.PropTypes.func,
-      error: React.PropTypes.string,
-      readOnly: React.PropTypes.bool,
-      className: React.PropTypes.string,
+      value: PropTypes.any,
+      key: PropTypes.string,
+      type: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      hidden: PropTypes.bool,
+      onChange: PropTypes.func,
+      error: PropTypes.string,
+      readOnly: PropTypes.bool,
+      className: PropTypes.string,
     };
   }
 

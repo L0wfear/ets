@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { withProps } from 'recompose';
 import requireAuth from 'utils/auth.js';
@@ -59,8 +61,8 @@ class App extends React.Component <any, any> {
 
   static get childContextTypes() {
     return {
-      flux: React.PropTypes.object,
-      loadData: React.PropTypes.func,
+      flux: PropTypes.object,
+      loadData: PropTypes.func,
     };
   }
 

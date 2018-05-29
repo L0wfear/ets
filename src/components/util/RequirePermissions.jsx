@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
 const defaultProps = {
@@ -17,7 +18,7 @@ const defaultPropsKeys = Object.keys(defaultProps).reduce((newData, key) => ({
 }), {});
 
 export default function enhanceWithPermissions(ComposedComponent) {
-  return @connectToStores('session') @FluxContext class extends Component {
+  return @connectToStores('session') @FluxContext class extends React.Component {
 
     static get propTypes() {
       return {

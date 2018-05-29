@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 import DateFormatter from 'components/ui/DateFormatter';
 import { WorkingHours } from 'components/directories/geoobjects/fountains/FountainsTable'
@@ -140,7 +141,7 @@ export const leaks = (feature, data) => {
   `
   )};
 
-export default class FeatureInfo extends Component {
+export default class FeatureInfo extends React.Component {
 
   static propTypes = {
     feature: PropTypes.object.isRequired,

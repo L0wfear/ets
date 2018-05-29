@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { withRouter } from 'react-router-dom';
 
 @autobind
-class LoginPage extends Component {
+class LoginPage extends React.Component {
 
   static get contextTypes() {
     return {

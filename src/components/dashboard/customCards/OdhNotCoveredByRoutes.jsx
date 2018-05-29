@@ -1,7 +1,8 @@
 import cx from 'classnames';
-import React from 'react';
+import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import * as queryString from 'query-string';
+import * as PropTypes from 'prop-types';
 
 import Div from 'components/ui/Div.jsx';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
@@ -9,8 +10,8 @@ import DashboardCardMedium from '../DashboardCardMedium.jsx';
 export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
 
   static contextTypes = {
-    history: React.PropTypes.any,
-    flux: React.PropTypes.object,
+    history: PropTypes.any,
+    flux: PropTypes.object,
   }
 
   action(technical_operation_id) {

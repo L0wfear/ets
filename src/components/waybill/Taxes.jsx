@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import Table from 'components/ui/table/Table.jsx';
 import { FormControl, Button } from 'react-bootstrap';
@@ -13,7 +14,7 @@ import _ from 'lodash';
  * @extends React.Component
  */
 @autobind
-export default class Taxes extends Component {
+export default class Taxes extends React.Component {
 
   static get propTypes() {
     return {

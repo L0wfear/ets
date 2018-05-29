@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { polyState, polyStyles } from 'constants/polygons.js';
 import { getVectorArrowStyle } from 'constants/vectors.js';
 import { getPolyStyle, GeoJSON } from 'utils/ol';
@@ -10,7 +11,7 @@ let POLYS_LAYER = null;
 // https://github.com/pka/ol3-react-example
 // local crs example http://stackoverflow.com/questions/20222885/custom-tiles-in-local-crs-without-projection
 // custom tiles example
-export default class PolyMap extends Component {
+export default class PolyMap extends React.Component {
 
   static get propTypes() {
     return {

@@ -1,9 +1,10 @@
-import React, { PropTypes, Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Highcharts from 'highcharts/highstock';
 
 import { makeTime, makeDate } from 'utils/dates';
 
-export default class LineChart extends Component {
+export default class LineChart extends React.Component {
   static propTypes = {
     onClick: PropTypes.func,
     name: PropTypes.string,

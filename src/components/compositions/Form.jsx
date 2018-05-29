@@ -1,4 +1,6 @@
-import React, { PropTypes, Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 
@@ -40,7 +42,7 @@ export default class Form extends React.Component {
   }
 
   render() {
-    return <Component {...this.props} {...this.state} />;
+    return <div>Form Component</div>;
   }
 
 }

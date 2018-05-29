@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import toArray from 'lodash/toArray';
 
 import Filter from './Filter.jsx';
 import TypeComponent from './TypeComponent.jsx';
 import ToolbarControl from './ToolbarControl.jsx';
 
-export default class ToolbarFilters extends Component {
+export default class ToolbarFilters extends React.Component {
 
   static propTypes = {
     typesList: PropTypes.array.isRequired,

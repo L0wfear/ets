@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 import Div from '../Div.jsx';
 
@@ -15,7 +16,7 @@ HeaderCell.propTypes = {
   value: PropTypes.any,
 };
 
-export default class Table extends Component {
+export default class Table extends React.Component {
 
   static get propTypes() {
     return {

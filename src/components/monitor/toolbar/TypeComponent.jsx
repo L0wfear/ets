@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { getIcon } from 'assets/icons/car.js';
 
-export default class TypeComponent extends Component {
+export default class TypeComponent extends React.Component {
 
   static get propTypes() {
     return {

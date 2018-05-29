@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import connectToStores from 'flummox/connect';
@@ -27,7 +29,7 @@ const ShowPlatesCheckbox = props =>
 )
 @FluxContext
 @autobind
-class Toolbar extends Component {
+class Toolbar extends React.Component {
 
   static get propTypes() {
     return {

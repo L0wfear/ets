@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon } from 'react-bootstrap';
@@ -49,8 +50,8 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   static get propTypes() {
     return {
-      renderOnly: React.PropTypes.bool,
-      payload: React.PropTypes.object,
+      renderOnly: PropTypes.bool,
+      payload: PropTypes.object,
     };
   }
 

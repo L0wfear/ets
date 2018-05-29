@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
@@ -10,7 +12,7 @@ import Div from 'components/ui/Div.jsx';
 
 @FluxContext
 @autobind
-export default class OdhCoverageReportPrintForm extends Component {
+export default class OdhCoverageReportPrintForm extends React.Component {
 
   static propTypes = {
     exportType: PropTypes.number,

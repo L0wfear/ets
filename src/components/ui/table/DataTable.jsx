@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
 import _ from 'lodash';

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Raven from 'raven-js';
 import { diffDates } from 'utils/dates.js';
 
@@ -13,10 +14,10 @@ class BsnoStaus extends React.Component {
 
   static get propTypes() {
     return {
-      okStatus: React.PropTypes.bool,
-      gps_code: React.PropTypes.string,
-      is_bnso_broken: React.PropTypes.bool,
-      handleChange: React.PropTypes.func,
+      okStatus: PropTypes.bool,
+      gps_code: PropTypes.string,
+      is_bnso_broken: PropTypes.bool,
+      handleChange: PropTypes.func,
     };
   }
 

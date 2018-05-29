@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
@@ -93,7 +94,7 @@ class MissionReportByPoints extends ElementsList {
 }
 
 MissionReportByPoints.contextTypes = {
-  flux: React.PropTypes.object,
+  flux: PropTypes.object,
 };
 
 export default connectToStores(MissionReportByPoints, ['missions']);

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import { connectToStores } from 'utils/decorators';
@@ -9,7 +10,7 @@ import CheckList from './CheckList.jsx';
 
 @connectToStores(['geoObjects'])
 @autobind
-export default class RouteInfo extends Component {
+export default class RouteInfo extends React.Component {
 
   static get propTypes() {
     return {

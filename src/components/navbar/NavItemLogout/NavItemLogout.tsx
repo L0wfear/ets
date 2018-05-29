@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import WithContext from 'components/compositions/vokinda-hoc/with-contetx/WithContext';
 import WithClassMethod from 'components/compositions/vokinda-hoc/with-class-method/WithClassMethod';
@@ -29,7 +30,7 @@ const onSelect = props => () =>
 export default withRouter(
   hocAll(
     WithContext({
-      flux: React.PropTypes.object,
+      flux: PropTypes.object,
     }),
     WithClassMethod({
       onSelect,

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import Div from 'components/ui/Div.jsx';
+import { nameOfFeature } from 'utils/geo';
 import CarInfo from './car_info/CarInfo.jsx';
 import FeatureInfo from './FeatureInfo.jsx';
-import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
-import { nameOfFeature } from 'utils/geo';
 
 const hideSidebarForSomeFeature = (type) => {
   switch (type) {
@@ -14,7 +14,7 @@ const hideSidebarForSomeFeature = (type) => {
   }
 };
 
-export default class Sidebar extends Component {
+export default class Sidebar extends React.Component {
   static get propTypes() {
     return {
       selected: PropTypes.object,

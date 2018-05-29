@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Select from 'react-select';
 import { isString, isNumber } from 'lodash';
 
@@ -32,7 +33,7 @@ const defaultSortingFunction = (a, b) => {
 // c обновлением до 1.2.1 появилась возможность ассинхронных опций
 // @todo разобраться
 
-export default class EstSelect extends Component {
+export default class EstSelect extends React.Component {
 
   static get propTypes() {
     return {

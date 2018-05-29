@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Div from 'components/ui/Div.jsx';
 import { get } from 'lodash';
 
@@ -13,7 +14,7 @@ const FORMATION_PERIOD_OPTIONS = [
   { value: 'month', label: 'Месячный' }
 ];
 
-class WaybillPrintForm extends Component {
+class WaybillPrintForm extends React.Component {
 
   static get propTypes() {
     return {
@@ -217,7 +218,7 @@ class WaybillPrintForm extends Component {
 }
 
 WaybillPrintForm.contextTypes = {
-  flux: React.PropTypes.object,
+  flux: PropTypes.object,
 };
 
 export default WaybillPrintForm;

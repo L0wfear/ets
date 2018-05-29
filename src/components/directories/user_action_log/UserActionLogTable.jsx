@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 
@@ -81,7 +82,7 @@ const UserActionLogTable = (props) => {
 };
 
 UserActionLogTable.propTypes = {
-  data: React.PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default UserActionLogTable;

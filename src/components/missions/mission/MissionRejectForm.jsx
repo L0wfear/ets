@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -14,7 +15,7 @@ import {
 
 @connectToStores(['objects', 'missions'])
 @FluxContext
-export default class MissionRejectForm extends Component {
+export default class MissionRejectForm extends React.Component {
 
   static get propTypes() {
     return {

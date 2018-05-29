@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { isEqual } from 'lodash';
 
@@ -9,7 +10,7 @@ import SpeedChart from './charts/SpeedChart';
 import FuelChart from './charts/FuelChart';
 
 
-export default class Charts extends Component {
+export default class Charts extends React.Component {
   static propTypes = {
     car: PropTypes.object,
     trackPoints: PropTypes.array,

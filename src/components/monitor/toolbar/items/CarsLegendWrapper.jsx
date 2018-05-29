@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import cx from 'classnames';
 
 import statuses from 'constants/statuses';
@@ -15,11 +17,11 @@ class CarsLegendWrapper extends React.Component {
 
   static get propTypes() {
     return {
-      filter: React.PropTypes.object,
-      storeHandleSetFilter: React.PropTypes.func,
-      byStatus: React.PropTypes.object,
-      storeFilter: React.PropTypes.object,
-      byConnectionStatus: React.PropTypes.object,
+      filter: PropTypes.object,
+      storeHandleSetFilter: PropTypes.func,
+      byStatus: PropTypes.object,
+      storeFilter: PropTypes.object,
+      byConnectionStatus: PropTypes.object,
     };
   }
 

@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Preloader from './ui/Preloader.jsx';
 
 export default function LoadingPage({ loaded }) {
@@ -6,5 +7,5 @@ export default function LoadingPage({ loaded }) {
 }
 
 LoadingPage.propTypes = {
-  loaded: React.PropTypes.bool,
+  loaded: PropTypes.bool,
 };

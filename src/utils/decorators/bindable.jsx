@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 export default function bindable(ComposedComponent) {
   return class BindableComponent extends React.Component {
@@ -12,10 +13,10 @@ export default function bindable(ComposedComponent) {
 
     static get propTypes() {
       return {
-        onClick: React.PropTypes.func,
-        onChange: React.PropTypes.func,
-        bindOnClick: React.PropTypes.any,
-        bindOnChange: React.PropTypes.any,
+        onClick: PropTypes.func,
+        onChange: PropTypes.func,
+        bindOnClick: PropTypes.any,
+        bindOnChange: PropTypes.any,
       };
     }
 

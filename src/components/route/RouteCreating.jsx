@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
@@ -11,7 +12,7 @@ import { polyState } from 'constants/polygons.js';
 import CheckList from './CheckList.jsx';
 
 @autobind
-class RouteCreating extends Component {
+class RouteCreating extends React.Component {
 
   static get propTypes() {
     return {
@@ -309,7 +310,7 @@ class RouteCreating extends Component {
 }
 
 RouteCreating.contextTypes = {
-  flux: React.PropTypes.object,
+  flux: PropTypes.object,
 };
 
 export default connectToStores(RouteCreating, ['routes', 'geoObjects']);

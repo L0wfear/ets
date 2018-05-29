@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Form from './Form.jsx';
 
-export default class FormWrap extends Component {
+export default class FormWrap extends React.Component {
 
   static contextTypes = {
-    flux: React.PropTypes.object,
+    flux: PropTypes.object,
   }
 
   constructor(props) {

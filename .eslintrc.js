@@ -34,7 +34,22 @@ module.exports = {
   "settings": {
     "import/resolver": {
       "webpack": {
-        config: path.resolve(__dirname, 'webpack', 'dev.config.js')
+        config: {
+          resolve: {
+            alias: {
+              utils: path.resolve(__dirname, 'src', 'utils'),
+              api: path.resolve(__dirname, 'src', 'api'),
+              components: path.resolve(__dirname, 'src', 'components'),
+              models: path.resolve(__dirname, 'src', 'models'),
+              constants: path.resolve(__dirname, 'src', 'constants'),
+              config: path.resolve(__dirname, 'src', 'config'),
+              stores: path.resolve(__dirname, 'src', 'stores'),
+              actions: path.resolve(__dirname, 'src', 'actions'),
+              redux: path.resolve(__dirname, 'src', 'redux'),
+            },
+            extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
+          }
+        }
       }
     }
   }

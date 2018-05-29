@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
@@ -114,7 +115,7 @@ class MissionsCreationForm extends Form {
 }
 
 MissionsCreationForm.contextTypes = {
-  flux: React.PropTypes.object,
+  flux: PropTypes.object,
 };
 
 export default connectToStores(MissionsCreationForm, ['objects', 'missions']);

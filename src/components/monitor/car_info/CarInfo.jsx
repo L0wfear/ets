@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { groupBy, flatten, get, cloneDeep, omit } from 'lodash';
 import { autobind } from 'core-decorators';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
@@ -56,7 +57,7 @@ const SensorColorLegend = ({ colors }) => {
 const initialMaxSpeed = 60;
 
 @autobind
-export default class CarInfo extends Component {
+export default class CarInfo extends React.Component {
 
   static get propTypes() {
     return {

@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import {
   cloneDeep,
   omit,
@@ -22,13 +24,13 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  */
 @FluxContext
 @autobind
-export default class FormWrap extends Component {
+export default class FormWrap extends React.Component {
 
   static get propTypes() {
     return {
-      showForm: React.PropTypes.bool.isRequired,
-      // element: React.PropTypes.object.isRequired,
-      onFormHide: React.PropTypes.func.isRequired,
+      showForm: PropTypes.bool.isRequired,
+      // element: PropTypes.object.isRequired,
+      onFormHide: PropTypes.func.isRequired,
     };
   }
 
@@ -217,7 +219,6 @@ export default class FormWrap extends Component {
 
   render() {
     throw new TypeError('FormWrap: do not call abstract method FormWrap#render from child.');
-    // return <Component {...this.props} {...this.state} />;
   }
 
 }

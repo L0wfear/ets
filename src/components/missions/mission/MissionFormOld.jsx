@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import {
   uniqBy,
@@ -26,9 +27,9 @@ const getRoute = async (routesActions, { route_id, mission_id, isTemplate }) => 
 class MissionFormOld extends React.Component {
   static get propTypes() {
     return {
-      carsList: React.PropTypes.array,
-      formState: React.PropTypes.object.isRequired,
-      onHide: React.PropTypes.func.isRequired,
+      carsList: PropTypes.array,
+      formState: PropTypes.object.isRequired,
+      onHide: PropTypes.func.isRequired,
     };
   }
 

@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { Button, Glyphicon } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import {

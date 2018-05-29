@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { autobind } from 'core-decorators';
 import Filter from './Filter.jsx';
 import ToolbarControl from './ToolbarControl.jsx';
 
 @autobind
-export default class ToolbarSearch extends Component {
+export default class ToolbarSearch extends React.Component {
 
   static get propTypes() {
     return {

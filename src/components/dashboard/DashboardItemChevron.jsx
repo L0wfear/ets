@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon } from 'react-bootstrap';
 

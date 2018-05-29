@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 import { FluxContext } from 'utils/decorators';
 
@@ -9,19 +10,19 @@ class MunicipalFacility extends React.Component {
 
   static get propTypes() {
     return {
-      id: React.PropTypes.string,
-      label: React.PropTypes.string,
-      state: React.PropTypes.object,
-      errors: React.PropTypes.object,
-      disabled: React.PropTypes.bool,
-      getNormIdFromState: React.PropTypes.bool,
-      handleChange: React.PropTypes.func,
-      getDataByNormId: React.PropTypes.func,
-      technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
-      clearable: React.PropTypes.bool,
-      fromWaybill: React.PropTypes.bool,
-      type_id: React.PropTypes.number,
-      kind_task_ids: React.PropTypes.any,
+      id: PropTypes.string,
+      label: PropTypes.string,
+      state: PropTypes.object,
+      errors: PropTypes.object,
+      disabled: PropTypes.bool,
+      getNormIdFromState: PropTypes.bool,
+      handleChange: PropTypes.func,
+      getDataByNormId: PropTypes.func,
+      technicalOperationsList: PropTypes.arrayOf(PropTypes.object),
+      clearable: PropTypes.bool,
+      fromWaybill: PropTypes.bool,
+      type_id: PropTypes.number,
+      kind_task_ids: PropTypes.any,
     };
   }
 

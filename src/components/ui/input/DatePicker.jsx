@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import localizer from 'react-widgets/lib/localizers/moment';
 import cx from 'classnames';
@@ -7,7 +8,7 @@ import 'moment/locale/ru';
 
 localizer(moment);
 
-export default class DatePicker extends Component {
+export default class DatePicker extends React.Component {
 
   static get propTypes() {
     return {

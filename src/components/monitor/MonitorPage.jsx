@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FluxContext } from 'utils/decorators';
 import { getTypes } from 'redux/modules/types';
@@ -15,7 +16,7 @@ import Sidebar from './Sidebar.jsx';
   }
 )
 @FluxContext
-class MonitorPage extends Component {
+class MonitorPage extends React.Component {
 
   static propTypes = {
     getTypes: PropTypes.func,

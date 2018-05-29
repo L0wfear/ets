@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import * as PropTypes from 'prop-types';
 import flummoxConnectToStores from 'flummox/connect';
 import exportable from './exportable.jsx';
 import bindable from './bindable.jsx';

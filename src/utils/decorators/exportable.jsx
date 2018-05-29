@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-unused-vars
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { saveData } from 'utils/functions';
 import { parseFilename } from 'utils/content-disposition.js';
@@ -13,7 +14,7 @@ export function toUrlWithParams(url, data) {
 
 export default function exportable(options) {
   return function decorateWithExportableFeatures(ComposedComponent) {
-    return @autobind class Exportable extends Component {
+    return @autobind class Exportable extends React.Component {
 
       static get propTypes() {
         return {

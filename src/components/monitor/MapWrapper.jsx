@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import Map from 'components/map/Map.jsx';
 import { connect } from 'react-redux';
 import { autobind } from 'core-decorators';

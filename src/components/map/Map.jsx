@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import CarMarker from './markers/car/CarMarker.js';
@@ -32,7 +33,7 @@ const SIDEBAR_WIDTH_PX = 500;
  * custom tiles example
  */
  // TODO сделать реализацию завязанной на рендеринг в рамках ЕТС карты
-export default class OpenLayersMap extends Component {
+export default class OpenLayersMap extends React.Component {
 
   static get propTypes() {
     return {

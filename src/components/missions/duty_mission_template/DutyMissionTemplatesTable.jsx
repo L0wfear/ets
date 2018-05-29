@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/DataTable.jsx';
 import { get } from 'lodash';
 
@@ -114,7 +115,7 @@ const DataTable = props => (
 );
 
 DataTable.propTypes = {
-  data: React.PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default DataTable;

@@ -1,17 +1,18 @@
-import React, { Component, PropTypes } from 'react';
-import { get } from 'lodash';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import { Glyphicon } from 'react-bootstrap';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
 
 import Panel from 'components/ui/Panel.jsx';
 import { makeUnixTime, secondsToTime } from 'utils/dates';
 
-import MissionFormWrap from '../../missions/mission/MissionFormWrap.jsx';
+import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
 
 import VehicleAttributes from './VehicleAttributes.jsx';
 
 
-export default class VehicleInfo extends Component {
+export default class VehicleInfo extends React.Component {
 
   static propTypes = {
     car: PropTypes.object,

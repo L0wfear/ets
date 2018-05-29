@@ -1,10 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import ClickOutHandler from 'react-onclickout';
 import cx from 'classnames';
 import { autobind } from 'core-decorators';
 
 @autobind
-export default class ToolbarControl extends Component {
+export default class ToolbarControl extends React.Component {
 
   static get propTypes() {
     return {

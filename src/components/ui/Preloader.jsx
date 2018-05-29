@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import preloaderGif from 'assets/images/infinity.gif';
+import preloaderFieldGif from 'assets/images/preloader-field.gif';
 import './preloader.scss';
-import preloaderGif from '../../assets/images/infinity.gif';
-import preloaderFieldGif from '../../assets/images/preloader-field.gif';
 
 export default function Preloader({ style = {}, type = '' }) {
   switch (type) {

@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 export default function Panel({ title, children }) {
   return (
@@ -14,6 +15,6 @@ export default function Panel({ title, children }) {
 }
 
 Panel.propTypes = {
-  title: React.PropTypes.any,
-  children: React.PropTypes.node,
+  title: PropTypes.any,
+  children: PropTypes.node,
 };

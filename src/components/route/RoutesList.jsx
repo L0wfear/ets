@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
@@ -27,7 +28,7 @@ const ButtonDeleteRoute = enhanceWithPermissions({
   permission: permissions.delete,
 })(Button);
 
-class RoutesList extends Component {
+class RoutesList extends React.Component {
 
   static get propTypes() {
     return {
@@ -37,7 +38,7 @@ class RoutesList extends Component {
   }
 
   static contextTypes = {
-    flux: React.PropTypes.object,
+    flux: PropTypes.object,
   }
 
   constructor(props) {

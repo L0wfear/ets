@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 export default function wrappedRef(ComposedComponent) {
   return class WrappedRefComponent extends React.Component {

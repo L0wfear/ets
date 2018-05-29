@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
 import { Modal } from 'react-bootstrap';
 import PDF from 'react-pdf-js';
+import * as PropTypes from 'prop-types';
 
 import ModalBody from 'components/ui/Modal';
 import Preloader from '../../ui/Preloader.jsx';
 
-export default class PDFViewModal extends Component {
+export default class PDFViewModal extends React.Component {
 
   static get propTypes() {
     return {

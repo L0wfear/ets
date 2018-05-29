@@ -58,7 +58,7 @@ try {
   configs.docs = config[pathToConfig].docs;
   configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
 } catch (e) {
-  console.log(e);
+  console.log(e); // eslint-disable-line
 }
 
 export default configs;

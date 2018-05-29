@@ -17,8 +17,12 @@ export interface IPropsReportContainer extends
     serviceName: string,
     getOpts?: object,
     reportType?: string,
+    props?: any,
   ): ReduxTypes.ReportDataPromise;
   getTableMetaInfo(serviceName: string): Promise<any>;
+  setAllData(data: any, func: any): any;
+  setReportDataWithSummerData(payload: any): any;
+  data: any;
 }
 
 export interface IStateReportContainer {
@@ -27,4 +31,6 @@ export interface IStateReportContainer {
   fetchedByMoveDownButton: boolean;
   selectedRow: IDataTableSelectedRowPropsData;
   exportFetching: boolean;
+  filterValues: any;
+  uniqName: string;
 }

@@ -120,7 +120,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 disabled={false}
                 options={EMPLOYEES}
                 value={brigade_employee_id_list}
-                onChange={this.handleBrigadeIdListChange.bind(this)}
+                onChange={this.handleBrigadeIdListChange}
               />
             </Col>
           </Row>

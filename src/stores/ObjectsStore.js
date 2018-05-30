@@ -192,7 +192,7 @@ export default class ObjectsStore extends Store {
     this.setState({ materialConsumptionRateList });
   }
 
-  handleGetMaintenanceWork({ result: { rows: maintenanceWorkList }}) {
+  handleGetMaintenanceWork({ result: { rows: maintenanceWorkList } }) {
     this.setState({ maintenanceWorkList });
   }
   handleUpdateOrganizations(r) {

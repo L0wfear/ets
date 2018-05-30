@@ -34,8 +34,8 @@ const OrderTableChilrend: React.SFC<any> = props => (
     </Button>
     <span style={marginLeft} >
       <DropdownButton onSelect={props.selectDownload} pullRight title={title} id="bg-nested-dropdown">
-        <MenuItem eventKey={TypeDownload.old} disabled={!props.disabledButtonsMenu}>Скан-копия факсограммы</MenuItem>
-        <MenuItem eventKey={TypeDownload.new} disabled={!props.disabledButtonsMenu}>Расшифровка централизованного задания</MenuItem>
+        <MenuItem eventKey={TypeDownload.old} disabled={props.disabledButtonsMenu}>Скан-копия факсограммы</MenuItem>
+        <MenuItem eventKey={TypeDownload.new} disabled={props.disabledButtonsMenu}>Расшифровка централизованного задания</MenuItem>
       </DropdownButton>
     </span>
   </div>
@@ -58,7 +58,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
-  disabledButtonsMenu: !stateProps.disabledButtonsMenu,
+  disabledButtonsMenu: !stateProps.selectedElementOrder,
   disabledTemplateMission: stateProps.disabledTemplateMission,
   disabledTemplateDutyMission: stateProps.disabledTemplateDutyMission,
 

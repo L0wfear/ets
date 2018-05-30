@@ -94,18 +94,21 @@ export class DutyMissionForm extends Form {
   // Можно принять второй параметр
   // Туда попадает вся опция
   // И не искать каждый раз всех
-  handleBrigadeIdListChange(v) {
+  handleBrigadeIdListChange = (v) => {
     const data = v.map(id => Number(id));
     const lastEmployee = last(data);
 
-    if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
+    if (lastEmployee && !this.isActiveEmployee(lastEmployee)) {
       onlyActiveEmployeeNotification();
       data.pop();
+      return;
     }
 
-    const { employeesList = [] } = this.props;
+    const brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
+      ...newArr,
+      this.props.employeesIndex[brigade_id],
+    ], []);
 
-    const brigade_employee_id_list = employeesList.filter(e => data.includes(e.id));
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 
@@ -480,7 +483,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
                 value={brigade_employee_id_list}
-                onChange={this.handleBrigadeIdListChange.bind(this)}
+                onChange={this.handleBrigadeIdListChange}
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>

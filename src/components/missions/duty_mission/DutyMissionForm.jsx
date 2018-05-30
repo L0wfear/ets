@@ -92,20 +92,23 @@ export class DutyMissionForm extends Form {
   }
 
   handleBrigadeIdListChange(v) {
-    const data = v.split(',').map(id => Number(id));
-    const lastEmployee = last(data);
+    let brigade_employee_id_list = [];
 
-    if (!isEmpty(lastEmployee) && !this.isActiveEmployee(lastEmployee)) {
-      onlyActiveEmployeeNotification();
-      data.pop();
+    if (v) {
+      const data = v.split(',').map(id => Number(id));
+      const lastEmployee = last(data);
+
+      if (!this.isActiveEmployee(lastEmployee)) {
+        onlyActiveEmployeeNotification();
+        data.pop();
+        return;
+      }
+
+      brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
+        ...newArr,
+        this.props.employeesIndex[brigade_id],
+      ], []);
     }
-
-    const { employeesList = [] } = this.props;
-
-    const brigade_employee_id_list = data.reduce((newArr, brigade_id) => {
-      const br = employeesList.find(({ id }) => brigade_id === id);
-      return br ? newArr.concat(br) : newArr;
-    }, []);
 
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }

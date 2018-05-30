@@ -87,17 +87,25 @@ export class DutyMissionForm extends Form {
     this.props.handleFormChange('foreman_id', value);
   }
 
-  handleBrigadeIdListChange(v) {
-    const data = v.split(',');
-    const lastEmployee = last(data);
+  handleBrigadeIdListChange = (v) => {
+    let brigade_employee_id_list = [];
 
-    if (lastEmployee !== '' && !this.isActiveEmployee(lastEmployee)) {
-      onlyActiveEmployeeNotification();
-      data.pop();
+    if (v) {
+      const data = v.split(',').map(id => Number(id));
+      const lastEmployee = last(data);
+
+      if (!this.isActiveEmployee(lastEmployee)) {
+        onlyActiveEmployeeNotification();
+        data.pop();
+        return;
+      }
+
+      brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
+        ...newArr,
+        this.props.employeesIndex[brigade_id],
+      ], []);
     }
 
-    const { employeesList = [] } = this.props;
-    const brigade_employee_id_list = employeesList.filter(e => data.indexOf(e.id.toString()) > -1);
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 
@@ -377,7 +385,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
                 value={brigade_employee_id_list}
-                onChange={this.handleBrigadeIdListChange.bind(this)}
+                onChange={this.handleBrigadeIdListChange}
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>

@@ -14,7 +14,7 @@ export const getTableMeta = ({
         type: 'number',
         cssClassName: 'width120',
         filter: {
-          type: 'advanced-number',
+          type: 'multiselect',
         },
       },
       {

@@ -12,6 +12,7 @@ export const getTableMeta = ({
   structures = [],
   technicalOperationsList = [],
   municipalFacilityList = [],
+  technicalOperationsObjectsList = [],
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -116,6 +117,17 @@ export const getTableMeta = ({
         cssClassName: 'width120',
       },
       {
+        name: 'object_type_id',
+        displayName: 'Тип объекта',
+        sort: {
+          serverFieldName: 'object_type_name',
+        },
+        filter: {
+          type: 'multiselect',
+          options: technicalOperationsObjectsList.map(({ id: value, short_name: label }) => ({ value, label })),
+        },
+      },
+      {
         name: 'passes_count',
         displayName: 'Количество циклов',
         type: 'number',
@@ -205,6 +217,7 @@ export default (props) => {
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
     car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
     type_id: ({ data }) => <div>{get(find(props.carsList, { 'type_id': data }), 'type_name', '')}</div>,
+    object_type_id: ({ rowData: { object_type_name } }) => <div>{object_type_name}</div>,
     technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
   };
 

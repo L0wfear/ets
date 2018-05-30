@@ -12,6 +12,7 @@ export const getTableMeta = ({
   foremanList = [],
   carDutyMissionList = [],
   municipalFacilityList = [],
+  technicalOperationsObjectsList = [],
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -99,6 +100,17 @@ export const getTableMeta = ({
           type: 'advanced-string-like',
         },
         cssClassName: 'width120',
+      },
+      {
+        name: 'object_type_id',
+        displayName: 'Тип объекта',
+        sort: {
+          serverFieldName: 'object_type_name',
+        },
+        filter: {
+          type: 'multiselect',
+          options: technicalOperationsObjectsList.map(({ id: value, short_name: label }) => ({ value, label })),
+        },
       },
       {
         name: 'foreman_fio',

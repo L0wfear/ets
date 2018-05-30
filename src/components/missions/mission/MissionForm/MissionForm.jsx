@@ -236,7 +236,7 @@ export class MissionForm extends Form {
 
       let { car_func_types_ids } = this.state;
       if (!formState.status && !fromWaybill) {
-        if (!this.state.template) {
+        if (!this.props.template) {
           changesObj.car_id = undefined;
         }
         car_func_types_ids = newStateData.normData.car_func_types.map(({ asuods_id }) => asuods_id);

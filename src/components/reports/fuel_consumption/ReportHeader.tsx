@@ -55,7 +55,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Col md={12}>
           <label>Период формирования</label>
         </Col>
-        <Col md={8}>
+        <Col md={12}>
           <Row>
             <Col md={3}>
               <DatePicker
@@ -73,7 +73,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 disabled={readOnly}
               />
             </Col>
-            <Col md={3}>
+            <Col md={2}>
               <Button block
                 disabled={this.props.readOnly}
                 onClick={this.handleSubmit}

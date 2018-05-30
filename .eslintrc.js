@@ -36,6 +36,7 @@ module.exports = {
       "webpack": {
         config: {
           resolve: {
+            extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx'],
             alias: {
               utils: path.resolve(__dirname, 'src', 'utils'),
               api: path.resolve(__dirname, 'src', 'api'),
@@ -47,7 +48,6 @@ module.exports = {
               actions: path.resolve(__dirname, 'src', 'actions'),
               redux: path.resolve(__dirname, 'src', 'redux'),
             },
-            extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
           }
         }
       }

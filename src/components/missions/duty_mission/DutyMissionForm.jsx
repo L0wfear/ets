@@ -91,7 +91,7 @@ export class DutyMissionForm extends Form {
     }
   }
 
-  handleBrigadeIdListChange(v) {
+  handleBrigadeIdListChange = (v) => {
     let brigade_employee_id_list = [];
 
     if (v) {
@@ -388,7 +388,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || readOnly}
                 options={EMPLOYEES}
                 value={brigade_employee_id_list}
-                onChange={this.handleBrigadeIdListChange.bind(this)}
+                onChange={this.handleBrigadeIdListChange}
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>

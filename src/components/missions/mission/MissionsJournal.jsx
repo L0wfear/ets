@@ -75,7 +75,7 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
     flux.getActions('companyStructure').getLinearCompanyStructure();
-
+    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   componentWillUpdate(nextProps, nextState) {

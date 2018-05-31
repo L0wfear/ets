@@ -184,30 +184,30 @@ export const handleRouteFormHide = (isSubmitted, result, formState, stateData, r
   });
 };
 
-export const getNormDataById = (norm_id, action) =>
-  action({ norm_id }).then(({ result: [normData] }) => normData);
-export const getCarsByNormId = (norm_id, formState, fromWaybill, action) => {
+export const getNormDataByNormatives = (normatives, action) =>
+  action({ norm_ids: normatives.map(({ id }) => id).join(',') }).then(({ result: normativesData }) => normativesData)
+;
+export const getCarsByNormNormatives = (normatives, formState, fromWaybill, action) => {
   if (!formState.status && !fromWaybill) {
-    return action({ norm_id }).then(({ result: { rows: carsList } }) => carsList);
+    return action({ norm_ids: normatives.map(({ id }) => id).join(',') }).then(({ result: { rows: carsList } }) => carsList);
   }
 
   return Promise.resolve(null);
 };
 
-export const getDataByNormId = (norm_id, formState, fromWaybill, technicalOperationActionGetOneTechOperationByNormId, routeActionGetRoutesBySomeData, carsActionGetCarsByNormId) =>
+export const getDataByNormatives = (normatives, formState, fromWaybill, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
   Promise.all([
-    getNormDataById(norm_id, technicalOperationActionGetOneTechOperationByNormId),
-    getCarsByNormId(norm_id, formState, fromWaybill, carsActionGetCarsByNormId),
+    getNormDataByNormatives(normatives, getTechOperationsByNormIds),
+    getCarsByNormNormatives(normatives, formState, fromWaybill, getCarsByNormIds),
   ])
-  .then(([ normData, carsList ]) => {
-    const { route_types: available_route_types } = normData;
+  .then(([ normativesData, carsList ]) => {
+    const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
 
     return getRoutesBySomeData(formState, { available_route_types }, routeActionGetRoutesBySomeData)
       .then(routesList => ({
-        normData,
+        normativesData,
         carsList,
         routesList,
         available_route_types,
-        is_cleaning_norm: normData.is_cleaning_norm,
       }));
   });

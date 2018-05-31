@@ -36,7 +36,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
     if (!error_plan_date_start && ((!!new_toi && !!new_pds && (old_toi !== new_toi || old_pds !== new_pds) && forseUpdateIsWas) || forseUpdate)) {
       const {
-        norm_ids = [],
+        normatives,
         is_new,
       } = (newTechOperationsList.find(({ id }) => id === new_toi) || {});
 
@@ -50,7 +50,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         if (getNormIdFromState) {
           outerPayload.norm_ids = norm_id;
         } else {
-          outerPayload.norm_ids = norm_ids.join(',');
+          outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
         }
 
         this.getCleaningMunicipalFacilityList(outerPayload, new_v);

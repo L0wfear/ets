@@ -41,7 +41,7 @@ class MissionTemplateForm extends MissionForm {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
-      car_func_types_ids, TECH_OPERATIONS,
+      TECH_OPERATIONS,
       technicalOperationsList = [],
       routesList = [],
       carsList = [],
@@ -79,15 +79,10 @@ class MissionTemplateForm extends MissionForm {
       'value',
     );
 
-    let newCarList = carsList;
-
-    if (lodashIsEmpty(car_func_types_ids)) {
-      newCarList = newCarList.filter(({ type_id }) => car_func_types_ids.includes(type_id));
-    }
-
-    const CARS = newCarList.map(c => ({
+    const CARS = carsList.map(c => ({
       value: c.asuods_id,
       label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
+      type_id: c.type_id,
     }));
 
     const IS_CREATING = true;
@@ -113,9 +108,10 @@ class MissionTemplateForm extends MissionForm {
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
+                clearable={false}
                 disabled={!!state.route_id}
                 value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange.bind(this)}
+                onChange={this.handleTechnicalOperationChange}
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>
@@ -138,9 +134,10 @@ class MissionTemplateForm extends MissionForm {
                 label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
+                clearable={false}
                 disabled={!!state.route_id}
-                handleChange={this.handleChange.bind(this)}
-                getDataByNormId={this.getDataByNormId}
+                handleChange={this.handleChangeMF}
+                getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!IS_CREATING}
               />
@@ -156,7 +153,7 @@ class MissionTemplateForm extends MissionForm {
                 options={CARS}
                 disabled={isEmpty(state.technical_operation_id) || isEmpty(state.municipal_facility_id)}
                 value={state.car_id}
-                onChange={this.handleChange.bind(this, 'car_id')}
+                onChange={this.handleCarIdChange}
               />
               <Field
                 type="number"

@@ -35,8 +35,10 @@ export class DutyMissionForm extends Form {
 
   handleRouteIdChange = (v) => {
     this.handleChange('route_id', v);
-    const { flux } = this.context;
+    this.handleChange('norm_id', null);
+
     if (v) {
+      const { flux } = this.context;
       flux.getActions('routes').getRouteById(v).then((route) => {
         this.setState({ selectedRoute: route });
       });
@@ -67,7 +69,8 @@ export class DutyMissionForm extends Form {
 
     this.handleChange('technical_operation_id', v);
     this.handleChange('municipal_facility_id', null);
-    this.handleChange('route_id', undefined);
+    this.handleChange('norm_id', null);
+    this.handleRouteIdChange(null);
     if (!isEmpty(this.props.formState.car_mission_id)) {
       this.handleChange('car_mission_id', 0);
     }
@@ -118,10 +121,7 @@ export class DutyMissionForm extends Form {
   async componentDidMount() {
     const mission = this.props.formState;
     const { flux } = this.context;
-    const {
-      id,
-      norm_id,
-    } = mission;
+    const { id } = mission;
     let TECH_OPERATIONS = [];
 
     const technicalOperationsActions = flux.getActions('technicalOperation');
@@ -132,10 +132,7 @@ export class DutyMissionForm extends Form {
     let kind_task_ids = null;
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
-
-    if (norm_id) {
-      this.getDataByNormId(norm_id);
-    }
+    flux.getActions('geoObjects').getGeozones();
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
@@ -151,8 +148,7 @@ export class DutyMissionForm extends Form {
     }
     await missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
-    const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
-    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
+    const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
 
     const {
       is_new,
@@ -179,18 +175,14 @@ export class DutyMissionForm extends Form {
   }
 
   createNewRoute() {
-    const {
-      formState: {
-        norm_id,
-      },
-    } = this.props;
+    const { formState } = this.props;
 
     const newR = {
-      norm_id,
+      normatives: formState.normatives,
       name: '',
-      technical_operation_id: this.props.formState.technical_operation_id,
-      municipal_facility_id: this.props.formState.municipal_facility_id,
-      structure_id: this.props.formState.structure_id,
+      technical_operation_id: formState.technical_operation_id,
+      municipal_facility_id: formState.municipal_facility_id,
+      structure_id: formState.structure_id,
       object_list: [],
     };
     this.setState({
@@ -237,35 +229,23 @@ export class DutyMissionForm extends Form {
     this.setState(stateChangeObject);
   }
 
-  getDataByNormId = async (norm_id) => {
-    this.handleChange('norm_id', norm_id);
-    const {
-      result: [
-        to_data = {},
-      ] = [],
-    } = await this.context.flux.getActions('technicalOperation').getOneTechOperationByNormId({ norm_id });
+  getDataByNormatives = async (normatives) => {
+    const norm_ids = normatives.map(({ id }) => id).join(',');
+    this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids })
+      .then(({ result: normativesData }) => {
+        const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
+        const { formState } = this.props;
+        this.context.flux.getActions('routes').getRoutesBySomeData({
+          municipal_facility_id: formState.municipal_facility_id,
+          technical_operation_id: formState.technical_operation_id,
+          type: available_route_types.join(','),
+        })
+        .then((routesList) => {
+          this.setState({ routesList });
+        });
 
-    const {
-      route_types: available_route_types = [],
-    } = to_data;
-
-    const {
-      formState: {
-        technical_operation_id,
-        municipal_facility_id,
-      },
-    } = this.props;
-
-    this.context.flux.getActions('routes').getRoutesBySomeData({
-      municipal_facility_id,
-      technical_operation_id,
-      type: available_route_types.join(','),
-    })
-    .then((routesList) => {
-      this.setState({ routesList });
-    });
-
-    this.setState({ available_route_types });
+        this.setState({ available_route_types, normatives });
+      });
   }
 
   render() {
@@ -371,6 +351,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="dm-technical-operation-id"
                 type="select"
+                clearable={false}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
@@ -453,9 +434,10 @@ export class DutyMissionForm extends Form {
                 label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
+                clearable={false}
                 disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 handleChange={this.handleChange.bind(this)}
-                getDataByNormId={this.getDataByNormId}
+                getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 kind_task_ids={kind_task_ids}

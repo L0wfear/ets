@@ -23,6 +23,9 @@ export default class TechnicalOperationsActions extends Actions {
   getOneTechOperationByNormId({ norm_id }) {
     return getTechnicalOperationsRegistry({ norm_id }, false, 'json');
   }
+  getTechOperationsByNormIds({ norm_ids }) {
+    return getTechnicalOperationsRegistry({ norm_ids }, false, 'json');
+  }
 
   getTechnicalOperationsObjects() {
     return TechnicalOperationObjectsService.get();

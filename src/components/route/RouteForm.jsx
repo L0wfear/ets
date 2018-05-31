@@ -151,8 +151,7 @@ export default class RouteForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { ROUTE_TYPE_OPTIONS, technicalOperationsList: technicalOperationsListOr = [] } = this.state;
-    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
+    const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
 
     let TECH_OPERATIONS = technicalOperationsList.map(({ id, name, is_new }) => ({ value: id, label: name, is_new }));
     if (!state.id) {

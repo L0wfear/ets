@@ -62,8 +62,25 @@ const dutyMissionSchema = {
       type: 'array',
       required: false,
     },
+    {
+      key: 'municipal_facility_id',
+      title: 'Элемент',
+      type: 'number',
+    },
   ],
   dependencies: {
+    'municipal_facility_id': [
+      {
+        validator: (value, { is_new }) => {
+          if (is_new) {
+            if (!value) {
+              return 'Поле "Элемент" должно быть заполнено';
+            }
+          }
+          return undefined;
+        },
+      },
+    ],
     plan_date_start: [
       {
         validator: (value, { plan_date_end }) => {

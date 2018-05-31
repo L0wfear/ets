@@ -16,7 +16,7 @@ class MunicipalFacility extends React.Component {
       disabled: React.PropTypes.bool,
       getNormIdFromState: React.PropTypes.bool,
       handleChange: React.PropTypes.func,
-      getDataByNormId: React.PropTypes.func,
+      getDataByNormatives: React.PropTypes.func,
       technicalOperationsList: React.PropTypes.arrayOf(React.PropTypes.object),
       clearable: React.PropTypes.bool,
       fromWaybill: React.PropTypes.bool,
@@ -70,7 +70,7 @@ class MunicipalFacility extends React.Component {
 
     if (!error_date_start && ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate)) {
       const {
-        norm_ids = [],
+        normatives,
         is_new,
       } = (newTechOperationsList.find(({ id }) => id === new_toi) || {});
 
@@ -84,7 +84,7 @@ class MunicipalFacility extends React.Component {
         if (getNormIdFromState) {
           outerPayload.norm_ids = norm_id;
         } else {
-          outerPayload.norm_ids = norm_ids.join(',');
+          outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
         }
 
         this.getCleaningMunicipalFacilityList(outerPayload, new_v);
@@ -103,9 +103,9 @@ class MunicipalFacility extends React.Component {
   getCleaningMunicipalFacilityList = (outerPayload, new_v) => {
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPayload).then(({ result: { rows = [] } = {} }) => {
       if (new_v) {
-        this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
+        this.props.getDataByNormatives(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).normatives);
       }
-      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id }));
+      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, normatives }) => ({ value, label, normatives }));
       const { type_id } = this.props;
 
       if (this.props.fromWaybill && type_id) {
@@ -155,14 +155,12 @@ class MunicipalFacility extends React.Component {
     };
   };
 
-  handleChange = (value) => {
-    const {
-      MUNICIPAL_FACILITY_OPTIONS = [],
-    } = this.state;
+  handleChange = (value, option) => {
     this.props.handleChange('municipal_facility_id', value);
     this.props.handleChange('municipal_facility_name', '');
+
     if (value) {
-      this.props.getDataByNormId(MUNICIPAL_FACILITY_OPTIONS.find(({ value: m_value }) => m_value === value).norm_id);
+      this.props.getDataByNormatives(option.normatives);
     }
   }
 

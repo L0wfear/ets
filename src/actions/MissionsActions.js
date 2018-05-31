@@ -375,6 +375,21 @@ export default class MissionsActions extends Actions {
     };
     return MissionLastReportService.get(payload);
   }
+  getCleaningOneNorm(outerData) {
+    const payload = {
+      datetime: createValidDateTime(outerData.datetime || new Date()),
+      technical_operation_id: outerData.technical_operation_id,
+      municipal_facility_id: outerData.municipal_facility_id,
+      route_type: outerData.route_type,
+      func_type_id: outerData.func_type_id,
+    };
+    if (!outerData.datetime) {
+      console.log('use userDate', new Date());
+    }
+
+    return Cleaning.path('one_norm').get(payload, false, 'json').then(({ result: { rows: [normData] } }) => normData);
+  }
+
   getCleaningByType({ type, payload: outerPyload }) {
     const payload = {
       ...outerPyload,

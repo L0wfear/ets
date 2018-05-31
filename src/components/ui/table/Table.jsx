@@ -130,7 +130,6 @@ const Row = (props) => {
       if (renderers[col] === undefined) {
         cells.push(<td key={cells.length}>{v}</td>);
       } else {
-        // console.log('rendered status')
         cells.push(<td key={cells.length}>{renderers[col](v, props.cells, props.index)}</td>);
       }
     });
@@ -140,7 +139,6 @@ const Row = (props) => {
         if (renderers[k] === undefined) {
           cells.push(<td key={cells.length}>{v}</td>);
         } else {
-          // console.log('rendered status')
           cells.push(<td key={cells.length}>{renderers[k](v)}</td>);
         }
       }

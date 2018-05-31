@@ -103,7 +103,7 @@ export default class Track {
   }
 
   setContinuousUpdating(flag) {
-    console.log('track', this, 'continuousUpdating is', flag);
+    console.log('track', this, 'continuousUpdating is', flag); // eslint-disable-line
     this.continuousUpdating = flag;
   }
 
@@ -187,7 +187,7 @@ export default class Track {
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();
-                  console.log('track fetched for', this.owner);
+                  console.log('track fetched for', this.owner); // eslint-disable-line
                   this.isLoading = false;
 
                   return obj;
@@ -242,11 +242,6 @@ export default class Track {
       return;
     }
 
-    // Сравнение в случае если все точки трека одинаковые
-    // console.log(_.uniqWith(track, (a,b) => {
-    //   return a.coords_msk[0] === b.coords_msk[0] && a.coords_msk[1] === b.coords_msk[1];
-    // }).length);
-
     ctx.strokeStyle = TRACK_COLORS.blue;
     ctx.lineWidth = TRACK_LINE_WIDTH;
     ctx.lineCap = 'round';
@@ -266,7 +261,6 @@ export default class Track {
     // и машина резко перемещается на другую точку
     if (owner.point.status === 1 && this.continuousUpdating) {
       const coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
-      // console.log(track[0].coords_msk, owner.point.coords_msk);
       ctx.lineTo(coords.x, coords.y);
     }
 

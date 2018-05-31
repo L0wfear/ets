@@ -31,7 +31,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
     if ((!!new_toi && (old_toi !== new_toi) && forseUpdateIsWas) || forseUpdate) {
       const {
-        norm_ids = [],
+        normatives = [],
         is_new = true,
       } = (newTechOperationsList.find(({ id }) => id === new_toi) || {});
 
@@ -44,7 +44,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         if (getNormIdFromState) {
           outerPayload.norm_ids = norm_id;
         } else {
-          outerPayload.norm_ids = norm_ids.join(',');
+          outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
         }
 
         this.getCleaningMunicipalFacilityList(outerPayload, new_v);
@@ -62,7 +62,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
       if (new_v) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v));
       }
-      const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types }) => ({ value, label, norm_id, route_types }));
+      const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, normatives: [{ id: norm_id }], route_types }) => ({ value, label, norm_id, route_types }));
 
       this.setState({
         myDisable: false,

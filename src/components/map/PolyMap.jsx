@@ -161,6 +161,7 @@ export default class PolyMap extends Component {
         name: poly.name,
         id: key,
         state: poly.state,
+        type: poly.type,
       });
       if (poly.shape && poly.shape.type === 'LineString') {
         feature.setStyle(getVectorArrowStyle(feature));

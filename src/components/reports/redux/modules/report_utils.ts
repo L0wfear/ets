@@ -87,23 +87,22 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
           displayName: 'Нет данных',
           toggle: true,
           allRow: true,
-          showChildren: false,
+          showChildren: true,
           children: [],
           [_uniq_field_father]: index + 1,
           [_uniq_field]: `${index + 1}.${1}`,
         });
-      };
+      }
 
       return {
         ...row,
         toggle: true,
         allRow: true,
-        showChildren: false,
+        showChildren: true,
         [_uniq_field]: index + 1,
         children,
       };
     });
 
-    console.log(returnData, aggr_fields)
-  return returnData
-}
+  return returnData;
+};

@@ -152,7 +152,7 @@ export class DutyMissionForm extends Form {
     await missionsActions.getMissionSources();
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
-    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, normatives }) => !is_new || (is_new && !normatives.some(({ id: to_norm_id }) => to_norm_id === null)));
+    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
     const {
       is_new,

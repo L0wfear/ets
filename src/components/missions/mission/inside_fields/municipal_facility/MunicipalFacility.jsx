@@ -70,7 +70,7 @@ class MunicipalFacility extends React.Component {
 
     if (!error_date_start && ((!!new_toi && new_ds && (old_toi !== new_toi || old_ds !== new_ds) && forseUpdateIsWas) || forseUpdate)) {
       const {
-        normatives = [],
+        norm_ids = [],
         is_new,
       } = (newTechOperationsList.find(({ id }) => id === new_toi) || {});
 
@@ -84,7 +84,7 @@ class MunicipalFacility extends React.Component {
         if (getNormIdFromState) {
           outerPayload.norm_ids = norm_id;
         } else {
-          outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
+          outerPayload.norm_ids = norm_ids.join(',');
         }
 
         this.getCleaningMunicipalFacilityList(outerPayload, new_v);
@@ -105,7 +105,7 @@ class MunicipalFacility extends React.Component {
       if (new_v) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v).norm_id);
       }
-      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, normatives: [{ id: norm_id }] }) => ({ value, label, norm_id }));
+      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id }) => ({ value, label, norm_id }));
       const { type_id } = this.props;
 
       if (this.props.fromWaybill && type_id) {

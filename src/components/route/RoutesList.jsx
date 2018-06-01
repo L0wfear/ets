@@ -143,6 +143,7 @@ class RoutesList extends Component {
       name: '',
       polys: {},
       object_list: [],
+      input_lines: [],
       type: '',
     };
 

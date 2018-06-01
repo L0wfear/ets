@@ -24,5 +24,11 @@ export const routeSchema = {
       type: 'array',
       required: false,
     },
+    {
+      key: 'input_lines',
+      title: 'Геоданные маршрута',
+      type: 'array',
+      required: false,
+    },
   ],
 };

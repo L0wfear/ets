@@ -169,7 +169,8 @@ class MissionTemplateForm extends DutyMissionForm {
           </Div>
         </Modal.Footer>
 
-        <RouteFormWrap element={route}
+        <RouteFormWrap
+          element={route}
           onFormHide={this.onFormHide.bind(this)}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}

@@ -165,6 +165,7 @@ export class DutyMissionForm extends Form {
         technical_operation_id: this.props.formState.technical_operation_id,
         structure_id: this.props.formState.structure_id,
         object_list: [],
+        input_lines: [],
       };
       this.setState({
         showRouteForm: true,
@@ -173,7 +174,7 @@ export class DutyMissionForm extends Form {
     });
   }
 
-  async onFormHide(isSubmitted, result) {
+  onFormHide = async (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
 
@@ -497,7 +498,7 @@ export class DutyMissionForm extends Form {
 
         <RouteFormWrap
           element={route}
-          onFormHide={this.onFormHide.bind(this)}
+          onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission

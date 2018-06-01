@@ -141,6 +141,7 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsObjects,
       technicalOperationsActions.updateTechnicalOperation,
       technicalOperationsActions.getTechnicalOperationsByCarId,
+      technicalOperationsActions.getTechOperationsByNormIds,
 
       companyStructureActions.getCompanyStructure,
       companyStructureActions.updateCompanyElement,
@@ -153,6 +154,7 @@ export default class LoadingStore extends Store {
       reportsActions.getDtCoverageReport,
 
       carActions.updateCarAdditionalInfo,
+      carActions.getDataByNormNormatives,
     );
 
     this.reg(true,

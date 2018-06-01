@@ -113,7 +113,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 state={state}
                 disabled={!!state.route_id}
                 handleChange={this.handleChange.bind(this)}
-                getDataByNormId={this.getDataByNormId}
+                getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!IS_CREATING}
               />
@@ -140,7 +140,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 disabled={false}
                 options={EMPLOYEES}
                 value={brigade_employee_id_list}
-                onChange={this.handleBrigadeIdListChange.bind(this)}
+                onChange={this.handleBrigadeIdListChange}
               />
             </Col>
           </Row>

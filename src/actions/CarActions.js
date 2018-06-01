@@ -121,6 +121,13 @@ export default class CarActions extends Actions {
 
     return CarService.get(payload);
   }
+  getCarsByNormIds({ norm_ids }) {
+    const payload = {
+      norm_ids,
+    };
+
+    return CarService.get(payload);
+  }
 
   async getCarsByTechnicalOperation(technical_operation_id) {
     const payload = {};

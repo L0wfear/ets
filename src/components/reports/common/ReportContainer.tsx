@@ -96,7 +96,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         const data = await this.props.getReportData(this.props.serviceName, payload, '', { ...this.state, notUseServerSummerTable });
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
-        if (this.state.fetchedByMoveDownButton) {
+        if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
             summaryMeta: {...this.props.prevMeta},
@@ -295,7 +295,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       if (!is_vertical) {
         let initialSchema: IDataTableColSchema;
-        
+
         initialSchema = {
           name: fieldName,
           displayName,
@@ -307,7 +307,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         if (forWhat === 'mainList' && this.props.data.result) {
           (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }) => ({ value, label: value })), 'value');
         }
-        
+
         const renderer = schemaMakers[fieldName] || identity;
         tableMeta.push(renderer(initialSchema, this.props));
       }

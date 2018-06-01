@@ -69,7 +69,7 @@ class RouteFormWrap extends FormWrap {
       };
     }
     formState.object_list = [];
-    formState.draw_object_list = [];
+    formState.input_lines = [];
     this.setState({ formState });
   }
 

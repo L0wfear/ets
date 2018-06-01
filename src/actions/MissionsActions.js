@@ -375,6 +375,28 @@ export default class MissionsActions extends Actions {
     };
     return MissionLastReportService.get(payload);
   }
+  getCleaningOneNorm(outerData) {
+    const payload = {
+      datetime: createValidDateTime(outerData.datetime || new Date()),
+      technical_operation_id: outerData.technical_operation_id,
+      municipal_facility_id: outerData.municipal_facility_id,
+      route_type: outerData.route_type,
+      func_type_id: outerData.func_type_id,
+      needs_brigade: outerData.needs_brigade,
+      kind_task_ids: outerData.kind_task_ids,
+    };
+
+    if (payload.needs_brigade) {
+      delete payload.func_type_id;
+    }
+    if (!payload.kind_task_ids) {
+      delete payload.kind_task_ids;
+    }
+
+    return Cleaning.path('one_norm').get(payload, false, 'json')
+      .then(({ result: { rows: [normData] } }) => normData);
+  }
+
   getCleaningByType({ type, payload: outerPyload }) {
     const payload = {
       ...outerPyload,

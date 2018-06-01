@@ -21,7 +21,7 @@ import { routeTypesBySlug } from 'constants/route';
 
 import { addTime, diffDates } from 'utils/dates.js';
 import {
-  getDataByNormId,
+  getDataByNormatives,
   getDataBySelectedRoute,
   getRoutesByMissionId,
   getTechnicalOperationData,
@@ -33,6 +33,15 @@ const ASSIGN_OPTIONS = [
   { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
   { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
 ];
+
+const makePayloadFromState = formState => ({
+  datetime: formState.date_start,
+  technical_operation_id: formState.technical_operation_id,
+  municipal_facility_id: formState.municipal_facility_id,
+  route_type: formState.route_type,
+  func_type_id: formState.func_type_id,
+  needs_brigade: false,
+});
 
 export class MissionForm extends Form {
 
@@ -46,8 +55,6 @@ export class MissionForm extends Form {
       carsList: [],
       routesList: [],
       technicalOperationsList: [],
-      car_func_types_ids: [],
-      is_cleaning_norm: false,
     };
   }
 
@@ -61,7 +68,7 @@ export class MissionForm extends Form {
     const { formState } = this.props;
 
     Promise.all([
-      getTechnicalOperationData(formState, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
+      getTechnicalOperationData(formState, this.props.template, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
       getDataBySelectedRoute(formState, routesActions.getRouteById),
       getRoutesByMissionId(formState, this.props.template, routesActions.getRoutesByMissionId, this.props.routesList),
     ])
@@ -78,25 +85,39 @@ export class MissionForm extends Form {
   handleRouteIdChange = (route_id) => {
     const changesObj = {
       route_id,
+      is_cleaning_norm: false,
+      norm_id: null,
     };
 
     const { flux } = this.context;
     if (route_id) {
       flux.getActions('routes').getRouteById(route_id, false)
         .then((route) => {
-          if (this.state.is_cleaning_norm) {
-            const { formState: { date_start, date_end } } = this.props;
+          const payload = {
+            ...makePayloadFromState(this.props.formState),
+            route_type: route.type,
+            kind_task_ids: this.state.kind_task_ids,
+          };
+          flux.getActions('missions').getCleaningOneNorm(payload)
+            .then((normData) => {
+              const changesObjSecond = {
+                norm_id: normData.norm_id,
+                is_cleaning_norm: normData.is_cleaning_norm,
+              };
 
-            if (date_start && date_end) {
-              const { time } = routeTypesBySlug[route.object_type];
+              if (changesObjSecond.is_cleaning_norm) {
+                const { formState: { date_start, date_end } } = this.props;
 
-              if (diffDates(date_end, date_start, 'hours') > time) {
-                this.props.handleMultiFormChange({
-                  date_end: addTime(date_start, time, 'hours'),
-                });
+                if (date_start && date_end) {
+                  const { time } = routeTypesBySlug[route.object_type];
+
+                  if (diffDates(date_end, date_start, 'hours') > time) {
+                    changesObjSecond.date_end = addTime(date_start, time, 'hours');
+                  }
+                }
               }
-            }
-          }
+              this.props.handleMultiFormChange(changesObjSecond);
+            });
           this.setState({ selectedRoute: route });
         });
     } else {
@@ -106,17 +127,25 @@ export class MissionForm extends Form {
     this.props.handleMultiFormChange(changesObj);
   }
 
-  handleCarIdChange = (car_id) => {
+  handleCarIdChange = (car_id, { type_id }) => {
     this.handleChange('car_id', car_id);
-    if (this.props.formState.status) {
-      this.handleRouteIdChange(undefined);
-    }
+    this.handleChange('func_type_id', type_id);
+    this.props.handleMultiFormChange({
+      car_id,
+      func_type_id: type_id,
+      is_cleaning_norm: false,
+      norm_id: null,
+    });
+
+    this.handleRouteIdChange(undefined);
   }
 
   handleTechnicalOperationChange = (technical_operation_id) => {
     this.props.handleMultiFormChange({
       technical_operation_id,
       municipal_facility_id: null,
+      is_cleaning_norm: false,
+      norm_id: null,
     });
 
     this.handleRouteIdChange(undefined);
@@ -152,12 +181,13 @@ export class MissionForm extends Form {
     this.setState({
       showRouteForm: true,
       selectedRoute: {
-        norm_id: this.props.formState.norm_id,
+        normatives: this.props.formState.normatives,
         name: '',
         technical_operation_id: this.props.formState.technical_operation_id,
         municipal_facility_id: this.props.formState.municipal_facility_id,
         structure_id: this.props.formState.structure_id,
         object_list: [],
+        input_lines: [],
       },
     })
   }
@@ -176,76 +206,96 @@ export class MissionForm extends Form {
       routesActions.getRoutesBySomeData,
     )
     .then((newStateData) => {
-      const changesObj = {};
-      const { object_type } = newStateData.selectedRoute || {};
-      changesObj.route_id = newStateData.route_id;
+      if (newStateData.selectedRoute) {
+        const payload = {
+          ...makePayloadFromState(this.props.formState),
+          route_type: newStateData.selectedRoute.type,
+          kind_task_ids: this.state.kind_task_ids,
+        };
 
-      if (this.state.is_cleaning_norm && object_type) {
-        const { date_start, date_end } = formState;
-        const { time } = routeTypesBySlug[object_type];
+        this.context.flux.getActions('missions').getCleaningOneNorm(payload)
+          .then(((normData) => {
+            const changesObj = {
+              is_cleaning_norm: normData.is_cleaning_norm,
+              norm_id: normData.norm_id,
+            };
 
-        if (date_start && date_end && diffDates(date_end, date_start, 'hours') > time) {
+            const { object_type } = newStateData.selectedRoute;
+
+            if (changesObj.is_cleaning_norm && object_type) {
+              const { date_start, date_end } = formState;
+              const { time } = routeTypesBySlug[object_type];
+
+              if (date_start && date_end && diffDates(date_end, date_start, 'hours') > time) {
+                changesObj.date_end = addTime(date_start, time, 'hours');
+              }
+            }
+
+            this.props.handleMultiFormChange(changesObj);
+          }));
+      }
+
+      this.handleChange('route_id', newStateData.route_id);
+
+      this.setState({
+        showRouteForm: false,
+        ...newStateData,
+      });
+    });
+  }
+
+  handleChangeDateStart = (date_start) => {
+    if (date_start) {
+      const { date_end } = this.props.formState;
+
+      const changesObj = {
+        date_start,
+        date_end,
+      };
+
+      if (date_start && date_end && this.state.is_cleaning_norm && this.state.selectedRoute) {
+        const { time } = routeTypesBySlug[this.state.selectedRoute.object_type];
+
+        if (diffDates(date_end, date_start, 'hours') > time) {
           changesObj.date_end = addTime(date_start, time, 'hours');
         }
       }
 
       this.props.handleMultiFormChange(changesObj);
-      this.setState({ ...newStateData });
-    });
-  }
-
-  handleChangeDateStart = (date_start) => {
-    const { date_end } = this.props.formState;
-
-    const changesObj = {
-      date_start,
-      date_end,
-    };
-
-    if (date_start && date_end && this.state.is_cleaning_norm && this.state.selectedRoute) {
-      const { time } = routeTypesBySlug[this.state.selectedRoute.object_type];
-
-      if (diffDates(date_end, date_start, 'hours') > time) {
-        changesObj.date_end = addTime(date_start, time, 'hours');
-      }
     }
-
-    this.props.handleMultiFormChange(changesObj);
   }
 
-  getDataByNormId = (norm_id) => {
+  getDataByNormatives = (normatives) => {
     const { flux } = this.context;
     const {
       formState,
       fromWaybill,
     } = this.props;
 
-    return getDataByNormId(
-      norm_id,
+    return getDataByNormatives(
+      normatives,
+      this.state.kind_task_ids,
       formState,
       fromWaybill,
-      flux.getActions('technicalOperation').getOneTechOperationByNormId,
+      flux.getActions('technicalOperation').getTechOperationsByNormIds,
       flux.getActions('routes').getRoutesBySomeData,
-      flux.getActions('cars').getCarsByNormId,
+      flux.getActions('cars').getCarsByNormIds,
     )
     .then((newStateData) => {
       const changesObj = {
-        norm_id,
+        normatives,
       };
 
-      let { car_func_types_ids } = this.state;
       if (!formState.status && !fromWaybill) {
-        if (!this.state.template) {
+        if (!this.props.template) {
           changesObj.car_id = undefined;
         }
-        car_func_types_ids = newStateData.normData.car_func_types.map(({ asuods_id }) => asuods_id);
       }
 
       this.props.handleMultiFormChange(changesObj);
 
       this.setState({
         ...newStateData,
-        car_func_types_ids,
         carsList: newStateData.carsList || this.state.carsList,
       });
     });
@@ -266,7 +316,6 @@ export class MissionForm extends Form {
       technicalOperationsList = [],
       selectedRoute: route = null,
       available_route_types = [],
-      car_func_types_ids = [],
       kind_task_ids,
     } = this.state;
 
@@ -278,7 +327,7 @@ export class MissionForm extends Form {
     }, []);
 
     const CARS = carsList
-      .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && (lodashIsEmpty(car_func_types_ids) ? true : car_func_types_ids.includes(c.type_id)))
+      .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id))
       .map(c => ({
         value: c.asuods_id,
         available: c.available,
@@ -376,9 +425,10 @@ export class MissionForm extends Form {
                 label={'municipal_facility_name'}
                 errors={errors}
                 state={state}
+                clearable={false}
                 disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
                 handleChange={this.handleChangeMF}
-                getDataByNormId={this.getDataByNormId}
+                getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
                 getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
                 fromWaybill={this.props.fromWaybill}
@@ -394,6 +444,7 @@ export class MissionForm extends Form {
                 type="select"
                 label="Транспортное средство"
                 error={errors.car_id}
+                clearable={false}
                 className="white-space-pre-wrap"
                 disabled={IS_POST_CREATING_ASSIGNED ||
                   state.status === 'not_assigned' ||

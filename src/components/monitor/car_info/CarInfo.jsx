@@ -181,7 +181,7 @@ export default class CarInfo extends React.Component {
           <div className="track-legend-text">{speed != null ? `${speed + 1}+ км/ч` : 'нет данных'}</div>
         </div>
         <div onClick={this.toggleMaxSpeed} className="track-legend-mission-speed">
-          <input disabled={this.state.maxSpeedMissionInfo === null} type="checkbox" checked={speed !== initialMaxSpeed} /><span>{'Ограничение по заданию'}</span>
+          <input disabled={this.state.maxSpeedMissionInfo === null} type="checkbox" checked={speed !== initialMaxSpeed} /><span>{'Ограничение по заданию / типу ТС'}</span>
         </div>
       </div>
     );

@@ -103,6 +103,8 @@ export default class RouteForm extends Form {
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
+    this.handleChange('input_lines', []);
+    this.handleChange('draw_object_list', []);
 
     this.setState({
       vector: false,
@@ -113,6 +115,7 @@ export default class RouteForm extends Form {
 
   handleClickSelectFromODH() {
     this.setState({ vector: false });
+    this.handleChange('input_lines', []);
   }
 
   async componentDidMount() {
@@ -151,8 +154,7 @@ export default class RouteForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { ROUTE_TYPE_OPTIONS, technicalOperationsList: technicalOperationsListOr = [] } = this.state;
-    const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
+    const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
 
     let TECH_OPERATIONS = technicalOperationsList.map(({ id, name, is_new }) => ({ value: id, label: name, is_new }));
     if (!state.id) {
@@ -176,7 +178,7 @@ export default class RouteForm extends Form {
     }
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
-    const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.draw_object_list && state.draw_object_list.length));
+    const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.input_lines && state.input_lines.length));
 
     const boundKeys = {
       name: ['name'],

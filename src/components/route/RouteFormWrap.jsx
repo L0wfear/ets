@@ -30,7 +30,7 @@ class RouteFormWrap extends FormWrap {
           formState.created_at = new Date();
         }
 
-        formState.draw_odh_list = cloneDeep(formState.input_lines);
+        formState.draw_odh_list = cloneDeep(formState.draw_object_list);
         if (formState.type !== 'mixed') {
           formState.polys = _.cloneDeep(this.props.dtPolys);
         }

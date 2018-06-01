@@ -104,6 +104,7 @@ export default class RouteForm extends Form {
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
     this.handleChange('input_lines', []);
+    this.handleChange('draw_object_list', []);
 
     this.setState({
       vector: false,

@@ -80,15 +80,30 @@ export default class RoutesActions extends Actions {
         });
       } else if (route.type === 'mixed') {
         route.draw_odh_list = [];
-        route.draw_object_list.forEach((object) => {
-          const start = [object.begin.x_msk, object.begin.y_msk];
-          const end = [object.end.x_msk, object.end.y_msk];
-          object.shape = {
-            type: 'LineString',
-            coordinates: [start, end],
-          };
-          return object;
-        });
+
+        if (route.input_lines && route.input_lines.length) {
+          route.input_lines.forEach((object) => {
+            const start = [object.begin.x_msk, object.begin.y_msk];
+            const end = [object.end.x_msk, object.end.y_msk];
+            object.shape = {
+              type: 'LineString',
+              coordinates: [start, end],
+            };
+            return object;
+          });
+        } else {
+          route.input_lines = [];
+          route.draw_object_list.forEach((object) => {
+            const start = [object.begin.x_msk, object.begin.y_msk];
+            const end = [object.end.x_msk, object.end.y_msk];
+            object.shape = {
+              type: 'LineString',
+              coordinates: [start, end],
+            };
+            return object;
+          });
+        }
+
         route.object_list.forEach((object, i) => {
           if (object.from_vectors) {
             route.draw_odh_list.push(object);
@@ -152,7 +167,7 @@ export default class RoutesActions extends Actions {
   validateRoute(route) {
     const payload = {
       technical_operation_id: route.technical_operation_id,
-      object_list: route.draw_object_list,
+      object_list: route.input_lines.length ? route.input_lines : route.draw_object_list,
       municipal_facility_id: route.is_new ? route.municipal_facility_id : null,
       norm_id: route.is_new ? route.norm_id : null,
     };

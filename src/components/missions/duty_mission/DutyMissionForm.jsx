@@ -195,6 +195,7 @@ export class DutyMissionForm extends Form {
       municipal_facility_id: formState.municipal_facility_id,
       structure_id: formState.structure_id,
       object_list: [],
+      input_lines: [],
     };
     this.setState({
       showRouteForm: true,

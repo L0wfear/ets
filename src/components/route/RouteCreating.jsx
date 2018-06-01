@@ -98,7 +98,7 @@ class RouteCreating extends Component {
 
   checkRoute() {
     const { flux } = this.context;
-    if (!this.props.route.draw_object_list.length) {
+    if (!this.props.route.input_lines.length) {
       this.props.onChange('draw_odh_list', []);
       return;
     }
@@ -170,31 +170,26 @@ class RouteCreating extends Component {
 
     this.props.onChange('object_list', object_list);
   }
+
   handleDrawFeatureAdd = ({ drawObjectNew }) => {
-    const { draw_object_list = [] } = this.props.route;
+    const { route: { input_lines: [...input_lines] = [] } } = this.props;
 
-    draw_object_list.push(drawObjectNew);
+    input_lines.push(drawObjectNew);
 
-    this.props.onChange('draw_object_list', draw_object_list);
+    this.props.onChange('input_lines', input_lines);
   }
   handleDrawFeatureClick = ({ index, nextState }) => {
-    const { route: { draw_object_list: draw_object_list_old } } = this.props;
-    const draw_object_list = _.cloneDeep(draw_object_list_old);
+    const input_lines = _.cloneDeep(this.props.route.input_lines);
 
-    draw_object_list[index].state = nextState;
+    input_lines[index].state = nextState;
 
-    this.props.onChange('draw_object_list', draw_object_list);
+    this.props.onChange('input_lines', input_lines);
   }
   handleRemoveLastDrawFeature = () => {
-    const {
-      route: {
-        draw_object_list: draw_object_list_old,
-      },
-    } = this.props;
-    const draw_object_list = _.cloneDeep(draw_object_list_old);
-    draw_object_list.pop();
+    const { route: { input_lines: [...input_lines] = [] } } = this.props;
+    input_lines.pop();
 
-    this.props.onChange('draw_object_list', draw_object_list);
+    this.props.onChange('input_lines', input_lines);
   }
 
   render() {
@@ -205,6 +200,7 @@ class RouteCreating extends Component {
     const {
       object_list = [],
       draw_object_list = [],
+      input_lines = [],
       polys = {},
     } = route;
     const [draw_list = []] = [route.draw_odh_list];
@@ -225,7 +221,7 @@ class RouteCreating extends Component {
                 manual={this.props.manual}
                 polys={MapPolys}
                 objectList={object_list}
-                drawObjectList={draw_object_list}
+                drawObjectList={input_lines.length ? input_lines : draw_object_list}
                 handleFeatureClick={this.handleFeatureClick}
                 handlePointAdd={this.handlePointAdd}
                 handleDrawFeatureAdd={this.handleDrawFeatureAdd}

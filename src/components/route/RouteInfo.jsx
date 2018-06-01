@@ -51,7 +51,7 @@ export default class RouteInfo extends Component {
 
   render() {
     const { route, geozonePolys = {}, mapOnly } = this.props;
-    const { object_list = [], draw_object_list = [] } = route;
+    const { object_list = [], draw_object_list = [], input_lines = [] } = route;
     const manual = route.type === 'mixed';
 
     const polys = _(_.cloneDeep(object_list))
@@ -69,6 +69,7 @@ export default class RouteInfo extends Component {
       })
       .value();
     const odh_list = route.odh_list || object_list.filter(o => o.type);
+    console.log(input_lines)
     return (
       <Div style={{ marginTop: 18 }}>
         <Div className="route-name" hidden={mapOnly}><b>{route.name}</b></Div>
@@ -81,7 +82,7 @@ export default class RouteInfo extends Component {
                   zoom={this.state.zoom}
                   center={this.state.center}
                   object_list={route.object_list}
-                  draw_object_list={draw_object_list}
+                  draw_object_list={input_lines.length ? input_lines : draw_object_list}
                   polys={polys}
                   objectsType={route.type}
                   manual={manual}

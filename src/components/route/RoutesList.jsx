@@ -145,7 +145,7 @@ class RoutesList extends Component {
     });
   }
 
-  createRoute = () => {
+  createRoute = () =>
     this.setState({
       showForm: true,
       selectedRoute: {
@@ -153,10 +153,10 @@ class RoutesList extends Component {
         polys: {},
         object_list: [],
         draw_object_list: [],
+        input_lines: [],
         type: '',
       },
     });
-  }
 
   copyRoute = () => {
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);

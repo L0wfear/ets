@@ -86,6 +86,7 @@ export default class PolyMap extends Component {
       this.renderPolygons(nextProps.polys);
     }
     if (nextProps.draw_object_list !== undefined) {
+      console.log('asdasd')
       this.renderRoute(nextProps.draw_object_list);
     }
   }

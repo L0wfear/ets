@@ -188,6 +188,7 @@ export class MissionForm extends Form {
         municipal_facility_id: this.props.formState.municipal_facility_id,
         structure_id: this.props.formState.structure_id,
         object_list: [],
+        input_lines: [],
       },
     })
   }

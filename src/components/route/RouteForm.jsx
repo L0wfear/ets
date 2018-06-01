@@ -103,6 +103,7 @@ export default class RouteForm extends Form {
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
+    this.handleChange('input_lines', []);
 
     this.setState({
       vector: false,
@@ -113,6 +114,7 @@ export default class RouteForm extends Form {
 
   handleClickSelectFromODH() {
     this.setState({ vector: false });
+    this.handleChange('input_lines', []);
   }
 
   async componentDidMount() {
@@ -175,7 +177,7 @@ export default class RouteForm extends Form {
     }
 
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
-    const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.draw_object_list && state.draw_object_list.length));
+    const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.input_lines && state.input_lines.length));
 
     const boundKeys = {
       name: ['name'],

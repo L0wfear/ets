@@ -153,23 +153,22 @@ export class DutyMissionForm extends Form {
     if (!isEmpty(mission.id)) {
       routesList = await routesActions.getRoutesByDutyMissionId(mission.id, isTemplate);
     }
-
-    // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
-    if (mission.technical_operation_id) {
-      missionsActions.getMissions(mission.technical_operation_id);
-    }
-    await missionsActions.getMissionSources();
-    flux.getActions('employees').getEmployees({ 'active': true });
-    const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
-
     const {
       is_new,
       mission_source_id,
     } = mission;
-    const { missionSourcesList = [] } = this.props;
-    if (!isTemplate && missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
+    // const kind_task_ids = getKindTaskIds(id, this.props.fromOrder);
+
+    if (mission.technical_operation_id) {
+      missionsActions.getMissions(mission.technical_operation_id);
+    }
+    await missionsActions.getMissionSources();
+    if (!isTemplate && this.props.missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
       kind_task_ids = getKindTaskIds(id, false);
     }
+
+    flux.getActions('employees').getEmployees({ 'active': true });
+    const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
 
     if (is_new) {
       TECH_OPERATIONS = technicalOperationsList.filter(({ is_new: is_new_to }) => !!is_new_to).map(({ id: value, name }) => ({ value, label: name }));

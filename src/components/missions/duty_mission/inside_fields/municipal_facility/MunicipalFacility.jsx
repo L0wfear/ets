@@ -76,12 +76,12 @@ class MunicipalFacility extends MunicipalFacilityMission {
         technical_operation_id,
         plan_date_start,
         norm_id,
-        kind_task_ids,
       } = {},
       errors: {
         [props.id]: error,
         plan_date_start: error_plan_date_start,
       },
+      kind_task_ids,
     } = props;
 
     return {

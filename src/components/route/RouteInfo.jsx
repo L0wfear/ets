@@ -69,7 +69,7 @@ export default class RouteInfo extends Component {
       })
       .value();
     const odh_list = route.odh_list || object_list.filter(o => o.type);
-    console.log(input_lines)
+
     return (
       <Div style={{ marginTop: 18 }}>
         <Div className="route-name" hidden={mapOnly}><b>{route.name}</b></Div>
@@ -82,7 +82,7 @@ export default class RouteInfo extends Component {
                   zoom={this.state.zoom}
                   center={this.state.center}
                   object_list={route.object_list}
-                  draw_object_list={input_lines.length ? input_lines : draw_object_list}
+                  draw_object_list={input_lines}
                   polys={polys}
                   objectsType={route.type}
                   manual={manual}

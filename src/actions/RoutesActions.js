@@ -158,7 +158,7 @@ export default class RoutesActions extends Actions {
   validateRoute(route) {
     const payload = {
       technical_operation_id: route.technical_operation_id,
-      object_list: route.draw_object_list,
+      object_list: route.input_lines.length ? route.input_lines : route.draw_object_list,
     };
     return RouteValidateService.post(payload, false, 'json');
   }

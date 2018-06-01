@@ -41,69 +41,72 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols], aggr_fields) 
 }
 
 export const makeDataForSummerTable = (data, { uniqName }) => {
-  const {
-    result: {
-      rows,
-      meta: {
-        summary: {
-          fields,
-          aggr_fields,
+  if (data.result.meta.level === 'company') {
+    const {
+      result: {
+        rows,
+        meta: {
+          summary: {
+            fields,
+            aggr_fields,
+          },
         },
       },
-    },
-  } = data;
+    } = data;
 
-  const _uniq_field = uniqName;
-  const _uniq_field_father = `${uniqName}_father`;
+    const _uniq_field = uniqName;
+    const _uniq_field_father = `${uniqName}_father`;
 
-  const cols = openFields(fields);
-  const verticalAgregationBy = cols.find(({ is_vertical }) => is_vertical);
-  const diffCols = cols.filter(({ keyName, is_vertical }) => !aggr_fields.includes(keyName) && !is_vertical);
-  const initialDataForReduce = Object.entries(verticalAgregationBy.names)
-                                .reduce((obj, [key, value]) => ({
-                                  ...obj,
-                                  [key]: { displayName: value, key, children: [] },
-                                }),
-                                {},
-                              );
+    const cols = openFields(fields);
+    const verticalAgregationBy = cols.find(({ is_vertical }) => is_vertical);
+    const diffCols = cols.filter(({ keyName, is_vertical }) => !aggr_fields.includes(keyName) && !is_vertical);
+    const initialDataForReduce = Object.entries(verticalAgregationBy.names)
+                                  .reduce((obj, [key, value]) => ({
+                                    ...obj,
+                                    [key]: { displayName: value, key, children: [] },
+                                  }),
+                                  {},
+                                );
 
-  const returnData = Object.values(rows.reduce((newDataObj, row) => {
-    const { [verticalAgregationBy.keyName]: verticalKey } = row;
+    const returnData = Object.values(rows.reduce((newDataObj, row) => {
+      const { [verticalAgregationBy.keyName]: verticalKey } = row;
 
-    newDataObj[verticalKey].children.push(row);
+      newDataObj[verticalKey].children.push(row);
 
-    return newDataObj;
-  }, initialDataForReduce))
-    .map((row, index) => {
-      const children = makeSummer([], row.children, diffCols, aggr_fields)
-        .map((row, indexRow) => ({
+      return newDataObj;
+    }, initialDataForReduce))
+      .map((row, index) => {
+        const children = makeSummer([], row.children, diffCols, aggr_fields)
+          .map((row, indexRow) => ({
+            ...row,
+            [_uniq_field_father]: index + 1,
+            [_uniq_field]: `${index + 1}.${indexRow + 1}`,
+          }));
+
+        if (!children.length) {
+          children.push({
+            displayName: 'Нет данных',
+            toggle: true,
+            allRow: true,
+            showChildren: false,
+            children: [],
+            [_uniq_field_father]: index + 1,
+            [_uniq_field]: `${index + 1}.${1}`,
+          });
+        };
+
+        return {
           ...row,
-          [_uniq_field_father]: index + 1,
-          [_uniq_field]: `${index + 1}.${indexRow + 1}`,
-        }));
-
-      if (!children.length) {
-        children.push({
-          displayName: 'Нет данных',
           toggle: true,
           allRow: true,
           showChildren: false,
-          children: [],
-          [_uniq_field_father]: index + 1,
-          [_uniq_field]: `${index + 1}.${1}`,
-        });
-      };
+          [_uniq_field]: index + 1,
+          children,
+        };
+      });
 
-      return {
-        ...row,
-        toggle: true,
-        allRow: true,
-        showChildren: false,
-        [_uniq_field]: index + 1,
-        children,
-      };
-    });
-
-    console.log(returnData, aggr_fields)
-  return returnData
+    return returnData;
+  }
+  console.log('level is company', 'SummaryTable hidden')
+  return [];
 }

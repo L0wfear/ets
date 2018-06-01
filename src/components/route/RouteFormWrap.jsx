@@ -20,7 +20,7 @@ class RouteFormWrap extends FormWrap {
       let formState = null;
       if (props.element !== null) {
         formState = _.cloneDeep(props.element);
-        formState.draw_odh_list = _.cloneDeep(formState.draw_object_list);
+        formState.draw_odh_list = _.cloneDeep(formState.input_lines);
         if (formState.type !== 'mixed') {
           formState.polys = _.cloneDeep(this.props.dtPolys);
         }
@@ -59,7 +59,7 @@ class RouteFormWrap extends FormWrap {
       };
     }
     formState.object_list = [];
-    formState.draw_object_list = [];
+    formState.input_lines = [];
     this.setState({ formState });
   }
 

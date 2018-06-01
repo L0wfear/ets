@@ -76,15 +76,30 @@ export default class RoutesActions extends Actions {
         });
       } else if (route.type === 'mixed') {
         route.draw_odh_list = [];
-        route.draw_object_list.forEach((object) => {
-          const start = [object.begin.x_msk, object.begin.y_msk];
-          const end = [object.end.x_msk, object.end.y_msk];
-          object.shape = {
-            type: 'LineString',
-            coordinates: [start, end],
-          };
-          return object;
-        });
+
+        if (route.input_lines && route.input_lines.length) {
+          route.input_lines.forEach((object) => {
+            const start = [object.begin.x_msk, object.begin.y_msk];
+            const end = [object.end.x_msk, object.end.y_msk];
+            object.shape = {
+              type: 'LineString',
+              coordinates: [start, end],
+            };
+            return object;
+          });
+        } else {
+          route.input_lines = [];
+          route.draw_object_list.forEach((object) => {
+            const start = [object.begin.x_msk, object.begin.y_msk];
+            const end = [object.end.x_msk, object.end.y_msk];
+            object.shape = {
+              type: 'LineString',
+              coordinates: [start, end],
+            };
+            return object;
+          });
+        }
+
         route.object_list.forEach((object, i) => {
           if (object.from_vectors) {
             route.draw_odh_list.push(object);

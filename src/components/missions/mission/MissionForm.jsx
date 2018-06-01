@@ -147,6 +147,7 @@ export class MissionForm extends Form {
         technical_operation_id: this.props.formState.technical_operation_id,
         structure_id: this.props.formState.structure_id,
         object_list: [],
+        input_lines: [],
       };
       this.setState({
         showRouteForm: true,

@@ -195,7 +195,6 @@ class RouteCreating extends Component {
     const { bridgesPolys = {} } = this.state;
     const {
       object_list = [],
-      draw_object_list = [],
       input_lines = [],
       polys = {},
     } = route;
@@ -217,7 +216,7 @@ class RouteCreating extends Component {
                 manual={this.props.manual}
                 polys={MapPolys}
                 objectList={object_list}
-                drawObjectList={input_lines.length ? input_lines : draw_object_list}
+                drawObjectList={input_lines}
                 handleFeatureClick={this.handleFeatureClick}
                 handlePointAdd={this.handlePointAdd}
                 handleDrawFeatureAdd={this.handleDrawFeatureAdd}

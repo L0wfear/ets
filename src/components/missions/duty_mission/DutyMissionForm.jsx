@@ -20,6 +20,14 @@ import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
 import { FormTitle, onlyActiveEmployeeNotification } from './utils';
 
+const makePayloadFromState = formState => ({
+  datetime: formState.plan_date_start,
+  technical_operation_id: formState.technical_operation_id,
+  municipal_facility_id: formState.municipal_facility_id,
+  route_type: formState.route_type,
+  needs_brigade: true,
+});
+
 export class DutyMissionForm extends Form {
 
   constructor(props) {
@@ -40,6 +48,14 @@ export class DutyMissionForm extends Form {
     if (v) {
       const { flux } = this.context;
       flux.getActions('routes').getRouteById(v).then((route) => {
+        const payload = {
+          ...makePayloadFromState(this.props.formState),
+          route_type: route.type,
+          kind_task_ids: this.state.kind_task_ids,
+        };
+        flux.getActions('missions').getCleaningOneNorm(payload)
+          .then(normData => this.handleChange('norm_id', normData.norm_id));
+
         this.setState({ selectedRoute: route });
       });
     } else {
@@ -58,10 +74,6 @@ export class DutyMissionForm extends Form {
     this.handleChange('structure_id', v);
   }
 
-  // Зачем тут таймаут?
-  // В текущей версии react-select стоит снятие фокуса через 0.05 секунды
-  // Но через 0.05 секунды он не может найти элемент и в консоль падает ошибка
-  // С версии 2.0.15.00 используется другая версия react-select и там этой ошибки нет
   handleTechnicalOperationChange(v) {
     const {
       flux,
@@ -155,7 +167,7 @@ export class DutyMissionForm extends Form {
       mission_source_id,
     } = mission;
     const { missionSourcesList = [] } = this.props;
-    if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
+    if (!isTemplate && missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
       kind_task_ids = getKindTaskIds(id, false);
     }
 
@@ -206,13 +218,22 @@ export class DutyMissionForm extends Form {
     if (isSubmitted === true) {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
-      const selectedRoute = await routesActions.getRouteById(createdRouteId);
+      const [selectedRoute, routesList] = await Promise.all([
+        routesActions.getRouteById(createdRouteId),
+        routesActions.getRoutesBySomeData({
+          municipal_facility_id,
+          technical_operation_id,
+          type: available_route_types.join(','),
+        }),
+      ]);
 
-      const routesList = await routesActions.getRoutesBySomeData({
-        municipal_facility_id,
-        technical_operation_id,
-        type: available_route_types.join(','),
-      });
+      const payload = {
+        ...makePayloadFromState(this.props.formState),
+        route_type: selectedRoute.type,
+        kind_task_ids: this.state.kind_task_ids,
+      };
+      flux.getActions('missions').getCleaningOneNorm(payload)
+        .then(normData => this.handleChange('norm_id', normData.norm_id));
 
       Object.assign(stateChangeObject, {
         showRouteForm: false,
@@ -230,8 +251,10 @@ export class DutyMissionForm extends Form {
   }
 
   getDataByNormatives = async (normatives) => {
+    this.handleChange('norm_id', null);
     const norm_ids = normatives.map(({ id }) => id).join(',');
-    this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids })
+    const { kind_task_ids } = this.state;
+    this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids, kind_task_ids: this.state.kind_task_ids })
       .then(({ result: normativesData }) => {
         const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
         const { formState } = this.props;
@@ -246,6 +269,12 @@ export class DutyMissionForm extends Form {
 
         this.setState({ available_route_types, normatives });
       });
+  }
+
+  handleChangePDS = (plan_date_start) => {
+    if (plan_date_start) {
+      this.handleChange('plan_date_start', plan_date_start)
+    }
   }
 
   render() {
@@ -373,7 +402,7 @@ export class DutyMissionForm extends Form {
                       error={errors.plan_date_start || errors.plan_date}
                       date={state.plan_date_start}
                       disabled={IS_DISPLAY || readOnly}
-                      onChange={this.handleChange.bind(this, 'plan_date_start')}
+                      onChange={this.handleChangePDS}
                     />
                   </Div>
                 </Col>

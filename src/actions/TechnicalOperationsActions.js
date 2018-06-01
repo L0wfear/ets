@@ -20,11 +20,13 @@ function getTechnicalOperationsRegistry(payload = {}) {
 }
 
 export default class TechnicalOperationsActions extends Actions {
-  getOneTechOperationByNormId({ norm_id }) {
-    return getTechnicalOperationsRegistry({ norm_id }, false, 'json');
-  }
-  getTechOperationsByNormIds({ norm_ids }) {
-    return getTechnicalOperationsRegistry({ norm_ids }, false, 'json');
+  getTechOperationsByNormIds(outerPayload) {
+    const payload = { ...outerPayload };
+    if (!payload.kind_task_ids) {
+      delete payload.kind_task_ids;
+    }
+
+    return getTechnicalOperationsRegistry(payload, false, 'json');
   }
 
   getTechnicalOperationsObjects() {

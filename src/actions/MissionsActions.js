@@ -382,12 +382,19 @@ export default class MissionsActions extends Actions {
       municipal_facility_id: outerData.municipal_facility_id,
       route_type: outerData.route_type,
       func_type_id: outerData.func_type_id,
+      needs_brigade: outerData.needs_brigade,
+      kind_task_ids: outerData.kind_task_ids,
     };
-    if (!outerData.datetime) {
-      console.log('use userDate', new Date());
+
+    if (payload.needs_brigade) {
+      delete payload.func_type_id;
+    }
+    if (!payload.kind_task_ids) {
+      delete payload.kind_task_ids;
     }
 
-    return Cleaning.path('one_norm').get(payload, false, 'json').then(({ result: { rows: [normData] } }) => normData);
+    return Cleaning.path('one_norm').get(payload, false, 'json')
+      .then(({ result: { rows: [normData] } }) => normData);
   }
 
   getCleaningByType({ type, payload: outerPyload }) {

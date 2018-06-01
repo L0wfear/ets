@@ -65,6 +65,7 @@ interface ITechnicalOperationActionsProps {
 
 type TGetTechnicalOperationData = (
   formState: IFormState,
+  isTemplate: boolean,
   fromOrder: boolean,
   fromWaybill: boolean,
   missionSourceAction: () => Promise<any>,
@@ -83,15 +84,16 @@ type TGetTechnicalOperationData = (
  * @param missionSourceAction Получение списка источников заданий
  * @param technicalOperationsActions Получение списка тех операций
  */
-export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, fromOrder, fromWaybill, missionSourceAction, technicalOperationsActions) =>
+export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, isTemplate, fromOrder, fromWaybill, missionSourceAction, technicalOperationsActions) =>
   missionSourceAction()
     .then(({ order_mission_source_id }) => {
       const kind_task_ids =
-        (order_mission_source_id !== formState.mission_source_id && !fromOrder)
+        (!isTemplate && order_mission_source_id !== formState.mission_source_id && !fromOrder)
         ?
-        getKindTaskIds(formState.id, false)
+          getKindTaskIds(formState.id, false)
         :
-        null;
+          null
+        ;
       return Promise.all([
         technicalOperationsActions({ kind_task_ids, for: 'mission' }),
         Promise.resolve(kind_task_ids),
@@ -184,8 +186,8 @@ export const handleRouteFormHide = (isSubmitted, result, formState, stateData, r
   });
 };
 
-export const getNormDataByNormatives = (normatives, action) =>
-  action({ norm_ids: normatives.map(({ id }) => id).join(',') }).then(({ result: normativesData }) => normativesData)
+export const getNormDataByNormatives = (normatives, kind_task_ids, action) =>
+  action({ norm_ids: normatives.map(({ id }) => id).join(','), kind_task_ids }).then(({ result: normativesData }) => normativesData)
 ;
 export const getCarsByNormNormatives = (normatives, formState, fromWaybill, action) => {
   if (!formState.status && !fromWaybill) {
@@ -195,9 +197,9 @@ export const getCarsByNormNormatives = (normatives, formState, fromWaybill, acti
   return Promise.resolve(null);
 };
 
-export const getDataByNormatives = (normatives, formState, fromWaybill, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
+export const getDataByNormatives = (normatives, kind_task_ids, formState, fromWaybill, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
   Promise.all([
-    getNormDataByNormatives(normatives, getTechOperationsByNormIds),
+    getNormDataByNormatives(normatives, kind_task_ids, getTechOperationsByNormIds),
     getCarsByNormNormatives(normatives, formState, fromWaybill, getCarsByNormIds),
   ])
   .then(([ normativesData, carsList ]) => {

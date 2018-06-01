@@ -41,6 +41,7 @@ const makePayloadFromState = formState => ({
   municipal_facility_id: formState.municipal_facility_id,
   route_type: formState.route_type,
   func_type_id: formState.func_type_id,
+  needs_brigade: false,
 });
 
 export class MissionForm extends Form {
@@ -68,7 +69,7 @@ export class MissionForm extends Form {
     const { formState } = this.props;
 
     Promise.all([
-      getTechnicalOperationData(formState, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
+      getTechnicalOperationData(formState, this.props.template, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
       getDataBySelectedRoute(formState, routesActions.getRouteById),
       getRoutesByMissionId(formState, this.props.template, routesActions.getRoutesByMissionId, this.props.routesList),
     ])
@@ -96,6 +97,7 @@ export class MissionForm extends Form {
           const payload = {
             ...makePayloadFromState(this.props.formState),
             route_type: route.type,
+            kind_task_ids: this.state.kind_task_ids,
           };
           flux.getActions('missions').getCleaningOneNorm(payload)
             .then((normData) => {
@@ -208,6 +210,7 @@ export class MissionForm extends Form {
         const payload = {
           ...makePayloadFromState(this.props.formState),
           route_type: newStateData.selectedRoute.type,
+          kind_task_ids: this.state.kind_task_ids,
         };
 
         this.context.flux.getActions('missions').getCleaningOneNorm(payload)
@@ -271,6 +274,7 @@ export class MissionForm extends Form {
 
     return getDataByNormatives(
       normatives,
+      this.state.kind_task_ids,
       formState,
       fromWaybill,
       flux.getActions('technicalOperation').getTechOperationsByNormIds,
@@ -314,7 +318,6 @@ export class MissionForm extends Form {
       available_route_types = [],
       kind_task_ids,
     } = this.state;
-    console.log(available_route_types)
 
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
       if (!auto || state.mission_source_id === id) {
@@ -376,7 +379,7 @@ export class MissionForm extends Form {
     // Старые задания нельзя редактирвоать
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
-    console.log(errors)
+
     return (
       <Modal {...this.props} bsSize="large" backdrop="static">
 

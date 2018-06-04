@@ -14,5 +14,6 @@ export interface IReportProps {
   summaryRenderes?: ISchemaRenderer;
   schemaMakers?: ISchemaMaker;
   additionalSchemaMakers?: IDataTableColSchema[];
+  notUseServerSummerTable?: boolean;
   headerStateMaker?(state: any): any;
 }

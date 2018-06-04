@@ -2,12 +2,15 @@ import { FetchingStatusReducerFactory } from 'utils/redux-utils';
 import { reports } from 'api/Services';
 import { hasWarningNotification } from 'utils/notifications';
 import * as ReduxTypes from './@types/report.h';
+import { makeDataForSummerTable } from 'components/reports/redux/modules/report_utils';
 
 type IState = ReduxTypes.IReportStateProps;
 
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 const SET_SUMMARY_TABLE_DATA = 'SET_SUMMARY_TABLE_DATA';
+const SET_REPORT_DATA_WITH_SUMMER_DATA = 'SET_REPORT_DATA_WITH_SUMMER_DATA';
 const GET_REPORT_DATA = 'GET_REPORT_DATA';
+const GET_REPORT_DATA_WITH_SUMMER_DATA = 'GET_REPORT_DATA_WITH_SUMMER_DATA';
 const GET_REPORT_DATA_START = 'GET_REPORT_DATA_START';
 const GET_REPORT_DATA_DONE = 'GET_REPORT_DATA_DONE';
 const GET_REPORT_DATA_ERROR = 'GET_REPORT_DATA_ERROR';
@@ -20,6 +23,7 @@ const dataFetchingStatusReducer = FetchingStatusReducerFactory('reportData');
 
 
 const initialState: IState = {
+  data: {},
   list: [],
   meta: {
     levels: {
@@ -76,8 +80,7 @@ const getTableMetaInfoReducer = (state: IState, { payload }) => ({
   },
 });
 
-
-export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: any = {}, reportType = '') => dispatch =>
+export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: any = {}, reportType = '', props = {}) => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: GET_REPORT_DATA_START });
@@ -106,14 +109,17 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
       }
 
       dispatch({ type: GET_REPORT_DATA_DONE });
-
-      dispatch({
-        type: GET_REPORT_DATA,
-        payload: {
-          data: response,
-          reportType,
-        },
-      });
+      if (props.notUseServerSummerTable) {
+        dispatch(setAllData(response, props));
+      } else {
+        dispatch({
+          type: GET_REPORT_DATA,
+          payload: {
+            data: response,
+            reportType,
+          },
+        });
+      }
       resolve(response);
     } catch (error) {
       dispatch({ type: GET_REPORT_DATA_ERROR, error });
@@ -124,6 +130,7 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
 const getReportDataReducer = (state: IState, { payload }) => {
   const { data, reportType } = payload;
   const newState = reportType !== 'summary' ? {
+    data,
     ...state,
     tableMetaInfo: {
       ...state.tableMetaInfo,
@@ -145,14 +152,59 @@ const getReportDataReducer = (state: IState, { payload }) => {
     ...state,
     summaryTableMetaInfo: data.result.meta.fields,
     summaryMeta: data.result.meta,
-    summaryList: data.result.rows,
+    summaryList: data.result.rows.map((row, index) => ({ _uniq_field: index, ...row })),
   };
 
   return newState;
 };
 
+const getReportDataWithSummerDataReducer = (state: IState, { payload }) => {
+  const { data, summerData } = payload;
+  return {
+    data,
+    tableMetaInfo: {
+      ...state.tableMetaInfo,
+      fields: data.result.meta.fields,
+    },
+    meta: data.result.meta,
+    list: data.result.rows,
+
+    prevTableMetaInfo: {
+      ...state.tableMetaInfo,
+    },
+    prevMeta: { ...state.meta },
+    prevList: [...state.list],
+    summaryTableMetaInfo: data.result.meta.summary.fields,
+    summaryMeta: data.result.meta,
+    summaryList: summerData.map((row, index) => ({ _uniq_field: index, ...row })),
+  }
+}
+
+export const setAllData: any = (response, props) => ({
+    type: GET_REPORT_DATA_WITH_SUMMER_DATA,
+    payload: {
+      data: response,
+      summerData: makeDataForSummerTable(response, props),
+    }
+  }
+);
+
+export const setReportDataWithSummerData: any = ({ data, props }) => ({
+  type: SET_REPORT_DATA_WITH_SUMMER_DATA,
+  payload: {
+    list: data.result.rows,
+    summaryList: makeDataForSummerTable(data, props),
+  }
+});
+
+export const setReportDataWithSummerDataReducer: any = (state, { payload: { list, summaryList } }) => ({
+  ...state,
+  list,
+  summaryList,
+});
+
 export const setSummaryTableData: ReduxTypes.ISetSummaryTableDataState = tableData => ({
-  type: 'SET_SUMMARY_TABLE_DATA',
+  type: SET_SUMMARY_TABLE_DATA,
   payload: {
     ...tableData,
   },
@@ -171,7 +223,9 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_INITIAL_STATE: return initialState;
     case SET_SUMMARY_TABLE_DATA: return setSummaryTableDataReducer(state, action);
+    case SET_REPORT_DATA_WITH_SUMMER_DATA: return setReportDataWithSummerDataReducer(state, action);
     case GET_REPORT_DATA: return getReportDataReducer(state, action);
+    case GET_REPORT_DATA_WITH_SUMMER_DATA: return getReportDataWithSummerDataReducer(state, action);
     case GET_TABLE_METAINFO: return getTableMetaInfoReducer(state, action);
 
     case GET_REPORT_DATA_START: return dataFetchingStatusReducer.start(state);

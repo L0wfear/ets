@@ -292,8 +292,7 @@ export default class DataTable extends React.Component {
   }
 
   saveFilter(filterValues) {
-    console.log('SAVE FILTER', filterValues); // eslint-disable-line
-
+    console.log('SAVE FILTER', filterValues);
     if (this.props.externalFilter) {
       this.props.externalFilter(filterValues);
       return;
@@ -449,10 +448,7 @@ export default class DataTable extends React.Component {
   }
 
   shouldBeRendered(obj) {
-    if (this.props.externalFilter && !this.props.needMyFilter) {
-      return true;
-    }
-
+    if (this.props.externalFilter) return true;
     const { filterValues } = this.state;
     // Здесь проводится проверка на то, фильтруется ли объект
     // если в результате isValid === false, то объект не рендерится в таблице

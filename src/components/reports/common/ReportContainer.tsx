@@ -327,6 +327,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       tableMetaInfo,
       summaryTableMetaInfo,
       additionalSchemaMakers,
+      location: { search },
     } = this.props;
 
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;

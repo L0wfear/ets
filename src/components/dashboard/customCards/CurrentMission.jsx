@@ -173,6 +173,9 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Тех. операция:</b>
               {technical_operation_data.name}
             </li>
+            <li><b>Тип объекта:</b>
+              {route_data.object_type_name}
+            </li>
             <li><b>Водитель:</b>
               {car_data.driver_fio}
             </li>

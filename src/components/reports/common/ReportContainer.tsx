@@ -83,7 +83,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         const data = await this.props.getReportData(this.props.serviceName, query);
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
-        if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
+        if (this.state.fetchedByMoveDownButton) {
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
             summaryMeta: {...this.props.prevMeta},

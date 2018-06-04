@@ -33,9 +33,9 @@ const OrderTableChilrend: React.SFC<any> = props => (
       {'Создать наряд-задание по шаблону'}
     </Button>
     <span style={marginLeft} >
-      <DropdownButton onSelect={props.selectDownload} pullRight title={title} id="bg-nested-dropdown">
-        <MenuItem eventKey={TypeDownload.old} disabled={props.disabledButtonsMenu}>Скан-копия факсограммы</MenuItem>
-        <MenuItem eventKey={TypeDownload.new} disabled={props.disabledButtonsMenu}>Расшифровка централизованного задания</MenuItem>
+      <DropdownButton disabled={props.disabledButtonsMenu} onSelect={props.selectDownload} pullRight title={title} id="bg-nested-dropdown">
+        <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
+        <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
       </DropdownButton>
     </span>
   </div>

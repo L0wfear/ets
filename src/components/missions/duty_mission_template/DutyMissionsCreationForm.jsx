@@ -22,7 +22,7 @@ class MissionsCreationForm extends Form {
       return newArr;
     }, []);
 
-    console.log('form state is ', state); // eslint-disable-line
+    console.log('form state is ', state);
 
     const title = 'Формирование заданий из шаблонов';
 

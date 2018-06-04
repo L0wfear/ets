@@ -111,7 +111,7 @@ class ProgramObjectFormWrap extends FormWrap {
     }
     if (error) {
       new Promise(res => res()).then(() => {
-        console.log('нет типа объекта'); // eslint-disable-line
+        console.log('нет типа объекта');
         this.props.onFormHide();
       });
     }

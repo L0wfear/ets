@@ -164,7 +164,6 @@ export default class DataTable extends React.Component {
         firstUseExternalInitialSort,
         originalData: this.state.originalData,
         data: this.state.data,
-        filterValues: this.state.filterValues,
       };
 
       if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
@@ -239,7 +238,6 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort,
       originalData: this.state.originalData,
       data: this.state.data,
-      filterValues: this.state.filterValues,
     };
 
     if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {

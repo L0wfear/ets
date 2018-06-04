@@ -11,22 +11,42 @@ import OrderInfoTable from 'components/directories/order/order_assignment/OrderI
 
 const EtsSelectTSX: any = EtsSelect;
 
-class HistoryOrder extends React.Component<any, any> {
+class HistoryOrderList extends React.Component<any, any> {
   state: any = {
     activeData: {},
+    data: {},
   };
-  componentDidMount() {
-    const { data } = this.props;
+  constructor(props) {
+    super(props);
+    const { data = [] } = props;
 
     const [activeData] = data;
 
-    this.setState({
+    this.state = {
+      data,
       haveData: !!activeData,
       activeList: !!activeData ? 1 : null,
       activeData: activeData || this.state.activeData,
       VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`})),
       historytableIsOpen: false,
-    });
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    const changedState: any = {};
+
+    if (this.state.data !== props.data) {
+      changedState.data = props.data;
+      const [activeData] = changedState.data;
+      
+      changedState.haveData = !!activeData;
+      changedState.activeList = !!activeData ? 1 : null;
+      changedState.activeData = activeData || this.state.activeData;
+      changedState.VERSION_OPTIONS = changedState.data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`}));
+      changedState.historytableIsOpen = false;
+    }
+
+    this.setState(changedState);
   }
 
   handleChangeVersion = num => {
@@ -84,6 +104,7 @@ class HistoryOrder extends React.Component<any, any> {
                     <OrdeHistoryTable
                       noHeader
                       preventNoDataMessage
+                      withNormInitialData
                       data={activeData.technical_operations}
                     />
                   </Col>
@@ -91,6 +112,7 @@ class HistoryOrder extends React.Component<any, any> {
                     <OrderInfoTable
                       noHeader
                       preventNoDataMessage
+                      withNormInitialData
                       data={[{ id: 0, order_info: activeData.order_info }]}
                     />
                   </Col>
@@ -118,4 +140,4 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-)(HistoryOrder);
+)(HistoryOrderList);

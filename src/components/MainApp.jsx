@@ -19,6 +19,7 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NotificationBage from 'components/notifications/NotificationBadge.tsx';
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
+import NavItemRole from 'components/nav-item-role/NavItemRole';
 
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
@@ -179,6 +180,7 @@ class MainApp extends React.Component {
           </Nav>
 
           <Nav pullRight>
+            <NavItemRole />
             <NavDropdown id="show-guide" title="Руководство пользователей">
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>

@@ -79,7 +79,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.validate(newItems);
     }
     handleRowSelected = selectedRow => {
-      // noDefine
+      // console.log('selectedRow', selectedRow);
     }
     render() {
 

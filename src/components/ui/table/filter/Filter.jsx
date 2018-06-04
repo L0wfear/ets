@@ -47,24 +47,7 @@ export default class Filter extends React.Component {
     if (!e || isEmpty(e.target ? e.target.value : e)) {
       delete filterValues[key];
     } else {
-      const data = e.target ? e.target.value : e;
-      const filter = this.props.options.find(({ name }) => name === key);
-
-      // для формата под новую таблицу
-      filterValues[key] = new Proxy(
-        data,
-        {
-          get: (target, name) => {
-            if (name === 'type')  {
-              return filter.type;
-            }
-            if (name === 'value') {
-              return data;
-            }
-
-            return target[name];
-          },
-        });
+      filterValues[key] = e.target ? e.target.value : e;
     }
 
     this.setState({ filterValues });
@@ -73,25 +56,8 @@ export default class Filter extends React.Component {
   handleFilterMultipleValueChange(key, v) {
     const filterValues = { ...this.state.filterValues };
     const data = !isEmpty(v) ? v.split('$') : [];
-    const { filter } = this.props.options.find(({ name }) => name === key);
 
-    // для формата под новую таблицу
-    filterValues[key] = new Proxy(
-      data,
-      {
-        get: (target, name) => {
-          if (name === 'type')  {
-            return filter.type;
-          }
-          if (name === 'value') {
-            return data;
-          }
-
-          return target[name];
-        },
-      }
-    );
-
+    filterValues[key] = data;
     if (data.length === 0) {
       delete filterValues[key];
     }
@@ -126,7 +92,7 @@ export default class Filter extends React.Component {
   render() {
     const { filterValues } = this.state;
     const { tableData, options } = this.props;
-
+    
     const filterRows = options.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options, byKey, byLabel } = filter;

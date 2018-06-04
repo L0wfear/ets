@@ -172,7 +172,7 @@ export default class WaybillFormWrap extends FormWrap {
     const value = _.get(e, ['target', 'value'], e);
     let formState = _.cloneDeep(this.state.formState);
     formState[field] = value;
-    console.log(field, value); // eslint-disable-line
+    console.log(field, value);
 
     formState = calculateWaybillMetersDiff(formState, field, value);
 
@@ -212,7 +212,7 @@ export default class WaybillFormWrap extends FormWrap {
     }
 
     Object.entries(fields).forEach(([field, value]) => {
-      console.log(field, value); // eslint-disable-line
+      console.log(field, value)
 
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);

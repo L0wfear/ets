@@ -129,6 +129,10 @@ export class DutyMissionForm extends Form {
     let kind_task_ids = null;
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
+    const {
+      is_new,
+      mission_source_id,
+    } = mission;
 
     if (norm_id) {
       this.getDataByNormId(norm_id);
@@ -147,15 +151,15 @@ export class DutyMissionForm extends Form {
       missionsActions.getMissions(mission.technical_operation_id);
     }
     await missionsActions.getMissionSources();
+    const { missionSourcesList = [] } = this.props;
+    if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
+      kind_task_ids = getKindTaskIds(id, false);
+    }
+
     flux.getActions('employees').getEmployees({ 'active': true });
     const technicalOperationsListOr = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids });
     const technicalOperationsList = technicalOperationsListOr.filter(({ is_new, norm_ids }) => !is_new || (is_new && !norm_ids.some(n => n === null)));
 
-    const {
-      is_new,
-      mission_source_id,
-    } = mission;
-    const { missionSourcesList = [] } = this.props;
     if (missionSourcesList.find(({ auto }) => auto).id !== mission_source_id && !this.props.fromOrder) {
       kind_task_ids = getKindTaskIds(id, false);
     }

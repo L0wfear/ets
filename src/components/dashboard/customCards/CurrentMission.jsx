@@ -158,6 +158,7 @@ export default class CurrentMission extends DashboardCardMedium {
       car_data,
       report_data,
       technical_operation_data,
+      route_data,
     } = selectedMission;
     const { sensor_traveled_working } = mission_data;
 
@@ -188,6 +189,9 @@ export default class CurrentMission extends DashboardCardMedium {
             </li>
             <li><b>Элемент: </b>
               {mission_data.element}
+            </li>
+            <li><b>Тип объекта: </b>
+              {route_data.object_type_name}
             </li>
             <li><b>Водитель: </b>
               {car_data.driver_fio}

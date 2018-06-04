@@ -16,7 +16,6 @@ export interface IDataTableSelectedRow<TRowData = IDataTableSelectedRowPropsData
 
 type FieldTypes =
   'multiselect' |
-  'multiselect-boolean' |
   'select' |
   'string' |
   'date' |
@@ -42,11 +41,6 @@ export interface IDataTableColFilter {
   notUse?: boolean;
 }
 
-interface IDataTableColNotUseFilter {
-  notUse: boolean,
-  [key: string]: any;
-}
-
 export interface IDataTableColSchema {
   /**
    * Field name for data binding
@@ -67,7 +61,7 @@ export interface IDataTableColSchema {
   /**
    * Table result filter type and other filter options
    */
-  filter?: IDataTableColFilter | boolean | IDataTableColNotUseFilter;
+  filter?: IDataTableColFilter | boolean;
   /**
    * CSS custom class for columns styling
    */
@@ -76,9 +70,6 @@ export interface IDataTableColSchema {
    * Custom table header component
    */
   customHeaderComponent?: JSX.Element;
-  render?: any;
-  orderNum?: any,
-  sortByKey?: string;
 }
 
 export interface IDataTableSchema {

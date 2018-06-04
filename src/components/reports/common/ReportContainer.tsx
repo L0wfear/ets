@@ -5,19 +5,17 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import * as queryString from 'query-string';
 import {
+  omit,
+  isEqual,
   difference,
   identity,
-  isEmpty,
-  isEqual,
-  omit,
   pick,
-  uniqBy,
+  isEmpty,
 } from 'lodash';
 
 import Title from './Title';
-import { filterFunction } from 'components/ui/tableNew/utils';
-import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 'components/ui/table/@types/schema.h';
-import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+
+import { IDataTableColSchema, IDataTableSelectedRow } from 'components/ui/table/@types/schema.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';
@@ -26,22 +24,19 @@ import Preloader from 'components/ui/Preloader.jsx';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
 import * as reportActionCreators from 'components/reports/redux/modules/report';
 import DataTable from 'components/ui/table/DataTable.jsx';
-import DataTableNew from 'components/ui/tableNew/DataTable';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
 
 class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       filterResetting: false,
       fetchedBySubmitButton: false,
       fetchedByMoveDownButton: false,
       exportFetching: false,
       selectedRow: null,
-      filterValues: {},
-      uniqName: props.uniqName || '_uniq_field',
     };
   }
   componentDidMount() {
@@ -77,26 +72,24 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       if (Object.keys(searchNextxObject).length > 0) {
         await this.getReportData(searchNextxObject);
-        this.setState({ filterValues: {} });
+        this.setState({ filterResetting: true });
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
-        this.setState({ filterValues: {} });
+        this.setState({ filterResetting: true });
       }
+    } else {
+      this.setState({ filterResetting: false });
     }
   }
 
   getReportData(query): ReportDataPromise {
-    const payload: any = { ...query };
-
     return new Promise(async (resolve, reject) => {
       try {
-        const { notUseServerSummerTable } = this.props;
-
-        const data = await this.props.getReportData(this.props.serviceName, payload, '', { ...this.state, notUseServerSummerTable });
+        const data = await this.props.getReportData(this.props.serviceName, query);
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
-        if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
+        if (this.state.fetchedByMoveDownButton) {
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
             summaryMeta: {...this.props.prevMeta},
@@ -106,9 +99,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
             fetchedByMoveDownButton: false,
               selectedRow: null,
           });
-        } else if (hasSummaryLevel && !notUseServerSummerTable) {
+        } else if (hasSummaryLevel) {
           const summaryQuery = {
-            ...payload,
+            ...query,
             level: data.result.meta.levels.summary.level,
           };
 
@@ -202,28 +195,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  externalFilter = (filterValues: any) => {
-    this.setState({ filterValues });
-
-    if (this.props.notUseServerSummerTable) {
-      const { data: old_data } = this.props;
-      const list = filterFunction(old_data.result.rows, { filterValues });
-
-      const data = {
-        ...old_data,
-        result: {
-          ...old_data.result,
-          rows: [...list],
-        },
-      };
-
-      this.props.setReportDataWithSummerData({
-        data,
-        props: { ...this.state },
-      })
-    }
-  }
-
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
@@ -244,6 +215,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...searchObject,
       level: lowerLevel,
       ...lowerLevelSelectors,
+      filter: '{}',
     };
 
     const filterDifference = difference(currentLevelFilters, lowerLevelFilters);
@@ -273,6 +245,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const query = {
       ...searchObject,
       level: higherLevel,
+      filter: '{}',
     };
 
     const filteredQuery = omit(query, currentLevelSelectors);
@@ -293,31 +266,25 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.setState({ exportFetching: false });
   }
 
-  makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
-    const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
-      const [[fieldName, { name: displayName, is_vertical }]] = Object.entries(field);
+  makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta) {
+    const cols = tableMetaInfo.fields.map(field => {
+      const [[fieldName, { name: displayName }]] = Object.entries(field);
+      let initialSchema: IDataTableColSchema;
 
-      if (!is_vertical) {
-        let initialSchema: IDataTableColSchema;
-        
-        initialSchema = {
-          name: fieldName,
-          displayName,
-          filter: {
-            type: 'multiselect',
-            options: undefined,
-          },
-        };
-        if (forWhat === 'mainList' && this.props.data.result) {
-          (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }) => ({ value, label: value })), 'value');
-        }
-        
-        const renderer = schemaMakers[fieldName] || identity;
-        tableMeta.push(renderer(initialSchema, this.props));
-      }
 
-      return tableMeta;
-    }, []).concat(...additionalSchemaMakers);;
+      initialSchema = {
+        name: fieldName,
+        displayName,
+        filter: {
+          type: 'multiselect',
+        },
+      };
+
+      const renderer = schemaMakers[fieldName] || identity;
+      const finalSchema = renderer(initialSchema, this.props);
+
+      return finalSchema;
+    }).concat(...additionalSchemaMakers);
 
     return { cols };
   }
@@ -336,8 +303,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
 
-    const tableMeta = this.makeTableSchema(schemaMakers, additionalSchemaMakers, tableMetaInfo, 'mainList');
-    const summaryTableMeta = this.makeTableSchema({}, [], { fields: summaryTableMetaInfo }, 'summaryList');
+    const tableMeta = this.makeTableSchema(schemaMakers, additionalSchemaMakers, tableMetaInfo);
+    const summaryTableMeta = this.makeTableSchema({}, [], { fields: summaryTableMetaInfo });
 
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
@@ -360,18 +327,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.summaryList.length > 0
     );
 
-    const summaryTable = (isSummaryEnable && (
-      this.props.notUseServerSummerTable ?
-      <DataTableNew
-        title={'Итого'}
-        tableMeta={summaryTableMeta}
-        data={this.props.summaryList}
-        enableSort={false}
-        enumerated={enumerated}
-        uniqName={this.state.uniqName}
-        noFilter
-      />
-      :
+    const summaryTable = (isSummaryEnable &&
       <Table
         title={'Итого'}
         tableMeta={summaryTableMeta}
@@ -382,7 +338,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         enableSort={false}
         noFilter
       />
-    )
     );
 
     /**
@@ -424,9 +379,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           enableSort={enableSort}
           filterResetting={this.state.filterResetting}
           initialSort={initialSort || ''}
-          externalFilter={this.externalFilter}
-          needMyFilter={!this.props.notUseServerSummerTable}
-          filterValues={this.state.filterValues}
           {...this.props.tableProps}
         >
           <Button

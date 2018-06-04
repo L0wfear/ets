@@ -19,7 +19,7 @@ export default class Form extends Component {
   }
 
   handleSubmit() {
-    console.log('submitting car form', this.props.formState); // eslint-disable-line
+    console.log('submitting car form', this.props.formState);
     this.props.onSubmit(this.props.formState);
   }
 
@@ -45,7 +45,7 @@ export default class Form extends Component {
     const { title, tableMeta = { cols: [] } } = this.props;
     const rows = tableMeta.cols.map(this.mapProperties.bind(this));
 
-    console.log('form state is ', state); // eslint-disable-line
+    console.log('form state is ', state);
 
     return (
       <Modal {...this.props} backdrop="static">

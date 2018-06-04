@@ -16,6 +16,8 @@ import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
 import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
+import NavItemRole from 'components/nav-item-role/NavItemRole';
+
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
 
@@ -141,6 +143,7 @@ export default class MainPage extends React.Component {
   renderHeader() {
     const { user } = this.state;
     const path = this.props.location.pathname;
+
     const isOkrug = user.okrug_id !== null;
     const defaultProps = { isOkrug, path };
 
@@ -177,6 +180,7 @@ export default class MainPage extends React.Component {
           </Nav>
 
           <Nav pullRight>
+            <NavItemRole history={this.props.history}/>
             <NavDropdown id="show-guide" title="Руководство пользователей">
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>

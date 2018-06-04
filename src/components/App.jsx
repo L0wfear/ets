@@ -79,7 +79,7 @@ class App extends Component {
 
   render() {
     return !this.state.loading
-      ? <MainPage location={this.props.location}>{this.props.children}</MainPage>
+      ? <MainPage location={this.props.location} history={this.props.history}>{this.props.children}</MainPage>
       : <LoadingPage loaded={this.state.loading} />;
   }
 }

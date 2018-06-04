@@ -101,3 +101,6 @@ export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('
 export const TimeMoscowService = ETS_API_FACTORY.createApiServiceAdapter('time', {});
 
 export { reports };
+
+/* Измнение роли */
+export const ChangeRole = ETS_API_FACTORY.createApiServiceAdapter('change_role');

@@ -40,6 +40,7 @@ export default class SessionStore extends Store {
 
     const sessionActions = flux.getActions('session');
     this.register(sessionActions.login, this.handleLogin);
+    this.register(sessionActions.cahngeCompanyOnAnother, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
     this.register(sessionActions.setBackendVersion, this.handleSetBackendVersion)
 
@@ -64,6 +65,7 @@ export default class SessionStore extends Store {
       isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       session: storedSession,
       userPermissions: currentUser.permissions,
+      isGlavControl: currentUser.permissions.includes('role.change'),
       backendVersion: null,
     };
   }
@@ -92,13 +94,16 @@ export default class SessionStore extends Store {
     setUserContext(currentUser);
     currentUser = new User(currentUser);
 
-    this.setState({
+    const newState = {
       currentUser,
       session,
       isOkrug: data.payload.okrug_id !== null,
       isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       userPermissions: currentUser.permissions,
-    });
+      isGlavControl: currentUser.permissions.includes('role.change'),
+    };
+
+    this.setState(newState);
   }
 
   isLoggedIn() {

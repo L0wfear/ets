@@ -279,7 +279,12 @@ body.application hr {
 }
 
 .company-switcher {
-  width: 200px;
+  width: 250px;
+  height: 50px;
+
+  &>a {
+    padding: 15px
+  }
 }
 
 .navbar-user {

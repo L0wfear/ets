@@ -16,7 +16,7 @@ class CompanyOptions extends React.Component<any, any> {
       company_id: currentUser.company_id || -1,
       COMPANY_OPTIONS: [
         ...currentUser.companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
-        { value: -1, label: 'Папка' },
+        { value: -1, label: 'Главконтроль' },
       ],
     };
   }
@@ -29,7 +29,7 @@ class CompanyOptions extends React.Component<any, any> {
       changesState.companies = companies;
       changesState.COMPANY_OPTIONS = [
         ...companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
-        { value: -1, label: 'Папка' },
+        { value: -1, label: 'Главконтроль' },
       ]
     }
 

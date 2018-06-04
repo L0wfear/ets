@@ -6,7 +6,6 @@ interface IReportMetaFieldDetails {
    */
   name: string;
   filter_field?: string;
-  is_vertical?: boolean;
 }
 
 
@@ -49,7 +48,6 @@ interface ISummaryTableData {
 }
 
 export interface IReportStateProps extends ISummaryTableData {
-  data: any;
   list: object[];
   meta: IReportMeta;
   tableMetaInfo: IReportTableMeta;
@@ -69,7 +67,6 @@ export type IGetReportData = (
   serviceName: string,
   getOpts?: object,
   reportType?: string,
-  props?: any,
 ) => (dispatch: any) => ReportDataPromise;
 
 export type ISetInitialState = () => object;

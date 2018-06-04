@@ -17,7 +17,7 @@ class MissionsCreationForm extends Form {
 
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
 
-    console.log('form state is ', state); // eslint-disable-line
+    console.log('form state is ', state);
 
     const title = 'Формирование заданий из шаблонов';
 

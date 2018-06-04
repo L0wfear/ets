@@ -38,7 +38,7 @@ try {
     config.backend = STANDS[STAND] || STANDS.dev;
   }
 } catch (e) {
-  console.log(e); // eslint-disable-line
+  console.log(e);
 }
 
 export default config;

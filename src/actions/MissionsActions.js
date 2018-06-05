@@ -129,6 +129,7 @@ export default class MissionsActions extends Actions {
     delete payload.route_name;
     delete payload.mission_source_name;
     delete payload.waybill_number;
+
     return MissionService.put(payload, autoUpdate, 'json');
   }
 

@@ -125,38 +125,36 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  async completeMission() {
-    const mission = _.cloneDeep(this.state.selectedElement);
-    mission.status = 'complete';
-    await this.context.flux.getActions('missions').updateMission(mission, false);
-    global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-    this.refreshList(this.state);
-  }
-
   rejectMission() {
     this.setState({ showMissionRejectForm: true });
   }
 
   completeCheckedElements() {
-    let error = false;
-    if (Object.keys(this.state.checkedElements).length !== 0) {
-      _.forEach(this.state.checkedElements, async (mission) => {
-        if (mission.status === 'assigned') {
-          const updatedMission = _.cloneDeep(mission);
-          updatedMission.status = 'complete';
-          await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-        } else error = true;
-      });
+    const { selectedElement } = this.state;
+    const missionsObj = this.state.checkedElements || {};
+    if (selectedElement) {
+      missionsObj[selectedElement.id] = selectedElement;
+    }
+    const missions = Object.values(missionsObj);
 
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
-      if (error) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
-      } else {
-        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-      }
+    if (missions.some(({ status }) => status !== 'assigned')) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
     } else {
-      this.completeMission();
+      Promise.all(
+        Object.values(this.state.checkedElements).map(mission =>
+          this.context.flux.getActions('missions')
+            .updateMission({ ..._.cloneDeep(mission), status: 'complete' }, false),
+        ),
+      ).then(() => {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      })
+      .catch(() => {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      });
     }
   }
 

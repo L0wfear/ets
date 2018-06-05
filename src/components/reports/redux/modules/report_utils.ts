@@ -1,6 +1,6 @@
 import { groupBy } from 'lodash';
 
-export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? 0 : rowValue + summValue;
+export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
 export const removeRedundantNumbers = rowValue => Math.round(rowValue * 1000) / 1000;
 export const openFields = fields => fields.map(meta => {
   const [[keyName, metaData]] = Object.entries(meta);

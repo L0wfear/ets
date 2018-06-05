@@ -114,9 +114,9 @@ class MunicipalFacility extends React.Component {
             const {
               municipal_facility_id,
               municipal_facility_name,
-              norm_id,
+              normatives,
             } = element;
-            arr.push({ value: municipal_facility_id, label: municipal_facility_name, norm_id });
+            arr.push({ value: municipal_facility_id, label: municipal_facility_name, normatives });
           }
 
           return arr;

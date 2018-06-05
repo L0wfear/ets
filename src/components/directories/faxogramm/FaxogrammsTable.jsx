@@ -11,10 +11,10 @@ export const getTableMeta = ({
       {
         name: 'order_number',
         displayName: 'Номер',
-        type: 'number',
+        type: 'string',
         cssClassName: 'width120',
         filter: {
-          type: 'multiselect',
+          type: 'string',
         },
       },
       {
@@ -66,15 +66,6 @@ export const getTableMeta = ({
           ],
         },
       },
-      // {
-      //   name: 'pgm_deny',
-      //   displayName: 'ПГМ',
-      //   type: 'number',
-      //   filter: {
-      //     type: 'multiselect',
-      //   },
-      //   cssClassName: 'width120',
-      // },
     ],
   };
 

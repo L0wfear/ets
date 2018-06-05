@@ -106,8 +106,8 @@ export const filterFunction = (data, { filterValues }) =>
         case 'advanced-string': return checkFilterByAdvancedString(f_data, rowCol);
         case 'date': return diffDatesByDays(rowCol, f_data.value);
         default:
-          console.log(`no define filter for ${f_data.type}`);
-          return false;
+          console.warn(`no define filter for ${f_data}`);
+          return !(rowCol === f_data);
       }
     });
     

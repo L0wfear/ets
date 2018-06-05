@@ -37,7 +37,7 @@ class CompanyOptions extends React.Component<any, any> {
   handleChange = (company_id) => {
     if (company_id !== this.state.company_id) {
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id === -1 ? null : company_id)
-        .then(() => this.props.history.push(`/monitor`));
+        .then(() => this.props.history.pushState(null, '/monitor'));
       this.setState({ company_id });
     }
   }

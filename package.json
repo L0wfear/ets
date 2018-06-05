@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.18.3",
+    "version": "2.0.18.4",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -111,7 +111,7 @@
     "scripts": {
         "build:stage": "STAND=stage NODE_ENV=production webpack --config webpack/prod.config.js",
         "build:prod": "STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
-        "build": "STAND=dev NODE_ENV=development webpack --config webpack/prod.config.js ",
+        "build": "STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js ",
         "dev:stage": "STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev:prod": "STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev": "STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",

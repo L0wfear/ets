@@ -116,19 +116,23 @@ function httpMethod(url, data = {}, method, type, params = {}) {
         const currV = process.env.VERSION;
         backendVersion = r.headers.get('ets-backend-Version');
 
-        if (servV && ((servV.split('.')[3] > +currV.split('.')[3]) || (servV.split('.')[2] > +currV.split('.')[2]))) {
-          global.NOTIFICATION_SYSTEM.notifyWithObject({
-            title: 'Вышла новая версия',
-            level: 'warning',
-            position: 'br',
-            dismissible: false,
-            autoDismiss: 0,
-            uid: 'versionWarn',
-            children: getNotifyCheckVersion({
-              currV: process.env.VERSION,
-              nextV: servV,
-            }),
-          });
+        if (servV) {
+          const [,, minorS, someS] = servV.split('.');
+          const [,, minorV, someV] = currV.split('.');
+          if ((minorS > minorV) || (someS > someV && (minorS === minorV))) {
+            global.NOTIFICATION_SYSTEM.notifyWithObject({
+              title: 'Вышла новая версия',
+              level: 'warning',
+              position: 'br',
+              dismissible: false,
+              autoDismiss: 0,
+              uid: 'versionWarn',
+              children: getNotifyCheckVersion({
+                currV: process.env.VERSION,
+                nextV: servV,
+              }),
+            });
+          }
         }
       } catch (e) {
         return new Promise((res, rej) => rej());

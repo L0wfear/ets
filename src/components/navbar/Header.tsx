@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {
   Navbar,
   Nav,
@@ -7,7 +7,6 @@ import {
 import NavDropdown from 'components/navbar/NavDropdown/NavDropdown';
 import NavItem from 'components/navbar/NavItem/NavItem';
 import MenuItem from 'components/navbar/MenuItem/MenuItem';
-import { withRouter } from 'react-router-dom';
 import NavItemUser from 'components/navbar/NavItemUser/NavItemUser';
 import NavItemLogout from 'components/navbar/NavItemLogout/NavItemLogout';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
@@ -60,7 +59,7 @@ const makeNavChildren = ([key, data]) => {
 const dataGuide = {
   changeRole: {
     renderNav: (key) => <NavItemRole key={'change-role'}/>
-  }
+  },
   guide: {
     title: 'Руководство пользователей',
     alwaysShow: true,

@@ -36,6 +36,7 @@ module.exports = {
       "webpack": {
         config: {
           resolve: {
+            modules: [__dirname, 'src', 'node_modules'],
             extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx'],
             alias: {
               utils: path.resolve(__dirname, 'src', 'utils'),

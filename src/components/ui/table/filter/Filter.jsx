@@ -50,7 +50,38 @@ export default class Filter extends React.Component {
       const data = e.target ? e.target.value : e;
       const filter = this.props.options.find(({ name }) => name === key);
 
-      // для формата под новую таблицу
+      try {
+        // для формата под новую таблицу
+        filterValues[key] = new Proxy(
+          data,
+          {
+            get: (target, name) => {
+              if (name === 'type')  {
+                return filter.type;
+              }
+              if (name === 'value') {
+                return data;
+              }
+
+              return target[name];
+            },
+          }
+        );
+      } catch (e) {
+        filterValues[key] = data;
+      }
+    }
+
+    this.setState({ filterValues });
+  }
+
+  handleFilterMultipleValueChange(key, v) {
+    const filterValues = { ...this.state.filterValues };
+    const data = !isEmpty(v) ? v.split('$') : [];
+    const { filter } = this.props.options.find(({ name }) => name === key);
+
+    // для формата под новую таблицу
+    try {
       filterValues[key] = new Proxy(
         data,
         {
@@ -64,33 +95,11 @@ export default class Filter extends React.Component {
 
             return target[name];
           },
-        });
+        }
+      );
+    } catch (e) {
+      filterValues[key] = data;
     }
-
-    this.setState({ filterValues });
-  }
-
-  handleFilterMultipleValueChange(key, v) {
-    const filterValues = { ...this.state.filterValues };
-    const data = !isEmpty(v) ? v.split('$') : [];
-    const { filter } = this.props.options.find(({ name }) => name === key);
-
-    // для формата под новую таблицу
-    filterValues[key] = new Proxy(
-      data,
-      {
-        get: (target, name) => {
-          if (name === 'type')  {
-            return filter.type;
-          }
-          if (name === 'value') {
-            return data;
-          }
-
-          return target[name];
-        },
-      }
-    );
 
     if (data.length === 0) {
       delete filterValues[key];

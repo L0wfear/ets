@@ -6,6 +6,7 @@ import {
   Button as BootstrapButton,
   Glyphicon,
 } from 'react-bootstrap';
+import { getWarningNotification } from 'utils/notifications';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
@@ -133,52 +134,34 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  async completeMission() {
-    const mission = _.cloneDeep(this.state.selectedElement);
-    mission.status = 'complete';
-    await this.context.flux.getActions('missions').updateMission(mission, false);
-    this.setState({
-      checkedElements: {},
-      selectedElement: null,
-    });
-    global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены', 'success');
-    this.refreshList(this.state);
-  }
-
-  rejectMission = () => {
-    this.setState({
-      showMissionRejectForm: true,
-    });
-  }
+  rejectMission = () => this.setState({ showMissionRejectForm: true });
 
   completeCheckedElements() {
-    const checkElList = Object.values(this.state.checkedElements);
-    const countCheckEl = checkElList.length;
+    const { selectedElement } = this.state;
+    const missionsObj = this.state.checkedElements || {};
+    if (selectedElement) {
+      missionsObj[selectedElement.id] = selectedElement;
+    }
+    const missions = Object.values(missionsObj);
 
-    if (countCheckEl !== 0) {
-      const queries = checkElList.map((mission, i) => {
-        const updatedMission = _.cloneDeep(mission);
-        updatedMission.status = 'complete';
-
-        return this.context.flux.getActions('missions').updateMission(updatedMission, false);
-      });
-
-      Promise.all(queries)
-        .then(() => {
-          this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify('Данные успешно обновлены');
-        })
-        .catch(() => {
-          this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при обновлении данных');
-        });
-
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
+    if (missions.some(({ status }) => status !== 'assigned')) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные задания!'));
     } else {
-      this.completeMission();
+      Promise.all(
+        Object.values(this.state.checkedElements).map(mission =>
+          this.context.flux.getActions('missions')
+            .updateMission({ ..._.cloneDeep(mission), status: 'complete' }, false),
+        ),
+      ).then(() => {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      })
+      .catch(() => {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      });
     }
   }
 

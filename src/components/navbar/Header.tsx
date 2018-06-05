@@ -10,6 +10,7 @@ import MenuItem from 'components/navbar/MenuItem/MenuItem';
 import { withRouter } from 'react-router-dom';
 import NavItemUser from 'components/navbar/NavItemUser/NavItemUser';
 import NavItemLogout from 'components/navbar/NavItemLogout/NavItemLogout';
+import NavItemRole from 'components/nav-item-role/NavItemRole';
 
 import config from 'config';
 
@@ -57,6 +58,9 @@ const makeNavChildren = ([key, data]) => {
 }
 
 const dataGuide = {
+  changeRole: {
+    renderNav: (key) => <NavItemRole key={'change-role'}/>
+  }
   guide: {
     title: 'Руководство пользователей',
     alwaysShow: true,
@@ -98,7 +102,7 @@ const dataGuide = {
   },
   logout: {
     renderNav: (key) => <NavItemLogout key={'link-logout'} />,
-  }
+  },
 };
 
 const Header = props => (

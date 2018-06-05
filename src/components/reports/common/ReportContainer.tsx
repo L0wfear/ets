@@ -289,13 +289,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     this.setState({ exportFetching: false });
   }
 
-  makeTableSchema(schemaMakers = {}, additionalSchemaMakers = [], tableMetaInfo: IReportTableMeta, forWhat) {
+  makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
     const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
       const [[fieldName, { name: displayName, is_vertical }]] = Object.entries(field);
 
       if (!is_vertical) {
         let initialSchema: IDataTableColSchema;
-
+        
         initialSchema = {
           name: fieldName,
           displayName,
@@ -307,7 +307,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         if (forWhat === 'mainList' && this.props.data.result) {
           (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }) => ({ value, label: value })), 'value');
         }
-
+        
         const renderer = schemaMakers[fieldName] || identity;
         tableMeta.push(renderer(initialSchema, this.props));
       }

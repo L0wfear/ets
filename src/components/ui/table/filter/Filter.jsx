@@ -51,21 +51,26 @@ export default class Filter extends React.Component {
       const data = e.target ? e.target.value : e;
       const filter = this.props.options.find(({ name }) => name === key);
 
-      // для формата под новую таблицу
-      filterValues[key] = new Proxy(
-        data,
-        {
-          get: (target, name) => {
-            if (name === 'type')  {
-              return filter.type;
-            }
-            if (name === 'value') {
-              return data;
-            }
+      try {
+        // для формата под новую таблицу
+        filterValues[key] = new Proxy(
+          data,
+          {
+            get: (target, name) => {
+              if (name === 'type')  {
+                return filter.type;
+              }
+              if (name === 'value') {
+                return data;
+              }
 
-            return target[name];
-          },
-        });
+              return target[name];
+            },
+          }
+        );
+      } catch (e) {
+        filterValues[key] = data;
+      }
     }
 
     this.setState({ filterValues });

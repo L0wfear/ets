@@ -126,6 +126,7 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
             <li><b>№ задания:</b> {data.duty_mission_number}</li>
             <li><b>Техоперация:</b> {data.technical_operation_name}</li>
             <li><b>Начало задания (плановое):</b> {getFormattedDateTimeSeconds(data.duty_mission_date_start)}</li>
+            <li><b>Тип объекта:</b>{data.object_type_name}</li>
             <li><b>Окончание задания (плановое):</b> {getFormattedDateTimeSeconds(data.duty_mission_date_end)}</li>
             <li><b>ФИО бригадира:</b> {data.foreman_fio}</li>
             <li><b>Номер телефона бригадира:</b> {data.foreman_phone}</li>

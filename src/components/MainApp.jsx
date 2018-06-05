@@ -9,6 +9,7 @@ import Routes from 'components/indexRoute.tsx';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
+import NavItemRole from 'components/nav-item-role/NavItemRole';
 
 import Header from 'components/navbar/Header';
 

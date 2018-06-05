@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
-import { createValidDateTime, createValidDate } from 'utils/dates';
+import { createValidDateTime } from 'utils/dates';
 import {
   clone,
   cloneDeep,

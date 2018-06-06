@@ -19,9 +19,12 @@ import {
   CarDutyMissionService,
 } from 'api/missions';
 
-export const parseFilterObject = filter => _.mapKeys(
-  flattenObject(filter),
-  (value, key) => _.isArray(value) ? `${key}__in` : key,
+export const parseFilterObject = filter =>
+  Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
+    ...newFilter,
+    [Array.isArray(value) ? `${key}__in` : key]: value,
+  }),
+  {},
 );
 
 // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ

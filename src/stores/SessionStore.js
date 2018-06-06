@@ -42,7 +42,6 @@ export default class SessionStore extends Store {
     this.register(sessionActions.login, this.handleLogin);
     this.register(sessionActions.cahngeCompanyOnAnother, this.handleLogin);
     this.register(sessionActions.logout, this.handleLogout);
-    this.register(sessionActions.setBackendVersion, this.handleSetBackendVersion)
 
 
     let storedSession;
@@ -66,11 +65,7 @@ export default class SessionStore extends Store {
       session: storedSession,
       userPermissions: currentUser.permissions,
       isGlavControl: currentUser.permissions.includes('role.change'),
-      backendVersion: null,
     };
-  }
-  handleSetBackendVersion(backendVersion) {
-    this.setState({ backendVersion });
   }
 // TODO
   handleLogin(data) {

@@ -396,7 +396,7 @@ export default class DataTable extends React.Component {
     // проверка берется по this.state.filterValues
     let isValid = true;
 
-    Object.entries(filterValues).forEach(([key, value]) => {
+    Object.entries(filterValues).forEach(([key, { value }]) => {
       if (obj[key] === null) {
         isValid = false;
         return;

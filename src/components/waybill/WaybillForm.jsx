@@ -1081,7 +1081,7 @@ class WaybillForm extends Form {
                     error={errors.fact_fuel_end}
                     value={state.fact_fuel_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={!IS_ACTIVE}
+                    disabled={!(IS_ACTIVE || this.state.canEditIfClose)}
                     onChange={this.handleChange}
                     boundKeys={boundKeysObj.fact_fuel_end}
                     showRedBorder={state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)}

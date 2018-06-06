@@ -107,14 +107,12 @@ function httpMethod(url, data = {}, method, type, params = {}) {
     }
     try {
       const responseBody = await r.json();
-      let backendVersion = null;
       try {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);
 
         const servV = r.headers.get('ets-frontend-version');
         const currV = process.env.VERSION;
-        backendVersion = r.headers.get('ets-backend-Version');
 
         if (servV) {
           const [,, minorS, someS] = servV.split('.');
@@ -138,14 +136,7 @@ function httpMethod(url, data = {}, method, type, params = {}) {
         return new Promise((res, rej) => rej());
       }
       checkOnAdminInfo({ ...responseBody });
-      return new Promise(res => res(new Proxy(responseBody, {
-        get(target, name) {
-          if (name === '__other_data') {
-            return { backendVersion };
-          }
-          return target[name];
-        },
-      })));
+      return Promise.resolve(responseBody, r);
     } catch (e) {
       console.error('Неверный формат ответа с сервера', url);
       return new Promise((res, rej) => rej());

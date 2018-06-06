@@ -16,44 +16,19 @@ import {
   WaybillsReportService,
   RootService,
 } from 'api/Services';
-
+import { parseFilterObject } from 'actions/MissionsActions.js';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
-const makeFilterValues = (filter) => {
-  const filterValues = _.cloneDeep(filter);
-  Object.keys(filterValues).forEach((k) => {
-    if (Array.isArray(filterValues[k])) {
-      filterValues[`${k}__in`] = filterValues[k];
-      delete filterValues[k];
-    }
-    if (typeof filterValues[k] === 'object') {
-      Object.keys(filterValues[k]).forEach(key => (filterValues[key] = filterValues[k][key]));
-      delete filterValues[k];
-    }
-  });
 
-  return JSON.stringify(filterValues);
-};
 
 export default class WaybillsActions extends Actions {
 
   getWaybills(limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
-    const filterValues = cloneDeep(filter);
-    Object.keys(filterValues).forEach((k) => {
-      if (Array.isArray(filterValues[k])) {
-        filterValues[`${k}__in`] = filterValues[k];
-        delete filterValues[k];
-      }
-      if (typeof filterValues[k] === 'object') {
-        Object.keys(filterValues[k]).forEach(key => (filterValues[key] = filterValues[k][key]));
-        delete filterValues[k];
-      }
-    });
     const payload = {
       limit,
       offset,
       sort_by,
-      filter: makeFilterValues(filter),
+      filter: JSON.stringify(parseFilterObject(cloneDeep(filter))),
     };
     return WaybillService.get(payload);
   }
@@ -99,7 +74,7 @@ export default class WaybillsActions extends Actions {
       payload.date = createValidDate(state.date);
     }
 
-    return WaybillJournalReportService.path(`?filter=${makeFilterValues(filter)}`).postBlob(payload);
+    return WaybillJournalReportService.path(`?filter=${JSON.stringify(parseFilterObject(_.cloneDeep(filter)))}`).postBlob(payload);
   }
 
   getWaybillsReport(state, filter) {
@@ -109,7 +84,7 @@ export default class WaybillsActions extends Actions {
     };
 
     if (state.with_filter) {
-      payload.filter = makeFilterValues(filter);
+      payload.filter = JSON.stringify(parseFilterObject(_.cloneDeep(filter)));
     }
 
     return WaybillsReportService.getBlob(payload);

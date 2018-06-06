@@ -21,9 +21,4 @@ export default class SessionActions extends Actions {
   logout() {
     return new Promise(res => res());
   }
-
-  setBackendVersion(backendVersion) {
-    return Promise.resolve(backendVersion);
-  }
-
 }

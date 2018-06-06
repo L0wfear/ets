@@ -211,7 +211,6 @@ class MainApp extends React.Component {
         company_name,
       },
     } = this.state;
-    const { backendVersion } = this.props;
 
     return (
       <div className="app">
@@ -245,7 +244,7 @@ class MainApp extends React.Component {
           </Col>
           <Col md={3}>
             <span style={{ position: 'absolute', right: 20 }}>
-              {`${VERSION_DESCRIPTION} ${(process.env.STAND !== 'prod' && backendVersion) ? `(${backendVersion})` : ''}`}
+              {VERSION_DESCRIPTION}
             </span>
           </Col>
         </div>

@@ -5,6 +5,7 @@ import {
   clone,
   cloneDeep,
 } from 'lodash';
+import { parseFilterObject } from 'actions/MissionsActions.js';
 import {
   OrderService,
   WorkKindsService,
@@ -93,13 +94,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getOrders(limit, offset, sort_by, filter, date_start, date_end) {
-    const filterValues = cloneDeep(filter);
-    Object.keys(filterValues).forEach((k) => {
-      if (Array.isArray(filterValues[k])) {
-        filterValues[`${k}__in`] = filterValues[k];
-        delete filterValues[k];
-      }
-    });
+    const filterValues = parseFilterObject(cloneDeep(filter));
 
     const payload = {
       date_start: createValidDateTime(date_start),

@@ -147,10 +147,6 @@ export class DutyMissionForm extends Form {
 
     flux.getActions('geoObjects').getGeozones();
 
-    if (norm_id) {
-      this.getDataByNormId(norm_id);
-    }
-
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
     }

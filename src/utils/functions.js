@@ -168,9 +168,13 @@ export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(nu
  */
 export function flattenObject(inputObject) {
   const f = {};
+
   Object.keys(inputObject).forEach((k) => {
-    if (isPlainObject(inputObject[k])) {
-      Object.keys(inputObject[k]).forEach(key => (f[key] = inputObject[k][key]));
+    if (isPlainObject(inputObject[k].value)) {
+      Object.keys(inputObject[k].value).forEach(key => {
+        f[key] = { ...f[key] };
+        f[key].value = inputObject[k].value[key];
+      });
     } else {
       f[k] = inputObject[k];
     }

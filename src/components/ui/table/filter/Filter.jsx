@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Div from '../../Div.jsx';
 import FilterRow from './FilterRow.jsx';
 
-@autobind
 export default class Filter extends React.Component {
 
   static get propTypes() {
@@ -34,15 +33,15 @@ export default class Filter extends React.Component {
   // TODO сделано для adv...-select-like
   // из-за с проблем с именем 
   // переделать
-  getName(name, type) {
+  getName = (name, type) => {
     switch (type) {
       case 'advanced-select-like': return `${name}__like`;
       default: return name;
     }
   }
 
-  handleFilterValueChange(key, e) {
-    const filterValues = { ...this.state.filterValues };
+  handleFilterValueChange = (key, e) => {
+    const { filterValues: { ...filterValues } } = this.state;
 
     if (!e || isEmpty(e.target ? e.target.value : e)) {
       delete filterValues[key];
@@ -50,56 +49,25 @@ export default class Filter extends React.Component {
       const data = e.target ? e.target.value : e;
       const filter = this.props.options.find(({ name }) => name === key);
 
-      try {
-        // для формата под новую таблицу
-        filterValues[key] = new Proxy(
-          data,
-          {
-            get: (target, name) => {
-              if (name === 'type')  {
-                return filter.type;
-              }
-              if (name === 'value') {
-                return data;
-              }
-
-              return target[name];
-            },
-          }
-        );
-      } catch (e) {
-        filterValues[key] = data;
-      }
+      filterValues[key] = {
+        type: filter.type || 'text',
+        value: data,
+      };
     }
 
     this.setState({ filterValues });
   }
 
-  handleFilterMultipleValueChange(key, v) {
-    const filterValues = { ...this.state.filterValues };
+  handleFilterMultipleValueChange = (key, v) => {
+    const { filterValues: { ...filterValues } } = this.state;
     const data = !isEmpty(v) ? v.split('$') : [];
     const { filter } = this.props.options.find(({ name }) => name === key);
 
     // для формата под новую таблицу
-    try {
-      filterValues[key] = new Proxy(
-        data,
-        {
-          get: (target, name) => {
-            if (name === 'type')  {
-              return filter.type;
-            }
-            if (name === 'value') {
-              return data;
-            }
-
-            return target[name];
-          },
-        }
-      );
-    } catch (e) {
-      filterValues[key] = data;
-    }
+    filterValues[key] = {
+      type: filter.type || '',
+      value: data,
+    };
 
     if (data.length === 0) {
       delete filterValues[key];
@@ -108,7 +76,7 @@ export default class Filter extends React.Component {
     this.setState({ filterValues });
   }
 
-  submit() {
+  submit= () => {
     const filterValues = _.reduce(this.state.filterValues, (cur, v, k) => {
       if (typeof v !== 'undefined') {
         if (typeof v === 'string') {
@@ -124,13 +92,9 @@ export default class Filter extends React.Component {
     this.props.onSubmit(filterValues);
   }
 
-  reset() {
-    this.props.onSubmit({});
-  }
+  reset = () => this.props.onSubmit({});
 
-  checkDisabledButton(filterValues) {
-    return Object.keys(filterValues).length === 0;
-  }
+  checkDisabledButton = filterValues => Object.keys(filterValues).length === 0;
 
   render() {
     const { filterValues } = this.state;
@@ -144,7 +108,7 @@ export default class Filter extends React.Component {
         <FilterRow
           tableData={tableData}
           key={i}
-          value={filterValues[this.getName(byKey || name, type)]}
+          value={(filterValues[this.getName(byKey || name, type)] || {}).value}
           type={type}
           name={this.getName(byKey || name, type)}
           byLabel={byLabel}

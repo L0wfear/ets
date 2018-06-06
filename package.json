@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.17.146",
+    "version": "2.0.17.147",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -35,7 +35,7 @@
         "jsdoc": "^3.4.0",
         "lodash": "^4.15.0",
         "moment": "^2.10.6",
-        "node-sass": "^4.5.3",
+        "node-sass": "^4.9.0",
         "ol3-popup": "github:walkermatt/ol3-popup#v1.0.2",
         "openlayers": "^4.2.0",
         "query-string": "^5.0.1",

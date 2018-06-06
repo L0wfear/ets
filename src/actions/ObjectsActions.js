@@ -1,6 +1,7 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime, diffDates } from 'utils/dates';
+import { parseFilterObject } from 'actions/MissionsActions.js';
 
 import _ from 'lodash';
 import {
@@ -83,13 +84,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getFaxogramms(limit, offset, sort_by, filter, create_date_from, create_date_to) {
-    const filterValues = _.cloneDeep(filter);
-    Object.keys(filterValues).forEach((k) => {
-      if (Array.isArray(filterValues[k])) {
-        filterValues[`${k}__in`] = filterValues[k];
-        delete filterValues[k];
-      }
-    });
+    const filterValues = parseFilterObject(_.cloneDeep(filter));
     const create_date__gte = createValidDateTime(create_date_from);
     const create_date__lte = createValidDateTime(create_date_to);
 

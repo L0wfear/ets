@@ -423,6 +423,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           externalFilter={this.externalFilter}
           needMyFilter={!this.props.notUseServerSummerTable}
           filterValues={this.state.filterValues}
+          useServerFilter
           {...this.props.tableProps}
         >
           <Button

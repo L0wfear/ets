@@ -10,3 +10,13 @@ export const routeTypesBySlug = {
     time: 5,
   },
 };
+
+
+export const routeTypesByKey = Object.entries(routeTypesBySlug)
+  .reduce((newObj, [slug, { key, ...other }]) => ({
+    ...newObj,
+    [key]: {
+      slug,
+      ...other,
+    }
+  }), {});

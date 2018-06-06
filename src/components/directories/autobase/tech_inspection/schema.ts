@@ -13,7 +13,7 @@ export const formValidationSchema: IValidationSchema = {
     },
     {
       key: 'reg_number',
-      title: 'Номер диагностической карты/ Талона ГТО',
+      title: 'Номер диагностической карты/Талона ГТО',
       type: 'string',
       required: true,
       maxLength: 21,

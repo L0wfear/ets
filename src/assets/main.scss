@@ -20,8 +20,19 @@
   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
+html, body {
+  height: 100%;
+}
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 body {
   color: #000;
+}
+.app-content {
+  justify-self: flex-start;
 }
 
 // NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
@@ -1688,23 +1699,8 @@ body.application {
 /** APP NAVIGATION */
 
 .app-navigation {
-  //position:relative;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
   z-index:1030;
-  //.navbar {
-  //  border-bottom:2px solid #ccc;
-  //}
-}
-
-body {
-  padding-top: 84px; // for fixed .app-navigation
-}
-
-.app-content {
-  margin-top: -21px;
+  width: 100%;
 }
 
 /** ETS TABLE */

@@ -465,7 +465,7 @@ export default class DataTable extends React.Component {
       },
     } = this.props;
 
-    Object.entries(filterValues).forEach(([key, value]) => {
+    Object.entries(filterValues).forEach(([key, { value }]) => {
       if (key.includes('additionalFilter')) {
         try {
           const { filter: { filterFunction } } = cols.find(d => d.name === key);

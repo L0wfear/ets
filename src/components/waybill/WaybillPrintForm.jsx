@@ -14,6 +14,17 @@ const FORMATION_PERIOD_OPTIONS = [
   { value: 'month', label: 'Месячный' }
 ];
 
+const getInitialState = () => ({
+  month: new Date().getMonth() + 1,
+  year: new Date().getYear() + 1900,
+  date_from: getToday9am(),
+  date_to: getTomorrow9am(),
+  DISABLE_SUBMIT: false,
+  formationPeriod: 'month',
+  date: new Date(),
+  with_filter: false,
+});
+
 class WaybillPrintForm extends React.Component {
 
   static get propTypes() {
@@ -26,19 +37,8 @@ class WaybillPrintForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = this.getInitialState();
+    this.state = getInitialState();
   }
-
-  getInitialState = () => ({
-    month: new Date().getMonth() + 1,
-    year: new Date().getYear() + 1900,
-    date_from: getToday9am(),
-    date_to: getTomorrow9am(),
-    DISABLE_SUBMIT: false,
-    formationPeriod: 'month',
-    date: new Date(),
-    with_filter: false,
-  })
 
   handleSubmit = async () => {
     global.NOTIFICATION_SYSTEM.notifyWithObject({
@@ -98,7 +98,7 @@ class WaybillPrintForm extends React.Component {
   handleChangeDate = date => this.setState({ date });
 
   hide = () => {
-    this.setState(this.getInitialState());
+    this.setState(getInitialState());
     this.props.hide();
   }
   render() {

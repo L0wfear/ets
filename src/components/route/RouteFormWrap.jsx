@@ -32,12 +32,12 @@ class RouteFormWrap extends FormWrap {
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
         if (formState.type !== 'mixed') {
-          formState.polys = _.cloneDeep(this.props.dtPolys);
+          formState.polys = cloneDeep(this.props.dtPolys);
         }
         if (formState.type !== 'simple_dt') {
           formState.polys = {
             ...formState.polys,
-            ..._.cloneDeep(this.props.odhPolys),
+            ...cloneDeep(this.props.odhPolys),
           };
         }
         each(formState.object_list.filter(o => !!o.object_id), (o) => {

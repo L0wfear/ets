@@ -18,7 +18,7 @@ import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/mission/inside_fields/index';
 import { checkRouteByNew } from 'components/missions/utils/utils.ts';
-import { routeTypesBySlug } from 'constants/route';
+import { routeTypesByKey } from 'constants/route';
 
 import { addTime, diffDates } from 'utils/dates.js';
 import {
@@ -110,7 +110,7 @@ export class MissionForm extends Form {
                 const { formState: { date_start, date_end } } = this.props;
 
                 if (date_start && date_end) {
-                  const { time } = routeTypesBySlug[route.object_type];
+                  const { time } = routeTypesByKey[route.type];
 
                   if (diffDates(date_end, date_start, 'hours') > time) {
                     changesObjSecond.date_end = addTime(date_start, time, 'hours');
@@ -190,7 +190,7 @@ export class MissionForm extends Form {
         object_list: [],
         input_lines: [],
       },
-    })
+    });
   }
 
   onFormHide = (isSubmitted, result) => {
@@ -221,11 +221,11 @@ export class MissionForm extends Form {
               norm_id: normData.norm_id,
             };
 
-            const { object_type } = newStateData.selectedRoute;
+            const { type } = newStateData.selectedRoute;
 
-            if (changesObj.is_cleaning_norm && object_type) {
+            if (changesObj.is_cleaning_norm && type) {
               const { date_start, date_end } = formState;
-              const { time } = routeTypesBySlug[object_type];
+              const { time } = routeTypesByKey[type];
 
               if (date_start && date_end && diffDates(date_end, date_start, 'hours') > time) {
                 changesObj.date_end = addTime(date_start, time, 'hours');
@@ -253,9 +253,10 @@ export class MissionForm extends Form {
         date_start,
         date_end,
       };
+      const { selectedRoute } = this.state;
 
-      if (date_start && date_end && this.state.is_cleaning_norm && this.state.selectedRoute) {
-        const { time } = routeTypesBySlug[this.state.selectedRoute.object_type];
+      if (date_start && date_end && this.state.is_cleaning_norm && selectedRoute) {
+        const { time } = routeTypesByKey[selectedRoute.type];
 
         if (diffDates(date_end, date_start, 'hours') > time) {
           changesObj.date_end = addTime(date_start, time, 'hours');

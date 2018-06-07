@@ -70,8 +70,9 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
 
     const returnData = Object.values(rows.reduce((newDataObj, row) => {
       const { [verticalAgregationBy.keyName]: verticalKey } = row;
-
-      newDataObj[verticalKey].children.push(row);
+      if (newDataObj[verticalKey]) {
+        newDataObj[verticalKey].children.push(row);
+      }
 
       return newDataObj;
     }, initialDataForReduce))

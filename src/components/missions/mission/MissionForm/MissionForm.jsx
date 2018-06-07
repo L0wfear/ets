@@ -39,7 +39,7 @@ const makePayloadFromState = formState => ({
   technical_operation_id: formState.technical_operation_id,
   municipal_facility_id: formState.municipal_facility_id,
   route_type: formState.route_type,
-  func_type_id: formState.func_type_id,
+  func_type_id: formState.type_id,
   needs_brigade: false,
 });
 
@@ -128,11 +128,9 @@ export class MissionForm extends Form {
   }
 
   handleCarIdChange = (car_id, { type_id }) => {
-    this.handleChange('car_id', car_id);
-    this.handleChange('func_type_id', type_id);
     this.props.handleMultiFormChange({
       car_id,
-      func_type_id: type_id,
+      type_id,
       is_cleaning_norm: false,
       norm_id: null,
     });

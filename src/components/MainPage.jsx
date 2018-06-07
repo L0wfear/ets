@@ -178,10 +178,9 @@ export default class MainPage extends React.Component {
             <NavItem id="link-notification-registry" title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><div style={{ fontSize: 18 }}><Glyphicon glyph="exclamation-sign" /></div></NavItem>
             <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
-
           <Nav pullRight>
-            <NavItemRole history={this.props.history}/>
-            <NavDropdown id="show-guide" title="Руководство пользователей">
+            <NavItemRole history={this.props.history} location={this.props.location} />
+            <NavDropdown id="show-guide" title={<Glyphicon glyph="book" />}>
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
               <MenuItem id="link-okrug" href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>

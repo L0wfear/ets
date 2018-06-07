@@ -13,10 +13,11 @@ import UserNotificationList from 'components/notifications/UserNotificationList'
 import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';
 import ProgramRegistryList from 'components/program_registry/ProgramRegistryList.jsx';
 import * as missions from 'components/missions';
-
+import CahngeCompany from 'components/nav-item-role/CahngeCompany';
 import AppComponent from 'components/App';
 import {
   requireAuth as _requireAuth,
+  requireAuthWithGlav as _requireAuthWithGlav,
   checkLoggedIn as _checkLoggedIn,
 } from 'utils/auth';
 
@@ -28,6 +29,7 @@ const history = createHashHistory({ queryKey: false });
 const routes = (props) => {
   const { flux } = props;
   const requireAuth = _requireAuth(flux);
+  const requireAuthWithGlav = _requireAuthWithGlav(flux);
   const checkLoggedIn = _checkLoggedIn(flux);
   const App = withProps({ flux })(AppComponent);
 
@@ -35,6 +37,7 @@ const routes = (props) => {
     <Router history={history}>
       <Redirect from="/" to="monitor" />
       <Route path="/" component={App}>
+        <Route path="change-company" component={CahngeCompany} onEnter={requireAuthWithGlav} />
         <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
         <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
         <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />
@@ -53,6 +56,7 @@ const routes = (props) => {
         <Route path="notification-registry" component={UserNotificationList} onEnter={requireAuth} />
         {/* Страница логина */}
         <Route path="login" component={LoginPage} onEnter={checkLoggedIn} />
+        <Redirect from="*" to="monitor" />
       </Route>
     </Router>
   );

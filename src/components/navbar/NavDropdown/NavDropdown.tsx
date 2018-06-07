@@ -28,7 +28,8 @@ const propsToNavDropdown: any = [
   'activeHref',
   'onSelect',
   'title',
-  'children'
+  'children',
+  'className',
 ];
 
 const NavDropdownCustom: React.SFC<any> = props =>

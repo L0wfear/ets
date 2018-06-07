@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import {
+  Glyphicon,
   Navbar,
   Nav,
 } from 'react-bootstrap';
@@ -17,11 +18,11 @@ import rWithP from 'constants/routerAndPermission';
 
 const makeNavDropChildren = ([key, data]) => {
   if ((data.path || data.divider) && !data.renderNav) {
-    return <MenuItem key={key} id={`link-${key}`} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
+    return <MenuItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
   }
   if (data.children && !data.renderNav) {
     return (
-      <NavDropdown key={key} id={`show-${key}`} data={data} title={data.title}>
+      <NavDropdown key={key} id={`show-${key}`} className={data.className} data={data} title={data.title}>
         {
           Object.entries(data.children).map(makeNavDropChildren)
         }
@@ -37,12 +38,13 @@ const makeNavDropChildren = ([key, data]) => {
 }
 
 const makeNavChildren = ([key, data]) => {
+  console.log(key, data)
   if (data.path && !data.renderNav) {
-    return <NavItem key={key} id={`link-${key}`} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
+    return <NavItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
   }
   if (data.children && !data.render) {
     return (
-      <NavDropdown key={key} id={`show-${key}`} data={data} title={data.title}>
+      <NavDropdown key={key} id={`show-${key}`} className={data.className} data={data} title={data.title}>
         {
           Object.entries(data.children).map(makeNavDropChildren)
         }
@@ -61,7 +63,8 @@ const dataGuide = {
     renderNav: (key) => <NavItemRole key={'change-role'}/>
   },
   guide: {
-    title: 'Руководство пользователей',
+    title: <Glyphicon glyph="book" />,
+    className: "user-guide",
     alwaysShow: true,
     children: {
       master: {

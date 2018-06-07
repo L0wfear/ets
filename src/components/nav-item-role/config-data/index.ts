@@ -3,7 +3,7 @@ import components from 'components/nav-item-role/config-data/components';
 
 export default {
   path: '/change-company',
-  title: 'Журнал наряд-заданий',
+  title: 'Смена компании',
   entyity: 'role',
   noDotList: false,
   hiddenNav: true,

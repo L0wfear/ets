@@ -29,11 +29,13 @@ class CompanyOptions extends React.Component<any, any> {
       }
 
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
-        .then(() => {
-          if (pathname !== '/change-company') {
-            this.props.history.goBack();
+        .then(({ payload }) => {
+          if (['dispatcher', 'master'].indexOf(payload.role) > -1 && payload.okrug_id === null) {
+            this.props.history.push('/dashboard');
+          } else {
+            this.props.history.push('/monitor');
           }
-        });
+        })
     }
   }
 

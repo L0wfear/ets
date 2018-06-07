@@ -260,6 +260,10 @@ body.application hr {
     }
   }
 
+  .user-guide>a {
+    text-decoration: none !important;
+  }
+
   .navbar-brand {
     color: $colorGray;
     text-decoration: none;

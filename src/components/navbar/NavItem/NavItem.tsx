@@ -16,7 +16,7 @@ const propsToNaItem = [
 const checkPermission = props => {
   let show = true;
 
-  if (props.hiddenNav) {
+  if (props.data.hiddenNav) {
     show = false;
   } else {
     const {

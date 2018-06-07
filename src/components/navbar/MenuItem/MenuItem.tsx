@@ -38,6 +38,7 @@ const propsToMenuItem = [
   'href',
   'onKeyDown',
   'onSelect',
+  'className',
 ];
 
 const MenuItemCustom: React.SFC<any> = (props, context) =>

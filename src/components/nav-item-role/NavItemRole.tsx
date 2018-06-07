@@ -7,10 +7,11 @@ import CompanyOptions from 'components/nav-item-role/CompanyOptions';
 class NavItemRole extends React.Component<any, any> {
   render() {
     return (
-      this.props.isGlavControl
+      this.props.isGlavControl && this.props.location.pathname !== '/change-company'
       ?
       <NavItem className={'company-switcher'}>
-        <CompanyOptions history={this.props.history} />
+        <span className={'company-switcher-label'}>Текущая организация:</span>
+        <CompanyOptions history={this.props.history} location={this.props.location} />
       </NavItem>
       :
       <div className="none"></div>

@@ -5,6 +5,14 @@ export const requireAuth = flux => (nextState, replaceState) => {
   }
 };
 
+export const requireAuthWithGlav = flux => (nextState, replaceState) => {
+  requireAuth(flux)(nextState, replaceState);
+  if (!flux.getStore('session').state.isGlavControl) {
+    replaceState({ nextPathname: nextState.location.pathname }, '/monitor');
+    return;
+  }
+};
+
 export const checkLoggedIn = flux => (nextState, replaceState) => {
   const user = flux.getStore('session').getCurrentUser();
   const { role, okrug_id } = user;

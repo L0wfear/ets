@@ -14,7 +14,6 @@ export const leakIcon = {
     image: new ol.style.Icon({
       src: leakIconSmall,
       offset: [0, 0],
-      opacity: 0.6,
       scale: 0.2,
     }),
   }),

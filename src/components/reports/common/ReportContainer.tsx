@@ -270,9 +270,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   makeTableSchema(schemaMakers = {}, tableMetaInfo: IReportTableMeta, forWhat) {
     const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
-      const [[fieldName, { name: displayName, is_vertical }]] = Object.entries(field);
+      const [[fieldName, { name: displayName, is_row }]] = Object.entries(field);
 
-      if (!is_vertical) {
+      if (!is_row) {
         let initialSchema: IDataTableColSchema;
         
         initialSchema = {

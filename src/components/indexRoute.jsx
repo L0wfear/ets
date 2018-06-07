@@ -10,6 +10,7 @@ import UserNotificationList from 'components/notifications/UserNotificationList'
 import ProgramRegistryList from 'components/program_registry/ProgramRegistryList.jsx';
 import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';
 import * as missions from 'components/missions';
+import CahngeCompany from 'components/nav-item-role/CahngeCompany';
 
 import reportRoutes from 'components/reports/indexRoute';
 import nsiRoutes from 'components/directories/indexRoute';
@@ -28,6 +29,7 @@ const getRouters = props => (
       <Route path="/duty-mission-templates-journal" component={missions.dutyMissionTemplates} />,
       <Route path="/program-registry" component={ProgramRegistryList} />,
       <Route path="/notification-registry" component={UserNotificationList} />,
+      <Route path="/change-company" component={CahngeCompany} />,
       ...reportRoutes(props),
       ...nsiRoutes(props),
       <Redirect push from="*" to="/monitor" />,

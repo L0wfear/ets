@@ -178,10 +178,9 @@ class MainApp extends React.Component {
             <NavItem id="link-notification-registry" includesPartOfText={['_notification.list']} title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><span>Уведомления <NotificationBage /></span></NavItem>
             <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage2/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
-
           <Nav pullRight>
             <NavItemRole />
-            <NavDropdown id="show-guide" title="Руководство пользователей">
+            <NavDropdown id="show-guide" title={<Glyphicon glyph="book" />}>
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
               <MenuItem id="link-okrug" href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>

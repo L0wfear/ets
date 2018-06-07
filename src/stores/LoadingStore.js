@@ -6,6 +6,7 @@ export default class LoadingStore extends Store {
   constructor(flux) {
     super();
 
+    const sessionActions = flux.getActions('session');
     const autoBaseActions = flux.getActions('autobase');
     const repairActions = flux.getActions('repair');
     const geoObjectsActions = flux.getActions('geoObjects');
@@ -21,6 +22,8 @@ export default class LoadingStore extends Store {
     const reportsActions = flux.getActions('reports');
 
     this.reg(false,
+      sessionActions.cahngeCompanyOnAnother,
+
       autoBaseActions.getAutobaseListByType,
       autoBaseActions.batteryBrand,
       autoBaseActions.batteryManufacturer,

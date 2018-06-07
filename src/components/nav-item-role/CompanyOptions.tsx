@@ -13,48 +13,32 @@ class CompanyOptions extends React.Component<any, any> {
 
     this.state = {
       companies: currentUser.companies,
-      company_id: currentUser.company_id || -1,
-      COMPANY_OPTIONS: [
-        ...currentUser.companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
-        { value: -1, label: 'Главконтроль' },
-      ],
+      COMPANY_OPTIONS: currentUser.companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
     };
   }
 
-  componentWillReceiveProps(props) {
-    const { currentUser: { companies } } = props;
-
-    const changesState: any = {};
-    if (this.state.companies !== companies) {
-      changesState.companies = companies;
-      changesState.COMPANY_OPTIONS = [
-        ...companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
-        { value: -1, label: 'Главконтроль' },
-      ]
-    }
-
-    this.setState(changesState);
-  }
   handleChange = (company_id) => {
-    if (company_id !== this.state.company_id) {
-      this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id === -1 ? null : company_id)
-        .then(() => this.props.history.push('/monitor'));
-      this.setState({ company_id });
+    const {
+      currentUser: { company_id_old },
+      location: { pathname },
+    } = this.props;
+
+    if (company_id !== company_id_old) {
+      this.props.history.push('/change-company');
+
+      this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
+        .then(() => this.props.history.push(pathname))
     }
   }
 
   render() {
-    const {
-      company_id,
-      COMPANY_OPTIONS,
-    } = this.state;
-
     return (
       <EtsSelect
-        options={COMPANY_OPTIONS}
-        value={company_id}
+        options={this.state.COMPANY_OPTIONS}
+        value={this.props.currentUser.company_id}
         onChange={this.handleChange}
         clearable={false}
+        placeholder="Выберите организацию..."
       />
     )
   }

@@ -180,7 +180,7 @@ class MainApp extends React.Component {
           </Nav>
           <Nav pullRight>
             <NavItemRole />
-            <NavDropdown id="show-guide" title={<Glyphicon glyph="book" />}>
+            <NavDropdown id="show-guide" className="user-guide" title={<Glyphicon glyph="book" />}>
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
               <MenuItem id="link-okrug" href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>

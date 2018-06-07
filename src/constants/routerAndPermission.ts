@@ -9,6 +9,7 @@ import routeList from 'components/route/config-data';
 import companyStructure from 'components/company_structure/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
+import changeCompany from 'components/nav-item-role/config-data';
 
 const routerAndPermission = {
   monitor,
@@ -31,8 +32,9 @@ const routerAndPermission = {
     checkHidden: (isShow, props) => isShow && !props.isOkrug,
     permissions: {
       list: 'administration',
-    }
-  }
+    },
+  },
+  changeCompany,
 };
 
 const getRouterToPermission = (rAp, level) => {

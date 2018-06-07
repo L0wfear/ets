@@ -10,10 +10,10 @@ const renderRoutes = (newRoutesArr, data) => {
       newRoutesArr.push(
         ...data.components.map(componentData =>
           <PublicRoute
-          key={[data.path, componentData.addPath].join('')}
-          path={[data.path, componentData.addPath].join('')}
-          exact={componentData.exact}
-          component={componentData.component}
+            key={[data.path, componentData.addPath].join('')}
+            path={[data.path, componentData.addPath].join('')}
+            exact={componentData.exact}
+            component={componentData.component}
           />
         ));
     } else if (!data.divider && !data.hiddenNav) {

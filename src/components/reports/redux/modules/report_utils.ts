@@ -10,12 +10,26 @@ export const openFields = fields => fields.map(meta => {
   };
 });
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols], aggr_fields) => {
+export const getInitialDataForReduce = rowCol =>
+  rowCol.sections.reduce((newwArr, oneSection) => {
+    if (oneSection.visible) {
+      newwArr.push({
+        ...oneSection,
+        displayName: oneSection.name,
+        children: [],
+        fields: oneSection.fields || [],
+      });
+    }
+
+    return newwArr;
+  }, []);
+
+export const makeSummer = ([...newArr], [...data], [col, ...cols], allCols, aggr_fields, filedsRule) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))
         .reduce((newArrTemp, rows) =>
-          makeSummer(newArrTemp, rows, cols, aggr_fields),
+          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule),
           [],
         ),
       );
@@ -33,6 +47,18 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols], aggr_fields) 
     aggr_fields.forEach(key => {
       newItem[key] = removeRedundantNumbers(newItem[key])
     })
+
+    filedsRule.forEach(({ key, value: { force_value }}) => {
+      if (force_value !== false) {
+        newItem[key] = force_value;
+      }
+    })
+
+    allCols.filter(({ keyName, abs }) => {
+      if (abs) {
+        newItem[keyName] = Math.abs(newItem[keyName]);
+      }
+    });
 
     newArr.push(newItem)
   }
@@ -58,28 +84,31 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
     const _uniq_field_father = `${uniqName}_father`;
 
     const cols = openFields(fields);
-    const verticalAgregationBy = cols.find(({ is_vertical }) => is_vertical);
-    const diffCols = cols.filter(({ keyName, is_vertical }) => !aggr_fields.includes(keyName) && !is_vertical);
-    const initialDataForReduce = Object.entries(verticalAgregationBy.names)
-                                  .reduce((obj, [key, value]) => ({
-                                    ...obj,
-                                    [key]: { displayName: value, key, children: [] },
-                                  }),
-                                  {},
-                                );
+    const verticalAgregationBy = cols.find(({ is_row }) => is_row);
+    const diffCols = cols.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);
 
-    const returnData = Object.values(rows.reduce((newDataObj, row) => {
+    const initialDataForReduce = getInitialDataForReduce(verticalAgregationBy);
+
+    const returnData = rows.reduce((newDataObj, row) => {
       const { [verticalAgregationBy.keyName]: verticalKey } = row;
-      if (newDataObj[verticalKey]) {
-        newDataObj[verticalKey].children.push(row);
-      }
+
+      newDataObj.forEach(section => {
+        if (section.values.includes(verticalKey)) {
+          section.children.push(row);
+        }
+      })
 
       return newDataObj;
-    }, initialDataForReduce))
+    }, initialDataForReduce)
       .map((row, index) => {
-        const children = makeSummer([], row.children, diffCols, aggr_fields)
-          .map((row, indexRow) => ({
-            ...row,
+
+        const children = makeSummer([], row.children, diffCols, cols, aggr_fields, row.fields.map(fieldData => {
+          const [[key, value]] = Object.entries(fieldData);
+
+          return { key, value };
+        }))
+          .map((child, indexRow) => ({
+            ...child,
             [_uniq_field_father]: index + 1,
             [_uniq_field]: `${index + 1}.${indexRow + 1}`,
           }));

@@ -6,7 +6,7 @@ interface IReportMetaFieldDetails {
    */
   name: string;
   filter_field?: string;
-  is_vertical?: boolean;
+  is_row?: boolean;
 }
 
 

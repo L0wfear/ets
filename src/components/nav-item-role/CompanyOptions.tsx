@@ -19,14 +19,19 @@ class CompanyOptions extends React.Component<any, any> {
   handleChange = (company_id) => {
     const {
       currentUser: { company_id_old },
-      location: { pathname },
     } = this.props;
 
     if (company_id !== company_id_old) {
       this.props.history.pushState(null, '/change-company');
 
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
-        .then(() => this.props.history.pushState(null, pathname))
+        .then(({ payload }) => {
+          if (['dispatcher', 'master'].indexOf(payload.role) > -1 && payload.okrug_id === null) {
+            this.props.history.pushState(null, '/dashboard');
+          } else {
+            this.props.history.pushState(null, '/monitor');
+          }
+    })
     }
   }
 

@@ -256,6 +256,10 @@ body.application hr {
     }
   }
 
+  .user-guide>a>span>span:nth-of-type(1) {
+    display: none;
+  }
+
   .navbar-brand {
     color: $colorGray;
     text-decoration: none;

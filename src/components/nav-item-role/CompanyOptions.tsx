@@ -24,10 +24,16 @@ class CompanyOptions extends React.Component<any, any> {
     } = this.props;
 
     if (company_id !== company_id_old) {
-      this.props.history.push('/change-company');
+      if (pathname !== '/change-company') {
+        this.props.history.push('/change-company');
+      }
 
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
-        .then(() => this.props.history.push(pathname))
+        .then(() => {
+          if (pathname !== '/change-company') {
+            this.props.history.goBack();
+          }
+        });
     }
   }
 

@@ -1,7 +1,7 @@
 @import './vendor.scss';
 @import './variables.scss';
 @import './data-table.scss';
-@import './react-widgets.scss';
+// @import './react-widgets.scss';
 @import './map.scss';
 @import './utils.scss';
 @import './waybill.scss';
@@ -479,7 +479,7 @@ body.application hr {
   font-size: 12px;
   padding: 8px 10px 5px;
 }
-
+/*
 .chart-wrapper .chart-datepicker {
   width: 200px;
   display: inline-block;
@@ -493,6 +493,7 @@ body.application hr {
   white-space:nowrap;
   z-index: 9999999;
 }
+*/
 
 .missions-list {
   text-align: left;
@@ -1896,10 +1897,11 @@ body.application {
   border-radius: 0;
 }
 
+/*
 .chart-datepicker {
   padding-bottom:2px;
 }
-
+*/
 .modal-footer {
   background-color: #e9f0f5;
   border: none;
@@ -2123,6 +2125,7 @@ body.application {
     overflow: scroll;
   }
 
+  /*
   .rw-select {
     .rw-btn {
       width: 0.7em;
@@ -2132,7 +2135,7 @@ body.application {
   .rw-calendar .rw-header .rw-btn-view {
     width: 55%;
   }
-
+*/
 
   .modal-body {
     padding-top: 5px;
@@ -2872,10 +2875,8 @@ div.none {
 }
 
 .faxogramms-date-range {
-  text-align: center;
-  .faxogramms-date {
-
-  }
+  display: flex;
+  
   .date-divider {
     display: inline-block;
     margin-left: 10px;
@@ -3278,6 +3279,7 @@ div.none {
       width: calc(100% - 55px);
     }
   }
+  /*
   .datepickers {
     .chart-datepicker {
       width: calc(100% - 55px);
@@ -3291,6 +3293,7 @@ div.none {
       width: 100%;
     }
   }
+  */
 }
 
 .griddle-container {

@@ -164,7 +164,7 @@ class MarkersLayer extends CanvasLayer {
       <div>
         <div class="header">
           <span class="gov-number">${gov_number}</span>
-          <span class="dt">${moment(timestamp * 1000).format(`${global.APP_DATE_FORMAT} HH:mm`)}</span>
+          <span class="dt">${moment(timestamp * 1000).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)}</span>
         </div>
         <div class="geo-objects">${objName}</div>
         <div class="geo-objects">${missions}</div>

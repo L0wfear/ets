@@ -1,24 +1,25 @@
 import React, { Component, PropTypes } from 'react';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-import localizer from 'react-widgets/lib/localizers/moment';
+import momentLocalizer from 'components/ui/input/date-picker/localizer';
+
 import cx from 'classnames';
 import moment from 'moment';
-import 'moment/locale/ru';
 
-localizer(moment);
+moment.locale('ru');
+momentLocalizer();
 
 export default class DatePicker extends Component {
 
   static get propTypes() {
     return {
-      time: PropTypes.bool,
-      date: PropTypes.any,
-      disabled: PropTypes.any,
-      min: PropTypes.any,
-      max: PropTypes.any,
-      onChange: PropTypes.func,
+      id: PropTypes.string,
       className: PropTypes.string,
       style: PropTypes.object,
+      date: PropTypes.any,
+      time: PropTypes.bool,
+      calendar: PropTypes.bool,
+      disabled: PropTypes.any,
+      onChange: PropTypes.func,
     };
   }
 
@@ -28,45 +29,29 @@ export default class DatePicker extends Component {
 
   render() {
     const { time = true, disabled, className = '', style = {}, id, calendar = true } = this.props;
-    let { date, min, max } = this.props;
-    const DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} HH:mm` : `${global.APP_DATE_FORMAT}`;
-    const TIME_FORMAT = 'HH:mm';
+    let { date } = this.props;
+    const DATE_FORMAT = time ? `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}` : `${global.APP_DATE_FORMAT}`;
 
     if (typeof date === 'string') {
       date = moment(date).toDate();
-    }
-
-    if (typeof min === 'string') {
-      min = moment(min).toDate();
-    } else if (typeof min === 'undefined' || min === null) {
-      min = new Date(1900, 0, 1);
-    }
-
-    if (typeof max === 'string') {
-      max = moment(max).toDate();
-    } else if (typeof max === 'undefined' || max === null) {
-      max = new Date(2099, 11, 31);
     }
 
     const datePickerClassName = cx('chart-datepicker', className);
 
     return (
       <DateTimePicker
+        culture="ru"
         id={id}
-        onChange={this.props.onChange}
-        format={calendar ? DATE_FORMAT : TIME_FORMAT}
-        timeFormat={TIME_FORMAT}
-        culture="ru-RU"
         className={datePickerClassName}
         style={style}
-        disabled={disabled}
-        step={5}
-        // min={min}
-        // max={max}
-        // messages={translation}
         value={date}
+        format={calendar ? DATE_FORMAT : global.APP_TIME_FORMAT}
+        timeFormat={global.APP_TIME_FORMAT}
+        step={5}
         time={time}
-        calendar={calendar}
+        date={calendar}
+        disabled={disabled}
+        onChange={this.props.onChange}
       />
     );
   }

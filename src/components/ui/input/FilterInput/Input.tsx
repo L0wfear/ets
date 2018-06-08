@@ -2,10 +2,7 @@ import * as React from 'react';
 import * as Input from 'react-bootstrap/lib/Input';
 import * as R from 'ramda';
 
-import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
-import Datepicker from 'components/ui/input/DatePicker';
-
-const DataPicker: React.ComponentClass<IPropsDatePicker> = Datepicker;
+import DatePicker from 'components/ui/input/DatePicker';
 
 export interface IPropsExtendedInput {
   type: string;
@@ -23,19 +20,10 @@ interface IStateExtendedInput {
 }
 
 class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedInput> {
-  handleFirstInput: (index: number, event: React.SyntheticEvent<EventTarget>) => void;
-  handleSecondInput: (index: number, event: React.SyntheticEvent<EventTarget>) => void;
+  state = {
+    value: [],
+  };
 
-  constructor() {
-    super();
-
-    this.handleFirstInput = this.handleChange.bind(this, 0);
-    this.handleSecondInput = this.handleChange.bind(this, 1);
-
-    this.state = {
-      value: [],
-    };
-  }
   handleChange(index, e) {
     const newValue = [...this.state.value];
 
@@ -56,6 +44,9 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     this.setState({ value: newValue });
     this.props.onChange(newValue);
   }
+  handleFirstInput = (e) => this.handleChange(0, e);
+  handleSecondInput = (e) => this.handleChange(1, e);
+
   renderDate() {
     const {
       time = this.props.type === 'datetime',
@@ -64,13 +55,13 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
 
     return (
       <div className="datepickers">
-        <DataPicker
+        <DatePicker
           date={value[0]}
           onChange={this.handleFirstInput}
           time={time}
         />
         {this.props.interval &&
-          <DataPicker
+          <DatePicker
             date={value[1]}
             onChange={this.handleSecondInput}
             time={time}

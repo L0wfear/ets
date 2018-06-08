@@ -5,7 +5,7 @@ export default function DateFormatter({ time = false, empty = '', date }) {
   if (!date) {
     return <div>{empty}</div>;
   }
-  const formattedDate = moment(date).format(`${global.APP_DATE_FORMAT}${time ? ' HH:mm' : ''}`);
+  const formattedDate = moment(date).format(`${global.APP_DATE_FORMAT}${time ? ` ${global.APP_TIME_FORMAT}` : ''}`);
   return <div>{formattedDate}</div>;
 }
 

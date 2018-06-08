@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { autobind } from 'core-decorators';
 import { Button, Glyphicon, Collapse } from 'react-bootstrap';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
@@ -15,6 +14,7 @@ export default class Filter extends React.Component {
       tableData: PropTypes.array,
       onHide: PropTypes.func,
       onSubmit: PropTypes.func.isRequired,
+      options: PropTypes.array,
     };
   }
 
@@ -31,7 +31,7 @@ export default class Filter extends React.Component {
   }
 
   // TODO сделано для adv...-select-like
-  // из-за с проблем с именем 
+  // из-за с проблем с именем
   // переделать
   getName = (name, type) => {
     switch (type) {
@@ -47,7 +47,7 @@ export default class Filter extends React.Component {
       delete filterValues[key];
     } else {
       const data = e.target ? e.target.value : e;
-      const filter = this.props.options.find(({ name }) => name === key);
+      const { filter } = this.props.options.find(({ name }) => key.match(`^${name}`));
 
       filterValues[key] = {
         type: filter.type || 'text',
@@ -61,7 +61,7 @@ export default class Filter extends React.Component {
   handleFilterMultipleValueChange = (key, v) => {
     const { filterValues: { ...filterValues } } = this.state;
     const data = !isEmpty(v) ? v.split('$') : [];
-    const { filter } = this.props.options.find(({ name }) => name === key);
+    const { filter } = this.props.options.find(({ name }) => key.match(`^${name}`));
 
     // для формата под новую таблицу
     filterValues[key] = {
@@ -98,12 +98,12 @@ export default class Filter extends React.Component {
 
   render() {
     const { filterValues } = this.state;
-    const { tableData, options } = this.props;
+    const { tableData, options: filters } = this.props;
 
-    const filterRows = options.map((option, i) => {
+    const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options, byKey, byLabel } = filter;
-      
+
       return (
         <FilterRow
           tableData={tableData}

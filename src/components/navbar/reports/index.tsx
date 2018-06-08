@@ -38,7 +38,7 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       title="Оперативные отчеты"
     >
       <MenuItem id="link-route-odh-coverage-report" permissions={[PERMISSIONS.reportAll.route_odh_coverage_report.false]} active={path === '/route-odh-coverage-report'} href="#/route-odh-coverage-report">Покрытие ОДХ маршрутами</MenuItem>
-      <MenuItem id="link-mission-reports" permissions={[PERMISSIONS.reportAll.car_travel_report.false]} active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
+      <MenuItem id="link-mission-reports" permissions={[PERMISSIONS.reportAll.car_travel_report.list]} active={path === '/mission-reports'} href="#/mission-reports">Прохождение заданий</MenuItem>
       <MenuItem id="link-car-usage-report" permissions={[PERMISSIONS.reportAll.car_usage_report_with_track_report.list]} active={path === '/car-usage-report'} href="#/car-usage-report">Статистика выхода техники</MenuItem>
       <MenuItem id="link-track-events-reports" permissions={[PERMISSIONS.reportAll.track_events_report.list]} active={path === '/track-events-reports'} href="#/track-events-reports">Отчет по возможным сливам топлива</MenuItem>
       <MenuItem id="link-brigade-efficiency-report"permissions={[PERMISSIONS.reportAll.brigade_efficiency_report.list]} active={path === '/brigade-efficiency-report'} href="#/brigade-efficiency-report">Работа бригад по ручной уборке</MenuItem>

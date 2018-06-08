@@ -30,9 +30,11 @@ class LoginPage extends Component {
       password,
     };
 
-    flux.getActions('session').login(user).then((data) => {
+    flux.getActions('session').login(user).then(({ payload }) => {
       this.context.loadData();
-      if (['dispatcher', 'master'].indexOf(data.payload.role) > -1 && data.payload.okrug_id === null) {
+      if (payload.permissions.includes('role.change')) {
+        this.props.history.push('/change-company');
+      } else if (['dispatcher', 'master'].indexOf(payload.role) > -1 && payload.okrug_id === null) {
         this.props.history.push('/dashboard');
       } else {
         this.props.history.push('/monitor');

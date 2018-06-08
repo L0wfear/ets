@@ -42,12 +42,16 @@ const getMainApp = props => {
     flux,
     match: { url },
   } = props;
+
   const permittedPath = requireAuth(flux, url);
 
   if (!flux.getStore('session').isLoggedIn()) {
     return <Redirect to="/login" />;
   } else if (url !== permittedPath) {
     return <Redirect to={permittedPath} />;
+  }
+  if (url === '11/change-company' && !flux.getStore('session').state.isGlavControl) {
+    return <Redirect to={requireAuth(flux, '/monitor')} />
   }
 
   return <MainApp {...props} />;

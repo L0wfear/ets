@@ -1,9 +1,11 @@
 import { createPath } from 'redux/redux-utils';
+import { cloneDeep } from 'lodash';
 import {
   OrderService,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 import { typeTemplate } from 'components/directories/order/forms/utils/constant';
+import { parseFilterObject } from 'actions/MissionsActions.js';
 
 const ORDER = createPath('ORDER');
 export const GET_ORDERS = ORDER`GET_ORDERS`;
@@ -102,7 +104,6 @@ export const setEmptyDutyMissionTemplateData = () => ({
 
 export const getOrders: any = ({ limit, offset, sort_by, filter, date_start, date_end, haveMax }) => (dispatch, getState) => {
   const { pageOptions: { ...pageOptionsStore } } = getState().order;
-
   const pageOptions = {
     date_start: createValidDateTime(date_start ? date_start : pageOptionsStore.date_start),
     date_end: createValidDateTime(date_end ? date_end : pageOptionsStore.date_end),
@@ -112,16 +113,16 @@ export const getOrders: any = ({ limit, offset, sort_by, filter, date_start, dat
     filter: filter || pageOptionsStore.filter,
   };
 
+  const filterValues = JSON.stringify(parseFilterObject(cloneDeep(pageOptions.filter)));
+
   return OrderService.get({
     ...pageOptions,
-    filter: JSON.stringify(Object.entries(pageOptions.filter).reduce((newObj, [key, value]) => ({
-      ...newObj,
-      [`${key}${Array.isArray(value) ? '__in' : ''}`]: value,
-    }), {})),
+    filter: filterValues,
   }).then(({ result: OrdersList, total_count }) => {
     if (OrdersList.length === 0 && total_count !== 0) {
       return getOrders({
         ...pageOptions,
+        filter: filterValues,
         offset: (Math.ceil(total_count / pageOptions.limit) - 1) * pageOptions.limit,
         haveMax: haveMax || pageOptionsStore.haveMax,
       })(dispatch, getState);

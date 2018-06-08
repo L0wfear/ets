@@ -27,7 +27,7 @@ export const tableMeta = {
       type: 'string',
       cssClassName: 'width120',
       filter: {
-        type: 'multiselect',
+        type: 'string',
       },
     },
     {

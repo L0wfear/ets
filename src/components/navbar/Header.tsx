@@ -38,7 +38,6 @@ const makeNavDropChildren = ([key, data]) => {
 }
 
 const makeNavChildren = ([key, data]) => {
-  console.log(key, data)
   if (data.path && !data.renderNav) {
     return <NavItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
   }

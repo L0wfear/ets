@@ -46,6 +46,9 @@ const FuelChartSFC = props => {
 
   const events = get(props, ['car', 'marker', 'track', 'events'], null);
   const points = props.trackPoints;
+
+  const hasLevelData = Object.values(props.carsSensors).some(({ type_slug }) => type_slug === 'level');
+
   const { rawData } = props;
 
   if (trackIsLoading) return <span>{LOAD_PROCESS_TEXT}</span>;
@@ -90,22 +93,27 @@ const FuelChartSFC = props => {
 
   return (
     <div>
-      <Div hidden={!hasData} >
-        <LineChart
-          name={rawData ? 'fuelChartRaw' : 'fuelChart'}
-          updateOnly
-          data={data}
-          showX
-          onClick={props.onMapClick}
-          forceUpdate={props.hasTrackChanged}
-        />
-        <div className="chart-checkbox" onClick={props.onSourceDataCheck}>
-         <input readOnly type="checkbox" checked={rawData} />
-          Исходные данные датчиков
-        </div>
-        <EventTable data={sumEvents} showOnMap={props.showOnMap} />
+      <Div hidden={!hasLevelData} >
+        <Div hidden={!hasData} >
+          <LineChart
+            name={rawData ? 'fuelChartRaw' : 'fuelChart'}
+            updateOnly
+            data={data}
+            showX
+            onClick={props.onMapClick}
+            forceUpdate={props.hasTrackChanged}
+          />
+          <div className="chart-checkbox" onClick={props.onSourceDataCheck}>
+          <input readOnly type="checkbox" checked={rawData} />
+            Исходные данные датчиков
+          </div>
+          <EventTable data={sumEvents} showOnMap={props.showOnMap} />
+        </Div>
+        <Div hidden={hasData}>
+          <span style={style.noData}>{'Нет данных по датчикам уровня топлива'}</span>
+        </Div>
       </Div>
-      <Div hidden={hasData}>
+      <Div hidden={hasLevelData}>
         <span style={style.noData}>{'Нет датчиков уровня топлива'}</span>
       </Div>
       

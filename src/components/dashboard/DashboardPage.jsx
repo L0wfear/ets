@@ -5,6 +5,8 @@ import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 
 import cx from 'classnames';
+import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
+
 import { FluxContext, connectToStores } from 'utils/decorators';
 import DashboardCardMedium from './DashboardCardMedium.jsx';
 import DashboardManagementCard from './DashboardManagementCard.jsx';
@@ -14,7 +16,7 @@ import customCards from './customCards/index.js';
 @connectToStores(['dashboard', 'loading'])
 @autobind
 @FluxContext
-export default class DashboardPage extends React.Component {
+class DashboardPage extends React.Component {
 
   static get propTypes() {
     return {
@@ -162,3 +164,6 @@ export default class DashboardPage extends React.Component {
     );
   }
 }
+
+
+export default triggerOnChangeCompany(DashboardPage);

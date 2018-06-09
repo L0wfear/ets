@@ -73,6 +73,7 @@ export default class CarInfo extends Component {
       tillNow: true,
       car: {},
       tab: 0,
+      carsSensors: {},
       sensors: {
         equipment: [],
         level: [],
@@ -207,6 +208,7 @@ export default class CarInfo extends Component {
 
     track.fetch(this.props.flux, from_dt, to_dt).then((trackInfo) => {
       this.setState({
+        carsSensors: trackInfo.cars_sensors,
         sensorsInfo: trackInfo.sensors,
         trackPoints: trackInfo.track,
       });
@@ -472,7 +474,7 @@ export default class CarInfo extends Component {
         </ButtonGroup>
         {tab === 0 && <VehicleInfo missions={missions} car={car} from_dt={from_dt} to_dt={to_dt} flux={this.props.flux} />}
         <div className={tab !== 1 ? 'hidden' : ''}>
-          <Charts trackPoints={this.state.trackPoints} car={car} />
+          <Charts trackPoints={this.state.trackPoints} car={car} carsSensors={this.state.carsSensors} />
         </div>
         {tab === 2 && this.renderTracking()}
       </div>

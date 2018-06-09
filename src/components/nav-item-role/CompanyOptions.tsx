@@ -18,10 +18,7 @@ class CompanyOptions extends React.Component<any, any> {
   }
 
   handleChange = (company_id) => {
-    const {
-      currentUser: { company_id_old },
-      location: { pathname },
-    } = this.props;
+    const { currentUser: { company_id_old } } = this.props;
 
     if (company_id !== company_id_old) {
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)

@@ -111,13 +111,13 @@ const MissionInfoForm: React.SFC<any> = props => {
               </Div>
             </Col>
           </Row>
-          <Div hidden={props.tooLongDates}>
+          <Div className="listStyleTypeNone" hidden={props.tooLongDates}>
             * - расстояние, учитываемое при прохождении задания<br />
             ** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости<br />
-            <li><b>{'Пройдено с рабочей скоростью: '}</b>
+            <li className="colorGreen" ><b>{'Пройдено с рабочей скоростью: '}</b>
               {props.withWorkSpeed}
             </li>
-            <li><b>{'Пройдено с превышением рабочей скорости: '}</b>
+            <li className="colorRed" ><b>{'Пройдено с превышением рабочей скорости: '}</b>
               {props.withHightSpeed}
             </li>
             <li><b>Общее время стоянок:</b>

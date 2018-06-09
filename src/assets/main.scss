@@ -3263,7 +3263,6 @@ div.none {
   resize: vertical;
 }
 
-
 .marginTop10 {
   margin-top: 10px;
 }
@@ -3288,4 +3287,15 @@ div.none {
       margin: 0 4px;
     }
   }
+}
+.colorRed {
+  color: red;
+}
+
+.colorGreen {
+  color: green;
+}
+
+.listStyleTypeNone{
+  list-style-type: none;
 }

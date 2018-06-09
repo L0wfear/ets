@@ -4,6 +4,7 @@ import { FluxContext } from 'utils/decorators';
 import { getTypes } from 'redux/modules/types';
 import FluxComponent from 'flummox/component';
 import connectToStores from 'flummox/connect';
+import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 import MapWrapper from './MapWrapper.jsx';
 import Toolbar from './toolbar/Toolbar.jsx';
 import Sidebar from './Sidebar.jsx';
@@ -88,4 +89,4 @@ class MonitorPage extends Component {
 
 }
 
-export default connectToStores(MonitorPage);
+export default triggerOnChangeCompany(connectToStores(MonitorPage));

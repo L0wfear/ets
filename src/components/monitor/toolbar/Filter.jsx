@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-// replace here
-// import { DropdownList, Multiselect } from 'react-widgets';
+
+import { DropdownList, Multiselect } from 'react-widgets';
 
 function filter(item, search) {
   if (!item || !item.title) {
@@ -81,22 +81,20 @@ export default class Filter extends Component {
   renderSearch(options) {
     return (
       <div className="app-toolbar-filter">
-      {
-        /*
+
         <Multiselect
-        valueField={this.props.valueField}
-        textField="title"
-        defaultValue={[]}
-        data={options}
-        onChange={value => this.onChange(value)}
-        filter={filter}
-        messages={messages}
-        placeholder={this.props.title}
-        className="map-filter__input"
-        {...this.props}
+          valueField={this.props.valueField}
+          textField="title"
+          defaultValue={[]}
+          data={options}
+          onChange={value => this.onChange(value)}
+          filter={filter}
+          messages={messages}
+          placeholder={this.props.title}
+          className="map-filter__input"
+          {...this.props}
         />
-        */
-        }
+
       </div>
     );
   }
@@ -130,18 +128,16 @@ export default class Filter extends Component {
     return (
       <div className="app-toolbar-filter">
         <span className="title">{this.props.title}</span>
-        {
-          /*
+
           <DropdownList
-          valueField={this.props.valueField}
-          textField="title"
-          defaultValue={null}
-          data={options}
-          onChange={value => this.onChangeSingle(value)}
-          {...this.props}
+            valueField={this.props.valueField}
+            textField="title"
+            defaultValue={null}
+            data={options}
+            onChange={value => this.onChangeSingle(value)}
+            {...this.props}
           />
-          */
-        }
+
       </div>
     );
   }

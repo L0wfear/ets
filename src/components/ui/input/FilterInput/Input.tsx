@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Input from 'react-bootstrap/lib/Input';
 import * as R from 'ramda';
 
-import DatePicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 
 export interface IPropsExtendedInput {
   type: string;

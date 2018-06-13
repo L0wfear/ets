@@ -1936,6 +1936,9 @@ body.application {
 .modal-footer {
   background-color: #e9f0f5;
   border: none;
+  #assign-to-waybill {
+    text-align: left;
+  }
 }
 
 .modal-backdrop.in {

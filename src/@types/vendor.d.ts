@@ -10,5 +10,6 @@ declare module NodeJS  {
     SESSION_KEY: string;
     window: any;
     APP_DATE_FORMAT: string;
+    APP_TIME_FORMAT: string;
   }
 }

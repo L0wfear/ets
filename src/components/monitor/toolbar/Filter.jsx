@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+
 import { DropdownList, Multiselect } from 'react-widgets';
 
 function filter(item, search) {
@@ -80,6 +81,7 @@ export default class Filter extends Component {
   renderSearch(options) {
     return (
       <div className="app-toolbar-filter">
+
         <Multiselect
           valueField={this.props.valueField}
           textField="title"
@@ -92,6 +94,7 @@ export default class Filter extends Component {
           className="map-filter__input"
           {...this.props}
         />
+
       </div>
     );
   }
@@ -125,14 +128,16 @@ export default class Filter extends Component {
     return (
       <div className="app-toolbar-filter">
         <span className="title">{this.props.title}</span>
-        <DropdownList
-          valueField={this.props.valueField}
-          textField="title"
-          defaultValue={null}
-          data={options}
-          onChange={value => this.onChangeSingle(value)}
-          {...this.props}
-        />
+
+          <DropdownList
+            valueField={this.props.valueField}
+            textField="title"
+            defaultValue={null}
+            data={options}
+            onChange={value => this.onChangeSingle(value)}
+            {...this.props}
+          />
+
       </div>
     );
   }

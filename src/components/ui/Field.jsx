@@ -4,7 +4,7 @@ import { Input } from 'react-bootstrap';
 import cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
-import DatePicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
 // import TextInput from 'components/ui/input/TextInput/TextInput';
@@ -117,8 +117,8 @@ export default class Field extends React.Component {
     const { error, label = '', readOnly = false } = this.props;
     const dateClassName = cx({ 'has-error': error });
     return (
-      <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
-        <label style={{ minHeight: 15 }}>{label}</label>
+      <Div hidden={this.props.hidden} style={{ marginBottom: label ? 15 : 0 }}>
+        { typeof label === 'string' && <label style={{ minHeight: 15 }}>{label}</label> }
         <DatePicker {...this.props} className={dateClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>

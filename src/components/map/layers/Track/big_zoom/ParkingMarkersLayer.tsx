@@ -69,8 +69,8 @@ class ParkingMarkersLayer extends CanvasLayer {
       coords,
     } = parking;
 
-    const start = moment(start_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`);
-    const end = moment(end_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`);
+    const start = moment(start_timestamp).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
+    const end = moment(end_timestamp).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
     const diff = secondsToTime((end_timestamp - start_timestamp) / 1000);
 
     this.showPopup({

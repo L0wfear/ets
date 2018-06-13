@@ -6,14 +6,14 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Div from 'components/ui/Div.jsx';
 import { getDatesByShift, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 
-const DatePicker: any = bindable(Datepicker);
+const DatePickerBindable: any = bindable(DatePicker);
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   mission_date_start_from: string;
@@ -43,10 +43,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row>
-        <Col md={3} />
-        <Col md={6} className="faxogramms-date-range">
+        <Col mdOffset={3} md={6} className="datepicker-range">
           <Div className="inline-block faxogramms-date">
-            <DatePicker
+            <DatePickerBindable
               date={mission_date_start_from}
               onChange={this.props.handleChange}
               bindOnChange={'mission_date_start_from'}
@@ -55,7 +54,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           </Div>
           <Div className="date-divider">—</Div>
           <Div className="inline-block faxogramms-date">
-            <DatePicker
+            <DatePickerBindable
               date={mission_date_end_to}
               onChange={this.props.handleChange}
               bindOnChange={'mission_date_end_to'}

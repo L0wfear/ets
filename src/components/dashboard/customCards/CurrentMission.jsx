@@ -61,7 +61,7 @@ const getEstimatedFinishTime = (data) => {
   if (typeof data === 'string' && data.indexOf('2') === -1) {
     return data;
   }
-  return moment(data).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  return moment(data).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
 };
 
 @autobind

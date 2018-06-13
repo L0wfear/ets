@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Button, Row, Col } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';
 import { connectToStores, FluxContext } from 'utils/decorators';
@@ -100,15 +100,14 @@ export default class Analytics extends Component {
     return (
       <div className="ets-page-wrap">
         <Div>
-          <Col md={1} />
-          <Col md={4}>
+          <Col mdOffset={1} md={4}>
             <Row>
               <Div><label>Период формирования:</label></Div>
               <Div className="inline-block reports-date">
-                <Datepicker date={this.state.date_from} onChange={this.handleChange.bind(this, 'date_from')} />
+                <DatePicker date={this.state.date_from} onChange={this.handleChange.bind(this, 'date_from')} />
               </Div>
               <Div className="inline-block reports-date">
-                <Datepicker date={this.state.date_to} onChange={this.handleChange.bind(this, 'date_to')} />
+                <DatePicker date={this.state.date_to} onChange={this.handleChange.bind(this, 'date_to')} />
               </Div>
             </Row>
             <br />

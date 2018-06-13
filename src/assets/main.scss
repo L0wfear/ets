@@ -1,7 +1,8 @@
 @import './vendor.scss';
 @import './variables.scss';
 @import './data-table.scss';
-@import './react-widgets.scss';
+// @import './react-widgets.scss';
+@import './react-widgets-new.scss';
 @import './map.scss';
 @import './utils.scss';
 @import './waybill.scss';
@@ -479,7 +480,7 @@ body.application hr {
   font-size: 12px;
   padding: 8px 10px 5px;
 }
-
+/*
 .chart-wrapper .chart-datepicker {
   width: 200px;
   display: inline-block;
@@ -493,6 +494,7 @@ body.application hr {
   white-space:nowrap;
   z-index: 9999999;
 }
+*/
 
 .missions-list {
   text-align: left;
@@ -1896,10 +1898,11 @@ body.application {
   border-radius: 0;
 }
 
+/*
 .chart-datepicker {
   padding-bottom:2px;
 }
-
+*/
 .modal-footer {
   background-color: #e9f0f5;
   border: none;
@@ -2082,6 +2085,7 @@ body.application {
   position: absolute;
   top: 84px;
   left: calc(50% - 250px);
+  max-width: 514px;
 
   .date-divider {
     margin-left: 10px;
@@ -2123,6 +2127,7 @@ body.application {
     overflow: scroll;
   }
 
+  /*
   .rw-select {
     .rw-btn {
       width: 0.7em;
@@ -2132,7 +2137,7 @@ body.application {
   .rw-calendar .rw-header .rw-btn-view {
     width: 55%;
   }
-
+*/
 
   .modal-body {
     padding-top: 5px;
@@ -2871,11 +2876,9 @@ div.none {
   min-height: 100px;
 }
 
-.faxogramms-date-range {
-  text-align: center;
-  .faxogramms-date {
-
-  }
+.datepicker-range {
+  display: flex;
+  
   .date-divider {
     display: inline-block;
     margin-left: 10px;
@@ -3284,6 +3287,7 @@ div.none {
       position: absolute;
       top: 0;
       left: 55px;
+      height: 36px;
     }
     .chart-datepicker:nth-child(2) {
       position: relative;
@@ -3317,6 +3321,11 @@ div.none {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+}
+
+.carinfo-divider {
+  margin: 5px;
+  position: relative;
 }
 
 .checkbox-print-with-filter {

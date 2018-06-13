@@ -81,7 +81,7 @@ class TrackLayerSZ extends CanvasLayer {
     } = fuelEvent;
 
     const typeText = type === 'leak' ? 'Слив топлива' : 'Заправка топлива'
-    const start = `${moment(start_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)} ${moment(end_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`;
+    const start = `${moment(start_timestamp).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)} ${moment(end_timestamp).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)}`;
     const diff = secondsToTime((end_timestamp - start_timestamp) / 1000);
 
     this.showPopup({

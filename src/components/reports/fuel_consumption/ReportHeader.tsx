@@ -6,13 +6,13 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 
-const DatePicker: any = bindable(Datepicker);
+const DatePickerBindable: any = bindable(DatePicker);
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: string;
@@ -58,7 +58,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Col md={12}>
           <Row>
             <Col md={3}>
-              <DatePicker
+              <DatePickerBindable
                 date={date_start}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_start'}
@@ -66,7 +66,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               />
             </Col>
             <Col md={3}>
-              <DatePicker
+              <DatePickerBindable
                 date={date_end}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_end'}

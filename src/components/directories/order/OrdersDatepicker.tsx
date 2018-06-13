@@ -6,15 +6,15 @@ import { getOrders } from 'redux/modules/order/action-order';
 import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/compositions/hoc';
 
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
-import Datepicker from 'components/ui/input/DatePicker';
+import Datepicker from 'components/ui/input/date-picker/DatePicker';
 
 const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker);
 
 
 const OrdersDatepicker: React.SFC<any> = props =>
     <Row>
-      <Col mdOffset={3} md={6} className="orders-date-range">
-        <div className="inline-block">
+      <Col mdOffset={3} md={6} className="datepicker-range">
+        <div>
           <DatePickerTsx
             date={props.date_start}
             onChange={props.getOrders}
@@ -23,7 +23,7 @@ const OrdersDatepicker: React.SFC<any> = props =>
           />
         </div>
         <div className="date-divider">—</div>
-        <div className="inline-block">
+        <div>
           <DatePickerTsx
             date={props.date_end}
             onChange={props.getOrders}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { staticProps, exportable, connectToStores } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import Datepicker from 'components/ui/input/DatePicker';
+import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable.jsx';
 import permissions from 'components/directories/medical_stats/config-data/permissions';
@@ -47,7 +47,7 @@ export default class MedicalStatsList extends ElementsList {
     const { date_from, date_to } = this.state;
     return (
       <div className="log-interval-picker">
-        <div className="inline-block faxogramms-date">
+        <div className="datepicker-range">
           <Datepicker date={date_from} onChange={v => this.setState({ date_from: v })} />
         </div>
         <div className="date-divider">—</div>

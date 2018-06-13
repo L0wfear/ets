@@ -3,15 +3,12 @@ import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl
 import { autobind } from 'core-decorators';
 
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
+import { getYesterday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader.jsx';
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
 import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm.jsx';
-import OdhCoverageReportHeader from './OdhCoverageReportHeader.jsx';
-import DataPicker from 'components/ui/input/DatePicker';
 
-const TWO_MINUTES = 1000 * 60 * 2;
+// const TWO_MINUTES = 1000 * 60 * 2;
 
 const MenuItem = bindable(BootstrapMenuItem);
 
@@ -89,7 +86,6 @@ export default class OdhCoverageReport extends Component {
 
     return (
       <div className="ets-page-wrap">
-        {/* <OdhCoverageReportHeader {...this.state} onSubmit={this.getReport} onChange={this.handleDateStartChange} /> */}
         <OdhCoverageReportTable data={odhCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:

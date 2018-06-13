@@ -84,6 +84,7 @@ export default class Filter extends React.Component {
   renderSearch(options) {
     return (
       <div className="app-toolbar-filter">
+
         <Multiselect
           valueField={this.props.valueField}
           textField="title"
@@ -97,6 +98,7 @@ export default class Filter extends React.Component {
           itemComponent={this.props.itemComponent}
           name={this.props.name}
         />
+
       </div>
     );
   }
@@ -129,14 +131,16 @@ export default class Filter extends React.Component {
     return (
       <div className="app-toolbar-filter">
         <span className="title">{this.props.title}</span>
-        <DropdownList
-          valueField={this.props.valueField}
-          textField="title"
-          defaultValue={null}
-          data={options}
-          onChange={value => this.onChangeSingle(value)}
-          {...this.props}
-        />
+
+          <DropdownList
+            valueField={this.props.valueField}
+            textField="title"
+            defaultValue={null}
+            data={options}
+            onChange={value => this.onChangeSingle(value)}
+            {...this.props}
+          />
+
       </div>
     );
   }

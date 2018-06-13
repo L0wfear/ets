@@ -21,7 +21,7 @@ export function makeUnixTime(time) {
 
 export function makeTime(date, withSeconds = false) {
   date = new Date(date);
-  return moment(date).format(`HH:mm${withSeconds ? ':ss' : ''}`);
+  return moment(date).format(`${global.APP_TIME_FORMAT}${withSeconds ? ':ss' : ''}`);
 }
 
 export function makeMinutes(date) {
@@ -46,7 +46,7 @@ export function createValidDateTime(date) {
 
 export function getFormattedDateTime(date) {
   if (!date) return '';
-  return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
 }
 
 export function getFormattedDateTimeSeconds(date) {

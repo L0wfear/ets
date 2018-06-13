@@ -355,7 +355,7 @@ export default class CarInfo extends React.Component {
               boundKeys={['from_dt_']}
               disabled={tillNow}
             />
-            &nbsp;–&nbsp;
+            <span className="carinfo-divider">–</span>
             <ExtField
               type={'date'}
               time

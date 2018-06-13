@@ -228,6 +228,7 @@ export default class ProgramRegistryForm extends Form {
               <Col md={3}>
                 <ExtField
                   type="date"
+                  label=""
                   date={state.plan_date_end}
                   time={false}
                   error={errors.plan_date_end}
@@ -261,6 +262,7 @@ export default class ProgramRegistryForm extends Form {
               <Col md={3}>
                 <ExtField
                   type="date"
+                  label=""
                   date={state.fact_date_end}
                   time={false}
                   error={errors.fact_date_end}

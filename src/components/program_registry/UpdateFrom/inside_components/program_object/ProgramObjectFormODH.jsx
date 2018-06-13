@@ -426,7 +426,7 @@ class ProgramObjectFormodh extends Form {
                 <Col md={3}>
                   <div className="pr-object-data">
                     <span>Дата осмотра</span>
-                    <span>{moment(state.reviewed_at).format(`${global.APP_DATE_FORMAT} HH:mm`)}</span>
+                    <span>{moment(state.reviewed_at).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)}</span>
                   </div>
                 </Col>
                 <Col md={2} xsOffset={1}>

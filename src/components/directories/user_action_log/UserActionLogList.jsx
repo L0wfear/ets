@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
-import Datepicker from 'components/ui/input/DatePicker';
+import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import UserActionLogTable from 'components/directories/user_action_log/UserActionLogTable.jsx';
 import permissions from 'components/directories/user_action_log/config-data/permissions';

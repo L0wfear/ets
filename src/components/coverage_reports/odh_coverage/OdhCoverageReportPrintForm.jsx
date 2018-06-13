@@ -7,7 +7,7 @@ import { Button, Modal } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { saveData } from 'utils/functions';
 import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Div from 'components/ui/Div.jsx';
 
 @FluxContext
@@ -53,12 +53,12 @@ export default class OdhCoverageReportPrintForm extends React.Component {
           {
             exportType === 1 ?
             <div style={{ textAlign: 'center' }}>
-              <Datepicker className="inline-block" time={false} date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
+              <DatePicker className="inline-block" time={false} date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
             </div>
             :
             <div style={{ textAlign: 'center' }}>
-              <Datepicker className="inline-block" date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
-              <Datepicker className="inline-block" style={{ marginLeft: 40 }} date={this.state.date_end} onChange={date => this.setState({ date_end: date })} />
+              <DatePicker className="inline-block" date={this.state.date_start} onChange={date => this.setState({ date_start: date })} />
+              <DatePicker className="inline-block" style={{ marginLeft: 40 }} date={this.state.date_end} onChange={date => this.setState({ date_end: date })} />
             </div>
           }
         </ModalBody>

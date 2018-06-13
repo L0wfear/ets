@@ -4,9 +4,8 @@ import * as moment from 'moment';
 
 import Div from 'components/ui/Div.jsx';
 import ModalBody from 'components/ui/Modal';
-import Datepicker from 'components/ui/input/DatePicker';
+import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
-const DataPicker: any = Datepicker;
 
 export interface IPropsPrintForm {
   show: boolean;
@@ -70,10 +69,10 @@ class PrintForm extends React.Component<IPropsPrintForm, IStatePrintForm> {
           <span style={{ marginBottom: 10, display: 'block' }}>Выберите период:</span>
           <Row>
             <Col md={12} style={{ marginBottom: 5 }}>
-              <DataPicker time={false} date={this.state.date_from} onChange={v => this.handleChange('date_from', v)} />
+              <Datepicker time={false} date={this.state.date_from} onChange={v => this.handleChange('date_from', v)} />
             </Col>
             <Col md={12}>
-              <DataPicker time={false} min={this.state.date_from} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
+              <Datepicker time={false} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
             </Col>
           </Row>
         </ModalBody>

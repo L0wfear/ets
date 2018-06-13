@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getNextDay859am, getToday9am, getFormattedDateTime } from 'utils/dates';
+import { getToday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
-// import DtCoverageReportHeader from './DtCoverageReportHeader.jsx';
-import DataPicker from 'components/ui/input/DatePicker';
 
 // const TWO_MINUTES = 1000 * 60 * 2;
 
@@ -94,7 +92,6 @@ export default class DtCoverageReport extends Component {
 
     return (
       <div className="ets-page-wrap">
-        {/* <DtCoverageReportHeader {...this.state} onSubmit={this.getReport} onChange={this.handleDateStartChange} />*/}
         <DtCoverageReportTable data={dtCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:

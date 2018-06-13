@@ -318,7 +318,7 @@ export default class CarInfo extends React.Component {
     changesState.from_dt = changesState.from_dt_;
     changesState.to_dt = changesState.to_dt_;
 
-    if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 3) {
+    if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 10) {
       changesState.errorDates = 'Период формирования трека не должен превышать трое суток';
     } else {
       changesState.errorDates = '';

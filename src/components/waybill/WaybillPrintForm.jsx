@@ -92,6 +92,7 @@ class WaybillPrintForm extends React.Component {
     e.stopPropagation();
   }
   handleChange = (field, e) => {
+    console.log(field, get(e, ['target', 'value'], e))
     this.setState({ [field]: get(e, ['target', 'value'], e) });
   }
   handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
@@ -142,7 +143,7 @@ class WaybillPrintForm extends React.Component {
                 value={this.state.month}
                 clearable={false}
                 onChange={this.handleChange}
-                boundKeys={['year']}
+                boundKeys={['month']}
                 error={errors.month}
                 disabled={this.state.DISABLE_SUBMIT}
               />

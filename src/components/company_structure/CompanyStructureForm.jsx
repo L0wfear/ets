@@ -37,10 +37,10 @@ class CompanyStructureForm extends Form {
     }
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-company-structure" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Создание подразделения</Modal.Title>
+          <Modal.Title>Создание подразделения</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

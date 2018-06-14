@@ -68,9 +68,9 @@ export default class ProgramRegistryForm extends Form {
     const title = 'Создание программы ремонта';
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-program-registry-c" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

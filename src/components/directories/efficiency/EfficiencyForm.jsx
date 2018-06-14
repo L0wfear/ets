@@ -29,9 +29,9 @@ export default class EfficiencyForm extends Form {
     const SOURCES = [{ value: 0, label: 'Реестр ОДХ' }, { value: 1, label: 'Справочник показателей норм на содержание ОДХ' }];
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-efficiency" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Div>

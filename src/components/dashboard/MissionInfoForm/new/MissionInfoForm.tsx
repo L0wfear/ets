@@ -51,9 +51,9 @@ const MissionInfoForm: React.SFC<any> = props => {
 
   return (
     <Div hidden={!props.gov_number}>
-      <Modal {...props} bsSize="large" className="mission-info-modal" backdrop="static">
+      <Modal {...props} id="modal-mission-info" bsSize="large" className="mission-info-modal" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{`Информация о задании. Рег. номер ТС: ${props.gov_number}`}</Modal.Title>
+          <Modal.Title>{`Информация о задании. Рег. номер ТС: ${props.gov_number}`}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

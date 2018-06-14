@@ -115,10 +115,10 @@ class WaybillPrintForm extends Component {
     const DISABLE_SUBMIT = (this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from));
 
     return (
-      <Modal {...this.props} show={!!this.props.show}>
+      <Modal {...this.props} id="modal-waybill-print" show={!!this.props.show}>
 
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">Печать отчета по выработке ТС</Modal.Title>
+          <Modal.Title>Печать отчета по выработке ТС</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

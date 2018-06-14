@@ -47,9 +47,9 @@ export default class FuelRateForm extends Form {
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-fuel-rate" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
+          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

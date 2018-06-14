@@ -45,9 +45,9 @@ export default class BaseTechInspectionForm extends Form {
     if (IS_CREATING) title = 'Добавление записи';
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-tech-inspection" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ExtDiv style={{ padding: 15 }}>
           <Row>

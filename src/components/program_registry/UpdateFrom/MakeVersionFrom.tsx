@@ -32,9 +32,9 @@ class MakeFileModal extends React.Component<any, any> {
     const { TextBody } = this.props;
 
     return (
-      <RB.Modal {...this.props} onHide={this.onHide} backdrop="static">
+      <RB.Modal {...this.props} id="modal-make-version" onHide={this.onHide} backdrop="static">
         <RB.Modal.Header closeButton>
-          <RB.Modal.Title id="contained-modal-title-lg">{this.props.title}</RB.Modal.Title>
+          <RB.Modal.Title>{this.props.title}</RB.Modal.Title>
         </RB.Modal.Header>
         <Div style={{ padding: '0px 15px' }}>
           {TextBody}

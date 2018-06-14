@@ -31,10 +31,10 @@ export default class OdhForm extends Form {
     const COMPANY_ELEMENTS = companyStructureList.map(defaultSelectListMapper);
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-odh" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Реестр ОДХ</Modal.Title>
+          <Modal.Title>Реестр ОДХ</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

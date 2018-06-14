@@ -166,9 +166,9 @@ export default class PercentModalList extends ElementsList {
 
   render() {
     return (
-      <Modal {...this.props} show bsSize="lg" backdrop="static">
+      <Modal {...this.props} id="modal-percent-list" show bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{'Проставление процента выполнения работ'}</Modal.Title>
+          <Modal.Title>{'Проставление процента выполнения работ'}</Modal.Title>
         </Modal.Header>
         { super.render() }
         <ModalBody />

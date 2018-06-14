@@ -16,9 +16,9 @@ export default class MaintenanceWorkForm extends Form {
     const MEASUREUNITS = measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
 
     return (
-      <Modal {...this.props} backdrop="static" bgSize="small">
+      <Modal {...this.props} id="modal-mainenance-work" backdrop="static" bgSize="small">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
+          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Field

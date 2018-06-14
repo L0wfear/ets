@@ -28,7 +28,7 @@ const DatePicker: React.SFC<DatePickerProps> = props => {
   if (typeof value === 'string') {
     value = moment(value).toDate();
   }
-  console.log(props.className)
+
   return (
     <DateTimePicker
       id={props.id}

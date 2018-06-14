@@ -31,9 +31,9 @@ export default class ODHNormForm extends Form {
     const title = IS_CREATING ? 'Добавление расходного материала' : 'Изменение расходного материала'; //'Добавление норматива по содержанию ОДХ' : 'Изменение норматива по содержанию ОДХ';
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal id="modal-odh-norm" show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Div>

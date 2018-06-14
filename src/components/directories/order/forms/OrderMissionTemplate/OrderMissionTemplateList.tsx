@@ -214,9 +214,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
 
     return (
-      <ModalTSX show={showForm} onHide={this.onFormHide} bsSize="lg">
+      <ModalTSX id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
         <RB.Modal.Header closeButton>
-          <RB.Modal.Title id="contained-modal-title-lg">{title}</RB.Modal.Title>
+          <RB.Modal.Title>{title}</RB.Modal.Title>
         </RB.Modal.Header>
 
         <ModalBody>

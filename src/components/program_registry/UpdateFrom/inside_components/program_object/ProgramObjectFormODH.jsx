@@ -331,9 +331,9 @@ class ProgramObjectFormodh extends Form {
     };
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} dialogClassName="modal-xlg" backdrop="static">
+      <Modal id="modal-program-object-odh" show={this.props.show} onHide={this.props.onHide} dialogClassName="modal-xlg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

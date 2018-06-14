@@ -47,9 +47,9 @@ export default class BaseBatteryForm extends Form {
     if (IS_CREATING) title = 'Добавление нового аккумулятора';
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-battery-reg" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ExtDiv style={{ padding: 15 }}>
           <Row>

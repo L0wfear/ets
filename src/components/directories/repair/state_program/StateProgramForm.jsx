@@ -21,9 +21,9 @@ export default class StateProgramForm extends Form {
     const title = 'Государственная программа ремонта';
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal id="modal-state-program" show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

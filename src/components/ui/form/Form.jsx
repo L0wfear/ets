@@ -48,10 +48,10 @@ export default class Form extends Component {
     console.log('form state is ', state); // eslint-disable-line
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-empty-from" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

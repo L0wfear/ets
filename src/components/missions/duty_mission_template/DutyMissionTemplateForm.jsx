@@ -73,10 +73,10 @@ class MissionTemplateForm extends DutyMissionForm {
     : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-duty-missio-template" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

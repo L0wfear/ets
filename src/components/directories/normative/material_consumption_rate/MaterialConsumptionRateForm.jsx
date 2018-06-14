@@ -36,9 +36,9 @@ export default class MaterialConsumptionRateForm extends Form {
     const title = IS_CREATING ? 'Добавление нормы на расход расходных материалов' : 'Изменение нормы на расход расходных материалов';
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-material-consumption-rate" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

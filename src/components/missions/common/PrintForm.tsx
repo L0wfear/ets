@@ -59,10 +59,10 @@ class PrintForm extends React.Component<IPropsPrintForm, IStatePrintForm> {
   }
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="small" >
+      <Modal id="modal-print-from" show={this.props.show} onHide={this.props.onHide} bsSize="small" >
 
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">{this.props.title}</Modal.Title>
+          <Modal.Title>{this.props.title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

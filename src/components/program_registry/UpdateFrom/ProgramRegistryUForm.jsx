@@ -143,9 +143,9 @@ export default class ProgramRegistryForm extends Form {
           onHide={this.hideMakeVersionForm}
           onSubmit={this.handleMakeVersionClick}
         />
-        <Modal show={this.props.show && !makeVersionIsVisible} onHide={this.props.onHide} bsSize="lg" backdrop="static">
+        <Modal id="modal-program-registry-u" show={this.props.show && !makeVersionIsVisible} onHide={this.props.onHide} bsSize="lg" backdrop="static">
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+            <Modal.Title>{ title }</Modal.Title>
           </Modal.Header>
           <Div style={{ padding: '0px 15px' }}>
             <Row>

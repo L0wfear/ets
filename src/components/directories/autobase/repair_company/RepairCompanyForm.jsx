@@ -20,9 +20,9 @@ export default class RepairCompanyForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal id="modal-repair-company" show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

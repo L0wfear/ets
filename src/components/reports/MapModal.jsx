@@ -30,10 +30,10 @@ class MapModal extends Component {
 
   render() {
     return (
-      <Modal show={this.props.showForm} onHide={this.props.onFormHide} bsSize="large" backdrop="static">
+      <Modal id="modal-map" show={this.props.showForm} onHide={this.props.onFormHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Просмотр объекта</Modal.Title>
+          <Modal.Title>Просмотр объекта</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

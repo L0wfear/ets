@@ -49,10 +49,10 @@ class CompanyStructureForm extends Form {
     if (IS_CREATING) title = 'Создание подразделения';
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal show={this.props.show} id="modal-company-structure" onHide={this.props.onHide} backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

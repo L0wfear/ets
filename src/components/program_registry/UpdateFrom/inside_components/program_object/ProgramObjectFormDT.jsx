@@ -338,9 +338,9 @@ class ProgramObjectFormDT extends Form {
     };
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="lg" backdrop="static">
+      <Modal id="modal-program-object-dt" show={this.props.show} onHide={this.props.onHide} bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

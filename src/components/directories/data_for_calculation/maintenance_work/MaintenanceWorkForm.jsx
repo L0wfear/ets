@@ -20,9 +20,9 @@ export default class MaintenanceWorkForm extends Form {
     const MEASUREUNIT_OPTIONS = measureUnitList.map(defaultSelectListMapper);
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-mainenance-work" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
+          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Field

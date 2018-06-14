@@ -61,10 +61,10 @@ export default class TechnicalOperationForm extends Form {
     const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-technical-operation" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

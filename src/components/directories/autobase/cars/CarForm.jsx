@@ -123,9 +123,9 @@ class CarForm extends Form {
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-car" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
+          <Modal.Title>Карточка транспортного средства</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

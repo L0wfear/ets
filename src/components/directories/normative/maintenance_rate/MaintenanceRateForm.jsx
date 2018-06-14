@@ -32,9 +32,9 @@ export default class MaintenanceRateForm extends Form {
     const CATEGORIES = cleanCategoriesList.map(defaultSelectListMapper);
     const SUBCATEGORIES = subcategories.map(defaultSelectListMapper);
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal id="modal-mainenance-rate" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {this.props.type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
+          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {this.props.type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

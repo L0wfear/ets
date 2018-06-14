@@ -268,10 +268,10 @@ export default class MissionRejectForm extends React.Component {
     );
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} dialogClassName="mission-reject-info-modal" backdrop="static">
+      <Modal id="modal-mission-reject" show={this.props.show} onHide={this.props.onHide} dialogClassName="mission-reject-info-modal" backdrop="static">
 
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

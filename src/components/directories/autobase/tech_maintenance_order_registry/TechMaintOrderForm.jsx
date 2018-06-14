@@ -65,9 +65,9 @@ export default class TechMaintOrderForm extends Form {
     const tech_maintenance_type_id = get(state, 'tech_maintenance_type_id', '');
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal id="modal-tech-maint-order" show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>

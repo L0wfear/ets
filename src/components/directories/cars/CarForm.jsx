@@ -125,9 +125,9 @@ class CarForm extends Form {
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
     return (
-      <Modal {...this.props} bsSize="lg" backdrop="static">
+      <Modal {...this.props} id="modal-car" bsSize="lg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Карточка транспортного средства</Modal.Title>
+          <Modal.Title>Карточка транспортного средства</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

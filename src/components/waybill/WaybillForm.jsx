@@ -510,10 +510,10 @@ class WaybillForm extends Form {
     }
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} id="modal-waybill" bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title} { IS_DRAFT && '(возможна корректировка)'} { (IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}</Modal.Title>
+          <Modal.Title>{title} { IS_DRAFT && '(возможна корректировка)'} { (IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

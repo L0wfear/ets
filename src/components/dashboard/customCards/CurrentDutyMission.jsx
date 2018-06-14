@@ -120,13 +120,15 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     );
   }
 
+  onHideCurrentDutyMissionForm = () => this.setState({ showCurrentDutyMissionForm: false });
+
   renderCustomCardForm() {
     if (!this.state.selectedDutyMission || !this.state.route) return (<div />);
     return (
-      <Modal bsSize="large" show={this.state.showCurrentDutyMissionForm} onHide={() => this.setState({ showCurrentDutyMissionForm: false })} backdrop="static">
+      <Modal bsSize="large" id="modal-current-duty-mission" show={this.state.showCurrentDutyMissionForm} onHide={this.onHideCurrentDutyMissionForm} backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Бригадир {this.state.selectedDutyMission.foreman_fio}</Modal.Title>
+          <Modal.Title>Бригадир {this.state.selectedDutyMission.foreman_fio}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

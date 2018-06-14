@@ -14,9 +14,9 @@ export default class OrganizationsForm extends Form {
     const { isPermitted } = this.props;
 
     return (
-      <Modal {...this.props} backdrop="static" bgSize="small">
+      <Modal {...this.props} id="modal-organizations" backdrop="static" bgSize="small">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Карточка организации</Modal.Title>
+          <Modal.Title>Карточка организации</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Field

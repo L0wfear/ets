@@ -256,10 +256,10 @@ export class MissionForm extends Form {
 
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} id="modal-mission" bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

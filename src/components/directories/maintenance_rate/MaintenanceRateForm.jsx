@@ -24,9 +24,9 @@ export default class MaintenanceRateForm extends Form {
     const SUBCATEGORIES = selectedCat.length ? selectedCat[0].subcategories.map(({ id, name }) => ({ value: id, label: name })) : [];
 
     return (
-      <Modal {...this.props} backdrop="static" bsSize="large">
+      <Modal {...this.props} id="modal-mainenance-rate" backdrop="static" bsSize="large">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {this.props.type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
+          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {this.props.type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

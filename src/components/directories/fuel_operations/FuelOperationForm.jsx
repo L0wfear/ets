@@ -13,9 +13,9 @@ export default class FuelOperationForm extends Form {
     const {isPermitted} = this.props;
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-fuel-operation" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{!state.id ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
+          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

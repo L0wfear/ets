@@ -19,9 +19,9 @@ export default class ODHNormDataSummerForm extends Form {
     const ODH_STANDARDS = odhNormList.map(({ id, standard }) => ({ value: id, label: standard }));
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} id="modal-odh-norm-data-summer" bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

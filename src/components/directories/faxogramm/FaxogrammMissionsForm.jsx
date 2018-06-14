@@ -27,10 +27,10 @@ class FaxogrammMissionsForm extends Form {
     ];
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} id="modal-faxogramm-missions" bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Создание заданий</Modal.Title>
+          <Modal.Title>Создание заданий</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

@@ -114,10 +114,10 @@ export default class Field extends React.Component {
   }
 
   renderDate() {
-    const { error, label = '', readOnly = false } = this.props;
+    const { error, label, readOnly = false } = this.props;
     const dateClassName = cx({ 'has-error': error });
     return (
-      <Div hidden={this.props.hidden} style={{ marginBottom: label ? 15 : 0 }}>
+      <Div hidden={this.props.hidden} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
         { typeof label === 'string' && <label style={{ minHeight: 15 }}>{label}</label> }
         <DatePicker {...this.props} className={dateClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>

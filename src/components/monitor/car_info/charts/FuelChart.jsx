@@ -17,11 +17,11 @@ const style = {
 };
 
 const EventTable = props => {
-  const rows = props.data.map((d, i) => (
-    <tr key={i} onClick={() => props.showOnMap(d.start_point.timestamp, null, true, d)}>
-      <td>{d.date}</td>
-      <td>{d.type_name}</td>
-      <td>{Math.abs(d.event_val)}</td>
+  const rows = props.data.map((row, i) => (
+    <tr key={i} onClick={() => props.showOnMap(row.start_point.timestamp, null, true, row)}>
+      <td>{row.date}</td>
+      <td>{row.type_name}</td>
+      <td>{row.value}</td>
     </tr>
     ));
 
@@ -82,11 +82,11 @@ const FuelChartSFC = props => {
   const data = sensorsData;
 
   const sumEvents = flatten(toArray(events))
-    .map(e => ({
-      ...e,
-      date: `${makeDate(new Date(e.start_point.timestamp * 1000))} ${makeTime(new Date(e.start_point.timestamp * 1000), true)}`,
-      type_name: e.type === 'leak' ? 'Слив' : 'Заправка',
-      value: `${Math.abs(e.val)} л`,
+    .map(eventData => ({
+      ...eventData,
+      date: `${makeDate(new Date(eventData.start_point.timestamp * 1000))} ${makeTime(new Date(eventData.start_point.timestamp * 1000), true)}`,
+      type_name: eventData.event_type === 'leak' ? 'Слив' : 'Заправка',
+      value: `${Math.abs(eventData.event_val)} л`,
     })).sort((a, b) => (a.start_point.timestamp - b.start_point.timestamp));
 
   const hasData = data.length > 0;

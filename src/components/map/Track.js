@@ -170,8 +170,8 @@ export default class Track {
     const carData = this.owner.point.car_actual;
     const updating = this.continuousUpdating;
 
-    if (to_dt - from_dt > 5 * 24 * 60 * 60 * 1000) {
-      global.NOTIFICATION_SYSTEM.notify('Период запроса трэка не может превышать 5 суток', 'warning');
+    if (to_dt - from_dt > 10 * 24 * 60 * 60 * 1000) {
+      global.NOTIFICATION_SYSTEM.notify('Период запроса трека не может превышать 10 суток', 'warning');
       return new Promise((res, rej) => rej);
     }
 

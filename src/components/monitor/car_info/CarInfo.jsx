@@ -298,8 +298,8 @@ export default class CarInfo extends Component {
     changesState.from_dt = changesState.from_dt_;
     changesState.to_dt = changesState.to_dt_;
 
-    if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 3) {
-      changesState.errorDates = 'Период формирования трека не должен превышать трое суток';
+    if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 10) {
+      changesState.errorDates = 'Период формирования трека не должен превышать 10 суток';
     } else {
       changesState.errorDates = '';
     }

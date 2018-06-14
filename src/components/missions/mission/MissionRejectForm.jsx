@@ -267,10 +267,10 @@ export default class MissionRejectForm extends Component {
     );
 
     return (
-      <Modal {...props} dialogClassName="mission-reject-info-modal" backdrop="static">
+      <Modal {...props} id="modal-mission-reject" dialogClassName="mission-reject-info-modal" backdrop="static">
 
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

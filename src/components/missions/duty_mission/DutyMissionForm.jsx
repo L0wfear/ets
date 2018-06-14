@@ -367,10 +367,10 @@ export class DutyMissionForm extends Form {
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} id="modal-duty-mission" bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

@@ -40,9 +40,9 @@ export default class DtCoverageReportPrintForm extends Component {
   render() {
     const { exportType } = this.props;
     return (
-      <Modal show={this.props.showForm}>
+      <Modal id="modal-dt-coverage-report-print" show={this.props.showForm}>
         <Modal.Header>
-          <Modal.Title id="contained-modal-title-lg">Печать отчета за заданный период</Modal.Title>
+          <Modal.Title>Печать отчета за заданный период</Modal.Title>
         </Modal.Header>
         <ModalBody>
           {exportType === 1 ?

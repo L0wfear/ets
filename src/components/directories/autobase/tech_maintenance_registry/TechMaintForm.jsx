@@ -51,9 +51,9 @@ export default class TechMaintForm extends Form {
     if (IS_CREATING) title = 'Создание записи';
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-tech-maint" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
 
         <div style={{ padding: 15 }}>

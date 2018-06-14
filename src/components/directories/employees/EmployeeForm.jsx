@@ -53,9 +53,9 @@ export default class EmployeeForm extends Form {
     if (IS_CREATING) title = 'Создание сотрудника';
 
     return (
-      <Modal {...this.props} bsSize="large" backdrop="static">
+      <Modal {...this.props} id="modal-employee" bsSize="large" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{ title }</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ExtDiv style={{ padding: 15 }}>
           <Row>

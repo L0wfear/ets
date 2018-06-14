@@ -27,10 +27,10 @@ export default class DtForm extends Form {
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
 
     return (
-      <Modal {...this.props} backdrop="static">
+      <Modal {...this.props} id="modal-dt" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">Дворовая территория</Modal.Title>
+          <Modal.Title>Дворовая территория</Modal.Title>
         </Modal.Header>
 
         <ModalBody>

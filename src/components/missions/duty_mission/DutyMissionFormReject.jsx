@@ -66,10 +66,10 @@ export class DutyMissionForm extends React.Component {
     const { comment, indexCurrMission } = this.state;
 
     return (
-      <Modal onHide={this.handlClickNext} show backdrop="static">
+      <Modal id="modal-duty-mission-reject" onHide={this.handlClickNext} show backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{`Введите причину для наряд-задания №${this.props.rejectedDutyMission[indexCurrMission].number}`}</Modal.Title>
+          <Modal.Title>{`Введите причину для наряд-задания №${this.props.rejectedDutyMission[indexCurrMission].number}`}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

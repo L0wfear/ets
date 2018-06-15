@@ -147,7 +147,11 @@ export default class CarInfo extends Component {
     const track = this.props.car.marker.track;
     track.setContinuousUpdating(notTillNow);
 
-    this.setState(state, this.fetchTrack);
+    if (notTillNow) {
+      this.setState(state, this.fetchTrack);
+    } else {
+      this.setState(state);
+    }
   }
 
   onShowGradientChange() {

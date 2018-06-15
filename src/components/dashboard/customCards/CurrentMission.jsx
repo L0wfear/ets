@@ -294,7 +294,7 @@ export default class CurrentMission extends DashboardCardMedium {
               </Div>
               <h5>{this.props.itemsTitle || (selectedItem !== null ? selectedItem.title : '')}</h5>
               <div style={{ marginTop: 15 }} />
-              {typeof this.renderCustomCardData === 'function' ? this.renderCustomCardData() : null}
+              {this.renderCustomCardData()}
             </Well>
           </Fade>
         </Div>

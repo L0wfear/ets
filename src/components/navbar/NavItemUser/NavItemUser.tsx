@@ -15,15 +15,19 @@ const data = {
   alwaysShow: true,
 }
 
-const NavItemUser: React.SFC<any> = ({ currentUser }) =>
-  <NavItem id={'info-user-data'} className="navbar-user" data={data}>
-    <div className="navbar-user__avatar">
-      <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />
-    </div>
-    <div className="navbar-user__data">
-      <div className="navbar-user__data-type">{ROLES[currentUser.role || ''] || ''}</div>
-      <div className="navbar-user__data-name">{currentUser.fio}</div>
-    </div>
-  </NavItem>;
+const NavItemUser: React.SFC<any> = ({ currentUser }) => {
+  const role = ROLES[currentUser.role || ''] || '';
+  return (
+    <NavItem id={'info-user-data'} className="navbar-user" data={data}>
+      <div className="navbar-user__avatar">
+        <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />
+      </div>
+      <div className="navbar-user__data">
+        <div className="navbar-user__data-type">{role}</div>
+        <div className={`navbar-user__data-name${role ? '' : '-short'}`}>{currentUser.fio}</div>
+      </div>
+    </NavItem>
+  );
+}
 
 export default connectToStores(NavItemUser, ['session']);

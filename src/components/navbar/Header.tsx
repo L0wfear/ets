@@ -11,6 +11,7 @@ import MenuItem from 'components/navbar/MenuItem/MenuItem';
 import NavItemUser from 'components/navbar/NavItemUser/NavItemUser';
 import NavItemLogout from 'components/navbar/NavItemLogout/NavItemLogout';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
+import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 
 import config from 'config';
 
@@ -58,6 +59,9 @@ const makeNavChildren = ([key, data]) => {
 }
 
 const dataGuide = {
+  backToCity: {
+    renderNav: (key) => <NavItemBackToGorod key={'change-role-to-city'}/>
+  },
   changeRole: {
     renderNav: (key) => <NavItemRole key={'change-role'}/>
   },

@@ -295,20 +295,24 @@ export default class CarInfo extends Component {
   }
 
   handleChangeDate = (field, value) => {
-    const changesState = {
-      ...this.state,
-      [field]: value,
-    };
-    changesState.from_dt = changesState.from_dt_;
-    changesState.to_dt = changesState.to_dt_;
+    if (value) {
+      const changesState = {
+        ...this.state,
+        [field]: value,
+      };
+      changesState.from_dt = changesState.from_dt_;
+      changesState.to_dt = changesState.to_dt_;
 
-    if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 10) {
-      changesState.errorDates = 'Период формирования трека не должен превышать 10 суток';
-    } else {
-      changesState.errorDates = '';
+      if (diffDates(changesState.to_dt_, changesState.from_dt_, 'minutes', false) <= 0) {
+        changesState.errorDates = 'Дата начала должна быть раньше даты окончания';
+      } else if (diffDates(changesState.to_dt_, changesState.from_dt_, 'days') > 10) {
+        changesState.errorDates = 'Период формирования трека не должен превышать 10 суток';
+      } else {
+        changesState.errorDates = ' ';
+      }
+
+      this.setState({ ...changesState });
     }
-
-    this.setState({ ...changesState });
   }
 
   renderTracking() {

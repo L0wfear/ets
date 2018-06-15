@@ -147,6 +147,7 @@ class MainApp extends React.Component {
     const path = this.props.match.url;
     const isOkrug = user.okrug_id !== null;
     const defaultProps = { isOkrug, path };
+    const role = ROLES[user.role || ''] || '';
 
     return (
       <Navbar justified fluid>
@@ -194,8 +195,8 @@ class MainApp extends React.Component {
                 <img role="presentation" src={defaultUser} className="navbar-user__avatar-img" />
               </div>
               <div className="navbar-user__data">
-                <div className="navbar-user__data-type">{ROLES[user.role || ''] || ''}</div>
-                <div className="navbar-user__data-name">{user.fio}</div>
+                <div className="navbar-user__data-type">{role}</div>
+                <div className={`navbar-user__data-name${role ? '' : '-short'}`}>{user.fio}</div>
               </div>
             </NavItem>
             <NavItem id="link-login" onClick={this.logout}>Выйти</NavItem>

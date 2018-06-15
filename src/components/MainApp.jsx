@@ -19,6 +19,7 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NotificationBage from 'components/notifications/NotificationBadge.tsx';
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
+import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
 
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -180,6 +181,7 @@ class MainApp extends React.Component {
           </Nav>
           <Nav pullRight>
             <NavItemRole />
+            <NavItemBackToGorod />
             <NavDropdown id="show-guide" className="user-guide" title={<Glyphicon glyph="book" />}>
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>

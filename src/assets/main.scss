@@ -283,6 +283,37 @@ body.application hr {
   }
 }
 
+.company-switcher-back-to-city>a {
+  height: 80px;
+  &>span {
+    height: 80px;
+  }
+}
+
+.company-switcher-back-to-city {
+  position: relative;
+  display: inline-block;
+  
+  .switcher-tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    padding: 5px 0;
+    text-align: center;
+
+    /* Position the tooltip */
+    position: absolute;
+    left: -80px;
+    top: 40px;
+    z-index: 1;
+  }
+  &:hover .switcher-tooltiptext {
+    visibility: visible;
+  }
+}
+
+
 .company-switcher {
   width: 250px;
 

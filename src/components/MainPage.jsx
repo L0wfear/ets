@@ -16,6 +16,7 @@ import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
 import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
+import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
 
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
@@ -179,8 +180,9 @@ export default class MainPage extends React.Component {
             <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage/' : ''}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
           <Nav pullRight>
-            <NavItemRole history={this.props.history} location={this.props.location} />
-            <NavDropdown id="show-guide" className="user-guide" title={<Glyphicon glyph="book" />}>
+              <NavItemBackToGorod history={this.props.history} location={this.props.location} />
+              <NavItemRole history={this.props.history} location={this.props.location} />
+              <NavDropdown id="show-guide" className="user-guide" title={<Glyphicon glyph="book" />}>
               <MenuItem id="link-master" href={`${config.docs}Руководство-мастера.docx`}>Руководство Мастера</MenuItem>
               <MenuItem id="link-dispather" href={`${config.docs}Руководство-диспетчера.docx`}>Руководство Диспетчера</MenuItem>
               <MenuItem id="link-okrug" href={`${config.docs}Руководство-окружного-пользователя.docx`}>Руководство окружного пользователя</MenuItem>

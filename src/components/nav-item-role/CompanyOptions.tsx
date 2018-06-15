@@ -29,7 +29,7 @@ class CompanyOptions extends React.Component<any, any> {
           } else {
             this.props.history.pushState(null, '/monitor');
           }
-    })
+      });
     }
   }
 

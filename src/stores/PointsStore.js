@@ -390,7 +390,8 @@ export default class PointsStore extends Store {
       const text = filter.bnso_gos.toLowerCase();
       visible = visible && (
         point.car.gps_code.toLowerCase().includes(text) ||
-        point.car.gov_number.toLowerCase().includes(text)
+        point.car.gov_number.toLowerCase().includes(text) ||
+        (point.car_actual.garage_number && point.car_actual.garage_number.toLowerCase().includes(text))
       );
       if (!visible) {
         return false;

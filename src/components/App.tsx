@@ -30,13 +30,8 @@ const getLoginPage = props => {
 
   if (flux.getStore('session').isLoggedIn()) {
     const user = flux.getStore('session').getCurrentUser();
-    const { role, okrug_id } = user;
 
-    if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
-      return <Redirect to={requireAuth(flux, '/dashboard')} />;
-    } else {
-      return <Redirect to={requireAuth(flux, '/monitor')} />;
-    }
+    return <Redirect to={requireAuth(flux, `/${user.default_path}`)} />;
   } else {
     return <Login {...props} />;
   }

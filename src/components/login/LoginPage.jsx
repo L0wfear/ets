@@ -35,10 +35,8 @@ class LoginPage extends React.Component {
       this.context.loadData();
       if (payload.permissions.includes('role.change')) {
         this.props.history.push('/change-company');
-      } else if (['dispatcher', 'master'].indexOf(payload.role) > -1 && payload.okrug_id === null) {
-        this.props.history.push('/dashboard');
       } else {
-        this.props.history.push('/monitor');
+        this.props.history.push(`/${payload.default_path}`);
       }
     });
   }

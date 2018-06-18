@@ -14,6 +14,7 @@ export default class User extends Model {
       company_id: 'integer',
       company_name: 'string',
       companies: 'array',
+      default_path: 'string',
       first_name: 'string',
       last_name: 'string',
       middle_name: 'string',
@@ -42,6 +43,7 @@ export default class User extends Model {
     this.company_id = user.company_id;
     this.company_name = user.company_name;
     this.companies = user.companies || [];
+    this.default_path = user.default_path || 'monitor';
     this.first_name = user.first_name;
     this.last_name = user.last_name;
     this.middle_name = user.middle_name;

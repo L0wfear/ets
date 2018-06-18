@@ -23,11 +23,7 @@ class CompanyOptions extends React.Component<any, any> {
     if (company_id !== company_id_old) {
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
         .then(({ payload }) => {
-          if (['dispatcher', 'master'].indexOf(payload.role) > -1 && payload.okrug_id === null) {
-            this.props.history.push('/dashboard');
-          } else {
-            this.props.history.push('/monitor');
-          }
+          this.props.history.push(`/${payload.default_path}`);
         });
     }
   }

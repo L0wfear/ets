@@ -22,6 +22,7 @@ const OBJECT = [
 */
 const getTableMeta = ({
   ELEMENTS = [],
+  KIND_TASK_NAMES = [],
   CAR_TYPES = [],
 } = {}) => {
   const tableMeta = {
@@ -52,6 +53,16 @@ const getTableMeta = ({
           type: 'multiselect',
         },
         cssClassName: 'width80',
+      },
+      {
+        name: 'kind_task_names',
+        displayName: 'Способ выполнения',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          some: true,
+          options: KIND_TASK_NAMES,
+        },
       },
       {
         name: 'work_type_name',
@@ -133,6 +144,7 @@ const getTableMeta = ({
 
 const renderers = {
   use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+  kind_task_names: ({ data }) => <div>{data.join(',\n')}</div>,
 };
 
 export default props => (

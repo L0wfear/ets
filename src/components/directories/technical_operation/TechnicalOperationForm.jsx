@@ -31,7 +31,7 @@ export default class TechnicalOperationForm extends Form {
   }
 
   handleObjectsChange(arrayOfObjects) {
-    const objects = this.props.technicalOperationsObjectsList.filter((obj) => arrayOfObjects.includes(obj.id));
+    const objects = this.props.technicalOperationsObjectsList.filter(obj => arrayOfObjects.includes(obj.id));
     this.props.handleFormChange('objects', objects);
   }
 
@@ -68,8 +68,8 @@ export default class TechnicalOperationForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-
           <Row>
+
             <Col md={3}>
               <ExtField
                 type="string"
@@ -106,6 +106,17 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
+            <Col md={3}>
+              <ExtField
+                type="string"
+                label="Способ выполнения"
+                value={state.kind_task_names}
+                onChange={this.handleChange}
+                boundKeys={['kind_task_names']}
+                error={errors.kind_task_names}
+                disabled={!isPermitted}
+              />
+            </Col>
 
             <Col md={3}>
               <ExtField
@@ -118,9 +129,6 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-          </Row>
-
-          <Row>
 
             <Col md={3}>
               <ExtField
@@ -167,17 +175,14 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-          </Row>
-
-          <Row>
             <Col md={3}>
-              <Field
+              <ExtField
                 type="select"
                 label="Объект"
                 multi
                 value={state.objects.map(cft => cft.id)}
                 options={TECHNICAL_OPERATION_OBJECTS}
-                onChange={this.handleObjectsChange.bind(this)}
+                onChange={this.handleObjectsChange}
                 disabled={!isPermitted}
               />
             </Col>
@@ -212,7 +217,7 @@ export default class TechnicalOperationForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={!isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+            <Button disabled={!isPermitted} onClick={this.handleSubmit}>Сохранить</Button>
           </Div>
         </Modal.Footer>
       </Modal>

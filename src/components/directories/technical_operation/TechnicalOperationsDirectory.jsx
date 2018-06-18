@@ -1,9 +1,11 @@
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-import TechnicalOperationsTable from 'components/directories/technical_operation/TechnicalOperationsTable.jsx';
+import TechnicalOperationsTable from 'components/directories/technical_operation/table/TechnicalOperationsTable.jsx';
 import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap.jsx';
 import permissions from 'components/directories/technical_operation/config-data/permissions';
+import { makeOptions } from 'components/ui/input/makeOptions';
+import { customOptionsTableFromMainResult, customOptionsTableFromTypes } from 'components/directories/technical_operation/table/helpData';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'cleaning/norm_registry' })
@@ -21,39 +23,22 @@ export default class TechOperationsDirectory extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperationsRegistry().then((ans) => {
-      const {
-        result = [],
-      } = ans;
+      const options = makeOptions({
+        data: ans.result,
+        options: customOptionsTableFromMainResult,
+      });
 
-      const ELEMENTS = Object.entries(result.reduce((newObj, { elements = [] }) => {
-        elements.forEach(({ id, name }) => {
-          if (id && name) {
-            newObj[name] = name;
-          }
-        });
-
-        return newObj;
-      }, {})).map(([value, label]) => ({ value, label }));
-
-      this.setState({ ELEMENTS });
+      this.setState({ ...options });
       return ans;
     });
+
     flux.getActions('objects').getTypes().then((ans) => {
-      const {
-        result: {
-          rows = [],
-        } = {},
-      } = ans;
+      const options = makeOptions({
+        data: ans.result.rows,
+        options: customOptionsTableFromTypes,
+      });
 
-      const CAR_TYPES = Object.entries(rows.reduce((newObj, { asuods_id, short_name }) => {
-        if (asuods_id && short_name) {
-          newObj[short_name] = short_name;
-        }
-
-        return newObj;
-      }, {})).map(([value, label]) => ({ value, label }));
-
-      this.setState({ CAR_TYPES });
+      this.setState({ ...options });
       return ans;
     });
   }
@@ -64,10 +49,12 @@ export default class TechOperationsDirectory extends ElementsList {
   getAdditionalProps = () => {
     const {
       ELEMENTS = [],
+      KIND_TASK_NAMES = [],
       CAR_TYPES = [],
     } = this.state;
     return {
       ELEMENTS,
+      KIND_TASK_NAMES,
       CAR_TYPES,
     };
   }

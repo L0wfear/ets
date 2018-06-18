@@ -386,7 +386,7 @@ export default class CarInfo extends React.Component {
           </div>
           <div>
             <div className="vehicle-attributes-list__item" style={{ marginLeft: 5, marginTop: 5, marginBottom: 5 }}>
-              Протяженность, км: <span className="value">{isTrackLoaded && marker.track.getDistance()}</span>
+              Протяженность, км: <span className="value">{isTrackLoaded && marker.track.getDistance() / 1000}</span>
             </div>
           </div>
         </Panel>

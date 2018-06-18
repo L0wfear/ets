@@ -7,7 +7,6 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: `https://psd.mos.ru/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
-export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');
 export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info', {});
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
 

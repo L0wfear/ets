@@ -59,6 +59,8 @@ export default class Track {
     this.parkings = [];
     this.events = {};
 
+    this.distance_agg2 = 0;
+
     this.parkingIcon = new Image();
     this.parkingIcon.src = ParkingIconSVG;
 
@@ -154,15 +156,7 @@ export default class Track {
   }
 
   getDistance() {
-    return parseFloat(this.points.reduce((prev, curr) => {
-      function isFloat(n) {
-        return n === +n && n !== (n | 0);
-      }
-      if (curr && isFloat(curr.distance)) {
-        prev += curr.distance;
-      }
-      return prev;
-    }, 0.000) / 1000).toFixed(3);
+    return this.distance_agg2;
   }
 
 
@@ -184,6 +178,7 @@ export default class Track {
                   this.events = obj.events;
                   this.points = obj.track;
                   this.sensors = obj.sensors;
+                  this.distance_agg2 = obj.distance_agg2;
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();

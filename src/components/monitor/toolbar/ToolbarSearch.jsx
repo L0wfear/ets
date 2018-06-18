@@ -49,7 +49,7 @@ export default class ToolbarSearch extends React.Component {
 
     return (
       <ToolbarControl controlType="search" top="0px" btnClass={this.state.btnClassName} onToggle={this.onToggle}>
-        <Filter ref={e => (this.search_text = e)} onFilterChange={this.onFilterChange} className="bnso-filter" title="рег. номер ТС или номер БНСО" name="bnso_gos" />
+        <Filter ref={e => (this.search_text = e)} onFilterChange={this.onFilterChange} className="bnso-filter" title="рег.номер/гар.номер/БНСО" name="bnso_gos" />
         {this.state.canFocus && <button style={style} onClick={this.props.focusOnLonelyCar} className="btn btn-default btn-sm"><span className="glyphicon glyphicon-screenshot" />&nbsp;Показать</button>}
       </ToolbarControl>
     );

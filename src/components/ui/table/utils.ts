@@ -129,13 +129,16 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
 
 
 export const sortFunction = (firstRowData, secondRowData, initialSort) => {
-  const [
+  let [
     first,
     second,
   ] = [
     firstRowData[initialSort],
     secondRowData[initialSort],
   ];
+
+  first = Array.isArray(first) ? first.reduce((newFirst, item) => `${newFirst}, ${item}`, '') : first;
+  second = Array.isArray(second) ? second.reduce((newSecond, item) => `${newSecond}, ${item}`, '') : second;
 
   const firstIsNumber = !isNaN(Number(first));
   const secondIsNumber = !isNaN(Number(second));

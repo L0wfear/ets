@@ -37,9 +37,7 @@ export default class Form extends React.Component {
     this.props.handleMultipleChange(fields);
   }
 
-  handleSubmit() {
-    this.props.onSubmit();
-  }
+  handleSubmit = () => this.props.onSubmit();
 
   render() {
     return <div>Form Component</div>;

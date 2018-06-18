@@ -13,13 +13,16 @@ export const showChildren = (data) => {
 };
 
 export const sortDataFunction = (firstRowData, secondRowData,) => {
-  const [
+  let [
     first,
     second,
   ] = [
     firstRowData.item,
     secondRowData.item,
   ];
+
+  first = Array.isArray(first) ? first.reduce((newFirst, item) => `${newFirst}, ${item}`, '') : first;
+  second = Array.isArray(second) ? second.reduce((newSecond, item) => `${newSecond}, ${item}`, '') : second;
 
   const firstIsNumber = !isNaN(Number(first));
   const secondIsNumber = !isNaN(Number(second));

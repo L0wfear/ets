@@ -34,10 +34,8 @@ export default class LoginPage extends Component {
       this.context.loadData();
       if (payload.permissions.includes('role.change')) {
         this.context.history.pushState(null, '/change-company');
-      } else if (['dispatcher', 'master'].indexOf(payload.role) > -1 && payload.okrug_id === null) {
-        this.context.history.pushState(null, '/dashboard');
       } else {
-        this.context.history.pushState(null, '/monitor');
+        this.context.history.pushState(null, `/${payload.default_path}`);
       }
     });
   }

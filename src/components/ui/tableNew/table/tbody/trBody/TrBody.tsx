@@ -1,5 +1,6 @@
 import * as React from 'react';
 import TdBody from 'components/ui/tableNew/table/tbody/trBody/tdBody/TdBody';
+import * as cx from 'classnames';
 
 class TrBody extends React.Component<any, any> {
   renderTd = (tableMeta, index) => (
@@ -25,7 +26,11 @@ class TrBody extends React.Component<any, any> {
     const { [uniqName]: id_selected } = selected || {};
     const { [uniqName]: id_rowData } = rowData;
 
-    const className = id_selected === id_rowData ? 'selected' : '';
+    const className = cx(
+      { selected: id_selected === id_rowData },
+      rowData.className,
+    );
+
     return (
       <tr className={className} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick} >
         { this.props.tableMeta.cols.map(this.renderTd) }

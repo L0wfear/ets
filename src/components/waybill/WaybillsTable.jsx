@@ -105,6 +105,9 @@ export const getTableMeta = ({
         name: 'garage_number',
         displayName: 'Гаражный номер',
         type: 'string',
+        filter: {
+          type: 'advanced-string-like',
+        },
       },
       {
         name: 'plan_departure_date',

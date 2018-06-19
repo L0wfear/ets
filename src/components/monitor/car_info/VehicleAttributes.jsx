@@ -34,6 +34,8 @@ const getState = (props) => {
     addAttributeToTarget(attributes, 'Организация', car.company_name);
   }
   addAttributeToTarget(attributes, 'Рег. номер ТС', car.gov_number);
+  addAttributeToTarget(attributes, 'Гаражный номер', car.garage_number);
+
   addAttributeToTarget(attributes, 'ID БНСО', point.id);
   getStatusById(point.status) && addAttributeToTarget(attributes, 'Статус', getStatusById(point.status).title);
   addAttributeToTarget(attributes, 'Тип техники', car.type_name);

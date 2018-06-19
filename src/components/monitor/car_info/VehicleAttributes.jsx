@@ -30,9 +30,7 @@ const getState = (props) => {
   const { point } = props;
   const attributes = [];
 
-  if (props.isOkrug) {
-    addAttributeToTarget(attributes, 'Организация', car.company_name);
-  }
+  addAttributeToTarget(attributes, 'Организация', car.company_name);
   addAttributeToTarget(attributes, 'Рег. номер ТС', car.gov_number);
   addAttributeToTarget(attributes, 'Гаражный номер', car.garage_number);
 

@@ -66,6 +66,9 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols], allCols, aggr
   return newArr;
 }
 
+const makeRowsWithNoneStructure = (rows, colMeta) =>
+  rows.map(({ ...row }) => ({ ...row, [colMeta.keyName]: '-' }));
+
 export const makeDataForSummerTable = (data, { uniqName }) => {
   if (data.result.meta.level === 'company') {
     const {
@@ -101,17 +104,13 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
       return newDataObj;
     }, initialDataForReduce)
       .map((row, index) => {
-
-        const children = makeSummer([], row.children, diffCols, cols, aggr_fields, row.fields.map(fieldData => {
+        const filedsRule = row.fields.map(fieldData => {
           const [[key, value]] = Object.entries(fieldData);
 
           return { key, value };
-        }))
-          .map((child, indexRow) => ({
-            ...child,
-            [_uniq_field_father]: index + 1,
-            [_uniq_field]: `${index + 1}.${indexRow + 1}`,
-          }));
+        });
+
+        const children = makeSummer([], row.children, diffCols, cols, aggr_fields, filedsRule);
 
         if (!children.length) {
           children.push({
@@ -120,9 +119,12 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
             allRow: true,
             showChildren: true,
             children: [],
-            [_uniq_field_father]: index + 1,
-            [_uniq_field]: `${index + 1}.${1}`,
           });
+        } else {
+          const col = cols.find(({ keyName, name }) => keyName === 'structure_name' || name === 'Подразделение');
+          if (col) {
+            children.push(...makeSummer([], makeRowsWithNoneStructure(row.children, col), diffCols, cols, aggr_fields, filedsRule).map(d => ({ ...d, className: 'bold'})));
+          }
         };
 
         return {
@@ -131,11 +133,15 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
           allRow: true,
           showChildren: true,
           [_uniq_field]: index + 1,
-          children,
+          children: children.map((child, indexRow) => ({
+            ...child,
+            [_uniq_field_father]: index + 1,
+            [_uniq_field]: `${index + 1}.${indexRow + 1}`,
+          })),
         };
       });
 
-    return returnData;
+      return returnData;
   }
 
   return [];

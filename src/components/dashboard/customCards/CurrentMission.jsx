@@ -183,6 +183,9 @@ export default class CurrentMission extends DashboardCardMedium {
             <li><b>Рег. номер ТС:</b>
               {car_data.gov_number}
             </li>
+            <li><b>Гаражный номер:</b>
+              {car_data.garage_number}
+            </li>
             <li><b>Начало задания:</b>
               {getFormattedDateTimeSeconds(mission_data.date_start)}
             </li>

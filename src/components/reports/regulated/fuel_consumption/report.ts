@@ -6,7 +6,7 @@ import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 
-const serviceUrl = 'fuel_consumption_new_report';
+const serviceUrl = process.env.STAND === 'prod' ? 'fuel_consumption_report' : 'fuel_consumption_new_report';
 const reportUrl = 'fuel-consumption-report';
 const serviceName = 'FuelReportService';
 
@@ -29,7 +29,7 @@ const reportProps: IReportProps = {
   headerComponent: ReportHeader,
   renderers,
   schemaMakers,
-  notUseServerSummerTable: true,
+  notUseServerSummerTable: process.env.STAND !== 'prod',
 };
 
 const ExportableReportContainer = exportable({

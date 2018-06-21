@@ -357,10 +357,10 @@ class WaybillForm extends Form {
       this.setState({ loadingFields });
 
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
-        .then(({ distance, consumption }) => {
+        .then(({ distance_agg2, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance,
+            distance: distance_agg2,
             consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
           });
 

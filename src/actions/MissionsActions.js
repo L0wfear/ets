@@ -154,6 +154,8 @@ export default class MissionsActions extends Actions {
     if (payload.faxogramm_id) {
       return MissionTemplatesForFaxogramm.get(payload);
     }
+
+    payload.actual_seasons = true;
     return MissionTemplateService.get(payload);
   }
 
@@ -266,7 +268,10 @@ export default class MissionsActions extends Actions {
   }
 
   getDutyMissionTemplates() {
-    return DutyMissionTemplateService.get({});
+    const payload = {};
+    payload.actual_seasons = true;
+
+    return DutyMissionTemplateService.get(payload);
   }
 
   createDutyMissionTemplate(mission) {

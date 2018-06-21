@@ -4,6 +4,7 @@
  */
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
+import carConditin from './car-condition/report';
 import fuelConsumption from './fuel_consumption/report.ts';
 import fuelConsumptionSummary from './fuel_consumption_summary/report.ts';
 import odhCoverageReport from './odh_coverage/OdhCoverageReport.jsx';
@@ -25,6 +26,7 @@ import inquiryExpiringDate from './inquiry_expiring_date/report'
 export {
   analytics,
   coverage,
+  carConditin,
   fuelConsumption,
   fuelConsumptionSummary,
   mission,

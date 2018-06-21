@@ -9,6 +9,7 @@ const reportRoutes = (props) => {
     <div>
       {/* Отчеты */}
       <Route path="odh-reports" component={reports.odh} onEnter={requireAuth} />
+      <Route path="car-condition-reports" component={reports.carConditin} onEnter={requireAuth} />
       <Route path="route-odh-coverage-report" component={reports.routeOdhCoverage} onEnter={requireAuth} />
       <Route path="coverage-report" component={reports.coverage} onEnter={requireAuth} />
       <Route path="mission-progress-report" component={reports.missionProgress} onEnter={requireAuth} />

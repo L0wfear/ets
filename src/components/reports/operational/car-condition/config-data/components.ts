@@ -1,7 +1,7 @@
-import EmployeeEfficiency from 'components/reports/operational/employee_efficiency/report';
+import CarCondition from 'components/reports/operational/car-condition/report';
 
 export default [
   {
-    component: EmployeeEfficiency,
+    component: CarCondition,
   },
 ];

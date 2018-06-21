@@ -361,8 +361,9 @@ export default class Track {
       // }
 
       const coords = this.map.projectToPixel(p.coords_msk);
-      const speed = p.speed_max;
+      const speed = p.speed_avg;
       const { maxSpeed } = this;
+
       let rgbaColor = getTrackColor(speed, maxSpeed, TRACK_LINE_OPACITY);
       let hexColor = getTrackColor(speed, maxSpeed);
 

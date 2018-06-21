@@ -33,7 +33,7 @@ export const getDataAboutPointTrack = props => {
   const {
     coords,
     coords_msk,
-    speed_max: speed,
+    speed_avg: speed,
     max_speed: maxSpeed,
   } = props;
 

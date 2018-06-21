@@ -122,7 +122,7 @@ export const loadTrack = props => (dispatch, getState) => {
                 trackLines.push({
                   pointOne: { ...prevPointTrack },
                   pointTwo: { ...nextTrackPoint },
-                  color: getTrackColor({ speed: prevPointTrack.speed_max, maxSpeed: max_speed, opacity: TRACK_LINE_OPACITY }),
+                  color: getTrackColor({ speed: prevPointTrack.speed_avg, maxSpeed: max_speed, opacity: TRACK_LINE_OPACITY }),
                 });
 
                 if (isFreezed.val) {

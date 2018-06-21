@@ -10,6 +10,7 @@ import missionProgress from 'components/reports/operational/mission_progress/con
 import longRepair from 'components/reports/operational/long_repair/config-data';
 import techMaintenanceSchedule from 'components/reports/operational/tech_maintenance_schedule/config-data';
 import inquiryExpiringDate from 'components/reports/operational/inquiry_expiring_date/config-data';
+import carCondition from 'components/reports/operational/car-condition/config-data';
 
 const children = {
   routeOdhCoverage,
@@ -21,7 +22,8 @@ const children = {
   missionProgress,
   longRepair,
   techMaintenanceSchedule,
-  inquiryExpiringDate
+  inquiryExpiringDate,
+  carCondition,
 };
 
 export default {

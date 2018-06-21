@@ -100,6 +100,9 @@ const PERMISSIONS = {
     analytical_reports: {
       list: 'analytical_reports.list',
     },
+    car_condition_report: {
+      list: 'car_condition_report.list',
+    },
   },
   'odh_coverage_report': 'odh_coverage_report',
   'dt_coverage_report': 'dt_coverage_report',

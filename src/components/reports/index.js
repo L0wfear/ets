@@ -5,6 +5,7 @@
 import Analytics from 'components/reports/analytics/Analytics.jsx';
 import BrigadeEfficiency from 'components/reports/operational/brigade_efficiency/report.tsx';
 import CarUsageReportWithTrack from 'components/reports/operational/car_usage_report_with_track/report';
+import carConditin from 'components/reports/operational/car-condition/report';
 import CleaningStatusTechOp from 'components/reports/regulated/cleaning_status_tech_op/report.tsx';
 import DailyCleaningCafap from 'components/reports/regulated/daily_cleaning_cafap/report';
 import DailyCleaningEts from 'components/reports/regulated/daily_cleaning_ets/report';
@@ -24,6 +25,7 @@ import TrackEvents from 'components/reports/operational/track_events/Report';
 export default {
   Analytics,
   BrigadeEfficiency,
+  carConditin,
   CarUsageReportWithTrack,
   CleaningStatusTechOp,
   DailyCleaningCafap,

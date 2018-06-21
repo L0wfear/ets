@@ -264,6 +264,12 @@ export class MissionForm extends Form {
     }
   }
 
+  handleChangeHoursDateEnd = countHours =>
+    this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
+
+  handleChangeDateEnd = newDate =>
+    this.handleChange('date_end', newDate);
+
   getDataByNormatives = (normatives) => {
     const { flux } = this.context;
     const {
@@ -459,36 +465,53 @@ export class MissionForm extends Form {
               />
             </Col>
 
-            <Col md={3}>
-              <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
-              <Div>
-                <Field
-                  id="date-start"
-                  type="date"
-                  label="Время выполнения:"
-                  error={errors.date_start}
-                  date={state.date_start}
-                  disabled={((IS_DISPLAY) && !IS_ASSIGNED)}
-                  min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
-                  max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-                  onChange={this.handleChangeDateStart}
-                />
-              </Div>
-            </Col>
-            <Col md={3}>
-              <Div>
-                <Field
-                  id="date_end"
-                  type="date"
-                  label=""
-                  error={errors.date_end}
-                  date={state.date_end}
-                  disabled={((IS_DISPLAY) && !IS_ASSIGNED)}
-                  min={state.date_start}
-                  max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-                  onChange={this.handleChange.bind(this, 'date_end')}
-                />
-              </Div>
+            <Col md={6}>
+              <Row>
+                <Col className="date-label" md={12}><label>Время выполнения:</label></Col>
+              </Row>
+              <Row className="datepicker-range mission">
+                <Col md={5}>
+                  <Field
+                    id="date-start"
+                    type="date"
+                    error={errors.date_start}
+                    date={state.date_start}
+                    disabled={IS_DISPLAY}
+                    min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
+                    max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+                    onChange={this.handleChangeDateStart}
+                  />
+                </Col>
+                <Col md={1}>
+                  <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
+                    <Dropdown.Toggle disabled={IS_DISPLAY}>
+                      <Glyphicon id="select-date_end" glyph="time" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="select-date-end-custom">
+                      <MenuItem eventKey={1}>1</MenuItem>
+                      <MenuItem eventKey={2}>2</MenuItem>
+                      <MenuItem eventKey={3}>3</MenuItem>
+                      <MenuItem eventKey={4}>4</MenuItem>
+                      <MenuItem eventKey={5}>5</MenuItem>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
+                <Col md={2}>
+                  <Col mdOffset={2} md={5}>—</Col>
+                </Col>
+                <Col md={5}>
+                  <Field
+                    id="date_end"
+                    type="date"
+                    error={errors.date_end}
+                    date={state.date_end}
+                    disabled={IS_DISPLAY}
+                    min={state.date_start}
+                    max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+                    onChange={this.handleChangeDateEnd}
+                  />
+                </Col>
+              </Row>
             </Col>
           </Row>
           <Row>

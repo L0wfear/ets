@@ -3012,6 +3012,9 @@ div.none {
 
 .datepicker-range {
   display: flex;
+  &.mission {
+    align-items: center;
+  }
   
   .date-divider {
     display: inline-block;
@@ -3513,4 +3516,12 @@ div.none {
 
 .listStyleTypeNone{
   list-style-type: none;
+}
+
+.date-label {
+  font-weight: 600;
+}
+
+.select-date-end-custom {
+  min-width: 50px;
 }

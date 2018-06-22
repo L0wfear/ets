@@ -4,8 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <title>ЕТС</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      #main-background {
+        width: 100%;
+        height: 100%;
+        background-image: url(dist/images/bg.jpg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+      }
+    </style>
   </head>
   <body>
+    <div id="main-background">Идет загрузка приложения...</div>
     <div id="container"></div>
     <script src="dist/app.js"></script>
   </body>

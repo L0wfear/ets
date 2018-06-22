@@ -19,6 +19,7 @@ const app = (
   </Provider>
 );
 
+document.body.removeChild(document.getElementById('main-background'));
 render(app, appNode);
 
 // console.log('%cЕсли здесь появляются красные сообщения, это не значит, что это баг системы.', 'background: #691a99; color: #68efad; font-size: 26px;');

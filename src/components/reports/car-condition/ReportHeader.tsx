@@ -50,6 +50,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               onChange={this.props.handleChange}
               bindOnChange={'start_date'}
               disabled={readOnly}
+              time={false}
             />
           </Div>
           <Div className="date-divider">—</Div>
@@ -59,6 +60,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               onChange={this.props.handleChange}
               bindOnChange={'end_date'}
               disabled={readOnly}
+              time={false}
             />
           </Div>
         </Col>

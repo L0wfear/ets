@@ -103,14 +103,16 @@ export default class RouteForm extends Form {
 
   handleTechChange(v) {
     this.handleChange('technical_operation_id', v);
-    this.handleChange('input_lines', []);
-    this.handleChange('draw_object_list', []);
 
     this.setState({
       vector: false,
     });
-    this.handleChange('draw_object_list', []);
     this.handleChange('municipal_facility_id', null);
+
+    if (!this.props.formState.copy) {
+      this.handleChange('input_lines', []);
+      this.handleChange('draw_object_list', []);
+    }
   }
 
   handleClickSelectFromODH() {

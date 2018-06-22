@@ -84,7 +84,7 @@ class WaybillPrintForm extends React.Component {
       date_from: getToday9am(),
       date_to: getTomorrow9am(),
       DISABLE_SUBMIT: false,
-    }, () => this.props.hide());
+    }, () => this.props.onHide());
   }
 
   toggleWithFilter = (e) => {

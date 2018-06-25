@@ -12,17 +12,24 @@
       #main-background {
         width: 100%;
         height: 100%;
-        background-image: url(dist/images/bg.jpg);
+        background-image: url(./images/bg.jpg);
         display: flex;
         justify-content: center;
         align-items: center;
         background-size: cover;
         background-position: center;
       }
+      #main-background>div {
+        background-color: grey;
+        color: white;
+        padding: 20px;
+        font-size: 40px;
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+      }
     </style>
   </head>
   <body>
-    <div id="main-background">Идет загрузка приложения...</div>
+    <div id="main-background"><div>Идет загрузка приложения...</div></div>
     <div id="container"></div>
     <script src="dist/app.js"></script>
   </body>

@@ -41,7 +41,9 @@ export default class HybridMap extends Map {
         oldPoint.setPoint(point);
       } else {
         this.markers[key] = new CarMarker(point, this, {
-          maxSpeed: this.props.maxSpeed,
+          mkad_speed_lim: this.props.mkad_speed_lim,
+          speed_lim: this.props.speed_lim,
+          fromHybridMap: true,
         });
       }
     }
@@ -228,6 +230,9 @@ export default class HybridMap extends Map {
             controls={['track', 'route', 'element']}
             zoom={this.state.zoom}
             marker={() => this._pointsStore.getSelectedMarker()}
+            mkad_speed_lim={this.props.mkad_speed_lim}
+            speed_lim={this.props.speed_lim}
+            object_type_name={this.props.object_type_name}
           />
         </FluxComponent>
       </div>

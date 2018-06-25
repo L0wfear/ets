@@ -17,6 +17,7 @@ export default class GeoObjectsStore extends Store {
 
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
+    this.register(geoObjectsActions.getOdhMkad, this.handleGetOdhMkad);
 
     this.state = {
       odhsList: [],
@@ -60,6 +61,8 @@ export default class GeoObjectsStore extends Store {
       snowStoragePolys: {},
       fuelingWaterStationPolys: {},
       carpoolPolys: {},
+
+      odh_mkad: {},
 
       selectedPolysTypes: [],
       selectedFeature: null,
@@ -153,6 +156,18 @@ export default class GeoObjectsStore extends Store {
     this.setState({
       [typeList]: rows,
     });
+  }
+
+  handleGetOdhMkad({ result: { rows = [] } }) {
+    const odh_mkad = rows.reduce((newObj, mkadData) => ({
+      ...newObj,
+      [mkadData.odh_id]: {
+        ...mkadData,
+        shape: JSON.parse(mkadData.shape_json),
+      },
+    }), {});
+
+    this.setState({ odh_mkad });
   }
 
   getSelectedPolys() {

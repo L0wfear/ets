@@ -23,7 +23,7 @@ class DutyMissionFormWrap extends FormWrap {
     let response;
 
     if (mission.id) {
-      response = await this.context.flux.getActions('missions').updateDutyMission(mission);
+      response = await this.context.flux.getActions('missions').updateDutyMission(mission, false);
     } else {
       response = await this.context.flux.getActions('missions').createDutyMission(mission);
     }

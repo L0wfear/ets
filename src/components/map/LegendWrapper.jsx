@@ -89,7 +89,7 @@ export default class LegendWrapper extends React.Component {
               control={control}
               onClick={this.toggleSettingsControl.bind(this, control.type)}
             />
-            {this.props.zoom > 6 && control.type === 'track' && marker && marker.track ? marker.track.getLegend() : ''}
+            {this.props.zoom > 6 && control.type === 'track' && marker && marker.track ? marker.track.getLegend(this.props) : ''}
           </li>
         );
       });

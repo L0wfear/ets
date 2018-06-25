@@ -106,7 +106,9 @@ export const initialState = {
   tooLongDates: ({ formState: { mission_data } }) => diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
   routeType: ({ formState: { route_data: { type: routeType } } }) => routeType,
   current_percentage: ({ formState: { mission_data: { current_percentage } } }) => current_percentage,
-  max_speed: ({ formState: { technical_operation_data: { max_speed } } }) => max_speed,
+  mkad_speed_lim: ({ formState: { speed_limits: { mkad_speed_lim } } }) => mkad_speed_lim,
+  speed_lim: ({ formState: { speed_limits: { speed_lim } } }) => speed_lim,
+  object_type_name: ({ formState: { route_data: { object_type_name } } }) => object_type_name,
   withWorkSpeed: ({ formState: { report_data }}) => getDataTraveledYet([
     ...checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F'),
     report_data.time_work_speed,

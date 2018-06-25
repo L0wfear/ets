@@ -80,10 +80,12 @@ const MissionInfoForm: React.SFC<any> = props => {
                 <HybridMapTSX
                   polys={polys}
                   routeCenter
-                  maxSpeed={props.max_speed}
+                  mkad_speed_lim={props.mkad_speed_lim}
+                  speed_lim={props.speed_lim}
                   selectedObjects={props.selectedObjects}
                   selectedPoly={props.selectedPoly}
                   car_gov_number={props.gov_number}
+                  object_type_name={props.object_type_name}
                 />
               </FluxComponent>
             </Col>

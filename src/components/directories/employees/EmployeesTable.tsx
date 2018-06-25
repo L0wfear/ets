@@ -145,6 +145,19 @@ export function tableMeta({
           options: [{ value: +true, label: 'Да' }, { value: +false, label: 'Нет' }],
         },
       },
+      {
+        name: 'has_car',
+        displayName: 'Показать незакрепленных за ТС водителей',
+        type: 'select',
+        display: false,
+        filter: {
+          type: 'select',
+          options: [
+            { value: 'TRUE', label: 'Нет' },
+            { value: 'False', label: 'Да' },
+          ],
+        },
+      }
     ],
   };
 

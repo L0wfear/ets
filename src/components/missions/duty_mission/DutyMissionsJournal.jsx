@@ -116,7 +116,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   completeMission() {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
-    this.context.flux.getActions('missions').updateDutyMission(mission);
+    this.context.flux.getActions('missions').updateDutyMission(mission, false);
     this.refreshList(this.state);
     this.setState({
       selectedElement: null,
@@ -158,7 +158,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
-          return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+          return this.context.flux.getActions('missions').updateDutyMission(updatedMission, false);
         }
         hasNotAssigned = true;
         return Promise.resolve();

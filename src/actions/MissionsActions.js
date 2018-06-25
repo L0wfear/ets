@@ -257,7 +257,7 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
+    payload.brigade_employee_id_list = _.uniqBy(_.uniqBy(payload.brigade_employee_id_list, 'id'), 'employee_id').map(b => b.id || b.employee_id);
     return DutyMissionService.post(payload, false, 'json');
   }
 
@@ -272,7 +272,7 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
+    payload.brigade_employee_id_list = _.uniqBy(_.uniqBy(payload.brigade_employee_id_list, 'id'), 'employee_id').map(b => b.id || b.employee_id);
     return DutyMissionService.put(payload, autoUpdate, 'json');
   }
 

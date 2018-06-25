@@ -31,7 +31,7 @@ export class DutyMissionForm extends React.Component {
       comment,
     };
 
-    const query = this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+    const query = this.context.flux.getActions('missions').updateDutyMission(updatedMission, false);
     allQuery.push(query);
 
     if (indexCurrMission === 0) {

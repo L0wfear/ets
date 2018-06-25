@@ -56,6 +56,18 @@ export function tableMeta({
         },
       },
       {
+        name: 'prefer_car',
+        displayName: 'Основное ТС',
+        type: 'string',
+        filter: false,
+      },
+      {
+        name: 'secondary_car_text',
+        displayName: 'Вторичное ТС',
+        type: 'string',
+        filter: false,
+      },
+      {
         name: 'drivers_license',
         displayName: 'Водительское удостоверение',
         type: 'string',

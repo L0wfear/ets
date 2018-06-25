@@ -46,6 +46,8 @@ const initialState = {
   fuelingWaterStationPolys: {},
   carpoolPolys: {},
 
+  odh_mkad: {},
+
   selectedPolysTypes: [],
   selectedPolysTypesLeak: [],
 
@@ -70,6 +72,7 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometryLeak, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
     this.register(geoObjectsActions.setInitialState, this.handleClearStore);
+    this.register(geoObjectsActions.getOdhMkad, this.handleGetOdhMkad);
 
     this.state = cloneDeep(initialState);
   }
@@ -169,6 +172,18 @@ export default class GeoObjectsStore extends Store {
     this.setState({
       [typeList]: rows,
     });
+  }
+
+  handleGetOdhMkad({ result: { rows = [] } }) {
+    const odh_mkad = rows.reduce((newObj, mkadData) => ({
+      ...newObj,
+      [mkadData.odh_id]: {
+        ...mkadData,
+        shape: JSON.parse(mkadData.shape_json),
+      },
+    }), {});
+
+    this.setState({ odh_mkad });
   }
 
   getSelectedPolys(nameOfSelected) {

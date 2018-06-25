@@ -14,6 +14,7 @@ export default class Marker {
 
     // some methods may be useful
     this.store = map._pointsStore;
+    this.storeGeoobjects = map._geoObjectsStore;
 
     // todo this.owner
     this._reactMap = map;

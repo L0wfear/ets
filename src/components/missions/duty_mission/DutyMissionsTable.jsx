@@ -153,6 +153,7 @@ export default (props) => {
     structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
     mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
     technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
+    object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
   };
 
   return (<Table title="Журнал наряд-заданий"

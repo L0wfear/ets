@@ -88,7 +88,6 @@ export default class CarInfo extends React.Component {
       },
       sensorsInfo: {},
       maxSpeed: initialMaxSpeed,
-      maxSpeedMissionInfo: null,
     };
   }
 
@@ -118,7 +117,6 @@ export default class CarInfo extends React.Component {
           level: [],
         },
         maxSpeed: initialMaxSpeed,
-        maxSpeedMissionInfo: null,
       });
     }
   }
@@ -161,18 +159,6 @@ export default class CarInfo extends React.Component {
     store.handleSetShowGradient(!flag);
   }
 
-  toggleMaxSpeed = () => {
-    if (this.state.maxSpeedMissionInfo) {
-      const maxSpeed = this.state.maxSpeed === initialMaxSpeed ? this.state.maxSpeedMissionInfo : initialMaxSpeed;
-      const track = this.props.car.marker.track;
-      if (track) {
-        track.maxSpeed = maxSpeed;
-      }
-
-      this.setState({ maxSpeed });
-    }
-  }
-
   getLegend() {
     const speed = this.state.maxSpeed;
     return (
@@ -184,9 +170,6 @@ export default class CarInfo extends React.Component {
         <div className="track-legend-item">
           <div className="track-legend-point" style={{ backgroundColor: TRACK_COLORS.red }} />
           <div className="track-legend-text">{speed != null ? `${speed + 1}+ км/ч` : 'нет данных'}</div>
-        </div>
-        <div onClick={this.toggleMaxSpeed} className="track-legend-mission-speed">
-          <input disabled={this.state.maxSpeedMissionInfo === null} type="checkbox" checked={speed !== initialMaxSpeed} /><span>{'Ограничение по заданию / типу ТС'}</span>
         </div>
       </div>
     );
@@ -204,8 +187,18 @@ export default class CarInfo extends React.Component {
     }
 
     const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
-    track.maxSpeed = this.state.maxSpeed;
-    this.setState({ missions: info.missions, maxSpeedMissionInfo: info.max_speed, imageUrl: car ? car.type_image_name : null });
+
+    const maxSpeed = info.missions.filter(({ date_start, date_end }) =>
+      (diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0),
+    ).reduce((min_speed_limits, { speed_limits: { mkad_speed_lim, speed_lim } }) => ({
+      mkad_speed_lim: min_speed_limits.mkad_speed_lim < mkad_speed_lim ? min_speed_limits.mkad_speed_lim : mkad_speed_lim,
+      speed_lim: min_speed_limits.speed_lim < speed_lim ? min_speed_limits.speed_lim : speed_lim,
+    }), { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed });
+
+    track.mkad_speed_lim = maxSpeed.mkad_speed_lim;
+    track.speed_lim = maxSpeed.speed_lim;
+
+    this.setState({ missions: info.missions, maxSpeed: track.speed_lim, imageUrl: car ? car.type_image_name : null });
   }
 
   fetchVehicleData = () => this.fetchTrack();

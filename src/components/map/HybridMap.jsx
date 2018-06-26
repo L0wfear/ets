@@ -43,7 +43,6 @@ export default class HybridMap extends Map {
         this.markers[key] = new CarMarker(point, this, {
           mkad_speed_lim: this.props.mkad_speed_lim,
           speed_lim: this.props.speed_lim,
-          fromHybridMap: true,
         });
       }
     }

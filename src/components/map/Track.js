@@ -47,9 +47,9 @@ const COLORS_ZOOM_THRESHOLD = 6;
  * @param speed
  * @return color string
  */
-export function getTrackColor({ speed_avg, checkOnSpeed }, { maxSpeed, fromHybridMap, mkad_speed_lim, speed_lim }, opacity = 1) {
+export function getTrackColor({ speed_avg, checkOnSpeed }, { maxSpeed, mkad_speed_lim, speed_lim }, opacity = 1) {
   let topSpeed = maxSpeed;
-  if (fromHybridMap && checkOnSpeed) {
+  if (checkOnSpeed) {
     topSpeed = checkOnSpeed.onMkad ? mkad_speed_lim : speed_lim;
   }
 
@@ -75,7 +75,6 @@ export default class Track {
   constructor(owner) {
     this.map = owner.map;
     const reactMapProps = owner._reactMap.props;
-    this.fromHybridMap = owner.options.fromHybridMap;
     this.mkad_speed_lim = owner.options.mkad_speed_lim;
     this.speed_lim = owner.options.speed_lim;
     this.maxSpeed = owner.options.maxSpeed;

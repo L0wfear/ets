@@ -1,9 +1,11 @@
-import styled from 'styled-components';
+export const SpanTitle = (props) => (
+  <span> style={{ marginLeft: '15px' }}>
+    {props.children}
+  </span>
+);
 
-export const SpanTitle = styled.span`
-  margin-left: 15px;
-`;
-
-export const ColorLegend = styled.div`
-  background-color: ${({ color }) => color};
-`;
+export const ColorLegend = (props) => (
+  <div> style={{ backgroundColor: props.color }}>
+    {props.children}
+  </div>
+);

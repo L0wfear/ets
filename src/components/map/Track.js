@@ -1,9 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-
 import { get, pick, toArray } from 'lodash';
 import insider from 'point-in-polygon';
 
+import { SpanTitle, ColorLegend } from 'components/map/syled/styled';
 import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
@@ -14,14 +13,6 @@ import ParkingIconSVG from 'assets/icons/track/parking.svg';
 
 import FuelIcon1 from 'assets/icons/track/oil-01.png';
 import FuelIcon2 from 'assets/icons/track/oil-02.png';
-
-const SpanTitle = styled.span`
-  margin-left: 15px;
-`;
-
-const ColorLegend = styled.div`
-  background-color: ${({ color }) => color};
-`;
 
 const checkPointInGeometry = (point, geometry) => {
   return {

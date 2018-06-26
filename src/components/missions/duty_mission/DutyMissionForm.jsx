@@ -393,26 +393,29 @@ export class DutyMissionForm extends Form {
 
             <Col md={6}>
               <Row>
-                <Col md={6}>
-                  <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
+                <Col md={12}>
+                  <label>Время выполнения, планируемое:</label>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12} className="datepicker-range">
                   <Div>
                     <Field
                       id="plan-date-start"
                       type="date"
-                      label="Время выполнения, планируемое:"
+                      label={false}
                       error={errors.plan_date_start || errors.plan_date}
                       date={state.plan_date_start}
                       disabled={IS_DISPLAY || readOnly}
                       onChange={this.handleChangePDS}
                     />
                   </Div>
-                </Col>
-                <Col md={6}>
+                  <Div className="date-divider">—</Div>
                   <Div>
                     <Field
                       id="plan-date-end"
                       type="date"
-                      label=""
+                      label={false}
                       error={errors.plan_date_end}
                       date={state.plan_date_end}
                       disabled={IS_DISPLAY || readOnly}

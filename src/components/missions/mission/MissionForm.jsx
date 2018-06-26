@@ -91,7 +91,7 @@ export class MissionForm extends Form {
     const car = this.props.carsIndex[this.props.formState.car_id];
 
     if (!v) {
-      if (!car.is_common) {
+      if (car && !car.is_common) {
         this.handleChange('car_id', null);
       }
     } else {
@@ -242,7 +242,7 @@ export class MissionForm extends Form {
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_DELETABLE = true;
     }
-    const structureValue = state.structure_id || _.find(STRUCTURES, [0].value);
+    const structureValue = state.structure_id;
 
     const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;

@@ -28,6 +28,8 @@ export const Car = ETS_API_FACTORY.createApiServiceAdapter('car');
 export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');
 export const DriverService = ETS_API_FACTORY.createApiServiceAdapter('driver', {});
 export const EmployeeService = ETS_API_FACTORY.createApiServiceAdapter('employee', {});
+export const EmployeeOnCarService = ETS_API_FACTORY.createApiServiceAdapter('employee_on_car');
+
 export const CustomersService = ETS_API_FACTORY.createApiServiceAdapter('customers', {});
 export const ForemanService = ETS_API_FACTORY.createApiServiceAdapter('foreman/', {});
 export const LastBrigadeService = ETS_API_FACTORY.createApiServiceAdapter('last_brigade/', {});

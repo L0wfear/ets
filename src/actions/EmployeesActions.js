@@ -1,6 +1,7 @@
 import { Actions } from 'flummox';
 import {
   EmployeeService,
+  EmployeeOnCarService,
   DriverService,
   ForemanService,
   LastBrigadeService,
@@ -43,6 +44,14 @@ export default class EmployeesActions extends Actions {
       ...props,
     };
     return getEmployees(payload);
+  }
+
+  getEmployeeOnCarList(props) {
+    const payload = {
+      ...props,
+    };
+
+    return EmployeeOnCarService.get(payload).then(({ result: { rows } }) => ({ result: rows }));
   }
 
   getDrivers() {

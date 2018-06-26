@@ -7,9 +7,9 @@ export interface IFilterValues {
 }
 
 export interface IPropsDataTable<TResultObject> {
+  results: TResultObject[];
   title?: string;
   tableMeta?: IDataTableSchema;
-  results: TResultObject[];
   renderers?: ISchemaRenderer;
   onRowSelected?(IDataTableSelectedRow): any;
   onRowChecked?(any): any;

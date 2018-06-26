@@ -8,6 +8,7 @@ export default class EmployeeStore extends Store {
 
     const employeesActions = flux.getActions('employees');
     this.register(employeesActions.getEmployees, this.handleGetEmployees);
+    this.register(employeesActions.getEmployeeOnCarList, this.handleGetEmployeeOnCarList);
     this.register(employeesActions.getWaybillDrivers, this.handleGetWaybillDrivers);
     this.register(employeesActions.getDrivers, this.handleGetDrivers);
     this.register(employeesActions.getForemans, this.handleGetForemans);
@@ -17,6 +18,8 @@ export default class EmployeeStore extends Store {
 
     this.state = {
       employeesList: [],
+      employeesIndex: {},
+      employeeOnCarList: [],
       driversList: [],
       foremanList: [],
       waybillDriversList: [],
@@ -28,6 +31,10 @@ export default class EmployeeStore extends Store {
       employeesList: result,
       employeesIndex: keyBy(result, 'id'),
     });
+  }
+
+  handleGetEmployeeOnCarList({ result }) {
+    this.setState({ employeeOnCarList: result.map((row, index) => ({ ...row, _uniq_field: index })) });
   }
 
   handleGetDrivers({ result }) {

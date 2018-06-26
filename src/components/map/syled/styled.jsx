@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export const SpanTitle = (props) => (
   <span> style={{ marginLeft: '15px' }}>
     {props.children}

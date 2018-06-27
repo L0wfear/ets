@@ -143,7 +143,7 @@ export default class Track {
     this.continuousUpdating = flag;
   }
 
-  getLegend({ object_type_name }) {
+  getLegend({ object_type_name, has_mkad }) {
     const legendPard = [];
     legendPard.push(
       <div key="obj-green" className="track-legend-item">
@@ -159,7 +159,7 @@ export default class Track {
       </div>,
     );
 
-    if (this.hasPointTrakOnMkad) {
+    if (has_mkad) {
       legendPard.push(<div key="devider">---------------------------</div>);
       legendPard.push(
         <div key="mkad-green" className="track-legend-item">

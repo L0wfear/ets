@@ -82,6 +82,7 @@ const MissionInfoForm: React.SFC<any> = props => {
                   routeCenter
                   mkad_speed_lim={props.mkad_speed_lim}
                   speed_lim={props.speed_lim}
+                  has_mkad={props.has_mkad}
                   selectedObjects={props.selectedObjects}
                   selectedPoly={props.selectedPoly}
                   car_gov_number={props.gov_number}

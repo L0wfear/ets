@@ -107,6 +107,7 @@ export const initialState = {
   routeType: ({ formState: { route_data: { type: routeType } } }) => routeType,
   current_percentage: ({ formState: { mission_data: { current_percentage } } }) => current_percentage,
   mkad_speed_lim: ({ formState: { speed_limits: { mkad_speed_lim } } }) => mkad_speed_lim,
+  has_mkad: ({ formState: { route_data: { has_mkad } } }) => has_mkad,
   speed_lim: ({ formState: { speed_limits: { speed_lim } } }) => speed_lim,
   object_type_name: ({ formState: { route_data: { object_type_name } } }) => object_type_name,
   withWorkSpeed: ({ formState: { report_data }}) => getDataTraveledYet([

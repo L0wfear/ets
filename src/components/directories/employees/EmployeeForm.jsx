@@ -9,8 +9,33 @@ import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
+import { diffDates } from 'utils/dates';
+import { isFourDigitGovNumber } from 'utils/functions';
 
 import Form from '../../compositions/Form.jsx';
+
+function filterCars(car, formState) {
+  if (car.condition_bool) {
+    if (
+      formState.drivers_license &&
+      formState.drivers_license_date_end &&
+      diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
+      isFourDigitGovNumber(car.gov_number)
+    ) {
+      return true;
+    }
+    if (
+      formState.special_license &&
+      formState.special_license_date_end &&
+      diffDates(formState.special_license_date_end, new Date()) > 0 &&
+      isFourDigitGovNumber(car.gov_number)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 @connectToStores(['objects'])
 @loadingOverlay
@@ -30,6 +55,16 @@ export default class EmployeeForm extends Form {
     }
 
     this.handleChange(field, e);
+    if (!e.target.value) {
+      this.handleChange('prefer_car', null);
+      this.handleChange('secondary_car', null);
+    }
+  }
+
+  handleChangePositionId =(field, e) => {
+    this.handleChange(field, e);
+    this.handleChange('prefer_car', null);
+    this.handleChange('secondary_car', null);
   }
 
   render() {
@@ -42,11 +77,13 @@ export default class EmployeeForm extends Form {
       onOverlayLoading,
     } = this.props;
 
-    const CARS = carsList.map(c => ({ value: c.asuods_id, label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]` }));
+    const CARS = carsList
+      .filter(car => filterCars(car, state))
+      .map(c => ({ value: c.asuods_id, label: `${c.gov_number}/ ${c.garage_number}/ ${c.type_name}/ ${c.full_model_name}/ ${c.special_model_name || c.model_name}` }));
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
     const DRIVER_STATES = [{ value: 1, label: 'Работает' }, { value: 0, label: 'Не работает' }];
     const POSITION_ELEMENTS = positionsList.map(el => ({ value: el.id, label: el.position }));
-
+    const positionLabel = (POSITION_ELEMENTS.find(({ value }) => value === state.position_id) || {}).label;
     const IS_CREATING = !state.id;
 
     let title = 'Изменение сотрудника';
@@ -190,7 +227,7 @@ export default class EmployeeForm extends Form {
                 value={state.position_id}
                 error={errors.position_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.handleChangePositionId}
                 boundKeys={['position_id']}
                 clearable={false}
               />
@@ -198,11 +235,11 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 type="select"
-                label="Предпочитаемое ТрС"
+                label="Основное ТС"
                 value={state.prefer_car}
                 options={CARS}
                 error={errors.prefer_car}
-                disabled={!isPermitted}
+                disabled={!isPermitted || !(positionLabel === 'водитель' || positionLabel === 'машинист')}
                 onChange={this.handleChange}
                 boundKeys={['prefer_car']}
               />
@@ -223,13 +260,15 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="string"
-                label="Медицинская справка №"
-                value={state.medical_certificate}
-                error={errors.medical_certificate}
-                disabled={!isPermitted}
+                type="select"
+                multi
+                label="Вторичное ТС"
+                value={state.secondary_car}
+                options={CARS}
+                error={errors.secondary_car}
+                disabled={!isPermitted || !(positionLabel === 'водитель' || positionLabel === 'машинист')}
                 onChange={this.handleChange}
-                boundKeys={['medical_certificate']}
+                boundKeys={['secondary_car']}
               />
             </Col>
           </Row>
@@ -248,14 +287,13 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="date"
-                label="Срок действия медицинской справки"
-                date={state.medical_certificate_date}
-                time={false}
-                error={errors.medical_certificate_date}
+                type="string"
+                label="Медицинская справка №"
+                value={state.medical_certificate}
+                error={errors.medical_certificate}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['medical_certificate_date']}
+                boundKeys={['medical_certificate']}
               />
             </Col>
           </Row>
@@ -269,6 +307,18 @@ export default class EmployeeForm extends Form {
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys={['is_common']}
+              />
+            </Col>
+            <Col md={6}>
+              <ExtField
+                type="date"
+                label="Срок действия медицинской справки"
+                date={state.medical_certificate_date}
+                time={false}
+                error={errors.medical_certificate_date}
+                disabled={!isPermitted}
+                onChange={this.handleChange}
+                boundKeys={['medical_certificate_date']}
               />
             </Col>
             <Col md={6}>

@@ -14,6 +14,7 @@ export interface IPropsMainInfoTab extends IBaseForm<IVehicle> {
   state: IVehicle;
   errors?: IVehicle;
   companyElements: IReactSelectOption;
+  DRIVERS: IReactSelectOption;
 }
 
 const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
@@ -98,6 +99,32 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           value={props.state.is_common}
           onChange={props.onChange}
           boundKeys={['is_common', !props.state.is_common]}
+          disabled={!props.isPermitted}
+        />
+      </Col>
+    </Row>
+    <Row>
+      <Col md={6}>
+        <ExtField
+          type="select"
+          multi
+          label="Основной водитель/машинист"
+          options={props.DRIVERS}
+          value={props.state.primary_drivers}
+          onChange={props.onChange}
+          boundKeys={['primary_drivers']}
+          disabled={!props.isPermitted}
+        />
+      </Col>
+      <Col md={6}>
+        <ExtField
+          type="select"
+          multi
+          label="Вторичный водитель/машинист"
+          options={props.DRIVERS}
+          value={props.state.secondary_drivers}
+          onChange={props.onChange}
+          boundKeys={['secondary_drivers']}
           disabled={!props.isPermitted}
         />
       </Col>

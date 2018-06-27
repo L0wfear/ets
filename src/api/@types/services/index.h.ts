@@ -38,6 +38,8 @@ export interface IVehicle {
   parking_address: string;
   car_group_id: number;
   car_group_name: string;
+  primary_drivers: any[],
+  secondary_drivers: any[],
 }
 
 export interface IVehicleRegister {

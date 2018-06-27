@@ -3,6 +3,9 @@ import { Modal, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootst
 import connectToStores from 'flummox/connect';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import * as queryString from 'query-string';
+import createFio from 'utils/create-fio.js';
+import { diffDates } from 'utils/dates';
+import { isFourDigitGovNumber } from 'utils/functions';
 
 import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
@@ -78,6 +81,8 @@ class CarForm extends Form {
     };
 
     const { flux } = this.context;
+    flux.getActions('employees').getEmployees();
+    flux.getActions('employees').getDrivers();
     flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
     flux.getActions('objects').getCountry();
     flux.getActions('autobase').getAutobaseListByType('engineType');
@@ -114,6 +119,8 @@ class CarForm extends Form {
       propulsionTypeList = [],
       carCategoryList = [],
       typesList = [],
+      employeesIndex = {},
+      driversList = [],
     } = this.props;
 
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
@@ -122,6 +129,15 @@ class CarForm extends Form {
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
 
+    const isFourInGovNumver = isFourDigitGovNumber(state.gov_number);
+    const DRIVERS = driversList.filter((driver) => {
+      const driverData = employeesIndex[driver.id];
+      if (isFourInGovNumver) {
+        return driverData.special_license && driverData.special_license_date_end && diffDates(driverData.special_license_date_end, new Date()) > 0;
+      }
+
+      return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
+    }).map((driver) => ({ value: driver.id, label: createFio(driver) }));
     return (
       <Modal id="modal-car" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
@@ -166,6 +182,7 @@ class CarForm extends Form {
               state={state}
               errors={errors}
               companyElements={COMPANY_ELEMENTS}
+              DRIVERS={DRIVERS}
               isPermitted={isPermitted}
               onChange={this.handleChangeMainInfoTab}
             />
@@ -252,4 +269,4 @@ class CarForm extends Form {
   }
 }
 
-export default tabable(connectToStores(CarForm, ['objects', 'autobase']));
+export default tabable(connectToStores(CarForm, ['objects', 'employees', 'autobase']));

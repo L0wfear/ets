@@ -231,6 +231,7 @@ export default class HybridMap extends Map {
             marker={() => this._pointsStore.getSelectedMarker()}
             mkad_speed_lim={this.props.mkad_speed_lim}
             speed_lim={this.props.speed_lim}
+            has_mkad={this.props.has_mkad}
             object_type_name={this.props.object_type_name}
           />
         </FluxComponent>

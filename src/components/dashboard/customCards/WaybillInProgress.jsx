@@ -30,7 +30,7 @@ export default class WaybillInProgress extends WaybillClosed {
         {subItems.map((item, i) => (<div key={i}>
           {item.data.groupStart ? <center><span style={{ fontWeight: 'bold' }}>{moment(item.data.create_date).format(global.APP_DATE_FORMAT)}</span></center> : ''}
           <li key={i} onClick={this.action.bind(this, item)}>
-            {`№${item.data.waybill_number}, `}<span style={{ fontWeight: 'bold' }}>{item.data.car_gov_number}</span>{`, ${item.data.car_garage_number}`}
+            {`№${item.data.waybill_number}, `}<span style={{ fontWeight: 'bold' }}>{item.data.car_gov_number}</span>{item.data.car_garage_number ? `, ${item.data.car_garage_number}` : ''}
             <br />
             {`${item.data.driver_fio || ''}${item.data.driver_phone ? ', ' + item.data.driver_phone : ''}`}
             {item.data.groupEnd ? <p /> : ''}

@@ -15,7 +15,8 @@ const renderRoutes = (newRoutesArr, data) => {
             exact={componentData.exact}
             component={componentData.component}
           />
-        ));
+        ),
+      );
     } else if (!data.divider && !data.hiddenNav) {
       newRoutesArr.push(...Object.values(data.children).reduce(renderRoutes, []));
     }

@@ -51,6 +51,7 @@ export const TechnicalOperationRegistryService = ETS_API_FACTORY.createApiServic
 export const AuthService = ETS_API_FACTORY.createApiServiceAdapter('auth', {});
 export const AuthCheckService = ETS_API_FACTORY.createApiServiceAdapter('auth_check', {});
 export const TechnicalOperationObjectsService = ETS_API_FACTORY.createApiServiceAdapter('technical_operation_objects', {});
+export const TechnicalOperationRelationsService = ETS_API_FACTORY.createApiServiceAdapter('technical_operation_relations');
 export const TechnicalOperationTypesService = ETS_API_FACTORY.createApiServiceAdapter('technical_operation_types', {});
 export const CompanyStructureService = ETS_API_FACTORY.createApiServiceAdapter('company_structure', {});
 export const CompanyService = ETS_API_FACTORY.createApiServiceAdapter('companies', {});

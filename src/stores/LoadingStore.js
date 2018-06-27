@@ -123,6 +123,7 @@ export default class LoadingStore extends Store {
       missionsActons.removeDutyMissionTemplate,
       missionsActons.printMission,
       missionsActons.printDutyMission,
+      missionsActons.getCleaningMunicipalFacilityList,
 
       routesActions.getRoutes,
       routesActions.createRoute,
@@ -145,6 +146,7 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.updateTechnicalOperation,
       technicalOperationsActions.getTechnicalOperationsByCarId,
       technicalOperationsActions.getTechOperationsByNormIds,
+      technicalOperationsActions.getTechnicalOperationRelations,
 
       companyStructureActions.getCompanyStructure,
       companyStructureActions.updateCompanyElement,

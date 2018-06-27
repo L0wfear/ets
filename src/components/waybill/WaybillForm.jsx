@@ -393,8 +393,10 @@ class WaybillForm extends Form {
   }
 
   getLatestWaybillDriver(formState) {
+    const { car_id } = formState;
+    this.context.flux.getActions('employees').getEmployeeBindedToCar(car_id);
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
-      formState.car_id,
+      car_id,
       formState.driver_id
     ).then(({ result: { driver_id = null } }) => {
       if (driver_id) {
@@ -622,6 +624,7 @@ class WaybillForm extends Form {
       carsIndex = {},
       waybillDriversList = [],
       employeesList = [],
+      employeesBindedoOCarList = [],
       appConfig,
       workModeOptions,
     } = this.props;
@@ -663,7 +666,12 @@ class WaybillForm extends Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const EMPLOYEES = employeesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
+    let EMPLOYEES = [];
+    if (employeesBindedoOCarList.length > 0) {
+      EMPLOYEES.employeesBindedoOCarList.map(({ employee_id, driver_fio }) => ({ value: employee_id, label: driver_fio }));
+    } else {
+      EMPLOYEES = employeesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
+    }
 
     const IS_CREATING = !state.status;
     const IS_ACTIVE = state.status && state.status === 'active';

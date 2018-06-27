@@ -216,7 +216,7 @@ export default class RouteForm extends Form {
                     options={TECH_OPERATIONS}
                     value={state.technical_operation_id}
                     onChange={this.handleTechChange}
-                    disabled={this.props.fromMission || state.id}
+                    disabled={this.props.fromMission || !!state.id}
                     clearable={false}
                     error={errors.technical_operation_id}
                   />
@@ -227,7 +227,7 @@ export default class RouteForm extends Form {
                     label={'municipal_facility_name'}
                     errors={errors}
                     state={state}
-                    disabled={this.props.fromMission || state.id}
+                    disabled={!!this.props.fromMission || !!state.id}
                     handleChange={this.handleChange}
                     getDataByNormId={this.getDataByNormId}
                     clearable={false}

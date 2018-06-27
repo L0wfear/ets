@@ -2,6 +2,7 @@ import { Actions } from 'flummox';
 import { cloneDeep } from 'lodash';
 import {
   TechnicalOperationObjectsService,
+  TechnicalOperationRelationsService,
   TechnicalOperationTypesService,
   TechnicalOperationRegistryService,
 } from 'api/Services';
@@ -35,6 +36,15 @@ export default class TechnicalOperationsActions extends Actions {
 
   getTechnicalOperationsTypes() {
     return TechnicalOperationTypesService.get();
+  }
+
+  getTechnicalOperationRelations(props) {
+    const payload = {
+      technical_operation_id: props.technical_operation_id,
+      municipal_facility_id: props.municipal_facility_id,
+      func_type_id: props.func_type_id,
+    };
+    return TechnicalOperationRelationsService.get(payload).then(({ result: { rows } }) => ({ result: rows }));
   }
 
   getTechnicalOperations(data) {

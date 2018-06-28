@@ -77,6 +77,10 @@ export default function(state = initialState, { type, payload }) {
         selectedElementAssignment: null,
         showHistoryComponent: false,
         disabledOrderButton,
+        disabledAssignmentButton: {
+          mission: true,
+          dutyMission: true,
+        },
       }
     case SET_SELECTED_ELEMENT_ASSIGNMENT:
       const { selectedElementOrder: { order_date_to, status: order_status } } = state;

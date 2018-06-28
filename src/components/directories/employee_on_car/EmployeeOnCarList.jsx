@@ -1,10 +1,12 @@
+import * as React from 'react';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList.jsx';
 import EmployeeOnCarTable from 'components/directories/employee_on_car/table/EmployeeOnCarTable';
 import { customOptionsTableFromMainResult } from 'components/directories/employee_on_car/table/helpData';
 import permissions from 'components/directories/employees/config-data/permissions';
 import { makeOptions } from 'components/ui/input/makeOptions';
-import * as queryString from 'query-string';
+import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
+import permissionsCar from 'components/directories/autobase/cars/config-data/permissions';
 
 @connectToStores(['employees', 'objects', 'session'])
 @exportable({ entity: 'employee_on_car' })
@@ -17,7 +19,17 @@ import * as queryString from 'query-string';
   operations: ['LIST'],
 })
 export default class EmployeeOnCarList extends ElementsList {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
+      showCarForm: false,
+      carElement: null,
+    };
+  }
   init() {
+    this.context.flux.getActions('objects').getCars();
     this.context.flux.getActions('employees').getEmployeeOnCarList()
       .then(({ result }) => {
         const options = makeOptions({
@@ -30,12 +42,29 @@ export default class EmployeeOnCarList extends ElementsList {
       });
   }
 
-  onRowDoubleClick = ({ props: { data } }) => {
-    const query = {
-      asuods_id: data.asuods_id,
-    };
-    this.props.history.push(`/cars?${queryString.stringify(query)}`);
+  onRowClick = ({ props: { data } }) => {
+    if (this.props.userPermissions.includes(permissionsCar.read)) {
+      this.setState({
+        selectedElement: data,
+      });
+    }
   }
+
+  onRowDoubleClick = ({ props: { data } }) => {
+    if (this.props.userPermissions.includes(permissionsCar.read)) {
+      const carElement = this.props.carsList.find(({ asuods_id }) => asuods_id === data.asuods_id);
+
+      if (!carElement) {
+        console.error(`Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`);
+      } else {
+        this.setState({
+          showCarForm: true,
+          carElement,
+        });
+      }
+    }
+  }
+  onCarFormHide = () => this.setState({ carElement: null, showCarForm: false });
 
   getAdditionalProps = () => {
     const {
@@ -48,5 +77,20 @@ export default class EmployeeOnCarList extends ElementsList {
       GARAGE_NUMBERS,
       DRIVER_FIOS,
     };
+  }
+
+  additionalRender() {
+    return [
+      <CarFormWrap
+        key="carFormWrap"
+        showForm={this.state.showCarForm}
+        onFormHide={this.onCarFormHide}
+        element={this.state.carElement}
+        entity={'car'}
+        permissions={[permissionsCar.read]}
+        flux={this.context.flux}
+        {...this.props}
+      />,
+    ]
   }
 }

@@ -10,7 +10,6 @@ import { ExtField } from 'components/ui/Field.jsx';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { diffDates } from 'utils/dates';
-import { isFourDigitGovNumber } from 'utils/functions';
 
 import Form from '../../compositions/Form.jsx';
 
@@ -21,7 +20,7 @@ function filterCars(car, formState) {
       formState &&
       formState.drivers_license_date_end &&
       diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
-      !isFourDigitGovNumber(car.gov_number)
+      car.for_driver_license
     ) {
       norm = true;
     }
@@ -29,7 +28,7 @@ function filterCars(car, formState) {
       formState.special_license &&
       formState.special_license_date_end &&
       diffDates(formState.special_license_date_end, new Date()) > 0 &&
-      isFourDigitGovNumber(car.gov_number)
+      car.for_special_license
     ) {
       norm = true;
     }

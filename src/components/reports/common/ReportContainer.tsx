@@ -54,7 +54,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   async componentWillReceiveProps(nextProps: IPropsReportContainer) {
     const { query } = this.props.location;
-
     const nextQuery = nextProps.location.query;
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
@@ -118,7 +117,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
         resolve(data);
       } catch (error) {
-        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+        const { warnings = [] }  = error
+        if (!warnings.length) {
+          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+        }
         reject(error);
       }
     });
@@ -129,7 +131,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.getTableMetaInfo(this.props.serviceName);
     } catch (error) {
       console.error(error);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+      const { warnings = [] }  = error
+      if (!warnings.length) {
+        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+      }
     }
   }
 
@@ -186,7 +191,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.history.pushState(null, this.props.reportUrl, newQuery);
     } catch (error) {
       console.error(error);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+      const { warnings = [] }  = error
+      if (!warnings.length) {
+        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
+      }
     }
   }
 

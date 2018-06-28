@@ -165,7 +165,7 @@ export default class Track {
           <ColorLegend className="track-legend-point" color={TRACK_COLORS.green} />
           <div className="track-legend-text">
             <span>{`0 - ${this.mkad_speed_lim} км/ч`}</span>
-            <SpanTitle>{'На Мкад'}</SpanTitle>
+            <SpanTitle>{'На МКАД'}</SpanTitle>
           </div>
         </div>,
         <div key="mkad-red" className="track-legend-item">

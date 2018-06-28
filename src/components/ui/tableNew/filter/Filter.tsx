@@ -14,7 +14,7 @@ class Fiter extends React.Component<any, any> {
     this.setState({ filterValues: props.filterValues });
   }
 
-  handleFilterValueChange = (key, type, e) => {
+  handleFilterValueChange = ({ name: key, type, customFilter }, e) => {
     const filterValues = { ...this.state.filterValues };
 
     if (!e || isEmpty(e.target ? e.target.value : e)) {
@@ -23,13 +23,16 @@ class Fiter extends React.Component<any, any> {
       filterValues[key] = {
         value: e.target ? e.target.value : e,
         type,
-      }
+        other: {
+          customFilter,
+        },
+      };
     }
 
     this.setState({ filterValues });
   }
 
-  handleFilterMultipleValueChange = (key, type, v) => {
+  handleFilterMultipleValueChange = ({ name: key, type, customFilter}, v) => {
     const filterValues = { ...this.state.filterValues };
     const data = !isEmpty(v) ? v : [];
 
@@ -39,6 +42,9 @@ class Fiter extends React.Component<any, any> {
       filterValues[key] = {
         value: data,
         type,
+        otherData: {
+          customFilter,
+        },
       };
     }
 
@@ -62,6 +68,7 @@ class Fiter extends React.Component<any, any> {
       filter: {
         type,
         notUse,
+        customFilter,
       },
     } = col;
     
@@ -73,6 +80,7 @@ class Fiter extends React.Component<any, any> {
         data={this.props.data}
         value={get(this.state.filterValues, [customName, 'value'], null)}
         type={type}
+        customFilter={customFilter}
         name={customName}
         byLabel={filter.byLabel}
         serverFieldName={filter.serverFieldName}

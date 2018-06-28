@@ -15,14 +15,15 @@ import { isFourDigitGovNumber } from 'utils/functions';
 import Form from '../../compositions/Form.jsx';
 
 function filterCars(car, formState) {
+  let norm = false;
   if (car.condition_bool) {
     if (
-      formState.drivers_license &&
+      formState &&
       formState.drivers_license_date_end &&
       diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
-      isFourDigitGovNumber(car.gov_number)
+      !isFourDigitGovNumber(car.gov_number)
     ) {
-      return true;
+      norm = true;
     }
     if (
       formState.special_license &&
@@ -30,11 +31,11 @@ function filterCars(car, formState) {
       diffDates(formState.special_license_date_end, new Date()) > 0 &&
       isFourDigitGovNumber(car.gov_number)
     ) {
-      return true;
+      norm = true;
     }
   }
 
-  return false;
+  return norm;
 }
 
 @connectToStores(['objects'])

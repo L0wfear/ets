@@ -35,7 +35,6 @@ class BrigadeEfficiencyReport extends React.Component<{}, IStateBrigadeEfficienc
       });
     } catch (err) {
       console.warn(err);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification('duty_mission (Журнал наряд-заданий)'));
     }
   }
   handleDutyMissionFormVisibility = () => {

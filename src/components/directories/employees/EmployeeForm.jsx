@@ -15,7 +15,7 @@ import Form from '../../compositions/Form.jsx';
 
 function filterCars(car, formState) {
   let norm = false;
-  if (car.condition_bool) {
+  if (car.available_to_bind) {
     if (
       formState &&
       formState.drivers_license_date_end &&

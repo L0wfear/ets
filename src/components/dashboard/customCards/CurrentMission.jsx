@@ -204,7 +204,7 @@ export default class CurrentMission extends DashboardCardMedium {
               {car_data.gov_number}
             </li>
             <li><b>Гаражный номер: </b>
-              {car_data.garage_number}
+              {car_data.garage_number ? car_data.garage_number : '-'}
             </li>
             <li><b>Начало задания: </b>
               {getFormattedDateTimeSeconds(mission_data.date_start)}

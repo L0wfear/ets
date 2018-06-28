@@ -52,7 +52,7 @@ const Table: React.SFC<any> = props => {
   return (
     <DataTable
       data={props.data}
-      title={'Итого'}
+      title={'Матрица распределения ТС и водителей'}
       tableMeta={getTableMeta(props)}
       enumerated
       uniqName={'gov_number'}

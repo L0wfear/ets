@@ -10,31 +10,31 @@ import { ExtField } from 'components/ui/Field.jsx';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { diffDates } from 'utils/dates';
-import { isFourDigitGovNumber } from 'utils/functions';
 
 import Form from '../../compositions/Form.jsx';
 
 function filterCars(car, formState) {
+  let norm = false;
   if (car.condition_bool) {
     if (
-      formState.drivers_license &&
+      formState &&
       formState.drivers_license_date_end &&
       diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
-      isFourDigitGovNumber(car.gov_number)
+      car.for_driver_license
     ) {
-      return true;
+      norm = true;
     }
     if (
       formState.special_license &&
       formState.special_license_date_end &&
       diffDates(formState.special_license_date_end, new Date()) > 0 &&
-      isFourDigitGovNumber(car.gov_number)
+      car.for_special_license
     ) {
-      return true;
+      norm = true;
     }
   }
 
-  return false;
+  return norm;
 }
 
 @connectToStores(['objects'])
@@ -79,7 +79,7 @@ export default class EmployeeForm extends Form {
 
     const CARS = carsList
       .filter(car => filterCars(car, state))
-      .map(c => ({ value: c.asuods_id, label: `${c.gov_number}/ ${c.garage_number}/ ${c.type_name}/ ${c.full_model_name}/ ${c.special_model_name || c.model_name}` }));
+      .map(c => ({ value: c.asuods_id, label: `${c.gov_number}/ ${c.garage_number ? c.garage_number : '-'}/ ${c.type_name}/ ${c.full_model_name}/ ${c.special_model_name || c.model_name}` }));
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
     const DRIVER_STATES = [{ value: 1, label: 'Работает' }, { value: 0, label: 'Не работает' }];
     const POSITION_ELEMENTS = positionsList.map(el => ({ value: el.id, label: el.position }));

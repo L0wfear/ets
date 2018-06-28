@@ -132,11 +132,14 @@ class CarForm extends Form {
     const isFourInGovNumver = isFourDigitGovNumber(state.gov_number);
     const DRIVERS = driversList.filter((driver) => {
       const driverData = employeesIndex[driver.id];
-      if (isFourInGovNumver) {
-        return driverData.special_license && driverData.special_license_date_end && diffDates(driverData.special_license_date_end, new Date()) > 0;
-      }
+      if (driverData) {
+        if (isFourInGovNumver) {
+          return driverData.special_license && driverData.special_license_date_end && diffDates(driverData.special_license_date_end, new Date()) > 0;
+        }
 
-      return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
+        return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
+      }
+      return false;
     }).map((driver) => ({ value: driver.id, label: createFio(driver) }));
     return (
       <Modal id="modal-car" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">

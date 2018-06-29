@@ -30,7 +30,7 @@ export default class WaybillClosed extends DashboardCardMedium {
       <ul>
         {subItems.map((item, i) => (
           <li key={i} onClick={this.action.bind(this, item)}>
-            {`№${item.data.waybill_number}, ${item.data.car_gov_number}, ${item.data.driver_fio}`}
+            {`№${item.data.waybill_number}, ${item.data.car_gov_number}, ${item.data.car_garage_number ? item.data.car_garage_number : '-'}, ${item.data.driver_fio}`}
           </li>
         ))}
       </ul>

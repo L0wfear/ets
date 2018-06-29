@@ -666,12 +666,7 @@ class WaybillForm extends Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    let EMPLOYEES = [];
-    if (employeesBindedoOCarList.length > 0) {
-      EMPLOYEES.employeesBindedoOCarList.map(({ employee_id, driver_fio }) => ({ value: employee_id, label: driver_fio }));
-    } else {
-      EMPLOYEES = employeesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
-    }
+    const EMPLOYEES = employeesList.map(({ id, full_name }) => ({ value: id, label: full_name }));
 
     const IS_CREATING = !state.status;
     const IS_ACTIVE = state.status && state.status === 'active';
@@ -682,7 +677,8 @@ class WaybillForm extends Form {
     const trailer = carsIndex[state.trailer_id];
     const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, employeesBindedoOCarList.length ? employeesBindedoOCarList : waybillDriversList) : [];
+
     const title = getTitleByStatus(state);
     const {
       tax_data = [],

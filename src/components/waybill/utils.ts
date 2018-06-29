@@ -75,16 +75,28 @@ export const getDrivers = (state, employeesIndex, driversList) => {
   const driverFilter = licenceSwitcher(state.gov_number);
 
   return driversList
-    .filter(driver => (
-      (!driver.prefer_car ? true : driver.prefer_car === state.car_id) &&
-      (!state.structure_id || ((employeesIndex[driver.id] && employeesIndex[driver.id].is_common) || state.structure_id === driver.company_structure_id)) &&
-      driverFilter(driver)
-    ))
-    .map(d => {
-      const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
+    .filter(({id, employee_id}) => {
+      const key = id || employee_id;
+      const driverData = employeesIndex[key];
+
+      if (!driverData) {
+        return false;
+      }
+
+      return (
+        (!driverData.prefer_car ? true : driverData.prefer_car === state.car_id) &&
+        (!state.structure_id || ((driverData.is_common) || state.structure_id === driverData.company_structure_id)) &&
+        driverFilter(driverData)
+      );
+    })
+    .map(({id, employee_id}) => {
+      const key = id || employee_id;
+      const driverData = employeesIndex[key];
+
+      const personnel_number = driverData.personnel_number ? `[${driverData.personnel_number}] ` : '';
       return {
-        value: d.id,
-        label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}`,
+        value: key,
+        label: `${personnel_number}${driverData.last_name || ''} ${driverData.first_name || ''} ${driverData.middle_name || ''}`,
       };
     });
 };

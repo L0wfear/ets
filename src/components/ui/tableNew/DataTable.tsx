@@ -14,13 +14,15 @@ interface DataTableState {
   [key: string]: any;
 }
 
+const emptyFilter = {};
+
 class DataTable extends React.Component<DataTableProps, DataTableState> {
   static get defaultProps() {
     return {
       enumerated: true,
       filterModalIsOpen: false,
       activeFilter: false,
-      filterValues: {},
+      filterValues: emptyFilter,
     };
   }
   constructor(props) {
@@ -30,7 +32,8 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       tableMeta: makeTableMeta(props.tableMeta, props),
       tableMeta_original: props.tableMet,
       enumerated: props.enumerated,
-      filterValues: props.filterValues || {},
+      filterValuesOrigina: props.filterValues,
+      filterValues: props.filterValues,
       propsData: props.data,
       hasData: !!props.data.length,
     };
@@ -57,8 +60,9 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       changesState.propsData = data_next;
       changesState.hasData = !!data_next.length;
     }
-
-    if (this.state.filterValues !== filterValues) {
+    console.log(this.state.filterValuesOrigina, filterValues)
+    if (this.state.filterValuesOrigina !== filterValues) {
+      changesState.filterValuesOrigina = filterValues;
       changesState.filterValues = filterValues;
       changesState.activeFilter = !!Object.keys(filterValues).length;
     }

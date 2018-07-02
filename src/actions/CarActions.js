@@ -37,8 +37,6 @@ export default class CarActions extends Actions {
     is_common,
     passport_id,
     passport_type = '',
-    primary_drivers,
-    secondary_drivers,
     ...restPayload
   }) {
     const car_id = asuods_id;
@@ -51,8 +49,6 @@ export default class CarActions extends Actions {
       company_structure_id,
       is_common: is_common ? 1 : 0,
       fuel_correction_rate: fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(2) : null,
-      primary_drivers,
-      secondary_drivers,
     };
     await this.updateCarRegisterInfo({
       car_id,

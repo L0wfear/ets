@@ -40,6 +40,8 @@ export interface IVehicle {
   car_group_name: string;
   primary_drivers: any[],
   secondary_drivers: any[],
+  register_secondary_drivers: any[],
+  register_primary_drivers: any[],
 }
 
 export interface IVehicleRegister {
@@ -47,6 +49,8 @@ export interface IVehicleRegister {
   register_given_by: string;
   register_given_at: Date;
   register_note: string;
+  register_secondary_drivers: any[],
+  register_primary_drivers: any[],
 }
 
 export interface IVehiclePassport  extends IVehiclePassportGibdd, IVehiclePassportGtn {

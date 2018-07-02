@@ -2246,7 +2246,7 @@ body.application {
           background-color: #f7f7f7 !important;
         }
 
-        &.highlighted-row > td {
+        &.highlighted-row.child-row > td {
           background-color: $colorYellow !important;
         }
 
@@ -3108,7 +3108,7 @@ div.none {
           color: white !important;
         }
 
-        &:hover > td, &.highlighted-row > td {
+        &.child-row:hover > td, &.child-row.highlighted-row > td {
           background-color: $colorYellow !important;
         }
       }

@@ -80,6 +80,7 @@ export const componentDidMount: IComponentDidMount = async props => {
   const [route] = await Promise.all([
     flux.getActions('routes').getRouteById(route_data.id, true),
     flux.getActions('geoObjects').getGeozones(),
+    flux.getActions('geoObjects').getOdhMkad(),
   ]);
   
   const missionReport = report_data.entries || [];

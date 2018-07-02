@@ -110,9 +110,9 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           multi
           label="Основной водитель/машинист"
           options={props.DRIVERS}
-          value={props.state.primary_drivers}
+          value={props.state.register_primary_drivers}
           onChange={props.onChange}
-          boundKeys={['primary_drivers']}
+          boundKeys={['register_primary_drivers']}
           disabled={!props.isPermitted}
         />
       </Col>
@@ -122,9 +122,9 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           multi
           label="Вторичный водитель/машинист"
           options={props.DRIVERS}
-          value={props.state.secondary_drivers}
+          value={props.state.register_secondary_drivers}
           onChange={props.onChange}
-          boundKeys={['secondary_drivers']}
+          boundKeys={['register_secondary_drivers']}
           disabled={!props.isPermitted}
         />
       </Col>

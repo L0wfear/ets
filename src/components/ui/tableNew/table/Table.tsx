@@ -70,7 +70,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       changesState.originalData = nextProps.data;
       changesState.filterValues = nextProps.filterValues;
       changesState.activeFilter = nextProps.activeFilter;
-      changesState.pagination = { ...this.state.pagination, totalCount: changesState.originalData.length };
+      changesState.pagination = { ...this.state.pagination, totalCount: changesState.data.length };
       changesState.pagination.maxPage = Math.ceil(changesState.pagination.totalCount / changesState.pagination.perPageCount);
       if (changesState.pagination.maxPage - 1 < changesState.pagination.offset) {
         changesState.pagination.offset = changesState.pagination.maxPage === 0 ? 0 : changesState.pagination.maxPage - 1;

@@ -627,6 +627,7 @@ class WaybillForm extends Form {
       employeesBindedoOCarList = [],
       appConfig,
       workModeOptions,
+      employeesIndex = {},
     } = this.props;
 
     let taxesControl = false;
@@ -677,7 +678,7 @@ class WaybillForm extends Form {
     const trailer = carsIndex[state.trailer_id];
     const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '').toLowerCase().includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number ? !hasMotohours(state.gov_number) : null;
-    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, this.props.employeesIndex, employeesBindedoOCarList.length ? employeesBindedoOCarList : waybillDriversList) : [];
+    const DRIVERS = (IS_CREATING || IS_DRAFT) ? getDrivers(state, employeesIndex, employeesBindedoOCarList.length ? employeesBindedoOCarList : waybillDriversList) : [];
 
     const title = getTitleByStatus(state);
     const {

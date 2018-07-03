@@ -31,6 +31,7 @@ class CarFormWrap extends FormWrap {
 
       const register_info = await this.context.flux.getActions('cars').getCarRegisterInfo(element.asuods_id) || {};
       const register_passport_info = await this.context.flux.getActions('cars').getCarPassportRegistryInfo(element.asuods_id) || {};
+      const car_drivers_info = await this.context.flux.getActions('cars').getCarDriversInfo(element.asuods_id) || {};
       const { type = '', id = null } = register_passport_info;
 
       this.setState({
@@ -40,6 +41,7 @@ class CarFormWrap extends FormWrap {
           passport_type: type,
           passport_id: id,
           ...unpackObjectData(`passport_${type.toLowerCase()}`, register_passport_info),
+          ...unpackObjectData('car_drivers', car_drivers_info),
         },
       });
     }

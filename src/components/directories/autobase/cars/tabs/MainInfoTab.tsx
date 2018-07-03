@@ -3,15 +3,17 @@ import { Row, Col } from 'react-bootstrap';
 
 import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
 import { IBaseForm } from 'components/ui/@types/Form.h';
-import { IVehicle } from 'api/@types/services/index.h';
+import { IVehicle, ICarDrivers } from 'api/@types/services/index.h';
 
 import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import config from 'config';
 const styles = require('components/directories/autobase/cars/cars.module.scss');
 
-export interface IPropsMainInfoTab extends IBaseForm<IVehicle> {
-  state: IVehicle;
+interface IFormState extends IVehicle, ICarDrivers {};
+
+export interface IPropsMainInfoTab extends IBaseForm<IFormState> {
+  state: IFormState;
   errors?: IVehicle;
   companyElements: IReactSelectOption;
   DRIVERS: IReactSelectOption;
@@ -110,9 +112,9 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           multi
           label="Основной водитель/машинист"
           options={props.DRIVERS}
-          value={props.state.register_primary_drivers}
+          value={props.state.car_drivers_primary_drivers}
           onChange={props.onChange}
-          boundKeys={['register_primary_drivers']}
+          boundKeys={['car_drivers_primary_drivers']}
           disabled={!props.isPermitted}
         />
       </Col>
@@ -122,9 +124,9 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           multi
           label="Вторичный водитель/машинист"
           options={props.DRIVERS}
-          value={props.state.register_secondary_drivers}
+          value={props.state.car_drivers_secondary_drivers}
           onChange={props.onChange}
-          boundKeys={['register_secondary_drivers']}
+          boundKeys={['car_drivers_secondary_drivers']}
           disabled={!props.isPermitted}
         />
       </Col>

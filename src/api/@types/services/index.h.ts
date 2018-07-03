@@ -44,6 +44,11 @@ export interface IVehicle {
   register_primary_drivers: any[],
 }
 
+export interface ICarDrivers {
+  car_drivers_primary_drivers: number[],
+  car_drivers_secondary_drivers: number[],
+}
+
 export interface IVehicleRegister {
   register_certificate_number: string;
   register_given_by: string;

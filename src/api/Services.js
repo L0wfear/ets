@@ -92,6 +92,7 @@ export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter(
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});
 
 export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase', {});
+export const CarDrivers = ETS_API_FACTORY.createApiServiceAdapter('car_drivers');
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair', {});
 

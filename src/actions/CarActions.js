@@ -5,6 +5,7 @@ import { swapCoords } from 'utils/geo';
 import { packObjectData } from 'api/utils';
 import {
   Car,
+  CarDrivers,
   CarService,
   CarInfoService,
   VectorObjectService,
@@ -50,21 +51,29 @@ export default class CarActions extends Actions {
       is_common: is_common ? 1 : 0,
       fuel_correction_rate: fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(2) : null,
     };
-    await this.updateCarRegisterInfo({
-      car_id,
-      ...packObjectData('register', restPayload),
-    });
 
-    if (!!passport_type) {
-      await this.updateCarPassportInfo({
+    return Promise.all([
+      CarService.put(payload, () => CarService.get().then(r => ({ result: r.result.rows })), 'json'),
+      this.updateCarRegisterInfo({
         car_id,
-        type: passport_type.toUpperCase(),
-        ...packObjectData(`passport_${passport_type.toLowerCase()}`, restPayload),
-        id: passport_id,
-      });
-    }
-
-    return CarService.put(payload, () => CarService.get().then(r => ({ result: r.result.rows })), 'json');
+        ...packObjectData('register', restPayload),
+      }),
+      this.updateCarDriversInfo({
+        car_id,
+        ...packObjectData('car_drivers', restPayload),
+      }),
+      () => {
+        if (!!passport_type) {
+          return this.updateCarPassportInfo({
+            car_id,
+            type: passport_type.toUpperCase(),
+            ...packObjectData(`passport_${passport_type.toLowerCase()}`, restPayload),
+            id: passport_id,
+          });
+        }
+        return Promise.resolve(true);
+      },
+    ]).then(([carData]) => carData);
   }
   getCarRegisterInfo(car_id) {
     return AutoBase
@@ -78,7 +87,11 @@ export default class CarActions extends Actions {
       .get({ car_id })
       .then(data => data.result.rows[0]);
   }
-  async updateCarRegisterInfo({
+  getCarDriversInfo(car_id) {
+    return CarDrivers
+      .get({ car_id });
+  }
+  updateCarRegisterInfo({
     id,
     certificate_number,
     given_at,
@@ -89,10 +102,10 @@ export default class CarActions extends Actions {
       given_at: createValidDate(given_at),
       ...restPayload,
     };
-    await updateCarInfo(id, payload, 'car_registration_registry');
+    return updateCarInfo(id, payload, 'car_registration_registry');
   }
 
-  async updateCarPassportInfo({
+  updateCarPassportInfo({
     id,
     type,
     given_at,
@@ -103,7 +116,11 @@ export default class CarActions extends Actions {
       given_at: createValidDate(given_at),
       type,
     };
-    await updateCarInfo(id, payload, `car_passport_${type.toLowerCase()}_registry`);
+    return updateCarInfo(id, payload, `car_passport_${type.toLowerCase()}_registry`);
+  }
+
+  updateCarDriversInfo({ car_id, ...restData }) {
+    return CarDrivers.path(car_id).put({ car_id, ...restData }, false, 'json');
   }
 
   getVectorObject(selectedPoint, prevPoint, nextPoint) {

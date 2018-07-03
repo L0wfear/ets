@@ -219,6 +219,10 @@ export class DutyMissionForm extends Form {
     } = this.state;
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
+
+    if (!TECH_OPERATIONS.some(({ id }) => id === state.technical_operation_id)) {
+      TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
+    }
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
     const ROUTES = routesList
         .filter(route => !state.structure_id || route.structure_id === state.structure_id)
@@ -331,28 +335,32 @@ export class DutyMissionForm extends Form {
                     />
                   </Div>
                 </Col>
-
-                <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
-                  <Col md={6}>
-                    <label style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</label>
+              </Row>
+              <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
+                <Row>
+                  <Col md={12}>
+                    <label>Время выполнения, фактическое:</label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} className="datepicker-range">
                     <Div>
                       <Field
                         id="fact-date-start"
                         type="date"
-                        label="Время выполнения, фактическое:"
+                        label={false}
                         error={errors.fact_date_start}
                         date={state.fact_date_start}
                         disabled={IS_CLOSED || readOnly}
                         onChange={this.handleChange.bind(this, 'fact_date_start')}
                       />
                     </Div>
-                  </Col>
-                  <Col md={6}>
+                    <Div className="date-divider">—</Div>
                     <Div>
                       <Field
                         id="fact-date-end"
                         type="date"
-                        label=""
+                        label={false}
                         error={errors.fact_date_end}
                         date={state.fact_date_end}
                         min={state.fact_date_start}
@@ -361,11 +369,9 @@ export class DutyMissionForm extends Form {
                       />
                     </Div>
                   </Col>
-                </Div>
-              </Row>
+                </Row>
+              </Div>
             </Col>
-
-
           </Row>
 
           <Row>

@@ -41,7 +41,7 @@ export const schema = {
     drivers_license: [
       {
         validator: (value, formData) => {
-          if (formData.position_id === 15 || formData.position_id === 24) {
+          if (formData.position_id === 15 || formData.position_id === 24 || formData.position_id === 46) {
             if (isEmpty(formData.special_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
@@ -53,7 +53,7 @@ export const schema = {
     special_license: [
       {
         validator: (value, formData) => {
-          if (formData.position_id === 15 || formData.position_id === 24) {
+          if (formData.position_id === 15 || formData.position_id === 24 || formData.position_id === 46) {
             if (isEmpty(formData.drivers_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }

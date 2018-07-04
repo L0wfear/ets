@@ -19,13 +19,15 @@ const ButtonChangeRoute = enhanceWithPermissions({
 @connectToStores(['objects', 'employees', 'missions', 'routes'])
 @FluxContext
 export default class ChangeRouteForm extends React.Component {
-  componentDidMount() {
-    this.context.flux.getActions('geoObjects').getGeozones();
-  }
+
   state = {
     routeSelected: null,
     showRouteForm: false,
     routeElement: null,
+  }
+
+  componentDidMount() {
+    this.context.flux.getActions('geoObjects').getGeozones();
   }
 
   onRowClick = ({ props: { data } }) => {
@@ -33,6 +35,7 @@ export default class ChangeRouteForm extends React.Component {
   }
 
   onFormHide = () => {
+    this.props.refreshList();
     this.setState({
       showRouteForm: false,
     });
@@ -63,6 +66,7 @@ export default class ChangeRouteForm extends React.Component {
 
   render() {
     const { routeSelected } = this.state;
+
     return (
       this.props.showForm
       ?

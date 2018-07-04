@@ -78,8 +78,28 @@ export default class TechnicalOperationRelationsList extends ElementsList {
     }
   }
 
+  refreshList = () => {
+    const {
+      selectedElement,
+      showRouteChangeForm,
+    } = this.state;
+
+    this.getData(this.props).then(({ result }) => {
+      const selectedElement_new = result.find(({ car_id }) => car_id === selectedElement.car_id);
+      if (selectedElement_new) {
+        if (showRouteChangeForm) {
+          this.setState({
+            selectedElement: selectedElement_new,
+            routesData: selectedElement_new.routes,
+            showRouteChangeForm: true,
+          });
+        }
+      }
+    });
+  }
+
   getData(props) {
-    this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props);
+    return this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props);
   }
 
   handleChangeDriver = () => {
@@ -120,6 +140,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         entity={'car'}
         permissions={['car.read']}
         flux={this.context.flux}
+        refreshList={this.refreshList}
         {...this.props}
       />,
       <ChangeRouteForm
@@ -129,6 +150,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         routesData={this.state.routesData}
         technical_operation_id={this.state.technical_operation_id}
         municipal_facility_id={this.state.municipal_facility_id}
+        refreshList={this.refreshList}
       />,
     ];
   }

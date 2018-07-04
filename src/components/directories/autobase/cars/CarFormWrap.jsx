@@ -52,11 +52,16 @@ class CarFormWrap extends FormWrap {
     }
     this.props.onFormHide();
   }
-  handleFormSubmit = async () => {
+  handleFormSubmit = () => {
     if (this.props.location.search) {
       this.props.history.push(this.props.match.url);
     }
-    return await super.handleFormSubmit();
+
+    return super.handleFormSubmit().then(() => {
+      if (this.props.refreshList) {
+        this.props.refreshList();
+      }
+    });
   }
 
   handleFormOnlySubmit = async () => {

@@ -1,7 +1,8 @@
 import React from 'react';
-
 import { get, pick, toArray } from 'lodash';
+import insider from 'point-in-polygon';
 
+import { SpanTitle, ColorLegend } from 'components/map/syled/styled';
 import { getStartOfToday, makeDate, makeTime, secondsToTime } from 'utils/dates';
 import { swapCoords, roundCoordinates } from 'utils/geo';
 import { isEmpty, hexToRgba } from 'utils/functions';
@@ -12,6 +13,31 @@ import ParkingIcon from 'assets/icons/track/parking.svg';
 import FuelIcon1 from 'assets/icons/track/oil-01.png';
 import FuelIcon2 from 'assets/icons/track/oil-02.png';
 
+const checkPointInGeometry = (point, geometry) => {
+  return {
+    onMkad: Object.values(geometry).some((geom) => {
+      const { shape: { coordinates, type } } = geom;
+
+      if (type === 'Polygon') {
+        return coordinates.some(polygon => insider(point, polygon));
+      }
+
+      if (type === 'MultiPolygon') {
+        return coordinates.some(mpolygon => mpolygon.some(polygon => insider(point, polygon)));
+      }
+
+      return false;
+    }),
+  };
+};
+
+const makePointTrack = (points, odh_mkad) => (
+  points.map(point => ({
+    ...point,
+    checkOnSpeed: checkPointInGeometry(point.coords_msk, odh_mkad),
+  }))
+);
+
 const DRAW_POINTS = true;
 const COLORS_ZOOM_THRESHOLD = 6;
 
@@ -21,14 +47,19 @@ const COLORS_ZOOM_THRESHOLD = 6;
  * @param speed
  * @return color string
  */
-export function getTrackColor(speed, maxSpeed, opacity = 1) {
+export function getTrackColor({ speed_avg, checkOnSpeed }, { maxSpeed, mkad_speed_lim, speed_lim }, opacity = 1) {
+  let topSpeed = maxSpeed;
+  if (checkOnSpeed) {
+    topSpeed = checkOnSpeed.onMkad ? mkad_speed_lim : speed_lim;
+  }
+
   let result = TRACK_COLORS.green; // green by default
 
-  if (speed >= 0 && speed <= maxSpeed) {
+  if (speed_avg >= 0 && speed_avg <= topSpeed) {
     result = TRACK_COLORS.green;
   }
 
-  if (speed > maxSpeed) {
+  if (speed_avg > topSpeed) {
     result = TRACK_COLORS.red;
   }
 
@@ -44,6 +75,8 @@ export default class Track {
   constructor(owner) {
     this.map = owner.map;
     const reactMapProps = owner._reactMap.props;
+    this.mkad_speed_lim = owner.options.mkad_speed_lim;
+    this.speed_lim = owner.options.speed_lim;
     this.maxSpeed = owner.options.maxSpeed;
     this.typesIndex = reactMapProps.typesIndex;
     // TODO придумать что-то с этими контекстами
@@ -51,12 +84,15 @@ export default class Track {
     this.owner = owner;
 
     this.points = null;
+    this.hasPointTrakOnMkad = false;
     this.sensorsState = {
       level: [],
       equipment: [],
     };
     this.parkings = [];
     this.events = {};
+
+    this.distance_agg2 = 0;
 
     this.parkingIcon = new Image();
     this.parkingIcon.src = ParkingIcon;
@@ -106,62 +142,51 @@ export default class Track {
     this.continuousUpdating = flag;
   }
 
-  getLegend() {
-    const colors = [];
-
-    let prevColor = getTrackColor(0, this.maxSpeed);
-
-    function addColor(color, speed) {
-      if (colors.length > 0) {
-        colors[colors.length - 1].till = speed - 1;
-      }
-      colors.push({
-        color,
-        speed,
-      });
-    }
-
-    addColor(prevColor, 0);
-
-    for (let i = 0, till = 100; i <= till; i++) {
-      const color = getTrackColor(i, this.maxSpeed);
-      if (color !== prevColor) {
-        addColor(color, i);
-        prevColor = color;
-      }
-    }
-
-    colors[colors.length - 1].speed += '+';
-
-    const legend = colors.map((obj, i) => {
-      const text = `${obj.speed + (obj.till ? ` – ${obj.till}` : '')} км/ч`;
-      const color = obj.color;
-
-      return (
-        <div key={i} className="track-legend-item">
-          <div className="track-legend-point" style={{ backgroundColor: color }} />
-          <div className="track-legend-text">{text}</div>
+  getLegend({ object_type_name, has_mkad }) {
+    const legendPard = [];
+    legendPard.push(
+      <div key="obj-green" className="track-legend-item">
+        <ColorLegend className="track-legend-point" color={TRACK_COLORS.green} />
+        <div className="track-legend-text">
+          <span>{`0 - ${this.speed_lim} км/ч`}</span>
+          <SpanTitle>{object_type_name}</SpanTitle>
         </div>
+      </div>,
+      <div key="obj-red" className="track-legend-item">
+        <ColorLegend className="track-legend-point" color={TRACK_COLORS.red} />
+        <div className="track-legend-text">{`${this.speed_lim}+ км/ч`}</div>
+      </div>,
+    );
+
+    if (has_mkad) {
+      legendPard.push(<div key="devider">---------------------------</div>);
+      legendPard.push(
+        <div key="mkad-green" className="track-legend-item">
+          <ColorLegend className="track-legend-point" color={TRACK_COLORS.green} />
+          <div className="track-legend-text">
+            <span>{`0 - ${this.mkad_speed_lim} км/ч`}</span>
+            <SpanTitle>{'На МКАД'}</SpanTitle>
+          </div>
+        </div>,
+        <div key="mkad-red" className="track-legend-item">
+          <ColorLegend className="track-legend-point" color={TRACK_COLORS.red} />
+          <div className="track-legend-text">{`${this.mkad_speed_lim}+ км/ч`}</div>
+        </div>,
       );
-    });
+    }
+
 
     return (
       <div className="track-legend">
-        {legend}
+        {
+          legendPard
+        }
       </div>
     );
   }
 
   getDistance() {
-    return parseFloat(this.points.reduce((prev, curr) => {
-      function isFloat(n) {
-        return n === +n && n !== (n | 0);
-      }
-      if (curr && isFloat(curr.distance)) {
-        prev += curr.distance;
-      }
-      return prev;
-    }, 0.000) / 1000).toFixed(3);
+    return this.distance_agg2;
   }
 
 
@@ -181,8 +206,10 @@ export default class Track {
                 .then((obj) => {
                   this.parkings = obj.parkings;
                   this.events = obj.events;
-                  this.points = obj.track;
+                  this.points = makePointTrack(obj.track, this.owner.storeGeoobjects.state.odh_mkad);
+                  this.hasPointTrakOnMkad = this.points.some(({ checkOnSpeed: { onMkad } }) => onMkad);
                   this.sensors = obj.sensors;
+                  this.distance_agg2 = obj.distance_agg2;
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();
@@ -344,7 +371,7 @@ export default class Track {
     ctx.beginPath();
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
-    let prevRgbaColor = getTrackColor(track[0].speed_avg, this.maxSpeed, TRACK_LINE_OPACITY);
+    let prevRgbaColor = getTrackColor(track[0], this, TRACK_LINE_OPACITY);
 
     if (this.sensorsState.equipment.length) {
       prevRgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(track[0], ['sensors', 'equipment']));
@@ -366,11 +393,9 @@ export default class Track {
       // }
 
       const coords = this.map.projectToPixel(p.coords_msk);
-      const speed = p.speed_avg;
-      const { maxSpeed } = this;
 
-      let rgbaColor = getTrackColor(speed, maxSpeed, TRACK_LINE_OPACITY);
-      let hexColor = getTrackColor(speed, maxSpeed);
+      let rgbaColor = getTrackColor(p, this, TRACK_LINE_OPACITY);
+      let hexColor = getTrackColor(p, this);
 
       ctx.globalCompositeOperation = 'destination-over';
 
@@ -623,7 +648,7 @@ export default class Track {
     const distanceCount = parseInt(distance, 10);
     const [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6);
     const gov_number = this.owner.point.car.gov_number;
-
+    console.log(checkPointInGeometry(trackPoint.coords_msk, this.owner.storeGeoobjects.state.odh_mkad))
     distance = typeof distance === 'number' ? Math.floor(distance) : distance;
     timestamp = new Date(timestamp * 1000);
     const dt = `${makeDate(timestamp)} ${makeTime(timestamp, true)}`;

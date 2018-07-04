@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Field from 'components/ui/Field.jsx';
 import connectToStores from 'flummox/connect';
 
@@ -48,10 +48,10 @@ class ODHReports extends Component {
                     <label>Период</label>
                     <Row>
                       <Col md={6}>
-                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
                       </Col>
                       <Col md={6}>
-                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
                       </Col>
                     </Row>
                   </Col>
@@ -89,10 +89,10 @@ class ODHReports extends Component {
                     <label>Период</label>
                     <Row>
                       <Col md={6}>
-                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
                       </Col>
                       <Col md={6}>
-                        <Datepicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
                       </Col>
                     </Row>
                   </Col>

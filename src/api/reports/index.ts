@@ -8,6 +8,8 @@ export const FuelReportService = ETS_API_FACTORY.createApiServiceAdapter(process
 export const FuelSummaryReportService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_summary_report', {});
 export const DailyCleaningReportsServiceETS = ETS_API_FACTORY.createApiServiceAdapter('cleaning_status_report', {});
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});
+export const CarConditionReport = ETS_API_FACTORY.createApiServiceAdapter('car_condition_report', {});
+
 export const DailyCleaningReportsServiceCAFAP = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning_status_cafap_report', {},
 );

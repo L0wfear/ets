@@ -10,7 +10,7 @@ import { getToday0am, getToday2359 } from 'utils/dates';
 import { staticProps } from 'utils/decorators';
 import { autobind } from 'core-decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import FaxogrammsDatepicker from './FaxogrammsDatepicker.jsx';
+import FaxogrammsDatepicker from 'components/directories/faxogramm/FaxogrammsDatepicker';
 import FaxogrammMissionsFormWrap from './FaxogrammMissionsFormWrap.jsx';
 import FaxogrammsTable, { getTableMeta } from './FaxogrammsTable.jsx';
 import FaxogrammInfoTable from './FaxogrammInfoTable.jsx';

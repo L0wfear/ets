@@ -47,6 +47,7 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem id="link-long-repair" permissions={[PERMISSIONS.reportAll.autobase_long_repair_report.list]} active={path === '/long-repair'} href="#/long-repair">Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне</MenuItem>
       <MenuItem id="link-tech-maintenance-schedule" permissions={[PERMISSIONS.reportAll.autobase_tech_maintenance_schedule_report.list]} active={path === '/tech-maintenance-schedule'} href="#/tech-maintenance-schedule">График проведения технического обслуживания транспортных средств</MenuItem>
       <MenuItem id="link-inquiry-expiring-date" permissions={[PERMISSIONS.reportAll.autobase_inquiry_expiring_date_report.list]} active={path === '/inquiry-expiring-date'} href="#/inquiry-expiring-date">Перечень справок, по которым подходит дата окончания действия</MenuItem>
+      <MenuItem id="link-car-condition-reports" permissions={[PERMISSIONS.reportAll.car_condition_report.list]} active={path === '/car-condition-reports'} href="#/car-condition-reports">Количество ТС в разрезе технического состояния</MenuItem>
     </NavDropdown>
     {/*
     <NavDropdown

@@ -8,11 +8,11 @@ const makeLastPointString = (p) => {
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(p.coords_msk)}]`;
 };
 
-const addAttributeToTarget = (target, name, value) => {
+const addAttributeToTarget = (target, name, value, defaultValue = '') => {
   if (typeof value !== 'undefined') {
     target.push({
       name,
-      value,
+      value: value || defaultValue,
     });
   }
 };
@@ -30,10 +30,10 @@ const getState = (props) => {
   const { point } = props;
   const attributes = [];
 
-  if (props.isOkrug) {
-    addAttributeToTarget(attributes, 'Организация', car.company_name);
-  }
+  addAttributeToTarget(attributes, 'Организация', car.company_name);
   addAttributeToTarget(attributes, 'Рег. номер ТС', car.gov_number);
+  addAttributeToTarget(attributes, 'Гаражный номер', car.garage_number, '-');
+
   addAttributeToTarget(attributes, 'ID БНСО', point.id);
   getStatusById(point.status) && addAttributeToTarget(attributes, 'Статус', getStatusById(point.status).title);
   addAttributeToTarget(attributes, 'Тип техники', car.type_name);

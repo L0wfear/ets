@@ -8,7 +8,6 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: `${PROTO_FOR_ODS_MOS_RU}//psd.mos.ru/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
-export const TrackDistanceService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('get_length');
 export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info', {});
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
 
@@ -23,7 +22,7 @@ export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapte
 
 /* ТС */
 export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car_actual', {});
-export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter('car_info', {});
+export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter('car_info');
 export const Car = ETS_API_FACTORY.createApiServiceAdapter('car');
 
 /* Рабочий стол */

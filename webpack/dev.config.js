@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const notifyStats = require('./utils/notifyStats');
 const version = require('./utils/getVersion');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const host = 'localhost';
 const port = 3000;
 const alias = require('./alias');
@@ -64,6 +65,16 @@ module.exports = {
         VERSION: JSON.stringify(version)
       },
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
+        to: 'fonts'
+      },
+      {
+        from: path.join(__dirname, '..', 'src', 'assets', 'images'),
+        to: 'images'
+      },
+    ]),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       __CLIENT__: true,

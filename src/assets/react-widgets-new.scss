@@ -1,0 +1,11 @@
+.chart-datepicker {
+  &.rw-state-focus>.rw-widget-picker.rw-widget-container {
+    box-shadow: none;
+  }
+  .rw-widget-picker {
+    border-radius: 0px;
+  }
+  &.has-error>.rw-widget-picker.rw-widget-container {
+    border-color: red;
+  }
+}

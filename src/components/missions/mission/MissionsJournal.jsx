@@ -105,17 +105,13 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   checkDisabled() {
-    const keysChEl = Object.keys(this.state.checkedElements);
-
-    if (keysChEl.length !== 0) {
-      return !keysChEl.every(el => this.state.checkedElements[el].status === 'assigned');
+    const validateMissionsArr = Object.values(this.state.checkedElements);
+    const { selectedElement } = this.state;
+    if (selectedElement) {
+      validateMissionsArr.push(selectedElement);
     }
 
-    if (this.state.selectedElement === null) {
-      return true;
-    }
-
-    return this.state.selectedElement.status !== 'assigned';
+    return validateMissionsArr.some(({ status, can_be_closed }) => status !== 'assigned' || !can_be_closed);
   }
 
   checkDisabledDelete() {

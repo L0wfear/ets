@@ -61,7 +61,7 @@ const getEstimatedFinishTime = (data) => {
   if (typeof data === 'string' && data.indexOf('2') === -1) {
     return data;
   }
-  return moment(data).format(`${global.APP_DATE_FORMAT} HH:mm`);
+  return moment(data).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
 };
 
 @autobind
@@ -182,6 +182,9 @@ export default class CurrentMission extends DashboardCardMedium {
             {medLabelVisibility && <MedViewLabel>Не пройден внеплановый мед. осмотр</MedViewLabel>}
             <li><b>Рег. номер ТС:</b>
               {car_data.gov_number}
+            </li>
+            <li><b>Гаражный номер:</b>
+              {car_data.garage_number ? car_data.garage_number : '-'}
             </li>
             <li><b>Начало задания:</b>
               {getFormattedDateTimeSeconds(mission_data.date_start)}

@@ -59,4 +59,8 @@ export default class GeoObjectsActions extends Actions {
   setSelectedPolysType(type) {
     return type;
   }
+
+  getOdhMkad() {
+    return services.GeozonesService.path('odh_mkad').get();
+  }
 }

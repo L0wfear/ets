@@ -1,10 +1,21 @@
-import { withHandlers, compose, withState } from 'recompose';
+import { withHandlers, compose, withState, shouldUpdate } from 'recompose';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 
+export const onChangeWithKeys = compose(
+  shouldUpdate((props, nextProps) => Object.entries(nextProps).some(([key, value]) => {
+    if (key === 'boundKeys') {
+      const { boundKeys: new_boundKeys = [] } = nextProps;
+      const { boundKeys: old_boundKeys = [] } = props;
 
-export const onChangeWithKeys = withHandlers({
-  onChange: ({ onChange, boundKeys = []}) => (e, ...other) => onChange(...boundKeys, e, ...other),
-});
+      return new_boundKeys.some((b_value, i) => old_boundKeys[i] !== b_value);
+    }
+
+    return value !== props[key];
+  })),
+  withHandlers({
+    onChange: ({ onChange, boundKeys = []}) => (e, ...other) => onChange(...boundKeys, e, ...other),
+  })
+);
 
 export const onClickWithKeys = withHandlers({
   onClick: ({ onClick, boundKeys = []}) => e => onClick(...boundKeys, e),

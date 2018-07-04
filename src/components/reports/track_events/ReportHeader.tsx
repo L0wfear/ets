@@ -6,14 +6,14 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 import Div from 'components/ui/Div.jsx';
 
-const DatePicker: any = bindable(Datepicker);
+const DatePickerBindable: any = bindable(DatePicker);
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: string;
@@ -41,11 +41,10 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row className="report-page__header">
-        <Col md={4}></Col>
-        <Col md={4}>
+        <Col mdOffset={4} md={4}>
         <Div><label htmlFor=" ">Период формирования</label></Div>
         <Div className="inline-block reports-date">
-          <DatePicker
+          <DatePickerBindable
             time={false}
             date={date_start}
             onChange={this.props.handleChange}
@@ -54,7 +53,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           />
         </Div>
         <Div className="inline-block reports-date">
-          <DatePicker
+          <DatePickerBindable
             time={false}
             date={date_end}
             onChange={this.props.handleChange}

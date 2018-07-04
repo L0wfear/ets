@@ -8,7 +8,7 @@ import {
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Div from 'components/ui/Div.jsx';
-import { getDatesByShift, createValidDateTime } from 'utils/dates';
+import { getDatesByShift, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
@@ -16,28 +16,28 @@ import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 const DatePickerBindable: any = bindable(DatePicker);
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
-  mission_date_start_from: string;
-  mission_date_end_to: string;
+  start_date: string;
+  end_date: string;
 }
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => {
     const timeShift = getDatesByShift();
     const {
-      mission_date_start_from = timeShift[0],
-      mission_date_end_to = timeShift[1],
+      start_date = timeShift[0],
+      end_date = timeShift[1],
     } = this.props;
 
     this.props.onClick({
-      mission_date_start_from: createValidDateTime(mission_date_start_from),
-      mission_date_end_to: createValidDateTime(mission_date_end_to),
+      start_date: createValidDate(start_date),
+      end_date: createValidDate(end_date),
     });
   }
   render() {
     const timeShift = getDatesByShift();
     const {
-      mission_date_start_from = timeShift[0],
-      mission_date_end_to = timeShift[1],
+      start_date = timeShift[0],
+      end_date = timeShift[1],
       readOnly,
     } = this.props;
 
@@ -46,19 +46,21 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Col mdOffset={3} md={6} className="datepicker-range">
           <Div className="inline-block faxogramms-date">
             <DatePickerBindable
-              date={mission_date_start_from}
+              date={start_date}
               onChange={this.props.handleChange}
-              bindOnChange={'mission_date_start_from'}
+              bindOnChange={'start_date'}
               disabled={readOnly}
+              time={false}
             />
           </Div>
           <Div className="date-divider">—</Div>
           <Div className="inline-block faxogramms-date">
             <DatePickerBindable
-              date={mission_date_end_to}
+              date={end_date}
               onChange={this.props.handleChange}
-              bindOnChange={'mission_date_end_to'}
+              bindOnChange={'end_date'}
               disabled={readOnly}
+              time={false}
             />
           </Div>
         </Col>

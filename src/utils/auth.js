@@ -15,12 +15,8 @@ export const requireAuthWithGlav = flux => (nextState, replaceState) => {
 
 export const checkLoggedIn = flux => (nextState, replaceState) => {
   const user = flux.getStore('session').getCurrentUser();
-  const { role, okrug_id } = user;
-  if (flux.getStore('session').isLoggedIn() && role) {
-    if (['dispatcher', 'master'].indexOf(role) > -1 && okrug_id === null) {
-      replaceState({}, '/dashboard');
-    } else {
-      replaceState({}, '/monitor');
-    }
+
+  if (flux.getStore('session').isLoggedIn()) {
+    replaceState({}, `/${user.default_path}`);
   }
 };

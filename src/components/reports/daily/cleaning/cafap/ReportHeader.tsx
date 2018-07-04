@@ -12,7 +12,7 @@ import { IAppConfig } from 'api/@types/services/index.h';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 import FieldComponent from 'components/ui/Field.jsx';
-import Datepicker from 'components/ui/input/DatePicker';
+import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
 import { bindable, FluxContext } from 'utils/decorators';
 import { getCurrentSeason } from 'utils/dates';
@@ -20,7 +20,7 @@ import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 
-const DatePicker: any = bindable(Datepicker);
+const DatePickerBindable: any = bindable(DatePicker);
 const Field: any = bindable(FieldComponent);
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
@@ -167,7 +167,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           <Col md={4}>
             <Div><label>Период формирования</label></Div>
             <Div className="inline-block reports-date">
-              <DatePicker
+              <DatePickerBindable
                 date={date_start}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_start'}
@@ -175,7 +175,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               />
             </Div>
             <Div className="inline-block reports-date">
-              <DatePicker
+              <DatePickerBindable
                 date={date_end}
                 onChange={this.props.handleChange}
                 bindOnChange={'date_end'}

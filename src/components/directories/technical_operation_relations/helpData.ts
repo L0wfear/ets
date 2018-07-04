@@ -47,3 +47,22 @@ export const customOptionsFuncType = [
     optionsPath: ['asArr'],
   },
 ];
+
+
+export const customOptionsRoutes = [
+  {
+    name: 'ROUTES_OPTIONS',
+    fields: ['routes'],
+    callBack: data => data.reduce((ROUTES_OPTIONS, { routes }) => {
+      routes.forEach(({ id, name }) => {
+        if (id && !ROUTES_OPTIONS.asObj[id]) {
+          ROUTES_OPTIONS.asObj[id] = { id, name };
+          ROUTES_OPTIONS.asArr.push({ value: id, label: name });
+        }
+      });
+
+      return ROUTES_OPTIONS;
+    }, { asObj: {}, asArr: [] }),
+    optionsPath: ['asArr'],
+  },
+];

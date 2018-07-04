@@ -81,16 +81,38 @@ export default class TechnicalOperationRelationsList extends ElementsList {
     }
   }
 
-  getData(props) {
-    this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props)
-    .then(({ result }) => {
-      const options = makeOptions({
-        data: result,
-        options: customOptionsRoutes,
-      });
+  refreshList = () => {
+    const {
+      selectedElement,
+      showRouteChangeForm,
+    } = this.state;
 
-      this.setState({ ...options });
+    this.getData(this.props).then(({ result }) => {
+      const selectedElement_new = result.find(({ car_id }) => car_id === selectedElement.car_id);
+      if (selectedElement_new) {
+        if (showRouteChangeForm) {
+          this.setState({
+            selectedElement: selectedElement_new,
+            routesData: selectedElement_new.routes,
+            showRouteChangeForm: true,
+          });
+        }
+      }
     });
+  }
+
+  getData(props) {
+    return this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props)
+      .then(({ result }) => {
+        const options = makeOptions({
+          data: result,
+          options: customOptionsRoutes,
+        });
+
+        this.setState({ ...options });
+
+        return { result };
+      });
   }
 
   handleChangeDriver = () => {
@@ -141,6 +163,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         entity={'car'}
         permissions={['car.read']}
         flux={this.context.flux}
+        refreshList={this.refreshList}
         {...this.props}
       />,
       <ChangeRouteForm
@@ -150,6 +173,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         routesData={this.state.routesData}
         technical_operation_id={this.state.technical_operation_id}
         municipal_facility_id={this.state.municipal_facility_id}
+        refreshList={this.refreshList}
       />,
     ];
   }

@@ -255,15 +255,18 @@ const carFormSchema: IValidationSchema = {
     // Main form
     {
       key: 'fuel_correction_rate',
+      title: 'Поправочный коэффициент',
       float: 2,
     },
     {
       key: 'note',
+      title: 'Примечание',
       type: 'text',
       maxLength: 4000,
     },
     {
       key: 'parking_address',
+      title: 'Адрес стоянки',
       type: 'string',
       maxLength: 2000,
     },

@@ -62,7 +62,7 @@ export function tableMeta({
         filter: false,
       },
       {
-        name: 'secondary_car_text',
+        name: 'secondary_car',
         displayName: 'Вторичное ТС',
         type: 'string',
         filter: false,
@@ -185,7 +185,8 @@ const Table: React.SFC<any> = props  => {
     is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
     drivers_license_date_end: ({ data }) => <DateFormatter date={data} />,
     special_license_date_end: ({ data }) => <DateFormatter date={data} />,
-    prefer_car: ({ data }) => <span>{props.carsIndex[data] ? props.carsIndex[data].gov_number : ''}</span>
+    prefer_car: ({ data }) => <span>{props.carsIndex[data] ? props.carsIndex[data].gov_number : ''}</span>,
+    secondary_car: ({ data, rowData }) => <span>{(data || []).reduce((newStr, id) => `${newStr}${props.carsIndex[id] ? `${!newStr ? '' : ', '}${props.carsIndex[id].gov_number}` : ''}`, '')}</span>,
   };
 
   return (

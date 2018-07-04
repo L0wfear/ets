@@ -100,17 +100,26 @@ export const filterFunction = (data, { filterValues }) =>
       if (rowCol === null && rowCol === undefined) {
         return true;
       }
-      
-      switch (f_data.type) {
-        case 'multiselect': return !f_data.value.includes(rowCol);
-        case 'multiselect-boolean': return !f_data.value.find(value => Boolean(value) === rowCol);
-        case 'string': return !String(rowCol).toLowerCase().includes(f_data.value.toLowerCase());
-        case 'advanced-number': return checkFilterByAdvancedNumber(f_data, rowCol);
-        case 'advanced-string': return checkFilterByAdvancedString(f_data, rowCol);
-        case 'date': return diffDatesByDays(rowCol, f_data.value);
-        default:
-          console.warn(`no define filter for ${f_data}`);
-          return !(rowCol === f_data);
+      const {
+        otherData: {
+          customFilter,
+        },
+      } = f_data;
+
+      if (customFilter) {
+        return customFilter(f_data, rowCol, row, data);
+      } else {
+        switch (f_data.type) {
+          case 'multiselect': return !f_data.value.includes(rowCol);
+          case 'multiselect-boolean': return !f_data.value.find(value => Boolean(value) === rowCol);
+          case 'string': return !String(rowCol).toLowerCase().includes(f_data.value.toLowerCase());
+          case 'advanced-number': return checkFilterByAdvancedNumber(f_data, rowCol);
+          case 'advanced-string': return checkFilterByAdvancedString(f_data, rowCol);
+          case 'date': return diffDatesByDays(rowCol, f_data.value);
+          default:
+            console.warn(`no define filter for ${f_data}`);
+            return !(rowCol === f_data);
+        }
       }
     });
     

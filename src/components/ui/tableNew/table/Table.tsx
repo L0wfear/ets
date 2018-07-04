@@ -49,8 +49,10 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       tableMeta: props.tableMeta,
     });
 
-    state.showData = makeDataByPagination(state.data, state.pagination, props.uniqName);
+    state.pagination.totalCount = state.data.length;
+    state.pagination.maxPage = Math.ceil(state.pagination.totalCount / state.pagination.perPageCount);
 
+    state.showData = makeDataByPagination(state.data, state.pagination, props.uniqName);
     this.state = state;
   }
 
@@ -72,6 +74,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       changesState.activeFilter = nextProps.activeFilter;
       changesState.pagination = { ...this.state.pagination, totalCount: changesState.data.length };
       changesState.pagination.maxPage = Math.ceil(changesState.pagination.totalCount / changesState.pagination.perPageCount);
+
       if (changesState.pagination.maxPage - 1 < changesState.pagination.offset) {
         changesState.pagination.offset = changesState.pagination.maxPage === 0 ? 0 : changesState.pagination.maxPage - 1;
       }
@@ -133,7 +136,13 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     });
   }
 
-  setPaginationOffset = offset => this.setState({ pagination: { ...this.state.pagination, offset }})
+  setPaginationOffset = offset => {
+    const changesState: any = {};
+    changesState.pagination = { ...this.state.pagination, offset };
+    changesState.showData = makeDataByPagination(this.state.data, changesState.pagination, this.props.uniqName);
+    
+    this.setState({ ...changesState })
+  }
 
   render() {
     const { pagination } = this.state;

@@ -102,7 +102,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
   }
 
   getData(props) {
-    this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props)
+    return this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props)
     .then(({ result }) => {
       const options = makeOptions({
         data: result,

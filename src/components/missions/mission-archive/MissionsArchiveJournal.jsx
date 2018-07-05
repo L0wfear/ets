@@ -1,0 +1,215 @@
+import * as React from 'react';
+import { autobind } from 'core-decorators';
+import _ from 'lodash';
+import {
+  Button,
+} from 'react-bootstrap';
+
+import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
+import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import permissions from 'components/missions/mission/config-data/permissions';
+import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import { connectToStores, staticProps } from 'utils/decorators';
+import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import PrintForm from 'components/missions/common/PrintForm.tsx';
+
+import Paginator from 'components/ui/Paginator.jsx';
+import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable.jsx';
+import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+
+const is_archive = true;
+
+const ButtonUpdateMission = enhanceWithPermissions({
+  permission: permissions.update,
+})(Button);
+
+@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@staticProps({
+  entity: 'mission',
+  permissions,
+  listName: 'missionsList',
+  tableComponent: MissionsTable,
+  tableMeta: extractTableMeta(getTableMeta()),
+  operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
+})
+@autobind
+export default class MissionsArchiveJournal extends CheckableElementsList {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
+      showPrintForm: false,
+      showMissionRejectForm: false,
+      showMissionInfoForm: false,
+      page: 0,
+      sortBy: ['number:desc'],
+      filter: {},
+    };
+  }
+
+  async init() {
+    const { flux } = this.context;
+    const linear = true;
+    const outerPayload = {
+      start_date: new Date(),
+      end_date: new Date(),
+    };
+
+    flux.getActions('companyStructure').getCompanyStructure(linear);
+    flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
+    flux.getActions('objects').getCars();
+    flux.getActions('technicalOperation').getTechnicalOperations();
+    flux.getActions('missions').getMissionSources();
+    flux.getActions('companyStructure').getCompanyStructure(linear);
+    flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (
+      nextState.page !== this.state.page ||
+      nextState.sortBy !== this.state.sortBy ||
+      nextState.filter !== this.state.filter
+    ) {
+      this.refreshList(nextState);
+    }
+  }
+  async refreshList(state = this.state) {
+    const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
+
+    const { total_count } = missions.result.meta;
+    const resultCount = missions.result.rows.length;
+
+    if (resultCount === 0 && total_count > 0) {
+      const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
+      this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter, is_archive);
+    }
+  }
+
+  checkDisabledArchive() {
+    const validateMissionsArr = Object.values(this.state.checkedElements);
+    const { selectedElement } = this.state;
+    if (selectedElement) {
+      validateMissionsArr.push(selectedElement);
+    }
+
+    return validateMissionsArr.length === 0;
+  }
+
+  archiveCheckedElements = () => {
+    const { selectedElement } = this.state;
+    const { checkedElements = {} } = this.state;
+
+    if (selectedElement) {
+      checkedElements[selectedElement[this.selectField]] = selectedElement;
+    }
+
+    const moreOne = Object.keys(checkedElements).length > 1;
+
+    confirmDialog({
+      title: 'Внимание',
+      body: `Вы уверены, что хотите вернуть из архива ${moreOne ? 'выбранные задания' : 'выбранное задание'}?`,
+    })
+    .then(() =>
+        Promise.all(
+          Object.entries(checkedElements).map(([id]) =>
+            this.context.flux.getActions('missions').changeArchiveMissionStatus(id, false),
+          )
+        ).then(() => {
+          this.refreshList();
+          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены из' : 'Выбранно задание перенесено из'} архива`);
+        })
+        .catch(() => {
+          this.refreshList();
+        })
+        .then(() => {
+          this.setState({
+            selectedElement: null,
+            checkedElements: {},
+          });
+        })
+    )
+    .catch(() => {});
+  }
+
+  async mapView(id) {
+    const { result, warnings = false } = await this.context.flux.getActions('missions').getMissionData(id);
+    if (warnings && warnings.length > 0) {
+      global.NOTIFICATION_SYSTEM.notify(warnings[0], 'error');
+    } else {
+      this.setState({ mission: result, showMissionInfoForm: true });
+    }
+  }
+
+  getForms() {
+    return [
+      <div key={'forms'}>
+        <MissionFormWrap
+          onFormHide={this.onFormHide}
+          showForm={this.state.showForm}
+          element={this.state.selectedElement}
+          refreshTableList={this.refreshList}
+          {...this.props}
+        />
+        <MissionInfoFormWrap
+          onFormHide={() => this.setState({ showMissionInfoForm: false })}
+          showForm={this.state.showMissionInfoForm}
+          element={this.state.mission}
+          flux={this.context.flux}
+        />
+        <PrintForm
+          onExport={this.processExport}
+          show={this.state.showPrintForm}
+          onHide={() => this.setState({ showPrintForm: false })}
+          title={'Печать журнала заданий'}
+        />
+      </div>,
+    ];
+  }
+
+  getButtons() {
+    const buttons = super.getButtons();
+
+    buttons.push(
+      <ButtonUpdateMission key="butto-archive-mission" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>Вернуть из архива</ButtonUpdateMission>,
+    );
+
+    return buttons;
+  }
+
+  changeSort(field, direction) {
+    this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
+  }
+
+  changeFilter(filter) {
+    this.setState({ filter });
+  }
+
+  getAdditionalProps() {
+    return {
+      mapView: this.mapView,
+      structures: this.props.companyStructureLinearList,
+      changeSort: this.changeSort,
+      changeFilter: this.changeFilter,
+      filterValues: this.state.filter,
+      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+      useServerFilter: true,
+      useServerSort: true,
+      is_archive,
+    };
+  }
+
+  additionalRender() {
+    return (
+      <Paginator
+        currentPage={this.state.page}
+        maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
+        setPage={page => this.setState({ page })}
+        firstLastButtons
+      />
+    );
+  }
+}

@@ -6,12 +6,14 @@ import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionReportsService,
   MissionService,
+  MissionArchiveService,
   MissionReassignationService,
   MissionSourceService,
   MissionTemplateService,
   MissionTemplatesForFaxogramm,
   MissionLastReportService,
   DutyMissionService,
+  DutyMissionArchiveService,
   DutyMissionTemplateService,
   MissionPrintService,
   DutyMissionPrintService,
@@ -36,7 +38,7 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION ---------- */
 
-  getMissions(technical_operation_id, limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}) {
+  getMissions(technical_operation_id, limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
     const filterValues = parseFilterObject(filter);
 
     const payload = {
@@ -44,6 +46,7 @@ export default class MissionsActions extends Actions {
       offset,
       sort_by,
       filter: JSON.stringify(filterValues),
+      is_archive,
     };
 
     if (!isEmpty(technical_operation_id)) {
@@ -122,9 +125,9 @@ export default class MissionsActions extends Actions {
     return MissionService.post(payload, false, 'json');
   }
 
-  removeMission(id, callback) {
+  removeMission(id) {
     const payload = { id };
-    return MissionService.delete(payload, callback, 'json');
+    return MissionService.delete(payload, false, 'json');
   }
 
   updateMission(mission, autoUpdate = true) {
@@ -139,6 +142,14 @@ export default class MissionsActions extends Actions {
     delete payload.waybill_number;
 
     return MissionService.put(payload, autoUpdate, 'json');
+  }
+
+  changeArchiveMissionStatus(id, is_archive) {
+    const payload = {
+      is_archive,
+    };
+
+    return MissionArchiveService.path(id).put(payload, false, 'json');
   }
 
   printMission(data) {
@@ -233,13 +244,14 @@ export default class MissionsActions extends Actions {
   /* ---------- MISSION DUTY ---------- */
 
 
-  getDutyMissions(limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}) {
+  getDutyMissions(limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
     const filterValues = parseFilterObject(filter);
     const payload = {
       limit,
       offset,
       sort_by,
       filter: JSON.stringify(filterValues),
+      is_archive,
     };
 
     return DutyMissionService.get(payload);
@@ -284,6 +296,14 @@ export default class MissionsActions extends Actions {
     }, {}));
 
     return DutyMissionService.put(payload, autoUpdate, 'json');
+  }
+
+  changeArchiveDutuMissionStatus(id, is_archive) {
+    const payload = {
+      is_archive,
+    };
+
+    return DutyMissionArchiveService.path(id).put(payload, false, 'json');
   }
 
   removeDutyMission(id) {

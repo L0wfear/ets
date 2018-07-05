@@ -169,7 +169,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
-          return this.context.flux.getActions('missions').updateDutyMission(updatedMission, false);
+          return this.context.flux.getActions('missions').updateDutyMission(updatedMission, true);
         }
         hasNotAssigned = true;
         return Promise.resolve();

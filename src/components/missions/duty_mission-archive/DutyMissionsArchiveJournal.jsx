@@ -118,7 +118,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     .then(() =>
         Promise.all(
           Object.entries(checkedElements).map(([id]) =>
-            this.context.flux.getActions('missions').changeArchiveDutuMissionStatus(id, true),
+            this.context.flux.getActions('missions').changeArchiveDutuMissionStatus(id, false),
           )
         ).then(() => {
           this.refreshList();

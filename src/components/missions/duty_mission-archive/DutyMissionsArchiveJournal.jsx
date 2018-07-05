@@ -33,7 +33,7 @@ const ButtonUpdateDutyMission = enhanceWithPermissions({
   exportable: true,
 })
 @autobind
-export default class DutyMissionsJournal extends CheckableElementsList {
+export default class DutyMissionsArchiveJournal extends CheckableElementsList {
 
   constructor(props) {
     super(props);
@@ -58,7 +58,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
-  inti() {
+  init() {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {

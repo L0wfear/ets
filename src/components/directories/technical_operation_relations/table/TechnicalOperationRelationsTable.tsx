@@ -25,7 +25,7 @@ export const getTableMeta = (props) => {
         },
       },
       {
-        name: 'route_names_string',
+        name: 'route_names',
         displayName: 'Маршруты',
         filter: {
           type: 'multiselect',

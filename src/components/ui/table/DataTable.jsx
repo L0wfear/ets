@@ -25,6 +25,16 @@ import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
 
+const style = {
+  headRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flex: '1 0 auto',
+  },
+};
+
 @autobind
 export default class DataTable extends React.Component {
 
@@ -660,8 +670,8 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
-            <div>
+          <div style={style.headRow}>
+            <div style={style.title}>
               {noTitle ? '' : title}
             </div>
             <div className="waybills-buttons">

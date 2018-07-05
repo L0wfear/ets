@@ -223,7 +223,7 @@ export default (props) => {
 
   return (
     <Table
-      title="Журнал заданий"
+      title={props.is_archive ? 'Архив заданий' : 'Журнал заданий'}
       results={props.data}
       renderers={renderers}
       enumerated

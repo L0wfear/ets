@@ -174,16 +174,19 @@ export default (props) => {
     object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
   };
 
-  return (<Table title="Журнал наряд-заданий"
-    results={props.data}
-    renderers={renderers}
-    tableMeta={getTableMeta(props)}
-    serverPagination
-    externalFilter={props.changeFilter}
-    externalChangeSort={props.changeSort}
-    initialSort={'number'}
-    initialSortAscending={false}
-    multiSelection
-    {...props}
-  />);
+  return (
+    <Table
+      title={props.is_archive ? 'Архив наряд-заданий' : 'Журнал наряд-заданий'}
+      results={props.data}
+      renderers={renderers}
+      tableMeta={getTableMeta(props)}
+      serverPagination
+      externalFilter={props.changeFilter}
+      externalChangeSort={props.changeSort}
+      initialSort={'number'}
+      initialSortAscending={false}
+      multiSelection
+      {...props}
+    />
+  );
 };

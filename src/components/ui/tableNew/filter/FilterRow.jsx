@@ -52,7 +52,7 @@ export default class FilterRow extends React.Component {
 
     let input = (
       <div className="form-group">
-        <FormControl type="text" value={value} onChange={this.onChange} />
+        <FormControl type="text" value={value || ''} onChange={this.onChange} />
       </div>
     );
     if (type) {

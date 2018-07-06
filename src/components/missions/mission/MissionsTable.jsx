@@ -179,7 +179,7 @@ export const getTableMeta = ({
 
 export default (props) => {
   const renderers = {
-    current_percentage: ({ data }) => <span>{Math.floor(data) || '-'}</span>,
+    current_percentage: ({ data }) => <span>{data !== null ? Math.floor(data) : '-'}</span>,
     rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,

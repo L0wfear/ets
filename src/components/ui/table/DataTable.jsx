@@ -656,8 +656,7 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-    console.log('---')
-    console.log(results)
+
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>

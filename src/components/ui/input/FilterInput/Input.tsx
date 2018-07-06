@@ -77,7 +77,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
           <FormControl
             type="number"
             min="0"
-            value={this.props.value[0]}
+            value={this.props.value[0] || ''}
             onChange={this.handleFirstInput}
           />
         </div>
@@ -86,7 +86,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
             <FormControl
               type="number"
               min="0"
-              value={this.props.value[1]}
+              value={this.props.value[1] || ''}
               onChange={this.handleSecondInput}
             />
           </div>
@@ -100,7 +100,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
         <div className="form-group">
           <FormControl
             type="text"
-            value={this.props.value[0]}
+            value={this.props.value[0] || ''}
             onChange={this.handleFirstInput}
           />
         </div>
@@ -108,7 +108,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
           <div className="form-group">
             <FormControl
               type="text"
-              value={this.props.value[1]}
+              value={this.props.value[1] || ''}
               onChange={this.handleSecondInput}
             />
           </div>

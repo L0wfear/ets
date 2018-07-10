@@ -118,6 +118,7 @@ class CarForm extends Form {
       engineTypeList = [],
       propulsionTypeList = [],
       carCategoryList = [],
+      employeesIndex = {},
       typesList = [],
       driversList = [],
     } = this.props;
@@ -129,10 +130,22 @@ class CarForm extends Form {
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
 
     /**
-     * TODO Сделать виртуализацию списка, так как весь список из 2000 элементов как-то накладно рендерить, да и притормаживает.
+     * TODO Сделать виртуализацию списка, если список ТС будет тормозить из-за большого количества записей.
      * Может с помощью этой штуки https://github.com/bvaughn/react-virtualized
      */
-    const DRIVERS = driversList.map(driver => ({ value: driver.id, label: createFio(driver) }));
+    const isFourInGovNumver = isFourDigitGovNumber(state.gov_number);
+    const DRIVERS = driversList.filter((driver) => {
+      const driverData = employeesIndex[driver.id];
+      if (driverData) {
+        if (isFourInGovNumver) {
+          return driverData.special_license && driverData.special_license_date_end && diffDates(driverData.special_license_date_end, new Date()) > 0;
+        }
+
+        return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
+      }
+      return false;
+    }).map(driver => ({ value: driver.id, label: createFio(driver) }));
+
     return (
       <Modal id="modal-car" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>

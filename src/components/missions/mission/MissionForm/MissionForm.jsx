@@ -13,6 +13,7 @@ import Field from 'components/ui/Field.jsx';
 
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/mission/inside_fields/index';
@@ -26,6 +27,7 @@ import {
   getRoutesByMissionId,
   getTechnicalOperationData,
   handleRouteFormHide,
+  isOdhRouteTypePermitted,
 } from 'components/missions/mission/MissionForm/utils';
 
 const ASSIGN_OPTIONS = [
@@ -55,6 +57,7 @@ export class MissionForm extends Form {
       carsList: [],
       routesList: [],
       technicalOperationsList: [],
+      columnPermittedTechOps: [],
     };
   }
 
@@ -136,6 +139,13 @@ export class MissionForm extends Form {
     });
 
     this.handleRouteIdChange(undefined);
+  }
+
+  handleColumnFlag = (name, value) => {
+    this.props.handleMultiFormChange({
+      car_id: null,
+      is_column: value,
+    });
   }
 
   handleTechnicalOperationChange = (technical_operation_id) => {
@@ -374,6 +384,21 @@ export class MissionForm extends Form {
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
 
+    const carEditionDisability = (
+      IS_POST_CREATING_ASSIGNED
+      || state.status === 'not_assigned'
+      || IS_DISPLAY
+      || this.props.fromWaybill
+      || (IS_CREATING && isEmpty(state.technical_operation_id))
+      || isEmpty(state.municipal_facility_id)
+    );
+
+    const columnFlagDisability = (
+      isEmpty(state.technical_operation_id)
+      || isEmpty(state.municipal_facility_id)
+      || !isOdhRouteTypePermitted(this.state.available_route_types)
+    );
+
     if (IS_CREATING) {
       title = (
         <div>
@@ -424,7 +449,7 @@ export class MissionForm extends Form {
             </Col>}
           </Row>
           <Row>
-            <Col md={12}>
+            <Col md={6}>
               <InsideField.MunicipalFacility
                 id={'municipal_facility_id'}
                 label={'municipal_facility_name'}
@@ -441,30 +466,6 @@ export class MissionForm extends Form {
                 kind_task_ids={kind_task_ids}
               />
             </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <Field
-                id="car-id"
-                type="select"
-                label="Транспортное средство"
-                error={errors.car_id}
-                clearable={false}
-                className="white-space-pre-wrap"
-                disabled={IS_POST_CREATING_ASSIGNED ||
-                  state.status === 'not_assigned' ||
-                  IS_DISPLAY ||
-                  this.props.fromWaybill ||
-                  (IS_CREATING && isEmpty(state.technical_operation_id)) ||
-                  isEmpty(state.municipal_facility_id)
-                }
-                options={CARS}
-                optionRenderer={InsideField.CarOptionLabel}
-                value={state.car_id}
-                onChange={this.handleCarIdChange}
-              />
-            </Col>
-
             <Col md={6}>
               <Row>
                 <Col className="date-label" md={12}><label>Время выполнения:</label></Col>
@@ -513,6 +514,39 @@ export class MissionForm extends Form {
                 </Col>
               </Row>
             </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <Field
+                id="car-id"
+                type="select"
+                multi={state.is_column}
+                label="Транспортное средство"
+                error={errors.car_id}
+                clearable={false}
+                className="white-space-pre-wrap"
+                disabled={carEditionDisability}
+                options={CARS}
+                optionRenderer={InsideField.CarOptionLabel}
+                value={state.car_id}
+                onChange={this.handleCarIdChange}
+              />
+            </Col>
+          </Row>
+          <Row>
+            {IS_CREATING && (
+              <Col md={12}>
+                <ExtField
+                  id="is_column"
+                  type="boolean"
+                  label="Создать задания на колонну"
+                  disabled={columnFlagDisability}
+                  value={state.is_column}
+                  boundKeys={['is_column', !state.is_column]}
+                  onChange={this.handleColumnFlag}
+                />
+              </Col>
+            )}
           </Row>
           <Row>
             <Col md={12}>
@@ -588,6 +622,7 @@ export class MissionForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
+        {!state.is_column && (
           <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }} hidden={!!state.status || this.props.fromWaybill}>
             <EtsSelect
               id="assign-to-waybill"
@@ -598,16 +633,19 @@ export class MissionForm extends Form {
               onChange={this.handleChange.bind(this, 'assign_to_waybill')}
             />
           </Div>
+        )}
           <Div className="inline-block">
-            <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-              <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
-                <Glyphicon id="m-print" glyph="print" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                <MenuItem eventKey={2}>Печать</MenuItem>
-              </Dropdown.Menu>
-            </Dropdown>
+            {!state.is_column && (
+              <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>  
+                <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
+                  <Glyphicon id="m-print" glyph="print" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+                  <MenuItem eventKey={2}>Печать</MenuItem>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
             <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>

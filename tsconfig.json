@@ -16,11 +16,7 @@
     "outDir": "dist",
     "lib": [
       "dom",
-      "es2015",
-      "es2015.promise",
-      "es2017",
-      "es2017.object",
-      "es7"
+      "es2017"
     ],
     "baseUrl": "src",
     "typeRoots": [

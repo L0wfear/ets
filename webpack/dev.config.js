@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const notifyStats = require('./utils/notifyStats');
 const version = require('./utils/getVersion');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -39,8 +40,14 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           'react-hot-loader',
-          'babel-loader',
-          'ts-loader',
+          // 'babel-loader',
+          {
+            loader: 'ts-loader',
+            options: {
+              // disable type checker - we will use it in fork plugin
+              transpileOnly: true
+            }
+          },
         ],
       },
       {
@@ -150,6 +157,7 @@ module.exports = {
     extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     // set global vars
     new webpack.DefinePlugin({

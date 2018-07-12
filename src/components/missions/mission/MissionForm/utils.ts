@@ -1,4 +1,5 @@
 import { getKindTaskIds } from 'components/missions/utils/utils';
+import { AvailableRouteTypes } from "components/missions/mission/MissionForm/types";
 
 interface IFormState {
   id?: number;
@@ -213,3 +214,5 @@ export const getDataByNormatives = (normatives, kind_task_ids, formState, fromWa
         available_route_types,
       }));
   });
+
+export const isOdhRouteTypePermitted = (types: string[]) => types.includes(AvailableRouteTypes.Mixed);

@@ -298,7 +298,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    if (!TECH_OPERATIONS.some(({ id }) => id === state.technical_operation_id)) {
+    if (!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
 

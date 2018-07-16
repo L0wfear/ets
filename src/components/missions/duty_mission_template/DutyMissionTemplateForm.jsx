@@ -52,7 +52,6 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-
     const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).reduce((newArr, employee) => {
       if (employee.active && (!state.structure_id || (employee.company_structure_id === state.structure_id))) {
         return [
@@ -67,7 +66,7 @@ class MissionTemplateForm extends DutyMissionForm {
       return [...newArr];
     }, []);
 
-    const FOREMANS = EMPLOYEES;
+    const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
       const employee = this.props.employeesIndex[state.foreman_id] || {};
 
@@ -77,7 +76,7 @@ class MissionTemplateForm extends DutyMissionForm {
       });
     }
 
-    const BRIGADES = EMPLOYEES;
+    const BRIGADES = [...EMPLOYEES];
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {

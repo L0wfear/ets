@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
 export default class FuelOperationForm extends Form {
-  compomn
-
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;

@@ -147,6 +147,9 @@ export default class Taxes extends React.Component {
     if (current.is_excluding_mileage && current.measure_unit_name === 'л/подъем') {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }
+    if (current.measure_unit_name === 'л/час') {
+      current.FACT_VALUE = Math.ceil(current.FACT_VALUE * 1000) / 1000;
+    }
     current.RESULT = Taxes.getResult(current);
 
     this.setState({ tableData });

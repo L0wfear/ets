@@ -2,6 +2,7 @@ import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { find } from 'lodash';
+import differenceWith from 'lodash/differenceWith';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -63,6 +64,25 @@ class MissionTemplateForm extends DutyMissionForm {
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
+    }
+
+    // Ищем diff между текущем значением и списком активных водителей
+    // Это надо для того если в значение Журнал наряд-задания есть не активные сотрудники
+    // И добавляем их к опциям
+    let diff;
+
+    if (state.brigade_employee_id_list) {
+      diff = differenceWith(state.brigade_employee_id_list, EMPLOYEES, (arrVal, othVal) => arrVal.employee_id === othVal.value ||
+      arrVal.id === othVal.value);
+    }
+
+    if (diff && Array.isArray(diff)) {
+      diff.forEach((element) => {
+        EMPLOYEES.push({
+          value: element.employee_id || element.id,
+          label: element.employee_fio,
+        });
+      });
     }
 
     const route = this.state.selectedRoute;

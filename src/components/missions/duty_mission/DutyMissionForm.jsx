@@ -2,6 +2,7 @@ import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import last from 'lodash/last';
+import differenceWith from 'lodash/differenceWith';
 
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
@@ -213,6 +214,7 @@ export class DutyMissionForm extends Form {
       missionsList = [],
       readOnly = false,
     } = this.props;
+
     const {
       technicalOperationsList = [],
       routesList = [],
@@ -227,11 +229,12 @@ export class DutyMissionForm extends Form {
     const ROUTES = routesList
         .filter(route => !state.structure_id || route.structure_id === state.structure_id)
         .map(({ id, name }) => ({ value: id, label: name }));
-
+    // список сотрудников в виде {value: number, label: string}
     const EMPLOYEES = employeesList.map(d => ({
       value: d.id,
       label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
     }));
+
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
       value: id,
@@ -273,7 +276,26 @@ export class DutyMissionForm extends Form {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
+    // Ищем diff между текущем значением и списком активных водителей
+    // Это надо для того если в значение Журнал наряд-задания есть не активные сотрудники
+    // И добавляем их к опциям
+    let diff;
 
+    if (state.brigade_employee_id_list) {
+      diff = differenceWith(state.brigade_employee_id_list, EMPLOYEES, (arrVal, othVal) => arrVal.employee_id === othVal.value ||
+      arrVal.id === othVal.value);
+    }
+
+    if (diff && Array.isArray(diff)) {
+      diff.forEach((element) => {
+        EMPLOYEES.push({
+          value: element.employee_id || element.id,
+          label: element.employee_fio,
+        });
+      });
+    }
+
+    // Список значений для селекта бригада
     const brigade_employee_id_list = !state.brigade_employee_id_list
       ? []
       : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');

@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
-import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { employeeFIOLabelFunction, newEmployeeFIOLabelFunction } from 'utils/labelFunctions';
 
 const getTableMeta = ({
   employeesList = [],
@@ -41,10 +41,12 @@ const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: employeesList.map(({ id: value }) => ({
-            value,
-            label: employeeFIOLabelFunction(flux)(value),
-          })),
+          options: employeesList.map((option) => {
+            return ({
+              value: option.id,
+              label: employeeFIOLabelFunction(flux)(option.id, false),
+            });
+          }),
         },
       },
       {
@@ -88,7 +90,10 @@ export default (props) => {
 
   const renderers = ({
     structure_id: ({ data }) => <div>{(structures.find(s => s.id === data) || { data: '' }).name}</div>,
-    brigade_employee_id_list: ({ data }) => <div>{data.map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', ')}</div>,
+    brigade_employee_id_list: ({ data }) => <div>
+      {/* {data.map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', ')} */}
+      {data.map(({ employee_fio }) => employee_fio).join(', ')}
+    </div>,
   });
 
   return (

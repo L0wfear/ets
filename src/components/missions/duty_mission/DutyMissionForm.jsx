@@ -1,6 +1,7 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import find from 'lodash/find';
 import last from 'lodash/last';
 
 import ModalBody from 'components/ui/Modal';
@@ -22,7 +23,6 @@ export class DutyMissionForm extends Form {
       selectedRoute: null,
       showRouteForm: false,
       routesList: [],
-      employeesList: this.props.employeesList,
     };
   }
 
@@ -147,7 +147,7 @@ export class DutyMissionForm extends Form {
       missionsActions.getMissions(mission.technical_operation_id);
     }
     missionsActions.getMissionSources();
-    flux.getActions('employees').getEmployees({ 'active': true });
+    flux.getActions('employees').getEmployees();
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades();
 
     this.setState({
@@ -158,7 +158,7 @@ export class DutyMissionForm extends Form {
   }
 
   createNewRoute() {
-    this.context.flux.getActions('geoObjects').getGeozones().then((v) => {
+    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
       const newR = {
         name: '',
         polys: this.props.geozonePolys,
@@ -183,7 +183,7 @@ export class DutyMissionForm extends Form {
       const createdRouteId = result.createdRoute.result[0].id;
       this.handleChange('route_id', createdRouteId);
       const selectedRoute = await routesActions.getRouteById(createdRouteId);
-      let routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
+      const routesList = await routesActions.getRoutesByTechnicalOperation(this.props.formState.technical_operation_id);
       routesList.push(selectedRoute);
       Object.assign(stateChangeObject, {
         showRouteForm: false,
@@ -198,9 +198,6 @@ export class DutyMissionForm extends Form {
     }
 
     this.setState(stateChangeObject);
-  }
-
-  componentWillReceiveProps(props) {
   }
 
   render() {
@@ -228,10 +225,43 @@ export class DutyMissionForm extends Form {
         .filter(route => !state.structure_id || route.structure_id === state.structure_id)
         .map(({ id, name }) => ({ value: id, label: name }));
 
-    const EMPLOYEES = employeesList.map(d => ({
-      value: d.id,
-      label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-    }));
+    const EMPLOYEES = employeesList.reduce((newArr, employee) => {
+      if (employee.active) {
+        return [
+          ...newArr,
+          {
+            value: employee.id,
+            label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''}`,
+          },
+        ];
+      }
+
+      return [...newArr];
+    }, []);
+
+    const FOREMANS = EMPLOYEES;
+    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
+      const employee = this.props.employeesIndex[state.foreman_id];
+
+      FOREMANS.push({
+        value: state.foreman_id,
+        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
+      });
+    }
+
+    const BRIGADES = EMPLOYEES;
+    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
+      const key = id || employee_id;
+      if (!BRIGADES.some(({ value }) => value === key)) {
+        const employee = this.props.employeesIndex[key];
+
+        BRIGADES.push({
+          value: key,
+          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
+        });
+      }
+    });
+
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
       value: id,
@@ -267,7 +297,7 @@ export class DutyMissionForm extends Form {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
@@ -382,7 +412,7 @@ export class DutyMissionForm extends Form {
                 label="Бригадир"
                 error={errors.foreman_id}
                 disabled={IS_DISPLAY || readOnly}
-                options={EMPLOYEES}
+                options={FOREMANS}
                 value={state.foreman_id}
                 onChange={this.handleForemanIdChange}
               />
@@ -396,7 +426,7 @@ export class DutyMissionForm extends Form {
                 error={errors.brigade_employee_id_list}
                 multi
                 disabled={IS_DISPLAY || readOnly}
-                options={EMPLOYEES}
+                options={BRIGADES}
                 value={brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
               />

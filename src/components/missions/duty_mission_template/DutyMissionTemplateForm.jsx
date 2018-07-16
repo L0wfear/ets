@@ -2,7 +2,6 @@ import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { find } from 'lodash';
-import differenceWith from 'lodash/differenceWith';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -41,16 +40,43 @@ class MissionTemplateForm extends DutyMissionForm {
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
-    const EMPLOYEES = employeesList.reduce((arr, d) => {
-      if (!state.structure_id || (d.company_structure_id === state.structure_id)) {
-        arr.push({
-          value: d.id,
-          label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
-        });
+    const EMPLOYEES = employeesList.reduce((newArr, employee) => {
+      if (employee.active && (!state.structure_id || (employee.company_structure_id === state.structure_id))) {
+        return [
+          ...newArr,
+          {
+            value: employee.id,
+            label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''}`,
+          },
+        ];
       }
 
-      return arr;
+      return [...newArr];
     }, []);
+
+    const FOREMANS = EMPLOYEES;
+    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
+      const employee = this.props.employeesIndex[state.foreman_id];
+
+      FOREMANS.push({
+        value: state.foreman_id,
+        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
+      });
+    }
+
+    const BRIGADES = EMPLOYEES;
+    state.brigade_employee_id_list.forEach(({ id,  employee_id }) => {
+      const key = id || employee_id;
+      if (!BRIGADES.some(({ value }) => value === key)) {
+        const employee = this.props.employeesIndex[key];
+
+        BRIGADES.push({
+          value: key,
+          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
+        });
+      }
+    });
+
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
@@ -64,25 +90,6 @@ class MissionTemplateForm extends DutyMissionForm {
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
-    }
-
-    // Ищем diff между текущем значением и списком активных водителей
-    // Это надо для того если в значение Журнал наряд-задания есть не активные сотрудники
-    // И добавляем их к опциям
-    let diff;
-
-    if (state.brigade_employee_id_list) {
-      diff = differenceWith(state.brigade_employee_id_list, EMPLOYEES, (arrVal, othVal) => arrVal.employee_id === othVal.value ||
-      arrVal.id === othVal.value);
-    }
-
-    if (diff && Array.isArray(diff)) {
-      diff.forEach((element) => {
-        EMPLOYEES.push({
-          value: element.employee_id || element.id,
-          label: element.employee_fio,
-        });
-      });
     }
 
     const route = this.state.selectedRoute;
@@ -101,7 +108,10 @@ class MissionTemplateForm extends DutyMissionForm {
 
           <Row>
             <Col md={6}>
-              <Field type="select" label="Технологическая операция" error={errors.technical_operation_id}
+              <Field
+                type="select"
+                label="Технологическая операция"
+                error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
                 disabled={!!state.route_id}
                 value={state.technical_operation_id}
@@ -126,7 +136,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 label="Бригадир"
                 error={errors.foreman_id}
                 disabled={false}
-                options={EMPLOYEES}
+                options={FOREMANS}
                 value={state.foreman_id}
                 onChange={this.handleForemanIdChange}
               />
@@ -138,7 +148,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 error={errors.brigade_employee_id_list}
                 multi
                 disabled={false}
-                options={EMPLOYEES}
+                options={BRIGADES}
                 value={brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
               />
@@ -161,7 +171,8 @@ class MissionTemplateForm extends DutyMissionForm {
               </Div>
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={6}>
-              <Field type="select"
+              <Field
+                type="select"
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY}

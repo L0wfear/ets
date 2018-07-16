@@ -4,7 +4,7 @@ import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from './fuelRateSchema.js';
 
-@connectToStores(['fuelRates', 'objects', 'session', 'companyStructure'])
+@connectToStores(['odh', 'fuelRates', 'objects', 'session', 'companyStructure'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
@@ -27,5 +27,6 @@ export default class FuelRatesDirectory extends ElementsList {
     flux.getActions('fuelRates').getFuelOperations();
     flux.getActions('fuelRates').getFuelRates();
     flux.getActions('companyStructure').getLinearCompanyStructureForUser();
+    flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }

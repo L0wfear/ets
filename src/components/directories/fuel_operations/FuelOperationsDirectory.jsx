@@ -1,10 +1,9 @@
-import React from 'react';
 import FuelOperationFormWrap from './FuelOperationFormWrap.jsx';
 import FuelOperationsTable from './FuelOperationsTable.jsx';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-@connectToStores(['fuelRates', 'objects'])
+@connectToStores(['fuelRates', 'objects', 'odh'])
 @exportable({ entity: 'fuel_operations' })
 @staticProps({
   entity: 'fuel_operation',
@@ -24,5 +23,6 @@ export default class FuelOperationsDirectory extends ElementsList {
     super.componentDidMount();
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+    flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }

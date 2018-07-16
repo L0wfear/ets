@@ -51,8 +51,8 @@ export default class ODHActions extends Actions {
     return ODHNormDataSummerService.post(payload, true, 'json');
   }
 
-  getMeasureUnits() {
-    return MeasureUnitService.get();
+  getMeasureUnits(paylaod = {}) {
+    return MeasureUnitService.get(paylaod);
   }
 
   getEfficiency() {

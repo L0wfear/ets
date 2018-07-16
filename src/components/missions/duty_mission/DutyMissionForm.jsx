@@ -220,7 +220,7 @@ export class DutyMissionForm extends Form {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 
-    if (!TECH_OPERATIONS.some(({ id }) => id === state.technical_operation_id)) {
+    if (!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));

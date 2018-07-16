@@ -14,6 +14,12 @@ export const fuelOperationSchema = {
       type: 'string',
       required: true,
     },
+    {
+      key: 'measure_unit_id',
+      title: 'Единица измерения',
+      type: 'number',
+      required: true,
+    },
   ],
 };
 
@@ -40,6 +46,7 @@ export default class FuelOperationFormWrap extends FormWrap {
       handleFormChange={this.handleFormStateChange.bind(this)}
       show={this.props.showForm}
       onHide={this.props.onFormHide}
+      measureUnitList={this.props.measureUnitList}
       {...this.state}
     />
     : null;

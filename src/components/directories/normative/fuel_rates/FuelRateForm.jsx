@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 
@@ -45,6 +45,7 @@ export default class FuelRateForm extends Form {
     const OPERATIONS = operations
       .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}` }))
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+    const MEASUREUNITS = this.props.measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
 
     return (
       <Modal id="modal-fuel-rate" show={this.props.show} onHide={this.props.onHide} backdrop="static">
@@ -76,6 +77,17 @@ export default class FuelRateForm extends Form {
                 clearable={false}
                 value={state.operation_id}
                 onChange={this.handleChange.bind(this, 'operation_id')}
+                disabled={!isPermitted}
+              />
+
+              <ExtField
+                type={'select'}
+                label="Единица измерения"
+                value={state.measure_unit_id}
+                error={errors.measure_unit_id}
+                options={MEASUREUNITS}
+                onChange={this.handleChange}
+                boundKeys={['measure_unit_id']}
                 disabled={!isPermitted}
               />
 

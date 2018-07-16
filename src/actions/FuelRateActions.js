@@ -85,7 +85,9 @@ export default class FuelRateActions extends Actions {
     const payload = {};
     if (typeof formState.name === 'string' && formState.name !== '') {
       payload.name = formState.name;
-      payload.equipment = !!formState.equipment || false;
+      payload.equipment = !!formState.equipment;
+      payload.measure_unit_id = formState.measure_unit_id;
+      payload.is_excluding_mileage = !!formState.is_excluding_mileage;
     }
 
     return FuelOperationsService.post(payload, getFuelOperations, 'json');
@@ -97,7 +99,9 @@ export default class FuelRateActions extends Actions {
     };
     if (typeof formState.name === 'string' && formState.name !== '') {
       payload.name = formState.name;
-      payload.equipment = !!formState.equipment || false;
+      payload.equipment = !!formState.equipment;
+      payload.measure_unit_id = formState.measure_unit_id;
+      payload.is_excluding_mileage = !!formState.is_excluding_mileage;
     }
     return FuelOperationsService.put(payload, getFuelOperations, 'json');
   }

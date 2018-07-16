@@ -56,7 +56,7 @@ export default class Taxes extends React.Component {
       return 0;
     }
     const result = _.reduce(data, (res, cur) => {
-      if (!isEmpty(cur.FACT_VALUE)) {
+      if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
         res += parseFloat(cur.FACT_VALUE);
       }
       return res;
@@ -71,14 +71,16 @@ export default class Taxes extends React.Component {
 
     this.tableCaptions = [
       'Операция',
+      'Ед. измерения',
       'Норма',
       'Поправочный коэффициент',
-      `Значение (${type === 'odometr' ? 'км' : 'м/ч'})`,
+      `Значение (${type === 'odometr' ? 'км | м/ч | раз | час' : 'м/ч | раз | час'})`,
       'Результат (л)',
     ];
 
     this.tableCols = [
       'OPERATION',
+      'measure_unit_name',
       'FUEL_RATE',
       'fuel_correction_rate',
       'FACT_VALUE',
@@ -101,6 +103,7 @@ export default class Taxes extends React.Component {
         });
         return <EtsSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
       },
+      measure_unit_name: measure_unit_name => measure_unit_name || '-',
       RESULT: RESULT => `${RESULT ? RESULT + ' л' : ''}`,
       fuel_correction_rate: (fuel_correction_rate, row) => {
         return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1;
@@ -132,7 +135,7 @@ export default class Taxes extends React.Component {
   componentWillReceiveProps(props) {
     const { fuelRates, taxes = this.state.tableData } = props;
     let { operations } = props;
-    operations = operations.map(({ id, name }) => ({ value: id, label: name }));
+    operations = operations.map(({ id, name, measure_unit_name }) => ({ value: id, label: name, measure_unit_name }));
     taxes.map(tax => ({ ...tax, RESULT: Taxes.getResult(tax) }));
     this.setState({ operations, fuelRates, tableData: taxes });
   }
@@ -141,6 +144,9 @@ export default class Taxes extends React.Component {
     const { tableData } = this.state;
     const current = tableData[index];
     current.FACT_VALUE = Math.abs(e.target.value);
+    if (current.is_excluding_mileage && current.measure_unit_name === 'л/подъем') {
+      current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
+    }
     current.RESULT = Taxes.getResult(current);
 
     this.setState({ tableData });
@@ -153,7 +159,11 @@ export default class Taxes extends React.Component {
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
     tableData[index].FUEL_RATE = fuelRateByOperation.rate_on_date || 0;
     tableData[index].RESULT = Taxes.getResult(tableData[index]);
-
+    tableData[index].measure_unit_name = (this.state.operations
+      .find(({ value: op_value }) => op_value === Number(value)) || {}).measure_unit_name;
+    tableData[index].is_excluding_mileage = (this.state.operations
+      .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
+      
     this.setState({ tableData });
     this.props.onChange(tableData);
   }
@@ -175,6 +185,7 @@ export default class Taxes extends React.Component {
   }
 
   selectOperation(selectedOperation) {
+    console.log(selectedOperation)
     this.setState({ selectedOperation });
   }
 
@@ -192,6 +203,7 @@ export default class Taxes extends React.Component {
       'taxes-result-label-negative': !finalFactValueEqualsBaseValue,
     });
 
+    console.log(taxes)
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
         <Div className="some-header">

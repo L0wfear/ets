@@ -182,7 +182,6 @@ export default class Taxes extends Component {
   }
 
   selectOperation(selectedOperation) {
-    console.log(selectedOperation)
     this.setState({ selectedOperation });
   }
 
@@ -200,7 +199,6 @@ export default class Taxes extends Component {
       'taxes-result-label-negative': !finalFactValueEqualsBaseValue,
     });
 
-    console.log(taxes)
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
         <Div className="some-header">

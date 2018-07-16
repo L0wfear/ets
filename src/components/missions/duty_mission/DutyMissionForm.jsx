@@ -95,19 +95,21 @@ export class DutyMissionForm extends Form {
     let brigade_employee_id_list = [];
 
     if (v) {
-      const data = v.split(',').map(id => Number(id));
-      const lastEmployee = last(data);
+      let hasNotActive = false;
+      brigade_employee_id_list = v.split(',').map(id => Number(id)).reduce((newArr, brigade_id) => {
+        if (!this.isActiveEmployee(brigade_id)) {
+          hasNotActive = true;
+          return [...newArr];
+        }
+        return [
+          ...newArr,
+          this.props.employeesIndex[brigade_id],
+        ];
+      });
 
-      if (!this.isActiveEmployee(lastEmployee)) {
+      if (hasNotActive) {
         onlyActiveEmployeeNotification();
-        data.pop();
-        return;
       }
-
-      brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
-        ...newArr,
-        this.props.employeesIndex[brigade_id],
-      ], []);
     }
 
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
@@ -241,7 +243,7 @@ export class DutyMissionForm extends Form {
 
     const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id];
+      const employee = this.props.employeesIndex[state.foreman_id] || {};
 
       FOREMANS.push({
         value: state.foreman_id,
@@ -253,7 +255,7 @@ export class DutyMissionForm extends Form {
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[key];
+        const employee = this.props.employeesIndex[state.foreman_id] || {};
 
         BRIGADES.push({
           value: key,

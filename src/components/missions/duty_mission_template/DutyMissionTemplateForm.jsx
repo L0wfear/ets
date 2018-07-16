@@ -56,7 +56,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const FOREMANS = EMPLOYEES;
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id];
+      const employee = this.props.employeesIndex[state.foreman_id] || {};
 
       FOREMANS.push({
         value: state.foreman_id,
@@ -65,10 +65,10 @@ class MissionTemplateForm extends DutyMissionForm {
     }
 
     const BRIGADES = EMPLOYEES;
-    state.brigade_employee_id_list.forEach(({ id,  employee_id }) => {
+    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[key];
+        const employee = this.props.employeesIndex[state.foreman_id] || {};
 
         BRIGADES.push({
           value: key,

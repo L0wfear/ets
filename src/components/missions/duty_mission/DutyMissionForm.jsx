@@ -3,7 +3,6 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import find from 'lodash/find';
 import last from 'lodash/last';
-import last from 'lodash/last';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
 
@@ -131,11 +130,6 @@ export class DutyMissionForm extends Form {
         onlyActiveEmployeeNotification();
       }
     }
-
-    const brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
-      ...newArr,
-      this.props.employeesIndex[brigade_id],
-    ], []);
 
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }

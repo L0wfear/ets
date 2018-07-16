@@ -1,12 +1,11 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
-import {
-  find,
-  last,
-  uniqBy,
-  isEmpty as lodashIsEmpty,
- } from 'lodash';
+import find from 'lodash/find';
+import last from 'lodash/last';
+import last from 'lodash/last';
+import uniqBy from 'lodash/uniqBy';
+import lodashIsEmpty from 'lodash/isEmpty';
 
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
@@ -113,13 +112,24 @@ export class DutyMissionForm extends Form {
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange = (v) => {
-    const data = v.map(id => Number(id));
-    const lastEmployee = last(data);
+    let brigade_employee_id_list = [];
 
-    if (lastEmployee && !this.isActiveEmployee(lastEmployee)) {
-      onlyActiveEmployeeNotification();
-      data.pop();
-      return;
+    if (v) {
+      let hasNotActive = false;
+      brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
+        if (!this.isActiveEmployee(brigade_id)) {
+          hasNotActive = true;
+          return [...newArr];
+        }
+        return [
+          ...newArr,
+          this.props.employeesIndex[brigade_id],
+        ];
+      });
+
+      if (hasNotActive) {
+        onlyActiveEmployeeNotification();
+      }
     }
 
     const brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
@@ -168,7 +178,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids = getKindTaskIds(id, false);
     }
 
-    flux.getActions('employees').getEmployees({ 'active': true });
+    flux.getActions('employees').getEmployees();
     const technicalOperationsList = await technicalOperationsActions.getTechnicalOperationsWithBrigades({ kind_task_ids, for: 'duty_mission' });
 
     if (is_new) {
@@ -188,19 +198,20 @@ export class DutyMissionForm extends Form {
 
   createNewRoute() {
     const { formState } = this.props;
-
-    const newR = {
-      normatives: formState.normatives,
-      name: '',
-      technical_operation_id: formState.technical_operation_id,
-      municipal_facility_id: formState.municipal_facility_id,
-      structure_id: formState.structure_id,
-      object_list: [],
-      input_lines: [],
-    };
-    this.setState({
-      showRouteForm: true,
-      selectedRoute: newR,
+    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
+      const newR = {
+        normatives: formState.normatives,
+        name: '',
+        technical_operation_id: formState.technical_operation_id,
+        municipal_facility_id: formState.municipal_facility_id,
+        structure_id: formState.structure_id,
+        object_list: [],
+        input_lines: [],
+      };
+      this.setState({
+        showRouteForm: true,
+        selectedRoute: newR,
+      });
     });
   }
 
@@ -321,7 +332,42 @@ export class DutyMissionForm extends Form {
       filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
-    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList);
+    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).reduce((newArr, employee) => {
+      if (employee.active) {
+        return [
+          ...newArr,
+          {
+            value: employee.value,
+            label: employee.label,
+          },
+        ];
+      }
+
+      return [...newArr];
+    }, []);
+
+    const FOREMANS = [...EMPLOYEES];
+    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
+      const employee = this.props.employeesIndex[state.foreman_id] || {};
+
+      FOREMANS.push({
+        value: state.foreman_id,
+        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
+      });
+    }
+
+    const BRIGADES = [...EMPLOYEES];
+    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
+      const key = id || employee_id;
+      if (!BRIGADES.some(({ value }) => value === key)) {
+        const employee = this.props.employeesIndex[state.foreman_id] || {};
+
+        BRIGADES.push({
+          value: key,
+          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
+        });
+      }
+    });
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
@@ -491,7 +537,7 @@ export class DutyMissionForm extends Form {
                 label="Бригадир"
                 error={errors.foreman_id}
                 disabled={IS_DISPLAY || readOnly}
-                options={EMPLOYEES}
+                options={FOREMANS}
                 value={state.foreman_id}
                 onChange={this.handleForemanIdChange}
               />
@@ -505,7 +551,7 @@ export class DutyMissionForm extends Form {
                 error={errors.brigade_employee_id_list}
                 multi
                 disabled={IS_DISPLAY || readOnly}
-                options={EMPLOYEES}
+                options={BRIGADES}
                 value={brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
               />

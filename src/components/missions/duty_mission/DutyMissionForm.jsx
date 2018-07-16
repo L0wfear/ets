@@ -239,7 +239,7 @@ export class DutyMissionForm extends Form {
       return [...newArr];
     }, []);
 
-    const FOREMANS = EMPLOYEES;
+    const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
       const employee = this.props.employeesIndex[state.foreman_id];
 
@@ -249,7 +249,7 @@ export class DutyMissionForm extends Form {
       });
     }
 
-    const BRIGADES = EMPLOYEES;
+    const BRIGADES = [...EMPLOYEES];
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {

@@ -111,19 +111,25 @@ export class DutyMissionForm extends Form {
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange = (v) => {
-    const data = v.map(id => Number(id));
-    const lastEmployee = last(data);
+    let brigade_employee_id_list = [];
 
-    if (lastEmployee && !this.isActiveEmployee(lastEmployee)) {
-      onlyActiveEmployeeNotification();
-      data.pop();
-      return;
+    if (v) {
+      let hasNotActive = false;
+      brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
+        if (!this.isActiveEmployee(brigade_id)) {
+          hasNotActive = true;
+          return [...newArr];
+        }
+        return [
+          ...newArr,
+          this.props.employeesIndex[brigade_id],
+        ];
+      });
+
+      if (hasNotActive) {
+        onlyActiveEmployeeNotification();
+      }
     }
-
-    const brigade_employee_id_list = data.reduce((newArr, brigade_id) => [
-      ...newArr,
-      this.props.employeesIndex[brigade_id],
-    ], []);
 
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
@@ -336,7 +342,7 @@ export class DutyMissionForm extends Form {
 
     const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id];
+      const employee = this.props.employeesIndex[state.foreman_id] || {};
 
       FOREMANS.push({
         value: state.foreman_id,
@@ -348,7 +354,7 @@ export class DutyMissionForm extends Form {
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[key];
+        const employee = this.props.employeesIndex[state.foreman_id] || {};
 
         BRIGADES.push({
           value: key,

@@ -113,7 +113,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
 
     confirmDialog({
       title: 'Внимание',
-      body: `Вы уверены, что хотите перенести из архива ${moreOne ? 'выбранные-наряд задания' : 'выбранное-наряд задание'}?`,
+      body: `Вы уверены, что хотите перенести из архива ${moreOne ? 'выбранные-наряд задания' : 'выбранное наряд-задание'}?`,
     })
     .then(() =>
         Promise.all(

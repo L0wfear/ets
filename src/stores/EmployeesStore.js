@@ -17,6 +17,7 @@ export default class EmployeeStore extends Store {
 
     this.state = {
       employeesList: [],
+      employeesIndex: {},
       driversList: [],
       foremanList: [],
       waybillDriversList: [],

@@ -105,7 +105,7 @@ export class DutyMissionForm extends Form {
           ...newArr,
           this.props.employeesIndex[brigade_id],
         ];
-      });
+      }, []);
 
       if (hasNotActive) {
         onlyActiveEmployeeNotification();
@@ -252,6 +252,7 @@ export class DutyMissionForm extends Form {
     }
 
     const BRIGADES = [...EMPLOYEES];
+
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {

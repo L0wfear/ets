@@ -501,8 +501,9 @@ class WaybillForm extends Form {
       const { mission_id_list: [...mission_id_list] } = this.props.formState;
       mission_id_list.push(id);
       this.handleChange('mission_id_list', mission_id_list);
+      this.getMissionsByCarAndDates({ ...formState, mission_id_list }, false);
     }
-    this.componentDidMount();
+
     this.setState({ showMissionForm: false, selectedMission: null });
   }
 

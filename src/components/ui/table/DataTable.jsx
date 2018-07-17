@@ -397,7 +397,7 @@ export default class DataTable extends React.Component {
     let isValid = true;
 
     Object.entries(filterValues).forEach(([key, { value }]) => {
-      if (obj[key] === null) {
+      if (obj[key] === null || !isValid) {
         isValid = false;
         return;
       }
@@ -446,19 +446,19 @@ export default class DataTable extends React.Component {
          * Значение: массив строк
          */
       } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
-        isValid = stringArrayDataMatching(value, obj[key]);
+        isValid = isValid && stringArrayDataMatching(value, obj[key]);
         /**
          * Фильтр: селект лист из чисел
          * Значение: массив чисел
          */
       } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
-        isValid = numberArrayDataMatching(value, obj[key]);
+        isValid = isValid && numberArrayDataMatching(value, obj[key]);
       } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
         const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
         const filterType = _.get(metaCol, 'filter.type', '');
-        isValid = parseAdvancedFilter(value, key, obj[key], filterType);
+        isValid = isValid && parseAdvancedFilter(value, key, obj[key], filterType);
       } else if (typeof obj[key] === 'string') {
-        isValid = stringArrayDataMatching(value, [obj[key]]);
+        isValid = isValid && stringArrayDataMatching(value, [obj[key]]);
       } else if (obj[key] !== value) {
         isValid = false;
       }

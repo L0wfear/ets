@@ -4,7 +4,7 @@ export const MissionProgressReportService = ETS_API_FACTORY.createApiServiceAdap
 export const BrigadeEfficiencyReport = ETS_API_FACTORY.createApiServiceAdapter('reports/efficiency/brigade', {});
 export const EmployeeEfficiencyReport = ETS_API_FACTORY.createApiServiceAdapter('reports/efficiency/employee', {});
 // временно
-export const FuelReportService = ETS_API_FACTORY.createApiServiceAdapter(process.env.STAND === 'prod' ? 'fuel_consumption_report' : 'fuel_consumption_new_report');
+export const FuelReportService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_new_report');
 export const FuelSummaryReportService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_summary_report', {});
 export const DailyCleaningReportsServiceETS = ETS_API_FACTORY.createApiServiceAdapter('cleaning_status_report', {});
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});

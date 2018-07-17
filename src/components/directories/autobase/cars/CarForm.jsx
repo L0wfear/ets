@@ -118,8 +118,8 @@ class CarForm extends Form {
       engineTypeList = [],
       propulsionTypeList = [],
       carCategoryList = [],
-      typesList = [],
       employeesIndex = {},
+      typesList = [],
       driversList = [],
     } = this.props;
 
@@ -129,6 +129,10 @@ class CarForm extends Form {
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
     const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
 
+    /**
+     * TODO Сделать виртуализацию списка, если список ТС будет тормозить из-за большого количества записей.
+     * Может с помощью этой штуки https://github.com/bvaughn/react-virtualized
+     */
     const isFourInGovNumver = isFourDigitGovNumber(state.gov_number);
     const DRIVERS = driversList.filter((driver) => {
       const driverData = employeesIndex[driver.id];
@@ -140,7 +144,8 @@ class CarForm extends Form {
         return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
       }
       return false;
-    }).map((driver) => ({ value: driver.id, label: createFio(driver) }));
+    }).map(driver => ({ value: driver.id, label: createFio(driver) }));
+
     return (
       <Modal id="modal-car" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>

@@ -1396,6 +1396,7 @@ body.application {
     align-items: center;
     &>label {
       padding: 0;
+      min-width: 25px;
     }
   }
 }

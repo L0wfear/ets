@@ -311,7 +311,7 @@ export default (props) => {
     all_missions_status: ({ data }) => <div>{get(missionsStatusBySlag, data, '')}</div>,
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name', '')}</div>,
     comment: ({ data }) => <div>{data ? data.split('\n').map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>) : data}</div>,
-    car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '')}</div>,
+    car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '-')}</div>,
   };
 
   const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);

@@ -55,7 +55,7 @@ class DutyMissionFormOld extends Form {
     const routesActions = flux.getActions('routes');
 
     flux.getActions('missions').getMissions(technical_operation_id);
-    flux.getActions('employees').getEmployees({ 'active': true });
+    flux.getActions('employees').getEmployees();
 
     getRoute(routesActions, { route_id, mission_id, isTemplate }).then(({ routesList, selectedRoute }) => this.setState({ routesList, selectedRoute }));
   }

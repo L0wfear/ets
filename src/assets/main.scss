@@ -1396,6 +1396,7 @@ body.application {
     align-items: center;
     &>label {
       padding: 0;
+      min-width: 25px;
     }
   }
 }
@@ -2389,6 +2390,12 @@ div.none {
 .inline-block {
   display: inline-block;
 }
+
+.modal-footer>.inline-block {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .faxogramms-date-range {
   display: flex;
   align-items: baseline;

@@ -400,27 +400,18 @@ class WaybillForm extends Form {
       formState.driver_id
     ).then(({ result: { driver_id = null } }) => {
       if (driver_id) {
-        const driver = this.props.employeesIndex[driver_id] || null;
         const DRIVERS = getDrivers({ ...formState, driver_id }, this.props.employeesIndex, this.props.waybillDriversList);
 
-        if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) return;
-
-        const { gov_number } = formState;
-        const hasLicense = !hasMotohours(gov_number) && driverHasLicenseWithActiveDate(driver);
-        const hasSpecialLicense = hasMotohours(gov_number) && driverHasSpecialLicenseWithActiveDate(driver);
-
-        if (hasLicense || hasSpecialLicense) {
+        if (DRIVERS.some(({ value }) => value === driver_id)) {
           this.props.handleFormChange('driver_id', driver_id);
         }
-
-        return;
+      } else {
+        /**
+         * Сбрасываем водителя, так как в новом, отфильтрованнои по ТС
+         * списке, водителей может уже не быть.
+         */
+        this.props.handleFormChange('driver_id', '');
       }
-
-      /**
-       * Сбрасываем водителя, так как в новом, отфильтрованнои по ТС
-       * списке, водителей может уже не быть.
-       */
-      this.props.handleFormChange('driver_id', '');
     });
   }
 
@@ -510,8 +501,9 @@ class WaybillForm extends Form {
       const { mission_id_list: [...mission_id_list] } = this.props.formState;
       mission_id_list.push(id);
       this.handleChange('mission_id_list', mission_id_list);
+      this.getMissionsByCarAndDates({ ...formState, mission_id_list }, false);
     }
-    this.componentDidMount();
+
     this.setState({ showMissionForm: false, selectedMission: null });
   }
 

@@ -3,7 +3,7 @@ import Table from 'components/ui/table/DataTable.jsx';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/labelFunctions';
-import { get, find } from 'lodash';
+import { get } from 'lodash';
 import { missionsStatusBySlag } from 'components/waybill/constant/table.ts';
 
 const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
@@ -311,7 +311,7 @@ export default (props) => {
     all_missions_status: ({ data }) => <div>{get(missionsStatusBySlag, data, '')}</div>,
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name', '')}</div>,
     comment: ({ data }) => <div>{data ? data.split('\n').map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>) : data}</div>,
-    car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '')}</div>,
+    car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '-')}</div>,
   };
 
   const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);

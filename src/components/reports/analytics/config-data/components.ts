@@ -1,4 +1,4 @@
-import Analytics from 'components/reports/analytics/Analytics.jsx';
+import Analytics from 'components/reports/analytics/Analytics';
 
 export default [
   {

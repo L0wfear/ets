@@ -30,6 +30,7 @@ function calculateWaybillMetersDiff(waybill, field, value) {
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
+      console.log(value)
       waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
@@ -186,11 +187,11 @@ export default class WaybillFormWrap extends FormWrap {
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
       const lastTax = last(formState.tax_data);
-      if (field === 'odometr_end' && formState.odometr_diff > 0) {
+      if (field === 'odometr_end' && formState.odometr_diff >= 0) {
         lastTax.FACT_VALUE = formState.odometr_diff;
         lastTax.RESULT = Taxes.getResult(lastTax);
       }
-      if (field === 'motohours_end' && formState.motohours_diff > 0) {
+      if (field === 'motohours_end' && formState.motohours_diff >= 0) {
         lastTax.FACT_VALUE = formState.motohours_diff;
         lastTax.RESULT = Taxes.getResult(lastTax);
       }

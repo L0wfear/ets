@@ -122,7 +122,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
           )
         ).then(() => {
           this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены из' : 'Выбранно наряд-задание перенесено из'} архива`);
+          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены из' : 'Выбранное наряд-задание перенесено из'} архива`);
         })
         .catch(() => {
           this.refreshList();

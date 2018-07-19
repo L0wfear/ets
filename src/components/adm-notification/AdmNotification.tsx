@@ -37,23 +37,27 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
   }
 
   componentWillReceiveProps(nextProps) {
+    const notificationId = (this.state.notification || {}).id;
+
     this.props.notReadAdmNotificationList.filter(({ id }) => {
-      if (!nextProps.notReadAdmNotificationList.find(({ id: id_newList }) => id_newList === id)) {
+      if (!nextProps.notReadAdmNotificationList.find(({ id: id_newList }) => id_newList === id) && notificationId !== id) {
         global.NOTIFICATION_SYSTEM.removeNotification(id);
       }
     });
 
-    nextProps.notReadAdmNotificationList.map(notification =>
-      global.NOTIFICATION_SYSTEM.notify({
-        title: notification.title,
-        message: notification.description,
-        level: notification.priority,
-        position: 'tr',
-        autoDismiss: 0,
-        onRemove: data => this.openModalForm(data),
-        uid: notification.id,
-      })
-    );
+    nextProps.notReadAdmNotificationList.forEach(notification => {
+      if (notification.id !== notificationId) {
+        global.NOTIFICATION_SYSTEM.notify({
+          title: notification.title,
+          message: notification.description,
+          level: notification.priority,
+          position: 'tr',
+          autoDismiss: 0,
+          onRemove: data => this.openModalForm(data),
+          uid: notification.id,
+        })
+      }
+    });
 
     this.setState
   }

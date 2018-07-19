@@ -2,6 +2,7 @@
  * @module components/reports
  * Отчеты
  */
+import carDowntimeAndOvermileage from 'components/reports/car_downtime_and_overmileage/report';
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
 import carConditin from './car-condition/report';
@@ -21,7 +22,7 @@ import employeeEfficiency from './employee_efficiency/report.ts';
 import trackEvents from './track_events/Report';
 import longRepair from './long_repair/report.tsx';
 import techMaintenanceSchedule from './tech_maintenance_schedule/report';
-import inquiryExpiringDate from './inquiry_expiring_date/report'
+import inquiryExpiringDate from './inquiry_expiring_date/report';
 
 export {
   analytics,
@@ -44,4 +45,5 @@ export {
   longRepair,
   techMaintenanceSchedule,
   inquiryExpiringDate,
+  carDowntimeAndOvermileage,
 };

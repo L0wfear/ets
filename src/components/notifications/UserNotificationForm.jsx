@@ -92,7 +92,12 @@ export default class UserNotificationForm extends Form {
     const state = this.props.formState;
 
     if (!state.is_read) {
-      this.context.flux.getActions('userNotifications').markAsRead([state.id], false);
+      this.context.flux.getActions('userNotifications').markAsRead([
+        {
+          id: [state.id],
+          front_type: 'common',
+        },
+      ]);
     }
   }
   handleClick = (pathComponent, query) => {

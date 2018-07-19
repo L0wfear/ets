@@ -30,8 +30,8 @@ export default class UserNotificationActions extends Actions {
       },
     };
 
-    readData.forEach(({ id, front_type }) => 
-      payload[front_type].read_ids.push(id)
+    readData.forEach(({ id, front_type }) =>
+      payload[front_type] && payload[front_type].read_ids.push(id)
     );
 
     return Promise.all([

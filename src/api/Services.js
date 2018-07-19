@@ -95,6 +95,7 @@ export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair', {});
 export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
 
 export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
+export const UserAdmNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_adm_registry', {});
 
 /* московское время */
 export const TimeMoscowService = ETS_API_FACTORY.createApiServiceAdapter('time', {});

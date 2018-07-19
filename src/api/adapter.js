@@ -6,19 +6,6 @@ import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';
 
 let headers = {};
 
-const checkOnAdminInfo = (response) => {
-  const { notification_adm = [] } = response;
-  if (notification_adm.length) {
-    notification_adm.forEach((notify) => {
-      const notificationReadInfo = JSON.parse(localStorage.getItem(global.NOTIFICATION_READ_ARR)) || [];
-
-      if (!notificationReadInfo.includes(notify.id)) {
-        global.NOTIFICATION_SYSTEM.notify(getAdminInfoNotification(notify));
-      }
-    });
-  }
-};
-
 export function setHeaders(requestHeaders) {
   headers = requestHeaders;
 }
@@ -126,7 +113,6 @@ function httpMethod(url, data = {}, method, type, params = {}) {
       } catch (e) {
         return new Promise((res, rej) => rej());
       }
-      checkOnAdminInfo({ ...responseBody });
       return Promise.resolve(responseBody, r);
     } catch (e) {
       console.error('Неверный формат ответа с сервера', url);

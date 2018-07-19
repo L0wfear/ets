@@ -6,6 +6,7 @@ declare module NodeJS  {
   interface Global {
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
+      removeNotification(uid: string | number),
     };
     SESSION_KEY: string;
     window: any;

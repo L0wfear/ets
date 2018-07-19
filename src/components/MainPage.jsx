@@ -19,6 +19,8 @@ import PERMISSIONS from 'constants/permissions';
 import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
 
+import AdmNotification from 'components/adm-notification/AdmNotification';
+
 import enhanceWithPermissions from './util/RequirePermissions.jsx';
 import defaultUser from '../assets/images/avatar-default.png';
 
@@ -232,6 +234,7 @@ export default class MainPage extends React.Component {
         <div className="app-navigation">{this.renderHeader()}</div>
 
         <div className="app-content">
+          <AdmNotification />
           <ModalTP
             show={this.state.showFormTp}
             onHide={this.hideFormTp}

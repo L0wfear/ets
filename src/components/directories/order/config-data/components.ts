@@ -5,8 +5,4 @@ export default [
     component: OrderList,
     exact: true,
   },
-  {
-    component: OrderList,
-    addPath: '/:idOrder',
-  }
 ];

@@ -20,7 +20,7 @@ export default class UserNotificationActions extends Actions {
     return UserAdmNotificationService.get({ is_read: false });
   }
   decNotificationsPopup(read_ids) {
-    return this.markAsRead(read_ids, false);
+    return this.markAsRead(read_ids.map(id => ({ id, front_type: 'common' })));
   }
   async getUserNotificationInfo(props) {
     const data = await UserNotificationInfoService.get();
@@ -43,8 +43,8 @@ export default class UserNotificationActions extends Actions {
       },
     };
 
-    readData.forEach(({ id, front_type }) => 
-      payload[front_type].read_ids.push(id)
+    readData.forEach(({ id, front_type }) =>
+      payload[front_type] && payload[front_type].read_ids.push(id)
     );
 
     this.changesUserNotificationsCount(-(payload.common.read_ids.length + payload.adm.read_ids.length));

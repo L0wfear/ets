@@ -235,13 +235,18 @@ export class MissionForm extends Form {
   }
 
   handleTechnicalOperationChange = (technical_operation_id) => {
+    const changedObj = {};
+
+    if (!this.props.fromWaybill) {
+      changedObj.car_id = null;
+      changedObj.type_id = null;
+    }
     this.props.handleMultiFormChange({
       technical_operation_id,
-      car_id: null,
-      type_id: null,
       municipal_facility_id: null,
       is_cleaning_norm: false,
       norm_id: null,
+      ...changedObj,
     });
 
     this.handleRouteIdChange(undefined);
@@ -625,7 +630,7 @@ export class MissionForm extends Form {
                 </Col>
               </Row>
               <Row>
-                {IS_CREATING && (
+                {IS_CREATING && !this.props.fromWaybill && (
                   <Col md={12}>
                     <ExtField
                       id="is_column"

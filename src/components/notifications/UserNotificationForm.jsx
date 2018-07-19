@@ -106,7 +106,7 @@ export default class UserNotificationForm extends Form {
       this.context.flux.getActions('userNotifications').markAsRead([
         {
           id: [state.id],
-          front_type: 'other',
+          front_type: 'common',
         },
       ]);
     }

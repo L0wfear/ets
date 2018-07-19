@@ -43,8 +43,8 @@ export default class UserNotificationActions extends Actions {
       },
     };
 
-    readData.forEach(({ id, front_type }) => 
-      payload[front_type].read_ids.push(id)
+    readData.forEach(({ id, front_type }) =>
+      payload[front_type] && payload[front_type].read_ids.push(id)
     );
 
     this.changesUserNotificationsCount(-(payload.common.read_ids.length + payload.adm.read_ids.length));

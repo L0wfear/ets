@@ -106,6 +106,10 @@ export default class UserNotificationForm extends Form {
   render() {
     const state = this.props.formState;
     const NotificationDesc = notificationComponents[state.type_code] || 'div';
+    const otherProps = {};
+    if (NotificationDesc !== 'div') {
+      otherProps.handleClick = this.handleClick;
+    }
 
     return (
       <Modal {...this.props} backdrop="static">

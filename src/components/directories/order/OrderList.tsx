@@ -34,15 +34,15 @@ class OrderList extends React.Component<any, any> {
 
     const {
       location: { search },
-      match: { params: { idOrder = '' } },
     } = this.props;
 
-    const outerIdFax = Number.parseInt(idOrder, 0);
 
     const {
-      date_start,
-      date_end,
+      idOrder,
+      dateFrom: date_start,
+      dateTo: date_end,
     } = queryString.parse(search);
+    const outerIdFax = Number.parseInt(idOrder, 0);
 
     const newPartPageOptions = {
       limit: !!outerIdFax ? 10000 : 15,
@@ -59,19 +59,10 @@ class OrderList extends React.Component<any, any> {
           if (selectedElementOrder) {
             this.props.setSelectedElementOrder(selectedElementOrder);
           }
+
+          this.props.history.replace('/orders');
         }
       });
-  }
-
-  componentWillReceiveProps(props) {
-    const { match: { params: { idOrder = '' } } } = this.props;
-
-    const outerIdFax = Number.parseInt(idOrder, 0);
-
-    if (outerIdFax) {
-      const selectedElementOrder = this.props.OrdersList.find(({ id }) => id === outerIdFax) || null;
-      this.props.setSelectedElementOrder(selectedElementOrder);
-    }
   }
 
   componentWillUnmount() {

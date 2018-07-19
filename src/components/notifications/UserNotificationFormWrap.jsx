@@ -6,9 +6,6 @@ import UserNotificationForm from './UserNotificationForm.jsx';
 export default class UserNotificationFormWrap extends FormWrap {
   handleFormHide = () => {
     this.props.onFormHide();
-    if (!this.state.formState.is_read) {
-      this.context.flux.getActions('userNotifications').getNotifications();
-    }
   }
   render() {
     return this.props.showForm ?
@@ -19,6 +16,8 @@ export default class UserNotificationFormWrap extends FormWrap {
         onHide={this.handleFormHide}
         markAllAsRead={this.handleMarkAllAsRead}
         history={this.props.history}
+        handleFormChange={this.handleFormStateChange}
+        onSubmit={this.handleFormSubmit}
       />
       : null;
   }

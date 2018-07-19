@@ -1,4 +1,7 @@
 import { Store } from 'flummox';
+import {
+  diffDates,
+} from 'utils/dates';
 
 const mock = `{
     "result": {
@@ -45,6 +48,14 @@ const mock = `{
     }
 }`;
 
+
+const getUserNotificationList = (commonNotificationList, admNotificationList) => [
+  ...commonNotificationList,
+  ...admNotificationList,
+].sort(({ created_at: created_at_first }, { created_at: created_at_second }) =>
+    diffDates(created_at_second, created_at_first)
+);
+
 export default class UserNotificationStore extends Store {
 
   constructor(flux) {
@@ -57,13 +68,145 @@ export default class UserNotificationStore extends Store {
     this.register(userNotificationActions.decNotificationsPopup, this.handleDecNotificationsPopup);
     this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
     this.register(userNotificationActions.changesUserNotificationsCount, this.handleChangesUserNotificationsCount)
+    this.register(userNotificationActions.getAdmNotifications, this.handleGetAdmNotifications);
+    this.register(userNotificationActions.getNotReadAdmNotifications, this.handleGetNotReadAdmNotifications);
+    this.register(userNotificationActions.markAsRead, this.handleMarkAsRead);
+    this.register(userNotificationActions.markAllAsRead, this.handleMarkAllAsRead);
+
     this.state = {
       notificationPopupList: [],
       notificationPopupLast: [],
       userNotificationList: [],
+      countNotReadBtType: {
+        common: 0,
+        adm: 0,
+      },
       countNotRead: 0,
       hasNewOrderNotifications: false,
+      commonNotificationList: [],
+      admNotificationList: [],
+
+      notReadAdmNotificationList: [],
+
+      dateUpdate: {
+        userNotificationList: null,
+        commonNotificationList: null,
+        notReadAdmNotificationList: null,
+      },
     };
+  }
+
+  handleGetNotifications({ result: { rows } }) {
+    const commonNotificationList = rows.map(notification => ({
+      ...notification,
+      front_type: 'common',
+    }));
+
+    this.setState({
+      commonNotificationList,
+      userNotificationList: getUserNotificationList(commonNotificationList, this.state.admNotificationList),
+      dateUpdate: {
+        ...this.state.dateUpdate,
+        commonNotificationList: new Date(),
+      },
+    });
+  }
+  handleGetAdmNotifications({ result: { rows } }) {
+    const admNotificationList = rows.map(notification => ({
+      ...notification,
+      front_type: 'adm',
+    }));
+
+    this.setState({
+      admNotificationList,
+      userNotificationList: getUserNotificationList(admNotificationList, this.state.commonNotificationList),
+      dateUpdate: {
+        ...this.state.dateUpdate,
+        admNotificationList: new Date(),
+      },
+    });
+  }
+
+  handleGetNotReadAdmNotifications({ result: { rows: notReadAdmNotificationList } }) {
+    this.setState({
+      notReadAdmNotificationList,
+      dateUpdate: {
+        ...this.state.dateUpdate,
+        notReadAdmNotificationList: new Date(),
+      },
+      countNotReadBtType: {
+        ...this.state.countNotReadBtType,
+        adm: notReadAdmNotificationList.length,
+      },
+      countNotRead: notReadAdmNotificationList.length + this.state.countNotReadBtType.common,
+    });
+  }
+
+  handleMarkAsRead(readData) {
+    const date = new Date();
+
+    let {
+      commonNotificationList: [...commonNotificationList],
+      admNotificationList: [...admNotificationList],
+
+      notReadAdmNotificationList: [...notReadAdmNotificationList],
+    } = this.state;
+    const { dateUpdate: { ...dateUpdate } } = this.state;
+
+    const needUpdate = {
+      commonNotificationList: false,
+      admNotificationList: false,
+      notReadAdmNotificationList: false,
+    };
+
+    if (dateUpdate.notReadAdmNotificationList && diffDates(date, dateUpdate.notReadAdmNotificationList) > 0) {
+      needUpdate.notReadAdmNotificationList = true;
+      dateUpdate.notReadAdmNotificationList = date;
+    }
+    if (dateUpdate.admNotificationList && diffDates(date, dateUpdate.admNotificationList) > 0) {
+      needUpdate.admNotificationList = true;
+      dateUpdate.admNotificationList = date;
+    }
+    if (dateUpdate.commonNotificationList && diffDates(date, dateUpdate.commonNotificationList) > 0) {
+      needUpdate.commonNotificationList = true;
+      dateUpdate.commonNotificationList = date;
+    }
+
+    readData.forEach(({ id, front_type }) => {
+      if (front_type === 'adm') {
+        if (needUpdate.notReadAdmNotificationList) {
+          notReadAdmNotificationList = notReadAdmNotificationList.filter(({ id: notReadId }) => notReadId !== id);
+        }
+        if (needUpdate.notReadAdmNotificationList) {
+          admNotificationList = admNotificationList.map(notification => ({
+            ...notification,
+            not_read: id === notification.id ? false : notification.not_read,
+          }));
+        }
+      } else if (front_type === 'common') {
+        if (needUpdate.notReadAdmNotificationList) {
+          commonNotificationList = commonNotificationList.map(notification => ({
+            ...notification,
+            not_read: id === notification.id ? false : notification.not_read,
+          }));
+        }
+      }
+    });
+
+    this.setState({
+      notReadAdmNotificationList,
+
+      admNotificationList,
+      commonNotificationList,
+      userNotificationList: getUserNotificationList(admNotificationList, commonNotificationList),
+      dateUpdate,
+
+      countNotReadBtType: {
+        ...this.state.countNotReadBtType,
+        adm: notReadAdmNotificationList.length,
+      },
+      countNotRead: notReadAdmNotificationList.length + this.state.countNotReadBtType.common,
+    });
   }
   handleGetNotificationsPopup({ result: { rows = [] } }) {
     const { notificationPopupList: notificationPopupListOld } = this.state;
@@ -74,6 +217,11 @@ export default class UserNotificationStore extends Store {
       notificationPopupList,
       notificationPopupLast: notificationPopupList.slice(-1),
       hasNewOrderNotifications: notificationPopupList.some(({ id }) => !notificationPopupIndexOld[id]),
+      countNotReadBtType: {
+        ...this.state.countNotReadBtType,
+        common: notificationPopupList.length,
+      },
+      countNotRead: notificationPopupList.length + this.state.countNotReadBtType.adm,
     });
   }
   handleDecNotificationsPopup() {
@@ -83,31 +231,31 @@ export default class UserNotificationStore extends Store {
       notificationPopupList,
       notificationPopupLast,
       hasNewOrderNotifications: false,
-    });
-  }
-  handleGetNotifications({ result }) {
-    this.setState({ userNotificationList: result.rows });
-  }
-
-  handleGetUserNotificationInfo({ result }) {
-    const { rows: { not_read_num = 0 } } = result;
-    this.setState({
-      countNotRead: not_read_num,
+      countNotReadBtType: {
+        ...this.state.countNotReadBtType,
+        common: notificationPopupList.length,
+      },
+      countNotRead: notificationPopupList.length + this.state.countNotReadBtType.adm,
     });
   }
 
-  handleChangesUserNotificationsCount({ count = 0 }) {
-    const { countNotRead } = this.state;
-    const newCountNotReadNumPrev = this.changeNotification(count, countNotRead);
-    const newCountNotReadNum = newCountNotReadNumPrev < 0 ? 0 : newCountNotReadNumPrev;
+  handleMarkAllAsRead() {
+    const date = new Date();
+    const { dateUpdate } = this.state;
 
-    this.setState({
-      countNotRead: newCountNotReadNum,
-    });
-  }
-
-  changeNotification(count, countNotRead) {
-    if (count === 'is_read_all') return 0;
-    return countNotRead + count;
+    if (dateUpdate.notReadAdmNotificationList && diffDates(date, dateUpdate.notReadAdmNotificationList) > 0) {
+      this.setState({
+        notReadAdmNotificationList: [],
+        dateUpdate: {
+          ...this.state.dateUpdate,
+          notReadAdmNotificationList: date,
+        },
+        countNotReadBtType: {
+          ...this.state.countNotReadBtType,
+          adm: 0,
+        },
+        countNotRead: this.state.countNotReadBtType.common,
+      });
+    }
   }
 }

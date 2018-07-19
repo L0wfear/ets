@@ -7,6 +7,7 @@ declare module NodeJS  {
     NODE_ENV: string;
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
+      removeNotification(uid: string | number),
     };
     SESSION_KEY2: string;
     window: any;

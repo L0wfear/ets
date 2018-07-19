@@ -9,6 +9,7 @@ import Routes from 'components/indexRoute.tsx';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
+import AdmNotification from 'components/adm-notification/AdmNotification';
 
 import Header from 'components/navbar/Header';
 
@@ -63,6 +64,7 @@ class MainApp extends React.Component {
           <Routes />
           <LoadingOverlay main />
           <NotifiactionOrders />
+          <AdmNotification />
         </div>
 
         <div className="app-footer">

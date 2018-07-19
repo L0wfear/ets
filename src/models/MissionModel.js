@@ -56,16 +56,16 @@ export const missionSchema = {
       required: true,
     },
     {
-      key: 'norm_id',
-      title: 'Норматив',
-      type: 'number',
-      integer: true,
-      required: true,
-    },
-    {
       key: 'municipal_facility_id',
       title: 'Элемент',
       type: 'number',
+
+    },
+    {
+      key: 'route_id',
+      title: 'Маршрут',
+      type: 'number',
+      required: true,
     },
   ],
   dependencies: {

@@ -122,6 +122,24 @@ export default class MissionsActions extends Actions {
 
     if (typeof payload.assign_to_waybill === 'undefined') payload.assign_to_waybill = 'not_assign';
     if (!defaultAssign) payload.assign_to_waybill = 'not_assign';
+
+    if (mission.is_column) {
+      return MissionService.path('column/').post(
+        {
+          missions: payload.car_id.map((car_id, index) => ({
+            ...payload,
+            car_id,
+            norm_id: payload.norm_id[index],
+            type_id: payload.type_id[index],
+            assign_to_waybill: payload.assign_to_waybill[index],
+            is_cleaning_norm: payload.is_cleaning_norm[index],
+          })),
+        },
+        false,
+        'json',
+      );
+    }
+
     return MissionService.post(payload, false, 'json');
   }
 

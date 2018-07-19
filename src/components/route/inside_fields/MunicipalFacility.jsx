@@ -12,7 +12,6 @@ class MunicipalFacility extends MunicipalFacilityMission {
       technical_operation_id: new_toi,
       value: new_v,
       error: new_err,
-      norm_id,
     } = this.getStateByProps(props);
 
     const {

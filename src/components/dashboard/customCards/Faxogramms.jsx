@@ -85,7 +85,7 @@ export default class Faxogramms extends DashboardCardMedium {
             </DropdownButton>
           </div>
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
-          {canCreateMission ? <Link to={`/orders/${data.id}?dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
+          {canCreateMission ? <Link to={`/orders?idOrder=${data.id}&dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
         </Div>
         <PDFViewModal
           blob={this.state.blob}

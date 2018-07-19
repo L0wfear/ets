@@ -176,6 +176,7 @@ export default class FormWrap extends React.Component {
             canSave: true,
           });
           console.warn(e);
+          throw e;
           return;
         }
       } else {

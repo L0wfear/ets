@@ -1,14 +1,15 @@
-var path = require('path');
-var webpack = require('webpack');
-var notifyStats = require('./utils/notifyStats');
-var CleanPlugin = require('clean-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var versionUtils = require('./utils/version');
-
-var stand = process.env.STAND || 'production';
-var useSourceMaps = process.env.USE_SOURCE_MAPS || false;
+const path = require('path');
+const webpack = require('webpack');
+const notifyStats = require('./utils/notifyStats');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const versionUtils = require('./utils/version');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const stand = process.env.STAND || 'production';
+const useSourceMaps = process.env.USE_SOURCE_MAPS || false;
 
 module.exports = {
   devtool: 'source-map',
@@ -38,7 +39,13 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           'babel-loader',
-          'ts-loader',
+          {
+            loader: 'ts-loader',
+            options: {
+              // disable type checker - we will use it in fork plugin
+              transpileOnly: true
+            }
+          },
         ],
       },
       { 
@@ -131,6 +138,7 @@ module.exports = {
     extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new CleanPlugin(['dist'], {
       root: path.resolve(__dirname, '..')
     }),
@@ -151,15 +159,8 @@ module.exports = {
         VERSION: JSON.stringify(versionUtils.version)
       }
     }),
-    // optimizations
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        pure_funcs: ['console.log'],
-        warnings: false,
-      },
+    new UglifyJSPlugin({
       sourceMap: useSourceMaps,
-      mangle: false
     }),
     new CopyWebpackPlugin([
       {

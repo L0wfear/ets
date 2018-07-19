@@ -1,6 +1,7 @@
 import ETS_API_FACTORY from 'api/EtsAPIServiceFactory';
 
 export const MissionService = ETS_API_FACTORY.createApiServiceAdapter('mission', {});
+export const ColumnMissionService = ETS_API_FACTORY.createApiServiceAdapter('mission/column', {});
 export const MissionArchiveService = ETS_API_FACTORY.createApiServiceAdapter('mission_archive', {});
 
 export const MissionReassignationService = ETS_API_FACTORY.createApiServiceAdapter('mission_reassignation', {});

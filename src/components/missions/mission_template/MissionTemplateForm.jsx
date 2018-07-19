@@ -3,13 +3,12 @@ import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import {
   uniqBy,
-  isEmpty as lodashIsEmpty,
 } from 'lodash';
 
 import { checkRouteByNew } from 'components/missions/utils/utils.ts';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -145,7 +144,7 @@ class MissionTemplateForm extends MissionForm {
           </Row>
           <Row>
             <Col md={6}>
-              <Field
+              <ExtField
                 type="select"
                 label="Транспортное средство"
                 error={errors.car_id}

@@ -157,11 +157,14 @@ class MunicipalFacility extends React.Component {
   };
 
   handleChange = (value, option) => {
-    this.props.handleChange('municipal_facility_id', value);
-    this.props.handleChange('municipal_facility_name', '');
+    console.log(value, this.state.value)
+    if (value !== this.state.value) {
+      this.props.handleChange('municipal_facility_id', value);
+      this.props.handleChange('municipal_facility_name', '');
 
-    if (value) {
-      this.props.getDataByNormatives(option.normatives);
+      if (value) {
+        this.props.getDataByNormatives(option.normatives);
+      }
     }
   }
 

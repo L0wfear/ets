@@ -89,6 +89,7 @@ export function tableMeta(props: any = {}): IDataTableSchema {
           type: 'multiselect',
           labelFunction: d => d ? 'Да' : 'Нет',
         },
+        cssClassName: 'width80',
       },
       {
         name: 'company_structure_name',

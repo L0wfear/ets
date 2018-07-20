@@ -16,11 +16,8 @@ export default class UserNotificationActions extends Actions {
     return UserAdmNotificationService.get({ is_read: false });
   }
 
-  markAsReadOffline(readData = []) {
-    return Promise.resolve(readData);
-  }
-
   markAsRead(readData = []) {
+    debugger;
     const payload = {
       common: {
         read_ids: [],
@@ -33,6 +30,9 @@ export default class UserNotificationActions extends Actions {
     readData.forEach(({ id, front_type }) =>
       payload[front_type] && payload[front_type].read_ids.push(id)
     );
+
+    console.log(payload, readData)
+    debugger;
 
     return Promise.all([
       (payload.common.read_ids.length ? UserNotificationService.put({ ...payload.common }, false, 'json') : Promise.reject())

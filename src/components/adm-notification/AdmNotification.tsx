@@ -73,7 +73,7 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
   openModalForm = ({ uid }) => {
     const notification = this.props.notReadAdmNotificationList.find(({ id }) => id === uid);
     
-    this.context.flux.getActions('userNotifications').markAsReadOffline([{ id: uid, front_type: 'adm' }])
+    this.context.flux.getActions('userNotifications').markAsRead([{ id: uid, front_type: 'adm' }])
     // из-за фичи formWrap
     this.setState({
       showForm: false,

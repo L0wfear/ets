@@ -66,8 +66,7 @@ export default class UserNotificationStore extends Store {
     this.register(userNotificationActions.getNotifications, this.handleGetNotifications);
     this.register(userNotificationActions.getAdmNotifications, this.handleGetAdmNotifications);
     this.register(userNotificationActions.getNotReadAdmNotifications, this.handleGetNotReadAdmNotifications);
-    this.register(userNotificationActions.markAsReadOffline, this.handleMarkAsReadOffline);
-    this.register(userNotificationActions.markAsRead, this.handleMarkAsReadOffline);
+    this.register(userNotificationActions.markAsRead, this.handleMarkAsRead);
     this.register(userNotificationActions.markAllAsRead, this.handleMarkAllAsRead);
 
     this.state = {
@@ -125,7 +124,7 @@ export default class UserNotificationStore extends Store {
     });
   }
 
-  handleMarkAsReadOffline(readData) {
+  handleMarkAsRead(readData) {
     const date = new Date();
 
     let {

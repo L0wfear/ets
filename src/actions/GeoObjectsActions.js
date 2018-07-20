@@ -60,6 +60,15 @@ export default class GeoObjectsActions extends Actions {
     return type;
   }
 
+  getGeozoneMunicipalFacility(municipal_facility_id, object_type_id) {
+    const payload = {
+      municipal_facility_id,
+      object_type_id,
+    };
+
+    return services.GeozoneMunicipalFacilityService.get(payload).then(({ result }) => result);
+  }
+
   async getGeozoneByTypeWithGeometryLeak(type, formState, serviceName = 'FuelEvent') {
     const payload = {
       ...formState,

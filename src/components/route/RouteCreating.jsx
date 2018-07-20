@@ -71,6 +71,11 @@ class RouteCreating extends React.Component {
         return index > -1;
       });
     }
+    Object.entries(polys).forEach(([id, poly_data]) => {
+      if (!v.includes(id) && poly_data.state === polyState.SELECTABLE && poly_data.old) {
+        delete polys[id];
+      }
+    });
     this.props.onChange('polys', polys);
     this.props.onChange('object_list', object_list);
   }
@@ -134,6 +139,11 @@ class RouteCreating extends React.Component {
       object_list = [];
       _.forEach(polys, e => (e.state = polyState.SELECTABLE));
     }
+    Object.entries(polys).forEach(([id, poly_data]) => {
+      if (!v.includes(id) && poly_data.state === polyState.SELECTABLE && poly_data.old) {
+        delete polys[id];
+      }
+    });
 
     this.props.onChange('polys', polys);
     this.props.onChange('object_list', object_list);
@@ -155,6 +165,9 @@ class RouteCreating extends React.Component {
     const polys = _.cloneDeep(polysOld);
 
     polys[id].state = nextState;
+    if (polys[id].state === 1 && polys[id].old) {
+      delete polys[id];
+    }
 
     this.props.onChange('polys', polys);
     this.setODH(id, name, nextState);
@@ -208,8 +221,10 @@ class RouteCreating extends React.Component {
     const list = object_list.filter(o => o.type) || [];
     const polysRT = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
     const fail_list = _.map(polysRT, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
-    const ODHS = _.map(this.props.odhPolys, (v, k) => ({ label: v.name, value: k }));
-    const DTS = _.map(this.props.dtPolys, (v, k) => ({ label: v.name, value: k }));
+    const POLYS_OPTIONS = Object.entries(polys).reduce((newArr, [id, { name }]) => [
+      ...newArr,
+      { value: id, label: name },
+    ], []);
 
     return (
       <div>
@@ -236,7 +251,7 @@ class RouteCreating extends React.Component {
                 <div className="form-group">
                   <div className="checkbox">
                     <label className="">
-                      <input type="checkbox" label="Выбрать все" disabled={!ODHS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', ODHS.map(o => o.value).join(','))} />
+                      <input type="checkbox" label="Выбрать все" disabled={!POLYS_OPTIONS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', POLYS_OPTIONS.map(o => o.value).join(','))} />
                       <span>Выбрать все</span>
                     </label>
                   </div>
@@ -246,7 +261,7 @@ class RouteCreating extends React.Component {
                   type="select"
                   label="Список выбранных ОДХ"
                   multi
-                  options={ODHS}
+                  options={POLYS_OPTIONS}
                   value={object_list.map(o => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'odh')}
                   error={errors.object_list}
@@ -256,7 +271,7 @@ class RouteCreating extends React.Component {
                 <div className="form-group">
                   <div className="checkbox">
                     <label htmlFor="route-select-all">
-                      <input id="route-select-all" type="checkbox" disabled={!DTS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', DTS.map(o => o.value).join(','))} />
+                      <input id="route-select-all" type="checkbox" disabled={!POLYS_OPTIONS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', POLYS_OPTIONS.map(o => o.value).join(','))} />
                       <span>Выбрать все</span>
                     </label>
                   </div>
@@ -266,7 +281,7 @@ class RouteCreating extends React.Component {
                   type="select"
                   label="Список выбранных ДТ"
                   multi
-                  options={DTS}
+                  options={POLYS_OPTIONS}
                   value={object_list.map(o => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
                   error={errors.object_list}

@@ -1,8 +1,11 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 const getTableMeta = (props) => {
   const CAR_TYPES = props.typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
+  const SENSORS_TYPE_OPTIONS = props.sensorTypesList.map(defaultSelectListMapper);
+
   const OBJECT = [
     {
       value: 1,
@@ -99,6 +102,15 @@ const getTableMeta = (props) => {
           options: CAR_TYPES,
         },
       },
+      {
+        name: 'sensor_type_ids',
+        displayName: 'Типы навесного оборудования',
+        type: 'array',
+        filter: {
+          type: 'multiselect',
+          options: SENSORS_TYPE_OPTIONS,
+        },
+      },
     ],
   };
 
@@ -117,6 +129,7 @@ export default (props) => {
     },
     needs_brigade: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
     use_in_reports: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+    sensor_type_ids: ({ data }) => <span>{data.map(id => (props.sensorTypesList.find(({ id: id_s }) => id_s === id) || { name: '' }).name).join(',')}</span>,
   };
 
   return (<Table

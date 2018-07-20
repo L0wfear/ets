@@ -10,7 +10,6 @@ export default class FuelRateForm extends Form {
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations({ is_active: true });
-    flux.getActions('objects').getSpecialModels();
     this.context.flux.getActions('objects').getModels(this.props.formState.car_special_model_id);
   }
 
@@ -43,9 +42,10 @@ export default class FuelRateForm extends Form {
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.full_name }));
     const SPECIALMODELS = specialModelsList.map(m => ({ value: m.id, label: m.name }));
     const OPERATIONS = operations
-      .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}` }))
+      .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}`, measure_unit_name: op.measure_unit_name }))
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
-    const MEASUREUNITS = this.props.measureUnitList.map(({ id, name }) => ({ value: id, label: name }));
+
+    const measure_unit_name = (OPERATIONS.find(({ value }) => value === state.operation_id) || { measure_unit_name: '-' }).measure_unit_name || '-';
 
     return (
       <Modal id="modal-fuel-rate" show={this.props.show} onHide={this.props.onHide} backdrop="static">
@@ -81,14 +81,10 @@ export default class FuelRateForm extends Form {
               />
 
               <ExtField
-                type={'select'}
+                type="string"
                 label="Единица измерения"
-                value={state.measure_unit_id}
-                error={errors.measure_unit_id}
-                options={MEASUREUNITS}
-                onChange={this.handleChange}
-                boundKeys={['measure_unit_id']}
-                disabled={!isPermitted}
+                value={measure_unit_name}
+                disabled
               />
 
               <Field

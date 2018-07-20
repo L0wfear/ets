@@ -41,6 +41,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         const outerPayload = {
           start_date: date_create,
           end_date: date_create,
+          for: 'duty-mission',
         };
 
         if (getNormIdFromState) {

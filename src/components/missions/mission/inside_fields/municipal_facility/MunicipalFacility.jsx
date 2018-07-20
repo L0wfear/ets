@@ -80,6 +80,7 @@ class MunicipalFacility extends React.Component {
           start_date: new_ds,
           end_date: new_ds,
           kind_task_ids,
+          for: 'mission',
         };
 
         if (getNormIdFromState) {

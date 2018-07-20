@@ -99,18 +99,6 @@ const notificationComponents = {
 
 @connectToStores(['userNotifications'])
 export default class UserNotificationForm extends Form {
-  componentDidMount() {
-    const state = this.props.formState;
-
-    if (!state.is_read) {
-      this.context.flux.getActions('userNotifications').markAsRead([
-        {
-          id: [state.id],
-          front_type: 'common',
-        },
-      ]);
-    }
-  }
   handleClick = (pathComponent, query) => {
     this.props.history.push(`/${pathComponent}?${queryString.stringify(query)}`);
   }

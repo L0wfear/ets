@@ -167,7 +167,7 @@ export default class Taxes extends React.Component {
       .find(({ value: op_value }) => op_value === Number(value)) || {}).measure_unit_name;
     tableData[index].is_excluding_mileage = (this.state.operations
       .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
-    debugger;
+
     this.setState({ tableData });
     this.props.onChange(tableData);
   }

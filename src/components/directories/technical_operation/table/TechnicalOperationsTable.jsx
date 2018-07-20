@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 
 const OBJECT = [
@@ -24,6 +25,7 @@ const getTableMeta = ({
   ELEMENTS = [],
   KIND_TASK_NAMES = [],
   CAR_TYPES = [],
+  SENSORS_TYPE_OPTIONS = [],
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -136,24 +138,36 @@ const getTableMeta = ({
           options: CAR_TYPES,
         },
       },
+      {
+        name: 'sensor_type_ids',
+        displayName: 'Типы навесного оборудования',
+        type: 'array',
+        filter: {
+          type: 'multiselect',
+          options: SENSORS_TYPE_OPTIONS,
+        },
+      },
     ],
   };
 
   return tableMeta;
 };
 
-const renderers = {
-  use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
-  kind_task_names: ({ data }) => <div>{data.join(',\n')}</div>,
-};
+export default props => {
+  const renderers = {
+    use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+    kind_task_names: ({ data }) => <div>{data.join(',\n')}</div>,
+    sensor_type_ids: ({ data }) => <span>{data.map(id => (props.sensorTypesList.find(({ id: id_s }) => id_s === id) || { name: '' }).name).join(',')}</span>,
+  };
 
-export default props => (
-  <Table
-    title="Реестр технологических операций"
-    results={props.data}
-    tableMeta={getTableMeta(props)}
-    renderers={renderers}
-    initialSort={'id'}
-    {...props}
-  />
-);
+  return (
+    <Table
+      title="Реестр технологических операций"
+      results={props.data}
+      tableMeta={getTableMeta(props)}
+      renderers={renderers}
+      initialSort={'id'}
+      {...props}
+    />
+  );
+};

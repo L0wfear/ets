@@ -92,7 +92,6 @@ class RouteFormWrap extends FormWrap {
               };
             }
           });
-          console.log(rows.length)
 
           this.handleFormStateChange('polys', polys);
         });

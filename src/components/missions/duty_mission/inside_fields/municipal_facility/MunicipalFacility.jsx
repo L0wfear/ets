@@ -45,6 +45,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
           start_date: new_pds,
           end_date: new_pds,
           kind_task_ids,
+          for: 'duty-mission',
         };
 
         if (getNormIdFromState) {

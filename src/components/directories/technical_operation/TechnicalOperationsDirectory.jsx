@@ -5,7 +5,7 @@ import TechnicalOperationsTable from 'components/directories/technical_operation
 import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap.jsx';
 import permissions from 'components/directories/technical_operation/config-data/permissions';
 import { makeOptions } from 'components/ui/input/makeOptions';
-import { customOptionsTableFromMainResult, customOptionsTableFromTypes } from 'components/directories/technical_operation/table/helpData';
+import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOptionsTableFromSensorTypes } from 'components/directories/technical_operation/table/helpData';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'cleaning/norm_registry' })
@@ -41,6 +41,16 @@ export default class TechOperationsDirectory extends ElementsList {
       this.setState({ ...options });
       return ans;
     });
+
+    flux.getActions('objects').getSensorTypes().then(ans => {
+      const options = makeOptions({
+        data: ans.result,
+        options: customOptionsTableFromSensorTypes,
+      });
+
+      this.setState({ ...options });
+      return ans;
+    });
   }
 
   /**
@@ -51,11 +61,13 @@ export default class TechOperationsDirectory extends ElementsList {
       ELEMENTS = [],
       KIND_TASK_NAMES = [],
       CAR_TYPES = [],
+      SENSORS_TYPE_OPTIONS = [],
     } = this.state;
     return {
       ELEMENTS,
       KIND_TASK_NAMES,
       CAR_TYPES,
+      SENSORS_TYPE_OPTIONS,
     };
   }
 }

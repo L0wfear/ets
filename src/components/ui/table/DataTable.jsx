@@ -490,6 +490,7 @@ export default class DataTable extends React.Component {
         }
 
         const IS_ARRAY = Array.isArray(value);
+    
         if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
           const { filter } = cols.find(({ name }) => name === key);
           if (filter && filter.type === 'datetime' && diffDates(obj[key], value) !== 0) {
@@ -519,7 +520,7 @@ export default class DataTable extends React.Component {
               if (!obj[key].some(el => value.every(val => el.toString().includes(val)))) {
                 isValid = false;
               }
-            } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
+            } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
               isValid = false;
             }
           } else if (typeof obj[key] === 'boolean') {

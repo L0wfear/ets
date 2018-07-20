@@ -45,6 +45,15 @@ export const getTableMeta = ({
         cssClassName: 'width60',
       },
       {
+        name: 'column_id',
+        displayName: 'Номер колонны',
+        type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
+        cssClassName: 'width60',
+      },
+      {
         name: 'current_percentage',
         displayName: 'Процент выполнения задания (%)',
         type: 'number',
@@ -198,6 +207,7 @@ export default (props) => {
   const renderers = {
     current_percentage: ({ data }) => <span>{data !== null ? Math.floor(data) : '-'}</span>,
     rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
+    column_id: ({ data }) => <span>{data || '-'}</span>,
     mission_source_id: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,

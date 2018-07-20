@@ -56,6 +56,7 @@ export default class Taxes extends React.Component {
       return 0;
     }
     const result = _.reduce(data, (res, cur) => {
+      console.log('----', cur);
       if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
         res += parseFloat(cur.FACT_VALUE);
       }
@@ -135,7 +136,7 @@ export default class Taxes extends React.Component {
   componentWillReceiveProps(props) {
     const { fuelRates, taxes = this.state.tableData } = props;
     let { operations } = props;
-    operations = operations.map(({ id, name, measure_unit_name }) => ({ value: id, label: name, measure_unit_name }));
+    operations = operations.map(({ id, name, measure_unit_name, is_excluding_mileage }) => ({ value: id, label: name, measure_unit_name, is_excluding_mileage }));
     taxes.map(tax => ({ ...tax, RESULT: Taxes.getResult(tax) }));
     this.setState({ operations, fuelRates, tableData: taxes });
   }
@@ -166,7 +167,7 @@ export default class Taxes extends React.Component {
       .find(({ value: op_value }) => op_value === Number(value)) || {}).measure_unit_name;
     tableData[index].is_excluding_mileage = (this.state.operations
       .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
-      
+    debugger;
     this.setState({ tableData });
     this.props.onChange(tableData);
   }

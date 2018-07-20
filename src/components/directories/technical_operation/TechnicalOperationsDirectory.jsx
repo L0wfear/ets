@@ -19,6 +19,6 @@ export default class TechOperationsDirectory extends ElementsList {
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperations(true);
     flux.getActions('objects').getTypes();
+    flux.getActions('objects').getSensorTypes();
   }
-
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -6,6 +6,7 @@ import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 const seasonsList = [{ id: 1, name: 'Лето' }, { id: 2, name: 'Зима' }, { id: 3, name: 'Всесезон' }];
 
@@ -26,6 +27,10 @@ export default class TechnicalOperationForm extends Form {
     });
     this.props.handleFormChange('objects', objects);
   }
+  handleChangeSensorTypeIds = (v) => {
+    const sensor_type_ids = v.split(',').map(d => Number(d));
+    this.props.handleFormChange('sensor_type_ids', v ? sensor_type_ids : []);
+  }
 
   componentDidMount() {
     const { flux } = this.context;
@@ -33,13 +38,15 @@ export default class TechnicalOperationForm extends Form {
     flux.getActions('objects').getTypes();
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('technicalOperation').getTechnicalOperationsTypes();
+    flux.getActions('objects').getSensorTypes();
   }
 
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const title = 'Тех. операция';
-    const { workKindsList = [], typesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], isPermitted = false } = this.props;
+    const { workKindsList = [], typesList = [], technicalOperationsObjectsList = [], technicalOperationsTypesList = [], isPermitted: isPermittedOuter = false } = this.props;
+    const isPermitted = false;
 
     const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
     const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));
@@ -47,6 +54,7 @@ export default class TechnicalOperationForm extends Form {
     const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(({ id, full_name }) => ({ value: id, label: full_name }));
     const NEEDS_BRIGADE_OPTIONS = [{ value: 1, label: 'Да' }, { value: 0, label: 'Нет' }];
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
+    const SENSORS_TYPE_OPTIONS = this.props.sensorTypesList.map(defaultSelectListMapper);
 
     return (
       <Modal {...this.props} id="modal-technical-operation" bsSize="large" backdrop="static">
@@ -146,13 +154,24 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
+            <Col md={3} className="vehicle-types-container">
+              <Field
+                type="select"
+                label="Типы навесного оборудования"
+                multi
+                value={state.sensor_type_ids.join(',')}
+                options={SENSORS_TYPE_OPTIONS}
+                onChange={this.handleChangeSensorTypeIds}
+                disabled={!isPermittedOuter}
+              />
+            </Col>
           </Row>
 
         </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={!isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+            <Button disabled={!isPermittedOuter} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
           </Div>
         </Modal.Footer>
       </Modal>

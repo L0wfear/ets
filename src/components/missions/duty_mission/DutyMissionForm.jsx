@@ -256,7 +256,6 @@ export class DutyMissionForm extends Form {
   }
 
   getDataByNormatives = async (normatives) => {
-    this.handleChange('norm_id', null);
     const norm_ids = normatives.map(({ id }) => id).join(',');
     const { kind_task_ids } = this.state;
     this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids, kind_task_ids: this.state.kind_task_ids })

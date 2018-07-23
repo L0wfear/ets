@@ -122,7 +122,8 @@ export default class TechnicalOperationsActions extends Actions {
     delete payload.check_type_name;
     delete payload.object_name;
     delete payload.object_text;
-    return TechnicalOperationRegistryService.put(payload, getTechnicalOperations, 'json');
+
+    return Cleaning.path('norm_registry').path(data.id).put(payload, getTechnicalOperationsRegistry, 'json');
   }
 
 }

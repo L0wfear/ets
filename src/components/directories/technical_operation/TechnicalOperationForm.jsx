@@ -54,8 +54,8 @@ export default class TechnicalOperationForm extends Form {
       typesList = [],
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
-      isPermitted: isPermittedOuter = false,
     } = this.props;
+    const isPermittedOuter = true;
     const isPermitted = false;
 
     const SEASONS = seasonsList.map(defaultSelectListMapper);

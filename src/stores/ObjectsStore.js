@@ -59,7 +59,7 @@ export default class ObjectsStore extends Store {
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.getTechnicalOperationsRegistry, this.handleGetTechOperationsRegistry);
     this.register(technicalOperationsActions.getTechnicalOperationRelations, this.handleGetTechnicalOperationRelations);
-    this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperations);
+    this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperationsRegistry);
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
     this.register(technicalOperationsActions.getTechnicalOperationsTypes, this.handleGetTechnicalOperationsTypes);
 

@@ -44,6 +44,7 @@ export default (props) => {
   const renderers = {
     equipment: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
     is_excluding_mileage: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
+    measure_unit_name: ({ data }) => <div>{data || '-'}</div>,
   };
 
   return (

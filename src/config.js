@@ -11,7 +11,7 @@ const WS_PROTO = 'wss:';
 const DOC_URL = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/docs/',
-    stage: 'https://ets.mos.ru/ets-stage2/docs/',
+    stage: 'https://ets-test.mos.ru/ets-stage2/docs/',
     prod: 'http://ets2.mos.ru/docs/',
   },
   origin: {
@@ -36,7 +36,7 @@ const config = {
 
 const STANDS = {
   develop: {
-    stage: 'https://ets.mos.ru/ets-stage2/services',
+    stage: 'https://ets-test.mos.ru/ets-stage2/services',
     prod: 'https://ets2.mos.ru/services',
     dev: 'http://dev2-ets.gost-group.com/services',
   },

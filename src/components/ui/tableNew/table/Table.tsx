@@ -88,7 +88,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     const changesState: any = {
       sortField,
       sortAscending: this.state.sortField === sortField ? !this.state.sortAscending : false,
-      data: this.state.showData,
+      data: this.state.data,
     };
 
     changesState.data = makeData({

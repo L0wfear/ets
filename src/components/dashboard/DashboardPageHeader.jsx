@@ -5,52 +5,79 @@ import { Row, Col } from 'react-bootstrap';
 import { FluxContext } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
 
+let error = false;
+
 @FluxContext
 export default class DashboardPageHeader extends React.Component {
 
   state = {
-    time: null,
-    date: null,
+    time: '--:--:--',
+    date: '-- -- ----',
+    summ: -1,
+    count: 0,
+    lastDate: new Date(),
   }
 
   componentDidMount() {
-    moment.locale('ru');
-    this.context.flux.getActions('dashboard').getMoscowTime().then(({ date }) => {
+    this.getTime();
+  }
+  componentWillUnmount() {
+    this.resetInterval();
+  }
+
+  getTime() {
+    this.context.flux.getActions('dashboard').getMoscowTime().then(({ timestamp }) => {
       this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
 
-      const backDate = moment(date);
+      const backDate = moment(timestamp * 1000).utcOffset(3);
 
       this.setState({
-        time: backDate.utcOffset(180).format('HH:mm:ss'),
+        time: backDate.format('HH:mm:ss'),
         date: backDate.format('DD MMMM YYYY'),
-        prevDate: date,
-        backDate: date,
+        prevDate: backDate,
       });
-    }).catch(() => {
-      this.timeInterval = setInterval(this.updateClock.bind(this), 1000);
-
-      const date = moment().utcOffset(180);
-
-      this.setState({
-        time: date.format('HH:mm:ss'),
-        date: date.format('DD MMMM YYYY'),
-        prevDate: date,
-        backDate: null,
-      });
+    }).catch((e) => {
+      console.error(e);
+      if (!error) {
+        error = true;
+        this.componentDidMount();
+      } else {
+        this.setState({
+          time: '--:--:--',
+          date: '-- -- ----',
+        });
+      }
     });
   }
 
-  componentWillUnmount() {
+  resetInterval() {
     clearInterval(this.timeInterval);
-    clearInterval(this.dateInterval);
   }
 
   updateClock() {
-    const prevDate = moment(this.state.prevDate).add(1, 'seconds').utcOffset(180);
+    let { summ, count, lastDate } = this.state;
+
+    const prevDate = moment(this.state.prevDate).add(1, 'seconds').utcOffset(3);
     const time = prevDate.format('HH:mm:ss');
     const date = prevDate.format('DD MMMM YYYY');
 
-    this.setState({ prevDate, time, date });
+    if (summ === -1) {
+      summ = 0;
+    } else {
+      count += 1;
+      summ += (new Date()) - lastDate;
+    }
+
+    if (Math.abs((summ / 1000) - count) > 0.1) {
+      this.resetInterval();
+      this.getTime();
+
+      summ = -1;
+      count = 0;
+    }
+
+    lastDate = new Date();
+    this.setState({ prevDate, time, date, lastDate, summ, count });
   }
   render() {
     return (

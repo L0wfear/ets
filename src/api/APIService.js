@@ -1,9 +1,17 @@
 import { getInfoNotification, getWarningNotification, getErrorNotificationFromBack as getErrorNotification } from 'utils/notifications';
 import RequestWarningError from 'utils/errors/RequestWarningError';
+import Raven from 'raven-js';
 import urljoin from 'url-join';
 import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter.js';
 import { getBlob, postBlob } from './adapterBlob.js';
 import { mocks } from './mocks';
+
+// временная ловушка
+const checkUrlWithPayload = (url, payload) => {
+  if (url.search(/\/services\/duty_mission$/) !== -1 && Object.keys(payload).length === 0) {
+    Raven.captureException(new Error('no payload in duty_mission GET'));
+  }
+};
 
 export default class APIService {
 
@@ -89,6 +97,8 @@ export default class APIService {
     this.log('GET');
     const url = this.url;
     this.resetPath();
+
+    checkUrlWithPayload(url, payload);
     return getJSON(url, payload).then(r => this.processResponse(r, false));
   }
 

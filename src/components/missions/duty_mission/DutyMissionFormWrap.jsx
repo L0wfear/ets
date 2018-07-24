@@ -23,7 +23,7 @@ class DutyMissionFormWrap extends FormWrap {
     let response;
 
     if (mission.id) {
-      response = await this.context.flux.getActions('missions').updateDutyMission(mission, false);
+      response = await this.context.flux.getActions('missions').updateDutyMission(mission);
     } else {
       response = await this.context.flux.getActions('missions').createDutyMission(mission);
     }
@@ -58,7 +58,7 @@ class DutyMissionFormWrap extends FormWrap {
   updateAction(formState) {
     return new Promise(async (resolve) => {
       try {
-        await this.context.flux.getActions('missions').updateDutyMission(formState, false);
+        await this.context.flux.getActions('missions').updateDutyMission(formState);
         await this.props.refreshTableList();
         resolve();
       } catch (error) {

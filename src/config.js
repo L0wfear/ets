@@ -42,7 +42,7 @@ const STANDS = {
   },
   origin: {
     stage: `${PROTO}//${HOST}${PATHNAME}services`,
-    prod: `${PROTO}//${HOST}${PATHNAME}services`,
+    prod: `${PROTO}//${HOST}${PATHNAME}ets-study/services`,
     dev: 'http://dev-ets.gost-group.com/services',
   },
 };
@@ -60,5 +60,7 @@ try {
 } catch (e) {
   console.log(e); // eslint-disable-line
 }
+
+global.showConfigs = () => console.log(configs);
 
 export default configs;

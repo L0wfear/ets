@@ -99,7 +99,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   completeMission() {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
-    this.context.flux.getActions('missions').updateDutyMission(mission, false).then(() => {
+    this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
       this.refreshList(this.state);
     });
   }
@@ -110,7 +110,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       const mission = _.cloneDeep(this.state.selectedElement);
       mission.status = 'fail';
       mission.comment = reason;
-      this.context.flux.getActions('missions').updateDutyMission(mission, false).then(() => {
+      this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
         this.refreshList(this.state);
       });
     }
@@ -148,7 +148,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         if (mission.status === 'assigned') {
           const updatedMission = _.cloneDeep(mission);
           updatedMission.status = 'complete';
-          return this.context.flux.getActions('missions').updateDutyMission(updatedMission, false);
+          return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
         }
         return Promise.reject();
       });
@@ -174,7 +174,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
             const updatedMission = _.cloneDeep(mission);
             updatedMission.status = 'fail';
             updatedMission.comment = reason;
-            return this.context.flux.getActions('missions').updateDutyMission(updatedMission, false);
+            return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
           }
         }
         return Promise.reject();

@@ -152,11 +152,12 @@ class MarkersLayer extends CanvasLayer {
     const [
       objName,
       missions,
-      {
-        sensorsVisibility,
-        sensorsString,
-      },
+      sensorData,
     ] = await Promise.all(querys);
+    const {
+      sensorsVisibility,
+      sensorsString,
+    } = sensorData as any;
 
     this.showPopup({
       coords: [...coords].reverse(),

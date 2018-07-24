@@ -99,7 +99,7 @@ export default class APIService {
     this.resetPath();
 
     checkUrlWithPayload(url, payload);
-    getJSON(url, payload).then(r => this.processResponse(r, false));
+    return getJSON(url, payload).then(r => this.processResponse(r, false));
   }
 
   getBlob(payload = {}) {

@@ -154,6 +154,10 @@ class MarkersLayer extends CanvasLayer {
       missions,
       sensorData,
     ] = await Promise.all(querys);
+    const {
+      sensorsVisibility,
+      sensorsString,
+    } = sensorData as any;
 
     const {
       sensorsVisibility,

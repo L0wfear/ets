@@ -204,7 +204,7 @@ export default class Taxes extends React.Component {
     const finalResult = Taxes.calculateFinalResult(taxes);
     const finalFactValue = Taxes.calculateFinalFactValue(taxes);
     const finalFactValueEqualsBaseValue = parseFloat(baseFactValue).toFixed(3) === parseFloat(finalFactValue).toFixed(3);
-    const finalFactValueClassName = cx('taxes-result-label', {
+    const finalFactValueClassName = cx({
       'taxes-result-label-positive': finalFactValueEqualsBaseValue,
       'taxes-result-label-negative': !finalFactValueEqualsBaseValue,
     });
@@ -239,7 +239,10 @@ export default class Taxes extends React.Component {
         </Div>
         <Div className="taxes-result" hidden={!hasTaxes}>
           <div className="taxes-result-label">Итого</div>
-          <div className={finalFactValueClassName}>{finalFactValue}</div>
+          <div className="taxes-result-label">
+            <span className={finalFactValueClassName}>{finalFactValue}</span>
+            <span> км</span>
+          </div>
           <div className="taxes-result-value">{finalResult} л.</div>
         </Div>
       </Div>

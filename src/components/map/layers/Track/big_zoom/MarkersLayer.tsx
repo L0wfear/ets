@@ -159,11 +159,6 @@ class MarkersLayer extends CanvasLayer {
       sensorsString,
     } = sensorData as any;
 
-    const {
-      sensorsVisibility,
-      sensorsString,
-    } = sensorData as any;
-
     this.showPopup({
       coords: [...coords].reverse(),
       html: `

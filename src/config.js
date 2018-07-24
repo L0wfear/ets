@@ -61,4 +61,6 @@ try {
   console.log(e); // eslint-disable-line
 }
 
+global.showConfigs = () => console.log(configs);
+
 export default configs;

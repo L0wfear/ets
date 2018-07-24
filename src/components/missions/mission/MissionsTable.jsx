@@ -27,7 +27,7 @@ export const getTableMeta = ({
       },
       {
         name: 'number',
-        displayName: 'Номер',
+        displayName: 'Номер задания',
         type: 'number',
         filter: {
           type: 'advanced-string',

@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
-import UserNotificationFormWrap from 'components/notifications/UserNotificationFormWrap';
 
 type propsAdmNotification = {
-  notReadAdmNotificationList: any[];
+  admNotReadNotificationsList: any[];
 };
 
 type stateAdmNotification = {
-  idInterval: NodeJS.Timer | any;
-  showForm: boolean;
-  notification: any;
+  idInterval: any;
 };
 
 @connectToStores(['userNotifications'])
@@ -20,46 +17,29 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
 
     this.state = {
       idInterval: setInterval(() => this.checkNotReadAdmNotification(), 30 * 1000),
-      showForm: false,
-      notification: null,
     }
   }
-  componentDidMount() {
-    this.context.flux.getActions('userNotifications').getNotReadAdmNotifications();
-  }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextProps.notReadAdmNotificationList !== this.props.notReadAdmNotificationList
-      || nextState.showForm !== this.state.showForm
-      || nextState.notification !== this.state.notification
-    );
+  componentDidMount() {
+    this.checkNotReadAdmNotification();
   }
 
   componentWillReceiveProps(nextProps) {
-    const notificationId = (this.state.notification || {}).id;
-
-    this.props.notReadAdmNotificationList.filter(({ id }) => {
-      if (!nextProps.notReadAdmNotificationList.find(({ id: id_newList }) => id_newList === id) && notificationId !== id) {
-        global.NOTIFICATION_SYSTEM.removeNotification(id);
-      }
-    });
-
-    nextProps.notReadAdmNotificationList.forEach(notification => {
-      if (notification.id !== notificationId) {
-        global.NOTIFICATION_SYSTEM.notify({
-          title: notification.title,
-          message: notification.description,
-          level: notification.priority,
-          position: 'tr',
-          autoDismiss: 0,
-          onRemove: data => this.openModalForm(data),
-          uid: notification.id,
-        })
-      }
-    });
-
-    this.setState
+    nextProps.admNotReadNotificationsList.forEach(notify => (
+      global.NOTIFICATION_SYSTEM.notify({
+        title: notify.title,
+        message: notify.description,
+        level: 'info',
+        position: 'tr',
+        autoDismiss: 0,
+        uid: notify.id,
+        dismissible: 'none',
+        action: {
+          label: 'Прочитано',
+          callback: () => this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id),
+        }
+      })
+    ))
   }
 
   componentWillUnmount() {
@@ -67,43 +47,11 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
   }
 
   checkNotReadAdmNotification() {
-    this.context.flux.getActions('userNotifications').getNotReadAdmNotifications();
+    this.context.flux.getActions('userNotifications').getAdmNotReadNotifications();
   }
-
-  openModalForm = ({ uid }) => {
-    const notification = this.props.notReadAdmNotificationList.find(({ id }) => id === uid);
-    
-    this.context.flux.getActions('userNotifications').markAsRead([{ id: uid, front_type: 'adm' }])
-    // из-за фичи formWrap
-    this.setState({
-      showForm: false,
-    });
-    if (notification) {
-      setTimeout(() =>
-        this.setState({
-          showForm: true,
-          notification,
-        }),
-        0,
-      );
-    }
-  }
-
-  onFormHide = () => (
-    this.setState({
-      showForm: false,
-      notification: null,
-    })
-  )
 
   render() {
-    return (
-      <UserNotificationFormWrap
-        element={this.state.notification}
-        showForm={this.state.showForm}
-        onFormHide={this.onFormHide}
-      />
-    )
+    return <div></div>;
   }
 }
 

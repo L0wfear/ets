@@ -65,22 +65,29 @@ export default class UserNotificationStore extends Store {
 
     this.register(userNotificationActions.getNotifications, this.handleGetNotifications);
     this.register(userNotificationActions.getAdmNotifications, this.handleGetAdmNotifications);
-    this.register(userNotificationActions.getNotReadAdmNotifications, this.handleGetNotReadAdmNotifications);
     this.register(userNotificationActions.markAsRead, this.handleMarkAsRead);
-    this.register(userNotificationActions.markAllAsRead, this.handleMarkAllAsRead);
+    this.register(userNotificationActions.markAllAsRead, this.handleMarkAsRead);
 
+    this.register(userNotificationActions.getOrderNotReadNotifications, this.handleGetOrderNotReadNotifications);
+    this.register(userNotificationActions.setMakeReadOrderNotification, this.handlesetMakeReadOrderNotification);
+    
+    this.register(userNotificationActions.getAdmNotReadNotifications, this.handleGetAdmNotReadNotifications);
+    this.register(userNotificationActions.setMakeReadAdmNotification, this.handleSetMakeReadAdmNotification);
+    
+
+    this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
+    
     this.state = {
-      userNotificationList: [],
       commonNotificationList: [],
+      userNotificationList: [],
       admNotificationList: [],
 
       notReadAdmNotificationList: [],
 
-      dateUpdate: {
-        userNotificationList: null,
-        commonNotificationList: null,
-        notReadAdmNotificationList: null,
-      },
+      orderNotReadList: [],
+      admNotReadNotificationsList: [],
+
+      countNotRead: 0,
     };
   }
   handleGetNotifications({ result: { rows } }) {
@@ -92,10 +99,6 @@ export default class UserNotificationStore extends Store {
     this.setState({
       commonNotificationList,
       userNotificationList: getUserNotificationList(commonNotificationList, this.state.admNotificationList),
-      dateUpdate: {
-        ...this.state.dateUpdate,
-        commonNotificationList: new Date(),
-      },
     });
   }
   handleGetAdmNotifications({ result: { rows } }) {
@@ -107,96 +110,78 @@ export default class UserNotificationStore extends Store {
     this.setState({
       admNotificationList,
       userNotificationList: getUserNotificationList(admNotificationList, this.state.commonNotificationList),
-      dateUpdate: {
-        ...this.state.dateUpdate,
-        admNotificationList: new Date(),
-      },
     });
   }
 
-  handleGetNotReadAdmNotifications({ result: { rows: notReadAdmNotificationList } }) {
+  handleGetOrderNotReadNotifications({ result: { rows } }) {
+    const orderNotReadList = rows.sort((a, b) => a.id - b.id);
+
     this.setState({
-      notReadAdmNotificationList,
-      dateUpdate: {
-        ...this.state.dateUpdate,
-        notReadAdmNotificationList: new Date(),
-      },
+      orderNotReadList,
     });
   }
-
-  handleMarkAsRead(readData) {
-    const date = new Date();
-
-    let {
-      commonNotificationList: [...commonNotificationList],
-      admNotificationList: [...admNotificationList],
-
-      notReadAdmNotificationList: [...notReadAdmNotificationList],
-    } = this.state;
-    const { dateUpdate: { ...dateUpdate } } = this.state;
-
-    const needUpdate = {
-      commonNotificationList: false,
-      admNotificationList: false,
-      notReadAdmNotificationList: false,
-    };
-
-    if (dateUpdate.notReadAdmNotificationList && diffDates(date, dateUpdate.notReadAdmNotificationList) > 0) {
-      needUpdate.notReadAdmNotificationList = true;
-      dateUpdate.notReadAdmNotificationList = date;
-    }
-    if (dateUpdate.admNotificationList && diffDates(date, dateUpdate.admNotificationList) > 0) {
-      needUpdate.admNotificationList = true;
-      dateUpdate.admNotificationList = date;
-    }
-    if (dateUpdate.commonNotificationList && diffDates(date, dateUpdate.commonNotificationList) > 0) {
-      needUpdate.commonNotificationList = true;
-      dateUpdate.commonNotificationList = date;
-    }
-
-    readData.forEach(({ id, front_type }) => {
-      if (front_type === 'adm') {
-        if (needUpdate.notReadAdmNotificationList) {
-          notReadAdmNotificationList = notReadAdmNotificationList.filter(({ id: notReadId }) => notReadId !== id);
-        }
-        if (needUpdate.notReadAdmNotificationList) {
-          admNotificationList = admNotificationList.map(notification => ({
-            ...notification,
-            not_read: id === notification.id ? false : notification.not_read,
-          }));
-        }
-      } else if (front_type === 'common') {
-        if (needUpdate.notReadAdmNotificationList) {
-          commonNotificationList = commonNotificationList.map(notification => ({
-            ...notification,
-            not_read: id === notification.id ? false : notification.not_read,
-          }));
-        }
-      }
-    });
+  handlesetMakeReadOrderNotification(id) {
+    const orderNotReadList = this.state.orderNotReadList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
+    const commonNotificationList = this.state.commonNotificationList.map((common) => ({ ...common, is_read: common.id === id ? true : common.is_read }));
+    const userNotificationList = getUserNotificationList(commonNotificationList, this.state.admNotificationList);
 
     this.setState({
-      notReadAdmNotificationList,
-
-      admNotificationList,
+      orderNotReadList,
       commonNotificationList,
-      userNotificationList: getUserNotificationList(admNotificationList, commonNotificationList),
-      dateUpdate,
+      userNotificationList,
+      countNotRead: userNotificationList.filter(({ is_read }) => !is_read).length
+    });
+  }
+  handleGetAdmNotReadNotifications({ result: { rows } }) {
+    const admNotReadNotificationsList = rows.sort((a, b) => a.id - b.id);
+
+    this.setState({
+      admNotReadNotificationsList,
+    });
+  }
+  handleSetMakeReadAdmNotification(id) {
+    const orderNotReadList = this.state.orderNotReadList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
+    const admNotificationList = this.state.admNotificationList.map((common) => ({ ...common, is_read: common.id === id ? true : common.is_read }));
+    const userNotificationList = getUserNotificationList(admNotificationList, this.state.commonNotificationList);
+
+    this.setState({
+      orderNotReadList,
+      admNotificationList,
+      userNotificationList,
+      countNotRead: userNotificationList.filter(({ is_read }) => !is_read).length
     });
   }
 
-  handleMarkAllAsRead() {
-    const date = new Date();
-    const { dateUpdate } = this.state;
+  handleMarkAsRead([commonAns, admAns]) {
+    console.log(commonAns, admAns)
+    const { result: { rows: commonNotificationList = [], notUpdate: commonNotUpdate } } = commonAns;
+    const { result: { rows: admNotificationList = [], notUpdate: admNotUpdate } } = admAns;
 
-    if (dateUpdate.notReadAdmNotificationList && diffDates(date, dateUpdate.notReadAdmNotificationList) > 0) {
-      this.setState({
-        notReadAdmNotificationList: [],
-        dateUpdate: {
-          ...this.state.dateUpdate,
-          notReadAdmNotificationList: date,
-        },
-      });
+    const changedObj = {};
+    if (!commonNotUpdate) {
+      const { orderNotReadList } = this.state;
+
+      changedObj.commonNotificationList;
+      changedObj.orderNotReadList = this.state.orderNotReadList.filter(({ id, not_read }) => (
+        (commonNotificationList.find(common => common.id === id) || {}).not_read
+      ));
     }
+    if (!admNotUpdate) {
+      changedObj.admNotificationList;
+      changedObj.admNotReadNotificationsList = this.state.admNotReadNotificationsList.filter(({ id, not_read }) => (
+        (admNotificationList.find(common => common.id === id) || {}).not_read
+      ));
+    }
+
+    changedObj.userNotificationList = getUserNotificationList(changedObj.admNotificationList || this.state.admNotificationList, changedObj.commonNotificationList || this.state.commonNotificationList)
+    changedObj.countNotRead = changedObj.userNotificationList.filter(({ is_read }) => !is_read).length;
+
+    this.setState(changedObj);
+  }
+
+  handleGetUserNotificationInfo({ result: { rows: { not_read_num } } }) {
+    this.setState({
+      countNotRead: not_read_num,
+    });
   }
 }

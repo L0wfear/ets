@@ -36,6 +36,10 @@ try {
   VERSION_DESCRIPTION = '';
 }
 
+const PROTO = window.location.protocol;
+const HOST = window.location.host;
+const PATHNAME = window.location.pathname;
+
 const ROLES = {
   master: 'Мастер',
   dispatcher: 'Диспетчер',
@@ -180,7 +184,7 @@ export default class MainPage extends React.Component {
             <NavItem id="link-program-registry" permissions={[PERMISSIONS.repair.list]} active={path === '/program-registry'} href="#/program-registry">Планирование ремонтных работ</NavItem>
 
             <NavItem id="link-notification-registry" title="Уведомления пользователей" active={path === '/notification-registry'} href="#/notification-registry"><div style={{ fontSize: 18 }}><Glyphicon glyph="exclamation-sign" /></div></NavItem>
-            <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`http://213.79.88.5/admin`}><Glyphicon glyph="list-alt" /></NavItem>
+            <NavItem id="link-admin" hidden={isOkrug} permissions={[PERMISSIONS.administration]} title="Администрирование" href={`${PROTO}//${HOST}${PATHNAME}admin`}><Glyphicon glyph="list-alt" /></NavItem>
           </Nav>
           <Nav pullRight>
               <NavItemBackToGorod history={this.props.history} location={this.props.location} />

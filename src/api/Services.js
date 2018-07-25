@@ -2,10 +2,9 @@ import ApiServiceFactory from './ApiServiceFactory.js';
 import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';
-import { PROTO_FOR_ODS_MOS_RU } from '../config.js';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: `${PROTO_FOR_ODS_MOS_RU}//psd.mos.ru/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
+  apiUrl: `https://psd.mos.ru/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
 });
 
 export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info', {});

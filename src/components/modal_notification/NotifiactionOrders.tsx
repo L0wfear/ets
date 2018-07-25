@@ -6,8 +6,6 @@ import {
 
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { makeDate } from 'utils/dates';
-import * as orderNotifiyMp3 from 'assets/audio/orderNotifiy.mp3';
-import * as orderNotifiyOgg from 'assets/audio/orderNotifiy.ogg';
 
 type PropsNotifiactionOrders = {
   orderNotReadList: any[];
@@ -69,8 +67,6 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
           <Modal.Body>
             <label key="0">{description}</label>
             <audio autoPlay>
-              <source src={orderNotifiyMp3} type={'audio/mpeg; codecs="mp3"'} />
-              <source src={orderNotifiyOgg} type={'audio/mpeg; codecs="ogg"'} />
             </audio>
           </Modal.Body>
           <Modal.Footer>

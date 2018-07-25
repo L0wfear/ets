@@ -129,7 +129,7 @@ export default class UserNotificationStore extends Store {
       orderNotReadList,
       commonNotificationList,
       userNotificationList,
-      countNotRead: userNotificationList.filter(({ is_read }) => !is_read).length
+      countNotRead: this.state.countNotRead - 1,
     });
   }
   handleGetAdmNotReadNotifications({ result: { rows } }) {
@@ -148,7 +148,7 @@ export default class UserNotificationStore extends Store {
       orderNotReadList,
       admNotificationList,
       userNotificationList,
-      countNotRead: userNotificationList.filter(({ is_read }) => !is_read).length
+      countNotRead: this.state.countNotRead - 1,
     });
   }
 

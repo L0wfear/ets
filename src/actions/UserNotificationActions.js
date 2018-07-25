@@ -2,10 +2,29 @@ import { Actions } from 'flummox';
 
 import {
   UserNotificationService,
+  UserNotificationInfoService,
   UserAdmNotificationService,
 } from 'api/Services';
 
 export default class UserNotificationActions extends Actions {
+  getOrderNotReadNotifications() {
+    const payload = {
+      type_id: 6,
+      is_read: false,
+    };
+
+    return UserNotificationService.get(payload);
+  }
+  setMakeReadOrderNotification(id) {
+    return UserNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
+  }
+
+  getAdmNotReadNotifications() {
+    return UserAdmNotificationService.get({ is_read: false });
+  }
+  setMakeReadAdmNotification(id) {
+    return UserAdmNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
+  }
   getNotifications(payload = {}) {
     return UserNotificationService.get(payload);
   }
@@ -13,8 +32,8 @@ export default class UserNotificationActions extends Actions {
     return UserAdmNotificationService.get(payload);
   }
 
-  getAdmNotReadNotifications() {
-    return UserAdmNotificationService.get({ is_read: false });
+  getUserNotificationInfo() {
+    return UserNotificationInfoService.get();
   }
 
   markAsRead(readData = []) {

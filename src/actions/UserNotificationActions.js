@@ -2,18 +2,38 @@ import { Actions } from 'flummox';
 
 import {
   UserNotificationService,
+  UserNotificationInfoService,
   UserAdmNotificationService,
 } from 'api/Services';
 
 export default class UserNotificationActions extends Actions {
+  getOrderNotReadNotifications() {
+    const payload = {
+      type_id: 6,
+      is_read: false,
+    };
+
+    return UserNotificationService.get(payload);
+  }
+  setMakeReadOrderNotification(id) {
+    return UserNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
+  }
+
+  getAdmNotReadNotifications() {
+    return UserAdmNotificationService.get({ is_read: false });
+  }
+  setMakeReadAdmNotification(id) {
+    return UserAdmNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
+  }
   getNotifications(payload = {}) {
     return UserNotificationService.get(payload);
   }
   getAdmNotifications(payload = {}) {
     return UserAdmNotificationService.get(payload);
   }
-  getNotReadAdmNotifications() {
-    return UserAdmNotificationService.get({ is_read: false });
+
+  getUserNotificationInfo() {
+    return UserNotificationInfoService.get();
   }
 
   markAsRead(readData = []) {
@@ -33,11 +53,11 @@ export default class UserNotificationActions extends Actions {
     return Promise.all([
       (payload.common.read_ids.length ? UserNotificationService.put({ ...payload.common }, false, 'json') : Promise.reject())
         .then(() => this.getNotifications())
-        .catch(() => {}),
+        .catch(() => ({ result: { notUpdate: true }})),
       (payload.adm.read_ids.length ? UserAdmNotificationService.put({ ...payload.adm }, false, 'json') : Promise.reject())
         .then(() => this.getAdmNotifications())
-        .catch(() => {}),
-    ]).then(() => readData);
+        .catch(() => ({ result: { notUpdate: true }})),
+    ]);
   }
 
   markAllAsRead() {

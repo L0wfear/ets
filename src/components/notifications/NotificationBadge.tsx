@@ -3,6 +3,7 @@ import { Badge } from 'react-bootstrap';
 import { FluxContext } from 'utils/decorators';
 import { connectToStores } from 'utils/decorators';
 
+/* ETS2 */
 @connectToStores(['userNotifications'])
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
@@ -13,8 +14,7 @@ class NotificationBadge extends React.Component<any, any> {
   }
   componentDidMount() {
     this.checkNotifications();
-    const checkUsNotifInterval = setInterval(this.checkNotifications, 1000 * 60 * 60);
-    this.setState({ checkUsNotifInterval });
+    this.setState({ checkUsNotifInterval: setInterval(this.checkNotifications, 10 * 1000 ) });
   }
   componentWillUnmount() {
     const { checkUsNotifInterval } = this.state;

@@ -7,30 +7,33 @@ import {
 } from 'api/Services';
 
 export default class UserNotificationActions extends Actions {
-  getNotifications(payload = {}) {
+  getOrderNotReadNotifications() {
+    const payload = {
+      type_id: 6,
+      is_read: false,
+    };
+
     return UserNotificationService.get(payload);
   }
-  getNotificationsPopup(payload = {}) {
+  setMakeReadOrderNotification(id) {
+    return UserNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
+  }
+
+  getAdmNotReadNotifications() {
+    return UserAdmNotificationService.get({ is_read: false });
+  }
+  setMakeReadAdmNotification(id) {
+    return UserAdmNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
+  }
+  getNotifications(payload = {}) {
     return UserNotificationService.get(payload);
   }
   getAdmNotifications(payload = {}) {
     return UserAdmNotificationService.get(payload);
   }
-  getNotReadAdmNotifications() {
-    return UserAdmNotificationService.get({ is_read: false });
-  }
-  decNotificationsPopup(read_ids) {
-    return this.markAsRead(read_ids.map(id => ({ id, front_type: 'common' })));
-  }
-  async getUserNotificationInfo(props) {
-    const data = await UserNotificationInfoService.get();
-    return {
-      result: data.result,
-      ...props,
-    };
-  }
-  changesUserNotificationsCount(count) {
-    return { count };
+
+  getUserNotificationInfo() {
+    return UserNotificationInfoService.get();
   }
 
   markAsRead(readData = []) {
@@ -47,23 +50,20 @@ export default class UserNotificationActions extends Actions {
       payload[front_type] && payload[front_type].read_ids.push(id)
     );
 
-    this.changesUserNotificationsCount(-(payload.common.read_ids.length + payload.adm.read_ids.length));
-
     return Promise.all([
       (payload.common.read_ids.length ? UserNotificationService.put({ ...payload.common }, false, 'json') : Promise.reject())
         .then(() => this.getNotifications())
-        .catch(() => {}),
+        .catch(() => ({ result: { notUpdate: true }})),
       (payload.adm.read_ids.length ? UserAdmNotificationService.put({ ...payload.adm }, false, 'json') : Promise.reject())
         .then(() => this.getAdmNotifications())
-        .catch(() => {}),
-    ]).then(() => readData);
+        .catch(() => ({ result: { notUpdate: true }})),
+    ]);
   }
 
   markAllAsRead() {
     const payload = {
       is_read_all: true,
     };
-    this.changesUserNotificationsCount('is_read_all');
 
     return Promise.all([
       UserNotificationService.put(payload, false, 'json'),

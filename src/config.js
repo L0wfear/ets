@@ -1,66 +1,44 @@
 
-/**
- * При разработке не имеем доступ к протоколу, хосту и всему прочему, если не хардкод
- */
-const PROTO = window.location.protocol;
-const HOST = window.location.host;
-const PATHNAME = window.location.pathname;
+const PROTO_FOR_STAGE = (window.location.host === 'localhost:3000') ? 'https:' : window.location.protocol;
+const PROTO_FOR_PROD = (window.location.host === 'localhost:3000') ? 'https:' : window.location.protocol;
 
+const DOMAIN_FOR_STAGE = (PROTO_FOR_STAGE === 'http:') ? 'ets-test.tech.mos.ru' : 'ets-test.mos.ru';
+const DOMAIN_FOR_PROD = (PROTO_FOR_PROD === 'http:') ? 'ets.tech.mos.ru' : 'ets.mos.ru';
+
+const STAND = process.env.STAND;
+
+export const PROTO_FOR_ODS_MOS_RU = 'https:';
 const WS_PROTO = 'wss:';
 
 const DOC_URL = {
-  develop: {
-    dev: 'http://dev-ets.gost-group.com/docs/',
-    stage: 'https://ets-test.mos.ru/ets-stage/docs/',
-    prod: 'https://ets.mos.ru/ets-study/docs/',
-  },
-  origin: {
-    dev: 'http://dev-ets.gost-group.com/docs/',
-    stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
-    prod: `${PROTO}//${HOST}${PATHNAME}docs/`,
-  },
+  dev: 'http://dev-ets.gost-group.com/docs/',
+  stage: `${PROTO_FOR_STAGE}//${DOMAIN_FOR_STAGE}/ets-stage/docs/`,
+  prod: `${PROTO_FOR_PROD}//${DOMAIN_FOR_PROD}/ets-study/docs/`,
 };
 
 const config = {
-  develop: {
-    ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
-    images: 'https://ets.mos.ru/ets/data/images/',
-    docs: DOC_URL.develop[process.env.STAND],
-  },
-  origin: {
-    ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
-    images: `${PROTO}//ets.mos.ru/ets/data/images/`,
-    docs: DOC_URL.origin[process.env.STAND],
-  },
+  ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
+  images: `${PROTO_FOR_ODS_MOS_RU}//ets.mos.ru/ets/data/images/`,
+  docs: DOC_URL[process.env.STAND],
 };
 
 const STANDS = {
-  develop: {
-    stage: 'https://ets-test.mos.ru/ets-stage/services',
-    prod: 'https://ets.mos.ru/ets-study/services',
-    dev: 'http://dev-ets.gost-group.com/services',
-  },
-  origin: {
-    stage: `${PROTO}//${HOST}${PATHNAME}services`,
-    prod: `${PROTO}//${HOST}${PATHNAME}ets-study/services`,
-    dev: 'http://dev-ets.gost-group.com/services',
-  },
+  dev: 'http://dev-ets.gost-group.com/services',
+  stage: `${PROTO_FOR_STAGE}//${DOMAIN_FOR_STAGE}/ets-stage/services`,
+  prod: `${PROTO_FOR_PROD}//${DOMAIN_FOR_PROD}/ets-study/services`,
 };
 
-const configs = {};
-const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
-
 try {
-  const STAND = process.env.STAND;
+  const HOST = process.env.APIHOST;
+  if (HOST) {
+    const PROTO = window.location.protocol;
 
-  configs.ws = config[pathToConfig].ws;
-  configs.images = config[pathToConfig].images;
-  configs.docs = config[pathToConfig].docs;
-  configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
+    config.backend = `${PROTO}://${process.env.APIHOST}`;
+  } else if (STAND) {
+    config.backend = STANDS[STAND] || STANDS.dev;
+  }
 } catch (e) {
   console.log(e); // eslint-disable-line
 }
 
-global.showConfigs = () => console.log(configs);
-
-export default configs;
+export default config;

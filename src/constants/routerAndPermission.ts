@@ -24,7 +24,7 @@ const routerAndPermission = {
   notificationRegistry,
   programRegistry,
   admin: {
-    path: `http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage2/' : ''}admin`,
+    path: `http://213.79.88.5/admin`,
     title: 'Администрирование',
     entyity: 'administration',
     noDotList: true,

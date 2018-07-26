@@ -28,9 +28,22 @@ const config = {
     docs: DOC_URL.develop[process.env.STAND],
   },
   origin: {
-    ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
+    ws: `${PROTO === 'http:' ? 'ws' : 'wss'}//psd.mos.ru/city-dashboard/stream`,
     images: `${PROTO}//ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin[process.env.STAND],
+  },
+};
+
+const notification_config = {
+  develop: {
+    stage: 'wss://ets-test.mos.ru/ets-stage2/services/notification_ws',
+    prod: 'wss://ets2.mos.ru/ets-study/services/notification_ws',
+    dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
+  },
+  origin: {
+    stage: `wss//${HOST}${PATHNAME}services/notification_ws`,
+    prod: `wss//${HOST}${PATHNAME}ets-study/services/notification_ws`,
+    dev: `ws//${HOST}${PATHNAME}services/notification_ws`,
   },
 };
 
@@ -57,6 +70,7 @@ try {
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;
   configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
+  configs.notification_ws = notification_config[pathToConfig][STAND] || notification_config[pathToConfig].dev;
 } catch (e) {
   console.log(e); // eslint-disable-line
 }

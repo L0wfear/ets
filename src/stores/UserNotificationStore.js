@@ -4,6 +4,17 @@ import {
 } from 'utils/dates';
 import uniqBy from 'lodash/uniqBy';
 
+const TYPE_GROUP = {
+  personal: {
+    arr: 'orderNotReadList',
+    dependent: 'commonNotificationList',
+  },
+  common: {
+    arr: 'admNotReadNotificationsList',
+    dependent: 'admNotificationList',
+  },
+};
+
 const mock = `{
     "result": {
         "rows": [
@@ -69,15 +80,14 @@ export default class UserNotificationStore extends Store {
     this.register(userNotificationActions.markAsRead, this.handleMarkAsRead);
     this.register(userNotificationActions.markAllAsRead, this.handleMarkAsRead);
 
-    this.register(userNotificationActions.getOrderNotReadNotifications, this.handleGetOrderNotReadNotifications);
     this.register(userNotificationActions.setMakeReadOrderNotification, this.handlesetMakeReadOrderNotification);
-    
-    this.register(userNotificationActions.getAdmNotReadNotifications, this.handleGetAdmNotReadNotifications);
+
     this.register(userNotificationActions.setMakeReadAdmNotification, this.handleSetMakeReadAdmNotification);
-    
+
 
     this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
-    
+    this.register(userNotificationActions.setNotifyFromWs, this.handleSetNotifyFromWs);
+
     this.state = {
       commonNotificationList: [],
       userNotificationList: [],
@@ -91,7 +101,31 @@ export default class UserNotificationStore extends Store {
       countNotRead: 0,
     };
   }
+  handleSetNotifyFromWs(notify) {
+    const { group } = notify;
 
+    let {
+      [TYPE_GROUP[group].arr]: [...newArr],
+      [TYPE_GROUP[group].dependent]: [...newDependent],
+    } = this.state;
+
+    newArr.push(notify);
+    newDependent.push(notify);
+
+    newArr = uniqBy(newArr, 'id');
+    newDependent = uniqBy(newArr, 'id');
+    const calculateData = {
+      admNotificationList: this.state.admNotificationList,
+      commonNotificationList: this.state.commonNotificationList,
+      [TYPE_GROUP[group].dependent]: newDependent,
+    };
+
+    this.setState({
+      [TYPE_GROUP[group].arr]: newArr,
+      [TYPE_GROUP[group].dependent]: newDependent,
+      userNotificationList: getUserNotificationList(calculateData.commonNotificationList, calculateData.admNotificationList),
+    });
+  }
   handleGetNotifications({ result: { rows } }) {
     const changedState = {
       commonNotificationList: [],
@@ -149,13 +183,6 @@ export default class UserNotificationStore extends Store {
     });
   }
 
-  handleGetOrderNotReadNotifications({ result: { rows } }) {
-    const orderNotReadList = rows.sort((a, b) => a.id - b.id);
-
-    this.setState({
-      orderNotReadList,
-    });
-  }
   handlesetMakeReadOrderNotification(id) {
     const orderNotReadList = this.state.orderNotReadList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
     const commonNotificationList = this.state.commonNotificationList.map(common => ({ ...common, is_read: common.id === id ? true : common.is_read }));
@@ -168,20 +195,14 @@ export default class UserNotificationStore extends Store {
       countNotRead: this.state.countNotRead - 1,
     });
   }
-  handleGetAdmNotReadNotifications({ result: { rows } }) {
-    const admNotReadNotificationsList = rows.sort((a, b) => a.id - b.id);
 
-    this.setState({
-      admNotReadNotificationsList,
-    });
-  }
   handleSetMakeReadAdmNotification(id) {
-    const orderNotReadList = this.state.orderNotReadList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
+    const admNotReadNotificationsList = this.state.admNotReadNotificationsList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
     const admNotificationList = this.state.admNotificationList.map(common => ({ ...common, is_read: common.id === id ? true : common.is_read }));
     const userNotificationList = getUserNotificationList(admNotificationList, this.state.commonNotificationList);
 
     this.setState({
-      orderNotReadList,
+      admNotReadNotificationsList,
       admNotificationList,
       userNotificationList,
       countNotRead: this.state.countNotRead - 1,

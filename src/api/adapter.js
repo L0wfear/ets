@@ -5,6 +5,12 @@ import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';
 
 let headers = {};
 
+try {
+  document.execCommand('ClearAuthenticationCache', 'false');
+} catch (e) {
+  //
+}
+
 export function setHeaders(requestHeaders) {
   headers = requestHeaders;
 }

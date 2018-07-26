@@ -25,6 +25,12 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
   }
 
   componentWillReceiveProps(nextProps) {
+    this.props.admNotReadNotificationsList.filter(({ id }) => (
+      !nextProps.admNotReadNotificationsList.find(n => n.id === id)
+    )).forEach(({ id }) => (
+      global.NOTIFICATION_SYSTEM.removeNotification(id)
+    ));
+
     nextProps.admNotReadNotificationsList.forEach(notify => (
       global.NOTIFICATION_SYSTEM.notify({
         title: notify.title,

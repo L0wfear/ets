@@ -153,7 +153,6 @@ export default class UserNotificationStore extends Store {
   }
 
   handleMarkAsRead([commonAns, admAns]) {
-    console.log(commonAns, admAns)
     const { result: { rows: commonNotificationList = [], notUpdate: commonNotUpdate } } = commonAns;
     const { result: { rows: admNotificationList = [], notUpdate: admNotUpdate } } = admAns;
 

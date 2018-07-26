@@ -12,18 +12,6 @@ type stateAdmNotification = {
 @connectToStores(['userNotifications'])
 @FluxContext
 class AdmNotification extends React.Component<propsAdmNotification, stateAdmNotification> {
-  constructor(props, context) {
-    super(props);
-
-    this.state = {
-      idInterval: setInterval(() => this.checkNotReadAdmNotification(), 30 * 1000),
-    }
-  }
-
-  componentDidMount() {
-    this.checkNotReadAdmNotification();
-  }
-
   componentWillReceiveProps(nextProps) {
     nextProps.admNotReadNotificationsList.forEach(notify => (
       global.NOTIFICATION_SYSTEM.notify({
@@ -40,14 +28,6 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
         }
       })
     ))
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.idInterval);
-  }
-
-  checkNotReadAdmNotification() {
-    this.context.flux.getActions('userNotifications').getAdmNotReadNotifications();
   }
 
   render() {

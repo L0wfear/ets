@@ -21,25 +21,6 @@ type StateNotifiactionOrders = {
 class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, StateNotifiactionOrders> {
   refAudio: any;
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      timerGetNot: setInterval(this.updateNotificationPopup, 30 * 1000),
-    };
-  }
-  componentDidMount() {
-    this.updateNotificationPopup();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.timerGetNot);
-  }
-
-  updateNotificationPopup = () => (
-    this.context.flux.getActions('userNotifications').getOrderNotReadNotifications()
-  )
-
   onHide = () => {
     const { orderNotReadList: [{ id }] } = this.props;
 

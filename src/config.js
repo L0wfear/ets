@@ -41,9 +41,9 @@ const notification_config = {
     dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
   },
   origin: {
-    stage: `wss//${HOST}${PATHNAME}services/notification_ws`,
-    prod: `wss//${HOST}${PATHNAME}ets-study/services/notification_ws`,
-    dev: `ws//${HOST}${PATHNAME}services/notification_ws`,
+    stage: `wss://${HOST}${PATHNAME}services/notification_ws`,
+    prod: `wss://${HOST}${PATHNAME}ets-study/services/notification_ws`,
+    dev: `ws://${HOST}${PATHNAME}services/notification_ws`,
   },
 };
 

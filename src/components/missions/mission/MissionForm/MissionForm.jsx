@@ -466,6 +466,9 @@ export class MissionForm extends Form {
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
+    if (state.column_id) {
+      title = `${title}  Колонна № ${state.column_id}`;
+    }
 
     const carEditionDisability = (
       IS_POST_CREATING_ASSIGNED
@@ -476,7 +479,6 @@ export class MissionForm extends Form {
       || isEmpty(state.municipal_facility_id)
     );
 
-    console.log(this.state.available_route_types)
     const columnFlagDisability = (
       isEmpty(state.technical_operation_id)
       || isEmpty(state.municipal_facility_id)

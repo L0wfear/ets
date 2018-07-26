@@ -103,28 +103,32 @@ export default class UserNotificationStore extends Store {
   }
   handleSetNotifyFromWs(notify) {
     const { group } = notify;
+    if (TYPE_GROUP[group]) {
+      let {
+        [TYPE_GROUP[group].arr]: [...newArr],
+        [TYPE_GROUP[group].dependent]: [...newDependent],
+      } = this.state;
 
-    let {
-      [TYPE_GROUP[group].arr]: [...newArr],
-      [TYPE_GROUP[group].dependent]: [...newDependent],
-    } = this.state;
+      newArr.push(notify);
+      newDependent.push(notify);
 
-    newArr.push(notify);
-    newDependent.push(notify);
+      newArr = uniqBy(newArr, 'id');
+      newDependent = uniqBy(newArr, 'id');
+      const calculateData = {
+        admNotificationList: this.state.admNotificationList,
+        commonNotificationList: this.state.commonNotificationList,
+        [TYPE_GROUP[group].dependent]: newDependent,
+      };
 
-    newArr = uniqBy(newArr, 'id');
-    newDependent = uniqBy(newArr, 'id');
-    const calculateData = {
-      admNotificationList: this.state.admNotificationList,
-      commonNotificationList: this.state.commonNotificationList,
-      [TYPE_GROUP[group].dependent]: newDependent,
-    };
-
-    this.setState({
-      [TYPE_GROUP[group].arr]: newArr,
-      [TYPE_GROUP[group].dependent]: newDependent,
-      userNotificationList: getUserNotificationList(calculateData.commonNotificationList, calculateData.admNotificationList),
-    });
+      this.setState({
+        [TYPE_GROUP[group].arr]: newArr,
+        [TYPE_GROUP[group].dependent]: newDependent,
+        userNotificationList: getUserNotificationList(calculateData.commonNotificationList, calculateData.admNotificationList),
+        countNotRead: this.state.countNotRead + 1,
+      });
+    } else {
+      throw new Error(`type ${group} not found in TYPE_GROUP`);
+    }
   }
   handleGetNotifications({ result: { rows } }) {
     const changedState = {

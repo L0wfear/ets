@@ -192,35 +192,35 @@ export class MissionForm extends Form {
       if (is_column) {
         car_id = [car_id];
       } else {
-        [car_id] = car_id;
+        car_id = null;
       }
     }
     if (type_id) {
       if (is_column) {
         type_id = [type_id];
       } else {
-        [type_id] = type_id;
+        type_id = null;
       }
     }
     if (norm_id) {
       if (is_column) {
         norm_id = [norm_id];
       } else {
-        [norm_id] = norm_id;
+        norm_id = null;
       }
     }
     if (is_cleaning_norm) {
       if (is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       } else {
-        [is_cleaning_norm] = is_cleaning_norm;
+        is_cleaning_norm = null;
       }
     }
     if (assign_to_waybill) {
       if (is_column) {
         assign_to_waybill = [assign_to_waybill];
       } else {
-        [assign_to_waybill] = assign_to_waybill;
+        assign_to_waybill = null;
       }
     }
 
@@ -466,6 +466,9 @@ export class MissionForm extends Form {
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
+    if (state.column_id) {
+      title = `${title}  Колонна № ${state.column_id}`;
+    }
 
     const carEditionDisability = (
       IS_POST_CREATING_ASSIGNED

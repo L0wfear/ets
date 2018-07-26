@@ -104,16 +104,15 @@ export default class UserNotificationStore extends Store {
   handleSetNotifyFromWs(notify) {
     const { group } = notify;
     if (TYPE_GROUP[group]) {
-      let {
-        [TYPE_GROUP[group].arr]: [...newArr],
-        [TYPE_GROUP[group].dependent]: [...newDependent],
-      } = this.state;
+      let newArr = [...this.state[TYPE_GROUP[group].arr]];
+      let newDependent = [...this.state[TYPE_GROUP[group].dependent]];
 
       newArr.push(notify);
       newDependent.push(notify);
 
       newArr = uniqBy(newArr, 'id');
-      newDependent = uniqBy(newArr, 'id');
+      newDependent = uniqBy(newDependent, 'id');
+
       const calculateData = {
         admNotificationList: this.state.admNotificationList,
         commonNotificationList: this.state.commonNotificationList,

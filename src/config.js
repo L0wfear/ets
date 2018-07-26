@@ -28,7 +28,7 @@ const config = {
     docs: DOC_URL.develop[process.env.STAND],
   },
   origin: {
-    ws: `${PROTO === 'http:' ? 'ws' : 'wss'}//psd.mos.ru/city-dashboard/stream`,
+    ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
     images: `${PROTO}//ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin[process.env.STAND],
   },

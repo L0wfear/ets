@@ -14,7 +14,7 @@ class NotificationBadge extends React.Component<any, any> {
   }
   componentDidMount() {
     this.checkNotifications();
-    this.setState({ checkUsNotifInterval: setInterval(this.checkNotifications, 10 * 1000 ) });
+    this.setState({ checkUsNotifInterval: setInterval(this.checkNotifications, 1000 * 60 * 60 ) });
   }
   componentWillUnmount() {
     const { checkUsNotifInterval } = this.state;

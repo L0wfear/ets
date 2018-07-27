@@ -10,6 +10,7 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 
 import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
 import AdmNotification from 'components/adm-notification/AdmNotification';
+import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
 import Header from 'components/navbar/Header';
 
@@ -54,7 +55,9 @@ class MainApp extends React.Component {
 
     return (
       <div className="app">
-        <div className="app-navigation"><Header /></div>
+        <div className="app-navigation">
+          <Header />
+        </div>
 
         <div className="app-content">
           <ModalTP
@@ -65,6 +68,7 @@ class MainApp extends React.Component {
           <LoadingOverlay main />
           <NotifiactionOrders />
           <AdmNotification />
+          <UserNotificationWs />
         </div>
 
         <div className="app-footer">

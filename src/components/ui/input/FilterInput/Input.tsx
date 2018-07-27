@@ -13,6 +13,7 @@ export interface IPropsExtendedInput {
   filterType: string;
   filterValueMaker?(value: any[], inputType: string): any;
   onChange(value: any): void;
+  lang?: string;
 }
 
 interface IStateExtendedInput {
@@ -79,6 +80,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
             min="0"
             value={this.props.value[0] || ''}
             onChange={this.handleFirstInput}
+            lang={this.props.lang}
           />
         </div>
         {this.props.interval &&
@@ -88,6 +90,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
               min="0"
               value={this.props.value[1] || ''}
               onChange={this.handleSecondInput}
+              lang={this.props.lang}
             />
           </div>
         }

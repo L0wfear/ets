@@ -20,6 +20,7 @@ interface IPropsFilterInput {
   inputType: string;
   single?: boolean;
   onChange(value: any): void;
+  lang?: string;
 }
 
 interface IStateFilterInput {
@@ -94,6 +95,7 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
         value={this.state.value}
         interval={isEqual(this.state.type, FILTER_VALUES.INTERVAL)}
         filterValueMaker={filterValueMaker}
+        lang={this.props.lang}
       />
     );
 

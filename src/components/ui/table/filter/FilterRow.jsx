@@ -82,7 +82,7 @@ export default class FilterRow extends React.Component {
         }
       }
       if (type === 'advanced-number') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="number" onChange={onChange} />;
+        input = <FilterInput filterValue={value} fieldName={name} inputType="number" onChange={onChange} lang="en" />;
       }
       if (type === 'advanced-string') {
         input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={onChange} />;

@@ -12,15 +12,17 @@ class NotificationBadge extends React.Component<any, any> {
   }
   ws: any;
   componentDidMount() {
-    // this.openWs();
+    this.openWs();
+    /*
     this.getNotifications();
     this.setState({
       getNotReadInterval: setInterval(() => this.getNotifications(), 30 * 1000),
     })
+    */
   }
   componentWillUnmount() {
-    //this.closeWs();
-    this.closeIntervalNotifications();
+    this.closeWs();
+    // this.closeIntervalNotifications();
   }
 
   getNotifications = () => {

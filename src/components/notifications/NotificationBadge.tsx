@@ -8,6 +8,7 @@ import { FluxContext, connectToStores } from 'utils/decorators';
 class NotificationBadge extends React.Component<any, any> {
   state = {
     socketIsWork: false,
+    checkUsNotifInterval: 0,
   }
   ws: any;
   componentDidMount() {

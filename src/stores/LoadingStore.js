@@ -136,8 +136,8 @@ export default class LoadingStore extends Store {
       routesActions.getRouteReports,
       routesActions.createRouteReport,
       routesActions.validateRoute,
-      routesActions.getGeozones,
       routesActions.getRoutesBySomeData,
+      routesActions.getRoutesByTechnicalOperation,
       routesActions.getRoutesByMissionId,
       routesActions.getRoutesByDutyMissionId,
 
@@ -161,6 +161,9 @@ export default class LoadingStore extends Store {
 
       carActions.updateCarAdditionalInfo,
       carActions.getDataByNormNormatives,
+
+      geoObjectsActions.getGeozones,
+      geoObjectsActions.getOdhMkad,
     );
 
     this.reg(true,

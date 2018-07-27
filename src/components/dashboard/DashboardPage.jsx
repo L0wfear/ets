@@ -36,17 +36,20 @@ class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
-    this.componentsUpdateInterval = setInterval(
-      this.refreshComponents.bind(this),
-      (1000 * (2 * 60))
-    );
-    this.currentMissionsUpdateInterval = setInterval(
-      this.refreshComponentCurrentMission.bind(this),
-      (1000 * 60)
-    );
+    this.context.flux.getActions('objects').getCars()
+    .then(() => {
+      this.componentsUpdateInterval = setInterval(
+        this.refreshComponents.bind(this),
+        (1000 * (2 * 60))
+      );
+      this.currentMissionsUpdateInterval = setInterval(
+        this.refreshComponentCurrentMission.bind(this),
+        (1000 * 60)
+      );
 
-    document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
-    this.init();
+      document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
+      this.init();
+    });
   }
 
   componentWillUnmount() {
@@ -56,9 +59,9 @@ class DashboardPage extends React.Component {
     document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
-  init() {
+  async init() {
     const { flux } = this.context;
-    flux.getActions('objects').getCars();
+    flux.getActions('geoObjects').getGeozones();
     const actions = flux.getActions('dashboard');
     const components = flux.getStore('dashboard').getComponentsByPermissionsAll();
     this.componentsInterval = {};

@@ -107,7 +107,7 @@ export default class Field extends React.Component {
 
     return (
       <Div hidden={this.props.hidden}>
-        <Input type="number" className={inputClassName} {...this.props} />
+        <Input lang="en" type="number" className={inputClassName} {...this.props} />
         <Div hidden={!error} className="error">{error}</Div>
       </Div>
     );

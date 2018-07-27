@@ -67,9 +67,8 @@ export const componentDidMount: IComponentDidMount = async props => {
       report_data,
     },
     flux,
+    fromMonitor,
   } = props;
-
-  await flux.getActions('objects').getCars();
 
   if (!props.tooLongDates) {
     flux.getActions('pointsHybrid').createConnection();
@@ -77,12 +76,6 @@ export const componentDidMount: IComponentDidMount = async props => {
     flux.getActions('pointsHybrid').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
   }
 
-  const [route] = await Promise.all([
-    flux.getActions('routes').getRouteById(route_data.id, true),
-    flux.getActions('geoObjects').getGeozones(),
-    flux.getActions('geoObjects').getOdhMkad(),
-  ]);
-  
   const missionReport = report_data.entries || [];
 
   const selectedObjects = missionReport.filter(p => p.status === 'success');
@@ -90,7 +83,20 @@ export const componentDidMount: IComponentDidMount = async props => {
     missionReport.forEach(report => (report.route_check_unit = report_data.check_unit));
   }
 
-  props.multyChange({ missionReport, selectedObjects, route });
+  props.multyChange({ missionReport, selectedObjects });
+
+  const {
+    has_mkad,
+  } = route_data
+
+  const [route] = await Promise.all([
+    flux.getActions('routes').getRouteById(route_data.id, true),
+    flux.getActions('geoObjects').getGeozones(),
+    has_mkad && !fromMonitor ? flux.getActions('geoObjects').getOdhMkad() : Promise.resolve(),
+  ]);
+
+
+  props.multyChange({ route });
 }
 
 

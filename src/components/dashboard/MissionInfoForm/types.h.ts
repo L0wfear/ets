@@ -37,6 +37,7 @@ export interface IRouteData{
   check_unit: string;
   name: string;
   type: string;
+  has_mkad: boolean;
 }
 export interface IReportData {
   entries: any[];
@@ -77,6 +78,7 @@ export interface IComponentDidMountProps {
   flux: any;
   tooLongDates: boolean;
   multyChange: any;
+  fromMonitor?: boolean;
 }
 
 export type IComponentDidMount = (props: IComponentDidMountProps) => void;

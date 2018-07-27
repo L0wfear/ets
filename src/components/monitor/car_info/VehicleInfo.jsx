@@ -120,6 +120,7 @@ export default class VehicleInfo extends Component {
           showForm={this.state.showMissionInfoForm}
           element={this.state.missionInfoData}
           flux={this.props.flux}
+          fromMonitor
         />
       </div>
     );

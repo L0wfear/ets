@@ -17,8 +17,6 @@ const data = {
 
 const NavItemUser: React.SFC<any> = ({ currentUser }) => {
   const role = ROLES[currentUser.role || ''] || '';
-  const fio = currentUser.fio || '';
-
   return (
     <NavItem id={'info-user-data'} className="navbar-user" data={data}>
       <div className="navbar-user__avatar">
@@ -26,7 +24,7 @@ const NavItemUser: React.SFC<any> = ({ currentUser }) => {
       </div>
       <div className="navbar-user__data">
         <div className="navbar-user__data-type">{role}</div>
-        <div className={`navbar-user__data-name${role ? '' : '-short'}`}>{fio.split(' ').map(p => <span key={p}>{p} </span>)}</div>
+        <div className={`navbar-user__data-name${role ? '' : '-short'}`}>{currentUser.fio}</div>
       </div>
     </NavItem>
   );

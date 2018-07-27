@@ -106,7 +106,7 @@ export default class HybridMap extends Map {
           if (this.props.selectedObjects) {
             let succeed = false;
             _.each(this.props.selectedObjects, (o) => {
-              if (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1]) {
+              if (o.coordinate && (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1])) {
                 succeed = true;
               }
             });

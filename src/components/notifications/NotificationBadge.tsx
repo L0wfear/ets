@@ -28,7 +28,10 @@ class NotificationBadge extends React.Component<any, any> {
       const token = this.context.flux.getStore('session').getSession();
       const wsUrl = `${config.notification_ws}?token=${token}`;
       this.ws = new ReconnectingWebSocket(wsUrl);
-      console.log(`API SERVICE OPEN WS ${config.notification_ws}`);
+
+      this.ws.onopen = (event) => {
+        console.log(`API SERVICE OPEN WS ${config.notification_ws}`);
+      }
 
       this.ws.onmessage = ({ data }) => {
         this.context.flux.getActions('userNotifications').setNotifyFromWs(JSON.parse(data));

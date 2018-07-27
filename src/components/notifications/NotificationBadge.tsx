@@ -6,6 +6,9 @@ import { FluxContext, connectToStores } from 'utils/decorators';
 @connectToStores(['userNotifications'])
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
+  state = {
+    socketIsWork: false,
+  }
   ws: any;
   componentDidMount() {
     this.checkNotifications();

@@ -1,5 +1,7 @@
 .chart-datepicker {
-
+  .rw-select>button {
+    height: auto;
+  }
   &.rw-state-focus>.rw-widget-picker.rw-widget-container {
     box-shadow: none;
     input {

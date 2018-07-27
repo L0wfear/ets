@@ -12,21 +12,37 @@ const style: any = {
 
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
+  state = {
+    socketIsWork: false,
+    getNotReadInterval: 0,
+  }
   ws: any;
   componentDidMount() {
     this.openWs();
+    /*
+    this.getNotifications();
+    this.setState({
+      getNotReadInterval: setInterval(() => this.getNotifications(), 30 * 1000),
+    })
+    */
   }
   componentWillUnmount() {
     this.closeWs();
+    // this.closeIntervalNotifications();
   }
-  checkNotifications = () => {
+  getNotifications = () => {
+    this.context.flux.getActions('userNotifications').getOrderNotRead();
+    this.context.flux.getActions('userNotifications').getAdmNotReadNotifications();
+  }
+
+  closeIntervalNotifications() {
+    clearInterval(this.state.getNotReadInterval);
   }
 
   openWs() {
-    
     try {
       const token = this.context.flux.getStore('session').getSession();
-      const wsUrl = `${config.notification_ws}?token=${token}`;
+      const wsUrl = `${config.notification_ws}?token1=${token}`;
       this.ws = new ReconnectingWebSocket(wsUrl);
 
       this.ws.onopen = (event) => {

@@ -86,6 +86,9 @@ export default class UserNotificationStore extends Store {
 
 
     this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
+
+    this.register(userNotificationActions.getOrderNotRead, this.handleSetNotifyFromArr);
+    this.register(userNotificationActions.getAdmNotReadNotifications, this.handleSetNotifyFromArr);
     this.register(userNotificationActions.setNotifyFromWs, this.handleSetNotifyFromWs);
 
     this.state = {
@@ -101,34 +104,52 @@ export default class UserNotificationStore extends Store {
       countNotRead: 0,
     };
   }
-  handleSetNotifyFromWs(notify) {
-    const { group } = notify;
-    if (TYPE_GROUP[group]) {
-      let newArr = [...this.state[TYPE_GROUP[group].arr]];
-      let newDependent = [...this.state[TYPE_GROUP[group].dependent]];
 
-      newArr.push(notify);
-      newDependent.push(notify);
-
-      newArr = uniqBy(newArr, 'id');
-      newDependent = uniqBy(newDependent, 'id');
-
-      const calculateData = {
-        admNotificationList: this.state.admNotificationList,
-        commonNotificationList: this.state.commonNotificationList,
-        [TYPE_GROUP[group].dependent]: newDependent,
-      };
-
-      this.setState({
-        [TYPE_GROUP[group].arr]: newArr,
-        [TYPE_GROUP[group].dependent]: newDependent,
-        userNotificationList: getUserNotificationList(calculateData.commonNotificationList, calculateData.admNotificationList),
-        countNotRead: this.state.countNotRead + 1,
-      });
-    } else {
-      throw new Error(`type ${group} not found in TYPE_GROUP`);
-    }
+  handleSetNotifyFromArr({ result: { rows }, group }) {
+    this.handleSetNotifyFromWs(rows.map(r => ({ ...r, group })));
   }
+  handleSetNotifyFromWs(props) {
+    let notifyArr = props;
+    if (!Array.isArray(notifyArr)) {
+      notifyArr = [notifyArr];
+    }
+
+    const {
+      commonNotificationList: [...commonNotificationList],
+      admNotificationList: [...admNotificationList],
+      orderNotReadList: [...orderNotReadList],
+      admNotReadNotificationsList: [...admNotReadNotificationsList],
+    } = this.state;
+
+    const changedState = {
+      commonNotificationList,
+      admNotificationList,
+      orderNotReadList,
+      admNotReadNotificationsList,
+    };
+
+    notifyArr.forEach((notify) => {
+      const { group } = notify;
+      if (TYPE_GROUP[group]) {
+        changedState[TYPE_GROUP[group].arr].push(notify);
+        changedState[TYPE_GROUP[group].dependent].push(notify);
+
+        changedState[TYPE_GROUP[group].arr] = uniqBy(changedState[TYPE_GROUP[group].arr], 'id');
+        changedState[TYPE_GROUP[group].dependent] = uniqBy(changedState[TYPE_GROUP[group].dependent], 'id');
+      } else {
+        throw new Error(`type ${group} not found in TYPE_GROUP`);
+      }
+    });
+
+    this.setState({
+      ...changedState,
+      userNotificationList: getUserNotificationList(changedState.commonNotificationList, changedState.admNotificationList),
+      countNotRead: this.state.countNotRead
+        + (changedState.orderNotReadList.length - this.state.orderNotReadList.length)
+        + (changedState.admNotReadNotificationsList.length - this.state.admNotReadNotificationsList.length),
+    });
+  }
+
   handleGetNotifications({ result: { rows } }) {
     const changedState = {
       commonNotificationList: [],

@@ -7,10 +7,16 @@ import {
 } from 'api/Services';
 
 export default class UserNotificationActions extends Actions {
+  getOrderNotRead() {
+    return UserNotificationService.get({ is_read: false, type_id: 6 }).then(ans => ({ ...ans, group: 'personal' }));
+  }
   setMakeReadOrderNotification(id) {
     return UserNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
   }
 
+  getAdmNotReadNotifications() {
+    return UserAdmNotificationService.get({ is_read: false }).then(ans => ({ ...ans, group: 'common' }));
+  }
   setMakeReadAdmNotification(id) {
     return UserAdmNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
   }

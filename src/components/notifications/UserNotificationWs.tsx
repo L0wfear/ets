@@ -7,12 +7,29 @@ import * as Raven from 'raven-js';
 /* ETS2 */
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
+  state = {
+    getNotReadInterval: 0,
+  }
   ws: any;
   componentDidMount() {
-    this.openWs();
+    // this.openWs();
+    this.getNotifications();
+    this.setState({
+      getNotReadInterval: setInterval(() => this.getNotifications(), 30 * 1000),
+    })
   }
   componentWillUnmount() {
-    this.closeWs();
+    //this.closeWs();
+    this.closeIntervalNotifications();
+  }
+
+  getNotifications = () => {
+    this.context.flux.getActions('userNotifications').getOrderNotRead();
+    this.context.flux.getActions('userNotifications').getAdmNotReadNotifications();
+  }
+
+  closeIntervalNotifications() {
+    clearInterval(this.state.getNotReadInterval);
   }
 
   openWs() {

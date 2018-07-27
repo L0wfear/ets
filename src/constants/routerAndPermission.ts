@@ -32,6 +32,7 @@ const routerAndPermission = {
     path: `${PROTO}//${HOST}${PATHNAME}admin`,
     title: 'Администрирование',
     entyity: 'administration',
+    noHash: true,
     noDotList: true,
     noRoute: true,
     checkHidden: (isShow, props) => isShow && !props.isOkrug,

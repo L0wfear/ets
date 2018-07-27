@@ -37,7 +37,6 @@ class RouteFormWrap extends FormWrap {
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
         this.updateFromStatePolys(formState);
-
       } else {
         formState = {};
       }
@@ -107,7 +106,7 @@ class RouteFormWrap extends FormWrap {
 
   resetFormState = async () => {
     const { formState } = this.state;
-    this.updateFromStatePolys(formState)
+    this.updateFromStatePolys(formState);
 
     formState.object_list = [];
     formState.input_lines = [];

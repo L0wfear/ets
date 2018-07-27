@@ -95,8 +95,9 @@ export default class RouteForm extends Form {
 
     this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue_new, vector: false });
     this.handleChange('type', type);
-
-    this.props.resetState();
+    if (type !== this.props.formState.type) {
+      this.props.resetState();
+    }
   }
 
   handleTechChange(v) {

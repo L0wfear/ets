@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Badge } from 'react-bootstrap';
 import { FluxContext, connectToStores } from 'utils/decorators';
-import config from 'components/../config';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import * as Raven from 'raven-js';
 
 /* ETS2 */
 @connectToStores(['userNotifications'])

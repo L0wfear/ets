@@ -50,7 +50,7 @@ class RouteFormWrap extends FormWrap {
     }
   }
 
-  updateFromStatePolys(formState) {
+  updateFromStatePolys = (formState) => {
     const {
       municipal_facility_id,
       type: object_type,
@@ -106,7 +106,6 @@ class RouteFormWrap extends FormWrap {
 
   resetFormState = async () => {
     const { formState } = this.state;
-    this.updateFromStatePolys(formState);
 
     formState.object_list = [];
     formState.input_lines = [];
@@ -178,6 +177,7 @@ class RouteFormWrap extends FormWrap {
         notTemplate={this.props.notTemplate}
         structureId={this.props.structureId}
         fromOrder={this.props.fromOrder}
+        updateFromStatePolys={this.updateFromStatePolys}
         {...this.state}
         {...this.additionalProps()}
       />

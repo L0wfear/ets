@@ -98,6 +98,7 @@ export default class RouteForm extends Form {
     if (type !== this.props.formState.type) {
       this.props.resetState();
     }
+    this.props.updateFromStatePolys({ ...this.props.formState, type });
   }
 
   handleTechChange(v) {

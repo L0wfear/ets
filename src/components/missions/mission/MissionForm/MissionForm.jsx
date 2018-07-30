@@ -465,9 +465,9 @@ export class MissionForm extends Form {
     const IS_ASSIGNED = state.status === 'assigned';
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
+    let title = `Задание № ${state.number}${state.status === 'fail' ? ' (Не выполнено)' : ''}`;
     if (state.column_id) {
-      title = `${title}. Колонна № ${state.column_id}`;
+      title = `${title} . Колонна № ${state.column_id}`;
     }
 
     const carEditionDisability = (

@@ -110,6 +110,7 @@ export const initialState = {
   selectedObjects: [],
   parkingCount: 0,
   route: {},
+  column_id: ({ formState: { mission_data: { column_id } } }) => column_id,
   tooLongDates: ({ formState: { mission_data } }) => diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
   routeType: ({ formState: { route_data: { type: routeType } } }) => routeType,
   current_percentage: ({ formState: { mission_data: { current_percentage } } }) => current_percentage,

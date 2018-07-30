@@ -49,12 +49,22 @@ const MissionInfoForm: React.SFC<any> = props => {
     })
     .value();
 
+  const titleArr = [
+    'Информация о задании.',
+    `Рег. номер ТС: ${props.gov_number}`,
+  ];
+  if (props.column_id) {
+    titleArr.push('.');
+    titleArr.push(`Колонна № ${props.column_id}`);
+  }
+
+
   return (
     <Div hidden={!props.gov_number}>
       <Modal id="modal-mission-info" show={props.show} onHide={props.onHide} bsSize="large" className="mission-info-modal" backdrop="static">
       
         <Modal.Header closeButton>
-          <Modal.Title>{`Информация о задании. Рег. номер ТС: ${props.gov_number}`}</Modal.Title>
+          <Modal.Title>{titleArr.join(' ')}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>

@@ -8,9 +8,15 @@ import {
 } from 'lodash';
 
 export default function ODHList(props) {
-  const { checkRoute, name } = props;
-  const { list = [], fail_list = [], draw_list = [] } = props;
-  const { error = false } = props;
+  const {
+    list = [],
+    fail_list = [],
+    draw_list = [],
+    checkRoute,
+    name,
+    disabledCheckRoute,
+  } = props;
+
   const LIST = list.map((odh, index) => {
     const speed_type = odh.state === polyState.IDLE ? 'холостой' : 'рабочий';
     return <li key={index}>{`${odh.name || odh.odh_name || odh.objects_text} (${speed_type} ход)`}</li>;
@@ -24,7 +30,7 @@ export default function ODHList(props) {
   return (
     <Div>
       <Div hidden={!checkRoute}>
-        <Button id="check-routes" disabled={!!error} onClick={checkRoute} style={{ marginTop: 11 }}>Проверить маршрут</Button>
+        <Button id="check-routes" disabled={disabledCheckRoute} onClick={checkRoute} style={{ marginTop: 11 }}>Проверить маршрут</Button>
       </Div>
       <Div hidden={!list.length} className="odh-list">
         <h4>Список {name} {DRAW_LIST.length ? '(Выбор из ОДХ)' : ''}</h4>
@@ -47,6 +53,6 @@ ODHList.propTypes = {
   fail_list: PropTypes.array,
   checkRoute: PropTypes.func,
   name: PropTypes.string,
-  error: PropTypes.string,
+  disabledCheckRoute: PropTypes.bool,
   draw_list: PropTypes.array,
 };

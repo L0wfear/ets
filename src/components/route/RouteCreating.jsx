@@ -294,7 +294,7 @@ class RouteCreating extends React.Component {
                   draw_list={draw_list}
                   fail_list={fail_list}
                   checkRoute={route.type === 'mixed' ? this.checkRoute : null}
-                  error={errors.object_list}                  
+                  disabledCheckRoute={!input_lines.length}
                 />
               </Div>
               <Div className="destination-points" hidden={route.type !== 'points'}>

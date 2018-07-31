@@ -2,10 +2,9 @@ import React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import find from 'lodash/find';
-import last from 'lodash/last';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
-
+import last from 'lodash/last';
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -257,7 +256,6 @@ export class DutyMissionForm extends Form {
   }
 
   getDataByNormatives = async (normatives) => {
-    this.handleChange('norm_id', null);
     const norm_ids = normatives.map(({ id }) => id).join(',');
     const { kind_task_ids } = this.state;
     this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids, kind_task_ids: this.state.kind_task_ids })
@@ -303,7 +301,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    if (!TECH_OPERATIONS.some(({ id }) => id === state.technical_operation_id)) {
+    if (!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
 

@@ -34,12 +34,16 @@ export default class TechnicalOperationForm extends Form {
     const objects = this.props.technicalOperationsObjectsList.filter(obj => arrayOfObjects.includes(obj.id));
     this.props.handleFormChange('objects', objects);
   }
+  handleChangeSensorTypeIds = (sensor_type_ids) => {
+    this.props.handleFormChange('sensor_type_ids', sensor_type_ids);
+  }
 
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('objects').getWorkKinds();
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('technicalOperation').getTechnicalOperationsTypes();
+    flux.getActions('objects').getSensorTypes();
   }
 
   render() {
@@ -51,6 +55,7 @@ export default class TechnicalOperationForm extends Form {
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
     } = this.props;
+    const isPermittedOuter = true;
     const isPermitted = false;
 
     const SEASONS = seasonsList.map(defaultSelectListMapper);
@@ -59,6 +64,7 @@ export default class TechnicalOperationForm extends Form {
                                         .map(({ id, full_name }) => ({ value: id, label: full_name }));
     const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
     const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
+    const SENSORS_TYPE_OPTIONS = this.props.sensorTypesList.map(defaultSelectListMapper);
 
     return (
       <Modal id="modal-technical-operation" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
@@ -201,7 +207,7 @@ export default class TechnicalOperationForm extends Form {
 
           <Row>
             <Col md={3} className="vehicle-types-container">
-              <Field
+              <ExtField
                 type="select"
                 label="Типы ТС"
                 multi
@@ -211,13 +217,24 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
+            <Col md={3} className="vehicle-types-container">
+              <ExtField
+                type="select"
+                label="Типы навесного оборудования"
+                multi
+                value={state.sensor_type_ids}
+                options={SENSORS_TYPE_OPTIONS}
+                onChange={this.handleChangeSensorTypeIds}
+                disabled={!isPermittedOuter}
+              />
+            </Col>
           </Row>
 
         </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={!isPermitted} onClick={this.handleSubmit}>Сохранить</Button>
+            <Button disabled={!isPermittedOuter} onClick={this.handleSubmit}>Сохранить</Button>
           </Div>
         </Modal.Footer>
       </Modal>

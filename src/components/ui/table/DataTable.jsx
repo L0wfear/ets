@@ -25,6 +25,16 @@ import FilterButton from './filter/FilterButton.jsx';
 import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
 
+const style = {
+  headRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flex: '1 0 auto',
+  },
+};
+
 @autobind
 export default class DataTable extends React.Component {
 
@@ -167,6 +177,7 @@ export default class DataTable extends React.Component {
         data: this.state.data,
       };
 
+      console.log('--', firstUseExternalInitialSort, props.initialSort, initialSort)
       if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
         changesFields.initialSort = props.initialSort;
         changesFields.firstUseExternalInitialSort = false;
@@ -243,6 +254,9 @@ export default class DataTable extends React.Component {
 
     if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
       changesFields.initialSort = props.initialSort;
+      changesFields.firstUseExternalInitialSort = false;
+    }
+    if (changesFields.firstUseExternalInitialSort) {
       changesFields.firstUseExternalInitialSort = false;
     }
 
@@ -480,6 +494,7 @@ export default class DataTable extends React.Component {
         }
 
         const IS_ARRAY = Array.isArray(value);
+    
         if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
           const { filter } = cols.find(({ name }) => name === key);
           if (filter && filter.type === 'datetime' && diffDates(obj[key], value) !== 0) {
@@ -509,7 +524,7 @@ export default class DataTable extends React.Component {
               if (!obj[key].some(el => value.every(val => el.toString().includes(val)))) {
                 isValid = false;
               }
-            } else if (!(obj[key].find(el => el.id && value.indexOf(el.id.toString()) > -1))) {
+            } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
               isValid = false;
             }
           } else if (typeof obj[key] === 'boolean') {
@@ -660,8 +675,8 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
-            <div>
+          <div style={style.headRow}>
+            <div style={style.title}>
               {noTitle ? '' : title}
             </div>
             <div className="waybills-buttons">

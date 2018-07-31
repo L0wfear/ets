@@ -97,17 +97,19 @@ class MissionsCreationForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
-          <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
-            <EtsSelect
-              type="select"
-              options={ASSIGN_OPTIONS}
-              value={state.assign_to_waybill}
-              clearable={false}
-              onChange={this.handleChange.bind(this, 'assign_to_waybill')}
-            />
-          </Div>
-          <Div className="inline-block" hidden={state.status === 'closed'}>
-            <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>{'Сформировать'}</Button>
+          <Div className="inline-block">
+            <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
+              <EtsSelect
+                type="select"
+                options={ASSIGN_OPTIONS}
+                value={state.assign_to_waybill}
+                clearable={false}
+                onChange={this.handleChange.bind(this, 'assign_to_waybill')}
+              />
+            </Div>
+            <Div hidden={state.status === 'closed'}>
+              <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>{'Сформировать'}</Button>
+            </Div>
           </Div>
         </Modal.Footer>
 

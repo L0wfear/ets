@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 
 const tableMeta = {
@@ -10,6 +10,23 @@ const tableMeta = {
       filter: {
         type: 'multiselect',
       },
+    },
+    {
+      name: 'measure_unit_name',
+      displayName: 'Единица измерения',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
+      name: 'is_excluding_mileage',
+      displayName: 'Без учета пробега',
+      filter: {
+        type: 'multiselect',
+        labelFunction: is_excluding_mileage => is_excluding_mileage ? 'Да' : 'Нет',
+      },
+      cssClassName: 'width150',
     },
     {
       name: 'equipment',
@@ -26,6 +43,8 @@ const tableMeta = {
 export default (props) => {
   const renderers = {
     equipment: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
+    is_excluding_mileage: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
+    measure_unit_name: ({ data }) => <div>{data || '-'}</div>,
   };
 
   return (

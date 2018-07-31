@@ -382,7 +382,7 @@ body.application hr {
     }
 
     &-name-short {
-      max-width: 120px !important;
+      max-width: 140px !important;
     }
   }
 }
@@ -2390,6 +2390,12 @@ div.none {
 .inline-block {
   display: inline-block;
 }
+
+.modal-footer>.inline-block {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .faxogramms-date-range {
   display: flex;
   align-items: baseline;
@@ -3015,9 +3021,6 @@ div.none {
 
 .datepicker-range {
   display: flex;
-  &.mission {
-    align-items: center;
-  }
   
   .date-divider {
     display: inline-block;
@@ -3039,7 +3042,11 @@ div.none {
 }
 
 .assignToWaybillCheck {
-    text-align: left !important;
+  width: 300px;
+  text-align: left !important;
+  height: 22px;
+  margin-right: 20px;
+
   .form-group {
 
     display: inline-block;

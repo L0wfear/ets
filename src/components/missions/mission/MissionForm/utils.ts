@@ -1,4 +1,5 @@
 import { getKindTaskIds } from 'components/missions/utils/utils';
+import { AvailableRouteTypes } from "components/missions/mission/MissionForm/types";
 
 interface IFormState {
   id?: number;
@@ -164,27 +165,14 @@ export const getRoutesBySomeData = (formState, stateData, routeAction) =>
     type: stateData.available_route_types.join(','),
   });
 
-export const handleRouteFormHide = (isSubmitted, result, formState, stateData, routeActionGetRouteById, routeActionGetRoutesBySomeData) => {
-  if (isSubmitted === true) {
-    const { createdRoute: { result: [{ id: route_id }] } } = result;
-
-    return Promise.all([
-      getDataBySelectedRoute({ route_id }, routeActionGetRouteById),
-      getRoutesBySomeData(formState, stateData, routeActionGetRoutesBySomeData),
-    ])
-    .then(([ selectedRoute, routesList ]) => ({
-      showRouteForm: false,
-      selectedRoute,
-      routesList,
-      route_id,
-    }));
-  }
-
-  return Promise.resolve({
-    showRouteForm: false,
-    selectedRoute: null,
-  });
-};
+export const handleRouteFormHide = (formState, stateData, routeActionGetRoutesBySomeData) => {
+  return Promise.all([
+    getRoutesBySomeData(formState, stateData, routeActionGetRoutesBySomeData),
+  ])
+  .then(([ routesList ]) => ({
+    routesList,
+  }));
+}
 
 export const getNormDataByNormatives = (normatives, kind_task_ids, action) =>
   action({ norm_ids: normatives.map(({ id }) => id).join(','), kind_task_ids }).then(({ result: normativesData }) => normativesData)
@@ -213,3 +201,5 @@ export const getDataByNormatives = (normatives, kind_task_ids, formState, fromWa
         available_route_types,
       }));
   });
+
+export const isOdhRouteTypePermitted = (types: string[]) => types.includes(AvailableRouteTypes.Mixed);

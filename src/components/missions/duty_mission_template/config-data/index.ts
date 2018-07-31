@@ -3,7 +3,7 @@ import components from 'components/missions/duty_mission_template/config-data/co
 
 export default {
   path: '/duty-mission-templates-journal',
-  title: 'Шаблоны наряд заданий',
+  title: 'Шаблоны наряд-заданий',
   entyity: 'duty_mission-template',
   noDotList: false,
   components,

@@ -28,7 +28,7 @@ export const getTableMeta = ({
       },
       {
         name: 'number',
-        displayName: 'Номер',
+        displayName: 'Номер задания',
         type: 'number',
         filter: {
           type: 'advanced-string',
@@ -41,6 +41,15 @@ export const getTableMeta = ({
         type: 'number',
         filter: {
           type: 'advanced-string',
+        },
+        cssClassName: 'width60',
+      },
+      {
+        name: 'column_id',
+        displayName: 'Номер колонны',
+        type: 'number',
+        filter: {
+          type: 'advanced-number',
         },
         cssClassName: 'width60',
       },
@@ -155,7 +164,7 @@ export const getTableMeta = ({
         display: false,
         filter: {
           type: 'multiselect',
-          options: municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })),
+          options: uniqBy(municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })), 'value'),
         },
       },
       {
@@ -198,6 +207,7 @@ export default (props) => {
   const renderers = {
     current_percentage: ({ data }) => <span>{data !== null ? Math.floor(data) : '-'}</span>,
     rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
+    column_id: ({ data }) => <span>{data || '-'}</span>,
     mission_source_id: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
@@ -223,7 +233,7 @@ export default (props) => {
 
   return (
     <Table
-      title="Журнал заданий"
+      title={props.is_archive ? 'Архив заданий' : 'Журнал заданий'}
       results={props.data}
       renderers={renderers}
       enumerated

@@ -9,6 +9,7 @@ import {
 import { routeSchema } from 'models/RouteModel.js';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
+import { polyState } from 'constants/polygons.js';
 
 @autobind
 class RouteFormWrap extends FormWrap {
@@ -17,6 +18,10 @@ class RouteFormWrap extends FormWrap {
     super(props);
 
     this.schema = routeSchema;
+  }
+
+  componentDidMount() {
+    this.context.flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   componentWillReceiveProps(props) {
@@ -31,18 +36,7 @@ class RouteFormWrap extends FormWrap {
         }
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
-        if (formState.type !== 'mixed') {
-          formState.polys = cloneDeep(this.props.dtPolys);
-        }
-        if (formState.type !== 'simple_dt') {
-          formState.polys = {
-            ...formState.polys,
-            ...cloneDeep(this.props.odhPolys),
-          };
-        }
-        each(formState.object_list.filter(o => !!o.object_id), (o) => {
-          if (formState.polys[o.object_id]) formState.polys[o.object_id].state = o.state;
-        });
+        this.updateFromStatePolys(formState);
       } else {
         formState = {};
       }
@@ -56,18 +50,63 @@ class RouteFormWrap extends FormWrap {
     }
   }
 
-  resetFormState() {
-    const { formState } = this.state;
-    formState.polys = {};
-    if (formState.type !== 'mixed') {
-      formState.polys = cloneDeep(this.props.dtPolys);
+  updateFromStatePolys = (formState) => {
+    const {
+      municipal_facility_id,
+      type: object_type,
+    } = formState;
+
+    let new_polys = {};
+    if (object_type !== 'mixed') {
+      new_polys = cloneDeep(this.props.dtPolys);
     }
-    if (formState.type !== 'simple_dt') {
-      formState.polys = {
-        ...formState.polys,
+    if (object_type !== 'simple_dt') {
+      new_polys = {
+        ...new_polys,
         ...cloneDeep(this.props.odhPolys),
       };
     }
+
+    if (municipal_facility_id && (object_type === 'mixed' || object_type === 'simple_dt')) {
+      const object_type_id = this.props.technicalOperationsObjectsList.find(({ type }) => object_type === type).id;
+      this.context.flux.getActions('geoObjects').getGeozoneMunicipalFacility(municipal_facility_id, object_type_id)
+        .then((rows) => {
+          const polys = rows.reduce((newObj, { id, name, shape }) => ({
+            ...newObj,
+            [id]: {
+              name,
+              shape: JSON.parse(shape),
+              state: polyState.SELECTABLE,
+            },
+          }), {});
+
+          each(formState.object_list.filter(o => !!o.object_id), (o) => {
+            if (polys[o.object_id]) {
+              polys[o.object_id].state = o.state;
+            } else if (new_polys[o.object_id]) {
+              polys[o.object_id] = {
+                ...new_polys[o.object_id],
+                state: o.state,
+                old: true,
+              };
+            }
+          });
+
+          this.handleFormStateChange('polys', polys);
+        });
+    }
+    each(formState.object_list.filter(o => !!o.object_id), (o) => {
+      if (new_polys[o.object_id]) {
+        new_polys[o.object_id].state = o.state;
+      }
+    });
+
+    this.handleFormStateChange('polys', new_polys);
+  }
+
+  resetFormState = async () => {
+    const { formState } = this.state;
+
     formState.object_list = [];
     formState.input_lines = [];
     this.setState({ formState });
@@ -138,6 +177,7 @@ class RouteFormWrap extends FormWrap {
         notTemplate={this.props.notTemplate}
         structureId={this.props.structureId}
         fromOrder={this.props.fromOrder}
+        updateFromStatePolys={this.updateFromStatePolys}
         {...this.state}
         {...this.additionalProps()}
       />
@@ -146,4 +186,4 @@ class RouteFormWrap extends FormWrap {
 
 }
 
-export default connectToStores(RouteFormWrap, ['routes', 'geoObjects']);
+export default connectToStores(RouteFormWrap, ['routes', 'geoObjects', 'objects']);

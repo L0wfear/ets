@@ -153,7 +153,7 @@ export default class APIService {
   }
 
   path(...args) {
-    this.url = urljoin(this.canonicUrl, ...args);
+    this.url = urljoin(this.url, ...args);
     return this;
   }
 

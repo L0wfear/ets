@@ -1,4 +1,19 @@
 import { Store } from 'flummox';
+import {
+  diffDates,
+} from 'utils/dates';
+import uniqBy from 'lodash/uniqBy';
+
+const TYPE_GROUP = {
+  personal: {
+    arr: 'orderNotReadList',
+    dependent: 'commonNotificationList',
+  },
+  common: {
+    arr: 'admNotReadNotificationsList',
+    dependent: 'admNotificationList',
+  },
+};
 
 const mock = `{
     "result": {
@@ -45,6 +60,14 @@ const mock = `{
     }
 }`;
 
+
+const getUserNotificationList = (commonNotificationList, admNotificationList) => [
+  ...commonNotificationList,
+  ...admNotificationList,
+].sort(({ created_at: created_at_first }, { created_at: created_at_second }) =>
+    diffDates(created_at_second, created_at_first)
+);
+
 export default class UserNotificationStore extends Store {
 
   constructor(flux) {
@@ -53,61 +76,190 @@ export default class UserNotificationStore extends Store {
     const userNotificationActions = flux.getActions('userNotifications');
 
     this.register(userNotificationActions.getNotifications, this.handleGetNotifications);
-    this.register(userNotificationActions.getNotificationsPopup, this.handleGetNotificationsPopup);
-    this.register(userNotificationActions.decNotificationsPopup, this.handleDecNotificationsPopup);
+    this.register(userNotificationActions.getAdmNotifications, this.handleGetAdmNotifications);
+    this.register(userNotificationActions.markAsRead, this.handleMarkAsRead);
+    this.register(userNotificationActions.markAllAsRead, this.handleMarkAsRead);
+
+    this.register(userNotificationActions.setMakeReadOrderNotification, this.handlesetMakeReadOrderNotification);
+
+    this.register(userNotificationActions.setMakeReadAdmNotification, this.handleSetMakeReadAdmNotification);
+
+
     this.register(userNotificationActions.getUserNotificationInfo, this.handleGetUserNotificationInfo);
-    this.register(userNotificationActions.changesUserNotificationsCount, this.handleChangesUserNotificationsCount)
+
+    this.register(userNotificationActions.getOrderNotRead, this.handleSetNotifyFromArr);
+    this.register(userNotificationActions.getAdmNotReadNotifications, this.handleSetNotifyFromArr);
+    this.register(userNotificationActions.setNotifyFromWs, this.handleSetNotifyFromWs);
+
     this.state = {
-      notificationPopupList: [],
-      notificationPopupLast: [],
+      commonNotificationList: [],
       userNotificationList: [],
+      admNotificationList: [],
+
+      notReadAdmNotificationList: [],
+
+      orderNotReadList: [],
+      admNotReadNotificationsList: [],
+
       countNotRead: 0,
-      hasNewOrderNotifications: false,
     };
   }
-  handleGetNotificationsPopup({ result: { rows = [] } }) {
-    const { notificationPopupList: notificationPopupListOld } = this.state;
-    const notificationPopupIndexOld = notificationPopupListOld.reduce((newObj, { id, ...other }) => ({ ...newObj, [id]: { ...other } }), {});
-    const notificationPopupList = rows;
+
+  handleSetNotifyFromArr({ result: { rows }, group }) {
+    this.handleSetNotifyFromWs(rows.map(r => ({ ...r, group })));
+  }
+  handleSetNotifyFromWs(props) {
+    let notifyArr = props;
+    if (!Array.isArray(notifyArr)) {
+      notifyArr = [notifyArr];
+    }
+
+    const {
+      commonNotificationList: [...commonNotificationList],
+      admNotificationList: [...admNotificationList],
+      orderNotReadList: [...orderNotReadList],
+      admNotReadNotificationsList: [...admNotReadNotificationsList],
+    } = this.state;
+
+    const changedState = {
+      commonNotificationList,
+      admNotificationList,
+      orderNotReadList,
+      admNotReadNotificationsList,
+    };
+
+    notifyArr.forEach((notify) => {
+      const { group } = notify;
+      if (TYPE_GROUP[group]) {
+        changedState[TYPE_GROUP[group].arr].push(notify);
+        changedState[TYPE_GROUP[group].dependent].push(notify);
+
+        changedState[TYPE_GROUP[group].arr] = uniqBy(changedState[TYPE_GROUP[group].arr], 'id');
+        changedState[TYPE_GROUP[group].dependent] = uniqBy(changedState[TYPE_GROUP[group].dependent], 'id');
+      } else {
+        throw new Error(`type ${group} not found in TYPE_GROUP`);
+      }
+    });
 
     this.setState({
-      notificationPopupList,
-      notificationPopupLast: notificationPopupList.slice(-1),
-      hasNewOrderNotifications: notificationPopupList.some(({ id }) => !notificationPopupIndexOld[id]),
+      ...changedState,
+      userNotificationList: getUserNotificationList(changedState.commonNotificationList, changedState.admNotificationList),
+      countNotRead: this.state.countNotRead
+        + (changedState.orderNotReadList.length - this.state.orderNotReadList.length)
+        + (changedState.admNotReadNotificationsList.length - this.state.admNotReadNotificationsList.length),
     });
-  }
-  handleDecNotificationsPopup() {
-    const notificationPopupList = [...this.state.notificationPopupList].slice(0, -1);
-    const notificationPopupLast = notificationPopupList.slice(-1);
-    this.setState({
-      notificationPopupList,
-      notificationPopupLast,
-      hasNewOrderNotifications: false,
-    });
-  }
-  handleGetNotifications({ result }) {
-    this.setState({ userNotificationList: result.rows });
   }
 
-  handleGetUserNotificationInfo({ result }) {
-    const { rows: { not_read_num = 0 } } = result;
+  handleGetNotifications({ result: { rows } }) {
+    const changedState = {
+      commonNotificationList: [],
+    };
+    let hasChangeInOrder = false;
+    const { orderNotReadList: [...orderNotReadList] } = this.state;
+
+    rows.forEach((notification) => {
+      changedState.commonNotificationList.push({
+        ...notification,
+        front_type: 'common',
+      });
+
+      if (notification.type_id === 6 && !notification.is_read) {
+        hasChangeInOrder = true;
+        orderNotReadList.push(notification);
+      }
+    });
+
+    if (hasChangeInOrder) {
+      changedState.orderNotReadList = uniqBy(orderNotReadList, 'id').sort((a, b) => a.id - b.id);
+    }
+
+    this.setState({
+      ...changedState,
+      userNotificationList: getUserNotificationList(changedState.commonNotificationList, this.state.admNotificationList),
+    });
+  }
+  handleGetAdmNotifications({ result: { rows } }) {
+    const changedState = {
+      admNotificationList: [],
+    };
+    let hasChangeInAdm = false;
+    const { admNotReadNotificationsList: [...admNotReadNotificationsList] } = this.state;
+
+    rows.forEach((notification) => {
+      changedState.admNotificationList.push({
+        ...notification,
+        front_type: 'adm',
+      });
+
+      if (!notification.is_read) {
+        hasChangeInAdm = true;
+        admNotReadNotificationsList.push(notification);
+      }
+    });
+
+    if (hasChangeInAdm) {
+      changedState.admNotReadNotificationsList = uniqBy(admNotReadNotificationsList, 'id').sort((a, b) => a.id - b.id);
+    }
+
+    this.setState({
+      ...changedState,
+      userNotificationList: getUserNotificationList(this.state.commonNotificationList, changedState.admNotificationList),
+    });
+  }
+
+  handlesetMakeReadOrderNotification(id) {
+    const orderNotReadList = this.state.orderNotReadList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
+    const commonNotificationList = this.state.commonNotificationList.map(common => ({ ...common, is_read: common.id === id ? true : common.is_read }));
+    const userNotificationList = getUserNotificationList(commonNotificationList, this.state.admNotificationList);
+
+    this.setState({
+      orderNotReadList,
+      commonNotificationList,
+      userNotificationList,
+      countNotRead: this.state.countNotRead - 1,
+    });
+  }
+
+  handleSetMakeReadAdmNotification(id) {
+    const admNotReadNotificationsList = this.state.admNotReadNotificationsList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
+    const admNotificationList = this.state.admNotificationList.map(common => ({ ...common, is_read: common.id === id ? true : common.is_read }));
+    const userNotificationList = getUserNotificationList(admNotificationList, this.state.commonNotificationList);
+
+    this.setState({
+      admNotReadNotificationsList,
+      admNotificationList,
+      userNotificationList,
+      countNotRead: this.state.countNotRead - 1,
+    });
+  }
+
+  handleMarkAsRead([commonAns, admAns]) {
+    const { result: { rows: commonNotificationList = [], notUpdate: commonNotUpdate } } = commonAns;
+    const { result: { rows: admNotificationList = [], notUpdate: admNotUpdate } } = admAns;
+
+    const changedObj = {};
+    if (!commonNotUpdate) {
+      changedObj.commonNotificationList = commonNotificationList;
+      changedObj.orderNotReadList = this.state.orderNotReadList.filter(({ id }) => (
+        (commonNotificationList.find(common => common.id === id) || {}).not_read
+      ));
+    }
+    if (!admNotUpdate) {
+      changedObj.admNotificationList = admNotificationList;
+      changedObj.admNotReadNotificationsList = this.state.admNotReadNotificationsList.filter(({ id }) => (
+        (admNotificationList.find(common => common.id === id) || {}).not_read
+      ));
+    }
+
+    changedObj.userNotificationList = getUserNotificationList(changedObj.admNotificationList || this.state.admNotificationList, changedObj.commonNotificationList || this.state.commonNotificationList)
+    changedObj.countNotRead = changedObj.userNotificationList.filter(({ is_read }) => !is_read).length;
+
+    this.setState(changedObj);
+  }
+
+  handleGetUserNotificationInfo({ result: { rows: { not_read_num } } }) {
     this.setState({
       countNotRead: not_read_num,
     });
-  }
-
-  handleChangesUserNotificationsCount({ count = 0 }) {
-    const { countNotRead } = this.state;
-    const newCountNotReadNumPrev = this.changeNotification(count, countNotRead);
-    const newCountNotReadNum = newCountNotReadNumPrev < 0 ? 0 : newCountNotReadNumPrev;
-
-    this.setState({
-      countNotRead: newCountNotReadNum,
-    });
-  }
-
-  changeNotification(count, countNotRead) {
-    if (count === 'is_read_all') return 0;
-    return countNotRead + count;
   }
 }

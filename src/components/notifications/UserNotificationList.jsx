@@ -23,7 +23,9 @@ export default class UserNotificationList extends CheckableElementsList {
     const { flux } = this.context;
 
     flux.getActions('userNotifications').getNotifications();
+    flux.getActions('userNotifications').getAdmNotifications();
   }
+
   handleMarkAllAsRead = () => {
     confirmDialog({
       title: 'Внимание!',
@@ -51,7 +53,7 @@ export default class UserNotificationList extends CheckableElementsList {
     const baseButtons = super.getButtons();
     const checkedItems = Object.entries(checkedElements).reduce((obj, [key, el]) => {
       if (!el.is_read) {
-        obj.push(parseInt(key, 10));
+        obj.push({ id: parseInt(key, 10), front_type: el.front_type });
       }
 
       return obj;
@@ -67,5 +69,49 @@ export default class UserNotificationList extends CheckableElementsList {
     ];
 
     return buttons;
+  }
+
+  /**
+   * @override
+   */
+  selectElement = ({ props }) => {
+    const DOUBLECLICK_TIMEOUT = 300;
+    function onDoubleClick() {
+      return this.setState({
+        showForm: true,
+      });
+    }
+    const { data: { ...data } } = props;
+
+    const { is_read, id, front_type } = data;
+    if (!is_read) {
+      this.handleMarkAsRead([{ id, front_type }]);
+    }
+    data.is_read = false;
+
+    if (props.fromKey) {
+      const selectedElement = this.state.elementsList.find(el => el.id === id);
+      if (selectedElement) {
+        this.setState({ selectedElement });
+      }
+      return;
+    }
+
+    this.clicks += 1;
+
+    if (this.clicks === 1) {
+      const selectedElement = this.state.elementsList.find(el => el.id === id);
+
+      this.setState({ selectedElement });
+      setTimeout(() => {
+        // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
+        if (this.clicks !== 1) {
+          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField] && this.state.readPermission) {
+            onDoubleClick.call(this);
+          }
+        }
+        this.clicks = 0;
+      }, DOUBLECLICK_TIMEOUT);
+    }
   }
 }

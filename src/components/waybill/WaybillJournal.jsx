@@ -45,7 +45,7 @@ export default class WaybillJournal extends CheckableElementsList {
     super.componentDidMount();
 
     const { flux } = this.context;
-    flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
+    this.updateList();
     flux.getActions('employees').getEmployees();
     flux.getActions('employees').getDrivers();
     flux.getActions('objects').getCars();
@@ -62,20 +62,29 @@ export default class WaybillJournal extends CheckableElementsList {
     }
   }
 
-  removeElementCallback() {
-    return this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
+  removeElementCallback = () => {
+    const { page } = this.state;
+    if (page !== 0) {
+      this.setState({ page: 0 });
+    } else {
+      this.updateList();
+    }
   }
 
-  async updateList(state) {
+  async updateList(state = this.state) {
+    this.setState({ wait: true });
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
     const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
+    this.setState({ wait: false });
 
     const { total_count } = waybills;
     const resultCount = waybills.result.length;
 
     if (resultCount === 0 && total_count > 0) {
       const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+      this.setState({ wait: true });
+      await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+      this.setState({ wait: false });
     }
   }
 
@@ -148,6 +157,14 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   additionalRender() {
-    return <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />;
+    const additionalRender = [
+      <Paginator key="pagination" currentPage={this.state.page} maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />,
+    ];
+
+    if (this.state.wait) {
+      additionalRender.push(<div key="kate" className="kate-waits"></div>);
+    }
+
+    return additionalRender;
   }
 }

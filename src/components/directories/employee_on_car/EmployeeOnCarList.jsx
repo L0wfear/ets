@@ -64,7 +64,10 @@ export default class EmployeeOnCarList extends ElementsList {
       }
     }
   }
-  onCarFormHide = () => this.setState({ carElement: null, showCarForm: false });
+  onCarFormHide = () => {
+    this.setState({ carElement: null, showCarForm: false });
+    this.init();
+  }
 
   getAdditionalProps = () => {
     const {

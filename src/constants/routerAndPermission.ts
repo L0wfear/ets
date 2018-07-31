@@ -11,6 +11,11 @@ import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
 import changeCompany from 'components/nav-item-role/config-data';
 
+
+const PROTO = window.location.protocol;
+const HOST = window.location.host;
+const PATHNAME = window.location.pathname;
+
 const routerAndPermission = {
   monitor,
   coverageReports,
@@ -24,9 +29,10 @@ const routerAndPermission = {
   notificationRegistry,
   programRegistry,
   admin: {
-    path: `http://213.79.88.5/${process.env.STAND !== 'prod' ? 'ets-stage2/' : ''}admin`,
+    path: `${PROTO}//${HOST}${PATHNAME}admin`,
     title: 'Администрирование',
     entyity: 'administration',
+    noHash: true,
     noDotList: true,
     noRoute: true,
     checkHidden: (isShow, props) => isShow && !props.isOkrug,

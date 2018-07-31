@@ -103,6 +103,9 @@ const PERMISSIONS = {
     car_condition_report: {
       list: 'car_condition_report.list',
     },
+    car_downtime_and_overmileage_report: {
+      list: 'car_downtime_and_overmileage_report.list',
+    },
   },
   'odh_coverage_report': 'odh_coverage_report',
   'dt_coverage_report': 'dt_coverage_report',

@@ -18,6 +18,8 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
 
+const is_archive = false;
+
 const ButtonUpdateDutyMission = enhanceWithPermissions({
   permission: permissions.update,
 })(Button);
@@ -80,7 +82,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
+    flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
@@ -92,14 +94,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   async refreshList(state = this.state) {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
-    const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, filter);
+    const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, filter, is_archive);
 
     const { total_count } = missions.result.meta;
     const resultCount = missions.result.rows.length;
 
     if (resultCount === 0 && total_count > 0) {
       const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, offset, state.sortBy, filter);
+      this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, offset, state.sortBy, filter, is_archive);
     }
   }
 
@@ -111,6 +113,15 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       return true;
     }
     return this.state.selectedElement.status !== 'assigned';
+  }
+  checkDisabledArchive() {
+    const validateMissionsArr = Object.values(this.state.checkedElements);
+    const { selectedElement } = this.state;
+    if (selectedElement) {
+      validateMissionsArr.push(selectedElement);
+    }
+
+    return validateMissionsArr.length === 0;
   }
 
   completeMission() {
@@ -273,15 +284,49 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
+  archiveCheckedElements = () => {
+    const { selectedElement } = this.state;
+    const { checkedElements = {} } = this.state;
+
+    if (selectedElement) {
+      checkedElements[selectedElement[this.selectField]] = selectedElement;
+    }
+
+    const moreOne = Object.keys(checkedElements).length > 1;
+
+    confirmDialog({
+      title: 'Внимание',
+      body: `Вы уверены, что хотите перенести в архив ${moreOne ? 'выбранные-наряд задания' : 'выбранное наряд-задание'}?`,
+    })
+    .then(() =>
+        Promise.all(
+          Object.entries(checkedElements).map(([id]) =>
+            this.context.flux.getActions('missions').changeArchiveDutuMissionStatus(id, true),
+          )
+        ).then(() => {
+          this.refreshList();
+          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены в' : 'Выбранно наряд-задание перенесено в'} архив`);
+        })
+        .catch(() => {
+          this.refreshList();
+        })
+        .then(() => {
+          this.setState({
+            selectedElement: null,
+            checkedElements: {},
+          });
+        })
+    )
+    .catch(() => {});
+  }
+
   getButtons() {
     const buttons = super.getButtons();
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
-      <ButtonToolbar key={'button-group'}>
-        <ButtonUpdateDutyMission bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateDutyMission>
-        <ButtonUpdateDutyMission bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateDutyMission>
-        {/* <Button bsSize="small" onClick={this.handleSubmit}><Glyphicon glyph="download-alt" /></Button>*/}
-      </ButtonToolbar>
+      <ButtonUpdateDutyMission key="button-complete-mission" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-reject-mission" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-archive-mission" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateDutyMission>,
     );
 
     return buttons;

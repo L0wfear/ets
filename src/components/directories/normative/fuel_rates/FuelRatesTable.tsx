@@ -35,6 +35,14 @@ export function tableMeta(props: any = {}): IDataTableSchema {
         },
       },
       {
+        name: 'measure_unit_name',
+        displayName: 'Единица измерения',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
         name: 'summer_rate',
         displayName: 'Норма для летнего периода',
         type: 'number',
@@ -81,6 +89,7 @@ export function tableMeta(props: any = {}): IDataTableSchema {
           type: 'multiselect',
           labelFunction: d => d ? 'Да' : 'Нет',
         },
+        cssClassName: 'width80',
       },
       {
         name: 'company_structure_name',
@@ -90,6 +99,15 @@ export function tableMeta(props: any = {}): IDataTableSchema {
           type: 'multiselect',
         },
       },
+      {
+        name: 'is_excluding_mileage',
+        displayName: 'Без учета пробега',
+        filter: {
+          type: 'multiselect',
+          labelFunction: is_excluding_mileage => is_excluding_mileage ? 'Да' : 'Нет',
+        },
+        cssClassName: 'width150',
+      },
     ],
   };
 }
@@ -97,6 +115,8 @@ export function tableMeta(props: any = {}): IDataTableSchema {
 const renderers: ISchemaRenderer = {
   order_date: ({ data }) => (<DateFormatter date={data} />),
   operation_equipment: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
+  is_excluding_mileage: ({ data }) => <div style={{ textAlign: 'center' }}><input type="checkbox" checked={!!data} readOnly /></div>,
+  measure_unit_name: ({ data }) => <div>{data || '-'}</div>,
 };
 
 const Table: React.SFC<any> = props  => (

@@ -132,7 +132,7 @@ export default class Field extends React.Component {
       <Div hidden={this.props.hidden}>
         <div className="form-group">
           <label className="control-label"><span>{this.props.label}</span></label>
-          <FormControl type="number" className={inputClassName} {...mainProps} value={value} />
+          <FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} />
         </div>
         <Div hidden={!error} className="error">{error}</Div>
       </Div>

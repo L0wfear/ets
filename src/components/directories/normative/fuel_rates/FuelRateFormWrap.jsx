@@ -29,6 +29,7 @@ export default class FuelRateFormWrap extends FormWrap {
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        measureUnitList={this.props.measureUnitList}
         {...this.state}
       />
       : null;

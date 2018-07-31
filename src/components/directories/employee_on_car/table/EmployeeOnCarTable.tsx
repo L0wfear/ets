@@ -55,7 +55,7 @@ const Table: React.SFC<any> = props => {
       title={'Матрица распределения ТС и водителей'}
       tableMeta={getTableMeta(props)}
       enumerated
-      uniqName={'gov_number'}
+      uniqName={'_uniq_field'}
       onRowClick={props.onRowClick}
       onRowDoubleClick={props.onRowDoubleClick}
       selected={props.selected}

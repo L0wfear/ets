@@ -1,28 +1,27 @@
 import * as React from 'react';
 import { Badge } from 'react-bootstrap';
-import { FluxContext } from 'utils/decorators';
-import { connectToStores } from 'utils/decorators';
+import { FluxContext, connectToStores } from 'utils/decorators';
 
+/* ETS2 */
 @connectToStores(['userNotifications'])
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
-  shouldComponentUpdate(nextProps) {
-    const { countNotRead: nextCountNotRead } = nextProps;
-    const { countNotRead: countNotRead } = this.props;
-    return nextCountNotRead !== countNotRead;
+  state = {
+    socketIsWork: false,
+    checkUsNotifInterval: 0,
   }
+  ws: any;
   componentDidMount() {
     this.checkNotifications();
-    const checkUsNotifInterval = setInterval(this.checkNotifications, 1000 * 60 * 60);
-    this.setState({ checkUsNotifInterval });
+    this.setState({ checkUsNotifInterval: setInterval(this.checkNotifications, 1000 * 60 * 60 ) });
   }
   componentWillUnmount() {
-    const { checkUsNotifInterval } = this.state;
-    clearInterval(checkUsNotifInterval);
+    clearInterval(this.state.checkUsNotifInterval);
   }
   checkNotifications = () => {
     this.context.flux.getActions('userNotifications').getUserNotificationInfo();
   }
+
   render() {
     const { countNotRead = 0 } = this.props;
     return <Badge>{countNotRead}</Badge>;

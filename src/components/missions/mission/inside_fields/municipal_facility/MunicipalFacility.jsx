@@ -80,6 +80,7 @@ class MunicipalFacility extends React.Component {
           start_date: new_ds,
           end_date: new_ds,
           kind_task_ids,
+          for: 'mission',
         };
 
         if (getNormIdFromState) {
@@ -157,11 +158,14 @@ class MunicipalFacility extends React.Component {
   };
 
   handleChange = (value, option) => {
-    this.props.handleChange('municipal_facility_id', value);
-    this.props.handleChange('municipal_facility_name', '');
+    console.log(value, this.state.value)
+    if (value !== this.state.value) {
+      this.props.handleChange('municipal_facility_id', value);
+      this.props.handleChange('municipal_facility_name', '');
 
-    if (value) {
-      this.props.getDataByNormatives(option.normatives);
+      if (value) {
+        this.props.getDataByNormatives(option.normatives);
+      }
     }
   }
 

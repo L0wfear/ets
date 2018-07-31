@@ -99,17 +99,6 @@ const notificationComponents = {
 
 @connectToStores(['userNotifications'])
 export default class UserNotificationForm extends Form {
-  componentDidMount() {
-    const state = this.props.formState;
-
-    if (!state.is_read) {
-      this.context.flux.getActions('userNotifications').markAsRead(
-        [state.id],
-        [state.id],
-        false,
-      );
-    }
-  }
   handleClick = (pathComponent, query) => {
     this.props.history.push(`/${pathComponent}?${queryString.stringify(query)}`);
   }
@@ -141,6 +130,10 @@ export default class UserNotificationForm extends Form {
   render() {
     const state = this.props.formState;
     const NotificationDesc = notificationComponents[state.type_code] || 'div';
+    const otherProps = {};
+    if (NotificationDesc !== 'div') {
+      otherProps.handleClick = this.handleClick;
+    }
 
     return (
       <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
@@ -160,7 +153,7 @@ export default class UserNotificationForm extends Form {
             <Col md={12} style={{ marginTop: 10 }}>
               <NotificationDesc
                 {...this.getDataForUserNotification(state.type_code, state)}
-                handleClick={this.handleClick}
+                {...otherProps}
               />
             </Col>
           </Row>

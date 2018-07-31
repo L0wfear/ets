@@ -44,3 +44,19 @@ export const customOptionsTableFromTypes = [
     optionsPath: ['asArr'],
   },
 ];
+
+export const customOptionsTableFromSensorTypes = [
+  {
+    name: 'SENSORS_TYPE_OPTIONS',
+    fields: ['id', 'name'],
+    callBack: data => data.reduce((SENSORS_TYPE_OPTIONS, { id, name }) => {
+      if (id && !SENSORS_TYPE_OPTIONS.asObj[id]) {
+        SENSORS_TYPE_OPTIONS.asObj[id] = name;
+        SENSORS_TYPE_OPTIONS.asArr.push({ value: id, label: name });
+      }
+
+      return SENSORS_TYPE_OPTIONS;
+    }, { asObj: {}, asArr: [] }),
+    optionsPath: ['asArr'],
+  },
+];

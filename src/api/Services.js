@@ -76,6 +76,8 @@ export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fuel
 export const CarPoolService = ETS_API_FACTORY.createApiServiceAdapter('carpool', {});
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
+export const GeozoneMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('geozone_municipal_facility', {});
+
 export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
 
 /* Reports - Отчеты */
@@ -107,7 +109,7 @@ export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
 
 export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
 export const UserNotificationInfoService = ETS_API_FACTORY.createApiServiceAdapter('notification_info', {});
-
+export const UserAdmNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_adm_registry', {});
 
 export const ObjectProperty = ETS_API_FACTORY.createApiServiceAdapter('object_property', {});
 

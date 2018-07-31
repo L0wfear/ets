@@ -43,6 +43,7 @@ export default class RouteForm extends Form {
   handleTypeChange(type) {
     this.setState({ vector: false });
     this.handleChange('type', type);
+    this.props.updateFromStatePolys({ ...this.props.formState, type });
     this.props.resetState();
   }
 
@@ -95,21 +96,24 @@ export default class RouteForm extends Form {
 
     this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue_new, vector: false });
     this.handleChange('type', type);
-
-    if (type !== routeTypeValue) {
+    if (type !== this.props.formState.type) {
       this.props.resetState();
     }
+    this.props.updateFromStatePolys({ ...this.props.formState, type });
   }
 
   handleTechChange(v) {
-    this.handleChange('technical_operation_id', v);
+    if (v !== this.props.formState.technical_operation_id) {
+      this.handleChange('technical_operation_id', v);
 
-    this.setState({ vector: false });
-    this.handleChange('municipal_facility_id', null);
+      this.setState({ vector: false });
+      this.handleChange('municipal_facility_id', null);
+      this.handleChange('type', null);
 
-    if (!this.props.formState.copy) {
-      this.handleChange('input_lines', []);
-      this.handleChange('draw_object_list', []);
+      if (!this.props.formState.copy) {
+        this.handleChange('input_lines', []);
+        this.handleChange('draw_object_list', []);
+      }
     }
   }
 

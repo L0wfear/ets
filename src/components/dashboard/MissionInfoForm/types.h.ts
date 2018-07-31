@@ -14,6 +14,7 @@ export interface IComponentWillReceivePropsProps {
 export type IComponentWillReceiveProps = (props: IComponentWillReceivePropsProps) => void;
 
 export interface IMIssionData {
+  column_id: number | void;
   current_percentage: number;
   date_start: string | Date;
   date_end: string | Date;

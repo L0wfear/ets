@@ -37,7 +37,6 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetEmployeeBindedToCar(result) {
-    console.log(result)
     this.setState({
       employeesBindedoOCarList: result,
       employeesBindedoOCarIndex: keyBy(result, 'employee_id'),

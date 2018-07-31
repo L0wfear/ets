@@ -3,7 +3,7 @@ import React from 'react';
 import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
-import { get, find } from 'lodash';
+import { get, find, uniqBy } from 'lodash';
 
 export const getTableMeta = ({
   structures = [],
@@ -67,7 +67,7 @@ export const getTableMeta = ({
         display: false,
         filter: {
           type: 'multiselect',
-          options: municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })),
+          options: uniqBy(municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })), 'value'),
         },
       },
       {
@@ -174,16 +174,19 @@ export default (props) => {
     object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
   };
 
-  return (<Table title="Журнал наряд-заданий"
-    results={props.data}
-    renderers={renderers}
-    tableMeta={getTableMeta(props)}
-    serverPagination
-    externalFilter={props.changeFilter}
-    externalChangeSort={props.changeSort}
-    initialSort={'number'}
-    initialSortAscending={false}
-    multiSelection
-    {...props}
-  />);
+  return (
+    <Table
+      title={props.is_archive ? 'Архив наряд-заданий' : 'Журнал наряд-заданий'}
+      results={props.data}
+      renderers={renderers}
+      tableMeta={getTableMeta(props)}
+      serverPagination
+      externalFilter={props.changeFilter}
+      externalChangeSort={props.changeSort}
+      initialSort={'number'}
+      initialSortAscending={false}
+      multiSelection
+      {...props}
+    />
+  );
 };

@@ -103,16 +103,16 @@ export default class TechnicalOperationRelationsList extends ElementsList {
 
   getData(props) {
     return this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props)
-    .then(({ result }) => {
-      const options = makeOptions({
-        data: result,
-        options: customOptionsRoutes,
+      .then(({ result }) => {
+        const options = makeOptions({
+          data: result,
+          options: customOptionsRoutes,
+        });
+
+        this.setState({ ...options });
+
+        return { result };
       });
-
-      this.setState({ ...options });
-
-      return { result };
-    });
   }
 
   handleChangeDriver = () => {

@@ -3,6 +3,7 @@
  * Отчеты
  */
 import Analytics from 'components/reports/analytics/Analytics.jsx';
+import CarDowntimeAndOvermileage from 'components/reports/car_downtime_and_overmileage/report';
 import BrigadeEfficiency from 'components/reports/operational/brigade_efficiency/report.tsx';
 import CarUsageReportWithTrack from 'components/reports/operational/car_usage_report_with_track/report';
 import carConditin from 'components/reports/operational/car-condition/report';
@@ -26,6 +27,7 @@ export default {
   Analytics,
   BrigadeEfficiency,
   carConditin,
+  CarDowntimeAndOvermileage,
   CarUsageReportWithTrack,
   CleaningStatusTechOp,
   DailyCleaningCafap,

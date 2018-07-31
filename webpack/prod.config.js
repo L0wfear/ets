@@ -159,8 +159,14 @@ module.exports = {
         VERSION: JSON.stringify(versionUtils.version)
       }
     }),
-    new UglifyJSPlugin({
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        pure_funcs: ['console.log'],
+        warnings: false,
+      },
       sourceMap: useSourceMaps,
+      mangle: false,
     }),
     new CopyWebpackPlugin([
       {

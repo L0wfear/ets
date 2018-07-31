@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import { Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
 import { get } from 'lodash';
 
-import { getServerSortingField, extractTableMeta } from 'components/ui/table/utils';
+import { getServerSortingField, extractTableMeta, toServerFilteringObject } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
@@ -72,19 +72,17 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   async updateList(state = this.state) {
-    this.setState({ wait: true });
+    const filter = toServerFilteringObject(state.filter, this.tableMeta);
+
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
-    const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
-    this.setState({ wait: false });
+    const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, filter);
 
     const { total_count } = waybills;
     const resultCount = waybills.result.length;
 
     if (resultCount === 0 && total_count > 0) {
       const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.setState({ wait: true });
-      await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
-      this.setState({ wait: false });
+      await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, filter);
     }
   }
 
@@ -160,10 +158,6 @@ export default class WaybillJournal extends CheckableElementsList {
     const additionalRender = [
       <Paginator key="pagination" currentPage={this.state.page} maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />,
     ];
-
-    if (this.state.wait) {
-      additionalRender.push(<div key="kate" className="kate-waits"></div>);
-    }
 
     return additionalRender;
   }

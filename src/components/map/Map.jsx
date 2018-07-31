@@ -205,20 +205,29 @@ export default class OpenLayersMap extends React.Component {
     el.style.cursor = changeCursor || hit ? 'pointer' : '';
   }
 
-  async handleFeatureClick(track, possibleTrackPoint, event) {
-    const pointCoords = possibleTrackPoint.coords_msk;
+  handleFeatureClick(track, possibleTrackPoint, event) {
     let prevPoint = null;
     let nextPoint = null;
-    track.points.forEach((point, i) => {
+    track.points.some((point, i) => {
       if (point.coords === possibleTrackPoint.coords) {
-        nextPoint = track.points[i + 1] ? track.points[i + 1] : null;
-        prevPoint = track.points[i - 1] ? track.points[i - 1] : null;
+        // из-за reduceRight в треке
+        nextPoint = track.points[i - 1] ? track.points[i - 1] : null;
+        prevPoint = track.points[i + 1] ? track.points[i + 1] : null;
       }
+
+      return point.coords === possibleTrackPoint.coords;
     });
-    // console.log( 'trackpoint  found', possibleTrackPoint);
+
+    this.makePopupTrack(track, possibleTrackPoint, prevPoint, nextPoint, event);
+  }
+
+  async makePopupTrack(track, possibleTrackPoint, prevPoint, nextPoint, event) {
+    const pointCoords = possibleTrackPoint.coords_msk;
+
     const makePopupFn = await track.getTrackPointTooltip(this.props.flux, possibleTrackPoint, prevPoint, nextPoint, event);
     this.popupCar.show(pointCoords, makePopupFn());
   }
+
   handleCarSelect(clickedMarker) {
     clickedMarker.onClick();
     this._pointsStore.handleSelectPoint(clickedMarker.point);
@@ -247,7 +256,7 @@ export default class OpenLayersMap extends React.Component {
     const map = this.map;
     const pixel = ev.pixel; // координаты клика во viewport
     const coordinate = ev.coordinate;
-    let clickedMarker = null;
+    const clickedMarker = this.getSelectedCar(coordinate);
 
     // проверка – не кликнули на точку трэка?
     const currentSelectedPoint = this._pointsStore.getSelectedPoint();
@@ -255,15 +264,22 @@ export default class OpenLayersMap extends React.Component {
       const marker = currentSelectedPoint.marker;
       if (marker.hasTrackLoaded()) {
         const track = marker.track;
-        const possibleTrackPoint = track.getPointAtCoordinate(coordinate);
-        if (possibleTrackPoint !== null) {
-          this.handleFeatureClick(track, possibleTrackPoint);
-          return;
+        if (clickedMarker && this._pointsStore.state.selected && this._pointsStore.state.selected.car.gps_code === clickedMarker.point.car.gps_code) { // если кликнуть на машину
+          const [possibleTrackPoint, prevPoint] = [...track.points].reverse();
+          if (possibleTrackPoint && possibleTrackPoint.timestamp === clickedMarker.point.timestamp) {
+            this.makePopupTrack(track, possibleTrackPoint, prevPoint, null);
+            return;
+          }
+        } else {
+          const possibleTrackPoint = track.getPointAtCoordinate(coordinate);
+          if (possibleTrackPoint !== null) {
+            this.handleFeatureClick(track, possibleTrackPoint);
+            return;
+          }
         }
       }
     }
 
-    clickedMarker = this.getSelectedCar(coordinate);
     if (clickedMarker) { // если кликнуть на машину
       this._pointsStore.handleSelectPoint(clickedMarker.point);
     }

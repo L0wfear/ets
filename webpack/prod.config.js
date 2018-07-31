@@ -8,8 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const versionUtils = require('./utils/version');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const stand = process.env.STAND || 'production';
-const useSourceMaps = process.env.USE_SOURCE_MAPS || false;
+const stand = process.env.STAND || 'prod';
 
 module.exports = {
   devtool: 'source-map',
@@ -160,7 +159,7 @@ module.exports = {
       }
     }),
     new UglifyJSPlugin({
-      sourceMap: useSourceMaps,
+      sourceMap: stand === 'prod',
     }),
     new CopyWebpackPlugin([
       {

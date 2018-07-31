@@ -164,7 +164,7 @@ export const getTableMeta = ({
         display: false,
         filter: {
           type: 'multiselect',
-          options: municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })),
+          options: uniqBy(municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })), 'value'),
         },
       },
       {

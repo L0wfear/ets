@@ -209,19 +209,40 @@ export default class CarInfo extends React.Component {
     if (!track) return;
 
     // обновление инфы о последней точке при обновлении трэка
-    track.onUpdate(() => {
-      const dt = new Date();
-      if (this.state.tillNow) {
-        this.setState({ to_dt_: dt }); // обновляем дату "по"
-      }
-    });
     track.removeAllPoints();
 
     track.fetch(this.props.flux, from_dt, to_dt).then((trackInfo) => {
-      this.setState({
+      const changedState = {
         carsSensors: trackInfo.cars_sensors,
         sensorsInfo: trackInfo.sensors,
         trackPoints: trackInfo.track,
+      };
+      if (this.state.tillNow) {
+        changedState.to_dt_ = new Date();
+      }
+
+      const [lastPointInTrack] = [...trackInfo.track].reverse();
+      const lastPointInStore = this.props.flux.getStore('points').state.points[this.props.car.id];
+
+      if (lastPointInTrack && lastPointInStore && lastPointInTrack.timestamp > lastPointInStore.timestamp) {
+        const updatePointData = {
+          coords: [...lastPointInTrack.coords].reverse(),
+          coords_msk: [...lastPointInTrack.coords_msk].reverse(),
+          direction: lastPointInTrack.direction,
+          distance: lastPointInTrack.distance,
+          speed_avg: lastPointInTrack.speed,
+          speed_max: lastPointInTrack.speed_max,
+          nsat: lastPointInTrack.nsat,
+          timestamp: lastPointInTrack.timestamp,
+        };
+
+        this.props.flux.getStore('points').handleUpdatePoints({
+          [this.props.car.id]: updatePointData,
+        });
+      }
+
+      this.setState({
+        ...changedState,
       });
     });
   }

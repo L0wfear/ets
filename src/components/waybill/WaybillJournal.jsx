@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import { Glyphicon, ButtonToolbar, Dropdown, MenuItem as BootstrapMenuItem } from 'react-bootstrap';
 import { get } from 'lodash';
 
-import { getServerSortingField, extractTableMeta } from 'components/ui/table/utils';
+import { getServerSortingField, extractTableMeta, toServerFilteringObject } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
@@ -67,15 +67,17 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   async updateList(state) {
+    const filter = toServerFilteringObject(state.filter, this.tableMeta);
+
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
-    const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, state.filter);
+    const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, filter);
 
     const { total_count } = waybills;
     const resultCount = waybills.result.length;
 
     if (resultCount === 0 && total_count > 0) {
       const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter);
+      this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, filter);
     }
   }
 
@@ -84,7 +86,7 @@ export default class WaybillJournal extends CheckableElementsList {
   }
 
   changeSort(field, direction) {
-    this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });    
+    this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
   }
 
   changeFilter(filter) {

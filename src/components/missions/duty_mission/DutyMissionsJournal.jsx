@@ -262,7 +262,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   changeSort(field, direction) {
-    this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });    
+    this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
   }
 
   changeFilter(filter) {

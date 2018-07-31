@@ -37,12 +37,12 @@ const config = {
 const notification_config = {
   develop: {
     stage: 'wss://ets-test.mos.ru/ets-stage2/services/notification_ws',
-    prod: 'wss://ets2.mos.ru/ets-study/services/notification_ws',
+    prod: 'wss://ets2.mos.ru/services/notification_ws',
     dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
   },
   origin: {
     stage: `wss://${HOST}${PATHNAME}services/notification_ws`,
-    prod: `wss://${HOST}${PATHNAME}ets-study/services/notification_ws`,
+    prod: `wss://${HOST}${PATHNAME}services/notification_ws`,
     dev: `ws://${HOST}${PATHNAME}services/notification_ws`,
   },
 };

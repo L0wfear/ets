@@ -18,5 +18,10 @@
   }
   &.has-error>.rw-widget-picker.rw-widget-container {
     border-color: red;
+    >input {
+      border-left: red 1px solid;
+      border-top: red 1px solid;
+      border-bottom: red 1px solid;
+    }
   }
 }

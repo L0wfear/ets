@@ -547,17 +547,13 @@ export default class Track {
 
 
   getTrackPointsInExtent(extent) {
-    const points = this.points;
-    const returns = [];
-
-    for (const key in points) {
-      const point = points[key];
+    return Object.values(this.points).reduceRight((newArr, point) => {
       if (ol.extent.containsCoordinate(extent, point.coords_msk)) {
-        returns.push(point);
+        newArr.push(point);
       }
-    }
 
-    return returns;
+      return newArr;
+    }, []);
   }
 
   makeParkingPopup(parking) {
@@ -607,12 +603,18 @@ export default class Track {
     };
     Object.keys(this.events).forEach((k) => {
       if (forceEvent || this.sensorsState.level.includes(k)) {
-        event.data = this.events[k].find(p => p.start_point.timestamp === trackPoint.timestamp);
+        event.data = this.events[k].find(p => {
+          return p.start_point.timestamp <= trackPoint.timestamp
+            && p.end_point.timestamp >= trackPoint.timestamp;
+        });
         event.id = k;
       }
     });
 
-    const parking = this.parkings.find(p => p.start_point.timestamp === trackPoint.timestamp);
+    const parking = this.parkings.find(p => {
+      return p.start_point.timestamp <= trackPoint.timestamp
+        && p.end_point.timestamp >= trackPoint.timestamp;
+    });
 
     const joinedPopup = `
       <div>

@@ -441,7 +441,7 @@ export class MissionForm extends Form {
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
-      filteredRoutes.filter(({ type }) => type === AvailableRouteTypes.Mixed).map(({ id, name }) => ({ value: id, label: name })),
+      filteredRoutes.filter(({ type }) => (state.is_column ? type === AvailableRouteTypes.Mixed : true)).map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
     // является ли задание отложенным
@@ -495,7 +495,7 @@ export class MissionForm extends Form {
     // Старые задания нельзя редактирвоать
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
-
+    console.log(state)
     return (
       <div>
         {

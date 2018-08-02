@@ -5,6 +5,8 @@ import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 import { get, find, uniqBy } from 'lodash';
 
+const highlight = [{ is_suspended: true }];
+
 export const getTableMeta = ({
   structures = [],
   missionSourcesList = [],
@@ -176,6 +178,7 @@ export default (props) => {
 
   return (
     <Table
+      className="duty-mission-table"
       title={props.is_archive ? 'Архив наряд-заданий' : 'Журнал наряд-заданий'}
       results={props.data}
       renderers={renderers}
@@ -186,6 +189,7 @@ export default (props) => {
       initialSort={'number'}
       initialSortAscending={false}
       multiSelection
+      highlight={highlight}
       {...props}
     />
   );

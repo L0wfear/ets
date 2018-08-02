@@ -6,6 +6,8 @@ import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 
+const highlight = [{ is_suspended: true }];
+
 export const getTableMeta = ({
   missionSourcesList = [],
   carsList = [],
@@ -234,6 +236,7 @@ export default (props) => {
   return (
     <Table
       title={props.is_archive ? 'Архив заданий' : 'Журнал заданий'}
+      className="mission-table"
       results={props.data}
       renderers={renderers}
       enumerated
@@ -244,6 +247,7 @@ export default (props) => {
       initialSort={'number'}
       initialSortAscending={false}
       multiSelection
+      highlight={highlight}
       {...props}
     />
   );

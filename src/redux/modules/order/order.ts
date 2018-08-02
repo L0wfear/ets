@@ -62,11 +62,17 @@ export default function(state = initialState, { type, payload }) {
         showHistoryComponent: false,
       }
     case SET_SELECTED_ELEMENT_ORDER:
-      const { selectedElementOrder: selectedElementOrder_sseo } = payload;
+      const {
+        selectedElementOrder: selectedElementOrder_sseo,
+        selectedElementOrder: { status },
+      } = payload;
       const { technical_operations } = selectedElementOrder_sseo;
 
       const disabledOrderButton = {
-        templateMission: status === 'cancelled' || diffDates(new Date(), selectedElementOrder_sseo.order_date_to, 'minutes') > 0 || !technical_operations.some(({ num_exec }) => num_exec > 0),
+        templateMission: status === 'suspended'
+          || status === 'cancelled'
+          || diffDates(new Date(), selectedElementOrder_sseo.order_date_to, 'minutes') > 0
+          || !technical_operations.some(({ num_exec }) => num_exec > 0),
         templateDutyMission: false,
       }
       disabledOrderButton.templateDutyMission = disabledOrderButton.templateMission || !(technical_operations.some(({ num_exec, work_type_name }) => (num_exec > 0) && (work_type_name === 'Ручные' || work_type_name === 'Комбинированный')));
@@ -98,8 +104,22 @@ export default function(state = initialState, { type, payload }) {
         ...state,
         selectedElementAssignment: selectedElementAssignment,
         disabledAssignmentButton: {
-          mission: !num_exec || diffDates(new Date(), dateTo) > 0 || order_status === 'cancelled' || work_type_name === 'Ручные',
-          dutyMission: !((work_type_name === null || work_type_name === 'Ручные' || work_type_name === 'Комбинированный') && num_exec > 0) || diffDates(new Date(), dateTo) > 0,
+          mission: !num_exec
+            || diffDates(new Date(), dateTo) > 0
+            || order_status === 'cancelled'
+            || order_status === 'suspended'
+            || work_type_name === 'Ручные',
+          dutyMission: order_status === 'suspended'
+            || !(
+              (
+                work_type_name === null
+                || work_type_name === 'Ручные'
+                || work_type_name === 'Комбинированный'
+              )
+              && num_exec > 0
+            )
+            || (num_exec <= 0 && order_status === 'partially_cancelled')
+            || diffDates(new Date(), dateTo) > 0, 
         },
       }
     case SET_ORDER_HISTORY: {

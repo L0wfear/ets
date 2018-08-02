@@ -1,7 +1,7 @@
 import { diffDates } from 'utils/dates.js';
 import { typeTemplate } from 'components/directories/order/forms/utils/constant';
 
-export const getFilterDateOrder = (technical_operations, { order_date, order_date_to }) =>
+export const getFilterDateOrder = (technical_operations, { order_date, order_date_to, status }) =>
   technical_operations.reduce((newObj, to) => {
     const {
       norm_id,
@@ -18,6 +18,7 @@ export const getFilterDateOrder = (technical_operations, { order_date, order_dat
           date_from: date_from || order_date,
           num_exec,
           order_operation_id,
+          status,
         }];
       } else {
         const newNormData = {
@@ -25,6 +26,7 @@ export const getFilterDateOrder = (technical_operations, { order_date, order_dat
           date_from: date_from || order_date,
           num_exec,
           order_operation_id,
+          status,
         };
 
         if (newObj[norm_id].some(({ date_to, date_from }) => date_to !== newNormData.date_to || date_from !== newNormData.date_from)) {
@@ -46,9 +48,11 @@ export const getMissionListByFilter = (missionsList, filterData, typeClick) =>
           date_from,
           num_exec,
           order_operation_id,
+          status,
         } = toData;
 
-        if ((typeClick === typeTemplate.missionDutyTemplate || passes_count <= num_exec) && diffDates(new Date(), date_to, 'minutes') < 0) {
+        console.log(status, passes_count)
+        if ((typeClick === typeTemplate.missionDutyTemplate || passes_count <= num_exec) && diffDates(new Date(), date_to, 'minutes') < 0 && (status === 'partially_suspended' ? true : passes_count > 0)) {
             arr.push({
             ...m,
             customId: arr.length,

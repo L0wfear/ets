@@ -61,6 +61,12 @@ export default class WaybillFormWrap extends FormWrap {
 
   componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
+      const currentDate = new Date();
+      
+      console.log('-----')
+      console.log((currentDate.getSeconds()))
+      console.log((61 - currentDate.getSeconds()));
+      const timeId = setTimeout(() => this.checkError(), (61 - currentDate.getSeconds()) * 1000);
       if (props.element === null) {
         const defaultBill = getDefaultBill();
         if (typeof defaultBill.structure_id === 'undefined') {
@@ -74,6 +80,7 @@ export default class WaybillFormWrap extends FormWrap {
           canClose: false,
           canPrint: false,
           formErrors: this.validate(defaultBill, {}),
+          timeId,
         });
       } else {
         const waybill = clone(props.element);
@@ -116,11 +123,13 @@ export default class WaybillFormWrap extends FormWrap {
               canPrint: false,
               canSave: !clone(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
               canClose: !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
+              timeId,
             });
           } else {
             this.setState({
               formState: waybill,
               formErrors: {},
+              timeId,
             });
           }
         } else if (props.element.status === 'draft') {
@@ -131,10 +140,14 @@ export default class WaybillFormWrap extends FormWrap {
             canSave: !filter(this.validate(waybill, {})).length,
             canClose: !filter(this.validate(waybill, {})).length,
             formErrors: this.validate(waybill, {}),
+            timeId,
           });
         }
       }
     }
+  }
+  componentWillUnmount() {
+    clearTimeout(this.state.timeId);
   }
 
   handleFieldsChange(formState) {
@@ -173,6 +186,31 @@ export default class WaybillFormWrap extends FormWrap {
     newState.formState = formState;
     newState.formErrors = formErrors;
     this.setState(newState);
+  }
+
+  checkError(formState = this.state.formState) {
+    let { formErrors } = this.state;
+    const newState = {};
+
+    if (!formState.status || formState.status === 'draft') {
+      this.schema = waybillSchema;
+      formErrors = this.validate(formState, formErrors);
+    } else if (formState.status && formState.status !== 'draft') {
+      this.schema = waybillClosingSchema;
+      formErrors = this.validate(formState, formErrors);
+    }
+
+    newState.canSave = !filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+    newState.timeId = setTimeout(() => this.checkError(), 60 * 1000);
+    if (Object.entries(formState).some(([key, value]) => value !== this.state.formErrors[key])) {
+      this.setState(newState);
+    } else {
+      this.setState({ timeId: newState.timeId });
+    }
   }
 
 

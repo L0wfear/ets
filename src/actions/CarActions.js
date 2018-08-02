@@ -216,9 +216,11 @@ export default class CarActions extends Actions {
     return InfoService.get(payload);
   }
 
-  getCarInfo(car_id) {
+  getCarInfo(car_id, date_start, date_end) {
     const payload = {
       car_id,
+      date_start: createValidDateTime(date_start),
+      date_end: createValidDateTime(date_end),
     };
     return CarInfoService.get(payload).then(({ result = {} }) => result);
   }

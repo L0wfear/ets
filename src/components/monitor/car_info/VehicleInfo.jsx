@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import { Glyphicon } from 'react-bootstrap';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import moment from 'moment';
 
 import Panel from 'components/ui/Panel.jsx';
 import { makeUnixTime, secondsToTime } from 'utils/dates';
@@ -61,7 +62,7 @@ export default class VehicleInfo extends React.Component {
     this.setState({ missionInfoData, showMissionInfoForm: true });
   }
 
-  renderMissionData = (mission) => {
+  renderMissionData = (mission, index, { length }) => {
     const { car: { marker = {} } = {} } = this.props;
     const { parkings = [] } = marker.track || {};
 
@@ -85,6 +86,16 @@ export default class VehicleInfo extends React.Component {
           </div>
           <div className={'mission-vehicle-info'}>{`Время стоянок: ${secondsToTime(parkingTime)}`}</div>
           <div className={'mission-vehicle-info'}>{`Процент выполнения задания, %: ${mission.traveled_percentage}`}</div>
+          { length > 1 ?
+            ([
+              <div key="date-start" className={'mission-vehicle-info'}>{`Дата начала: ${moment(mission.date_start).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)}`}</div>,
+              <div key="date-end" className={'mission-vehicle-info'}>{`Дата окончания: ${moment(mission.date_end).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)}`}</div>,
+            ])
+            :
+            (
+              <div />
+            )
+          }
         </div>
         <Glyphicon glyph="info-sign" className="pointer fontSize24" onClick={() => this.mapView(mission.id)} />
       </div>

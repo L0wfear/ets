@@ -85,14 +85,12 @@ export default class CarInfo extends Component {
 
   componentDidMount() {
     if (this.props.car) {
-      this.fetchCarInfo();
       this.fetchTrack();
     }
   }
 
   componentWillReceiveProps(props) {
     if (props.car.id !== this.props.car.id || props.car.track !== this.props.car.track) {
-      this.fetchCarInfo(props);
       this.fetchTrack(props);
       this.stopTrackPlaying();
 
@@ -161,7 +159,7 @@ export default class CarInfo extends Component {
     );
   }
 
-  async fetchCarInfo(props = this.props) {
+  async fetchCarInfo(props, from_dt, to_dt) {
     const carList = props.flux.getStore('objects').state.carsList;
     const track = props.car.marker.track;
     if (!track) return;
@@ -172,7 +170,7 @@ export default class CarInfo extends Component {
       return;
     }
 
-    const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id);
+    const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id, from_dt, to_dt);
 
     const maxSpeed = info.missions.filter(({ date_start, date_end }) =>
       (diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0),
@@ -196,6 +194,7 @@ export default class CarInfo extends Component {
 
     // обновление инфы о последней точке при обновлении трэка
     track.removeAllPoints();
+    this.fetchCarInfo(props, from_dt, to_dt);
 
     track.fetch(this.props.flux, from_dt, to_dt).then((trackInfo) => {
       const changedState = {

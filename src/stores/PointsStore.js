@@ -134,7 +134,7 @@ export default class PointsStore extends Store {
       this.ws = null;
     }
     this.setState({
-      ...cloneDeep(this.initialState),
+      ...cloneDeep(initialState),
       carsMapByGpsCode: this.state.carsMapByGpsCode,
     });
     this.pauseRendering();

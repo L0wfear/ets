@@ -495,7 +495,7 @@ export class MissionForm extends Form {
     // Старые задания нельзя редактирвоать
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
-    console.log(state)
+
     return (
       <div>
         {

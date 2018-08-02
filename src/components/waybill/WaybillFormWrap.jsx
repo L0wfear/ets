@@ -62,11 +62,9 @@ export default class WaybillFormWrap extends FormWrap {
   componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
       const currentDate = new Date();
-      
-      console.log('-----')
-      console.log((currentDate.getSeconds()))
-      console.log((61 - currentDate.getSeconds()));
-      const timeId = setTimeout(() => this.checkError(), (61 - currentDate.getSeconds()) * 1000);
+
+      const timeId = setTimeout(() => this.checkError(), (60 - currentDate.getSeconds()) * 1000);
+
       if (props.element === null) {
         const defaultBill = getDefaultBill();
         if (typeof defaultBill.structure_id === 'undefined') {

@@ -8,7 +8,7 @@ export type IComponentWillUnmount = (props: IComponentWillUnmountProps) => void;
 export interface IComponentWillReceivePropsProps {
   track: any;
   parkingCount: number;
-  setParkingCount: (parkingCount: number) => void;
+  setparkingCount: (parkingCount: number) => void;
 }
 
 export type IComponentWillReceiveProps = (props: IComponentWillReceivePropsProps) => void;

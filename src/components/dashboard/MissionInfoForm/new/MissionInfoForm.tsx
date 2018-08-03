@@ -123,7 +123,7 @@ const MissionInfoForm: React.SFC<any> = props => {
               {props.withHightSpeed}
             </li>
             <li><b>Общее время стоянок:</b>
-              {props.parkingCount ? secondsToTime(props.parkingCount) : 'Рассчитывается...'}
+              {props.parkingCount !== -1 ? secondsToTime(props.parkingCount) : 'Рассчитывается...'}
             </li>
             <li><b>{'Общий пробег с работающим оборудованием: '}</b>
               {`${props.sensor_traveled_working ? props.allRunWithWorkEquipment : 'Данные будут отображены после выполнения задания'}`}

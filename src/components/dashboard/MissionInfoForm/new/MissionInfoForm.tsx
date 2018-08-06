@@ -140,7 +140,7 @@ const MissionInfoForm: React.SFC<any> = props => {
               {`${props.sensor_traveled_working ? props.allRunWithWorkEquipment : 'Данные будут отображены после выполнения задания'}`}
             </li>
             <li><b>{'Процент выполнения задания, %: '}</b>
-              {Math.floor(props.current_percentage) || '-'}
+              {props.traveled_percentage || '-'}
             </li>
           </Div>
         </ModalBody>

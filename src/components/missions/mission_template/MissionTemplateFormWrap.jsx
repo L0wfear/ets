@@ -108,6 +108,7 @@ export default class MissionFormWrap extends FormWrap {
       if (props.formType === 'ViewForm') {
         this.schema = missionTemplateSchema;
         const mission = props.element === null ? getDefaultMissionTemplate() : clone(props.element);
+        mission.type_id = mission.car_type_id;
 
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {

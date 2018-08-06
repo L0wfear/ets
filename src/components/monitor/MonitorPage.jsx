@@ -45,14 +45,7 @@ class MonitorPage extends React.Component {
     if (!this.props.typesList.length) return <div>Загрузка...</div>;
 
     return (
-      <div
-        style={{
-          position: 'fixed',
-          width: '100%',
-          top: 0,
-          bottom: '30px',
-        }}
-      >
+      <div>
 
         <Toolbar />
 

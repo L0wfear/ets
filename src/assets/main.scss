@@ -28,12 +28,15 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100vh;
 }
 body {
   color: #000;
 }
 .app-content {
   justify-self: flex-start;
+  flex: 1 1;
+  position: relative;
 }
 
 // NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
@@ -594,7 +597,7 @@ body.application {
 }
 
 .app-toolbar-new {
-  top: 84px;
+  top: 36px;
   color: #fff;
   position: absolute;
   z-index: 1000;
@@ -621,7 +624,7 @@ body.application {
 
   color: #fff;
   position: absolute;
-  top: 84px;
+  top: 36px;
   z-index: 1000;
   left: 20px;
 
@@ -768,7 +771,7 @@ body.application {
 .monitor-sidebar {
   padding: 0px 10px;
   position: absolute;
-  top: 48px;
+  top: 0px;
   bottom: 0;
   width: 500px;
   background-color: rgba(#f2f2f2, 0.8);
@@ -1757,9 +1760,8 @@ body.application {
 
 /** APP NAVIGATION */
 
-.app-navigation {
-  z-index:1030;
-  width: 100%;
+.app-navigation>nav {
+  margin: 0px;
 }
 
 /** ETS TABLE */
@@ -3153,22 +3155,23 @@ div.none {
 
 .app-footer {
   position: fixed;
-    bottom: 0;
-    height: 30px;
-    text-align: center;
-    width: 100%;
-    background: #292929;
-    color: white;
-    line-height: 30px;
-    z-index: 300;
-    & .tp {
-      color: red;
-      font-weight: bold;
-      cursor: pointer;
-      &.not-red {
-        color: white;
-      }
+  overflow: hidden;
+  bottom: 0;
+  height: 30px;
+  text-align: center;
+  width: 100%;
+  background: #292929;
+  color: white;
+  line-height: 30px;
+  z-index: 300;
+  & .tp {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+    &.not-red {
+      color: white;
     }
+  }
 
 }
 

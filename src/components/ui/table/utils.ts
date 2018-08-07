@@ -182,7 +182,7 @@ export const sortData = (data, { initialSort }) => data.sort((a, b) => sortFunct
 export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
-  if (prevProps.originalData !== nextProps.originalData || prevProps.initialSort !== nextProps.initialSort) {
+  if ((prevProps.originalData !== nextProps.originalData && nextProps.initialSort) || prevProps.initialSort !== nextProps.initialSort) {
     const { tableMeta: { cols = [] } = {} } = nextProps;
     const colData = cols.find(({ name }) => name === nextProps.initialSort);
     if (colData && colData.sortFunc) {

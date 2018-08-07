@@ -60,13 +60,12 @@ const mock = `{
     }
 }`;
 
-
 const getUserNotificationList = (commonNotificationList, admNotificationList) => [
   ...commonNotificationList,
   ...admNotificationList,
-].sort(({ created_at: created_at_first }, { created_at: created_at_second }) =>
-    diffDates(created_at_second, created_at_first)
-);
+].sort(({ created_at: created_at_first }, { created_at: created_at_second }) => (
+  diffDates(created_at_second, created_at_first)
+));
 
 export default class UserNotificationStore extends Store {
 

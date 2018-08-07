@@ -50,8 +50,8 @@ class MainApp extends React.Component {
       currentUser,
     } = this.props;
 
-    const company_name = currentUser.company_name || 'asdadasd';
-    const structure_name = currentUser.structure_name || 'dasdasdfas';
+    const company_name = currentUser.company_name || '';
+    const structure_name = currentUser.structure_name || '';
 
     return (
       <div className="app">

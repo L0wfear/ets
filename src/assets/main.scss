@@ -3154,7 +3154,6 @@ div.none {
 }
 
 .app-footer {
-  overflow: hidden;
   bottom: 0;
   height: 30px;
   text-align: center;
@@ -3163,6 +3162,10 @@ div.none {
   color: white;
   line-height: 30px;
   z-index: 300;
+  >div {
+    overflow: hidden;
+    height: 30px;
+  }
   & .tp {
     color: red;
     font-weight: bold;

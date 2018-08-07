@@ -259,7 +259,8 @@ export default class MainPage extends React.Component {
             <Div hidden={!this.state.needShowHrefOnNewProd}>
               <Col md={6}>
                 <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
-              </Col>              <Col md={6}>
+              </Col>
+              <Col md={6}>
                 <a className="tp not-red" href='https://ets2.mos.ru' >Переход на новую версию</a>
               </Col>
             </Div>

@@ -239,13 +239,19 @@ export default class UserNotificationStore extends Store {
 
     const changedObj = {};
     if (!commonNotUpdate) {
-      changedObj.commonNotificationList = commonNotificationList;
+      changedObj.commonNotificationList = commonNotificationList.map(notification => ({
+        ...notification,
+        front_type: 'common',
+      }));
       changedObj.orderNotReadList = this.state.orderNotReadList.filter(({ id }) => (
         (commonNotificationList.find(common => common.id === id) || {}).not_read
       ));
     }
     if (!admNotUpdate) {
-      changedObj.admNotificationList = admNotificationList;
+      changedObj.admNotificationList = admNotificationList.map(notification => ({
+        ...notification,
+        front_type: 'adm',
+      }));
       changedObj.admNotReadNotificationsList = this.state.admNotReadNotificationsList.filter(({ id }) => (
         (admNotificationList.find(common => common.id === id) || {}).not_read
       ));

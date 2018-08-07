@@ -32,13 +32,16 @@ export default class EmployeesList extends ElementsList {
     if (this.props.location.query.employee_id) {
       const employee_id = parseInt(this.props.location.query.employee_id, 10);
       const selectedElement = employees.result.find(employee => employee.id === employee_id);
-
-      // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
-      this.setState({
-        ...this.state,
-        selectedElement,
-        showForm: true,
-      });
+      if (selectedElement) {
+        // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
+        this.setState({
+          ...this.state,
+          selectedElement,
+          showForm: true,
+        });
+      } else {
+        this.props.history.replaceState(null, this.props.location.pathname, {});
+      }
     }
   }
 }

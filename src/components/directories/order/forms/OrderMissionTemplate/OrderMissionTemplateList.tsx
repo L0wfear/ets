@@ -248,16 +248,16 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           </Div>
         </ModalBody>
         <RB.Modal.Footer>
-          <Div hidden={typeClick === typeTemplate.missionDutyTemplate} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
-            <EtsSelectTSX
-              type="select"
-              options={ASSIGN_OPTIONS}
-              value={assign_to_waybill}
-              clearable={false}
-              onChange={this.handleChangeTypePrint}
-            />
-          </Div>
           <Div className="inline-block">
+            <Div hidden={typeClick === typeTemplate.missionDutyTemplate} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
+              <EtsSelectTSX
+                type="select"
+                options={ASSIGN_OPTIONS}
+                value={assign_to_waybill}
+                clearable={false}
+                onChange={this.handleChangeTypePrint}
+              />
+            </Div>
             <RB.Button disabled={this.checkDisabledSubmit()} onClick={this.handleSubmit}>{'Сформировать'}</RB.Button>
           </Div>
         </RB.Modal.Footer>

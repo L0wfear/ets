@@ -38,7 +38,9 @@ export default class LoadingOverlay extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const modals = document.getElementsByClassName('modal-body');
-    this.setState({ show: !modals.length || !nextProps.main });
+    const modalDelete = document.getElementById('delete-form')
+
+    this.setState({ show: modalDelete ? true : !modals.length || !nextProps.main });
   }
 
   render() {

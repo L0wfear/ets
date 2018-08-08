@@ -139,7 +139,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
   getButtons() {
     return [
       <ButtonChangeCarData key="change-driver" onClick={this.handleChangeDriver} disabled={!this.state.selectedElement}>{'Изменить водителей'}</ButtonChangeCarData>,
-      <ButtonChangeRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>{'Изменить машрут'}</ButtonChangeRoute>,
+      <ButtonChangeRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>{'Изменить маршрут'}</ButtonChangeRoute>,
     ];
   }
 

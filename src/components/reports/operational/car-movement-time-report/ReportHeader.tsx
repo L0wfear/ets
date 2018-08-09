@@ -83,54 +83,51 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
 
     return (
       <div>
-        <Row className="report-page__header">
-          <Col md={12}>
-            <Col md={6}>
+        <Row className="report-page__header car-movement-time-report">
+          <Col md={6}>
+            <Col md={12}>
               <label>Период формирования</label>
             </Col>
             <Col md={6}>
-              <label>Организация</label>
+              <DatePickerBindable
+                date={date_start}
+                onChange={this.props.handleChange}
+                bindOnChange={'date_start'}
+                disabled={readOnly}
+              />
+            </Col>
+            <Col md={6}>
+              <DatePickerBindable
+                date={date_end}
+                onChange={this.handleChangeDateEnd}
+                bindOnChange={'date_end'}
+                disabled={readOnly}
+              />
             </Col>
           </Col>
-          <Col md={12}>
-            <Row>
-              <Col md={3}>
-                <DatePickerBindable
-                  date={date_start}
-                  onChange={this.props.handleChange}
-                  bindOnChange={'date_start'}
-                  disabled={readOnly}
-                />
-              </Col>
-              <Col md={3}>
-                <DatePickerBindable
-                  date={date_end}
-                  onChange={this.handleChangeDateEnd}
-                  bindOnChange={'date_end'}
-                  disabled={readOnly}
-                />
-              </Col>
-              <Col md={3}>
-                <ExtField
-                  type="select"
-                  clearable={false}
-                  label={false}
-                  value={company_id}
-                  options={ORGANIZATIONS_OPTION}
-                  disabled={readOnly}
-                  onChange={this.props.handleChange}
-                  boundKeys={['company_id']}
-                />
-              </Col>
-              <Col md={3}>
-                <Button
-                  block
-                  disabled={this.props.readOnly || !!errorMes || !company_id}
-                  onClick={this.handleSubmit}
-                >Сформировать отчёт</Button>
-              </Col>
-
-            </Row>
+          <Col md={6}>
+            <Col md={12}>
+              <label>Организация</label>
+            </Col>
+            <Col md={6}>
+              <ExtField
+                type="select"
+                clearable={false}
+                label={false}
+                value={company_id}
+                options={ORGANIZATIONS_OPTION}
+                disabled={readOnly}
+                onChange={this.props.handleChange}
+                boundKeys={['company_id']}
+              />
+            </Col>
+            <Col md={6}>
+              <Button
+                block
+                disabled={this.props.readOnly || !!errorMes || !company_id}
+                onClick={this.handleSubmit}
+              >Сформировать отчёт</Button>
+            </Col>
           </Col>
         </Row>
         <Row className="error">

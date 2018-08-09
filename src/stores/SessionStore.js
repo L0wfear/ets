@@ -32,6 +32,8 @@ export const getSpecificPermissions = (user) => {
     permissions.push('pgm_store.read');
   }
 
+  permissions.push(...getFullAccess('car_movement_time_report'));
+
   return permissions;
 };
 

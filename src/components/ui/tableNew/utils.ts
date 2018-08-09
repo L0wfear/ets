@@ -100,10 +100,11 @@ export const filterFunction = (data, { filterValues }) =>
       if (rowCol === null && rowCol === undefined) {
         return true;
       }
+
       const {
         otherData: {
-          customFilter,
-        },
+          customFilter = false,
+        } = {},
       } = f_data;
 
       if (customFilter) {

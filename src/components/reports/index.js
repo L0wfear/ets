@@ -3,6 +3,7 @@
  * Отчеты
  */
 import carDowntimeAndOvermileage from 'components/reports/car_downtime_and_overmileage/report';
+import carMovementTimeReport from 'components/reports/car-movement-time-report/report';
 import analytics from './Analytics.jsx';
 import coverage from './CoverageReport.jsx';
 import carConditin from './car-condition/report';
@@ -27,6 +28,7 @@ import inquiryExpiringDate from './inquiry_expiring_date/report';
 export {
   analytics,
   coverage,
+  carMovementTimeReport,
   carConditin,
   fuelConsumption,
   fuelConsumptionSummary,

@@ -145,8 +145,8 @@ export default class Field extends React.Component {
     const { error, label = '', className = '', readOnly = false, id } = this.props;
     const selectClassName = cx({ 'has-error': error });
     return (
-      <Div hidden={this.props.hidden} className={className} style={{ marginBottom: 15 }}>
-        <label id={id}>{label}</label>
+      <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
+        { typeof label === 'string' && <label id={id}>{label}</label> }
         <EtsSelect {...this.props} disabled={readOnly || this.props.disabled} className={selectClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>

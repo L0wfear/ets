@@ -23,7 +23,7 @@ class Fiter extends React.Component<any, any> {
       filterValues[key] = {
         value: e.target ? e.target.value : e,
         type,
-        other: {
+        otherData: {
           customFilter,
         },
       };

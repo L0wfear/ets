@@ -12,6 +12,7 @@ import techMaintenanceSchedule from 'components/reports/operational/tech_mainten
 import inquiryExpiringDate from 'components/reports/operational/inquiry_expiring_date/config-data';
 import carCondition from 'components/reports/operational/car-condition/config-data';
 import carDowntimeAndOvermileage from 'components/reports/operational/car_downtime_and_overmileage/config-data';
+import carMovementTimeReport from 'components/reports/operational/car-movement-time-report/config-data';
 
 const children = {
   routeOdhCoverage,
@@ -26,6 +27,7 @@ const children = {
   inquiryExpiringDate,
   carCondition,
   carDowntimeAndOvermileage,
+  carMovementTimeReport,
 };
 
 export default {

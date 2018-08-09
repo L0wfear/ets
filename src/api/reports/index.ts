@@ -38,3 +38,7 @@ export const InquiryExpiringDate = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/reports/inquiry_expiring_date',
   {},
 );
+
+export const CarMovementTimeReportService = ETS_API_FACTORY.createApiServiceAdapter(
+  'car_movement_time_report',
+);

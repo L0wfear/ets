@@ -3,10 +3,11 @@
  * Отчеты
  */
 import Analytics from 'components/reports/analytics/Analytics.jsx';
-import CarDowntimeAndOvermileage from 'components/reports/car_downtime_and_overmileage/report';
+import CarDowntimeAndOvermileage from 'components/reports/operational/car_downtime_and_overmileage/report';
 import BrigadeEfficiency from 'components/reports/operational/brigade_efficiency/report.tsx';
 import CarUsageReportWithTrack from 'components/reports/operational/car_usage_report_with_track/report';
 import carConditin from 'components/reports/operational/car-condition/report';
+import CarMovementTimeReport from 'components/reports/operational/car-movement-time-report/report';
 import CleaningStatusTechOp from 'components/reports/regulated/cleaning_status_tech_op/report.tsx';
 import DailyCleaningCafap from 'components/reports/regulated/daily_cleaning_cafap/report';
 import DailyCleaningEts from 'components/reports/regulated/daily_cleaning_ets/report';
@@ -28,6 +29,7 @@ export default {
   BrigadeEfficiency,
   carConditin,
   CarDowntimeAndOvermileage,
+  CarMovementTimeReport,
   CarUsageReportWithTrack,
   CleaningStatusTechOp,
   DailyCleaningCafap,

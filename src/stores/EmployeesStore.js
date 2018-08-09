@@ -30,9 +30,14 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetEmployees({ result }) {
+    const data = result.map(empl => ({
+      ...empl,
+      active: !!empl.active,
+    }));
+
     this.setState({
-      employeesList: result,
-      employeesIndex: keyBy(result, 'id'),
+      employeesList: data,
+      employeesIndex: keyBy(data, 'id'),
     });
   }
 

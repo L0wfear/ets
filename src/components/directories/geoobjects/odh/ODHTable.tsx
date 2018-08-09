@@ -132,16 +132,16 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-  auto_footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  cleaning_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  distance: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  footway_length: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  gutters_length: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  manual_footway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  roadway_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  snow_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
-  total_area: ({ data }) => <div>{Number.parseFloat(data).toFixed(2)}</div>,
+  auto_footway_area: ({ data }) => <div>{data !== 0 && !data ? '-' : data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  cleaning_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  distance: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  footway_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  footway_length: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  gutters_length: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  manual_footway_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  roadway_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  snow_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
+  total_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
 };
 
 const Table: React.SFC<any> = props  => {

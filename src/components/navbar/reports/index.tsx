@@ -33,6 +33,7 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
         'autobase_long_repair_report.list',
         'autobase_tech_maintenance_schedule_report.list',
         'autobase_inquiry_expiring_date_report.list',
+        'car_movement_time_report.list',
       ]}
       id="show-operative"
       title="Оперативные отчеты"
@@ -49,6 +50,7 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem id="link-inquiry-expiring-date" permissions={[PERMISSIONS.reportAll.autobase_inquiry_expiring_date_report.list]} active={path === '/inquiry-expiring-date'} href="#/inquiry-expiring-date">Перечень справок, по которым подходит дата окончания действия</MenuItem>
       <MenuItem id="link-car-condition-reports" permissions={[PERMISSIONS.reportAll.car_condition_report.list]} active={path === '/car-condition-reports'} href="#/car-condition-reports">Количество ТС в разрезе технического состояния</MenuItem>
       <MenuItem id="link-car-downtime-and-overmileage-report" permissions={[PERMISSIONS.reportAll.car_downtime_and_overmileage_report.list]} active={path === '/car-downtime-and-overmileage-report'} href="#/car-downtime-and-overmileage-report">Простои и перепробеги ТС при выполнении заданий</MenuItem>
+      <MenuItem id="link-car-movement-time-report" permissions={[PERMISSIONS.reportAll.car_movement_time_report.list]} active={path === '/car-movement-time-report'} href="#/car-movement-time-report">Время движения ТС</MenuItem>
       
     </NavDropdown>
     {/*

@@ -8,6 +8,10 @@ export const getDateWithMoscowTz = (...dateProps) => {
   return newDate;
 };
 
+export const addSecond = (date, seconds) => (
+  moment(date).add(seconds, 'seconds')
+);
+
 export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
@@ -88,10 +92,10 @@ export function getNextDay859am(date) {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
 }
 
-export function getToday9am() {
+export function getToday9am(seconds = 0) {
   const now = new Date();
 
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, seconds);
 }
 
 export function getToday859am() {
@@ -110,10 +114,10 @@ export function getToday2359() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
 }
 
-export function getTomorrow9am() {
+export function getTomorrow9am(seconds = 0) {
   const now = new Date();
 
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59, seconds);
 }
 
 export function getDatesByShift() {

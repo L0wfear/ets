@@ -24,16 +24,6 @@ class MissionTemplateForm extends MissionForm {
       ...this.state,
       isTemplate: true,
     };
-
-    this.handleStructureIdChange = this.handleStructureIdChange.bind(this);
-  }
-
-  handleStructureIdChange(v) {
-    try {
-      super.handleStructureIdChange.call(this, v);
-    } catch (error) {
-      console.log('Не корректно выызвается метод родительского класса', error);
-    }
   }
 
   render() {
@@ -122,7 +112,7 @@ class MissionTemplateForm extends MissionForm {
                 options={STRUCTURES}
                 emptyValue={null}
                 value={state.structure_id}
-                onChange={this.handleStructureIdChange.bind(this)}
+                onChange={this.handleStructureIdChange}
               />
             </Col>}
           </Row>

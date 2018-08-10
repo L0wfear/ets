@@ -25,13 +25,24 @@ class NotificationBadge extends React.Component<any, any> {
     // this.closeIntervalNotifications();
   }
 
-  getNotifications = () => {
-    this.context.flux.getActions('userNotifications').getOrderNotRead();
-    this.context.flux.getActions('userNotifications').getAdmNotReadNotifications();
+  getNotifications = async () => {
+    try {
+      await Promise.all([
+        this.context.flux.getActions('userNotifications').getOrderNotRead(),
+        this.context.flux.getActions('userNotifications').getAdmNotReadNotifications(),
+      ])
+    } catch (e) {
+      //
+    }
+
+    this.updateCounterNotify();
   }
 
   closeIntervalNotifications() {
     clearInterval(this.state.getNotReadInterval);
+  }
+  updateCounterNotify() {
+    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
   }
 
   openWs() {
@@ -48,6 +59,7 @@ class NotificationBadge extends React.Component<any, any> {
 
       this.ws.onmessage = ({ data }) => {
         this.context.flux.getActions('userNotifications').setNotifyFromWs(JSON.parse(data));
+        this.updateCounterNotify();
       };
 
       this.ws.onclose = (event) => {

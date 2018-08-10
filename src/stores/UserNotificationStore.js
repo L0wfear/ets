@@ -79,7 +79,7 @@ export default class UserNotificationStore extends Store {
     this.register(userNotificationActions.markAsRead, this.handleMarkAsRead);
     this.register(userNotificationActions.markAllAsRead, this.handleMarkAsRead);
 
-    this.register(userNotificationActions.setMakeReadOrderNotification, this.handlesetMakeReadOrderNotification);
+    this.register(userNotificationActions.setMakeReadOrderNotification, this.handleSetMakeReadOrderNotification);
 
     this.register(userNotificationActions.setMakeReadAdmNotification, this.handleSetMakeReadAdmNotification);
 
@@ -143,9 +143,6 @@ export default class UserNotificationStore extends Store {
     this.setState({
       ...changedState,
       userNotificationList: getUserNotificationList(changedState.commonNotificationList, changedState.admNotificationList),
-      countNotRead: this.state.countNotRead
-        + (changedState.orderNotReadList.length - this.state.orderNotReadList.length)
-        + (changedState.admNotReadNotificationsList.length - this.state.admNotReadNotificationsList.length),
     });
   }
 
@@ -172,10 +169,9 @@ export default class UserNotificationStore extends Store {
       changedState.orderNotReadList = uniqBy(orderNotReadList, 'id').sort((a, b) => a.id - b.id);
     }
 
-    this.setState({
-      ...changedState,
-      userNotificationList: getUserNotificationList(changedState.commonNotificationList, this.state.admNotificationList),
-    });
+    changedState.userNotificationList = getUserNotificationList(changedState.commonNotificationList, this.state.admNotificationList);
+
+    this.setState(changedState);
   }
   handleGetAdmNotifications({ result: { rows } }) {
     const changedState = {
@@ -200,13 +196,12 @@ export default class UserNotificationStore extends Store {
       changedState.admNotReadNotificationsList = uniqBy(admNotReadNotificationsList, 'id').sort((a, b) => a.id - b.id);
     }
 
-    this.setState({
-      ...changedState,
-      userNotificationList: getUserNotificationList(this.state.commonNotificationList, changedState.admNotificationList),
-    });
+    changedState.userNotificationList = getUserNotificationList(this.state.commonNotificationList, changedState.admNotificationList);
+
+    this.setState(changedState);
   }
 
-  handlesetMakeReadOrderNotification(id) {
+  handleSetMakeReadOrderNotification(id) {
     const orderNotReadList = this.state.orderNotReadList.filter(notifyData => notifyData.id !== id).sort((a, b) => a.id - b.id);
     const commonNotificationList = this.state.commonNotificationList.map(common => ({ ...common, is_read: common.id === id ? true : common.is_read }));
     const userNotificationList = getUserNotificationList(commonNotificationList, this.state.admNotificationList);
@@ -215,7 +210,6 @@ export default class UserNotificationStore extends Store {
       orderNotReadList,
       commonNotificationList,
       userNotificationList,
-      countNotRead: this.state.countNotRead - 1,
     });
   }
 
@@ -228,7 +222,6 @@ export default class UserNotificationStore extends Store {
       admNotReadNotificationsList,
       admNotificationList,
       userNotificationList,
-      countNotRead: this.state.countNotRead - 1,
     });
   }
 
@@ -243,7 +236,7 @@ export default class UserNotificationStore extends Store {
         front_type: 'common',
       }));
       changedObj.orderNotReadList = this.state.orderNotReadList.filter(({ id }) => (
-        (commonNotificationList.find(common => common.id === id) || {}).not_read
+        !(commonNotificationList.find(common => common.id === id) || {}).is_read
       ));
     }
     if (!admNotUpdate) {
@@ -252,19 +245,18 @@ export default class UserNotificationStore extends Store {
         front_type: 'adm',
       }));
       changedObj.admNotReadNotificationsList = this.state.admNotReadNotificationsList.filter(({ id }) => (
-        (admNotificationList.find(common => common.id === id) || {}).not_read
+        !(admNotificationList.find(common => common.id === id) || {}).is_read
       ));
     }
 
     changedObj.userNotificationList = getUserNotificationList(changedObj.admNotificationList || this.state.admNotificationList, changedObj.commonNotificationList || this.state.commonNotificationList)
-    changedObj.countNotRead = changedObj.userNotificationList.filter(({ is_read }) => !is_read).length;
 
     this.setState(changedObj);
   }
 
-  handleGetUserNotificationInfo({ result: { rows: { not_read_num } } }) {
+  handleGetUserNotificationInfo({ result: { rows: { not_read_num: countNotRead } } }) {
     this.setState({
-      countNotRead: not_read_num,
+      countNotRead,
     });
   }
 }

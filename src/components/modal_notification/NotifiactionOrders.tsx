@@ -26,7 +26,12 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
   onHide = () => {
     const { orderNotReadList: [{ id }] } = this.props;
 
-    this.context.flux.getActions('userNotifications').setMakeReadOrderNotification(id);
+    this.context.flux.getActions('userNotifications').setMakeReadOrderNotification(id)
+      .then(() => this.updateCounterNotify());
+  }
+
+  updateCounterNotify() {
+    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
   }
 
   render() {

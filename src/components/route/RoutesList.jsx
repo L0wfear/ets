@@ -102,7 +102,7 @@ class RoutesList extends Component {
 
   shouldBeRendered(obj) {
     let isValid = true;
-    _.mapKeys(this.state.filterValues, (value, key) => {
+    _.mapKeys(this.state.filterValues, ({ value }, key) => {
       if (_.isArray(value)) {
         if (!obj[key]) {
           isValid = false;

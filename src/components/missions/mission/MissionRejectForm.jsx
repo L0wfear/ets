@@ -72,14 +72,18 @@ export default class MissionRejectForm extends Component {
         this.setState({ comment: e.target.value });
         break;
       case 'car_id': {
-        const mission_id = this.props.mission.mission_id || this.props.mission.id;
-        const payload = {
-          car_id: e,
-          mission_id,
-        };
-        const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
-        const data = result ? result.result : null;
-        this.setState({ [field]: e, data });
+        if (e) {
+          const mission_id = this.props.mission.mission_id || this.props.mission.id;
+          const payload = {
+            car_id: e,
+            mission_id,
+          };
+          const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
+          const data = result ? result.result : null;
+          this.setState({ [field]: e, data });
+        } else {
+          this.setState({ [field]: e, data: null });
+        }
         break;
       }
       default:
@@ -95,7 +99,7 @@ export default class MissionRejectForm extends Component {
       mission = mission.result.rows[0];
       mission.status = 'fail';
       mission.comment = this.state.comment;
-      resolve = await this.context.flux.getActions('missions').updateMission(mission);
+      resolve = await this.context.flux.getActions('missions').updateMission(mission, false);
     } else {
       switch (this.state.data.mark) {
         case 'create':

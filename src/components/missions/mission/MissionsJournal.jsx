@@ -2,7 +2,6 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import {
-  ButtonToolbar,
   Button,
   Glyphicon,
 } from 'react-bootstrap';
@@ -165,7 +164,7 @@ export default class MissionsJournal extends CheckableElementsList {
       Promise.all(
         Object.values(this.state.checkedElements).map(mission =>
           this.context.flux.getActions('missions')
-            .updateMission({ ..._.cloneDeep(mission), status: 'complete' }, false),
+            .updateMission({ ..._.cloneDeep(mission), status: 'complete' }),
         ),
       ).then(() => {
         global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');

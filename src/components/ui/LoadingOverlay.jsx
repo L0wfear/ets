@@ -31,26 +31,13 @@ export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extend
 @connectToStores(['loading'])
 @FluxContext
 export default class LoadingOverlay extends React.Component {
-
-  state = {
-    show: true,
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const modals = document.getElementsByClassName('modal-body');
-    const modalDelete = document.getElementById('delete-form')
-
-    this.setState({ show: modalDelete ? true : !modals.length || !nextProps.main });
-  }
-
   render() {
     const { flux } = this.context;
     const { isLoading } = this.props;
-    const { show } = this.state;
     const store = flux.getStore('loading');
     const storeIsLoading = store.isLoading();
     const storeIsLazyLoading = store.isLazyLoading();
-    if (storeIsLoading && show) {
+    if (storeIsLoading) {
       return <Preloader type="mainpage" />;
     } else if (!storeIsLoading && (isLoading || storeIsLazyLoading) && show) {
       return <Preloader type="lazy" />;

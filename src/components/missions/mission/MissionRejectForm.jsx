@@ -97,24 +97,30 @@ export default class MissionRejectForm extends React.Component {
     this.setState({ comment: e.target.value });
   }
   handleChangeCarId = async (car_id) => {
-    const {
-      missionList,
-      mIndex,
-    } = this.state;
+    if (car_id) {
+      const {
+        missionList,
+        mIndex,
+      } = this.state;
 
-    const mission_id = missionList[mIndex].mission_id || missionList[mIndex].id;
-    const payload = {
-      car_id,
-      mission_id,
-    };
-    const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
-    const data = result ? result.result : null;
+      const mission_id = missionList[mIndex].mission_id || missionList[mIndex].id;
+      const payload = {
+        car_id,
+        mission_id,
+      };
+      const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
+      const data = result ? result.result : null;
 
-    this.setState({
-      car_id,
-      data,
-      comment: '',
-    });
+      this.setState({
+        car_id,
+        data,
+      });
+    } else {
+      this.setState({
+        car_id,
+        data: null,
+      });
+    }
   }
 
   handleChange(field, e) {
@@ -129,7 +135,7 @@ export default class MissionRejectForm extends React.Component {
       mission = mission.result.rows[0];
       mission.status = 'fail';
       mission.comment = this.state.comment;
-      resolve = await this.context.flux.getActions('missions').updateMission(mission, false);
+      resolve = await this.context.flux.getActions('missions').updateMission(mission);
     } else {
       switch (this.state.data.mark) {
         case 'create':

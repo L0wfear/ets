@@ -8,7 +8,6 @@ export default class WaybillsStore extends Store {
 
     const waybillsActions = flux.getActions('waybills');
     this.register(waybillsActions.getWaybills, this.handleGetWaybills);
-    this.register(waybillsActions.deleteWaybill, this.handleGetWaybills);
 
     this.state = {
       waybillsList: [],

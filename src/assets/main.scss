@@ -42,6 +42,7 @@ body {
   justify-self: flex-start;
   flex: 1 1;
   position: relative;
+  overflow: auto;
 }
 
 // NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.

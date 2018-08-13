@@ -42,6 +42,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       buttonName = 'Добавить файл', errorClassName = '', value = [], multiple = false,
       showFileList = true,
       id,
+      button_id,
     } = this.props;
     const inputClass = cx(errorClassName);
     const inputStyle = { display: 'none' };
@@ -70,6 +71,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           <BootstrapButton
             disabled={this.props.disabled}
             onClick={this.handleFilePick}
+            id={button_id}
           >{buttonName}</BootstrapButton>
           <input
             id={id}

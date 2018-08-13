@@ -98,6 +98,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
+                id="last_name"
                 type="string"
                 label="Фамилия"
                 value={state.last_name}
@@ -109,7 +110,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="string"
+                id="personnel_number"
                 label="Табельный номер"
                 value={state.personnel_number}
                 error={errors.personnel_number}
@@ -122,6 +123,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
+                id="first_name"
                 type="string"
                 label="Имя"
                 value={state.first_name}
@@ -133,6 +135,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
+                id="special_license"
                 type="string"
                 label="Специальное удостоверение"
                 value={state.special_license}
@@ -146,6 +149,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
+                id="middle_name"
                 type="string"
                 label="Отчество"
                 value={state.middle_name}
@@ -157,7 +161,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="date"
+                id="special_license_date_end"
                 label="Срок действия специального удостоверения"
                 date={state.special_license_date_end}
                 time={false}
@@ -171,6 +175,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
+                id="birthday"
                 type="date"
                 label="Дата рождения"
                 date={state.birthday}
@@ -183,7 +188,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="string"
+                id="drivers_license"
                 label="Водительское удостоверение"
                 value={state.drivers_license}
                 error={errors.drivers_license}
@@ -196,7 +201,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
-                type="string"
+                id="phone"
                 label="Телефон"
                 value={state.phone}
                 error={errors.phone}
@@ -207,7 +212,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
-                type="date"
+                id="drivers_license_date_end"
                 label="Срок действия водительского удостоверения"
                 date={state.drivers_license_date_end}
                 time={false}
@@ -221,6 +226,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
+                id="position_id"
                 type="select"
                 label="Должность"
                 options={POSITION_ELEMENTS}
@@ -234,6 +240,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
+                id="prefer_car"
                 type="select"
                 label="Основное ТС"
                 value={state.prefer_car}
@@ -248,6 +255,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
+                id="active"
                 type="select"
                 label="Состояние"
                 value={state.active ? 1 : 0}
@@ -260,6 +268,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
+                id="secondary_car"
                 type="select"
                 multi
                 label="Вторичное ТС"
@@ -275,7 +284,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
-                type="select"
+                id="company_structure_id"
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
@@ -287,6 +296,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
+                id="medical_certificate"
                 type="string"
                 label="Медицинская справка №"
                 value={state.medical_certificate}
@@ -300,7 +310,7 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <ExtField
-                type="select"
+                id="is_common"
                 label="Общее"
                 options={[{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }]}
                 value={state.is_common ? 1 : 0}
@@ -311,6 +321,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
+                id="medical_certificate_date"
                 type="date"
                 label="Срок действия медицинской справки"
                 date={state.medical_certificate_date}
@@ -323,6 +334,7 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <ExtField
+                id="snils"
                 type="string"
                 label="СНИЛС №"
                 value={state.snils}
@@ -336,6 +348,8 @@ export default class EmployeeForm extends Form {
           <Row>
             <Col md={6}>
               <FileField
+                button_id="button-medical_certificate_files"
+                id="medical_certificate_files"
                 label="Медицинские справки"
                 multiple
                 value={state.medical_certificate_files}
@@ -347,6 +361,8 @@ export default class EmployeeForm extends Form {
             </Col>
             <Col md={6}>
               <FileField
+                button_id="button-driver_license_files"
+                id="driver_license_files"
                 label="Водительские удостоверения"
                 multiple
                 value={state.driver_license_files}
@@ -360,7 +376,7 @@ export default class EmployeeForm extends Form {
         </ExtDiv>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSave}>Сохранить</Button>
+          <Button id="save_employee" disabled={!this.props.canSave} onClick={this.handleSave}>Сохранить</Button>
         </Modal.Footer>
       </Modal>
     );

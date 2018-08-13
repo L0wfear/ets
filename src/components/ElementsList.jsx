@@ -323,7 +323,7 @@ class ElementsList extends React.Component {
           <ButtonDeleteNew
             key={'button-delete'}
             buttonName={BDbuttonName}
-            onClick={this.removeCheckedElements}
+            onClick={this.removeElement}
             permission={this.permissions.delete}
             disabled={this.checkDisabledDelete()}
           />

@@ -19,9 +19,12 @@ const VALID_VEHICLES_TYPES = {
 
 // declarative functional approach
 const vehicleFilter = (structure_id: string) => R.filter<IVehicle>(c =>
-  !structure_id ||
-  c.is_common ||
-  c.company_structure_id === structure_id,
+  (
+    !structure_id ||
+    c.is_common ||
+    c.company_structure_id === structure_id
+  )
+  && c.condition_bool,
 );
 
 // IVehaicle

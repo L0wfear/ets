@@ -425,7 +425,7 @@ export class MissionForm extends Form {
     }, []);
 
     const CARS = carsList
-      .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id))
+      .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.condition_bool)
       .map(c => ({
         value: c.asuods_id,
         available: c.available,

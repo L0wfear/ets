@@ -19,6 +19,7 @@ export interface IVehicleType extends IResponseRowObject<number> {
 }
 
 export interface IVehicle {
+  condition_bool: boolean;
   type_id: number;
   is_trailer: boolean;
   model_id: string | null;

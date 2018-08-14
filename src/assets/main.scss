@@ -3392,6 +3392,8 @@ div.none {
 }
 
 div.car-movement-time-report {
-  margin-left: -30px;
-  margin-right: -30px;
+  >.col-md-6 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }

@@ -65,7 +65,7 @@ const statusStyle: React.CSSProperties = {
   fontSize: 16,
 };
 
-const alertStyle: React.CSSProperties = {
+const alert: React.CSSProperties = {
   background: '#E57373',
   borderRadius: '50%',
   width: 25,
@@ -75,8 +75,34 @@ const alertStyle: React.CSSProperties = {
   alignItems: 'center',
 };
 
-const AlertIcon = () =>
-  <div style={alertStyle}>
+const warning: React.CSSProperties = {
+  background: '#e5d773',
+  borderRadius: '50%',
+  width: 25,
+  height: 25,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const info: React.CSSProperties = {
+  background: '#8ae573',
+  borderRadius: '50%',
+  width: 25,
+  height: 25,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const glyph = {
+  alert,
+  warning,
+  info,
+}
+
+const Icon = ({ type }) =>
+  <div style={glyph[type]}>
     <Glyphicon glyph="exclamation-sign"/>
   </div>;
 
@@ -85,7 +111,9 @@ const renderers: ISchemaRenderer<IUserNotification> = {
   is_read: meta =>
     <div style={statusStyle}>
       {!meta.rowData.is_read && <Glyphicon glyph="envelope"/>}
-      {meta.rowData.priority === 'alert' && <AlertIcon />}
+      {meta.rowData.priority === 'alert' && <Icon type="alert" />}
+      {meta.rowData.priority === 'warning' && <Icon type="warning" />}
+      {meta.rowData.priority === 'info' && <Icon type="info" />}
     </div>,
 };
 

@@ -63,13 +63,13 @@ class App extends Component {
           .then(() => {
             this.setState({ loading: false });
           })
-          .catch((error) => {
-            console.log(error); // eslint-disable-line
-            if (error === 401) {
+          .catch(({ error_text, errorIsShow }) => {
+            console.log(error_text); // eslint-disable-line
+            if (error_text === 401) {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM.notify(loginErrorNotification);
             }
-            return global.NOTIFICATION_SYSTEM.notify(getErrorNotification(error));
+            return !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(error_text));
           });
   }
 

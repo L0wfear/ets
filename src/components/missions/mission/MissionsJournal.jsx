@@ -146,8 +146,8 @@ export default class MissionsJournal extends CheckableElementsList {
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       })
-      .catch(() => {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       });

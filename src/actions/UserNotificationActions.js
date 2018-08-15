@@ -48,10 +48,10 @@ export default class UserNotificationActions extends Actions {
     return Promise.all([
       (payload.common.read_ids.length ? UserNotificationService.put({ ...payload.common }, false, 'json') : Promise.reject())
         .then(() => this.getNotifications())
-        .catch(() => ({ result: { notUpdate: true }})),
+        .catch(() => ({ result: { notUpdate: true } })),
       (payload.adm.read_ids.length ? UserAdmNotificationService.put({ ...payload.adm }, false, 'json') : Promise.reject())
         .then(() => this.getAdmNotifications())
-        .catch(() => ({ result: { notUpdate: true }})),
+        .catch(() => ({ result: { notUpdate: true } })),
     ]);
   }
 

@@ -12,13 +12,6 @@ export default class ApiServiceFactory {
     }
   }
 
-  setApiUrl(url) {
-    if (typeof this._apiUrl === 'string') {
-      throw new Error('You cannot change API url');
-    }
-    this._apiUrl = url;
-  }
-
   createApiServiceAdapter = (path, options) =>
     new APIService(
       urljoin(this._apiUrl, path),

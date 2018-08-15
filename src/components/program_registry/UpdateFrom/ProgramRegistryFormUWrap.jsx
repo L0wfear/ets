@@ -130,8 +130,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
 
       return this.updateVersionList({ id: this.props.element.id });
-    }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
+    }).catch(({ errorIsShow }) => {
+      !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
     });
   }
 
@@ -144,8 +144,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify('Запрос на согласование отправлен', 'success');
 
       return this.updateVersionList({ id: this.props.element.id });
-    }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
+    }).catch(({ errorIsShow }) => {
+      !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Запрос на согласование не отправлен', 'error');
     });
   }
 
@@ -180,8 +180,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify('Версия согласована', 'success');
 
       return this.updateVersionList({ id: this.props.element.id })
-    }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
+    }).catch(({ errorIsShow }) => {
+      !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
     });
   }
 
@@ -194,8 +194,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify('Версия отменена', 'success');
 
       return this.updateVersionList({ id: this.props.element.id })
-    }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
+    }).catch(({ errorIsShow }) => {
+      !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
     });
   }
 
@@ -215,8 +215,8 @@ class ProgramRegistryFormWrap extends FormWrap {
       global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
 
       return this.updateVersionList({ id: this.props.element.id })
-    }).catch(() => {
-      global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
+    }).catch(({ errorIsShow }) => {
+      !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });
   }
 

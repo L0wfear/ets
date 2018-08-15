@@ -7,7 +7,7 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import { getToday9am, getTomorrow9am, createValidDateTime, diffDates, addSecond } from 'utils/dates';
+import { getToday9am, getDateWithMoscowTz, createValidDateTime, diffDates, addSecond } from 'utils/dates';
 import { bindable, FluxContext } from 'utils/decorators';
 import { connectToStores } from 'utils/decorators';
 
@@ -28,14 +28,17 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
   componentDidMount() {
     this.context.flux.getActions('objects').getOrganizations().then(({ result: [company] }) => {
       if (company) {
-        this.props.handleChange('company_id', company.company_id)
+        const { company_id } = this.getState();
+        if (!company_id) {
+          this.props.handleChange('company_id', company.company_id);
+        }
       }
     });
   }
   getState() {
     const {
       date_start = getToday9am(),
-      date_end = getTomorrow9am(59),
+      date_end = getDateWithMoscowTz(),
       company_id = null,
     } = this.props;
 

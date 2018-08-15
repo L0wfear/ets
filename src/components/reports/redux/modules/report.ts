@@ -67,9 +67,9 @@ export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = serviceName => dis
         payload,
       });
       resolve(payload);
-    } catch (error) {
-      dispatch({ type: GET_REPORT_META_ERROR, error });
-      reject(error);
+    } catch (errorData) {
+      dispatch({ type: GET_REPORT_META_ERROR, error: errorData.error_text });
+      reject(errorData);
     }
   });
 
@@ -121,9 +121,9 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
         });
       }
       resolve(response);
-    } catch (error) {
-      dispatch({ type: GET_REPORT_DATA_ERROR, error });
-      reject(error);
+    } catch (errorData) {
+      dispatch({ type: GET_REPORT_DATA_ERROR, error: errorData.error_text });
+      reject(errorData);
     }
   });
 

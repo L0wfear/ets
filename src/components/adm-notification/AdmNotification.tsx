@@ -40,7 +40,8 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
           label: 'Прочитано',
           callback: () => {
             this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id)
-              .then(() => this.updateCounterNotify());
+              .then(() => this.updateCounterNotify())
+              .catch(({ error_text }) => console.warn(error_text))
           }
         }
       })

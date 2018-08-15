@@ -104,12 +104,12 @@ class CarFormWrap extends FormWrap {
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
           });
-        } catch (e) {
+        } catch ({ error_text }) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
           });
-          console.warn(e);
+          console.warn(error_text);
           return;
         }
       } else {
@@ -127,12 +127,12 @@ class CarFormWrap extends FormWrap {
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
           });
-        } catch (e) {
+        } catch ({ error_text }) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
           });
-          console.warn(e);
+          console.warn(error_text);
           return;
         }
       } else {

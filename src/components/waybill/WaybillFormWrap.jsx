@@ -342,8 +342,8 @@ export default class WaybillFormWrap extends FormWrap {
           formState.fact_arrival_date = formState.plan_arrival_date;
           await flux.getActions('waybills').updateWaybill(formState);
           callback(id);
-        } catch (e) {
-          global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
+        } catch ({ errorIsShow }) {
+          !errorIsShow && global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
           this.setState({
             formState: {
               ...formState,
@@ -357,8 +357,8 @@ export default class WaybillFormWrap extends FormWrap {
         formState.status = 'draft';
         try {
           await flux.getActions('waybills').createWaybill(formState);
-        } catch (e) {
-          console.log(e); // eslint-disable-line
+        } catch ({ error_text }) {
+          console.log(error_text); // eslint-disable-line
           return;
         }
       }
@@ -386,16 +386,16 @@ export default class WaybillFormWrap extends FormWrap {
     } else if (waybillStatus === 'active') {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
-      } catch (e) {
-        console.log(e); // eslint-disable-line
+      } catch ({ error_text }) {
+        console.log(error_text); // eslint-disable-line
         return;
       }
       this.props.onCallback();
     } else if (waybillStatus === 'closed') {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
-      } catch (e) {
-        console.log(e); // eslint-disable-line
+      } catch ({ error_text }) {
+        console.log(error_text); // eslint-disable-line
         return;
       }
       this.props.onCallback();

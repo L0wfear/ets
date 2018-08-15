@@ -139,7 +139,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         checkedElements: {},
         selectedElement: null,
       });
-    }).catch(() => global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!')));
+    }).catch(({ errorIsShow }) => !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!')));
   }
 
   completeCheckedElements = async () => {
@@ -154,8 +154,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       });
       try {
         await Promise.all(allQuerys);
-      } catch (e) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      } catch ({ errorIsShow }) {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
       }
 
       this.refreshList(this.state);
@@ -181,8 +181,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       });
       try {
         await Promise.all(allQuerys);
-      } catch (e) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+      } catch ({ errorIsShow }) {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
       }
 
       this.refreshList(this.state);
@@ -213,8 +213,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
       try {
         await Promise.all(allQuerys);
-      } catch (e) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+      } catch ({ errorIsShow }) {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
       }
 
       this.refreshList(this.state);

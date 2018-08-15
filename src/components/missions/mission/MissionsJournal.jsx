@@ -171,8 +171,8 @@ export default class MissionsJournal extends CheckableElementsList {
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       })
-      .catch(() => {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       });
@@ -211,7 +211,7 @@ export default class MissionsJournal extends CheckableElementsList {
         });
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
       })
-      .catch(() => global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
+      .catch(({ errorIsShow }) => !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
     })
     .catch(() => {});
   }
@@ -245,11 +245,11 @@ export default class MissionsJournal extends CheckableElementsList {
               global.NOTIFICATION_SYSTEM.notify(notifyText);
             }
           })
-          .catch(() => {
+          .catch(({ errorIsShow }) => {
             elList[i] = true;
             if (!elList.some(elD => !elD)) {
               this.refreshList();
-              global.NOTIFICATION_SYSTEM.notify(notifyText);
+              !errorIsShow && global.NOTIFICATION_SYSTEM.notify(notifyText);
             }
           });
         });

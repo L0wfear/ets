@@ -37,8 +37,17 @@ function checkResponse(url, response, body, method) {
 
   if (response.status === 500) {
     // global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
-    throw new Error('Server responded with 500');
+    const error = {
+      erorr: body,
+      error_text: new Error('Server responded with 500'),
+    };
+    throw error;
   } else if (response.status === 422) {
+    const error = {
+      erorr: body,
+      error_text: new Error('Server responded with 422'),
+      errorIsShow: true,
+    };
     global.NOTIFICATION_SYSTEM.notify({
       title: 'Ошибка',
       message: 'Неправильно заполнены фильтры',
@@ -47,7 +56,7 @@ function checkResponse(url, response, body, method) {
       position: 'tr',
       autoDismiss: 0,
     });
-    throw new Error('Server responded with 422');
+    throw error;
   } else if (body && body.errors && body.errors.length) {
     const error = `ERROR /${method} ${usedUrl}`;
     console.error(error);
@@ -56,7 +65,11 @@ function checkResponse(url, response, body, method) {
       console.error(er);
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}`));
     });
-    throw new Error('Errors in response body');
+    const errorThrow = {
+      erorr: body,
+      error_text: new Error('Errors in response body'),
+    };
+    throw errorThrow;
   }
 }
 
@@ -96,7 +109,9 @@ function httpMethod(url, data = {}, method, type, params = {}) {
     if (r.status === 401) {
       window.localStorage.clear();
       window.location.reload();
-      return new Promise((res, rej) => rej(r.status));
+      const error_text = r.status;
+
+      return Promise.reject({ error: r, error_text });
     }
     try {
       const responseBody = await r.json();
@@ -125,16 +140,16 @@ function httpMethod(url, data = {}, method, type, params = {}) {
             });
           }
         }
-      } catch (e) {
-        return new Promise((res, rej) => rej());
+      } catch (error) {
+        return Promise.reject({ error, error_text: 'none' });
       }
       return Promise.resolve(responseBody, r);
-    } catch (e) {
-      console.error('Неверный формат ответа с сервера', url);
-      return new Promise((res, rej) => rej());
+    } catch (error) {
+      const error_text = 'Неверный формат ответа с сервера';
+
+      console.error(error_text, url);
+      return Promise.reject({ error, error_text });
     }
-    // return r.json().then((responseBody) => {
-    // });
   });
 }
 

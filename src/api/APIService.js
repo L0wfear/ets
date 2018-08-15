@@ -44,12 +44,28 @@ export default class APIService {
       // Show warnings
       if (Array.isArray(r.warnings)) {
         r.warnings.forEach(w => {
+          const errorIsShow = !w.hidden;
+
           !w.hidden && this.warningNotificationFunction(w.message || w);
-          throw new RequestWarningError(w);
+
+          const errorThrow = {
+            erorr: r,
+            error_text: new RequestWarningError(w),
+            errorIsShow,
+          };
+          throw errorThrow;
         });
       } else if (r.warnings && r.warnings.message || typeof r.warnings === 'string') {
+        const errorIsShow = !r.warnings.hidden;
+
         !r.warnings.hidden && this.warningNotificationFunction(r.warnings.message || r.warnings);
-        throw new RequestWarningError(r.warnings);
+
+        const errorThrow = {
+          erorr: r,
+          error_text: new RequestWarningError(r.warnings),
+          errorIsShow,
+        };
+        throw errorThrow;
       }
     }
     if (r.info && r.info.length) {
@@ -66,12 +82,27 @@ export default class APIService {
       // Show errors
       if (Array.isArray(r.errors)) {
         r.errors.forEach(w => {
+          const errorIsShow = !w.hidden;
           !w.hidden && this.errrorNotificationFunction(w.message || w);
-          throw new RequestWarningError(w);
+
+          const errorThrow = {
+            erorr: r,
+            error_text: new RequestWarningError(w),
+            errorIsShow,
+          };
+          throw errorThrow;
         });
       } else if (r.errors && r.errors.message || typeof r.errors === 'string') {
+        const errorIsShow = !r.errors.hidden;
+
         !r.errors.hidden && this.errrorNotificationFunction(r.errors.message || r.errors);
-        throw new RequestWarningError(r.errors);
+
+        const errorThrow = {
+          erorr: r,
+          error_text: new RequestWarningError(r.errors),
+          errorIsShow,
+        };
+        throw errorThrow;
       }
     }
     if (typeof callback === 'function') {
@@ -88,9 +119,9 @@ export default class APIService {
   get(payload = {}) {
     if (this.useMock && mocks[this.serviceName]) {
       this.log('GET MOCK');
-      return new Promise((res) => {
+      return new Promise((resolve) => {
         setTimeout(() => {
-          res(mocks[this.serviceName].get(payload));
+          resolve(mocks[this.serviceName].get(payload));
         }, 500);
       });
     }

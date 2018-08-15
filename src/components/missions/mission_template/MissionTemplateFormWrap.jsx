@@ -24,9 +24,9 @@ export const createMissions = async (flux, element, payload) => {
   let error = false;
   try {
     await flux.getActions('missions').createMissions(element, payload);
-  } catch (e) {
+  } catch ({ error_text }) {
     error = true;
-    if (e && e.message.code === 'no_active_waybill') {
+    if (error_text && error_text.message.code === 'no_active_waybill') {
       let cancel = false;
       try {
         await confirmDialog({

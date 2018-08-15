@@ -182,8 +182,8 @@ export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mi
               date_to: missionOrderTo.date_to || order.order_date_to,
             };
           })
-          .catch(e => {
-            console.error(`Ошибка получения централизованного задания| id = ${order_id}`, e);
+          .catch(({ error_text }) => {
+            console.error(`Ошибка получения централизованного задания| id = ${order_id}`, error_text);
             return {
               ...mainMissionData,
               isOrderSource: true,

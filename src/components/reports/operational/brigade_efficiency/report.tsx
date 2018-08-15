@@ -32,8 +32,8 @@ class BrigadeEfficiencyReport extends React.Component<{}, IStateBrigadeEfficienc
         dutyMissionFormVisibility: true,
         dutyMissionSelectedItem: dutyMission.result[0],
       });
-    } catch (err) {
-      console.warn(err);
+    } catch ({ error_text }) {
+      console.warn(error_text);
     }
   }
   handleDutyMissionFormVisibility = () => {

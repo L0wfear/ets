@@ -390,14 +390,8 @@ body.application hr {
 }
 
 .sidebar {
-  position: fixed;
-  top: 64px;
-  bottom: 0;
-  left: 0;
-  z-index: 140;
-  display: block;
-  overflow: hidden;
   background-color: #eee;
+  height: 100%;
 }
 
 .sidebar__header {
@@ -1814,6 +1808,8 @@ body.application {
 }
 
 .routes-list {
+  padding: 0px;
+  height: 100%;
   &-menu {
     float:left;
     margin-top: 50px;

@@ -116,12 +116,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         }
 
         resolve(data);
-      } catch (error) {
-        const { warnings = [] }  = error
-        if (!warnings.length) {
-          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
-        }
-        reject(error);
+      } catch (errorData) {
+        !errorData.errorIsShow && global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+        reject({ ...errorData, errorIsShow: true });
       }
     });
   }
@@ -129,12 +126,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   getTableMetaInfo() {
     try {
       this.props.getTableMetaInfo(this.props.serviceName);
-    } catch (error) {
-      console.error(error);
-      const { warnings = [] }  = error
-      if (!warnings.length) {
-        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
-      }
+    } catch (errorData) {
+      !errorData.errorIsShow && global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
     }
   }
 
@@ -189,12 +182,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       }
 
       this.props.history.pushState(null, this.props.reportUrl, newQuery);
-    } catch (error) {
-      console.error(error);
-      const { warnings = [] }  = error
-      if (!warnings.length) {
-        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${error}`));
-      }
+    } catch (errorData) {
+      !errorData.errorIsShow && global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
     }
   }
 

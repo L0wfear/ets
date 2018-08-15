@@ -33,7 +33,10 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
         dismissible: false,
         action: {
           label: 'Прочитано',
-          callback: () => this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id),
+          callback: () => (
+            this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id)
+            .catch(({ error_text }) => console.warn(error_text))
+          ),
         }
       })
     ))

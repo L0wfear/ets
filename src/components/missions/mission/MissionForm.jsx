@@ -52,8 +52,8 @@ export class MissionForm extends Form {
         const technicalOperationsList = await this.context.flux.getActions('technicalOperation')
                                                              .getTechnicalOperationsByCarId(v);
         this.setState({ technicalOperationsList });
-      } catch (e) {
-        console.error(e);
+      } catch ({ error_text }) {
+        console.error(error_text);
       }
     }
   }
@@ -81,8 +81,8 @@ export class MissionForm extends Form {
           this.handleRouteIdChange(routesList[0].id);
         }
         this.setState({ routesList });
-      } catch (e) {
-        console.error(e);
+      } catch ({ error_text }) {
+        console.error(error_text);
       }
     }, 60);
   }

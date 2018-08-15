@@ -16,15 +16,21 @@ export default class CompanyStructure extends ElementsList {
     super.componentDidMount();
 
     const { flux } = this.context;
-    flux.getActions('companyStructure').getCompanyStructure();
-    flux.getActions('companyStructure').getLinearCompanyStructure();
+    Promise.all([
+      flux.getActions('companyStructure').getCompanyStructure(),
+      flux.getActions('companyStructure').getLinearCompanyStructure(),
+    ]).catch(({ error_text }) => {
+      console.warn(error_text);
+    });
   }
 
   editElement = async (id, e) => {
     e.stopPropagation();
-
-    await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
-
+    try {
+      await this.context.flux.getActions('companyStructure').getLinearCompanyStructure();
+    } catch ({ error_text }) {
+      console.warn(error_text);
+    };
     const { companyStructureLinearList = [] } = this.props;
     const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);
 
@@ -42,7 +48,10 @@ export default class CompanyStructure extends ElementsList {
       return;
     }
 
-    this.context.flux.getActions('companyStructure').deleteCompanyElement(id);
+    this.context.flux.getActions('companyStructure').deleteCompanyElement(id)
+      .catch(({ error_text }) => {
+        console.warn(error_text);
+      });
   }
 
   render() {

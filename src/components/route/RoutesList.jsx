@@ -306,53 +306,51 @@ class RoutesList extends React.Component {
 
     return (
       <div className="ets-page-wrap routes-list">
-        <Row>
-          <Col xs={5} md={3} className="sidebar">
-            <header className="sidebar__header clearfix">
-              <div className="sidebar__header-title col-xs-12">
-                Список маршрутов
-              </div>
-            </header>
-            <div className="sidebar__list-container" style={{ marginBottom: '30px !important', marginLeft: 20, top: '70px' }}>
-              {this.renderItem(ROUTES)}
+        <Col xs={5} md={3} className="sidebar">
+          <header className="sidebar__header clearfix">
+            <div className="sidebar__header-title col-xs-12">
+              Список маршрутов
             </div>
-          </Col>
-          <Col xs={7} md={9} className="col-xs-offset-5 col-md-offset-3">
-            <div className="some-header clearfix">
-              <div className="waybills-buttons">
-                <FilterButton
-                  show={this.state.filterModalIsOpen}
-                  active={!!_.keys(this.state.filterValues).length}
-                  onClick={this.toggleFilter}
-                />
-                <ButtonCreateRoute bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</ButtonCreateRoute>
-                <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}><Glyphicon glyph="pencil" /> Изменить маршрут</ButtonUpdateRoute>
-                <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
-                <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
-              </div>
-            </div>
-            <Filter
-              show={this.state.filterModalIsOpen}
-              onSubmit={this.saveFilter}
-              onClick={this.toggleFilter}
-              onHide={this.closeFilter}
-              active={_.keys(this.state.filterValues).length}
-              values={this.state.filterValues}
-              options={filterOptions}
-            />
-            <div className="clearfix">
-              <Div hidden={this.state.showForm || route === null}>
-                <RouteInfo route={route} />
-              </Div>
-              <RouteFormWrap
-                element={route}
-                onFormHide={this.onFormHide}
-                showForm={this.state.showForm}
-                routesList={routesList}
+          </header>
+          <div className="sidebar__list-container" style={{ marginBottom: '30px !important', marginLeft: 20, top: '70px' }}>
+            {this.renderItem(ROUTES)}
+          </div>
+        </Col>
+        <Col xs={7} md={9} >
+          <div className="some-header clearfix">
+            <div className="waybills-buttons">
+              <FilterButton
+                show={this.state.filterModalIsOpen}
+                active={!!_.keys(this.state.filterValues).length}
+                onClick={this.toggleFilter}
               />
+              <ButtonCreateRoute bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</ButtonCreateRoute>
+              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}><Glyphicon glyph="pencil" /> Изменить маршрут</ButtonUpdateRoute>
+              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
+              <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
             </div>
-          </Col>
-        </Row>
+          </div>
+          <Filter
+            show={this.state.filterModalIsOpen}
+            onSubmit={this.saveFilter}
+            onClick={this.toggleFilter}
+            onHide={this.closeFilter}
+            active={_.keys(this.state.filterValues).length}
+            values={this.state.filterValues}
+            options={filterOptions}
+          />
+          <div className="clearfix">
+            <Div hidden={this.state.showForm || route === null}>
+              <RouteInfo route={route} />
+            </Div>
+            <RouteFormWrap
+              element={route}
+              onFormHide={this.onFormHide}
+              showForm={this.state.showForm}
+              routesList={routesList}
+            />
+          </div>
+        </Col>
 
       </div>
     );

@@ -106,11 +106,11 @@ export default class MissionFormWrap extends FormWrap {
                 await createMissions(element, newPayload);
               }
             }
-            if (e && e.message.code === 'invalid_period') {
-              const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+            if (errorFromThrow && errorFromThrow.message.code === 'invalid_period') {
+              const waybillNumber = errorFromThrow.message.message.split('№')[1].split(' ')[0];
 
               const body = self => <div>
-                <div>{e.message.message}</div><br />
+                <div>{errorFromThrow.message.message}</div><br />
                 <center>Введите даты задания:</center>
                 <IntervalPicker
                   interval={self.state.interval}

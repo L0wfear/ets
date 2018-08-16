@@ -13,6 +13,11 @@ type stateAdmNotification = {
 @FluxContext
 class AdmNotification extends React.Component<propsAdmNotification, stateAdmNotification> {
   componentWillReceiveProps(nextProps) {
+
+    this.props.admNotReadNotificationsList.filter(({ id }) => !nextProps.admNotReadNotificationsList.find(admN => admN.id === id)).forEach(({ id }) => {
+      global.NOTIFICATION_SYSTEM.removeNotification(id);
+    })
+
     nextProps.admNotReadNotificationsList.forEach(notify => (
       global.NOTIFICATION_SYSTEM.notify({
         title: notify.title,
@@ -33,10 +38,18 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
         dismissible: false,
         action: {
           label: 'Прочитано',
-          callback: () => this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id),
+          callback: () => {
+            this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id)
+              .then(() => this.updateCounterNotify())
+              .catch(({ error_text }) => console.warn(error_text))
+          }
         }
       })
     ))
+  }
+
+  updateCounterNotify() {
+    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
   }
 
   render() {

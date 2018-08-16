@@ -1,0 +1,14 @@
+
+.duty-mission-table {
+  .griddle-body {
+    table {
+      tbody {
+        tr {
+          &.highlighted-row > td {
+            background-color: orange !important;
+          }
+        }
+      }
+    }
+  }
+}

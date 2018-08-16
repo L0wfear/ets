@@ -26,7 +26,12 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
   onHide = () => {
     const { orderNotReadList: [{ id }] } = this.props;
 
-    this.context.flux.getActions('userNotifications').setMakeReadOrderNotification(id);
+    this.context.flux.getActions('userNotifications').setMakeReadOrderNotification(id)
+      .then(() => this.updateCounterNotify());
+  }
+
+  updateCounterNotify() {
+    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
   }
 
   render() {
@@ -35,6 +40,7 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
     const {
       created_at = null,
       description = '',
+      title = '',
       notShow,
     } = firstOrderNotify;
 
@@ -43,7 +49,7 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
         <Modal show onHide={this.onHide} backdrop="static">
           <Modal.Header closeButton>
             <div className="flex-space-between">
-              <span>{'Поступление новой факсограммы'}</span>
+              <span>{title}</span>
               <span>{created_at ? makeDate(created_at) : ''}</span>
             </div>
           </Modal.Header>

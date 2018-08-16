@@ -2,7 +2,6 @@ import React from 'react';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import {
-  ButtonToolbar,
   Button,
   Glyphicon,
 } from 'react-bootstrap';
@@ -165,15 +164,15 @@ export default class MissionsJournal extends CheckableElementsList {
       Promise.all(
         Object.values(this.state.checkedElements).map(mission =>
           this.context.flux.getActions('missions')
-            .updateMission({ ..._.cloneDeep(mission), status: 'complete' }, false),
+            .updateMission({ ..._.cloneDeep(mission), status: 'complete' }),
         ),
       ).then(() => {
         global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       })
-      .catch(() => {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       });
@@ -212,7 +211,7 @@ export default class MissionsJournal extends CheckableElementsList {
         });
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
       })
-      .catch(() => global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
+      .catch(({ errorIsShow }) => !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
     })
     .catch(() => {});
   }
@@ -246,11 +245,11 @@ export default class MissionsJournal extends CheckableElementsList {
               global.NOTIFICATION_SYSTEM.notify(notifyText);
             }
           })
-          .catch(() => {
+          .catch(({ errorIsShow }) => {
             elList[i] = true;
             if (!elList.some(elD => !elD)) {
               this.refreshList();
-              global.NOTIFICATION_SYSTEM.notify(notifyText);
+              !errorIsShow && global.NOTIFICATION_SYSTEM.notify(notifyText);
             }
           });
         });

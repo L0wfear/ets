@@ -56,6 +56,7 @@ class Prompt extends React.Component {
       <Modal
         show={this.state.isVisible}
         bsSize={"small"}
+        id="delete-form"
       >
         <Modal.Header>
           {this.state.title}

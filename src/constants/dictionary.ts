@@ -51,6 +51,8 @@ export const ORDER_STATUS_LABELS = {
   published: 'Опубликовано',
   cancelled: 'Отменено',
   partially_cancelled: 'Частично отменено',
+  suspended: 'Приостановлено',
+  partially_suspended: 'Частично приостановлено',
 };
 
 export const GEOZONE_OBJECTS = [

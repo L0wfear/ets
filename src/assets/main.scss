@@ -12,6 +12,8 @@
 @import './version-notifications.scss';
 @import './program-repaier.scss';
 @import './order.scss';
+@import './mission.scss';
+@import './duty-mission.scss';
 
 .all-width {
   width: 100%;
@@ -31,12 +33,16 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100vh;
 }
 body {
   color: #000;
 }
 .app-content {
   justify-self: flex-start;
+  flex: 1 1;
+  position: relative;
+  overflow: auto;
 }
 
 // NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
@@ -393,14 +399,8 @@ body.application hr {
 }
 
 .sidebar {
-  position: fixed;
-  top: 64px;
-  bottom: 0;
-  left: 0;
-  z-index: 140;
-  display: block;
-  overflow: hidden;
   background-color: #eee;
+  height: 100%;
 }
 
 .sidebar__header {
@@ -600,7 +600,7 @@ body.application {
 }
 
 .app-toolbar-new {
-  top: 84px;
+  top: 36px;
   color: #fff;
   position: absolute;
   z-index: 1000;
@@ -627,7 +627,7 @@ body.application {
 
   color: #fff;
   position: absolute;
-  top: 84px;
+  top: 36px;
   z-index: 1000;
   left: 20px;
 
@@ -774,7 +774,7 @@ body.application {
 .monitor-sidebar {
   padding: 0px 10px;
   position: absolute;
-  top: 48px;
+  top: 0px;
   bottom: 0;
   width: 500px;
   background-color: rgba(#f2f2f2, 0.8);
@@ -1787,9 +1787,8 @@ body.application {
 
 /** APP NAVIGATION */
 
-.app-navigation {
-  z-index:1030;
-  width: 100%;
+.app-navigation>nav {
+  margin: 0px;
 }
 
 /** ETS TABLE */
@@ -1825,7 +1824,6 @@ body.application {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
 }
 
 .some-header {
@@ -1848,6 +1846,9 @@ body.application {
 }
 
 .routes-list {
+  padding: 0px;
+  height: 100%;
+  flex-direction: row;
   &-menu {
     float:left;
     margin-top: 50px;
@@ -3279,23 +3280,43 @@ div.none {
 }
 
 .app-footer {
-  position: fixed;
-    bottom: 0;
+  height: 30px;
+  width: 100%;
+  padding: 0 20px;
+  background: #292929;
+  color: white;
+  line-height: 30px;
+  z-index: 300;
+  min-height: 30px;
+  display: flex;
+  justify-content: space-between;
+  >div {
+    flex: 1 1 0;
+  }
+  >.container-tp {
+    display: flex;
+    justify-content: center;
+  }
+  >.container-company {
+    display: flex;
+    justify-content: center;
+  }
+  >.container-version {
+    display: flex;
+    justify-content: flex-end;
+  }
+  >div {
+    overflow: hidden;
     height: 30px;
-    text-align: center;
-    width: 100%;
-    background: #292929;
-    color: white;
-    line-height: 30px;
-    z-index: 300;
-    & .tp {
-      color: red;
-      font-weight: bold;
-      cursor: pointer;
-      &.not-red {
-        color: white;
-      }
+  }
+  & .tp {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+    &.not-red {
+      color: white;
     }
+  }
 
 }
 
@@ -3378,7 +3399,7 @@ div.none {
 
 .cleaning-rate-header {
   position: absolute;
-  top: 90px;
+  top: 25px;
   left: 520px;
   button {
     width: 54px;
@@ -3535,4 +3556,11 @@ div.none {
 
 .select-date-end-custom {
   min-width: 50px;
+}
+
+div.car-movement-time-report {
+  >.col-md-6 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }

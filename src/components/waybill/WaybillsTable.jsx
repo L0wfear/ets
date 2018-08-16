@@ -103,7 +103,14 @@ export const getTableMeta = ({
         displayName: 'Гаражный номер',
         type: 'string',
         filter: {
-          type: 'advanced-string-like',
+          type: 'multiselect',
+          options: carsList.reduce((newArr, { garage_number }) => {
+            if (garage_number) {
+              newArr.push({ value: garage_number, label: garage_number });
+            }
+
+            return newArr;
+          }, []),
         },
       },
       {

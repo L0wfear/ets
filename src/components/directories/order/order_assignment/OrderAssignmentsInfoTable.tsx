@@ -83,7 +83,11 @@ const mapStateToProps = (state) => ({
   dataSource: state.order.selectedElementOrder,
 });
 const mapDispatchToProps = dispatch => ({
-  onRowSelectedAssignment: ({ props: { data: selectedElementAssignment } }) => dispatch(setSelectedElementAssignment(selectedElementAssignment)),
+  onRowSelectedAssignment: ({ props: { data: selectedElementAssignment } }) => (
+    dispatch(
+      setSelectedElementAssignment(selectedElementAssignment)
+    )
+  ),
 })
 
 export default connect(

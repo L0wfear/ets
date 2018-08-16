@@ -55,6 +55,7 @@ export const getMissionTemplateData = (state, payload) => {
       order_date: selectedElementOrder.order_date,
       order_date_to: selectedElementOrder.order_date_to,
       faxogramm_id: selectedElementOrder.id,
+      status: selectedElementOrder.status,
     }
   }
 };

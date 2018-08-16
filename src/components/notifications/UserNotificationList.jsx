@@ -22,8 +22,20 @@ export default class UserNotificationList extends CheckableElementsList {
     super.componentDidMount();
     const { flux } = this.context;
 
-    flux.getActions('userNotifications').getNotifications();
-    flux.getActions('userNotifications').getAdmNotifications();
+    try {
+      await Promise.all([
+        flux.getActions('userNotifications').getNotifications(),
+        flux.getActions('userNotifications').getAdmNotifications(),
+      ]);
+    } catch (e) {
+      //
+    }
+
+    this.updateCounterNotify();
+  }
+
+  updateCounterNotify() {
+    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
   }
 
   handleMarkAllAsRead = () => {
@@ -34,12 +46,13 @@ export default class UserNotificationList extends CheckableElementsList {
     .then(() => {
       this.context.flux.getActions('userNotifications').markAllAsRead();
     })
+    .then(() => this.updateCounterNotify())
     .catch(() => {});
   }
   handleMarkAsRead = (checkedItems) => {
     this.context.flux.getActions('userNotifications').markAsRead(
       checkedItems,
-    );
+    ).then(() => this.updateCounterNotify());
   }
   /**
    * @override

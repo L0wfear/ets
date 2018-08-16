@@ -40,7 +40,11 @@ export default class CompanyStructure extends ElementsList {
 
   editElement = async (id, e) => {
     e.stopPropagation();
-    await this.refreshState();
+    try {
+      await this.refreshState();
+    } catch ({ error_text }) {
+      console.warn(error_text);
+    }
 
     const { companyStructureLinearList = [] } = this.props;
     const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);
@@ -57,7 +61,11 @@ export default class CompanyStructure extends ElementsList {
     } catch (err) {
       // отмена
     }
-    this.context.flux.getActions('companyStructure').deleteCompanyElement(id).then(() => this.refreshState());
+    this.context.flux.getActions('companyStructure').deleteCompanyElement(id)
+      .then(() => this.refreshState())
+      .catch(({ error_text }) => {
+        console.warn(error_text);
+      });
   }
 
   render() {

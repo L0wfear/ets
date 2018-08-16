@@ -273,9 +273,9 @@ export class MissionForm extends Form {
       if (this.state.selectedRoute && structure_id !== this.state.selectedRoute.structure_id) {
         this.handleRouteIdChange(undefined);
       }
-
-      this.props.handleMultiFormChange(changesObj);
     }
+
+    this.props.handleMultiFormChange(changesObj);
   }
 
   createNewRoute = () => {

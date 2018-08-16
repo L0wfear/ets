@@ -95,14 +95,16 @@ class App extends React.Component <any, any> {
           .then(flux.getActions('objects').getConfig())
           .then(() => this.setState({ loading: false }))
           .catch(error => {
+            const { error_text, errorIsShow } = error;
+
             /* tslint:disable:no-console */
-            console.log(error);
+            console.log(error_text);
             /* tslint:enable */
-            if (error === 401) {
+            if (error_text === 401) {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM.notify(loginErrorNotification);
             }
-            return global.NOTIFICATION_SYSTEM.notify(getErrorNotification(error));
+            return !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(error_text));
           });
   }
 

@@ -36,8 +36,8 @@ export default class DashboardPageHeader extends React.Component {
         date: backDate.format('DD MMMM YYYY'),
         prevDate: backDate,
       });
-    }).catch((e) => {
-      console.error(e);
+    }).catch(({ error_text }) => {
+      console.error(error_text);
       if (!error) {
         error = true;
         this.componentDidMount();

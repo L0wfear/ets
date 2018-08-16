@@ -169,15 +169,14 @@ export default class FormWrap extends React.Component {
             saveButtonEnability: true,
             canSave: true,
           });
-        } catch (e) {
+        } catch (errorData) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
             canSave: true,
           });
-          console.warn(e);
-          throw e;
-          return;
+          console.warn(errorData.error_text);
+          throw errorData;
         }
       } else {
         throw new Error('Create action called but not specified');
@@ -196,13 +195,13 @@ export default class FormWrap extends React.Component {
             saveButtonEnability: true,
             canSave: true,
           });
-        } catch (e) {
+        } catch ({ error_text }) {
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
             canSave: true,
           });
-          console.warn(e);
+          console.warn(error_text);
           return;
         }
       } else {

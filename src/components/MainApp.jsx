@@ -47,11 +47,11 @@ class MainApp extends React.Component {
 
   render() {
     const {
-      currentUser: {
-        structure_name = '',
-        company_name,
-      },
+      currentUser,
     } = this.props;
+
+    const company_name = currentUser.company_name || '';
+    const structure_name = currentUser.structure_name || '';
 
     return (
       <div className="app">
@@ -72,26 +72,17 @@ class MainApp extends React.Component {
         </div>
 
         <div className="app-footer">
-          <Col md={3}>
-            <Div hidden={this.state.needShowHrefOnNewProd}>
-              <Col md={12}>
-                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
-              </Col>
-            </Div>
-            <Div hidden={!this.state.needShowHrefOnNewProd}>
-              <Col md={6}>
-                <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
-              </Col>
-            </Div>
-          </Col>
-          <Col md={6}>
-            <span>{`${company_name ? company_name : ''} ${structure_name ? structure_name : ''}`}</span>
-          </Col>
-          <Col md={3}>
-            <span style={{ position: 'absolute', right: 20 }}>
+          <div className="container-tp">
+            <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+          </div>
+          <div className="container-company">
+            <span>{`${company_name} ${structure_name}`}</span>
+          </div>
+          <div className="container-version">
+            <span>
               {VERSION_DESCRIPTION}
             </span>
-          </Col>
+          </div>
         </div>
       </div>
     );

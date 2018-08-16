@@ -6,6 +6,18 @@ import {
   UserAdmNotificationService,
 } from 'api/Services';
 
+
+const getFrontType = (group) => {
+  switch (group) {
+    case 'personal':
+      return 'common';
+    case 'common':
+      return 'adm';
+    default:
+      return '';
+  }
+};
+
 export default class UserNotificationActions extends Actions {
   getOrderNotRead() {
     return UserNotificationService.get({ is_read: false, type_id: 6 }).then(ans => ({ ...ans, group: 'personal' }));
@@ -48,10 +60,10 @@ export default class UserNotificationActions extends Actions {
     return Promise.all([
       (payload.common.read_ids.length ? UserNotificationService.put({ ...payload.common }, false, 'json') : Promise.reject())
         .then(() => this.getNotifications())
-        .catch(() => ({ result: { notUpdate: true }})),
+        .catch(() => ({ result: { notUpdate: true } })),
       (payload.adm.read_ids.length ? UserAdmNotificationService.put({ ...payload.adm }, false, 'json') : Promise.reject())
         .then(() => this.getAdmNotifications())
-        .catch(() => ({ result: { notUpdate: true }})),
+        .catch(() => ({ result: { notUpdate: true } })),
     ]);
   }
 
@@ -70,6 +82,9 @@ export default class UserNotificationActions extends Actions {
   }
 
   setNotifyFromWs(notify) {
-    return Promise.resolve(notify);
+    return Promise.resolve({
+      ...notify,
+      front_type: getFrontType(notify.group),
+    });
   }
 }

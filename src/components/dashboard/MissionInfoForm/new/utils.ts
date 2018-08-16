@@ -52,9 +52,11 @@ export const componentWillUnmount: IComponentWillUnmount = props => {
 };
 
 export const componentWillReceiveProps: IComponentWillReceiveProps = props => {
-  const { track: { time_of_parking: parkingCount } } = props;
-  if (parkingCount && parkingCount !== props.parkingCount) {
-      props.setParkingCount(parkingCount);
+  let { track: { time_of_parking: parkingCount } } = props;
+  parkingCount = parkingCount === undefined ? -1 : Number(parkingCount);
+
+  if (parkingCount !== props.parkingCount) {
+      props.setparkingCount(parkingCount);
   }
 };
 
@@ -108,7 +110,7 @@ export const initialState = {
   selectedPoly: undefined,
   missionReport: [],
   selectedObjects: [],
-  parkingCount: 0,
+  parkingCount: -1,
   route: {},
   column_id: ({ formState: { mission_data: { column_id } } }) => column_id,
   tooLongDates: ({ formState: { mission_data } }) => diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,

@@ -47,11 +47,11 @@ export const createMissions = async (flux, element, payload) => {
         await createMissions(element, newPayload);
       }
     }
-    if (e && e.message.code === 'invalid_period') {
-      const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+    if (error_text && error_text.message.code === 'invalid_period') {
+      const waybillNumber = error_text.message.message.split('№')[1].split(' ')[0];
 
       const body = self => <div>
-        <div>{e.message.message}</div><br />
+        <div>{error_text.message.message}</div><br />
         <center>Введите даты задания:</center>
         <IntervalPicker
           interval={self.state.interval}

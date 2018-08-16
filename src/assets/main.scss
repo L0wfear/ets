@@ -603,7 +603,7 @@ body.application {
   top: 36px;
   color: #fff;
   position: absolute;
-  z-index: 1000;
+  z-index: 99;
   left: 20px;
   & .cars-legend {
     display: flex;
@@ -628,7 +628,8 @@ body.application {
   color: #fff;
   position: absolute;
   top: 36px;
-  z-index: 1000;
+  z-index: 99;
+
   left: 20px;
 
   &-filter {
@@ -1787,8 +1788,11 @@ body.application {
 
 /** APP NAVIGATION */
 
-.app-navigation>nav {
-  margin: 0px;
+.app-navigation {
+  z-index: 100;
+  & >nav {
+    margin: 0px;
+  }
 }
 
 /** ETS TABLE */

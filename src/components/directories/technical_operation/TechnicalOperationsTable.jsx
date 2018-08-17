@@ -3,7 +3,7 @@ import Table from 'components/ui/table/DataTable.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 const getTableMeta = (props) => {
-  const CAR_TYPES = props.typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
+  const CAR_TYPES = props.typesList.map(({ asuods_id, short_name }) => ({ value: asuods_id, label: short_name }));
   const SENSORS_TYPE_OPTIONS = props.sensorTypesList.map(defaultSelectListMapper);
 
   const OBJECT = [

@@ -162,6 +162,7 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 id="special_license_date_end"
+                type="date"
                 label="Срок действия специального удостоверения"
                 date={state.special_license_date_end}
                 time={false}
@@ -213,6 +214,7 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 id="drivers_license_date_end"
+                type="date"
                 label="Срок действия водительского удостоверения"
                 date={state.drivers_license_date_end}
                 time={false}

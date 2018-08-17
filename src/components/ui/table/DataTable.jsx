@@ -177,7 +177,6 @@ export default class DataTable extends React.Component {
         data: this.state.data,
       };
 
-      console.log('--', firstUseExternalInitialSort, props.initialSort, initialSort)
       if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
         changesFields.initialSort = props.initialSort;
         changesFields.firstUseExternalInitialSort = false;
@@ -240,8 +239,8 @@ export default class DataTable extends React.Component {
     }
     const {
       initialSort,
-      initialSortAscending,
       firstUseExternalInitialSort,
+      initialSortAscending,
     } = this.state;
 
     const changesFields = {
@@ -252,17 +251,21 @@ export default class DataTable extends React.Component {
       data: this.state.data,
     };
 
-    if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
-      changesFields.initialSort = props.initialSort;
+    if (firstUseExternalInitialSort) {
+      if (props.initialSort && props.initialSort !== initialSort) {
+        changesFields.initialSort = props.initialSort;
+      }
+      if (props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
+        changesFields.initialSortAscending = props.initialSortAscending;
+      }
       changesFields.firstUseExternalInitialSort = false;
     }
+
+    // очень странные дела
     if (changesFields.firstUseExternalInitialSort) {
       changesFields.firstUseExternalInitialSort = false;
     }
 
-    if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
-      changesFields.initialSortAscending = props.initialSortAscending;
-    }
     if (props.useServerFilter) {
       changesFields.filterValues = props.filterValues;
     }
@@ -276,7 +279,8 @@ export default class DataTable extends React.Component {
     }
 
     if (!props.useServerSort || !props.useServerFilter) {
-      changesFields.data = makeData(changesFields.data, this.state, { ...props, ...changesFields });
+      console.log(changesFields, this.state)
+      changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
     }
 
     this.setState(changesFields);
@@ -619,10 +623,13 @@ export default class DataTable extends React.Component {
       initialSort: this.state.initialSort,
       initialSortAscending: this.state.initialSortAscending,
     };
+    if (this.state.firstUseExternalInitialSort) {
+      nextProps.firstUseExternalInitialSort = false;
+    }
 
     this.setState({
       ...nextProps,
-      data: makeData(this.state.data, prevProps, { ...this.props, ...nextProps }),
+      data: makeData(this.state.originalData, prevProps, { ...this.props, ...nextProps }),
     });
   }
 

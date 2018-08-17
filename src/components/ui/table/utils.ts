@@ -177,22 +177,21 @@ export const sortFunction = (firstRowData, secondRowData, initialSort) => {
   return first.localeCompare(second);
 };
 
-export const sortData = (data, { initialSort }) => data.sort((a, b) => sortFunction(a,b, initialSort));
+export const sortData = (data, { initialSort, initialSortAscending }) => data.sort((a, b) => (
+  sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort))
+);
 
 export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
-  if ((prevProps.originalData !== nextProps.originalData && nextProps.initialSort) || prevProps.initialSort !== nextProps.initialSort) {
+  if ((prevProps.originalData !== nextProps.originalData && nextProps.initialSort) || prevProps.initialSort !== nextProps.initialSort || prevProps.initialSortAscending !== nextProps.initialSortAscending) {
     const { tableMeta: { cols = [] } = {} } = nextProps;
     const colData = cols.find(({ name }) => name === nextProps.initialSort);
     if (colData && colData.sortFunc) {
-      returnData = returnData.sort(colData.sortFunc);
+      returnData = returnData.sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
     } else {
       returnData = sortData([...returnData], nextProps);
     }
-  }
-  if (prevProps.initialSortAscending !== nextProps.initialSortAscending) {
-    returnData = [...returnData].reverse();
   }
 
   return returnData;

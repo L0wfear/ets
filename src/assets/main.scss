@@ -12,7 +12,6 @@
 @import './version-notifications.scss';
 @import './program-repaier.scss';
 
-
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -617,7 +616,6 @@ body.application hr {
   .navbar-nav > li {
     @media (min-width: 768px) {
       & > a {
-        // for: min-height: 64px;
         padding-top: $navbarPaddingA;
         padding-bottom: $navbarPaddingA;
         padding-left: 10px;
@@ -659,7 +657,6 @@ body.application hr {
     @media (min-width: 768px) {
       height: $navbarHeight;
 
-      // for: min-height: 64px;
       padding-top: $navbarPaddingA;
       padding-bottom: $navbarPaddingA;
     }
@@ -801,7 +798,6 @@ body.application hr {
   h5 {
     font-weight: normal;
   }
-  //background-color: #ff0; // test
 }
 
 .sidebar__list {
@@ -935,10 +931,6 @@ body.application hr {
 body.application {
   padding: 0;
   margin: 0;
-}
-
-.row {
-  //margin: 0; // !! test base bootstrap
 }
 
 .analytics-input {
@@ -2743,7 +2735,7 @@ div.car_legend-active {
   color: #000;
   cursor: default;
 
-  border: 1px solid #c1c1c1;//$colorButton;
+  border: 1px solid #c1c1c1;
 
   &-window {
     min-width: 250px;
@@ -2774,8 +2766,8 @@ div.car_legend-active {
 
 .column-control-wrap {
   position: relative;
-  line-height: 1.5; // copy .btn
-  margin-left: 10px; // copy .btn
+  line-height: 1.5;
+  margin-left: 10px;
 }
 
 .filter-button-active {

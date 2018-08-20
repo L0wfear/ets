@@ -230,7 +230,6 @@ export default class CurrentMission extends DashboardCardMedium {
         onFormHide={() => this.setState({ showMissionInfoForm: false })}
         showForm={this.state.showMissionInfoForm}
         element={this.state.selectedMission}
-        flux={this.context.flux}
         {...this.props}
       />
     );

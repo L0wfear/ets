@@ -1,4 +1,4 @@
-const list = [
+export const list = [
   {
     id: 1,
     title: 'В движении',
@@ -20,6 +20,14 @@ const list = [
     color: '#888888',
   },
 ];
+
+export const listObj = list.reduce((newObj, { id, ...other }) => ({
+  ...newObj,
+  [id]: {
+    id,
+    ...other,
+  },
+}), {});
 
 const index = {};
 
@@ -55,3 +63,5 @@ export const REPORT_STATUSES = {
 
 export const LOAD_PROCESS_TEXT = 'Загрузка...';
 export const NO_DATA_TEXT = 'Нет данных';
+export const NO_SENSORS_LEVEL_TEXT = 'Нет датчиков уровня топлива';
+export const NO_SENSORS_EQUIPMENT_TEXT = 'Нет датчиков навесного оборудования';

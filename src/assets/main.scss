@@ -29,6 +29,7 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
+  overflow: hidden;
 }
 body {
   color: #000;
@@ -38,6 +39,389 @@ body {
   flex: 1 1;
   position: relative;
 }
+
+.monitor-page {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  >div.olmap {
+    height: 100%;
+    width: 100%;
+  }
+
+  .map_info-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: row-reverse;
+    z-index: 1;
+
+    >.data_container-wrap {
+      height: 100%;
+      display: flex;
+      flex-direction: row-reverse;
+      overflow: hidden;
+
+      .data_container-make-small {
+        width: 50px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: hsla(0,0%,95%,.8);
+        overflow-y: scroll;
+        border: 1px solid rgba(0,0,0,.3);
+        position: relative;
+        transform: translate(1px, -1px);
+        pointer-events: all;
+        cursor: pointer;
+        font-weight: bold;
+      }
+    }
+    >.data_container, >.data_container-wrap>.data_container {
+      pointer-events: all;
+      flex: 1 1;
+      max-width: 500px;
+      background-color: hsla(0,0%,95%,.8);
+      overflow-y: scroll;
+      border-left: 1px solid rgba(0,0,0,.3);
+      height: 100%;
+
+      &:last-child {
+        box-shadow: -1px 0 30px rgba(0,0,0,.3);
+        border-left: none;
+      }
+
+      &.geoobjects_info {
+        max-width: 350px;
+      }
+      
+      >div {
+        margin: 10px;
+      }
+      .center-preloader {
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+      }
+    }
+  }
+}
+
+.car_info_block {
+  border: medium none;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  background: #ffffff;
+  padding: 0px 5px;
+  border-radius: 3px;
+}
+
+.map_info-title_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.geoobject_title>div {
+    font-size: 18px;
+    text-align: center;
+
+    &:nth-of-type(n+1) {
+      margin-right: 5px;
+    }
+    &::last-child {
+      margin-right: 0;
+    }
+  }
+
+  >div {
+    font-size: 24px;
+    &.car_info-gov_number {
+      display: flex;
+      justify-content: center;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+.selected_geoobjects-container {
+  margin: 5px 0px;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #7e7e7e;
+
+  .geoobject_one_data {
+    border-bottom: 1px solid #d7d7d7;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    >.title {
+      margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.car_info-close {
+  display: flex;
+  justify-content: flex-end;
+  >div {
+    cursor: pointer;
+    transition: transform 0.5s, background-color 0.5s;
+    will-change: transform, background-color;
+    >span {
+      position: relative;
+      transform: translateY(-6%);
+    }
+    &:hover {
+      transform: scale3d(1.1, 1.1, 1);
+      background-color: red;
+      color: white;
+    }
+  }
+}
+
+.all-width {
+  width: 100%;
+}
+
+.car_info-main_data_container {
+  >.car_info_block {
+    padding: 10px;
+  }
+
+  .legend-color {
+    display: flex;
+    align-items: center;
+    >div {
+      margin: 0px 2px;
+    }
+  }
+  .car_info-legend-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+
+    &.red {
+      background-color: rgb(255, 0, 51);;
+    }
+    &.green {
+      background-color: rgb(102, 204, 0);;
+    }
+  }
+}
+
+
+.car_info_block {
+  display: flex;
+  &.column {
+    flex-direction: column;
+  }
+  >div {
+    flex: 1 1;
+  }
+  >div.car_info-img {
+    flex: 3 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &.tab-data {
+    margin-top: 10px;
+  }
+}
+
+.car_info-attributes {
+  font-weight: 200;
+  margin: 5px 0;
+
+  >div {
+    margin: 5px;
+  }
+}
+
+.car_info-buttons_row {
+  display: flex;
+  >button {
+    flex: 1 1;
+    &:nth-child(2) {
+      margin: 0px 5px;
+    }
+  }
+}
+
+.car_info-charts {
+  margin-top: 10px;
+  .car_info-chart_buttons_row {
+    display: flex;
+    >button {
+      flex: 1 1;
+      &:first-child {
+        margin-right: 2.5px;
+      }
+      &:last-child {
+        margin-left: 2.5px;
+      }
+    }
+  }
+}
+
+
+
+.car_info-attr_title {
+  color: #666;
+}
+
+.chart-select_raw {
+  position: relative;
+  transform: translate3d(20px, -90px, 0);
+  font-weight: 200;
+  cursor: pointer;
+  >span {
+    margin: 5px;
+  }
+}
+
+.car_info-event_table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 2px;
+  margin-bottom: 30px;
+  font-weight: 200;
+  text-align: center;
+
+  thead {
+    background: #555;
+    color: white;
+    tr {
+      td {
+        width: 33%;
+        padding: 4px;
+      }
+    }
+  }
+  tbody {
+    td {
+      cursor: pointer;
+      border-bottom: 1px solid #DDD;
+      padding: 4px;
+    }
+  }
+}
+
+button {
+  &[disabled=''] {
+    .car_info-main_block-button {
+      &.inverse {
+        color: inherit;
+      }
+    }
+  }
+  .car_info-main_block-button  {
+    border-radius: 9px;
+    padding: 2px;
+    margin-right: 5px;
+    &.inverse {
+      background-color: #eee;
+      border: 1px solid #ccc;
+      color: #000;
+    }
+  }
+}
+
+.car_info-track_date_title {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d7d7d7;
+  padding: 5px;
+  font-weight: 200;
+  input {
+    margin-right: 5px;
+  }
+}
+.car_info-toggle_for_today {
+  cursor: pointer;
+
+  &.disabled {
+    color: rgba(0, 0, 0, 0.5);
+    cursor: not-allowed;
+  }
+}
+.car_info-track_date_control {
+  padding: 5px 0px;
+}
+
+.car_info-distance {
+  font-weight: 200;
+  padding: 5px 5px;
+}
+
+.car_info-sensors-list-container {
+  padding: 5px;
+
+  .sensors-type-list {
+    margin-bottom: 5px;
+    .type-title {
+      font-weight: 400;
+      font-style: italic;
+    }
+    .sensors-list {
+      padding: 5px 20px;
+      .sensor-option {
+        font-weight: 200;
+        cursor: pointer;
+        &.disabled {
+          cursor: not-allowed;
+          color: rgba(0, 0, 0, 0.5);
+        }
+        >input {
+          cursor: inherit;
+        }
+      }
+    }
+  }
+}
+
+.car_info-sensors_legend {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0px;
+  font-weight: 200;
+
+  .sensors_legeng_option {
+    display: flex;
+    align-items: center;
+    cursor: default;
+
+    .sensor_color {
+      width: 30px;
+      height: 10px;
+      border: 1px solid black;
+      margin-right: 10px;
+
+      &.color_0 {
+        background-color: #607D8B47;
+      }
+      &.color_1 {
+        background-color: #FFEB3B47;
+      }
+      &.color_2 {
+        background-color: #2196F347;
+      }
+      &.color_3 {
+        background-color: #673AB747;
+      }
+      &.color_4 {
+        background-color: #FF980047;
+      }
+    }
+  }
+}
+
+
 
 // NOTE Почему-то численное значение, переопределяемое в бутстрапе не делает текст жирным в некоторых браузерах.
 h5 {
@@ -724,16 +1108,223 @@ body.application {
 
   }
 }
+.car_info-track_player {
+  padding: 5px 0px;
+  >button {
+    margin: 5px;
+  }
+}
 
 .car-info-play-info {
   text-align: left;
   margin-top: 10px;
+  padding: 0 5px;
   dt {
     float: left;
     width: 120px;
   }
 }
 
+.car_info-missions_list_container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  .car_info_mission_container {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 200;
+    margin: 5px 2px;
+
+    .mission_title {
+      cursor: pointer;
+    }
+    .mission_vehicle_info {
+      color: #666;
+    }
+  }
+}
+
+.car-toolbar {
+  display: flex;
+}
+
+.tool_bar-wrap {
+  .tool_bar {
+    .car_filters-container-wrap {
+      position: relative;
+      width: 100%;
+
+      .car_filters-container {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        >span>.tool_bar-block {
+          min-width: 0px;
+          max-width: 310px;
+        }
+      }
+    }
+  }
+}
+
+.tool_bar-wrap {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .tool_bar {
+    position: relative;
+    width: 100%;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .tool_bar-block {
+      margin: 10px;
+      pointer-events: all;
+      display: inline-block;
+      min-width: 195px;
+
+      .default_cube {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        padding: 6px 1pc;
+
+        &.map-car-filter {
+          &>div {
+            min-height: 48px;
+          }
+          padding: 0;
+
+          .car_text_filter-container {
+            display: flex;
+            align-items: center;
+            &.multi>div {
+              min-width: 250px;
+            }
+            .input_text_action-wrap {
+              position: relative;
+              .input_text_action {
+                position: absolute;
+                display: flex;
+                align-items: baseline;
+                transform: translate(calc(-100% - 10px), -50%);
+                cursor: pointer;
+                >*:nth-child(n + 2) {
+                  margin-left: 5px;
+                }
+              }
+
+            }
+          }
+
+          >div.button-toggle {
+            min-width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+            cursor: pointer;
+          }
+        }
+
+        &.flex-row {
+          display: flex;
+          align-items: center;
+          &.multi {
+            align-items: baseline;
+          }
+          >div:nth-child(n + 2) {
+            margin-right: 10px;
+          }
+          .form-group {
+            margin: 0;
+            width: 250px;
+          }
+        }
+      }
+    }
+  }
+}
+
+div.car_legend-active {
+  margin-left: 25px;
+  font-size: large;
+  cursor: pointer;
+}
+.car_block_legend {
+  margin: 5px 0;
+  &.left {
+    margin-left: 5px;
+  }
+}
+
+.legen_option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px 0;
+  font-size: small;
+
+  &.off {
+    opacity: 0.5;
+  }
+
+  &.with_checkbox {
+    >input {
+      cursor: pointer;
+      margin: 0 8px;
+    }
+  }
+
+  .car_data-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin: 0 5px;
+
+    &.line {
+      border-radius: 0;
+    }
+    &.active {
+      background-color: white;
+    }
+    &.in_move {
+      background-color: #2ECC40;
+    }
+    &.stop {
+      background-color: #563d7c;
+
+    }
+    &.parking {
+      background-color: #f34b7d;
+    }
+    &.not_in_touch {
+      background-color: #888888;
+    }
+
+    &.track_red {
+      background-color: #f03;
+
+    }
+    &.track_green {
+      background-color: #6c0;
+    }
+
+    &.geoobject_un_select {
+      background-color: red;
+    }
+
+    &.geoobject_select {
+      background-color: yellow;
+
+    }
+  }
+}
 
 .list-item-checkbox {
 
@@ -1594,7 +2185,6 @@ body.application {
   }
 
   &-image {
-    margin: 10px;
     width: 250px;
     min-height: 100px;
   }
@@ -1724,8 +2314,8 @@ body.application {
 
 /** OPENLAYERS */
 .ol-zoom, .ol-zoom:hover {
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  background: white;
+  box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
   border-radius: 6px;
   top: -74px;
   width: 28px;
@@ -1734,6 +2324,7 @@ body.application {
   z-index: 9999;
 
   button {
+    color: black;
     background-color: transparent;
   }
 }
@@ -3154,14 +3745,12 @@ div.none {
 }
 
 .app-footer {
-  bottom: 0;
-  height: 30px;
+  z-index: 2;
   text-align: center;
-  width: 100%;
   background: #292929;
   color: white;
   line-height: 30px;
-  z-index: 300;
+  max-height: 30px;
   >div {
     overflow: hidden;
     height: 30px;
@@ -3396,4 +3985,107 @@ div.car-movement-time-report {
     padding-left: 0px;
     padding-right: 0px;
   }
+}
+
+.flex-line-unset {
+  display: flex;
+  align-items: unset;
+}
+
+.overlay_inside {
+  pointer-events: none;
+
+  &.track-overlay>.ets_overlay {
+    width: 500px;
+  }
+
+  .ets_overlay {
+    pointer-events: all;
+
+    padding: 5px;
+    width: 250px;
+
+    display: flex;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+
+    white-space: nowrap;
+    font-weight: 200;
+    border-radius: 10px;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+
+    .ets_overlay-title {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #d7d7d7;
+      font-weight: bold;
+
+      .overlay-track-title {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-right: 5px;
+      }
+
+      .overlay_close {
+        cursor: pointer;
+      }
+    }
+    .ets_overlay-body {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+
+      .overlay-box-info {
+        display: flex;
+        justify-content: space-between;
+
+        >div {
+          border-bottom: 1px solid #d7d7d7;
+          flex: 1 1;
+          border-left: 1px solid #d7d7d7;
+          border-right: 1px solid #d7d7d7;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:first-child {
+            border-left: none;
+          }
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+      .overlay-line-info {
+        width: 100%;
+        padding: 5px;
+        border-bottom: 1px solid #d7d7d7;
+
+        .sensors-list {
+          margin: 5px;
+        }
+      }
+    }
+
+  }
+  .ets_triangle-wrap {
+    width: 100%;
+    transform: translate(calc(50% - 10px), -1px);
+
+    .ets_triangle {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid white;
+    }
+  }
+}
+
+.font-bold {
+  font-weight: bold;
 }

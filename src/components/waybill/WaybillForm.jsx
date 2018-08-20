@@ -864,8 +864,9 @@ class WaybillForm extends Form {
                     disabled
                   />
                   <ExtField
+                    multi
                     id="fuel-end"
-                    type="number"
+                    type="select"
                     label="Возврат фактический, л"
                     error={errors.fact_fuel_end}
                     value={state.fact_fuel_end}

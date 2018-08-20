@@ -9,6 +9,7 @@ import {
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
+import { connect } from 'react-redux';
 
 import config from 'config';
 import { autobind } from 'core-decorators';
@@ -18,6 +19,11 @@ import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
+
+import {
+  sessionResetData,
+  sessionSetData,
+} from 'redux/modules/session/actions-session';
 
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import NotificationBadge from 'components/notifications/NotificationBadge';
@@ -56,6 +62,13 @@ const styleNotificationInfo = {
   flexDirection: 'row-reverse',
 };
 
+@connect(
+  null,
+  dispatch => ({
+    sessionSetData: props => dispatch(sessionSetData(props)),
+    sessionResetData: () => dispatch(sessionResetData()),
+  }),
+)
 @connectToStores(['session'])
 @FluxContext
 @HistoryContext
@@ -79,39 +92,24 @@ export default class MainPage extends React.Component {
 
   componentWillMount() {
     const user = this.context.flux.getStore('session').getCurrentUser();
-
+    if (user.user_id) {
+      this.props.sessionSetData(this.props);
+    }
     this.setState({
       user,
       needShowHrefOnNewProd: [10227244, 102266640].includes(user.company_id),
     });
   }
 
-  componentDidMount() {
-    if (this.context.flux.getStore('session').isLoggedIn()) {
-      const isSee = this.context.flux.getStore('session').isSeeNotifyProblem();
-
-      if (!isSee) {
-        global.NOTIFICATION_SYSTEM.notifyWithObject({
-          title: 'Уважаемые пользователи !',
-          level: 'success',
-          position: 'tr',
-          dismissible: false,
-          autoDismiss: 0,
-          uid: 'gotoets2',
-          children: (
-            <div>
-              <p>
-                На 27.02.2018 с 13:00 до 16:00 запланированы регламентные работы в ЦОД. В указанное время могут наблюдаться сбои в работе системы ЕТС.
-              </p>
-                <p style={styleNotificationInfo}><Button onClick={this.closeError}>Закрыть</Button></p>
-            </div>
-          ),
-        });
-      }
-    }
-  }
-
   componentWillReceiveProps() {
+    if (this.props.currentUser.user_id){
+      if (this.props.currentUser.user_id !== this.state.user.user_id) {
+        this.props.sessionSetData(this.props);
+      }
+    } else {
+      this.props.sessionResetData();
+    }
+
     this.setState({
       user: this.context.flux.getStore('session').getCurrentUser(),
     });
@@ -125,6 +123,7 @@ export default class MainPage extends React.Component {
   logout() {
     const { flux, history } = this.context;
     flux.getActions('session').logout().then(() => {
+      this.props.sessionResetData();
       history.pushState(null, '/login');
     });
   }

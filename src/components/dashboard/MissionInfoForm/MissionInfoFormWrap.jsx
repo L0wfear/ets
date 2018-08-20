@@ -1,10 +1,13 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
-import MissionInfoForm from 'components/dashboard/MissionInfoForm/new/MissionInfoForm.tsx';
+import MissionInfoForm from 'components/dashboard/MissionInfoForm/new/MissionInfoForm';
+import { FluxContext } from 'utils/decorators';
 
 import FormWrap from '../../compositions/FormWrap.jsx';
 
-export default class MissionInfoFormWrap extends FormWrap {
+// надеюсь временно
+@FluxContext
+class MissionInfoFormWrap extends FormWrap {
   handleFormSubmit = () => this.props.onFormHide();
 
   render() {
@@ -17,9 +20,12 @@ export default class MissionInfoFormWrap extends FormWrap {
           handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
+          flux={this.context.flux}
           {...this.state}
         />
       </Div>
     );
   }
 }
+
+export default MissionInfoFormWrap;

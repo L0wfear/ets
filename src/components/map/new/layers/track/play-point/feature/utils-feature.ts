@@ -1,4 +1,5 @@
-const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
+
 const radius = 10 / (DEVICE_PIXEL_RATIO / 2);
 
 export const getStroke = () => (

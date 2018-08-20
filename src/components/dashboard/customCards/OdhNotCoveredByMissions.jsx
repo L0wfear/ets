@@ -1,5 +1,6 @@
 import React from 'react';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 import Div from 'components/ui/Div.jsx';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 

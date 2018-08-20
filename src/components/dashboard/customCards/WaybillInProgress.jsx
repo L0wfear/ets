@@ -1,7 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 import Div from 'components/ui/Div.jsx';
 import WaybillClosed from './WaybillClosed.jsx';
 

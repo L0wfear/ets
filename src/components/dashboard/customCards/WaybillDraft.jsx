@@ -1,5 +1,6 @@
 import React from 'react';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 import moment from 'moment';
 import _ from 'lodash';
 import Div from 'components/ui/Div.jsx';

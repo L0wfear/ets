@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal, Button, Glyphicon, Input } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 import Div from '../Div.jsx';
 
 export default class ColumnControl extends Component {

@@ -1,5 +1,5 @@
 import { listObj }  from 'constants/statuses';
-const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
   zoomMore8: 40 / (DEVICE_PIXEL_RATIO / 2),
   zoomNotMore8: 20 / (DEVICE_PIXEL_RATIO / 2),

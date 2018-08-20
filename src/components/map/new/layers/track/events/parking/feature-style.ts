@@ -1,6 +1,6 @@
 const ParkingIcon = require('assets/icons/track/parking.svg');
 
-const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 
 const CACHE_ICON = {};
 

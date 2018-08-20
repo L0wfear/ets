@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 
 const DashboardCardHeader = (props) => {
   const iconClassname = cx({ 'glyphicon-spin': props.loading });

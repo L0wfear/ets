@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { TRACK_COLORS } from 'constants/track.js';
-import * as cx from 'classnames';
+import cx from 'classnames';
 
 const ControlComponent = props =>
   <span>

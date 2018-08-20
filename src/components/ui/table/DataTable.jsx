@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
 import _ from 'lodash';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 import ClickOutHandler from 'react-onclickout';
 import Griddle from 'griddle-react';
 import { autobind } from 'core-decorators';

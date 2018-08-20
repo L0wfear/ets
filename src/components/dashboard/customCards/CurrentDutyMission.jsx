@@ -4,7 +4,7 @@ import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button, Modal
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
-import * as cx from 'classnames';
+import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
 import { FluxContext, wrappedRef } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ClickOutHandler from 'react-onclickout';
-import * as cx from 'classnames';
+import cx from 'classnames';
+
 import { autobind } from 'core-decorators';
 
 @autobind

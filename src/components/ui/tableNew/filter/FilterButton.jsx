@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
+import cx from 'classnames';
 
 export default function FilterButton({ active, disabled, onClick }) {
   const filterClass = cx('filter-button', {

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
+import cx from 'classnames';
 
 export default class Paginator extends React.Component {
 

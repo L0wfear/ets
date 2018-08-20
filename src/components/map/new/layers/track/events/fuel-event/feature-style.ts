@@ -1,7 +1,7 @@
 const FuelIconRefill = require('assets/icons/track/oil-01.png');
 const FuelIconLeak = require('assets/icons/track/oil-02.png');
 
-const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
+const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 
 const CACHE_ICON = {};
 

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { groupBy, flatten, get } from 'lodash';
 import { autobind } from 'core-decorators';
 import { Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
+import cx from 'classnames';
 
 import { sensorTrackColor } from 'constants/sensors';
 import { LOAD_PROCESS_TEXT } from 'constants/statuses';

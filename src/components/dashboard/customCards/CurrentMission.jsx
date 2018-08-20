@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { autobind } from 'core-decorators';
 import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
-import * as cx from 'classnames';
+import cx from 'classnames';
 
 import Div from 'components/ui/Div.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
+import cx from 'classnames';
 
 const getClassName = active =>
   cx(

@@ -1,7 +1,7 @@
 import React from 'react';
 import Div from 'components/ui/Div.jsx';
 import { Button } from 'react-bootstrap';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 
 export default class OdhNotCoveredByRoutes extends DashboardCardMedium {

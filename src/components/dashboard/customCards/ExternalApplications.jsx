@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well, Button } from 'react-bootstrap';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import moment from 'moment';
 import { isEmpty } from 'utils/functions';
 import { wrappedRef } from 'utils/decorators';

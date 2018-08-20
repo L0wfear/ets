@@ -5,7 +5,7 @@ import { Input, Button } from 'react-bootstrap';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import _ from 'lodash';
 
 /**

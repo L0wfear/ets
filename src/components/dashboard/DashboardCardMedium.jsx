@@ -3,7 +3,7 @@ import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div.jsx';
 import { Panel as BootstrapPanel, Collapse, Glyphicon, Fade, Well } from 'react-bootstrap';
 import { FluxContext, wrappedRef } from 'utils/decorators';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import DashboardCardHeader from './DashboardCardHeader.jsx';
 import DashboardItemChevron from './DashboardItemChevron.jsx';
 

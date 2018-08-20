@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import { monitorPageToggleStatusGeo } from 'components/monitor/new/redux/models/actions-monitor-page';
 
 const getClassNameByType = (props, type) => (

@@ -4,7 +4,7 @@ import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
 
-import cx from 'classnames';
+import * as cx from 'classnames';
 import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 
 import { FluxContext, connectToStores } from 'utils/decorators';

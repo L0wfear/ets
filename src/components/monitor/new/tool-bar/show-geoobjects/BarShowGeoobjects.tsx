@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import { monitorPageToggleStatusGeoobject, monitorPageSetGeometry } from 'components/monitor/new/redux/models/actions-monitor-page';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { loadGeozones } from 'redux/trash-actions/geometry';

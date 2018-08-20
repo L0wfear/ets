@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import cx from 'classnames';
+import * as cx from 'classnames';
 
 import Div from 'components/ui/Div.jsx';
 import CarInfo from './car_info/CarInfo.jsx';

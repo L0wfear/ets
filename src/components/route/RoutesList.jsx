@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { autobind } from 'core-decorators';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import connectToStores from 'flummox/connect';
 
 import Div from 'components/ui/Div.jsx';

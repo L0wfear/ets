@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import cx from 'classnames';
+import * as cx from 'classnames';
 import { monitorPageToggleStatusShow } from 'components/monitor/new/redux/models/actions-monitor-page';
 import { getFrontStatus } from 'components/map/new/layers/car-markers/utils';
 import CarFilters from 'components/monitor/new/tool-bar/car-data/car-filters/CarFilters';

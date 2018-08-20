@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { ExtField } from 'components/ui/Field.jsx';
-import cx from 'classnames';
+import * as cx from 'classnames';
 
 import { connect } from 'react-redux';
 import { carInfoToggleForToday, fetchTrack, fetchCarInfo, carInfoChangeDate } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
 import { Input } from 'react-bootstrap';
-import cx from 'classnames';
+import * as cx from 'classnames';
 
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';

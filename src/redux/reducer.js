@@ -7,6 +7,8 @@ import owners from 'redux/modules/owners';
 import settings from 'redux/modules/settings';
 import session from 'redux/modules/session/session';
 import monitorPage from 'components/monitor/new/redux/models/monitor-page';
+// legacy
+import types from 'redux/modules/types';
 
 export default combineReducers({
   ...rootReducers,
@@ -15,5 +17,6 @@ export default combineReducers({
   settings,
   session,
   monitorPage,
+  types,
 });
 

@@ -7,7 +7,7 @@ import { createHashHistory } from 'history';
 import LoginPage from 'components/login/LoginPage.jsx';
 import WaybillJournal from 'components/waybill/WaybillJournal.jsx';
 import RoutesList from 'components/route/RoutesList.jsx';
-import MonitorPage from 'components/monitor/MonitorPage.jsx';
+import MonitorPage from 'components/monitor/new/MonitorPage';
 import DashboardPage from 'components/dashboard/DashboardPage.jsx';
 import UserNotificationList from 'components/notifications/UserNotificationList';
 import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';

@@ -14,3 +14,8 @@ declare module NodeJS  {
     APP_TIME_FORMAT: string;
   }
 }
+
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}

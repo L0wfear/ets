@@ -249,7 +249,6 @@ export default class MissionsJournal extends CheckableElementsList {
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}
           element={this.state.mission}
-          flux={this.context.flux}
         />
         <PrintForm
           onExport={this.processExport.bind(this)}

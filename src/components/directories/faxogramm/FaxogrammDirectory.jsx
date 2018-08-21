@@ -140,7 +140,7 @@ class FaxogrammDirectory extends ElementsList {
     const faxogrammInfoData = [{ id: 0, order_info: faxogramm.order_info }];
 
     return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
+      <div className="ets-page-wrap auto-height" ref={node => (this.node = node)}>
         <FaxogrammsDatepicker handleChange={this.handleChange} {...this.state} />
         <FaxogrammsTable
           data={faxogrammsList}
@@ -165,13 +165,13 @@ class FaxogrammDirectory extends ElementsList {
           {...this.props}
         />
         <Paginator currentPage={this.state.page} maxPage={Math.ceil(this.props.faxogrammsTotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />
-        <Div hidden={this.state.selectedElement === null}>
+        <Div className="data-table data-other" hidden={this.state.selectedElement === null}>
           <Row>
-            <h4 style={{ marginLeft: 20, fontWeight: 'bold' }}>Расшифровка факсограммы</h4>
             <Col md={8}>
               <FaxogrammOperationInfoTable
                 noHeader
                 preventNoDataMessage
+                title="Расшифровка факсограммы"
                 data={faxogramm.technical_operations || []}
               />
             </Col>

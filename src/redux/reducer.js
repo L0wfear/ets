@@ -10,6 +10,9 @@ import monitorPage from 'components/monitor/new/redux/models/monitor-page';
 // legacy
 import types from 'redux/modules/types';
 
+// sorry
+import paginator from 'components/ui/new/paginator/redux/paginator';
+
 export default combineReducers({
   ...rootReducers,
   owners,
@@ -18,5 +21,6 @@ export default combineReducers({
   session,
   monitorPage,
   types,
+  paginator,
 });
 

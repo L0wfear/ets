@@ -343,6 +343,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />
       :
       <Table
+        className="data-other"
         title={'Итого'}
         tableMeta={summaryTableMeta}
         results={this.props.summaryList}
@@ -376,7 +377,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />;
 
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap auto-height">
         <Header
           tableMeta={mergedTableMetaInfo}
           queryState={queryState}

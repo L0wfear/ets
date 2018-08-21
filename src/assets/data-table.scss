@@ -75,6 +75,29 @@ th.width-fuel-report-xlarge {
   overflow-x: visible;
 }
 
+.data-table {
+  display: flex;
+  flex-direction: column;
+
+  &.data-other {
+    margin-bottom: 30px;
+  }
+
+  >.griddle {
+    height: 100%;
+    overflow: auto;
+    margin-top: 15px;
+    border: 1px solid rgba(0,0,0,0.2);
+
+    .griddle-container {
+      overflow-x: initial;
+      margin-bottom: 0;
+    }
+    .griddle-body {
+      margin: 0 auto;
+    }
+  }
+}
 
 .registry-new {
   &>.header {

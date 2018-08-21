@@ -20,8 +20,9 @@ import {
 import ColumnControl from './ColumnControl.jsx';
 import Filter from './filter/Filter.jsx';
 import FilterButton from './filter/FilterButton.jsx';
-import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
+import PaginatorToPortalData from 'components/ui/new/paginator/PaginatorToPortalData';
+import Paginator from 'components/ui/new/paginator/Paginator';
 
 @autobind
 export default class DataTable extends React.Component {
@@ -141,6 +142,7 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort: true,
       initialSort: false,
       initialSortAscending: true,
+      uniqKey: Symbol('data-table'),
     };
   }
 
@@ -630,7 +632,7 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
+    console.log(this.state.uniqKey)
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
@@ -681,6 +683,7 @@ export default class DataTable extends React.Component {
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
         <Griddle
+          uniqKey={this.state.uniqKey}
           results={results}
           enableSort={enableSort}
           initialSort={initialSort}
@@ -690,13 +693,23 @@ export default class DataTable extends React.Component {
           resultsPerPage={15}
           useCustomPagerComponent
           externalChangeSort={externalChangeSort || this.handleChangeSort}
-          customPagerComponent={serverPagination ? <Div /> : Paginator}
+          customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
           onRowClick={!isHierarchical ? onRowSelected : null}
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
           lowerCaseSorting
         />
+        {
+          serverPagination ?
+          (
+            <div></div>
+          )
+          :
+          (
+            <Paginator uniqKey={this.state.uniqKey} />
+          )
+        }
       </Div>
     );
   }

@@ -86,7 +86,7 @@ export default class OdhCoverageReport extends Component {
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap auto-height">
         <OdhCoverageReportTable data={odhCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:

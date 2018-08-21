@@ -45,7 +45,6 @@ class DashboardPage extends React.Component {
         (1000 * 60)
       );
 
-      document.getElementsByTagName('html')[0].classList.add('overflow-scroll');
       this.init();
     });
   }
@@ -54,7 +53,6 @@ class DashboardPage extends React.Component {
     clearInterval(this.componentsUpdateInterval);
     clearInterval(this.currentMissionsUpdateInterval);
     Object.values(this.componentsInterval).forEach(clearInterval)
-    document.getElementsByTagName('html')[0].classList.remove('overflow-scroll');
   }
 
   async init() {

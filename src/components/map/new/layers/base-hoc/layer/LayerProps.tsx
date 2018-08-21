@@ -2,9 +2,9 @@ import * as React from 'react';
 
 type PropsLayerProps = {
   map: ol.Map;
-  center: [number, number];
-  zoom: number,
-  centerOn: Function;
+  center?: [number, number];
+  zoom?: number,
+  centerOn?: Function;
 };
 
 type StateLayerProps = {

@@ -52,7 +52,12 @@ class Overlay extends React.Component<any, any> {
         <div className="ets_overlay" >
           <div className="ets_overlay-title">
             {this.props.title}
-            <div className="overlay_close"onClick={this.hidePopup}>x</div>
+            {
+              this.props.hidePopup ?
+                <div className="overlay_close"onClick={this.hidePopup}>x</div>
+              :
+                <div className="none"></div>
+            }
           </div>
           <div className="ets_overlay-body" >
             {this.props.children}

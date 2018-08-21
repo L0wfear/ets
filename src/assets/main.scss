@@ -46,6 +46,17 @@ body {
   >div.olmap {
     height: 100%;
     width: 100%;
+    >div {
+      height: 100%;
+      width: 100%;
+
+      .layer-container {
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+        position: relative;
+      }
+    }
   }
 
   .map_info-container {

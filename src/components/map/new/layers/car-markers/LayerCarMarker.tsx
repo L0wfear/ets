@@ -61,16 +61,17 @@ export const checkOnIncludesCar = (filterData, gps_code, { gov_number = '', gara
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {
   switch (key) {
     case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
-    case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
-    case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
-    case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.company_id);
+    case 'carFilterMultyType': return !value.length || !car_actualData || value.includes(car_actualData.type_id);
+    case 'carFilterMultyStructure': return !value.length || !car_actualData || value.includes(car_actualData.company_structure_id);
+    case 'carFilterMultyOwner': return !value.length || !car_actualData || value.includes(car_actualData.company_id);
     default: return false;
   }
 }
 
 
 export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, gps_code) => (
-  statusShow[`SHOW_CAR_${getFrontStatus(wsData.status).slug.toUpperCase()}`]
+  !!car_actualData
+  && statusShow[`SHOW_CAR_${getFrontStatus(wsData.status).slug.toUpperCase()}`]
   && Object.entries(filters).every(([key, value]) => (
     checkFilterByKey(
       key,
@@ -92,6 +93,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     lastPoint: this.props.lastPoint,
     statusShow: this.props.statusShow,
     filters: this.props.filters,
+    carActualGpsNumberIndex: this.props.carActualGpsNumberIndex,
   }
   componentDidMount() {
     this.props.addLayer({ id: 'CarMarker', zIndex: 10 }).then(() => {
@@ -105,8 +107,14 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     let whatPointChange = {};
     let hasWhatChage = false;
 
-    const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters } = nextProps;
+    const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
     const zoomMore8 = zoom > 8;
+
+    if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
+      hasWhatChage = true;
+      whatPointChange = this.state.carPointsDataWs;
+      changeState.carActualGpsNumberIndex = carActualGpsNumberIndex;
+    }
 
     if (gps_code !== this.state.gps_code) {
       const { carPointsDataWs: { [gps_code]: carPointData } = {} } = this.state;
@@ -190,6 +198,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     }
 
     if (hasWhatChage) {
+      console.log(hasWhatChage, whatPointChange, changeState)
       this.changeStyle({ ...this.state, ...whatPointChange, ...changeState });
 
       this.setState(changeState);
@@ -202,8 +211,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.closeWs();
   }
 
-  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters }) {
-    const { carActualGpsNumberIndex } = this.props;
+  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex }) {
     const carsByStatus = {
       in_move: 0,
       stop: 0,
@@ -213,17 +221,27 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     const filtredCarGpsCode = {};
     let hasDiffInFiltredCarGpsCode = false;
 
-    for (let key in carPointsDataWs) {
-      const { id: gps_code } = carPointsDataWs[key];
+    for (let gps_code in carPointsDataWs) {
       const feature = this.props.getFeatureById(gps_code);
 
       if (feature) {
         // feature.setGeometry(new ol.geom.Point(carPointsDataWs[gps_code].coords_msk));
         const selected = gps_code === state_gps_code;
-        const visible = selected || checkOnVisible({ filters, wsData: carPointsDataWs[key], statusShow, car_actualData: carActualGpsNumberIndex[gps_code] }, gps_code);
+
+        const visible = selected
+        || checkOnVisible(
+          {
+            filters,
+            wsData: carPointsDataWs[gps_code],
+            statusShow,
+            car_actualData: carActualGpsNumberIndex[gps_code],
+          },
+          gps_code,
+        );
         const old_visible = feature.get('visible');
         const old_status = feature.get('status');
-
+        console.log(old_visible, visible, gps_code)
+        console.log(old_status, carPointsDataWs[gps_code].front_status, gps_code)
         feature.set('visible', visible);
         feature.set('status', carPointsDataWs[gps_code].front_status);
 
@@ -281,6 +299,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       }
     };
     ws.onerror = () => {
+      console.log('hre')
       // console.error('WEBSOCKET - Ошибка WebSocket');
     };
 
@@ -295,8 +314,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   }
 
   handleReveiveData(data, statusShow) {
-    const { carPointsDataWs, gps_code: state_gps_code, lastPoint } = this.state;
-    const { carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER, odh_mkad  } = this.props;
+    const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
+    const { odh_mkad  } = this.props;
     const carsByStatus = {
       in_move: 0,
       stop: 0,

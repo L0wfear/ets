@@ -54,9 +54,6 @@ class Map extends React.Component<PropsMap, StateMap> {
       loadTilesWhileAnimating: true,
     });
 
-    map.set('parent', this);
-
-
     this.state = {
       map,
       eventHandles: null,

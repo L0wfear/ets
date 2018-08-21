@@ -51,10 +51,9 @@ const getTableMeta = (props) => {
       {
         name: 'max_speed',
         displayName: 'Максимальная скорость',
+        display: false,
         type: 'number',
-        filter: {
-          type: 'multiselect',
-        },
+        filter: false,
       },
       {
         name: 'check_type_name',

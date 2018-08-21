@@ -172,9 +172,7 @@ export default class CarInfo extends Component {
 
     const info = await this.props.flux.getActions('cars').getCarInfo(car.asuods_id, from_dt, to_dt);
 
-    const maxSpeed = info.missions.filter(({ date_start, date_end }) =>
-      (diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0),
-    ).reduce((min_speed_limits, { speed_limits: { mkad_speed_lim, speed_lim } }) => ({
+    const maxSpeed = info.missions.reduce((min_speed_limits, { speed_limits: { mkad_speed_lim, speed_lim } }) => ({
       mkad_speed_lim: min_speed_limits.mkad_speed_lim < mkad_speed_lim ? min_speed_limits.mkad_speed_lim : mkad_speed_lim,
       speed_lim: min_speed_limits.speed_lim < speed_lim ? min_speed_limits.speed_lim : speed_lim,
     }), { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed });

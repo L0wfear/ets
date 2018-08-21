@@ -114,6 +114,7 @@ export const initialState = {
   route: {},
   column_id: ({ formState: { mission_data: { column_id } } }) => column_id,
   tooLongDates: ({ formState: { mission_data } }) => diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
+  number: ({ formState: { mission_data } }) => mission_data.number,
   routeType: ({ formState: { route_data: { type: routeType } } }) => routeType,
   traveled_percentage: ({ formState: { mission_data: { traveled_percentage } } }) => traveled_percentage,
   mkad_speed_lim: ({ formState: { speed_limits: { mkad_speed_lim } } }) => mkad_speed_lim,

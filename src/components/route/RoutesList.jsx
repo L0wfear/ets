@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
+
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
 

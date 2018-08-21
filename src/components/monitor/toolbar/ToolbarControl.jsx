@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import ClickOutHandler from 'react-onclickout';
 import cx from 'classnames';
+
 import { autobind } from 'core-decorators';
 
 @autobind

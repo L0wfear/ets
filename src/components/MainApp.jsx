@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Col } from 'react-bootstrap';
 import Div from 'components/ui/Div.jsx';
+import { connect } from 'react-redux';
 
 import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
 import ModalTP from 'components/modalTP/ModalTP.tsx';
@@ -14,6 +15,11 @@ import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
 import Header from 'components/navbar/Header';
 
+import {
+  sessionResetData,
+  sessionSetData,
+} from 'redux/modules/session/actions-session';
+
 let VERSION_DESCRIPTION;
 try {
   const VERSION = process.env.VERSION;
@@ -24,11 +30,20 @@ try {
 
 @connectToStores(['session'])
 @FluxContext
+@connect(
+  null,
+  dispatch => ({
+    sessionSetData: props => dispatch(sessionSetData(props)),
+    sessionResetData: () => dispatch(sessionResetData()),
+  }),
+)
 class MainApp extends React.Component {
 
   static get propTypes() {
     return {
       currentUser: PropTypes.object,
+      sessionSetData: PropTypes.func,
+      sessionResetData: PropTypes.func,
     };
   }
 
@@ -38,6 +53,18 @@ class MainApp extends React.Component {
     this.state = {
       showFormTp: false,
     };
+  }
+
+  componentDidMount() {
+    if (this.props.currentUser.user_id){
+      this.props.sessionSetData(this.props);
+    } else {
+      this.props.sessionResetData();
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.sessionResetData();
   }
 
   logout = () => this.context.flux.getActions('session').logout();

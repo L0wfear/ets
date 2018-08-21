@@ -359,7 +359,7 @@ export default class CarInfo extends React.Component {
       <div className={'flex-space-beetwen-center'}>
         <span>{'Трекинг'}</span>
         <div className={'flex-space-beetwen-center till-now'}>
-          <input type="checkbox" checked={tillNow} onChange={this.onTillNowChange} /><span>За сегодня</span>
+          <input readOnly type="checkbox" checked={tillNow} onClick={this.onTillNowChange} /><span>За сегодня</span>
         </div>
       </div>
     );

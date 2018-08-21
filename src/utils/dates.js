@@ -188,3 +188,7 @@ export const diffDatesByDays = (dateA, dateB) =>
     createValidDate(dateB),
     'days',
   );
+
+export const currentDateInInterval = ({ date_start, date_end }) => (
+  diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0
+);

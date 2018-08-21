@@ -50,11 +50,11 @@ const getMainApp = props => {
   } else if (url !== permittedPath) {
     return <Redirect to={permittedPath} />;
   }
-  if (url === '11/change-company' && !flux.getStore('session').state.isGlavControl) {
+  if (url === '/change-company' && !flux.getStore('session').state.isGlavControl) {
     return <Redirect to={requireAuth(flux, '/monitor')} />
   }
 
-  return <MainApp />;
+  return <MainApp {...props} />;
 };
 
 class App extends React.Component <any, any> {
@@ -94,17 +94,18 @@ class App extends React.Component <any, any> {
     return AuthCheckService.get()
           .then(flux.getActions('objects').getConfig())
           .then(() => this.setState({ loading: false }))
-          .catch(error => {
-            const { error_text, errorIsShow } = error;
+          .catch((ErrorData) => {
+            const { error_text, errorIsShow } = ErrorData;
+            const t_error = error_text || ErrorData;
 
             /* tslint:disable:no-console */
-            console.log(error_text);
+            console.log(t_error);
             /* tslint:enable */
-            if (error_text === 401) {
+            if (t_error === 401) {
               flux.getActions('session').logout();
               return global.NOTIFICATION_SYSTEM.notify(loginErrorNotification);
             }
-            return !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(error_text));
+            return !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(t_error));
           });
   }
 

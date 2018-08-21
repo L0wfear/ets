@@ -1,4 +1,6 @@
 import monitor from 'components/monitor/config-data';
+import monitorNew from 'components/monitor/new/config-data';
+
 import coverageReports from 'components/coverage_reports/config-data';
 import dashboard from 'components/dashboard/config-data/index';
 import waybillJournal from 'components/waybill/config-data';
@@ -18,6 +20,7 @@ const PATHNAME = window.location.pathname;
 
 const routerAndPermission = {
   monitor,
+  monitorNew,
   coverageReports,
   dashboard,
   waybillJournal,

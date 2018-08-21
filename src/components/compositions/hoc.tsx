@@ -13,7 +13,7 @@ export const onChangeWithKeys = compose(
     return value !== props[key];
   })),
   withHandlers({
-    onChange: ({ onChange, boundKeys = []}) => (e, ...other) => onChange(...boundKeys, e, ...other),
+    onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...other) =>  onChange(...boundKeys, e, ...other),
   })
 );
 

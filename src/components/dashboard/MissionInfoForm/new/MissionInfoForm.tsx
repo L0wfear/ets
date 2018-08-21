@@ -50,7 +50,7 @@ const MissionInfoForm: React.SFC<any> = props => {
     .value();
 
   const titleArr = [
-    'Информация о задании.',
+    `Информация о задании №${props.number}.`,
     `Рег. номер ТС: ${props.gov_number}`,
   ];
   if (props.column_id) {

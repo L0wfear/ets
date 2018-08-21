@@ -1,7 +1,5 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
-
 
 const OBJECT = [
   {

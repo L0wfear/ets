@@ -22,3 +22,7 @@ declare module NodeJS  {
 declare module '*.png';
 declare module '*.mp3'
 declare module '*.ogg'
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}

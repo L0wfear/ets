@@ -650,7 +650,7 @@ export default class Track {
     const distanceCount = parseInt(distance, 10);
     const [latitude, longitude] = roundCoordinates(trackPoint.coords_msk, 6);
     const gov_number = this.owner.point.car.gov_number;
-    console.log(checkPointInGeometry(trackPoint.coords_msk, this.owner.storeGeoobjects.state.odh_mkad))
+
     distance = typeof distance === 'number' ? Math.floor(distance) : distance;
     timestamp = new Date(timestamp * 1000);
     const dt = `${makeDate(timestamp)} ${makeTime(timestamp, true)}`;

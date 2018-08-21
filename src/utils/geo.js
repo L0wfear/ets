@@ -1,7 +1,14 @@
 import { isEqual, isEmpty } from 'lodash';
 
-export function swapCoords([x, y]) {
-  return [y, x];
+export function swapCoords(props) {
+  try {
+    const [x, y] = props;
+
+    return [y, x];
+  } catch (e) {
+    console.warn('cant swap coords', props);
+    return [0, 0];
+  }
 }
 
 export function unwrapCoords({ x, y }) {

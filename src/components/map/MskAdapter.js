@@ -29,6 +29,26 @@ export function projectToPixel(map, coordinates) {
   return { x: coords[0] * DEVICE_PIXEL_RATIO, y: coords[1] * DEVICE_PIXEL_RATIO };
 }
 
+export function projectToPixelNew(map, coordinates) {
+  let x;
+  let y;
+
+  if (coordinates.length) {
+    [x, y] = coordinates;
+  } else {
+    x = coordinates.x;
+    y = coordinates.y;
+  }
+
+  if (x === null || y === null) {
+    return { x: 0, y: 0 };
+  }
+
+  const coords = map.getPixelFromCoordinate([x, y]);
+
+  return { x: coords[0], y: coords[1] };
+}
+
 export const EXTENT = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax];
 export const PROJECTION = new ol.proj.Projection({
   code: 'MSK77',

@@ -334,18 +334,6 @@ export default class EmployeeForm extends Form {
                 boundKeys={['medical_certificate_date']}
               />
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="snils"
-                type="string"
-                label="СНИЛС №"
-                value={state.snils}
-                error={errors.snils}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys={['snils']}
-              />
-            </Col>
           </Row>
           <Row>
             <Col md={6}>

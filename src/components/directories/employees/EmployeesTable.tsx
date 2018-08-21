@@ -129,14 +129,6 @@ export function tableMeta({
         },
       },
       {
-        name: 'snils',
-        displayName: 'СНИЛС №',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'is_common',
         displayName: 'Общее',
         type: 'select',

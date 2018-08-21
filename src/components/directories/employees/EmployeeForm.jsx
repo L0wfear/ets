@@ -273,17 +273,6 @@ export default class EmployeeForm extends Form {
                 onChange={this.handleChange.bind(this, 'is_common')}
               />
             </Col>
-            <Col md={6}>
-              <Field
-                id="snils"
-                type="string"
-                label="СНИЛС №"
-                value={state.snils}
-                error={errors.snils}
-                disabled={!isPermitted}
-                onChange={this.handleChange.bind(this, 'snils')}
-              />
-            </Col>
           </Row>
           <Row>
             <Col md={6}>

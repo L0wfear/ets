@@ -32,7 +32,7 @@ class ODHReports extends Component {
     const TYPES = typesList.map(({ asuods_id, full_name }) => ({ label: full_name, value: asuods_id }));
 
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap auto-height">
         <div className="some-header">
           <div className="waybills-buttons" />
         </div>

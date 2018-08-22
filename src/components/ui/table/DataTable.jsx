@@ -23,8 +23,9 @@ import {
 import ColumnControl from './ColumnControl.jsx';
 import Filter from './filter/Filter.jsx';
 import FilterButton from './filter/FilterButton.jsx';
-import Paginator from '../Paginator.jsx';
 import Div from '../Div.jsx';
+import PaginatorToPortalData from 'components/ui/new/paginator/PaginatorToPortalData';
+import Paginator from 'components/ui/new/paginator/Paginator';
 
 const style = {
   headRow: {
@@ -160,6 +161,7 @@ export default class DataTable extends React.Component {
       initialSortAscending: this.props.initialSortAscending,
       data: [],
       originalData: [],
+      uniqKey: Symbol('data-table'),
     };
 
     // временно до выпиливания гридла
@@ -679,7 +681,7 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
+    console.log(this.state.uniqKey)
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
@@ -730,25 +732,40 @@ export default class DataTable extends React.Component {
           }
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
-        <Div hidden={griddleHidden}>
-          <Griddle
-            results={results}
-            enableSort={enableSort}
-            initialSort={initialSort}
-            initialSortAscending={initialSortAscending}
-            columnMetadata={columnMetadata}
-            columns={tableCols}
-            resultsPerPage={haveMax ? 15 : 10000}
-            useCustomPagerComponent
-            externalChangeSort={externalChangeSort || this.handleChangeSort}
-            customPagerComponent={serverPagination ? <Div /> : Paginator}
-            onRowClick={!isHierarchical ? onRowSelected : null}
-            rowMetadata={rowMetadata}
-            onKeyPress={this.handleKeyPress}
-            noDataMessage={noDataMessage || 'Нет данных'}
-            lowerCaseSorting
-          />
-        </Div>
+        {
+          griddleHidden ?
+          <div key="griddle_none"></div>
+          :
+          [
+            <Griddle
+              key={`griddle`}
+              uniqKey={this.state.uniqKey}
+              results={results}
+              enableSort={enableSort}
+              initialSort={initialSort}
+              initialSortAscending={initialSortAscending}
+              columnMetadata={columnMetadata}
+              columns={tableCols}
+              resultsPerPage={haveMax ? 15 : 10000}
+              useCustomPagerComponent
+              externalChangeSort={externalChangeSort || this.handleChangeSort}
+              customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
+              onRowClick={!isHierarchical ? onRowSelected : null}
+              rowMetadata={rowMetadata}
+              onKeyPress={this.handleKeyPress}
+              noDataMessage={noDataMessage || 'Нет данных'}
+              lowerCaseSorting
+            />,
+            serverPagination ?
+            (
+              <div key="paginator_none"></div>
+            )
+            :
+            (
+              <Paginator key={`paginator`} uniqKey={this.state.uniqKey} />
+            )
+          ]
+        }
       </Div>
     );
   }

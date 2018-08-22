@@ -71,7 +71,7 @@ class OrderList extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap none-flex">
         <OrdersDatepicker />
         <OrdersTable>
           <OrderTableChildren order_mission_source_id={this.state.order_mission_source_id} />

@@ -91,7 +91,7 @@ export default class DtCoverageReport extends Component {
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
-      <div className="ets-page-wrap">
+      <div className="ets-page-wrap auto-height">
         <DtCoverageReportTable data={dtCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:

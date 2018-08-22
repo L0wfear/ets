@@ -19,7 +19,7 @@ const Button = enhanceWithPermissions({})(BootstrapButton);
 const style: any = { marginLeft: 20, fontWeight: 'bold' };
 
 const OrderAssignmentsList: React.SFC<any> = props => (
-  <Div hidden={props.hidden} >
+  <Div className="data-table data-other" hidden={props.hidden} >
     <Row>
       <Col md={8} className="flex-space-beetwen">
         <h4 style={style}>Расшифровка централизованного задания</h4>

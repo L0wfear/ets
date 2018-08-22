@@ -43,7 +43,7 @@ body {
   justify-self: flex-start;
   flex: 1 1;
   position: relative;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .monitor-page {
@@ -99,11 +99,11 @@ body {
       }
     }
     >.data_container, >.data_container-wrap>.data_container {
+      overflow-y: auto;
       pointer-events: all;
       flex: 1 1;
       max-width: 500px;
       background-color: hsla(0,0%,95%,.8);
-      overflow-y: scroll;
       border-left: 1px solid rgba(0,0,0,.3);
       height: 100%;
 
@@ -2385,7 +2385,7 @@ div.car_legend-active {
 /** APP NAVIGATION */
 
 .app-navigation {
-  z-index: 100;
+  z-index: 1000;
   & >nav {
     margin: 0px;
   }
@@ -2424,6 +2424,13 @@ div.car_legend-active {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  height: 100%;
+  &.none-flex {
+    height: auto
+  }
+  &.auto-height {
+    display: inherit;
+  }
 }
 
 .some-header {
@@ -2680,12 +2687,6 @@ div.car_legend-active {
 }
 
 .griddle-container {
-  max-height: calc(100vh - 66px - 21px - 45px - 72px - 30px);  
-  border: none !important;
-  overflow-x: auto;
-  width: 100%;
-  margin-bottom: 16px;
-
   thead {
     span.glyphicon.glyphicon-info-sign {
       margin-left: 5px;

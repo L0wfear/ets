@@ -306,14 +306,14 @@ class RoutesList extends React.Component {
     });
 
     return (
-      <div className="ets-page-wrap routes-list">
+      <div className="ets-page-wrap auto-height routes-list">
         <Col xs={5} md={3} className="sidebar">
           <header className="sidebar__header clearfix">
             <div className="sidebar__header-title col-xs-12">
               Список маршрутов
             </div>
           </header>
-          <div className="sidebar__list-container" style={{ marginBottom: '30px !important', marginLeft: 20, top: '70px' }}>
+          <div className="sidebar__list-container" style={{ marginLeft: 20, top: '70px' }}>
             {this.renderItem(ROUTES)}
           </div>
         </Col>

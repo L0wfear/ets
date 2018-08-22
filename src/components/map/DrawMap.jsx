@@ -42,7 +42,7 @@ export default class DrawMap extends PolyMap {
     if (this.props.objectsType === 'points') {
       this.renderRoutePoints(this.props.object_list);
     }
-    if (this.props.draw_object_list.length) {
+    if (this.props.draw_object_list && this.props.draw_object_list.length) {
       this.draw.setActive(false);
       this.drawSetToEnd = true;
     }
@@ -57,7 +57,7 @@ export default class DrawMap extends PolyMap {
       this.drawSetToEnd = true;
       this.renderRoute(nextProps.draw_object_list);
     }
-    if (nextProps.draw_object_list.length === 0) {
+    if (nextProps.draw_object_list && nextProps.draw_object_list.length === 0) {
       this.drawSetToEnd = false;
       this.draw.setActive(true);
     }

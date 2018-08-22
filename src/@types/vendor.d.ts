@@ -16,6 +16,7 @@ declare module NodeJS  {
     confirmDialog: any;
     NOTIFICATION_READ_ARR: string;
     APP_TIME_FORMAT: string;
+    toggleUpdateCarPoints: Function;
   }
 }
 

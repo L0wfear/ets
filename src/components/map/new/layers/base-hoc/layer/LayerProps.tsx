@@ -26,11 +26,12 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
       vectorSource: null,
       olLayer: null,
     }
-    addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex }) => {
+    addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
       return new Promise((res) => {
         const vectorSource = new ol.source.Vector();
         const olLayer = new ol.layer.Vector({
           source: vectorSource,
+          renderMode,
         });
     
         // Определяет, что это не слой с картой

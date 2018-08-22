@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.21.40",
+    "version": "2.0.21.41",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -31,7 +31,7 @@
         "moment": "^2.22.2",
         "node-sass": "^4.9.0",
         "ol3-popup": "github:walkermatt/ol3-popup#v1.0.2",
-        "openlayers": "^4.2.0",
+        "openlayers": "^4.6.0",
         "point-in-polygon": "^1.0.1",
         "prop-types": "=15.6.1",
         "query-string": "^5.0.1",
@@ -64,7 +64,7 @@
     "devDependencies": {
         "@types/lodash": "=4.14.64",
         "@types/node": "^8.0.5",
-        "@types/openlayers": "=4.1.1",
+        "@types/openlayers": "=4.6.0",
         "@types/ramda": "=0.24.0",
         "@types/react": "=15.0.25",
         "@types/react-bootstrap": "=0.0.48",

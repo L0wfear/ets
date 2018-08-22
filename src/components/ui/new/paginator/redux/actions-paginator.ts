@@ -1,5 +1,6 @@
 import {
   PAGINATOR_UPDATE_DATA,
+  PAGINATOR_RESET_DATA,
 } from 'components/ui/new/paginator/redux/paginator';
 
 export const paginatorUpdateData = (uniqKey, changedPaginatorData) => ({
@@ -7,5 +8,12 @@ export const paginatorUpdateData = (uniqKey, changedPaginatorData) => ({
   payload: {
     uniqKey,
     changedPaginatorData,
+  }
+});
+
+export const paginatorResetData = (uniqKey) => ({
+  type: PAGINATOR_RESET_DATA,
+  payload: {
+    uniqKey,
   }
 });

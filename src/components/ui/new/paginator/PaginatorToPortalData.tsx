@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { paginatorUpdateData } from 'components/ui/new/paginator/redux/actions-paginator';
+import { paginatorUpdateData, paginatorResetData } from 'components/ui/new/paginator/redux/actions-paginator';
 
 class Paginator extends React.Component<any, any> {
   componentDidMount() {
@@ -14,7 +14,7 @@ class Paginator extends React.Component<any, any> {
   }
 
   componentWillUnmount() {
-    this.props.paginatorUpdateData(this.props.uniqKey, {});
+    this.props.paginatorResetData(this.props.uniqKey);
   }
 
   render() {
@@ -33,6 +33,13 @@ const mapDispatchToProps = dispatch => ({
       )
     )
   ),
+  paginatorResetData: (uniqKey) => (
+    dispatch(
+      paginatorResetData(
+        uniqKey,
+      )
+    )
+  )
 })
 
 export default connect(

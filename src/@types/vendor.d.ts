@@ -12,6 +12,7 @@ declare module NodeJS  {
     window: any;
     APP_DATE_FORMAT: string;
     APP_TIME_FORMAT: string;
+    toggleUpdateCarPoints: Function;
   }
 }
 

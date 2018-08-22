@@ -52,6 +52,10 @@ type StateLayerCarMarker = {
   filters: any;
 };
 
+let updatePoints = true;
+
+global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
+
 export const checkOnIncludesCar = (filterData, gps_code, { gov_number = '', garage_number = '' } = {}) => (
   gps_code.includes(filterData)
   || gov_number && gov_number.includes(filterData)
@@ -96,37 +100,85 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     carActualGpsNumberIndex: this.props.carActualGpsNumberIndex,
   }
   componentDidMount() {
-    this.props.addLayer({ id: 'CarMarker', zIndex: 10 }).then(() => {
+    this.props.addLayer({ id: 'CarMarker', zIndex: 10, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
     });
     this.openWs();
   }
 
   componentWillReceiveProps(nextProps) {
-    const changeState: any = {};
-    let whatPointChange = {};
-    let hasWhatChage = false;
+    if (updatePoints) {
+      const changeState: any = {};
+      let whatPointChange = {};
+      let hasWhatChage = false;
 
-    const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
-    const zoomMore8 = zoom > 8;
+      const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
+      const zoomMore8 = zoom > 8;
 
-    if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
-      hasWhatChage = true;
-      whatPointChange = this.state.carPointsDataWs;
-      changeState.carActualGpsNumberIndex = carActualGpsNumberIndex;
-    }
-
-    if (gps_code !== this.state.gps_code) {
-      const { carPointsDataWs: { [gps_code]: carPointData } = {} } = this.state;
-      if (carPointData) {
-        this.props.carInfoSetStatus(carPointData.status);
+      if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
+        hasWhatChage = true;
+        whatPointChange = this.state.carPointsDataWs;
+        changeState.carActualGpsNumberIndex = carActualGpsNumberIndex;
       }
-      hasWhatChage = true;
-      whatPointChange = { [gps_code]: this.state.carPointsDataWs[gps_code] };
-      changeState.gps_code = gps_code;
 
-      if (gps_code) {
-        const { coords_msk } = this.state.carPointsDataWs[gps_code];
+      if (gps_code !== this.state.gps_code) {
+        const { carPointsDataWs: { [gps_code]: carPointData } = {} } = this.state;
+        if (carPointData) {
+          this.props.carInfoSetStatus(carPointData.status);
+        }
+        hasWhatChage = true;
+        whatPointChange = { [gps_code]: this.state.carPointsDataWs[gps_code] };
+        changeState.gps_code = gps_code;
+
+        if (gps_code) {
+          const { coords_msk } = this.state.carPointsDataWs[gps_code];
+
+          const extent: [number, number, number, number] = [
+            coords_msk[0],
+            coords_msk[1],
+            coords_msk[0],
+            coords_msk[1],
+          ];
+
+          const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
+
+          this.props.centerOn({ extent, opt_options, noCheckDisabledCenterOn: true });
+        }
+      }
+      if (zoomMore8 !== this.state.zoomMore8) {
+        hasWhatChage = true;
+        whatPointChange = this.state.carPointsDataWs;
+        changeState.zoomMore8 = zoomMore8;
+      }
+
+      if (STATUS_SHOW_GOV_NUMBER !== this.state.STATUS_SHOW_GOV_NUMBER) {
+        hasWhatChage = true;
+        whatPointChange = this.state.carPointsDataWs;
+        changeState.STATUS_SHOW_GOV_NUMBER = STATUS_SHOW_GOV_NUMBER;
+      }
+
+      if (gps_code && lastPoint !== this.state.lastPoint && nextProps.forToday && Object.values(nextProps.odh_mkad).length) {
+        if (lastPoint) {
+          if (lastPoint.timestamp > this.state.carPointsDataWs[gps_code].timestamp) {
+            changeState.carPointsDataWs = {
+              ...this.state.carPointsDataWs,
+              [gps_code]: {
+                ...this.state.carPointsDataWs[gps_code],
+                ...lastPoint,
+              },
+            };
+          } else if (lastPoint.timestamp < this.state.carPointsDataWs[gps_code].timestamp) {
+            this.props.carInfoPushPointIntoTrack(this.state.carPointsDataWs[gps_code], nextProps.odh_mkad);
+          }
+        } else {
+          this.props.carInfoPushPointIntoTrack(this.state.carPointsDataWs[gps_code], nextProps.odh_mkad);
+        }
+        hasWhatChage = true;
+        changeState.lastPoint = lastPoint;
+      }
+
+      if (nextProps.STATUS_TC_FOLLOW_ON_CAR) {
+        const { coords_msk } = (changeState.carPointsDataWs || this.state.carPointsDataWs)[gps_code];
 
         const extent: [number, number, number, number] = [
           coords_msk[0],
@@ -135,73 +187,26 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           coords_msk[1],
         ];
 
-        const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
-
-        this.props.centerOn({ extent, opt_options, noCheckDisabledCenterOn: true });
+        this.props.centerOn({ extent, noCheckDisabledCenterOn: true });
       }
-    }
-    if (zoomMore8 !== this.state.zoomMore8) {
-      hasWhatChage = true;
-      whatPointChange = this.state.carPointsDataWs;
-      changeState.zoomMore8 = zoomMore8;
-    }
 
-    if (STATUS_SHOW_GOV_NUMBER !== this.state.STATUS_SHOW_GOV_NUMBER) {
-      hasWhatChage = true;
-      whatPointChange = this.state.carPointsDataWs;
-      changeState.STATUS_SHOW_GOV_NUMBER = STATUS_SHOW_GOV_NUMBER;
-    }
-
-    if (gps_code && lastPoint !== this.state.lastPoint && nextProps.forToday && Object.values(nextProps.odh_mkad).length) {
-      if (lastPoint) {
-        if (lastPoint.timestamp > this.state.carPointsDataWs[gps_code].timestamp) {
-          changeState.carPointsDataWs = {
-            ...this.state.carPointsDataWs,
-            [gps_code]: {
-              ...this.state.carPointsDataWs[gps_code],
-              ...lastPoint,
-            },
-          };
-        } else if (lastPoint.timestamp < this.state.carPointsDataWs[gps_code].timestamp) {
-          this.props.carInfoPushPointIntoTrack(this.state.carPointsDataWs[gps_code], nextProps.odh_mkad);
-        }
-      } else {
-        this.props.carInfoPushPointIntoTrack(this.state.carPointsDataWs[gps_code], nextProps.odh_mkad);
+      if (statusShow !== this.state.statusShow) {
+        hasWhatChage = true;
+        whatPointChange = this.state.carPointsDataWs;
+        changeState.statusShow = statusShow;
       }
-      hasWhatChage = true;
-      changeState.lastPoint = lastPoint;
-    }
 
-    if (nextProps.STATUS_TC_FOLLOW_ON_CAR) {
-      const { coords_msk } = (changeState.carPointsDataWs || this.state.carPointsDataWs)[gps_code];
+      if (filters !== this.state.filters) {
+        hasWhatChage = true;
+        whatPointChange = this.state.carPointsDataWs;
+        changeState.filters = filters;
+      }
 
-      const extent: [number, number, number, number] = [
-        coords_msk[0],
-        coords_msk[1],
-        coords_msk[0],
-        coords_msk[1],
-      ];
+      if (hasWhatChage) {
+        this.changeStyle({ ...this.state, ...whatPointChange, ...changeState });
 
-      this.props.centerOn({ extent, noCheckDisabledCenterOn: true });
-    }
-
-    if (statusShow !== this.state.statusShow) {
-      hasWhatChage = true;
-      whatPointChange = this.state.carPointsDataWs;
-      changeState.statusShow = statusShow;
-    }
-
-    if (filters !== this.state.filters) {
-      hasWhatChage = true;
-      whatPointChange = this.state.carPointsDataWs;
-      changeState.filters = filters;
-    }
-
-    if (hasWhatChage) {
-      console.log(hasWhatChage, whatPointChange, changeState)
-      this.changeStyle({ ...this.state, ...whatPointChange, ...changeState });
-
-      this.setState(changeState);
+        this.setState(changeState);
+      }
     }
   }
 
@@ -240,8 +245,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         );
         const old_visible = feature.get('visible');
         const old_status = feature.get('status');
-        console.log(old_visible, visible, gps_code)
-        console.log(old_status, carPointsDataWs[gps_code].front_status, gps_code)
+
         feature.set('visible', visible);
         feature.set('status', carPointsDataWs[gps_code].front_status);
 
@@ -314,171 +318,173 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   }
 
   handleReveiveData(data, statusShow) {
-    const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
-    const { odh_mkad  } = this.props;
-    const carsByStatus = {
-      in_move: 0,
-      stop: 0,
-      parking: 0,
-      not_in_touch: 0,
-    };
-    const filtredCarGpsCode = {};
-    let hasDiffInFiltredCarGpsCode = false;
-
-    Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
-      let point = {
-        coords_msk: [...coords_msk].reverse(),
-        coords: [...coords].reverse(),
-        ...data,
-        front_status: getFrontStatus(data.status).slug,
+    if (updatePoints) {
+      const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
+      const { odh_mkad  } = this.props;
+      const carsByStatus = {
+        in_move: 0,
+        stop: 0,
+        parking: 0,
+        not_in_touch: 0,
       };
+      const filtredCarGpsCode = {};
+      let hasDiffInFiltredCarGpsCode = false;
 
-      if (this.props.forToday && gps_code === state_gps_code && lastPoint !== -1 && lastPoint) {
-        if (lastPoint.timestamp > point.timestamp) {
-          point = {
-            ...point,
-            ...lastPoint,
-          };
-        } else if (lastPoint.timestamp < point.timestamp && Object.entries(odh_mkad).length) {
-          this.props.carInfoPushPointIntoTrack(point, odh_mkad);
-        }
-      }
-
-      if (!carPointsDataWs[gps_code]) {
-        carPointsDataWs[gps_code] = point;
-
-        const feature = new ol.Feature({
-          geometry: new ol.geom.Point(point.coords_msk),
-        });
-        const selected = gps_code === state_gps_code;
-
-        const visible = selected || checkOnVisible(
-          {
-            filters: this.state.filters,
-            wsData: carPointsDataWs[gps_code],
-            statusShow,
-            car_actualData: carActualGpsNumberIndex[gps_code],
-          },
-          gps_code,
-        );
-
-        if (visible) {
-          carsByStatus[point.front_status] += 1;
-          filtredCarGpsCode[gps_code] = true;
-          hasDiffInFiltredCarGpsCode = true;
-        } else {
-          filtredCarGpsCode[gps_code] = false;
-          hasDiffInFiltredCarGpsCode = true;
-        }
-  
-        const style = getStyleForStatusDirectionType({
-          status: point.status,
-          direction: point.direction,
-          type: point.type,
-          selected,
-          zoomMore8: this.state.zoomMore8,
-          show_gov_number: STATUS_SHOW_GOV_NUMBER,
-          gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
-          visible,
-        });
-
-        if (state_gps_code && state_gps_code === gps_code) {
-          this.props.carInfoSetStatus(point.status);
-        }
-
-        feature.setId(point.id);
-        feature.setStyle(style);
-        feature.set('visible', visible);
-        feature.set('status', point.front_status);
-
-        this.props.addFeaturesToSource(feature);
-
-      } else if (carPointsDataWs[gps_code].timestamp < point.timestamp) {
-        const { [gps_code]: { front_status: old_status } } = carPointsDataWs;
-
-        carPointsDataWs[gps_code] = {
-          ...carPointsDataWs[gps_code],
-          ...point,
+      Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
+        let point = {
+          coords_msk: [...coords_msk].reverse(),
+          coords: [...coords].reverse(),
+          ...data,
+          front_status: getFrontStatus(data.status).slug,
         };
 
-        if (state_gps_code && state_gps_code === gps_code) {
-          if (this.props.STATUS_TC_FOLLOW_ON_CAR) {
-            const { coords_msk } = carPointsDataWs[gps_code];
-      
-            const extent: [number, number, number, number] = [
-              coords_msk[0],
-              coords_msk[1],
-              coords_msk[0],
-              coords_msk[1],
-            ];
-      
-            this.props.centerOn({ extent, noCheckDisabledCenterOn: true });
+        if (this.props.forToday && gps_code === state_gps_code && lastPoint !== -1 && lastPoint) {
+          if (lastPoint.timestamp > point.timestamp) {
+            point = {
+              ...point,
+              ...lastPoint,
+            };
+          } else if (lastPoint.timestamp < point.timestamp && Object.entries(odh_mkad).length) {
+            this.props.carInfoPushPointIntoTrack(point, odh_mkad);
           }
         }
 
-        const feature = this.props.getFeatureById(carPointsDataWs[gps_code].id);
-        const old_visible = feature.get('visible');
-        const selected = gps_code === state_gps_code
+        if (!carPointsDataWs[gps_code]) {
+          carPointsDataWs[gps_code] = point;
 
-        const visible = selected || checkOnVisible(
-          {
-            filters: this.state.filters,
-            wsData: carPointsDataWs[gps_code],
-            statusShow,
-            car_actualData: carActualGpsNumberIndex[gps_code],
-          }, gps_code
-        );
+          const feature = new ol.Feature({
+            geometry: new ol.geom.Point(point.coords_msk),
+          });
+          const selected = gps_code === state_gps_code;
 
-        if (visible) {
-          if (old_visible) {
-            carsByStatus[old_status] -= 1;
-          } else {
-            hasDiffInFiltredCarGpsCode = true;
+          const visible = selected || checkOnVisible(
+            {
+              filters: this.state.filters,
+              wsData: carPointsDataWs[gps_code],
+              statusShow,
+              car_actualData: carActualGpsNumberIndex[gps_code],
+            },
+            gps_code,
+          );
+
+          if (visible) {
+            carsByStatus[point.front_status] += 1;
             filtredCarGpsCode[gps_code] = true;
-          }
-          carsByStatus[carPointsDataWs[gps_code].front_status] += 1;
-        } else {
-          if (old_visible) {
-            carsByStatus[old_status] -= 1;
             hasDiffInFiltredCarGpsCode = true;
+          } else {
             filtredCarGpsCode[gps_code] = false;
+            hasDiffInFiltredCarGpsCode = true;
           }
+    
+          const style = getStyleForStatusDirectionType({
+            status: point.status,
+            direction: point.direction,
+            type: point.type,
+            selected,
+            zoomMore8: this.state.zoomMore8,
+            show_gov_number: STATUS_SHOW_GOV_NUMBER,
+            gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
+            visible,
+          });
+
+          if (state_gps_code && state_gps_code === gps_code) {
+            this.props.carInfoSetStatus(point.status);
+          }
+
+          feature.setId(point.id);
+          feature.setStyle(style);
+          feature.set('visible', visible);
+          feature.set('status', point.front_status);
+
+          this.props.addFeaturesToSource(feature);
+
+        } else if (carPointsDataWs[gps_code].timestamp < point.timestamp) {
+          const { [gps_code]: { front_status: old_status } } = carPointsDataWs;
+
+          carPointsDataWs[gps_code] = {
+            ...carPointsDataWs[gps_code],
+            ...point,
+          };
+
+          if (state_gps_code && state_gps_code === gps_code) {
+            if (this.props.STATUS_TC_FOLLOW_ON_CAR) {
+              const { coords_msk } = carPointsDataWs[gps_code];
+        
+              const extent: [number, number, number, number] = [
+                coords_msk[0],
+                coords_msk[1],
+                coords_msk[0],
+                coords_msk[1],
+              ];
+        
+              this.props.centerOn({ extent, noCheckDisabledCenterOn: true });
+            }
+          }
+
+          const feature = this.props.getFeatureById(carPointsDataWs[gps_code].id);
+          const old_visible = feature.get('visible');
+          const selected = gps_code === state_gps_code
+
+          const visible = selected || checkOnVisible(
+            {
+              filters: this.state.filters,
+              wsData: carPointsDataWs[gps_code],
+              statusShow,
+              car_actualData: carActualGpsNumberIndex[gps_code],
+            }, gps_code
+          );
+
+          if (visible) {
+            if (old_visible) {
+              carsByStatus[old_status] -= 1;
+            } else {
+              hasDiffInFiltredCarGpsCode = true;
+              filtredCarGpsCode[gps_code] = true;
+            }
+            carsByStatus[carPointsDataWs[gps_code].front_status] += 1;
+          } else {
+            if (old_visible) {
+              carsByStatus[old_status] -= 1;
+              hasDiffInFiltredCarGpsCode = true;
+              filtredCarGpsCode[gps_code] = false;
+            }
+          }
+
+          feature.set('visible', visible);
+          feature.set('status', point.front_status);
+
+          feature.setGeometry(new ol.geom.Point(carPointsDataWs[gps_code].coords_msk));
+
+          const style = getStyleForStatusDirectionType({
+            status: carPointsDataWs[gps_code].status,
+            direction: carPointsDataWs[gps_code].direction,
+            type: carPointsDataWs[gps_code].type,
+            selected,
+            zoomMore8: this.state.zoomMore8,
+            show_gov_number: STATUS_SHOW_GOV_NUMBER,
+            gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
+            visible,
+          });
+
+          if (state_gps_code && state_gps_code === gps_code) {
+            this.props.carInfoSetStatus(point.status);
+          }
+
+          feature.setStyle(style);
         }
+      });
 
-        feature.set('visible', visible);
-        feature.set('status', point.front_status);
 
-        feature.setGeometry(new ol.geom.Point(carPointsDataWs[gps_code].coords_msk));
-
-        const style = getStyleForStatusDirectionType({
-          status: carPointsDataWs[gps_code].status,
-          direction: carPointsDataWs[gps_code].direction,
-          type: carPointsDataWs[gps_code].type,
-          selected,
-          zoomMore8: this.state.zoomMore8,
-          show_gov_number: STATUS_SHOW_GOV_NUMBER,
-          gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
-          visible,
-        });
-
-        if (state_gps_code && state_gps_code === gps_code) {
-          this.props.carInfoSetStatus(point.status);
-        }
-
-        feature.setStyle(style);
+      if (Object.values(carsByStatus).some(val => !!val)) {
+        this.props.monitoPageChangeCarsByStatus(carsByStatus);
       }
-    });
 
+      if (hasDiffInFiltredCarGpsCode) {
+        this.props.monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode);
+      }
 
-    if (Object.values(carsByStatus).some(val => !!val)) {
-      this.props.monitoPageChangeCarsByStatus(carsByStatus);
+      this.setState({ carPointsDataWs });
     }
-
-    if (hasDiffInFiltredCarGpsCode) {
-      this.props.monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode);
-    }
-
-    this.setState({ carPointsDataWs });
   }
 
   singleclick = (feature) => {

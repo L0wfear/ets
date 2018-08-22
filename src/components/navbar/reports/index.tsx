@@ -51,7 +51,10 @@ const ReportsNavItem: React.SFC<IPropsReportsNavItem> = ({ path }) =>
       <MenuItem id="link-car-condition-reports" permissions={[PERMISSIONS.reportAll.car_condition_report.list]} active={path === '/car-condition-reports'} href="#/car-condition-reports">Количество ТС в разрезе технического состояния</MenuItem>
       <MenuItem id="link-car-downtime-and-overmileage-report" permissions={[PERMISSIONS.reportAll.car_downtime_and_overmileage_report.list]} active={path === '/car-downtime-and-overmileage-report'} href="#/car-downtime-and-overmileage-report">Простои и перепробеги ТС при выполнении заданий</MenuItem>
       {
-        // <MenuItem id="link-car-movement-time-report" permissions={[PERMISSIONS.reportAll.car_movement_time_report.list]} active={path === '/car-movement-time-report'} href="#/car-movement-time-report">Время движения ТС</MenuItem>
+        process.env.STAND !== 'prod' ?
+        <MenuItem id="link-car-movement-time-report" permissions={[PERMISSIONS.reportAll.car_movement_time_report.list]} active={path === '/car-movement-time-report'} href="#/car-movement-time-report">Время движения ТС</MenuItem>
+        :
+        null
       }
     </NavDropdown>
     {/*

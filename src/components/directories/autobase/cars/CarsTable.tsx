@@ -173,6 +173,14 @@ export function tableMeta({
           type: 'multiselect',
         },
       },
+      {
+        name: 'season_name',
+        displayName: 'Сезонность',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
     ],
   };
 

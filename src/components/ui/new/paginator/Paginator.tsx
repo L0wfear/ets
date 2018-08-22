@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Glyphicon } from 'react-bootstrap';
-import cx from 'classnames';
+import * as cx from 'classnames';
 
 class Paginator extends React.Component<any, any> {
   setPage(i) {

@@ -3,11 +3,9 @@ import { createPath } from 'redux/redux-utils';
 const PAGINATOR = createPath('PAGINATOR');
 
 export const PAGINATOR_UPDATE_DATA = PAGINATOR`UPDATE_DATA`;
+export const PAGINATOR_RESET_DATA = PAGINATOR`RESET_DATA`;
 
 const initialState = {
-  currentPage: 0,
-  maxPage: 0,
-  setPage: () => {},
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -19,6 +17,13 @@ export default (state = initialState, { type, payload }) => {
           ...payload.changedPaginatorData,
         },
       };
+    }
+    case PAGINATOR_RESET_DATA: {
+      const copyState = { ...state };
+
+      delete copyState[payload.uniqKey];
+
+      return copyState;
     }
     default: {
       return state;

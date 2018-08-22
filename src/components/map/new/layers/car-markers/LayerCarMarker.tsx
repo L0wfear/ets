@@ -76,8 +76,8 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
 export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, gps_code) => (
   !!car_actualData
   && statusShow[`SHOW_CAR_${getFrontStatus(wsData.status).slug.toUpperCase()}`]
-  && Object.entries(filters).every(([key, value]) => (
-    checkFilterByKey(
+  && !Object.entries(filters).some(([key, value]) => (
+    !checkFilterByKey(
       key,
       value,
       gps_code,
@@ -203,7 +203,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       }
 
       if (hasWhatChage) {
-        this.changeStyle({ ...this.state, ...whatPointChange, ...changeState });
+        this.changeStyle({ ...this.state, carPointsDataWs: whatPointChange, ...changeState, old_carPointsDataWs: this.state.carPointsDataWs });
 
         this.setState(changeState);
       }
@@ -216,7 +216,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.closeWs();
   }
 
-  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex }) {
+  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs }) {
     const carsByStatus = {
       in_move: 0,
       stop: 0,
@@ -227,10 +227,14 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     let hasDiffInFiltredCarGpsCode = false;
 
     for (let gps_code in carPointsDataWs) {
+      const data = carPointsDataWs[gps_code];
+      const old_data = old_carPointsDataWs[gps_code];
       const feature = this.props.getFeatureById(gps_code);
 
       if (feature) {
-        // feature.setGeometry(new ol.geom.Point(carPointsDataWs[gps_code].coords_msk));
+        if (data.coords_msk !== old_data.coords_msk) {
+          feature.setGeometry(new ol.geom.Point(data.coords_msk));
+        }
         const selected = gps_code === state_gps_code;
 
         const visible = selected

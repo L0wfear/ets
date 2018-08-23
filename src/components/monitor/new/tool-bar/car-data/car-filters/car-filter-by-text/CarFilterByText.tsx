@@ -8,7 +8,7 @@ import CarFieldBytextInput from 'components/monitor/new/tool-bar/car-data/car-fi
 import {
   PropsCarFilterByText,
   StateCarFilterByText,
-} from '/Users/vladimirleshchev/Desktop/gost/ets-frontend/src/components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText.h';
+} from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText.h';
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
   state = {

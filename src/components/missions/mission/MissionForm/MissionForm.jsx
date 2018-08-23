@@ -33,6 +33,8 @@ import { AvailableRouteTypes } from "components/missions/mission/MissionForm/typ
 
 import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssignment';
 
+const modalKey = 'mission';
+
 const ASSIGN_OPTIONS = [
   { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
   { value: 'assign_to_new_draft', label: 'Создать черновик ПЛ' },
@@ -522,6 +524,7 @@ export class MissionForm extends Form {
                     <Field
                       id="technical-operation-id"
                       type="select"
+                      modalKey={modalKey}
                       label="Технологическая операция"
                       error={errors.technical_operation_id}
                       disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
@@ -535,6 +538,7 @@ export class MissionForm extends Form {
                     <Field
                       id="m-structure-id"
                       type="select"
+                      modalKey={modalKey}
                       label="Подразделение"
                       error={errors.structure_id}
                       disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !this.props.fromWaybill) || !IS_CREATING}
@@ -619,6 +623,7 @@ export class MissionForm extends Form {
                     <Field
                       id="car-id"
                       type="select"
+                      modalKey={modalKey}
                       multi={state.is_column}
                       label="Транспортное средство"
                       error={errors.car_id}
@@ -652,6 +657,7 @@ export class MissionForm extends Form {
                     <Field
                       id="m-route-id"
                       type="select"
+                      modalKey={modalKey}
                       label="Маршрут"
                       error={errors.route_id}
                       disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}
@@ -688,6 +694,7 @@ export class MissionForm extends Form {
                     <Field
                       id="m-source-id"
                       type="select"
+                      modalKey={modalKey}
                       label="Источник получения задания"
                       error={errors.mission_source_id}
                       disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || sourceIsOrder}
@@ -727,6 +734,7 @@ export class MissionForm extends Form {
                       <EtsSelect
                         id="assign-to-waybill"
                         type="select"
+                        modalKey={modalKey}
                         options={ASSIGN_OPTIONS}
                         value={state.assign_to_waybill}
                         clearable={false}

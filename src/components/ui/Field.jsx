@@ -170,8 +170,12 @@ export default class Field extends React.Component {
 
   renderSelect() {
     const { label = '', ...props } = this.props;
-    const { error, className = '', readOnly = false, id } = props;
+    const { error, className = '', readOnly = false, modalKey } = this.props;
+
+    const { error, className = '', readOnly = false } = props;
     const selectClassName = cx({ 'has-error': error });
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
         { typeof label === 'string' && <label id={id}>{label}</label> }

@@ -16,6 +16,8 @@ import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm.jsx';
 
+const modalKey = 'mission_template';
+
 class MissionTemplateForm extends MissionForm {
   constructor(props) {
     super(props);
@@ -94,6 +96,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
@@ -104,7 +107,9 @@ class MissionTemplateForm extends MissionForm {
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>
-              <Field type="select"
+              <Field
+                type="select"
+                modalKey={modalKey}
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY}
@@ -136,6 +141,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <ExtField
                 type="select"
+                modalKey={modalKey}
                 label="Транспортное средство"
                 error={errors.car_id}
                 className="white-space-pre-wrap"
@@ -168,6 +174,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Маршрут"
                 error={errors.route_id}
                 options={ROUTES}

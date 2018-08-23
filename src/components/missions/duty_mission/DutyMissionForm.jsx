@@ -24,6 +24,7 @@ const makePayloadFromState = formState => ({
   route_type: formState.route_type,
   needs_brigade: true,
 });
+const modalKey = 'duty_mission';
 
 export class DutyMissionForm extends Form {
 
@@ -424,6 +425,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="dm-technical-operation-id"
                 type="select"
+                modalKey={modalKey}
                 clearable={false}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
@@ -527,6 +529,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="foreman-id"
                 type="select"
+                modalKey={modalKey}
                 label="Бригадир"
                 error={errors.foreman_id}
                 disabled={IS_DISPLAY || readOnly}
@@ -540,6 +543,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="brigade-employee-id-list"
                 type="select"
+                modalKey={modalKey}
                 label="Бригада"
                 error={errors.brigade_employee_id_list}
                 multi
@@ -553,6 +557,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="dm-structure-id"
                 type="select"
+                modalKey={modalKey}
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY || (!IS_CREATING && state.status !== 'not_assigned') || readOnly}
@@ -571,6 +576,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="mission-source-id"
                 type="select"
+                modalKey={modalKey}
                 label="Источник получения задания"
                 error={errors.mission_source_id}
                 disabled={IS_DISPLAY || readOnly || this.props.fromOrder || sourceIsOrder}
@@ -609,6 +615,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="car-mission-id"
                 type="select"
+                modalKey={modalKey}
                 label="Задание на ТС" error={errors.car_mission_id}
                 disabled={IS_DISPLAY || readOnly}
                 options={MISSIONS}
@@ -623,6 +630,7 @@ export class DutyMissionForm extends Form {
               <Field
                 id="dm-route-id"
                 type="select"
+                modalKey={modalKey}
                 label="Маршрут"
                 error={errors.route_id}
                 disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}

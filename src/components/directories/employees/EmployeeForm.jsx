@@ -37,6 +37,9 @@ function filterCars(car, formState) {
   return norm;
 }
 
+const modalKey = 'employee';
+
+
 @connectToStores(['objects'])
 @loadingOverlay
 export default class EmployeeForm extends Form {
@@ -230,6 +233,7 @@ export default class EmployeeForm extends Form {
               <ExtField
                 id="position_id"
                 type="select"
+                modalKey={modalKey}
                 label="Должность"
                 options={POSITION_ELEMENTS}
                 value={state.position_id}
@@ -244,6 +248,7 @@ export default class EmployeeForm extends Form {
               <ExtField
                 id="prefer_car"
                 type="select"
+                modalKey={modalKey}
                 label="Основное ТС"
                 value={state.prefer_car}
                 options={CARS}
@@ -259,6 +264,7 @@ export default class EmployeeForm extends Form {
               <ExtField
                 id="active"
                 type="select"
+                modalKey={modalKey}
                 label="Состояние"
                 value={state.active ? 1 : 0}
                 options={DRIVER_STATES}
@@ -272,6 +278,7 @@ export default class EmployeeForm extends Form {
               <ExtField
                 id="secondary_car"
                 type="select"
+                modalKey={modalKey}
                 multi
                 label="Вторичное ТС"
                 value={state.secondary_car}
@@ -287,6 +294,8 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 id="company_structure_id"
+                type="select"
+                modalKey={modalKey}
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
@@ -313,6 +322,8 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 id="is_common"
+                type="select"
+                modalKey={modalKey}
                 label="Общее"
                 options={[{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }]}
                 value={state.is_common ? 1 : 0}

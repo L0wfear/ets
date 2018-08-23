@@ -12,6 +12,7 @@ import {
   mouseSingleClick,
   centerOn,
 } from 'components/map/new/utils';
+
 class Map extends React.Component<PropsMap, StateMap> {
   _container: HTMLDivElement;
 

@@ -22,6 +22,7 @@
 
 html, body {
   height: 100%;
+  overflow: hidden;
 }
 .app {
   display: flex;
@@ -37,7 +38,7 @@ body {
   justify-self: flex-start;
   flex: 1 1;
   position: relative;
-  overflow: auto;
+  overflow-x: hidden;
 }
 
 .monitor-page {
@@ -1190,6 +1191,10 @@ body.application {
       pointer-events: all;
       display: inline-block;
       min-width: 195px;
+      &.active>div {
+        background-color: #6a9e56;
+        color: white;
+      }
 
       .default_cube {
         background: rgba(255, 255, 255, 1);
@@ -1256,9 +1261,11 @@ body.application {
 }
 
 div.car_legend-active {
-  margin-left: 25px;
   font-size: large;
   cursor: pointer;
+  >div {
+    margin: 0 auto;
+  }
 }
 .car_block_legend {
   margin: 5px 0;
@@ -2313,7 +2320,6 @@ div.car_legend-active {
   width:100%;
   height:100%;
   position:absolute;
-  border: 1px solid #ccc;
 }
 
 

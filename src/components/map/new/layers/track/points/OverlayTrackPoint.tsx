@@ -37,10 +37,6 @@ class OverlayTrackPoint extends React.Component<any, any> {
     }
   }
 
-  componentWillUnmount() {
-    console.log('componentWillUnmount')
-  }
-
   getOtherDataOnTrackPoint = (props) => {
     this.getObjectData(props);
     this.getMissionsData(props);

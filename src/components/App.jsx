@@ -49,6 +49,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    document.body.removeChild(document.getElementById('main-background'));
+
     this.loadData();
   }
 

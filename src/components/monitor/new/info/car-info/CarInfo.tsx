@@ -34,7 +34,7 @@ class CarInfo extends React.Component<PropsCarInfo, StateCarInfo> {
 
 const mapStateToProps = null;
 const mapDispatchToProps = dispatch => ({
-  carInfoSetGpsNumber() { dispatch(carInfoSetGpsNumber(null)); },
+  carInfoSetGpsNumber() { dispatch(carInfoSetGpsNumber(null, null)); },
 });
 
 export default hocAll(

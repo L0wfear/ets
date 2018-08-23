@@ -46,7 +46,7 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
     SHOW_TRACK: this.props.SHOW_TRACK,
   }
   componentDidMount() {
-    this.props.addLayer({ id: 'TrackPoints', zIndex: 3 }).then(() => {
+    this.props.addLayer({ id: 'TrackPoints', zIndex: 3, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       const { track } = this.props;

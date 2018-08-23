@@ -142,7 +142,7 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort: true,
       initialSort: false,
       initialSortAscending: true,
-      uniqKey: Symbol('data-table'),
+      uniqKey: Symbol(props.uniqKey || 'data-table'),
     };
   }
 
@@ -632,7 +632,7 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-    console.log(this.state.uniqKey)
+
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>

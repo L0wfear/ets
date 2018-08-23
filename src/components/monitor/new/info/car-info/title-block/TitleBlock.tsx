@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
-import Preloader from 'components/ui/Preloader';
 
 type PropsTitleBlock = {
-  carActualGpsNumberIndex: any;
   gov_number: string;
-  gps_code: number;
+  gps_code: string;
   handleClickOnClose: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 };
 
@@ -15,16 +13,7 @@ const TitleBlock: React.SFC<PropsTitleBlock> = ({ gov_number, ...props }) => (
     <div></div>
     <div className=" car_info-gov_number">
       <div className="car_info_block">
-      {
-        gov_number ?
-        (
-          <span>{gov_number}</span>
-        )
-        :
-        (
-          <Preloader type="field" />
-        )
-      }
+        <span>{gov_number}</span>
       </div>
     </div>
     <div className="car_info-close">
@@ -36,12 +25,11 @@ const TitleBlock: React.SFC<PropsTitleBlock> = ({ gov_number, ...props }) => (
 );
 
 const mapStateToProps = state => ({
-  carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
-  gov_number: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { gov_number: null}).gov_number,
   gps_code: state.monitorPage.carInfo.gps_code,
+  gov_number: state.monitorPage.carInfo.gov_number,
 });
 const mapDispatchToProps = dispatch => ({
-  handleClickOnClose: () => dispatch(carInfoSetGpsNumber(null)),
+  handleClickOnClose: () => dispatch(carInfoSetGpsNumber(null, null)),
 });
 
 

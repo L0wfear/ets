@@ -26,10 +26,11 @@ import {
   CarInfoService,
 } from 'api/Services';
 
-export const carInfoSetGpsNumber = (gps_code?) => ({
+export const carInfoSetGpsNumber = (gps_code = null, gov_number = null) => ({
   type: CAR_INFO_SET_GPS_CODE,
   payload: {
     gps_code,
+    gov_number,
   }
 });
 

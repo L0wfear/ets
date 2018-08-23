@@ -1,0 +1,83 @@
+export type PropsLayerCarMarker = {
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+  token: string;
+  zoom: number,
+  gps_code: string | void;
+  forToday: boolean;
+  STATUS_SHOW_GOV_NUMBER: boolean;
+  STATUS_TC_FOLLOW_ON_CAR: boolean;
+  
+  carActualGpsNumberIndex: any;
+  lastPoint: any;
+  odh_mkad: any[],
+  statusShow: any;
+  filters: any;
+  
+  carInfoSetStatus: Function;
+  carInfoPushPointIntoTrack: Function;
+  monitorPageResetCarStatus: Function;
+  centerOn: Function;
+  monitoPageChangeCarsByStatus: Function;
+  monitorPageMergeFiltredCarGpsCode: Function;
+  carInfoSetGpsNumber: Function;
+};
+
+export type OneWsDataCardata = {
+  company_id: number | void;
+  contract_type_ids: string[] | void;
+  contractor_ids: number[] | void;
+  customer_ids: number[] | void;
+  gov_number: string;
+  gps_code: string;
+  model_id: number | void;
+  owner_id: number | void;
+  provider_ids: number[] | void;
+  type_id: number | void;  
+}
+
+export type OneWsData = {
+  car: OneWsDataCardata;
+  connection_status_date: number | void;
+  coords: ol.Coordinate;
+  coords_msk: ol.Coordinate;
+  direction: number | void;
+  distance: number;
+  id: string;
+  nsat: number | void;
+  speed: number | void;
+  speed_max: number | void;
+  status: number | void;
+  status_date: number | void;
+  timestamp: number | void;
+};
+
+export type WsData = {
+  [gps_code: string]: OneWsData;
+}
+
+export type OneCarPointDataWsType = OneWsData | {
+  front_status: string;
+};
+
+export type CarPointsDataWsType = {
+  [gps_code: string]: OneCarPointDataWsType;
+}
+
+export type StateLayerCarMarker = {
+  zoomMore8: boolean,
+  gps_code: string | void;
+  carPointsDataWs: CarPointsDataWsType;
+  lastPoint: any;
+  statusShow: any;
+  ws: any,
+  filters: any;
+};
+
+
+export module LayerCarMarkerUtils {
+}

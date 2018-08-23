@@ -143,7 +143,7 @@ export default class Field extends React.Component {
 
   renderSelect() {
     const { error, label = '', className = '', readOnly = false, modalKey } = this.props;
-    console.log(this.props)
+
     const selectClassName = cx({ 'has-error': error });
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
 

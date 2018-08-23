@@ -11,86 +11,26 @@ import {
   CAR_INFO_SET_TRACK_CACHING,
 } from 'components/monitor/new/info/car-info/redux/modules/car-info';
 import { monitoPageChangeCarsByStatus, monitorPageResetCarStatus, monitorPageMergeFiltredCarGpsCode } from 'components/monitor/new/redux/models/actions-monitor-page';
-import { getFrontStatus } from 'components/map/new/layers/car-markers/utils';
+import {
+  getFrontStatus,
+  checkOnVisible,
+} from 'components/map/new/layers/car-markers/utils';
 
-type PropsLayerCarMarker = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  token: string;
-  carInfoSetGpsNumber: Function;
-  carInfoSetStatus: Function;
-  zoom: number,
-  carActualGpsNumberIndex: any;
-  STATUS_SHOW_GOV_NUMBER: boolean;
-  lastPoint: any;
-  carInfoPushPointIntoTrack: Function;
-  forToday: boolean;
-  odh_mkad: any[],
-  STATUS_TC_FOLLOW_ON_CAR: boolean;
-  statusShow: any;
-
-  monitorPageResetCarStatus: Function;
-  centerOn: Function;
-  monitoPageChangeCarsByStatus: Function;
-  monitorPageMergeFiltredCarGpsCode: Function;
-
-  filters: any;
-};
-
-type StateLayerCarMarker = {
-  ws: null,
-  carPointsDataWs: any;
-  gps_code: number | void;
-  zoomMore8: boolean,
-  lastPoint: any;
-  statusShow: any;
-  filters: any;
-};
+import {
+  PropsLayerCarMarker,
+  StateLayerCarMarker,
+  WsData,
+} from 'components/map/new/layers/car-markers/LayerCarMarker.h';
 
 let updatePoints = true;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
 
-export const checkOnIncludesCar = (filterData, gps_code, { gov_number = '', garage_number = '' } = {}) => (
-  gps_code.includes(filterData)
-  || gov_number && gov_number.includes(filterData)
-  || garage_number && garage_number.includes(filterData)
-);
-
-export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {
-  switch (key) {
-    case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
-    case 'carFilterMultyType': return !value.length || !car_actualData || value.includes(car_actualData.type_id);
-    case 'carFilterMultyStructure': return !value.length || !car_actualData || value.includes(car_actualData.company_structure_id);
-    case 'carFilterMultyOwner': return !value.length || !car_actualData || value.includes(car_actualData.company_id);
-    default: return false;
-  }
-}
-
-
-export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, gps_code) => (
-  !!car_actualData
-  && statusShow[`SHOW_CAR_${getFrontStatus(wsData.status).slug.toUpperCase()}`]
-  && !Object.entries(filters).some(([key, value]) => (
-    !checkFilterByKey(
-      key,
-      value,
-      gps_code,
-      wsData,
-      car_actualData,
-    )
-  ))
-);
-
 class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarMarker> {
   state = {
     ws: null,
     carPointsDataWs: {},
-    gps_code: null,
+    gps_code: this.props.gps_code,
     zoomMore8: this.props.zoom >= 8,
     STATUS_SHOW_GOV_NUMBER: this.props.STATUS_SHOW_GOV_NUMBER,
     lastPoint: this.props.lastPoint,
@@ -110,6 +50,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       const changeState: any = {};
       let whatPointChange = {};
       let hasWhatChage = false;
+      const { gps_code: state_gps_code } = this.state;
 
       const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
       const zoomMore8 = zoom > 8;
@@ -120,13 +61,18 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         changeState.carActualGpsNumberIndex = carActualGpsNumberIndex;
       }
 
-      if (gps_code !== this.state.gps_code) {
+      if (gps_code !== state_gps_code) {
         const { carPointsDataWs: { [gps_code]: carPointData } = {} } = this.state;
         if (carPointData) {
           this.props.carInfoSetStatus(carPointData.status);
         }
         hasWhatChage = true;
-        whatPointChange = { [gps_code]: this.state.carPointsDataWs[gps_code] };
+        whatPointChange = {
+          [gps_code]: this.state.carPointsDataWs[gps_code],
+        };
+        if (state_gps_code) {
+          whatPointChange[state_gps_code] = this.state.carPointsDataWs[state_gps_code];
+        }
         changeState.gps_code = gps_code;
 
         if (gps_code) {
@@ -143,6 +89,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           const noCheckDisabledCenterOn = true;
           this.props.centerOn({ extent, opt_options }, noCheckDisabledCenterOn);
         }
+        
       }
       if (zoomMore8 !== this.state.zoomMore8) {
         hasWhatChage = true;
@@ -271,7 +218,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         const style = getStyleForStatusDirectionType({
           status: carPointsDataWs[gps_code].status,
           direction: carPointsDataWs[gps_code].direction,
-          type: carPointsDataWs[gps_code].type,
           selected,
           zoomMore8,
           show_gov_number: STATUS_SHOW_GOV_NUMBER,
@@ -306,7 +252,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       }
     };
     ws.onerror = () => {
-      console.log('hre')
       // console.error('WEBSOCKET - Ошибка WebSocket');
     };
 
@@ -320,7 +265,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     }
   }
 
-  handleReveiveData(data, statusShow) {
+  handleReveiveData(data: WsData, statusShow) {
     if (updatePoints) {
       const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
       const { odh_mkad  } = this.props;
@@ -335,8 +280,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
       Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
         let point = {
-          coords_msk: [...coords_msk].reverse(),
-          coords: [...coords].reverse(),
+          coords_msk: [...coords_msk].reverse() as ol.Coordinate,
+          coords: [...coords].reverse() as ol.Coordinate,
           ...data,
           front_status: getFrontStatus(data.status).slug,
         };
@@ -382,7 +327,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           const style = getStyleForStatusDirectionType({
             status: point.status,
             direction: point.direction,
-            type: point.type,
             selected,
             zoomMore8: this.state.zoomMore8,
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
@@ -462,7 +406,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           const style = getStyleForStatusDirectionType({
             status: carPointsDataWs[gps_code].status,
             direction: carPointsDataWs[gps_code].direction,
-            type: carPointsDataWs[gps_code].type,
             selected,
             zoomMore8: this.state.zoomMore8,
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
@@ -494,7 +437,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   singleclick = (feature) => {
     const gps_code = (feature as any).getId();
     if (gps_code !== this.state.gps_code) {
-      this.props.carInfoSetGpsNumber((feature as any).getId());
+      const gps_code = (feature as any).getId();
+      this.props.carInfoSetGpsNumber(gps_code, this.state.carPointsDataWs[gps_code].car.gov_number);
     }
   }
 
@@ -518,7 +462,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  carInfoSetGpsNumber(gps_code) { dispatch(carInfoSetGpsNumber(gps_code)); },
+  carInfoSetGpsNumber(gps_code, gov_number) { dispatch(carInfoSetGpsNumber(gps_code, gov_number)); },
   carInfoSetStatus(status){ dispatch(carInfoSetStatus(status)); },
   carInfoPushPointIntoTrack(point, odh_mkad){ dispatch(carInfoPushPointIntoTrack(point, odh_mkad)); },
   monitoPageChangeCarsByStatus: (carsByStatus) => (

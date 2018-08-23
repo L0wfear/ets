@@ -28,10 +28,10 @@ const initialState = {
   carInfo: carInfoReducer(undefined, {}),
   SHOW_GOV_NUMBER: false,
   status: {
-    SHOW_CAR_IN_MOVE: true,
-    SHOW_CAR_STOP: true,
-    SHOW_CAR_PARKING: true,
-    SHOW_CAR_NOT_IN_TOUCH: true,
+    in_move: true,
+    stop: true,
+    parking: true,
+    not_in_touch: true,
   },
   statusGeo: {
     SHOW_TRACK: true,

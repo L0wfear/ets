@@ -12,24 +12,12 @@ export default class FuelChart extends Chart {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log('fuel chart received props', nextProps);
-
     if (nextProps.to !== this.props.to ||
         nextProps.from !== this.props.from ||
         nextProps.id !== this.props.id) {
       this.fetch();
     }
   }
-
-  /* shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.to !== this.props.to ||
-      nextProps.from !== this.props.from ||
-      nextProps.id !== this.props.id) {
-       this.fetch()
-        return true;
-    }
-    return false;
-  }*/
 
   renderLegend() {
     const { from, to } = this.props;

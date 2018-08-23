@@ -112,6 +112,7 @@ class BsnoStaus extends React.Component {
 
     return (
       <Field
+        id={'is_bnso_broken'}
         type="string"
         label="Исправность датчика ГЛОНАСС"
         value={value}

@@ -26,6 +26,7 @@ export const CAR_INFO_SET_POPUP_FUEL_EVENT_POINT = CAR_INFO`SET_POPUP_FUEL_EVENT
 
 export const initialState = {
   gps_code: null,
+  gov_number: null,
   missionsData: {
     missions: -1,
     mkad_speed_lim: initialMaxSpeed,
@@ -81,6 +82,7 @@ export default (state: any = initialState, { type, payload }: any) => {
       let newState = {
         ...initialState,
         gps_code: payload.gps_code,
+        gov_number: payload.gov_number,
       };
 
       return newState;

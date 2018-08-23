@@ -60,7 +60,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       changesState.propsData = data_next;
       changesState.hasData = !!data_next.length;
     }
-    console.log(this.state.filterValuesOrigina, filterValues)
+
     if (this.state.filterValuesOrigina !== filterValues) {
       changesState.filterValuesOrigina = filterValues;
       changesState.filterValues = filterValues;

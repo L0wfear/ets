@@ -83,6 +83,8 @@ class App extends React.Component <any, any> {
 
   componentDidMount() {
     this.loadData();
+
+    document.body.removeChild(document.getElementById('main-background'));
   }
 
   loadData() {

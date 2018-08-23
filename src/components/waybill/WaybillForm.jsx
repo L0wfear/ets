@@ -778,6 +778,7 @@ class WaybillForm extends Form {
             </Div>
             <Col md={6}>
               <Field
+                id="work_mode_id"
                 type="select"
                 label="Режим работы"
                 error={errors.work_mode_id}
@@ -915,6 +916,7 @@ class WaybillForm extends Form {
             </Col>
             <Col md={6}>
               <Field
+                id="work_mode_id"
                 type="string"
                 label="Режим работы"
                 readOnly

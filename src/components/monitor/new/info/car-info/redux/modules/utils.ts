@@ -1,4 +1,3 @@
-import { currentDateInInterval } from 'utils/dates';
 import { swapCoords } from 'utils/geo';
 import * as insider from 'point-in-polygon';
 import { sensorsMapOptions } from 'constants/sensors';
@@ -7,11 +6,9 @@ import { makeDate, makeTime } from 'utils/dates';
 import { initialMaxSpeed } from 'components/monitor/new/info/car-info/redux/modules/constatnts';
 
 export const getMaxSpeeds = missions => missions.reduce((maxSpeeds, mission) => {
-  if(currentDateInInterval(mission)) {
-    const { speed_limits } = mission
-    maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
-    maxSpeeds.speed_lim = Math.max(speed_limits.speed_lim, maxSpeeds.mkad_speed_lim);
-  }
+  const { speed_limits } = mission
+  maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
+  maxSpeeds.speed_lim = Math.max(speed_limits.speed_lim, maxSpeeds.mkad_speed_lim);
 
   return maxSpeeds;
 }, { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed });

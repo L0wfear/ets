@@ -1,4 +1,10 @@
-export const hideOverlay = (marker) => (
+import { OverlayUtils } from 'components/map/new/overlay/Overlay.h';
+/**
+ * hide оверлея
+ * Т.к. реакт, то оверлей просто уходит в закат
+ * @param marker оверлей
+ */
+export const hideOverlay: OverlayUtils.hideOverlay = (marker) => (
   marker
   && setMakerPosition(
       marker,
@@ -9,14 +15,23 @@ export const hideOverlay = (marker) => (
     )
 );
 
-export const setMakerPosition = (marker, coords_msk) => (
+/**
+ * изменение положения оверлея
+ * @param marker оверлей
+ * @param coords_msk координаты
+ */
+export const setMakerPosition: OverlayUtils.setMakerPosition = (marker, coords_msk) => (
   marker
   && Array.isArray(coords_msk)
   && coords_msk.length === 2
   && marker.setPosition(coords_msk)
 );
 
-export const makeOverlay = (props: olx.OverlayOptions) => (
+/**
+ * создание оверлея
+ * @param props пропсы создания оверлея
+ */
+export const makeOverlay: OverlayUtils.makeOverlay = (props) => (
   new ol.Overlay({
     ...props,
   })

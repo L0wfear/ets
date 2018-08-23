@@ -9,6 +9,8 @@ import { connectToStores } from 'utils/decorators';
 
 import Form from '../../compositions/Form.jsx';
 
+const modalKey = 'e,ployee';
+
 @connectToStores(['objects', 'companyStructure'])
 @loadingOverlay
 export default class EmployeeForm extends Form {
@@ -189,6 +191,7 @@ export default class EmployeeForm extends Form {
               <Field
                 id="position_id"
                 type="select"
+                modalKey={modalKey}
                 label="Должность"
                 options={POSITION_ELEMENTS}
                 value={state.position_id}
@@ -201,6 +204,7 @@ export default class EmployeeForm extends Form {
               <Field
                 id="prefer_car"
                 type="select"
+                modalKey={modalKey}
                 label="Предпочитаемое ТрС"
                 value={state.prefer_car}
                 options={CARS}
@@ -215,6 +219,7 @@ export default class EmployeeForm extends Form {
               <Field
                 id="active"
                 type="select"
+                modalKey={modalKey}
                 label="Состояние"
                 value={state.active ? 1 : 0}
                 options={DRIVER_STATES}
@@ -240,6 +245,7 @@ export default class EmployeeForm extends Form {
               <Field
                 id="company_structure_id"
                 type="select"
+                modalKey={modalKey}
                 label="Подразделение"
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
@@ -266,6 +272,7 @@ export default class EmployeeForm extends Form {
               <Field
                 id="is_common"
                 type="select"
+                modalKey={modalKey}
                 label="Общее"
                 options={[{ label: 'Да', value: 1 }, { label: 'Нет', value: 0 }]}
                 value={state.is_common ? 1 : 0}

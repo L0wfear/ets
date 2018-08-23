@@ -43,6 +43,8 @@ const boundKeysObj = {
   fact_fuel_end: ['fact_fuel_end'],
 };
 
+const modalKey = 'waybill';
+
 @autobind
 class WaybillForm extends Form {
 
@@ -543,6 +545,7 @@ class WaybillForm extends Form {
                   <Field
                     id="waybill-structure-id"
                     type="select"
+                    modalKey={modalKey}
                     label="Подразделение"
                     error={errors.structure_id}
                     disabled={STRUCTURE_FIELD_READONLY || !(IS_CREATING || IS_DRAFT)}
@@ -555,6 +558,7 @@ class WaybillForm extends Form {
                 <Field
                   id="accompanying-person-id"
                   type="select"
+                  modalKey={modalKey}
                   label="Сопровождающий"
                   error={errors.accompanying_person_id}
                   clearable
@@ -640,7 +644,8 @@ class WaybillForm extends Form {
               <Field
                 id="car-id"
                 type="select"
-                label="Транспортное средство (поиск по рег. номер ТС)"
+                modalKey={modalKey}
+                label="Транспортное средство (поиск по рег. номер  ТС)"
                 error={errors.car_id}
                 className="white-space-pre-wrap"
                 hidden={!(IS_CREATING || IS_DRAFT)}
@@ -663,6 +668,7 @@ class WaybillForm extends Form {
               <Field
                 id="trailer-id"
                 type="select"
+                modalKey={modalKey}
                 label="Прицеп"
                 error={errors.trailer_id}
                 className="white-space-pre-wrap"
@@ -686,6 +692,7 @@ class WaybillForm extends Form {
               <Field
                 id="driver-id"
                 type="select"
+                modalKey={modalKey}
                 label="Водитель (возможен поиск по табельному номеру)"
                 error={driversEnability ? errors.driver_id : undefined}
                 hidden={!(IS_CREATING || IS_DRAFT)}
@@ -815,6 +822,7 @@ class WaybillForm extends Form {
                   <Field
                     id="fuel-type"
                     type="select"
+                    modalKey={modalKey}
                     label="Тип топлива"
                     error={errors.fuel_type}
                     disabled={IS_ACTIVE || IS_CLOSED}
@@ -867,6 +875,7 @@ class WaybillForm extends Form {
                     multi
                     id="fuel-end"
                     type="select"
+                    modalKey={modalKey}
                     label="Возврат фактический, л"
                     error={errors.fact_fuel_end}
                     value={state.fact_fuel_end}

@@ -11,6 +11,8 @@ import RouteInfo from '../../route/RouteInfo.jsx';
 import RouteFormWrap from '../../route/RouteFormWrap.jsx';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
 
+const modalKey = 'duty_mission_template';
+
 class MissionTemplateForm extends DutyMissionForm {
   render() {
     const state = this.props.formState;
@@ -110,6 +112,7 @@ class MissionTemplateForm extends DutyMissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
@@ -133,6 +136,7 @@ class MissionTemplateForm extends DutyMissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Бригадир"
                 error={errors.foreman_id}
                 disabled={false}
@@ -144,6 +148,7 @@ class MissionTemplateForm extends DutyMissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Бригада"
                 error={errors.brigade_employee_id_list}
                 multi
@@ -158,6 +163,7 @@ class MissionTemplateForm extends DutyMissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Маршрут"
                 error={errors.route_id}
                 options={ROUTES}
@@ -173,6 +179,7 @@ class MissionTemplateForm extends DutyMissionForm {
             {STRUCTURE_FIELD_VIEW && <Col md={6}>
               <Field
                 type="select"
+                modalKey={modalKey}
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY}

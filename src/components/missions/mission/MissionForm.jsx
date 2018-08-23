@@ -15,6 +15,8 @@ import _ from 'lodash';
 import CarAvailableIcon from 'assets/images/car_available.png';
 import CarNotAvailableIcon from 'assets/images/car_not_available.png';
 
+const modalKey = 'mission';
+
 @autobind
 export class MissionForm extends Form {
 
@@ -269,6 +271,7 @@ export class MissionForm extends Form {
               <Field
                 id="car-id"
                 type="select"
+                modalKey={modalKey}
                 label="Транспортное средство"
                 error={errors.car_id}
                 className="white-space-pre-wrap"
@@ -335,6 +338,7 @@ export class MissionForm extends Form {
               <Field
                 id="m-source-id"
                 type="select"
+                modalKey={modalKey}
                 label="Источник получения задания"
                 error={errors.mission_source_id}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY}
@@ -369,6 +373,7 @@ export class MissionForm extends Form {
               <Field
                 id="technical-operation-id"
                 type="select"
+                modalKey={modalKey}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY || isEmpty(state.car_id))}
@@ -381,6 +386,7 @@ export class MissionForm extends Form {
               <Field
                 id="m-structure-id"
                 type="select"
+                modalKey={modalKey}
                 label="Подразделение"
                 error={errors.structure_id}
                 disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !IS_POST_CREATING_NOT_ASSIGNED) || !IS_CREATING}
@@ -399,6 +405,7 @@ export class MissionForm extends Form {
               <Field
                 id="m-route-id"
                 type="select"
+                modalKey={modalKey}
                 label="Маршрут"
                 error={errors.route_id}
                 disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.technical_operation_id}
@@ -426,6 +433,7 @@ export class MissionForm extends Form {
             <EtsSelect
               id="assign-to-waybill"
               type="select"
+              modalKey={modalKey}
               options={ASSIGN_OPTIONS}
               value={state.assign_to_waybill}
               clearable={false}

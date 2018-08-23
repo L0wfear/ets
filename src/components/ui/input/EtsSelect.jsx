@@ -62,12 +62,14 @@ export default class EstSelect extends Component {
       noResultsText = 'Ничего не найдено',
       options = [],
       sortingFunction = defaultSortingFunction,
+      modalKey, 
     } = this.props;
 
     const sortedOptions = options.sort(sortingFunction);
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
 
     return (
-      <div id={this.props.id}>
+      <div id={id}>
         <Select
           {...this.props}
           onChange={this.handleChange}

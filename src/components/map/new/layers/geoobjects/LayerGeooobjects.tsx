@@ -3,28 +3,16 @@ import * as React from 'react';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import { getCasheStyleForGeoobject } from 'components/map/new/layers/geoobjects/feature-style';
-import { GeoJSON } from 'utils/ol';
 import { monitorPageAddToSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
-
-type PropsLayerPlayPoint = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  hideFeatures: ETSCore.Map.InjectetLayerProps.FuncHideFeatures,
-  geoobjects: any;
-  SHOW_GEOOBJECTS: boolean;
-
-  monitorPageAddToSelectedGeoobjects: Function;
-}
-
-type StateLayerPlayPoint = {
-  geoobjects: any,
-  SHOW_GEOOBJECTS: boolean;
-}
+import {
+  PropsLayerPlayPoint,
+  StateLayerPlayPoint,
+} from 'components/map/new/layers/geoobjects/LayerGeooobjects.h';
+import {
+  diffInputProps,
+  getMergedGeoobjects,
+  renderGeoobjects,
+} from '/Users/vladimirleshchev/Desktop/gost/ets-frontend/src/components/map/new/layers/geoobjects/utils';
 
 class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, StateLayerPlayPoint> {
   state = {
@@ -35,70 +23,22 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, StateLayerPlay
     this.props.addLayer({ id: 'GeoObject', zIndex: 0 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
-      this.renderGeoobjects(this.state.geoobjects);
+      renderGeoobjects(this.state.geoobjects, this.state.geoobjects, this.props);
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geoobjects, SHOW_GEOOBJECTS } = nextProps;
-    let hasDiff = false;
-    let diffGeoobjects = {};
-
-    diffGeoobjects = Object.entries(geoobjects).reduce((newObj, [serverName, data]) => {
-      const show = SHOW_GEOOBJECTS && data.show;
-      const stateData = this.state.geoobjects[serverName];
-
-
-      if (show !== stateData.show) {
-        if (!show) {
-          hasDiff = true;
-          newObj[serverName] = {
-            show,
-            data: data.data,
-            oldData: this.state.geoobjects[serverName].data,
-          };
-        } else {
-          hasDiff = true;
-          newObj[serverName] = {
-            show,
-            data: data.data,
-            oldData: {},
-          };
-        }
-      }
-      if (data.data !== stateData.data) {
-        hasDiff = true;
-        newObj[serverName] = {
-          show,
-          data: data.data,
-          oldData: this.state.geoobjects[serverName].data,
-        };
-      }
-      
-     
-      return newObj;
-    }, {});
-
+    const {
+      hasDiff,
+      diffGeoobjects,
+    } = diffInputProps(nextProps, this.state);
     
     if (hasDiff) {
-      this.renderGeoobjects(diffGeoobjects);
+      renderGeoobjects(this.state.geoobjects, diffGeoobjects, nextProps);
       this.setState({
-        geoobjects: {
-          ...this.state.geoobjects,
-          ...Object.entries(geoobjects).reduce(({ ...newObj }, [serverName, data]) => {
-            if (diffGeoobjects[serverName]) {
-
-              newObj[serverName] = {
-                ...data,
-                ...diffGeoobjects[serverName],
-              }
-            }
-  
-            return newObj;
-          }, {})
-        },
-        SHOW_GEOOBJECTS,
-      });
+        geoobjects: getMergedGeoobjects(this.state.geoobjects, diffGeoobjects),
+        SHOW_GEOOBJECTS: nextProps.SHOW_GEOOBJECTS,
+      })
     }
   }
 
@@ -117,56 +57,16 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, StateLayerPlay
     )
   }
 
-  renderGeoobjects(geoobjectsForRender) {
-    Object.entries(geoobjectsForRender).forEach(([serverName, { show, data, oldData }]) => {
-      for(let id in (data || oldData)) {
-
-        const oldFeature = this.props.getFeatureById(id);
-
-        if (show) {
-          const geoobj = data[id];
-
-          if (oldFeature) {
-            if (oldFeature.get('shape') !== geoobj.shape) {
-              this.props.removeFeaturesFromSource(oldFeature);
-              const feature = new ol.Feature({
-                geometry: GeoJSON.readGeometry(geoobj.shape),
-              });
-              feature.setId(id);
-              feature.set('serverName', serverName)
-              feature.set('shape', geoobj.shape);
-              feature.setStyle(getCasheStyleForGeoobject(false));
-
-              this.props.addFeaturesToSource(feature);
-            }
-          } else {
-            const feature = new ol.Feature({
-              geometry: GeoJSON.readGeometry(geoobj.shape),
-            });
-            feature.setId(id);
-            feature.set('serverName', serverName)
-            feature.set('shape', geoobj.shape);
-            feature.setStyle(getCasheStyleForGeoobject(false));
-
-            this.props.addFeaturesToSource(feature);
-          }
-        } else if (oldFeature) {
-          this.props.removeFeaturesFromSource(oldFeature);
-        }
-      }
-    });
-  }
-
   render() {
     return <div></div>;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   geoobjects: state.monitorPage.geoobjects,
   SHOW_GEOOBJECTS: state.monitorPage.statusGeo.SHOW_GEOOBJECTS,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   monitorPageAddToSelectedGeoobjects: (serverName, id, data) => (
     dispatch(
       monitorPageAddToSelectedGeoobjects(

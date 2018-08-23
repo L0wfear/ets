@@ -20,7 +20,6 @@ type PropsLayerCarMarker = {
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  hideFeatures: ETSCore.Map.InjectetLayerProps.FuncHideFeatures,
   token: string;
   carInfoSetGpsNumber: Function;
   carInfoSetStatus: Function;
@@ -141,8 +140,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           ];
 
           const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
-
-          this.props.centerOn({ extent, opt_options, noCheckDisabledCenterOn: true });
+          const noCheckDisabledCenterOn = true;
+          this.props.centerOn({ extent, opt_options }, noCheckDisabledCenterOn);
         }
       }
       if (zoomMore8 !== this.state.zoomMore8) {
@@ -186,8 +185,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           coords_msk[0],
           coords_msk[1],
         ];
-
-        this.props.centerOn({ extent, noCheckDisabledCenterOn: true });
+        const noCheckDisabledCenterOn = true;
+        this.props.centerOn({ extent }, noCheckDisabledCenterOn);
       }
 
       if (statusShow !== this.state.statusShow) {
@@ -421,7 +420,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
                 coords_msk[1],
               ];
         
-              this.props.centerOn({ extent, noCheckDisabledCenterOn: true });
+              const noCheckDisabledCenterOn = true;
+              this.props.centerOn({ extent }, noCheckDisabledCenterOn);
             }
           }
 

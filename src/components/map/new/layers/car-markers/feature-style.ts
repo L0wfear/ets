@@ -133,7 +133,7 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
   ctx.fill();
 
   ctx.lineWidth = 1;
-  ctx.strokeStyle = selected ? 'white' : 'black';
+  ctx.strokeStyle = !selected ? 'white' : 'black';
   ctx.stroke();
 }
 

@@ -12,7 +12,7 @@ import {
   diffInputProps,
   getMergedGeoobjects,
   renderGeoobjects,
-} from '/Users/vladimirleshchev/Desktop/gost/ets-frontend/src/components/map/new/layers/geoobjects/utils';
+} from 'components/map/new/layers/geoobjects/utils';
 
 class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, StateLayerPlayPoint> {
   state = {

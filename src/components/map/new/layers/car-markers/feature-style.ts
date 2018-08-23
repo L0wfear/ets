@@ -133,7 +133,7 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
   ctx.fill();
 
   ctx.lineWidth = 1;
-  ctx.strokeStyle = selected ? 'white' : 'black';
+  ctx.strokeStyle = !selected ? 'white' : 'black';
   ctx.stroke();
 }
 
@@ -144,43 +144,50 @@ const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
   }
 }
 
-const makeCacheIcon = (cacheStyleName, { status, direction, type, selected, zoomMore8, gov_number, show_gov_number, visible }) => {
-  if (visible) {
-    const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : 'zoomNotMore8'];
-    const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) %360) );
+const makeCacheIcon = (cacheStyleName, { status, direction, type, selected, zoomMore8, gov_number, show_gov_number }) => {
+  const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : 'zoomNotMore8'];
+  const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) %360) );
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    [canvas.width, canvas.height] = getCanvasWH(width, ctx, show_gov_number, gov_number, zoomMore8 || selected);
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  [canvas.width, canvas.height] = getCanvasWH(width, ctx, show_gov_number, gov_number, zoomMore8 || selected);
 
-    drawGovNumber(canvas, ctx, width, status, show_gov_number, gov_number, directionInRad, selected, zoomMore8);
-    drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad);
-    drawCarIcon(canvas, ctx, width, zoomMore8, selected);
+  drawGovNumber(canvas, ctx, width, status, show_gov_number, gov_number, directionInRad, selected, zoomMore8);
+  drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad);
+  drawCarIcon(canvas, ctx, width, zoomMore8, selected);
 
-    return CACHE_ICON[cacheStyleName] = new ol.style.Style({
-      image: new ol.style.Icon({
-        src: undefined,
-        img: canvas,
-        imgSize: [canvas.width, canvas.height],
-      }),
-      zIndex: selected ? Infinity : 10,
-    });
-  } else {
-    return CACHE_ICON[cacheStyleName] = new ol.style.Style({});
-  }
+  return CACHE_ICON[cacheStyleName] = new ol.style.Style({
+    image: new ol.style.Icon({
+      src: undefined,
+      img: canvas,
+      imgSize: [canvas.width, canvas.height],
+    }),
+    zIndex: selected ? Infinity : 10,
+  });
 }
 
 export const getStyleForStatusDirectionType = ({ status, direction, type, selected, zoomMore8, gov_number, show_gov_number, visible }) => {
-  const cacheStyleName = `${selected ? true : visible}/${status}/${selected}/${zoomMore8}/${direction}/${show_gov_number ? gov_number : null}`;
-  const { [cacheStyleName] : cache_icon } = CACHE_ICON;
-  let icon = cache_icon;
+  if (visible || selected) {
+    let trueDirection = selected || zoomMore8 ? direction : 0;
 
-  if (!cache_icon) {
-    icon = makeCacheIcon(
-      cacheStyleName,
-      { status, direction, type, selected, zoomMore8, gov_number, show_gov_number, visible: selected || visible },
-    );
+    const cacheStyleName = `${status}/${selected}/${zoomMore8}/${trueDirection}/${show_gov_number ? gov_number : null}`;
+    const { [cacheStyleName] : cache_icon } = CACHE_ICON;
+    let icon = cache_icon;
+  
+    if (!cache_icon) {
+      icon = makeCacheIcon(
+        cacheStyleName,
+        { status, direction: trueDirection, type, selected, zoomMore8, gov_number, show_gov_number },
+      );
+    }
+  
+    return icon;
+  } else {
+    let not_visible = 'not_visible';
+    if (!CACHE_ICON[not_visible]) {
+      return CACHE_ICON[not_visible] = new ol.style.Style({});
+    } else {
+      return CACHE_ICON[not_visible];
+    }
   }
-
-  return icon;
 }

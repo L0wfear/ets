@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 import { monitorPageToggleStatusGeoobject, monitorPageSetGeometry } from 'components/monitor/new/redux/models/actions-monitor-page';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-import { loadGeozones } from 'redux/trash-actions/geometry';
+import { loadGeozones } from 'redux/trash-actions/geometry/geometry';
 import {
   MONITOR_PAGE_SET_GEOMETRY,
 } from 'components/monitor/new/redux/models/monitor-page';

@@ -1,8 +1,15 @@
 import * as React from 'react';
 import * as cx from 'classnames';
+import {
+  PropsOverlay,
+  StateOverlay,
+} from 'components/map/new/overlay/Overlay.h';
+import {
+  hideOverlay,
+  makeOverlay,
+} from 'components/map/new/overlay/utils';
 
-class Overlay extends React.Component<any, any> {
-  _handlers: any;
+class Overlay extends React.Component<PropsOverlay, StateOverlay> {
   node: any;
 
   constructor(props) {
@@ -14,32 +21,46 @@ class Overlay extends React.Component<any, any> {
     }
   }
   componentDidMount() {
-    const marker = new ol.Overlay({
-      position: this.props.coords_msk,
-      positioning: 'bottom-center',
-      element: this.node,
-      stopEvent: false
-    });
-    (this.props.map as ol.Map).addOverlay(marker);
+    try {
+      const marker = makeOverlay({
+        position: this.props.coords_msk,
+        positioning: 'bottom-center',
+        element: this.node,
+        stopEvent: false
+      });
+      this.props.map.addOverlay(marker);
 
-    this.setState({ marker })
+      this.setState({ marker });
+    } catch (e) {
+      console.warn('не могу создать попап');
+    }
   }
   componentWillReceiveProps(nextProps) {
     const { coords_msk } = nextProps;
     if (coords_msk !== this.state.coords_msk) {
-      (this.state.marker as ol.Overlay).setPosition(coords_msk)
-      this.setState({
-        coords_msk,
-      });
+      try {
+        this.state.marker.setPosition(coords_msk);
+        this.setState({ coords_msk });
+      } catch (e) {
+        console.warn('не могу свдинуть попап');
+      }
     }
   }
 
   componentWillUnmount() {
-    this.state.marker.setPosition([-Number.MAX_SAFE_INTEGER, -Number.MAX_SAFE_INTEGER]);
+    try {
+      hideOverlay(this.state.marker);
+    } catch (e) {
+      console.warn('не могу скрыть попап');
+    }
   }
 
   hidePopup = () => {
-    this.state.marker.setPosition([-Number.MAX_SAFE_INTEGER, -Number.MAX_SAFE_INTEGER]);
+    try {
+      hideOverlay(this.state.marker);
+    } catch (e) {
+      console.warn('не могу скрыть попап');
+    }
 
     this.props.hidePopup();
   }

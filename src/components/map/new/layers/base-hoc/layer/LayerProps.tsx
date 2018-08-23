@@ -18,8 +18,6 @@ type TypeConfig = {
   map?: boolean;
 };
 
-const emptyStyle = new ol.style.Style({});
-
 const withLayerProps = (config: TypeConfig = {}) => Component => (
   class LayerProps extends React.Component<PropsLayerProps, StateLayerProps> {
     state: StateLayerProps = {
@@ -90,11 +88,6 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
       }
     }
 
-    hideFeatures: ETSCore.Map.InjectetLayerProps.FuncHideFeatures = (features) => {
-      let featureArr = Array.isArray(features) ? features : [features];
-      featureArr.forEach(feature => feature.setStyle(emptyStyle));
-    }
-
     getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures = () => (
       this.state.vectorSource.getFeatures()
     )
@@ -110,7 +103,6 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
           removeFeaturesFromSource={this.removeFeaturesFromSource}
           getFeatureById={this.getFeatureById}
           setDataInLayer={this.setDataInLayer}
-          hideFeatures={this.hideFeatures}
           getAllFeatures={this.getAllFeatures}
           zoom={config.zoom ? zoom : undefined}
           map={config.map ? map : undefined}

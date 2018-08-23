@@ -1,7 +1,13 @@
+type FuncAddLayerProps = {
+  id: number | string;
+  zIndex?: number;
+  renderMode?: olx.layer.VectorRenderType,
+}
+
 declare namespace ETSCore {
-  module Map {
-    module InjectetLayerProps {
-      type FuncAddLayer = (props: any) => Promise<{}>;
+  export module Map {
+    export module InjectetLayerProps {
+      type FuncAddLayer = (props: FuncAddLayerProps) => Promise<{}>;
       type FuncRemoveLayer = () => void;
       type FuncAddFeaturesToSource = (features: ol.Feature | ol.Feature[]) => void;
       type FuncRemoveFeaturesFromSource = (features: ol.Feature | ol.Feature[] | void, all?: boolean) => void;
@@ -10,7 +16,6 @@ declare namespace ETSCore {
       type FuncGetAllFeatures = () => ol.Feature[];
 
 
-      type FuncHideFeatures = (features: ol.Feature | ol.Feature[]) => void;
 
     }
   }

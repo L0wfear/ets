@@ -21,13 +21,16 @@ export const makeExtent: TypeMakeExtent = coords_msk => (
     coords_msk[i%2]
   )) as [number, number, number, number]
 )
-export const centerOn = (coords_msk, { centerOn }) => (
-  centerOn({
-    extent: makeExtent(coords_msk),
-    opt_options,
-    noCheckDisabledCenterOn: true,
-  })
-);
+export const centerOn = (coords_msk, { centerOn }) => {
+  const noCheckDisabledCenterOn = true;
+  centerOn(
+    {
+      extent: makeExtent(coords_msk),
+      opt_options,
+    },
+    noCheckDisabledCenterOn,
+  )
+};
 
 export const setNullGeometryToFeature = (feature) => (
   feature.setGeometry(

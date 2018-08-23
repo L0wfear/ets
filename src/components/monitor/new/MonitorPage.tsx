@@ -6,7 +6,7 @@ import MapWrap from 'components/monitor/new/MapWrap';
 import ToolBar from 'components/monitor/new/tool-bar/ToolBar';
 
 import { loadCarActualIndex } from 'redux/trash-actions/car';
-import { loadGeozones } from 'redux/trash-actions/geometry';
+import { loadGeozones } from 'redux/trash-actions/geometry/geometry';
 
 import { resetMonitorPageState } from 'components/monitor/new/redux/models/actions-monitor-page';
 import {

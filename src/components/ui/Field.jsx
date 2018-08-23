@@ -172,7 +172,6 @@ export default class Field extends React.Component {
     const { label = '', ...props } = this.props;
     const { error, className = '', readOnly = false, modalKey } = this.props;
 
-    const { error, className = '', readOnly = false } = props;
     const selectClassName = cx({ 'has-error': error });
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
 

@@ -3541,6 +3541,13 @@ div.none {
       overflow: hidden;
       padding: 15px 0;
 
+      >div>dl {
+        margin: 0 20px;
+        dt {
+          font-weight: inherit;
+        }
+      }
+
       .dashboard-card-item-inner-singlevalue {
         width: 90%;
         text-align: center;

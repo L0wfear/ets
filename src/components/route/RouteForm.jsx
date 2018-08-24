@@ -21,17 +21,19 @@ const OBJECTS_BY_TYPE = {
 
 const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
 
+const initial_ROUTE_TYPES_OPTIONS = [
+  { value: 'mixed', label: 'Выбор из ОДХ' },
+  { value: 'simple_dt', label: 'Выбор из ДТ' },
+  { value: 'points', label: 'Выбор пунктов назначения' },
+];
+
 @connectToStores(['objects', 'geoObjects'])
 @autobind
 export default class RouteForm extends Form {
 
   constructor(props) {
     super(props);
-    const ROUTE_TYPE_OPTIONS = [
-      { value: 'mixed', label: 'ОДХ' },
-      { value: 'simple_dt', label: 'ДТ' },
-      { value: 'points', label: 'Пункты назначения' },
-    ];
+    const ROUTE_TYPE_OPTIONS = initial_ROUTE_TYPES_OPTIONS;
 
     this.state = {
       ROUTE_TYPE_OPTIONS,
@@ -158,12 +160,20 @@ export default class RouteForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
 
-    const { ROUTE_TYPE_OPTIONS, technicalOperationsList = [] } = this.state;
+    const { ROUTE_TYPE_OPTIONS: [...ROUTE_TYPE_OPTIONS], technicalOperationsList = [] } = this.state;
 
     let TECH_OPERATIONS = technicalOperationsList.map(({ id, name, is_new }) => ({ value: id, label: name, is_new }));
     if (!state.id) {
       TECH_OPERATIONS = TECH_OPERATIONS.filter(({ is_new }) => !!is_new);
     }
+    if (state.type && !ROUTE_TYPE_OPTIONS.find(({ value }) => value === state.type)) {
+      ROUTE_TYPE_OPTIONS.push({
+        value: state.type,
+        label: (initial_ROUTE_TYPES_OPTIONS.find(({ value }) => value === state.type) || { label: 'Не найден тип' }).label,
+        disabled: true,
+      });
+    }
+
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
@@ -265,7 +275,7 @@ export default class RouteForm extends Form {
                   type="select"
                   label="Тип объекта"
                   options={ROUTE_TYPE_OPTIONS}
-                  value={state.type !== 'mixed' ? state.type : 'mixed'}
+                  value={state.type}
                   clearable={false}
                   disabled={this.state.routeTypeDisabled || !state.municipal_facility_id || state.copy}
                   onChange={this.handleTypeChange}

@@ -27,7 +27,12 @@ const reportRoutes = (props) => {
       <Route path="tech-maintenance-schedule" component={reports.techMaintenanceSchedule} onEnter={requireAuth} />
       <Route path="inquiry-expiring-date" component={reports.inquiryExpiringDate} onEnter={requireAuth} />
       <Route path="car-downtime-and-overmileage-report" component={reports.carDowntimeAndOvermileage} onEnter={requireAuth} />
-      <Route path="car-movement-time-report" component={reports.carMovementTimeReport} onEnter={requireAuth} />
+      {
+        process.env.STAND !== 'prod' ?
+          <Route path="car-movement-time-report" component={reports.carMovementTimeReport} onEnter={requireAuth} />
+        :
+        <div></div>
+      }
 
       {/* Отчеты - Задания */}
       <Route path="mission-reports" component={reports.mission} onEnter={requireAuth} />

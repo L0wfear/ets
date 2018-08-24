@@ -59,6 +59,14 @@ export const tableMeta = props => ({
         type: 'multiselect',
       },
     },
+    {
+      displayName: 'ФИО',
+      name: 'fio',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
   ],
 });
 

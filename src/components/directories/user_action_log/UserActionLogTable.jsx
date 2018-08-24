@@ -62,6 +62,14 @@ export const tableMeta = ({
         type: 'multiselect',
       },
     },
+    {
+      displayName: 'ФИО',
+      name: 'fio',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
   ],
 });
 

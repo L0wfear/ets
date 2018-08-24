@@ -296,7 +296,7 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.post(payload, false, 'json');
   }
 
-  updateDutyMission(mission, autoUpdate = true) {
+  updateDutyMission(mission) {
     const payload = cloneDeep(mission);
     delete payload.number;
     delete payload.technical_operation_name;
@@ -313,7 +313,7 @@ export default class MissionsActions extends Actions {
       return newObj;
     }, {}));
 
-    return DutyMissionService.put(payload, autoUpdate, 'json');
+    return DutyMissionService.put(payload, false, 'json');
   }
 
   changeArchiveDutuMissionStatus(id, is_archive) {

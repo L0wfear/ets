@@ -33,7 +33,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
 
 export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, gps_code) => (
   !!car_actualData
-  && statusShow[`SHOW_CAR_${getFrontStatus(wsData.status).slug.toUpperCase()}`]
+  && statusShow[getFrontStatus(wsData.status).slug]
   && !Object.entries(filters).some(([key, value]) => (
     !checkFilterByKey(
       key,

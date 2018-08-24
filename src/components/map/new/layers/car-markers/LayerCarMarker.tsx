@@ -369,7 +369,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             }
           }
 
-          const feature = this.props.getFeatureById(carPointsDataWs[gps_code].id);
+          const feature = this.props.getFeatureById(gps_code);
           const old_visible = feature.get('visible');
           const selected = gps_code === state_gps_code
 

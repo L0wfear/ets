@@ -18,9 +18,9 @@ import {
 const CarLegendStatus: React.SFC<PropsCarLegendStatus> = props => (
   <span className="car-toolbar">
     <div className="tool_bar-block">
-      <div className="default_cube">
+      <div className="default_cube dark">
         <div className={getActiveClassName(props)} onClick={props.toggleActiveStatus}>
-          <div>{`Активно: ${listStatus.slice(0,3).reduce((summ, { key }) => summ + props[key], 0)}`}</div>
+          <div>{`Активно: ${listStatus.slice(0,3).reduce((summ, { key }) => summ + props.carsByStatus[key], 0)}`}</div>
         </div>
         <div className="car_block_legend">
           {

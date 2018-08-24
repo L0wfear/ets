@@ -1191,9 +1191,14 @@ body.application {
       pointer-events: all;
       display: inline-block;
       min-width: 195px;
-      &.active>div {
+      &.active>.default_cube {
         background-color: #6a9e56;
         color: white;
+
+        &.dark {
+          background-color: #6a9e56;
+          color: white;
+        }
       }
 
       .default_cube {
@@ -1201,6 +1206,11 @@ body.application {
         box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
         border-radius: 6px;
         padding: 6px 1pc;
+
+        &.dark {
+          background: rgba(0, 0, 0, 0.75);
+          color: white;
+        }
 
         &.map-car-filter {
           &>div {
@@ -1216,6 +1226,7 @@ body.application {
             }
             .input_text_action-wrap {
               position: relative;
+              color: black;
               .input_text_action {
                 position: absolute;
                 display: flex;

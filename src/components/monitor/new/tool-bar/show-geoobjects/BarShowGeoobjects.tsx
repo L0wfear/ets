@@ -81,7 +81,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
       (
         <span>
           <div className="tool_bar-block">
-            <div className="default_cube">
+            <div className="default_cube dark">
               <div className={getActiveClassName(activeMain)} onClick={this.toggleList}>
                 <input type="checkbox" checked={activeMain} onClick={this.toggleAllStatus} />
                 <span>{`Объекты ${showGeoObjList ? ' \u25BC' : ' \u25BA'}`}</span>

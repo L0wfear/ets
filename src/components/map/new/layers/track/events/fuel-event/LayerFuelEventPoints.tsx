@@ -47,7 +47,8 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   componentWillReceiveProps(nextProps) {
     const { fuelEventPoint, front_cars_sensors_level} = nextProps;
 
-    if (front_cars_sensors_level !== this.props.front_cars_sensors_level) {
+    console.log(front_cars_sensors_level, this.props.front_cars_sensors_level)
+    if (front_cars_sensors_level !== this.state.front_cars_sensors_level) {
       this.drawTrackPoints(
         fuelEventPoint,
         nextProps.front_events_list,
@@ -85,25 +86,34 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
 
   addOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
-      const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
-      if (!featureOld) {
-        const feature = new ol.Feature({
-          geometry: new ol.geom.Point(fuelEventPoint.start_point.coords_msk),
-        });
+      try {
+        const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
+        if (!featureOld) {
+          const feature = new ol.Feature({
+            geometry: new ol.geom.Point(fuelEventPoint.start_point.coords_msk),
+          });
 
-        feature.setId(fuelEventPoint.start_point.timestamp);
-        feature.setStyle(getStyleForFuelEvent(fuelEventPoint.event_type));
-        this.props.addFeaturesToSource(feature);
+          feature.setId(fuelEventPoint.start_point.timestamp);
+          feature.setStyle(getStyleForFuelEvent(fuelEventPoint.event_type));
+          this.props.addFeaturesToSource(feature);
+        }
+      } catch (error) {
+        console.warn(error);
       }
     }
   }
 
   removeOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
-      const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
-      
-      if (featureOld) {
-        this.props.removeFeaturesFromSource(featureOld);
+      console.log(fuelEventPoint)
+      try {
+        const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
+        
+        if (featureOld) {
+          this.props.removeFeaturesFromSource(featureOld);
+        }
+      } catch (error) {
+        console.warn(error)
       }
     }
   }

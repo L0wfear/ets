@@ -257,7 +257,7 @@ export default class MissionsActions extends Actions {
       return newObj;
     }, {}));
 
-    return DutyMissionService.put(payload, autoUpdate, 'json');
+    return DutyMissionService.put(payload, false, 'json');
   }
 
   removeDutyMission(id) {

@@ -7,6 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import { wrappedRef } from 'utils/decorators';
 // TODO move to HOC
 import DashboardCardMedium from 'components/dashboard/DashboardCardMedium.jsx';
+import DashboardDlList from 'components/dashboard/customCards/ui/dashboard-dl-list/DashboardDlList';
 
 const styleDashboardCardHeader = { cursor: 'pointer' };
 
@@ -42,9 +43,11 @@ export default class CurrentMission extends DashboardCardMedium {
     return (
       <Collapse in={this.props.selectedItem === i}>
         <Div className={!this.canView ? 'no-pointer-events' : 'pointer'}>
-          <ul>
-            {subItems.map((subItem, key) => <li key={key} onClick={this.selectMission.bind(this, subItem.id)}>{subItem.title || subItem}</li>)}
-          </ul>
+        {
+          subItems.map((subItem, key) => (
+            <DashboardDlList key={key} selectMission={this.selectMission} subItem={subItem} />
+          ))
+        }
         </Div>
       </Collapse>
     );

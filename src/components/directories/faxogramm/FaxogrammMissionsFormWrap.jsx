@@ -77,9 +77,9 @@ class FaxogrammMissionsFormWrap extends FormWrap {
         let error = false;
         try {
           await flux.getActions('missions').createMissions(element, payload);
-        } catch ({ error: errorFromThrow }) {
+        } catch ({ error_text: e }) {
           error = true;
-          if (errorFromThrow && errorFromThrow.message.code === 'no_active_waybill') {
+          if (e && e.message.code === 'no_active_waybill') {
             let cancel = false;
             try {
               await confirmDialog({
@@ -89,6 +89,8 @@ class FaxogrammMissionsFormWrap extends FormWrap {
             } catch (er) {
               cancel = true;
             }
+            console.log(cancel)
+
             if (!cancel) {
               const newPayload = {
                 mission_source_id: '4',

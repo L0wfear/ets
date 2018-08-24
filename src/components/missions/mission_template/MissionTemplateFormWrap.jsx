@@ -24,9 +24,9 @@ export const createMissions = async (flux, element, payload) => {
   let error = false;
   try {
     await flux.getActions('missions').createMissions(element, payload);
-  } catch ({ error_text }) {
+  } catch ({ error_text: e }) {
     error = true;
-    if (error_text && error_text.message.code === 'no_active_waybill') {
+    if (e && e.message.code === 'no_active_waybill') {
       let cancel = false;
       try {
         await confirmDialog({
@@ -47,11 +47,11 @@ export const createMissions = async (flux, element, payload) => {
         await createMissions(element, newPayload);
       }
     }
-    if (error_text && error_text.message.code === 'invalid_period') {
-      const waybillNumber = error_text.message.message.split('№')[1].split(' ')[0];
+    if (e && e.message.code === 'invalid_period') {
+      const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
 
       const body = self => <div>
-        <div>{error_text.message.message}</div><br />
+        <div>{e.message.message}</div><br />
         <center>Введите даты задания:</center>
         <IntervalPicker
           interval={self.state.interval}

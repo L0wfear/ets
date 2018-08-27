@@ -12,7 +12,7 @@ const DefaultInput: React.SFC<PropsDefaultInput> = ({ OPTIONS, OPTIONS: { length
     multi
     label={false}
     type="select"
-    value={props.value.join(',')}
+    value={props.value}
     onChange={props.changeFilter}
     placeholder={`Тип техники${!length ? ' (нет данных)' : ''}`}
     options={OPTIONS}
@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch, { keyField }) => ({
     dispatch(
       monitorPageChangeFilter(
         keyField,
-        stringMulty ? stringMulty.split(',').map(d => Number(d)) : [],
+        stringMulty,
       ),
     )
   ),

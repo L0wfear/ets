@@ -18,6 +18,31 @@
   max-height: none !important;
 }
 
+.ol-control.ol-measure-new{
+  pointer-events: all;
+  bottom: 23px;
+  left: 70px;
+  background-color: rgba(0, 0, 0, 0.75);;
+  box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
+
+  button.btn.btn-default {
+    background-color: inherit;
+    color: white;
+
+    :hover {
+      background-color: initial;
+      color: white;
+    }
+
+    &.draw-point {
+      background-image: url('images/ruler-new.png');
+      background-blend-mode: difference;
+      background-size: cover;
+    }
+  }
+
+}
+
 .ol-control.ol-measure{
   bottom:21px;
   left: 70px;
@@ -47,6 +72,7 @@
     }
   }
 }
+
 
 .tooltip {
   position: relative;

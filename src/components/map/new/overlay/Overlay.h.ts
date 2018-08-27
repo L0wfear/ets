@@ -1,5 +1,5 @@
 export type PropsOverlay = {
-  coords_msk?: [number, number];
+  coordsMsk?: [number, number];
   map: ol.Map;
   hidePopup?: () => void;
   className?: string;
@@ -7,7 +7,7 @@ export type PropsOverlay = {
 }
 
 export type StateOverlay = {
-  coords_msk: [number, number] | null;
+  coordsMsk: [number, number] | null;
   marker: ol.Overlay | null;
 }
 
@@ -18,7 +18,7 @@ export module OverlayUtils {
 
   export type setMakerPosition = (
     marker: ol.Overlay,
-    coords_msk: ol.Coordinate,
+    coordsMsk: ol.Coordinate,
   ) => void;
 
   export type makeOverlay = (

@@ -40,7 +40,7 @@ const OverlayFuelEventPoint: React.SFC<any> = props => {
   const diff = secondsToTime(ep_timestamp - sp_timestamp);
 
   return (
-    <Overlay title={getTitleByType(event_type)} map={props.map} coords_msk={coords_msk} hidePopup={props.hidePopup} >
+    <Overlay title={getTitleByType(event_type)} map={props.map} coordsMsk={coords_msk} hidePopup={props.hidePopup} >
       <div className="overlay-line-info">
         <span className="font-bold">Датчик: </span><span>{sensor_id}</span>
       </div>

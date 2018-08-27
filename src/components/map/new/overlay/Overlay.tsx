@@ -16,14 +16,14 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     super(props);
 
     this.state = {
-      coords_msk: props.coords_msk,
+      coordsMsk: props.coordsMsk,
       marker: null,
     }
   }
   componentDidMount() {
     try {
       const marker = makeOverlay({
-        position: this.props.coords_msk,
+        position: this.props.coordsMsk,
         positioning: 'bottom-center',
         element: this.node,
         stopEvent: false
@@ -36,11 +36,11 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const { coords_msk } = nextProps;
-    if (coords_msk !== this.state.coords_msk) {
+    const { coordsMsk } = nextProps;
+    if (coordsMsk !== this.state.coordsMsk) {
       try {
-        this.state.marker.setPosition(coords_msk);
-        this.setState({ coords_msk });
+        this.state.marker.setPosition(coordsMsk);
+        this.setState({ coordsMsk });
       } catch (e) {
         console.warn('не могу свдинуть попап');
       }

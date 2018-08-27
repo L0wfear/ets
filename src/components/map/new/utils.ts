@@ -144,7 +144,7 @@ const handleClickOnRowLayer: MapUtils.handleClickOnRowLayerFunc = (eventOl) => (
   eventOl.map.forEachFeatureAtPixel(
     eventOl.pixel,
     (feature, layer) => {
-      if (layer.get('singleclick')) {
+      if (layer && layer.get('singleclick')) {
         layer.get('singleclick')(feature);
 
         return true;

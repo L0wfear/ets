@@ -116,7 +116,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
     );
 
     return (
-      <Overlay className="track-overlay" title={Title} map={this.props.map} coords_msk={coords_msk} hidePopup={this.props.hidePopup} >
+      <Overlay className="track-overlay" title={Title} map={this.props.map} coordsMsk={coords_msk} hidePopup={this.props.hidePopup} >
         <div className="overlay-line-info">{objectsString ? objectsString : <Preloader type="field" />}</div>
         <div className="overlay-line-info">
           {

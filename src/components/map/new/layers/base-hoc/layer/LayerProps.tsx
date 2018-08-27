@@ -27,6 +27,7 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
     addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
       return new Promise((res) => {
         const vectorSource = new ol.source.Vector();
+
         const olLayer = new ol.layer.Vector({
           source: vectorSource,
           renderMode,
@@ -52,6 +53,9 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
         }
       });
     }
+
+    getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource = () => this.state.vectorSource;
+
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource = (features) => {
       const { vectorSource } = this.state;
       if (vectorSource) {
@@ -99,6 +103,7 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
         <Component
           addLayer={this.addLayer}
           removeLayer={this.removeLayer}
+          getVectorSource={this.getVectorSource}
           addFeaturesToSource={this.addFeaturesToSource}
           removeFeaturesFromSource={this.removeFeaturesFromSource}
           getFeatureById={this.getFeatureById}

@@ -1192,7 +1192,7 @@ body.application {
   .tool_bar {
     position: relative;
     width: 100%;
-    margin: 20px;
+    margin: 10px;
     display: flex;
     flex-direction: column;
 
@@ -2370,7 +2370,8 @@ div.car_legend-active {
 
 /** OPENLAYERS */
 .ol-zoom, .ol-zoom:hover {
-  background: white;
+  background: rgba(0, 0, 0, 0.75);;
+  color: white;
   box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
   border-radius: 6px;
   top: -74px;
@@ -2380,7 +2381,6 @@ div.car_legend-active {
   z-index: 9999;
 
   button {
-    color: black;
     background-color: transparent;
   }
 }
@@ -4201,6 +4201,35 @@ div.car-movement-time-report {
 
 .overlay_inside {
   pointer-events: none;
+
+  &.measure {
+    font-size: 12px;
+    font-weight: 400;
+
+    >.ets_overlay {
+      width: auto;
+    }
+    &.active {
+      >.ets_overlay {
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+      }
+      >.ets_triangle-wrap>.ets_triangle {
+        border-top-color: rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    >.ets_overlay {
+      background: rgba(255, 204, 51, 0.8);
+      color: black;
+      >.ets_overlay-title {
+        border-bottom: 1px solid black;
+      }
+    }
+    >.ets_triangle-wrap>.ets_triangle {
+      border-top-color: rgba(255, 204, 51, 0.5);
+    }
+  }
 
   &.track-overlay>.ets_overlay {
     width: 500px;

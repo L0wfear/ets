@@ -13,6 +13,7 @@ import {
   MONITOR_PAGE_REMOVE_ALL_FROM_SELECTED_GEOMETRY,
   MONITOR_PAGE_CHANGE_FILTERS,
   MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST,
+  MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
 } from 'components/monitor/new/redux/models/monitor-page';
 
 export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) => ({
@@ -105,4 +106,9 @@ export const monitorPageMergeFiltredCarGpsCode = (filtredCarGpsCode) => ({
   payload: {
     filtredCarGpsCode
   },
+});
+
+export const monitorPageToggleMeasureActive = () => ({
+  type: MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
+  payload: {},
 });

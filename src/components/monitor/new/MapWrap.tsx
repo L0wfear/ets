@@ -13,6 +13,7 @@ import LayerFuelEventPoint from 'components/map/new/layers/track/events/fuel-eve
 import LayerGeooobjects from 'components/map/new/layers/geoobjects/LayerGeooobjects';
 import LayerSelectedGeooobjects from 'components/map/new/layers/geoobjects/selected/LayerSelectedGeooobjects';
 import LayerMeasure from 'components/map/new/layers/measure/LayerMeasure';
+import LayerFuelEventLeakPoint from 'components/map/new/layers/fuel-event/leak/LayerFuelEventLeakPoint';
 
 type PropsMapWrap = {
   disabledByType: any;
@@ -35,6 +36,7 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
           <LayerPlayPoint map={map} centerOn={centerOn} />
           <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
           <LayerMeasure map={map} />
+          <LayerFuelEventLeakPoint map={map} />
           <MapInfo map={map} centerOn={centerOn}/>
         </div>
       )

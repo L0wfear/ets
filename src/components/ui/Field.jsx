@@ -87,7 +87,6 @@ export default class Field extends React.Component {
       value: PropTypes.any,
       key: PropTypes.string,
       type: PropTypes.string.isRequired,
-      label: PropTypes.string,
       hidden: PropTypes.bool,
       onChange: PropTypes.func,
       error: PropTypes.string,
@@ -140,27 +139,29 @@ export default class Field extends React.Component {
   }
 
   renderDate() {
-    const { error, label, readOnly = false, date, value, className = '' } = this.props;
+    const { label, ...props } = this.props;
+    const { error, readOnly = false, date, value, className = '' } = this.props;
 
     const dateClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
-      { typeof label === 'string' && <label style={{ minHeight: 15 }}>{label}</label> }
-        <DatePicker {...this.props} date={date || value} className={dateClassName} />
+        { typeof label === 'string' && <label style={{ minHeight: 15 }}>{label}</label> }
+        <DatePicker {...props} date={date || value} className={dateClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>
     );
   }
 
   renderFile() {
-    const { error, label = '' } = this.props;
+    const { label = '', ...props } = this.props;
+    const { error } = this.props;
     const errorClassName = cx({ 'has-error': error });
 
     return (
       <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
         <label htmlFor=" " style={{ minHeight: 15 }}>{label}</label>
         <FileInput
-          {...this.props}
+          {...props}
           errorClassName={errorClassName}
         />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>

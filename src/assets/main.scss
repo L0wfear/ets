@@ -1293,6 +1293,23 @@ div.car_legend-active {
   &.left {
     margin-left: 5px;
   }
+  
+  &.fuel_leak {
+    max-width: 300px;
+
+    >div {
+      display: flex;
+      margin: 5px;
+      align-items: center;
+
+      >span {
+        flex: 1 1;
+      }
+      >div {
+        flex: 8 1;
+      }
+    }
+  }
 }
 
 .legen_option {

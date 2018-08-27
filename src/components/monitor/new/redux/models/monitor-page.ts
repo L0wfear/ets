@@ -1,7 +1,7 @@
 import { createPath } from 'redux/redux-utils';
 import carInfoReducer from 'components/monitor/new/info/car-info/redux/modules/car-info';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-import { getDateWithMoscowTz } from 'utils/dates';
+import { getToday0am, getDateWithMoscowTz } from 'utils/dates';
 
 const MONITOR_PAGE = createPath('MONITOR_PAGE');
 
@@ -23,6 +23,11 @@ export const MONITOR_PAGE_RESER_CAR_STATUS = MONITOR_PAGE`RESER_CAR_STATUS`;
 export const MONITOR_PAGE_CHANGE_FILTERS = MONITOR_PAGE`CHANGE_FILTERS`;
 export const MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST = MONITOR_PAGE`MERGE_FILTERS_GPS_CODE_LIST`;
 export const MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE = MONITOR_PAGE`TOGGLE_MEASURE_ACTIVE`;
+
+export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE = MONITOR_PAGE`CHANGE_FUEL_EVENTS_DATE`;
+export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_DATA`;
+export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA`;
+export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUEL_EVENTS_LEAK_SHOW`;
 
 const initialState = {
   carActualGpsNumberIndex: {},
@@ -70,6 +75,15 @@ const initialState = {
     filtredCarGpsCode: [],
   },
   measureActive: false,
+  fuelEvents: {
+    leak: {
+      show: false,
+      overlayData: null,
+      data: {},
+      date_from: getToday0am(),
+      date_to: getDateWithMoscowTz(),
+    }
+  }
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -257,6 +271,57 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         measureActive: !state.measureActive,
+      };
+    }
+    case MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE: {
+      return {
+        ...state,
+        fuelEvents: {
+          ...state.fuelEvents,
+          [payload.type]: {
+            ...state.fuelEvents[payload.type],
+            [payload.field]: payload.date,
+          },
+        },
+      };
+    }
+    case MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA: {
+      return {
+        ...state,
+        fuelEvents: {
+          ...state.fuelEvents,
+          leak: {
+            ...state.fuelEvents.leak,
+            data: payload.leak,
+          },
+        },
+      };
+    }
+    case MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA: {
+      return {
+        ...state,
+        fuelEvents: {
+          ...state.fuelEvents,
+          leak: {
+            ...state.fuelEvents.leak,
+            overlayData: payload.overlayData,
+          },
+        },
+      };
+    }
+    case MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW: {
+      const show = ! state.fuelEvents.leak.show;
+
+      return {
+        ...state,
+        fuelEvents: {
+          ...state.fuelEvents,
+          leak: {
+            ...state.fuelEvents.leak,
+            show,
+            data: show ? state.fuelEvents.leak.data : {},
+          },
+        },
       };
     }
     default: {

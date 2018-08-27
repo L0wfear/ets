@@ -311,7 +311,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           )
         ).then(() => {
           this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены в' : 'Выбранно наряд-задание перенесено в'} архив`);
+          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены в' : 'Выбранное наряд-задание перенесено в'} архив`);
         })
         .catch(() => {
           this.refreshList();

@@ -299,7 +299,7 @@ export default class MissionsJournal extends CheckableElementsList {
           )
         ).then(() => {
           this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены в' : 'Выбранно задание перенесено в'} архив`);
+          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены в' : 'Выбранное задание перенесено в'} архив`);
         })
         .catch(() => {
           this.refreshList();

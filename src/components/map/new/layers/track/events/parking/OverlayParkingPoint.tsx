@@ -30,7 +30,7 @@ const OverlayTrackPoint: React.SFC<any> = props => {
   const diff = secondsToTime(ep_timestamp - sp_timestamp);
 
   return (
-    <Overlay title="Зона стоянки:" map={props.map} coords_msk={coords_msk} hidePopup={props.hidePopup} >
+    <Overlay title="Зона стоянки:" map={props.map} coordsMsk={coords_msk} hidePopup={props.hidePopup} >
       <div className="overlay-line-info">
         <span className="font-bold">Начало: </span><span>{start}</span>
       </div>

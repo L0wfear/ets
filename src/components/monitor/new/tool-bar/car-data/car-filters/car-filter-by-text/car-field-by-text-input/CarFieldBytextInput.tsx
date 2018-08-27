@@ -21,7 +21,6 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="car_text_filter-container">
         <ExtField

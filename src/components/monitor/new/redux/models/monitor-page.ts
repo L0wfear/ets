@@ -22,6 +22,7 @@ export const MONITOR_PAGE_RESER = MONITOR_PAGE`RESER`;
 export const MONITOR_PAGE_RESER_CAR_STATUS = MONITOR_PAGE`RESER_CAR_STATUS`;
 export const MONITOR_PAGE_CHANGE_FILTERS = MONITOR_PAGE`CHANGE_FILTERS`;
 export const MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST = MONITOR_PAGE`MERGE_FILTERS_GPS_CODE_LIST`;
+export const MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE = MONITOR_PAGE`TOGGLE_MEASURE_ACTIVE`;
 
 const initialState = {
   carActualGpsNumberIndex: {},
@@ -67,7 +68,8 @@ const initialState = {
       carFilterMultyOwner: [],
     },
     filtredCarGpsCode: [],
-  }
+  },
+  measureActive: false,
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -249,6 +251,12 @@ export default (state = initialState, { type, payload }) => {
             ...payload.filtredCarGpsCode,
           }
         },
+      };
+    }
+    case MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE: {
+      return {
+        ...state,
+        measureActive: !state.measureActive,
       };
     }
     default: {

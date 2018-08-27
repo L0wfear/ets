@@ -4030,6 +4030,35 @@ div.car-movement-time-report {
 .overlay_inside {
   pointer-events: none;
 
+  &.measure {
+    font-size: 12px;
+    font-weight: 400;
+
+    >.ets_overlay {
+      width: auto;
+    }
+    &.active {
+      >.ets_overlay {
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+      }
+      >.ets_triangle-wrap>.ets_triangle {
+        border-top-color: rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    >.ets_overlay {
+      background: rgba(255, 204, 51, 0.8);
+      color: black;
+      >.ets_overlay-title {
+        border-bottom: 1px solid black;
+      }
+    }
+    >.ets_triangle-wrap>.ets_triangle {
+      border-top-color: rgba(255, 204, 51, 0.5);
+    }
+  }
+
   &.track-overlay>.ets_overlay {
     width: 500px;
   }

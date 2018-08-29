@@ -126,12 +126,13 @@ export default class Field extends React.Component {
   }
 
   renderFile() {
-    const { error, label = '' } = this.props;
+    const { error, label = '', modalKey } = this.props;
     const errorClassName = cx({ 'has-error': error });
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
 
     return (
       <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
-        <label htmlFor=" " style={{ minHeight: 15 }}>{label}</label>
+        <label htmlFor=" " id={id} style={{ minHeight: 15 }}>{label}</label>
         <FileInput
           {...this.props}
           errorClassName={errorClassName}

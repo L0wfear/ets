@@ -9,7 +9,7 @@ import { connectToStores } from 'utils/decorators';
 
 import Form from '../../compositions/Form.jsx';
 
-const modalKey = 'e,ployee';
+const modalKey = 'employee';
 
 @connectToStores(['objects', 'companyStructure'])
 @loadingOverlay
@@ -287,6 +287,7 @@ export default class EmployeeForm extends Form {
                 button_id="button-medical_certificate_files"
                 id="medical_certificate_files"
                 label="Медицинские справки"
+                modalKey={modalKey}
                 multiple
                 value={state.medical_certificate_files}
                 onChange={this.handleChange}
@@ -299,6 +300,7 @@ export default class EmployeeForm extends Form {
               <FileField
                 button_id="button-driver_license_files"
                 id="driver_license_files"
+                modalKey={modalKey}
                 label="Водительские удостоверения"
                 multiple
                 value={state.driver_license_files}

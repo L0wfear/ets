@@ -282,7 +282,6 @@ export default class DataTable extends React.Component {
     }
 
     if (!props.useServerSort || !props.useServerFilter) {
-      console.log(changesFields, this.state)
       changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
     }
 

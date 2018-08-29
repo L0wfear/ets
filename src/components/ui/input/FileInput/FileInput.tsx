@@ -43,6 +43,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       showFileList = true,
       id,
       button_id,
+      modalKey,
     } = this.props;
     const inputClass = cx(errorClassName);
     const inputStyle = { display: 'none' };
@@ -64,10 +65,11 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           disabled={this.props.disabled}
         />,
       );
+    const ID = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-list` : undefined;
 
     return (
       <div>
-        { showFileList && <Row>{fileList}</Row> }
+        { showFileList && <Row id={ID}>{fileList}</Row> }
           <BootstrapButton
             disabled={this.props.disabled}
             onClick={this.handleFilePick}

@@ -11,6 +11,7 @@ export interface IPropsFileInput {
   showFileList: boolean;
   id?: any;
   button_id?: any;
+  modalKey?: string;
   onChange(e: React.ChangeEvent<HTMLInputElement> | File[] | IFileWrapper[]): void;
   isLoading?(callback: (indicator: boolean, error?: any) => void): void;
 }

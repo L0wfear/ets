@@ -18,7 +18,6 @@ import { diffDates } from 'utils/dates.js';
 
 import { checkStructureByTypeClick } from 'components/directories/order/forms/utils/customValidate';
 import {
-  getFilterDateOrder,
   getMissionListByFilter,
 } from 'components/directories/order/forms/utils/filtersData';
 
@@ -48,14 +47,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   };
 
   componentDidMount() {
-    const { technical_operations = [] } = this.props;
-    const { orderDates, typeClick } = this.props;
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
 
-    const filterData = getFilterDateOrder(technical_operations, orderDates);
-
     this.getMissionsList().then(({ result = [] }) => {
-      const missionsList = getMissionListByFilter(result, filterData, typeClick);
+      const missionsList = getMissionListByFilter(result);
       const date = (new Date()).getTime();
 
       const timeInterval = setTimeout(this.checkMissionsList, new Date(date - (date % 60000) + 60 * 1000).getTime() - date + 1000);
@@ -92,7 +87,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   getMissionsList() {
     const { flux } = this.context;
     const { typeClick } = this.props;
-    const payload = {};
+
+    const payload = {
+      order_id: this.props.orderDates.faxogramm_id,
+    };
 
     switch (typeClick) {
       case typeTemplate.missionTemplate: return flux.getActions('missions').getMissionTemplates(payload);

@@ -1,5 +1,8 @@
 import * as React from 'react';
+
+import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
+
 import * as cx from 'classnames';
 import { monitorPageToggleStatusGeoobject, monitorPageSetGeometry } from 'components/monitor/new/redux/models/actions-monitor-page';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
@@ -37,32 +40,36 @@ class BarShowGeoobjects extends React.Component<any, any> {
   }
 
   toggleList = (event) => {
-    this.setState({
-      showGeoObjList: !this.state.showGeoObjList,
-    })
+    if (this.props.companiesIndex !== -1) {
+      this.setState({
+        showGeoObjList: !this.state.showGeoObjList,
+      })
+    }
   }
   toggleShowStatus: any = ({ currentTarget: { dataset: { type } } }) => {
     this.props.toggleShowStatus([type])
   }
 
   toggleAllStatus = (event) => {
-    const notActiveOptionsArr = this.state.FILTRED_GEOOBJECTS_LIST.filter((key) => !this.props[GEOOBJECTS_OBJ[key].serverName]);
+    if (this.props.companiesIndex !== -1) {
+      const notActiveOptionsArr = this.state.FILTRED_GEOOBJECTS_LIST.filter((key) => !this.props[GEOOBJECTS_OBJ[key].serverName]);
 
-    if (notActiveOptionsArr.length) {
-      this.props.toggleShowStatus(
-        notActiveOptionsArr.map((key) => (
-          GEOOBJECTS_OBJ[key].serverName
-        ))
-      );
-      if (this.state.showGeoObjList) {
-        event.stopPropagation();
+      if (notActiveOptionsArr.length) {
+        this.props.toggleShowStatus(
+          notActiveOptionsArr.map((key) => (
+            GEOOBJECTS_OBJ[key].serverName
+          ))
+        );
+        if (this.state.showGeoObjList) {
+          event.stopPropagation();
+        }
+      } else {
+        this.props.toggleShowStatus(
+          this.state.FILTRED_GEOOBJECTS_LIST.map((key) => (
+            GEOOBJECTS_OBJ[key].serverName
+          ))
+        );
       }
-    } else {
-      this.props.toggleShowStatus(
-        this.state.FILTRED_GEOOBJECTS_LIST.map((key) => (
-          GEOOBJECTS_OBJ[key].serverName
-        ))
-      );
     }
   }
 
@@ -80,7 +87,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
       :
       (
         <span>
-          <div className="tool_bar-block">
+          <div className={cx('tool_bar-block', { disabled: this.props.companiesIndex === -1 })}>
             <div className="default_cube dark">
               <div className={getActiveClassName(activeMain)} onClick={this.toggleList}>
                 <input type="checkbox" checked={activeMain} onClick={this.toggleAllStatus} />
@@ -113,6 +120,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
 }
 
 const mapStateToProps = state => ({
+  companiesIndex: state.monitorPage.companiesIndex,
   permissions: state.session.userData.permissions,
   ...Object.values(GEOOBJECTS_OBJ).reduce((newObj, { serverName }) => ({
     ...newObj,
@@ -153,9 +161,11 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
   dispatch,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-  mergedPropd,
+export default hocAll(
+  connect(
+    mapStateToProps,
+    null,
+    mergedPropd,
+  ),
 )
 (BarShowGeoobjects);

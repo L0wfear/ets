@@ -63,6 +63,7 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, StateLayerPlay
 }
 
 const mapStateToProps = (state) => ({
+  companiesIndex: state.monitorPage.companiesIndex,
   geoobjects: state.monitorPage.geoobjects,
   SHOW_GEOOBJECTS: state.monitorPage.statusGeo.SHOW_GEOOBJECTS,
 });

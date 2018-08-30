@@ -1,4 +1,5 @@
 import { GeozonesDataByIndex } from 'redux/trash-actions/geometry/geometry.h';
+import { TypeCompaniesIndex } from 'redux/trash-actions/uniq/promise.h';
 
 export type PropsLayerPlayPoint = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -9,6 +10,7 @@ export type PropsLayerPlayPoint = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   geoobjects: any;
   SHOW_GEOOBJECTS: boolean;
+  companiesIndex: TypeCompaniesIndex;
 
   monitorPageAddToSelectedGeoobjects: Function;
 }
@@ -39,6 +41,7 @@ export module InjectetLayerProps {
 export module LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
+    companiesIndex?: TypeCompaniesIndex;
   }
 
   type checkShowFalseFuncThisProps = {
@@ -47,6 +50,7 @@ export module LayerGeoobjectsUtilsTypes {
 
   type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
     getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
+    companiesIndex?: TypeCompaniesIndex;
   }
 
   export type renderGeoobjectsFunc = (
@@ -64,6 +68,7 @@ export module LayerGeoobjectsUtilsTypes {
     oldFeature: ol.Feature,
     thisProps: checkShowTrueFuncThisProps,
     selected: boolean,
+    isManyCompany?: boolean,
   ) => void;
 
   export type checkShowTrueHasOldFeatureFunc = (
@@ -78,6 +83,7 @@ export module LayerGeoobjectsUtilsTypes {
     geoobj: GeozonesDataByIndex,
     thisProps: checkShowTrueFuncThisProps,
     selected: boolean,
+    color?: string,
   ) => void;
 
   export type getMergedGeoobjectsFunc = (

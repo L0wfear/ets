@@ -163,13 +163,17 @@ const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldF
  * @param thisProps пропсы для добавления фичи в слой
  * @param selected является ли фича выбранной
  */
-const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (serverName, id, geoobj, thisProps, selected) => {
+const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (serverName, id, geoobj, thisProps, selected, color) => {
   const feature = new ol.Feature({
     geometry: GeoJSON.readGeometry(geoobj.shape),
   });
   feature.setId(id);
   feature.set('serverName', serverName)
-  feature.setStyle(getCasheStyleForGeoobject(selected));
+  if (selected) {
+    feature.setStyle(getCasheStyleForGeoobject(true));
+  } else {
+    feature.setStyle(getCasheStyleForGeoobject(false, color));
+  }
 
   thisProps.addFeaturesToSource(feature);
 }
@@ -185,12 +189,12 @@ const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasN
  * @param thisProps пропсы для добавления фичи в слой
  * @param selected является ли фича выбранной
  */
-export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serverName, id, show, geoobj, geoobj_old, oldFeature, thisProps, selected) => {
+export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serverName, id, show, geoobj, geoobj_old, oldFeature, thisProps, selected, isManyCompany) => {
   if (show) {
     if (oldFeature) {
       checkShowTrueHasOldFeature(geoobj, geoobj_old, oldFeature);
     } else {
-      checkShowTrueHasNotOldFeature(serverName, id, geoobj, thisProps, selected);
+      checkShowTrueHasNotOldFeature(serverName, id, geoobj, thisProps, selected, isManyCompany && geoobj.front_key.includes('odh') ? thisProps.companiesIndex[geoobj.company_id].rgb_color : '');
     }
   }
 };
@@ -218,10 +222,12 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
     const { show, data = {}, oldData = {} } = diffGeoobjects[serverName];
     let iterableData = data || oldData;
 
+    const isManyCompany = Object.values(thisProps.companiesIndex).length > 1;
+
     for (let id in iterableData) {
       const oldFeature = thisProps.getFeatureById(id);
 
-      checkShowTrue(serverName, id, show, iterableData[id], geoobjects[serverName][id], oldFeature, thisProps, false);
+      checkShowTrue(serverName, id, show, iterableData[id], geoobjects[serverName][id], oldFeature, thisProps, false, isManyCompany);
       checkShowFalse(show, oldFeature, thisProps);
     }
   }

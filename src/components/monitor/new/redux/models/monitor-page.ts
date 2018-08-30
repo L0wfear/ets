@@ -7,6 +7,7 @@ const MONITOR_PAGE = createPath('MONITOR_PAGE');
 
 export const MONITOR_PAGE_SET_CAR_ACTUAL_INDEX = MONITOR_PAGE`SET_CAR_ACTUAL_INDEX`;
 export const MONITOR_PAGE_SET_GEOMETRY = MONITOR_PAGE`SET_GEOMETRY`;
+export const MONITOR_PAGE_SET_COMPANY = MONITOR_PAGE`PAGE_SET_COMPANY`;
 
 export const MONITOR_PAGE_CHANGE_CARS_BY_STATUS = MONITOR_PAGE`CHANGE_CARS_BY_STATUS`;
 export const MONITOR_PAGE_TOGGLE_STATUS_SHOW = MONITOR_PAGE`TOGGLE_STATUS_SHOW`;
@@ -69,6 +70,7 @@ const initialState = {
     },
     filtredCarGpsCode: [],
   },
+  companiesIndex: -1,
   measureActive: false,
 }
 
@@ -79,6 +81,12 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         carActualGpsNumberIndex: payload.carActualGpsNumberIndex,
       };
+    }
+    case MONITOR_PAGE_SET_COMPANY: {
+      return {
+        ...state,
+        companiesIndex: payload.companiesIndex,
+      }
     }
     case MONITOR_PAGE_SET_GEOMETRY: {
       return {

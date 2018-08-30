@@ -91,6 +91,7 @@ body {
         pointer-events: all;
         cursor: pointer;
         font-weight: bold;
+        overflow: hidden;
       }
     }
     >.data_container, >.data_container-wrap>.data_container {

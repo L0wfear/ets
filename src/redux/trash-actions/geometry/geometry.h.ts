@@ -7,6 +7,7 @@ export module GeoData {
 
 export interface GeozonesDataByIndex {
   front_key: string;
+  company_id: number;
   shape: (Document | Node | GlobalObject | string),
 };
 

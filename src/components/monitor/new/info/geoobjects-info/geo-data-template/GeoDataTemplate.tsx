@@ -30,6 +30,18 @@ const InfoODh: React.SFC<any> = ({ data, ...props }) =>
     {data.name}
     <h5>Общая площадь</h5>
     {data.total_area}
+    <h5>Площадь проезжей части для механизированной уборки</h5>
+    {data.total_auto_clean_area || '--'}
+    <h5>Площадь проезжей части для ручной уборки</h5>
+    {data.total_manual_clean_area || '---'}
+    <h5>Площать тротуаров для механизированной уборки</h5>
+    {data.auto_footway_area || '--'}
+    <h5>Площать тротуаров для ручной уборки</h5>
+    {data.manual_footway_area || '--'}
+    <h5>Длина по оси</h5>
+    {data.distance || '--'}
+    <h5>Длина лотка</h5>
+    {data.gutters_length || '--'}
   </div>
 
 const InfoSsp: React.SFC<any> = ({ data, ...props }) =>

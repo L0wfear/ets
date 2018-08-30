@@ -7,17 +7,19 @@ import ToolBar from 'components/monitor/new/tool-bar/ToolBar';
 
 import { loadCarActualIndex } from 'redux/trash-actions/car';
 import { loadGeozones } from 'redux/trash-actions/geometry/geometry';
-
+import { getCompany } from 'redux/trash-actions/uniq';
 import { resetMonitorPageState } from 'components/monitor/new/redux/models/actions-monitor-page';
 import {
   MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   MONITOR_PAGE_SET_GEOMETRY,
+  MONITOR_PAGE_SET_COMPANY,
 } from 'components/monitor/new/redux/models/monitor-page';
 
 type PropsMonitorPage = {
   token: string;
   loadCarActualIndex: Function;
   loadGeozonesOdhMkad: Function;
+  getCompany: Function;
   resetMonitorPageState: Function;
 };
 
@@ -29,6 +31,7 @@ class MonitorPage extends React.Component<PropsMonitorPage, StateMonitorPage> {
   componentDidMount() {
     this.props.loadCarActualIndex();
     this.props.loadGeozonesOdhMkad();
+    this.props.getCompany();
   }
 
   componentWillUnmount() {
@@ -62,6 +65,11 @@ const mapDispatchToProps = dispatch => ({
   loadGeozonesOdhMkad: () => (
     dispatch(
       loadGeozones(MONITOR_PAGE_SET_GEOMETRY, GEOOBJECTS_OBJ.odh_mkad.serverName)
+    )
+  ),
+  getCompany: () => (
+    dispatch(
+      getCompany(MONITOR_PAGE_SET_COMPANY)
     )
   ),
   resetMonitorPageState: () => (

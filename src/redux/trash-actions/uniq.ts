@@ -2,9 +2,11 @@ import {
   VectorObjectService,
 } from 'api/Services';
 
+import {
+  loadCompany,
+} from 'redux/trash-actions/uniq/promise';
+
 export const getVectorObject = (type, points) => {
-
-
   if (points.length < 3 || points.some(({ coords_msk }) => !coords_msk)) {
     return {
       type,
@@ -37,3 +39,11 @@ export const getVectorObject = (type, points) => {
     },
   };
 }
+
+export const getCompany = (type) => ({
+  type,
+  payload: loadCompany(),
+  meta: {
+    loading: true,
+  },
+});

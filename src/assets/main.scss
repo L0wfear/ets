@@ -3949,6 +3949,7 @@ div.none {
   >.container-company {
     display: flex;
     justify-content: center;
+    flex: 1 1 auto;
   }
   >.container-version {
     display: flex;

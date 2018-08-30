@@ -235,9 +235,12 @@ export default class MissionsActions extends Actions {
       if (!isEmpty(missionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = missionsCreationTemplateCopy.faxogramm_id;
       }
+      payload.template_id = payload.id;
+
       delete payload.company_id;
       delete payload.id;
       delete payload.number;
+
       return MissionService.post(payload, false, 'json');
     });
     return Promise.all(queries);
@@ -390,6 +393,7 @@ export default class MissionsActions extends Actions {
       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
       }
+      payload.template_id = payload.id;
 
       delete payload.company_id;
       delete payload.id;

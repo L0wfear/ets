@@ -683,88 +683,97 @@ export default class DataTable extends React.Component {
 
     return (
       <Div className={tableClassName}>
-        <Div className="some-header" hidden={noHeader}>
-          <div style={style.headRow}>
-            <div style={style.title}>
-              {noTitle ? '' : title}
-            </div>
-            <div className="waybills-buttons">
-              {columnControl &&
-                <ClickOutHandler onClickOut={this.closeColumnControl}>
-                  <ColumnControl
-                    show={this.state.columnControlModalIsOpen}
-                    onChange={this.saveColumnControl}
-                    onClick={this.toggleColumnControl}
-                    values={this.state.columnControlValues}
-                    options={tableMetaCols.filter(el => el.display !== false)}
+        <div className="header_container">
+          <Div className="some-header" hidden={noHeader}>
+            <div style={style.headRow}>
+              <div style={style.title}>
+                {noTitle ? '' : title}
+              </div>
+              <div className="waybills-buttons">
+                {columnControl &&
+                  <ClickOutHandler onClickOut={this.closeColumnControl}>
+                    <ColumnControl
+                      show={this.state.columnControlModalIsOpen}
+                      onChange={this.saveColumnControl}
+                      onClick={this.toggleColumnControl}
+                      values={this.state.columnControlValues}
+                      options={tableMetaCols.filter(el => el.display !== false)}
+                    />
+                  </ClickOutHandler>
+                }
+                {!noFilter &&
+                  <FilterButton
+                    show={this.state.filterModalIsOpen}
+                    active={!!Object.keys(this.state.filterValues).length}
+                    onClick={this.toggleFilter}
                   />
-                </ClickOutHandler>
-              }
-              {!noFilter &&
-                <FilterButton
-                  show={this.state.filterModalIsOpen}
-                  active={!!Object.keys(this.state.filterValues).length}
-                  onClick={this.toggleFilter}
-                />
-              }
-              {refreshable &&
-                <Button
-                  bsSize="small"
-                  onClick={this.props.onRefresh}
-                >
-                  <Glyphicon glyph="refresh" />
-                </Button>
-              }
-              {!noCustomButton && this.props.children}
+                }
+                {refreshable &&
+                  <Button
+                    bsSize="small"
+                    onClick={this.props.onRefresh}
+                  >
+                    <Glyphicon glyph="refresh" />
+                  </Button>
+                }
+                {!noCustomButton && this.props.children}
+              </div>
             </div>
-          </div>
-
-          {!noFilter &&
-            <Filter
-              show={this.state.filterModalIsOpen}
-              onSubmit={this.saveFilter}
-              onHide={this.closeFilter}
-              values={this.state.filterValues}
-              options={tableMetaCols.filter(el => el.filter !== false)}
-              tableData={this.props.results}
-            />
-          }
-        </Div>
-        {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
-        {
-          griddleHidden ?
-          <div key="griddle_none"></div>
-          :
-          [
-            <Griddle
-              key={`griddle`}
-              uniqKey={this.state.uniqKey}
-              results={results}
-              enableSort={enableSort}
-              initialSort={initialSort}
-              initialSortAscending={initialSortAscending}
-              columnMetadata={columnMetadata}
-              columns={tableCols}
-              resultsPerPage={haveMax ? 15 : 10000}
-              useCustomPagerComponent
-              externalChangeSort={externalChangeSort || this.handleChangeSort}
-              customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
-              onRowClick={!isHierarchical ? onRowSelected : null}
-              rowMetadata={rowMetadata}
-              onKeyPress={this.handleKeyPress}
-              noDataMessage={noDataMessage || 'Нет данных'}
-              lowerCaseSorting
-            />,
-            serverPagination ?
-            (
-              <div key="paginator_none"></div>
-            )
+          </Div>
+        </div>
+        <div className={cx('table_container', { open_filter: this.state.filterModalIsOpen })}>
+          {
+            griddleHidden ?
+            <div key="griddle_none"></div>
             :
-            (
-              <Paginator key={`paginator`} uniqKey={this.state.uniqKey} />
-            )
-          ]
-        }
+            [
+              <div key="filter" className="filter_container_wrap">
+              {
+
+                !noFilter ?
+                  <Filter
+                    key="filter"
+                    show={this.state.filterModalIsOpen}
+                    onSubmit={this.saveFilter}
+                    onHide={this.closeFilter}
+                    values={this.state.filterValues}
+                    options={tableMetaCols.filter(el => el.filter !== false)}
+                    tableData={this.props.results}
+                  />
+                  :
+                  <div key="no-filter"></div>
+              }
+              </div>,
+              <Griddle
+                key={`griddle`}
+                uniqKey={this.state.uniqKey}
+                results={results}
+                enableSort={enableSort}
+                initialSort={initialSort}
+                initialSortAscending={initialSortAscending}
+                columnMetadata={columnMetadata}
+                columns={tableCols}
+                resultsPerPage={haveMax ? 15 : 10000}
+                useCustomPagerComponent
+                externalChangeSort={externalChangeSort || this.handleChangeSort}
+                customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
+                onRowClick={!isHierarchical ? onRowSelected : null}
+                rowMetadata={rowMetadata}
+                onKeyPress={this.handleKeyPress}
+                noDataMessage={noDataMessage || 'Нет данных'}
+                lowerCaseSorting
+              />,
+              serverPagination ?
+              (
+                <div key="paginator_none"></div>
+              )
+              :
+              (
+                <Paginator key={`paginator`} uniqKey={this.state.uniqKey} />
+              )
+            ]
+          }
+        </div>
       </Div>
     );
   }

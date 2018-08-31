@@ -2,11 +2,13 @@ import React, { PropTypes } from 'react';
 import find from 'lodash/find';
 import { autobind } from 'core-decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
+import cx from 'classnames';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
 import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
 
+require('./ElementsList.scss');
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
  * используется для наследования
@@ -437,7 +439,7 @@ class ElementsList extends React.Component {
     const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
+      <div className={cx('ets-page-wrap', { 'default-registry': !this.props.notDefault })} ref={node => (this.node = node)}>
         {table}
         {additionalRender}
         {forms}

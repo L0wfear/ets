@@ -28,9 +28,9 @@
         &.open_filter {
           .griddle {
             transform: translateY(400px);
+            overflow: initial;
           }
         }
-
         .filter_container_wrap {
           position: relative;
 

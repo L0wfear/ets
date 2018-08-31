@@ -29,6 +29,7 @@
           .griddle {
             transform: translateY(400px);
             overflow: initial;
+            margin-top: 10px;
           }
         }
         .filter_container_wrap {
@@ -50,10 +51,10 @@
         }
 
         .griddle {
-          margin-top: 10px;
           height: 100%;
           will-change: transfrom;
           transition: transform 0.5s;
+          overflow: initial;
 
           .griddle-container {
             overflow: inherit;

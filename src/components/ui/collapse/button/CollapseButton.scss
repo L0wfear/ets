@@ -7,6 +7,6 @@
     cursor: pointer;
   }
   &.is_open {
-    transform: rotateX(180deg);
+    transform: rotateX(180deg) translateY(-50%);
   }
 }

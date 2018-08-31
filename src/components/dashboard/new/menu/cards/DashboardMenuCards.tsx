@@ -3,7 +3,7 @@ import * as React from 'react';
 import CurrentMissions from 'components/dashboard/new/menu/cards/current-missions/CurrentMissions';
 import FutureMissions from 'components/dashboard/new/menu/cards/future-missions/FutureMissions';
 import OdhNotCoveredByMissionsOfCurrentShift from 'components/dashboard/new/menu/cards/odh-not-covered-by-missions-of-current-shift/OdhNotCoveredByMissionsOfCurrentShift';
-import OdhNotCoveredByRoutes from '/Users/vladimirleshchev/Desktop/gost/ets-frontend/src/components/dashboard/new/menu/cards/odh-not-covered-by-routes/OdhNotCoveredByRoutes';
+import OdhNotCoveredByRoutes from 'components/dashboard/new/menu/cards/odh-not-covered-by-routes/OdhNotCoveredByRoutes';
 import OdhCoveredByRoutes from 'components/dashboard/new/menu/cards/odh-covered-by-routes/OdhCoveredByRoutes';
 import CarInWorkOverall from 'components/dashboard/new/menu/cards/car-in-work-overall/CarInWorkOverall';
 import Faxogramms from 'components/dashboard/new/menu/cards/faxogramms/Faxogramms';

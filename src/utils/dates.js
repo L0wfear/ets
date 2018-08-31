@@ -48,9 +48,27 @@ export function createValidDateTime(date) {
   return moment(date).format('YYYY-MM-DDTHH:mm:ss');
 }
 
+export function formatDate(date, format) {
+  if (!date) {
+    return null;
+  }
+
+  return moment(date).format(format);
+}
+
 export function getFormattedDateTime(date) {
   if (!date) return '';
   return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
+}
+
+export function getFormattedDateTimeWithSecond(date) {
+  if (!date) return '';
+  return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_WITH_SECOND_FORMAT}`);
+}
+
+export function getFormattedTimeWithSecond(date) {
+  if (!date) return '';
+  return moment(date).format(`${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
 export function getFormattedDateTimeSeconds(date) {

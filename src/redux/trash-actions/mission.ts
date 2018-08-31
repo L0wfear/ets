@@ -1,28 +1,13 @@
 import {
-  MissionService,
   MissionDataService,
 } from 'api/missions';
 
+import { getMissionById }  from 'redux/trash-actions/mission/promise';
+
 export const loadMissionById = (type, id) => {
-  const payload = {
-    id,
-  };
   return {
     type,
-    payload: MissionService.get(payload)
-      .catch((error) => {
-        console.warn(error);
-
-        return {
-          result: {
-            rows: [],
-          },
-        };
-      })
-      .then(({ result: { rows: [mission] } }) => ({
-        mission,
-        id,
-      })),
+    payload: getMissionById(id),
     meta: {
       loading: true,
     },

@@ -14,6 +14,7 @@ const initialState = {
       zoom: MAP_INITIAL_ZOOM,
       coordinates: MAP_INITIAL_CENTER,
     },
+    permissions: [],
   },
   token: null,
 }

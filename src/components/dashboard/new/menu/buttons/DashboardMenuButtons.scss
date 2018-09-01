@@ -1,0 +1,25 @@
+.dashboard_menu_buttons {
+  flex: 3 3;
+  margin: 10px;
+  min-width: 350px;
+
+  .card_container {
+    .card_title {
+      padding: 20px;
+      padding-bottom: 5px;
+      font-weight: bold;
+    }
+    .card_body {
+      align-items: center;
+      >button {
+        margin: 5px;
+        width: 100%;
+        white-space: normal;
+
+        &:hover {
+          word-break: break-word;
+        }
+      }
+    }
+  }
+}

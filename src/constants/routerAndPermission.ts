@@ -3,6 +3,7 @@ import monitorNew from 'components/monitor/new/config-data';
 
 import coverageReports from 'components/coverage_reports/config-data';
 import dashboard from 'components/dashboard/config-data/index';
+import dashboardNew from 'components/dashboard/new/config-data/index';
 import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
@@ -23,6 +24,7 @@ const routerAndPermission = {
   monitorNew,
   coverageReports,
   dashboard,
+  dashboardNew,
   waybillJournal,
   missions,
   nsi,

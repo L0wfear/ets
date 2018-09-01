@@ -69,7 +69,6 @@ export default class PointsStore extends Store {
     this.initialState = {
       selected: null,
       points: {},
-      carsMapByGpsCode: new Map(),
       filter: {
         status: statuses.map(s => s.id),
         type: [],
@@ -94,10 +93,6 @@ export default class PointsStore extends Store {
     };
 
     this.state = _.cloneDeep(this.initialState);
-  }
-
-  handleGetCars({ result: carsList = [] }) {
-    this.setState({ carsMapByGpsCode: new Map(carsList.map(car => [car.gps_code, { ...car }])) });
   }
 
   /**
@@ -140,7 +135,6 @@ export default class PointsStore extends Store {
     }
     this.setState({
       ..._.cloneDeep(this.initialState),
-      carsMapByGpsCode: this.state.carsMapByGpsCode,
     });
     this.pauseRendering();
   }
@@ -182,7 +176,6 @@ export default class PointsStore extends Store {
       return;
     }
     const {
-      carsMapByGpsCode,
       selected = null,
     } = this.state;
 
@@ -192,11 +185,10 @@ export default class PointsStore extends Store {
     Object.entries(update).forEach(([key, value]) => {
       if (points[key] && (points[key].timestamp > value.timestamp)) {
         console.warn('got old info for point!');
-      } else if (carsMapByGpsCode.has(key)) {
+      } else {
         points[key] = {
           ...points[key],
           ...value,
-          car_actual: carsMapByGpsCode.get(key),
         };
         if (selected && value.id === selected.id) {
           newSelected = points[key];

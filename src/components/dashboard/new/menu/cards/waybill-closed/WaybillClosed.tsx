@@ -26,7 +26,7 @@ class WaybillClosed extends React.Component<PropsWaybillClosed, StateWaybillClos
 }
 
 export default withDefaultWaybill({
-  path: 'waybill_completed',
+  path: 'waybill_closed',
   loadData: dashboardLoadWaybillClosed,
   InfoComponent: WaybillClosedInfo,
   setInfoData: dashboardSetInfoDataInWaybillClosed,

@@ -24,7 +24,7 @@ type PropsDefaultWaybill = {
 const withDefaultWaybill = (config: TypeConfig) => (Component) => (
   hocAll(
     withDefaultCard({
-      path: 'waybill_completed',
+      path: config.path,
       loadData: config.loadData,
       InfoComponent: config.InfoComponent,
     }),

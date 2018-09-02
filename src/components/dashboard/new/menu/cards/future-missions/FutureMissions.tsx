@@ -1,64 +1,27 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+
+import withDefaultCard from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import CollapseButton from 'components/ui/collapse/button/CollapseButton';
 
 import List from 'components/dashboard/new/menu/cards/future-missions/list/List';
 import { dashboardLoadFutureMissions } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 import { getMissionById }  from 'redux/trash-actions/mission/promise';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+import { PermittedMissionFormWrap } from 'components/missions/mission/buttons/buttons';
 
-const PermittedMissionFormWrap = withRequirePermissionsNew({
-  permissions: 'mission.read',
-})(MissionFormWrap);
-
-type PropsFutureMissions = {
-  title: string;
-  items: any[];
-  isLoading: boolean;
-  loadData: Function;
-  timeDelay?: number;
-};
-
-type StateFutureMissions = {
-  showMissionFormWrap: boolean;
-  elementMissionFormWrap: any;
-  timerId: any;
-};
+import {
+  PropsFutureMissions,
+  StateFutureMissions,
+} from 'components/dashboard/new/menu/cards/future-missions/FutureMissions.h';
 
 class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMissions> {
   state = {
     showMissionFormWrap: false,
     elementMissionFormWrap: null,
-    timerId: 0,
-  }
-  componentDidMount() {
-    this.loadData();
-    this.setState({
-      timerId: setTimeout(() => (
-        this.setState({
-          timerId: setInterval(() => (
-            this.loadData()
-          ), 60 * 1000)
-        })
-      ), this.props.timeDelay || 0),
-    })
   }
 
-  componentWillUnMount() {
-    clearTimeout(this.state.timerId);
-    clearInterval(this.state.timerId);
-  }
-
-  loadData = () => (
-    this.props.loadData()
-  );
-
-  handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
+  handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const id = Number.parseInt((path as string).split('/').slice(-1)[0])
 
     getMissionById(id).then(({ mission }) => {
@@ -66,7 +29,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
         this.setState({
           showMissionFormWrap: true,
           elementMissionFormWrap: mission,
-        })
+        });
       }
     });
   }
@@ -79,41 +42,26 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   )
 
   render() {
-    const { items, isLoading } = this.props;
+    const { items } = this.props;
 
     const firstTwoItem = items.slice(0, 2);
     const collapsetItems = items.slice(2);
 
     return (
-      <div className="card_container main">
-        <div className="card_title">
-          <div>
-            <div>{this.props.title}</div>
-            <div>
-              <Button onClick={this.loadData}>
-                <Glyphicon
-                  className={cx({ 'glyphicon-spin': isLoading })}
-                  glyph="refresh"
-                />
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className={cx('card_body', { is_loading: isLoading })}>
-          <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
-          { 
-            collapsetItems.length ? 
-            (
-              <CollapseButton dependentData={collapsetItems}>
-                <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
-              </CollapseButton>
-            )
-            :
-            (
-              <div className="none"></div>
-            )
-          }
-        </div>
+      <div>
+        <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
+        { 
+          collapsetItems.length ? 
+          (
+            <CollapseButton dependentData={collapsetItems}>
+              <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
+            </CollapseButton>
+          )
+          :
+          (
+            <div className="none"></div>
+          )
+        }
         <PermittedMissionFormWrap
           onFormHide={this.handleFormHide}
           showForm={this.state.showMissionFormWrap}
@@ -126,25 +74,14 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
 }
 
 const mapStateToProps = (state) => ({
-  isLoading: state.dashboard.future_missions.isLoading,
-  title: state.dashboard.future_missions.data.title,
   items: state.dashboard.future_missions.data.items,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  loadData: () => (
-    dispatch(
-      dashboardLoadFutureMissions(),
-    )
-  ),
-});
-
-export default hocAll(
-  withRequirePermissionsNew({
-    permissions: 'dashboard.future_missions',
-  }),
+export default withDefaultCard({
+  path: 'future_missions',
+  loadData: dashboardLoadFutureMissions,
+})(
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(FutureMissions);
+  )(FutureMissions)
+);

@@ -6,7 +6,7 @@ require('components/dashboard/new/menu/DashboardMenu.scss');
 
 const DashboardMenu: React.SFC<any> = ({ history }) => (
   <div className="dashboard_menu">
-    <DashboardMenuCards history={history} />
+    <DashboardMenuCards />
     <DashboardMenuButtons />
   </div>
 );

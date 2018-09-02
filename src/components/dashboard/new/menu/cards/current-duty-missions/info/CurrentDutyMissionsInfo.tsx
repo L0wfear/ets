@@ -19,18 +19,10 @@ import { getDutyMissionById, updateDutyMission }  from 'redux/trash-actions/miss
 import { ButtenUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { LinkToOpenRouteInfoForm } from 'components/route/buttons/buttons';
 
-
-type PropsCurrentMissionInfo = {
-  infoData: any;
-
-  handleClose: Function;
-  loadData: Function;
-}
-
-type StateCurrentMissionInfo = {
-  showRouteInfoForm: boolean;
-  showMissionRejectForm: boolean;
-}
+import {
+  PropsCurrentMissionInfo,
+  StateCurrentMissionInfo,
+} from 'components/dashboard/new/menu/cards/current-duty-missions/info/@types/CurrentDutyMissionsInfo.h';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -64,16 +56,14 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     // react 16 Portal
     global.confirmDialog({
       title: <b>Введите причину</b>,
-      body: self => {
-        console.log(self)
-        return (
-          <ExtField
-            type="string"
-            label="Введите причину"
-            value={self.state.comment}
-            onChange={({ target: { value: comment } }) => self.setState({ comment })}
-          />
-      )},
+      body: self => (
+        <ExtField
+          type="string"
+          label="Введите причину"
+          value={self.state.comment}
+          onChange={({ target: { value: comment } }) => self.setState({ comment })}
+        />
+      ),
       defaultState: {
         comment: '',
       },
@@ -98,15 +88,16 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
       .then(({ duty_mission }) => {
         if (duty_mission) {
-          updateDutyMission({
-            ...duty_mission,
-            ...newProps,
+          updateDutyMission(
+            {
+              ...duty_mission,
+              ...newProps,
+            }
+          )
+          .then(() => {
+            this.refreshCard();
+            this.props.handleClose();
           })
-            .then(() => {
-              console.log('here')
-              this.refreshCard();
-              this.props.handleClose();
-            })
         } else {
           console.warn('not found duty mission')
         }

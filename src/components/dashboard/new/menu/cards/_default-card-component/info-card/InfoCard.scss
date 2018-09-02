@@ -6,7 +6,7 @@
   max-width: 350px;
   pointer-events: none;
 
-  @media screen and (max-width: 999px) {
+  @media screen and (max-width: 729px) {
     top: 100%;
     width: 100%;
     max-width: initial;
@@ -20,12 +20,9 @@
     border: 1px solid black;
     transform: translate(calc(100% + 20px));
     width: 100%;
-    max-height: 700px;
-    overflow-y: auto;
 
-    @media screen and (max-width: 999px) {
+    @media screen and (max-width: 729px) {
       transform: translate(0, 20px);
     }
-
   }
 }

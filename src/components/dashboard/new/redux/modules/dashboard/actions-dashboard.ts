@@ -4,10 +4,25 @@ import {
 
 import * as defAns from 'components/dashboard/new/redux/modules/dashboard/mosk/defAns';
 import {
+  DASHBOARD_RESET,
   DASHBOARD_CHANGE_CART_DATA,
   DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
   DASHBOARD_SET_INFO_DATA,
 } from 'components/dashboard/new/redux/modules/dashboard/dashboard';
+
+import { OdhNotCoveredByMissionsOfCurrentShiftInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/odh-not-covered-by-missions-of-current-shift.h';
+import { OdhNotCoveredByRoutesInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/odh-not-covered-by-routes.h';
+import { OdhCoveredByRoutesInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/odh-covered-by-routes.h';
+import { CarInWorkOverallInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/car-in-work-overall.h';
+import { FaxogrammsInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/faxogramms.h';
+import { CurrentDutyMissionsItemsSubItemDatasType } from 'components/dashboard/new/redux/modules/dashboard/@types/current-duty-mission.h';
+import { WaybillDraftInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-draft.h';
+import { WaybillInProgressInfoDataType}  from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-in-progress.h';
+import { WaybillCompletedInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-completed.h';
+import { WaybillClosedInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-closed.h';
+
+import { loadMissionDataById } from 'redux/trash-actions/mission';
+import { loadRouteDataById } from 'redux/trash-actions/route/route';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -15,10 +30,15 @@ export const dashboardSetIsLoadingForCardData = (path) => ({
     path,
   },
 });
-import { loadMissionDataById } from 'redux/trash-actions/mission';
-import { loadRouteDataById } from 'redux/trash-actions/route/route';
 
-export const dashboardLoadMissionDataForCurrentMission = (id?) => (dispatch) => {
+
+
+export const dashBoardResetData = () => ({
+  type: DASHBOARD_RESET,
+  payload: {},
+})
+
+export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {
@@ -45,7 +65,7 @@ export const dashboardLoadMissionDataForCurrentMission = (id?) => (dispatch) => 
   }
 };
 
-export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?, id?) => (dispatch) => {
+export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?: CurrentDutyMissionsItemsSubItemDatasType, id?: number) => (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {
@@ -77,7 +97,7 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?,
   }
 };
 
-export const dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift = (infoData = null) => ({
+export const dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift = (infoData: OdhNotCoveredByMissionsOfCurrentShiftInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'odh_not_covered_by_missions_of_current_shift',
@@ -85,7 +105,7 @@ export const dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift = (info
   },
 });
 
-export const dashboardSetInfoDataInOdhNotCoveredByRoutes = (infoData = null) => ({
+export const dashboardSetInfoDataInOdhNotCoveredByRoutes = (infoData: OdhNotCoveredByRoutesInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'odh_not_covered_by_routes',
@@ -93,7 +113,7 @@ export const dashboardSetInfoDataInOdhNotCoveredByRoutes = (infoData = null) => 
   },
 });
 
-export const dashboardSetInfoDataInOdhCoveredByRoutes = (infoData = null) => ({
+export const dashboardSetInfoDataInOdhCoveredByRoutes = (infoData: OdhCoveredByRoutesInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'odh_covered_by_routes',
@@ -101,7 +121,7 @@ export const dashboardSetInfoDataInOdhCoveredByRoutes = (infoData = null) => ({
   },
 });
 
-export const dashboardSetInfoDataInCarInWorkOverall = (infoData = null) => ({
+export const dashboardSetInfoDataInCarInWorkOverall = (infoData: CarInWorkOverallInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'car_in_work_overall',
@@ -109,7 +129,7 @@ export const dashboardSetInfoDataInCarInWorkOverall = (infoData = null) => ({
   },
 });
 
-export const dashboardSetInfoDataInFaxogramms = (infoData = null) => ({
+export const dashboardSetInfoDataInFaxogramms = (infoData: FaxogrammsInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'faxogramms',
@@ -117,7 +137,7 @@ export const dashboardSetInfoDataInFaxogramms = (infoData = null) => ({
   },
 });
 
-export const dashboardSetInfoDataInWaybillDraft = (infoData = null) => ({
+export const dashboardSetInfoDataInWaybillDraft = (infoData: WaybillDraftInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'waybill_draft',
@@ -125,7 +145,7 @@ export const dashboardSetInfoDataInWaybillDraft = (infoData = null) => ({
   },
 });
 
-export const dashboardSetInfoDataInWaybillInProgress = (infoData = null) => ({
+export const dashboardSetInfoDataInWaybillInProgress = (infoData: WaybillInProgressInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'waybill_in_progress',
@@ -133,7 +153,7 @@ export const dashboardSetInfoDataInWaybillInProgress = (infoData = null) => ({
   },
 });
 
-export const dashboardSetInfoDataInWaybillCompleted = (infoData = null) => ({
+export const dashboardSetInfoDataInWaybillCompleted = (infoData: WaybillCompletedInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'waybill_completed',
@@ -141,7 +161,7 @@ export const dashboardSetInfoDataInWaybillCompleted = (infoData = null) => ({
   },
 });
 
-export const dashboardSetInfoDataInWaybillClosed = (infoData = null) => ({
+export const dashboardSetInfoDataInWaybillClosed = (infoData: WaybillClosedInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'waybill_closed',
@@ -150,7 +170,7 @@ export const dashboardSetInfoDataInWaybillClosed = (infoData = null) => ({
 });
 
 
-export const dashboardLoadCardData = (path, payload = {}) => ({
+export const dashboardLoadCardData = (path: string, payload = {}) => ({
   type: DASHBOARD_CHANGE_CART_DATA,
   payload: path.split('/').reduce((ApiService, path) => ApiService.path(path), DashboardService)
     .get(payload)
@@ -171,11 +191,10 @@ export const dashboardLoadCardData = (path, payload = {}) => ({
   )
 });
 
-export const dashboardLoadCardDataByPath = (path) => (dispatch) => {
+export const dashboardLoadCardDataByPath = (path, payload?) => (dispatch) => {
   dispatch(dashboardSetIsLoadingForCardData(path.split('/').join('_')))
-  dispatch(dashboardLoadCardData(path));
+  return dispatch(dashboardLoadCardData(path, payload));
 }
-
 
 export const dashboardLoadCurrentMissions = () => (
   dashboardLoadCardDataByPath('current_missions')
@@ -202,7 +221,12 @@ export const dashboardLoadCarInWorkOverall = () => (
 );
 
 export const dashboardLoadFaxogramms = () => (
-  dashboardLoadCardDataByPath('faxogramms')
+  dashboardLoadCardDataByPath(
+    'faxogramms',
+    {
+      status: 2,
+    },
+  )
 );
 
 export const dashboardLoadCurrentDutyMissions = () => (

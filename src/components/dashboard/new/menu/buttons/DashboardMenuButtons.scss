@@ -1,7 +1,10 @@
 .dashboard_menu_buttons {
   flex: 3 3;
   margin: 10px;
-  min-width: 300px;
+  min-width: 350px;
+  @media screen and (max-width: 744px) {
+    min-width: 300px;
+  }
 
   .card_container {
     .card_title {
@@ -14,6 +17,11 @@
       >button {
         margin: 5px;
         width: 100%;
+        white-space: normal;
+
+        &:hover {
+          word-break: break-word;
+        }
       }
     }
   }

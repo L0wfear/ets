@@ -5,14 +5,10 @@ import PDF from 'react-pdf-js';
 import ModalBody from 'components/ui/Modal';
 import Preloader from 'components/ui/Preloader';
 
-type PropsPDFViewModal = {
-  onHide: Function;
-  blob: any;
-};
-
-type StatePDFViewModal = {
-  url: string;
-}
+import {
+  PropsPDFViewModal,
+  StatePDFViewModal,
+} from 'components/dashboard/new/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal.h';
 
 class PDFViewModal extends React.Component<PropsPDFViewModal, StatePDFViewModal> {
   state = {

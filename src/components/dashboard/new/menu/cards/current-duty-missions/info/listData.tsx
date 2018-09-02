@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 
-export const listData: any = [
+import {
+  ListDataType,
+} from 'components/dashboard/new/menu/cards/current-duty-missions/info/@types/listData.h';
+export const listData: ListDataType = [
   {
     path: ['duty_mission_data', 'duty_mission_number'],
     title: '№ Задания',

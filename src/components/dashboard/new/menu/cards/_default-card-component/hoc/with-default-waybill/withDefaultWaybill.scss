@@ -3,10 +3,10 @@
   justify-content: center;
   font-weight: bold;
   font-size: 22px;
+}
 
-  max-height: 350px;
-
-  @media screen and (max-width: 793px) {
-    max-width: 100%;
-  }
+.title_waybill_info {
+  display: flex;
+  justify-content: center;
+  font-weight: 800; 
 }

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { DropdownButton, MenuItem, Glyphicon, Button } from 'react-bootstrap';
+import { DropdownButton, MenuItem, Glyphicon } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { saveData } from 'utils/functions';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
@@ -17,34 +16,19 @@ import {
   saveFaxogramm,
 } from 'redux/trash-actions/faxogramm/promise';
 
+import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
+import { ButtonReadFaxogramm } from 'components/directories/faxogramm/buttons/buttons';
 import FaxogrammMissionsFormWrap from 'components/directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
-import PDFViewModal from 'components/dashboard/new/menu/cards/faxogramms/info/PDFViewModal';
+import PDFViewModal from 'components/dashboard/new/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal';
+
+import {
+  PropsFaxogrammsInfo,
+  StateFaxogrammsInfo,
+} from 'components/dashboard/new/menu/cards/faxogramms/info/FaxogrammsInfo.h';
 
 require('components/dashboard/new/menu/cards/faxogramms/info/FaxogrammInfo.scss');
 
-const ButtonReadFaxogramm = withRequirePermissionsNew({
-  permissions: 'faxogramm.read',
-})(Button);
-
-const ButtonCreateMission = withRequirePermissionsNew({
-  permissions: 'mission.create',
-})(Button);
-
 const DropdownButtonTSX: any = DropdownButton;
-
-type PropsFaxogrammsInfo = {
-  infoData: any;
-
-  handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
-
-type StateFaxogrammsInfo = {
-  showFaxogrammMissionsFormWrap: boolean;
-  elementFaxogrammMissionsFormWrap: any;
-
-  blob: any;
-  showPDFViewModal: boolean;
-}
 
 const TypeDownload = {
   old: 'old',

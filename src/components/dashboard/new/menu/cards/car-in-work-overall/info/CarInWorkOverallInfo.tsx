@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
-
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { connect } from 'react-redux';
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 
@@ -11,19 +10,16 @@ import {
   dashboardSetInfoDataInCarInWorkOverall,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-
-type PropsCarInWorkOverallInfo = {
-  infoData: any;
-
-  handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
+import {
+  PropsCarInWorkOverallInfo,
+} from 'components/dashboard/new/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo.h';
 
 const CarInWorkOverallInfo: React.SFC<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
     <ul>
       {
-        subItems.map(({ title }, index) => (
-          <li key={index}>
+        subItems.map(({ title }) => (
+          <li key={title}>
             <span>{title}</span>
           </li>
         ))

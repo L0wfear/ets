@@ -5,23 +5,17 @@ import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-
+import { LinkToRouteListPermitted } from 'components/route/buttons/buttons';
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 
 import {
   dashboardSetInfoDataInOdhNotCoveredByRoutes,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-
-type PropsOdhNotCoveredByRoutesInfo = {
-  infoData: any;
-
-  handleClose: React.MouseEventHandler<HTMLDivElement>;
-  gotoRoute: any;
-}
+import { PropsOdhNotCoveredByRoutesInfo } from 'components/dashboard/new/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo.h'
 
 const OdhNotCoveredByRoutesInfo: React.SFC<PropsOdhNotCoveredByRoutesInfo> = ({ infoData, ...props }) => (
-  <InfoCard title="Карточка задания" handleClose={props.handleClose}>
+  <InfoCard title="Список объектов" handleClose={props.handleClose}>
     <ul>
       {
         infoData.subItems.map((title, index) => (
@@ -32,7 +26,9 @@ const OdhNotCoveredByRoutesInfo: React.SFC<PropsOdhNotCoveredByRoutesInfo> = ({ 
       }
     </ul>
     <div className="right_button_block">
-      <Button onClick={props.gotoRoute}>Перейти к маршрутам</Button>
+      <LinkToRouteListPermitted to={`/routes-list/?technical_operation_id=${infoData.technical_operation_id}`}>
+        <Button>Перейти к маршрутам</Button>
+      </LinkToRouteListPermitted>
     </div>
   </InfoCard>
 );

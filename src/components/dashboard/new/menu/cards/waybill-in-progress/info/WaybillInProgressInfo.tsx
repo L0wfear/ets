@@ -20,49 +20,37 @@ import {
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
-type PropsWaybillInProgressInfo = {
-  infoData: any;
-  infoDataRaw: any;
-
-  handleClose: Function;
-  loadAllWaybillCard: Function;
-  setInfoData: (infoData: any) => any;
-};
-
-type StateWaybillInProgressInfo = {
-  showWaybillFormWrap: boolean;
-  elementWaybillFormWrap: any;
-  infoDataGroupByDate: any;
-  infoData: any;
-  infoDataRaw: any;
-}
+import {
+  PropsWaybillInProgressInfo,
+  StateWaybillInProgressInfo,
+} from 'components/dashboard/new/menu/cards/waybill-in-progress/info/WaybillInProgressInfo.h';
 
 class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, StateWaybillInProgressInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
     infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy(this.props.infoData, waybill => makeDate((waybill as any).data.create_date)),
-    infoDataRaw: this.props.infoDataRaw,
+    infoDataGroupByDate: groupBy(
+      this.props.infoData.subItems,
+      (waybill) => (
+        makeDate(waybill.data.create_date)
+      ),
+    ),
   }
 
-  componentWillReceiveProps({ infoData, infoDataRaw }) {
+  componentWillReceiveProps({ infoData }: PropsWaybillInProgressInfo) {
     if (infoData !== this.state.infoData) {
-      this.setState({
-        infoData,
-        infoDataGroupByDate: groupBy(infoData, waybill => makeDate((waybill as any).data.create_date)),
-      });
-    }
-
-    if (infoDataRaw !== this.state.infoDataRaw) {
-      if (infoDataRaw.subItems) {
-        this.props.setInfoData(infoDataRaw.subItems);
+      if (infoData) {
+        this.setState({
+          infoData,
+          infoDataGroupByDate: groupBy(infoData.subItems, waybill => makeDate(waybill.data.create_date)),
+        });
       } else {
-        this.props.handleClose();
+        this.setState({
+          infoData,
+          infoDataGroupByDate: {},
+        });
       }
-      this.setState({
-        infoDataRaw,
-      });
     }
   }
 
@@ -111,12 +99,11 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
               <div>
                 <ul>
                   {
-                    arrData.map(({ data: { waybill_id }, data, title }, index) => (
+                    arrData.map(({ data: { waybill_id }, data }, index) => (
                       <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
-                        {
-                          title
-                          || `№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}<br />{`${data.driver_fio || ''}${data.driver_phone ? `, ${data.driver_phone}` : ''}`
-                        }
+                        {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
+                        <br />
+                        {`${data.driver_fio || ''}${data.driver_phone ? `, ${data.driver_phone}` : ''}`}
                       </li>
                     ))
                   }

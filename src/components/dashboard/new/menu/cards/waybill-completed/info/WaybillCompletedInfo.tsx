@@ -14,61 +14,46 @@ import {
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
 import { makeDate } from 'utils/dates';
-import {
-  getWaybillById,
-} from 'redux/waybill/promise';
+import { getWaybillById } from 'redux/waybill/promise';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
-type PropsWaybillCompletedInfo = {
-  infoData: any;
-  infoDataRaw: any;
-  activeIndex: number;
-
-  handleClose: Function;
-  loadAllWaybillCard: Function;
-  setInfoData: (infoData: any) => any;
-};
-
-type StateWaybillCompletedInfo = {
-  showWaybillFormWrap: boolean;
-  elementWaybillFormWrap: any;
-  infoDataGroupByDate: any;
-  infoData: any;
-  infoDataRaw: any;
-  activeIndex: number;
-}
+import {
+  PropsWaybillCompletedInfo,
+  StateWaybillCompletedInfo,
+} from 'components/dashboard/new/menu/cards/waybill-completed/info/WaybillCompletedInfo.h';
 
 class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, StateWaybillCompletedInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
     infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy(this.props.infoData, waybill => makeDate((waybill as any).data.create_date)),
-    infoDataRaw: this.props.infoDataRaw,
-    activeIndex: this.props.activeIndex,
+    infoDataGroupByDate: groupBy(
+      this.props.infoData.subItems,
+      (waybill) => (
+        makeDate(waybill.data.create_date)
+      ),
+    ),
   }
 
-  componentWillReceiveProps({ infoData, infoDataRaw, activeIndex }) {
+  componentWillReceiveProps({ infoData }: PropsWaybillCompletedInfo) {
     if (infoData !== this.state.infoData) {
-      this.setState({
-        infoData,
-        infoDataGroupByDate: groupBy(infoData, waybill => makeDate((waybill as any).data.create_date)),
-      });
-    }
-
-    if (infoDataRaw !== this.state.infoDataRaw) {
-      if (activeIndex === this.state.activeIndex) {
-        if (infoDataRaw.subItems) {
-          this.props.setInfoData(infoDataRaw.subItems);
-        } else {
-          this.props.handleClose();
-        }
+      if (infoData) {
+        this.setState({
+          infoData,
+          infoDataGroupByDate: groupBy(
+            infoData.subItems,
+            (waybill) => (
+              makeDate(waybill.data.create_date)
+            ),
+          ),
+        });
+      } else {
+        this.setState({
+          infoData,
+          infoDataGroupByDate: {},
+        });
       }
-      this.setState({
-        activeIndex,
-        infoDataRaw,
-      });
     }
   }
 
@@ -77,8 +62,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
   }
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    const waybill_id = Number.parseInt(path);
-    getWaybillById(waybill_id)
+    getWaybillById(Number.parseInt(path))
       .then(({ waybill_data }) => {
         if (waybill_data) {
           this.setState({
@@ -106,10 +90,9 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
     });
   };
 
-
   render() {
     return (
-      <InfoCard title={this.state.infoDataRaw.subItemsTitle || 'Информация о ПЛ'} handleClose={this.handleClose}>
+      <InfoCard title={this.state.infoData.subItemsTitle || 'Информация о ПЛ'} handleClose={this.handleClose}>
         {
           Object.entries(this.state.infoDataGroupByDate).sort().map(([key, arrData]) => (
             <div key={key}>
@@ -117,12 +100,11 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
               <div>
                 <ul>
                   {
-                    arrData.map(({ data: { waybill_id }, data, title }, index) => (
+                    arrData.map(({ data: { waybill_id }, data }, index) => (
                       <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
-                        {
-                          title
-                          || `№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}<br />{`${data.driver_fio || ''}${data.driver_phone ? `, ${data.driver_phone}` : ''}`
-                        }
+                        {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
+                        <br />
+                        {`${data.driver_fio || ''}${data.driver_phone ? `, ${data.driver_phone}` : ''}`}
                       </li>
                     ))
                   }
@@ -146,7 +128,6 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
 const mapStateToProps = (state) => ({
   activeIndex: state.dashboard.waybill_completed.activeIndex,
   infoData: state.dashboard.waybill_completed.infoData,
-  infoDataRaw: state.dashboard.waybill_completed.data.items[state.dashboard.waybill_completed.activeIndex],
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -158,11 +139,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadAllWaybillCard: () => (
     dispatch(
       dashboardLoadDependentDataByWaybillCompleted(),
-    )
-  ),
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInWaybillCompleted(infoData)
     )
   ),
 });

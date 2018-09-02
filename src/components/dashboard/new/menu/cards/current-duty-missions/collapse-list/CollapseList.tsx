@@ -3,12 +3,9 @@ import * as cx from 'classnames';
 
 import CollapseText from 'components/ui/collapse/text/CollapseText';
 
-type PropsCollapseList = {
-  collapsetItems: any[];
-  handleClickMission: any;
-  classNameContainer?: string;
-  path: string;
-};
+import {
+  PropsCollapseList,
+} from 'components/dashboard/new/menu/cards/current-duty-missions/collapse-list/CollapseList.h';
 
 const ListFirstLine: React.SFC<any> = (props) => (
   <ul>
@@ -20,20 +17,33 @@ const ListFirstLine: React.SFC<any> = (props) => (
   </ul>
 );
 
-const CollapseList: React.SFC<PropsCollapseList> = props => {
-  return (
+const CollapseList: React.SFC<PropsCollapseList> = (props) => (
   <ul>
     {
       props.collapsetItems.map(({ subItems = [], ...item }, index) => (
         <li key={item.title} >
-          <CollapseText title={item.title} dependentData={item} classNameContainer={cx( 'initial_font_weight', { pointer: subItems.length, 'no-pointer-events': !subItems.length })} {...props}>
-            <ListFirstLine collapsetItems={subItems} path={`${props.path}/${index}`} handleClickMission={props.handleClickMission} />
+          <CollapseText
+            title={item.title}
+            dependentData={item}
+            classNameContainer={cx(
+              {
+                pointer: subItems.length,
+                'no-pointer-events': !subItems.length,
+              },
+              'initial_font_weight',
+            )}
+            {...props}
+          >
+            <ListFirstLine
+              collapsetItems={subItems}
+              path={`${props.path}/${index}`}
+              handleClickMission={props.handleClickMission}
+            />
           </CollapseText>
         </li>
       ))
     }
   </ul>
 );
-}
                
 export default CollapseList;

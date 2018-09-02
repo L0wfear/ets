@@ -1,23 +1,14 @@
 import * as React from 'react';
 
-import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
-
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { connect } from 'react-redux';
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 
-import {
-  dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+import { dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-
-type PropsOdhNotCoveredByMissionsOfCurrentShiftInfo = {
-  infoData: any;
-  gotoRoute: any;
-
-  handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
+import { PropsOdhNotCoveredByMissionsOfCurrentShiftInfo } from 'components/dashboard/new/menu/cards/odh-not-covered-by-missions-of-current-shift/info/OdhNotCoveredByMissionsOfCurrentShiftInfo.h';
 
 const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.SFC<PropsOdhNotCoveredByMissionsOfCurrentShiftInfo> = ({ infoData, ...props }) => (
   <InfoCard title="Список объектов / количество недостающих циклов" handleClose={props.handleClose}>

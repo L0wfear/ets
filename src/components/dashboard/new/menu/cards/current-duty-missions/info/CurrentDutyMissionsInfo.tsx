@@ -16,21 +16,13 @@ import {
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
 import { getDutyMissionById, updateDutyMission }  from 'redux/trash-actions/mission/promise';
-import { ButtenUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
+import { ButtonUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { LinkToOpenRouteInfoForm } from 'components/route/buttons/buttons';
 
-
-type PropsCurrentMissionInfo = {
-  infoData: any;
-
-  handleClose: Function;
-  loadData: Function;
-}
-
-type StateCurrentMissionInfo = {
-  showRouteInfoForm: boolean;
-  showMissionRejectForm: boolean;
-}
+import {
+  PropsCurrentMissionInfo,
+  StateCurrentMissionInfo,
+} from 'components/dashboard/new/menu/cards/current-duty-missions/info/@types/CurrentDutyMissionsInfo.h';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -64,15 +56,14 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     // react 16 Portal
     global.confirmDialog({
       title: <b>Введите причину</b>,
-      body: self => {
-        return (
+      body: self => (
           <ExtField
             type="string"
             label="Введите причину"
             value={self.state.comment}
             onChange={({ target: { value: comment } }) => self.setState({ comment })}
           />
-      )},
+      ),
       defaultState: {
         comment: '',
       },
@@ -97,14 +88,16 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
       .then(({ duty_mission }) => {
         if (duty_mission) {
-          updateDutyMission({
-            ...duty_mission,
-            ...newProps,
+          updateDutyMission(
+            {
+              ...duty_mission,
+              ...newProps,
+            }
+          )
+          .then(() => {
+            this.refreshCard();
+            this.props.handleClose();
           })
-            .then(() => {
-              this.refreshCard();
-              this.props.handleClose();
-            })
         } else {
           console.warn('not found duty mission')
         }
@@ -141,8 +134,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         </ul>
         <LinkToOpenRouteInfoForm openRouteInfoForm={this.openRouteInfoForm}/>
         <div className="right_button_block">
-          <ButtenUpdateDutyMission onClick={this.completeDutyMission} >Выполнено</ButtenUpdateDutyMission>
-          <ButtenUpdateDutyMission onClick={this.rejectDutyMission} >Не выполнено</ButtenUpdateDutyMission>
+          <ButtonUpdateDutyMission onClick={this.completeDutyMission} >Выполнено</ButtonUpdateDutyMission>
+          <ButtonUpdateDutyMission onClick={this.rejectDutyMission} >Не выполнено</ButtonUpdateDutyMission>
         </div>
         <RouteInfoForm
           show={this.state.showRouteInfoForm}

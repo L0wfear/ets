@@ -12,12 +12,12 @@ type PropsListByTypeMission = {
   items: any[];
   titleKey: string;
   itemsKey: string;
-  handleClickMission: Function;
+  handleClick: React.MouseEventHandler<HTMLLIElement>;
 }
 
 const ListByTypeMission: React.SFC<PropsListByTypeMission> = ({ title, items = [], ...props }) => (
   <CollapseText title={title} dependentData={items} classNameContainer={cx('line_data', 'bold', { pointer: items.length, 'no-pointer-events': !items.length })}>
-    <CollapseList collapsetItems={items} handleClickMission={props.handleClickMission} />
+    <CollapseList collapsetItems={items} handleClick={props.handleClick} />
   </CollapseText>
 );
 

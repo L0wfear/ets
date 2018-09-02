@@ -6,31 +6,18 @@ import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-
 import {
   dashboardLoadDependentDataByWaybillDraft,
   dashboardLoadDependentDataByNewMission,
   dashboardLoadDependentDataByNewDutyMission,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
+import { LinkToOrder } from 'components/directories/order/buttons/buttons';
+import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
+import { ButtonCreateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
+import { ButtonCreateWaybill } from '/Users/vladimirleshchev/Desktop/gost/ets-frontend/src/components/waybill/buttons/buttons';
+
 require('components/dashboard/new/menu/buttons/DashboardMenuButtons.scss');
-
-const ButtonCreateWaybill = withRequirePermissionsNew({
-  permissions: 'waybill.create',
-})(Button);
-
-const ButtonReadOrder = withRequirePermissionsNew({
-  permissions: 'faxogramm.read',
-})(Button);
-
-const ButtonCreateMission = withRequirePermissionsNew({
-  permissions: 'mission.create',
-})(Button);
-
-const ButtonCreateDutyMission = withRequirePermissionsNew({
-  permissions: 'duty_mission.create',
-})(Button);
 
 class DashboardMenuButtons extends React.Component<any, any> {
   state = {
@@ -66,10 +53,6 @@ class DashboardMenuButtons extends React.Component<any, any> {
     this.setState({ showDutyMissionFormWrap: false });
   }
 
-  gotoOrder = () => {
-    this.props.history.push('/orders');
-  }
-
   render() {
     return (
       <div className="dashboard_menu_buttons">
@@ -77,7 +60,7 @@ class DashboardMenuButtons extends React.Component<any, any> {
           <div className="card_title">Управление</div>
           <div className="card_body">
             <ButtonCreateWaybill onClick={this.showWaybillFormWrap} >Создать путевой лист</ButtonCreateWaybill>
-            <ButtonReadOrder active onClick={this.gotoOrder} >Исполнение централизованного задания</ButtonReadOrder>
+            <LinkToOrder to="/order"><Button active >Исполнение централизованного задания</Button></LinkToOrder>
             <ButtonCreateMission onClick={this.showMissionFormWrap} >Создать децентрализованное задание</ButtonCreateMission>
             <ButtonCreateDutyMission onClick={this.showDutyMissionFormWrap} >Создать наряд-задание</ButtonCreateDutyMission>
           </div>

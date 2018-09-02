@@ -72,8 +72,6 @@ export const componentDidMount: IComponentDidMount = async props => {
     fromMonitor,
   } = props;
 
-  await flux.getActions('objects').getCars();
-
   if (!props.tooLongDates) {
     flux.getActions('pointsHybrid').createConnection();
     flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number);

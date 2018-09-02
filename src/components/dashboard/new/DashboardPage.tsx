@@ -9,7 +9,7 @@ const DashboardPage: React.SFC<any> = (props) => {
   return (
     <div className="ets-page-wrap dashboard_page">
       <DashboardTime />
-      <DashboardMenu history={props.history}/>
+      <DashboardMenu />
     </div>
   );
 }

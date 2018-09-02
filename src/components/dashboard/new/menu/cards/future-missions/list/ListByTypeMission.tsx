@@ -7,17 +7,11 @@ import CollapseText from 'components/ui/collapse/text/CollapseText';
 
 import CollapseList from 'components/dashboard/new/menu/cards/future-missions/list/CollapseList';
 
-type PropsListByTypeMission = {
-  title: string;
-  items: any[];
-  titleKey: string;
-  itemsKey: string;
-  handleClickMission: Function;
-}
+import { PropsListByTypeMission } from 'components/dashboard/new/menu/cards/future-missions/list/@types/ListByTypeMission.h';
 
 const ListByTypeMission: React.SFC<PropsListByTypeMission> = ({ title, items, ...props }) => (
   <CollapseText title={title} dependentData={items} classNameContainer={cx('line_data', 'bold', { pointer: items.length, 'no-pointer-events': !items.length })} >
-    <CollapseList collapsetItems={items} handleClickMission={props.handleClickMission} />
+    <CollapseList collapsetItems={items} handleClick={props.handleClick} />
   </CollapseText>
 );
 

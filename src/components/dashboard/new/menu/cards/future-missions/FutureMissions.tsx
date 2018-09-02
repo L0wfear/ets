@@ -1,63 +1,26 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+
+import withDefaultCard from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import ListByTypeMission from 'components/dashboard/new/menu/cards/future-missions/list/ListByTypeMission';
 
 import { dashboardLoadFutureMissions } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 import { getMissionById }  from 'redux/trash-actions/mission/promise';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+import { PermittedMissionFormWrap } from 'components/missions/mission/buttons/buttons';
 
-const PermittedMissionFormWrap = withRequirePermissionsNew({
-  permissions: 'mission.read',
-})(MissionFormWrap);
-
-type PropsFutureMissions = {
-  title: string;
-  items: any[];
-  isLoading: boolean;
-  loadData: Function;
-  timeDelay?: number;
-};
-
-type StateFutureMissions = {
-  showMissionFormWrap: boolean;
-  elementMissionFormWrap: any;
-  timerId: any;
-};
+import {
+  PropsFutureMissions,
+  StateFutureMissions,
+} from 'components/dashboard/new/menu/cards/future-missions/FutureMissions.h';
 
 class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMissions> {
   state = {
     showMissionFormWrap: false,
     elementMissionFormWrap: null,
-    timerId: 0,
-  }
-  componentDidMount() {
-    this.loadData();
-    this.setState({
-      timerId: setTimeout(() => (
-        this.setState({
-          timerId: setInterval(() => (
-            this.loadData()
-          ), 60 * 1000)
-        })
-      ), this.props.timeDelay || 0),
-    })
   }
 
-  componentWillUnMount() {
-    clearTimeout(this.state.timerId);
-    clearInterval(this.state.timerId);
-  }
-
-  loadData = () => (
-    this.props.loadData()
-  );
-
-  handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
+  handleClick: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const id = Number.parseInt((path as string).split('/').slice(-1)[0])
 
     getMissionById(id).then(({ mission }) => {
@@ -65,7 +28,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
         this.setState({
           showMissionFormWrap: true,
           elementMissionFormWrap: mission,
-        })
+        });
       }
     });
   }
@@ -78,27 +41,10 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   )
 
   render() {
-    const { isLoading } = this.props;
-
     return (
-      <div className="card_container main">
-        <div className="card_title">
-          <div>
-            <div>{this.props.title}</div>
-            <div>
-              <Button onClick={this.loadData}>
-                <Glyphicon
-                  className={cx({ 'glyphicon-spin': isLoading })}
-                  glyph="refresh"
-                />
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className={cx('card_body', { is_loading: isLoading })}>
-          <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClickMission={this.handleClickMission} />
-          <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClickMission={this.handleClickMission} />
-        </div>
+      <div>
+        <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
+        <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
         <PermittedMissionFormWrap
           onFormHide={this.handleFormHide}
           showForm={this.state.showMissionFormWrap}
@@ -110,25 +56,11 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   }
 }
 
-const mapStateToProps = (state) => ({
-  isLoading: state.dashboard.future_missions.isLoading,
-  title: state.dashboard.future_missions.data.title,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  loadData: () => (
-    dispatch(
-      dashboardLoadFutureMissions(),
-    )
-  ),
-});
-
-export default hocAll(
-  withRequirePermissionsNew({
-    permissions: 'dashboard.future_missions',
-  }),
+export default withDefaultCard({
+  path: 'future_missions',
+  loadData: dashboardLoadFutureMissions,
+})(
   connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(FutureMissions);
+    null,
+  )(FutureMissions)
+);

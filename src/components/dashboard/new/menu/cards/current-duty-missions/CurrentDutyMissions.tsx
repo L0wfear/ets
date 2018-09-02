@@ -1,61 +1,30 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
-import * as cx from 'classnames';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+
+import withDefaultCard from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-
-import { dashboardLoadCurrentDutyMissions, dashboardLoadRouteDataForCurrentDutyMissions } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import CurrentMissionInfo from 'components/dashboard/new/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
-
 import ListByTypeMission from 'components/dashboard/new/menu/cards/current-duty-missions/collapse-list/ListByTypeMission';
 
-type PropsCurrentDutyMissions = {
-  title: string;
-  items: any[];
-  isLoading: boolean;
-  loadData: Function;
-  loadRouteDataById: (duty_mission_data: any, id: number) => any;
-  timeDelay?: number;
-}
+import {
+  dashboardLoadCurrentDutyMissions,
+  dashboardLoadRouteDataForCurrentDutyMissions,
+} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-type StateCurrentDutyMissions = {
-  timerId: any,
-};
+import CurrentDutyMissionInfo from 'components/dashboard/new/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
+
+import {
+  PropsCurrentDutyMissions,
+  StateCurrentDutyMissions,
+} from 'components/dashboard/new/menu/cards/current-duty-missions/CurrentDutyMissions.h';
 
 class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, StateCurrentDutyMissions> {
-  state = {
-    timerId: 0,
-  }
-  componentDidMount() {
-    this.loadData();
-    this.setState({
-      timerId: setTimeout(() => (
-        this.setState({
-          timerId: setInterval(() => (
-            this.loadData()
-          ), 60 * 1000)
-        })
-      ), this.props.timeDelay || 0),
-    })
-  }
-
-  componentWillUnMount() {
-    clearTimeout(this.state.timerId);
-    clearInterval(this.state.timerId);
-  }
-
-  loadData = () => (
-    this.props.loadData()
-  );
-
-  handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
+  handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const [
       itemsKey,
       subItemsIndex,
       dataIndex,
     ] = path.split('/');
 
+    // items_centralized | items_decentralized
     const duty_mission_data = this.props[itemsKey][subItemsIndex].subItems[dataIndex].data;
 
     this.props.loadRouteDataById(
@@ -65,45 +34,21 @@ class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, Stat
   }
 
   render() {
-    const { isLoading } = this.props;
-
     return (
-      <div className="card_container main">
-        <div className="card_title">
-          <div>
-            <div>{this.props.title}</div>
-            <div>
-              <Button onClick={this.loadData}>
-                <Glyphicon
-                  className={cx({ 'glyphicon-spin': isLoading })}
-                  glyph="refresh"
-                />
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className={cx('card_body', { is_loading: isLoading })}>
-          <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClickMission={this.handleClickMission} />
-          <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClickMission={this.handleClickMission} />
-        </div>
-        <CurrentMissionInfo />
+      <div>
+        <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClickMission={this.handleClickMission} />
+        <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClickMission={this.handleClickMission} />
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  ...state.dashboard.current_duty_missions.data,
-  isLoading: state.dashboard.current_duty_missions.isLoading,
-  title: state.dashboard.current_duty_missions.data.title,
+  items_centralized: state.dashboard.current_duty_missions.data.items_centralized,
+  items_decentralized: state.dashboard.current_duty_missions.data.items_decentralized,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadData: () => (
-    dispatch(
-      dashboardLoadCurrentDutyMissions(),
-    )
-  ),
   loadRouteDataById: (duty_mission_data, id) => (
     dispatch(
       dashboardLoadRouteDataForCurrentDutyMissions(duty_mission_data, id),
@@ -111,12 +56,13 @@ const mapDispatchToProps = (dispatch) => ({
   )
 });
 
-export default hocAll(
-  withRequirePermissionsNew({
-    permissions: 'dashboard.current_duty_missions',
-  }),
+export default withDefaultCard({
+  path: 'current_duty_missions',
+  loadData: dashboardLoadCurrentDutyMissions,
+  InfoComponent: CurrentDutyMissionInfo,
+})(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  ),
-)(CurrentDutyMissions);
+  )(CurrentDutyMissions)
+);

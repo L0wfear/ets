@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
-import { groupBy } from 'lodash';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
@@ -12,54 +11,28 @@ import {
   dashboardSetInfoDataInWaybillClosed,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-import { makeDate } from 'utils/dates';
 import {
   getWaybillById,
 } from 'redux/waybill/promise';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
-type PropsWaybillClosedInfo = {
-  infoData: any;
-  infoDataRaw: any;
-
-  handleClose: Function;
-  setInfoData: (infoData: any) => any;
-};
-
-type StateWaybillClosedInfo = {
-  showWaybillFormWrap: boolean;
-  elementWaybillFormWrap: any;
-  infoDataGroupByDate: any;
-  infoData: any;
-  infoDataRaw: any;
-}
+import {
+  PropsWaybillClosedInfo,
+  StateWaybillClosedInfo,
+} from 'components/dashboard/new/menu/cards/waybill-closed/info/WaybillClosedInfo.h';
 
 class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWaybillClosedInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
     infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy(this.props.infoData, waybill => makeDate((waybill as any).data.create_date)),
-    infoDataRaw: this.props.infoDataRaw,
   }
 
-  componentWillReceiveProps({ infoData, infoDataRaw }) {
+  componentWillReceiveProps({ infoData }: PropsWaybillClosedInfo) {
     if (infoData !== this.state.infoData) {
       this.setState({
         infoData,
-        infoDataGroupByDate: groupBy(infoData, waybill => makeDate((waybill as any).data.create_date)),
-      });
-    }
-
-    if (infoDataRaw !== this.state.infoDataRaw) {
-      if (infoDataRaw.subItems) {
-        this.props.setInfoData(infoDataRaw.subItems);
-      } else {
-        this.props.handleClose();
-      }
-      this.setState({
-        infoDataRaw,
       });
     }
   }
@@ -101,27 +74,17 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
   render() {
     return (
       <InfoCard title="Информация о ПЛ" handleClose={this.handleClose}>
+        <ul>
         {
-          Object.entries(this.state.infoDataGroupByDate).sort().map(([key, arrData]) => (
-            <div key={key}>
-              <div className="title_waybill_info">{key}</div>
-              <div>
-                <ul>
-                  {
-                    arrData.map(({ data: { waybill_id }, data, title }, index) => (
-                      <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
-                        {
-                          title
-                          || `№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}<br />{`${data.driver_fio || ''}${data.driver_phone ? `, ${data.driver_phone}` : ''}`
-                        }
-                      </li>
-                    ))
-                  }
-                </ul>
-              </div>
-            </div>
-          ))
-        }
+          this.state.infoData.subItems.map(({ data: { waybill_id, ...data } }) => (
+            <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
+              {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>
+              <br />
+              {`${data.car_garage_number || '-'}, ${data.driver_fio || '-'}`}
+            </li>
+            ))
+          }
+        </ul>
         <WaybillFormWrap
           onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
           onCallback={this.handleWaybillFormWrapHideAfterSubmit}

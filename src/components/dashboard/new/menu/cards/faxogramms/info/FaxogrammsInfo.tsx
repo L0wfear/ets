@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { DropdownButton, MenuItem, Glyphicon, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { saveData } from 'utils/functions';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
@@ -18,36 +16,21 @@ import {
   saveOrder,
 } from 'redux/trash-actions/order/promise';
 
-import PDFViewModal from 'components/dashboard/new/menu/cards/faxogramms/info/PDFViewModal';
+import {
+  ButtonReadOrder,
+  LinkToOrder,
+} from 'components/directories/order/buttons/buttons';
+
+import PDFViewModal from 'components/dashboard/new/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal';
+
+import {
+  PropsFaxogrammsInfo,
+  StateFaxogrammsInfo,
+} from 'components/dashboard/new/menu/cards/faxogramms/info/FaxogrammsInfo.h';
 
 require('components/dashboard/new/menu/cards/faxogramms/info/FaxogrammInfo.scss');
 
-const ButtonReadOrder = withRequirePermissionsNew({
-  permissions: 'faxogramm.read',
-})(Button);
-
-const LinkReadOrder = withRequirePermissionsNew({
-  permissions: 'faxogramm.read',
-})(Link);
-
 const DropdownButtonTSX: any = DropdownButton;
-
-type PropsFaxogrammsInfo = {
-  infoData: any;
-  meta: {
-    date_from: string;
-    date_to: string;
-  };
-  handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
-
-type StateFaxogrammsInfo = {
-  showFaxogrammMissionsFormWrap: boolean;
-  elementFaxogrammMissionsFormWrap: any;
-
-  blob: any;
-  showPDFViewModal: boolean;
-}
 
 const TypeDownload = {
   old: 'old',
@@ -150,7 +133,9 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
             <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
           </DropdownButtonTSX>
           <ButtonReadOrder onClick={this.showPDFViewModal}><Glyphicon glyph="info-sign" /></ButtonReadOrder>
-          <LinkReadOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}><Button >Сформировать задания</Button></LinkReadOrder>
+          <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
+            <Button >Сформировать задания</Button>
+          </LinkToOrder>
         </div>
         {
           this.state.showPDFViewModal ?

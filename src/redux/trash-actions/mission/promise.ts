@@ -1,5 +1,6 @@
 import {
   MissionService,
+  MissionDataService,
   DutyMissionService,
 } from 'api/missions';
 
@@ -19,6 +20,21 @@ export const getMissionById = (id) => (
     })
     .then(({ result: { rows: [mission] } }) => ({
       mission,
+      id,
+    }))
+);
+
+export const getMissionDataById = (id) => (
+  MissionDataService.path(id).get()
+    .catch((error) => {
+      console.warn(error);
+
+      return {
+        result: null,
+      };
+    })
+    .then(({ result }) => ({
+      mission_data: result,
       id,
     }))
 );

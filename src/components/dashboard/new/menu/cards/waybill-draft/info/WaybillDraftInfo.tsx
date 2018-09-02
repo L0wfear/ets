@@ -20,51 +20,42 @@ import {
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
-require('components/dashboard/new/menu/cards/waybill-draft/info/WaybillDraftInfo.scss');
-
-type PropsWaybillDraftInfo = {
-  infoData: any;
-  infoDataRaw: any;
-
-  handleClose: Function;
-  loadAllWaybillCard: Function;
-  setInfoData: (infoData: any) => any;
-};
-
-type StateWaybillDraftInfo = {
-  showWaybillFormWrap: boolean;
-  elementWaybillFormWrap: any;
-  infoDataGroupByDate: any;
-  infoData: any;
-  infoDataRaw: any;
-}
+import {
+  PropsWaybillDraftInfo,
+  StateWaybillDraftInfo,
+} from 'components/dashboard/new/menu/cards/waybill-draft/info/WaybillDraftInfo.h';
 
 class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
     infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy(this.props.infoData, waybill => makeDate((waybill as any).data.waybill_date_create)),
-    infoDataRaw: this.props.infoDataRaw,
+    infoDataGroupByDate: groupBy(
+      this.props.infoData.subItems,
+      (waybill) => (
+        makeDate(waybill.data.waybill_date_create)
+      ),
+    ),
   }
 
-  componentWillReceiveProps({ infoData, infoDataRaw }) {
+  componentWillReceiveProps({ infoData }: PropsWaybillDraftInfo) {
     if (infoData !== this.state.infoData) {
-      this.setState({
-        infoData,
-        infoDataGroupByDate: groupBy(infoData, waybill => makeDate((waybill as any).data.create_date)),
-      });
-    }
-
-    if (infoDataRaw !== this.state.infoDataRaw) {
-      if (infoDataRaw.subItems) {
-        this.props.setInfoData(infoDataRaw.subItems);
+      if (infoData) {
+        this.setState({
+          infoData,
+          infoDataGroupByDate: groupBy(
+            infoData.subItems,
+            (waybill) => (
+              makeDate(waybill.data.waybill_date_create)
+            ),
+          ),
+        });
       } else {
-        this.props.handleClose();
+        this.setState({
+          infoData,
+          infoDataGroupByDate: {},
+        })
       }
-      this.setState({
-        infoDataRaw,
-      });
     }
   }
 
@@ -148,11 +139,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadAllWaybillCard: () => (
     dispatch(
       dashboardLoadDependentDataByWaybillDraft(),
-    )
-  ),
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInWaybillDraft(infoData)
     )
   ),
 });

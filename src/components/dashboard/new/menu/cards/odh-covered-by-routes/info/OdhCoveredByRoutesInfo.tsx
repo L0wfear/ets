@@ -11,12 +11,7 @@ import {
   dashboardSetInfoDataInOdhCoveredByRoutes,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-
-type PropsOdhCoveredByRoutesInfo = {
-  infoData: any;
-
-  handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
+import { PropsOdhCoveredByRoutesInfo } from 'components/dashboard/new/menu/cards/odh-covered-by-routes/info/OdhCoveredByRoutesInfo.h';
 
 const OdhCoveredByRoutesInfo: React.SFC<PropsOdhCoveredByRoutesInfo> = ({ infoData, ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>

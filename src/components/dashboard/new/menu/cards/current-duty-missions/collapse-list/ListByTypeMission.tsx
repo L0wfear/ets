@@ -12,7 +12,7 @@ type PropsListByTypeMission = {
   items: any[];
   titleKey: string;
   itemsKey: string;
-  handleClickMission: Function;
+  handleClickMission: React.MouseEventHandler<HTMLLIElement>;
 }
 
 const ListByTypeMission: React.SFC<PropsListByTypeMission> = ({ title, items = [], ...props }) => (

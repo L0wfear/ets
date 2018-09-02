@@ -1,20 +1,32 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 
-type PropsList = {
-  items: any[];
-  handleClick: any;
-  classNameContainer?: string;
-}
+import {
+  PropsList,
+} from 'components/dashboard/new/menu/cards/car-in-work-overall/list/List.h';
 
 const List: React.SFC<PropsList> = props => (
-  <div>
+  <ul>
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (
-        <div key={index} data-path={`${index}`} className={cx({ pointer: subItems.length, 'no-pointer-events': !subItems.length }, props.classNameContainer)} onClick={props.handleClick} title={item.tooltip || title}>{title}</div>
+        <li
+          key={index}
+          data-path={index}
+          title={item.tooltip || title}
+          className={cx(
+            {
+              pointer: subItems.length,
+              'no-pointer-events': !subItems.length,
+            },
+            props.classNameContainer,
+          )}
+          onClick={props.handleClick}
+        >
+          {title}
+        </li>
       ))
     }
-  </div>
+  </ul>
 );
                
 export default List;

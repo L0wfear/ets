@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import whitPreloader from 'components/ui/new/preloader/whitPreloader';
+
 import DashboardTime from 'components/dashboard/new/time/DashboardTime';
 import DashboardMenu from 'components/dashboard/new/menu/DashboardMenu';
 
@@ -15,4 +17,7 @@ const DashboardPage: React.SFC<any> = (props) => {
 }
 
 
-export default DashboardPage;
+export default whitPreloader({
+  page: 'dashboard',
+  typePreloader: 'mainpage',
+})(DashboardPage);

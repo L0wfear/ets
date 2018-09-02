@@ -12,9 +12,7 @@ import InfoCard from 'components/dashboard/new/menu/cards/_default-card-componen
 import {
   dashboardSetInfoDataInFaxogramms,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import {
-  saveOrder,
-} from 'redux/trash-actions/order/promise';
+import { saveOrderBlob } from 'redux/trash-actions/order/order';
 
 import {
   ButtonReadOrder,
@@ -59,7 +57,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
       payload.format = 'xls';
     }
 
-    saveOrder(this.props.infoData.data.id, payload)
+    this.props.saveOrder(this.props.infoData.data.id, payload)
       .then(({ blob, fileName }) => saveData(blob, fileName))
       .catch((error) => {
         console.warn(error)
@@ -67,7 +65,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
   }
 
   showPDFViewModal = () => {
-    saveOrder(this.props.infoData.data.id)
+    this.props.saveOrder(this.props.infoData.data.id)
       .then(({ blob }) => {
         if (!!blob) {
           this.setState({
@@ -164,6 +162,19 @@ const mapDispatchToProps = (dispatch) => ({
   handleClose: () => (
     dispatch(
       dashboardSetInfoDataInFaxogramms(null),
+    )
+  ),
+  saveOrder: (id, payload) => (
+    dispatch(
+      saveOrderBlob(
+        '',
+        id,
+        payload,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
     )
   ),
 });

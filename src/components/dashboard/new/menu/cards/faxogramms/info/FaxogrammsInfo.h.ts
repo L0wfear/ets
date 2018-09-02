@@ -6,6 +6,7 @@ import {
 export type PropsFaxogrammsInfo = {
   infoData: FaxogrammsInfoDataType;
   meta: FaxogrammsAnsMetaType;
+  saveOrder: Function;
 
   handleClose: React.MouseEventHandler<HTMLDivElement>;
 }

@@ -15,7 +15,10 @@ import {
   dashboardLoadMissionDataForCurrentMission,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-import { getDutyMissionById, updateDutyMission }  from 'redux/trash-actions/mission/promise';
+import {
+  loadDutyMissionById,
+  updateDutyMissionByPayload,
+} from 'redux/trash-actions/mission';
 import { ButtonUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { LinkToOpenRouteInfoForm } from 'components/route/buttons/buttons';
 
@@ -85,10 +88,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   updateDutyMission = (newProps) => (
-    getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
+    this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
       .then(({ duty_mission }) => {
         if (duty_mission) {
-          updateDutyMission(
+          this.props.updateDutyMission(
             {
               ...duty_mission,
               ...newProps,
@@ -162,6 +165,30 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       dashboardLoadCurrentDutyMissions(),
     )
+  ),
+  getDutyMissionById: (id) => (
+    dispatch(
+      loadDutyMissionById(
+        '',
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
+    ).payload
+  ),
+  updateDutyMission: (payload) => (
+    dispatch(
+      updateDutyMissionByPayload(
+        '',
+        payload,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
+    ).payload
   ),
 });
 

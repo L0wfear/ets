@@ -7,13 +7,8 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 
-import {
-  dashboardSetInfoDataInWaybillClosed,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-
-import {
-  getWaybillById,
-} from 'redux/waybill/promise';
+import { dashboardSetInfoDataInWaybillClosed } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+import { loadWaybillById } from 'redux/trash-actions/waybill/waybill';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
@@ -42,8 +37,7 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
   }
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    const waybill_id = Number.parseInt(path);
-    getWaybillById(waybill_id)
+    this.props.getWaybillById(Number.parseInt(path))
       .then(({ waybill_data }) => {
         if (waybill_data) {
           this.setState({
@@ -112,6 +106,18 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       dashboardSetInfoDataInWaybillClosed(infoData)
     )
+  ),
+  getWaybillById: (id) => (
+    dispatch(
+      loadWaybillById(
+        '',
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
+    ).payload
   ),
 });
 

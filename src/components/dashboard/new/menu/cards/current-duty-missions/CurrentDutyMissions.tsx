@@ -51,7 +51,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadRouteDataById: (duty_mission_data, id) => (
     dispatch(
-      dashboardLoadRouteDataForCurrentDutyMissions(duty_mission_data, id),
+      dashboardLoadRouteDataForCurrentDutyMissions(
+        duty_mission_data,
+        id,
+      ),
     )
   )
 });

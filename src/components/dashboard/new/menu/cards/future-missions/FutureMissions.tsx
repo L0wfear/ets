@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import ListByTypeMission from 'components/dashboard/new/menu/cards/future-missions/list/ListByTypeMission';
 
 import { dashboardLoadFutureMissions } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import { getMissionById }  from 'redux/trash-actions/mission/promise';
 import { PermittedMissionFormWrap } from 'components/missions/mission/buttons/buttons';
+import { loadMissionById } from 'redux/trash-actions/mission';
 
 import {
   PropsFutureMissions,
@@ -23,7 +23,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   handleClick: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const id = Number.parseInt((path as string).split('/').slice(-1)[0])
 
-    getMissionById(id).then(({ mission }) => {
+    this.props.getMissionById(id).then(({ mission }) => {
       if (mission) {
         this.setState({
           showMissionFormWrap: true,
@@ -56,11 +56,29 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   }
 }
 
+const mapStateToProps = null
+
+const mapDispatchToProps = (dispatch) => ({
+  getMissionById: (id) => (
+    dispatch(
+      loadMissionById(
+        '',
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      )
+    ).payload
+  ),
+});
+
 export default withDefaultCard({
   path: 'future_missions',
   loadData: dashboardLoadFutureMissions,
 })(
   connect(
-    null,
+    mapStateToProps,
+    mapDispatchToProps,
   )(FutureMissions)
 );

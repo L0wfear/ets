@@ -15,7 +15,7 @@ import {
 import { LinkToOrder } from 'components/directories/order/buttons/buttons';
 import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
 import { ButtonCreateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
-import { ButtonCreateWaybill } from '/Users/vladimirleshchev/Desktop/gost/ets-frontend/src/components/waybill/buttons/buttons';
+import { ButtonCreateWaybill } from 'components/waybill/buttons/buttons';
 
 require('components/dashboard/new/menu/buttons/DashboardMenuButtons.scss');
 

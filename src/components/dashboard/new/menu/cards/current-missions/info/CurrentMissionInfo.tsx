@@ -19,7 +19,10 @@ import {
   dashboardLoadMissionDataForCurrentMission,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 
-import { getMissionById, updateMission }  from 'redux/trash-actions/mission/promise';
+import {
+  loadMissionById,
+  updateMissionByPayload,
+} from 'redux/trash-actions/mission';
 
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
@@ -59,12 +62,12 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   completeMission = () => {
-    getMissionById(this.props.infoData.mission_data.id)
+    this.props.getMissionById(this.props.infoData.mission_data.id)
       .then(({ mission }) => {
         if (mission) {
           mission.status = 'complete';
 
-          return updateMission(mission);
+          return this.props.updateMission(mission);
         }
 
         return Promise.resolve();
@@ -159,6 +162,30 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       dashboardLoadCurrentMissions(),
     )
+  ),
+  getMissionById: (id) => (
+    dispatch(
+      loadMissionById(
+        '',
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      )
+    ).payload
+  ),
+  updateMission: (payload) => (
+    dispatch(
+      updateMissionByPayload(
+        '',
+        payload,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
+    ).payload
   ),
 });
 

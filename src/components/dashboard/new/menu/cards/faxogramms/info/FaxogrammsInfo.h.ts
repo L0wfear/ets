@@ -2,6 +2,7 @@ import { FaxogrammsInfoDataType } from 'components/dashboard/new/redux/modules/d
 
 export type PropsFaxogrammsInfo = {
   infoData: FaxogrammsInfoDataType;
+  saveFaxogramm: Function;
 
   handleClose: React.MouseEventHandler<HTMLDivElement>;
 }

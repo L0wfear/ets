@@ -48,9 +48,15 @@ export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispa
   });
 
   if (id) {
-    const loadMissionDataOption = loadMissionDataById(
-      DASHBOARD_SET_INFO_DATA,
-      id,
+    const loadMissionDataOption = dispatch(
+      loadMissionDataById(
+        DASHBOARD_SET_INFO_DATA,
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        }
+      )
     );
 
     loadMissionDataOption.payload.then(({ mission_data }) => (
@@ -75,9 +81,15 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?:
   });
 
   if (id) {
-    const loadRouteDataOption = loadRouteDataById(
-      DASHBOARD_SET_INFO_DATA,
-      id,
+    const loadRouteDataOption = dispatch(
+      loadRouteDataById(
+        DASHBOARD_SET_INFO_DATA,
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        }
+      )
     );
 
     loadRouteDataOption.payload.then(({ route_data }) => (

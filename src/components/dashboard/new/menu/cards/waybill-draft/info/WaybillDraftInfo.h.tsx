@@ -2,9 +2,11 @@ import {
   WaybillDraftItemsType,
   WaybillDraftItemsSubItemsType,
 } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-draft.h';
+import { WaybillType } from 'redux/trash-actions/waybill/@types/promise.h';
 
 export type PropsWaybillDraftInfo = {
   infoData: WaybillDraftItemsType;
+  getWaybillById: (id: number) => Promise<WaybillType>;
 
   handleClose: Function;
   loadAllWaybillCard: Function;

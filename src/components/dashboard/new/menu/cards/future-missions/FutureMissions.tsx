@@ -7,8 +7,8 @@ import CollapseButton from 'components/ui/collapse/button/CollapseButton';
 
 import List from 'components/dashboard/new/menu/cards/future-missions/list/List';
 import { dashboardLoadFutureMissions } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import { getMissionById }  from 'redux/trash-actions/mission/promise';
 import { PermittedMissionFormWrap } from 'components/missions/mission/buttons/buttons';
+import { loadMissionById } from 'redux/trash-actions/mission';
 
 import {
   PropsFutureMissions,
@@ -24,7 +24,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const id = Number.parseInt((path as string).split('/').slice(-1)[0])
 
-    getMissionById(id).then(({ mission }) => {
+    this.props.getMissionById(id).then(({ mission }) => {
       if (mission) {
         this.setState({
           showMissionFormWrap: true,
@@ -77,11 +77,27 @@ const mapStateToProps = (state) => ({
   items: state.dashboard.future_missions.data.items,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  getMissionById: (id) => (
+    dispatch(
+      loadMissionById(
+        '',
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      )
+    ).payload
+  ),
+});
+
 export default withDefaultCard({
   path: 'future_missions',
   loadData: dashboardLoadFutureMissions,
 })(
   connect(
     mapStateToProps,
+    mapDispatchToProps,
   )(FutureMissions)
 );

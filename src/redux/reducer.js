@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { loadingReducer } from 'redux-promise-loading';
+import { etsLoading } from 'redux/_middleware/etsLoading';
 
 import rootReducers from 'components/redux/reducer';
 
@@ -19,6 +20,7 @@ export default combineReducers({
   dashboard,
   owners,
   loading: loadingReducer,
+  etsLoading,
   settings,
   session,
   monitorPage,

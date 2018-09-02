@@ -57,4 +57,8 @@ export interface MissionDataType {
   report_data: TypeReportData;
   technical_operation_data: TypeTechnicalOperationData;
   waybill_data: TypeWaybillData;
-}
+};
+
+
+export type MissionType = any;
+export type DutyMissionType = any;

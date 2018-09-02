@@ -12,11 +12,9 @@ import {
   dashboardLoadDependentDataByWaybillDraft,
   dashboardSetInfoDataInWaybillDraft,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+import { loadWaybillById } from 'redux/trash-actions/waybill/waybill';
 
 import { makeDate } from 'utils/dates';
-import {
-  getWaybillById,
-} from 'redux/waybill/promise';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
@@ -64,8 +62,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
   }
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    const waybill_id = Number.parseInt(path);
-    getWaybillById(waybill_id)
+    this.props.getWaybillById(Number.parseInt(path))
       .then(({ waybill_data }) => {
         if (waybill_data) {
           this.setState({
@@ -140,6 +137,18 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       dashboardLoadDependentDataByWaybillDraft(),
     )
+  ),
+  getWaybillById: (id) => (
+    dispatch(
+      loadWaybillById(
+        '',
+        id,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
+    ).payload
   ),
 });
 

@@ -13,8 +13,8 @@ import {
   dashboardSetInfoDataInFaxogramms,
 } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
 import {
-  saveFaxogramm,
-} from 'redux/trash-actions/faxogramm/promise';
+  saveFaxogrammBlob,
+} from 'redux/trash-actions/faxogramm/faxogramm';
 
 import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
 import { ButtonReadFaxogramm } from 'components/directories/faxogramm/buttons/buttons';
@@ -64,7 +64,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
       payload.format = 'xls';
     }
 
-    saveFaxogramm(this.props.infoData.data.id, payload)
+    this.props.saveFaxogramm(this.props.infoData.data.id, payload)
       .then(({ blob, fileName }) => saveData(blob, fileName))
       .catch((error) => {
         console.warn(error)
@@ -72,7 +72,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
   }
 
   showPDFViewModal = () => {
-    saveFaxogramm(this.props.infoData.data.id)
+    this.props.saveFaxogramm(this.props.infoData.data.id)
       .then(({ blob }) => {
         if (!!blob) {
           this.setState({
@@ -170,6 +170,19 @@ const mapDispatchToProps = (dispatch) => ({
   handleClose: () => (
     dispatch(
       dashboardSetInfoDataInFaxogramms(null),
+    )
+  ),
+  saveFaxogramm: (id, payload) => (
+    dispatch(
+      saveFaxogrammBlob(
+        '',
+        id,
+        payload,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
     )
   ),
 });

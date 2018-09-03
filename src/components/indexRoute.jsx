@@ -7,8 +7,8 @@ import { createHashHistory } from 'history';
 import LoginPage from 'components/login/LoginPage.jsx';
 import WaybillJournal from 'components/waybill/WaybillJournal.jsx';
 import RoutesList from 'components/route/RoutesList.jsx';
-import MonitorPageNew from 'components/monitor/new/MonitorPage';
-import MonitorPage from 'components/monitor/MonitorPage';
+import MonitorPage from 'components/monitor/new/MonitorPage';
+import MonitorPageOld from 'components/monitor/MonitorPage';
 import DashboardPageOld from 'components/dashboard/DashboardPage.jsx';
 import DashboardPage from 'components/dashboard/new/DashboardPage';
 import UserNotificationList from 'components/notifications/UserNotificationList';
@@ -41,7 +41,7 @@ const routes = (props) => {
       <Route path="/" component={App}>
         <Route path="change-company" component={CahngeCompany} onEnter={requireAuthWithGlav} />
         <Route path="monitor" component={MonitorPage} onEnter={requireAuth} />
-        <Route path="monitor-new" component={MonitorPageNew} onEnter={requireAuth} />
+        <Route path="monitor-old" component={MonitorPageOld} onEnter={requireAuth} />
         <Route path="dashboard-old" component={DashboardPageOld} onEnter={requireAuth} />
         <Route path="dashboard" component={DashboardPage} onEnter={requireAuth} />
         <Route path="waybill-journal" component={WaybillJournal} onEnter={requireAuth} />

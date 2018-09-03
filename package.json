@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "1.0.22.77",
+    "version": "1.0.22.78",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -92,6 +92,7 @@
         "eslint-plugin-jsx-a11y": "^2.2.2",
         "eslint-plugin-react": "^6.10.3",
         "express": "^4.15.3",
+        "fork-ts-checker-webpack-plugin": "^0.4.9",
         "nodemon": "^1.10.2",
         "openurl": "^1.1.1",
         "react-hot-loader": "^2.0.0-alpha-3",

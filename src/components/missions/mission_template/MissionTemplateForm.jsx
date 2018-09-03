@@ -1,6 +1,6 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import {
   uniqBy,
 } from 'lodash';
@@ -15,6 +15,8 @@ import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm.jsx';
+import HiddenMapForPrint from 'components/missions/mission_template/print/HiddenMapForPrint';
+
 
 const modalKey = 'mission_template';
 
@@ -197,10 +199,24 @@ class MissionTemplateForm extends MissionForm {
         </ModalBody>
 
         <Modal.Footer>
-          <Div hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+          <Div className="text-right-flex">
+            <Dropdown id="waybill-print-dropdown" dropup disabled={!state.id} onSelect={this.props.handlePrint}>
+              <Dropdown.Toggle>
+                <Glyphicon id="m-print" glyph="print" />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <MenuItem eventKey={3}>Формате А3</MenuItem>
+                <MenuItem eventKey={4}>Формате А4</MenuItem>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Div hidden={state.status === 'closed'}>
+              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+            </Div>
           </Div>
+
+          
         </Modal.Footer>
+        <HiddenMapForPrint printFormat={this.props.printFormat} route={this.state.selectedRoute} keyGlobal={this.props.keyGlobal} />
 
         <RouteFormWrap
           element={route}

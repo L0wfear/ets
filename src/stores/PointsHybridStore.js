@@ -89,6 +89,7 @@ export default class PointsStore extends Store {
       showTrackingGradient: false,
       isRenderPaused: false,
       singleCarTrack: null,
+      singleCarAsuodsId: null,
       singleCarTrackDates: [],
     };
 
@@ -139,8 +140,8 @@ export default class PointsStore extends Store {
     this.pauseRendering();
   }
 
-  handleSetSingleCarTrack(car_gov_number) {
-    this.setState({ singleCarTrack: car_gov_number });
+  handleSetSingleCarTrack({ gov_number, singleCarAsuodsId }) {
+    this.setState({ singleCarTrack: gov_number, singleCarAsuodsId });
   }
 
   handleSetSingleCarTrackDates(dates) {
@@ -154,6 +155,11 @@ export default class PointsStore extends Store {
         _.map(points, (p) => {
           const car = p.car;
           if (car && car.gov_number === this.state.singleCarTrack && p.marker) { // заменить на car.gps_code
+            p.car_actual = {
+              asuods_id: this.state.singleCarAsuodsId,
+              gps_code: p.id,
+            };
+
             p.marker.createTrack();
             p.marker.track.fetch(this.flux, this.state.singleCarTrackDates[0] || undefined, this.state.singleCarTrackDates[1] || undefined);
             this.handleSelectPoint(p);

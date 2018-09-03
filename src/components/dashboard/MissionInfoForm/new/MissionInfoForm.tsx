@@ -138,11 +138,10 @@ const MissionInfoForm: React.SFC<any> = props => {
         </Modal.Footer>
       </Modal>
     </Div>
-  )
-}
+  );
+};
 
-
-const all = connectToStores(hocAll(
+export default connectToStores(hocAll(
   WithState({
     ...initialState,
   }),
@@ -153,7 +152,5 @@ const all = connectToStores(hocAll(
     componentDidMount,
     componentWillReceiveProps,
     componentWillUnmount,
-  })
+  }),
 )(MissionInfoForm), ['objects', 'employees', 'missions', 'routes', 'geoObjects']);
-
-export default all;

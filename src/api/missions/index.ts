@@ -9,5 +9,7 @@ export const DutyMissionService = ETS_API_FACTORY.createApiServiceAdapter('duty_
 export const CarDutyMissionService = ETS_API_FACTORY.createApiServiceAdapter('duty_mission_car_mission/', {});
 export const DutyMissionTemplateService = ETS_API_FACTORY.createApiServiceAdapter('duty_mission_template', {});
 export const MissionPrintService = ETS_API_FACTORY.createApiServiceAdapter('plate_mission', {});
+export const MissionTemplatePrintService = ETS_API_FACTORY.createApiServiceAdapter('plate_mission_template', {});
+
 export const DutyMissionPrintService = ETS_API_FACTORY.createApiServiceAdapter('plate_duty_mission', {});
 export const MissionDataService = ETS_API_FACTORY.createApiServiceAdapter('mission_data', {});

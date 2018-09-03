@@ -145,9 +145,14 @@ export default class PolyMap extends Component {
   }
 
   init() {
-    // TODO рак
-    global.map = this.map;
-    global.map.reset = () => this.componentDidMount();
+    // TODO рак рак
+    const { keyGlobal = '' } = this.props;
+    console.log(`map${keyGlobal}`);
+    global[`map${keyGlobal}`] = this.map;
+    if (this.props.rotationAngle) {
+      global[`map${keyGlobal}`].getView().setRotation(this.props.rotationAngle);
+  }
+    global[`map${keyGlobal}`].reset = () => this.componentDidMount();
   }
 
   renderPolygons(polys = {}, fit) {

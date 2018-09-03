@@ -87,6 +87,7 @@ export default class LoadingStore extends Store {
       missionsActons.removeMission,
       missionsActons.updateMission,
       missionsActons.getMissionTemplates,
+      missionsActons.printMissionTemplate,
       missionsActons.createMissionTemplate,
       missionsActons.removeMissionTemplate,
       missionsActons.getMissionReports,

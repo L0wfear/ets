@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.22.82",
+    "version": "2.0.22.83",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -83,7 +83,7 @@
         "express": "^4.15.3",
         "extract-text-webpack-plugin": "=3.0.2",
         "file-loader": "=1.1.11",
-        "fork-ts-checker-webpack-plugin": "^0.4.2",
+        "fork-ts-checker-webpack-plugin": "^0.4.9",
         "handlebars-loader": "^1.4.0",
         "html-webpack-plugin": "=3.2.0",
         "imports-loader": "^0.8.0",

@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const notifyStats = require('./utils/notifyStats');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');

@@ -14,12 +14,12 @@ const HiddenMapForPrint: React.SFC<IPropsHiddenMapForPrint> = ({ route, ...props
   <div className="hidden_map">
     <div className="a3">
       <Div hidden={!route}>
-        <RouteInfo route={route} mapOnly keyGlobal={`${props.keyGlobal}/a3`} rotationAngle={Math.PI / 2} />
+        <RouteInfo route={route} mapOnly keyGlobal={`${props.keyGlobal}/a3`} rotationAngle={Math.PI / 2} onlyMap />
       </Div>
     </div>
     <div className="a4" >
       <Div hidden={!route}>
-        <RouteInfo route={route} mapOnly keyGlobal={`${props.keyGlobal}/a4`} />
+        <RouteInfo route={route} mapOnly keyGlobal={`${props.keyGlobal}/a4`} onlyMap />
       </Div>
     </div>
   </div>

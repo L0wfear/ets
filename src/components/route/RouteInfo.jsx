@@ -75,7 +75,7 @@ export default class RouteInfo extends Component {
         <Div className="route-name" hidden={mapOnly}><b>{route.name}</b></Div>
         <Div>
           <Row>
-            <Col md={12}>
+            <Col md={this.props.onlyMap ? 12 : 8}>
               <Div className="route-creating">
                 <PolyMap
                   keyGlobal={this.props.keyGlobal}
@@ -91,6 +91,17 @@ export default class RouteInfo extends Component {
                 />
               </Div>
             </Col>
+
+            <Col md={this.props.onlyMap ? 0 : 4}>
+              <CheckList showSelectable list={odh_list} draw_list={draw_object_list} />
+              <Div style={{ marginTop: 20 }} hidden={route.type !== 'points'}>
+                {route.object_list.map((o, i) => {
+                  const label = `Пункт назначения №${i + 1} ${o.name ? `(${o.name})` : ''}`;
+                  return <Input key={i} label={label} />;
+                })}
+              </Div>
+            </Col>
+
           </Row>
         </Div>
       </Div>

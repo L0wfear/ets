@@ -10,9 +10,12 @@ import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import { checkMissionsOnStructureIdCar } from 'components/missions/utils/customValidate.ts';
+import { printData, resizeBase64 } from 'utils/functions';
 
 import MissionTemplateForm from './MissionTemplateForm.jsx';
 import MissionsCreationForm from './MissionsCreationForm.jsx';
+
+const keyGlobal = 'mission_template_hidden';
 
 @autobind
 export default class MissionFormWrap extends FormWrap {
@@ -21,6 +24,10 @@ export default class MissionFormWrap extends FormWrap {
     super(props);
 
     this.schema = missionTemplateSchema;
+
+    this.state = {
+      ...this.state,
+    };
   }
 
   componentWillReceiveProps(props) {
@@ -167,8 +174,31 @@ export default class MissionFormWrap extends FormWrap {
     }
   }
 
+  handlePrint = (ev, print_format) => {
+    const f = this.state.formState;
+    const { flux } = this.context;
+    const data = {
+      template_id: f.id,
+      size: `a${print_format}`,
+    };
+    const mapKey = `map${keyGlobal}/${data.size}`;
+
+    global[mapKey].once('postcompose', async (event) => {
+      const routeImageBase64Data = await resizeBase64(event.context.canvas.toDataURL('image/png'));
+      data.image = routeImageBase64Data;
+
+      flux.getActions('missions').printMissionTemplate(data).then(({ blob }) => {
+        printData(blob);
+      });
+    });
+
+    global[mapKey].render();
+  }
+
+
   render() {
     if (this.props.formType === 'ViewForm') {
+      // Создание шаблона задания
       return (
         <Div hidden={!this.props.showForm}>
           <MissionTemplateForm
@@ -178,12 +208,15 @@ export default class MissionFormWrap extends FormWrap {
             show={this.props.showForm}
             onHide={this.props.onFormHide}
             template
+            handlePrint={this.handlePrint}
+            keyGlobal={keyGlobal}
             {...this.state}
           />
         </Div>
       );
     }
 
+    // Создание задания по шаблону
     return (
       <Div hidden={!this.props.showForm}>
         <MissionsCreationForm

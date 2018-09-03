@@ -1,0 +1,21 @@
+.hidden_map {
+  position: absolute;
+  height: 0px;
+  overflow: hidden;
+
+  .a3 {
+    width: 812px;
+    height: 1148px;
+  }
+  .a4 {
+    width: 528px;
+    height: 747px;
+  }
+
+  *, .route-creating>.openlayers-container {
+    height: 100%;
+  }
+  .ol-overlaycontainer-stopevent {
+    display: none;
+  }
+}

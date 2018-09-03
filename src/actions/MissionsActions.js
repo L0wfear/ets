@@ -14,6 +14,7 @@ import {
   DutyMissionService,
   DutyMissionTemplateService,
   MissionPrintService,
+  MissionTemplatePrintService,
   DutyMissionPrintService,
   MissionDataService,
   CarDutyMissionService,
@@ -201,6 +202,12 @@ export default class MissionsActions extends Actions {
     delete payload.number;
     delete payload.company_id;
     return MissionTemplateService.put(payload, null, 'json');
+  }
+
+  printMissionTemplate(data) {
+    const payload = _.cloneDeep(data);
+
+    return MissionTemplatePrintService.postBlob(payload);
   }
 
 

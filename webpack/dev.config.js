@@ -1,4 +1,5 @@
 const path = require('path');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
 const notifyStats = require('./utils/notifyStats');
 const version = require('./utils/getVersion');
@@ -6,7 +7,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const host = 'localhost';
 const port = 3000;
 const alias = require('./alias');
-
 const stand = process.env.STAND || 'development';
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader'] },
-      { test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader', 'ts-loader'] },
+      { test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'ts-loader?transpileOnly'] },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.(jpe?g|png|gif)$/, loader: 'url-loader?limit=1000000&name=images/[name].[ext]' },
       { test: /\.(eot|woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?/, loader: 'url-loader?limit=100000&name=fonts/[name].[ext]' },
@@ -55,6 +55,7 @@ module.exports = {
     extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     // set global vars
     new webpack.DefinePlugin({

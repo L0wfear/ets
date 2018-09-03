@@ -26,8 +26,8 @@ export default class PointsActions extends Actions {
     return true;
   }
 
-  setSingleCarTrack(number) {
-    return number;
+  setSingleCarTrack(gov_number, singleCarAsuodsId) {
+    return { gov_number, singleCarAsuodsId };
   }
 
   setSingleCarTrackDates(dates) {

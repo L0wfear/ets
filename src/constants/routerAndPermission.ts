@@ -1,5 +1,5 @@
-import monitor from 'components/monitor/config-data';
-import monitorNew from 'components/monitor/new/config-data';
+import monitorOld from 'components/monitor/config-data';
+import monitor from 'components/monitor/new/config-data';
 
 import coverageReports from 'components/coverage_reports/config-data';
 import dashboardOld from 'components/dashboard/config-data/index';
@@ -20,8 +20,8 @@ const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
 
 const routerAndPermission = {
+  monitorOld,
   monitor,
-  monitorNew,
   coverageReports,
   dashboardOld,
   dashboard,

@@ -23,6 +23,80 @@ import MissionsCreationForm from './MissionsCreationForm.jsx';
 
 const keyGlobal = 'mission_template_hidden';
 
+export const createMissions = async (flux, element, payload) => {
+  let error = false;
+  try {
+    await flux.getActions('missions').createMissions(element, payload);
+  } catch ({ error_text: e }) {
+    error = true;
+    if (e && e.message.code === 'no_active_waybill') {
+      let cancel = false;
+      try {
+        await confirmDialog({
+          title: 'Для ТС не существует активного ПЛ',
+          body: 'Создать черновик ПЛ?',
+        });
+      } catch (err) {
+        cancel = true;
+      }
+      if (!cancel) {
+        const newPayload = {
+          mission_source_id: payload.mission_source_id,
+          passes_count: payload.passes_count,
+          date_start: payload.date_start,
+          date_end: payload.date_end,
+          assign_to_waybill: 'assign_to_new_draft',
+        };
+        await createMissions(element, newPayload);
+      }
+    }
+    if (e && e.message.code === 'invalid_period') {
+      const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
+
+      const body = self => <div>
+        <div>{e.message.message}</div><br />
+        <center>Введите даты задания:</center>
+        <IntervalPicker
+          interval={self.state.interval}
+          onChange={interval => self.setState({ interval })}
+        />
+      </div>;
+
+      let cancel = false;
+      let state;
+      try {
+        state = await confirmDialog({
+          title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
+          body,
+          checkOnOk: (self) => {
+            const { state: { interval } } = self;
+            if (!interval || interval.some(date => !date)) {
+              global.NOTIFICATION_SYSTEM.notify('Поля дат задания должны быть заполнены', 'warning');
+              return false;
+            }
+            return true;
+          },
+        });
+      } catch (err) {
+        cancel = true;
+      }
+      if (!cancel) {
+        const { interval = [getToday9am(), getTomorrow9am()] } = state;
+
+        const newPayload = {
+          mission_source_id: payload.mission_source_id,
+          passes_count: payload.passes_count,
+          date_start: interval[0],
+          date_end: interval[1],
+          assign_to_waybill: payload.assign_to_waybill,
+        };
+        await createMissions(element, newPayload);
+      }
+    }
+  }
+  return error;
+};
+
 @autobind
 export default class MissionFormWrap extends FormWrap {
 

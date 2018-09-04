@@ -57,14 +57,14 @@ class Map extends React.Component<PropsMap, StateMap> {
   mousePointerMove = (olEvent) => {
     mousePointerMove(
       olEvent,
-      this.state.enableInteractions && this.props.disabledMouseSingleClick,
+      this.state.enableInteractions && !this.props.disabledMouseSingleClick,
     );
   }
 
   mouseSingleClick = (olEvent) => {
     mouseSingleClick(
       olEvent,
-      this.state.enableInteractions && this.props.disabledMouseSingleClick,
+      this.state.enableInteractions && !this.props.disabledMouseSingleClick,
     );
   }
 

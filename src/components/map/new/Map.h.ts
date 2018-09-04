@@ -16,7 +16,6 @@ export type PropsMap = {
   disabledMousePointerMove?: boolean;
   disabledMouseSingleClick?: boolean;
   disabledMouseMoveend?: boolean;
-  disabledouseSingleClick?: boolean;
 };
 
 export module MapUtils {

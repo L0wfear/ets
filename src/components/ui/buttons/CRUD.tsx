@@ -30,8 +30,8 @@ export const ButtonCreateNew: React.SFC<ICRUDButton & { permission: string }> = 
   </ButtonPermission>
 ;
 
-export const ButtonReadNew: React.SFC<ICRUDButton & { permission: string }> = ({ permission, onClick, disabled, buttonName = 'Просмотреть' }) =>
-  <ButtonPermission id="open-update-form" bsSize="small" onClick={onClick} permission={permission} disabled={disabled}>
+export const ButtonReadNew: React.SFC<ICRUDButton & { permission: string }> = ({ permission, permissions, onClick, disabled, buttonName = 'Просмотреть' }) =>
+  <ButtonPermission id="open-update-form" bsSize="small" onClick={onClick} permission={permission} permissions={permissions} disabled={disabled}>
     <Glyphicon glyph="search" /> {buttonName}
   </ButtonPermission>
 ;

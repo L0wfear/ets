@@ -622,6 +622,7 @@ class WaybillForm extends Form {
       appConfig,
       workModeOptions,
       employeesIndex = {},
+      isPermittedByKey = {},
     } = this.props;
 
     let taxesControl = false;
@@ -730,7 +731,7 @@ class WaybillForm extends Form {
                     modalKey={modalKey}
                     label="Подразделение"
                     error={errors.structure_id}
-                    disabled={STRUCTURE_FIELD_READONLY || !(IS_CREATING || IS_DRAFT)}
+                    disabled={STRUCTURE_FIELD_READONLY || !(IS_CREATING || IS_DRAFT) || !isPermittedByKey.update}
                     clearable={STRUCTURE_FIELD_DELETABLE}
                     options={STRUCTURES}
                     emptyValue={null}
@@ -744,7 +745,7 @@ class WaybillForm extends Form {
                   label="Сопровождающий"
                   error={errors.accompanying_person_id}
                   clearable
-                  disabled={IS_ACTIVE || IS_CLOSED}
+                  disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                   options={EMPLOYEES}
                   value={state.accompanying_person_id}
                   onChange={this.handleChange.bind(this, 'accompanying_person_id')}
@@ -760,6 +761,7 @@ class WaybillForm extends Form {
                   error={errors.plan_departure_date}
                   date={state.plan_departure_date}
                   onChange={this.handlePlanDepartureDates.bind(this, 'plan_departure_date')}
+                  disabled={!isPermittedByKey.update}
                 />
               </Col>
             </Div>
@@ -773,6 +775,7 @@ class WaybillForm extends Form {
                   date={state.plan_arrival_date}
                   min={state.plan_departure_date}
                   onChange={this.handlePlanDepartureDates.bind(this, 'plan_arrival_date')}
+                  disabled={!isPermittedByKey.update}
                 />
               </Col>
             </Div>
@@ -784,11 +787,11 @@ class WaybillForm extends Form {
                 error={errors.work_mode_id}
                 clearable
                 hidden={!(IS_CREATING || IS_DRAFT)}
-                disabled={IS_ACTIVE || IS_CLOSED}
+                disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                 options={workModeOptions}
                 value={state.work_mode_id}
                 onChange={this.handleChange.bind(this, 'work_mode_id')}
-              />
+                />
             </Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={3}>
@@ -807,7 +810,7 @@ class WaybillForm extends Form {
                   label="Выезд факт."
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
-                  disabled={IS_CLOSED}
+                  disabled={IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                   onChange={this.handleChange.bind(this, 'fact_departure_date')}
                 />
               </Col>
@@ -827,7 +830,7 @@ class WaybillForm extends Form {
                   label="Возвращение факт."
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
-                  disabled={IS_CLOSED}
+                  disabled={IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                   onChange={this.handleChange.bind(this, 'fact_arrival_date')}
                 />
               </Col>
@@ -847,6 +850,7 @@ class WaybillForm extends Form {
                 options={CARS}
                 value={state.car_id}
                 onChange={this.onCarChange}
+                disabled={!isPermittedByKey.update}
               />
 
               <Field
@@ -871,6 +875,7 @@ class WaybillForm extends Form {
                 options={TRAILERS}
                 value={state.trailer_id}
                 onChange={this.handleChange.bind(this, 'trailer_id')}
+                disabled={!isPermittedByKey.update}
               />
 
               <Field
@@ -903,6 +908,7 @@ class WaybillForm extends Form {
                 options={DRIVERS}
                 value={state.driver_id}
                 onChange={this.handleChange.bind(this, 'driver_id')}
+                disabled={!isPermittedByKey.update}
               />
 
               <Field
@@ -936,7 +942,8 @@ class WaybillForm extends Form {
                     type="number"
                     label="Выезд из гаража, км"
                     error={errors.odometr_start}
-                    value={state.odometr_start} disabled={IS_ACTIVE || IS_CLOSED}
+                    value={state.odometr_start}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'odometr_start')}
                   />
 
@@ -947,7 +954,7 @@ class WaybillForm extends Form {
                     error={errors.odometr_end}
                     value={state.odometr_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                     onChange={this.handleChange.bind(this, 'odometr_end')}
                   />
 
@@ -970,7 +977,7 @@ class WaybillForm extends Form {
                     label="Выезд из гаража, м/ч"
                     error={errors.motohours_start}
                     value={state.motohours_start}
-                    disabled={IS_ACTIVE || IS_CLOSED}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'motohours_start')}
                   />
 
@@ -981,7 +988,7 @@ class WaybillForm extends Form {
                     error={errors.motohours_end}
                     value={state.motohours_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                     onChange={this.handleChange.bind(this, 'motohours_end')}
                   />
 
@@ -1004,7 +1011,7 @@ class WaybillForm extends Form {
                     label="Выезд из гаража, м/ч"
                     error={errors.motohours_equip_start}
                     value={state.motohours_equip_start}
-                    disabled={IS_ACTIVE || IS_CLOSED}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'motohours_equip_start')}
                   />
 
@@ -1014,7 +1021,7 @@ class WaybillForm extends Form {
                     label="Возвращение в гараж, м/ч"
                     error={errors.motohours_equip_end}
                     value={state.motohours_equip_end}
-                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                    hidden={!(IS_ACTIVE || IS_CLOSED) || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                     disabled={IS_CLOSED && !this.state.canEditIfClose}
                     onChange={this.handleChange.bind(this, 'motohours_equip_end')}
                   />
@@ -1039,7 +1046,7 @@ class WaybillForm extends Form {
                     modalKey={modalKey}
                     label="Тип топлива"
                     error={errors.fuel_type}
-                    disabled={IS_ACTIVE || IS_CLOSED}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     options={FUEL_TYPES}
                     value={state.fuel_type}
                     onChange={this.handleChange.bind(this, 'fuel_type')}
@@ -1051,7 +1058,7 @@ class WaybillForm extends Form {
                     label="Выезд, л"
                     error={errors.fuel_start}
                     value={state.fuel_start}
-                    disabled={IS_ACTIVE || IS_CLOSED}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'fuel_start')}
                   />
 
@@ -1061,7 +1068,7 @@ class WaybillForm extends Form {
                     label="Выдать, л"
                     error={errors.fuel_to_give}
                     value={state.fuel_to_give}
-                    disabled={(IS_ACTIVE || IS_CLOSED)}
+                    disabled={(IS_ACTIVE || IS_CLOSED) || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'fuel_to_give')}
                   />
 
@@ -1072,7 +1079,7 @@ class WaybillForm extends Form {
                     error={errors.fuel_given}
                     value={state.fuel_given}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !this.state.canEditIfClose}
+                    disabled={IS_CLOSED && !this.state.canEditIfClose || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'fuel_given')}
                   />
 
@@ -1094,7 +1101,7 @@ class WaybillForm extends Form {
                     error={errors.fact_fuel_end}
                     value={state.fact_fuel_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={!(IS_ACTIVE || this.state.canEditIfClose)}
+                    disabled={!(IS_ACTIVE || this.state.canEditIfClose) || !isPermittedByKey.update}
                     onChange={this.handleChange}
                     boundKeys={boundKeysObj.fact_fuel_end}
                     showRedBorder={state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)}
@@ -1109,7 +1116,7 @@ class WaybillForm extends Form {
           <Row>
             <Col md={8}>
               <Taxes
-                hidden={!(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
+                hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
                 readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 title={'Расчет топлива по норме'}
                 taxes={state.tax_data}
@@ -1121,7 +1128,7 @@ class WaybillForm extends Form {
                 type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               />
               <Taxes
-                hidden={!(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !!!state.equipment_tax_data)}
+                hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !!!state.equipment_tax_data)}
                 readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}
                 operations={this.state.equipmentOperations}
@@ -1152,7 +1159,7 @@ class WaybillForm extends Form {
                   className="task-container"
                   options={MISSIONS.concat(OUTSIDEMISSIONS)}
                   value={state.mission_id_list}
-                  disabled={isEmpty(state.car_id) || IS_CLOSED}
+                  disabled={isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update}
                   clearable={false}
                   onChange={this.handleMissionsChange}
                 />
@@ -1163,7 +1170,7 @@ class WaybillForm extends Form {
                   id="create-mission"
                   style={{ marginTop: 10 }}
                   onClick={this.createMission}
-                  disabled={isEmpty(state.car_id) || IS_CLOSED}
+                  disabled={isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update}
                 >
                   Создать задание
                 </ButtonCreateMission>
@@ -1184,7 +1191,7 @@ class WaybillForm extends Form {
                   <div className="form-group">
                     <div className="checkbox">
                       <label htmlFor="show-fuel-consumption">
-                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
+                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
                         <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
                       </label>
                     </div>
@@ -1197,7 +1204,7 @@ class WaybillForm extends Form {
                     type="select"
                     label="Тип топлива"
                     error={errors.equipment_fuel_type}
-                    disabled={IS_ACTIVE || IS_CLOSED}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     options={FUEL_TYPES}
                     value={state.equipment_fuel_type}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
@@ -1208,7 +1215,7 @@ class WaybillForm extends Form {
                     label="Выезд, л"
                     error={errors.equipment_fuel_start}
                     value={state.equipment_fuel_start}
-                    disabled={IS_ACTIVE || IS_CLOSED}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_start')}
                   />
                   <Field
@@ -1217,7 +1224,7 @@ class WaybillForm extends Form {
                     label="Выдать, л"
                     error={errors.equipment_fuel_to_give}
                     value={state.equipment_fuel_to_give}
-                    disabled={(IS_ACTIVE || IS_CLOSED)}
+                    disabled={(IS_ACTIVE || IS_CLOSED) || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_to_give')}
                   />
                   <Field
@@ -1227,7 +1234,7 @@ class WaybillForm extends Form {
                     error={errors.equipment_fuel_given}
                     value={state.equipment_fuel_given}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !(this.state.canEditIfClose && !!state.equipment_fuel)}
+                    disabled={IS_CLOSED && !(this.state.canEditIfClose && !!state.equipment_fuel) || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_given')}
                   />
                   <Field
@@ -1270,7 +1277,7 @@ class WaybillForm extends Form {
                   id="waybill-comment"
                   type="text"
                   label="Комментарий"
-                  disabled={IS_CLOSED}
+                  disabled={IS_CLOSED || !isPermittedByKey.update}
                   value={state.comment}
                   onChange={this.handleChange.bind(this, 'comment')}
                   error={errors.comment}
@@ -1300,7 +1307,7 @@ class WaybillForm extends Form {
                     id={'downtime-hours-work'}
                     type="string"
                     label="Работа"
-                    disabled={IS_CLOSED}
+                    disabled={IS_CLOSED || !isPermittedByKey.update}
                     value={state.downtime_hours_work}
                     onChange={this.handleChange.bind(this, 'downtime_hours_work')}
                     error={errors.downtime_hours_work}
@@ -1311,7 +1318,7 @@ class WaybillForm extends Form {
                     id={'downtime-hours-duty'}
                     type="string"
                     label="Дежурство"
-                    disabled={IS_CLOSED}
+                    disabled={IS_CLOSED || !isPermittedByKey.update}
                     value={state.downtime_hours_duty}
                     onChange={this.handleChange.bind(this, 'downtime_hours_duty')}
                     error={errors.downtime_hours_duty}
@@ -1326,7 +1333,7 @@ class WaybillForm extends Form {
                     id={'downtime-hours-dinner'}
                     type="string"
                     label="Обед"
-                    disabled={IS_CLOSED}
+                    disabled={IS_CLOSED || !isPermittedByKey.update}
                     value={state.downtime_hours_dinner}
                     onChange={this.handleChange.bind(this, 'downtime_hours_dinner')}
                     error={errors.downtime_hours_dinner}
@@ -1337,7 +1344,7 @@ class WaybillForm extends Form {
                     id={'downtime-hours-repair'}
                     type="string"
                     label="Ремонт"
-                    disabled={IS_CLOSED}
+                    disabled={IS_CLOSED || !isPermittedByKey.update}
                     value={state.downtime_hours_repair}
                     onChange={this.handleChange.bind(this, 'downtime_hours_repair')}
                     error={errors.downtime_hours_repair}
@@ -1367,6 +1374,7 @@ class WaybillForm extends Form {
             handlePrint={this.props.handlePrint}
             handlePrintFromMiniButton={this.props.handlePrintFromMiniButton}
             entity={entity}
+            isPermittedByKey={isPermittedByKey}
           />
         </Modal.Footer>
 

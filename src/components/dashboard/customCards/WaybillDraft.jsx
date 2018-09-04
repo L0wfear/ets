@@ -37,7 +37,8 @@ export default class WaybillDraft extends WaybillClosed {
   }
 
   renderItems() {
-    const canView = this.context.flux.getStore('session').getPermission('waybill.read');
+    const canView = this.context.flux.getStore('session').getPermission('waybill.read')
+    || this.context.flux.getStore('session').getPermission('waybill.departure_and_arrival_values');
 
     return this.props.items.map((item, i) => {
       const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.subItems && item.subItems.length) || (this.action), 'no-pointer-events': !canView });

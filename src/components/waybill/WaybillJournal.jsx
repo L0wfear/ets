@@ -1,7 +1,8 @@
 import React from 'react';
 import { autobind } from 'core-decorators';
-import { Glyphicon, ButtonToolbar, Dropdown, MenuItem } from 'react-bootstrap';
+import { Glyphicon, ButtonToolbar, Dropdown, MenuItem, Button } from 'react-bootstrap';
 import { get } from 'lodash';
+import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
 
 import { getServerSortingField, extractTableMeta, toServerFilteringObject } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
@@ -13,6 +14,7 @@ import WaybillFormWrap from './WaybillFormWrap.jsx';
 import WaybillPrintForm from './WaybillPrintForm.jsx';
 import WaybillsTable, { getTableMeta } from './WaybillsTable.jsx';
 import permissions from 'components/waybill/config-data/permissions';
+
 @connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
   entity: 'waybill',
@@ -50,6 +52,12 @@ export default class WaybillJournal extends CheckableElementsList {
     flux.getActions('employees').getDrivers();
     flux.getActions('objects').getCars();
     flux.getActions('objects').getWorkMode();
+
+    this.setState({
+      readPermission: [permissions.read, permissions.departure_and_arrival_values].some(pName => (
+        flux.getStore('session').state.userPermissions.includes(pName)
+      )),
+    });
   }
 
   async componentWillUpdate(nextProps, nextState) {
@@ -110,7 +118,47 @@ export default class WaybillJournal extends CheckableElementsList {
    * @override
    */
   getButtons() {
-    const buttons = super.getButtons();
+    // Операции, заданные в статической переменной operations класса-наследника
+    const operations = this.constructor.operations || [];
+    const buttons = [];
+
+    if (operations.indexOf('CREATE') > -1) {
+      buttons.push(
+        <ButtonCreateNew
+          key={'button-create'}
+          buttonName="Создать"
+          onClick={this.createElement}
+          permission={this.permissions.create}
+        />
+      );
+    }
+    if (operations.indexOf('READ') > -1) {
+      buttons.push(
+        <ButtonReadNew
+          key={'button-read'}
+          buttonName="Просмотреть"
+          onClick={this.showForm}
+          permissions={[this.permissions.read, this.permissions.departure_and_arrival_values]}
+          disabled={this.checkDisabledRead()}
+        />
+      );
+    }
+    if (operations.indexOf('DELETE') > -1) {
+      buttons.push(
+        <ButtonDeleteNew
+          key={'button-delete'}
+          buttonName="Удалить"
+          onClick={this.removeCheckedElements}
+          permission={this.permissions.delete}
+          disabled={this.checkDisabledDelete()}
+        />
+      );
+    }
+    if (this.props.exportable) {
+      buttons.push(
+        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>
+      );
+    }
 
     buttons.push(
       <ButtonToolbar key={'print-waybil-group'} className="waybill-button-toolbar">

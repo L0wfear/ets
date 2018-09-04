@@ -6,4 +6,5 @@ export default {
   update_closed: 'waybill.update_closed',
   plate: 'waybill.plate',
   delete: 'waybill.delete',
+  departure_and_arrival_values: 'waybill.departure_and_arrival_values',
 };

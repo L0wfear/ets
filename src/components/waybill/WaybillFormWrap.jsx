@@ -17,6 +17,7 @@ import {
 } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
 import { FluxContext } from 'utils/decorators';
+import permissions from 'components/waybill/config-data/permissions';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import Taxes from './Taxes.jsx';
@@ -41,6 +42,26 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   return waybill;
 }
 
+const checkDataForDepartureAndArrivalValues = [
+  'fact_departure_date',
+  'fact_arrival_date',
+  'odometr_end',
+  'motohours_end',
+  'motohours_equip_end',
+];
+
+const filterFormErrorByPerission = (isPermittedByKey, formErrors) => (
+  Object.entries(formErrors).reduce((newFormError, [key, value]) => {
+    if (isPermittedByKey.update) {
+      newFormError[key] = value;
+    } else if (isPermittedByKey.departure_and_arrival_values && checkDataForDepartureAndArrivalValues.includes(key)) {
+      newFormError[key] = value;
+    }
+
+    return newFormError;
+  }, {})
+)
+
 @FluxContext
 @autobind
 export default class WaybillFormWrap extends FormWrap {
@@ -48,7 +69,7 @@ export default class WaybillFormWrap extends FormWrap {
     onCallback: () => {},
   }
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
       formState: null,
@@ -56,6 +77,10 @@ export default class WaybillFormWrap extends FormWrap {
       canSave: false,
       canClose: false,
       canPrint: false,
+      isPermittedByKey: {
+        update: context.flux.getStore('session').state.userPermissions.includes(permissions.update),
+        departure_and_arrival_values: context.flux.getStore('session').state.userPermissions.includes(permissions.departure_and_arrival_values),
+      },
     };
   }
 
@@ -114,13 +139,17 @@ export default class WaybillFormWrap extends FormWrap {
 
           if (props.element.status === 'active') {
             this.schema = waybillClosingSchema;
-            const formErrors = this.validate(waybill, {});
+            const formErrors = filterFormErrorByPerission(
+              this.state.isPermittedByKey,
+              this.validate(waybill, {}),
+            );
+
             this.setState({
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: !clone(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
-              canClose: !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
+              canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !clone(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
+              canClose: this.state.isPermittedByKey.update && !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
               timeId,
             });
           } else {
@@ -132,12 +161,17 @@ export default class WaybillFormWrap extends FormWrap {
           }
         } else if (props.element.status === 'draft') {
           this.schema = waybillSchema;
+          const formErrors = filterFormErrorByPerission(
+            this.state.isPermittedByKey,
+            this.validate(waybill, {}),
+          );
+
           this.setState({
             formState: waybill,
             canPrint: true,
-            canSave: !filter(this.validate(waybill, {})).length,
-            canClose: !filter(this.validate(waybill, {})).length,
-            formErrors: this.validate(waybill, {}),
+            canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !formErrors.length,
+            canClose: this.state.isPermittedByKey.update && formErrors.length,
+            formErrors,
             timeId,
           });
         }
@@ -172,11 +206,13 @@ export default class WaybillFormWrap extends FormWrap {
 
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
-      formErrors = this.validate(formState, formErrors);
     } else if (formState.status && formState.status !== 'draft') {
       this.schema = waybillClosingSchema;
-      formErrors = this.validate(formState, formErrors);
     }
+    formErrors = filterFormErrorByPerission(
+      this.state.isPermittedByKey,
+      this.validate(formState, formErrors),
+    );
 
     newState.canSave = !filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
@@ -192,11 +228,14 @@ export default class WaybillFormWrap extends FormWrap {
 
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
-      formErrors = this.validate(formState, formErrors);
     } else if (formState.status && formState.status !== 'draft') {
       this.schema = waybillClosingSchema;
-      formErrors = this.validate(formState, formErrors);
     }
+
+    formErrors = filterFormErrorByPerission(
+      this.state.isPermittedByKey,
+      this.validate(formState, formErrors),
+    );
 
     newState.canSave = !filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
@@ -456,6 +495,7 @@ export default class WaybillFormWrap extends FormWrap {
           entity={entity || 'waybill'}
           handlePrintFromMiniButton={this.handlePrintFromMiniButton}
           clearSomeData={this.clearSomeData}
+          isPermittedByKey={this.state.isPermittedByKey}
           {...this.state}
         />
       </Div>

@@ -1214,9 +1214,14 @@ body.application {
         border-radius: 6px;
         padding: 6px 1pc;
 
-        &.maxHeight300 {
-          max-width: 300px;
-          overflow-y: auto;
+        &.companies {
+          padding: 6px 0 6px 1pc;
+          >.legen_option {
+            padding-right: 1pc;
+          }
+          >.car_block_legend>.legen_option {
+            padding-right: 1pc;
+          }
         }
 
         &.dark {
@@ -1296,6 +1301,14 @@ div.car_legend-active {
   margin: 5px 0;
   &.left {
     margin-left: 5px;
+  }
+
+  &.companies {
+    max-width: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+
+    padding-right: -1pc;
   }
 }
 

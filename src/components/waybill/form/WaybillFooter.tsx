@@ -11,6 +11,7 @@ const Div = enhanceWithPermissions({})(DivForEnhance);
 const savePermissions = [
   permissions.update_closed,
   permissions.update,
+  permissions.departure_and_arrival_values,
 ];
 
 interface IPropsWaybillFooter {
@@ -29,6 +30,10 @@ interface IPropsWaybillFooter {
   handleClose(taxes: any): void;
   handlePrint(is: boolean): void;
   message: string;
+  isPermittedByKey: {
+    update: boolean;
+    departure_and_arrival_values: boolean;
+  };
 }
 
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
@@ -46,7 +51,7 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
        <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
       </OverlayTrigger>
     </Div>
-    <Div className="inline-block" permission={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
+    <Div hidden={!props.isPermittedByKey.update}className="inline-block" permission={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
       <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
         <Dropdown.Toggle disabled={!props.canSave}>
           <Glyphicon glyph="print" />
@@ -70,10 +75,10 @@ const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
         </Dropdown.Menu>
       </Dropdown>&nbsp;
     </Div>
-    <Div permissions={savePermissions} className={'inline-block'} hidden={props.state.status === 'closed' && !props.canEditIfClose}>
+    <Div permissions={savePermissions} className={'inline-block'} hidden={(props.state.status === 'closed' && !props.canEditIfClose) || (!props.isPermittedByKey.update && !props.isPermittedByKey.departure_and_arrival_values)}>
       <Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
     </Div>
-    <Div permission={permissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
+    <Div hiddne={props.isPermittedByKey.update} permission={permissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
       <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
     </Div>
   </Div>;

@@ -32,7 +32,8 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   state = {
     fuelEventPoint: this.props.fuelEventPoint,
     front_cars_sensors_level: this.props.front_cars_sensors_level,
-  }
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -106,12 +107,12 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
     if (fuelEventPoint) {
       try {
         const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
-        
+
         if (featureOld) {
           this.props.removeFeaturesFromSource(featureOld);
         }
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
       }
     }
   }
@@ -150,8 +151,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       carInfoSetFuelEventPoint(parkingPoint),
     )
-  )
-})
+  ),
+});
 
 export default hocAll(
   withShowByProps({

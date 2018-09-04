@@ -19,10 +19,11 @@ type PropsMapWrap = {
   disabledByType: any;
   enableInteractions: boolean;
   disabledCenterOn: boolean;
-}
+  disabledouseSingleClick: boolean;
+};
 
 const MapWrap: React.SFC<PropsMapWrap> = (props) => (
-  <Map disabledByType={props.disabledByType} enableInteractions={props.enableInteractions} disabledCenterOn={props.disabledCenterOn} >
+  <Map disabledByType={props.disabledByType} enableInteractions={props.enableInteractions} disabledCenterOn={props.disabledCenterOn} disabledouseSingleClick={props.disabledouseSingleClick}>
     {
       ({ map, zoom, centerOn }) => (
         <div>
@@ -48,7 +49,8 @@ const mapStateToProps = state => ({
   disabledByType: state.monitorPage.carInfo.statusTC,
   enableInteractions: !(!!state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR || state.monitorPage.carInfo.playTrack.status === 'play'),
   disabledCenterOn: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR && !(state.monitorPage.carInfo.playTrack.status === 'play'),
-})
+  disabledouseSingleClick: state.monitorPage.measureActive,
+});
 
 export default connect(
   mapStateToProps,

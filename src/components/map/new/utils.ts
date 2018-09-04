@@ -64,7 +64,7 @@ const checkOnEnableInteractions: MapUtils.checkOnEnableInteractionsFunc = (enabl
     return {
       hasChange: true,
       newChnagedStateObj: {
-        enableInteractions
+        enableInteractions,
       },
     };
   }
@@ -117,7 +117,7 @@ const checkOnHitByEvent: MapUtils.checkOnHitByEventFunc = (map, pixel) => {
     (feature) => (
       hasFeatureUndoMouse = !feature.get('notSelected')
     ),
-  )
+  );
 
   return hasFeatureUndoMouse;
 };
@@ -127,8 +127,8 @@ const checkOnHitByEvent: MapUtils.checkOnHitByEventFunc = (map, pixel) => {
  * @param eventOl ol событие
  * @param enableInteractions доступна ли интерактивность
  */
-export const mousePointerMove: MapUtils.mousePointerMoveFunc = (eventOl, enableInteractions) => {
-  if (enableInteractions) {
+export const mousePointerMove: MapUtils.mousePointerMoveFunc = (eventOl, disabledMouseSingleClick) => {
+  if (disabledMouseSingleClick) {
 
     const method = checkOnHitByEvent(eventOl.map, eventOl.pixel) ? 'add' : 'remove';
 
@@ -151,17 +151,17 @@ const handleClickOnRowLayer: MapUtils.handleClickOnRowLayerFunc = (eventOl) => (
       }
 
       return false;
-    }
+    },
   )
 );
 
 /**
  * хендлер на клик на карте
  * @param eventOl ol событие
- * @param enableInteractions доступна ли интерактивность 
+ * @param enableInteractions доступна ли интерактивность
  */
-export const mouseSingleClick: MapUtils.mouseSingleClickFunc = (eventOl, enableInteractions) => {
-  if (enableInteractions) {
+export const mouseSingleClick: MapUtils.mouseSingleClickFunc = (eventOl, disabledMouseSingleClick) => {
+  if (disabledMouseSingleClick) {
     handleClickOnRowLayer(eventOl);
   }
 };

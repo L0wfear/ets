@@ -5,16 +5,31 @@ type PropsList = {
   items: any[];
   handleClick: any;
   classNameContainer?: string;
-}
+  addIndex?: number;
+};
 
-const List: React.SFC<PropsList> = props => (
-  <div>
+const List: React.SFC<PropsList> = ({ addIndex = 0, ...props }) => (
+  <ul>
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (
-        <div key={index} data-path={`${index + 2}`} className={cx({ pointer: subItems.length, 'no-pointer-events': !subItems.length }, props.classNameContainer)} onClick={props.handleClick} title={item.tooltip || title}>{title}</div>
+        <li
+          key={index}
+          data-path={`${index + addIndex}`}
+          className={cx(
+            {
+              pointer: subItems.length,
+              'no-pointer-events': !subItems.length,
+            },
+            props.classNameContainer
+          )}
+          onClick={props.handleClick}
+          title={item.tooltip || title}
+        >
+          {title}
+        </li>
       ))
     }
-  </div>
+  </ul>
 );
                
 export default List;

@@ -20,8 +20,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
     const index = Number.parseInt((path as string).split('/').slice(-1)[0])
 
     this.props.setInfoData(
-      this.props.items[index].subItems,
-      index,
+      this.props.items[index],
     );
   }
 
@@ -34,10 +33,10 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
       <div>
         <List items={firstTwoItem} handleClick={this.handleClick} classNameContainer="line_data" />
         { 
-          collapsetItems.length ? 
+          collapsetItems.length ?
           (
             <CollapseButton dependentData={collapsetItems}>
-              <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" />
+              <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
             </CollapseButton>
           )
           :
@@ -55,9 +54,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setInfoData: (infoData, index) => (
+  setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInWaybillCompleted(infoData, index)
+      dashboardSetInfoDataInWaybillCompleted(infoData)
     )
   ),
 });

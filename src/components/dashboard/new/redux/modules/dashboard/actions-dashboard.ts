@@ -165,14 +165,11 @@ export const dashboardSetInfoDataInWaybillInProgress = (infoData: WaybillInProgr
   },
 });
 
-export const dashboardSetInfoDataInWaybillCompleted = (infoData: WaybillCompletedInfoDataType = null, activeIndex = 0) => ({
+export const dashboardSetInfoDataInWaybillCompleted = (infoData: WaybillCompletedInfoDataType = null) => ({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'waybill_completed',
     infoData,
-    other: {
-      activeIndex,
-    },
   },
 });
 

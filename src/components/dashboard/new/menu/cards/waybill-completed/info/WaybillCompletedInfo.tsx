@@ -88,7 +88,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
     });
-  };
+  }
 
   render() {
     return (

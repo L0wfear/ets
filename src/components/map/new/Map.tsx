@@ -57,14 +57,14 @@ class Map extends React.Component<PropsMap, StateMap> {
   mousePointerMove = (olEvent) => {
     mousePointerMove(
       olEvent,
-      this.state.enableInteractions,
+      this.state.enableInteractions && this.props.disabledMouseSingleClick,
     );
   }
 
   mouseSingleClick = (olEvent) => {
     mouseSingleClick(
       olEvent,
-      this.state.enableInteractions,
+      this.state.enableInteractions && this.props.disabledMouseSingleClick,
     );
   }
 
@@ -92,7 +92,7 @@ class Map extends React.Component<PropsMap, StateMap> {
         <div ref={this.setContainer} className="openlayers-container" />
         { this.props.children(this.state) }
       </div>
-    )
+    );
   }
 }
 

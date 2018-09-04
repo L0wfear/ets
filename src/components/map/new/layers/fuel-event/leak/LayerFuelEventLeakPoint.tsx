@@ -22,9 +22,14 @@ type PropsLayerFuelEventLeakPoint = {
 };
 
 type StateLayerFuelEventLeakPoint = {
+  leakData: any;
 };
 
 class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoint, StateLayerFuelEventLeakPoint> {
+  state = {
+    leakData: this.props.leakData,
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventsLeak', zIndex: 11 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -38,9 +43,21 @@ class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoi
     this.props.monitorPageSetFuelEventsLeakOverlayData();
   }
 
+  componentWillReceiveProps({ leakData }) {
+    if (this.state.leakData !== leakData) {
+      this.setState({ leakData });
+    }
+  }
+
+  componentDidUpdate({ leakData }) {
+    if (leakData !== this.state.leakData) {
+      this.props.removeFeaturesFromSource(null, true);
+      this.drawFuelEventsLeakPoints(this.state.leakData);
+    }
+  }
+
   singleclick = (feature) => {
     const id = (feature as any).getId();
-
     const leak = this.props.leakData[id];
 
     if (leak) {
@@ -49,16 +66,18 @@ class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoi
   }
 
   drawFuelEventsLeakPoints(leakData) {
-    for (let id in leakData) {
-      const currPoint = leakData[id];
+    for (const id in leakData) {
+      if (id in leakData) {
+        const currPoint = leakData[id];
 
-      const feature = new ol.Feature({
-        geometry: GeoJSON.readGeometry(currPoint.shape),
-      });
+        const feature = new ol.Feature({
+          geometry: GeoJSON.readGeometry(currPoint.shape),
+        });
 
-      feature.setId(id);
-      feature.setStyle(getStyleForFuelEventLeak());
-      this.props.addFeaturesToSource(feature);
+        feature.setId(id);
+        feature.setStyle(getStyleForFuelEventLeak());
+        this.props.addFeaturesToSource(feature);
+      }
     }
   }
 
@@ -80,9 +99,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       monitorPageSetFuelEventsLeakOverlayData(
         overlayData,
-      )
+      ),
     )
-  )
+  ),
 });
 
 export default hocAll(

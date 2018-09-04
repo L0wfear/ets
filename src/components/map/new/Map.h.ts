@@ -16,8 +16,8 @@ export type PropsMap = {
   disabledMousePointerMove?: boolean;
   disabledMouseSingleClick?: boolean;
   disabledMouseMoveend?: boolean;
+  disabledouseSingleClick?: boolean;
 };
-
 
 export module MapUtils {
   export type getViewFunc = (
@@ -67,11 +67,11 @@ export module MapUtils {
   export type olEvent = {
     map: ol.Map;
     pixel: ol.Pixel;
-  }
+  };
 
   export type mousePointerMoveFunc = (
     eventOl: olEvent,
-    enableInteractions: boolean,
+    disabledMouseSingleClick: boolean,
   ) => void;
 
   export type handleClickOnRowLayerFunc = (
@@ -80,7 +80,7 @@ export module MapUtils {
 
   export type mouseSingleClickFunc = (
     eventOl: olEvent,
-    enableInteractions: boolean,
+    disabledMouseSingleClick: boolean,
   ) => void;
 
   export type centerOnFunc = (

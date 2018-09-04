@@ -16,7 +16,7 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
 
     this.props.admNotReadNotificationsList.filter(({ id }) => !nextProps.admNotReadNotificationsList.find(admN => admN.id === id)).forEach(({ id }) => {
       global.NOTIFICATION_SYSTEM.removeNotification(id);
-    })
+    });
 
     nextProps.admNotReadNotificationsList.forEach(notify => (
       global.NOTIFICATION_SYSTEM.notify({
@@ -41,11 +41,11 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
           callback: () => {
             this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id)
               .then(() => this.updateCounterNotify())
-              .catch(({ error_text }) => console.warn(error_text))
-          }
-        }
+              .catch(({ error_text }) => console.warn(error_text));
+          },
+        },
       })
-    ))
+    ));
   }
 
   updateCounterNotify() {

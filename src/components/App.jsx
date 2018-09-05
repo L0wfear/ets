@@ -5,16 +5,14 @@ import { loginErrorNotification, getErrorNotification } from 'utils/notification
 import MainPage from './MainPage.jsx';
 import LoadingPage from './LoadingPage.jsx';
 
+const { location } = window;
+
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
-global.SESSION_KEY = `ets-session-${process.env.STAND}`;
-global.NOTIFICATION_READ_ARR = `notification-read-arr-${process.env.STAND}`;
-global.CURRENT_USER = `current-user-${process.env.STAND}`;
-
-global.ERROR_GO_TO_ETS2 = `error-gotoets2${global.SESSION_KEY}`;
-global.ERROR_IN_COD = `error-in_cod${global.SESSION_KEY}`;
+global.SESSION_KEY = `${location.host}${location.pathname}-ets-session-${process.env.STAND}`;
+global.CURRENT_USER = `${location.host}${location.pathname}-current-user-${process.env.STAND}`;
 
 class App extends Component {
 

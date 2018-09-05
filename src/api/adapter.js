@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getServerErrorNotification, getAdminInfoNotification } from 'utils/notifications';
+import { getServerErrorNotification } from 'utils/notifications';
 
 import { checkInternalErrors } from 'utils/raven';
 import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';

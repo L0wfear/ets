@@ -136,9 +136,6 @@ export default class SessionStore extends Store {
   handleLogout(message) {
     localStorage.removeItem(global.SESSION_KEY2);
     localStorage.removeItem(global.CURRENT_USER2);
-    localStorage.removeItem(global.ERROR_GO_TO_ETS2);
-    localStorage.removeItem(global.ERROR_IN_COD);
-    localStorage.removeItem(global.NOTIFICATION_READ_ARR);
 
     this.setState({
       session: null,
@@ -161,19 +158,4 @@ export default class SessionStore extends Store {
   getStableRedirect() {
     return this.state.currentUser.stableRedirect;
   }
-  isSeeNotifyProblem() {
-    if (moment(new Date()).diff(new Date(2018, 1, 27, 16, 0, 1), 'seconds') < 0) {
-      const { isSee = false } = JSON.parse(localStorage.getItem(global.ERROR_IN_COD)) || {};
-      if (!isSee) {
-        return false;
-      }
-      return true;
-    }
-    this.setAsSee(false);
-    return true;
-  }
-  setAsSee(flag) {
-    localStorage.setItem(global.ERROR_IN_COD, JSON.stringify({ isSee: flag }));
-  }
-
 }

@@ -19,9 +19,8 @@ global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
-global.SESSION_KEY2 = `ets-session-${process.env.STAND}2`;
-global.CURRENT_USER2 = `current-user-${process.env.STAND}2`;
-global.NOTIFICATION_READ_ARR = `notification-read-arr-${process.env.STAND}2`;
+global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
+global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 
 const getLoginPage = props => {
   const {

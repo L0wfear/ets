@@ -226,7 +226,7 @@ export default class Track {
 
     this.addParkingsToTrack();
     this.addFuelEventsToTrack();
-    this.renderInColors(speed);
+    this.renderInColors();
 
     this.owner._reactMap.triggerRender();
   }
@@ -316,7 +316,6 @@ export default class Track {
     const ctx = this.ctx;
     const freezed = track.every(p => p.coords_msk[0] === track[0].coords_msk[0] && p.coords_msk[1] === track[0].coords_msk[1]);
 
-
     if (!track || track.length < 2) {
       return;
     }
@@ -325,9 +324,126 @@ export default class Track {
     const RENDER_GRADIENT = this.owner.store.state.showTrackingGradient;
 
     const firstPoint = this.map.projectToPixel(track[0].coords_msk);
+
+
+
+    if (this.sensorsState.equipment.length) {
+      prevCoords = firstPoint;
+
+      ctx.lineWidth = LINE_WIDTH;
+      ctx.lineCap = 'butt';
+      ctx.lineJoin = 'round';
+
+      ctx.beginPath();
+      ctx.moveTo(firstPoint.x, firstPoint.y);
+
+      prevRgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(track[0], ['sensors', 'equipment']));
+      ctx.strokeStyle = prevRgbaColor;
+
+      for (let i = 1, till = track.length; i < till; i++) {
+        const p = track[i];
+
+        const coords = this.map.projectToPixel(p.coords_msk);
+
+        const rgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(p, ['sensors', 'equipment']));
+        const hexColor = getTrackSensorColor(this.sensorsState.equipment, get(p, ['sensors', 'equipment']));
+
+        ctx.globalCompositeOperation = 'destination-over';
+
+        // если предыдущий цвет не соответствует новому
+        // нужно закрыть предыдущую линию
+        // и нарисовать новую
+        if (prevRgbaColor !== rgbaColor) {
+          if (RENDER_GRADIENT) {
+            // stroke path before
+            ctx.stroke();
+
+            // make gradient fill
+            const gradient = ctx.createLinearGradient(prevCoords.x, prevCoords.y, coords.x, coords.y);
+            gradient.addColorStop('0', prevRgbaColor);
+            gradient.addColorStop('1', rgbaColor);
+
+            // make new path and stroke that
+            ctx.strokeStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(prevCoords.x, prevCoords.y);
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+
+            this.drawTrackPoint(coords, hexColor);
+          } else {
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+
+            this.drawTrackPoint(coords, hexColor);
+          }
+
+          // start new path
+          // and reset color && lineWidth
+          ctx.strokeStyle = rgbaColor;
+          ctx.lineWidth = LINE_WIDTH;
+          ctx.beginPath();
+          ctx.moveTo(coords.x, coords.y);
+        } else {
+  // если цвет не менялся
+
+          ctx.strokeStyle = prevRgbaColor;
+          ctx.lineWidth = LINE_WIDTH;
+          ctx.lineTo(coords.x, coords.y);
+
+          // оптимизация, типа
+          // рисовать кружки только там, где были заметные изменения скорости
+          if (!SHOW_ONLY_POINTS_WITH_SPEED_CHANGES) {
+            ctx.stroke();
+
+            this.drawTrackPoint(coords, hexColor);
+
+            ctx.strokeStyle = rgbaColor;
+            ctx.lineWidth = LINE_WIDTH;
+            ctx.beginPath();
+            ctx.moveTo(coords.x, coords.y);
+          }
+        }
+
+        prevCoords = coords;
+        prevRgbaColor = rgbaColor;
+
+        ctx.globalCompositeOperation = 'source-over';
+        if (p.parking) {
+          const shift = p.event !== undefined || freezed ? 20 : 0;
+          ctx.drawImage(this.parkingIcon,
+            coords.x - (iconSize / 2) - shift,
+            coords.y - (iconSize / 2) - shift,
+            iconSize,
+            iconSize,
+          );
+        }
+        if (p.event !== undefined) {
+          const shift = p.parking || freezed ? -20 : 0;
+          ctx.drawImage(this.fuelIcons[p.event],
+            coords.x - (iconSize / 2) - shift,
+            coords.y - (iconSize / 2) - shift,
+            iconSize,
+            iconSize,
+          );
+        }
+      }
+
+      // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
+      // получается некрасиво в том случае, если обновление происходит редко
+      // и машина резко перемещается на другую точку
+      if (owner.point.status === 1 && this.continuousUpdating) {
+        const coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
+        ctx.lineTo(coords.x, coords.y);
+      }
+
+      ctx.stroke();
+      ctx.closePath();
+    }
+
     let prevCoords = firstPoint;
 
-    ctx.lineWidth = LINE_WIDTH;
+    ctx.lineWidth = LINE_WIDTH + 8;
     ctx.lineCap = 'butt';
     ctx.lineJoin = 'round';
 
@@ -335,10 +451,6 @@ export default class Track {
     ctx.moveTo(firstPoint.x, firstPoint.y);
 
     let prevRgbaColor = getTrackColor(track[0], this, TRACK_LINE_OPACITY);
-
-    if (this.sensorsState.equipment.length) {
-      prevRgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(track[0], ['sensors', 'equipment']));
-    }
 
     ctx.strokeStyle = prevRgbaColor;
 
@@ -361,11 +473,6 @@ export default class Track {
       let hexColor = getTrackColor(p, this);
 
       ctx.globalCompositeOperation = 'destination-over';
-
-      if (this.sensorsState.equipment.length) {
-        rgbaColor = getTrackSensorColor(this.sensorsState.equipment, get(p, ['sensors', 'equipment']));
-        hexColor = getTrackSensorColor(this.sensorsState.equipment, get(p, ['sensors', 'equipment']));
-      }
 
       // если предыдущий цвет не соответствует новому
       // нужно закрыть предыдущую линию
@@ -398,14 +505,14 @@ export default class Track {
         // start new path
         // and reset color && lineWidth
         ctx.strokeStyle = rgbaColor;
-        ctx.lineWidth = LINE_WIDTH;
+        ctx.lineWidth = LINE_WIDTH + 8;
         ctx.beginPath();
         ctx.moveTo(coords.x, coords.y);
       } else {
  // если цвет не менялся
 
         ctx.strokeStyle = prevRgbaColor;
-        ctx.lineWidth = LINE_WIDTH;
+        ctx.lineWidth = LINE_WIDTH + 8;
         ctx.lineTo(coords.x, coords.y);
 
         // оптимизация, типа
@@ -416,7 +523,7 @@ export default class Track {
           this.drawTrackPoint(coords, hexColor);
 
           ctx.strokeStyle = rgbaColor;
-          ctx.lineWidth = LINE_WIDTH;
+          ctx.lineWidth = LINE_WIDTH + 8;
           ctx.beginPath();
           ctx.moveTo(coords.x, coords.y);
         }
@@ -455,6 +562,7 @@ export default class Track {
     }
 
     ctx.stroke();
+    ctx.closePath();
   }
 
   getPointAtCoordinate(coordinate) {

@@ -224,13 +224,10 @@ export default class Track {
     const map = this.map;
     const zoom = map.getView().getZoom();
 
-    if (zoom > COLORS_ZOOM_THRESHOLD) {
-      this.addParkingsToTrack();
-      this.addFuelEventsToTrack();
-      this.renderInColors(speed);
-    } else {
-      this.renderSimple();
-    }
+    this.addParkingsToTrack();
+    this.addFuelEventsToTrack();
+    this.renderInColors(speed);
+
     this.owner._reactMap.triggerRender();
   }
 
@@ -257,40 +254,6 @@ export default class Track {
         }
       });
     });
-  }
-
-  renderSimple() {
-    const owner = this.owner;
-    const track = this.points;
-    const ctx = this.ctx;
-
-    if (!track || track.length < 2) {
-      return;
-    }
-
-    ctx.strokeStyle = TRACK_COLORS.blue;
-    ctx.lineWidth = TRACK_LINE_WIDTH;
-    ctx.lineCap = 'round';
-
-    const first = this.map.projectToPixel(track[0].coords_msk);
-
-    ctx.beginPath();
-    ctx.moveTo(first.x, first.y);
-
-    for (let i = 1, till = track.length; i < till; i++) {
-      const coords = this.map.projectToPixel(track[i].coords_msk);
-      ctx.lineTo(coords.x, coords.y);
-    }
-
-    // если машина в движении - дорисовываем еще одну точку, чтобы трэк не обрывался
-    // получается некрасиво в том случае, если обновление происходит редко
-    // и машина резко перемещается на другую точку
-    if (owner.point.status === 1 && this.continuousUpdating) {
-      const coords = this.map.projectToPixel(swapCoords(owner.point.coords_msk));
-      ctx.lineTo(coords.x, coords.y);
-    }
-
-    ctx.stroke();
   }
 
   getExtent() {

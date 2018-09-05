@@ -635,77 +635,71 @@ export default class DataTable extends React.Component {
 
     return (
       <Div className={tableClassName}>
-        <div className="header_container">
-          <Div className="some-header" hidden={noHeader}>
-            <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
-              <div>
-                {noTitle ? '' : title}
-              </div>
-              <div className="waybills-buttons">
-                {columnControl &&
-                  <ClickOutHandler onClickOut={this.closeColumnControl}>
-                    <ColumnControl
-                      show={this.state.columnControlModalIsOpen}
-                      onChange={this.saveColumnControl}
-                      onClick={this.toggleColumnControl}
-                      values={this.state.columnControlValues}
-                      options={tableMetaCols.filter(el => el.display !== false)}
-                    />
-                  </ClickOutHandler>
-                }
-                {!noFilter &&
-                  <FilterButton
-                    show={this.state.filterModalIsOpen}
-                    active={!!Object.keys(this.state.filterValues).length}
-                    onClick={this.toggleFilter}
-                  />
-                }
-                {refreshable &&
-                  <Button
-                    bsSize="small"
-                    onClick={this.props.onRefresh}
-                  >
-                    <Glyphicon glyph="refresh" />
-                  </Button>
-                }
-                {!noCustomButton && this.props.children}
-              </div>
+        <Div className="some-header" hidden={noHeader}>
+          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
+            <div>
+              {noTitle ? '' : title}
             </div>
-          </Div>
-        </div>
-        <div className={cx('table_container', { open_filter: this.state.filterModalIsOpen })}>
-          <div className="filter_container_wrap">
-            {!noFilter &&
-              <Filter
-                show={this.state.filterModalIsOpen}
-                onSubmit={this.saveFilter}
-                onHide={this.closeFilter}
-                values={this.state.filterValues}
-                options={tableMetaCols.filter(el => el.filter !== false)}
-                tableData={this.props.results}
-              />
-            }
+            <div className="waybills-buttons">
+              {columnControl &&
+                <ClickOutHandler onClickOut={this.closeColumnControl}>
+                  <ColumnControl
+                    show={this.state.columnControlModalIsOpen}
+                    onChange={this.saveColumnControl}
+                    onClick={this.toggleColumnControl}
+                    values={this.state.columnControlValues}
+                    options={tableMetaCols.filter(el => el.display !== false)}
+                  />
+                </ClickOutHandler>
+              }
+              {!noFilter &&
+                <FilterButton
+                  show={this.state.filterModalIsOpen}
+                  active={!!Object.keys(this.state.filterValues).length}
+                  onClick={this.toggleFilter}
+                />
+              }
+              {refreshable &&
+                <Button
+                  bsSize="small"
+                  onClick={this.props.onRefresh}
+                >
+                  <Glyphicon glyph="refresh" />
+                </Button>
+              }
+              {!noCustomButton && this.props.children}
+            </div>
           </div>
-          {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
-          <Griddle
-            uniqKey={this.state.uniqKey}
-            results={results}
-            enableSort={enableSort}
-            initialSort={initialSort}
-            initialSortAscending={initialSortAscending}
-            columnMetadata={columnMetadata}
-            columns={tableCols}
-            resultsPerPage={15}
-            useCustomPagerComponent
-            externalChangeSort={externalChangeSort || this.handleChangeSort}
-            customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
-            onRowClick={!isHierarchical ? onRowSelected : null}
-            rowMetadata={rowMetadata}
-            onKeyPress={this.handleKeyPress}
-            noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
-            lowerCaseSorting
-          />
-        </div>
+          {!noFilter &&
+            <Filter
+              show={this.state.filterModalIsOpen}
+              onSubmit={this.saveFilter}
+              onHide={this.closeFilter}
+              values={this.state.filterValues}
+              options={tableMetaCols.filter(el => el.filter !== false)}
+              tableData={this.props.results}
+            />
+          }
+        </Div>
+        {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
+        <Griddle
+          uniqKey={this.state.uniqKey}
+          results={results}
+          enableSort={enableSort}
+          initialSort={initialSort}
+          initialSortAscending={initialSortAscending}
+          columnMetadata={columnMetadata}
+          columns={tableCols}
+          resultsPerPage={15}
+          useCustomPagerComponent
+          externalChangeSort={externalChangeSort || this.handleChangeSort}
+          customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
+          onRowClick={!isHierarchical ? onRowSelected : null}
+          rowMetadata={rowMetadata}
+          onKeyPress={this.handleKeyPress}
+          noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
+          lowerCaseSorting
+        />
         {
           serverPagination ?
           (

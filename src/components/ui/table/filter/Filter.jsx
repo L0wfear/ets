@@ -130,9 +130,7 @@ export default class Filter extends React.Component {
             <Button id="reset-filter" onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
             <span id="filter-close" className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
           </Div>
-          <div className="filter-rows">
-            {filterRows}
-          </div>
+          {filterRows}
         </Div>
       </Collapse>
     );

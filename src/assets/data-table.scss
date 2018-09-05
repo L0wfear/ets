@@ -84,7 +84,7 @@ th.width-fuel-report-xlarge {
   }
 
   >.griddle {
-    height: 100%;
+    max-height: calc(100vh - 270px);
     overflow: auto;
     margin-top: 15px;
     table {

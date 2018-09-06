@@ -160,17 +160,6 @@ export default class TechnicalOperationForm extends Form {
             </Col>
             <Col md={3}>
               <ExtField
-                type="number"
-                label="Максимальная скорость"
-                value={state.max_speed}
-                onChange={this.handleChange}
-                boundKeys={['max_speed']}
-                error={errors.max_speed}
-                disabled={!isPermitted}
-              />
-            </Col>
-            <Col md={3}>
-              <ExtField
                 label="Тип проверки"
                 type="select"
                 multi

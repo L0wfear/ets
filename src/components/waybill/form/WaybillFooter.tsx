@@ -46,7 +46,7 @@ const popoverHoverFocus = (
 
 const WaybillFooter: React.SFC<IPropsWaybillFooter> = props =>
   <Div>
-    <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft)}>
+    <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
       <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
        <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
       </OverlayTrigger>

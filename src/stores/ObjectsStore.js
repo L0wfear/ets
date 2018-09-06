@@ -1,6 +1,16 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
+const colors = [];
+
+Array(16).fill(1).map((d, r) => 
+  Array(16).fill(1).map((d, g) => 
+    Array(16).fill(1).map((d, b) => 
+    colors.push(`rgb(${r * 16}, ${g * 16}, ${b * 16})`)
+    )
+  )
+);
+
 export default class ObjectsStore extends Store {
 
   constructor(flux) {
@@ -181,7 +191,15 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetOrganizations(organizations) {
-    this.setState({ organizations: organizations.result });
+    const organizationsNew = organizations.result.map(company => ({
+      ...company,
+      rgb_color: company.rgb_color || colors[Math.ceil(Math.random() * 4096)],
+    }));
+
+    this.setState({
+      organizations: organizationsNew,
+      organizationsIndex: _.keyBy(organizationsNew, 'company_id'),
+    });
   }
 
   handleGetFaxogramms(faxogramms) {

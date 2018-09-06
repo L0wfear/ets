@@ -5,6 +5,7 @@ import employeeOnCar from 'components/directories/employee_on_car/config-data';
 import order from 'components/directories/order/config-data';
 import technicalOperation from 'components/directories/technical_operation/config-data';
 import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
+import typesAttr from 'components/directories/types-attr/config-data';
 import transportation from 'components/directories/autobase/config-data';
 import repairsRegistry from 'components/directories/repair/config-data';
 import normative from 'components/directories/normative/config-data';
@@ -19,6 +20,7 @@ const children = {
   order,
   technicalOperation,
   technicalOperationRelations,
+  typesAttr,
   dividerOne: { divider: true },
   transportation,
   repairsRegistry,

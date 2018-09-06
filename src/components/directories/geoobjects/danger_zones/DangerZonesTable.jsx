@@ -14,8 +14,16 @@ export const tableMeta = ({
       filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
     },
     {
+      name: 'name',
+      displayName: 'Наименование ОДХ',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'address_comm',
-      displayName: 'Адрес',
+      displayName: 'Адресная привязка',
       type: 'string',
       filter: {
         type: 'multiselect',

@@ -145,7 +145,7 @@ export default class MissionsJournal extends CheckableElementsList {
       validateMissionsArr.push(selectedElement);
     }
 
-    return validateMissionsArr.length === 0 || validateMissionsArr.some(({ status }) => status === 'assigned');
+    return validateMissionsArr.length === 0;
   }
 
   rejectMission = () => this.setState({ showMissionRejectForm: true });

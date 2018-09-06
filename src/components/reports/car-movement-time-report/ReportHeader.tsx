@@ -7,7 +7,7 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates, addSecond } from 'utils/dates';
+import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates } from 'utils/dates';
 import { bindable, FluxContext } from 'utils/decorators';
 import { connectToStores } from 'utils/decorators';
 
@@ -17,7 +17,7 @@ const DatePickerBindable: any = bindable(DatePicker);
 
 interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: string;
-  date_end: string;
+  date_end: any;
   company_id: null | number;
   organizations: any;
 }
@@ -36,9 +36,12 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     });
   }
   getState() {
+    const date_end_temp: Date = getDateWithMoscowTz();
+    date_end_temp.setSeconds(0);
+
     const {
       date_start = getToday0am(),
-      date_end = getDateWithMoscowTz(),
+      date_end = date_end_temp,
       company_id = null,
     } = this.props;
 
@@ -49,8 +52,9 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     };
   }
   handleChangeDateEnd = (field, value) => (
-    this.props.handleChange(field, value ? createValidDateTime(addSecond(value, 59)) : value)
+    this.props.handleChange(field, value ? createValidDateTime(value) : value)
   )
+
   handleSubmit = () => {
     const {
       date_start,

@@ -89,14 +89,6 @@ const getTableMeta = ({
         },
       },
       {
-        name: 'max_speed_text',
-        displayName: 'Максимальная скорость',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'check_type_names',
         displayName: 'Тип проверки',
         type: 'string',

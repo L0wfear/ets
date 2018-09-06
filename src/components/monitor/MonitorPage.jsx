@@ -27,6 +27,7 @@ class MonitorPage extends React.Component {
     this.props.getTypes();
     const { flux } = this.context;
     await Promise.all([
+      flux.getActions('objects').getOrganizations(),
       flux.getActions('geoObjects').getOdhMkad(),
       flux.getActions('objects').getCars(),
     ]);
@@ -72,6 +73,9 @@ class MonitorPage extends React.Component {
               polysLeak: store.getSelectedPolys('selectedPolysTypesLeak'),
               selectedFeature: store.getSelectedFeature('selectedFeature'),
               selectedFeatureLeak: store.getSelectedFeature('selectedFeatureLeak'),
+            }),
+            objects: store => ({
+              organizationsIndex: store.state.organizationsIndex,
             }),
           }}
         >

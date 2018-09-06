@@ -22,6 +22,18 @@ const ODHFeature = ({ feature }) =>
     {feature.name}
     <h5>Общая площадь</h5>
     {feature.total_area}
+    <h5>Площадь проезжей части для механизированной уборки</h5>
+    {feature.total_auto_clean_area}
+    <h5>Площадь проезжей части для ручной уборки</h5>
+    {feature.total_manual_clean_area}
+    <h5>Площать тротуаров для механизированной уборки</h5>
+    {feature.auto_footway_area}
+    <h5>Площать тротуаров для ручной уборки</h5>
+    {feature.manual_footway_area}
+    <h5>Длина по оси</h5>
+    {feature.distance}
+    <h5>Длина лотка</h5>
+    {feature.gutters_length}
   </div>
 ;
 

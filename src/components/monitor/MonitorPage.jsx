@@ -26,6 +26,7 @@ class MonitorPage extends Component {
     this.props.getTypes();
     const { flux } = this.context;
     await Promise.all([
+      flux.getActions('objects').getOrganizations(),
       flux.getActions('geoObjects').getOdhMkad(),
       flux.getActions('objects').getCars(),
     ]);
@@ -65,6 +66,9 @@ class MonitorPage extends Component {
             geoObjects: store => ({
               polys: store.getSelectedPolys(),
               selectedFeature: store.getSelectedFeature(),
+            }),
+            objects: store => ({
+              organizationsIndex: store.state.organizationsIndex,
             }),
           }}
         >

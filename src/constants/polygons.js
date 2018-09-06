@@ -4,6 +4,8 @@ export const polyState = {
   IDLE: 3,
 };
 
+const CACHE_ODH_COLOR = {};
+
 export const polyStyles = {
   [polyState.SELECTABLE]: new ol.style.Style({
     fill: new ol.style.Fill({
@@ -50,4 +52,20 @@ export const polyStyles = {
       width: 1,
     }),
   }),
+  odh: (color) => {
+    console.log(color)
+    if (!CACHE_ODH_COLOR[color]) {
+      CACHE_ODH_COLOR[color] = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color,
+        }),
+        stroke: new ol.style.Stroke({
+          color,
+          width: 1,
+        }),
+      });
+    }
+
+    return CACHE_ODH_COLOR[color];
+  },
 };

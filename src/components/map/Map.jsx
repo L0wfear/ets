@@ -40,6 +40,7 @@ export default class OpenLayersMap extends Component {
       showPolygons: PropTypes.bool,
       showTrack: PropTypes.bool,
       onFeatureClick: PropTypes.func,
+      organizationsIndex: PropTypes.object,
     };
   }
 
@@ -303,7 +304,18 @@ export default class OpenLayersMap extends Component {
           if (poly.selected) {
             feature.setStyle(polyStyles['geoobject-selected']);
           } else {
-            feature.setStyle(polyStyles.geoobject);
+            if (poly.data.featureType === 'odh') {
+              const { organizationsIndex = {} } = this.props;
+              if (Object.keys(organizationsIndex).length > 0) {
+                feature.setStyle(
+                  polyStyles.odh(
+                    (organizationsIndex[poly.data.company_id] || { rgb_color: 'red' }).rgb_color
+                  )
+                );
+              }
+            } else {
+              feature.setStyle(polyStyles.geoobject);
+            }
           }
         } else { // Если точка
           if (poly.selected) {

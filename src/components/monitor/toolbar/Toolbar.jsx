@@ -11,7 +11,7 @@ import ToolbarSearch from './ToolbarSearch.jsx';
 import ToolbarFilters from './ToolbarFilters.jsx';
 import CarsLegendWrapper from './items/CarsLegendWrapper';
 import ShowGeoobjectsCheckbox from './items/ShowGeoobjectsCheckbox';
-
+import CompanyLegend from 'components/monitor/toolbar/items/CompanyLegend';
 
 const ShowPlatesCheckbox = props =>
   <div className="app-toolbar-fill app-toolbar-show-govnumber" >
@@ -105,6 +105,7 @@ class Toolbar extends Component {
             />
             <ShowPlatesCheckbox />
             <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes} />
+            <CompanyLegend />
           </FluxComponent>
         </div>
         <ToolbarSearch focusOnLonelyCar={this.focusOnLonelyCar} carsCount={carsCount} />

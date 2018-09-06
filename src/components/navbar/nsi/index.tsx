@@ -49,6 +49,7 @@ const NsiNavItem: React.SFC<IPropsNavbarItem> = ({ path }) =>
     <MenuItem id="link-faxogramms" permissions={['faxogramm.list']} active={path === '/faxogramms'} href="#/faxogramms">Реестр факсограмм</MenuItem>
     <MenuItem id="link-technical-operations" permissions={['technical_operation.list']} active={path === '/technical-operations'} href="#/technical-operations">Реестр технологических операций</MenuItem>
     <MenuItem id="link-companies" permissions={['company.list']} active={path === '/companies'} href="#/companies">Реестр организаций</MenuItem>
+    <MenuItem id="link-types-attr" permissions={['types_attr.list']} active={path === '/types-attr'} href="#/types-attr">Таблица нормативных скоростей и ширин</MenuItem>
     <MenuItem divider />
 
     <NavDropdown

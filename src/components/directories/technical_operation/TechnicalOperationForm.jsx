@@ -116,17 +116,6 @@ export default class TechnicalOperationForm extends Form {
                 disabled={!isPermitted}
               />
             </Col>
-            <Col md={2}>
-              <Field
-                type="number"
-                label="Максимальная скорость"
-                value={state.max_speed}
-                onChange={this.handleChange.bind(this, 'max_speed')}
-                error={errors[name]}
-                disabled={!isPermitted}
-              />
-            </Col>
-
             <Col md={3}>
               <Field type="select" label="Тип проверки"
                 options={TECHNICAL_OPERATION_TYPES}

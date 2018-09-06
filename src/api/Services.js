@@ -40,6 +40,8 @@ export const FaxogrammService = ETS_API_FACTORY.createApiServiceAdapter('faxogra
 export const ModelsService = ETS_API_FACTORY.createApiServiceAdapter('models', {});
 export const SpecialModelService = ETS_API_FACTORY.createApiServiceAdapter('special_model', {});
 export const TypesService = ETS_API_FACTORY.createApiServiceAdapter('types', {});
+export const TypesAttr = ETS_API_FACTORY.createApiServiceAdapter('types_attr', {});
+
 export const WaybillDriverService = ETS_API_FACTORY.createApiServiceAdapter('medical_stats/allowed_drivers', {});
 export const FuelTypeService = ETS_API_FACTORY.createApiServiceAdapter('fuel_type', {});
 export const FuelConsumptionRateService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_rates', {});

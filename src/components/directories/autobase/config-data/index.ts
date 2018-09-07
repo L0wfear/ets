@@ -1,6 +1,7 @@
 import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
 
 import carFuncTypes from 'components/directories/autobase/car_types/config-data';
+import typesAttr from 'components/directories/autobase/types-attr/config-data';
 import carsList from 'components/directories/autobase/cars/config-data';
 import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';
 import batteryBrand from 'components/directories/autobase/battery_brand/config-data';
@@ -17,6 +18,7 @@ import roadAccident from 'components/directories/autobase/road_accident/config-d
 
 const children = {
   carFuncTypes,
+  typesAttr,
   carsList,
   batteryRegistry,
   batteryBrand,

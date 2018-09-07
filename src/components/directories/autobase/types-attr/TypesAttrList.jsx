@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ElementsList from 'components/ElementsList.jsx';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import CarTypesTable from 'components/directories/types-attr/TypesAttrTable';
+import CarTypesTable from 'components/directories/autobase/types-attr/TypesAttrTable';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'types_attr' })

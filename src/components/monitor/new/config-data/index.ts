@@ -3,7 +3,7 @@ import components from 'components/monitor/new/config-data/components';
 
 export default {
   path: '/monitor',
-  title: 'КартаNew',
+  title: 'Карта',
   entyity: 'monitor',
   noDotList: true,
   components,

@@ -326,7 +326,7 @@ export default class OpenLayersMap extends React.Component {
           } else {
             if (poly.data.featureType === 'odh') {
               const { organizationsIndex = {} } = this.props;
-              if (Object.keys(organizationsIndex).length > 0) {
+              if (Object.keys(organizationsIndex).length > 1) {
                 feature.setStyle(
                   polyStyles.odh(
                     (organizationsIndex[poly.data.company_id] || { rgb_color: 'red' }).rgb_color

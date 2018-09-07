@@ -29,14 +29,6 @@ const tableMeta = {
       },
       cssClassName: 'width300',
     },
-    {
-      name: 'season_name',
-      displayName: 'Сезон',
-      type: 'select',
-      filter: {
-        type: 'multiselect',
-      },
-    },
   ],
 };
 

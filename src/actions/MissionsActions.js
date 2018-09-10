@@ -247,7 +247,7 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.post(payload, false, 'json');
   }
 
-  updateDutyMission(mission, autoUpdate = true) {
+  updateDutyMission(mission) {
     const payload = _.cloneDeep(mission);
     delete payload.number;
     delete payload.technical_operation_name;

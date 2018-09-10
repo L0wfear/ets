@@ -13,6 +13,7 @@ declare module NodeJS  {
     APP_DATE_FORMAT: string;
     APP_TIME_FORMAT: string;
     toggleUpdateCarPoints: Function;
+    confirmDialog: (props: any) => Promise<any>;
   }
 }
 

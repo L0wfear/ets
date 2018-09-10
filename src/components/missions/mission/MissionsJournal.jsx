@@ -9,6 +9,7 @@ import {
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import { rejectMissionsPack } from 'components/missions/common/rejectMissionsPack';
 
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { getWarningNotification } from 'utils/notifications';
@@ -107,11 +108,12 @@ export default class MissionsJournal extends CheckableElementsList {
   checkDisabled() {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
-    if (selectedElement) {
-      validateMissionsArr.push(selectedElement);
-    }
 
-    return validateMissionsArr.some(({ status, can_be_closed }) => status !== 'assigned' || !can_be_closed);
+    return (!validateMissionsArr.length && !selectedElement)
+    || validateMissionsArr.some(({ status, can_be_closed }) => status !== 'assigned' || !can_be_closed)
+    || (selectedElement &&
+      (selectedElement.status !== 'assigned' || !selectedElement.can_be_closed)
+    );
   }
 
   checkDisabledDelete() {
@@ -155,26 +157,20 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   rejectCheckedElements() {
-    let error = false;
-    if (Object.keys(this.state.checkedElements).length !== 0) {
-      _.forEach(this.state.checkedElements, async (mission) => {
-        if (mission.status === 'assigned') {
-          const reason = prompt(`Введите причину для задания №${mission.number}`, '');
-          if (reason) {
-            const updatedMission = _.cloneDeep(mission);
-            updatedMission.status = 'fail';
-            updatedMission.comment = reason;
-            await this.context.flux.getActions('missions').updateMission(updatedMission, false);
-          }
-        } else error = true;
-      });
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
-      if (error) {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные задания!'));
-      } else {
+    const missions = Object.values(this.state.checkedElements);
+
+    if (missions.length) {
+      rejectMissionsPack(
+        missions,
+        {
+          updateMission: mission => this.context.flux.getActions('missions').updateMission(mission),
+        },
+        'mission',
+      ).then(() => {
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
         global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-      }
+      });
     } else {
       this.rejectMission();
     }

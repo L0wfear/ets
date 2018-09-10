@@ -65,7 +65,7 @@ class Toolbar extends Component {
   }
 
   render() {
-    const { selectedPolysTypes, filter } = this.props;
+    const { filter } = this.props;
     const filters = filter;
     const pointsStore = this.context.flux.getStore('points');
     const storeState = pointsStore.state;
@@ -104,7 +104,7 @@ class Toolbar extends Component {
               marker={() => this._pointsStore.getSelectedMarker()}
             />
             <ShowPlatesCheckbox />
-            <ShowGeoobjectsCheckbox selectedPolysTypes={selectedPolysTypes} />
+            <ShowGeoobjectsCheckbox />
             <CompanyLegend />
           </FluxComponent>
         </div>

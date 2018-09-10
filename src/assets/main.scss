@@ -1298,17 +1298,15 @@ div.car_legend-active {
   }
 }
 .car_block_legend {
-  margin: 5px 0;
+
   &.left {
     margin-left: 5px;
   }
 
   &.companies {
     max-width: 300px;
-    max-height: 300px;
+    max-height: 150px;
     overflow-y: auto;
-
-    padding-right: -1pc;
   }
 }
 

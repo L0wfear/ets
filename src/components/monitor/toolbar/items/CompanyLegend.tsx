@@ -4,7 +4,7 @@ import { connectToStores } from 'utils/decorators';
 require('./CompanyLegend.scss');
 
 @connectToStores('objects')
-class ShowGeoobjectsCheckbox extends React.Component<any, any> {
+class CompanyLegend extends React.Component<any, any> {
   state = {
     show: false,
   };
@@ -16,14 +16,14 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
   }
 
   render() {
-    const { organizations } = this.props;
+    const { organizations, selectedPolysTypes = [] } = this.props;
     const { show } = this.state;
 
     if (organizations.length < 2) {
       return null;
     }
 
-    return (
+    return selectedPolysTypes.includes('odh') && (
       <div className="app-toolbar-fill app-toolbar-show-geoobjects all-list" >
         <div className="checkbox">
           <label
@@ -53,4 +53,4 @@ class ShowGeoobjectsCheckbox extends React.Component<any, any> {
   }
 }
 
-export default ShowGeoobjectsCheckbox;
+export default CompanyLegend;

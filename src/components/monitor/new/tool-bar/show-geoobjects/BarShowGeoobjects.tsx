@@ -17,7 +17,7 @@ const getActiveClassName = (activeMain) => (
     'with_checkbox',
     {
       off: !activeMain,
-    }
+    },
   )
 );
 
@@ -27,7 +27,7 @@ const getClassNameByType = (props, type) => (
     'with_checkbox',
     {
       off: !props[type],
-    }
+    },
   )
 );
 
@@ -35,19 +35,19 @@ class BarShowGeoobjects extends React.Component<any, any> {
   state = {
     showGeoObjList: false,
     FILTRED_GEOOBJECTS_LIST: Object.keys(GEOOBJECTS_OBJ).filter((key) => (
-      this.props.permissions.includes(`${key}.list`))
+      this.props.permissions.includes(`${key}.list`)),
     ),
-  }
+  };
 
   toggleList = (event) => {
     if (this.props.companiesIndex !== -1) {
       this.setState({
         showGeoObjList: !this.state.showGeoObjList,
-      })
+      });
     }
   }
   toggleShowStatus: any = ({ currentTarget: { dataset: { type } } }) => {
-    this.props.toggleShowStatus([type])
+    this.props.toggleShowStatus([type]);
   }
 
   toggleAllStatus = (event) => {
@@ -58,7 +58,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
         this.props.toggleShowStatus(
           notActiveOptionsArr.map((key) => (
             GEOOBJECTS_OBJ[key].serverName
-          ))
+          )),
         );
         if (this.state.showGeoObjList) {
           event.stopPropagation();
@@ -67,7 +67,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
         this.props.toggleShowStatus(
           this.state.FILTRED_GEOOBJECTS_LIST.map((key) => (
             GEOOBJECTS_OBJ[key].serverName
-          ))
+          )),
         );
       }
     }
@@ -115,7 +115,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
             </div>
           </div>
         </span>
-      )
+      );
   }
 }
 
@@ -140,8 +140,11 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
     typeArr.forEach(type => {
       if (!stateProps[type]) {
         dispatch(
-          loadGeozones(MONITOR_PAGE_SET_GEOMETRY, type)
-        )
+          loadGeozones(
+            MONITOR_PAGE_SET_GEOMETRY,
+            type,
+          ),
+        );
       } else {
         whereClearData.push(type);
       }
@@ -153,8 +156,8 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
           whereClearData.reduce((newObj, type) => ({
             ...newObj,
             [type]: null,
-          }), {})
-        )
+          }), {}),
+        ),
       );
     }
   },

@@ -3,6 +3,7 @@ import * as React from 'react';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
+import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
 import { TypeCompaniesIndex } from 'redux/trash-actions/uniq/promise.h';
 
@@ -23,7 +24,6 @@ type StateBarCompanyColor = {
   }[];
 };
 
-
 class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarCompanyColor> {
   state = {
     isOpen: false,
@@ -34,7 +34,7 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
         backgroundColor: rgb_color,
       },
     })),
-  }
+  };
 
   toggleOpen = () => (
     this.setState({
@@ -79,13 +79,17 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
           </div>
         </span>
       )
-    )
+    );
   }
-};
+}
 
 export default hocAll(
   withShowByProps({
     path: ['monitorPage', 'companiesIndex'],
+    type: 'none',
+  }),
+  withShowByProps({
+    path: ['monitorPage', 'geoobjects', GEOOBJECTS_OBJ.odh.serverName, 'show'],
     type: 'none',
   }),
   connect(

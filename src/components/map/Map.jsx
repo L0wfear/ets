@@ -304,15 +304,13 @@ export default class OpenLayersMap extends Component {
           if (poly.selected) {
             feature.setStyle(polyStyles['geoobject-selected']);
           } else {
-            if (poly.data.featureType === 'odh') {
-              const { organizationsIndex = {} } = this.props;
-              if (Object.keys(organizationsIndex).length > 1) {
-                feature.setStyle(
-                  polyStyles.odh(
-                    (organizationsIndex[poly.data.company_id] || { rgb_color: 'red' }).rgb_color
-                  )
-                );
-              }
+            const { organizationsIndex = {} } = this.props;
+            if (poly.data.featureType === 'odh' && Object.keys(organizationsIndex).length > 1) {
+              feature.setStyle(
+                polyStyles.odh(
+                  (organizationsIndex[poly.data.company_id] || { rgb_color: 'red' }).rgb_color
+                )
+              );
             } else {
               feature.setStyle(polyStyles.geoobject);
             }

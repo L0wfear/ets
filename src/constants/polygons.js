@@ -53,7 +53,6 @@ export const polyStyles = {
     }),
   }),
   odh: (color) => {
-    console.log(color)
     if (!CACHE_ODH_COLOR[color]) {
       CACHE_ODH_COLOR[color] = new ol.style.Style({
         fill: new ol.style.Fill({

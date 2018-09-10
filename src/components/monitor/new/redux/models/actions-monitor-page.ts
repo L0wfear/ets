@@ -30,7 +30,7 @@ export const monitoPageChangeCarsByStatus = (changedCarsByStatus) => ({
   type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
   payload: {
     changedCarsByStatus,
-  }
+  },
 });
 
 export const monitorPageToggleStatusShow = typeArr => ({
@@ -100,14 +100,14 @@ export const monitorPageChangeFilter = (type, value) => ({
   type: MONITOR_PAGE_CHANGE_FILTERS,
   payload: {
     type,
-    value
+    value,
   },
 });
 
 export const monitorPageMergeFiltredCarGpsCode = (filtredCarGpsCode) => ({
   type: MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST,
   payload: {
-    filtredCarGpsCode
+    filtredCarGpsCode,
   },
 });
 
@@ -115,7 +115,6 @@ export const monitorPageToggleMeasureActive = () => ({
   type: MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
   payload: {},
 });
-
 
 export const monitorPageChangeFuelEventsDate = (type, field, date) => ({
   type: MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,

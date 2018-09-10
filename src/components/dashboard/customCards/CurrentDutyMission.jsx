@@ -6,6 +6,8 @@ import RouteInfo from 'components/route/RouteInfo.jsx';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 import cx from 'classnames';
 import { isEmpty } from 'utils/functions';
+import { rejectMissionsPack } from 'components/missions/common/rejectMissionsPack';
+
 import { FluxContext, wrappedRef } from 'utils/decorators';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
@@ -57,16 +59,26 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
   }
 
   async rejectMission(id) {
-    const reason = prompt('Введите причину', '');
-    if (reason) {
-      let mission = await this.context.flux.getActions('missions').getDutyMissionById(id);
-      mission = mission.result.rows[0];
-      mission.status = 'fail';
-      mission.comment = reason;
-      this.context.flux.getActions('missions').updateDutyMission(mission);
+    try {
+      const { result: { rows: [dutyMission] } } = await this.context.flux.getActions('missions').getDutyMissionById(id);
+      if (dutyMission) {
+        rejectMissionsPack(
+          [dutyMission],
+          {
+            updateMission: mission => this.context.flux.getActions('missions').updateDutyMission(mission),
+          },
+          'dutyMission',
+        ).then(() => {
+          this.selectItem(null);
+          this.props.refreshCard();
+          global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+        });
+      } else {
+        console.log('not find mission');
+      }
+    } catch (error) {
+      console.warn(error);
     }
-    this.selectItem(null);
-    this.props.refreshCard();
   }
 
   renderSubitems() {

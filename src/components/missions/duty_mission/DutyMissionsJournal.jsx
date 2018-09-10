@@ -10,6 +10,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
 import Paginator from 'components/ui/Paginator.jsx';
 import PrintForm from 'components/missions/common/PrintForm.tsx';
+import { rejectMissionsPack } from 'components/missions/common/rejectMissionsPack';
 
 import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
 import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
@@ -86,14 +87,13 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
-
   checkDisabled() {
-    if (Object.keys(this.state.checkedElements).length !== 0) return false;
+    const { checkedElements = {}, selectedElement } = this.state;
+    const selectedDutyMissions = Object.values(checkedElements);
 
-    if (this.state.selectedElement === null) {
-      return true;
-    }
-    return this.state.selectedElement.status !== 'assigned';
+    return (!selectedDutyMissions.length && !selectedElement)
+      || selectedDutyMissions.some(mission => mission.status !== 'assigned')
+      || (selectedElement && selectedElement.status !== 'assigned');
   }
 
   completeMission() {
@@ -105,15 +105,17 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   rejectMission() {
-    const reason = prompt('Введите причину', '');
-    if (reason) {
-      const mission = _.cloneDeep(this.state.selectedElement);
-      mission.status = 'fail';
-      mission.comment = reason;
-      this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
-        this.refreshList(this.state);
-      });
-    }
+    rejectMissionsPack(
+      [this.state.selectedElement],
+      {
+        updateMission: mission => this.context.flux.getActions('missions').updateDutyMission(mission),
+      },
+      'dutyMission',
+    ).then(() => {
+      this.refreshList(this.state);
+      this.setState({ selectedElement: null });
+      global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+    });
   }
 
   removeElement = async () => {
@@ -166,27 +168,20 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   rejectCheckedElements = async () => {
-    if (Object.keys(this.state.checkedElements).length !== 0) {
-      const allQuerys = Object.values(this.state.checkedElements).map((mission) => {
-        if (mission.status === 'assigned') {
-          const reason = prompt(`Введите причину для наряд-задания №${mission.number}`, '');
-          if (reason) {
-            const updatedMission = _.cloneDeep(mission);
-            updatedMission.status = 'fail';
-            updatedMission.comment = reason;
-            return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-          }
-        }
-        return Promise.reject();
-      });
-      try {
-        await Promise.all(allQuerys);
-      } catch ({ errorIsShow }) {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
-      }
+    const missions = Object.values(this.state.checkedElements);
 
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
+    if (missions.length !== 0) {
+      rejectMissionsPack(
+        missions,
+        {
+          updateMission: mission => this.context.flux.getActions('missions').updateDutyMission(mission),
+        },
+        'dutyMission',
+      ).then(() => {
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+      });
     } else {
       this.rejectMission();
     }

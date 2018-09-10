@@ -105,14 +105,13 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
-
   checkDisabled() {
-    if (Object.keys(this.state.checkedElements).length !== 0) return false;
+    const { checkedElements = {}, selectedElement } = this.state;
+    const selectedDutyMissions = Object.values(checkedElements);
 
-    if (this.state.selectedElement === null) {
-      return true;
-    }
-    return this.state.selectedElement.status !== 'assigned';
+    return (!selectedDutyMissions.length && !selectedElement)
+      || selectedDutyMissions.some(mission => mission.status !== 'assigned')
+      || (selectedElement && selectedElement.status !== 'assigned');
   }
   checkDisabledArchive() {
     const validateMissionsArr = Object.values(this.state.checkedElements);

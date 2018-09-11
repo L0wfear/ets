@@ -62,7 +62,7 @@ export default function exportable(options) {
       }
 
       exportByPostFunction(bodyPayload = {}, urlPayload = {}) {
-        const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
+        const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
 
         const URL = toUrlWithParams(
           `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}`,

@@ -1,8 +1,9 @@
-.order, .program-remark, .program-object, .table-percent {
-  & .griddle .griddle-container{
+.data-table.order, .program-remark, .program-object, .table-percent {
+  margin-bottom: 20px;
+  .griddle, .griddle .griddle-container{
     height: auto;
   }
-  & .griddle-body table tbody tr.selected-row > td{
+  .griddle-body table tbody tr.selected-row > td{
     background-color: $colorHalfGreen !important;
   }
 }

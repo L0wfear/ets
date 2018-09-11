@@ -147,7 +147,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       // Если урл пустой, то делаем запрос на основе параметров из хедера.
       if (Object.keys(searchObject).length === 0) {
         const payload: any = { ...headerData };
-        
+
         const data = await this.getReportData(payload);
 
         if (data.result.rows.length === 0) {
@@ -214,7 +214,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.setReportDataWithSummerData({
         data,
         props: { ...this.state },
-      })
+      });
     }
   }
 
@@ -275,15 +275,17 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportPrint = async () => {
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
     this.setState({ exportFetching: true });
-    console.log(this.props.location.query)
+
     await this.props.exportByPostData(
       {
         rows: [
           ...this.props.list,
         ],
       },
-      this.props.location.query,
+      searchObject,
     );
 
     this.setState({ exportFetching: false });

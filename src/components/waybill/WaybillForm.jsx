@@ -432,7 +432,7 @@ class WaybillForm extends Form {
     let taxesControl = false;
     const { carsList = [], carsIndex = {}, waybillDriversList = [], employeesList = [], missionsList = [], entity } = this.props;
 
-    const getCarsByStructId = getCars(state.structure_id);
+    const getCarsByStructId = getCars(state.structure_id, state.car_id);
     const getTrailersByStructId = getTrailers(state.structure_id);
 
     const CARS = getCarsByStructId(carsList);

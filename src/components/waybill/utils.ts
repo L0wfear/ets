@@ -18,18 +18,21 @@ const VALID_VEHICLES_TYPES = {
 };
 
 // declarative functional approach
-const vehicleFilter = (structure_id: string) => R.filter<IVehicle>(c =>
-  (
-    !structure_id ||
-    c.is_common ||
-    c.company_structure_id === structure_id
-  )
-  && c.condition_bool,
+const vehicleFilter = (structure_id: string, car_id: number | void) => R.filter<IVehicle>(c =>
+  c.asuods_id === car_id
+  || (
+    (
+      !structure_id ||
+      c.is_common ||
+      c.company_structure_id === structure_id
+    )
+    && c.available_to_bind
+  ),
 );
 
 // IVehaicle
-const carFilter = structure_id => R.pipe(
-  vehicleFilter(structure_id),
+const carFilter = (structure_id, car_id) => R.pipe(
+  vehicleFilter(structure_id, car_id),
   R.filter<any>(c =>
     !c.is_trailer ||
     [
@@ -40,7 +43,7 @@ const carFilter = structure_id => R.pipe(
 );
 // IVehaicle
 const trailerFilter = structure_id => R.pipe(
-  vehicleFilter(structure_id),
+  vehicleFilter(structure_id, null),
   R.filter<any>(c => c.is_trailer),
 );
 // <IVehicle, any>
@@ -50,8 +53,8 @@ const vehicleMapper = R.map<any, any>(c => ({
   label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}]`,
 }));
 
-export const getCars = structure_id => R.pipe(
-  carFilter(structure_id),
+export const getCars = (structure_id, car_id) => R.pipe(
+  carFilter(structure_id, car_id),
   vehicleMapper,
 );
 

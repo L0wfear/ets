@@ -214,7 +214,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.setReportDataWithSummerData({
         data,
         props: { ...this.state },
-      })
+      });
     }
   }
 
@@ -275,6 +275,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   handleReportPrint = async () => {
+    const { location: { search } } = this.props;
+    const searchObject = queryString.parse(search);
     this.setState({ exportFetching: true });
 
     await this.props.exportByPostData(
@@ -283,7 +285,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           ...this.props.list,
         ],
       },
-      this.props.location.query,
+      searchObject,
     );
 
     this.setState({ exportFetching: false });

@@ -61,7 +61,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     .then(({ duty_mission }) => {
       // надо уйти от этого
       // react 16 Portal
-      global.confirmDialog({
+      return global.confirmDialog({
         title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
         bsSize: 'medium',
         body: self => (
@@ -85,6 +85,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       })
       .then(({ comment }) => (
         this.updateDutyMission({
+          ...duty_mission,
           status: 'fail',
           comment,
         })

@@ -276,11 +276,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   handleReportPrint = async () => {
     this.setState({ exportFetching: true });
-    await this.props.exportByPostData({
-      rows: [
-        ...this.props.list,
-      ],
-    });
+    console.log(this.props.location.query)
+    await this.props.exportByPostData(
+      {
+        rows: [
+          ...this.props.list,
+        ],
+      },
+      this.props.location.query,
+    );
 
     this.setState({ exportFetching: false });
   }

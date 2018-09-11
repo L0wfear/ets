@@ -61,25 +61,20 @@ export default function exportable(options) {
         });
       }
 
-      exportByPostFunction(payload = {}, useRouteParams) {
+      exportByPostFunction(bodyPayload = {}, urlPayload = {}) {
         const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
-        let id = '';
-        if (useRouteParams) {
-          id = this.props.routeParams.id;
-        }
-
-        payload = {
-          ...payload,
-        };
 
         const URL = toUrlWithParams(
-          `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}/${id}`,
-          { format: 'xls' },
+          `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}`,
+          {
+            format: 'xls',
+            ...urlPayload,
+          },
           );
         // TODO blob
         return fetch(URL, {
           method: 'post',
-          body: JSON.stringify(payload),
+          body: JSON.stringify(bodyPayload),
           headers: {
             Authorization: `Token ${token}`,
             'Access-Control-Expose-Headers': 'Content-Disposition',
@@ -104,9 +99,9 @@ export default function exportable(options) {
 
         return Promise.resolve(false);
       }
-      exportByPostData(payload) {
+      exportByPostData(bodyPayload, urlPayload) {
         if (typeof this.exportByPostFunction === 'function') {
-          return this.exportByPostFunction(payload)
+          return this.exportByPostFunction(bodyPayload, urlPayload)
             .then(({ blob, fileName }) => {
               saveData(blob, fileName);
             });

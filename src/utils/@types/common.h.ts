@@ -1,5 +1,6 @@
 export interface IExportableTableList {
   export(payload: object, useRouteParams?: boolean): Promise<any>;
+  exportByPostData(payload: object): Promise<any>;
 }
 
 export interface IHistoryQuery {

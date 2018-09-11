@@ -50,7 +50,40 @@ export default function exportable(options) {
             Authorization: `Token ${token}`,
             'Access-Control-Expose-Headers': 'Content-Disposition',
           },
-        }).then((async) (r) => {
+        }).then(async (r) => {
+          const fileName = parseFilename(r.headers.get('Content-Disposition'));
+          const blob = await r.blob();
+          return {
+            blob,
+            fileName,
+          };
+        });
+      }
+
+      exportByPostFunction(payload = {}, useRouteParams) {
+        const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
+        let id = '';
+        if (useRouteParams) {
+          id = this.props.routeParams.id;
+        }
+
+        payload = {
+          ...payload,
+        };
+
+        const URL = toUrlWithParams(
+          `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}/${id}`,
+          { format: 'xls' },
+          );
+        // TODO blob
+        return fetch(URL, {
+          method: 'post',
+          body: JSON.stringify(payload),
+          headers: {
+            Authorization: `Token ${token}`,
+            'Access-Control-Expose-Headers': 'Content-Disposition',
+          },
+        }).then(async (r) => {
           const fileName = parseFilename(r.headers.get('Content-Disposition'));
           const blob = await r.blob();
           return {
@@ -67,10 +100,22 @@ export default function exportable(options) {
               saveData(blob, fileName);
             });
         }
+
+        return Promise.resolve(false);
+      }
+      exportByPostData(payload) {
+        if (typeof this.exportByPostFunction === 'function') {
+          return this.exportByPostFunction(payload)
+            .then(({ blob, fileName }) => {
+              saveData(blob, fileName);
+            });
+        }
+
+        return Promise.resolve(false);
       }
 
       render() {
-        return <ComposedComponent {...this.props} exportable export={this.export} />;
+        return <ComposedComponent {...this.props} exportable export={this.export} exportByPostData={this.exportByPostData} />;
       }
 
     };

@@ -10,6 +10,8 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from './ReportHeader';
 import DeltaTableHeader from './DeltaTableHeader';
 
+require('components/reports/route_odh_coverage/report.scss');
+
 const serviceUrl = 'route_odh_coverage_report';
 const reportUrl = 'route-odh-coverage-report';
 const serviceName = 'RouteODHCoverageReportService';
@@ -32,11 +34,32 @@ const schemaMakers: ISchemaMaker = {
     ...schema,
     customHeaderComponent: <DeltaTableHeader name={schema.displayName} tooltip={deltaHeaderTooltip} />,
   }),
+  is_covered_text: schema => {
+    return ({
+      ...schema,
+      name: 'is_covered',
+      filter: {
+        type: 'multiselect',
+        byKey: 'is_covered_text',
+        byLabel: 'is_covered_text',
+      },
+    });
+  },
 };
+
 const renderers = {
   routes_names: ({ data }) => <span>{data.join(', ')}</span>,
+  is_covered: ({ rowData }) => <span>{rowData.is_covered_text}</span>,
 };
 const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['technical_operations_ids']);
+
+const tableProps = {
+  highlightClassColMapper: ([field_key, field_value]) => {
+    if (field_key === 'is_covered') {
+      return field_value && 'highlight-td-pink';
+    }
+  },
+};
 
 const reportProps: IReportProps = {
   title: 'Покрытие ОДХ маршрутами',
@@ -49,6 +72,7 @@ const reportProps: IReportProps = {
   summaryRenderes: renderers,
   schemaMakers,
   headerStateMaker,
+  tableProps,
 };
 
 const ExportableReportContainer = exportable({

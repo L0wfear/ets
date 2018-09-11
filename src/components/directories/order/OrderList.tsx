@@ -25,7 +25,8 @@ class OrderList extends React.Component<any, any> {
   context: any;
   state = {
     order_mission_source_id: null,
-  }
+  };
+
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources().then(({ order_mission_source_id }) => this.setState({ order_mission_source_id }));
@@ -49,7 +50,7 @@ class OrderList extends React.Component<any, any> {
       date_start,
       date_end,
       haveMax: !outerIdFax,
-    }
+    };
 
     this.props.getOrders(newPartPageOptions)
       .then(({ payload: { OrdersList } }) => {

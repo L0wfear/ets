@@ -261,7 +261,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
   handleReportPrint = async () => {
     this.setState({ exportFetching: true });
-    await this.props.export(this.props.location.query);
+    await this.props.exportByPostData({
+      rows: [
+        ...this.props.list,
+      ],
+    });
+
     this.setState({ exportFetching: false });
   }
 
@@ -271,7 +276,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       if (!is_row) {
         let initialSchema: IDataTableColSchema;
-        
+
         initialSchema = {
           name: fieldName,
           displayName,
@@ -283,7 +288,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         if (forWhat === 'mainList' && this.props.data.result) {
           (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }) => ({ value, label: value })), 'value');
         }
-        
+
         const renderer = schemaMakers[fieldName] || identity;
         tableMeta.push(renderer(initialSchema, this.props));
       }

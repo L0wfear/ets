@@ -89,6 +89,7 @@ export default class DataTable extends React.Component {
       filterResetting: PropTypes.bool,
       externalFilter: PropTypes.func,
       highlightClassMapper: PropTypes.func,
+      highlightClassColMapper: PropTypes.func,
       highlight: PropTypes.array,
 
       columnControl: PropTypes.bool,
@@ -465,6 +466,14 @@ export default class DataTable extends React.Component {
         }
 
         return defaultClass;
+      },
+      'tdCssClassName': (col) => {
+        // [field_name, field_value];
+        if (typeof this.props.highlightClassColMapper === 'function') {
+          return this.props.highlightClassColMapper(col);
+        }
+
+        return null;
       },
     };
   }

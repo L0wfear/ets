@@ -43,7 +43,7 @@ export interface IDataTableColFilter {
 }
 
 interface IDataTableColNotUseFilter {
-  notUse: boolean,
+  notUse?: boolean;
   [key: string]: any;
 }
 

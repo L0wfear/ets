@@ -50,7 +50,7 @@ export default class EmployeesList extends ElementsList {
           showForm: true,
         });
       } else {
-        this.props.history.replaceState(null, this.props.location.pathname, {});
+        this.props.history.replace(this.props.location.pathname, {});
       }
     }
   }

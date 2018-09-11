@@ -7,6 +7,7 @@ import { Row, Col, FormControl, Button, Glyphicon } from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import MapWrap from 'components/ui/input/map/MapWrap.tsx';
+import cx from 'classnames';
 
 import { polyState } from 'constants/polygons.js';
 import CheckList from './CheckList.jsx';
@@ -20,8 +21,6 @@ class RouteCreating extends React.Component {
       onChange: PropTypes.func,
       geozonePolys: PropTypes.object,
       manual: PropTypes.bool,
-      odhPolys: PropTypes.object,
-      dtPolys: PropTypes.object,
       formErrors: PropTypes.object,
     };
   }
@@ -219,8 +218,17 @@ class RouteCreating extends React.Component {
     const [draw_list = []] = [route.draw_odh_list];
     const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter(o => o.type) || [];
-    const polysRT = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
-    const fail_list = _.map(polysRT, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
+
+    const fail_list = _.map(polys, (v, k) => ({
+      name: v.name,
+      object_id: parseInt(k, 10),
+      type: 'odh',
+      state: v.state,
+    })).filter(o => (
+      !list.concat(draw_list)
+        .find(e => e.object_id === o.object_id)
+    ));
+
     const POLYS_OPTIONS = Object.entries(polys).reduce((newArr, [id, { name }]) => [
       ...newArr,
       { value: id, label: name },
@@ -250,8 +258,8 @@ class RouteCreating extends React.Component {
               <Div hidden={route.type !== 'mixed'} className="odh-container">
                 <div className="form-group">
                   <div className="checkbox">
-                    <label className="">
-                      <input type="checkbox" label="Выбрать все" disabled={!POLYS_OPTIONS.length} checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', POLYS_OPTIONS.map(o => o.value).join(','))} />
+                    <label className={cx({ 'not-allowed': !POLYS_OPTIONS.length })} disabled={!POLYS_OPTIONS.length}>
+                      <input type="checkbox" label="Выбрать все" disabled={!POLYS_OPTIONS.length} checked={POLYS_OPTIONS.length && !fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', POLYS_OPTIONS.map(o => o.value).join(','))} />
                       <span>Выбрать все</span>
                     </label>
                   </div>

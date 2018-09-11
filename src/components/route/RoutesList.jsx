@@ -74,7 +74,8 @@ class RoutesList extends React.Component {
           value: [v],
         };
       });
-      this.props.history.replaceState(null, this.props.location.pathname, {});
+
+      this.props.history.replace(this.props.location.pathname, {});
       this.refreshRoutes({ filterValues });
     } else {
       this.refreshRoutes();

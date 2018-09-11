@@ -987,8 +987,12 @@ body.application {
 }
 
 .no-pointer-events {
-  pointer-events: none !important;
+  pointer-events:  !important;
   cursor: default !important;
+}
+
+.not-allowed {
+  cursor: not-allowed !important;
 }
 
 .app-toolbar-new {

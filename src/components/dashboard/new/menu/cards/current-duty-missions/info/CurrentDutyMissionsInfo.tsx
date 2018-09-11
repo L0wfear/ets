@@ -31,7 +31,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   state = {
     showRouteInfoForm: false,
     showMissionRejectForm: false,
-  }
+  };
+
   refreshCard = () => (
     this.props.loadData()
   )
@@ -55,52 +56,65 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   rejectDutyMission = () => {
-    // надо уйти от этого
-    // react 16 Portal
-    global.confirmDialog({
-      title: <b>Введите причину</b>,
-      body: self => (
+    this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
+    .then(({ duty_mission }) => {
+      // надо уйти от этого
+      // react 16 Portal
+      return global.confirmDialog({
+        title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
+        body: self => (
           <ExtField
             type="string"
-            label="Введите причину"
+            label="Причина"
             value={self.state.comment}
             onChange={({ target: { value: comment } }) => self.setState({ comment })}
           />
-      ),
-      defaultState: {
-        comment: '',
-      },
-      checkOnOk: ({ state }) => {
-        if (!state.comment) {
-          global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
-          return false;
-        }
-        return true;
-      }
-    })
-    .then(({ comment }) => (
-      this.updateDutyMission({
-        status: 'fail',
-        comment,
+        ),
+        defaultState: {
+          comment: '',
+        },
+        checkOnOk: ({ state }) => {
+          if (!state.comment) {
+            global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
+            return false;
+          }
+          return true;
+        },
       })
-    ))
-    .catch(() => {});
+      .then(({ comment }) => (
+        this.updateDutyMission({
+          ...duty_mission,
+          status: 'fail',
+          comment,
+        })
+      ))
+      .catch(() => {
+        //
+      });
+    }).catch(e => {
+      console.log(e)
+    });
   }
 
   updateDutyMission = (newProps) => (
-    this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
+    (
+      newProps.number ?
+      Promise.resolve({ duty_mission: newProps })
+      :
+      this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
+    )
       .then(({ duty_mission }) => {
         if (duty_mission) {
           this.props.updateDutyMission(
             {
               ...duty_mission,
               ...newProps,
-            }
+            },
           )
           .then(() => {
             this.refreshCard();
             this.props.handleClose();
-          })
+          });
         } else {
           console.warn('not found duty mission')
         }

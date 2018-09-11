@@ -1,0 +1,9 @@
+@import '../../../assets/variables.scss';
+
+.griddle-body table tbody td.highlight-td-pink, .griddle-body table tbody tr:hover > td.highlight-td-pink {
+  background-color: $colorPink !important;
+}
+
+.griddle-body table tbody tr:nth-child(even) > td.highlight-td-pink {
+  background-color: $colorLightPink !important;
+}

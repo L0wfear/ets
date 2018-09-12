@@ -76,10 +76,18 @@
   }
 }
 
-.glyphicon-spin {
-  -webkit-animation: spin 1000ms infinite linear;
-  animation: spin 1000ms infinite linear;
+.button_refresh {
+  .glyphicon {
+    -webkit-animation: none;
+    animation: none;
+
+    &.glyphicon-spin {
+      -webkit-animation: spin 1000ms infinite linear;
+      animation: spin 1000ms infinite linear;
+    }
+  }
 }
+
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);

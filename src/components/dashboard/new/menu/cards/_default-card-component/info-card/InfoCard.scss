@@ -18,7 +18,7 @@
     box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
 
     border: 1px solid black;
-    transform: translate(calc(100% + 20px));
+    transform: translate(100%) translate(20px);
     width: 100%;
 
     @media screen and (max-width: 729px) {

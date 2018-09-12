@@ -1,8 +1,8 @@
 .dashboard_menu_buttons {
-  flex: 3 3 350px;
+  flex: 3 3 0px;
   margin: 20px;
   min-width: 350px;
-  @media screen and (max-width: 744px) {
+  @media screen and (max-width: 787px) {
     min-width: 300px;
   }
 

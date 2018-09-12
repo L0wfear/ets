@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "1.0.20.72",
+    "version": "1.0.20.73",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -84,6 +84,7 @@
         "@types/react-bootstrap": "0.0.48",
         "@types/react-dom": "=15.5.0",
         "babel-eslint": "^6.1.2",
+        "cross-env": "^5.2.0",
         "eslint": "^3.19.0",
         "eslint-config-airbnb": "^11.1.0",
         "eslint-import-resolver-webpack": "^0.6.0",
@@ -106,12 +107,12 @@
         "webpack-hot-middleware": "^2.18.0"
     },
     "scripts": {
-        "build:stage": "STAND=stage NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
-        "build:prod": "STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js --stack-size=100000",
-        "build": "STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
-        "dev:stage": "STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "dev:prod": "STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "dev": "STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "build:stage": "cross-env STAND=stage NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
+        "build:prod": "cross-env STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js --stack-size=100000",
+        "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js --stack-size=100000",
+        "dev:stage": "cross-env STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev:prod": "cross-env STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev": "cross-env STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "esdoc": "esdoc -c esdoc.json",
         "bump": "node webpack/utils/updateVersion.js"

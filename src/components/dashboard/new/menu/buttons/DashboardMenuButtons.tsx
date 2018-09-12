@@ -60,7 +60,7 @@ class DashboardMenuButtons extends React.Component<any, any> {
           <div className="card_title">Управление</div>
           <div className="card_body">
             <ButtonCreateWaybill onClick={this.showWaybillFormWrap} >Создать путевой лист</ButtonCreateWaybill>
-            <LinkToOrder to="/order"><Button active >Исполнение централизованного задания</Button></LinkToOrder>
+            <LinkToOrder to="/orders"><Button active >Исполнение централизованного задания</Button></LinkToOrder>
             <ButtonCreateMission onClick={this.showMissionFormWrap} >Создать децентрализованное задание</ButtonCreateMission>
             <ButtonCreateDutyMission onClick={this.showDutyMissionFormWrap} >Создать наряд-задание</ButtonCreateDutyMission>
           </div>

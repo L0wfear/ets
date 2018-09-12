@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.20.113",
+    "version": "2.0.20.114",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -73,6 +73,7 @@
         "clean-webpack-plugin": "^0.1.10",
         "copy-webpack-plugin": "^3.0.1",
         "css-loader": "=0.28.11",
+        "cross-env": "^5.2.0",
         "eslint": "=3.19.0",
         "eslint-config-airbnb": "=11.1.0",
         "eslint-import-resolver-webpack": "=0.10.0",
@@ -111,13 +112,13 @@
         "webpack-hot-middleware": "^2.18.0"
     },
     "scripts": {
-        "build:stage": "STAND=stage NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
-        "build:prod": "STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
-        "build": "STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js ",
-        "dev:stage": "STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "dev:prod": "STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "dev": "STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
-        "dev:test": "STAND=dev NODE_ENV=development PORT=3000 webpack webpack/webpack-dev-server.js",
+        "build:stage": "cross-env STAND=stage NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
+        "build:prod": "cross-env STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
+        "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js ",
+        "dev:stage": "cross-env STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev:prod": "cross-env STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev": "cross-env STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
+        "dev:test": "cross-env STAND=dev NODE_ENV=development PORT=3000 webpack webpack/webpack-dev-server.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "esdoc": "esdoc -c esdoc.json",
         "bump": "node webpack/utils/updateVersion.js"

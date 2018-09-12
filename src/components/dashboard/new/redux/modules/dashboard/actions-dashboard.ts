@@ -17,7 +17,7 @@ import { CarInWorkOverallInfoDataType } from 'components/dashboard/new/redux/mod
 import { FaxogrammsInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/faxogramms.h';
 import { CurrentDutyMissionsItemsSubItemDatasType } from 'components/dashboard/new/redux/modules/dashboard/@types/current-duty-mission.h';
 import { WaybillDraftInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-draft.h';
-import { WaybillInProgressInfoDataType}  from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-in-progress.h';
+import { WaybillInProgressInfoDataType} from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-in-progress.h';
 import { WaybillCompletedInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-completed.h';
 import { WaybillClosedInfoDataType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-closed.h';
 
@@ -31,12 +31,10 @@ export const dashboardSetIsLoadingForCardData = (path) => ({
   },
 });
 
-
-
 export const dashBoardResetData = () => ({
   type: DASHBOARD_RESET,
   payload: {},
-})
+});
 
 export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispatch) => {
   dispatch({
@@ -44,7 +42,7 @@ export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispa
     payload: {
       path: 'current_missions',
       infoData: null,
-    }
+    },
   });
 
   if (id) {
@@ -55,8 +53,8 @@ export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispa
         {
           promise: true,
           page: 'dashboard',
-        }
-      )
+        },
+      ),
     );
 
     loadMissionDataOption.payload.then(({ mission_data }) => (
@@ -77,7 +75,7 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?:
     payload: {
       path: 'current_duty_missions',
       infoData: null,
-    }
+    },
   });
 
   if (id) {
@@ -88,8 +86,8 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?:
         {
           promise: true,
           page: 'dashboard',
-        }
-      )
+        },
+      ),
     );
 
     loadRouteDataOption.payload.then(({ route_data }) => (
@@ -181,10 +179,9 @@ export const dashboardSetInfoDataInWaybillClosed = (infoData: WaybillClosedInfoD
   },
 });
 
-
 export const dashboardLoadCardData = (path: string, payload = {}) => ({
   type: DASHBOARD_CHANGE_CART_DATA,
-  payload: path.split('/').reduce((ApiService, path) => ApiService.path(path), DashboardService)
+  payload: path.split('/').reduce((ApiService, pathPart) => ApiService.path(pathPart), DashboardService)
     .get(payload)
     .catch(e => {
       console.warn(e);
@@ -197,16 +194,16 @@ export const dashboardLoadCardData = (path: string, payload = {}) => ({
       setTimeout(() => {
         res({
           [path.split('/').join('_')]: result,
-        })
+        });
       }, 500)
-    ))
-  )
+    )),
+  ),
 });
 
 export const dashboardLoadCardDataByPath = (path, payload?) => (dispatch) => {
-  dispatch(dashboardSetIsLoadingForCardData(path.split('/').join('_')))
+  dispatch(dashboardSetIsLoadingForCardData(path.split('/').join('_')));
   return dispatch(dashboardLoadCardData(path, payload));
-}
+};
 
 export const dashboardLoadCurrentMissions = () => (
   dashboardLoadCardDataByPath('current_missions')

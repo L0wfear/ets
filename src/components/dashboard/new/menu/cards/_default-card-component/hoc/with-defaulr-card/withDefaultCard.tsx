@@ -90,7 +90,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
 
       render() {
         const { isLoading, title, loadData, dateLoad, ...props } = this.props;
-
+        console.log(title, loadData)
         return (
           <div className="card_container main">
             <div className="card_title">

@@ -1327,10 +1327,10 @@ div.car_legend-active {
       align-items: center;
 
       >span {
-        flex: 1 1;
+        flex: 1 1 auto;
       }
       >div {
-        flex: 8 1;
+        flex: 8 1 auto;
       }
     }
   }

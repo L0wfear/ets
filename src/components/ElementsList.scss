@@ -13,7 +13,7 @@
     flex-direction: column;
 
     >* {
-      flex: 1 1;
+      flex: 1 1 auto;
 
       &.header_container {
         padding-right: 15px;

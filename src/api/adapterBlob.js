@@ -52,7 +52,7 @@ export const getBlob = async (url, data) => {
   try {
     ans = await httpMethodBlob(url, data, 'get');
   } catch (error) {
-    console.log('getBlob', error);
+    console.warn('getBlob', error);
   }
 
   return ans;

@@ -94,7 +94,7 @@ export default class WaybillsActions extends Actions {
     try {
       ans = await RootService.path(print_form_type).getBlob(payload);
     } catch (error) {
-      console.log('printWaybill', error);
+      console.warn('printWaybill', error);
     }
 
     return ans;

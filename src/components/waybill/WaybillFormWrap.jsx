@@ -265,7 +265,7 @@ export default class WaybillFormWrap extends FormWrap {
           saveData(respoce.blob, respoce.fileName)
         ))
         .catch(error => {
-          console.log('waybillFormWrap saveData', error)
+          console.warn('waybillFormWrap saveData', error);
         });
     };
 

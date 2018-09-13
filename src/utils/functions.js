@@ -72,8 +72,7 @@ export function isEmpty(value) {
 }
 
 export function saveData(blob, fileName) {
-  const arr = [blob, fileName];
-  if (isEqualOr(arr, null)) return;
+  if (blob === null || fileName === null) return;
 
   const a = document.createElement('a');
   document.body.appendChild(a);

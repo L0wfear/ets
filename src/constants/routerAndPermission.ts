@@ -1,8 +1,9 @@
-import monitor from 'components/monitor/config-data';
-import monitorNew from 'components/monitor/new/config-data';
+import monitorOld from 'components/monitor/config-data';
+import monitor from 'components/monitor/new/config-data';
 
 import coverageReports from 'components/coverage_reports/config-data';
-import dashboard from 'components/dashboard/config-data/index';
+import dashboardOld from 'components/dashboard/config-data/index';
+import dashboard from 'components/dashboard/new/config-data/index';
 import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
@@ -19,9 +20,10 @@ const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
 
 const routerAndPermission = {
+  monitorOld,
   monitor,
-  monitorNew,
   coverageReports,
+  dashboardOld,
   dashboard,
   waybillJournal,
   missions,

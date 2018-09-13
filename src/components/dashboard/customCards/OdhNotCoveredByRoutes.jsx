@@ -15,7 +15,6 @@ export default class OdhNotCoveredByRoutes extends DashboardCardMedium {
   }
 
   action(technical_operation_id) {
-    console.log(technical_operation_id); // eslint-disable-line
     const query = queryString.stringify({ technical_operation_id });
     this.context.history.push(`/routes-list/?${query}`);
   }

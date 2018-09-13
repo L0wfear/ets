@@ -69,8 +69,13 @@ class RoutesList extends React.Component {
     if (searchObject) {
       const filterValues = {};
       _.mapKeys(searchObject, (v, k) => {
-        filterValues[k] = [v];
+        filterValues[k] = {
+          type: 'multiselect',
+          value: [v],
+        };
       });
+
+      this.props.history.replace(this.props.location.pathname, {});
       this.refreshRoutes({ filterValues });
     } else {
       this.refreshRoutes();
@@ -133,6 +138,7 @@ class RoutesList extends React.Component {
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues);
+    console.log(filterValues)
     this.setState({ filterValues });
   }
 

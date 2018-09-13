@@ -19,6 +19,7 @@ global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
+global.APP_TIME_WITH_SECOND_FORMAT = 'HH:mm:ss';
 global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
 global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 

@@ -31,7 +31,6 @@ function calculateWaybillMetersDiff(waybill, field, value) {
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
-      console.log(value)
       waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
@@ -413,7 +412,9 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
         callback();
-        (await this.props.onCallback()) && this.props.onCallback();
+        if (this.props.onCallback) {
+          await this.props.onCallback();
+        }
       } else {
         try {
           await flux.getActions('waybills').updateWaybill(formState);

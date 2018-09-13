@@ -120,7 +120,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       validateMissionsArr.push(selectedElement);
     }
 
-    return validateMissionsArr.length === 0;
+    return validateMissionsArr.length === 0 || validateMissionsArr.some(({ status }) => status === 'assigned');
   }
 
   completeMission() {

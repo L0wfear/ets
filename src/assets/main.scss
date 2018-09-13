@@ -42,7 +42,7 @@ body {
 }
 .app-content {
   justify-self: flex-start;
-  flex: 1 1;
+  flex: 1 1 100%;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -104,7 +104,7 @@ body {
     >.data_container, >.data_container-wrap>.data_container {
       overflow-y: auto;
       pointer-events: all;
-      flex: 1 1;
+      flex: 1 1 auto;
       max-width: 500px;
       background-color: hsla(0,0%,95%,.8);
       border-left: 1px solid rgba(0,0,0,.3);
@@ -241,10 +241,10 @@ body {
     flex-direction: column;
   }
   >div {
-    flex: 1 1;
+    flex: 1 1 auto;
   }
   >div.car_info-img {
-    flex: 3 1;
+    flex: 3 1 auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -266,7 +266,7 @@ body {
 .car_info-buttons_row {
   display: flex;
   >button {
-    flex: 1 1;
+    flex: 1 1 auto;
     &:nth-child(2) {
       margin: 0px 5px;
     }
@@ -278,7 +278,7 @@ body {
   .car_info-chart_buttons_row {
     display: flex;
     >button {
-      flex: 1 1;
+      flex: 1 1 auto;
       &:first-child {
         margin-right: 2.5px;
       }
@@ -987,8 +987,12 @@ body.application {
 }
 
 .no-pointer-events {
-  pointer-events: none !important;
+  pointer-events:  !important;
   cursor: default !important;
+}
+
+.not-allowed {
+  cursor: not-allowed !important;
 }
 
 .app-toolbar-new {
@@ -1323,10 +1327,10 @@ div.car_legend-active {
       align-items: center;
 
       >span {
-        flex: 1 1;
+        flex: 1 1 auto;
       }
       >div {
-        flex: 8 1;
+        flex: 8 1 auto;
       }
     }
   }
@@ -3650,11 +3654,6 @@ div.none {
     background-color: $colorButton;
     cursor: pointer;
   }
-
-
-
-
-
 }
 
 .glyphicon-spin {
@@ -4323,7 +4322,7 @@ div.car-movement-time-report {
 
         >div {
           border-bottom: 1px solid #d7d7d7;
-          flex: 1 1;
+          flex: 1 1 auto;
           border-left: 1px solid #d7d7d7;
           border-right: 1px solid #d7d7d7;
           text-align: center;

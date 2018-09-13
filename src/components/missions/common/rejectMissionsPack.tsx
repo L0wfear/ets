@@ -3,7 +3,7 @@ import { ExtField } from 'components/ui/Field.jsx';
 import { cloneDeep } from 'lodash';
 
 const typeObj = {
-  dutyMisison: 'наряд задания',
+  dutyMission: 'наряд задания',
   mission: 'задания',
 };
 

@@ -5,8 +5,9 @@ import {
 import { createValidDateTime } from 'utils/dates';
 
 import { loadGeozonesFunc } from 'redux/trash-actions/geometry/geometry.h';
+import { TypeMeta } from 'redux/trash-actions/@types/common.h';
 
-export const loadGeozones: loadGeozonesFunc = (type, type_geoobject) => ({
+export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { loading: true } as TypeMeta) => ({
   type,
   payload: GeozonesService.path(type_geoobject).get()
     .catch((error) => {
@@ -37,7 +38,7 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject) => ({
       }, {}),
     })),
   meta: {
-    loading: true,
+    ...meta,
   },
 });
 

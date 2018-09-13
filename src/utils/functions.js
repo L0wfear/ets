@@ -76,7 +76,7 @@ export function saveData(blob, fileName) {
   let a = '';
   try {
     a = document.createElement('a');
-    document.body.appendChild(a);
+    a.classList.add('none');
     a.style = 'display: none';
   } catch (error) {
     console.warn('createElement or appendChild', error);

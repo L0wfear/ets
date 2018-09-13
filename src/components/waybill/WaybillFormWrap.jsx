@@ -261,9 +261,9 @@ export default class WaybillFormWrap extends FormWrap {
     const callback = (createdWaybillId) => {
       const waybill_id = createdWaybillId || currentWaybillId;
       return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then(({ blob, fileName }) => {
-          saveData(blob, fileName);
-        });
+        .then((respoce) => (
+          saveData(respoce.blob, respoce.fileName)
+        ));
     };
 
     try {

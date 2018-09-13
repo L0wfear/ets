@@ -77,10 +77,10 @@ export function saveData(blob, fileName) {
   try {
     a = document.createElement('a');
     a.classList.add('none');
-    a.style = 'display: none';
   } catch (error) {
     console.warn('createElement or appendChild', error);
   }
+  a.classList.add('none');
   let url = '';
   try {
     url = window.URL.createObjectURL(blob);

@@ -73,24 +73,37 @@ export function isEmpty(value) {
 
 export function saveData(blob, fileName) {
   if (blob === null || fileName === null) return;
-
-  const a = document.createElement('a');
-  document.body.appendChild(a);
-  a.style = 'display: none';
-  debugger;
+  let a = '';
+  try {
+    a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style = 'display: none';
+  } catch (error) {
+    console.warn('createElement or appendChild', error);
+  }
   let url = '';
   try {
     url = window.URL.createObjectURL(blob);
   } catch (error) {
     console.warn('createObjectURL', error);
   }
-  a.href = url;
-  a.download = 'Отчет.xls';
-  if (fileName) {
-    a.download = fileName;
+  try {
+    a.href = url;
+    a.download = 'Отчет.xls';
+    if (fileName) {
+      a.download = fileName;
+    }
+  } catch (error) {
+    console.warn('href or name', error);
   }
-  a.click();
-  setTimeout(() => window.URL.revokeObjectURL(url), 100);
+  try {
+    a.click();
+  } catch (error) {
+    console.log('click')
+  }
+  Promise.resolve().then(() => (
+    window.URL.revokeObjectURL(url)
+  ));
 }
 
 function get_browser() {

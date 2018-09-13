@@ -17,8 +17,8 @@ export const schema = {
     {
       key: 'personnel_number',
       title: 'Табельный номер',
-      type: 'number',
-      integer: true,
+      type: 'string',
+      integer: false,
     },
     {
       key: 'position_id',

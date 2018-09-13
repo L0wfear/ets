@@ -46,9 +46,17 @@ function httpMethodBlob(url, data, method) {
     });
 }
 
-export function getBlob(url, data) {
-  return httpMethodBlob(url, data, 'get');
-}
+export const getBlob = async (url, data) => {
+  let ans = '';
+
+  try {
+    ans = await httpMethodBlob(url, data, 'get');
+  } catch (error) {
+    console.log('getBlob', error);
+  }
+
+  return ans;
+};
 
 export function postBlob(url, data) {
   return httpMethodBlob(url, data, 'post');

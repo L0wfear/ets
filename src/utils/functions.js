@@ -77,7 +77,13 @@ export function saveData(blob, fileName) {
   const a = document.createElement('a');
   document.body.appendChild(a);
   a.style = 'display: none';
-  const url = window.URL.createObjectURL(blob);
+  debugger;
+  let url = '';
+  try {
+    url = window.URL.createObjectURL(blob);
+  } catch (error) {
+    console.warn('createObjectURL', error);
+  }
   a.href = url;
   a.download = 'Отчет.xls';
   if (fileName) {

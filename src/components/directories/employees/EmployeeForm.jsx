@@ -67,7 +67,7 @@ export default class EmployeeForm extends Form {
   handleChangePositionId =(field, e) => {
     this.handleChange(field, e);
     this.handleChange('prefer_car', null);
-    this.handleChange('secondary_car', null); 
+    this.handleChange('secondary_car', null);
   }
 
   render() {

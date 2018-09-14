@@ -95,6 +95,7 @@ class ElementsList extends React.Component {
    */
   @autobind
   selectElement({ props }) {
+    console.warn(this)
     const DOUBLECLICK_TIMEOUT = 300;
     console.warn(props.data);
     // TODO реализовать вызов ошибки в случае пустого айдишника

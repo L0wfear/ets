@@ -13,4 +13,4 @@ export default {
   children,
   hiddenNav: true,
   permissions: getChildrenPermissions(children),
-}
+};

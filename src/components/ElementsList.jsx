@@ -96,32 +96,28 @@ class ElementsList extends React.Component {
    */
   @autobind
   selectElement({ props }) {
-    const DOUBLECLICK_TIMEOUT = 300;
-    function onDoubleClick() {
-      return this.setState({
-        showForm: true,
-      });
-    }
+    const DOUBLECLICK_TIMEOUT = 400;
+
     const selectedElement = { ...props.data };
 
     if (props.fromKey) {
       this.setState({ selectedElement });
       return;
     }
-
     this.clicks += 1;
 
     if (this.clicks === 1) {
-      this.setState({ selectedElement });
-      setTimeout(() => {
-        // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
-        if (this.clicks !== 1) {
-          if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
-            onDoubleClick.call(this);
+      this.setState({ selectedElement },
+        setTimeout(() => {
+          // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
+          if (this.clicks !== 1) {
+            if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
+              this.showForm();
+            }
           }
-        }
-        this.clicks = 0;
-      }, DOUBLECLICK_TIMEOUT);
+          this.clicks = 0;
+        }, DOUBLECLICK_TIMEOUT),
+      );
     }
   }
 

@@ -73,35 +73,39 @@ export function isEmpty(value) {
 
 export function saveData(blob, fileName) {
   if (blob === null || fileName === null) return;
-  const url = window.URL.createObjectURL(blob);
+  if (navigator.msSaveOrOpenBlob) {
+    navigator.msSaveOrOpenBlob(blob, fileName || 'Отчет.xls');
+  } else {
+    const url = window.URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
-  a.classList.add('none');
-  a.href = url;
-  a.download = fileName || 'Отчет.xls';
+    const a = document.createElement('a');
+    a.classList.add('none');
+    a.href = url;
+    a.download = fileName || 'Отчет.xls';
 
-  try {
-    document.body.appendChild(a);
-  } catch (error) {
-    console.warn('appendChild', error)
+    try {
+      document.body.appendChild(a);
+    } catch (error) {
+      console.warn('appendChild', error)
+    }
+
+    try {
+      a.click();
+    } catch (error) {
+      console.warn('click', error)
+    }
+
+    try {
+      document.body.removeChild(a);
+    } catch (error) {
+      console.warn('removeChild', error)
+    }
+
+    console.warn('click to load');
+    setTimeout(() => (
+      window.URL.revokeObjectURL(url)
+    ), 1000);
   }
-
-  try {
-    a.click();
-  } catch (error) {
-    console.warn('click', error)
-  }
-
-  try {
-    document.body.removeChild(a);
-  } catch (error) {
-    console.warn('removeChild', error)
-  }
-
-  console.warn('click to load');
-  setTimeout(() => (
-    window.URL.revokeObjectURL(url)
-  ), 1000);
 }
 
 function get_browser() {

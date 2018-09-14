@@ -73,14 +73,31 @@ export function isEmpty(value) {
 
 export function saveData(blob, fileName) {
   if (blob === null || fileName === null) return;
+  const url = window.URL.createObjectURL(blob);
+
   const a = document.createElement('a');
   a.classList.add('none');
-
-  const url = window.URL.createObjectURL(blob);
   a.href = url;
   a.download = fileName || 'Отчет.xls';
 
-  a.click();
+  try {
+    document.body.appendChild(a);
+  } catch (error) {
+    console.warn('appendChild', error)
+  }
+
+  try {
+    a.click();
+  } catch (error) {
+    console.warn('click', error)
+  }
+
+  try {
+    document.body.removeChild(a);
+  } catch (error) {
+    console.warn('removeChild', error)
+  }
+
   console.warn('click to load');
   setTimeout(() => (
     window.URL.revokeObjectURL(url)

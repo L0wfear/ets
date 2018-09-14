@@ -114,6 +114,7 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 id="personnel_number"
+                type="string"
                 label="Табельный номер"
                 value={state.personnel_number}
                 error={errors.personnel_number}

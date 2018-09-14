@@ -13,7 +13,6 @@ import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
 import changeCompany from 'components/nav-item-role/config-data';
 
-
 const PROTO = window.location.protocol;
 const HOST = window.location.host;
 const PATHNAME = window.location.pathname;

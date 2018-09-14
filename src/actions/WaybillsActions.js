@@ -84,20 +84,12 @@ export default class WaybillsActions extends Actions {
     return WaybillsReportService.getBlob(payload);
   }
 
-  async printWaybill(print_form_type, waybill_id) {
+  printWaybill(print_form_type, waybill_id) {
     const payload = {
       waybill_id,
     };
 
-    let ans = '';
-
-    try {
-      ans = await RootService.path(print_form_type).getBlob(payload);
-    } catch (error) {
-      console.warn('printWaybill', error);
-    }
-
-    return ans;
+    return RootService.path(print_form_type).getBlob(payload);
   }
 
   updateWaybill(waybill) {

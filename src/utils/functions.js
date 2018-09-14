@@ -83,25 +83,10 @@ export function saveData(blob, fileName) {
     a.href = url;
     a.download = fileName || 'Отчет.xls';
 
-    try {
-      document.body.appendChild(a);
-    } catch (error) {
-      console.warn('appendChild', error)
-    }
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-    try {
-      a.click();
-    } catch (error) {
-      console.warn('click', error)
-    }
-
-    try {
-      document.body.removeChild(a);
-    } catch (error) {
-      console.warn('removeChild', error)
-    }
-
-    console.warn('click to load');
     setTimeout(() => (
       window.URL.revokeObjectURL(url)
     ), 1000);

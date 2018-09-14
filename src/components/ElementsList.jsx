@@ -93,12 +93,7 @@ class ElementsList extends React.Component {
   @autobind
   selectElement({ props }) {
     const DOUBLECLICK_TIMEOUT = 300;
-    function onDoubleClick() {
-      return this.setState({
-        showForm: true,
-      });
-    }
-
+    console.log(props.data)
     // TODO реализовать вызов ошибки в случае пустого айдишника
     const id = props && props.data ? props.data[this.selectField] : null;
 
@@ -109,9 +104,9 @@ class ElementsList extends React.Component {
       }
       return;
     }
-
+    console.log('before', this.clicks)
     this.clicks += 1;
-
+    console.log('after', this.clicks)
     if (this.clicks === 1) {
       const selectedElement = find(this.state.elementsList,
         el => el.id ? el.id === id : el[this.selectField] === id
@@ -121,7 +116,7 @@ class ElementsList extends React.Component {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
           if (this.state.selectedElement && id === this.state.selectedElement[this.selectField] && this.state.readPermission) {
-            onDoubleClick.call(this);
+            this.showForm();
           }
         }
         this.clicks = 0;

@@ -7,6 +7,11 @@
   }
   .rw-widget-picker {
     border-radius: 0px;
+    input {
+      border-left: #ccc 1px solid;
+      border-top: #ccc 1px solid;
+      border-bottom: #ccc 1px solid;
+    }
   }
   &.has-error>.rw-widget-picker.rw-widget-container {
     border-color: red;

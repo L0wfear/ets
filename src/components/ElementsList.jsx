@@ -12,6 +12,9 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from './ui/buttons/CRUD';
  * используется для наследования
  * @extends React.Component
  */
+
+let lastDate = +(new Date());
+
 @FluxContext
 class ElementsList extends React.Component {
 
@@ -93,7 +96,7 @@ class ElementsList extends React.Component {
   @autobind
   selectElement({ props }) {
     const DOUBLECLICK_TIMEOUT = 300;
-    console.warn(props.data)
+    console.warn(props.data);
     // TODO реализовать вызов ошибки в случае пустого айдишника
     const id = props && props.data ? props.data[this.selectField] : null;
 
@@ -104,9 +107,9 @@ class ElementsList extends React.Component {
       }
       return;
     }
-    console.warn('before', this.clicks)
+    console.warn('before', this.clicks);
     this.clicks += 1;
-    console.warn('after', this.clicks)
+    console.warn('after', this.clicks);
     if (this.clicks === 1) {
       const selectedElement = find(this.state.elementsList,
         el => el.id ? el.id === id : el[this.selectField] === id
@@ -120,6 +123,7 @@ class ElementsList extends React.Component {
           }
         }
         this.clicks = 0;
+        console.warn('resetClick', this.clicks);
       }, DOUBLECLICK_TIMEOUT);
     }
   }

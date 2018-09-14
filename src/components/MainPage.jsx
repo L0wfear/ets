@@ -163,7 +163,7 @@ export default class MainPage extends React.Component {
           <Navbar.Collapse>
             <Nav>
               <NavItem id="link-monitor" permissions={[PERMISSIONS.monitor]} active={path === '/monitor'} href="#/monitor">Карта</NavItem>
-              <NavDropdown id="show-coverage-report" hidden={isOkrug} oneOfPermissions={[PERMISSIONS.odh_coverage_report, PERMISSIONS.dt_coverage_report]} title="Оперативная обстановка">
+              <NavDropdown id="show-coverage-report" hidden={isOkrug || true} oneOfPermissions={[PERMISSIONS.odh_coverage_report, PERMISSIONS.dt_coverage_report]} title="Оперативная обстановка">
                 <MenuItem id="link-odh_coverage_report" permissions={[PERMISSIONS.odh_coverage_report]} active={path === '/odh_coverage_report'} href="#/odh_coverage_report">Отчет по посещению ОДХ</MenuItem>
                 <MenuItem id="link-dt_coverage_report" permissions={[PERMISSIONS.dt_coverage_report]} active={path === '/dt_coverage_report'} href="#/dt_coverage_report">Отчет по посещению ДТ</MenuItem>
               </NavDropdown>

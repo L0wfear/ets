@@ -94,6 +94,7 @@ export default class WaybillsActions extends Actions {
     const payload = {
       waybill_id,
     };
+
     return RootService.path(print_form_type).getBlob(payload);
   }
 

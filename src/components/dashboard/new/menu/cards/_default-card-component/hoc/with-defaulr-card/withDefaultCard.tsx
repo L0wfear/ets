@@ -75,7 +75,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
         }
       }
     
-      componentWillUnMount() {
+      componentWillUnmount() {
         clearTimeout(this.state.timerId);
         clearInterval(this.state.timerId);
       }

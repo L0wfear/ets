@@ -16,6 +16,9 @@ import {
  * используется для наследования
  * @extends React.Component
  */
+
+let lastDate = +(new Date());
+
 @FluxContext
 class ElementsList extends React.Component {
 

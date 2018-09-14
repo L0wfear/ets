@@ -338,7 +338,12 @@ export default class WaybillFormWrap extends FormWrap {
     });
     const callback = (waybill_id = currentWaybillId) => {
       return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then(({ blob, fileName }) => saveData(blob, fileName));
+        .then((respoce) => (
+          saveData(respoce.blob, respoce.fileName)
+        ))
+        .catch((error) => {
+          console.warn('waybillFormWrap saveData', error);
+        });
     };
 
     try {

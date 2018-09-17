@@ -1,5 +1,9 @@
 import * as React from 'react';
+
+import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 import { connect } from 'react-redux';
+
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
 import MapWrap from 'components/monitor/new/MapWrap';
@@ -79,7 +83,10 @@ const mapDispatchToProps = dispatch => ({
   )
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default hocAll(
+  triggerOnChangeCompany,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(MonitorPage);

@@ -52,6 +52,8 @@ class SimpleGriddle extends React.Component<any, any> {
       results,
       resultsPerPage,
       shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
+      initialSort: this.props.initialSort,
+      initialSortAscending: this.props.initialSortAscending,
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -84,8 +86,8 @@ class SimpleGriddle extends React.Component<any, any> {
       <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
         {field.displayName}
         {
-          this.props.initialSort === columnName ?
-            <Glyphicon glyph={`sort-by-attributes${!this.props.initialSortAscending ? '-alt' : ''}`} />
+          this.state.initialSort === columnName ?
+            <Glyphicon glyph={`sort-by-attributes${!this.state.initialSortAscending ? '-alt' : ''}`} />
           :
             <span></span>
         }
@@ -196,9 +198,15 @@ class SimpleGriddle extends React.Component<any, any> {
       const fieldMeta = this.props.columnMetadata.find(({ columnName }) => columnName === title);
 
       if (fieldMeta && fieldMeta.sortable) {
-        const initialSortAscending = title === this.props.initialSort ? !this.props.initialSortAscending : true;
+        const initialSortAscending = title === this.state.initialSort ? !this.state.initialSortAscending : true;
+
+        console.log('CHANGE SORT', title, initialSortAscending)
 
         this.props.externalChangeSort(title, initialSortAscending);
+        this.setState({
+          initialSort: title,
+          initialSortAscending: initialSortAscending,
+        })
       }
     } 
   }

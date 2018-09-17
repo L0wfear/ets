@@ -583,7 +583,6 @@ export default class DataTable extends React.Component {
   }
 
   handleChangeSort(sortingColumnName, ascendingSort) {
-    console.log('CHANGE SORT', sortingColumnName, ascendingSort)
     this.setState({
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
@@ -706,7 +705,7 @@ export default class DataTable extends React.Component {
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
           rowNumberOffset={serverPagination ? this.props.rowNumberOffset : 0}
           handleRowCheck={this.handleRowCheck}
-          lowerCaseSorting
+          serverPagination={serverPagination}
         />
         {
           serverPagination ?

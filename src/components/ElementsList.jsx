@@ -108,15 +108,17 @@ class ElementsList extends React.Component {
 
     if (this.clicks === 1) {
       this.setState({ selectedElement },
-        setTimeout(() => {
-          // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
-          if (this.clicks !== 1) {
-            if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
-              this.showForm();
+        () => {
+          setTimeout(() => {
+            // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
+            if (this.clicks !== 1) {
+              if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
+                this.showForm();
+              }
             }
-          }
-          this.clicks = 0;
-        }, DOUBLECLICK_TIMEOUT),
+            this.clicks = 0;
+          }, DOUBLECLICK_TIMEOUT);
+        },
       );
     }
   }

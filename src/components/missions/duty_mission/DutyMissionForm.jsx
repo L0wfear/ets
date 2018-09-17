@@ -102,9 +102,10 @@ export class DutyMissionForm extends Form {
 
     if (!isEmpty(foreman_id)) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
-      this.props.handleFormChange('foreman_id', foreman_id);
       this.handleBrigadeIdListChange(lastBrigade);
     }
+
+    this.props.handleFormChange('foreman_id', foreman_id);
   }
 
   // Можно принять второй параметр
@@ -354,7 +355,7 @@ export class DutyMissionForm extends Form {
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
       if (!BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[state.foreman_id] || {};
+        const employee = this.props.employeesIndex[key] || {};
 
         BRIGADES.push({
           value: key,

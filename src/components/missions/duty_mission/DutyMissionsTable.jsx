@@ -165,7 +165,6 @@ export const getTableMeta = ({
 
 export default (props) => {
   const renderers = {
-    rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     mission_source_name: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{DUTY_MISSION_STATUS_LABELS[data]}</div>,
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,

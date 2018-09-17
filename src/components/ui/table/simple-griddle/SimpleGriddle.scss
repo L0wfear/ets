@@ -1,0 +1,21 @@
+.simple-griddle {
+
+  .griddle-body table tbody tr:nth-child(even) > td {
+    background-color: #f7f7f7 !important;
+}
+  table {
+    width: 100%;
+    td, th {
+      padding: 5px;
+    }
+    th.glyphicon {
+      margin-left: 5px;
+    }
+
+    th {
+      &.sortable {
+        cursor: pointer;
+      }
+    }
+  }
+}

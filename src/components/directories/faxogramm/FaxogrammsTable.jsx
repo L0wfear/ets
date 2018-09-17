@@ -82,6 +82,7 @@ export default (props) => {
     pgm_deny: ({ data }) => <div>{data === 1 ? 'Не применять' : 'Применять'}</div>,
     order_type_id: ({ data }) => <div>{get(find(props.faxogrammsList, { 'order_type_id': data }), 'order_type_name', '')}</div>,
   };
+  console.log(props)
 
   return (<Table
     title="Реестр факсограмм"
@@ -92,8 +93,6 @@ export default (props) => {
     enumerated={false}
     externalFilter={props.changeFilter}
     externalChangeSort={props.changeSort}
-    initialSort={'create_date'}
-    initialSortAscending={false}
     {...props}
   />);
 };

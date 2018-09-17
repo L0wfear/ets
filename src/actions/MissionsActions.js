@@ -363,7 +363,7 @@ export default class MissionsActions extends Actions {
     payload.created_at = createValidDate(payload.created_at);
     payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
 
-    return DutyMissionTemplateService.post(payload, null, 'json');
+    return DutyMissionTemplateService.post(payload, false, 'json');
   }
 
   updateDutyMissionTemplate(mission) {
@@ -374,12 +374,12 @@ export default class MissionsActions extends Actions {
     delete payload.number;
     delete payload.technical_operation_name;
     delete payload.route_name;
-    return DutyMissionTemplateService.put(payload, null, 'json');
+    return DutyMissionTemplateService.put(payload, false, 'json');
   }
 
   removeDutyMissionTemplate(id) {
     const payload = { id };
-    return DutyMissionTemplateService.delete(payload, null, 'json');
+    return DutyMissionTemplateService.delete(payload, false, 'json');
   }
 
   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {

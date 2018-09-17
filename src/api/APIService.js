@@ -49,7 +49,7 @@ export default class APIService {
           !w.hidden && this.warningNotificationFunction(w.message || w);
 
           const errorThrow = {
-            erorr: r,
+            error: r,
             error_text: new RequestWarningError(w),
             errorIsShow,
           };
@@ -61,7 +61,7 @@ export default class APIService {
         !r.warnings.hidden && this.warningNotificationFunction(r.warnings.message || r.warnings);
 
         const errorThrow = {
-          erorr: r,
+          error: r,
           error_text: new RequestWarningError(r.warnings),
           errorIsShow,
         };
@@ -86,7 +86,7 @@ export default class APIService {
           !w.hidden && this.errrorNotificationFunction(w.message || w);
 
           const errorThrow = {
-            erorr: r,
+            error: r,
             error_text: new RequestWarningError(w),
             errorIsShow,
           };
@@ -98,7 +98,7 @@ export default class APIService {
         !r.errors.hidden && this.errrorNotificationFunction(r.errors.message || r.errors);
 
         const errorThrow = {
-          erorr: r,
+          error: r,
           error_text: new RequestWarningError(r.errors),
           errorIsShow,
         };

@@ -39,7 +39,7 @@ function checkResponse(url, response, body, method) {
   if (response.status === 500) {
     // global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
     const error = {
-      erorr: body,
+      error: body,
       error_text: new Error('Server responded with 500'),
     };
     throw error;
@@ -52,7 +52,7 @@ function checkResponse(url, response, body, method) {
       global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}`));
     });
     const errorThrow = {
-      erorr: body,
+      error: body,
       error_text: new Error('Errors in response body'),
     };
     throw errorThrow;

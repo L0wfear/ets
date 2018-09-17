@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Glyphicon } from 'react-bootstrap';
-import cx from 'classnames';
+import * as cx from 'classnames';
 
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 

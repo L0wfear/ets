@@ -27,6 +27,10 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
       })
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.itervalId);
+  }
+
   updateDateOnSecond = () => {
     const { date } = this.state;
     

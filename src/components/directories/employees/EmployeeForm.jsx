@@ -85,8 +85,8 @@ export default class EmployeeForm extends Form {
       .map(c => ({ value: c.asuods_id, label: `${c.gov_number}/ ${c.garage_number ? c.garage_number : '-'}/ ${c.type_name}/ ${c.full_model_name}/ ${c.special_model_name || c.model_name}` }));
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
     const DRIVER_STATES = [{ value: 1, label: 'Работает' }, { value: 0, label: 'Не работает' }];
-    const POSITION_ELEMENTS = positionsList.map(el => ({ value: el.id, label: el.position }));
-    const positionLabel = (POSITION_ELEMENTS.find(({ value }) => value === state.position_id) || {}).label;
+    const POSITION_ELEMENTS = positionsList.map(el => ({ value: el.id, label: el.position, isDriver: el.is_driver }));
+    const positionIsDriver = (POSITION_ELEMENTS.find(({ value }) => value === state.position_id) || {}).isDriver; // флаг, если должность подразумевает управление транспортным средством
     const IS_CREATING = !state.id;
 
     let title = 'Изменение сотрудника';
@@ -114,6 +114,7 @@ export default class EmployeeForm extends Form {
             <Col md={6}>
               <ExtField
                 id="personnel_number"
+                type="string"
                 label="Табельный номер"
                 value={state.personnel_number}
                 error={errors.personnel_number}
@@ -253,7 +254,7 @@ export default class EmployeeForm extends Form {
                 value={state.prefer_car}
                 options={CARS}
                 error={errors.prefer_car}
-                disabled={!isPermitted || !(positionLabel === 'водитель' || positionLabel === 'машинист')}
+                disabled={!isPermitted || !positionIsDriver}
                 onChange={this.handleChange}
                 boundKeys={['prefer_car']}
               />
@@ -284,7 +285,7 @@ export default class EmployeeForm extends Form {
                 value={state.secondary_car}
                 options={CARS}
                 error={errors.secondary_car}
-                disabled={!isPermitted || !(positionLabel === 'водитель' || positionLabel === 'машинист')}
+                disabled={!isPermitted || !positionIsDriver}
                 onChange={this.handleChange}
                 boundKeys={['secondary_car']}
               />

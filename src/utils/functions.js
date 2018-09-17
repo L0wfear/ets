@@ -72,19 +72,25 @@ export function isEmpty(value) {
 }
 
 export function saveData(blob, fileName) {
-  if (isEqualOr([blob, fileName], null)) return;
+  if (blob === null || fileName === null) return;
+  if (navigator.msSaveOrOpenBlob) {
+    navigator.msSaveOrOpenBlob(blob, fileName || 'Отчет.xls');
+  } else {
+    const url = window.URL.createObjectURL(blob);
 
-  const a = document.createElement('a');
-  document.body.appendChild(a);
-  a.style = 'display: none';
-  const url = window.URL.createObjectURL(blob);
-  a.href = url;
-  a.download = 'Отчет.xls';
-  if (fileName) {
-    a.download = fileName;
+    const a = document.createElement('a');
+    a.classList.add('none');
+    a.href = url;
+    a.download = fileName || 'Отчет.xls';
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    setTimeout(() => (
+      window.URL.revokeObjectURL(url)
+    ), 1000);
   }
-  a.click();
-  setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
 
 function get_browser() {

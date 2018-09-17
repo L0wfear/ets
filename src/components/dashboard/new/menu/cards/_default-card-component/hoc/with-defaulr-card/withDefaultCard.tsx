@@ -75,7 +75,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
         }
       }
     
-      componentWillUnMount() {
+      componentWillUnmount() {
         clearTimeout(this.state.timerId);
         clearInterval(this.state.timerId);
       }
@@ -96,7 +96,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
             <div className="card_title">
               <div>
                 <div>{title}</div>
-                <div>
+                <div className="button_refresh">
                   <Button onClick={this.loadData}>
                     <Glyphicon
                       className={cx({ 'glyphicon-spin': isLoading })}

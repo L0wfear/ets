@@ -151,7 +151,7 @@ export function getErrorNotificationFromBack(message) {
 
 export function getInfoNotification(message) {
   return {
-    title: 'Ифнормация.',
+    title: 'Информация.',
     message: `${message}`,
     level: 'info',
     dismissible: true,

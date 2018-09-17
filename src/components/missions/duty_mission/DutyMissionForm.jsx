@@ -102,9 +102,10 @@ export class DutyMissionForm extends Form {
 
     if (!isEmpty(foreman_id)) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
-      this.props.handleFormChange('foreman_id', foreman_id);
       this.handleBrigadeIdListChange(lastBrigade);
     }
+
+    this.props.handleFormChange('foreman_id', foreman_id);
   }
 
   // Можно принять второй параметр

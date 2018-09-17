@@ -1,9 +1,20 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+
+import {
+  sessionSetData,
+} from 'redux/modules/session/actions-session';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import EtsSelect from 'components/ui/input/EtsSelect';
 import { withRouter } from 'react-router-dom';
 
 @withRouter
+@connect(
+  null,
+  dispatch => ({
+    sessionSetData: props => dispatch(sessionSetData(props)),
+  }),
+)
 @connectToStores(['session'])
 @FluxContext
 class CompanyOptions extends React.Component<any, any> {
@@ -22,7 +33,12 @@ class CompanyOptions extends React.Component<any, any> {
 
     if (company_id !== company_id_old) {
       this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
-        .then(({ payload }) => {
+        .then(({ payload, token }) => {
+          this.props.sessionSetData({
+            currentUser: payload,
+            session: token,
+          });
+
           this.props.history.push(`/${payload.default_path}`);
         });
     }

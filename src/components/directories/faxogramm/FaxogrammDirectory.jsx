@@ -5,8 +5,7 @@ import get from 'lodash/get';
 import ElementsList from 'components/ElementsList.jsx';
 import Paginator from 'components/ui/Paginator.jsx';
 import Div from 'components/ui/Div.jsx';
-import { saveData } from 'utils/functions';
-import { getToday0am, getToday2359 } from 'utils/dates';
+import { saveData } from 'utils/functions'; 
 import { staticProps } from 'utils/decorators';
 import { autobind } from 'core-decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
@@ -39,8 +38,8 @@ class FaxogrammDirectory extends ElementsList {
     this.state = {
       page: 0,
       selectedElement: null,
-      create_date_from: getToday0am(),
-      create_date_to: getToday2359(),
+      create_date_from: props.appConfig.shift.shift_start,
+      create_date_to: props.appConfig.shift.shift_end,
       showForm: false,
       sortBy: ['order_number:desc'],
       filter: {},

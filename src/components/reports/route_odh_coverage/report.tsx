@@ -56,7 +56,7 @@ const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryStat
 const tableProps = {
   highlightClassColMapper: ([field_key, field_value]) => {
     if (field_key === 'is_covered') {
-      return field_value && 'highlight-td-pink';
+      return !field_value ? 'highlight-td-pink' : 'highlight-td-green';
     }
   },
 };

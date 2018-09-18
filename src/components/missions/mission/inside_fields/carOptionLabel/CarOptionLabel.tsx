@@ -7,7 +7,7 @@ const style = {
   marginTop: -2,
 };
 
-const CarOptionLabel: React.SFC<any> = ({ available, label }) =>
+const CarOptionLabel: React.SFC<any> = ({ data: { available, label } }) =>
   <div>
     {
       available

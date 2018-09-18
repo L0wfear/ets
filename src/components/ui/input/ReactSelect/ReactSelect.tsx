@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import * as cx from 'classnames';
-import styled from 'styled-components';
 
 import {
   onChangeSelectLegacy,
@@ -34,8 +33,6 @@ export default class EstSelect extends React.Component<any, any> {
   }
 
   handleChange = (objectValue) => {
-    debugger;
-    console.log(styled);
     const {
       emptyValue = '',
     } = this.props;
@@ -43,11 +40,11 @@ export default class EstSelect extends React.Component<any, any> {
     this.props.onChange(onChangeSelectLegacy(objectValue === null ? emptyValue : objectValue), objectValue);
   }
 
-  optionRenderer = (obj) => {
+  optionRenderer = (props) => {
     if (this.props.optionRenderer && typeof this.props.optionRenderer === 'function') {
-      return <div id={obj.value}>{this.props.optionRenderer(obj)}</div>;
+      return <components.Option {...props} >{this.props.optionRenderer(props)}</ components.Option>;
     }
-    return <div id={obj.value}><span>{obj.label}</span></div>;
+    return <components.Option {...props} />;
   }
   render() {
     const {
@@ -95,7 +92,11 @@ export default class EstSelect extends React.Component<any, any> {
           options={sortedOptions}
           placeholder={placeholder}
           noResultsText={noResultsText}
-          optionRenderer={this.optionRenderer}
+          components={
+            {
+              Option: this.optionRenderer
+            }
+          }
           isDisabled={disabled}
         />
       </div>

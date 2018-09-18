@@ -14,7 +14,7 @@ const DefaultInput: React.SFC<PropsDefaultInput> = ({ OPTIONS, OPTIONS: { length
     type="select"
     value={props.value}
     onChange={props.changeFilter}
-    placeholder={`Тип техники${!length ? ' (нет данных)' : ''}`}
+    placeholder={`${props.placeholder}${!length ? ' (нет данных)' : ''}`}
     options={OPTIONS}
     disabled={!length}
   />

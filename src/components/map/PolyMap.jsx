@@ -162,26 +162,28 @@ export default class PolyMap extends React.Component {
     let styleFunction = polyStyles[polyState.SELECTABLE];
 
     Object.entries(polys).forEach(([key, poly]) => {
-      const feature = new ol.Feature({
-        geometry: GeoJSON.readGeometry(poly.shape),
-        name: poly.name,
-        id: key,
-        state: poly.state,
-        type: poly.type,
-      });
-      if (poly.shape && poly.shape.type === 'LineString') {
-        feature.setStyle(getVectorArrowStyle(feature));
-      } else if (poly.shape && poly.shape.type !== 'Point') {
-        feature.setStyle(polyStyles[poly.state]);
-      } else {
-        styleFunction = null;
-      }
+      if (poly.shape) {
+        const feature = new ol.Feature({
+          geometry: GeoJSON.readGeometry(poly.shape),
+          name: poly.name,
+          id: key,
+          state: poly.state,
+          type: poly.type,
+        });
+        if (poly.shape && poly.shape.type === 'LineString') {
+          feature.setStyle(getVectorArrowStyle(feature));
+        } else if (poly.shape && poly.shape.type !== 'Point') {
+          feature.setStyle(polyStyles[poly.state]);
+        } else {
+          styleFunction = null;
+        }
 
-      if (poly.state === 4) {
-        feature.setStyle(getPolyStyle('green'));
-      }
+        if (poly.state === 4) {
+          feature.setStyle(getPolyStyle('green'));
+        }
 
-      vectorSource.addFeature(feature);
+        vectorSource.addFeature(feature);
+      }
     });
 
     !!POLYS_LAYER && map.removeLayer(POLYS_LAYER);

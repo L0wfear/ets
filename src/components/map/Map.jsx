@@ -311,46 +311,48 @@ export default class OpenLayersMap extends React.Component {
 
     if (showPolygons) {
       _.each(polys, (poly, key) => {
-        const feature = new ol.Feature({
-          geometry: GeoJSON.readGeometry(poly.shape),
-          name: poly.name,
-          id: key,
-          state: poly.state,
-          data: poly.data,
-        });
-        if (poly.shape && poly.shape.type === 'LineString') {
-          feature.setStyle(getVectorArrowStyle(feature));
-        } else if (poly.shape && poly.shape.type !== 'Point') {
-          if (poly.selected) {
-            feature.setStyle(polyStyles['geoobject-selected']);
-          } else {
-            const { organizationsIndex = {} } = this.props;
-            if (poly.data.featureType === 'odh' && Object.keys(organizationsIndex).length > 1) {
-              feature.setStyle(
-                polyStyles.odh(
-                  (organizationsIndex[poly.data.company_id] || { rgb_color: 'red' }).rgb_color
-                )
-              );
+        if (poly.shape) {
+          const feature = new ol.Feature({
+            geometry: GeoJSON.readGeometry(poly.shape),
+            name: poly.name,
+            id: key,
+            state: poly.state,
+            data: poly.data,
+          });
+          if (poly.shape && poly.shape.type === 'LineString') {
+            feature.setStyle(getVectorArrowStyle(feature));
+          } else if (poly.shape && poly.shape.type !== 'Point') {
+            if (poly.selected) {
+              feature.setStyle(polyStyles['geoobject-selected']);
             } else {
-              feature.setStyle(polyStyles.geoobject);
+              const { organizationsIndex = {} } = this.props;
+              if (poly.data.featureType === 'odh' && Object.keys(organizationsIndex).length > 1) {
+                feature.setStyle(
+                  polyStyles.odh(
+                    (organizationsIndex[poly.data.company_id] || { rgb_color: 'red' }).rgb_color
+                  )
+                );
+              } else {
+                feature.setStyle(polyStyles.geoobject);
+              }
+            }
+          } else if (poly.shape && poly.data.type === 'leak') {
+            if (poly.selected) {
+              feature.setStyle(leakIcon['geoobject-selected']);
+              this.popupLeak.show(poly.shape.coordinates, leaks('leak', poly.data));
+            } else {
+              feature.setStyle(leakIcon.geoobject);
+            }
+          } else { // Если точка
+            if (poly.selected) {
+              feature.setStyle(pointStyles['geoobject-selected']);
+            } else {
+              feature.setStyle(pointStyles.geoobject);
             }
           }
-        } else if (poly.shape && poly.data.type === 'leak') {
-          if (poly.selected) {
-            feature.setStyle(leakIcon['geoobject-selected']);
-            this.popupLeak.show(poly.shape.coordinates, leaks('leak', poly.data));
-          } else {
-            feature.setStyle(leakIcon.geoobject);
-          }
-        } else { // Если точка
-          if (poly.selected) {
-            feature.setStyle(pointStyles['geoobject-selected']);
-          } else {
-            feature.setStyle(pointStyles.geoobject);
-          }
-        }
 
-        vectorSource.addFeature(feature);
+          vectorSource.addFeature(feature);
+        }
       });
     }
 

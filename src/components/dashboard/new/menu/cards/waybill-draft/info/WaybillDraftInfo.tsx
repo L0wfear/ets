@@ -22,13 +22,16 @@ import {
   PropsWaybillDraftInfo,
   StateWaybillDraftInfo,
 } from 'components/dashboard/new/menu/cards/waybill-draft/info/WaybillDraftInfo.h';
+import {
+  WaybillDraftItemsSubItemsType,
+} from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-draft.h';
 
 class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
     infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy(
+    infoDataGroupByDate: groupBy<WaybillDraftItemsSubItemsType>(
       this.props.infoData.subItems,
       (waybill) => (
         makeDate(waybill.data.waybill_date_create)
@@ -41,7 +44,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
       if (infoData) {
         this.setState({
           infoData,
-          infoDataGroupByDate: groupBy(
+          infoDataGroupByDate: groupBy<WaybillDraftItemsSubItemsType>(
             infoData.subItems,
             (waybill) => (
               makeDate(waybill.data.waybill_date_create)

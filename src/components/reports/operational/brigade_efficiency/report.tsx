@@ -15,8 +15,8 @@ const DutyMissionForm: any = DutyMissionFormSCC;
   entity: serviceUrl,
 })
 class BrigadeEfficiencyReport extends React.Component<{}, IStateBrigadeEfficiency> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       dutyMissionFormVisibility: false,
       dutyMissionSelectedItem: null,

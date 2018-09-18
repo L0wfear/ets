@@ -9,7 +9,15 @@ import { carInfoToggleSensorShow } from 'components/monitor/new/info/car-info/re
 
 type PropsSensorsEquipmentList = {
   track: any;
-  front_cars_sensors_equipment: any;
+  front_cars_sensors_equipment: {
+    [key: string]: {
+      data: any[];
+      show: boolean;
+      sensor: {
+        type_name: string;
+      };
+    };
+  };
   toggleSensorOnMap: any;
 };
 

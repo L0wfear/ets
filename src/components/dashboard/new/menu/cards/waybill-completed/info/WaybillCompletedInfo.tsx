@@ -22,13 +22,16 @@ import {
   PropsWaybillCompletedInfo,
   StateWaybillCompletedInfo,
 } from 'components/dashboard/new/menu/cards/waybill-completed/info/WaybillCompletedInfo.h';
+import {
+  WaybillCompletedItemsSubItemsType,
+} from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-completed.h';
 
 class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, StateWaybillCompletedInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
     infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy(
+    infoDataGroupByDate: groupBy<WaybillCompletedItemsSubItemsType>(
       this.props.infoData.subItems,
       (waybill) => (
         makeDate(waybill.data.create_date)
@@ -41,7 +44,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
       if (infoData) {
         this.setState({
           infoData,
-          infoDataGroupByDate: groupBy(
+          infoDataGroupByDate: groupBy<WaybillCompletedItemsSubItemsType>(
             infoData.subItems,
             (waybill) => (
               makeDate(waybill.data.create_date)
@@ -100,7 +103,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
               <div>
                 <ul>
                   {
-                    arrData.map(({ data: { waybill_id }, data }, index) => (
+                    arrData.map(({ data: { waybill_id, ...data } }, index) => (
                       <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
                         {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
                         <br />

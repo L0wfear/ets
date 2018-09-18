@@ -126,7 +126,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       infoData,
       infoData: {
         duty_mission_data,
-        ...route,
+        ...route
       }
     } = this.props;
 

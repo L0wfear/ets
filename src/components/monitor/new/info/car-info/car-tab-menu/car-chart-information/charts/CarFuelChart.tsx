@@ -9,10 +9,20 @@ import EventTable from 'components/monitor/new/info/car-info/car-tab-menu/car-ch
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 
+type TypeFrontCarsSensorsLevel = {
+  [key: string]: {
+    data: any[];
+    show: boolean;
+    color: string;
+    connectNulls: number;
+    name: string;
+  };
+};
+
 type PropsCarFuelChart = {
   track: any;
   has_cars_sensors: boolean;
-  front_cars_sensors_level: any;
+  front_cars_sensors_level: TypeFrontCarsSensorsLevel;
   handleChartClick: any;
   handleEventClick: any;
 };
@@ -20,11 +30,11 @@ type PropsCarFuelChart = {
 type StateCarFuelChart = {
   sensorRawData: boolean,
   data: any[],
-  front_cars_sensors_level: any;
+  front_cars_sensors_level: TypeFrontCarsSensorsLevel;
 };
 
 const makeData = (front_cars_sensors_level, { sensorRawData = false }) => (
-  Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {
+  Object.values(front_cars_sensors_level as TypeFrontCarsSensorsLevel).reduce((newArr, sensor) => {
     const data = sensor[sensorRawData ? 'raw_data' : 'data'];
 
     if (sensor.data.length) {

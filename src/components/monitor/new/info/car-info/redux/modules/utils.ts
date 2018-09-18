@@ -5,6 +5,20 @@ import { makeDate, makeTime } from 'utils/dates';
 
 import { initialMaxSpeed } from 'components/monitor/new/info/car-info/redux/modules/constatnts';
 
+type TypeFrontCarsSensorsEquipment = {
+  [key: string]: {
+    data: any[];
+  };
+};
+
+type TypeCarsSensors = {
+  [key: string]: {
+    type_slug: string;
+    type_name?: string;
+  };
+};
+
+
 export const getMaxSpeeds = missions => missions.reduce((maxSpeeds, mission) => {
   const { speed_limits } = mission
   maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
@@ -39,7 +53,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
   let indexLevel = 0;
   let indexEquipment = 0;
 
-  const front_cars_sensors_level = Object.entries(cars_sensors).reduce((newObj, [key, sensor]) => {
+  const front_cars_sensors_level = Object.entries(cars_sensors as TypeCarsSensors).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'level') {
       newObj[key] = {
         name: `ДУТ №${indexLevel + 1}`,
@@ -57,7 +71,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
     return newObj;
   }, {});
 
-  const front_cars_sensors_equipment = Object.entries(cars_sensors).reduce((newObj, [key, sensor]) => {
+  const front_cars_sensors_equipment = Object.entries(cars_sensors as TypeCarsSensors).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'equipment') {
       newObj[key] = {
         name: `ДУТ №${indexEquipment + 1} - ${sensor.type_name || '---'}`,
@@ -100,7 +114,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
       },
     }), {});
 
-    Object.entries(front_cars_sensors_equipment as any)
+    Object.entries(front_cars_sensors_equipment as TypeFrontCarsSensorsEquipment)
       .forEach(([key, value]) => {
         value.data.push([
           point.timestamp,
@@ -114,29 +128,32 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
   });
 
   const front_events_list = Object.values(events)
-    .reduce((newArr, eventData) => [
-      ...newArr,
-      ...eventData.map((event) => {
-        const newDate = new Date(event.start_point.timestamp * 1000);
-        
-        return ({
-          ...event,
-          start_point: {
-            ...event.start_point,
-            coords: swapCoords(event.start_point.coords),
-            coords_msk: swapCoords(event.start_point.coords_msk),
-          },
-          end_point: {
-            ...event.end_point,
-            coords: swapCoords(event.end_point.coords),
-            coords_msk: swapCoords(event.end_point.coords_msk),
-          },
-          date: `${makeDate(newDate)} ${makeTime(newDate, true)}`,
-          type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
-          value: `${Math.abs(event.event_val)} л`,
-        });
-      }),
-    ], [])
+    .reduce<any[]>((newArr, eventData: any[]) => {
+      newArr.push(
+        ...eventData.map((event) => {
+          const newDate = new Date(event.start_point.timestamp * 1000);
+          
+          return {
+            ...event,
+            start_point: {
+              ...event.start_point,
+              coords: swapCoords(event.start_point.coords),
+              coords_msk: swapCoords(event.start_point.coords_msk),
+            },
+            end_point: {
+              ...event.end_point,
+              coords: swapCoords(event.end_point.coords),
+              coords_msk: swapCoords(event.end_point.coords_msk),
+            },
+            date: `${makeDate(newDate)} ${makeTime(newDate, true)}`,
+            type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
+            value: `${Math.abs(event.event_val)} л`,
+          };
+        }),
+      )
+
+      return newArr;
+    }, [])
     .sort((a, b) => (a.start_point.timestamp - b.start_point.timestamp));
 
   const front_parkings = parkings.map((parking) => ({

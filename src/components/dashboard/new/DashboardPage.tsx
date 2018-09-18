@@ -7,14 +7,16 @@ import whitPreloader from 'components/ui/new/preloader/whitPreloader';
 import DashboardTime from 'components/dashboard/new/time/DashboardTime';
 import DashboardMenu from 'components/dashboard/new/menu/DashboardMenu';
 
-require('components/dashboard/new/DashboardPage.scss');
+import {
+  DashboardPageContainer,
+} from 'components/dashboard/new/styled/styled';
 
 const DashboardPage: React.SFC<any> = (props) => {
   return (
-    <div className="ets-page-wrap dashboard_page">
+    <DashboardPageContainer className="ets-page-wrap">
       <DashboardTime />
       <DashboardMenu />
-    </div>
+    </DashboardPageContainer>
   );
 }
 

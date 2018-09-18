@@ -98,7 +98,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           order_info,
         },
       },
-      ...props,
+      ...props
     } = this.props;
 
     return (

@@ -62,7 +62,8 @@ class BarShowGeoobjects extends React.Component<any, any> {
   
   handleChange = (field, date) => {
     const changedDates = {
-      ...this.props,
+      date_to: this.props.date_to,
+      date_from: this.props.date_from,
       [field]: date,
     };
 

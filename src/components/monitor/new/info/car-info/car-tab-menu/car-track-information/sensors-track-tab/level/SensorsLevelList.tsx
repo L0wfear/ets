@@ -9,7 +9,12 @@ import { carInfoToggleSensorShow } from 'components/monitor/new/info/car-info/re
 
 type PropsSensorsTrackTab = {
   track: any;
-  front_cars_sensors_level: any;
+  front_cars_sensors_level: {
+    [key: string]: {
+      data: any[];
+      show: boolean;
+    };
+  };
   toggleSensorOnMap: any;
 };
 

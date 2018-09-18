@@ -14,7 +14,7 @@ import {
 
 class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
   focusOn = node => {
-    const element: HTMLDivElement = findDOMNode(node);
+    const element: any = findDOMNode(node);
     if (element) {
       (element.querySelector('.form-control') as HTMLInputElement).focus();
     }

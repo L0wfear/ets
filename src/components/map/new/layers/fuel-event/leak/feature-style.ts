@@ -2,7 +2,11 @@ const ParkingIcon = require('components/map/new/layers/fuel-event/leak/oil-02.pn
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 
-const CACHE_ICON = {};
+type TYPE_CACHE_ICON = {
+  [key: string]: any;
+};
+
+const CACHE_ICON: TYPE_CACHE_ICON = {};
 
 const makeCacheStyle = (cacheStyleName ) => {
   return CACHE_ICON[cacheStyleName] = new ol.style.Style({

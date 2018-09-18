@@ -9,11 +9,22 @@ import { sensorsMapOptions } from 'constants/sensors';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 
+type TypeFrontCarsSensorsEquipment = {
+  [key: string]: {
+    data: any[];
+    type_name: string;
+    color: string;
+    connectNulls: number;
+    name: string;
+    show: boolean;
+  };
+};
+
 type PropsCarSpeedChart = {
   track: any;
   lastPoint: any;
   has_cars_sensors: boolean;
-  front_cars_sensors_equipment: any;
+  front_cars_sensors_equipment: TypeFrontCarsSensorsEquipment;
   handleChartClick: any;
   handleEventClick: any;
   mkad_speed_lim: number;
@@ -23,7 +34,7 @@ type PropsCarSpeedChart = {
 type StateCarSpeedChart = {
   lastPoint: any,
   data: any[],
-  front_cars_sensors_equipment: any;
+  front_cars_sensors_equipment: TypeFrontCarsSensorsEquipment;
   mkad_speed_lim: number;
   speed_lim: number;
 };
@@ -39,7 +50,7 @@ const makeData = ({ track, front_cars_sensors_equipment, mkad_speed_lim, speed_l
     data: track.map(({ timestamp, checkCoordsMsk: { onMkad = false } = {} }) => [timestamp, onMkad ? mkad_speed_lim : speed_lim]),
     color: 'rgba(205, 17, 71, 1)',
   },
-  ...Object.values(front_cars_sensors_equipment).reduce((newArr, sensor) => ([
+  ...Object.values(front_cars_sensors_equipment as TypeFrontCarsSensorsEquipment).reduce<any[]>((newArr, sensor) => ([
       ...newArr,
       {
         color: sensor.color,

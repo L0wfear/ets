@@ -13,7 +13,7 @@ const WithState: any = state => Component =>
       this.state = {
         ...Object.entries(state).reduce((newObj, [key, value]) => ({
           ...newObj,
-          [key]: typeof value === 'function' ? value(props) : value,
+          [key]: typeof value === 'function' ? (value as any)(props) : value,
         }), {}),
         ...Object.keys(state).reduce((newObj, key) => ({
           ...newObj,

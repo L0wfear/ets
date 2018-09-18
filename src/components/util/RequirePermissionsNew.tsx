@@ -24,7 +24,7 @@ const mergeProps = (config, props: any, context) => {
     ignorePermission,
     permission,
     permissions,
-    ...mergedProps,
+    ...mergedProps
   } = props;
 
   Object.keys(context.flux.getStore('session').state)

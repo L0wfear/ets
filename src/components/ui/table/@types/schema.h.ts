@@ -1,4 +1,4 @@
-import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;

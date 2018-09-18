@@ -3,7 +3,8 @@ import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import Table from 'components/ui/table/Table.jsx';
 import { FormControl, Button } from 'react-bootstrap';
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+
 import Div from 'components/ui/Div.jsx';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';
@@ -102,7 +103,7 @@ export default class Taxes extends React.Component {
           }
           return op;
         });
-        return <EtsSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
+        return <ReactSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
       },
       measure_unit_name: measure_unit_name => measure_unit_name || '-',
       RESULT: RESULT => `${RESULT ? RESULT + ' л' : ''}`,

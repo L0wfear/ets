@@ -7,7 +7,7 @@ import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { ExtDiv } from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
 import Form from 'components/compositions/Form.jsx';
 

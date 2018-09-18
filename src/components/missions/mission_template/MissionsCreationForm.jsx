@@ -6,7 +6,8 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+
 import Form from 'components/compositions/Form.jsx';
 import { addTime, diffDates } from 'utils/dates.js';
 
@@ -99,7 +100,7 @@ class MissionsCreationForm extends Form {
         <Modal.Footer>
           <Div className="inline-block">
             <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
-              <EtsSelect
+              <ReactSelect
                 type="select"
                 options={ASSIGN_OPTIONS}
                 value={state.assign_to_waybill}

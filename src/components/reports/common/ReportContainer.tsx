@@ -17,7 +17,7 @@ import {
 import Title from './Title';
 import { filterFunction } from 'components/ui/tableNew/utils';
 import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 'components/ui/table/@types/schema.h';
-import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';

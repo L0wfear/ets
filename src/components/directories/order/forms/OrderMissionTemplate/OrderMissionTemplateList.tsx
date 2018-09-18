@@ -6,7 +6,7 @@ import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div.jsx';
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import MissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
 import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
@@ -30,7 +30,6 @@ import {
   IStateOrderMissionTemplate,
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
 const ModalTSX: any = RB.Modal;
-const EtsSelectTSX: any = EtsSelect;
 
 @connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
@@ -248,7 +247,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
         <RB.Modal.Footer>
           <Div className="inline-block">
             <Div hidden={typeClick === typeTemplate.missionDutyTemplate} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
-              <EtsSelectTSX
+              <ReactSelect
                 type="select"
                 options={ASSIGN_OPTIONS}
                 value={assign_to_waybill}

@@ -5,7 +5,7 @@ import { FormControl } from 'react-bootstrap';
 import _ from 'lodash';
 
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import Div from 'components/ui/Div.jsx';
 
@@ -71,12 +71,12 @@ export default class FilterRow extends React.Component {
           if (name === 'operation_id') {
             options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
           }
-          input = <EtsSelect options={options} value={value} onChange={onChange} />;
+          input = <ReactSelect options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
           if (value && !!value.length) value = value.filter(v => _.find(options, o => o.value === v));
           input = (
             <Div className="filter-multiselect-container">
-              <EtsSelect options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />
+              <ReactSelect options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />
             </Div>
           );
         }

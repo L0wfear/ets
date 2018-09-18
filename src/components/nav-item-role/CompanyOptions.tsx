@@ -5,7 +5,8 @@ import {
   sessionSetData,
 } from 'redux/modules/session/actions-session';
 import { connectToStores, FluxContext } from 'utils/decorators';
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+
 import { withRouter } from 'react-router-dom';
 
 @withRouter
@@ -46,7 +47,7 @@ class CompanyOptions extends React.Component<any, any> {
 
   render() {
     return (
-      <EtsSelect
+      <ReactSelect
         options={this.state.COMPANY_OPTIONS}
         value={this.props.currentUser.company_id}
         onChange={this.handleChange}

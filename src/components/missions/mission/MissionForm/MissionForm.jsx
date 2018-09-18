@@ -11,7 +11,8 @@ import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
 import Field from 'components/ui/Field.jsx';
 
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+
 import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import { isEmpty } from 'utils/functions';
@@ -731,7 +732,7 @@ export class MissionForm extends Form {
                 <Div className="inline-block">
                   {!state.is_column && (
                     <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }} hidden={!!state.status || this.props.fromWaybill}>
-                      <EtsSelect
+                      <ReactSelect
                         id="assign-to-waybill"
                         type="select"
                         modalKey={modalKey}

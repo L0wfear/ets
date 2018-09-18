@@ -7,7 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 import Form from 'components/compositions/Form.jsx';
 
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 @connectToStores(['autobase'])
 export default class BatteryBrandForm extends Form {

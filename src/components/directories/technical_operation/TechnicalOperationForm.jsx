@@ -4,7 +4,7 @@ import ModalBody from 'components/ui/Modal';
 import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 

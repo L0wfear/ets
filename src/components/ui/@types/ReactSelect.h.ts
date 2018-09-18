@@ -4,7 +4,7 @@ export interface IReactSelectOption {
   [additionalFields: string]: any;
 }
 
-export interface IPropsEtsSelect {
+export interface IPropsReactSelect {
   options?: IReactSelectOption[];
   value?: string;
   clearable?: boolean;

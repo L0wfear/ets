@@ -6,10 +6,9 @@ import filterTypeHandler from './filterTypeHandler';
 import Input from './Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from './constants';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import ETSSelect from 'components/ui/input/EtsSelect';
-import { isEqualOr } from 'utils/functions';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-const EtsSelect: any = ETSSelect;
+import { isEqualOr } from 'utils/functions';
 
 interface IPropsFilterInput {
   nativeDatetime: boolean;
@@ -100,7 +99,7 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
 
     return (
       <div className="advanced-string-input">
-        <EtsSelect
+        <ReactSelect
           options={FILTER_SELECT_TYPES}
           value={this.state.type}
           clearable={false}

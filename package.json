@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.22.159",
+    "version": "2.0.22.160",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -46,7 +46,7 @@
         "react-router-dom": "^4.2.2",
         "react-select": "=1.2.1",
         "react-sparklines": "^1.6.0",
-        "react-widgets": "=4.3.1",
+        "react-widgets": "=4.4.4",
         "recompose": "^0.20.2",
         "redux": "^4.0.0",
         "redux-actions": "^0.11.0",

@@ -148,7 +148,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       if (mission.status === 'not_assigned') {
         return this.removeElementAction(mission.id).then(() => res());
       }
-      return rej();
+      return rej({ errorIsShow: false });
     });
 
     query.then(() => {
@@ -171,7 +171,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
         }
         hasNotAssigned = true;
-        return Promise.resolve();
+        return Promise.resolve({ errorIsShow: false });
       });
 
       Promise.all(querysToCompleted).then(() => {
@@ -267,6 +267,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           return Promise.resolve();
         }
       });
+
       try {
         await Promise.all(allQuery);
       } catch (e) {

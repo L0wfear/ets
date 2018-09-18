@@ -41,22 +41,29 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
       ),
     ),
   }
-
-  componentWillReceiveProps({ infoData }: PropsWaybillInProgressInfo) {
-    if (infoData !== this.state.infoData) {
+  
+  static getDerivedStateFromProps({ infoData }, state) {
+    if (infoData !== state.infoData) {
       if (infoData) {
-        this.setState({
+        return {
           infoData,
-          infoDataGroupByDate: groupBy<WaybillInProgressItemsSubItemsType>(infoData.subItems, waybill => makeDate(waybill.data.create_date)),
-        });
+          infoDataGroupByDate: groupBy<WaybillInProgressItemsSubItemsType>(
+            infoData.subItems,
+            (waybill) => (
+              makeDate(waybill.data.create_date)
+            ),
+          ),
+        };
       } else {
-        this.setState({
+        return {
           infoData,
           infoDataGroupByDate: {},
-        });
+        };
       }
     }
-  }
+
+    return null;
+  };
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();

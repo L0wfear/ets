@@ -42,10 +42,10 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
     ),
   }
 
-  componentWillReceiveProps({ infoData }: PropsWaybillDraftInfo) {
-    if (infoData !== this.state.infoData) {
+  static getDerivedStateFromProps({ infoData }, state) {
+    if (infoData !== state.infoData) {
       if (infoData) {
-        this.setState({
+        return {
           infoData,
           infoDataGroupByDate: groupBy<WaybillDraftItemsSubItemsType>(
             infoData.subItems,
@@ -53,15 +53,17 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
               makeDate(waybill.data.waybill_date_create)
             ),
           ),
-        });
+        };
       } else {
-        this.setState({
+        return {
           infoData,
           infoDataGroupByDate: {},
-        })
+        };
       }
     }
-  }
+
+    return null;
+  };
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();

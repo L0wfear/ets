@@ -24,12 +24,14 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
     infoData: this.props.infoData,
   }
 
-  componentWillReceiveProps({ infoData }: PropsWaybillClosedInfo) {
-    if (infoData !== this.state.infoData) {
-      this.setState({
+  static getDerivedStateFromProps({ infoData }, state) {
+    if (infoData !== state.infoData) {
+      return {
         infoData,
-      });
+      }
     }
+
+    return null;
   }
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {

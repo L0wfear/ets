@@ -60,26 +60,31 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
         })
       }
 
-      componentWillReceiveProps({ dateLoad }) {
-        if (dateLoad !== this.state.dateLoad) {
+      static getDerivedStateFromProps({ dateLoad }, state) {
+        if (dateLoad !== state.dateLoad) {
+          return {
+            dateLoad,
+          }
+        }
+
+        return null;
+      }
+
+      componentDidUpdate(prevProps, prevState) {
+        if (prevState.dateLoad !== this.state.dateLoad) {
           if (!this.state.inLoadByLocalRefresh) {
             clearTimeout(this.state.timerId);
             clearInterval(this.state.timerId);
 
             this.setState({
-              dateLoad,
               timerId: setInterval(() => (
                 this.loadData()
               ), 60 * 1000),
             });
-          } else {
-            this.setState({
-              dateLoad,
-            })
           }
         }
       }
-    
+
       componentWillUnmount() {
         clearTimeout(this.state.timerId);
         clearInterval(this.state.timerId);

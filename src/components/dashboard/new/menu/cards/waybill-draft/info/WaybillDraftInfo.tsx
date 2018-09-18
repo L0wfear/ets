@@ -25,6 +25,9 @@ import {
 import {
   WaybillDraftItemsSubItemsType,
 } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-draft.h';
+import {
+  TitleWaybillInfoContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 
 class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
   state = {
@@ -100,7 +103,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
         {
           Object.entries(this.state.infoDataGroupByDate).sort().map(([key, arrData]) => (
             <div key={key}>
-              <div className="title_waybill_info">{key}</div>
+              <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
               <div>
                 <ul>
                   {

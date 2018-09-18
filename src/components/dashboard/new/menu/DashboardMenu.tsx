@@ -2,13 +2,15 @@ import * as React from 'react';
 import DashboardMenuCards from 'components/dashboard/new/menu/cards/DashboardMenuCards';
 import DashboardMenuButtons from 'components/dashboard/new/menu/buttons/DashboardMenuButtons';
 
-require('components/dashboard/new/menu/DashboardMenu.scss');
+import {
+  DashboardMenuContainer
+} from 'components/dashboard/new/menu/styled/styled';
 
 const DashboardMenu: React.SFC<any> = ({ history }) => (
-  <div className="dashboard_menu">
+  <DashboardMenuContainer>
     <DashboardMenuCards />
     <DashboardMenuButtons />
-  </div>
+  </DashboardMenuContainer>
 );
 
 export default DashboardMenu;

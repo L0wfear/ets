@@ -8,8 +8,6 @@ import {
   ConfigType,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
-require('components/dashboard/new/menu/cards/_default-card-component/hoc/with-default-waybill/withDefaultWaybill.scss');
-
 type TypeConfig = ConfigType & {
   setInfoData: Function;
   setInfoDataPropsMake: Function;

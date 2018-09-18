@@ -12,7 +12,12 @@ import {
   ConfigType,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
-require('components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.scss');
+import {
+  CardMainContainer,
+  CardTitleContainer,
+  CardTitleContainerWrap,
+  CardBodyContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Component) => (
   hocAll(
@@ -92,9 +97,9 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
         const { isLoading, title, loadData, dateLoad, ...props } = this.props;
 
         return (
-          <div className="card_container main">
-            <div className="card_title">
-              <div>
+          <CardMainContainer>
+            <CardTitleContainer>
+              <CardTitleContainerWrap>
                 <div>{title}</div>
                 <div className="button_refresh">
                   <Button onClick={this.loadData}>
@@ -104,11 +109,11 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
                     />
                   </Button>
                 </div>
-              </div>
-            </div>
-            <div className={cx('card_body', { is_loading: isLoading })}>
+              </CardTitleContainerWrap>
+            </CardTitleContainer>
+            <CardBodyContainer isLoading={isLoading}>
               <Component {...props} />
-            </div>
+            </CardBodyContainer>
             {
               InfoComponent ?
               (
@@ -119,7 +124,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
                 <div className="none"></div>
               )
             }
-          </div>
+          </CardMainContainer>
         )
       }
     }

@@ -1,6 +1,15 @@
 import * as React from 'react';
 
-require('components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard.scss');
+import {
+  CardTitleContainer,
+  CardTitleContainerWrap,
+  CardBodyContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+
+import {
+  InfoCardWrapContainer,
+  CardInfoContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/info-card/styled/styled';
 
 type PropsInfoCard = {
   title: React.ReactNode;
@@ -8,19 +17,19 @@ type PropsInfoCard = {
 };
 
 const InfoCard: React.SFC<PropsInfoCard> = props => (
-  <div className="info_card_wrap">
-    <div className="info_card card_container info">
-      <div className="card_title">
-        <div>
+  <InfoCardWrapContainer>
+    <CardInfoContainer>
+      <CardTitleContainer>
+        <CardTitleContainerWrap>
           <div>{props.title}</div>
           <div className="pointer" onClick={props.handleClose}>X</div>
-        </div>
-      </div>
-      <div className="card_body">
+        </CardTitleContainerWrap>
+      </CardTitleContainer>
+      <CardBodyContainer>
         { props.children }
-      </div>
-    </div>
-  </div>
+      </CardBodyContainer>
+    </CardInfoContainer>
+  </InfoCardWrapContainer>
 );
 
 export default InfoCard;

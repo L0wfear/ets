@@ -17,7 +17,14 @@ import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons
 import { ButtonCreateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { ButtonCreateWaybill } from 'components/waybill/buttons/buttons';
 
-require('components/dashboard/new/menu/buttons/DashboardMenuButtons.scss');
+import {
+  DashboardMenuButtonsContainer,
+  CardTitleContainer,
+  CardBodyContainer,
+} from 'components/dashboard/new/menu/buttons/styled/styled';
+import {
+  CardContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 class DashboardMenuButtons extends React.Component<any, any> {
   state = {
@@ -55,16 +62,16 @@ class DashboardMenuButtons extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="dashboard_menu_buttons">
-        <div className="card_container">
-          <div className="card_title">Управление</div>
-          <div className="card_body">
+      <DashboardMenuButtonsContainer className="dashboard_menu_buttons">
+        <CardContainer>
+          <CardTitleContainer>Управление</CardTitleContainer>
+          <CardBodyContainer>
             <ButtonCreateWaybill onClick={this.showWaybillFormWrap} >Создать путевой лист</ButtonCreateWaybill>
             <LinkToOrder to="/orders"><Button active >Исполнение централизованного задания</Button></LinkToOrder>
             <ButtonCreateMission onClick={this.showMissionFormWrap} >Создать децентрализованное задание</ButtonCreateMission>
             <ButtonCreateDutyMission onClick={this.showDutyMissionFormWrap} >Создать наряд-задание</ButtonCreateDutyMission>
-          </div>
-        </div>
+          </CardBodyContainer>
+        </CardContainer>
         <WaybillFormWrap
           onFormHide={this.handleFormHideWaybillFormWrap}
           onCallback={this.handleFormHideWaybillFormWrap}
@@ -84,7 +91,7 @@ class DashboardMenuButtons extends React.Component<any, any> {
           showForm={this.state.showDutyMissionFormWrap}
           element={null}
         />
-      </div>
+      </DashboardMenuButtonsContainer>
     );
   }
 };

@@ -25,6 +25,9 @@ import {
 import {
   WaybillCompletedItemsSubItemsType,
 } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-completed.h';
+import {
+  TitleWaybillInfoContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 
 class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, StateWaybillCompletedInfo> {
   state = {
@@ -99,7 +102,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
         {
           Object.entries(this.state.infoDataGroupByDate).sort().map(([key, arrData]) => (
             <div key={key}>
-              <div className="title_waybill_info">{key}</div>
+              <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
               <div>
                 <ul>
                   {

@@ -2,7 +2,11 @@ import * as React from 'react';
 import { formatDate, getFormattedTimeWithSecond, getDateWithMoscowTz } from 'utils/dates';
 import { loadMoscowTime } from 'redux/trash-actions/uniq/promise';
 
-require('components/dashboard/new/time/DashboardTime.scss');
+import {
+  DashboardTimeContainer,
+  TimeLineContainer,
+  DateLineContainer,
+} from 'components/dashboard/new/time/styled/styled';
 
 type StateDashboardTime = {
   date: Date;
@@ -43,10 +47,10 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
     const { date } = this.state;
 
     return (
-      <div className="dashboard_time">
-        <div className="time_line">{getFormattedTimeWithSecond(date) || '--:--:--'}</div>
-        <div className="date_line">{formatDate(date, 'DD MMMM YYYY') || '--:------:--'}</div>
-      </div>
+      <DashboardTimeContainer>
+        <TimeLineContainer>{getFormattedTimeWithSecond(date) || '--:--:--'}</TimeLineContainer>
+        <DateLineContainer>{formatDate(date, 'DD MMMM YYYY') || '--:------:--'}</DateLineContainer>
+      </DashboardTimeContainer>
     )
   }
 };

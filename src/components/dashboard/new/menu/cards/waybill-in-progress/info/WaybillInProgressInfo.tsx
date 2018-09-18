@@ -25,6 +25,9 @@ import {
 import {
   WaybillInProgressItemsSubItemsType,
 } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-in-progress.h';
+import {
+  TitleWaybillInfoContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 
 class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, StateWaybillInProgressInfo> {
   state = {
@@ -95,7 +98,7 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
         {
           Object.entries(this.state.infoDataGroupByDate).sort().map(([key, arrData]) => (
             <div key={key}>
-              <div className="title_waybill_info">{key}</div>
+              <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
               <div>
                 <ul>
                   {

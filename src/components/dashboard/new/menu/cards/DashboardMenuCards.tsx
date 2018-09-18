@@ -16,7 +16,9 @@ import WaybillInProgress from 'components/dashboard/new/menu/cards/waybill-in-pr
 import WaybillCompleted from 'components/dashboard/new/menu/cards/waybill-completed/WaybillCompleted';
 import WaybillClosed from 'components/dashboard/new/menu/cards/waybill-closed/WaybillClosed';
 
-require('components/dashboard/new/menu/cards/DashboardMenuCards.scss');
+import {
+  DashboardMenuCardsContainer,
+} from 'components/dashboard/new/menu/cards/styled/styled';
 
 class DashboardMenuCards extends React.Component<any, {}> {
   componentWillUnmount() {
@@ -25,7 +27,7 @@ class DashboardMenuCards extends React.Component<any, {}> {
 
   render() {
     return (
-      <div className="dashboard_menu_cards">
+      <DashboardMenuCardsContainer>
         <CurrentMissions timeDelay={0} />
         <FutureMissions timeDelay={1} />
         <OdhNotCoveredByMissionsOfCurrentShift timeDelay={2} />
@@ -38,7 +40,7 @@ class DashboardMenuCards extends React.Component<any, {}> {
         <WaybillInProgress timeDelay={9} />
         <WaybillCompleted timeDelay={10} />
         <WaybillClosed timeDelay={11} />
-      </div>
+      </DashboardMenuCardsContainer>
     );
   }
 }

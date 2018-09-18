@@ -31,6 +31,9 @@ import {
   PropsCurrentMissionInfo,
   StateCurrentMissionInfo,
 } from 'components/dashboard/new/menu/cards/current-missions/info/@types/CurrentMissionInfo.h';
+import {
+  RightButton_BlockContainer,
+} from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -106,10 +109,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           }
         </ul>
         <LinkToOpenMissionInfoForm openMissiomInfoForm={this.openMissiomInfoForm}/>
-        <div className="right_button_block">
+        <RightButton_BlockContainer>
           <ButtenUpdateMission onClick={this.completeMission} >Выполнено</ButtenUpdateMission>
           <ButtenUpdateMission onClick={this.rejectMission} >Не выполнено</ButtenUpdateMission>
-        </div>
+        </RightButton_BlockContainer>
         {
           this.state.showMissionRejectForm ?
           (

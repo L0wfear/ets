@@ -150,7 +150,7 @@ export const getMergedGeoobjects: LayerGeoobjectsUtilsTypes.getMergedGeoobjectsF
  * @param oldFeature текущая фича геообъекта
  */
 const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldFeatureFunc = (geoobj, geoobj_old, oldFeature) => {
-  if (geoobj_old.shape !== geoobj.shape) {
+  if (geoobj_old.shape !== geoobj.shape && geoobj.shape) {
     oldFeature.setGeometry(GeoJSON.readGeometry(geoobj.shape))
   }
 };
@@ -164,18 +164,20 @@ const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldF
  * @param selected является ли фича выбранной
  */
 const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (serverName, id, geoobj, thisProps, selected, color) => {
-  const feature = new ol.Feature({
-    geometry: GeoJSON.readGeometry(geoobj.shape),
-  });
-  feature.setId(id);
-  feature.set('serverName', serverName)
-  if (selected) {
-    feature.setStyle(getCasheStyleForGeoobject(true));
-  } else {
-    feature.setStyle(getCasheStyleForGeoobject(false, color));
-  }
+  if (geoobj.shape) {
+    const feature = new ol.Feature({
+      geometry: GeoJSON.readGeometry(geoobj.shape),
+    });
+    feature.setId(id);
+    feature.set('serverName', serverName)
+    if (selected) {
+      feature.setStyle(getCasheStyleForGeoobject(true));
+    } else {
+      feature.setStyle(getCasheStyleForGeoobject(false, color));
+    }
 
-  thisProps.addFeaturesToSource(feature);
+    thisProps.addFeaturesToSource(feature);
+  }
 }
 
 /**

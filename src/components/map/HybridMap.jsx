@@ -76,35 +76,37 @@ export default class HybridMap extends Map {
 
     if (showPolygons) {
       _.each(polys, (poly, key) => {
-        const feature = new ol.Feature({
-          geometry: GeoJSON.readGeometry(poly.shape),
-          name: poly.name,
-          id: key,
-          state: poly.state,
-        });
-        if (poly.shape && poly.shape.type === 'LineString') {
-          feature.setStyle(getVectorArrowStyle(feature));
-        } else if (poly.shape && poly.shape.type !== 'Point') {
-          feature.setStyle(polyStyles[poly.state]);
-        } else if (poly.shape && poly.shape.type === 'Point') {
-          if (this.props.selectedObjects) {
-            let succeed = false;
-            _.each(this.props.selectedObjects, (o) => {
-              if (o.coordinate && (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1])) {
-                succeed = true;
+        if (poly.shape) {
+          const feature = new ol.Feature({
+            geometry: GeoJSON.readGeometry(poly.shape),
+            name: poly.name,
+            id: key,
+            state: poly.state,
+          });
+          if (poly.shape && poly.shape.type === 'LineString') {
+            feature.setStyle(getVectorArrowStyle(feature));
+          } else if (poly.shape && poly.shape.type !== 'Point') {
+            feature.setStyle(polyStyles[poly.state]);
+          } else if (poly.shape && poly.shape.type === 'Point') {
+            if (this.props.selectedObjects) {
+              let succeed = false;
+              _.each(this.props.selectedObjects, (o) => {
+                if (o.coordinate && (o.coordinates.x_msk === poly.shape.coordinates[0] && o.coordinates.y_msk === poly.shape.coordinates[1])) {
+                  succeed = true;
+                }
+              });
+              if (succeed) {
+                feature.setStyle(getPointStyle('green'));
+              } else {
+                feature.setStyle(getPointStyle('red'));
               }
-            });
-            if (succeed) {
-              feature.setStyle(getPointStyle('green'));
             } else {
-              feature.setStyle(getPointStyle('red'));
+              styleFunction = null;
             }
-          } else {
-            styleFunction = null;
           }
-        }
 
-        vectorSource.addFeature(feature);
+          vectorSource.addFeature(feature);
+        }
       });
     }
 

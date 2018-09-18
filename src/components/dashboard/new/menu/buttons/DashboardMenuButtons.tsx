@@ -62,7 +62,7 @@ class DashboardMenuButtons extends React.Component<any, any> {
 
   render() {
     return (
-      <DashboardMenuButtonsContainer className="dashboard_menu_buttons">
+      <DashboardMenuButtonsContainer>
         <CardContainer>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>

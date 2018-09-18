@@ -2,18 +2,27 @@ export type PropsOverlay = {
   coordsMsk?: [number, number];
   map: ol.Map;
   hidePopup?: () => void;
-  className?: string;
   title?: React.ReactNode;
+  OverlayInside?: any;
+  EtsOverlay?: any;
+  EtsOverlayTitle?: any;
+  OverlayClose?: any;
+  EtsOverlayBody?: any;
+  EtsTriangleWrap?: any;
+  EtsTriangle?: any;
+  [key: string]: any;
 }
 
 export type StateOverlay = {
   coordsMsk: [number, number] | null;
   marker: ol.Overlay | null;
+  container: HTMLDivElement;
 }
 
 export module OverlayUtils {
   export type hideOverlay = (
     marker: ol.Overlay,
+    map: ol.Map,
   ) => void;
 
   export type setMakerPosition = (

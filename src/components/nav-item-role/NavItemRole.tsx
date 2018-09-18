@@ -4,6 +4,10 @@ import { NavItem } from 'react-bootstrap';
 import { connectToStores } from 'utils/decorators';
 import CompanyOptions from 'components/nav-item-role/CompanyOptions';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 @withRouter
 @connectToStores(['session'])
 class NavItemRole extends React.Component<any, any> {
@@ -16,7 +20,7 @@ class NavItemRole extends React.Component<any, any> {
         <CompanyOptions />
       </NavItem>
       :
-      <div className="none"></div>
+      <DivNone />
     )
   }
 }

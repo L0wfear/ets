@@ -7,6 +7,10 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { carInfoToggleSensorShow } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type PropsSensorsEquipmentList = {
   track: any;
   front_cars_sensors_equipment: {
@@ -83,7 +87,7 @@ const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = props => {
                         disabled ?
                           <span> (Нет данных)</span>
                         :
-                          ( <div className="none"></div> )
+                          ( <DivNone /> )
                       }
                     </div>
                   )

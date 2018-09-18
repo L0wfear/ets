@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const DashboardPageContainer = styled.div`
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
+export const DashboardPageContainer = styled(EtsPageWrap)`
   display: flex;
   flex-direction: column;
   align-items: center;

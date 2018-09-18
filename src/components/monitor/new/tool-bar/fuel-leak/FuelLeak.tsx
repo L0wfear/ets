@@ -12,6 +12,10 @@ import { diffDates } from 'utils/dates';
 
 import { ExtField } from 'components/ui/Field.jsx';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 const getActiveClassName = (activeMain) => (
   cx(
     'legen_option',
@@ -94,7 +98,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
             {
               !isOpen ?
               (
-                <div className="none"></div>
+                <DivNone />
               )
               :
               (

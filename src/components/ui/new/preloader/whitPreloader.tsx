@@ -2,6 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { selectors } from 'redux/_middleware/etsLoading';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type TypeConfig = {
   typePreloader?: 'mainpage' | 'graph' | 'field' | 'lazy'
   page?: string;
@@ -55,7 +59,7 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
         <Component {...props} />

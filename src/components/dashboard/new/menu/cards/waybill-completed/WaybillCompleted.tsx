@@ -15,6 +15,10 @@ import {
   StateWaybillCompleted,
 } from 'components/dashboard/new/menu/cards/waybill-completed/WaybillCompleted.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
   handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
     const index = Number.parseInt((path as string).split('/').slice(-1)[0])
@@ -41,7 +45,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </div>

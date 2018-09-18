@@ -16,6 +16,10 @@ import {
   StateOdhNotCoveredByRoutes,
 } from 'components/dashboard/new/menu/cards/odh-not-covered-by-routes/OdhNotCoveredByRoutes.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, StateOdhNotCoveredByRoutes> {
   handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
     const index = Number.parseInt((path as string).split('/').slice(-1)[0])
@@ -41,7 +45,7 @@ class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, 
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </div>

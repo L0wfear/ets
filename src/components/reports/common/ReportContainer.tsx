@@ -28,6 +28,10 @@ import * as reportActionCreators from 'components/reports/redux/modules/report';
 import DataTable from 'components/ui/table/DataTable.jsx';
 import DataTableNew from 'components/ui/tableNew/DataTable';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
 
@@ -406,7 +410,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />;
 
     return (
-      <div className="ets-page-wrap auto-height">
+      <EtsPageWrap inheritDisplay>
         <Header
           tableMeta={mergedTableMetaInfo}
           queryState={queryState}
@@ -438,7 +442,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         </ Table>
         {summaryTable}
         {preloader}
-      </div>
+      </EtsPageWrap>
     );
   }
 }

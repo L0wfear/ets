@@ -5,6 +5,10 @@ import CarFuelChart from 'components/monitor/new/info/car-info/car-tab-menu/car-
 import CarSpeedChart from 'components/monitor/new/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
 import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type PropsCarChartsInformation = {
   centerOn: Function;
   carInfoSetTrackPoint: Function;
@@ -79,7 +83,7 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
               />
             )
             :
-            ( <div className="none"></div> )
+            ( <DivNone /> )
           }
           {
             selectedTab === 2 ?
@@ -89,7 +93,7 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
               />
             )
             :
-            ( <div className="none"></div> )
+            ( <DivNone /> )
           }
         </div>
       </div>

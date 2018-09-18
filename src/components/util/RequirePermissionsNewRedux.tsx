@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type TypeConfig = {
   withIsPermittedProps?: boolean;
   permissions?: string | string[];
@@ -42,7 +46,7 @@ const withRequirePermissionsNew = (config: TypeConfig = {}) => Component => (
       )
       :
       (
-        <div className="none"></div>
+        <DivNone />
       )
     )
   })

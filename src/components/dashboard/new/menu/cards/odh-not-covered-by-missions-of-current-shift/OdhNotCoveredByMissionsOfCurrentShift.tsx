@@ -17,6 +17,10 @@ import {
   StateOdhNotCoveredByMissionsOfCurrentShift,
 } from 'components/dashboard/new/menu/cards/odh-not-covered-by-missions-of-current-shift/OdhNotCoveredByMissionsOfCurrentShift.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotCoveredByMissionsOfCurrentShift, StateOdhNotCoveredByMissionsOfCurrentShift> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     this.props.setInfoData(
@@ -44,7 +48,7 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </div>

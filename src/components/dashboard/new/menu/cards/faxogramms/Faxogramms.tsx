@@ -16,6 +16,9 @@ import {
   PropsFaxogramms,
   StateFaxogramms,
 } from 'components/dashboard/new/menu/cards/faxogramms/Faxogramms.h';
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 
 class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -44,7 +47,7 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </div>

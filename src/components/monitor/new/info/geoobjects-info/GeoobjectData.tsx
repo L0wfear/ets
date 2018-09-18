@@ -5,6 +5,10 @@ import { GEOOBJECTS_OBJ_BY_SERVER_NAME } from 'constants/geoobjects-new';
 import GeoDataTemplate from 'components/monitor/new/info/geoobjects-info/geo-data-template/GeoDataTemplate';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type PropsGeoobjectData = {
   selectedGeoobjectData: {
     [key: string]: {
@@ -20,7 +24,7 @@ type PropsGeoobjectData = {
 const GeoobjectData: React.SFC<PropsGeoobjectData> = ({ selectedGeoobjectData, serverName, ...props }) => (
   !selectedGeoobjectData ?
   (
-    <div className="none"></div>
+    <DivNone />
   )
   :
   (

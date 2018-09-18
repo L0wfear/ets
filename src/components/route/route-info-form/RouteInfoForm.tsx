@@ -3,6 +3,10 @@ import { Modal } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type PropsRouteInfoForm = {
   show: boolean;
   route: any;
@@ -27,7 +31,7 @@ const RouteInfoForm: React.SFC<PropsRouteInfoForm> = (props) => (
   )
   :
   (
-    <div className="none"></div>
+    <DivNone />
   )
 );
 

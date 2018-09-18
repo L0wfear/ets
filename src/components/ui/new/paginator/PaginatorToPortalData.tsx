@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 
 import { paginatorUpdateData, paginatorResetData } from 'components/ui/new/paginator/redux/actions-paginator';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class Paginator extends React.Component<any, any> {
   componentDidMount() {
     const { uniqKey, ...props } = this.props;
@@ -19,7 +23,7 @@ class Paginator extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="none"></div>
+      <DivNone />
     );
   }
 }

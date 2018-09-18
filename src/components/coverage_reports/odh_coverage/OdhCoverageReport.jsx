@@ -7,6 +7,11 @@ import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormatt
 import { saveData } from 'utils/functions';
 import Preloader from 'components/ui/Preloader.jsx';
 import DataPicker from 'components/ui/input/date-picker/DatePicker';
+
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
 import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm.jsx';
 
@@ -87,7 +92,7 @@ export default class OdhCoverageReport extends Component {
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
-      <div className="ets-page-wrap">
+      <EtsPageWrap>
         <OdhCoverageReportTable data={odhCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
@@ -115,7 +120,7 @@ export default class OdhCoverageReport extends Component {
           exportType={this.state.exportType}
           onExport={this.export}
         />
-      </div>
+      </EtsPageWrap>
     );
   }
 }

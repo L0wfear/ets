@@ -20,6 +20,10 @@ import OrderAssignmentsList from 'components/directories/order/order_assignment/
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 import Paginator from 'components/directories/order/Paginator';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;
@@ -72,7 +76,7 @@ class OrderList extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="ets-page-wrap none-flex">
+      <EtsPageWrap inheritDisplay>
         <OrdersDatepicker />
         <OrdersTable>
           <OrderTableChildren order_mission_source_id={this.state.order_mission_source_id} />
@@ -81,7 +85,7 @@ class OrderList extends React.Component<any, any> {
         <OrderAssignmentsList order_mission_source_id={this.state.order_mission_source_id} />
         <HistoryOrderList />
         <OrderFormWrap />
-      </div>
+      </EtsPageWrap>
     );
   }
 }

@@ -7,6 +7,10 @@ import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
 import { TypeCompaniesIndex } from 'redux/trash-actions/uniq/promise.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 require('components/monitor/new/tool-bar/show-company-color/BarCompanyColor.scss');
 
 type PropsBarCompanyColor = {
@@ -48,7 +52,7 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
     return (
       companiesOption.length < 2 ?
       (
-        <div className="none"></div>
+        <DivNone />
       )
       :
       (
@@ -71,7 +75,7 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
                   )
                   :
                   (
-                    <div className="none"></div>
+                    <DivNone />
                   )
                 }
               </div>

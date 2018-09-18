@@ -3,16 +3,19 @@ import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
-import Div from 'components/ui/Div.jsx';
 import cx from 'classnames';
 
 import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 
 import { FluxContext, connectToStores } from 'utils/decorators';
-import DashboardCardMedium from './DashboardCardMedium.jsx';
-import DashboardManagementCard from './DashboardManagementCard.jsx';
-import DashboardPageHeader from './DashboardPageHeader.jsx';
-import customCards from './customCards/index.js';
+import DashboardCardMedium from 'components/dashboard/DashboardCardMedium.jsx';
+import DashboardManagementCard from 'components/dashboard/DashboardManagementCard.jsx';
+import DashboardPageHeader from 'components/dashboard/DashboardPageHeader.jsx';
+import customCards from 'components/dashboard/customCards/index.js';
+
+import {
+  EtsPageWrapDashboard,
+} from 'components/dashboard/styled/styled';
 
 @connectToStores(['dashboard', 'loading'])
 @autobind
@@ -157,7 +160,7 @@ class DashboardPage extends React.Component {
     });
 
     return (
-      <Div className="ets-page-wrap dashboard-page">
+      <EtsPageWrapDashboard className="dashboard-page">
         <DashboardPageHeader />
         <Row>
           <Col md={9}>
@@ -170,7 +173,7 @@ class DashboardPage extends React.Component {
             />
           </Col>
         </Row>
-      </Div>
+      </EtsPageWrapDashboard>
     );
   }
 }

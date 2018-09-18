@@ -13,7 +13,7 @@ import {
 
 const DashboardPage: React.SFC<any> = (props) => {
   return (
-    <DashboardPageContainer className="ets-page-wrap">
+    <DashboardPageContainer>
       <DashboardTime />
       <DashboardMenu />
     </DashboardPageContainer>

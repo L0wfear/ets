@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTz } from 'utils/dates';
 
+import {
+  OverlayLineInfoContainer,
+} from 'components/map/new/overlay/styled/styled';
+
 const getTitleByType = (event_type) => {
   switch (event_type) {
     case 'leak' : return 'Слив топлива:';
@@ -41,18 +45,18 @@ const OverlayFuelEventPoint: React.SFC<any> = props => {
 
   return (
     <Overlay title={getTitleByType(event_type)} map={props.map} coordsMsk={coords_msk} hidePopup={props.hidePopup} >
-      <div className="overlay-line-info">
+      <OverlayLineInfoContainer>
         <span className="font-bold">Датчик: </span><span>{sensor_id}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Кол-во: </span><span>{event_val} л.</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Дата и время: </span><span>{start}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Потраченное время: </span><span>{diff}</span>
-      </div>
+      </OverlayLineInfoContainer>
     </Overlay>
   );
 }

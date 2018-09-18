@@ -6,7 +6,13 @@ import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps'
 import { monitorPageToggleMeasureActive } from 'components/monitor/new/redux/models/actions-monitor-page';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { getStyleForLineMeasure } from 'components/map/new/layers/measure/feature-style';
-import * as cx from 'classnames';
+
+import {
+  OverlayInsideMeasureContainer,
+  EtsOverlayMeasureContainer,
+  EtsOverlayMeasureTitleContainer,
+  EtsTriangleMeasure,
+} from 'components/map/new/layers/measure/styled/styled';
 
 type PropsLayerParkingPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -240,12 +246,16 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
 
   render() {
     return (
-      <div className="layer-container">
+      <div>
         {
           this.state.lines.map(({ overlayData: { lineStringLength, active, ...overlayData } }, index) => (
             <Overlay
               key={index}
-              className={cx('measure', { active })}
+              OverlayInside={OverlayInsideMeasureContainer}
+              EtsOverlay={EtsOverlayMeasureContainer}
+              EtsOverlayTitle={EtsOverlayMeasureTitleContainer}
+              EtsTriangle={EtsTriangleMeasure}
+              active={active}
               title={lineStringLength < 1000 ? `${lineStringLength.toFixed(3)} м.` : `${(lineStringLength/1000).toFixed(3)} км.`}
               map={this.props.map}
               coordsMsk={overlayData.coords_msk}

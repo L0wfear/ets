@@ -2,6 +2,10 @@ import * as React from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import * as cx from 'classnames';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 
 const emptyArr = [];
@@ -254,7 +258,7 @@ class SimpleGriddle extends React.Component<any, any> {
                 )
                 :
                 (
-                  <div className="none"></div>
+                  <DivNone />
                 )
               }
             </div>

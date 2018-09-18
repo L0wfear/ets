@@ -14,6 +14,10 @@ import {
 } from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
 import DefaultInput from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
   constructor(props) {
     super(props);
@@ -69,7 +73,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                 {
                   this.state.hidden ?
                   (
-                    <div className="none"></div>
+                    <DivNone />
                   )
                   :
                   (
@@ -97,7 +101,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                           )
                           :
                           (
-                            <div className="none"></div>
+                            <DivNone />
                           )
                         }
                       </div>

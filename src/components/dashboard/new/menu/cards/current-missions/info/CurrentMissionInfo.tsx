@@ -34,6 +34,9 @@ import {
 import {
   RightButton_BlockContainer,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -128,7 +131,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
         <MissionInfoFormWrap

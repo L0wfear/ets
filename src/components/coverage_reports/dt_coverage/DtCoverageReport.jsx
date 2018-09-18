@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
 import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getNextDay859am, getToday9am, getFormattedDateTime } from 'utils/dates';
+import { getToday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
+
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
 
@@ -91,7 +96,7 @@ export default class DtCoverageReport extends Component {
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
-      <div className="ets-page-wrap">
+      <EtsPageWrap>
         <DtCoverageReportTable data={dtCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
@@ -119,7 +124,7 @@ export default class DtCoverageReport extends Component {
           exportType={this.state.exportType}
           onExport={this.export}
         />
-      </div>
+      </EtsPageWrap>
     );
   }
 }

@@ -29,6 +29,10 @@ import {
   RightButton_BlockContainer,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 const DropdownButtonTSX: any = DropdownButton;
 
 const TypeDownload = {
@@ -123,7 +127,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
         <RightButton_BlockContainer needMarginBottom>
@@ -146,7 +150,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </InfoCard>

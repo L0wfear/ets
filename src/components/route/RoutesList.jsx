@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+import { Button, Glyphicon, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
 
@@ -8,6 +8,10 @@ import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
 
 import permissions from 'components/route/config-data/permissions';
+
+import {
+  EtsPageWrapRoute,
+} from 'components/route/styled/styled';
 
 import Div from 'components/ui/Div.jsx';
 import Filter from 'components/ui/table/filter/Filter.jsx';
@@ -98,8 +102,8 @@ class RoutesList extends React.Component {
     return this.context.flux.getStore('session').getCurrentUser().structures.map(({ name }) => ({ value: name, label: name }));
   }
 
-  refreshRoutes = (withState = null) => {
-    return Promise.all([
+  refreshRoutes = (withState = null) => (
+    Promise.all([
       this.context.flux.getActions('routes').getRoutes().then(({ result }) => result),
       Promise.resolve(this.getStructures()),
     ])
@@ -110,8 +114,8 @@ class RoutesList extends React.Component {
       this.setState({ ...withState, routesList });
 
       return routesList;
-    });
-  }
+    })
+  )
 
   shouldBeRendered(obj) {
     let isValid = true;
@@ -138,7 +142,7 @@ class RoutesList extends React.Component {
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues);
-    console.log(filterValues)
+    console.log(filterValues);
     this.setState({ filterValues });
   }
 
@@ -312,7 +316,7 @@ class RoutesList extends React.Component {
     });
 
     return (
-      <div className="ets-page-wrap auto-height routes-list">
+      <EtsPageWrapRoute inheritDisplay>
         <Col xs={5} md={3} className="sidebar">
           <header className="sidebar__header clearfix">
             <div className="sidebar__header-title col-xs-12">
@@ -359,7 +363,7 @@ class RoutesList extends React.Component {
           </div>
         </Col>
 
-      </div>
+      </EtsPageWrapRoute>
     );
   }
 }

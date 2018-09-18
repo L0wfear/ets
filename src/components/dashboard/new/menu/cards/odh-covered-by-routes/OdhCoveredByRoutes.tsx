@@ -16,6 +16,10 @@ import {
   StateOdhCoveredByRoutes,
 } from 'components/dashboard/new/menu/cards/odh-covered-by-routes/OdhCoveredByRoutes.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateOdhCoveredByRoutes> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     this.props.setInfoData(
@@ -43,7 +47,7 @@ class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateO
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </div>

@@ -6,6 +6,11 @@ import * as queryString from 'query-string';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
+
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 import {
   ButtonCreateNew, ButtonReadNew, ButtonDeleteNew,
   ButtonCreate, ButtonRead, ButtonDelete,
@@ -481,12 +486,12 @@ class ElementsList extends React.Component {
     const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
+      <EtsPageWrap innerRef={node => (this.node = node)}>
         {table}
         {additionalRender}
         {forms}
         {preloader}
-      </div>
+      </EtsPageWrap>
     );
   }
 

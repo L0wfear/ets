@@ -9,6 +9,10 @@ import { NavItem, Glyphicon } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 @withRouter
 @connect(
   null,
@@ -39,7 +43,7 @@ class NavItemBackToGorod extends React.Component<any, any> {
         <Glyphicon glyph="arrow-left"/>
       </NavItem>
       :
-      <div className="none"></div>
+      <DivNone />
     )
   }
 }

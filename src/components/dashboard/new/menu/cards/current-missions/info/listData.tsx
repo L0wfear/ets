@@ -2,6 +2,9 @@ import * as React from 'react';
 
 import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'utils/dates';
 import { ListDataType } from 'components/dashboard/new/menu/cards/current-missions/info/@types/listData.h';
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -78,7 +81,7 @@ export const listData: ListDataType = [
       )
       :
       (
-        <div className="none"></div>
+        <DivNone />
       )
     )
   },

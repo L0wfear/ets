@@ -4,6 +4,10 @@ import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Field from 'components/ui/Field.jsx';
 import connectToStores from 'flummox/connect';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 class ODHReports extends Component {
 
   static contextTypes = {
@@ -32,7 +36,7 @@ class ODHReports extends Component {
     const TYPES = typesList.map(({ asuods_id, full_name }) => ({ label: full_name, value: asuods_id }));
 
     return (
-      <div className="ets-page-wrap auto-height">
+      <EtsPageWrap inheritDisplay>
         <div className="some-header">
           <div className="waybills-buttons" />
         </div>
@@ -109,7 +113,7 @@ class ODHReports extends Component {
           </Col>
         </Row>
 
-      </div>
+      </EtsPageWrap>
     );
   }
 }

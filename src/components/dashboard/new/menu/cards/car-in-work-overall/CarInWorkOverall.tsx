@@ -17,6 +17,9 @@ import {
   PropsCarInWorkOverall,
   StateCarInWorkOverall,
 } from 'components/dashboard/new/menu/cards/car-in-work-overall/CarInWorkOverall.h';
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -43,7 +46,7 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
           )
           :
           (
-            <div className="none"></div>
+            <DivNone />
           )
         }
       </div>

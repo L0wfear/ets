@@ -353,7 +353,6 @@ export default class MissionsActions extends Actions {
 
   getDutyMissionTemplates() {
     const payload = {};
-    payload.actual_seasons = true;
 
     return DutyMissionTemplateService.get(payload);
   }

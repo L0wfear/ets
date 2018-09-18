@@ -160,7 +160,7 @@ class DashboardPage extends React.Component {
     });
 
     return (
-      <EtsPageWrapDashboard className="dashboard-page">
+      <EtsPageWrapDashboard>
         <DashboardPageHeader />
         <Row>
           <Col md={9}>

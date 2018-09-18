@@ -219,8 +219,7 @@ class RouteCreating extends React.Component {
     const [draw_list = []] = [route.draw_odh_list];
     const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter(o => o.type) || [];
-    const polysRT = route.type === 'simple_dt' ? this.props.dtPolys : this.props.odhPolys;
-    const fail_list = _.map(polysRT, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
+    const fail_list = _.map(polys, (v, k) => ({ name: v.name, object_id: parseInt(k, 10), type: 'odh', state: v.state })).filter(o => !list.concat(draw_list).find(e => e.object_id === o.object_id));
     const POLYS_OPTIONS = Object.entries(polys).reduce((newArr, [id, { name }]) => [
       ...newArr,
       { value: id, label: name },

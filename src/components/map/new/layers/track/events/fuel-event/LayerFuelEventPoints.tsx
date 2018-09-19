@@ -119,7 +119,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   }
 
   drawTrackPoints(fuelEventPoint, front_events_list, front_cars_sensors_level) {
-    this.props.removeFeaturesFromSource('', true);
+    this.props.removeFeaturesFromSource(null, true);
 
     for (let index = 0, length = front_events_list.length; index < length; index++) {
       const currPoint = front_events_list[index];

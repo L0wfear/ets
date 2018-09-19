@@ -193,7 +193,7 @@ export const makeData = (data, prevProps, nextProps) => {
       returnData = sortData([...returnData], nextProps);
     }
   } else {
-    returnData = prevProps.data;
+    returnData = prevProps.data.length ? prevProps.data : data;
   }
 
   return returnData;

@@ -104,6 +104,7 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
           value={this.state.type}
           clearable={false}
           onChange={this.handleTypeChange}
+          className="width70"
         />
         {filterField}
       </div>

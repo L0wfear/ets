@@ -1,6 +1,11 @@
 .react-select {
   background-color: white;
-  height: 36px;
+  height: auto;
+  color: black;
+
+  &.width70 {
+    width: 70px;
+  }
 
   &.has-error {
     .react-select__control {

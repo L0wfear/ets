@@ -1782,7 +1782,7 @@ div.car_legend-active {
   margin: 0 auto;
 }
 .form-control {
-  height: 36px;
+  height: 38px;
 }
 
 .form-signin .form-signin-heading,
@@ -3475,24 +3475,24 @@ div.none {
       width: 40%;
       position: absolute;
       top: 0;
-      left: 55px;
+      left: 75px;
     }
     .form-group:nth-child(2) {
       left: calc(40% + 60px);
       width: calc(100% - 40% - 60px);
     }
     .form-group:only-child {
-      left: 55px;
-      width: calc(100% - 55px);
+      left: 75px;
+      width: calc(100% - 75px);
     }
   }
   .datepickers {
     .chart-datepicker {
-      width: calc(100% - 55px);
+      width: calc(100% - 75px);
       position: absolute;
       top: 0;
-      left: 55px;
-      height: 36px;
+      left: 75px;
+      height: 38px;
     }
     .chart-datepicker:nth-child(2) {
       position: relative;

@@ -77,29 +77,28 @@ export default class EstSelect extends React.Component<any, any> {
     }
 
     return (
-      <div id={id}>
-        <Select
-          {...props}
-          isClearable={clearable}
-          isMulti={multi}
-          value={value}
-          className={cx(
-            'react-select',
-            className,
-          )}
-          classNamePrefix="react-select"
-          onChange={this.handleChange}
-          options={sortedOptions}
-          placeholder={placeholder}
-          noResultsText={noResultsText}
-          components={
-            {
-              Option: this.optionRenderer
-            }
+      <Select
+        {...props}
+        id={id}
+        isClearable={clearable}
+        isMulti={multi}
+        value={value}
+        className={cx(
+          'react-select',
+          className,
+        )}
+        classNamePrefix="react-select"
+        onChange={this.handleChange}
+        options={sortedOptions}
+        placeholder={placeholder}
+        noResultsText={noResultsText}
+        components={
+          {
+            Option: this.optionRenderer
           }
-          isDisabled={disabled}
-        />
-      </div>
+        }
+        isDisabled={disabled}
+      />
     );
   }
 }

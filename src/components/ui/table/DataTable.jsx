@@ -211,17 +211,6 @@ export default class DataTable extends React.Component {
     }
   }
 
-  // Сортировка теперь тут
-  // По идеи гридлу это не надо
-  componentWillMount() {
-    // Здесь производится инициализация начальной сортировки для того,
-    // чтобы гриддл мог корректно отобразить хедер при первом рендеринге
-    // важно устанавливать сортировку именно в willMount!
-    // const { initialSort = '', initialSortAscending = true } = this.props;
-
-    // this.setState({ initialSort, initialSortAscending });
-  }
-
   componentDidMount() {
     const { filterValues, columnControl } = this.props;
     if (filterValues) {
@@ -625,7 +614,8 @@ export default class DataTable extends React.Component {
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
     };
-    const prevProps = {
+    const prevState = {
+      ...this.state,
       initialSort: this.state.initialSort,
       initialSortAscending: this.state.initialSortAscending,
     };
@@ -635,7 +625,7 @@ export default class DataTable extends React.Component {
 
     this.setState({
       ...nextProps,
-      data: makeData(this.state.originalData, prevProps, { ...this.props, ...nextProps }),
+      data: makeData(this.state.originalData, prevState, { ...this.props, ...nextProps }),
     });
   }
 

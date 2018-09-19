@@ -188,10 +188,12 @@ export const makeData = (data, prevProps, nextProps) => {
     const { tableMeta: { cols = [] } = {} } = nextProps;
     const colData = cols.find(({ name }) => name === nextProps.initialSort);
     if (colData && colData.sortFunc) {
-      returnData = returnData.sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
+      returnData = [...returnData].sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
     } else {
       returnData = sortData([...returnData], nextProps);
     }
+  } else {
+    returnData = prevProps.data;
   }
 
   return returnData;

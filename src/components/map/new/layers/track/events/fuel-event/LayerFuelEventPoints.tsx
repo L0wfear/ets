@@ -47,7 +47,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   }
   componentWillReceiveProps(nextProps) {
     const { fuelEventPoint, front_cars_sensors_level} = nextProps;
-
+    console.log('front_cars_sensors_level', front_cars_sensors_level)
     if (front_cars_sensors_level !== this.state.front_cars_sensors_level) {
       this.drawTrackPoints(
         fuelEventPoint,
@@ -57,6 +57,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
 
       this.setState({ front_cars_sensors_level });
     } else {
+      console.log('fuelEventPoint', fuelEventPoint)
       if (fuelEventPoint !== this.state.fuelEventPoint) {
         this.removeOneFuelEventPoint(this.state.fuelEventPoint);
         this.addOneFuelEventPoint(fuelEventPoint);
@@ -118,6 +119,8 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   }
 
   drawTrackPoints(fuelEventPoint, front_events_list, front_cars_sensors_level) {
+    this.props.removeFeaturesFromSource('', true);
+
     for (let index = 0, length = front_events_list.length; index < length; index++) {
       const currPoint = front_events_list[index];
 

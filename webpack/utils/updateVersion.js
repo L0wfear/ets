@@ -18,4 +18,4 @@ var [
 
 data.version = `${kontur}.${zero}.${release}.${version + 1}`;
 
-fs.writeFileSync(package, `${JSON.stringify(data, null, 2)}\n`);
+fs.writeFileSync(package, `${JSON.stringify(data, null, 4)}\n`);

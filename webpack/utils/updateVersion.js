@@ -1,14 +1,21 @@
 var path = require('path');
-var versiony = require('./versionyFour');
+var fs = require('fs');
 var package = path.join(__dirname, '..', '..', 'package.json');
-var minor = process.env.MINOR || false;
-var major = process.env.MAJOR || false;
-console.log(major);
 
-if (major) {
-  versiony.from(package).major().to(package).end();
-} else if (minor) {
-  versiony.from(package).minor().to(package).end();
-} else {
-  versiony.from(package).patch().to(package).end();
-}
+var data = JSON.parse(
+  fs.readFileSync(
+    package,
+    'utf8',
+    ),
+);
+
+var [
+  kontur,
+  zero,
+  release,
+  version,
+] = data.version.split('.').map(number => Number(number));
+
+data.version = `${kontur}.${zero}.${release}.${version + 1}`;
+
+fs.writeFileSync(package, `${JSON.stringify(data, null, 2)}\n`);

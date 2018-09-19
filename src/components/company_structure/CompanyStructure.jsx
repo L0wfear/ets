@@ -72,11 +72,15 @@ export default class CompanyStructure extends ElementsList {
       });
   }
 
+  setNode = (node) => {
+    this.node = node;
+  }
+
   render() {
     const { companyStructureList = [] } = this.props;
 
     return (
-      <EtsPageWrapCompanyStructure innerRef={node => (this.node = node)}>
+      <EtsPageWrapCompanyStructure innerRef={this.setNode}>
         <CompanyStructureTable
           data={companyStructureList}
           onActionEdit={this.editElement}

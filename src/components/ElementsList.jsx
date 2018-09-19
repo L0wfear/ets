@@ -476,6 +476,10 @@ class ElementsList extends React.Component {
     return '';
   }
 
+  setNode = (node) => {
+    this.node = node;
+  }
+
   /**
    * React render
    */
@@ -486,7 +490,7 @@ class ElementsList extends React.Component {
     const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
-      <EtsPageWrap innerRef={node => (this.node = node)}>
+      <EtsPageWrap innerRef={this.setNode}>
         {table}
         {additionalRender}
         {forms}

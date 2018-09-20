@@ -270,8 +270,7 @@ export default class DataTable extends React.Component {
     return clonedObject;
   }
 
-  handleRowCheck (e) {
-    const id = Number(e.currentTarget.dataset.id);
+  handleRowCheck = (id) => {
     const value = !this.props.checked[id];
     const clonedData = _.cloneDeep(this.props.checked);
     clonedData[id] = value;
@@ -700,6 +699,8 @@ export default class DataTable extends React.Component {
           externalChangeSort={externalChangeSort || this.handleChangeSort}
           customPagerComponent={serverPagination ? false : PaginatorToPortalData}
           onRowClick={!isHierarchical ? onRowSelected : null}
+          onRowDoubleClick={this.props.onRowDoubleClick}
+          onRowClickNew={this.props.onRowClick}
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import * as cx from 'classnames';
+import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
 
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -18,7 +19,7 @@ const mapRows = (rows, selectField, parentId = null) => (
       rowData.children = mapRows(
         children,
         selectField,
-        other[selectField],
+        rowData[selectField],
       );
     }
 
@@ -95,92 +96,87 @@ class SimpleGriddle extends React.Component<any, any> {
     )
   }
 
-  mapTbodyTr = ({ children = emptyArr, ...rowData }, index) => (
-    <tr key={rowData[this.props.selectField] || index} data-index={index} className={cx({ 'selected-row': rowData.isSelected, 'parent-row': rowData._isParent, 'child-row': rowData._parentId }, this.props.rowMetadata.bodyCssClassName(rowData))} onClick={this.handleCLickTbodyTr}>
-      {
-        this.props.columnMetadata.map(({ columnName, customComponent }, colIndex) => (
-            <td key={columnName} className={cx(this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
-              {
-                rowData._isParent && colIndex === 0 ?
-                (
-                  rowData._isShowChildren ?
-                  (
-                    <Glyphicon glyph="triangle-bottom" />
-                  )
-                  :
-                  (
-                    <Glyphicon glyph="triangle-right" />
-                  )
-                )
-                :
-                (
-                  <span></span>
-                )
-              }
-              {
-                customComponent ?
-                  customComponent({ rowData, data: rowData[columnName] })
-                :
-                  columnName === 'rowNumber' ?
-                  (this.props.rowNumberOffset || this.state.currentPage * this.state.resultsPerPage) + index + 1
-                  :
-                    columnName === 'isChecked' ?
-                    (
-                      <div>
-                        <input
-                          type="checkbox"
-                          readOnly
-                          id={`checkbox-${rowData[this.props.selectField] || index}`}
-                          data-id={rowData[this.props.selectField] || index}
-                          checked={rowData.isChecked}
-                          onClick={this.props.handleRowCheck}
-                        />
-                      </div>
-                    )
-                    :
-                    rowData[columnName]
-              }
-            </td>
-          ))
-      }
-    </tr>
+  mapTbodyTr = (rowData, index) => (
+    <TrTable
+      key={rowData[this.props.selectField] || index}
+      rowData={rowData}
+      index={index}
+      rowMetadata={this.props.rowMetadata}
+      handleClickTbodyTr={this.handleClickTbodyTr}
+      onRowDoubleClick={this.onRowDoubleClick}
+      columnMetadata={this.props.columnMetadata}
+      rowNumberOffset={this.props.rowNumberOffset}
+      handleRowCheck={this.props.handleRowCheck}
+      selectField={this.props.selectField}
+      currentPage={this.state.currentPage}
+      resultsPerPage={this.state.resultsPerPage}
+    />
   )
 
-  handleCLickTbodyTr: any = ({ currentTarget: { dataset: { index } } }) => {
-    const numberIndex = Number(index);
-    const data = this.state.shortResult[(this.props.rowNumberOffset || this.state.currentPage * this.props.resultsPerPage) + numberIndex];
-    const { _isParent } = data;
+  onRowDoubleClick: any = (rowData, index) => {
+    const { onRowDoubleClick } = this.props;
 
-    if (this.props.onRowClick) {
-      if (!_isParent) {
-        this.props.onRowClick({
-          props: {
-            data,
-          },
-        });
-      } else {
-        console.warn('нужно обработать случай')
+    if (onRowDoubleClick) {
+      const {
+        _isParent,
+        _isShowChildren,
+        isChecked,
+        isHighlighted,
+        isSelected,
+        ...data
+      } = rowData;
+      onRowDoubleClick({ props: { data }});
+    }
+  }
+  handleClickTbodyTr: any = (rowData, index) => {
+    const numberIndex = index;
+
+    const { _isParent } = rowData;
+
+    if (!_isParent) {
+      if (this.props.onRowClickNew || this.props.onRowClick) {
+        const {
+          _isParent,
+          _isShowChildren,
+          isChecked,
+          isHighlighted,
+          isSelected,
+          ...data
+        } = rowData;
+        try {
+          this.props.onRowClickNew({
+            props: {
+              data,
+            },
+          });
+        } catch (e) {
+          this.props.onRowClick({
+            props: {
+              data,
+            },
+          });
+        }
       }
-    } else if (_isParent) {
+    } else {
       let shortResult = [];
 
-      if (!data._isShowChildren) {
+      if (!rowData._isShowChildren) {
         shortResult = [
           ...this.state.shortResult.slice(0, numberIndex),
           {
-            ...data,
+            ...rowData,
             _isShowChildren: true,
           },
-          ...data.children,
+          ...rowData.children,
           ...this.state.shortResult.slice(numberIndex + 1)
         ];
       } else {
-        shortResult = this.state.shortResult.reduce((newArr, {...rowData}) => {
-          if (data[this.props.selectField] === rowData[this.props.selectField]) {
-            rowData._isShowChildren = false;
+        shortResult = this.state.shortResult.reduce((newArr, newRowData) => {
+          if (newRowData[this.props.selectField] === rowData[this.props.selectField]) {
+            newRowData._isShowChildren = false;
           }
-          if (rowData._parentId !== data[this.props.selectField]) {
-            newArr.push(rowData);
+          if (newRowData._parentId !== rowData[this.props.selectField]) {
+            newArr.push(newRowData);
           }
 
           return newArr;
@@ -200,7 +196,7 @@ class SimpleGriddle extends React.Component<any, any> {
       if (fieldMeta && fieldMeta.sortable) {
         const initialSortAscending = title === this.state.initialSort ? !this.state.initialSortAscending : true;
 
-        console.log('CHANGE SORT', title, initialSortAscending)
+        console.log('CHANGE SORT', title, initialSortAscending);
 
         this.props.externalChangeSort(title, initialSortAscending);
         this.setState({

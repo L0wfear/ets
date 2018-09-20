@@ -6,6 +6,7 @@ const WithLifeCycle: any = lyfeCycleMethods => Component =>
         try {
           lyfeCycleMethods.componentDidMount(this.props);
         } catch (e) {
+          // tslint:disable-next-line
           console.log(e);
         }
       }
@@ -14,6 +15,7 @@ const WithLifeCycle: any = lyfeCycleMethods => Component =>
         try {
           lyfeCycleMethods.componentWillUnmount(this.props);
         } catch (e) {
+          // tslint:disable-next-line
           console.log(e);
         }
       }
@@ -22,6 +24,7 @@ const WithLifeCycle: any = lyfeCycleMethods => Component =>
         try {
           lyfeCycleMethods.componentWillReceiveProps(this.props);
         } catch (e) {
+          // tslint:disable-next-line
           console.log(e);
         }
       }

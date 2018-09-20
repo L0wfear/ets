@@ -27,7 +27,7 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
   }
   handleSubmit = async () => {
     try {
-      await this.props.handleSubmit().then(ans => console.log('---', ans));
+      await this.props.handleSubmit();
     } catch (e) {
       this.setState({ showBackButton: true });
     }

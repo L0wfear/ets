@@ -48,6 +48,7 @@ export const fileFormatter = withHandlers({
         base64PromiseList.push(readingPromise);
       });
     } catch (error) {
+      // tslint:disable-next-line
       console.log('File reading error:', error);
     }
 

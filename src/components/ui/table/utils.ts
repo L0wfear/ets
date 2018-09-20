@@ -184,16 +184,12 @@ export const sortData = (data, { initialSort, initialSortAscending }) => data.so
 export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
-  if ((prevProps.originalData !== nextProps.originalData && nextProps.initialSort) || prevProps.initialSort !== nextProps.initialSort || prevProps.initialSortAscending !== nextProps.initialSortAscending) {
-    const { tableMeta: { cols = [] } = {} } = nextProps;
-    const colData = cols.find(({ name }) => name === nextProps.initialSort);
-    if (colData && colData.sortFunc) {
-      returnData = [...returnData].sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
-    } else {
-      returnData = sortData([...returnData], nextProps);
-    }
+  const { tableMeta: { cols = [] } = {} } = nextProps;
+  const colData = cols.find(({ name }) => name === nextProps.initialSort);
+  if (colData && colData.sortFunc) {
+    returnData = [...returnData].sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
   } else {
-    returnData = prevProps.data.length ? prevProps.data : data;
+    returnData = sortData([...returnData], nextProps);
   }
 
   return returnData;

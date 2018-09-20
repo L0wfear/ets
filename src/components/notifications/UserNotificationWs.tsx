@@ -54,6 +54,7 @@ class NotificationBadge extends React.Component<any, any> {
       });
 
       this.ws.onopen = (event) => {
+        // tslint:disable-next-line
         console.log(`API SERVICE OPEN WS ${config.notification_ws}`);
       }
 
@@ -63,6 +64,7 @@ class NotificationBadge extends React.Component<any, any> {
       };
 
       this.ws.onclose = (event) => {
+        // tslint:disable-next-line
         console.log(`API SERVICE CLOSE WS ${config.notification_ws}`);
 
         if (event.code === 1006) {

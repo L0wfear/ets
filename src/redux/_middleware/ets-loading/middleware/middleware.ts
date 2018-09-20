@@ -8,7 +8,7 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
 
   if (meta.promise && typeof action.payload.then === 'function') {
     dispatch(incLoadingCount(meta));
-    console.log(action.payload)
+
     return {
       ...action,
       payload: action.payload

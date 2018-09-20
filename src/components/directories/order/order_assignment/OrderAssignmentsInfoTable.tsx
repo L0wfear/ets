@@ -84,7 +84,7 @@ const Table: React.SFC<any> = props  => {
       preventNoDataMessage
       selected={props.seleted}
       selectField={'order_operation_id'}
-      title="Реестр централизованных заданий"
+      title="Реестр поручений"
       results={technical_operations}
       renderers={renderers}
       tableMeta={tableMeta()}

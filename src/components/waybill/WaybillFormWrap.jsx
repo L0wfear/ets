@@ -291,7 +291,7 @@ export default class WaybillFormWrap extends FormWrap {
     delete formState.equipment_fuel_start;
     delete formState.fuel_start;
     delete formState.motohours_equip_start;
-    console.log('delete', '----->', 'equipment_fuel_start', 'fuel_start', 'motohours_equip_start')
+    console.log('delete', '----->', 'equipment_fuel_start', 'fuel_start', 'motohours_equip_start'); // eslint-disable-line
 
     this.handleMultipleChange(formState);
   }

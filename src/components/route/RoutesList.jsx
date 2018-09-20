@@ -141,8 +141,7 @@ class RoutesList extends React.Component {
   toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
 
   saveFilter = (filterValues) => {
-    console.info('SETTING FILTER VALUES', filterValues);
-    console.log(filterValues);
+    console.info('SETTING FILTER VALUES', filterValues); // eslint-disable-line
     this.setState({ filterValues });
   }
 

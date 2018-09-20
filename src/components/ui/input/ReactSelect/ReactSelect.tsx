@@ -40,11 +40,16 @@ export default class ReactSelect extends React.Component<any, any> {
     this.props.onChange(onChangeSelectLegacy(objectValue === null ? emptyValue : objectValue), objectValue);
   }
 
-  optionRenderer = (props) => {
+  optionRenderer = ({ innerProps, ...props }) => {
+    const newInnerProps = {
+      ...innerProps,
+      id: innerProps.id.replace(/option-\d+$/, props.value),
+    };
+
     if (this.props.optionRenderer && typeof this.props.optionRenderer === 'function') {
-      return <components.Option {...props} >{this.props.optionRenderer(props)}</ components.Option>;
+      return <components.Option innerProps={newInnerProps} {...props} >{this.props.optionRenderer(props)}</ components.Option>;
     }
-    return <components.Option {...props} />;
+    return <components.Option innerProps={newInnerProps} {...props} />;
   }
   render() {
     const {
@@ -63,6 +68,7 @@ export default class ReactSelect extends React.Component<any, any> {
 
     const sortedOptions = options.sort(sortingFunction);
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
+    const instanceId = modalKey ? `${modalKey}-${this.props.id}` : this.props.id;
 
     let value = props.value;
 
@@ -80,6 +86,7 @@ export default class ReactSelect extends React.Component<any, any> {
       <Select
         {...props}
         id={id}
+        instanceId={instanceId}
         isClearable={clearable}
         isMulti={multi}
         value={value}

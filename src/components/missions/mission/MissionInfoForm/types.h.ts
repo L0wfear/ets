@@ -28,18 +28,23 @@ export interface IMIssionData {
   structure_id: void | number;
   traveled_percentage: number;
 }
+
 export interface ICarData {
   driver_fio: string;
   driver_phone: string;
   gov_number: string;
+  asuods_id: number;
+  car_func_type_id: number;
 }
-export interface IRouteData{
+
+export interface IRouteData {
   id: number;
   check_unit: string;
   name: string;
   type: string;
   has_mkad: boolean;
 }
+
 export interface IReportData {
   entries: any[];
   check_unit: string | void;
@@ -56,16 +61,19 @@ export interface IReportData {
   traveled_percentage: number;
   traveled_raw: number;
 }
+
 export interface ITechnicalOperationData {
   check_type: string;
   id: number;
   max_speed: number;
   name: string;
 }
+
 export interface IWaybillData {
   fact_arrival_date: string | Date;
   fact_departure_date: string | Date;
 }
+
 export interface IMissionInfoFormState {
   mission_data: IMIssionData;
   car_data: ICarData;
@@ -74,6 +82,7 @@ export interface IMissionInfoFormState {
   technical_operation_data: ITechnicalOperationData;
   waybill_data: IWaybillData;
 }
+
 export interface IComponentDidMountProps {
   formState: IMissionInfoFormState;
   flux: any;

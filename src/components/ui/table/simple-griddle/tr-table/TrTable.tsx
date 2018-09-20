@@ -59,8 +59,8 @@ class TrTable extends React.Component<PropsTrTable, any> {
         onDoubleClick={this.handleDoubleClickTbodyTr}
       >
       {
-        this.props.columnMetadata.map(({ columnName, customComponent }, colIndex) => (
-            <td key={columnName} className={cx(this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
+        this.props.columnMetadata.map(({ columnName, customComponent, cssClassName }, colIndex) => (
+            <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
               {
                 rowData._isParent && colIndex === 0 ?
                 (

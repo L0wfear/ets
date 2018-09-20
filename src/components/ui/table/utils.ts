@@ -7,7 +7,7 @@ import { mapKeys, get, isEmpty, identity, sortBy } from 'lodash';
 import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema, ISchemaMaker } from 'components/ui/table/@types/schema.h';
 
 export function extractTableMeta(columnMeta: IDataTableSchema): IExtractedDataTableSchema {
-  return indexBy<IDataTableColSchema, IExtractedDataTableSchema>(prop('name'), columnMeta.cols);
+  return indexBy<IDataTableColSchema>(prop('name'), columnMeta.cols);
 }
 
 export function getServerSortingField(sourceField: string, direction: string, serverFieldName: string = null): string {

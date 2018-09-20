@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import MissionsList from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/MissionsList';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 
 import {
   loadMissionById,

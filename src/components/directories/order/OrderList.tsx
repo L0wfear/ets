@@ -24,6 +24,8 @@ import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 
+require('components/directories/order/Order.scss');
+
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;

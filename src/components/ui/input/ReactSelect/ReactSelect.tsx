@@ -13,7 +13,7 @@ require('components/ui/input/ReactSelect/ReactSelect.scss');
 /**
  * @todo уйти от легаси
  */
-export default class EstSelect extends React.Component<any, any> {
+export default class ReactSelect extends React.Component<any, any> {
   static defaultProps = {
     legacy: true,
     clearable: true,

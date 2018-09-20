@@ -8,9 +8,25 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
+import { ORDER_ASSIGNMENTS_STATUS_KEYS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 const emptyArr = [];
+
+/**
+ * подсветка строк таблицы в зависимости от статуса поручения
+ * @param rowData строка реестра поручений
+ */
+const highlightClassMapper = ({ change_status }) => {
+  if (change_status === ORDER_ASSIGNMENTS_STATUS_KEYS.full) {
+    return 'standart-row red_line';
+  }
+  if (change_status === ORDER_ASSIGNMENTS_STATUS_KEYS.partial) {
+    return 'standart-row yellow_line';
+  }
+
+  return 'standart-row';
+};
 
 const meta: IDataTableSchema = {
   cols: [
@@ -74,6 +90,7 @@ const Table: React.SFC<any> = props  => {
       tableMeta={tableMeta()}
       className="order"
       onRowSelected={props.onRowSelectedAssignment}
+      highlightClassMapper={highlightClassMapper}
     />
   );
 };

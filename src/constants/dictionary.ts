@@ -57,7 +57,7 @@ export const ORDER_STATUS_KEYS = {
 
 export const ORDER_ASSIGNMENTS_STATUS_KEYS = {
   full: 'full',
-  partial: 'partial,'
+  partial: 'partial'
 };
 
 export const ORDER_STATUS_LABELS = {

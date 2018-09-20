@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.22.183",
+    "version": "2.0.22.184",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -33,7 +33,7 @@
         "openlayers": "=4.6.5",
         "point-in-polygon": "^1.0.1",
         "prop-types": "=15.6.2",
-        "query-string": "=6.1.0",
+        "query-string": "^5.0.1",
         "ramda": "=0.25.0",
         "raven-js": "^3.24.2",
         "react": "^16.5.2",

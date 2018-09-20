@@ -2,7 +2,10 @@ import { getFullAccess } from 'api/mocks/permissions';
 import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
+  SESSION_SET_CONFIG
 } from 'redux/modules/session/session';
+
+import { ConfigService } from 'api/Services';
 
 export const getSpecificPermissions = (user) => {
   const permissions = [];
@@ -26,20 +29,41 @@ export const getSpecificPermissions = (user) => {
   ]
 };
 
-export const sessionSetData = ({ currentUser, session }) => {
+export const sessionSetAppConfig = () => {
+  return {
+    type: SESSION_SET_CONFIG,
+    payload: ConfigService.get()
+      .then((appConfig) =>({
+          appConfig
+      }))
+      .catch((ErrorData) => {
+        const { error_text } = ErrorData;
+        const t_error = error_text || ErrorData; 
+        console.log(t_error);
+      }),
+    meta: {
+      loading: true, 
+    },
+  };
+}
+
+export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
   const userData = { ...currentUser };
 
   userData.permissions = getSpecificPermissions(currentUser);
   userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
-
-  return {
+  
+  dispatch(
+    sessionSetAppConfig()
+  );
+  dispatch({
     type: SESSION_SET_DATA,
     payload: {
       userData,
       token: session,
-    },
-  };
+    }
+  });
 }
 
 export const sessionResetData = () => ({

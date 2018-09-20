@@ -51,19 +51,10 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     }
   }
 
-  static getDerivedStateFromProps({ coordsMsk }, prevState) {
-    if (coordsMsk !== prevState.coordsMsk) {
-      return {
-        coordsMsk,
-      };
-    }
-
-    return null;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { coordsMsk } = this.state;
-    if (coordsMsk !== prevState.coordsMsk) {
+
+    if (coordsMsk !== prevProps.coordsMsk) {
       let marker = this.state.marker;
 
       this.state.marker.setPosition(coordsMsk);

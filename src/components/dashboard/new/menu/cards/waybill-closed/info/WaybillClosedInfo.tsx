@@ -21,17 +21,6 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
-    infoData: this.props.infoData,
-  }
-
-  static getDerivedStateFromProps({ infoData }, state) {
-    if (infoData !== state.infoData) {
-      return {
-        infoData,
-      }
-    }
-
-    return null;
   }
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
@@ -72,7 +61,7 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
       <InfoCard title="Информация о ПЛ" handleClose={this.handleClose}>
         <ul>
         {
-          this.state.infoData.subItems.map(({ data: { waybill_id, ...data } }) => (
+          this.props.infoData.subItems.map(({ data: { waybill_id, ...data } }) => (
             <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
               {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>
               <br />

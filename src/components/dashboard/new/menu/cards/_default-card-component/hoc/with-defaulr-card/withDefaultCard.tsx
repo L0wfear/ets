@@ -46,7 +46,6 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
       state = {
         timerId: 0,
         inLoadByLocalRefresh: false,
-        dateLoad: this.props.dateLoad,
       };
 
       componentDidMount() {
@@ -63,18 +62,8 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
         })
       }
 
-      static getDerivedStateFromProps({ dateLoad }, state) {
-        if (dateLoad !== state.dateLoad) {
-          return {
-            dateLoad,
-          }
-        }
-
-        return null;
-      }
-
-      componentDidUpdate(prevProps, prevState) {
-        if (prevState.dateLoad !== this.state.dateLoad) {
+      componentDidUpdate(prevProps) {
+        if (prevProps.dateLoad !== this.props.dateLoad) {
           if (!this.state.inLoadByLocalRefresh) {
             clearTimeout(this.state.timerId);
             clearInterval(this.state.timerId);

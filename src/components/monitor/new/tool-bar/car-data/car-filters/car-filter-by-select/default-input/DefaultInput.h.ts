@@ -7,4 +7,5 @@ export type PropsDefaultInput = {
   keyField: string;
   changeFilter: Function;
   OPTIONS: IReactSelectOption[];
+  placeholder: string;
 }

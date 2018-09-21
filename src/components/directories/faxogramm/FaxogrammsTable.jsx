@@ -92,8 +92,6 @@ export default (props) => {
     enumerated={false}
     externalFilter={props.changeFilter}
     externalChangeSort={props.changeSort}
-    initialSort={'create_date'}
-    initialSortAscending={false}
     {...props}
   />);
 };

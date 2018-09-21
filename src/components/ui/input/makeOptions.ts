@@ -1,4 +1,7 @@
 import { get } from 'lodash';
+import {
+  defaultSortingFunction,
+} from 'components/ui/input/ReactSelect/utils';
 
 export const makeOptions = ({ data, options }) => {
   const intiData = options.reduce((initData, { name }) => ({ ...initData, [name]: [] }), {});
@@ -19,7 +22,12 @@ export const makeOptions = ({ data, options }) => {
   }, { ...intiData });
 
   return options.reduce((afterCallBack, config) => {
-    afterCallBack[config.name] = get(config.callBack(firstSelect[config.name]), config.optionsPath, []);
+    const ans = afterCallBack[config.name] = get(config.callBack(firstSelect[config.name]), config.optionsPath, []);
+
+    if (Array.isArray(ans)) {
+      ans.sort(defaultSortingFunction)
+    }
+
     return afterCallBack;
   }, { ...intiData });
 }

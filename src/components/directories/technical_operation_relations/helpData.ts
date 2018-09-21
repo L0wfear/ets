@@ -1,3 +1,5 @@
+import { routeTypesByKey } from 'constants/route';
+
 export const customOptionsTechnicalOperation = [
   {
     name: 'TECHNICAL_OPERATION_OPTIONS',
@@ -43,6 +45,23 @@ export const customOptionsFuncType = [
       });
 
       return FUNC_TYPE_OPTIONS;
+    }, { asObj: {}, asArr: [] }),
+    optionsPath: ['asArr'],
+  },
+  {
+    name: 'ROUTE_TYPES',
+    fields: ['route_types'],
+    callBack: data => data.reduce((ROUTE_TYPES, { route_types }) => {
+      route_types.forEach((value) => {
+        if (value && !ROUTE_TYPES.asObj[value]) {
+          const label = routeTypesByKey[value].title;
+
+          ROUTE_TYPES.asObj[value] = { value, label };
+          ROUTE_TYPES.asArr.push({ value: value, label });
+        }
+      });
+
+      return ROUTE_TYPES;
     }, { asObj: {}, asArr: [] }),
     optionsPath: ['asArr'],
   },

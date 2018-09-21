@@ -9,8 +9,11 @@ export const routeTypesBySlug = {
     title: 'ОДХ',
     time: 5,
   },
+  points: {
+    key: 'points',
+    title: 'ПН',
+  },
 };
-
 
 export const routeTypesByKey = Object.entries(routeTypesBySlug)
   .reduce((newObj, [slug, { key, ...other }]) => ({

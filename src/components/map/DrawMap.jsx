@@ -31,7 +31,6 @@ export default class DrawMap extends PolyMap {
     const container = this._container;
 
     map.setTarget(container);
-    map.getView().setRotation(Math.PI / 2);
     map.render();
 
     if (!this.props.disabled) {

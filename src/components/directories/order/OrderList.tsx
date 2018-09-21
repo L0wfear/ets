@@ -48,7 +48,7 @@ class OrderList extends React.Component<any, any> {
       location: { search },
     } = this.props;
 
-    
+
     const {
       idOrder,
       dateFrom: date_start,
@@ -76,7 +76,7 @@ class OrderList extends React.Component<any, any> {
         }
       });
   }
- 
+
   componentWillUnmount() {
     this.props.resetOrder();
   }

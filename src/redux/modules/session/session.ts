@@ -5,7 +5,7 @@ const SESSION = createPath('SESSION');
 export const SESSION_SET_DATA = SESSION`SET_DATA`;
 export const SESSION_RESET_DATA = SESSION`RESET_DATA`;
 
-export const SESSION_SET_CONFIG = SESSION`SET_CONFIG`
+export const SESSION_SET_CONFIG = SESSION`SET_CONFIG`;
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
@@ -62,7 +62,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         appConfig: payload.appConfig || CONFIG_INITIAL,
-      }
+      };
     }
     case SESSION_RESET_DATA: {
       return initialState;

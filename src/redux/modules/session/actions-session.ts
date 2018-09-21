@@ -29,23 +29,19 @@ export const getSpecificPermissions = (user) => {
   ]
 };
 
-export const sessionSetAppConfig = () => {
-  return {
-    type: SESSION_SET_CONFIG,
-    payload: ConfigService.get()
-      .then((appConfig) =>({
-          appConfig
-      }))
-      .catch((ErrorData) => {
-        const { error_text } = ErrorData;
-        const t_error = error_text || ErrorData; 
-        console.log(t_error);
-      }),
-    meta: {
-      loading: true, 
-    },
-  };
-}
+export const sessionSetAppConfig = () => ({
+  type: SESSION_SET_CONFIG,
+  payload: ConfigService.get()
+    .then((appConfig) =>({
+        appConfig
+    }))
+    .catch((ErrorData) => {
+      console.warn(ErrorData);
+    }),
+  meta: {
+    loading: true, 
+  },
+});
 
 export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
   const userData = { ...currentUser };
@@ -55,8 +51,9 @@ export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
   userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
   
   dispatch(
-    sessionSetAppConfig()
+    sessionSetAppConfig(),
   );
+
   dispatch({
     type: SESSION_SET_DATA,
     payload: {

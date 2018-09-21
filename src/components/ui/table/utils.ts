@@ -7,7 +7,7 @@ import { mapKeys, get, isEmpty, identity, sortBy } from 'lodash';
 import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema, ISchemaMaker } from 'components/ui/table/@types/schema.h';
 
 export function extractTableMeta(columnMeta: IDataTableSchema): IExtractedDataTableSchema {
-  return indexBy<IDataTableColSchema, IExtractedDataTableSchema>(prop('name'), columnMeta.cols);
+  return indexBy<IDataTableColSchema>(prop('name'), columnMeta.cols);
 }
 
 export function getServerSortingField(sourceField: string, direction: string, serverFieldName: string = null): string {
@@ -184,16 +184,12 @@ export const sortData = (data, { initialSort, initialSortAscending }) => data.so
 export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;
 
-  if ((prevProps.originalData !== nextProps.originalData && nextProps.initialSort) || prevProps.initialSort !== nextProps.initialSort || prevProps.initialSortAscending !== nextProps.initialSortAscending) {
-    const { tableMeta: { cols = [] } = {} } = nextProps;
-    const colData = cols.find(({ name }) => name === nextProps.initialSort);
-    if (colData && colData.sortFunc) {
-      returnData = [...returnData].sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
-    } else {
-      returnData = sortData([...returnData], nextProps);
-    }
+  const { tableMeta: { cols = [] } = {} } = nextProps;
+  const colData = cols.find(({ name }) => name === nextProps.initialSort);
+  if (colData && colData.sortFunc) {
+    returnData = [...returnData].sort((a, b) => nextProps.initialSortAscending ? colData.sortFunc(a, b) : colData.sortFunc(b, a));
   } else {
-    returnData = prevProps.data;
+    returnData = sortData([...returnData], nextProps);
   }
 
   return returnData;

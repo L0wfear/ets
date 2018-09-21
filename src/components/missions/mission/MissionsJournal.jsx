@@ -8,7 +8,7 @@ import {
 import { getWarningNotification } from 'utils/notifications';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import permissions from 'components/missions/mission/config-data/permissions';
 import order_permissions from 'components/directories/order/config-data/permissions';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';

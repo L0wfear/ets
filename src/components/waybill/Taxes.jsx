@@ -57,7 +57,6 @@ export default class Taxes extends React.Component {
       return 0;
     }
     const result = _.reduce(data, (res, cur) => {
-      console.log('----', cur);
       if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
         res += parseFloat(cur.FACT_VALUE);
       }

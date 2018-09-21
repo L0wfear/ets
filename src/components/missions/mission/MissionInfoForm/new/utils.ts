@@ -3,7 +3,7 @@ import {
   IComponentWillUnmount,
   IComponentWillReceiveProps,
   IComponentDidMount,
-} from 'components/dashboard/MissionInfoForm/types.h';
+} from 'components/missions/mission/MissionInfoForm/types.h';
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -47,7 +47,7 @@ const getDataTraveledYet = (data) => {
 export const componentWillUnmount: IComponentWillUnmount = props => {
   if (!props.tooLongDates) {
     props.flux.getActions('pointsHybrid').closeConnection();
-    props.flux.getActions('pointsHybrid').setSingleCarTrack(null);
+    props.flux.getActions('pointsHybrid').setSingleCarTrack(null, null);
   }
 };
 
@@ -74,7 +74,7 @@ export const componentDidMount: IComponentDidMount = async props => {
 
   if (!props.tooLongDates) {
     flux.getActions('pointsHybrid').createConnection();
-    flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number);
+    flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number, car_data.asuods_id);
     flux.getActions('pointsHybrid').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
   }
 
@@ -89,7 +89,7 @@ export const componentDidMount: IComponentDidMount = async props => {
 
   const {
     has_mkad,
-  } = route_data
+  } = route_data;
 
   const [route] = await Promise.all([
     flux.getActions('routes').getRouteById(route_data.id, true),

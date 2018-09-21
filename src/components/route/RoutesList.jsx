@@ -1,37 +1,28 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Button, Glyphicon, Col } from 'react-bootstrap';
+import { Glyphicon, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import cx from 'classnames';
 
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
 
-import permissions from 'components/route/config-data/permissions';
-
 import {
   EtsPageWrapRoute,
 } from 'components/route/styled/styled';
 
-import Div from 'components/ui/Div.jsx';
-import Filter from 'components/ui/table/filter/Filter.jsx';
-import FilterButton from 'components/ui/table/filter/FilterButton.jsx';
+import Div from 'components/ui/Div';
+import Filter from 'components/ui/table/filter/Filter';
+import FilterButton from 'components/ui/table/filter/FilterButton';
 import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils.js';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
-import RouteInfo from './RouteInfo.jsx';
-import RouteFormWrap from './RouteFormWrap.jsx';
+import RouteInfo from 'components/route/RouteInfo';
+import RouteFormWrap from 'components/route/RouteFormWrap';
 
-const ButtonCreateRoute = enhanceWithPermissions({
-  permission: permissions.create,
-})(Button);
-
-const ButtonUpdateRoute = enhanceWithPermissions({
-  permission: permissions.update,
-})(Button);
-
-const ButtonDeleteRoute = enhanceWithPermissions({
-  permission: permissions.delete,
-})(Button);
+import {
+  ButtonCreateRoute,
+  ButtonUpdateRoute,
+  ButtonDeleteRoute,
+} from 'components/route/buttons/buttons';
 
 class RoutesList extends React.Component {
 
@@ -141,8 +132,7 @@ class RoutesList extends React.Component {
   toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
 
   saveFilter = (filterValues) => {
-    console.info('SETTING FILTER VALUES', filterValues);
-    console.log(filterValues);
+    console.info('SETTING FILTER VALUES', filterValues); // eslint-disable-line
     this.setState({ filterValues });
   }
 

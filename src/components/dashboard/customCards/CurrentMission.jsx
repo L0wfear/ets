@@ -11,7 +11,7 @@ import { wrappedRef } from 'utils/decorators';
 import Preloader from 'components/ui/Preloader.jsx';
 import DashboardCardMedium from 'components/dashboard/DashboardCardMedium.jsx';
 import DashboardCardHeader from 'components/dashboard/DashboardCardHeader.jsx';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm.jsx';
 import DashboardItemChevron from 'components/dashboard/DashboardItemChevron.jsx';
 

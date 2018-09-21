@@ -35,17 +35,8 @@ export default class TechnicalOperationRelationsList extends ElementsList {
   constructor(props) {
     super(props);
 
-    const {
-      technical_operation_id,
-      municipal_facility_id,
-      func_type_id,
-    } = props;
-
     this.state = {
       ...this.state,
-      technical_operation_id,
-      municipal_facility_id,
-      func_type_id,
       showCarForm: false,
       carElement: null,
       showRouteChangeForm: false,
@@ -59,25 +50,27 @@ export default class TechnicalOperationRelationsList extends ElementsList {
     this.getData(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const {
       technical_operation_id,
       municipal_facility_id,
+      route_types,
       func_type_id,
-    } = nextProps;
+    } = this.props;
 
     if (
-      this.state.technical_operation_id !== technical_operation_id ||
-      this.state.municipal_facility_id !== municipal_facility_id ||
-      this.state.func_type_id !== func_type_id
+      technical_operation_id
+      && municipal_facility_id
+      && route_types
+      && func_type_id
+      && (
+        technical_operation_id !== prevProps.technical_operation_id
+        || municipal_facility_id !== prevProps.municipal_facility_id
+        || route_types !== prevProps.route_types
+        || func_type_id !== prevProps.func_type_id
+      )
     ) {
-      this.getData(nextProps);
-
-      this.setState({
-        technical_operation_id,
-        municipal_facility_id,
-        func_type_id,
-      });
+      this.getData(this.props);
     }
   }
 
@@ -116,9 +109,10 @@ export default class TechnicalOperationRelationsList extends ElementsList {
   }
 
   handleChangeDriver = () => {
-    const carElement = this.props.carsList.find(({ asuods_id }) => asuods_id === this.state.selectedElement.car_id);
+    const carElement = this.props.carsIndex[this.state.selectedElement.car_id];
+
     if (!carElement) {
-      console.error(`Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`);
+      console.error(`Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`); // eslint-disable-line
     } else {
       this.setState({
         showCarForm: true,
@@ -171,8 +165,8 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         showForm={this.state.showRouteChangeForm}
         onFormHide={this.onRouteFormHide}
         routesData={this.state.routesData}
-        technical_operation_id={this.state.technical_operation_id}
-        municipal_facility_id={this.state.municipal_facility_id}
+        technical_operation_id={this.props.technical_operation_id}
+        municipal_facility_id={this.props.municipal_facility_id}
         refreshList={this.refreshList}
       />,
     ];

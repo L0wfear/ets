@@ -1,6 +1,6 @@
 import React from 'react';
 import Div from 'components/ui/Div';
-import MissionInfoForm from 'components/dashboard/MissionInfoForm/new/MissionInfoForm';
+import MissionInfoForm from 'components/missions/mission/MissionInfoForm/new/MissionInfoForm';
 import { FluxContext } from 'utils/decorators';
 
 import FormWrap from 'components/compositions/FormWrap';

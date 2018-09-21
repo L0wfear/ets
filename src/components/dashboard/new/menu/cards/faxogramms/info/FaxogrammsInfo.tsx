@@ -82,7 +82,8 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
         }
       })
       .catch((error) => {
-        console.log(error)
+        // tslint:disable-next-line
+        console.log(error);
       });
   }
 

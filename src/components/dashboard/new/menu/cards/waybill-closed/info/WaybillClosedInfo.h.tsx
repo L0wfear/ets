@@ -13,5 +13,4 @@ export type PropsWaybillClosedInfo = {
 export type StateWaybillClosedInfo = {
   showWaybillFormWrap: boolean;
   elementWaybillFormWrap: any;
-  infoData: WaybillClosedInfoDataType;
 };

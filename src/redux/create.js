@@ -1,7 +1,7 @@
 import { createStore as _createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
-import createLogger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import { loadingMiddleware } from 'redux-promise-loading';
 
 import { etsLoadingMiddleware } from 'redux/_middleware/etsLoading';

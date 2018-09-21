@@ -34,4 +34,5 @@ export interface IPropsDataTable<TResultObject> {
   haveMax?: boolean;
   checked?: any;
   normInitialData?: boolean;
+  highlightClassMapper?: (rowData: any) => void | string;
 }

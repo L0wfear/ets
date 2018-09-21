@@ -7,7 +7,7 @@ import {
   componentWillUnmount,
   handleSelectedElementChange,
   initialState,
-} from 'components/dashboard/MissionInfoForm/new/utils';
+} from 'components/missions/mission/MissionInfoForm/new/utils';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import WithState from 'components/compositions/vokinda-hoc/with-state/WithState';
 import withClassMethods from 'components/compositions/vokinda-hoc/with-class-method/WithClassMethod';

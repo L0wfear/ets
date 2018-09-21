@@ -21,7 +21,6 @@ export default class CheckableElementsList extends ElementsList {
     return {
       onListStateChange: PropTypes.func,
       exportable: PropTypes.bool,
-      export: PropTypes.func,
     };
   }
 
@@ -82,7 +81,6 @@ export default class CheckableElementsList extends ElementsList {
   getButtons(propsButton = {}) {
     // Операции, заданные в статической переменной operations класса-наследника
     const operations = this.constructor.operations || [];
-    const entity = this.constructor.entity;
     const buttons = [];
 
     const {

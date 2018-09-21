@@ -7,7 +7,6 @@ export type PropsDefaultCard = {
 };
 
 export type StateDefaultCard = {
-  dateLoad: Date;
   inLoadByLocalRefresh: boolean;
   timerId: any;
 };

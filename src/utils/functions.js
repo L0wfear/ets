@@ -192,9 +192,8 @@ export function resizeBase64(base64) {
 
     const image = new Image();
     image.onload = () => {
-      console.log(image.width)
-      canvas.width = image.width / window.devicePixelRatio * 2;
-      canvas.height = image.height / window.devicePixelRatio * 2;
+      canvas.width = image.width / (window.devicePixelRatio * 2);
+      canvas.height = image.height / (window.devicePixelRatio * 2);
       ctx.drawImage(image,
         0, 0, image.width, image.height,
         0, 0, canvas.width, canvas.height

@@ -21,5 +21,5 @@ const app = (
 
 render(app, appNode);
 
-// console.log('%cЕсли здесь появляются красные сообщения, это не значит, что это баг системы.', 'background: #691a99; color: #68efad; font-size: 26px;');
-// console.log('%cКатя, остановись!', 'background: #691a99; color: #68efad; font-size: 30px;');
+// console.log('%cЕсли здесь появляются красные сообщения, это не значит, что это баг системы.', 'background: #691a99; color: #68efad; font-size: 26px;'); // eslint-disable-line
+// console.log('%cКатя, остановись!', 'background: #691a99; color: #68efad; font-size: 30px;'); // eslint-disable-line

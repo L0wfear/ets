@@ -6,7 +6,10 @@ import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
 
-const highlight = [{ is_suspended: true }];
+/**
+ * подсветка строк таблицы "провальных" поручений
+ */
+const highlight = [{ is_valid_to_order_operation: false }];
 
 export const getTableMeta = ({
   missionSourcesList = [],
@@ -61,6 +64,16 @@ export const getTableMeta = ({
         type: 'number',
         sortable: false,
         filter: false,
+        cssClassName: 'width120',
+      },
+      {
+        name: 'order_number',
+        displayName: 'Факсограмма №',
+        type: 'number',
+        sortable: true,
+        filter: {
+          type: 'advanced-string-like',
+        },
         cssClassName: 'width120',
       },
       {
@@ -198,6 +211,19 @@ export const getTableMeta = ({
         },
         display: structures.length,
       },
+      {
+        name: 'is_valid_to_order_operation',
+        displayName: 'Не соответствующие поручению',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          options: [{
+            value: 0,
+            label: 'Да',
+          }],
+        },
+        display: false,
+      },
     ],
   };
 
@@ -209,7 +235,7 @@ export default (props) => {
   const renderers = {
     current_percentage: ({ data }) => <span>{data !== null ? Math.floor(data) : '-'}</span>,
     column_id: ({ data }) => <span>{data || '-'}</span>,
-    mission_source_id: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
+    mission_source_id: ({ rowData }) => <span>{rowData.mission_source_name}</span>,
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,
@@ -225,11 +251,11 @@ export default (props) => {
         </div>
       );
     },
-    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-    car_id: ({ data }) => <div>{get(find(props.carsList, { 'asuods_id': data }), 'gov_number', '')}</div>,
-    type_id: ({ data }) => <div>{get(find(props.carsList, { 'type_id': data }), 'type_name', '')}</div>,
+    structure_id: ({ rowData }) => <div>{rowData.structure_name}</div>,
+    car_id: ({ rowData }) => <div>{rowData.car_gov_number}</div>,
+    type_id: ({ rowData }) => <div>{rowData.type_name}</div>,
     object_type_id: ({ rowData: { object_type_name } }) => <div>{object_type_name}</div>,
-    technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
+    technical_operation_id: ({ rowData }) => <div>{rowData.technical_operation_name}</div>,
   };
 
   return (

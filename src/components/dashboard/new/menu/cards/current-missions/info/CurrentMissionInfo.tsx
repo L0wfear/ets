@@ -69,6 +69,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         return Promise.resolve();
       })
       .catch((error) => {
+        // tslint:disable-next-line
         console.log(error);
       })
       .then(() => {

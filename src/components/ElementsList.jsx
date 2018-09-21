@@ -104,8 +104,6 @@ class ElementsList extends React.Component {
    */
   @autobind
   selectElement({ props }) {
-    const DOUBLECLICK_TIMEOUT = 400;
-
     const selectedElement = { ...props.data };
 
     if (props.fromKey) {
@@ -114,21 +112,7 @@ class ElementsList extends React.Component {
     }
     this.clicks += 1;
 
-    if (this.clicks === 1) {
-      this.setState({ selectedElement },
-        () => {
-          setTimeout(() => {
-            // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
-            if (this.clicks !== 1) {
-              if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
-                this.showForm();
-              }
-            }
-            this.clicks = 0;
-          }, DOUBLECLICK_TIMEOUT);
-        },
-      );
-    }
+    this.setState({ selectedElement })
   }
 
   onRowClick = ({ props: { data } }) => {
@@ -476,6 +460,10 @@ class ElementsList extends React.Component {
     return '';
   }
 
+  setNode = (node) => {
+    this.node = node;
+  }
+
   /**
    * React render
    */
@@ -486,7 +474,7 @@ class ElementsList extends React.Component {
     const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
-      <EtsPageWrap innerRef={node => (this.node = node)}>
+      <EtsPageWrap innerRef={this.setNode}>
         {table}
         {additionalRender}
         {forms}

@@ -141,7 +141,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         checkedElements: {},
         selectedElement: null,
       });
-    }).catch(({ errorIsShow }) => global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"! 2')));
+    }).catch((e) => global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"! 2')));
   }
 
   completeCheckedElements = async () => {
@@ -156,8 +156,8 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       });
       try {
         await Promise.all(allQuerys);
-      } catch ({ errorIsShow }) {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      } catch (e) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
       }
 
       this.refreshList(this.state);

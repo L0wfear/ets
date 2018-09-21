@@ -63,4 +63,8 @@ export default class GeoObjectsActions extends Actions {
   getOdhMkad() {
     return services.GeozonesService.path('odh_mkad').get();
   }
+
+  resetState() {
+    return Promise.resolve(true);
+  }
 }

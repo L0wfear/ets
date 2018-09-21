@@ -94,7 +94,7 @@ class App extends React.Component <any, any> {
       return this.setState({ loading: false });
     }
     return AuthCheckService.get()
-          .then(flux.getActions('objects').getConfig())
+          .then(() => flux.getActions('objects').getConfig())
           .then(() => this.setState({ loading: false }))
           .catch((ErrorData) => {
             const { error_text, errorIsShow } = ErrorData;

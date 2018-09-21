@@ -33,6 +33,11 @@ class OrderList extends React.Component<any, any> {
     order_mission_source_id: null,
   };
 
+  componentDidUpdate(prevProps, prevState){  
+    if (prevProps.configDateStart !== this.props.configDateStart ) {
+      prevProps.getOrders({date_start: this.props.configDateStart, date_end: this.props.configDateEnd});
+    }
+  }
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources().then(({ order_mission_source_id }) => this.setState({ order_mission_source_id }));
@@ -95,6 +100,8 @@ class OrderList extends React.Component<any, any> {
 const mapStateToProps = (state) => ({
   OrdersList: state.order.OrdersList,
   selectedElementOrder: state.order.selectedElementOrder,
+  configDateStart: state.session.appConfig.shift.shift_start,
+  configDateEnd: state.session.appConfig.shift.shift_end,
 });
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(

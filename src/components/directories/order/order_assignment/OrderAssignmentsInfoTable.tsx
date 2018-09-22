@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { setSelectedElementAssignment } from 'redux/modules/order/action-order';
+import { setSelectedElementAssignment } from 'redux-main/modules/order/action-order';
   
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';

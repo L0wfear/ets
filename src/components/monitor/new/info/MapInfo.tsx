@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import CarInfo from 'components/monitor/new/info/car-info/CarInfo';
 import GeoobjectsInfo from 'components/monitor/new/info/geoobjects-info/GeoobjectsInfo';
 

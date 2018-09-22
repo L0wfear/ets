@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import CarFuelChart from 'components/monitor/new/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart';
 import CarSpeedChart from 'components/monitor/new/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
-import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 import {
   DivNone,

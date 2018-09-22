@@ -1,3 +1,4 @@
+import * as ol from 'openlayers';
 // тут задаются стили иконок пунктов слива топлива
 
 import leakIconSmall from 'assets/icons/track/oil-02.png';

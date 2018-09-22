@@ -1,8 +1,8 @@
 import {
   WaybillDraftItemsType,
   WaybillDraftItemsSubItemsType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-draft.h';
-import { WaybillType } from 'redux/trash-actions/waybill/@types/promise.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/waibill-draft.h';
+import { WaybillType } from 'redux-main/trash-actions/waybill/@types/promise.h';
 
 export type PropsWaybillDraftInfo = {
   infoData: WaybillDraftItemsType;

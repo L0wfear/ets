@@ -1,4 +1,6 @@
 import { OverlayUtils } from 'components/map/new/overlay/Overlay.h';
+import * as ol from 'openlayers';
+
 /**
  * hide оверлея
  * Т.к. реакт, то оверлей просто уходит в закат

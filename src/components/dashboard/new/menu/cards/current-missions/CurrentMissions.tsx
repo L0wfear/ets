@@ -9,7 +9,7 @@ import CurrentMissionInfo from 'components/dashboard/new/menu/cards/current-miss
 import {
   dashboardLoadCurrentMissions,
   dashboardLoadMissionDataForCurrentMission,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import { PropsCurrentMissions } from 'components/dashboard/new/menu/cards/current-missions/CurrentMissions.h';
 

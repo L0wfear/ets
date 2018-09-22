@@ -9,7 +9,7 @@ import List from 'components/dashboard/new/menu/cards/odh-not-covered-by-mission
 import {
   dashboardLoadOdhNotCoveredByMissionsOfCurrentShift,
   dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift,
- } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+ } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 import OdhNotCoveredByMissionsOfCurrentShiftInfo from 'components/dashboard/new/menu/cards/odh-not-covered-by-missions-of-current-shift/info/OdhNotCoveredByMissionsOfCurrentShiftInfo';
 
 import {

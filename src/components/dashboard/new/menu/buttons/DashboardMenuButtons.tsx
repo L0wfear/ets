@@ -10,7 +10,7 @@ import {
   dashboardLoadDependentDataByWaybillDraft,
   dashboardLoadDependentDataByNewMission,
   dashboardLoadDependentDataByNewDutyMission,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import { LinkToOrder } from 'components/directories/order/buttons/buttons';
 import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';

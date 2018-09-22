@@ -9,15 +9,15 @@ import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import MapWrap from 'components/monitor/new/MapWrap';
 import ToolBar from 'components/monitor/new/tool-bar/ToolBar';
 
-import { loadCarActualIndex } from 'redux/trash-actions/car';
-import { loadGeozones } from 'redux/trash-actions/geometry/geometry';
-import { getCompany } from 'redux/trash-actions/uniq';
-import { resetMonitorPageState } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { loadCarActualIndex } from 'redux-main/trash-actions/car';
+import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
+import { getCompany } from 'redux-main/trash-actions/uniq';
+import { resetMonitorPageState } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import {
   MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   MONITOR_PAGE_SET_GEOMETRY,
   MONITOR_PAGE_SET_COMPANY,
-} from 'components/monitor/new/redux/models/monitor-page';
+} from 'components/monitor/new/redux-main/models/monitor-page';
 
 type PropsMonitorPage = {
   token: string;

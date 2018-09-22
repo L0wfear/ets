@@ -1,7 +1,13 @@
-import MissionsArchiveJournal from 'components/missions/mission-archive/MissionsArchiveJournal';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "mission-archive-journal" */ 'components/missions/mission-archive/config-data/MissionsArchiveJournalWrap'), {
+  LoadingComponent,
+})
 
 export default [
   {
-    component: MissionsArchiveJournal,
+    component,
+    loadable: true,
   },
 ];

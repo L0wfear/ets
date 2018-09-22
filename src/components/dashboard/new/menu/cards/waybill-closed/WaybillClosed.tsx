@@ -7,7 +7,7 @@ import ListNumber from 'components/dashboard/new/menu/cards/_default-card-compon
 import {
   dashboardLoadWaybillClosed,
   dashboardSetInfoDataInWaybillClosed,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import WaybillClosedInfo from 'components/dashboard/new/menu/cards/waybill-closed/info/WaybillClosedInfo';
 

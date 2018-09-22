@@ -8,7 +8,7 @@ import List from 'components/dashboard/new/menu/cards/odh-not-covered-by-routes/
 import {
   dashboardLoadOdhNotCoveredByRoutes,
   dashboardSetInfoDataInOdhNotCoveredByRoutes,
- } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+ } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 import OdhNotCoveredByRoutesInfo from 'components/dashboard/new/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo';
 
 import {

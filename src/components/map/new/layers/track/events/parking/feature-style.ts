@@ -1,3 +1,4 @@
+import * as ol from 'openlayers';
 const ParkingIcon = require('assets/icons/track/parking.svg');
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;

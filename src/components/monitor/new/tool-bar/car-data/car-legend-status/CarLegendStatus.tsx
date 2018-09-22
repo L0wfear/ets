@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { monitorPageToggleStatusShow } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageToggleStatusShow } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import { getFrontStatus } from 'components/map/new/layers/car-markers/utils';
 
 import {

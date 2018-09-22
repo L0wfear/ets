@@ -5,7 +5,7 @@ import { attributeList } from 'components/monitor/new/info/car-info/car-tab-menu
 import { PropsCarAttributeInformation } from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
 import {
   CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
+} from 'components/monitor/new/info/car-info/redux-main/modules/car-info';
 import CarMissions from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/car-missions/CarMissions';
 
 const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = props => (

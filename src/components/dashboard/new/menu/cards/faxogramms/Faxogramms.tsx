@@ -10,7 +10,7 @@ import FaxogrammsInfo from 'components/dashboard/new/menu/cards/faxogramms/info/
 import {
   dashboardLoadOrders,
   dashboardSetInfoDataInFaxogramms,
- } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+ } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import {
   PropsFaxogramms,

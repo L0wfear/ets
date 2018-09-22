@@ -22,7 +22,7 @@ import NavItemRole from 'components/nav-item-role/NavItemRole';
 import {
   sessionResetData,
   sessionSetData,
-} from 'redux/modules/session/actions-session';
+} from 'redux-main/modules/session/actions-session';
 
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import NotificationBadge from 'components/notifications/NotificationBadge';

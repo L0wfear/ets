@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import LineChart from 'components/monitor/new/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
 import {
   CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
+} from 'components/monitor/new/info/car-info/redux-main/modules/car-info';
 import { NO_DATA_TEXT } from 'constants/statuses';
 import { sensorsMapOptions } from 'constants/sensors';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';

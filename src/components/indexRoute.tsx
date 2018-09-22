@@ -8,14 +8,16 @@ const renderRoutes = (newRoutesArr, data) => {
   if (!data.noRoute) {
     if (data.path) {
       newRoutesArr.push(
-        ...data.components.map(componentData =>
-          <PublicRoute
-            key={[data.path, componentData.addPath].join('')}
-            path={[data.path, componentData.addPath].join('')}
-            exact={componentData.exact}
-            component={componentData.component}
-          />,
-        ),
+        ...data.components.map(componentData => {
+          return (
+            <PublicRoute
+              key={[data.path, componentData.addPath].join('')}
+              path={[data.path, componentData.addPath].join('')}
+              exact={componentData.exact}
+              component={componentData.component}
+            />
+          );
+        }),
       );
     } else if (!data.divider && !data.hiddenNav) {
       newRoutesArr.push(...Object.values(data.children).reduce(renderRoutes, []));

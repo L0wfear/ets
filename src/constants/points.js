@@ -1,3 +1,5 @@
+import * as ol from 'openlayers';
+
 // тут задаются стили кружочков при отображении геообъектов на карте
 export const pointStyles = {
   'geoobject': new ol.style.Style({

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as ol from 'openlayers';
+
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { getStyleForStatusDirectionType} from 'components/map/new/layers/car-markers/feature-style';
@@ -6,11 +8,11 @@ import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
 import config from 'config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import { carInfoSetGpsNumber, carInfoSetStatus, carInfoPushPointIntoTrack } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetGpsNumber, carInfoSetStatus, carInfoPushPointIntoTrack } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import {
   CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
-import { monitoPageChangeCarsByStatus, monitorPageResetCarStatus, monitorPageMergeFiltredCarGpsCode } from 'components/monitor/new/redux/models/actions-monitor-page';
+} from 'components/monitor/new/info/car-info/redux-main/modules/car-info';
+import { monitoPageChangeCarsByStatus, monitorPageResetCarStatus, monitorPageMergeFiltredCarGpsCode } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import {
   getFrontStatus,
   checkOnVisible,

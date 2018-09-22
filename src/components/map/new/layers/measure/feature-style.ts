@@ -1,3 +1,4 @@
+import * as ol from 'openlayers';
 const CACHE_ICON = {};
 
 const makeCacheStyle = (cacheStyleName, { type }) => {

@@ -1,17 +1,15 @@
 import { Actions } from 'flummox';
-import { mapKeys, clone, cloneDeep, keys } from 'lodash';
+import { clone, cloneDeep, keys } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
-  MissionReportsService,
   MissionService,
   MissionArchiveService,
   MissionReassignationService,
   MissionSourceService,
   MissionTemplateService,
   MissionTemplatesForFaxogramm,
-  MissionLastReportService,
   DutyMissionService,
   DutyMissionArchiveService,
   DutyMissionTemplateService,
@@ -415,15 +413,6 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION REPORTS ---------- */
 
-
-  getMissionReports({ mission_date_start_from, mission_date_end_to }) {
-    const payload = {
-      mission_date_start_from: createValidDateTime(mission_date_start_from),
-      mission_date_end_to: createValidDateTime(mission_date_end_to),
-    };
-    return MissionReportsService.get(payload);
-  }
-
   getMissionReportByODHs(index) {
     return index;
   }
@@ -436,12 +425,6 @@ export default class MissionsActions extends Actions {
     return index;
   }
 
-  getMissionLastReport(mission_id) {
-    const payload = {
-      mission_id,
-    };
-    return MissionLastReportService.get(payload);
-  }
   getCleaningOneNorm(outerData) {
     const payload = {
       datetime: createValidDateTime(outerData.datetime || new Date()),

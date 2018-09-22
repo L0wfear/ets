@@ -1,8 +1,8 @@
 import {
   FutureMissionsItemsType,
   FutureMissionsFormDataType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/future-mission.h';
-import { MissionType } from 'redux/trash-actions/mission/@types/promise-mission.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/future-mission.h';
+import { MissionType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
 
 export type PropsFutureMissions = {
   items: FutureMissionsItemsType[];

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import config from 'config';
 import Preloader from 'components/ui/Preloader';
 import { getMaxSpeedToLegend } from 'components/monitor/new/info/car-info/car-main-data-block/utils';
-import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import {
   CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
+} from 'components/monitor/new/info/car-info/redux-main/modules/car-info';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;

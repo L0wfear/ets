@@ -1,4 +1,6 @@
 import { listObj }  from 'constants/statuses';
+import * as ol from 'openlayers';
+
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
   zoomMore8: 40 / (DEVICE_PIXEL_RATIO / 2),

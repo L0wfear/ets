@@ -1,7 +1,7 @@
 import {
   CurrentDutyMissionsItemsType,
   CurrentDutyMissionsItemsSubItemDatasType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/current-duty-mission.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
 
 export type PropsCurrentDutyMissions = {

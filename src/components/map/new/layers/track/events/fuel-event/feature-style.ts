@@ -1,3 +1,4 @@
+import * as ol from 'openlayers';
 const FuelIconRefill = require('assets/icons/track/oil-01.png');
 const FuelIconLeak = require('assets/icons/track/oil-02.png');
 

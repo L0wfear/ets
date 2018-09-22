@@ -15,6 +15,8 @@ import LoadingPage from './LoadingPage.jsx';
 
 const MainApp: any = MainAppTSX;
 
+
+
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
@@ -83,8 +85,10 @@ class App extends React.Component <any, any> {
 
   componentDidMount() {
     this.loadData();
-
-    document.body.removeChild(document.getElementById('main-background'));
+    const el = document.getElementById('main-background');
+    if (el) {
+      document.body.removeChild(el);
+    }
   }
 
   loadData() {

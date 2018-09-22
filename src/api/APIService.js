@@ -184,7 +184,7 @@ export default class APIService {
   }
 
   path(...args) {
-    this.url = urljoin(this.url, ...args);
+    this.url = urljoin(this.url, ...args.map(b => String(b)));
     return this;
   }
 

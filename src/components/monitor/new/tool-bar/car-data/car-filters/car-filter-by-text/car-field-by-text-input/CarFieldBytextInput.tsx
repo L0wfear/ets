@@ -4,8 +4,8 @@ import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import { Glyphicon } from 'react-bootstrap';
 import { ExtField } from 'components/ui/Field.jsx';
-import { monitorPageChangeFilter } from 'components/monitor/new/redux/models/actions-monitor-page';
-import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { monitorPageChangeFilter } from 'components/monitor/new/redux-main/models/actions-monitor-page';
+import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 import {
   PropsCarFieldBytextInput,

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as ol from 'openlayers';
+
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
@@ -6,7 +8,7 @@ import withShowByPropsObj from 'components/compositions/vokinda-hoc/show-by-prop
 import { getStyleForFuelEventLeak} from 'components/map/new/layers/fuel-event/leak/feature-style';
 import OverlayFuelEventLeakPoint from 'components/map/new/layers/fuel-event/leak/OverlayFuelEventLeakPoint';
 import { GeoJSON } from 'utils/ol';
-import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 
 type PropsLayerFuelEventLeakPoint = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cx from 'classnames';
-import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/monitor/new/redux/models/actions-monitor-page';
-import { loadFuelEvents } from 'redux/trash-actions/geometry/geometry';
+import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/monitor/new/redux-main/models/actions-monitor-page';
+import { loadFuelEvents } from 'redux-main/trash-actions/geometry/geometry';
 
 import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
-} from 'components/monitor/new/redux/models/monitor-page';
+} from 'components/monitor/new/redux-main/models/monitor-page';
 
 import { diffDates } from 'utils/dates';
 

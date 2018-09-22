@@ -9,7 +9,7 @@ import InfoCard from 'components/dashboard/new/menu/cards/_default-card-componen
 
 import {
   dashboardSetInfoDataInOdhCoveredByRoutes,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import { PropsOdhCoveredByRoutesInfo } from 'components/dashboard/new/menu/cards/odh-covered-by-routes/info/OdhCoveredByRoutesInfo.h';
 

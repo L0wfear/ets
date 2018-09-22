@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { formatDate, getFormattedTimeWithSecond, getDateWithMoscowTz } from 'utils/dates';
-import { loadMoscowTime } from 'redux/trash-actions/uniq/promise';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 import {
   DashboardTimeContainer,

@@ -1,7 +1,7 @@
 import { IHistoryInjected, IExportableTableList } from 'utils/@types/common.h';
 import { IDataTableSelectedRowPropsData } from 'components/ui/table/@types/schema.h';
 import { IReportProps } from 'components/reports/@types/common.h';
-import * as ReduxTypes from 'components/reports/redux/modules/@types/report.h';
+import * as ReduxTypes from 'components/reports/redux-main/modules/@types/report.h';
 
 export interface IPropsReportContainer extends
   IExportableTableList,

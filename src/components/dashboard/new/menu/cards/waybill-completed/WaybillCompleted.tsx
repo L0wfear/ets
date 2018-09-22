@@ -6,7 +6,7 @@ import List from 'components/dashboard/new/menu/cards/waybill-completed/list/Lis
 import {
   dashboardLoadWaybillCompleted,
   dashboardSetInfoDataInWaybillCompleted,
- } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+ } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 import WaybillCompletedInfo from 'components/dashboard/new/menu/cards/waybill-completed/info/WaybillCompletedInfo';
 import CollapseButton from 'components/ui/collapse/button/CollapseButton';
 

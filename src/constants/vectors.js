@@ -1,3 +1,5 @@
+import * as ol from 'openlayers';
+
 export function createArrowStyle(start, end) {
   const dx = end[0] - start[0];
   const dy = end[1] - start[1];

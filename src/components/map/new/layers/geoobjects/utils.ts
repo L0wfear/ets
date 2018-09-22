@@ -1,4 +1,6 @@
 import { GeoJSON } from 'utils/ol';
+import * as ol from 'openlayers';
+
 import { getCasheStyleForGeoobject } from 'components/map/new/layers/geoobjects/feature-style';
 import {
   LayerGeoobjectsUtilsTypes,

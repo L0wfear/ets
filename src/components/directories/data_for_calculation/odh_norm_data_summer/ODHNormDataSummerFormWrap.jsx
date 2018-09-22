@@ -1,15 +1,15 @@
 import React from 'react';
 import ODHNormDataSummerForm from './ODHNormDataSummerForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { schema as odhNormDataSummerSchema, defaultElement } from 'models/ODHNormDataSummer.js';
+import { odhNormSchema } from 'models/ODHNormDataSummer.js';
 
 export default class ODHNormDataSummerFormWrap extends FormWrap {
 
   constructor(props, context) {
     super(props);
 
-    this.defaultElement = defaultElement;
-    this.schema = odhNormDataSummerSchema;
+    this.defaultElement = null;
+    this.schema = odhNormSchema;
     this.createAction = context.flux.getActions('odh').createODHNormDataSummer;
     this.updateAction = context.flux.getActions('odh').updateODHNormDataSummer;
   }

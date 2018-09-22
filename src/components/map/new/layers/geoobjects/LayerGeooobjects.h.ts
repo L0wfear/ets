@@ -1,5 +1,5 @@
-import { GeozonesDataByIndex } from 'redux/trash-actions/geometry/geometry.h';
-import { TypeCompaniesIndex } from 'redux/trash-actions/uniq/promise.h';
+import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
+import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
 export type PropsLayerPlayPoint = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { makeDateFromUnix } from 'utils/dates';
-import { carInfoTogglePlay, carInfoStopPlay, carInfoIncTrackPointIndex } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoTogglePlay, carInfoStopPlay, carInfoIncTrackPointIndex } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 import { connect } from 'react-redux';
 

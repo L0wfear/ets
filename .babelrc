@@ -1,25 +1,3 @@
 {
-  "env": {
-    "development": {
-      "presets": [
-        "latest",
-        "stage-0",
-        "react"
-      ],
-      "plugins": [
-        "transform-decorators-legacy",
-        "typecheck"
-      ]
-    },
-    "production": {
-      "presets": [
-        "latest",
-        "stage-0",
-        "react"
-      ],
-      "plugins": [
-        "transform-decorators-legacy"
-      ]
-    }
-  }
+  "plugins": ["react-hot-loader/babel"]
 }

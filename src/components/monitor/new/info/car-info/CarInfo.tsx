@@ -4,7 +4,7 @@ import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import TitleBlock from 'components/monitor/new/info/car-info/title-block/TitleBlock';
 import CarMainDataBlock from 'components/monitor/new/info/car-info/car-main-data-block/CarMainDataBlock';
 import CarTabMenu from 'components/monitor/new/info/car-info/car-tab-menu/CarTabMenu';
-import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 type PropsCarInfo = {

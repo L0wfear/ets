@@ -5,7 +5,7 @@ import { NO_DATA_TEXT, NO_SENSORS_EQUIPMENT_TEXT } from 'constants/statuses';
 import * as cx from 'classnames';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
-import { carInfoToggleSensorShow } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoToggleSensorShow } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 import {
   DivNone,

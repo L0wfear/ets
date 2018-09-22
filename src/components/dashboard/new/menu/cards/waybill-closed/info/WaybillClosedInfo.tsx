@@ -7,8 +7,8 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 
-import { dashboardSetInfoDataInWaybillClosed } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import { loadWaybillById } from 'redux/trash-actions/waybill/waybill';
+import { dashboardSetInfoDataInWaybillClosed } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
+import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 

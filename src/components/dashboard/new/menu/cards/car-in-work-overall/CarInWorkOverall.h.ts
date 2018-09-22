@@ -1,7 +1,7 @@
 import {
   CarInWorkOverallItemsType,
   CarInWorkOverallInfoDataType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/car-in-work-overall.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/car-in-work-overall.h';
 
 export type PropsCarInWorkOverall = {
   items: CarInWorkOverallItemsType[];

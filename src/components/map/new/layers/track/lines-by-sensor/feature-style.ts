@@ -1,4 +1,5 @@
 import { sensorTrackColor } from 'constants/sensors';
+import * as ol from 'openlayers';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
 

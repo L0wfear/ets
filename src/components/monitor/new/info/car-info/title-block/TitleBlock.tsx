@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 type PropsTitleBlock = {
   gov_number: string;

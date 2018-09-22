@@ -4,7 +4,6 @@
  */
 import autobase from './AutobaseStore.js';
 import companyStructure from './CompanyStructureStore.js';
-import dashboard from './DashboardStore.js';
 import employees from './EmployeesStore.js';
 import fuelRates from './FuelRatesStore.js';
 import geoObjects from './GeoObjectsStore.js';
@@ -13,7 +12,6 @@ import missions from './MissionsStore.js';
 import notifications from './NotificationsStore.js';
 import objects from './ObjectsStore.js';
 import odh from './ODHStore.js';
-import points from './PointsStore.js';
 // Временно
 import pointsHybrid from './PointsHybridStore.js';
 
@@ -29,7 +27,6 @@ import waybills from './WaybillsStore.js';
 export {
   autobase,
   companyStructure,
-  dashboard,
   employees,
   fuelRates,
   geoObjects,
@@ -38,7 +35,6 @@ export {
   notifications,
   objects,
   odh,
-  points,
   pointsHybrid,
   repair,
   reports,

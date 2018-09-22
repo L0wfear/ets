@@ -1,7 +1,7 @@
-import { ActionsMonitorPage } from 'components/monitor/new/redux/models/actions-monitor-page.h';
+import { ActionsMonitorPage } from 'components/monitor/new/redux-main/models/actions-monitor-page.h';
 import {
   FrontGeozonesDataByIndex
-} from 'components/monitor/new/redux/models/monitor-page.h';
+} from 'components/monitor/new/redux-main/models/monitor-page.h';
 
 export type PropsLayerSelectedGeooobjects = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

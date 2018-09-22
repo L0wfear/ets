@@ -11,8 +11,8 @@ import InfoCard from 'components/dashboard/new/menu/cards/_default-card-componen
 import {
   dashboardLoadDependentDataByWaybillInProgress,
   dashboardSetInfoDataInWaybillInProgress,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import { loadWaybillById } from 'redux/trash-actions/waybill/waybill';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
+import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
 import { makeDate } from 'utils/dates';
 
@@ -24,7 +24,7 @@ import {
 } from 'components/dashboard/new/menu/cards/waybill-in-progress/info/WaybillInProgressInfo.h';
 import {
   WaybillInProgressItemsSubItemsType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-in-progress.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/waibill-in-progress.h';
 import {
   TitleWaybillInfoContainer,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';

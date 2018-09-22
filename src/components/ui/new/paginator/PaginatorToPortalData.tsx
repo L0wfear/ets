@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { paginatorUpdateData, paginatorResetData } from 'components/ui/new/paginator/redux/actions-paginator';
+import { paginatorUpdateData, paginatorResetData } from 'components/ui/new/paginator/redux-main/actions-paginator';
 
 import {
   DivNone,

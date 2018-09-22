@@ -4,7 +4,7 @@ import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForFuelEvent } from 'components/map/new/layers/track/events/fuel-event/feature-style';
-import { carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import OverlayFuelEventPoint from 'components/map/new/layers/track/events/fuel-event/OverlayFuelEventPoint';
 
 type PropsLayerFuelEventPoints = {

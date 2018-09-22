@@ -1,6 +1,8 @@
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
-
+import * as ol from 'openlayers';
 import { TRACK_COLORS } from 'constants/track.js';
+
+
+const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 

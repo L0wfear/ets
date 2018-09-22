@@ -1,11 +1,13 @@
 import * as React from 'react';
+import * as ol from 'openlayers';
+
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForParking } from 'components/map/new/layers/track/events/parking/feature-style';
 import OverlayParkingPoint from 'components/map/new/layers/track/events/parking/OverlayParkingPoint';
-import { carInfoSetParkingPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetParkingPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 
 type PropsLayerParkingPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

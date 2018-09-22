@@ -1,3 +1,5 @@
+import * as ol from 'openlayers';
+
 import _ from 'lodash';
 import EverGisTokenService from 'api/map/EverGisTokenService';
 import MapServerConfig from './MapServerConfig.js';

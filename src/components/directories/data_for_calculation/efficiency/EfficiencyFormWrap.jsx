@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { schema as efficiencySchema, defaultElement } from 'models/Efficiency.js';
+import { efficiencySchema } from 'models/Efficiency.js';
 import EfficiencyForm from './EfficiencyForm.jsx';
 
 export default class EfficiencyFormWrap extends FormWrap {
@@ -8,7 +8,7 @@ export default class EfficiencyFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.defaultElement = defaultElement;
+    this.defaultElement = null;
     this.schema = efficiencySchema;
     this.createAction = context.flux.getActions('odh').createEfficiency;
     this.updateAction = context.flux.getActions('odh').updateEfficiency;

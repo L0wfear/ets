@@ -2,7 +2,7 @@ import * as React from 'react';
 import Overlay from 'components/map/new/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
-import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import { getFormattedDateTime } from 'utils/dates';
 
 import {

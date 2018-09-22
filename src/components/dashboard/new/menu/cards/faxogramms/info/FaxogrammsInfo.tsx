@@ -11,8 +11,8 @@ import InfoCard from 'components/dashboard/new/menu/cards/_default-card-componen
 
 import {
   dashboardSetInfoDataInFaxogramms,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
-import { saveOrderBlob } from 'redux/trash-actions/order/order';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
+import { saveOrderBlob } from 'redux-main/trash-actions/order/order';
 
 import {
   ButtonReadOrder,

@@ -1,6 +1,7 @@
 import { PROJECTION, ArcGisLayer } from '../MskAdapter.js';
 import { defaultZoom } from 'utils/ol';
 import { MapUtils } from 'components/map/new/Map.h';
+import * as ol from 'openlayers';
 
 /**
  * получние mapView

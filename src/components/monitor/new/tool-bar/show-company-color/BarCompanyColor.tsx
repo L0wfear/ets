@@ -5,7 +5,7 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import { connect } from 'react-redux';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
-import { TypeCompaniesIndex } from 'redux/trash-actions/uniq/promise.h';
+import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
 import {
   DivNone,

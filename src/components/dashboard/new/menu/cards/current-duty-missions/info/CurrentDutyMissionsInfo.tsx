@@ -13,12 +13,12 @@ import { listData } from 'components/dashboard/new/menu/cards/current-duty-missi
 import {
   dashboardLoadCurrentDutyMissions,
   dashboardLoadMissionDataForCurrentMission,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import {
   loadDutyMissionById,
   updateDutyMissionByPayload,
-} from 'redux/trash-actions/mission';
+} from 'redux-main/trash-actions/mission';
 import { ButtonUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { LinkToOpenRouteInfoForm } from 'components/route/buttons/buttons';
 

@@ -18,7 +18,7 @@ import Header from 'components/navbar/Header';
 import {
   sessionResetData,
   sessionSetData,
-} from 'redux/modules/session/actions-session';
+} from 'redux-main/modules/session/actions-session';
 
 let VERSION_DESCRIPTION;
 try {

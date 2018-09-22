@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ol from 'openlayers';
 
 type PropsLayerProps = {
   map: ol.Map;

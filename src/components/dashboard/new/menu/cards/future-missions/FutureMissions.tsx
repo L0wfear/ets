@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 
 import ListByTypeMission from 'components/dashboard/new/menu/cards/future-missions/list/ListByTypeMission';
 
-import { dashboardLoadFutureMissions } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+import { dashboardLoadFutureMissions } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 import { PermittedMissionFormWrap } from 'components/missions/mission/buttons/buttons';
-import { loadMissionById } from 'redux/trash-actions/mission';
+import { loadMissionById } from 'redux-main/trash-actions/mission';
 
 import {
   PropsFutureMissions,

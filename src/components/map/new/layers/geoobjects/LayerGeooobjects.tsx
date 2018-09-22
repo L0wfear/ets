@@ -1,9 +1,10 @@
 import * as React from 'react';
+import * as ol from 'openlayers';
 
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import { monitorPageAddToSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageAddToSelectedGeoobjects } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import {
   PropsLayerPlayPoint,
   StateLayerPlayPoint,

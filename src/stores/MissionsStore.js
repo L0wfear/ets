@@ -15,7 +15,6 @@ class MissionsStore extends Store {
     this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
-    this.register(missionsActons.getMissionReports, this.handleGetMissionReports);
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
     this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
@@ -73,18 +72,6 @@ class MissionsStore extends Store {
 
   getMissionSourceById(id) {
     return _.find(this.state.missionSourcesList, ms => ms.id === id) || {};
-  }
-
-  handleGetMissionReports(data) {
-    // let selectedReportData = data.result[0].result.result.map((r,i) => {
-    //   r.index = i;
-    //   return r;
-    // });
-    const selectedReportData = data.result.rows.map((r, i) => {
-      r.index = i;
-      return r;
-    });
-    this.setState({ selectedReportData });
   }
 
   handleGetMissionReportByODHs(index) {

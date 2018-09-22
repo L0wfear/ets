@@ -9,7 +9,7 @@ import List from 'components/dashboard/new/menu/cards/car-in-work-overall/list/L
 import {
   dashboardLoadCarInWorkOverall,
   dashboardSetInfoDataInCarInWorkOverall,
- } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+ } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
  
 import CarInWorkOverallInfo from 'components/dashboard/new/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo';
 

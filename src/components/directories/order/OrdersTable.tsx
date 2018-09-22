@@ -6,7 +6,7 @@ import {
   getOrders,
   getOrderHistory,
   setSelectedElementOrder,
-} from 'redux/modules/order/action-order';
+} from 'redux-main/modules/order/action-order';
 
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';

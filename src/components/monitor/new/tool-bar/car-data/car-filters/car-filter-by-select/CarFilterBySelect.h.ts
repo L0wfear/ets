@@ -1,6 +1,6 @@
 import {
   CarActualAsuodsIdIndexType,
-} from 'redux/trash-actions/car/car.h';
+} from 'redux-main/trash-actions/car/car.h';
 
 import {
   IReactSelectOption

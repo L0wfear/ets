@@ -7,7 +7,7 @@ import ListByTypeMission from 'components/dashboard/new/menu/cards/current-duty-
 import {
   dashboardLoadCurrentDutyMissions,
   dashboardLoadRouteDataForCurrentDutyMissions,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import CurrentDutyMissionInfo from 'components/dashboard/new/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
 

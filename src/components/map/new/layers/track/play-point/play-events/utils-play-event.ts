@@ -1,4 +1,5 @@
 import { PropsLayerPlayPoint } from 'components/map/new/layers/track/play-point/LayerPlayPoint.h';
+import * as ol from 'openlayers';
 
 type TypeActionOnPlay = (props: PropsLayerPlayPoint) => void;
 type TypeActionOnStop = (props: PropsLayerPlayPoint) => void;

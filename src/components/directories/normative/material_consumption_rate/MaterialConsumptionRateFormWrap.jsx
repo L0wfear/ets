@@ -1,5 +1,5 @@
 import React from 'react';
-import { schema as materialConsumptionRateSchema, defaultElement } from 'models/MaterialConsumptionRate.js';
+import { schema } from 'models/MaterialConsumptionRate.js';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
 
 import FormWrap from 'components/compositions/FormWrap.jsx';
@@ -12,8 +12,8 @@ export default class MaterialConsumptionRateFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
-    this.defaultElement = defaultElement;
-    this.schema = materialConsumptionRateSchema;
+    this.defaultElement = null;
+    this.schema = schema;
     this.createAction = context.flux.getActions('objects').createMaterialConsumptionRate;
     this.updateAction = context.flux.getActions('objects').updateMaterialConsumptionRate;
   }

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 
-import { dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+import { dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import { PropsOdhNotCoveredByMissionsOfCurrentShiftInfo } from 'components/dashboard/new/menu/cards/odh-not-covered-by-missions-of-current-shift/info/OdhNotCoveredByMissionsOfCurrentShiftInfo.h';
 

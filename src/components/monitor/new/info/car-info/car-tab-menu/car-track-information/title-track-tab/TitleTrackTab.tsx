@@ -4,9 +4,9 @@ import { ExtField } from 'components/ui/Field.jsx';
 import * as cx from 'classnames';
 
 import { connect } from 'react-redux';
-import { carInfoToggleForToday, fetchTrack, fetchCarInfo, carInfoChangeDate } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoToggleForToday, fetchTrack, fetchCarInfo, carInfoChangeDate } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/monitor/new/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
-import { initialState } from 'components/monitor/new/info/car-info/redux/modules/car-info';
+import { initialState } from 'components/monitor/new/info/car-info/redux-main/modules/car-info';
 import { diffDates } from 'utils/dates';
 
 type PropsTitleTrackTab = {

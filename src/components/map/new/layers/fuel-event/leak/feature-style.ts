@@ -1,3 +1,4 @@
+import * as ol from 'openlayers';
 const ParkingIcon = require('components/map/new/layers/fuel-event/leak/oil-02.png');
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;

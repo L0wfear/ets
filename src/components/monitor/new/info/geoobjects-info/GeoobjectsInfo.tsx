@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import GeoobjectData from 'components/monitor/new/info/geoobjects-info/GeoobjectData';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-import { monitorPageRemoveAllFromSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageRemoveAllFromSelectedGeoobjects } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import * as cx from 'classnames';
 
 import {

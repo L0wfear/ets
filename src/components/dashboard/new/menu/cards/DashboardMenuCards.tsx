@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { dashBoardResetData } from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+import { dashBoardResetData } from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import CurrentMissions from 'components/dashboard/new/menu/cards/current-missions/CurrentMissions';
 import FutureMissions from 'components/dashboard/new/menu/cards/future-missions/FutureMissions';

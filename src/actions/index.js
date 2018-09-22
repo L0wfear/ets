@@ -5,14 +5,12 @@
 import autobase from './AutobaseAction.js';
 import cars from './CarActions.js';
 import companyStructure from './CompanyStructureActions.js';
-import dashboard from './DashboardActions.js';
 import employees from './EmployeesActions.js';
 import fuelRates from './FuelRateActions.js';
 import geoObjects from './GeoObjectsActions.js';
 import missions from './MissionsActions.js';
 import objects from './ObjectsActions.js';
 import odh from './ODHActions.js';
-import points from './PointsActions.js';
 // Временно
 import pointsHybrid from './PointsHybridActions.js';
 import repair from './RepairAction';
@@ -29,14 +27,12 @@ export {
   autobase,
   cars,
   companyStructure,
-  dashboard,
   employees,
   fuelRates,
   geoObjects,
   missions,
   objects,
   odh,
-  points,
   pointsHybrid,
   repair,
   reports,

@@ -8,7 +8,7 @@ import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/Mis
 import {
   loadMissionById,
   loadMissionDataById,
-} from 'redux/trash-actions/mission';
+} from 'redux-main/trash-actions/mission';
 
 type PropsCarMissions = {
   loadMissionById: Function;

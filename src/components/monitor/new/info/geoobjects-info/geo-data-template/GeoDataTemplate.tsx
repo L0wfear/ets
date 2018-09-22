@@ -4,7 +4,7 @@ import DateFormatter from 'components/ui/DateFormatter';
 import { WorkingHours } from 'components/directories/geoobjects/fountains/FountainsTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { GeoJSON } from 'utils/ol';
-import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 
 const InfoDt: React.SFC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>

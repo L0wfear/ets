@@ -16,12 +16,12 @@ import InfoCard from 'components/dashboard/new/menu/cards/_default-card-componen
 import {
   dashboardLoadCurrentMissions,
   dashboardLoadMissionDataForCurrentMission,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import {
   loadMissionById,
   updateMissionByPayload,
-} from 'redux/trash-actions/mission';
+} from 'redux-main/trash-actions/mission';
 
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';

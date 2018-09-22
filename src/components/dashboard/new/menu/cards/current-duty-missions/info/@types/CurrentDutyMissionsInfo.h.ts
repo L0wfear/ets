@@ -1,7 +1,7 @@
 import {
   CurrentDutyMissionsInfoDataType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/current-duty-mission.h';
-import { DutyMissionType } from 'redux/trash-actions/mission/@types/promise-mission.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/current-duty-mission.h';
+import { DutyMissionType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
 
 export type PropsCurrentMissionInfo = {
   infoData: CurrentDutyMissionsInfoDataType;

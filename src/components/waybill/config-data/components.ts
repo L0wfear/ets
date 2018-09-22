@@ -1,7 +1,13 @@
-import WaybillJournal from 'components/waybill/WaybillJournal.jsx';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "waybill" */ 'components/waybill/config-data/WaybillJournalWrap'), {
+  LoadingComponent,
+})
 
 export default [
   {
-    component: WaybillJournal,
+    component,
+    loadable: true,
   },
 ];

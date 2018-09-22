@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { selectors } from 'redux/_middleware/etsLoading';
+import { selectors } from 'redux-main/_middleware/etsLoading';
 
 import {
   DivNone,

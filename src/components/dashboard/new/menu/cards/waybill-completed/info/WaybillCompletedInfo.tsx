@@ -11,10 +11,10 @@ import InfoCard from 'components/dashboard/new/menu/cards/_default-card-componen
 import {
   dashboardLoadDependentDataByWaybillCompleted,
   dashboardSetInfoDataInWaybillCompleted,
-} from 'components/dashboard/new/redux/modules/dashboard/actions-dashboard';
+} from 'components/dashboard/new/redux-main/modules/dashboard/actions-dashboard';
 
 import { makeDate } from 'utils/dates';
-import { loadWaybillById } from 'redux/trash-actions/waybill/waybill';
+import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 
@@ -24,7 +24,7 @@ import {
 } from 'components/dashboard/new/menu/cards/waybill-completed/info/WaybillCompletedInfo.h';
 import {
   WaybillCompletedItemsSubItemsType,
-} from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-completed.h';
+} from 'components/dashboard/new/redux-main/modules/dashboard/@types/waibill-completed.h';
 import {
   TitleWaybillInfoContainer,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';

@@ -1,8 +1,9 @@
 import * as React from 'react';
+
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { fetchTrack, fetchCarInfo } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
-import { initialState } from 'components/monitor/new/info/car-info/redux/modules/car-info';
+import { fetchTrack, fetchCarInfo } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
+import { initialState } from 'components/monitor/new/info/car-info/redux-main/modules/car-info';
 
 import CarAttributeInformation from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation';
 import CarChartsInformation from 'components/monitor/new/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation';

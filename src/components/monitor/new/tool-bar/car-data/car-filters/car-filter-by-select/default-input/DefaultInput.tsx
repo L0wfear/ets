@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ExtField } from 'components/ui/Field.jsx';
-import { monitorPageChangeFilter } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageChangeFilter } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 
 import {
   PropsDefaultInput,

@@ -1,4 +1,4 @@
-import { WaybillCompletedItemsType } from 'components/dashboard/new/redux/modules/dashboard/@types/waibill-completed.h';
+import { WaybillCompletedItemsType } from 'components/dashboard/new/redux-main/modules/dashboard/@types/waibill-completed.h';
 
 export type PropsWaybillCompleted = {
   items: WaybillCompletedItemsType[];

@@ -1,7 +1,13 @@
-import MonitorPage from 'components/monitor/new/MonitorPage';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "monitor" */ 'components/monitor/new/MonitorPage'), {
+  LoadingComponent,
+})
 
 export default [
   {
-    component: MonitorPage,
+    component,
+    loadable: true,
   },
 ];

@@ -34,7 +34,7 @@ export default class OdhNotCoveredByMissions extends DashboardCardMedium {
   }
 
   renderItems() {
-    const canView = this.context.flux.getStore('session').getPermission(['odh.list', 'dt.list']);
+    const canView = this.context.flux.getStore('session').getPermission(['odh.list', 'dt.list'], true);
 
     return this.props.items.map((item, i) => {
       const itemClassName = cx('dashboard-card-item', { 'pointer': (item.data) || (item.sub_items && item.sub_items.length) || (this.action), 'no-pointer-events': !canView });

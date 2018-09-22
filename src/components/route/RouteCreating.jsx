@@ -40,7 +40,7 @@ class RouteCreating extends React.Component {
 
   async componentDidMount() {
     const { flux } = this.context;
-    const shwoBridge = flux.getStore('session').getPermission(['bridges.list']);
+    const shwoBridge = flux.getStore('session').getPermission('bridges.list');
 
     if (shwoBridge) {
       await flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('bridges', 'GormostService', {});

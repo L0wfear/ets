@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Raven from 'raven-js';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { FluxContext } from 'utils/decorators';
 import Field from 'components/ui/Field.jsx';

@@ -3,7 +3,7 @@ import { Modal, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootst
 import connectToStores from 'flummox/connect';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import * as queryString from 'query-string';
-import createFio from 'utils/create-fio.js';
+import createFio from 'utils/create-fio';
 import { diffDates } from 'utils/dates';
 import { isFourDigitGovNumber } from 'utils/functions';
 

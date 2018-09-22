@@ -5,7 +5,7 @@ import { userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import { routToPer } from 'constants/routerAndPermission.ts';
-import createFio from '../utils/create-fio.js';
+import createFio from '../utils/create-fio';
 import { User } from '../models';
 
 const defaultUser = {

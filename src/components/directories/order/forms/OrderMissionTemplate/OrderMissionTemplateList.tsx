@@ -14,7 +14,7 @@ import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMi
 import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap.jsx';
 import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap.jsx';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { checkStructureByTypeClick } from 'components/directories/order/forms/utils/customValidate';
 import {

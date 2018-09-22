@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import { saveData } from 'utils/functions';
-import { parseFilename } from 'utils/content-disposition.js';
+import { parseFilename } from 'utils/content-disposition';
 import config from 'config';
 import _ from 'lodash';
 

@@ -1,8 +1,8 @@
 import * as ol from 'openlayers';
 
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import EverGisTokenService from 'api/map/EverGisTokenService';
-import MapServerConfig from './MapServerConfig.js';
+import MapServerConfig from 'components/map/new/config/MapServerConfig';
 
 const FULL_EXTENT = MapServerConfig.fullExtent;
 const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile';
@@ -51,7 +51,7 @@ export function projectToPixelNew(map, coordinates) {
   return { x: coords[0], y: coords[1] };
 }
 
-export const EXTENT = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax];
+export const EXTENT: [number, number, number, number] = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax];
 export const PROJECTION = new ol.proj.Projection({
   code: 'MSK77',
   units: 'pixels',
@@ -96,7 +96,7 @@ function onErrorsLimitCallback() {
 }
 
 ArcGisSource.on('tileloaderror', () => {
-  const onErrorsLimit = _.debounce(onErrorsLimitCallback, 1000);
+  const onErrorsLimit = debounce(onErrorsLimitCallback, 1000);
 
   // TODO идентифицировать ошибку конкретно токена
   if (!evergisTokenService.isFetchingToken() && !evergisTokenService.attemptsLimitExceeded()) {

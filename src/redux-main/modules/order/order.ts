@@ -1,5 +1,5 @@
 import { getToday0am, getToday2359 } from 'utils/dates';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 import { getMElement, getDMElement, getMissionTemplateData } from 'redux-main/modules/order/utils';
 import {
   SET_ORDERS,

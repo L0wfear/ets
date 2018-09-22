@@ -1,12 +1,3 @@
-// Модуль для функций, использующихся при рендеринге поля фильтра в гридах
-// TODO переделать на нормальный i18n
-
-
-// TODO убрать
-export function getGeozoneTypeLabel(type) {
-  return type === 'odh' ? 'Объект дорожного хозяйства' : 'Дворовая территория';
-}
-
 // TODO обращений к сторам быть не должно, нужно получать данные из бека
 export const employeeFIOLabelFunction = flux => (employeeId, fullFlag = false) => {
   const employees = flux.getStore('employees').state.employeesList;

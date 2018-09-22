@@ -10,7 +10,7 @@ import Div from 'components/ui/Div.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
 import { getDefaultDutyMission } from 'stores/MissionsStore.js';
 import { saveData } from 'utils/functions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 import dutyMissionSchema from 'models/DutyMissionModel.js';
 
 import DutyMissionForm from './DutyMissionForm.jsx';

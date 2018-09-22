@@ -1,8 +1,8 @@
-import moment from 'moment';
-import { isEqualOr } from './functions';
+import * as moment from 'moment';
+import { isEqualOr } from 'utils/functions';
 
-export const getDateWithMoscowTz = (...dateProps) => {
-  const newDate = new Date(...dateProps);
+export const getDateWithMoscowTz = (timestamp?) => {
+  const newDate = new Date(timestamp); 
   newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
 
   return newDate;
@@ -193,7 +193,7 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
 export const setZeroSecondsToDate = date => moment(date).seconds(0);
 
 export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
-  moment(dateA).diff(moment(dateB), typeDiff, float);
+  moment(dateA).diff(moment(dateB), typeDiff as any, float);
 
 export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();
 

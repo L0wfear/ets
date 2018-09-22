@@ -1,4 +1,4 @@
-import { PROJECTION, ArcGisLayer } from '../MskAdapter.js';
+import { PROJECTION, ArcGisLayer } from 'components/map/new/config/MskAdapter';
 import { defaultZoom } from 'utils/ol';
 import { MapUtils } from 'components/map/new/Map.h';
 import * as ol from 'openlayers';

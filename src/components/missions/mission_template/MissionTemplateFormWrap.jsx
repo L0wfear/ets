@@ -6,7 +6,7 @@ import filter from 'lodash/filter';
 import Div from 'components/ui/Div.jsx';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
 import { isEmpty } from 'utils/functions';
-import { getToday9am, getTomorrow9am, addTime } from 'utils/dates.js';
+import { getToday9am, getTomorrow9am, addTime } from 'utils/dates';
 import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
 

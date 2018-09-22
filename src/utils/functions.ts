@@ -132,7 +132,7 @@ export function printData(blob) {
   const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
   const iframe = document.createElement('iframe');
   document.body.appendChild(iframe);
-  iframe.style = 'display: none';
+  iframe.classList.add('none');
   iframe.src = url;
   if (get_browser().name === 'Firefox') {
     setTimeout(() => {

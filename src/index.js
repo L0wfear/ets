@@ -17,4 +17,4 @@ import './bootstrap';
  */
 import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
-import './config/raven.js';
+import './config/raven';

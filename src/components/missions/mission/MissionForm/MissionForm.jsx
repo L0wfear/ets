@@ -21,7 +21,7 @@ import InsideField from 'components/missions/mission/inside_fields/index';
 import { checkRouteByNew } from 'components/missions/utils/utils.ts';
 import { routeTypesByKey } from 'constants/route';
 
-import { addTime, diffDates } from 'utils/dates.js';
+import { addTime, diffDates } from 'utils/dates';
 import {
   getDataByNormatives,
   getDataBySelectedRoute,

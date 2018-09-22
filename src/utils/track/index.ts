@@ -1,5 +1,5 @@
 import { TRACK_COLORS } from 'constants/track.js';
-import { hexToRgba } from 'utils/functions.js';
+import { hexToRgba } from 'utils/functions';
 import { swapCoords } from 'utils/geo';
 
 /**

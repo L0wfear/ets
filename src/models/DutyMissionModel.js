@@ -1,4 +1,4 @@
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 const dutyMissionSchema = {
   properties: [

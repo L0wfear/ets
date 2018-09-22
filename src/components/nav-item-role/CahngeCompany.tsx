@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
 import CompanyOptions from 'components/nav-item-role/CompanyOptions';
-import requireAuth from 'utils/auth.js';
+import requireAuth from 'utils/auth';
 
 @connectToStores(['session'])
 @FluxContext

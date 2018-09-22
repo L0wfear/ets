@@ -21,7 +21,7 @@ import {
   isEmpty,
   hasMotohours,
 } from 'utils/functions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';

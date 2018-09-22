@@ -1,4 +1,4 @@
-import { parseFilename } from 'utils/content-disposition.js';
+import { parseFilename } from 'utils/content-disposition';
 import { hasWarningNotification } from 'utils/notifications';
 
 function urlencode(jsonObject) {

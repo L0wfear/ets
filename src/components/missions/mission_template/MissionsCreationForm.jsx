@@ -9,7 +9,7 @@ import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import Form from 'components/compositions/Form.jsx';
-import { addTime, diffDates } from 'utils/dates.js';
+import { addTime, diffDates } from 'utils/dates';
 
 class MissionsCreationForm extends Form {
 

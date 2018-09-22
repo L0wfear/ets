@@ -1,4 +1,4 @@
-import createFio from 'utils/create-fio.js';
+import createFio from 'utils/create-fio';
 
 // DutyMission
 const PermittedPosiotosNames = [

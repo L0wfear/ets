@@ -1,4 +1,4 @@
-export default function createFio(data, full = false) {
+const createFio = (data, full = false) => {
   const { first_name, last_name, middle_name } = data;
   let result = '';
   if (last_name && last_name.length) {
@@ -11,4 +11,6 @@ export default function createFio(data, full = false) {
     result += full ? `${middle_name} ` : `${middle_name[0]}. `;
   }
   return result;
-}
+};
+
+export default createFio;

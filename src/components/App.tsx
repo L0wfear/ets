@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { withProps } from 'recompose';
-import requireAuth from 'utils/auth.js';
+import requireAuth from 'utils/auth';
 
 import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';

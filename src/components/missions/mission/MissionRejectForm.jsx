@@ -7,7 +7,7 @@ import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
-import { reassignMissionSuccessNotification } from 'utils/notifications.js';
+import { reassignMissionSuccessNotification } from 'utils/notifications';
 import {
   cloneDeep,
   isEmpty,

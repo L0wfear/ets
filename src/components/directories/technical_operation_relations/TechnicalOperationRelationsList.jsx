@@ -9,17 +9,15 @@ import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import ChangeRouteForm from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteForm';
 import permissions from 'components/directories/technical_operation_relations/config-data/permissions';
 import permissionsCar from 'components/directories/autobase/cars/config-data/permissions';
-import permissionsRoute from 'components/route/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsRoutes } from 'components/directories/technical_operation_relations/helpData';
+import {
+  ButtonUpdateRoute,
+} from 'components/route/buttons/buttons';
 
 const ButtonChangeCarData = enhanceWithPermissions({
   permission: permissionsCar.update,
-})(Button);
-
-const ButtonChangeRoute = enhanceWithPermissions({
-  permission: permissionsRoute.update,
 })(Button);
 
 @withRouter
@@ -133,7 +131,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
   getButtons() {
     return [
       <ButtonChangeCarData key="change-driver" onClick={this.handleChangeDriver} disabled={!this.state.selectedElement}>{'Изменить водителей'}</ButtonChangeCarData>,
-      <ButtonChangeRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>{'Изменить маршрут'}</ButtonChangeRoute>,
+      <ButtonUpdateRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>{'Изменить маршрут'}</ButtonUpdateRoute>,
     ];
   }
 

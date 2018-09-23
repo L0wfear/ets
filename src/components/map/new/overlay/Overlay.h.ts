@@ -14,7 +14,6 @@ export type PropsOverlay = {
 }
 
 export type StateOverlay = {
-  coordsMsk: [number, number] | null;
   marker: ol.Overlay | null;
   container: HTMLDivElement;
 }

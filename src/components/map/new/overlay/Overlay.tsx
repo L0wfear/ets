@@ -30,7 +30,6 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     const container = document.createElement('div');
     
     this.state = {
-      coordsMsk: props.coordsMsk,
       marker: null,
       container,
     }
@@ -52,7 +51,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
   }
 
   componentDidUpdate(prevProps) {
-    const { coordsMsk } = this.state;
+    const { coordsMsk } = this.props;
 
     if (coordsMsk !== prevProps.coordsMsk) {
       let marker = this.state.marker;
@@ -74,7 +73,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     }
   }
 
-  hidePopup = () => {
+  hidePopup: React.MouseEventHandler<HTMLElement> = (e) => {
     try {
       hideOverlay(this.state.marker, this.props.map);
     } catch (e) {

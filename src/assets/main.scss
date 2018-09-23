@@ -1166,10 +1166,11 @@ body.application {
     flex-direction: column;
 
     .tool_bar-block {
-      margin: 10px;
+      margin: 5px;
       pointer-events: all;
       display: inline-block;
-      min-width: 195px;
+      min-width: 175px;
+
       &.disabled {
         .legen_option, input { 
           cursor: not-allowed;
@@ -1191,6 +1192,7 @@ body.application {
         box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
         border-radius: 6px;
         padding: 6px 1pc;
+        font-weight: 200;
 
         &.companies {
           padding: 6px 0 6px 1pc;
@@ -1218,6 +1220,9 @@ body.application {
             align-items: center;
             &.multi>div {
               min-width: 250px;
+              &>*:nth-of-type(n + 2) {
+                margin-top: 5px;
+              }
             }
             .input_text_action-wrap {
               position: relative;
@@ -1253,11 +1258,15 @@ body.application {
           display: flex;
           align-items: center;
           &.multi {
-            align-items: baseline;
+            align-items: end;
+
+            >div:nth-child(n + 2) {
+              padding: 10px 0px;
+            }
           }
           >div:nth-child(n + 2) {
             margin-right: 10px;
-            padding: 10px 0px;
+            padding: 5px 0px;
           }
           .form-group {
             margin: 0;
@@ -1291,7 +1300,7 @@ div.car_legend-active {
       align-items: center;
 
       >span {
-        flex: 1 1 auto;
+        flex: 1 1 25px;
       }
       >div {
         flex: 8 1 auto;

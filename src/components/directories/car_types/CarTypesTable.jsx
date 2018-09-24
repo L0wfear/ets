@@ -13,6 +13,14 @@ const tableMeta = {
       cssClassName: 'width300',
     },
     {
+      name: 'group_name',
+      displayName: 'Группа',
+      type: 'select',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'short_name',
       displayName: 'Краткое наименование',
       type: 'select',
@@ -20,36 +28,6 @@ const tableMeta = {
         type: 'multiselect',
       },
       cssClassName: 'width300',
-    },
-    {
-      name: 'plow_width_odh',
-      displayName: 'Ширина уборочного оборудования на ОДХ',
-      display: false,
-      type: 'string',
-      filter: false,
-    },
-    {
-      name: 'plow_width_dt',
-      displayName: 'Ширина уборочного оборудования на ДТ',
-      display: false,
-      type: 'string',
-      filter: false,
-    },
-    
-    {
-      name: 'season_name',
-      displayName: 'Сезон',
-      type: 'select',
-      filter: {
-        type: 'multiselect',
-      },
-    },
-    {
-      name: 'speed_limit',
-      displayName: 'Максимальная скорость',
-      display: false,
-      type: 'select',
-      filter: false,
     },
   ],
 };

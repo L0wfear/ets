@@ -55,6 +55,7 @@ const NsiNavItem: React.SFC<IPropsNavbarItem> = ({ path }) =>
       id="show-autobase"
       oneOfPermissions={[
         'type.list',
+        'types_attr.list',
         'car.list',
         'autobase_battery.list',
         'autobase_battery_brand.list',
@@ -71,6 +72,7 @@ const NsiNavItem: React.SFC<IPropsNavbarItem> = ({ path }) =>
       title="Транспортные средства"
     >
       <MenuItem id="link-car-func-types" role="MENU_ROLE" permissions={['type.list']} active={path === '/car-func-types'} href="#/car-func-types">Типы техники</MenuItem>
+      <MenuItem id="link-types-attr" permissions={['types_attr.list']} active={path === '/types-attr'} href="#/types-attr">Таблица нормативных скоростей и ширин</MenuItem>
       <MenuItem id="link-cars" permissions={['car.list']} active={path === '/cars'} href="#/cars">Реестр транспортных средств</MenuItem>
       <MenuItem id="link-battery-registry" permissions={['autobase_battery.list']} active={path === '/battery-registry'} href="#/battery-registry">Реестр аккумуляторов</MenuItem>
       <MenuItem id="link-battery-brand" permissions={['autobase_battery_brand.list']} active={path === '/battery-brand'} href="#/battery-brand">Марки аккумуляторов</MenuItem>

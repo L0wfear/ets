@@ -20,11 +20,12 @@ class Prompt extends React.Component {
     window.confirmDialog = global.confirmDialog = this.showConfirm.bind(this);
   }
 
-  showConfirm({ title, body, defaultState = {}, checkOnOk = () => true }) {
+  showConfirm({ title, body, bsSize, defaultState = {}, checkOnOk = () => true }) {
     const promise = new Promise((res, rej) => {
       this.setState({
         isVisible: true,
         title,
+        bsSize,
         body,
         res,
         rej,
@@ -55,7 +56,7 @@ class Prompt extends React.Component {
     return (
       <Modal
         show={this.state.isVisible}
-        bsSize={"small"}
+        bsSize={this.state.bsSize || 'small'}
         id="delete-form"
       >
         <Modal.Header>

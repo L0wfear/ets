@@ -23,7 +23,6 @@ function calculateWaybillMetersDiff(waybill, field, value) {
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
-      console.log(value)
       waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
@@ -262,8 +261,11 @@ export default class WaybillFormWrap extends FormWrap {
     const callback = (createdWaybillId) => {
       const waybill_id = createdWaybillId || currentWaybillId;
       return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then(({ blob, fileName }) => {
-          saveData(blob, fileName);
+        .then((respoce) => (
+          saveData(respoce.blob, respoce.fileName)
+        ))
+        .catch(error => {
+          console.warn('waybillFormWrap saveData', error);
         });
     };
 
@@ -337,7 +339,9 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
         callback();
-        (await this.props.onCallback()) && this.props.onCallback();
+        if (this.props.onCallback) {
+          await this.props.onCallback();
+        }
       } else {
         try {
           await flux.getActions('waybills').updateWaybill(formState);

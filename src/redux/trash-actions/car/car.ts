@@ -7,8 +7,9 @@ import { keyBy } from 'lodash';
 import {
   LoadCarActualIndexFunc,
 } from 'redux/trash-actions/car/car.h';
+import { TypeMeta } from 'redux/trash-actions/@types/common.h';
 
-export const loadCarActualIndex: LoadCarActualIndexFunc = (type, data = {}) => {
+export const loadCarActualIndex: LoadCarActualIndexFunc = (type, data = {}, meta = { loading: true } as TypeMeta) => {
   const payload = {
     ...data,
   };
@@ -29,13 +30,13 @@ export const loadCarActualIndex: LoadCarActualIndexFunc = (type, data = {}) => {
         carActualGpsNumberIndex: keyBy(rows, 'gps_code'),
       })),
     meta: {
-      loading: true,
+      ...meta,
     },
   };
 };
 
 
-export const getCarMissionsByTimestamp = (type, car_id, point_timestamp) => {
+export const getCarMissionsByTimestamp = (type, car_id, point_timestamp, meta = { loading: true } as TypeMeta) => {
   const payload = {
     car_id,
     point_timestamp,
@@ -55,7 +56,7 @@ export const getCarMissionsByTimestamp = (type, car_id, point_timestamp) => {
       })
       .then(({ result: { missions: missionsByTimestamp } }) => ({ missionsByTimestamp })),
     meta: {
-      loading: true,
+      ...meta,
     },
   };
 };

@@ -50,8 +50,13 @@ class RoutesList extends Component {
     if (this.props.location.query) {
       const filterValues = {};
       _.mapKeys(this.props.location.query, (v, k) => {
-        filterValues[k] = [v];
+        filterValues[k] = {
+          type: 'multiselect',
+          value: [v],
+        };
       });
+
+      this.props.history.replaceState(null, this.props.location.pathname, {});
       this.setState({ filterValues });
     }
   }
@@ -128,6 +133,7 @@ class RoutesList extends Component {
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues);
+    console.log(filterValues)
     this.setState({ filterValues });
   }
 

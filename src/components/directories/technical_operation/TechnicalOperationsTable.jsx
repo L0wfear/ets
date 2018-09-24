@@ -49,13 +49,6 @@ const getTableMeta = (props) => {
         cssClassName: 'width80',
       },
       {
-        name: 'max_speed',
-        displayName: 'Максимальная скорость',
-        display: false,
-        type: 'number',
-        filter: false,
-      },
-      {
         name: 'check_type_name',
         displayName: 'Тип проверки',
         type: 'string',

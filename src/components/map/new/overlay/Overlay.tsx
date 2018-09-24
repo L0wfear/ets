@@ -55,7 +55,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     }
   }
 
-  hidePopup = () => {
+  hidePopup: React.MouseEventHandler<HTMLElement> = (e) => {
     try {
       hideOverlay(this.state.marker);
     } catch (e) {

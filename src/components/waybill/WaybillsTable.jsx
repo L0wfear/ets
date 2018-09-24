@@ -296,7 +296,6 @@ export const getTableMeta = ({
 
 export default (props) => {
   const renderers = {
-    rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
     status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
     responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
     driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,

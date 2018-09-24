@@ -19,6 +19,7 @@ import {
 } from 'components/monitor/new/info/car-info/redux/modules/car-info';
 import { makeUnixTime, createValidDateTime, diffDayOfDate } from 'utils/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad } from 'components/monitor/new/info/car-info/redux/modules/utils';
+import { TypeMeta } from 'redux/trash-actions/@types/common.h';
 
 import {
   Car,
@@ -121,7 +122,7 @@ export const getCarGpsNumberByDateTime = ({ asuods_id, gps_code, date_start }) =
   return Promise.resolve({ gps_code });
 }
 
-export const fetchTrack = (payloadData, odh_mkad) => (dispatch) => {
+export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as TypeMeta) => (dispatch) => {
   dispatch(carInfoResetTrackCahing())
   dispatch({
     type: CAR_INFO_SET_TRACK_CACHING,
@@ -140,12 +141,12 @@ export const fetchTrack = (payloadData, odh_mkad) => (dispatch) => {
         );
       }),
     meta: {
-      loading: true,
+      ...meta,
     },
   });
 };
 
-export const fetchCarInfo = (payloadData) => (dispatch) => {
+export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) => (dispatch) => {
   dispatch(carInfoResetMissionsData());
   dispatch({
     type: CAR_INFO_SET_MISSIONS_DATA,
@@ -157,7 +158,7 @@ export const fetchCarInfo = (payloadData) => (dispatch) => {
       carInfoSetMissionsData(ans.result, payloadData.gps_code).payload
     )),
     meta: {
-      loading: true,
+      ...meta,
     },
   });
 };

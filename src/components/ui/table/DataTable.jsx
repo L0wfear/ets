@@ -5,9 +5,9 @@ import _ from 'lodash';
 import cx from 'classnames';
 
 import ClickOutHandler from 'react-onclickout';
-import Griddle from 'griddle-react';
 import { autobind } from 'core-decorators';
 import { isEmpty } from 'utils/functions';
+import SimpleGriddle from 'components/ui/table/simple-griddle/SimpleGriddle';
 
 import {
   isStringArrayData,
@@ -270,9 +270,7 @@ export default class DataTable extends React.Component {
     return clonedObject;
   }
 
-  handleRowCheck(id, e) {
-    e.preventDefault();
-    e.stopPropagation();
+  handleRowCheck = (id) => {
     const value = !this.props.checked[id];
     const clonedData = _.cloneDeep(this.props.checked);
     clonedData[id] = value;
@@ -304,10 +302,6 @@ export default class DataTable extends React.Component {
         displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />,
         sortable: false,
         cssClassName: 'width25 pointer text-center',
-        customComponent: (props) => {
-          const id = props.rowData.id;
-          return <div><input type="checkbox" id={`checkbox-${id}`}checked={this.props.checked[id]} onChange={this.handleRowCheck.bind(this, id)} /></div>;
-        },
       });
     }
 
@@ -388,7 +382,7 @@ export default class DataTable extends React.Component {
           return this.props.highlightClassColMapper(col);
         }
 
-        return null;
+        return undefined;
       },
     };
   }
@@ -691,8 +685,9 @@ export default class DataTable extends React.Component {
           }
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
-        <Griddle
+        <SimpleGriddle
           uniqKey={this.state.uniqKey}
+          selectField={this.props.selectField}
           results={results}
           enableSort={enableSort}
           initialSort={initialSort}
@@ -702,12 +697,16 @@ export default class DataTable extends React.Component {
           resultsPerPage={15}
           useCustomPagerComponent
           externalChangeSort={externalChangeSort || this.handleChangeSort}
-          customPagerComponent={serverPagination ? <Div /> : PaginatorToPortalData}
+          customPagerComponent={serverPagination ? false : PaginatorToPortalData}
           onRowClick={!isHierarchical ? onRowSelected : null}
+          onRowDoubleClick={this.props.onRowDoubleClick}
+          onRowClickNew={this.props.onRowClick}
           rowMetadata={rowMetadata}
           onKeyPress={this.handleKeyPress}
           noDataMessage={noDataMessage || noFilter ? '' : 'Нет данных'}
-          lowerCaseSorting
+          rowNumberOffset={serverPagination ? this.props.rowNumberOffset : 0}
+          handleRowCheck={this.handleRowCheck}
+          serverPagination={serverPagination}
         />
         {
           serverPagination ?

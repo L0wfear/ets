@@ -56,6 +56,7 @@ export default (props) => {
       tableMeta={tableMeta}
       isHierarchical
       noFilter
+      enableSort={false}
       {...props}
     />
   );

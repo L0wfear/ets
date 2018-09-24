@@ -71,6 +71,7 @@ export class MissionForm extends Form {
 
       if (!this.props.formState.status && !this.props.fromWaybill) {
         this.handleChange('car_id', undefined);
+        this.setState({ carsList: [] });
         const carsList = await this.context.flux.getActions('cars')
                                               .getCarsByTechnicalOperation(v);
         this.setState({ carsList });

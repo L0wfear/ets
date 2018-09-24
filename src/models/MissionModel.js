@@ -31,6 +31,7 @@ export const missionSchema = {
       key: 'route_id',
       title: 'Маршрут',
       type: 'number',
+      required: true,
     },
     {
       key: 'mission_source_id',

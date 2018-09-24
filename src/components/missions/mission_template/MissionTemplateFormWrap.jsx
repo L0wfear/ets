@@ -90,8 +90,9 @@ export default class MissionFormWrap extends FormWrap {
           let error = false;
           try {
             await flux.getActions('missions').createMissions(element, payload);
-          } catch ({ error: errorFromThrow }) {
+          } catch ({ error_text: errorFromThrow }) {
             error = true;
+
             if (errorFromThrow && errorFromThrow.message.code === 'no_active_waybill') {
               let cancel = false;
               try {

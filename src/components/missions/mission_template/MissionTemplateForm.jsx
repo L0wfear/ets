@@ -77,7 +77,6 @@ class MissionTemplateForm extends MissionForm {
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
-                disabled={!!state.route_id}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
               />

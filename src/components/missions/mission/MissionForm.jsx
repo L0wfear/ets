@@ -245,12 +245,12 @@ export class MissionForm extends Form {
     } else if (currentStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_DELETABLE = true;
     }
-    const structureValue = state.structure_id; 
+    const structureValue = state.structure_id;
     const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
     const IS_POST_CREATING_ASSIGNED = state.status === 'assigned' && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    const IS_DISABLED_ASSIGNED = state.status === 'assigned' ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено" 
+    const IS_DISABLED_ASSIGNED = state.status === 'assigned' ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено"
     let title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
 
     if (IS_CREATING) {

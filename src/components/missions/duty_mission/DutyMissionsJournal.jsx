@@ -33,14 +33,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     this.removeElementAction = id => context.flux.getActions('missions').removeDutyMission(id);
 
-    this.removeDisabled = () => {
-      if (Object.keys(this.state.checkedElements).length !== 0) return false;
-      if (this.state.selectedElement === null) {
-        return true;
-      }
-      return this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned';
-    };
-
     this.state = {
       ...this.state,
       showPrintForm: false,
@@ -87,13 +79,18 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
+  checkDisabledDelete = () => {
+    const { checkedElements = {}, selectedElement } = this.state;
+    const selectedDutyMissions = Object.values(checkedElements);
+
+    return !(selectedDutyMissions.length || (selectedElement && selectedElement.status === 'not_assigned'));
+  }
+
   checkDisabled() {
     const { checkedElements = {}, selectedElement } = this.state;
     const selectedDutyMissions = Object.values(checkedElements);
 
-    return (!selectedDutyMissions.length && !selectedElement)
-      || selectedDutyMissions.some(mission => mission.status !== 'assigned')
-      || (selectedElement && selectedElement.status !== 'assigned');
+    return !(selectedDutyMissions.length || (selectedElement && selectedElement.status === 'assigned'));
   }
 
   completeMission() {
@@ -101,6 +98,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     mission.status = 'complete';
     this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
       this.refreshList(this.state);
+      this.setState({ selectedElement: null });
     });
   }
 
@@ -113,7 +111,10 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       'dutyMission',
     ).then(() => {
       this.refreshList(this.state);
-      this.setState({ selectedElement: null });
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
     });
   }
@@ -128,12 +129,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       return;
     }
     const mission = _.cloneDeep(this.state.selectedElement);
-    const query = new Promise((res, rej) => {
-      if (mission.status === 'not_assigned') {
-        return this.removeElementAction(mission.id).then(() => res());
-      }
-      return rej();
-    });
+    const query = this.removeElementAction(mission.id);
 
     query.then(() => {
       this.refreshList(this.state);
@@ -141,27 +137,35 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         checkedElements: {},
         selectedElement: null,
       });
-    }).catch(({ errorIsShow }) => !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!')));
+    }).catch((error) => (
+      console.warn(error) // eslint-disable-line
+    ));
   }
 
   completeCheckedElements = async () => {
-    if (Object.keys(this.state.checkedElements).length !== 0) {
+    const checkedElements = Object.values(this.state.checkedElements);
+    if (checkedElements.some(({ status }) => status !== 'assigned')) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      return;
+    }
+    if (checkedElements.length) {
       const allQuerys = Object.values(this.state.checkedElements).map((mission) => {
-        if (mission.status === 'assigned') {
-          const updatedMission = _.cloneDeep(mission);
-          updatedMission.status = 'complete';
-          return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-        }
-        return Promise.reject();
+        const updatedMission = _.cloneDeep(mission);
+        updatedMission.status = 'complete';
+
+        return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
       });
       try {
         await Promise.all(allQuerys);
-      } catch ({ errorIsShow }) {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      } catch (error) {
+        console.warn(error); // eslint-disable-line
       }
 
       this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
     } else {
       this.completeMission();
     }
@@ -170,7 +174,12 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   rejectCheckedElements = async () => {
     const missions = Object.values(this.state.checkedElements);
 
-    if (missions.length !== 0) {
+    if (missions.some(({ status }) => status !== 'assigned')) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Не выполненые" можно только назначенные наряд-задания!'));
+      return;
+    }
+
+    if (missions.length) {
       rejectMissionsPack(
         missions,
         {
@@ -188,9 +197,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   }
 
   removeCheckedElements = async () => {
-    if (typeof this.removeElementAction !== 'function') return;
+    const missions = Object.values(this.state.checkedElements);
 
-    if (Object.keys(this.state.checkedElements).length !== 0) {
+    if (missions.some(({ status }) => status !== 'not_assigned')) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалить можно только задания со статусом "Не назначено"!'));
+      return;
+    }
+
+    if (missions.length) {
       try {
         await confirmDialog({
           title: 'Внимание!',
@@ -199,17 +213,14 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       } catch (er) {
         return;
       }
-      const allQuerys = Object.values(this.state.checkedElements).map((mission) => {
-        if (mission.status === 'not_assigned') {
-          return this.removeElementAction(mission.id);
-        }
-        return Promise.reject();
-      });
+      const allQuerys = missions.map((mission) => (
+        this.removeElementAction(mission.id)
+      ));
 
       try {
         await Promise.all(allQuerys);
-      } catch ({ errorIsShow }) {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Удалились только задания со статусом "Не назначено"!'));
+      } catch (error) {
+        console.warn(error); // eslint-disable-line
       }
 
       this.refreshList(this.state);

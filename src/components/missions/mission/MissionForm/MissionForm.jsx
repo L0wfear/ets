@@ -471,6 +471,7 @@ export class MissionForm extends Form {
     const IS_NOT_ASSIGNED = state.status === 'not_assigned';
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
+    const IS_DISABLED_ASSIGNED = state.status === 'assigned' ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено"
     let title = `Задание № ${state.number}${state.status === 'fail' ? ' (Не выполнено)' : ''}`;
     if (state.column_id) {
       title = `${title} . Колонна № ${state.column_id}`;
@@ -584,7 +585,7 @@ export class MissionForm extends Form {
                           type="date"
                           error={errors.date_start}
                           date={state.date_start}
-                          disabled={IS_DISPLAY}
+                          disabled={IS_DISABLED_ASSIGNED}
                           min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
                           max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                           onChange={this.handleChangeDateStart}
@@ -613,7 +614,7 @@ export class MissionForm extends Form {
                           type="date"
                           error={errors.date_end}
                           date={state.date_end}
-                          disabled={IS_DISPLAY}
+                          disabled={IS_DISABLED_ASSIGNED}
                           min={state.date_start}
                           max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
                           onChange={this.handleChangeDateEnd}

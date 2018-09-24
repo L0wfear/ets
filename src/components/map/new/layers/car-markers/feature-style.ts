@@ -8,6 +8,7 @@ const widthIcon = {
 // let textPadding = 6 * DEVICE_PIXEL_RATIO;
 const getRaidus = width => width/2;
 
+/*
 const greider = require('assets/icons/car/greider.svg');
 const musorovoz = require('assets/icons/car/musorovoz.svg');
 const podmetalka = require('assets/icons/car/podmetalka.svg');
@@ -18,7 +19,6 @@ const reagent_tverd = require('assets/icons/car/reagent_tverd.svg');
 const samosval = require('assets/icons/car/samosval.svg');
 const traktor = require('assets/icons/car/traktor.svg');
 const trotuar = require('assets/icons/car/trotuar.svg');
-const drugoe = require('assets/icons/car/drugoe.svg');
 const neizvesten = require('assets/icons/car/neizvesten.svg');
 
 const images = {
@@ -33,6 +33,13 @@ const images = {
   samosval,
   trotuar,
   neizvesten,
+  drugoe,
+};
+
+*/
+const drugoe = require('assets/icons/car/drugoe.svg');
+
+const images = {
   drugoe,
 };
 
@@ -132,8 +139,8 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
   ctx.fillStyle = listObj[status].color;
   ctx.fill();
 
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = !selected ? 'white' : 'black';
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = !selected ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)';
   ctx.stroke();
 }
 

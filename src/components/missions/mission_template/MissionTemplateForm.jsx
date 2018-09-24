@@ -106,7 +106,7 @@ class MissionTemplateForm extends MissionForm {
                 error={errors.car_id}
                 className="white-space-pre-wrap"
                 options={CARS}
-                disabled={isEmpty(state.technical_operation_id) || CARS.length === 0 }
+                disabled={isEmpty(state.technical_operation_id) || !CARS.length}
                 value={state.car_id}
                 onChange={this.handleChange.bind(this, 'car_id')}
               />

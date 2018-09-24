@@ -2,7 +2,6 @@ import { Store } from 'flummox';
 import { getTomorrow9am } from 'utils/dates';
 
 export default class WaybillsStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -18,7 +17,6 @@ export default class WaybillsStore extends Store {
   handleGetWaybills(waybills) {
     this.setState({ waybillsList: waybills.result, waybillstotalCount: waybills.total_count });
   }
-
 }
 
 export function getDefaultBill() {

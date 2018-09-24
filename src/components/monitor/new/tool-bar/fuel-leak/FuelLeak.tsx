@@ -10,7 +10,7 @@ import {
 
 import { diffDates } from 'utils/dates';
 
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 import {
   DivNone,

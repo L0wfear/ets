@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div.jsx';
 import Form from 'components/compositions/Form.jsx';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';

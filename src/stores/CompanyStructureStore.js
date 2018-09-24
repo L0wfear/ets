@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 
 export default class CompanyStructureStore extends Store {
-
   constructor(flux) {
     super();
 

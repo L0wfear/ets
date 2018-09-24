@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
+import {
+  Row, Col, Button, ButtonToolbar,
+} from 'react-bootstrap';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Field from 'components/ui/Field.jsx';
 import connectToStores from 'flummox/connect';
@@ -9,7 +11,6 @@ import {
 } from 'global-styled/global-styled';
 
 class ODHReports extends Component {
-
   static contextTypes = {
     flux: React.PropTypes.object,
   }
@@ -60,20 +61,26 @@ class ODHReports extends Component {
                     </Row>
                   </Col>
                   <Col md={2}>
-                    <Field type="select" label="Типы ТС"
+                    <Field
+                      type="select"
+                      label="Типы ТС"
                       options={TYPES}
                       value={null}
                       onChange={this.handleChange.bind(this, 'responsible_person_id')}
                     />
                   </Col>
                   <Col md={2}>
-                    <Field type="string" label="Норма, ПМ"
+                    <Field
+                      type="string"
+                      label="Норма, ПМ"
                       value={null}
                       onChange={this.handleChange.bind(this, 'responsible_person_id')}
                     />
                   </Col>
                   <Col md={2}>
-                    <Field type="string" label="ТУ"
+                    <Field
+                      type="string"
+                      label="ТУ"
                       value={null}
                       onChange={this.handleChange.bind(this, 'responsible_person_id')}
                     />

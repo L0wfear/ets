@@ -3,7 +3,9 @@ import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import { Row, Col, FormControl, Button, Glyphicon } from 'react-bootstrap';
+import {
+  Row, Col, FormControl, Button, Glyphicon,
+} from 'react-bootstrap';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
 import MapWrap from 'components/ui/input/map/MapWrap.tsx';
@@ -14,7 +16,6 @@ import CheckList from './CheckList.jsx';
 
 @autobind
 class RouteCreating extends React.Component {
-
   static get propTypes() {
     return {
       route: PropTypes.object,
@@ -59,7 +60,9 @@ class RouteCreating extends React.Component {
 
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);
-      object_list.push({ object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED });
+      object_list.push({
+        object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED,
+      });
       polys[object_id].state = polyState.ENABLED;
     } else {
       object_list = object_list.filter((o) => {
@@ -93,9 +96,13 @@ class RouteCreating extends React.Component {
     if (state === polyState.SELECTABLE) {
       object_list.splice(objectIndex, 1);
     } else if (objectIndex > -1) {
-      object_list[objectIndex] = { object_id: parseInt(id, 10), type, name, state };
+      object_list[objectIndex] = {
+        object_id: parseInt(id, 10), type, name, state,
+      };
     } else {
-      object_list.push({ object_id: parseInt(id, 10), type, name, state });
+      object_list.push({
+        object_id: parseInt(id, 10), type, name, state,
+      });
     }
 
     this.props.onChange('object_list', object_list);
@@ -131,7 +138,9 @@ class RouteCreating extends React.Component {
     });
     if (e.target.checked) {
       odhs.forEach((e) => {
-        object_list.push({ object_id: e, type, name: geozonePolys[e].name, state: polyState.ENABLED });
+        object_list.push({
+          object_id: e, type, name: geozonePolys[e].name, state: polyState.ENABLED,
+        });
         polys[e].state = polyState.ENABLED;
       });
     } else {
@@ -171,6 +180,7 @@ class RouteCreating extends React.Component {
     this.props.onChange('polys', polys);
     this.setODH(id, name, nextState);
   }
+
   handlePointAdd = ({ newPointObject }) => {
     const {
       route: {
@@ -191,6 +201,7 @@ class RouteCreating extends React.Component {
 
     this.props.onChange('input_lines', input_lines);
   }
+
   handleDrawFeatureClick = ({ index, nextState }) => {
     const input_lines = _.cloneDeep(this.props.route.input_lines);
 
@@ -198,6 +209,7 @@ class RouteCreating extends React.Component {
 
     this.props.onChange('input_lines', input_lines);
   }
+
   handleRemoveLastDrawFeature = () => {
     const { route: { input_lines: [...input_lines] = [] } } = this.props;
     input_lines.pop();

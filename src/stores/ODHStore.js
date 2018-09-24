@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 
 export default class ODHStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -42,5 +41,4 @@ export default class ODHStore extends Store {
   handleGetEfficiency({ result }) {
     this.setState({ efficiencyList: result });
   }
-
 }

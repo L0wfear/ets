@@ -25,7 +25,6 @@ import {
 } from 'components/route/buttons/buttons';
 
 class RoutesList extends React.Component {
-
   static get propTypes() {
     return {
       technicalOperationsList: PropTypes.array,
@@ -98,14 +97,14 @@ class RoutesList extends React.Component {
       this.context.flux.getActions('routes').getRoutes().then(({ result }) => result),
       Promise.resolve(this.getStructures()),
     ])
-    .then(([routesListFromStore, STRUCTURES]) => {
-      const { technicalOperationsList = [] } = this.props;
-      const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
+      .then(([routesListFromStore, STRUCTURES]) => {
+        const { technicalOperationsList = [] } = this.props;
+        const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
 
-      this.setState({ ...withState, routesList });
+        this.setState({ ...withState, routesList });
 
-      return routesList;
-    })
+        return routesList;
+      })
   )
 
   shouldBeRendered(obj) {
@@ -162,18 +161,17 @@ class RoutesList extends React.Component {
     });
   }
 
-  createRoute = () =>
-    this.setState({
-      showForm: true,
-      selectedRoute: {
-        name: '',
-        polys: {},
-        object_list: [],
-        draw_object_list: [],
-        input_lines: [],
-        type: '',
-      },
-    });
+  createRoute = () => this.setState({
+    showForm: true,
+    selectedRoute: {
+      name: '',
+      polys: {},
+      object_list: [],
+      draw_object_list: [],
+      input_lines: [],
+      type: '',
+    },
+  });
 
   copyRoute = () => {
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);
@@ -187,7 +185,7 @@ class RoutesList extends React.Component {
     });
   }
 
-  deleteRoute = async() => {
+  deleteRoute = async () => {
     try {
       await confirmDialog({
         title: 'Внимание!',
@@ -202,6 +200,7 @@ class RoutesList extends React.Component {
   }
 
   editRoute = route => this.setState({ selectedRoute: route });
+
   handleChange = selectedRoute => this.setState({ selectedRoute });
 
   handleDropdown = (name) => {
@@ -224,23 +223,27 @@ class RoutesList extends React.Component {
     }
     return _.map(collection, (childrenCollection, name) => {
       const hidden = !(this.state.showId.indexOf(parentName + name) + 1);
-      return (<div key={name}>
-        <h5>
-          <span style={{ cursor: 'pointer' }} onClick={() => this.handleDropdown(parentName + name)}>
-            {name}
-            <span
-              style={{
-                fontSize: 9,
-                position: 'relative',
-                top: -1,
-              }}
-            >{!hidden ? ' \u25BC' : ' \u25BA'}</span>
-          </span>
-        </h5>
-        <Div hidden={hidden} style={{ paddingLeft: 10 }}>
-          {this.renderItem(childrenCollection, parentName + name)}
-        </Div>
-      </div>);
+      return (
+        <div key={name}>
+          <h5>
+            <span style={{ cursor: 'pointer' }} onClick={() => this.handleDropdown(parentName + name)}>
+              {name}
+              <span
+                style={{
+                  fontSize: 9,
+                  position: 'relative',
+                  top: -1,
+                }}
+              >
+                {!hidden ? ' \u25BC' : ' \u25BA'}
+              </span>
+            </span>
+          </h5>
+          <Div hidden={hidden} style={{ paddingLeft: 10 }}>
+            {this.renderItem(childrenCollection, parentName + name)}
+          </Div>
+        </div>
+      );
     });
   }
 
@@ -251,7 +254,7 @@ class RoutesList extends React.Component {
 
     const TECH_OPERATIONS = _.uniqBy(
       technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
-      'value'
+      'value',
     );
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
     const STRUCTURES = this.getStructures();
@@ -317,7 +320,7 @@ class RoutesList extends React.Component {
             {this.renderItem(ROUTES)}
           </div>
         </Col>
-        <Col xs={7} md={9} >
+        <Col xs={7} md={9}>
           <div className="some-header clearfix">
             <div className="waybills-buttons">
               <FilterButton
@@ -325,10 +328,26 @@ class RoutesList extends React.Component {
                 active={!!_.keys(this.state.filterValues).length}
                 onClick={this.toggleFilter}
               />
-              <ButtonCreateRoute bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</ButtonCreateRoute>
-              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}><Glyphicon glyph="pencil" /> Изменить маршрут</ButtonUpdateRoute>
-              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
-              <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
+              <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
+                <Glyphicon glyph="plus" />
+                {' '}
+Создать маршрут
+              </ButtonCreateRoute>
+              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}>
+                <Glyphicon glyph="pencil" />
+                {' '}
+Изменить маршрут
+              </ButtonUpdateRoute>
+              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}>
+                <Glyphicon glyph="copy" />
+                {' '}
+Копировать маршрут
+              </ButtonUpdateRoute>
+              <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}>
+                <Glyphicon glyph="remove" />
+                {' '}
+Удалить
+              </ButtonDeleteRoute>
             </div>
           </div>
           <Filter

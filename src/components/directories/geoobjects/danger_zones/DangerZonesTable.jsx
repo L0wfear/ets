@@ -56,17 +56,35 @@ export const tableMeta = ({
   ],
 });
 const renderers = {
-  roadway_area: ({ data }) => (<div> {parseFloat(data).toFixed(2)} </div>),
-  sidewalk_area: ({ data }) => (<div> {parseFloat(data).toFixed(2)} </div>),
-  sidelines_area: ({ data }) => (<div> {parseFloat(data).toFixed(2)} </div>),
+  roadway_area: ({ data }) => (
+    <div>
+      {' '}
+      {parseFloat(data).toFixed(2)}
+      {' '}
+    </div>
+  ),
+  sidewalk_area: ({ data }) => (
+    <div>
+      {' '}
+      {parseFloat(data).toFixed(2)}
+      {' '}
+    </div>
+  ),
+  sidelines_area: ({ data }) => (
+    <div>
+      {' '}
+      {parseFloat(data).toFixed(2)}
+      {' '}
+    </div>
+  ),
 };
 
-export default (props) => {
-  return (<Table
+export default props => (
+  <Table
     title="Особо опасные места"
     results={props.data}
     tableMeta={tableMeta(props)}
     renderers={renderers}
     {...props}
-  />);
-};
+  />
+);

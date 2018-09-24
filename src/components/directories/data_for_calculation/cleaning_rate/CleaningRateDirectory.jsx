@@ -17,7 +17,6 @@ import permissions from 'components/directories/data_for_calculation/cleaning_ra
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class CleaningRateDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
@@ -43,6 +42,7 @@ export default class CleaningRate extends Component {
   state = {
     type: 'odh',
   }
+
   render() {
     const { type } = this.state;
     return (

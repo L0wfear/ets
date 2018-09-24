@@ -6,7 +6,7 @@ import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form.jsx';
 import TireToVehicleBlockComponent from './vehicle-block/TireToVehicleBlock';
 

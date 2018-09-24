@@ -22,19 +22,21 @@ class InsurancePolicyFormWrap extends FormWrap {
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm ?
-      <InsurancePolicyForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        car_id={car_id}
-        permissions={[`${entity}.update`]}
-        isPermitted={isPermitted}
-        canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <InsurancePolicyForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          car_id={car_id}
+          permissions={[`${entity}.update`]}
+          isPermitted={isPermitted}
+          canSave={canSave}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
       : null;
   }
 }

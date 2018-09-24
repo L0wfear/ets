@@ -3,16 +3,9 @@ import _ from 'lodash';
 
 const colors = [];
 
-Array(16).fill(1).map((d, r) => 
-  Array(16).fill(1).map((d, g) => 
-    Array(16).fill(1).map((d, b) => 
-    colors.push(`rgb(${r * 16}, ${g * 16}, ${b * 16})`)
-    )
-  )
-);
+Array(16).fill(1).map((d, r) => Array(16).fill(1).map((d, g) => Array(16).fill(1).map((d, b) => colors.push(`rgb(${r * 16}, ${g * 16}, ${b * 16})`))));
 
 export default class ObjectsStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -74,7 +67,7 @@ export default class ObjectsStore extends Store {
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
     this.register(technicalOperationsActions.getTechnicalOperationsTypes, this.handleGetTechnicalOperationsTypes);
 
-    
+
     this.state = {
       carsList: [],
       carListBuyTO: [],
@@ -147,9 +140,11 @@ export default class ObjectsStore extends Store {
 
     this.setState({ [myName]: result });
   }
+
   handleGetCompanyStructureAfterCUD({ result = [] }) {
     this.setState({ companyStructureList: result });
   }
+
   getNameCompanyStructureList(linear, descendants_by_user) {
     if (linear) {
       if (descendants_by_user) {
@@ -171,6 +166,7 @@ export default class ObjectsStore extends Store {
     const carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({ carsList, carsIndex });
   }
+
   handleGetCarsByTechnicalOperation(result) {
     this.setState({ carListBuyTO: result });
   }
@@ -193,6 +189,7 @@ export default class ObjectsStore extends Store {
     const typesIndex = _.keyBy(typesList, 'asuods_id');
     this.setState({ typesList, typesIndex });
   }
+
   handleGetSensorTypes({ result }) {
     this.setState({ sensorTypesList: result });
   }
@@ -208,9 +205,11 @@ export default class ObjectsStore extends Store {
   handleGetTechOperations(techOperations) {
     this.setState({ technicalOperationsList: techOperations.result });
   }
+
   handleGetTechOperationsRegistry(techOperations) {
     this.setState({ technicalOperationsRegistryList: techOperations.result });
   }
+
   handleGetTechnicalOperationRelations({ result }) {
     this.setState({ technicalOperationRelationsList: result });
   }
@@ -252,6 +251,7 @@ export default class ObjectsStore extends Store {
   handleGetMaintenanceWork({ result: { rows: maintenanceWorkList } }) {
     this.setState({ maintenanceWorkList });
   }
+
   handleUpdateOrganizations(r) {
     const organizations = r.result.rows || r.result;
     this.setState({ organizations });
@@ -289,7 +289,9 @@ export default class ObjectsStore extends Store {
   handleGetWorkMode({ result: { rows = [] } }) {
     this.setState({
       workMode: rows,
-      workModeOptions: rows.map(({ id, name, start_time_text, end_time_text }) => ({ value: id, label: `${name} (${start_time_text} - ${end_time_text})`, name })),
+      workModeOptions: rows.map(({
+        id, name, start_time_text, end_time_text,
+      }) => ({ value: id, label: `${name} (${start_time_text} - ${end_time_text})`, name })),
     });
   }
 }

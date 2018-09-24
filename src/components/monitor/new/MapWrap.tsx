@@ -2,18 +2,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import Map from 'components/map/new/Map';
-import LayerTrackLines from 'components/map/new/layers/track/lines/LayerTrackLines';
-import LayerTrackPoints from 'components/map/new/layers/track/points/LayerTrackPoints';
-import LayerCarMarker from 'components/map/new/layers/car-markers/LayerCarMarker';
-import MapInfo from 'components/monitor/new/info/MapInfo';
-import LayerPlayPoint from 'components/map/new/layers/track/play-point/LayerPlayPoint';
-import LayerParkingPoints from 'components/map/new/layers/track/events/parking/LayerParkingPoints';
-import LayerTrackLinesBySensor from 'components/map/new/layers/track/lines-by-sensor/LayerTrackLinesBySensor';
-import LayerFuelEventPoint from 'components/map/new/layers/track/events/fuel-event/LayerFuelEventPoints';
 import LayerGeooobjects from 'components/map/new/layers/geoobjects/LayerGeooobjects';
 import LayerSelectedGeooobjects from 'components/map/new/layers/geoobjects/selected/LayerSelectedGeooobjects';
+import LayerTrackLines from 'components/map/new/layers/track/lines/LayerTrackLines';
+import LayerTrackPoints from 'components/map/new/layers/track/points/LayerTrackPoints';
+import LayerTrackLinesBySensor from 'components/map/new/layers/track/lines-by-sensor/LayerTrackLinesBySensor';
+import LayerParkingPoints from 'components/map/new/layers/track/events/parking/LayerParkingPoints';
+import LayerFuelEventPoint from 'components/map/new/layers/track/events/fuel-event/LayerFuelEventPoints';
+import LayerPlayPoint from 'components/map/new/layers/track/play-point/LayerPlayPoint';
+import LayerCarMarker from 'components/map/new/layers/car-markers/LayerCarMarker';
 import LayerMeasure from 'components/map/new/layers/measure/LayerMeasure';
 import LayerFuelEventLeakPoint from 'components/map/new/layers/fuel-event/leak/LayerFuelEventLeakPoint';
+import MapInfo from 'components/monitor/new/info/MapInfo';
 
 type PropsMapWrap = {
   disabledByType: any;

@@ -5,7 +5,7 @@ import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle, IVehiclePassport } from 'api/@types/services/index.h';
 
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import GntTab from './passportTabs/GtnTab';
 import GibddTab from './passportTabs/GibddTab';
 const styles = require('components/directories/autobase/cars/cars.module.scss');

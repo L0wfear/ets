@@ -6,7 +6,6 @@ import ProgramRemarkForm from 'components/program_registry/UpdateFrom/inside_com
 import { formValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_remark/schema';
 
 class ProgramRemarkFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
     this.schema = formValidationSchema;
@@ -14,6 +13,7 @@ class ProgramRemarkFormWrap extends FormWrap {
 
     this.updateAction = context.flux.getActions('repair').programRemark.bind(null, 'put');
   }
+
   createAction = (formState) => {
     const {
       program_version_id,
@@ -28,27 +28,31 @@ class ProgramRemarkFormWrap extends FormWrap {
   }
 
   render() {
-    const { entity, isPermitted = false, isSupervisor, isСustomer } = this.props;
+    const {
+      entity, isPermitted = false, isSupervisor, isСustomer,
+    } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm ?
-      <ProgramRemarkForm
-        entity={entity}
-        formState={this.state.formState}
-        program_version_status={this.props.program_version_status}
-        formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        isPermitted={isPermitted}
-        canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        isSupervisor={isSupervisor}
-        isСustomer={isСustomer}
-      />
+    return this.props.showForm
+      ? (
+        <ProgramRemarkForm
+          entity={entity}
+          formState={this.state.formState}
+          program_version_status={this.props.program_version_status}
+          formErrors={this.state.formErrors}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          isPermitted={isPermitted}
+          canSave={canSave}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          isSupervisor={isSupervisor}
+          isСustomer={isСustomer}
+        />
+      )
       : null;
   }
 }

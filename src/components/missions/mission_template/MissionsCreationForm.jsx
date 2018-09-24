@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -12,7 +14,6 @@ import Form from 'components/compositions/Form.jsx';
 import { addTime, diffDates } from 'utils/dates';
 
 class MissionsCreationForm extends Form {
-
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources();
@@ -57,15 +58,21 @@ class MissionsCreationForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-          <Div style={{ marginBottom: 20 }} >
+          <Div style={{ marginBottom: 20 }}>
             <Row>
               <Col md={6}>
                 <label>Время выполнения</label>
-                <Div>c <Datepicker date={state.date_start} onChange={this.handleChangeDateStart} /></Div>
+                <Div>
+c
+                  <Datepicker date={state.date_start} onChange={this.handleChangeDateStart} />
+                </Div>
               </Col>
               <Col md={6}>
                 <label style={{ minHeight: 15 }} />
-                <Div>по <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} /></Div>
+                <Div>
+по
+                  <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} />
+                </Div>
               </Col>
             </Row>
           </Div>
@@ -79,7 +86,7 @@ class MissionsCreationForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span>
+              <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span>
             </Col>
           </Row>
           <Row>
@@ -99,7 +106,12 @@ class MissionsCreationForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
+            <Div
+              className="inline-block assignToWaybillCheck"
+              style={{
+                width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px',
+              }}
+            >
               <ReactSelect
                 type="select"
                 options={ASSIGN_OPTIONS}
@@ -109,7 +121,7 @@ class MissionsCreationForm extends Form {
               />
             </Div>
             <Div hidden={state.status === 'closed'}>
-              <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>{'Сформировать'}</Button>
+              <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сформировать</Button>
             </Div>
           </Div>
         </Modal.Footer>

@@ -143,7 +143,7 @@ const getTableMeta = ({
   return tableMeta;
 };
 
-export default props => {
+export default (props) => {
   const renderers = {
     use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
     kind_task_names: ({ data }) => <div>{data.join(',\n')}</div>,
@@ -156,7 +156,7 @@ export default props => {
       results={props.data}
       tableMeta={getTableMeta(props)}
       renderers={renderers}
-      initialSort={'id'}
+      initialSort="id"
       {...props}
     />
   );

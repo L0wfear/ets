@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 
 export default function bindable(ComposedComponent) {
   return class BindableComponent extends React.Component {
-
     constructor() {
       super();
 

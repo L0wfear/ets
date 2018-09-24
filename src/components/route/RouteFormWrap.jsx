@@ -7,13 +7,12 @@ import {
   filter,
 } from 'lodash';
 import { routeSchema } from 'models/RouteModel.js';
+import { polyState } from 'constants/polygons.js';
 import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
-import { polyState } from 'constants/polygons.js';
 
 @autobind
 class RouteFormWrap extends FormWrap {
-
   constructor(props) {
     super(props);
 
@@ -153,6 +152,7 @@ class RouteFormWrap extends FormWrap {
     }
     this.setState({ formErrors });
   }
+
   additionalProps() {
     const { fromMission = false } = this.props;
 
@@ -172,25 +172,26 @@ class RouteFormWrap extends FormWrap {
   render() {
     const props = this.props;
 
-    return props.showForm ?
-      <RouteForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        resetState={this.resetFormState}
-        fromMission={this.props.fromMission}
-        notTemplate={this.props.notTemplate}
-        structureId={this.props.structureId}
-        fromOrder={this.props.fromOrder}
-        updateFromStatePolys={this.updateFromStatePolys}
-        {...this.state}
-        {...this.additionalProps()}
-      />
+    return props.showForm
+      ? (
+        <RouteForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          resetState={this.resetFormState}
+          fromMission={this.props.fromMission}
+          notTemplate={this.props.notTemplate}
+          structureId={this.props.structureId}
+          fromOrder={this.props.fromOrder}
+          updateFromStatePolys={this.updateFromStatePolys}
+          {...this.state}
+          {...this.additionalProps()}
+        />
+      )
       : null;
   }
-
 }
 
 export default connectToStores(RouteFormWrap, ['routes', 'geoObjects', 'objects']);

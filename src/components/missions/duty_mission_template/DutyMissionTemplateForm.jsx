@@ -1,6 +1,8 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import { find, uniqBy } from 'lodash';
 
 import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils.ts';
@@ -34,9 +36,9 @@ class MissionTemplateForm extends DutyMissionForm {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -107,8 +109,8 @@ class MissionTemplateForm extends DutyMissionForm {
     }
 
     const brigade_employee_id_list = !state.brigade_employee_id_list
-    ? []
-    : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
+      ? []
+      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     return (
       <Modal id="modal-duty-missio-template" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
@@ -146,8 +148,8 @@ class MissionTemplateForm extends DutyMissionForm {
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id={'municipal_facility_id'}
-                label={'municipal_facility_name'}
+                id="municipal_facility_id"
+                label="municipal_facility_name"
                 errors={errors}
                 state={state}
                 disabled={!!state.route_id}
@@ -202,7 +204,8 @@ class MissionTemplateForm extends DutyMissionForm {
                 <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={6}>
+            {STRUCTURE_FIELD_VIEW && (
+            <Col md={6}>
               <Field
                 type="select"
                 modalKey={modalKey}
@@ -215,7 +218,8 @@ class MissionTemplateForm extends DutyMissionForm {
                 value={state.structure_id}
                 onChange={this.handleChangeStructureId}
               />
-            </Col>}
+            </Col>
+            )}
           </Row>
           <Row>
             <Col md={12}>
@@ -229,7 +233,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

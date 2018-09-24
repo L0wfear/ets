@@ -12,7 +12,6 @@ function getODHNorm() {
 }
 
 export default class ODHActions extends Actions {
-
   getODHNorm() {
     return getODHNorm();
   }
@@ -67,6 +66,4 @@ export default class ODHActions extends Actions {
   deleteEfficiency(formState) {
     return EfficiencyService.path(formState.id).delete();
   }
-
-
 }

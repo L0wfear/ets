@@ -61,7 +61,11 @@ class MunicipalFacility extends MunicipalFacilityMission {
       if (new_v) {
         this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v));
       }
-      const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types }) => ({ value, label, norm_id, route_types }));
+      const MUNICIPAL_FACILITY_OPTIONS = rows.map(({
+        municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types,
+      }) => ({
+        value, label, norm_id, route_types,
+      }));
 
       this.setState({
         myDisable: false,

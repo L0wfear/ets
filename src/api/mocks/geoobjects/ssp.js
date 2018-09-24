@@ -1,7 +1,6 @@
-import Mock from '../Mock.js';
+import Mock from '../Mock';
 
 export default class SSPMock extends Mock {
-
   constructor() {
     super();
     this.data = [
@@ -14,5 +13,4 @@ export default class SSPMock extends Mock {
       },
     ];
   }
-
 }

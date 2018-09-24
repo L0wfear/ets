@@ -24,7 +24,6 @@ export const maintenanceWorkSchema = {
 };
 
 export default class MaintenanceWorkFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -40,18 +39,19 @@ export default class MaintenanceWorkFormWrap extends FormWrap {
   render() {
     const props = this.props;
 
-    return props.showForm ?
-      <MaintenanceWorkForm
-        formState={this.state.formState}
-        permissions={['maintenance_work.update']}
-        addPermissionProp
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        {...this.state}
-      />
-    : null;
+    return props.showForm
+      ? (
+        <MaintenanceWorkForm
+          formState={this.state.formState}
+          permissions={['maintenance_work.update']}
+          addPermissionProp
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          {...this.state}
+        />
+      )
+      : null;
   }
-
 }

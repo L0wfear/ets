@@ -27,21 +27,23 @@ class RepairFormWrap extends FormWrap {
     const isBelongToUserCompany = company_id === null || company_id === userCompanyId;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability && (isBelongToUserCompany || can_edit === true);
 
-    return this.props.showForm ?
-      <RepairForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        cols={this.props.meta.cols}
-        car_id={car_id}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        isPermitted={isPermitted && (isBelongToUserCompany || can_edit === true)}
-        canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <RepairForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          cols={this.props.meta.cols}
+          car_id={car_id}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          isPermitted={isPermitted && (isBelongToUserCompany || can_edit === true)}
+          canSave={canSave}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
       : null;
   }
 }

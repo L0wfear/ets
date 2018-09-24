@@ -6,7 +6,6 @@ import REPAIR from 'constants/repair';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 export default class RepairActions extends Actions {
-
   async getRepairListByType(type, data, other) {
     const trueType = REPAIR[type];
     const payload = {
@@ -44,14 +43,17 @@ export default class RepairActions extends Actions {
 
     return Repair.path(progress).get(payload);
   }
+
   getObjectVersions(id) {
     const { objects } = REPAIR;
 
     return Repair.path(`${objects}/${id}/program_versions`).get({}, false, 'json').then(({ result: { rows } }) => rows);
   }
+
   cleartDataAboutObjectById() {
     return new Promise(res => res({ resolve: { rows: [] } }));
   }
+
   postDataToUpdateObjectPercent(formState) {
     const { progress } = REPAIR;
     const payload = {
@@ -61,6 +63,7 @@ export default class RepairActions extends Actions {
 
     return Repair.path(progress).post(payload, false, 'json');
   }
+
   removePercent(id) {
     const { progress } = REPAIR;
 
@@ -104,6 +107,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   removeСontractor(id) {
     const { contractor } = REPAIR;
     return Repair.path(`${contractor}/${id}`).delete(
@@ -128,6 +132,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   removeStateProgram(id) {
     const { stateProgram } = REPAIR;
 
@@ -170,6 +175,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   programVersionPut(formState) {
     const { programVersion } = REPAIR;
     const payload = {
@@ -188,6 +194,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   programVersionPutOnlyFiles(formState) {
     const { programVersion } = REPAIR;
     const payload = {
@@ -201,6 +208,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   programVersionCreateVersion(formState) {
     const payload = {
       ...formState,
@@ -220,17 +228,20 @@ export default class RepairActions extends Actions {
     );
   }
 
-  async programVersionSendToReview(formState) {
-    return await this.programVersionSendFor('send_to_review', formState, true);
+  programVersionSendToReview(formState) {
+    return this.programVersionSendFor('send_to_review', formState, true);
   }
-  async programVersionSendToApply(formState) {
-    return await this.programVersionSendFor('accept', formState);
+
+  programVersionSendToApply(formState) {
+    return this.programVersionSendFor('accept', formState);
   }
-  async programVersionSendToCansel(formState) {
-    return await this.programVersionSendFor('reject', formState);
+
+  programVersionSendToCansel(formState) {
+    return this.programVersionSendFor('reject', formState);
   }
-  async programVersionSendToClose(formState) {
-    return await this.programVersionSendFor('close', formState);
+
+  programVersionSendToClose(formState) {
+    return this.programVersionSendFor('close', formState);
   }
 
   programVersionSendFor(type, formState, withForm) {
@@ -281,6 +292,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   rejectRemarks(id) {
     const { programRemark } = REPAIR;
 
@@ -290,6 +302,7 @@ export default class RepairActions extends Actions {
       'json',
     );
   }
+
   fixRemarks(id) {
     const { programRemark } = REPAIR;
 

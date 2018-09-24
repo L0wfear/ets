@@ -331,7 +331,7 @@ export default (props) => {
       title="Журнал путевых листов"
       results={props.data}
       renderers={renderers}
-      initialSort={'number'}
+      initialSort="number"
       enumerated
       initialSortAscending={false}
       tableMeta={getTableMeta(extProps)}
@@ -341,7 +341,7 @@ export default (props) => {
       externalChangeSort={props.changeSort}
       className="waybills-table"
       highlight={[{ status: 'active' }]}
-      columnControlStorageName={'waybillsColumnControl'}
+      columnControlStorageName="waybillsColumnControl"
       {...props}
     />
   );

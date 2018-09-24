@@ -49,7 +49,6 @@ const getPermission = ({ permissions = [], permissionName, some = 1 }) => {
 };
 
 export default class SessionStore extends Store {
-
   constructor(flux) {
     super();
     this.flux = flux;
@@ -83,7 +82,8 @@ export default class SessionStore extends Store {
       isGlavControl: currentUser.permissions.includes('role.change'),
     };
   }
-// TODO
+
+  // TODO
   handleLogin(data) {
     clear();
     data.payload.fio = createFio(data.payload);
@@ -112,7 +112,6 @@ export default class SessionStore extends Store {
 
     localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
     localStorage.setItem(global.CURRENT_USER2, JSON.stringify(currentUser));
-    this.flux.getStore('dashboard').resetState();
     this.flux.getStore('reports').resetState();
     setUserContext(currentUser);
     currentUser = new User(currentUser);
@@ -155,6 +154,7 @@ export default class SessionStore extends Store {
     const { permissions = [] } = this.state.currentUser;
     return getPermission({ permissions, permissionName, some });
   }
+
   getStableRedirect() {
     return this.state.currentUser.stableRedirect;
   }

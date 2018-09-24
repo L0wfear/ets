@@ -11,10 +11,10 @@ const getTableMeta = () => {
         type: 'string',
         cssClassName: 'width200',
         customHeaderComponent:
-          <div className="diagonal-header">
-            <div className="top-right">Вид операции</div>
-            <div className="bottom-left">Учреждение</div>
-          </div>,
+  <div className="diagonal-header">
+    <div className="top-right">Вид операции</div>
+    <div className="bottom-left">Учреждение</div>
+  </div>,
       },
       {
         name: 'percentage_one_distance',

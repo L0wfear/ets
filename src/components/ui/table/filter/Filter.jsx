@@ -7,7 +7,6 @@ import Div from '../../Div.jsx';
 import FilterRow from './FilterRow.jsx';
 
 export default class Filter extends React.Component {
-
   static get propTypes() {
     return {
       values: PropTypes.object,
@@ -103,7 +102,9 @@ export default class Filter extends React.Component {
 
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
-      const { type, labelFunction, options, byKey, byLabel } = filter;
+      const {
+        type, labelFunction, options, byKey, byLabel,
+      } = filter;
 
       return (
         <FilterRow
@@ -136,5 +137,4 @@ export default class Filter extends React.Component {
       </Collapse>
     );
   }
-
 }

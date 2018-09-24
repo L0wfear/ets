@@ -6,7 +6,7 @@ import { IPropsFileInput, IStateFileInput, IFileWrapper } from './FileInput.h';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
 
-const Button = onClickWithKeys(BootstrapButton);
+const Button: any = onClickWithKeys(BootstrapButton as any);
 
 const FileListItem: React.SFC<any> = ({
   onFileRemove,

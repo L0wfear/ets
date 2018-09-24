@@ -4,7 +4,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form.jsx';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';

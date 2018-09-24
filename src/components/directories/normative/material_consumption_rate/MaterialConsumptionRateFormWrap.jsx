@@ -8,7 +8,6 @@ import BaseMaterialConsumptionRateForm from 'components/directories/normative/ma
 const MaterialConsumptionRateForm = enhanceWithPermissions(BaseMaterialConsumptionRateForm);
 
 export default class MaterialConsumptionRateFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -19,19 +18,20 @@ export default class MaterialConsumptionRateFormWrap extends FormWrap {
   }
 
   render() {
-    return this.props.showForm ?
-      <MaterialConsumptionRateForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        permissions={['material_consumption_rate.update']}
-        addPermissionProp
-        canSave={this.state.canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
-                : null;
+    return this.props.showForm
+      ? (
+        <MaterialConsumptionRateForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          permissions={['material_consumption_rate.update']}
+          addPermissionProp
+          canSave={this.state.canSave}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
+      : null;
   }
-
 }

@@ -107,10 +107,10 @@ const DataTable = props => (
     renderers={getRenderers(props)}
     results={props.data}
     tableMeta={getTableMeta(props)}
-    initialSort={'number'}
+    initialSort="number"
     initialSortAscending={false}
     {...props}
-    multiSelection={true}
+    multiSelection
   />
 );
 

@@ -18,7 +18,7 @@ const CloneButton = enhanceWithPermissions({
     }
 
     return newProps;
-  }, {})
+  }, {}),
 )(Button)));
 
 export const tableMeta = ({
@@ -111,24 +111,28 @@ export const tableMeta = ({
 };
 
 export default (props) => {
-
   const renderers = {
     installed_at: ({ data }) => <DateFormatter date={data} />,
-    cloneButton: meta =>
+    cloneButton: meta => (
       <CloneButton
         onClick={props.onCloneClick}
         boundKeys={[meta.rowData.id]}
-      >Создать копированием</CloneButton>,
+      >
+Создать копированием
+      </CloneButton>
+    ),
   };
 
   const meta = tableMeta(props);
   const sortedMeta = sortSchemaCols(meta);
 
-  return (<Table
-    title="Реестр шин"
-    results={props.data}
-    tableMeta={sortedMeta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Реестр шин"
+      results={props.data}
+      tableMeta={sortedMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

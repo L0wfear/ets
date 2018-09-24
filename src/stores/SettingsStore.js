@@ -11,7 +11,6 @@ const initialState = {
 };
 
 export default class SettingsStore extends Store {
-
   constructor(flux) {
     super();
 

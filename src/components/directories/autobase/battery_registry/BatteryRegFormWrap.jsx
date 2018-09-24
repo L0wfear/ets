@@ -6,7 +6,6 @@ import BatteryForm from 'components/directories/autobase/battery_registry/Batter
 import { schema } from 'models/BatteryRegModel.js';
 
 class BatteryRegFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -22,19 +21,21 @@ class BatteryRegFormWrap extends FormWrap {
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm ?
-      <BatteryForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        isPermitted={isPermitted}
-        canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <BatteryForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          isPermitted={isPermitted}
+          canSave={canSave}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
       : null;
   }
 }

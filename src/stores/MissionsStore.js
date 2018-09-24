@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { getToday9am, getTomorrow9am, getDateWithMoscowTz } from 'utils/dates';
 
 class MissionsStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -40,6 +39,7 @@ class MissionsStore extends Store {
       dutyMissionsTotalCount: 0,
     };
   }
+
   handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
     this.setState({ municipalFacilityList });
   }
@@ -95,7 +95,6 @@ class MissionsStore extends Store {
     _.each(selectedReportDataDTS, r => (r.route_check_unit = missionReport.route_check_unit));
     this.setState({ selectedReportDataDTS });
   }
-
 }
 
 export default MissionsStore;

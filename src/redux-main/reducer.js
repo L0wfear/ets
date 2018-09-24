@@ -8,8 +8,6 @@ import order from 'redux-main/modules/order/order.ts';
 import session from 'redux-main/modules/session/session';
 import monitorPage from 'components/monitor/new/redux-main/models/monitor-page';
 import dashboard from 'components/dashboard/new/redux-main/modules/dashboard/dashboard';
-// legacy
-import types from 'redux-main/modules/types';
 
 // sorry
 import paginator from 'components/ui/new/paginator/redux-main/paginator';
@@ -22,7 +20,5 @@ export default combineReducers({
   order,
   session,
   monitorPage,
-  types,
   paginator,
 });
-

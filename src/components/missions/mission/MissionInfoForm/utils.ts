@@ -63,20 +63,11 @@ export const componentWillReceiveProps: IComponentWillReceiveProps = props => {
 export const componentDidMount: IComponentDidMount = async props => {
   const {
     formState: {
-      mission_data,
-      car_data,
       route_data,
       report_data,
     },
     flux,
-    fromMonitor,
   } = props;
-
-  if (!props.tooLongDates) {
-    flux.getActions('pointsHybrid').createConnection();
-    flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number, car_data.asuods_id);
-    flux.getActions('pointsHybrid').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
-  }
 
   const missionReport = report_data.entries || [];
 
@@ -87,22 +78,21 @@ export const componentDidMount: IComponentDidMount = async props => {
 
   props.multyChange({ missionReport, selectedObjects });
 
-  const {
-    has_mkad,
-  } = route_data;
-
   const [route] = await Promise.all([
     flux.getActions('routes').getRouteById(route_data.id, true),
-    flux.getActions('geoObjects').getGeozones(),
-    has_mkad && !fromMonitor ? flux.getActions('geoObjects').getOdhMkad() : Promise.resolve(),
   ]);
-
 
   props.multyChange({ route });
 }
 
-
-export const handleSelectedElementChange = props => selectedElementId => props.multyChange({ selectedElementId, selectedPoly: props.geozonePolys[selectedElementId] });
+export const handleSelectedElementChange = (props) => (
+  (selectedElementId) => (
+    props.multyChange({
+      selectedElementId,
+      selectedPoly: props.geozonePolys[selectedElementId],
+    })
+  )
+);
 
 export const initialState = {
   selectedElementId: null,
@@ -134,4 +124,5 @@ export const initialState = {
     checkFixed([sensor_traveled_working / 1000, 'км'], 'THREE_F')
   ),
   gov_number: ({ formState: { car_data: { gov_number } }}) => gov_number,
+  asuods_id: ({ formState: { car_data: { asuods_id } }}) => asuods_id,
 }

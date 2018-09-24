@@ -4,7 +4,6 @@ import ModalBody from 'components/ui/Modal';
 import FieldWrap from '../FieldWrap.jsx';
 // deprecated
 export default class Form extends Component {
-
   constructor(props) {
     super(props);
 
@@ -28,7 +27,8 @@ export default class Form extends Component {
       return (
         <Row key={index}>
           <Col md={6}>
-            <FieldWrap field={property}
+            <FieldWrap
+              field={property}
               value={this.props.formState[property.name]}
               error={this.props.formErrors[property.name]}
               onChange={this.handleChange.bind(this, property.name)}
@@ -61,7 +61,7 @@ export default class Form extends Component {
         </ModalBody>
 
         <Modal.Footer>
-          {/* <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button>*/}
+          {/* <Button onClick={this.handleSubmit.bind(this)}>Сохранить</Button> */}
         </Modal.Footer>
 
       </Modal>

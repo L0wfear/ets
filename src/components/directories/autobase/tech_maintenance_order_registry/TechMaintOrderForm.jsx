@@ -6,7 +6,7 @@ import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { connectToStores } from 'utils/decorators';
 import Div, { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import Form from 'components/compositions/Form.jsx';
 import { FileField } from 'components/ui/input/fields';

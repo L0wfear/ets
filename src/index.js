@@ -3,9 +3,6 @@
  * Стартовый файл приложения
  * @module ets
  */
-/* Полифиллы для поддержки старых браузеров */
-import 'whatwg-fetch';
-
 /* 3rd party js */
 import './assets/main.scss';
 import 'react-widgets/lib/scss/react-widgets.scss';

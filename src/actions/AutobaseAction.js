@@ -9,7 +9,6 @@ const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${m
 const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
 
 export default class AutobaseActions extends Actions {
-
   async getAutobaseListByType(type, data, other) {
     const trueType = AUTOBASE[type];
     const payload = {
@@ -36,6 +35,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeBatteryBrand(id) {
     const { batteryBrand } = AUTOBASE;
     return AutoBase.path(`${batteryBrand}/${id}`).delete(
@@ -56,6 +56,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeBatteryManufacturer(id) {
     const { batteryManufacturer } = AUTOBASE;
     return AutoBase.path(`${batteryManufacturer}/${id}`).delete(
@@ -84,6 +85,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeBatteryRegistry(id) {
     const { batteryRegistry } = AUTOBASE;
     return AutoBase.path(`${batteryRegistry}/${id}`).delete(
@@ -99,7 +101,7 @@ export default class AutobaseActions extends Actions {
     };
 
     ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
-      if (!!formState[key]) {
+      if (formState[key]) {
         payload[key] = createValidDate(formState[key]);
       }
     });
@@ -112,6 +114,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeInsurancePolicy(boundPayload, id) {
     const { insurancePolicy } = AUTOBASE;
 
@@ -151,6 +154,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeRepair(boundPayload, id) {
     const { repair } = AUTOBASE;
 
@@ -172,6 +176,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeRepairCompany(id) {
     const { repairCompany } = AUTOBASE;
     return AutoBase.path(`${repairCompany}/${id}`).delete(
@@ -185,7 +190,7 @@ export default class AutobaseActions extends Actions {
     const payload = {
       ...formState,
       accident_date: createValidDate(formState.accident_date),
-      is_guilty: !!formState.is_guilty,      
+      is_guilty: !!formState.is_guilty,
     };
     const { roadAccidentRegistry } = AUTOBASE;
 
@@ -196,6 +201,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeRoadAccident(boundPayload, id) {
     const { roadAccidentRegistry } = AUTOBASE;
 
@@ -220,6 +226,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeSparePart(id) {
     const { sparePart } = AUTOBASE;
     return AutoBase.path(`${sparePart}/${id}`).delete(
@@ -247,6 +254,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeTechInspection(boundPayload, id) {
     const { techInspection } = AUTOBASE;
 
@@ -268,6 +276,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeTechMaintOrder(id) {
     const { techMaintOrder } = AUTOBASE;
     return AutoBase.path(`${techMaintOrder}/${id}`).delete(
@@ -296,6 +305,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeTechMaint(boundPayload, id) {
     const { techMaint } = AUTOBASE;
     return AutoBase.path(`${techMaint}/${id}`).delete(
@@ -325,6 +335,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   cloneTire(id) {
     const { tire } = AUTOBASE;
     return AutoBase.path(`${tire}/${id}/copy`).post(
@@ -333,6 +344,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeTire(id) {
     const { tire } = AUTOBASE;
 
@@ -354,6 +366,7 @@ export default class AutobaseActions extends Actions {
       'json',
     );
   }
+
   removeTireModel(id) {
     const { tireModel } = AUTOBASE;
     return AutoBase.path(`${tireModel}/${id}`).delete(

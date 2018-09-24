@@ -1,7 +1,6 @@
 import Mock from './Mock.js';
 
 export default class MissionDataMock extends Mock {
-
   constructor() {
     super();
 
@@ -38,5 +37,4 @@ export default class MissionDataMock extends Mock {
       data: this.data,
     };
   }
-
 }

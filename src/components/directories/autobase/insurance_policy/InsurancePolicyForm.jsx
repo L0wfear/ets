@@ -3,7 +3,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import Form from 'components/compositions/Form.jsx';

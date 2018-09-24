@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ol from 'openlayers';
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';

@@ -55,6 +55,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       permissionForButton: { ...ButtonInFormDefPermission },
     };
   }
+
   componentDidMount() {
     const { id } = this.props.element;
 
@@ -113,12 +114,15 @@ class ProgramRegistryFormWrap extends FormWrap {
     });
     return Promise.resolve();
   }
+
   handleExportVersion = () => {
     global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
+
   loadFile = () => {
     global.NOTIFICATION_SYSTEM.notify('Не реализовано', 'error');
   }
+
   makeVersion = () => {
     const payload = {};
     payload.callback = this.context.flux.getActions('repair').programVersionCreateVersion;
@@ -164,6 +168,7 @@ class ProgramRegistryFormWrap extends FormWrap {
       return this.updateVersionList({ id: this.props.element.id });
     });
   }
+
   onSubmitFiles = (fileState) => {
     const payload = {};
     payload.callback = this.context.flux.getActions('repair').programVersionPutOnlyFiles;
@@ -180,7 +185,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия согласована', 'success');
 
-      return this.updateVersionList({ id: this.props.element.id })
+      return this.updateVersionList({ id: this.props.element.id });
     }).catch(({ errorIsShow }) => {
       !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
     });
@@ -194,7 +199,7 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия отменена', 'success');
 
-      return this.updateVersionList({ id: this.props.element.id })
+      return this.updateVersionList({ id: this.props.element.id });
     }).catch(({ errorIsShow }) => {
       !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
     });
@@ -215,15 +220,13 @@ class ProgramRegistryFormWrap extends FormWrap {
     this.props.defSendFromState(payload).then(() => {
       global.NOTIFICATION_SYSTEM.notify('Версия закрыта', 'success');
 
-      return this.updateVersionList({ id: this.props.element.id })
+      return this.updateVersionList({ id: this.props.element.id });
     }).catch(({ errorIsShow }) => {
       !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
     });
   }
 
-  updateVersionOuter = () => {
-    return this.updateVersionList({ id: this.props.element.id });
-  }
+  updateVersionOuter = () => this.updateVersionList({ id: this.props.element.id })
 
   render() {
     const {

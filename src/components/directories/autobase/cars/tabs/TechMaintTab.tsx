@@ -7,7 +7,7 @@ import { IVehicle } from 'api/@types/services/index.h';
 import BaseField from 'components/ui/Field.jsx';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 
-const Field = onChangeWithKeys(BaseField);
+const Field: any = onChangeWithKeys(BaseField);
 
 interface ITechMaintListExtra {
   car_interval_probeg: string;

@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form.jsx';
 import { connectToStores } from 'utils/decorators';
 import BatteryToVehicleBlockComponent from './vehicle-block/BatteryToVehicleBlock';

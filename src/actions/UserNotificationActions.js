@@ -22,6 +22,7 @@ export default class UserNotificationActions extends Actions {
   getOrderNotRead() {
     return UserNotificationService.get({ is_read: false, type_id: 6 }).then(ans => ({ ...ans, group: 'personal' }));
   }
+
   setMakeReadOrderNotification(id) {
     return UserNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
   }
@@ -29,12 +30,15 @@ export default class UserNotificationActions extends Actions {
   getAdmNotReadNotifications() {
     return UserAdmNotificationService.get({ is_read: false }).then(ans => ({ ...ans, group: 'common' }));
   }
+
   setMakeReadAdmNotification(id) {
     return UserAdmNotificationService.put({ read_ids: [id] }, false, 'json').then(() => id);
   }
+
   getNotifications(payload = {}) {
     return UserNotificationService.get(payload);
   }
+
   getAdmNotifications(payload = {}) {
     return UserAdmNotificationService.get(payload);
   }
@@ -53,9 +57,7 @@ export default class UserNotificationActions extends Actions {
       },
     };
 
-    readData.forEach(({ id, front_type }) =>
-      payload[front_type] && payload[front_type].read_ids.push(id)
-    );
+    readData.forEach(({ id, front_type }) => payload[front_type] && payload[front_type].read_ids.push(id));
 
     return Promise.all([
       (payload.common.read_ids.length ? UserNotificationService.put({ ...payload.common }, false, 'json') : Promise.reject())

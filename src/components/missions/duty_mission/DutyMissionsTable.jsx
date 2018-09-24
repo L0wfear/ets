@@ -210,7 +210,7 @@ export default (props) => {
       serverPagination
       externalFilter={props.changeFilter}
       externalChangeSort={props.changeSort}
-      initialSort={'number'}
+      initialSort="number"
       initialSortAscending={false}
       multiSelection
       highlight={highlight}

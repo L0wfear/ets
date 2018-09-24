@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 
 import { connect } from 'react-redux';
 import { Glyphicon } from 'react-bootstrap';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { monitorPageChangeFilter } from 'components/monitor/new/redux-main/models/actions-monitor-page';
 import { carInfoSetGpsNumber } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 

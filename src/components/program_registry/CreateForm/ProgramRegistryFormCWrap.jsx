@@ -40,12 +40,12 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
         saveButtonEnability: true,
       });
     })
-    .catch(() => {
-      this.setState({
-        saveButtonLabel: 'Сохранить',
-        saveButtonEnability: true,
+      .catch(() => {
+        this.setState({
+          saveButtonLabel: 'Сохранить',
+          saveButtonEnability: true,
+        });
       });
-    });
   }
 
   validate = (state, errors) => this.props.validate(state, errors);

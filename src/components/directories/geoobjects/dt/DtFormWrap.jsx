@@ -1,10 +1,9 @@
 import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import DtForm from './DtForm.jsx';
 import Div from 'components/ui/Div.jsx';
+import DtForm from './DtForm.jsx';
 
 export default class DtFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
     this.updateAction = formState => context.flux.getActions('geoObjects').updateDT(formState).then(() => this.context.flux.getActions('geoObjects').getGeozoneByType('dt'));
@@ -25,5 +24,4 @@ export default class DtFormWrap extends FormWrap {
       </Div>
     );
   }
-
 }

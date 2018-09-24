@@ -3,7 +3,6 @@ import get from 'lodash/get';
 import { notifications } from 'utils/notifications';
 
 export default class NotificationsStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -103,15 +102,9 @@ export default class NotificationsStore extends Store {
       },
     ];
 
-    saveNotificationQueue.forEach(opts =>
-      opts.actionNames.forEach(name =>
-        this.register(opts.actions[name], this.handleSave.bind(null, get(opts, ['actionNotifications', name], 'Данные успешно сохранены')))
-    ));
+    saveNotificationQueue.forEach(opts => opts.actionNames.forEach(name => this.register(opts.actions[name], this.handleSave.bind(null, get(opts, ['actionNotifications', name], 'Данные успешно сохранены')))));
 
-    removeNotificationQueue.forEach(opts =>
-      opts.actionNames.forEach(name =>
-        this.register(opts.actions[name], this.handleRemove)
-    ));
+    removeNotificationQueue.forEach(opts => opts.actionNames.forEach(name => this.register(opts.actions[name], this.handleRemove)));
 
 
     // this.register(missionsActions.updateMissionFromReassignation, this.handleSave);

@@ -269,7 +269,7 @@ export default (props) => {
       externalFilter={props.changeFilter}
       externalChangeSort={props.changeSort}
       tableMeta={getTableMeta(props)}
-      initialSort={'number'}
+      initialSort="number"
       initialSortAscending={false}
       multiSelection
       highlight={highlight}

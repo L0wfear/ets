@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import * as cx from 'classnames';
 
 import { connect } from 'react-redux';

@@ -47,7 +47,6 @@ const MissionReportByPointsTable = (props) => {
 };
 
 class MissionReportByPoints extends ElementsList {
-
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,

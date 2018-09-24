@@ -2,7 +2,6 @@ import { Store } from 'flummox';
 import AUTOBASE_CONSTANT from '../constants/autobase.js';
 
 export default class AutobaseStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -62,15 +61,18 @@ export default class AutobaseStore extends Store {
     })];
     return { rows: newRows, extra };
   }
+
   defaultData = ({ result = [] }) => {
     const { rows = [], extra = false } = result;
     return { rows, extra };
   }
+
   makeExtra(extra, name) {
     if (!Object.values(extra)[0]) return undefined;
 
     return { [`${name}Extra`]: extra };
   }
+
   makeOption({ makeOptions = false, selectListMapper, type }, rows) {
     if (!makeOptions) return undefined;
 

@@ -78,7 +78,7 @@ const renderers = {
   total_percentage: floatFixed1Percentage,
 };
 
-const OdhCoverageReportTable = (props) => (
+const OdhCoverageReportTable = props => (
   <Table
     title="Отчет по посещению ОДХ"
     noFilter

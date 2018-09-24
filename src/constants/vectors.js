@@ -34,7 +34,7 @@ export const vectorStyles = {
     stroke: new ol.style.Stroke({
       color: 'red',
       width: 2,
-          //lineDash: [4],
+      // lineDash: [4],
     }),
   }),
   [vectorState.IDLE]: new ol.style.Style({

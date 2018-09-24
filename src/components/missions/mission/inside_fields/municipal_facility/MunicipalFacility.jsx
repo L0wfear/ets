@@ -7,7 +7,6 @@ import Field from 'components/ui/Field.jsx';
 
 @FluxContext
 class MunicipalFacility extends React.Component {
-
   static get propTypes() {
     return {
       id: PropTypes.string,

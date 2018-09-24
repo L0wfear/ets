@@ -13,7 +13,6 @@ const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
 
 class CarFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -21,6 +20,7 @@ class CarFormWrap extends FormWrap {
     this.uniqueField = 'asuods_id';
     this.updateAction = context.flux.getActions('cars').updateCarAdditionalInfo;
   }
+
   async inheritedComponentWillReceiveProps(nextProps) {
     if (this.props.showForm !== nextProps.showForm && nextProps.element) {
       const {
@@ -46,12 +46,14 @@ class CarFormWrap extends FormWrap {
       });
     }
   }
+
   handleFormHide = () => {
     if (this.props.location.search) {
       this.props.history.push(this.props.match.url);
     }
     this.props.onFormHide();
   }
+
   handleFormSubmit = () => {
     if (this.props.location.search) {
       this.props.history.push(this.props.match.url);
@@ -68,7 +70,7 @@ class CarFormWrap extends FormWrap {
     const uniqueField = this.uniqueField || 'id';
     let { formState } = this.state;
     let result = null;
-    Object.entries(formState).forEach(([key, val])=> {
+    Object.entries(formState).forEach(([key, val]) => {
       if (typeof val === 'string') {
         formState[key] = val.trim();
       }
@@ -110,7 +112,6 @@ class CarFormWrap extends FormWrap {
             saveButtonEnability: true,
           });
           console.warn(error_text);
-          return;
         }
       } else {
         throw new Error('Create action called but not specified');
@@ -148,23 +149,24 @@ class CarFormWrap extends FormWrap {
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm ?
-      <CarForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit}
-        handleFormOnlySubmit={this.handleFormOnlySubmit}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        isPermitted={isPermitted}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.handleFormHide}
-        {...this.state}
-        canSave={canSave}
-        location={this.props.location}
-      />
-      :
-      null;
+    return this.props.showForm
+      ? (
+        <CarForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit}
+          handleFormOnlySubmit={this.handleFormOnlySubmit}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          isPermitted={isPermitted}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.handleFormHide}
+          {...this.state}
+          canSave={canSave}
+          location={this.props.location}
+        />
+      )
+      : null;
   }
 }
 

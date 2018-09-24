@@ -9,7 +9,6 @@ const HEADERS = {
 };
 
 export default class Graph extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -68,11 +67,10 @@ export default class Graph extends Component {
 
     return (
       <Panel title={HEADERS[this.type]}>
-        {loaded ?
-          this.renderChart()
-        : <Preloader type="graph" style={{ height: 103 }} />}
+        {loaded
+          ? this.renderChart()
+          : <Preloader type="graph" style={{ height: 103 }} />}
       </Panel>
     );
   }
-
 }

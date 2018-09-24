@@ -14,24 +14,22 @@ import MissionForm from 'components/missions/mission/MissionForm/MissionForm.jsx
 import MissionFormOld from 'components/missions/mission/MissionFormOld.jsx';
 
 export default class MissionFormWrap extends FormWrap {
-
   constructor(props) {
     super(props);
 
     this.schema = missionSchema;
   }
 
-  createAction = formState =>
-    this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
-      if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
-        try {
-          this.props.refreshTableList();
-        } catch (e) {
-          // function refreshTableList not in father modules
-        }
+  createAction = formState => this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
+    if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
+      try {
+        this.props.refreshTableList();
+      } catch (e) {
+        // function refreshTableList not in father modules
       }
-      return r;
-    });
+    }
+    return r;
+  });
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
@@ -97,6 +95,7 @@ export default class MissionFormWrap extends FormWrap {
       });
     }
   }
+
   /**
    * @override
    * @param {*} formState
@@ -206,7 +205,7 @@ export default class MissionFormWrap extends FormWrap {
     const {
       order_date,
       order_date_to,
-      technical_operations = [],        
+      technical_operations = [],
     } = order;
 
     const {
@@ -284,7 +283,7 @@ export default class MissionFormWrap extends FormWrap {
 
     return (
       <Div hidden={!this.props.showForm}>
-        <Div hidden={!this.state.formState.is_new} >
+        <Div hidden={!this.state.formState.is_new}>
           <MissionForm
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
@@ -295,7 +294,7 @@ export default class MissionFormWrap extends FormWrap {
             {...this.state}
           />
         </Div>
-        <Div hidden={this.state.formState.is_new} >
+        <Div hidden={this.state.formState.is_new}>
           <MissionFormOld
             formState={this.state.formState}
             {...props}
@@ -305,5 +304,4 @@ export default class MissionFormWrap extends FormWrap {
       </Div>
     );
   }
-
 }

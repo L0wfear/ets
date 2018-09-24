@@ -10,7 +10,6 @@ import FormWrap from '../../compositions/FormWrap.jsx';
 const EmployeeForm = enhanceWithPermissions(BaseEmployeeForm);
 
 export default class EmployeeFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -19,6 +18,7 @@ export default class EmployeeFormWrap extends FormWrap {
     this.createAction = context.flux.getActions('employees').createEmployee;
     this.updateAction = context.flux.getActions('employees').updateEmployee;
   }
+
   handleFormHide = () => {
     const { location: { search } } = this.props;
 
@@ -29,6 +29,7 @@ export default class EmployeeFormWrap extends FormWrap {
     }
     this.props.onFormHide();
   }
+
   handleFormSubmit = () => {
     super.handleFormSubmit().then(() => {
       const { location: { search } } = this.props;
@@ -44,19 +45,20 @@ export default class EmployeeFormWrap extends FormWrap {
   handleFormStateChange = (...arg) => super.handleFormStateChange(...arg);
 
   render() {
-    return this.props.showForm ?
-      <EmployeeForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        permissions={['employee.update']}
-        addPermissionProp
-        canSave={this.state.canSave}
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.handleFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <EmployeeForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          permissions={['employee.update']}
+          addPermissionProp
+          canSave={this.state.canSave}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.handleFormHide}
+        />
+      )
       : null;
   }
-
 }

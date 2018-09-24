@@ -33,15 +33,28 @@ export default function ODHList(props) {
         <Button id="check-routes" disabled={disabledCheckRoute} onClick={checkRoute} style={{ marginTop: 11 }}>Проверить маршрут</Button>
       </Div>
       <Div hidden={!list.length} className="odh-list">
-        <h4>Список {name} {DRAW_LIST.length ? '(Выбор из ОДХ)' : ''}</h4>
+        <h4>
+Список
+          {name}
+          {' '}
+          {DRAW_LIST.length ? '(Выбор из ОДХ)' : ''}
+        </h4>
         <ul>{LIST}</ul>
       </Div>
       <Div hidden={!DRAW_LIST.length} className="odh-list">
-        <h4>Список {name} (Вручную)</h4>
+        <h4>
+Список
+          {name}
+          {' '}
+(Вручную)
+        </h4>
         <ul>{DRAW_LIST}</ul>
       </Div>
       <Div hidden={!fail_list.length} className="odh-list">
-        <h4>Список непокрытых {name}</h4>
+        <h4>
+Список непокрытых
+          {name}
+        </h4>
         <ul>{FAIL}</ul>
       </Div>
     </Div>

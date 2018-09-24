@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
 
 export default class SettingsActions extends Actions {
-
   setShowPlates(showPlates) {
     return showPlates;
   }
@@ -29,5 +28,4 @@ export default class SettingsActions extends Actions {
   setInitialState() {
     return true;
   }
-
 }

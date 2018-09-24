@@ -19,7 +19,6 @@ const defaultPropsKeys = Object.keys(defaultProps).reduce((newData, key) => ({
 
 export default function enhanceWithPermissions(ComposedComponent) {
   return @connectToStores('session') @FluxContext class extends React.Component {
-
     static get propTypes() {
       return {
         userPermissions: PropTypes.array.isRequired,
@@ -41,7 +40,9 @@ export default function enhanceWithPermissions(ComposedComponent) {
      * @return {boolean} isPermitted - доступен ли компонент для отображения
      */
     isPermitted() {
-      const { includesPartOfText = false, userPermissions, permissions, oneOfPermissions } = this.props;
+      const {
+        includesPartOfText = false, userPermissions, permissions, oneOfPermissions,
+      } = this.props;
       // В случае, если в на
       if (includesPartOfText) {
         return userPermissions.some(d => includesPartOfText.some(p => d.includes(p)));

@@ -7,7 +7,6 @@ import cx from 'classnames';
 import Div from '../Div.jsx';
 
 export default class ColumnControl extends React.Component {
-
   static get propTypes() {
     return {
       onChange: PropTypes.func,
@@ -35,24 +34,24 @@ export default class ColumnControl extends React.Component {
       }
       return (
         <div key={i} style={{ marginLeft: 20 }}>
-            <div className="form-group"  style={{ cursor: 'pointer' }}>
-              <div className="checkbox">
-                <label className="control-label">
-                  <input readOnly type="checkbox" checked={this.props.values.indexOf(option.name) === -1} onClick={this.checkboxChange.bind(this, option.name)} />
-                  <span style={{ bottom: -2, position: 'relative' }}>{option.displayName}</span>
-                </label>
-              </div>
+          <div className="form-group" style={{ cursor: 'pointer' }}>
+            <div className="checkbox">
+              <label className="control-label">
+                <input readOnly type="checkbox" checked={this.props.values.indexOf(option.name) === -1} onClick={this.checkboxChange.bind(this, option.name)} />
+                <span style={{ bottom: -2, position: 'relative' }}>{option.displayName}</span>
+              </label>
             </div>
+          </div>
         </div>
       );
     });
 
     return (
-      <Div className={'column-control-wrap'}>
+      <Div className="column-control-wrap">
         <Button bsSize="small" className={buttonClass} onClick={this.props.onClick}>
           <Glyphicon glyph="cog" />
         </Button>
-        <Div hidden={!this.props.show} className={'column-control-container'}>
+        <Div hidden={!this.props.show} className="column-control-container">
           <Div className="column-control-container-window">
             <ModalBody>
               {rows}
@@ -62,5 +61,4 @@ export default class ColumnControl extends React.Component {
       </Div>
     );
   }
-
 }

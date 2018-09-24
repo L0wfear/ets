@@ -42,13 +42,15 @@ const EfficiencyTable = (props) => {
     source: ({ data }) => +data ? <div>Справочник показателей норм на содержание ОДХ</div> : <div>Реестр ОДХ</div>,
   };
 
-  return (<Table
-    title="Реестр показателей для расчета эффективности"
-    results={props.data}
-    tableMeta={tableMeta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Реестр показателей для расчета эффективности"
+      results={props.data}
+      tableMeta={tableMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
 
 export default EfficiencyTable;

@@ -20,23 +20,21 @@ export const onInit = actionTypeDecorator(INIT);
 export const onSuccess = actionTypeDecorator(SUCCESS);
 export const onError = actionTypeDecorator(ERROR);
 
-export const isFetchingReducer = (actionType, path = 'fetchState') =>
-  state => ({
-    ...state,
-    [path]: Object.assign({}, {
-      ...state[path],
-      [actionType]: get(state, [path, actionType], 0) + 1,
-    }),
-  });
+export const isFetchingReducer = (actionType, path = 'fetchState') => state => ({
+  ...state,
+  [path]: Object.assign({}, {
+    ...state[path],
+    [actionType]: get(state, [path, actionType], 0) + 1,
+  }),
+});
 
-export const isNotFetchingReducer = (actionType, path = 'fetchState') =>
-  state => ({
-    ...state,
-    [path]: Object.assign({}, {
-      ...state[path],
-      [actionType]: Math.max(get(state, [path, actionType], 0) - 1, 0),
-    }),
-  });
+export const isNotFetchingReducer = (actionType, path = 'fetchState') => state => ({
+  ...state,
+  [path]: Object.assign({}, {
+    ...state[path],
+    [actionType]: Math.max(get(state, [path, actionType], 0) - 1, 0),
+  }),
+});
 
 export const fetchStateFlow = type => ({
   [onInit(type)]: isFetchingReducer(type),

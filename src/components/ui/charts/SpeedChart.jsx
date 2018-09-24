@@ -1,7 +1,6 @@
 import Chart from './BaseChart.jsx';
 
 export default class SpeedChart extends Chart {
-
   constructor(props) {
     super(props);
     this.type = 'speed';
@@ -30,6 +29,4 @@ export default class SpeedChart extends Chart {
       loaded: true,
     });
   }
-
-
 }

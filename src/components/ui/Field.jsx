@@ -220,9 +220,3 @@ export default class Field extends React.Component {
     return this.renderFieldByType(type);
   }
 }
-
-export const ExtField = onChangeWithKeys(
-  withMergeProps(
-    ({ boundKeys, ...props }) => props
-  )(Field)
-);

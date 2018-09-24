@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form.jsx';
 
 const boundKeysObj = {
@@ -9,7 +9,6 @@ const boundKeysObj = {
 };
 
 export default class OrganizationsForm extends Form {
-
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -31,7 +30,7 @@ export default class OrganizationsForm extends Form {
             disabled
           />
           <ExtField
-            type={'boolean'}
+            type="boolean"
             label="Наличие дистанционного мед. осмотра"
             value={state.has_remote_checkup}
             error={errors.has_remote_checkup}
@@ -44,7 +43,9 @@ export default class OrganizationsForm extends Form {
           <Button
             onClick={() => this.handleSubmit()}
             disabled={!this.props.canSave || !isPermitted || !this.props.saveButtonEnability}
-          >{this.props.saveButtonLabel}</Button>
+          >
+            {this.props.saveButtonLabel}
+          </Button>
         </Modal.Footer>
       </Modal>
     );

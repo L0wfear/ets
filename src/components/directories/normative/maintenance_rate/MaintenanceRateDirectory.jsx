@@ -17,16 +17,17 @@ import permissions from 'components/directories/normative/maintenance_rate/confi
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class MaintenanceRateDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
 
     this.setExportType(props.type);
   }
+
   setExportType(type) {
     this.exportPayload = { type };
   }
+
   componentDidMount() {
     super.componentDidMount();
     const { flux } = this.context;
@@ -49,6 +50,7 @@ export default class MaintenanceRate extends Component {
   state = {
     type: 'odh',
   }
+
   render() {
     const { type } = this.state;
     return (

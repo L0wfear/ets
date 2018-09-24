@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
-import { ExtField } from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 class TablePrev extends React.Component<any, any> {
   handleChange = (numRow, field, value) => {

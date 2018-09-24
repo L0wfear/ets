@@ -1,6 +1,8 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
+} from 'react-bootstrap';
 import {
   uniqBy,
 } from 'lodash';
@@ -8,7 +10,8 @@ import {
 import { checkRouteByNew } from 'components/missions/utils/utils.ts';
 
 import ModalBody from 'components/ui/Modal';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div.jsx';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -62,9 +65,9 @@ class MissionTemplateForm extends MissionForm {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -108,7 +111,8 @@ class MissionTemplateForm extends MissionForm {
                 onChange={this.handleTechnicalOperationChange}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+            {STRUCTURE_FIELD_VIEW && (
+            <Col md={3}>
               <Field
                 type="select"
                 modalKey={modalKey}
@@ -121,13 +125,14 @@ class MissionTemplateForm extends MissionForm {
                 value={state.structure_id}
                 onChange={this.handleStructureIdChange}
               />
-            </Col>}
+            </Col>
+            )}
           </Row>
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id={'municipal_facility_id'}
-                label={'municipal_facility_name'}
+                id="municipal_facility_id"
+                label="municipal_facility_name"
                 errors={errors}
                 state={state}
                 clearable={false}
@@ -157,7 +162,8 @@ class MissionTemplateForm extends MissionForm {
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
-                onChange={this.handleChange.bind(this, 'passes_count')} min="0"
+                onChange={this.handleChange.bind(this, 'passes_count')}
+                min="0"
               />
             </Col>
 
@@ -210,11 +216,11 @@ class MissionTemplateForm extends MissionForm {
               </Dropdown.Menu>
             </Dropdown>
             <Div hidden={state.status === 'closed'}>
-              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
           </Div>
 
-          
+
         </Modal.Footer>
         <HiddenMapForPrint printFormat={this.props.printFormat} route={this.state.selectedRoute} keyGlobal={this.props.keyGlobal} />
 

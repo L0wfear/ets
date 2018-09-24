@@ -8,7 +8,7 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import RouteInfoForm from 'components/route/route-info-form/RouteInfoForm';
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { listData } from 'components/dashboard/new/menu/cards/current-duty-missions/info/listData';
 import {
   dashboardLoadCurrentDutyMissions,

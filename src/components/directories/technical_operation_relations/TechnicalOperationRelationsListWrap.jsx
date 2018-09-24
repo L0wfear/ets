@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { FluxContext } from 'utils/decorators';
 import { makeOptions } from 'components/ui/input/makeOptions';
@@ -222,15 +222,15 @@ class TechnicalOperationRelationsListWrap extends React.Component {
         <div>
           {
             technical_operation_id && municipal_facility_id && route_types.length && func_type_id
-            ?
-              <TechnicalOperationRelationsList
-                technical_operation_id={technical_operation_id}
-                municipal_facility_id={municipal_facility_id}
-                route_types={route_types}
-                func_type_id={func_type_id}
-              />
-            :
-              null
+              ? (
+                <TechnicalOperationRelationsList
+                  technical_operation_id={technical_operation_id}
+                  municipal_facility_id={municipal_facility_id}
+                  route_types={route_types}
+                  func_type_id={func_type_id}
+                />
+              )
+              : null
           }
         </div>
       </div>

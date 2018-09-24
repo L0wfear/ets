@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 
 @autobind
 class LoginPage extends React.Component {
-
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,
@@ -65,9 +64,10 @@ class LoginPage extends React.Component {
                 <button id="submit" role="button" className="btn btn-lg btn-primary btn-block" disabled={disabled} onClick={this.onSigninClick}>Войти</button>
                 <div className="tp-messange">
                   <span>
-                  Служба технической поддержки</span>
+                  Служба технической поддержки
+                  </span>
                   <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
-                  <a href="tel:84951501193">8(495) 150-11-93</ a>
+                  <a href="tel:84951501193">8(495) 150-11-93</a>
                 </div>
                 <hr />
                 <div className="dit-logo" />

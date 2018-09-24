@@ -15,7 +15,6 @@ export function toUrlWithParams(url, data) {
 export default function exportable(options) {
   return function decorateWithExportableFeatures(ComposedComponent) {
     return @autobind class Exportable extends React.Component {
-
       static get propTypes() {
         return {
           routeParams: PropTypes.object,
@@ -42,7 +41,7 @@ export default function exportable(options) {
         };
         const URL = toUrlWithParams(
           `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}/${id}`,
-          payload
+          payload,
         );
         // TODO blob
         return fetch(URL, {
@@ -70,7 +69,7 @@ export default function exportable(options) {
             format: 'xls',
             ...urlPayload,
           },
-          );
+        );
         // TODO blob
         return fetch(URL, {
           method: 'post',
@@ -99,6 +98,7 @@ export default function exportable(options) {
 
         return Promise.resolve(false);
       }
+
       exportByPostData(bodyPayload, urlPayload) {
         if (typeof this.exportByPostFunction === 'function') {
           return this.exportByPostFunction(bodyPayload, urlPayload)
@@ -113,7 +113,6 @@ export default function exportable(options) {
       render() {
         return <ComposedComponent {...this.props} exportable export={this.export} exportByPostData={this.exportByPostData} />;
       }
-
     };
   };
 }

@@ -5,7 +5,6 @@ import {
 } from 'api/Services';
 
 export default class SessionActions extends Actions {
-
   login(user) {
     return AuthService.post(user, false, 'json');
   }

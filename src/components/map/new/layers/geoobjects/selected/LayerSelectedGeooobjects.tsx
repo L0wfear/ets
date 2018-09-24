@@ -53,6 +53,7 @@ class LayerSelectedGeooobjects extends React.Component<PropsLayerSelectedGeooobj
 const mapStateToProps = state => ({
   selectedGeoobjects: state.monitorPage.selectedGeoobjects,
 });
+
 const mapDispatchToProps = dispatch => ({
   monitorPageRemoveFromSelectedGeoobjects: (serverName, id) => (
     dispatch(

@@ -3,15 +3,17 @@ import * as PropTypes from 'prop-types';
 import Div from 'components/ui/Div.jsx';
 import { get } from 'lodash';
 
-import { Modal, Button, Row, Col } from 'react-bootstrap';
+import {
+  Modal, Button, Row, Col,
+} from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
 
 const FORMATION_PERIOD_OPTIONS = [
   { value: 'date', label: 'Дневной' },
-  { value: 'month', label: 'Месячный' }
+  { value: 'month', label: 'Месячный' },
 ];
 
 const getInitialState = () => ({
@@ -26,7 +28,6 @@ const getInitialState = () => ({
 });
 
 class WaybillPrintForm extends React.Component {
-
   static get propTypes() {
     return {
       show: PropTypes.any,
@@ -91,17 +92,21 @@ class WaybillPrintForm extends React.Component {
     this.setState({ with_filter: !this.state.with_filter });
     e.stopPropagation();
   }
+
   handleChange = (field, e) => {
     console.log(field, get(e, ['target', 'value'], e)); // eslint-disable-line
     this.setState({ [field]: get(e, ['target', 'value'], e) });
   }
+
   handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
+
   handleChangeDate = date => this.setState({ date });
 
   hide = () => {
     this.setState(getInitialState());
     this.props.hide();
   }
+
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i + 1 }));
@@ -126,8 +131,8 @@ class WaybillPrintForm extends React.Component {
           <Div hidden={this.props.show !== 1}>
             <span style={{ marginBottom: 15, display: 'block' }}>Выберите период:</span>
             <ExtField
-              type={'select'}
-              label={'Период формирования'}
+              type="select"
+              label="Период формирования"
               options={FORMATION_PERIOD_OPTIONS}
               value={this.state.formationPeriod}
               clearable={false}
@@ -171,12 +176,12 @@ class WaybillPrintForm extends React.Component {
             </Div>
           </Div>
           <Div hidden={this.props.show === 1}>
-            <Row className={'waybill-print-form'}>
+            <Row className="waybill-print-form">
               <Col md={6}>
                 <ExtField
-                  type={'date'}
+                  type="date"
                   time
-                  label={'Время с'}
+                  label="Время с"
                   date={this.state.date_from}
                   onChange={this.handleChange}
                   boundKeys={['date_from']}
@@ -184,36 +189,41 @@ class WaybillPrintForm extends React.Component {
               </Col>
               <Col md={6}>
                 <ExtField
-                  type={'date'}
+                  type="date"
                   time
-                  label={'Время по'}
+                  label="Время по"
                   date={this.state.date_to}
                   onChange={this.handleChange}
                   boundKeys={['date_to']}
                 />
               </Col>
             </Row>
-            <Row className={'checkbox-print-with-filter'}>
+            <Row className="checkbox-print-with-filter">
               <Col md={12} onClick={this.toggleWithFilter}>
-                <input type={'checkbox'} onChange={this.toggleWithFilter} checked={this.state.with_filter} /><span>{'С применением фильтрации'}</span>
+                <input type="checkbox" onChange={this.toggleWithFilter} checked={this.state.with_filter} />
+                <span>С применением фильтрации</span>
               </Col>
             </Row>
             <Div hidden={!DISABLE_SUBMIT}>
-              <label style={{ color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10 }}>Даты должны быть указаны</label>
+              <label style={{
+                color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10,
+              }}
+              >
+Даты должны быть указаны
+              </label>
             </Div>
           </Div>
         </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={DISABLE_SUBMIT || this.state.DISABLE_SUBMIT} onClick={this.handleSubmit}>{'OK'}</Button>
+            <Button disabled={DISABLE_SUBMIT || this.state.DISABLE_SUBMIT} onClick={this.handleSubmit}>OK</Button>
             <Button onClick={this.props.onHide}>Отмена</Button>
           </Div>
         </Modal.Footer>
       </Modal>
     );
   }
-
 }
 
 WaybillPrintForm.contextTypes = {

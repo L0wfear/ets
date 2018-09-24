@@ -2,7 +2,6 @@ import { Store } from 'flummox';
 import keyBy from 'lodash/keyBy';
 
 export default class EmployeeStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -83,5 +82,4 @@ export default class EmployeeStore extends Store {
       };
     });
   }
-
 }

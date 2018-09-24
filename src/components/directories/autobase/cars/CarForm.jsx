@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import {
+  Modal, Button, Nav, NavItem, NavDropdown, MenuItem,
+} from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import * as queryString from 'query-string';
@@ -44,6 +46,7 @@ class CarForm extends Form {
   static defaultProps = {
     tabKey: CAR_TAB_INDEX.main_info,
   }
+
   constructor(props) {
     super(props);
 
@@ -51,6 +54,7 @@ class CarForm extends Form {
       type_image_name: null,
     };
   }
+
   componentWillReceiveProps(props) {
     const { flux } = this.context;
     const currentState = this.props.formState;
@@ -67,6 +71,7 @@ class CarForm extends Form {
       flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
     }
   }
+
   async componentDidMount() {
     const { location: { search } } = this.props;
     if (search) {
@@ -92,6 +97,7 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
     flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
   }
+
   handleChangeMainInfoTab = (key, value) => {
     if (key === 'company_structure_id') {
       global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
@@ -99,6 +105,7 @@ class CarForm extends Form {
 
     this.handleChange(key, value);
   }
+
   handleSave = () => {
     if (this.props.tabKey !== CAR_TAB_INDEX.main_info) {
       this.props.handleFormOnlySubmit().then(() => this.props.handleTabSelect(CAR_TAB_INDEX.main_info));
@@ -106,6 +113,7 @@ class CarForm extends Form {
       this.handleSubmit();
     }
   }
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -158,31 +166,41 @@ class CarForm extends Form {
               <MenuItem
                 eventKey={CAR_TAB_INDEX.main_info}
                 active={tabKey === CAR_TAB_INDEX.main_info}
-              >Общая информация</MenuItem>
+              >
+Общая информация
+              </MenuItem>
               <MenuItem
                 eventKey={CAR_TAB_INDEX.register_info}
                 active={tabKey === CAR_TAB_INDEX.register_info}
-              >Информация о регистрации</MenuItem>
+              >
+Информация о регистрации
+              </MenuItem>
               <MenuItem
                 eventKey={CAR_TAB_INDEX.passport_info}
                 active={tabKey === CAR_TAB_INDEX.passport_info}
-              >Паспорт ТС</MenuItem>
+              >
+Паспорт ТС
+              </MenuItem>
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
-            <NavItem eventKey={CAR_TAB_INDEX.tire} >Шины</NavItem>
+            <NavItem eventKey={CAR_TAB_INDEX.tire}>Шины</NavItem>
             <NavItem eventKey={CAR_TAB_INDEX.insurance_policy}>Страхование</NavItem>
-            <NavItem eventKey={CAR_TAB_INDEX.road_accident} >ДТП</NavItem>
+            <NavItem eventKey={CAR_TAB_INDEX.road_accident}>ДТП</NavItem>
             <NavDropdown id={6} eventKey="6" title="ТО и ремонты">
               <MenuItem
                 eventKey={CAR_TAB_INDEX.tech_maintenance}
                 active={tabKey === CAR_TAB_INDEX.tech_maintenance}
-              >Тех. обслуживание</MenuItem>
+              >
+Тех. обслуживание
+              </MenuItem>
               <MenuItem
                 eventKey={CAR_TAB_INDEX.repair}
                 active={tabKey === CAR_TAB_INDEX.repair}
-              >Ремонты ТС</MenuItem>
+              >
+Ремонты ТС
+              </MenuItem>
             </NavDropdown>
-            <NavItem eventKey={CAR_TAB_INDEX.tech_inspection} >Техосмотр</NavItem>
+            <NavItem eventKey={CAR_TAB_INDEX.tech_inspection}>Техосмотр</NavItem>
           </Nav>
 
           <TabContent eventKey={CAR_TAB_INDEX.main_info} tabKey={tabKey}>

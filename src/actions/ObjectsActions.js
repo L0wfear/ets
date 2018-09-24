@@ -90,9 +90,11 @@ export default class ObjectsActions extends Actions {
   getWorkMode() {
     return WorkMode.get();
   }
+
   getOrderById(id) {
     return OrderService.get({ id });
   }
+
   getOrderHistoryById(id) {
     return OrderService.path(`${id}/history/`).get();
   }
@@ -110,6 +112,7 @@ export default class ObjectsActions extends Actions {
     };
     return OrderService.get(payload);
   }
+
   resetOrder() {
     return {};
   }
@@ -246,5 +249,4 @@ export default class ObjectsActions extends Actions {
 
     return Country.get(payload);
   }
-
 }

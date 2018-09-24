@@ -21,20 +21,18 @@ import {
   Cleaning,
 } from 'api/missions';
 
-export const parseFilterObject = filter =>
+export const parseFilterObject = filter => (
   Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
     ...newFilter,
     [Array.isArray(value) ? `${key}__in` : key]: value,
   }),
-  {},
+  {})
 );
 
 // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
 // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
 const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
 export default class MissionsActions extends Actions {
-
-
   /* ---------- MISSION ---------- */
 
   getMissions(technical_operation_id, limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
@@ -56,7 +54,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReassignationParameters(payload) {
-    if (!payload.car_id) return Promise.reject('empty car_id');
+    if (!payload.car_id) return Promise.reject(new Error('empty car_id'));
     return MissionReassignationService.get(payload);
   }
 
@@ -261,7 +259,7 @@ export default class MissionsActions extends Actions {
   }
 
   printMissionTemplate(data) {
-    const payload = _.cloneDeep(data);
+    const payload = cloneDeep(data);
 
     return MissionTemplatePrintService.postBlob(payload);
   }
@@ -455,9 +453,11 @@ export default class MissionsActions extends Actions {
     };
     return Cleaning.path(type).get(payload, false, 'json');
   }
+
   getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
     return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }
+
   getCleaningMunicipalFacilityList(outerPyload) {
     const payload = {
       ...outerPyload,
@@ -471,6 +471,7 @@ export default class MissionsActions extends Actions {
 
     return Cleaning.path('municipal_facility').get(payload, false, 'json');
   }
+
   getCleaningMunicipalFacilityAllList(outerPyload) {
     const payload = {
       start_date: createValidDate(outerPyload.start_date || new Date()),

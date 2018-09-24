@@ -20,7 +20,7 @@ export type PropsMap = {
 
 export module MapUtils {
   export type getViewFunc = (
-    props: olx.ViewOptions,
+    props: ol.olx.ViewOptions,
   ) => ol.View;
 
   export type getMapViewFunc = (
@@ -87,7 +87,7 @@ export module MapUtils {
     disabledCenterOn: boolean,
     fitProps: {
       extent: ol.Extent,
-      opt_options: olx.view.FitOptions,
+      opt_options: ol.olx.view.FitOptions,
     },
     noCheckDisabledCenterOn?: boolean,
   ) => boolean;

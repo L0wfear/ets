@@ -1,7 +1,6 @@
 import MunicipalFacilityMission from 'components/missions/mission/inside_fields/municipal_facility/MunicipalFacility.jsx';
 
 class MunicipalFacility extends MunicipalFacilityMission {
-
   /**
    * @override
    */
@@ -70,7 +69,7 @@ class MunicipalFacility extends MunicipalFacilityMission {
         technical_operation_id,
         plan_date_start,
         norm_id,
-        } = {},
+      } = {},
       errors: {
         [props.id]: error,
       },

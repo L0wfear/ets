@@ -101,17 +101,14 @@ const renderers = {
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
 };
 
-export default (props) => {
-
-  return (
-    <Table
-      title="Шаблоны заданий"
-      renderers={renderers}
-      results={props.data}
-      tableMeta={getTableMeta(props)}
-      initialSort={'number'}
-      initialSortAscending={false}
-      {...props}
-    />
-  );
-};
+export default props => (
+  <Table
+    title="Шаблоны заданий"
+    renderers={renderers}
+    results={props.data}
+    tableMeta={getTableMeta(props)}
+    initialSort="number"
+    initialSortAscending={false}
+    {...props}
+  />
+);

@@ -35,11 +35,13 @@ export const tableMeta = ({
 export default (props) => {
   const renderers = {};
 
-  return (<Table
-    title="Автобазы"
-    results={props.data}
-    tableMeta={tableMeta(props)}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Автобазы"
+      results={props.data}
+      tableMeta={tableMeta(props)}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

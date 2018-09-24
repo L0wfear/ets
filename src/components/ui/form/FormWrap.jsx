@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import Form from './Form.jsx';
 
 export default class FormWrap extends React.Component {
-
   static contextTypes = {
     flux: PropTypes.object,
   }
@@ -31,7 +30,7 @@ export default class FormWrap extends React.Component {
 
 
   handleFormStateChange(field, e) {
-    const value = !!e.target ? e.target.value : e;
+    const value = e.target ? e.target.value : e;
     const formState = this.state.formState;
     const newState = {};
 
@@ -51,18 +50,19 @@ export default class FormWrap extends React.Component {
   render() {
     const props = this.props;
 
-    return props.showForm ?
-      <Form
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        tableMeta={this.props.tableMeta}
-        title={this.props.title}
-        {...this.state}
-      />
+    return props.showForm
+      ? (
+        <Form
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          tableMeta={this.props.tableMeta}
+          title={this.props.title}
+          {...this.state}
+        />
+      )
       : null;
   }
-
 }

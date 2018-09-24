@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 import Form from 'components/compositions/Form.jsx';

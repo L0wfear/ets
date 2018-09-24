@@ -1,7 +1,6 @@
 import { Actions } from 'flummox';
 
 export default class PointsActions extends Actions {
-
   updatePoints(data) {
     return data;
   }
@@ -33,5 +32,4 @@ export default class PointsActions extends Actions {
   setSingleCarTrackDates(dates) {
     return dates;
   }
-
 }

@@ -1,6 +1,8 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
-import { makeUnixTime, createValidDate, createValidDateTime, diffDayOfDate } from 'utils/dates';
+import {
+  makeUnixTime, createValidDate, createValidDateTime, diffDayOfDate,
+} from 'utils/dates';
 import { swapCoords } from 'utils/geo';
 import { packObjectData } from 'api/utils';
 import {
@@ -17,12 +19,12 @@ import {
 const updateCarInfo = async (id = null, payload, serviceName) => {
   if (id === null) {
     await AutoBase
-    .path(serviceName)
-    .post(payload, false, 'json');
+      .path(serviceName)
+      .post(payload, false, 'json');
   } else {
     await AutoBase
-    .path(`${serviceName}/${id}`)
-    .put({ id, ...payload }, false, 'json');
+      .path(`${serviceName}/${id}`)
+      .put({ id, ...payload }, false, 'json');
   }
 };
 
@@ -63,7 +65,7 @@ export default class CarActions extends Actions {
         ...packObjectData('car_drivers', restPayload),
       }),
       () => {
-        if (!!passport_type) {
+        if (passport_type) {
           return this.updateCarPassportInfo({
             car_id,
             type: passport_type.toUpperCase(),
@@ -75,22 +77,26 @@ export default class CarActions extends Actions {
       },
     ]).then(([carData]) => carData);
   }
+
   getCarRegisterInfo(car_id) {
     return AutoBase
       .path('car_registration_registry')
       .get({ car_id })
       .then(data => data.result.rows[0]);
   }
+
   getCarPassportRegistryInfo(car_id) {
     return AutoBase
       .path('car_passport_registry')
       .get({ car_id })
       .then(data => data.result.rows[0]);
   }
+
   getCarDriversInfo(car_id) {
     return CarDrivers
       .get({ car_id });
   }
+
   updateCarRegisterInfo({
     id,
     certificate_number,
@@ -138,6 +144,7 @@ export default class CarActions extends Actions {
 
     return CarService.get(payload);
   }
+
   getCarsByNormIds({ norm_ids }) {
     const payload = {
       norm_ids,
@@ -196,7 +203,7 @@ export default class CarActions extends Actions {
         const { track = [] } = obj;
 
         obj.track = track.map((point) => {
-            // wrap coords for OpenLayers
+          // wrap coords for OpenLayers
           point.coords = swapCoords(point.coords);
           point.coords_msk = swapCoords(point.coords_msk);
           return point;
@@ -232,5 +239,4 @@ export default class CarActions extends Actions {
     };
     return CarInfoService.get(payload).then(({ result: { missions = [] } }) => missions);
   }
-
 }

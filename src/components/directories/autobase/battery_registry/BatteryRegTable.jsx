@@ -106,11 +106,13 @@ export default (props) => {
   const meta = tableMeta(props);
   const sortedMeta = sortSchemaCols(meta);
 
-  return (<Table
-    title="Реестр аккумуляторов"
-    results={props.data}
-    tableMeta={sortedMeta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Реестр аккумуляторов"
+      results={props.data}
+      tableMeta={sortedMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

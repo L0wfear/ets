@@ -12,7 +12,7 @@ const tableMeta = {
       },
     },
     {
-      name: 'measure_unit_name', //unit
+      name: 'measure_unit_name', // unit
       displayName: 'Единица измерения',
       type: 'text',
       filter: {

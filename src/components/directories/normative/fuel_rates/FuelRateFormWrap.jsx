@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import BaseFuelRateForm from './FuelRateForm.jsx';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import { fuelRateSchema, defaultElement } from './fuelRateSchema.js';
 import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import BaseFuelRateForm from './FuelRateForm.jsx';
+import { fuelRateSchema, defaultElement } from './fuelRateSchema.js';
 
 const FuelRateForm = enhanceWithPermissions(BaseFuelRateForm);
 
 export default class FuelRateFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -20,19 +19,20 @@ export default class FuelRateFormWrap extends FormWrap {
   render() {
     const props = this.props;
 
-    return props.showForm ?
-      <FuelRateForm
-        formState={this.state.formState}
-        permissions={['fuel_consumption_rate.update']}
-        addPermissionProp={true}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        measureUnitList={this.props.measureUnitList}
-        {...this.state}
-      />
+    return props.showForm
+      ? (
+        <FuelRateForm
+          formState={this.state.formState}
+          permissions={['fuel_consumption_rate.update']}
+          addPermissionProp
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          measureUnitList={this.props.measureUnitList}
+          {...this.state}
+        />
+      )
       : null;
   }
-
 }

@@ -5,11 +5,10 @@ import PolyMap from 'components/map/PolyMap.jsx';
 import Div from 'components/ui/Div.jsx';
 
 class MapModal extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      polys: {}
+      polys: {},
     };
   }
 

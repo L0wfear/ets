@@ -1,10 +1,12 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
-import Form from '../compositions/Form.jsx';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
+import Form from '../compositions/Form';
 
 const DEY = { value: 3, label: 'ДЭУ' };
 const DEK = { value: 2, label: 'ДЭК' };
@@ -24,6 +26,7 @@ class CompanyStructureForm extends Form {
     this.handleChange('type', null);
     this.handleChange('parent_id', parent_id);
   }
+
   render() {
     const {
       formState: state = {},

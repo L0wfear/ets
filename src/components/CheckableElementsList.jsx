@@ -8,7 +8,7 @@ import {
   each,
   find,
 } from 'lodash';
-import ElementsList from './ElementsList.jsx';
+import ElementsList from './ElementsList';
 import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CRUD';
 
 /**
@@ -16,7 +16,6 @@ import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CR
  * @extends React.Component
  */
 export default class CheckableElementsList extends ElementsList {
-
   static get propTypes() {
     return {
       onListStateChange: PropTypes.func,
@@ -92,38 +91,38 @@ export default class CheckableElementsList extends ElementsList {
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
         <ButtonCreateNew
-          key={'button-create'}
+          key="button-create"
           buttonName={BCbuttonName}
           onClick={this.createElement}
           permission={this.permissions.create}
-        />
+        />,
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
         <ButtonReadNew
-          key={'button-read'}
+          key="button-read"
           buttonName={BRbuttonName}
           onClick={this.showForm}
           permission={this.permissions.read}
           disabled={this.checkDisabledRead()}
-        />
+        />,
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
         <ButtonDeleteNew
-          key={'button-delete'}
+          key="button-delete"
           buttonName={BDbuttonName}
           onClick={this.removeCheckedElements}
           permission={this.permissions.delete}
           disabled={this.checkDisabledDelete()}
-        />
+        />,
       );
     }
     if (this.props.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>
+        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>,
       );
     }
     return buttons;
@@ -216,5 +215,4 @@ export default class CheckableElementsList extends ElementsList {
       this.props.onListStateChange(this.state);
     }
   }
-
 }

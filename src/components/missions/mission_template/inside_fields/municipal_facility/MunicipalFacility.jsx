@@ -1,7 +1,6 @@
 import MunicipalFacilityMission from 'components/missions/mission/inside_fields/municipal_facility/MunicipalFacility.jsx';
 
 class MunicipalFacility extends MunicipalFacilityMission {
-
   /**
    * @override
    */

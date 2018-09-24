@@ -1,10 +1,9 @@
 import React from 'react';
 import FormWrap from 'components/compositions/FormWrap.jsx';
-import OdhForm from './OdhForm.jsx';
 import Div from 'components/ui/Div.jsx';
+import OdhForm from './OdhForm.jsx';
 
 export default class OdhFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -26,5 +25,4 @@ export default class OdhFormWrap extends FormWrap {
       </Div>
     );
   }
-
 }

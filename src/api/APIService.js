@@ -2,8 +2,10 @@ import { getInfoNotification, getWarningNotification, getErrorNotificationFromBa
 import RequestWarningError from 'utils/errors/RequestWarningError';
 import Raven from 'raven-js';
 import urljoin from 'url-join';
-import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter.js';
-import { getBlob, postBlob } from './adapterBlob.js';
+import {
+  getJSON, postJSON, deleteJSON, putJSON, patchJSON,
+} from './adapter';
+import { getBlob, postBlob } from './adapterBlob';
 import { mocks } from './mocks';
 
 // временная ловушка
@@ -14,7 +16,6 @@ const checkUrlWithPayload = (url, payload) => {
 };
 
 export default class APIService {
-
   /**
    * Creates APIService handler for backend service via provided url
    * @param {string} url - url path
@@ -32,7 +33,7 @@ export default class APIService {
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
 
-    this.logFunction = method => console.info(`API SERVICE ${method} ${this.url}`);
+    this.logFunction = method => console.info(`API SERVICE ${method} ${this.url}`); // eslint-disable-line
     this.warningNotificationFunction = warning => global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
     this.errrorNotificationFunction = errror => global.NOTIFICATION_SYSTEM.notify(getErrorNotification(errror));
 
@@ -43,7 +44,7 @@ export default class APIService {
     if (r.warnings && r.warnings.length) {
       // Show warnings
       if (Array.isArray(r.warnings)) {
-        r.warnings.forEach(w => {
+        r.warnings.forEach((w) => {
           const errorIsShow = !w.hidden;
 
           !w.hidden && this.warningNotificationFunction(w.message || w);
@@ -55,7 +56,7 @@ export default class APIService {
           };
           throw errorThrow;
         });
-      } else if (r.warnings && r.warnings.message || typeof r.warnings === 'string') {
+      } else if ((r.warnings && r.warnings.message) || typeof r.warnings === 'string') {
         const errorIsShow = !r.warnings.hidden;
 
         !r.warnings.hidden && this.warningNotificationFunction(r.warnings.message || r.warnings);
@@ -74,14 +75,14 @@ export default class APIService {
         r.info.forEach((i) => {
           !i.hidden && this.infoNotificationFunction(i.message || i);
         });
-      } else if (r.info && r.info.message || typeof r.info === 'string') {
+      } else if ((r.info && r.info.message) || typeof r.info === 'string') {
         !r.info.hidden && this.infoNotificationFunction(r.info.message || r.info);
       }
     }
     if (r.errors && r.errors.length) {
       // Show errors
       if (Array.isArray(r.errors)) {
-        r.errors.forEach(w => {
+        r.errors.forEach((w) => {
           const errorIsShow = !w.hidden;
           !w.hidden && this.errrorNotificationFunction(w.message || w);
 
@@ -92,7 +93,7 @@ export default class APIService {
           };
           throw errorThrow;
         });
-      } else if (r.errors && r.errors.message || typeof r.errors === 'string') {
+      } else if ((r.errors && r.errors.message) || typeof r.errors === 'string') {
         const errorIsShow = !r.errors.hidden;
 
         !r.errors.hidden && this.errrorNotificationFunction(r.errors.message || r.errors);
@@ -108,7 +109,7 @@ export default class APIService {
     if (typeof callback === 'function') {
       // If callback is specified, call it
       return callback();
-    } else if (callback === false) {
+    } if (callback === false) {
       // If forced to prevent callback we return just response
       return r;
     }
@@ -126,7 +127,7 @@ export default class APIService {
       });
     }
     this.log('GET');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
 
     checkUrlWithPayload(url, payload);
@@ -135,42 +136,42 @@ export default class APIService {
 
   getBlob(payload = {}) {
     this.log('GET BLOB');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
     return getBlob(url, payload).then(r => this.processResponse(r, false));
   }
 
   postBlob(payload = {}) {
     this.log('GET (POST) BLOB');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
     return postBlob(url, payload).then(r => this.processResponse(r, false));
   }
 
   post(payload = {}, callback, type = 'form', params = {}) {
     this.log('POST');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
     return postJSON(url, payload, type, params).then(r => this.processResponse(r, callback));
   }
 
   put(payload = {}, callback, type = 'form') {
     this.log('PUT');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
     return putJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   patch(payload = {}, callback, type = 'form') {
     this.log('PATCH');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
     return patchJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   delete(payload = {}, callback, type = 'form') {
     this.log('DELETE');
-    const url = this.url;
+    const { url } = this;
     this.resetPath();
     return deleteJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
@@ -203,5 +204,4 @@ export default class APIService {
       this.warningNotificationFunction = fn;
     }
   }
-
 }

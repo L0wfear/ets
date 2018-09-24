@@ -77,8 +77,8 @@ const renderers = {
   timestamp: ({ data }) => <DateFormatter date={data} time />,
 };
 
-const UserActionLogTable = (props) => {
-  return (<Table
+const UserActionLogTable = props => (
+  <Table
     title="Журнал действий пользователей"
     initialSort="timestamp"
     initialSortAscending={false}
@@ -86,8 +86,8 @@ const UserActionLogTable = (props) => {
     tableMeta={tableMeta(props)}
     renderers={renderers}
     {...props}
-  />);
-};
+  />
+);
 
 UserActionLogTable.propTypes = {
   data: PropTypes.array,

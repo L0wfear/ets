@@ -40,6 +40,7 @@ class ObjectPropertyList extends ElementsList {
       typeData: this.props.typeData,
     };
   }
+
   async inheritedComponentWillReceiveProps(props) {
     const { typeData } = props;
     const { iHaveType = { 'odh': true } } = this.state;
@@ -70,6 +71,7 @@ export default class ObjectProperty extends Component {
       this.setState({ typeData: typeDateNew });
     }
   }
+
   render() {
     const { typeData } = this.state;
 

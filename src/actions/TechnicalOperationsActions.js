@@ -57,6 +57,7 @@ export default class TechnicalOperationsActions extends Actions {
 
     return getTechnicalOperations(payload);
   }
+
   getTechnicalOperationsRegistry() {
     const payload = {};
     return getTechnicalOperationsRegistry(payload);
@@ -126,5 +127,4 @@ export default class TechnicalOperationsActions extends Actions {
 
     return Cleaning.path('norm_registry').path(data.id).put(payload, getTechnicalOperationsRegistry, 'json');
   }
-
 }

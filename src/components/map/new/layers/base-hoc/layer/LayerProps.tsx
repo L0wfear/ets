@@ -6,6 +6,7 @@ type PropsLayerProps = {
   center?: [number, number];
   zoom?: number,
   centerOn?: Function;
+  [key: string]: any;
 };
 
 type StateLayerProps = {
@@ -56,6 +57,7 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
     }
 
     getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource = () => this.state.vectorSource;
+    getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer = () => this.state.olLayer;
 
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource = (features) => {
       const { vectorSource } = this.state;
@@ -103,6 +105,7 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
       return (
         <Component
           addLayer={this.addLayer}
+          getOlLayer={this.getOlLayer}
           removeLayer={this.removeLayer}
           getVectorSource={this.getVectorSource}
           addFeaturesToSource={this.addFeaturesToSource}

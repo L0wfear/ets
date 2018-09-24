@@ -2,7 +2,6 @@ import { Store } from 'flummox';
 import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
 
 export default class StreamStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -56,5 +55,4 @@ export default class StreamStore extends Store {
       });
     }
   }
-
 }

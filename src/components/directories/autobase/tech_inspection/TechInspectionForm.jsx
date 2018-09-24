@@ -5,7 +5,7 @@ import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form.jsx';
 
 import { connectToStores } from 'utils/decorators';

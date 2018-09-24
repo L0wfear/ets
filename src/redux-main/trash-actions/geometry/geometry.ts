@@ -22,7 +22,8 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
     .then(({ result: { rows } }) => ({
       [type_geoobject]: rows.reduce((newObj, data) => {
         const geom = data;
-        const front_key = `${type_geoobject}/${data.odh_id || data.dt_id || data.global_id || data.id}`;
+        const front_id = data.odh_id || data.dt_id || data.global_id || data.id;
+        const front_key = `${type_geoobject}/${front_id}`;
 
         try {
           geom.shape = JSON.parse(data.shape_json || data.shape);
@@ -30,6 +31,7 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
           geom.shape = data.shape_json || data.shape;
         }
         geom.front_key = front_key;
+        geom.front_id = front_id;
 
         return {
           ...newObj,

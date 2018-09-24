@@ -18,9 +18,7 @@ import {
   CardTitleContainerWrap,
   CardBodyContainer,
 } from 'components/dashboard/new/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import { DivNone } from 'global-styled/global-styled';
 
 const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Component) => (
   hocAll(

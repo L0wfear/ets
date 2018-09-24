@@ -49,7 +49,7 @@ function validateFieldByType(config, value, formData) {
 
 function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
   if (typeof type === 'undefined') {
-    return undefined; 
+    return undefined;
   }
   const validator = dependencyValidators[type];
 

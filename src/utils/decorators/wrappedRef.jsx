@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 
 export default function wrappedRef(ComposedComponent) {
   return class WrappedRefComponent extends React.Component {
-
     static get propTypes() {
       return {
         wrappedRef: PropTypes.func,

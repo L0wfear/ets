@@ -95,8 +95,8 @@ const dutyMissionSchema = {
       {
         validator: (value, { plan_date_start, plan_date_end, status }) => {
           const pbs = status && (status === 'assigned' || status === 'complete');
-          const validInterval = diffDates(value, plan_date_start) < 0 ||
-                                diffDates(value, plan_date_end) > 0;
+          const validInterval = diffDates(value, plan_date_start) < 0
+                                || diffDates(value, plan_date_end) > 0;
 
           if (value && pbs && validInterval) {
             return 'Фактическая дата начала не должна выходить за границы плановых дат';
@@ -120,8 +120,8 @@ const dutyMissionSchema = {
       {
         validator: (value, { plan_date_start, plan_date_end, status }) => {
           const pbs = status && (status === 'assigned' || status === 'complete');
-          const validInterval = diffDates(value, plan_date_start) < 0 ||
-                                diffDates(value, plan_date_end) > 0;
+          const validInterval = diffDates(value, plan_date_start) < 0
+                                || diffDates(value, plan_date_end) > 0;
 
           if (value && pbs && validInterval) {
             return 'Фактическая дата окончания не должна выходить за границы плановых дат';

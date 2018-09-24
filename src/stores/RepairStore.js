@@ -2,7 +2,6 @@ import { Store } from 'flummox';
 import REPAIR from 'constants/repair';
 
 export default class RepairStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -11,8 +10,8 @@ export default class RepairStore extends Store {
     this.register(repairActions.getObjectProperty, this.handleGetList);
     this.register(repairActions.setActiveList, this.handleChangeListActive);
 
-    this.register(repairActions.getDataAboutObjectById, this.handlerGetDataAboutObjectById)
-    this.register(repairActions.cleartDataAboutObjectById, this.handlerGetDataAboutObjectById)
+    this.register(repairActions.getDataAboutObjectById, this.handlerGetDataAboutObjectById);
+    this.register(repairActions.cleartDataAboutObjectById, this.handlerGetDataAboutObjectById);
 
     this.state = {
       ...this.getDefaultStateList(),
@@ -21,6 +20,7 @@ export default class RepairStore extends Store {
       dataAboutObjectbyIdList: [],
     };
   }
+
   handlerGetDataAboutObjectById({ result: { rows: dataAboutObjectbyIdList } }) {
     this.setState({ dataAboutObjectbyIdList });
   }
@@ -28,9 +28,11 @@ export default class RepairStore extends Store {
   getDefaultStateList() {
     return Object.keys(REPAIR).reduce((obj, type) => ({ ...obj, [`${type}List`]: [] }), {});
   }
+
   getDefaultOptionsIndex() {
     return Object.keys(REPAIR).reduce((obj, type) => ({ ...obj, [`${type}Options`]: [] }), {});
   }
+
   handleChangeListActive({ listName, listNameTrue }) {
     const list = this.state[listNameTrue];
     this.setState({ [listName]: list });
@@ -46,6 +48,7 @@ export default class RepairStore extends Store {
     };
     this.setState({ ...setStateObject });
   }
+
   getNameList(type, { name = false }) {
     let nameList = type;
 
@@ -54,17 +57,20 @@ export default class RepairStore extends Store {
     }
     return `${nameList}List`;
   }
+
   getDataForStore = (type, data = []) => this.defaultData(data);
 
   defaultData = ({ result = [] }) => {
     const { rows = [], extra = false } = result;
     return { rows, extra };
   }
+
   makeExtra(extra, name) {
     if (!Object.values(extra)[0]) return undefined;
 
     return { [`${name}Extra`]: extra };
   }
+
   makeOption({ makeOptions = false, selectListMapper, type }, rows) {
     if (!makeOptions) return undefined;
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/DataTableInput/DataTableInput.h';

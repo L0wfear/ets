@@ -10,7 +10,6 @@ import {
 } from 'api/Services';
 
 export default class RoutesActions extends Actions {
-
   getRoutes(technical_operation_id) {
     const payload = {};
     if (technical_operation_id) {
@@ -174,5 +173,4 @@ export default class RoutesActions extends Actions {
     };
     return RouteValidateService.post(payload, false, 'json');
   }
-
 }

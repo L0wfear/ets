@@ -22,11 +22,10 @@ import {
  * @extends React.Component
  */
 
-let lastDate = +(new Date());
+const lastDate = +(new Date());
 
 @FluxContext
 class ElementsList extends React.Component {
-
   static get propTypes() {
     return {
       location: PropTypes.object,
@@ -112,7 +111,7 @@ class ElementsList extends React.Component {
     }
     this.clicks += 1;
 
-    this.setState({ selectedElement })
+    this.setState({ selectedElement });
   }
 
   onRowClick = ({ props: { data } }) => {
@@ -130,14 +129,13 @@ class ElementsList extends React.Component {
     }
   }
 
-  setNewSelectedElement = (selectedElement) =>
-    Promise.resolve(this.setState({ showForm: false }))
-      .then(() => {
-        this.setState({
-          showForm: true,
-          selectedElement,
-        });
+  setNewSelectedElement = selectedElement => Promise.resolve(this.setState({ showForm: false }))
+    .then(() => {
+      this.setState({
+        showForm: true,
+        selectedElement,
       });
+    });
 
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
@@ -194,13 +192,13 @@ class ElementsList extends React.Component {
       title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
-    .then(() => {
-      const query = this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
+      .then(() => {
+        const query = this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
 
-      this.setState({ selectedElement: null });
-      return query;
-    })
-    .catch(() => {});
+        this.setState({ selectedElement: null });
+        return query;
+      })
+      .catch(() => {});
   }
 
   onKeyPress(e) {
@@ -233,23 +231,7 @@ class ElementsList extends React.Component {
   checkDisabledRead() {
     return this.state.selectedElement === null;
   }
-  processExport = async (exportPayload = this.exportPayload) => {
-    try {
-      this.setState({ exportFetching: true });
-      await this.props.export(exportPayload, this.exportUseRouteParams);
-      this.setState({ exportFetching: false });
-    } catch (error) {
-      this.setState({ exportFetching: false });
-    }
-  }
-  handleExport = () => {
-    if (typeof this.export === 'function') {
-      this.export();
-      return;
-    }
 
-    this.processExport();
-  }
   /**
    * Определяет и возвращает массив кнопок для CRUD операций
    * @return {Component[]} Buttons - массив кнопок
@@ -269,62 +251,68 @@ class ElementsList extends React.Component {
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
         this.permissions.create
-        ?
-          <ButtonCreateNew
-            key={'button-create'}
-            buttonName={BCbuttonName}
-            onClick={this.createElement}
-            permission={this.permissions.create}
-          />
-        :
-          <ButtonCreate
-            buttonName={BCbuttonName}
-            key={buttons.length}
-            onClick={this.createElement}
-            permissions={[`${entity}.create`]}
-          />
+          ? (
+            <ButtonCreateNew
+              key="button-create"
+              buttonName={BCbuttonName}
+              onClick={this.createElement}
+              permission={this.permissions.create}
+            />
+          )
+          : (
+            <ButtonCreate
+              buttonName={BCbuttonName}
+              key={buttons.length}
+              onClick={this.createElement}
+              permissions={[`${entity}.create`]}
+            />
+          ),
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
         this.permissions.read
-        ?
-          <ButtonReadNew
-            key={'button-read'}
-            buttonName={BRbuttonName}
-            onClick={this.showForm}
-            permission={this.permissions.read}
-            disabled={this.checkDisabledRead()}
-          />
-        :
-          <ButtonRead
-            buttonName={BRbuttonName}
-            key={buttons.length}
-            onClick={this.showForm}
-            disabled={this.checkDisabledRead()}
-            permissions={[`${entity}.read`]}
-          />
+          ? (
+            <ButtonReadNew
+              key="button-read"
+              buttonName={BRbuttonName}
+              onClick={this.showForm}
+              permission={this.permissions.read}
+              disabled={this.checkDisabledRead()}
+            />
+          )
+          : (
+            <ButtonRead
+              buttonName={BRbuttonName}
+              key={buttons.length}
+              onClick={this.showForm}
+              disabled={this.checkDisabledRead()}
+              permissions={[`${entity}.read`]}
+            />
+          ),
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
         this.permissions.read
-        ?
-          <ButtonDeleteNew
-            key={'button-delete'}
-            buttonName={BDbuttonName}
-            onClick={this.removeElement}
-            permission={this.permissions.delete}
-            disabled={this.checkDisabledDelete()}
-          />
-        :
-          <ButtonDelete
-            buttonName={BDbuttonName}
-            key={buttons.length}
-            onClick={this.removeElement}
-            disabled={this.checkDisabledDelete()}
-            permissions={[`${entity}.delete`]}
-          />
+          ? (
+            <ButtonDeleteNew
+              key="button-delete"
+              buttonName={BDbuttonName}
+              onClick={this.removeElement}
+              permission={this.permissions.delete}
+              disabled={this.checkDisabledDelete()}
+            />
+          )
+          : (
+            <ButtonDelete
+              buttonName={BDbuttonName}
+              key={buttons.length}
+              onClick={this.removeElement}
+              disabled={this.checkDisabledDelete()}
+              permissions={[`${entity}.delete`]}
+            />
+          ),
       );
     }
     if (this.props.exportable) {
@@ -338,10 +326,29 @@ class ElementsList extends React.Component {
           onClick={this.handleExport}
         >
           <Glyphicon glyph="download-alt" />
-        </Button>
+        </Button>,
       );
     }
     return buttons;
+  }
+
+  processExport = async (exportPayload = this.exportPayload) => {
+    try {
+      this.setState({ exportFetching: true });
+      await this.props.export(exportPayload, this.exportUseRouteParams);
+      this.setState({ exportFetching: false });
+    } catch (error) {
+      this.setState({ exportFetching: false });
+    }
+  }
+
+  handleExport = () => {
+    if (typeof this.export === 'function') {
+      this.export();
+      return;
+    }
+
+    this.processExport();
   }
 
   /**
@@ -396,8 +403,7 @@ class ElementsList extends React.Component {
     return Object.assign({},
       this.getBasicProps(),
       this.getSelectedProps(),
-      this.getAdditionalProps()
-    );
+      this.getAdditionalProps());
   }
 
   /**
@@ -450,7 +456,7 @@ class ElementsList extends React.Component {
         permissions={[`${this.entity}.read`]}
         flux={this.context.flux}
         {...this.props}
-      />
+      />,
     );
 
     return forms;
@@ -482,7 +488,6 @@ class ElementsList extends React.Component {
       </EtsPageWrap>
     );
   }
-
 }
 
 export default ElementsList;

@@ -23,7 +23,6 @@ export const organizationsSchema = {
 };
 
 export default class MaintenanceWorkFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -38,18 +37,19 @@ export default class MaintenanceWorkFormWrap extends FormWrap {
   render() {
     const props = this.props;
 
-    return props.showForm ?
-      <OrganizationsForm
-        formState={this.state.formState}
-        permissions={['company.update']}
-        addPermissionProp
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        {...this.state}
-      />
-    : null;
+    return props.showForm
+      ? (
+        <OrganizationsForm
+          formState={this.state.formState}
+          permissions={['company.update']}
+          addPermissionProp
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          {...this.state}
+        />
+      )
+      : null;
   }
-
 }

@@ -8,7 +8,6 @@ const MAP_INITIAL_ZOOM = 3;
  * @extends Model
  */
 export default class User extends Model {
-
   static get schema() {
     return {
       company_id: 'integer',

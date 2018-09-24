@@ -12,8 +12,7 @@ import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/cus
 import DutyMissionTemplateForm from './DutyMissionTemplateForm.jsx';
 import DutyMissionsCreationForm from './DutyMissionsCreationForm.jsx';
 
-export const createDutyMissions = async (flux, element, payload) =>
-  flux.getActions('missions').createDutyMissions(element, payload);
+export const createDutyMissions = async (flux, element, payload) => flux.getActions('missions').createDutyMissions(element, payload);
 
 class DutyMissionTemplateFormWrap extends FormWrap {
   constructor(props) {
@@ -88,23 +87,21 @@ class DutyMissionTemplateFormWrap extends FormWrap {
           />
         </Div>
       );
-    } else {
-      return (
-        <Div hidden={!this.props.showForm}>
-          <DutyMissionsCreationForm
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            missions={this.props.missions}
-            {...this.state}
-          />
-        </Div>
-      );
     }
+    return (
+      <Div hidden={!this.props.showForm}>
+        <DutyMissionsCreationForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          missions={this.props.missions}
+          {...this.state}
+        />
+      </Div>
+    );
   }
-
 }
 
 export default DutyMissionTemplateFormWrap;

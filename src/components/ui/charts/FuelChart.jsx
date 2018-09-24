@@ -5,16 +5,15 @@ import Chart from './BaseChart.jsx';
 const LEGEND = '% топлива';
 
 export default class FuelChart extends Chart {
-
   constructor(props) {
     super(props);
     this.type = 'fuel';
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.to !== this.props.to ||
-        nextProps.from !== this.props.from ||
-        nextProps.id !== this.props.id) {
+    if (nextProps.to !== this.props.to
+        || nextProps.from !== this.props.from
+        || nextProps.id !== this.props.id) {
       this.fetch();
     }
   }

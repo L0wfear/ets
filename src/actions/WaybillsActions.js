@@ -4,7 +4,7 @@ import {
   cloneDeep,
   clone,
   mapKeys,
- } from 'lodash';
+} from 'lodash';
 import {
   hasMotohours,
   isEmpty,
@@ -16,13 +16,12 @@ import {
   WaybillsReportService,
   RootService,
 } from 'api/Services';
-import { parseFilterObject } from 'actions/MissionsActions.js';
+import { parseFilterObject } from 'actions/MissionsActions';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
 
 export default class WaybillsActions extends Actions {
-
   getWaybills(limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
     const payload = {
       limit,
@@ -74,7 +73,7 @@ export default class WaybillsActions extends Actions {
       payload.date = createValidDate(state.date);
     }
 
-    return WaybillJournalReportService.path(`?filter=${JSON.stringify(parseFilterObject(_.cloneDeep(filter)))}`).postBlob(payload);
+    return WaybillJournalReportService.path(`?filter=${JSON.stringify(parseFilterObject(cloneDeep(filter)))}`).postBlob(payload);
   }
 
   getWaybillsReport(state, filter) {
@@ -84,7 +83,7 @@ export default class WaybillsActions extends Actions {
     };
 
     if (state.with_filter) {
-      payload.filter = JSON.stringify(parseFilterObject(_.cloneDeep(filter)));
+      payload.filter = JSON.stringify(parseFilterObject(cloneDeep(filter)));
     }
 
     return WaybillsReportService.getBlob(payload);
@@ -108,15 +107,11 @@ export default class WaybillsActions extends Actions {
     payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
 
     if (payload.tax_data) {
-      const tax_data = payload.tax_data.filter(t =>
-         !isEmpty(t.FACT_VALUE)
-      );
+      const tax_data = payload.tax_data.filter(t => !isEmpty(t.FACT_VALUE));
       payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
-      const equipment_tax_data = payload.equipment_tax_data.filter(t =>
-         !isEmpty(t.FACT_VALUE)
-      );
+      const equipment_tax_data = payload.equipment_tax_data.filter(t => !isEmpty(t.FACT_VALUE));
       payload.equipment_tax_data = equipment_tax_data;
     }
 
@@ -200,5 +195,4 @@ export default class WaybillsActions extends Actions {
 
     return WaybillService.post(payload, false, 'json');
   }
-
 }

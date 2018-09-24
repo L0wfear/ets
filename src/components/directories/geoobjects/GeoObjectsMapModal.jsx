@@ -14,18 +14,17 @@ const extractData = L.prop('data');
 @connectToStores(['geoObjects'])
 @FluxContext
 class GeoObjectsMapModal extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      polys: {}
+      polys: {},
     };
   }
 
   // TODO убрать запрос shape
   componentDidMount() {
     if (GORMOST_GEOOBJECTS_LIST.includes(this.props.entity)) {
-      //this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity, 'GormostService', {});
+      // this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity, 'GormostService', {});
     } else {
       this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry(this.props.entity !== 'pgm' ? this.props.entity : 'pgm_store');
     }
@@ -41,11 +40,11 @@ class GeoObjectsMapModal extends Component {
               shape: JSON.parse(props.element.shape),
             },
           },
-        })
+        });
       } else {
         this.setState({
-          polys: _.pick(props[`${GEOOBJECTS_TYPES[props.entity]}Polys`], props.element.global_id || props.element.id)
-        })
+          polys: _.pick(props[`${GEOOBJECTS_TYPES[props.entity]}Polys`], props.element.global_id || props.element.id),
+        });
       }
     }
   }
@@ -57,8 +56,11 @@ class GeoObjectsMapModal extends Component {
         const renderer = _.get(this.props, ['renderers', key], null) || extractData;
 
         return (
-          <Div key={key} style={{marginBottom: 10}}>
-            <label style={{display: 'block', margin: 0}}>{name}:</label>
+          <Div key={key} style={{ marginBottom: 10 }}>
+            <label style={{ display: 'block', margin: 0 }}>
+              {name}
+:
+            </label>
             {renderer({ data: this.props.element[key] })}
           </Div>
         );

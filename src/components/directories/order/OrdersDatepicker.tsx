@@ -8,7 +8,7 @@ import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/co
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 
-const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker);
+const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker) as any;
 
 
 const OrdersDatepicker: React.SFC<any> = props =>

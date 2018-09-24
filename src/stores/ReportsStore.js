@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 
 export default class ReportsStore extends Store {
-
   constructor(flux) {
     super();
 

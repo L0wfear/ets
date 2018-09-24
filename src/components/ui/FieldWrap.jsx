@@ -3,7 +3,6 @@ import Field from './Field.jsx';
 import Div from './Div.jsx';
 
 export default class FieldWrap extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -11,7 +10,9 @@ export default class FieldWrap extends React.Component {
   }
 
   getFieldByPropertyMeta() {
-    const { field, value, error, onChange } = this.props;
+    const {
+      field, value, error, onChange,
+    } = this.props;
     let fieldProps = {};
     console.log(value); // eslint-disable-line
 
@@ -20,7 +21,7 @@ export default class FieldWrap extends React.Component {
         fieldProps = {
           type: 'string',
           label: field.displayName,
-          readOnly: !!!field.form.editable,
+          readOnly: !field.form.editable,
           hidden: field.form.hidden,
           value,
           error,
@@ -31,7 +32,7 @@ export default class FieldWrap extends React.Component {
         fieldProps = {
           type: 'number',
           label: field.displayName,
-          disabled: !!!field.form.editable,
+          disabled: !field.form.editable,
           hidden: field.form.hidden,
           value,
           error,
@@ -42,7 +43,7 @@ export default class FieldWrap extends React.Component {
         fieldProps = {
           type: 'select2',
           label: field.displayName,
-          disabled: !!!field.form.editable,
+          disabled: !field.form.editable,
           hidden: field.form.hidden,
           value,
           error,
@@ -61,9 +62,8 @@ export default class FieldWrap extends React.Component {
 
     return (
       <Div>
-      {this.getFieldByPropertyMeta()}
+        {this.getFieldByPropertyMeta()}
       </Div>
     );
   }
-
 }

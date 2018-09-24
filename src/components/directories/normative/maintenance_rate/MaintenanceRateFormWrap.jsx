@@ -49,7 +49,6 @@ export const maintenanceRateSchema = {
 };
 
 export default class MaintenanceRateFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
     this.uniqueField = 'id';
@@ -70,19 +69,20 @@ export default class MaintenanceRateFormWrap extends FormWrap {
 
   render() {
     const props = this.props;
-    return props.showForm ?
-      <MaintenanceRateForm
-        formState={this.state.formState}
-        permissions={['maintenance_rate.update']}
-        addPermissionProp
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        type={this.props.type}
-        {...this.state}
-      />
-    : null;
+    return props.showForm
+      ? (
+        <MaintenanceRateForm
+          formState={this.state.formState}
+          permissions={['maintenance_rate.update']}
+          addPermissionProp
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          type={this.props.type}
+          {...this.state}
+        />
+      )
+      : null;
   }
-
 }

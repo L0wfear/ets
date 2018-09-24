@@ -44,12 +44,12 @@ const checkFixed = (data, key) => {
   if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
     clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].type](
       clone[0],
-      VALUE_FOR_FIXED[key].val
+      VALUE_FOR_FIXED[key].val,
     );
   } else if ('another' in VALUE_FOR_FIXED[key]) {
     clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].another.type](
       clone[0],
-      VALUE_FOR_FIXED[key].another.val
+      VALUE_FOR_FIXED[key].another.val,
     );
   }
 
@@ -138,7 +138,6 @@ const MissionReportByODHTable = (props) => {
 };
 
 class MissionReportByODH extends ElementsList {
-
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,

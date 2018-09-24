@@ -37,7 +37,6 @@ export const cleaningRateSchema = {
 };
 
 export default class CleaningRateFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
     this.uniqueField = 'id';
@@ -58,19 +57,20 @@ export default class CleaningRateFormWrap extends FormWrap {
 
   render() {
     const props = this.props;
-    return props.showForm ?
-      <CleaningRateForm
-        formState={this.state.formState}
-        permissions={['cleaning_rate.update']}
-        addPermissionProp
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        type={this.props.type}
-        {...this.state}
-      />
-    : null;
+    return props.showForm
+      ? (
+        <CleaningRateForm
+          formState={this.state.formState}
+          permissions={['cleaning_rate.update']}
+          addPermissionProp
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          type={this.props.type}
+          {...this.state}
+        />
+      )
+      : null;
   }
-
 }

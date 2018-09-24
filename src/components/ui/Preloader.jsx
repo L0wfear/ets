@@ -23,7 +23,8 @@ export default function Preloader({ style = {}, type = '' }) {
     case 'lazy':
       return (
         <div className="gost-weak-loading-overlay">
-          <img id="preloader-lazy" src={preloaderFieldGif} alt="Идет загрузка" />Загрузка...
+          <img id="preloader-lazy" src={preloaderFieldGif} alt="Идет загрузка" />
+Загрузка...
         </div>
       );
     default:

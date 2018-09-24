@@ -1,6 +1,8 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button, Glyphicon,
+} from 'react-bootstrap';
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
@@ -27,7 +29,6 @@ const makePayloadFromState = formState => ({
 const modalKey = 'duty_mission';
 
 export class DutyMissionForm extends Form {
-
   constructor(props) {
     super(props);
 
@@ -269,9 +270,9 @@ export class DutyMissionForm extends Form {
           technical_operation_id: formState.technical_operation_id,
           type: available_route_types.join(','),
         })
-        .then((routesList) => {
-          this.setState({ routesList });
-        });
+          .then((routesList) => {
+            this.setState({ routesList });
+          });
 
         this.setState({ available_route_types, normatives });
       });
@@ -279,7 +280,7 @@ export class DutyMissionForm extends Form {
 
   handleChangePDS = (plan_date_start) => {
     if (plan_date_start) {
-      this.handleChange('plan_date_start', plan_date_start)
+      this.handleChange('plan_date_start', plan_date_start);
     }
   }
 
@@ -317,9 +318,9 @@ export class DutyMissionForm extends Form {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -511,8 +512,8 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id={'municipal_facility_id'}
-                label={'municipal_facility_name'}
+                id="municipal_facility_id"
+                label="municipal_facility_name"
                 errors={errors}
                 state={state}
                 clearable={false}
@@ -554,7 +555,8 @@ export class DutyMissionForm extends Form {
                 onChange={this.handleBrigadeIdListChange}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+            {STRUCTURE_FIELD_VIEW && (
+            <Col md={3}>
               <Field
                 id="dm-structure-id"
                 type="select"
@@ -568,7 +570,8 @@ export class DutyMissionForm extends Form {
                 value={state.structure_id}
                 onChange={this.handleChangeStructureId}
               />
-            </Col>}
+            </Col>
+            )}
           </Row>
 
 
@@ -585,7 +588,7 @@ export class DutyMissionForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && !this.props.fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+              { IS_CREATING && !this.props.fromOrder && <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span> }
             </Col>
             <Col md={6}>
               <Field
@@ -602,7 +605,8 @@ export class DutyMissionForm extends Form {
 
           <Row>
             <Col md={6}>
-              { !!state.order_number &&
+              { !!state.order_number
+                && (
                 <Field
                   id="order-number"
                   type="string"
@@ -610,6 +614,7 @@ export class DutyMissionForm extends Form {
                   readOnly
                   value={state.order_number}
                 />
+                )
               }
             </Col>
             <Col md={6}>
@@ -617,7 +622,8 @@ export class DutyMissionForm extends Form {
                 id="car-mission-id"
                 type="select"
                 modalKey={modalKey}
-                label="Задание на ТС" error={errors.car_mission_id}
+                label="Задание на ТС"
+                error={errors.car_mission_id}
                 disabled={IS_DISPLAY || readOnly}
                 options={MISSIONS}
                 value={state.car_mission_id}
@@ -644,7 +650,9 @@ export class DutyMissionForm extends Form {
                   id="dm-create-route"
                   onClick={this.createNewRoute.bind(this)}
                   disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
-                >Создать новый</Button>
+                >
+Создать новый
+                </Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -657,10 +665,13 @@ export class DutyMissionForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
-          <Div className="inline-block" >
+          <Div className="inline-block">
             <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
-              <Glyphicon id="dm-download-all" glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
-            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
+              <Glyphicon id="dm-download-all" glyph="download-alt" />
+              {' '}
+              {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}
+            </Button>
+            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

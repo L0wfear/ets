@@ -9,6 +9,14 @@ export const DivNone = styled.div`
   display: none;
 `;
 
+export const DivGreen = styled.div`
+  color: green;
+`;
+
+export const DivRed = styled.div`
+  color: red;
+`;
+
 export const EtsPageWrap = styled.div`
   padding: 20px;
   display: ${({ inheritDisplay }: EtsPageWrapProps) => inheritDisplay ? 'inherit': 'flex'};

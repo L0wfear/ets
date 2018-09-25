@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Div from 'components/ui/Div.jsx';
-import Form from 'components/compositions/Form.jsx';
+import Div from 'components/ui/Div';
+import Form from 'components/compositions/Form';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';

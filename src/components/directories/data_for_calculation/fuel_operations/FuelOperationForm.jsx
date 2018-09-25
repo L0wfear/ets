@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 export default class FuelOperationForm extends Form {
   render() {

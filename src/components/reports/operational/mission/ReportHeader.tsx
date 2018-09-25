@@ -7,7 +7,7 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { getDatesByShift, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 

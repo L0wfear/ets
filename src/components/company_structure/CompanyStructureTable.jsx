@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 import permissions from 'components/company_structure/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 const ButtonEditStructure = enhanceWithPermissions({
   permission: permissions.update,

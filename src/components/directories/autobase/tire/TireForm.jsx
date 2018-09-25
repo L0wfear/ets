@@ -5,9 +5,9 @@ import { get } from 'lodash';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import { ExtDiv } from 'components/ui/Div.jsx';
+import { ExtDiv } from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import TireToVehicleBlockComponent from './vehicle-block/TireToVehicleBlock';
 
 const TireToVehicleBlock = onChangeWithKeys(TireToVehicleBlockComponent);

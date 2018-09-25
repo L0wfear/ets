@@ -11,16 +11,16 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import permissions from 'components/missions/mission/config-data/permissions';
 import order_permissions from 'components/directories/order/config-data/permissions';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
-import PrintForm from 'components/missions/common/PrintForm.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import PrintForm from 'components/missions/common/PrintForm';
 
-import Paginator from 'components/ui/Paginator.jsx';
-import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable.jsx';
+import Paginator from 'components/ui/Paginator';
+import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
-import MissionRejectForm from 'components/missions/mission/MissionRejectForm.jsx';
+import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 
 const is_archive = false;
 

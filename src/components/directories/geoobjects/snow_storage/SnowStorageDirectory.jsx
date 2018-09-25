@@ -1,7 +1,7 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import SnowStorageTable, { tableMeta } from 'components/directories/geoobjects/snow_storage/SnowStorageTable.jsx';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import SnowStorageTable, { tableMeta } from 'components/directories/geoobjects/snow_storage/SnowStorageTable';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import permissions from 'components/directories/geoobjects/snow_storage/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

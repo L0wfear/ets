@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import { cloneDeep, get, omit } from 'lodash';
 import { AutoBase } from 'api/Services';
-import AUTOBASE from '../constants/autobase.js';
+import AUTOBASE from '../constants/autobase';
 import { createValidDate } from '../utils/dates';
 import { AUTOBASE_REPAIR_STATUS } from '../constants/dictionary';
 

@@ -11,7 +11,7 @@ import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 const DatePickerBindable: any = bindable(DatePicker);
 

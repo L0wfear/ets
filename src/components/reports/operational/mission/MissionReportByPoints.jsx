@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import Table from 'components/ui/table/DataTable';
+import ElementsList from 'components/ElementsList';
 
 const tableMeta = {
   cols: [

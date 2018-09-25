@@ -4,8 +4,8 @@ import { IStateBrigadeEfficiency } from './@types/report.h';
 
 import { DutyMissionService } from 'api/missions';
 import { exportable } from 'utils/decorators';
-import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable.jsx';
-import DutyMissionFormSCC from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';
+import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
+import DutyMissionFormSCC from 'components/missions/duty_mission/DutyMissionFormWrap';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from './reportProps';
 

@@ -5,8 +5,8 @@ import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getYesterday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
-import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm.jsx';
+import OdhCoverageReportTable from './OdhCoverageReportTable';
+import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm';
 
 import {
   EtsPageWrap,

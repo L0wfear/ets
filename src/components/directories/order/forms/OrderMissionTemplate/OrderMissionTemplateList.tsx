@@ -5,14 +5,14 @@ import { isEmpty } from 'lodash';
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import MissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
 import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
 
-import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap.jsx';
-import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap.jsx';
+import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap';
+import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { diffDates } from 'utils/dates';
 

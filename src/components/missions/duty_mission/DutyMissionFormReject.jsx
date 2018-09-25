@@ -4,7 +4,7 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { FluxContext } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 
 @FluxContext
 export class DutyMissionForm extends React.Component {

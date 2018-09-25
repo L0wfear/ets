@@ -1,4 +1,4 @@
-import RoutesList from 'components/route/RoutesList.jsx';
+import RoutesList from 'components/route/RoutesList';
 
 export default [
   {

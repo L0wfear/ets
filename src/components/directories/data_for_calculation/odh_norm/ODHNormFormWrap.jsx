@@ -1,7 +1,7 @@
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { schema } from 'models/ODHNorm.js';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import BaseODHNormForm from './ODHNormForm.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import { schema } from 'models/ODHNorm';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import BaseODHNormForm from './ODHNormForm';
 
 
 const ODHNormForm = enhanceWithPermissions(BaseODHNormForm);

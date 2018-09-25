@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 
 export const tableMeta = ({
   isOkrug = false,

@@ -4,16 +4,16 @@ import _ from 'lodash';
 import { Button } from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
-import Paginator from 'components/ui/Paginator.jsx';
-import PrintForm from 'components/missions/common/PrintForm.tsx';
+import Paginator from 'components/ui/Paginator';
+import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable.jsx';
-import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap.jsx';
+import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
+import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 
 
 const is_archive = true;

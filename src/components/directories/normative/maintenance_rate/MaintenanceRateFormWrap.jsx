@@ -1,7 +1,7 @@
 import React from 'react';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import BaseMaintenanceRateForm from 'components/directories/normative/maintenance_rate/MaintenanceRateForm.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import FormWrap from 'components/compositions/FormWrap';
+import BaseMaintenanceRateForm from 'components/directories/normative/maintenance_rate/MaintenanceRateForm';
 
 const MaintenanceRateForm = enhanceWithPermissions(BaseMaintenanceRateForm);
 

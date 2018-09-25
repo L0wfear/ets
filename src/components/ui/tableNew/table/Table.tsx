@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import Thead from 'components/ui/tableNew/table/thead/Thead';
 import Tbody from 'components/ui/tableNew/table/tbody/Tbody';
-import Paginator from 'components/ui/Paginator.jsx';
+import Paginator from 'components/ui/Paginator';
 
 import {
   makeData,

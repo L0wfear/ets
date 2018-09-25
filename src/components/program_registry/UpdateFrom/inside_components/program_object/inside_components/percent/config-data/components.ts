@@ -1,4 +1,4 @@
-import PercentModalList from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalList.jsx';
+import PercentModalList from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalList';
 
 export default [
   {

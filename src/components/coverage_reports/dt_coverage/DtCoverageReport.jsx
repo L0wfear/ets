@@ -9,8 +9,8 @@ import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 
-import DtCoverageReportTable from './DtCoverageReportTable.jsx';
-import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
+import DtCoverageReportTable from './DtCoverageReportTable';
+import DtCoverageReportPrintForm from './DtCoverageReportPrintForm';
 
 // const TWO_MINUTES = 1000 * 60 * 2;
 

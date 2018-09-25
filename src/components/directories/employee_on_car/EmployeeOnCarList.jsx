@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import EmployeeOnCarTable from 'components/directories/employee_on_car/table/EmployeeOnCarTable';
 import { customOptionsTableFromMainResult } from 'components/directories/employee_on_car/table/helpData';
 import permissions from 'components/directories/employees/config-data/permissions';

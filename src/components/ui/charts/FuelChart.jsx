@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeDate, makeTime } from 'utils/dates';
-import Chart from './BaseChart.jsx';
+import Chart from './BaseChart';
 
 const LEGEND = '% топлива';
 

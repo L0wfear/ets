@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-import Table from 'components/ui/table/Table.jsx';
+import Table from 'components/ui/table/Table';
 import { FormControl, Button } from 'react-bootstrap';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';
 import _ from 'lodash';

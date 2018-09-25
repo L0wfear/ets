@@ -6,13 +6,13 @@ import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/b
 
 import { getServerSortingField, extractTableMeta, toServerFilteringObject } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import Paginator from 'components/ui/Paginator.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
+import Paginator from 'components/ui/Paginator';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { waybillClosingSchema } from 'models/WaybillModel';
-import WaybillFormWrap from './WaybillFormWrap.jsx';
-import WaybillPrintForm from './WaybillPrintForm.jsx';
-import WaybillsTable, { getTableMeta } from './WaybillsTable.jsx';
+import WaybillFormWrap from './WaybillFormWrap';
+import WaybillPrintForm from './WaybillPrintForm';
+import WaybillsTable, { getTableMeta } from './WaybillsTable';
 import permissions from 'components/waybill/config-data/permissions';
 
 @connectToStores(['waybills', 'objects', 'employees'])

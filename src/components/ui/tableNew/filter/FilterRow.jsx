@@ -7,7 +7,7 @@ import _ from 'lodash';
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 @autobind
 export default class FilterRow extends React.Component {

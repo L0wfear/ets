@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Div from 'components/ui/Div.jsx';
-import RouteInfo from 'components/route/RouteInfo.jsx';
+import Div from 'components/ui/Div';
+import RouteInfo from 'components/route/RouteInfo';
 
 require('components/missions/mission_template/print/HiddenMapForPrint.scss');
 

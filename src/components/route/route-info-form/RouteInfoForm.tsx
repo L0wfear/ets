@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
+import RouteInfo from 'components/route/RouteInfo';
 
 import {
   DivNone,

@@ -10,10 +10,10 @@ import {
   findIndexDrawObjectById,
 } from 'components/ui/input/map/utils/index';
 
-import { polyState } from 'constants/polygons.js';
+import { polyState } from 'constants/polygons';
 
-import DrawMap from 'components/map/DrawMap.jsx';
-import PolyMap from 'components/map/PolyMap.jsx';
+import DrawMap from 'components/map/DrawMap';
+import PolyMap from 'components/map/PolyMap';
 
 const DrawMapTSX: any = DrawMap;
 const PolyMapTSX: any = PolyMap;

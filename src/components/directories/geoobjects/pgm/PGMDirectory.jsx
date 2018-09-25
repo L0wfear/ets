@@ -1,7 +1,7 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import PGMTable, { tableMeta } from 'components/directories/geoobjects/pgm/PGMTable.jsx';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import PGMTable, { tableMeta } from 'components/directories/geoobjects/pgm/PGMTable';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import permissions from 'components/directories/geoobjects/pgm/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

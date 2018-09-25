@@ -3,8 +3,8 @@ import * as PropTypes from 'prop-types';
 import { Button, Glyphicon, Collapse } from 'react-bootstrap';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
-import Div from '../../Div.jsx';
-import FilterRow from './FilterRow.jsx';
+import Div from '../../Div';
+import FilterRow from './FilterRow';
 
 export default class Filter extends React.Component {
   static get propTypes() {

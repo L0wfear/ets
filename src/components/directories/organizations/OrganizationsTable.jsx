@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 const tableMeta = {

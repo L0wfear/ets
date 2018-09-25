@@ -4,7 +4,7 @@ import {
   IFindIndexDrawObjectById,
 } from 'components/ui/input/map/utils/index.h';
 
-import { polyState } from 'constants/polygons.js';
+import { polyState } from 'constants/polygons';
 
 /**
  * Возвращает новое состояние точки. Вторым параметром можно задать другую маску polyState

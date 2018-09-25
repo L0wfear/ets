@@ -1,6 +1,6 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
-import OrganizationsTable from './OrganizationsTable.jsx';
+import OrganizationsTable from './OrganizationsTable';
 import OrganizationsFormWrap from './OrganizationsFormWrap';
 @connectToStores(['objects'])
 @staticProps({

@@ -10,8 +10,8 @@ import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
 // import TextInput from 'components/ui/input/TextInput/TextInput';
-import Div from './Div.jsx';
-import Preloader from './Preloader.jsx';
+import Div from './Div';
+import Preloader from './Preloader';
 
 function StringField(props) {
   const { error, ...mainProps } = props; 

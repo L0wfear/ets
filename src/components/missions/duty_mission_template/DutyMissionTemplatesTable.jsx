@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 import { get } from 'lodash';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';

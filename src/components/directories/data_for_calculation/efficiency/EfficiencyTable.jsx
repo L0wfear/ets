@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 const tableMeta = {
   cols: [

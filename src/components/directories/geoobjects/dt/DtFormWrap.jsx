@@ -1,7 +1,7 @@
 import React from 'react';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import Div from 'components/ui/Div.jsx';
-import DtForm from './DtForm.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import Div from 'components/ui/Div';
+import DtForm from './DtForm';
 
 export default class DtFormWrap extends FormWrap {
   constructor(props, context) {

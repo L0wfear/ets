@@ -1,6 +1,6 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import { floatFixed1Percentage } from 'utils/renderers/index.jsx';
+import Table from 'components/ui/table/DataTable';
+import { floatFixed1Percentage } from 'utils/renderers/index';
 
 const tableMeta = {
   cols: [

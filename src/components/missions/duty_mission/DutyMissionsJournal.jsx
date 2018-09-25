@@ -4,19 +4,19 @@ import _ from 'lodash';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
-import Paginator from 'components/ui/Paginator.jsx';
-import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject.jsx';
+import Paginator from 'components/ui/Paginator';
+import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject';
 import Div from 'components/ui/Div';
-import PrintForm from 'components/missions/common/PrintForm.tsx';
+import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
-import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
+import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable';
+import DutyMissionFormWrap from './DutyMissionFormWrap';
 
 const is_archive = false;
 

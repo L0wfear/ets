@@ -5,15 +5,15 @@ import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader.jsx';
+import Preloader from 'components/ui/Preloader';
 import DataPicker from 'components/ui/input/date-picker/DatePicker';
 
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 
-import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
-import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm.jsx';
+import OdhCoverageReportTable from './OdhCoverageReportTable';
+import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm';
 
 const TWO_MINUTES = 1000 * 60 * 2;
 

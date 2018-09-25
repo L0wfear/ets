@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 const boundKeysObj = {
   short_name: ['short_name'],

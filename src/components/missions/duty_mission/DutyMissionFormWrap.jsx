@@ -6,15 +6,15 @@ import {
   isEmpty,
 } from 'lodash';
 
-import Div from 'components/ui/Div.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { getDefaultDutyMission } from 'stores/MissionsStore.js';
+import Div from 'components/ui/Div';
+import FormWrap from 'components/compositions/FormWrap';
+import { getDefaultDutyMission } from 'stores/MissionsStore';
 import { saveData } from 'utils/functions';
 import { diffDates } from 'utils/dates';
-import dutyMissionSchema from 'models/DutyMissionModel.js';
+import dutyMissionSchema from 'models/DutyMissionModel';
 
-import DutyMissionForm from './DutyMissionForm.jsx';
-import DutyMissionFormOld from './DutyMissionFormOld.jsx';
+import DutyMissionForm from './DutyMissionForm';
+import DutyMissionFormOld from './DutyMissionFormOld';
 
 class DutyMissionFormWrap extends FormWrap {
   constructor(props, context) {

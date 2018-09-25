@@ -10,14 +10,14 @@ import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/
 
 import { tabable } from 'components/compositions/hoc';
 
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import ModalBody from 'components/ui/Modal';
 
-import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
-import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
+import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo';
+import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
 

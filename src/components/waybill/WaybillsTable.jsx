@@ -1,10 +1,10 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { get } from 'lodash';
-import { missionsStatusBySlag } from 'components/waybill/constant/table.ts';
+import { missionsStatusBySlag } from 'components/waybill/constant/table';
 
 const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
 

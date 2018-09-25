@@ -9,18 +9,18 @@ import {
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
-import Field from 'components/ui/Field.jsx';
+import RouteInfo from 'components/route/RouteInfo';
+import RouteFormWrap from 'components/route/RouteFormWrap';
+import Field from 'components/ui/Field';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { isEmpty } from 'utils/functions';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/mission/inside_fields/index';
-import { checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { checkRouteByNew } from 'components/missions/utils/utils';
 import { routeTypesByKey } from 'constants/route';
 
 import { addTime, diffDates } from 'utils/dates';

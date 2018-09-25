@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import TechnicalOperationRelationsTable from 'components/directories/technical_operation_relations/table/TechnicalOperationRelationsTable';
 import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import ChangeRouteForm from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteForm';

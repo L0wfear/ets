@@ -5,7 +5,7 @@ import { connectToStores } from 'utils/decorators';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 @connectToStores(['objects', 'odh'])
 export default class MaterialConsumptionRateForm extends Form {

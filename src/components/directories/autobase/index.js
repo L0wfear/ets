@@ -1,16 +1,16 @@
-import BatteryBrandList from 'components/directories/autobase/battery_brand/BatteryBrandList.jsx';
-import BatteryManufacturerList from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerList.jsx';
-import BatteryRegList from 'components/directories/autobase/battery_registry/BatteryRegList.jsx';
-import CarsList from 'components/directories/autobase/cars/CarsList.jsx';
-import CarTypesDirectory from 'components/directories/autobase/car_types/CarTypesDirectory.jsx';
-import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
-import RepairCompanyList from 'components/directories/autobase/repair_company/RepairCompanyList.jsx';
-import SparePartList from 'components/directories/autobase/spare_part/SparePartList.jsx';
-import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
-import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList.jsx';
-import TechMaintOrderList from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderList.jsx';
-import TireList from 'components/directories/autobase/tire/TireList.jsx';
-import TireModelList from 'components/directories/autobase/tire_model/TireModelList.jsx';
+import BatteryBrandList from 'components/directories/autobase/battery_brand/BatteryBrandList';
+import BatteryManufacturerList from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerList';
+import BatteryRegList from 'components/directories/autobase/battery_registry/BatteryRegList';
+import CarsList from 'components/directories/autobase/cars/CarsList';
+import CarTypesDirectory from 'components/directories/autobase/car_types/CarTypesDirectory';
+import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList';
+import RepairCompanyList from 'components/directories/autobase/repair_company/RepairCompanyList';
+import SparePartList from 'components/directories/autobase/spare_part/SparePartList';
+import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList';
+import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList';
+import TechMaintOrderList from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderList';
+import TireList from 'components/directories/autobase/tire/TireList';
+import TireModelList from 'components/directories/autobase/tire_model/TireModelList';
 
 export default {
   BatteryBrandList,

@@ -1,7 +1,7 @@
 import React from 'react';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { odhNormSchema } from 'models/ODHNormDataSummer.js';
-import ODHNormDataSummerForm from './ODHNormDataSummerForm.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import { odhNormSchema } from 'models/ODHNormDataSummer';
+import ODHNormDataSummerForm from './ODHNormDataSummerForm';
 
 export default class ODHNormDataSummerFormWrap extends FormWrap {
   constructor(props, context) {

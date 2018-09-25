@@ -1,6 +1,6 @@
-import FuelOperationFormWrap from 'components/directories/data_for_calculation/fuel_operations/FuelOperationFormWrap.jsx';
-import FuelOperationsTable from 'components/directories/data_for_calculation/fuel_operations/FuelOperationsTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import FuelOperationFormWrap from 'components/directories/data_for_calculation/fuel_operations/FuelOperationFormWrap';
+import FuelOperationsTable from 'components/directories/data_for_calculation/fuel_operations/FuelOperationsTable';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import permissions from 'components/directories/data_for_calculation/fuel_operations/config-data/permissions';
 

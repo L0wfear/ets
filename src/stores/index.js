@@ -2,27 +2,27 @@
  * @module stores
  * Flummox stores
  */
-import autobase from './AutobaseStore.js';
-import companyStructure from './CompanyStructureStore.js';
-import employees from './EmployeesStore.js';
-import fuelRates from './FuelRatesStore.js';
-import geoObjects from './GeoObjectsStore.js';
-import loading from './LoadingStore.js';
-import missions from './MissionsStore.js';
-import notifications from './NotificationsStore.js';
-import objects from './ObjectsStore.js';
-import odh from './ODHStore.js';
+import autobase from './AutobaseStore';
+import companyStructure from './CompanyStructureStore';
+import employees from './EmployeesStore';
+import fuelRates from './FuelRatesStore';
+import geoObjects from './GeoObjectsStore';
+import loading from './LoadingStore';
+import missions from './MissionsStore';
+import notifications from './NotificationsStore';
+import objects from './ObjectsStore';
+import odh from './ODHStore';
 // Временно
-import pointsHybrid from './PointsHybridStore.js';
+import pointsHybrid from './PointsHybridStore';
 
 import repair from './RepairStore';
-import reports from './ReportsStore.js';
-import routes from './RoutesStore.js';
-import session from './SessionStore.js';
+import reports from './ReportsStore';
+import routes from './RoutesStore';
+import session from './SessionStore';
 import stream from './StreamStore';
-import settings from './SettingsStore.js';
-import userNotifications from './UserNotificationStore.js';
-import waybills from './WaybillsStore.js';
+import settings from './SettingsStore';
+import userNotifications from './UserNotificationStore';
+import waybills from './WaybillsStore';
 
 export {
   autobase,

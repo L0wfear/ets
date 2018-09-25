@@ -3,9 +3,9 @@ import { Modal, Button } from 'react-bootstrap';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div.jsx';
-import Field from 'components/ui/Field.jsx';
-import Form from 'components/compositions/Form.jsx';
+import Div from 'components/ui/Div';
+import Field from 'components/ui/Field';
+import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['odh'])

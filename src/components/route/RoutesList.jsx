@@ -18,7 +18,7 @@ import {
 import Div from 'components/ui/Div';
 import Filter from 'components/ui/table/filter/Filter';
 import FilterButton from 'components/ui/table/filter/FilterButton';
-import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils.js';
+import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils';
 import RouteInfo from 'components/route/RouteInfo';
 import RouteFormWrap from 'components/route/RouteFormWrap';
 
@@ -27,7 +27,7 @@ import {
   ButtonUpdateRoute,
   ButtonDeleteRoute,
 } from 'components/route/buttons/buttons';
-import { ExtField } from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { getCurrentSeason } from 'utils/dates';
 

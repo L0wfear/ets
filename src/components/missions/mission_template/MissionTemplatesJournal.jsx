@@ -3,14 +3,14 @@ import * as PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon } from 'react-bootstrap';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import permissions from 'components/missions/mission_template/config-data/permissions';
 import permissions_mission from 'components/missions/mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import MissionTemplateFormWrap from './MissionTemplateFormWrap.jsx';
-import MissionTemplatesTable from './MissionTemplatesTable.jsx';
+import MissionTemplateFormWrap from './MissionTemplateFormWrap';
+import MissionTemplatesTable from './MissionTemplatesTable';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {

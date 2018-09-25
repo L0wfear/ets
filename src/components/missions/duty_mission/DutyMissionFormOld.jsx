@@ -9,10 +9,10 @@ import {
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
-import Form from 'components/compositions/Form.jsx';
+import RouteInfo from 'components/route/RouteInfo';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
+import Form from 'components/compositions/Form';
 
 import { FormTitle } from './utils';
 

@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
-import ODHTable, { tableMeta } from 'components/directories/geoobjects/odh/ODHTable.tsx';
-import OdhFormWrap from 'components/directories/geoobjects/odh/OdhFormWrap.jsx';
+import ElementsList from 'components/ElementsList';
+import ODHTable, { tableMeta } from 'components/directories/geoobjects/odh/ODHTable';
+import OdhFormWrap from 'components/directories/geoobjects/odh/OdhFormWrap';
 import permissions from 'components/directories/geoobjects/odh/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

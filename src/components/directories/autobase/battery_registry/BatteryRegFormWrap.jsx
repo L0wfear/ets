@@ -1,9 +1,9 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
 import BatteryForm from 'components/directories/autobase/battery_registry/BatteryRegForm';
-import { schema } from 'models/BatteryRegModel.js';
+import { schema } from 'models/BatteryRegModel';
 
 class BatteryRegFormWrap extends FormWrap {
   constructor(props, context) {

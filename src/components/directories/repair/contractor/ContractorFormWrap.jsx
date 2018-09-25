@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ContractorForm from 'components/directories/repair/contractor/ContractorForm';
 import { formValidationSchema } from 'components/directories/repair/contractor//schema';

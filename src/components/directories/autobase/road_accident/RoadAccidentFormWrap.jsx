@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { connectToStores } from 'utils/decorators';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
 import RoadAccidentFrom from './RoadAccidentForm';
 import { formValidationSchema } from './schema';
 

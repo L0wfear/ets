@@ -7,17 +7,17 @@ import {
   uniqBy,
 } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { checkRouteByNew } from 'components/missions/utils/utils';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Div from 'components/ui/Div.jsx';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
+import Div from 'components/ui/Div';
+import RouteInfo from 'components/route/RouteInfo';
+import RouteFormWrap from 'components/route/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
-import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm.jsx';
+import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
 import HiddenMapForPrint from 'components/missions/mission_template/print/HiddenMapForPrint';
 
 

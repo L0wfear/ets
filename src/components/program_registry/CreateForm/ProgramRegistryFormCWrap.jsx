@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormCreate from 'components/program_registry/CreateForm/ProgramRegistryFormC';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import Field from './Field.jsx';
-import Div from './Div.jsx';
+import Field from './Field';
+import Div from './Div';
 
 export default class FieldWrap extends React.Component {
   constructor(props) {

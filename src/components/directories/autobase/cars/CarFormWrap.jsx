@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { unpackObjectData } from 'api/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import FormWrap from 'components/compositions/FormWrap';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
-import CarForm from './CarForm.jsx';
+import CarForm from './CarForm';
 import schema from './schema';
 
 

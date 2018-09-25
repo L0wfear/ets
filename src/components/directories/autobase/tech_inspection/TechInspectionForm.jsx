@@ -4,9 +4,9 @@ import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
-import { ExtDiv } from 'components/ui/Div.jsx';
+import { ExtDiv } from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 import { connectToStores } from 'utils/decorators';
 

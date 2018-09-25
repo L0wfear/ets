@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateFormWrap.jsx';
-import MaintenanceRateTable from 'components/directories/normative/maintenance_rate/MaintenanceRateTable.jsx';
+import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateFormWrap';
+import MaintenanceRateTable from 'components/directories/normative/maintenance_rate/MaintenanceRateTable';
 import permissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
 
 @connectToStores(['objects'])

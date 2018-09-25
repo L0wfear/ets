@@ -2,7 +2,7 @@
  * @module utils/errors
  *
  */
-import RequestWarningError from './RequestWarningError.js';
+import RequestWarningError from './RequestWarningError';
 
 export {
   RequestWarningError,

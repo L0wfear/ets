@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cloneDeep } from 'lodash';
 
 import { isEmpty } from 'utils/functions';
-import { validateField } from 'utils/validate/validateField.js';
+import { validateField } from 'utils/validate/validateField';
 
 import { formValidationSchema } from 'components/program_registry/schema';
 import ProgramRegistryFormCreateWrap from 'components/program_registry/CreateForm/ProgramRegistryFormCWrap';

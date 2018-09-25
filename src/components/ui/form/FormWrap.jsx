@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Form from './Form.jsx';
+import Form from './Form';
 
 export default class FormWrap extends React.Component {
   static contextTypes = {

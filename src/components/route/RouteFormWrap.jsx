@@ -6,10 +6,10 @@ import {
   each,
   filter,
 } from 'lodash';
-import { routeSchema } from 'models/RouteModel.js';
-import { polyState } from 'constants/polygons.js';
-import RouteForm from './RouteForm.jsx';
-import FormWrap from '../compositions/FormWrap.jsx';
+import { routeSchema } from 'models/RouteModel';
+import { polyState } from 'constants/polygons';
+import RouteForm from './RouteForm';
+import FormWrap from '../compositions/FormWrap';
 
 @autobind
 class RouteFormWrap extends FormWrap {

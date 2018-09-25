@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import { FluxContext } from 'utils/decorators';
 
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 
 @FluxContext
 class MunicipalFacility extends React.Component {

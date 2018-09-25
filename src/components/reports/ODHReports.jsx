@@ -3,7 +3,7 @@ import {
   Row, Col, Button, ButtonToolbar,
 } from 'react-bootstrap';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 import connectToStores from 'flummox/connect';
 
 import {

@@ -1,7 +1,7 @@
 import React from 'react';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import BaseCleaningRateForm from './CleaningRateForm.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import FormWrap from 'components/compositions/FormWrap';
+import BaseCleaningRateForm from './CleaningRateForm';
 
 const CleaningRateForm = enhanceWithPermissions(BaseCleaningRateForm);
 

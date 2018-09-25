@@ -1,7 +1,7 @@
 import React from 'react';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import BaseMaintenanceWorkForm from './MaintenanceWorkForm.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import FormWrap from 'components/compositions/FormWrap';
+import BaseMaintenanceWorkForm from './MaintenanceWorkForm';
 
 const MaintenanceWorkForm = enhanceWithPermissions(BaseMaintenanceWorkForm);
 

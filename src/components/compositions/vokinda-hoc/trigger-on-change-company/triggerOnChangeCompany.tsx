@@ -1,6 +1,6 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
-import Preloader from 'components/ui/Preloader.jsx';
+import Preloader from 'components/ui/Preloader';
 
 const triggerOnChangeCompany = Component =>
   connectToStores(class extends React.Component<any, any> {

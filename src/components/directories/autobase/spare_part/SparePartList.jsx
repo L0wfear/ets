@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import SparePartTable from 'components/directories/autobase/spare_part/SparePartTable';
 import SparePartFormWrap from 'components/directories/autobase/spare_part/SparePartFormWrap';
 import permissions from 'components/directories/autobase/spare_part/config-data/permissions';

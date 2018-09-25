@@ -5,12 +5,12 @@ import {
   Modal, Row, Col, Button,
 } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import { addTime, diffDates } from 'utils/dates';
 
 class MissionsCreationForm extends Form {

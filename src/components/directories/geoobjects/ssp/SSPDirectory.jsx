@@ -1,7 +1,7 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import SSPTable, { tableMeta } from 'components/directories/geoobjects/ssp/SSPTable.jsx';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import SSPTable, { tableMeta } from 'components/directories/geoobjects/ssp/SSPTable';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import schema from 'components/directories/geoobjects/ssp/schema';
 import permissions from 'components/directories/geoobjects/ssp/config-data/permissions';
 

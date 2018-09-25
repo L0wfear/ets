@@ -1,10 +1,10 @@
 import React from 'react';
 import * as queryString from 'query-string';
 
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import { schema as employeeSchema, defaultElement } from 'models/Employee.js';
-import BaseEmployeeForm from './EmployeeForm.jsx';
-import FormWrap from '../../compositions/FormWrap.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import { schema as employeeSchema, defaultElement } from 'models/Employee';
+import BaseEmployeeForm from './EmployeeForm';
+import FormWrap from '../../compositions/FormWrap';
 
 
 const EmployeeForm = enhanceWithPermissions(BaseEmployeeForm);

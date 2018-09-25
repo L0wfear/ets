@@ -1,8 +1,8 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import RepairCompanyForm from './RepairCompanyForm.jsx';
+import RepairCompanyForm from './RepairCompanyForm';
 import { formValidationSchema } from './schema';
 
 class RepairCompanyWrap extends FormWrap {

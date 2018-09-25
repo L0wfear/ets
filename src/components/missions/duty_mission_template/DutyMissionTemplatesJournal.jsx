@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 import permissions from 'components/missions/duty_mission_template/config-data/permissions';
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap.jsx';
-import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
+import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap';
+import DutyMissionTemplatesTable from './DutyMissionTemplatesTable';
 
 const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
   permission: permissions_duty_mission.create,

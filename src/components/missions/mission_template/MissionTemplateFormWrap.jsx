@@ -3,23 +3,23 @@ import { autobind } from 'core-decorators';
 import clone from 'lodash/clone';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
-import Div from 'components/ui/Div.jsx';
-import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
+import Div from 'components/ui/Div';
+import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
 import { isEmpty } from 'utils/functions';
 import { getToday9am, getTomorrow9am, addTime } from 'utils/dates';
-import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
-import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
+import { missionTemplateSchema } from 'models/MissionTemplateModel';
+import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import {
   checkMissionsByRouteType,
   checkMissionsOnStructureIdCar,
-} from 'components/missions/utils/customValidate.ts';
+} from 'components/missions/utils/customValidate';
 import { printData, resizeBase64 } from 'utils/functions';
 
-import MissionTemplateForm from './MissionTemplateForm.jsx';
-import MissionsCreationForm from './MissionsCreationForm.jsx';
+import MissionTemplateForm from './MissionTemplateForm';
+import MissionsCreationForm from './MissionsCreationForm';
 
 const keyGlobal = 'mission_template_hidden';
 

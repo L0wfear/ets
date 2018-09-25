@@ -1,4 +1,4 @@
-import ApiServiceFactory from './ApiServiceFactory.js';
+import ApiServiceFactory from './ApiServiceFactory';
 import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';

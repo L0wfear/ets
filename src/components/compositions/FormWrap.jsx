@@ -7,7 +7,7 @@ import {
 } from 'lodash';
 import { autobind } from 'core-decorators';
 
-import { validateField } from 'utils/validate/validateField.js';
+import { validateField } from 'utils/validate/validateField';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';

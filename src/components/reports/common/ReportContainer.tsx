@@ -22,10 +22,10 @@ import { IPropsReportContainer, IStateReportContainer } from './@types/ReportCon
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux-main/modules/@types/report.h';
 
-import Preloader from 'components/ui/Preloader.jsx';
+import Preloader from 'components/ui/Preloader';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
 import * as reportActionCreators from 'components/reports/redux-main/modules/report';
-import DataTable from 'components/ui/table/DataTable.jsx';
+import DataTable from 'components/ui/table/DataTable';
 import DataTableNew from 'components/ui/tableNew/DataTable';
 
 import {

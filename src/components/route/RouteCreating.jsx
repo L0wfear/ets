@@ -6,13 +6,13 @@ import connectToStores from 'flummox/connect';
 import {
   Row, Col, FormControl, Button, Glyphicon,
 } from 'react-bootstrap';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
-import MapWrap from 'components/ui/input/map/MapWrap.tsx';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
+import MapWrap from 'components/ui/input/map/MapWrap';
 import cx from 'classnames';
 
-import { polyState } from 'constants/polygons.js';
-import CheckList from './CheckList.jsx';
+import { polyState } from 'constants/polygons';
+import CheckList from './CheckList';
 
 @autobind
 class RouteCreating extends React.Component {

@@ -5,7 +5,7 @@ import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-import { getTableMeta as getMissionTempalteTableMeta } from 'components/missions/mission_template/MissionTemplatesTable.jsx';
+import { getTableMeta as getMissionTempalteTableMeta } from 'components/missions/mission_template/MissionTemplatesTable';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
 

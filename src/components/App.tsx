@@ -8,10 +8,10 @@ import requireAuth from 'utils/auth';
 import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
-import Login from 'components/login/LoginPage.jsx';
-import MainAppTSX from 'components/MainApp.jsx';
+import Login from 'components/login/LoginPage';
+import MainAppTSX from 'components/MainApp';
 
-import LoadingPage from './LoadingPage.jsx';
+import LoadingPage from './LoadingPage';
 
 const MainApp: any = MainAppTSX;
 

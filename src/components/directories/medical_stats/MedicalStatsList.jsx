@@ -1,9 +1,9 @@
 import React from 'react';
 import { staticProps, exportable, connectToStores } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
-import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable.jsx';
+import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable';
 import permissions from 'components/directories/medical_stats/config-data/permissions';
 
 @connectToStores(['objects', 'session'])

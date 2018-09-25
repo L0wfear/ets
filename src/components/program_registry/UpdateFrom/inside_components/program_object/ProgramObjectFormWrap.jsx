@@ -1,8 +1,8 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import { validateField } from 'utils/validate/validateField.js';
+import { validateField } from 'utils/validate/validateField';
 
 import ProgramObjectFormDT from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
 import ProgramObjectFormODH from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormODH';

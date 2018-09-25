@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
-import Div from '../Div.jsx';
+import Div from '../Div';
 
 const HeaderCell = ({ renderer, children, value }) => {
   if (typeof renderer === 'function') {

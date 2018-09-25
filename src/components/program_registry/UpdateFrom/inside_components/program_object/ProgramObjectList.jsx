@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';

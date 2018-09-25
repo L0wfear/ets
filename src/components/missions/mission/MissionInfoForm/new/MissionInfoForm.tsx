@@ -23,9 +23,9 @@ import {
 } from 'global-styled/global-styled';
 
 import MapWrap from 'components/missions/mission/MissionInfoForm/new/map/MapWrap';
-import MissionReportByODH from 'components/reports/operational/mission/MissionReportByODH.jsx';
-import MissionReportByDT from 'components/reports/operational/mission/MissionReportByDT.jsx';
-import MissionReportByPoints from 'components/reports/operational/mission/MissionReportByPoints.jsx';
+import MissionReportByODH from 'components/reports/operational/mission/MissionReportByODH';
+import MissionReportByDT from 'components/reports/operational/mission/MissionReportByDT';
+import MissionReportByPoints from 'components/reports/operational/mission/MissionReportByPoints';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';

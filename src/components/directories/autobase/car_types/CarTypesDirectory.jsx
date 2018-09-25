@@ -1,7 +1,7 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import CarTypesTable from 'components/directories/autobase/car_types/CarTypesTable.jsx';
-import schema from 'components/directories/autobase/car_types/CarTypesSchema.js';
+import CarTypesTable from 'components/directories/autobase/car_types/CarTypesTable';
+import schema from 'components/directories/autobase/car_types/CarTypesSchema';
 import permissions from 'components/directories/autobase/car_types/config-data/permissions';
 
 @connectToStores(['objects'])

@@ -9,10 +9,10 @@ import {
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import Field from 'components/ui/Field.jsx';
+import RouteInfo from 'components/route/RouteInfo';
+import Field from 'components/ui/Field';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 const getRoute = async (routesActions, { route_id, mission_id, isTemplate }) => {
   const selectedRoute = await routesActions.getRouteById(route_id, false);

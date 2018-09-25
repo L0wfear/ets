@@ -1,8 +1,8 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import BatteryManufacturerFormWrap from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerFormWrap';
-import BatteryManufacturerTable from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerTable.tsx';
+import BatteryManufacturerTable from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerTable';
 import permissions from 'components/directories/autobase/battery_manufacturer/config-data/permissions';
 
 @connectToStores(['autobase', 'session'])

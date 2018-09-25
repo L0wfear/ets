@@ -4,7 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import cx from 'classnames';
 
-import Div from '../Div.jsx';
+import Div from '../Div';
 
 export default class ColumnControl extends React.Component {
   static get propTypes() {

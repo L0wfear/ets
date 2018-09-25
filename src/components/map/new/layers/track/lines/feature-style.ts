@@ -1,5 +1,5 @@
 import * as ol from 'openlayers';
-import { TRACK_COLORS } from 'constants/track.js';
+import { TRACK_COLORS } from 'constants/track';
 
 
 const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;

@@ -1,4 +1,4 @@
-import TechnicalOperationsDirectory from 'components/directories/technical_operation/TechnicalOperationsDirectory.jsx';
+import TechnicalOperationsDirectory from 'components/directories/technical_operation/TechnicalOperationsDirectory';
 
 export default [
   {

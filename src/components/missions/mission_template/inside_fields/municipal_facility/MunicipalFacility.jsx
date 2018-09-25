@@ -1,4 +1,4 @@
-import MunicipalFacilityMission from 'components/missions/mission/inside_fields/municipal_facility/MunicipalFacility.jsx';
+import MunicipalFacilityMission from 'components/missions/mission/inside_fields/municipal_facility/MunicipalFacility';
 
 class MunicipalFacility extends MunicipalFacilityMission {
   /**

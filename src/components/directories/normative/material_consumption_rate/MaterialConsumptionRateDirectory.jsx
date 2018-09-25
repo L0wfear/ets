@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
-import MaterialConsumptionRateFormWrap from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateFormWrap.jsx';
-import MaterialConsumptionRateTable from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateTable.tsx';
+import ElementsList from 'components/ElementsList';
+import MaterialConsumptionRateFormWrap from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateFormWrap';
+import MaterialConsumptionRateTable from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateTable';
 import permissions from 'components/directories/normative/material_consumption_rate/config-data/permissions';
 
 @connectToStores(['objects'])

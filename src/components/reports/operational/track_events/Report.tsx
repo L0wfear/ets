@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { IPropsMapModal } from 'components/reports/@types/MapModal.h';
-import MapModalSCC from 'components/reports/MapModal.jsx';
+import MapModalSCC from 'components/reports/MapModal';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from './reportProps';

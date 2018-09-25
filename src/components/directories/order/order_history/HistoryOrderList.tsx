@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';

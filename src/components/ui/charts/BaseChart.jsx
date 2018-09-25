@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Panel from 'components/ui/Panel.jsx';
+import Panel from 'components/ui/Panel';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-import Preloader from '../Preloader.jsx';
+import Preloader from '../Preloader';
 
 const HEADERS = {
   fuel: 'График уровня топлива',

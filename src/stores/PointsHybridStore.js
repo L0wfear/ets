@@ -3,8 +3,8 @@ import { Store } from 'flummox';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import statuses from 'constants/statuses';
-import config from '../config.js';
-import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket.js';
+import config from '../config';
+import ReconnectingWebSocket from '../vendor/ReconnectingWebsocket';
 
 /**
  * Хранилище для объектов точек, отображаемых на карте

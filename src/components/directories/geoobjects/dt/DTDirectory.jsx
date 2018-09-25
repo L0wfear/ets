@@ -1,8 +1,8 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-import ElementsList from 'components/ElementsList.jsx';
-import DtFormWrap from 'components/directories/geoobjects/dt/DtFormWrap.jsx';
-import DTTable, { tableMeta } from 'components/directories/geoobjects/dt/DTTable.tsx';
+import ElementsList from 'components/ElementsList';
+import DtFormWrap from 'components/directories/geoobjects/dt/DtFormWrap';
+import DTTable, { tableMeta } from 'components/directories/geoobjects/dt/DTTable';
 import schema from 'components/directories/geoobjects/dt/DTSchema';
 import permissions from 'components/directories/geoobjects/dt/config-data/permissions';
 

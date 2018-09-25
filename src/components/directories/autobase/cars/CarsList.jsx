@@ -1,11 +1,11 @@
 import * as queryString from 'query-string';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import permissions from 'components/directories/autobase/cars/config-data/permissions';
 
-import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap.jsx';
-import CarsTable from 'components/directories/autobase/cars/CarsTable.tsx';
+import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
+import CarsTable from 'components/directories/autobase/cars/CarsTable';
 import schema from 'components/directories/autobase/cars/schema';
 
 

@@ -1,4 +1,4 @@
-import EmployeesList from 'components/directories/employees/EmployeesList.jsx';
+import EmployeesList from 'components/directories/employees/EmployeesList';
 
 export default [
   {

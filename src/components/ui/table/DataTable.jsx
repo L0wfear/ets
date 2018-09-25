@@ -20,10 +20,10 @@ import {
   getFilterTypeByKey,
   makeData,
 } from './utils';
-import ColumnControl from './ColumnControl.jsx';
-import Filter from './filter/Filter.jsx';
-import FilterButton from './filter/FilterButton.jsx';
-import Div from '../Div.jsx';
+import ColumnControl from './ColumnControl';
+import Filter from './filter/Filter';
+import FilterButton from './filter/FilterButton';
+import Div from '../Div';
 import PaginatorToPortalData from 'components/ui/new/paginator/PaginatorToPortalData';
 import Paginator from 'components/ui/new/paginator/Paginator';
 

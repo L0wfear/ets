@@ -7,13 +7,13 @@ import {
   NavDropdown as BootstrapNavDropdown,
   MenuItem as BootstrapMenuItem,
 } from 'react-bootstrap';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { connect } from 'react-redux';
 
 import config from 'config';
 import { autobind } from 'core-decorators';
-import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
-import ModalTP from 'components/modalTP/ModalTP.tsx';
+import LoadingOverlay from 'components/ui/LoadingOverlay';
+import ModalTP from 'components/modalTP/ModalTP';
 import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
 import PERMISSIONS from 'constants/permissions';
 import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
@@ -26,7 +26,7 @@ import {
 
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import NotificationBadge from 'components/notifications/NotificationBadge';
-import enhanceWithPermissions from './util/RequirePermissions.jsx';
+import enhanceWithPermissions from './util/RequirePermissions';
 import defaultUser from '../assets/images/avatar-default.png';
 
 import MissionsNavItem from './navbar/MissionsNavItem';

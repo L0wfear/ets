@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { Modal, Row, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import ChangeRouteTable from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteTable';
-import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
+import RouteFormWrap from 'components/route/RouteFormWrap';
 import { FluxContext } from 'utils/decorators';
 
 import {

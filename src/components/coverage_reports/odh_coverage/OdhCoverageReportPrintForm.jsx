@@ -8,7 +8,7 @@ import ModalBody from 'components/ui/Modal';
 import { saveData } from 'utils/functions';
 import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 @FluxContext
 @autobind

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
-import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap.jsx';
-import CleaningRateTable from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateTable.jsx';
+import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap';
+import CleaningRateTable from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateTable';
 import permissions from 'components/directories/data_for_calculation/cleaning_rate/config-data/permissions';
 
 @connectToStores(['objects'])

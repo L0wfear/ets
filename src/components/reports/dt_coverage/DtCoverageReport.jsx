@@ -4,8 +4,8 @@ import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import DtCoverageReportTable from './DtCoverageReportTable.jsx';
-import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
+import DtCoverageReportTable from './DtCoverageReportTable';
+import DtCoverageReportPrintForm from './DtCoverageReportPrintForm';
 
 import {
   EtsPageWrap,

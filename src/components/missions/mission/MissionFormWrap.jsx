@@ -4,14 +4,14 @@ import {
   isEmpty,
   filter,
 } from 'lodash';
-import Div from 'components/ui/Div.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { getDefaultMission } from 'stores/MissionsStore.js';
+import Div from 'components/ui/Div';
+import FormWrap from 'components/compositions/FormWrap';
+import { getDefaultMission } from 'stores/MissionsStore';
 import { saveData, printData, resizeBase64 } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates';
-import { missionSchema } from 'models/MissionModel.js';
-import MissionForm from 'components/missions/mission/MissionForm/MissionForm.jsx';
-import MissionFormOld from 'components/missions/mission/MissionFormOld.jsx';
+import { missionSchema } from 'models/MissionModel';
+import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
+import MissionFormOld from 'components/missions/mission/MissionFormOld';
 
 export default class MissionFormWrap extends FormWrap {
   constructor(props) {

@@ -1,9 +1,9 @@
 import React from 'react';
-import { schema } from 'models/MaterialConsumptionRate.js';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import { schema } from 'models/MaterialConsumptionRate';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import BaseMaterialConsumptionRateForm from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import BaseMaterialConsumptionRateForm from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm';
 
 const MaterialConsumptionRateForm = enhanceWithPermissions(BaseMaterialConsumptionRateForm);
 

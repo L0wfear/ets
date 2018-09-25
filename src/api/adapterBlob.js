@@ -31,7 +31,7 @@ function httpMethodBlob(url, data, method) {
       };
 
       if (contentDisposition === null) {
-        const response = await r.json();
+        const response = await ron();
         hasWarningNotification(response);
         return defaultResult;
       }

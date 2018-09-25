@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import AUTOBASE_CONSTANT from '../constants/autobase.js';
+import AUTOBASE_CONSTANT from '../constants/autobase';
 
 export default class AutobaseStore extends Store {
   constructor(flux) {

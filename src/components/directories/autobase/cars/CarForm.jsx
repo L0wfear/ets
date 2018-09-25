@@ -12,21 +12,21 @@ import { isFourDigitGovNumber } from 'utils/functions';
 import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import TabContent from 'components/ui/containers/TabContent';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
-import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
-import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';
-import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList.jsx';
-import RepairList from 'components/directories/autobase/repair/RepairList.jsx';
-import RoadAccidentList from 'components/directories/autobase/road_accident/RoadAccidentList.jsx';
+import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList';
+import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList';
+import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList';
+import RepairList from 'components/directories/autobase/repair/RepairList';
+import RoadAccidentList from 'components/directories/autobase/road_accident/RoadAccidentList';
 
 import MainInfoTab from './tabs/MainInfoTab';
 import RegisterInfoTab from './tabs/RegisterInfoTab';
 import PasportInfoTab from './tabs/PasportInfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
-import TechMaintTab from './tabs/TechMaintTab.tsx';
+import TechMaintTab from './tabs/TechMaintTab';
 
 export const CAR_TAB_INDEX = {
   info: '1',

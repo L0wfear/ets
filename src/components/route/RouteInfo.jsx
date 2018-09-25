@@ -4,13 +4,14 @@ import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
-import Div from 'components/ui/Div.jsx';
-import PolyMap from '../map/PolyMap.jsx';
-import CheckList from './CheckList.jsx';
+import Div from 'components/ui/Div';
+import PolyMap from '../map/PolyMap';
+import CheckList from './CheckList';
 
+export default
 @connectToStores(['geoObjects'])
 @autobind
-export default class RouteInfo extends React.Component {
+class RouteInfo extends React.Component {
 
   static get propTypes() {
     return {

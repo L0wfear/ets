@@ -5,16 +5,16 @@ import {
 } from 'react-bootstrap';
 import { find, uniqBy } from 'lodash';
 
-import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
 import InsideField from 'components/missions/duty_mission_template/inside_fields/index';
 
-import RouteInfo from '../../route/RouteInfo.jsx';
-import RouteFormWrap from '../../route/RouteFormWrap.jsx';
-import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
+import RouteInfo from '../../route/RouteInfo';
+import RouteFormWrap from '../../route/RouteFormWrap';
+import { DutyMissionForm } from '../duty_mission/DutyMissionForm';
 
 const modalKey = 'duty_mission_template';
 

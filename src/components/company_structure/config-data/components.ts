@@ -1,4 +1,4 @@
-import CompanyStructure from 'components/company_structure/CompanyStructure.jsx';
+import CompanyStructure from 'components/company_structure/CompanyStructure';
 
 export default [
   {

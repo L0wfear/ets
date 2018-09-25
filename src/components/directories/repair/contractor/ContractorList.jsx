@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
 
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import ContractorTable from 'components/directories/repair/contractor/ContractorTable';
 import ContractorFormWrap from 'components/directories/repair/contractor/ContractorFormWrap';
 import permissions from 'components/directories/repair/contractor/config-data/permissions';

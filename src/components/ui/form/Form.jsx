@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import FieldWrap from '../FieldWrap.jsx';
+import FieldWrap from '../FieldWrap';
 // deprecated
 export default class Form extends Component {
   constructor(props) {

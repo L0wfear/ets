@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { connect } from 'react-redux';
-import Preloader from './Preloader.jsx';
+import Preloader from './Preloader';
 
 export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extends React.Component {
   handleOverlayLoading = (isLoading) => {

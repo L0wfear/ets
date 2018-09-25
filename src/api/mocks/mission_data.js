@@ -1,4 +1,4 @@
-import Mock from './Mock.js';
+import Mock from './Mock';
 
 export default class MissionDataMock extends Mock {
   constructor() {

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
+import FormWrap from 'components/compositions/FormWrap';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
 import InsurancePolicyForm from './InsurancePolicyForm';
 import { formValidationSchema } from './schema';
 

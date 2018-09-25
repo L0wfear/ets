@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 
 const tableMeta = {
   cols: [

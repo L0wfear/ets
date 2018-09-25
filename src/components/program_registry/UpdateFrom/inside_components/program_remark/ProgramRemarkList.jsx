@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Button as BootstrapButton } from 'react-bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
 
 import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';

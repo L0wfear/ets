@@ -2,26 +2,26 @@
  * @module actions
  * Flummox actions
  */
-import autobase from './AutobaseAction.js';
-import cars from './CarActions.js';
-import companyStructure from './CompanyStructureActions.js';
-import employees from './EmployeesActions.js';
-import fuelRates from './FuelRateActions.js';
-import geoObjects from './GeoObjectsActions.js';
-import missions from './MissionsActions.js';
-import objects from './ObjectsActions.js';
-import odh from './ODHActions.js';
+import autobase from './AutobaseAction';
+import cars from './CarActions';
+import companyStructure from './CompanyStructureActions';
+import employees from './EmployeesActions';
+import fuelRates from './FuelRateActions';
+import geoObjects from './GeoObjectsActions';
+import missions from './MissionsActions';
+import objects from './ObjectsActions';
+import odh from './ODHActions';
 // Временно
-import pointsHybrid from './PointsHybridActions.js';
+import pointsHybrid from './PointsHybridActions';
 import repair from './RepairAction';
-import reports from './ReportsActions.js';
-import routes from './RoutesActions.js';
-import session from './SessionActions.js';
-import settings from './SettingsActions.js';
+import reports from './ReportsActions';
+import routes from './RoutesActions';
+import session from './SessionActions';
+import settings from './SettingsActions';
 import stream from './StreamAction';
-import technicalOperation from './TechnicalOperationsActions.js';
-import userNotifications from './UserNotificationActions.js';
-import waybills from './WaybillsActions.js';
+import technicalOperation from './TechnicalOperationsActions';
+import userNotifications from './UserNotificationActions';
+import waybills from './WaybillsActions';
 
 export {
   autobase,

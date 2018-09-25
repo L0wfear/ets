@@ -5,9 +5,9 @@ import { Modal, Row, Col } from 'react-bootstrap';
 
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { GEOOBJECTS_TYPES, GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import ModalBody from 'components/ui/Modal';
-import PolyMap from 'components/map/PolyMap.jsx';
+import PolyMap from 'components/map/PolyMap';
 
 const extractData = L.prop('data');
 

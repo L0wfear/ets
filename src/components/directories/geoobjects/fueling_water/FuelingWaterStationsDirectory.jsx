@@ -1,7 +1,7 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import FuelingWaterStationsTable, { tableMeta } from 'components/directories/geoobjects/fueling_water/FuelingWaterStationsTable.jsx';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import FuelingWaterStationsTable, { tableMeta } from 'components/directories/geoobjects/fueling_water/FuelingWaterStationsTable';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import permissions from 'components/directories/geoobjects/fueling_water/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

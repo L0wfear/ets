@@ -6,7 +6,7 @@ import {
   setMissionData,
   setDutyMissionData,
 } from 'redux-main/modules/order/action-order';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import connectToStores from 'flummox/connect';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import permissions_mission from 'components/missions/mission/config-data/permissions';

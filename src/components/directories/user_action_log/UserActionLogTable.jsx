@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 export const tableMeta = ({
   isOkrug = false,

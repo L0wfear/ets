@@ -5,7 +5,7 @@ import {
   clone,
   cloneDeep,
 } from 'lodash';
-import { parseFilterObject } from 'actions/MissionsActions.js';
+import { parseFilterObject } from 'actions/MissionsActions';
 import {
   OrderService,
   WorkKindsService,

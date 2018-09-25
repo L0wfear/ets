@@ -1,11 +1,11 @@
 import * as React from 'react';
 import moment from 'moment';
 
-import { validateField } from 'utils/validate/validateField.js';
+import { validateField } from 'utils/validate/validateField';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import PercentModalForm from './PercentModalForm.jsx';
+import PercentModalForm from './PercentModalForm';
 
 import { formValidationSchema } from './schema';
 

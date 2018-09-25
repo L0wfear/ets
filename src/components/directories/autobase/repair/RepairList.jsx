@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import RepairFormWrap from 'components/directories/autobase/repair/RepairFormWrap';
 import RepairTable, { tableMeta } from 'components/directories/autobase/repair/RepairTable';
 import permissions from 'components/directories/autobase/repair/config-data/permissions';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
-import { sortFunc } from 'components/reports/mission/utils/sortFunction.ts';
+import Table from 'components/ui/table/DataTable';
+import ElementsList from 'components/ElementsList';
+import { sortFunc } from 'components/reports/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/reports/mission/utils/main';
 
 const VALUE_FOR_FIXED = {

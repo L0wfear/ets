@@ -5,7 +5,7 @@ import {
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 import { typeTemplate } from 'components/directories/order/forms/utils/constant';
-import { parseFilterObject } from 'actions/MissionsActions.js';
+import { parseFilterObject } from 'actions/MissionsActions';
 
 const ORDER = createPath('ORDER');
 export const GET_ORDERS = ORDER`GET_ORDERS`;

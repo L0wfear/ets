@@ -1,5 +1,5 @@
 import { getToday9am } from 'utils/dates';
-import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore.js';
+import { getDefaultMission, getDefaultDutyMission } from 'stores/MissionsStore';
 
 export const getMElement = (state, payload) => {
   const {

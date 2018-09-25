@@ -3,11 +3,11 @@ import { Button } from 'react-bootstrap';
 import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
-import Table from 'components/ui/table/DataTable.jsx';
+import DateFormatter from 'components/ui/DateFormatter';
+import Table from 'components/ui/table/DataTable';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 import permissions from 'components/directories/autobase/tire/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 const CloneButton = enhanceWithPermissions({
   permission: permissions.create,

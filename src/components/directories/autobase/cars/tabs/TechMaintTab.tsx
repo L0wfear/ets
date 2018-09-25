@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle } from 'api/@types/services/index.h';
-import BaseField from 'components/ui/Field.jsx';
+import BaseField from 'components/ui/Field';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 
 const Field: any = onChangeWithKeys(BaseField);

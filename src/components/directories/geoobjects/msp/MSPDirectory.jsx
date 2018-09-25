@@ -1,7 +1,7 @@
-import MSPTable, { tableMeta } from 'components/directories/geoobjects/msp/MSPTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import MSPTable, { tableMeta } from 'components/directories/geoobjects/msp/MSPTable';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import schema from 'components/directories/geoobjects/msp/schema';
 import permissions from 'components/directories/geoobjects/msp/config-data/permissions';
 

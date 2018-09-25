@@ -3,8 +3,8 @@ import { Glyphicon } from 'react-bootstrap';
 import { get, uniqBy, find } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
-import Table from 'components/ui/table/DataTable.jsx';
+import DateFormatter from 'components/ui/DateFormatter';
+import Table from 'components/ui/table/DataTable';
 
 /**
  * подсветка строк таблицы "провальных" поручений

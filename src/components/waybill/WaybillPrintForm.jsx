@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { get } from 'lodash';
 
 import {

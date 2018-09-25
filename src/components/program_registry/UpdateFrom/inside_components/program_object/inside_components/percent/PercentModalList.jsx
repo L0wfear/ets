@@ -4,7 +4,7 @@ import moment from 'moment';
 import { isEmpty } from 'lodash';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import ModalBody from 'components/ui/Modal';
 import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 

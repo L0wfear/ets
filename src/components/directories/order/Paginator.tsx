@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getOrders } from 'redux-main/modules/order/action-order';
 
-import Paginator from 'components/ui/Paginator.jsx';
-import Div from 'components/ui/Div.jsx';
+import Paginator from 'components/ui/Paginator';
+import Div from 'components/ui/Div';
 
 const PaginatorTsx: any = Paginator;
 

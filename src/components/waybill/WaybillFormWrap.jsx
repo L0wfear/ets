@@ -8,19 +8,19 @@ import {
   max,
 } from 'lodash';
 import { autobind } from 'core-decorators';
-import Div from 'components/ui/Div.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import Div from 'components/ui/Div';
+import FormWrap from 'components/compositions/FormWrap';
 import { getWarningNotification } from 'utils/notifications';
 import {
   saveData,
   printData,
 } from 'utils/functions';
-import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel.js';
+import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
 import { FluxContext } from 'utils/decorators';
 import permissions from 'components/waybill/config-data/permissions';
-import WaybillForm from './WaybillForm.jsx';
-import { getDefaultBill } from '../../stores/WaybillsStore.js';
-import Taxes from './Taxes.jsx';
+import WaybillForm from './WaybillForm';
+import { getDefaultBill } from '../../stores/WaybillsStore';
+import Taxes from './Taxes';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ

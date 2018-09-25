@@ -6,9 +6,9 @@ import {
   setEmptyDutyMissionTemplateData,
 } from 'redux-main/modules/order/action-order';
   
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap.jsx';
+import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 import OrderMissionTemplate from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
 

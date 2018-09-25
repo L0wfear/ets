@@ -1,7 +1,7 @@
-import DangerZonesTable, { tableMeta } from 'components/directories/geoobjects/danger_zones/DangerZonesTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import DangerZonesTable, { tableMeta } from 'components/directories/geoobjects/danger_zones/DangerZonesTable';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import permissions from 'components/directories/geoobjects/danger_zones/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

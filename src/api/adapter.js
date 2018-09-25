@@ -115,7 +115,7 @@ function httpMethod(url, data = {}, method, type, params = {}) {
       return Promise.reject({ error: r, error_text });
     }
     try {
-      const responseBody = await r.json();
+      const responseBody = await ron();
       try {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);

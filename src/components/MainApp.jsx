@@ -5,11 +5,11 @@ import Div from 'components/ui/Div';
 import { connect } from 'react-redux';
 
 import LoadingOverlay from 'components/ui/LoadingOverlay';
-import ModalTP from 'components/modalTP/ModalTP.tsx';
-import Routes from 'components/indexRoute.tsx';
+import ModalTP from 'components/modalTP/ModalTP';
+import Routes from 'components/indexRoute';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
-import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
+import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders';
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 

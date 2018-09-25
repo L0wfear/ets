@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 export const tableMeta = ({
   schemaMakers = {},

@@ -1,4 +1,4 @@
-import Chart from './BaseChart.jsx';
+import Chart from './BaseChart';
 
 export default class SpeedChart extends Chart {
   constructor(props) {

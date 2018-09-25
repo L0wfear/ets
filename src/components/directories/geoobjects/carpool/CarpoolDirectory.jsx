@@ -1,7 +1,7 @@
-import CarpoolTable, { tableMeta } from 'components/directories/geoobjects/carpool/CarpoolTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import CarpoolTable, { tableMeta } from 'components/directories/geoobjects/carpool/CarpoolTable';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal.jsx';
+import GeoObjectsMapModal from 'components/directories/geoobjects/GeoObjectsMapModal';
 import permissions from 'components/directories/geoobjects/carpool/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

@@ -2,11 +2,11 @@ import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import permissions from 'components/company_structure/config-data/permissions';
 import { connectToStores, staticProps } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import ElementsList from 'components/ElementsList';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import CompanyStructureFormWrap from 'components/company_structure/CompanyStructureFormWrap.jsx';
-import CompanyStructureTable from 'components/company_structure/CompanyStructureTable.jsx';
+import CompanyStructureFormWrap from 'components/company_structure/CompanyStructureFormWrap';
+import CompanyStructureTable from 'components/company_structure/CompanyStructureTable';
 
 import {
   EtsPageWrapCompanyStructure,

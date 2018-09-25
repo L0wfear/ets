@@ -33,12 +33,21 @@ const boundKeys = {
   comment: ['comment'],
 };
 
-const makeName = ({ number, name, object_list }, { fromMission }) => {
+const makeName = ({ number, name, object_list, draw_odh_list }, { fromMission }) => {
   if (number === null) {
     return name;
   }
 
-  const [first, ...other] = object_list;
+  const list = [];
+  if (object_list) {
+    list.push(...object_list);
+  }
+
+  if (draw_odh_list) {
+    list.push(...draw_odh_list);
+  }
+
+  const [first, ...other] = list;
   const [last] = other.slice(-1);
 
   let generateName = `Маршрут №${number}`;
@@ -63,11 +72,9 @@ export default class RouteForm extends Form {
 
   constructor(props) {
     super(props);
-    const ROUTE_TYPE_OPTIONS = initial_ROUTE_TYPES_OPTIONS;
 
     this.state = {
-      ROUTE_TYPE_OPTIONS,
-      routeTypeDisabled: true,
+      ROUTE_TYPE_OPTIONS: [],
     };
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
@@ -82,10 +89,12 @@ export default class RouteForm extends Form {
   }
 
   handleTypeChange(type) {
-    this.setState({ vector: false });
-    this.handleChange('type', type);
-    this.props.updateFromStatePolys({ ...this.props.formState, type });
-    this.props.resetState();
+    if (type !== this.props.formState.type) {
+      this.setState({ vector: false });
+      this.handleChange('type', type);
+      this.props.updateFromStatePolys({ ...this.props.formState, type });
+      this.props.resetState();
+    }
   }
 
   changeRouteTypesAvailable(route_types_out) {
@@ -100,47 +109,42 @@ export default class RouteForm extends Form {
     }
 
     const { formState: { type: routeTypeValue } } = this.props;
-    let routeTypeValue_new = routeTypeValue;
+    let hasOldTypeInNew = false;
 
     route_types.forEach((obj) => {
       switch (obj) {
         case 'mixed':
           route_type_options.push({ value: 'mixed', label: 'ОДХ' });
-          if (!routeTypeValue_new) {
-            routeTypeValue_new = 'mixed';
-          }
+          hasOldTypeInNew = hasOldTypeInNew || routeTypeValue === 'mixed';
           break;
         case 'points':
           route_type_options.push({ value: 'points', label: 'Пункты назначения' });
-          if (!routeTypeValue_new && routeTypeValue !== 'mixed') {
-            routeTypeValue_new = 'points';
-          }
+          hasOldTypeInNew = hasOldTypeInNew || routeTypeValue === 'points';
           break;
         case 'simple_dt':
           route_type_options.push({ value: 'simple_dt', label: 'ДТ' });
-          if (!routeTypeValue_new && routeTypeValue_new !== 'mixed') {
-            routeTypeValue_new = 'simple_dt';
-          }
+          hasOldTypeInNew = hasOldTypeInNew || routeTypeValue === 'simple_dt';
           break;
         default:
           break;
       }
     });
 
-    let type;
-    if (route_type_options.find(({ value }) => value === routeTypeValue_new)) {
-      type = routeTypeValue_new;
-    }
-    if (route_type_options[0]) {
-      type = route_type_options[0].value;
+    const changeStateObj = {
+      ROUTE_TYPE_OPTIONS: route_type_options,
+    };
+
+    if (!hasOldTypeInNew) {
+      changeStateObj.vector = false;
+      const type = route_type_options[0].value;
+      this.handleChange('type', type);
+      this.props.resetState();
+      this.props.updateFromStatePolys({ ...this.props.formState, type }, false);
+    } else {
+      this.props.updateFromStatePolys({ ...this.props.formState }, true);
     }
 
-    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue_new, vector: false });
-    this.handleChange('type', type);
-    if (type !== this.props.formState.type) {
-      this.props.resetState();
-    }
-    this.props.updateFromStatePolys({ ...this.props.formState, type });
+    this.setState({ ...changeStateObj });
   }
 
   handleTechChange(v) {
@@ -320,7 +324,7 @@ export default class RouteForm extends Form {
                 options={ROUTE_TYPE_OPTIONS}
                 value={state.type}
                 clearable={false}
-                disabled={this.state.routeTypeDisabled || !state.municipal_facility_id || state.copy}
+                disabled={!state.municipal_facility_id || state.copy}
                 onChange={this.handleTypeChange}
               />
             </Col>

@@ -198,15 +198,13 @@ class RoutesList extends React.Component {
     return this.context.flux.getActions('routes').getRouteById(id).then((route) => {
       const { showId } = this.state;
 
-      const STRUCTURES = this.getStructures();
-      const { technicalOperationsList = [] } = this.props;
-
       const pathToIsMain = route.is_main ? 'main' : 'other';
-      const pathTo_type = getTypeRoute(route.type);
-      const pathTo_structure_name = pathTo_type + ((STRUCTURES.length > 0 && route.structure_id) ? (_.get(STRUCTURES.find(t => t.value === route.structure_id), 'label') || 'Без подразделения') : 'Без подразделения');
-      const pathTo_technical_operation_name = pathTo_structure_name + _.get(technicalOperationsList.find(t => t.id === route.technical_operation_id), 'name');
+      const pathTo_type = pathToIsMain + getTypeRoute(route.type);
+      const pathTo_structure_name = pathTo_type + route.structure_name || 'Без подразделения';
+      const pathToWorkTypeName = pathTo_structure_name + route.front_work_type_name;
+      const pathTo_technical_operation_name = pathTo_structure_name + route.technical_operation_name;
 
-      [pathToIsMain, pathTo_type, pathTo_structure_name, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
+      [pathToIsMain, pathTo_type, pathTo_structure_name, pathToWorkTypeName, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
 
       this.setState({
         showForm: false,

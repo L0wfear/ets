@@ -9,6 +9,8 @@ import * as queryString from 'query-string';
 
 import {
   EtsPageWrapRoute,
+  RouteHeaderContainer,
+  SeasonsFilterContainer,
 } from 'components/route/styled/styled';
 
 import Div from 'components/ui/Div';
@@ -23,11 +25,30 @@ import {
   ButtonUpdateRoute,
   ButtonDeleteRoute,
 } from 'components/route/buttons/buttons';
+import { ExtField } from 'components/ui/Field';
+
+import { getCurrentSeason } from 'utils/dates';
+
+const SEASONS_OPTIONS = [
+  {
+    value: 1,
+    label: 'Лето',
+  },
+  {
+    value: 2,
+    label: 'Зима',
+  },
+  {
+    value: 3,
+    label: 'Всесезон',
+  },
+];
 
 class RoutesList extends React.Component {
 
   static get propTypes() {
     return {
+      appConfig: PropTypes.object,
       technicalOperationsList: PropTypes.array,
       technicalOperationsObjectsList: PropTypes.array,
     };
@@ -40,6 +61,8 @@ class RoutesList extends React.Component {
   constructor(props) {
     super(props);
 
+    const season = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+
     this.state = {
       selectedRoute: null,
       selectedRoute_old: null,
@@ -47,6 +70,7 @@ class RoutesList extends React.Component {
       filterValues: {},
       filterModalIsOpen: false,
       showId: [-1],
+      season_id: [3, season === 'winter' ? 2 : 1],
     };
   }
 
@@ -108,19 +132,21 @@ class RoutesList extends React.Component {
     })
   )
 
-  shouldBeRendered(obj) {
-    let isValid = true;
-    _.mapKeys(this.state.filterValues, ({ value }, key) => {
-      if (_.isArray(value)) {
-        if (!obj[key]) {
-          isValid = false;
-        } else if (value.indexOf(obj[key].toString()) === -1) {
-          isValid = false;
-        }
-      }
-    });
+  handleChangeSeasonId = (season_id) => {
+    this.setState({ season_id });
+  }
 
-    return isValid;
+  shouldBeRendered(obj) {
+    if (this.state.season_id.some(season_id => (obj.seasons.some(seasonData => seasonData.season_id === season_id)))) {
+      return Object.entries(this.state.filterValues).every(([key, { value }]) => {
+        if (Array.isArray(obj[key])) {
+          return obj[key].some(data => value.includes(data));
+        }
+        return value.includes(obj[key]);
+      });
+    }
+
+    return false;
   }
 
   closeFilter = () => {
@@ -318,8 +344,20 @@ class RoutesList extends React.Component {
           </div>
         </Col>
         <Col xs={7} md={9} >
-          <div className="some-header clearfix">
+          <RouteHeaderContainer className="some-header">
             <div className="waybills-buttons">
+              <span>{'Сезон: '}</span>
+              <SeasonsFilterContainer>
+                <ExtField
+                  id="season_id"
+                  type="select"
+                  multi
+                  label={false}
+                  options={SEASONS_OPTIONS}
+                  value={this.state.season_id}
+                  onChange={this.handleChangeSeasonId}
+                />
+              </SeasonsFilterContainer>
               <FilterButton
                 show={this.state.filterModalIsOpen}
                 active={!!_.keys(this.state.filterValues).length}
@@ -330,7 +368,7 @@ class RoutesList extends React.Component {
               <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
               <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
             </div>
-          </div>
+          </RouteHeaderContainer>
           <Filter
             show={this.state.filterModalIsOpen}
             onSubmit={this.saveFilter}

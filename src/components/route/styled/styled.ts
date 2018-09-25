@@ -65,3 +65,14 @@ export const EtsPageWrapRoute = styled(EtsPageWrap)`
     white-space: nowrap;
   }
 `;
+
+export const RouteHeaderContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const SeasonsFilterContainer = styled.div`
+  width: 300px;
+  font-size: 14px;
+  line-height: normal;
+`;

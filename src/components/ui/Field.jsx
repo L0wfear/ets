@@ -100,14 +100,17 @@ export default class Field extends React.Component {
   }
 
   renderBoolean() {
-    const { label = '' } = this.props;
+    const {
+      label = '',
+      className = 'default-boolean-input',
+    } = this.props;
     return (
-      <Div hidden={this.props.hidden}>
+      <Div hidden={this.props.hidden} className={className}>
         <label>{label}</label>
         <input
           id={this.props.id}
           type="checkbox"
-          style={{ fontSize: '20px', marginLeft: '5px' }}
+          style={{ fontSize: '20px', margin: '5px' }}
           checked={this.props.value}
           onChange={this.props.onChange}
           disabled={this.props.disabled}

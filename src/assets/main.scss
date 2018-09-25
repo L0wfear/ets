@@ -3609,3 +3609,10 @@ div.car-movement-time-report {
 .font-bold {
   font-weight: bold;
 }
+
+.flex-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: baseline;
+}

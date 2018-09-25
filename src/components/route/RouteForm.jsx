@@ -27,6 +27,11 @@ const initial_ROUTE_TYPES_OPTIONS = [
   { value: 'points', label: 'Выбор пунктов назначения' },
 ];
 
+const boundKeys = {
+  name: ['name'],
+  structure_id: ['structure_id'],
+};
+
 @connectToStores(['objects', 'geoObjects'])
 @autobind
 export default class RouteForm extends Form {
@@ -146,6 +151,8 @@ export default class RouteForm extends Form {
   handleSaveAsTemplate = () => this.handleSubmit(1);
   handleSubmitForMission = () => this.handleSubmit(0);
 
+  toggleIsMain = () => this.handleChange('is_main', !this.props.formState.is_main);
+
   getDataByNormId = (data) => {
     if (!data) {
       this.handleChange('norm_id', data);
@@ -194,10 +201,6 @@ export default class RouteForm extends Form {
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
     const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.input_lines && state.input_lines.length));
 
-    const boundKeys = {
-      name: ['name'],
-      structure_id: ['structure_id'],
-    };
     return (
       <Modal id="modal-route" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
@@ -206,7 +209,17 @@ export default class RouteForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-
+          <Row>
+            <Col md={12}>
+              <ExtField
+                type="boolean"
+                label="Основной маршрут"
+                value={state.is_main}
+                onChange={this.toggleIsMain}
+                className="flex-reverse"
+              />
+            </Col>
+          </Row>
           <Row>
             <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
               <ExtField

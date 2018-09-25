@@ -11,6 +11,8 @@ import {
   EtsPageWrapRoute,
   RouteHeaderContainer,
   SeasonsFilterContainer,
+  SidebarListContainer,
+  SpanTitleRouteGroup,
 } from 'components/route/styled/styled';
 
 import Div from 'components/ui/Div';
@@ -43,6 +45,25 @@ const SEASONS_OPTIONS = [
     label: 'Всесезон',
   },
 ];
+
+const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
+  const ROUTES = _.groupBy(INPUT_ROUTES, r => r.type_name);
+  _.forOwn(ROUTES, (ar1, key1) => {
+    ROUTES[key1] = _(ar1)
+      .sortBy(r => r.structure_id)
+      .groupBy(r => r.structure_name || 'Без подразделения')
+      .value();
+    if (Object.keys(ROUTES[key1]).length === 1 && Object.keys(ROUTES[key1])[0] === 'Без подразделения') {
+      ROUTES[key1] = _.groupBy(ar1, r => r.technical_operation_name);
+    } else {
+      _.forOwn(ROUTES[key1], (ar2, key2) => {
+        ROUTES[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
+      });
+    }
+  });
+
+  return ROUTES;
+};
 
 class RoutesList extends React.Component {
 
@@ -171,11 +192,12 @@ class RoutesList extends React.Component {
       const STRUCTURES = this.getStructures();
       const { technicalOperationsList = [] } = this.props;
 
+      const pathToIsMain = route.is_main ? 'main' : 'other';
       const pathTo_type = getTypeRoute(route.type);
       const pathTo_structure_name = pathTo_type + ((STRUCTURES.length > 0 && route.structure_id) ? (_.get(STRUCTURES.find(t => t.value === route.structure_id), 'label') || 'Без подразделения') : 'Без подразделения');
       const pathTo_technical_operation_name = pathTo_structure_name + _.get(technicalOperationsList.find(t => t.id === route.technical_operation_id), 'name');
 
-      [pathTo_type, pathTo_structure_name, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
+      [pathToIsMain, pathTo_type, pathTo_structure_name, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
 
       this.setState({
         showForm: false,
@@ -316,20 +338,11 @@ class RoutesList extends React.Component {
     ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
     ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
 
-    ROUTES = _.groupBy(ROUTES, r => r.type_name);
-    _.forOwn(ROUTES, (ar1, key1) => {
-      ROUTES[key1] = _(ar1)
-        .sortBy(r => r.structure_id)
-        .groupBy(r => r.structure_name || 'Без подразделения')
-        .value();
-      if (Object.keys(ROUTES[key1]).length === 1 && Object.keys(ROUTES[key1])[0] === 'Без подразделения') {
-        ROUTES[key1] = _.groupBy(ar1, r => r.technical_operation_name);
-      } else {
-        _.forOwn(ROUTES[key1], (ar2, key2) => {
-          ROUTES[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
-        });
-      }
-    });
+    ROUTES = Object.entries(_.groupBy(ROUTES, r => r.is_main ? 'main' : 'other')).reduce((newObj, [key, arr]) => {
+      newObj[key] = makeMainGroupRoute(arr);
+
+      return newObj;
+    }, {});
 
     return (
       <EtsPageWrapRoute inheritDisplay>
@@ -339,9 +352,16 @@ class RoutesList extends React.Component {
               Список маршрутов
             </div>
           </header>
-          <div className="sidebar__list-container" style={{ marginLeft: 20, top: '70px' }}>
-            {this.renderItem(ROUTES)}
-          </div>
+          <SidebarListContainer>
+            <div>
+              <SpanTitleRouteGroup>Основные:</SpanTitleRouteGroup>
+              {this.renderItem(ROUTES.main, 'main')}
+            </div>
+            <div>
+              <SpanTitleRouteGroup className="second">Дополнительные:</SpanTitleRouteGroup>
+              {this.renderItem(ROUTES.other, 'other')}
+            </div>
+          </SidebarListContainer>
         </Col>
         <Col xs={7} md={9} >
           <RouteHeaderContainer className="some-header">

@@ -347,8 +347,11 @@ export default class MissionsActions extends Actions {
     return CarDutyMissionService.get();
   }
 
-  getDutyMissionTemplates() {
+  getDutyMissionTemplates(data = {}) {
     const payload = {};
+    if (data && data.order_id) {
+      payload.order_id = data.order_id;
+    }
 
     return DutyMissionTemplateService.get(payload);
   }

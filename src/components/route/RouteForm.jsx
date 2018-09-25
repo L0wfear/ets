@@ -27,26 +27,74 @@ const initial_ROUTE_TYPES_OPTIONS = [
   { value: 'points', label: 'Выбор пунктов назначения' },
 ];
 
+const boundKeys = {
+  name: ['name'],
+  structure_id: ['structure_id'],
+  comment: ['comment'],
+};
+
+const makeName = ({ number, name, object_list, draw_odh_list }, { fromMission }) => {
+  if (number === null) {
+    return name;
+  }
+
+  const list = [];
+  if (object_list) {
+    list.push(...object_list);
+  }
+
+  if (draw_odh_list) {
+    list.push(...draw_odh_list);
+  }
+
+  const [first, ...other] = list;
+  const [last] = other.slice(-1);
+
+  let generateName = `Маршрут №${number}`;
+
+  if (first && first.name) {
+    if (last && last.name) {
+      generateName = `${generateName} от ${first.name} до ${last.name}`;
+    } else {
+      generateName = `${generateName} до ${first.name}`;
+    }
+    if (fromMission) {
+      generateName = `${generateName}-А`;
+    }
+  }
+
+  return generateName;
+};
+
 @connectToStores(['objects', 'geoObjects'])
 @autobind
 export default class RouteForm extends Form {
 
   constructor(props) {
     super(props);
-    const ROUTE_TYPE_OPTIONS = initial_ROUTE_TYPES_OPTIONS;
 
     this.state = {
-      ROUTE_TYPE_OPTIONS,
-      routeTypeDisabled: true,
+      ROUTE_TYPE_OPTIONS: [],
     };
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const name = makeName(this.props.formState, this.props);
+
+    // todo тригерить на изменения зависимых значений
+    if (name !== prevProps.formState.name) {
+      this.handleChange('name', name);
+    }
+  }
+
   handleTypeChange(type) {
-    this.setState({ vector: false });
-    this.handleChange('type', type);
-    this.props.updateFromStatePolys({ ...this.props.formState, type });
-    this.props.resetState();
+    if (type !== this.props.formState.type) {
+      this.setState({ vector: false });
+      this.handleChange('type', type);
+      this.props.updateFromStatePolys({ ...this.props.formState, type });
+      this.props.resetState();
+    }
   }
 
   changeRouteTypesAvailable(route_types_out) {
@@ -61,47 +109,42 @@ export default class RouteForm extends Form {
     }
 
     const { formState: { type: routeTypeValue } } = this.props;
-    let routeTypeValue_new = routeTypeValue;
+    let hasOldTypeInNew = false;
 
     route_types.forEach((obj) => {
       switch (obj) {
         case 'mixed':
           route_type_options.push({ value: 'mixed', label: 'ОДХ' });
-          if (!routeTypeValue_new) {
-            routeTypeValue_new = 'mixed';
-          }
+          hasOldTypeInNew = hasOldTypeInNew || routeTypeValue === 'mixed';
           break;
         case 'points':
           route_type_options.push({ value: 'points', label: 'Пункты назначения' });
-          if (!routeTypeValue_new && routeTypeValue !== 'mixed') {
-            routeTypeValue_new = 'points';
-          }
+          hasOldTypeInNew = hasOldTypeInNew || routeTypeValue === 'points';
           break;
         case 'simple_dt':
           route_type_options.push({ value: 'simple_dt', label: 'ДТ' });
-          if (!routeTypeValue_new && routeTypeValue_new !== 'mixed') {
-            routeTypeValue_new = 'simple_dt';
-          }
+          hasOldTypeInNew = hasOldTypeInNew || routeTypeValue === 'simple_dt';
           break;
         default:
           break;
       }
     });
 
-    let type;
-    if (route_type_options.find(({ value }) => value === routeTypeValue_new)) {
-      type = routeTypeValue_new;
-    }
-    if (route_type_options[0]) {
-      type = route_type_options[0].value;
+    const changeStateObj = {
+      ROUTE_TYPE_OPTIONS: route_type_options,
+    };
+
+    if (!hasOldTypeInNew) {
+      changeStateObj.vector = false;
+      const type = route_type_options[0].value;
+      this.handleChange('type', type);
+      this.props.resetState();
+      this.props.updateFromStatePolys({ ...this.props.formState, type }, false);
+    } else {
+      this.props.updateFromStatePolys({ ...this.props.formState }, true);
     }
 
-    this.setState({ ROUTE_TYPE_OPTIONS: route_type_options, routeTypeDisabled: !routeTypeValue_new, vector: false });
-    this.handleChange('type', type);
-    if (type !== this.props.formState.type) {
-      this.props.resetState();
-    }
-    this.props.updateFromStatePolys({ ...this.props.formState, type });
+    this.setState({ ...changeStateObj });
   }
 
   handleTechChange(v) {
@@ -145,6 +188,8 @@ export default class RouteForm extends Form {
 
   handleSaveAsTemplate = () => this.handleSubmit(1);
   handleSubmitForMission = () => this.handleSubmit(0);
+
+  toggleIsMain = () => this.handleChange('is_main', !this.props.formState.is_main);
 
   getDataByNormId = (data) => {
     if (!data) {
@@ -194,10 +239,6 @@ export default class RouteForm extends Form {
     const title = state.id ? 'Изменение маршрута' : 'Создание нового маршрута';
     const canSave = this.props.canSave && ((!!state.object_list && state.object_list.length) || (!!state.input_lines && state.input_lines.length));
 
-    const boundKeys = {
-      name: ['name'],
-      structure_id: ['structure_id'],
-    };
     return (
       <Modal id="modal-route" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
@@ -206,22 +247,28 @@ export default class RouteForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-
           <Row>
-            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
+            <Col md={12}>
+              <div>
+                <b>{'Название маршрута '}</b>{state.number !== null ? state.name.replace(/\{\{number\}\}/, '-') : state.name}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
               <ExtField
-                id="route-name"
-                type="string"
-                label="Название маршрута"
-                value={state.name}
-                onChange={this.handleChange}
-                boundKeys={boundKeys.name}
-                error={errors.name}
+                type="boolean"
+                label="Основной маршрут"
+                value={state.is_main}
+                onChange={this.toggleIsMain}
+                className="flex-reverse"
               />
             </Col>
-
-            <Div hidden={this.props.forceTechnicalOperation}>
-              <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
+          </Row>
+          <Row>
+          <Div hidden={this.props.forceTechnicalOperation}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
+              <Row>
                 <Col md={6} style={{ zIndex: 10001 }}>
                   <ExtField
                     id="route-technical-operation-id"
@@ -249,6 +296,7 @@ export default class RouteForm extends Form {
                     getNormIdFromState={this.props.fromMission}
                   />
                 </Col>
+                </Row>
               </Col>
             </Div>
             <Div hidden={!STRUCTURE_FIELD_VIEW}>
@@ -268,20 +316,28 @@ export default class RouteForm extends Form {
                 />
               </Col>
             </Div>
-            <Div hidden={this.props.forceRouteType}>
-              <Col md={2}>
-                <ExtField
-                  id="type"
-                  type="select"
-                  label="Тип объекта"
-                  options={ROUTE_TYPE_OPTIONS}
-                  value={state.type}
-                  clearable={false}
-                  disabled={this.state.routeTypeDisabled || !state.municipal_facility_id || state.copy}
-                  onChange={this.handleTypeChange}
+            <Col md={2}>
+              <ExtField
+                id="type"
+                type="select"
+                label="Тип объекта"
+                options={ROUTE_TYPE_OPTIONS}
+                value={state.type}
+                clearable={false}
+                disabled={!state.municipal_facility_id || state.copy}
+                onChange={this.handleTypeChange}
+              />
+            </Col>
+            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
+              <ExtField
+                id="comment"
+                type="string"
+                label="Примечание"
+                value={state.comment}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.comment}
                 />
-              </Col>
-            </Div>
+            </Col>
           </Row>
 
           <Row className={'routes-form-map-wrapper'}>

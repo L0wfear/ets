@@ -467,6 +467,7 @@ export class MissionForm extends Form {
     const IS_NOT_ASSIGNED = state.status === 'not_assigned';
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
+    const IS_DISABLED_ASSIGNED = state.status === 'assigned' ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено"
     let title = `Задание № ${state.number}${state.status === 'fail' ? ' (Не выполнено)' : ''}`;
     if (state.column_id) {
       title = `${title} . Колонна № ${state.column_id}`;
@@ -514,135 +515,136 @@ export class MissionForm extends Form {
               />
             )
             : (
-              <Modal id="modal-mission" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+            <Modal id="modal-mission" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
-                <Modal.Header closeButton>
-                  <Modal.Title>{title}</Modal.Title>
-                </Modal.Header>
+              <Modal.Header closeButton>
+                <Modal.Title>{title}</Modal.Title>
+              </Modal.Header>
 
-                <ModalBody>
-                  <Row>
-                    <Col md={9}>
-                      <Field
-                        id="technical-operation-id"
-                        type="select"
-                        modalKey={modalKey}
-                        label="Технологическая операция"
-                        error={errors.technical_operation_id}
-                        disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
-                        options={TECH_OPERATIONS}
-                        value={state.technical_operation_id}
-                        onChange={this.handleTechnicalOperationChange}
-                        clearable={false}
-                      />
-                    </Col>
-                    {STRUCTURES.length > 0 && (
-                    <Col md={3}>
-                      <Field
-                        id="m-structure-id"
-                        type="select"
-                        modalKey={modalKey}
-                        label="Подразделение"
-                        error={errors.structure_id}
-                        disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !this.props.fromWaybill) || !IS_CREATING}
-                        clearable={STRUCTURE_FIELD_DELETABLE}
-                        options={STRUCTURES}
-                        emptyValue={null}
-                        placeholder=""
-                        value={structureValue}
-                        onChange={this.handleStructureIdChange}
-                      />
-                    </Col>
-                    )}
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <InsideField.MunicipalFacility
-                        id="municipal_facility_id"
-                        label="municipal_facility_name"
-                        errors={errors}
-                        state={state}
-                        clearable={false}
-                        disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
-                        handleChange={this.handleChangeMF}
-                        getDataByNormatives={this.getDataByNormatives}
-                        technicalOperationsList={technicalOperationsList}
-                        getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
-                        fromWaybill={this.props.fromWaybill}
-                        type_id={this.props.fromWaybill ? state.type_id : null}
-                        kind_task_ids={kind_task_ids}
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <Row>
-                        <Col className="date-label" md={12}><label>Время выполнения:</label></Col>
-                      </Row>
-                      <Row className="datepicker-range mission">
-                        <Col md={5}>
-                          <Field
-              id="date-start"
-              type="date"
-              error={errors.date_start}
-              date={state.date_start}
-              disabled={IS_DISPLAY}
-              min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
-              max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-              onChange={this.handleChangeDateStart}
-            />
-                        </Col>
-                        <Col md={1}>
-                          <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
-              <Dropdown.Toggle disabled={IS_DISPLAY}>
-                          <Glyphicon id="select-date_end" glyph="time" />
-                        </Dropdown.Toggle>
-              <Dropdown.Menu className="select-date-end-custom">
-                          <MenuItem eventKey={1}>1</MenuItem>
-                          <MenuItem eventKey={2}>2</MenuItem>
-                          <MenuItem eventKey={3}>3</MenuItem>
-                          <MenuItem eventKey={4}>4</MenuItem>
-                          <MenuItem eventKey={5}>5</MenuItem>
-                        </Dropdown.Menu>
-            </Dropdown>
-                        </Col>
-                        <Col md={2}>
-                          <Col mdOffset={2} md={5}>—</Col>
-                        </Col>
-                        <Col md={5}>
-                          <Field
-              id="date_end"
-              type="date"
-              error={errors.date_end}
-              date={state.date_end}
-              disabled={IS_DISPLAY}
-              min={state.date_start}
-              max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-              onChange={this.handleChangeDateEnd}
-            />
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={12}>
-                      <Field
-                        id="car-id"
-                        type="select"
-                        modalKey={modalKey}
-                        multi={state.is_column}
-                        label="Транспортное средство"
-                        error={errors.car_id}
-                        clearable={false}
-                        className="white-space-pre-wrap"
-                        disabled={carEditionDisability}
-                        options={CARS}
-                        optionRenderer={InsideField.CarOptionLabel}
-                        value={state.car_id}
-                        onChange={this.handleCarIdChange}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    {IS_CREATING && !this.props.fromWaybill && (
+              <ModalBody>
+                <Row>
+                  <Col md={9}>
+                    <Field
+                      id="technical-operation-id"
+                      type="select"
+                      modalKey={modalKey}
+                      label="Технологическая операция"
+                      error={errors.technical_operation_id}
+                      disabled={!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
+                      options={TECH_OPERATIONS}
+                      value={state.technical_operation_id}
+                      onChange={this.handleTechnicalOperationChange}
+                      clearable={false}
+                    />
+                  </Col>
+                  {
+                    STRUCTURES.length > 0 && (
+                      <Col md={3}>
+                        <Field
+                          id="m-structure-id"
+                          type="select"
+                          modalKey={modalKey}
+                          label="Подразделение"
+                          error={errors.structure_id}
+                          disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !this.props.fromWaybill) || !IS_CREATING}
+                          clearable={STRUCTURE_FIELD_DELETABLE}
+                          options={STRUCTURES}
+                          emptyValue={null}
+                          placeholder=""
+                          value={structureValue}
+                          onChange={this.handleStructureIdChange}
+                        />
+                      </Col>
+                  )}
+                </Row>
+                <Row>
+                  <Col md={6}>
+                    <InsideField.MunicipalFacility
+                      id="municipal_facility_id"
+                      label="municipal_facility_name"
+                      errors={errors}
+                      state={state}
+                      clearable={false}
+                      disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
+                      handleChange={this.handleChangeMF}
+                      getDataByNormatives={this.getDataByNormatives}
+                      technicalOperationsList={technicalOperationsList}
+                      getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
+                      fromWaybill={this.props.fromWaybill}
+                      type_id={this.props.fromWaybill ? state.type_id : null}
+                      kind_task_ids={kind_task_ids}
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <Row>
+                      <Col className="date-label" md={12}><label>Время выполнения:</label></Col>
+                    </Row>
+                    <Row className="datepicker-range mission">
+                      <Col md={5}>
+                        <Field
+                          id="date-start"
+                          type="date"
+                          error={errors.date_start}
+                          date={state.date_start}
+                          disabled={IS_DISABLED_ASSIGNED}
+                          min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
+                          max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+                          onChange={this.handleChangeDateStart}
+                        />
+                      </Col>
+                      <Col md={1}>
+                        <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
+                          <Dropdown.Toggle disabled={IS_DISPLAY}>
+                            <Glyphicon id="select-date_end" glyph="time" />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu className="select-date-end-custom">
+                            <MenuItem eventKey={1}>1</MenuItem>
+                            <MenuItem eventKey={2}>2</MenuItem>
+                            <MenuItem eventKey={3}>3</MenuItem>
+                            <MenuItem eventKey={4}>4</MenuItem>
+                            <MenuItem eventKey={5}>5</MenuItem>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Col>
+                      <Col md={2}>
+                        <Col mdOffset={2} md={5}>—</Col>
+                      </Col>
+                      <Col md={5}>
+                        <Field
+                          id="date_end"
+                          type="date"
+                          error={errors.date_end}
+                          date={state.date_end}
+                          disabled={IS_DISABLED_ASSIGNED}
+                          min={state.date_start}
+                          max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+                          onChange={this.handleChangeDateEnd}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <Field
+                      id="car-id"
+                      type="select"
+                      modalKey={modalKey}
+                      multi={state.is_column}
+                      label="Транспортное средство"
+                      error={errors.car_id}
+                      clearable={false}
+                      className="white-space-pre-wrap"
+                      disabled={carEditionDisability}
+                      options={CARS}
+                      optionRenderer={InsideField.CarOptionLabel}
+                      value={state.car_id}
+                      onChange={this.handleCarIdChange}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  {IS_CREATING && !this.props.fromWaybill && (
                     <Col md={12}>
                       <ExtField
                         id="is_column"

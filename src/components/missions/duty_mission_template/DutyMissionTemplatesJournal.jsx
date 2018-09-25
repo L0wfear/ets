@@ -49,7 +49,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   updateTable = () => {
     const { flux } = this.context;
 
-    return flux.getActions('missions').getDutyMissionTemplates({}).then(({ result }) => {
+    return flux.getActions('missions').getDutyMissionTemplates().then(({ result }) => {
       this.setState({
         listData: result.map(r => ({
           ...r,

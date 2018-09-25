@@ -1,8 +1,8 @@
 import { diffDates } from 'utils/dates';
 
-export const getMissionListByFilter = (missionsList) =>
+export const getMissionListByFilter = (missionsList) => (
   missionsList.reduce((arr, m) => {
-    if (diffDates(new Date(), m.date_to, 'minutes') < 0) {
+    if (m.date_to && diffDates(new Date(), m.date_to, 'minutes') < 0) {
       arr.push({
         ...m,
         customId: arr.length,
@@ -10,4 +10,5 @@ export const getMissionListByFilter = (missionsList) =>
     }
 
     return arr;
-  }, []);
+  }, [])
+);

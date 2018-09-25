@@ -65,3 +65,40 @@ export const EtsPageWrapRoute = styled(EtsPageWrap)`
     white-space: nowrap;
   }
 `;
+
+export const SidebarListContainer = styled.div`
+  margin: auto;
+  position: absolute;
+  left: 0;
+  top: 70px;
+  bottom: 0;
+  right: 0;
+  padding-right: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: 20px;
+  h5 {
+    font-weight: normal;
+  }
+  >div:nth-of-type(n + 2) {
+    margin-top: 5px;
+  }
+`;
+
+export const RouteHeaderContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const SeasonsFilterContainer = styled.div`
+  width: 300px;
+  font-size: 14px;
+  line-height: normal;
+`;
+
+export const SpanTitleRouteGroup = styled.div`
+  font-weight: 800;
+  text-decoration: underline;
+
+
+`;

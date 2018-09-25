@@ -106,7 +106,6 @@ class MissionTemplateForm extends MissionForm {
                 error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
                 clearable={false}
-                disabled={!!state.route_id}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange}
               />

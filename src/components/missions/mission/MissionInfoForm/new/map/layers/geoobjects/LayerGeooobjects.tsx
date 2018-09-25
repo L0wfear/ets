@@ -41,7 +41,7 @@ class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, { firstCen
       ))) {
         this.props.centerOn({
           extent: this.props.getOlLayer().getSource().getExtent(),
-          opt_options: { padding: [50, 50, 50, 50], maxZoom: 11, duration: 500 },
+          opt_options: { padding: [50, 50, 50, 50], maxZoom: 9, duration: 500 },
         });
       }
     }

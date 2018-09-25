@@ -17,7 +17,7 @@ const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldF
     oldFeature.setGeometry(GeoJSON.readGeometry(geoobj.shape))
   }
   if (geoobj_old.frontIsSelected !== geoobj.frontIsSelected) {
-    oldFeature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected))
+    oldFeature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected, geoobj.state))
   }
 };
 
@@ -36,7 +36,7 @@ const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasN
     });
     feature.setId(id);
     feature.set('serverName', serverName)
-    feature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected));
+    feature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected, geoobj.state));
 
     thisProps.addFeaturesToSource(feature);
   }

@@ -2,7 +2,6 @@ import {
   RouteService,
 } from 'api/Services';
 
-
 export const getRouteDataById = (id) => (
   RouteService.get({ id })
     .then(({ result: [route_data = null] }) => {
@@ -17,6 +16,7 @@ export const getRouteDataById = (id) => (
                 coordinates: el.coordinates,
               };
             }
+
             return el;
           });
         } else if (route_data.type === 'mixed') {

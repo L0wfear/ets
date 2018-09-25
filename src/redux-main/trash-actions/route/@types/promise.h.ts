@@ -24,3 +24,7 @@ export type RouteType = {
   technical_operation_name: string;
   type: 'mixed' | 'simple_dt' | 'points';
 };
+
+export type AnsGetRouteDataById = {
+  route_data: RouteType;
+};

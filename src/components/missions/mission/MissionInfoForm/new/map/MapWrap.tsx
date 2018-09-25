@@ -12,7 +12,6 @@ type PropsMapWrap = {
 
 class MapWrap extends React.Component<PropsMapWrap, {}> {
   render() {
-    console.log(this.props)
     return (
       <Map enableInteractions>
         {
@@ -24,6 +23,7 @@ class MapWrap extends React.Component<PropsMapWrap, {}> {
                 <LayerTrackLines map={map} />
                 <LayerTrackPoints map={map} />
                 <LayerParkingPoints map={map} />
+                <Legend hasMkad MaxSpeeds />
 
                 */
               }

@@ -54,22 +54,22 @@ export module LayerGeoobjectsUtilsTypes {
   export type checkShowTrueFunc = (
     serverName: string,
     id: string,
-    geoobj: GeozonesDataByIndex,
-    geoobj_old: GeozonesDataByIndex,
+    geoobj: GeozonesDataByIndex & { state: number },
+    geoobj_old: GeozonesDataByIndex & { state: number },
     oldFeature: ol.Feature,
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 
   export type checkShowTrueHasOldFeatureFunc = (
-    geoobj: GeozonesDataByIndex,
-    geoobj_old: GeozonesDataByIndex,
+    geoobj: GeozonesDataByIndex & { state: number },
+    geoobj_old: GeozonesDataByIndex & { state: number },
     oldFeature: ol.Feature,
   ) => void;
 
   export type checkShowTrueHasNotOldFeatureFunc = (
     serverName: string,
     id: string,
-    geoobj: GeozonesDataByIndex,
+    geoobj: GeozonesDataByIndex & { state: number },
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 };

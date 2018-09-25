@@ -30,6 +30,31 @@ const initial_ROUTE_TYPES_OPTIONS = [
 const boundKeys = {
   name: ['name'],
   structure_id: ['structure_id'],
+  comment: ['comment'],
+};
+
+const makeName = ({ number, name, object_list }, { fromMission }) => {
+  if (number === null) {
+    return name;
+  }
+
+  const [first, ...other] = object_list;
+  const [last] = other.slice(-1);
+
+  let generateName = `Маршрут №${number}`;
+
+  if (first && first.name) {
+    if (last && last.name) {
+      generateName = `${generateName} от ${first.name} до ${last.name}`;
+    } else {
+      generateName = `${generateName} до ${first.name}`;
+    }
+    if (fromMission) {
+      generateName = `${generateName}-А`;
+    }
+  }
+
+  return generateName;
 };
 
 @connectToStores(['objects', 'geoObjects'])
@@ -45,6 +70,15 @@ export default class RouteForm extends Form {
       routeTypeDisabled: true,
     };
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const name = makeName(this.props.formState, this.props);
+
+    // todo тригерить на изменения зависимых значений
+    if (name !== prevProps.formState.name) {
+      this.handleChange('name', name);
+    }
   }
 
   handleTypeChange(type) {
@@ -211,6 +245,13 @@ export default class RouteForm extends Form {
         <ModalBody>
           <Row>
             <Col md={12}>
+              <div>
+                <b>{'Название маршрута '}</b>{state.number !== null ? state.name.replace(/\{\{number\}\}/, '-') : state.name}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
               <ExtField
                 type="boolean"
                 label="Основной маршрут"
@@ -221,20 +262,9 @@ export default class RouteForm extends Form {
             </Col>
           </Row>
           <Row>
-            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
-              <ExtField
-                id="route-name"
-                type="string"
-                label="Название маршрута"
-                value={state.name}
-                onChange={this.handleChange}
-                boundKeys={boundKeys.name}
-                error={errors.name}
-              />
-            </Col>
-
-            <Div hidden={this.props.forceTechnicalOperation}>
-              <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
+          <Div hidden={this.props.forceTechnicalOperation}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
+              <Row>
                 <Col md={6} style={{ zIndex: 10001 }}>
                   <ExtField
                     id="route-technical-operation-id"
@@ -262,6 +292,7 @@ export default class RouteForm extends Form {
                     getNormIdFromState={this.props.fromMission}
                   />
                 </Col>
+                </Row>
               </Col>
             </Div>
             <Div hidden={!STRUCTURE_FIELD_VIEW}>
@@ -281,20 +312,28 @@ export default class RouteForm extends Form {
                 />
               </Col>
             </Div>
-            <Div hidden={this.props.forceRouteType}>
-              <Col md={2}>
-                <ExtField
-                  id="type"
-                  type="select"
-                  label="Тип объекта"
-                  options={ROUTE_TYPE_OPTIONS}
-                  value={state.type}
-                  clearable={false}
-                  disabled={this.state.routeTypeDisabled || !state.municipal_facility_id || state.copy}
-                  onChange={this.handleTypeChange}
+            <Col md={2}>
+              <ExtField
+                id="type"
+                type="select"
+                label="Тип объекта"
+                options={ROUTE_TYPE_OPTIONS}
+                value={state.type}
+                clearable={false}
+                disabled={this.state.routeTypeDisabled || !state.municipal_facility_id || state.copy}
+                onChange={this.handleTypeChange}
+              />
+            </Col>
+            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
+              <ExtField
+                id="comment"
+                type="string"
+                label="Примечание"
+                value={state.comment}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.comment}
                 />
-              </Col>
-            </Div>
+            </Col>
           </Row>
 
           <Row className={'routes-form-map-wrapper'}>

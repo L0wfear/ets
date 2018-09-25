@@ -227,6 +227,8 @@ class RoutesList extends React.Component {
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);
     delete copiedRoute.name;
     delete copiedRoute.id;
+    delete copiedRoute.comment;
+    delete copiedRoute.number;
     copiedRoute.copy = true;
 
     this.setState({

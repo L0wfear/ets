@@ -43,6 +43,12 @@ class RouteFormWrap extends FormWrap {
           is_main: false,
         };
       }
+
+      if (!formState.id) {
+        formState.number = '{{number}}';
+        formState.name = formState.name || '';
+      }
+
       formState.structure_id = props.element.structure_id || this.context.flux.getStore('session').getCurrentUser().structure_id;
       const formErrors = this.validate(formState, {});
       this.setState({

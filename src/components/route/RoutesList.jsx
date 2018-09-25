@@ -53,15 +53,25 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
       .sortBy(r => r.structure_id)
       .groupBy(r => r.structure_name || 'Без подразделения')
       .value();
+
     if (Object.keys(ROUTES[key1]).length === 1 && Object.keys(ROUTES[key1])[0] === 'Без подразделения') {
-      ROUTES[key1] = _.groupBy(ar1, r => r.technical_operation_name);
+      ROUTES[key1] = _.groupBy(ar1, r => r.front_work_type_name);
+
+      Object.entries(ROUTES[key1]).forEach(([key, arr]) => {
+        ROUTES[key1][key] = _.groupBy(arr, r => r.technical_operation_name);
+      });
     } else {
-      _.forOwn(ROUTES[key1], (ar2, key2) => {
-        ROUTES[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
+      Object.entries(ROUTES[key1]).forEach(([key2, arr2]) => {
+        ROUTES[key1][key2] = _.groupBy(arr2, r => r.front_work_type_name);
+
+        Object.entries(ROUTES[key1][key2]).forEach(([key, arr]) => {
+          ROUTES[key1][key2][key] = _.groupBy(arr, r => r.technical_operation_name);
+        });
       });
     }
   });
 
+  console.log(ROUTES)
   return ROUTES;
 };
 
@@ -143,9 +153,8 @@ class RoutesList extends React.Component {
       this.context.flux.getActions('routes').getRoutes().then(({ result }) => result),
       Promise.resolve(this.getStructures()),
     ])
-    .then(([routesListFromStore, STRUCTURES]) => {
-      const { technicalOperationsList = [] } = this.props;
-      const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
+    .then(([routesListFromStore]) => {
+      const routesList = makeRoutesListForRender(routesListFromStore);
 
       this.setState({ ...withState, routesList });
 

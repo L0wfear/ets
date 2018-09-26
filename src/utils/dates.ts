@@ -5,8 +5,8 @@ export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) => (
   moment(dateA).diff(moment(dateB), typeDiff as any, float)
 );
 
-export const getDateWithMoscowTz = (timestamp?) => {
-  const newDate = new Date(timestamp);
+export const getDateWithMoscowTz = (...dateArgument: [number]) => {
+  const newDate = new Date(...dateArgument);
   newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
 
   return newDate;

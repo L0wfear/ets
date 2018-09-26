@@ -3,6 +3,8 @@ import * as PropTypes from 'prop-types';
 import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 
+
+console.log(components)
 import {
   onChangeSelectLegacy,
   defaultSortingFunction,
@@ -51,6 +53,22 @@ export default class ReactSelect extends React.Component<any, any> {
     }
     return <components.Option innerProps={newInnerProps} {...props} />;
   }
+
+  singleValueRender = ({ innerProps, ...props }) => {
+    const {
+      modalKey,
+    } = this.props;
+    
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
+
+    console.log('singlValueRender')
+    const newInnerProps = {
+      ...innerProps,
+      id,
+    };
+
+    return <components.SingleValue innerProps={newInnerProps} {...props} />;
+  }
   render() {
     const {
       placeholder = 'Выберите...',
@@ -67,7 +85,6 @@ export default class ReactSelect extends React.Component<any, any> {
     } = this.props;
 
     const sortedOptions = options.sort(sortingFunction);
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
     const instanceId = modalKey ? `${modalKey}-${this.props.id}` : this.props.id;
 
     let value = props.value;
@@ -85,7 +102,7 @@ export default class ReactSelect extends React.Component<any, any> {
     return (
       <Select
         {...props}
-        id={id}
+        id={props.id}
         instanceId={instanceId}
         isClearable={clearable}
         isMulti={multi}
@@ -101,7 +118,8 @@ export default class ReactSelect extends React.Component<any, any> {
         noResultsText={noResultsText}
         components={
           {
-            Option: this.optionRenderer
+            Option: this.optionRenderer,
+            SingleValue: this.singleValueRender,
           }
         }
         isDisabled={disabled}

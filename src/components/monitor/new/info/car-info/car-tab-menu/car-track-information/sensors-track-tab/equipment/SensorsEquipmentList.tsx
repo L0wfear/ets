@@ -109,7 +109,7 @@ const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = props => {
 
 const mapStateToProps = state => ({
   track: state.monitorPage.carInfo.trackCaching.track,
-  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
+  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment, // Использывать данный пропс, лежит в store
 });
 const mergedProps = (stateProps, { dispatch }) => ({
   ...stateProps,

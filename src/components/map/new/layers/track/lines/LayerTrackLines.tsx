@@ -19,6 +19,8 @@ type PropsLayerTrackLines = {
   mkad_speed_lim: number;
   speed_lim: number;
   SHOW_TRACK: boolean;
+  front_cars_sensors_equipment: any[];// new props
+  equipmentChecked: boolean;
 };
 
 type StateLayerTrackLines = {
@@ -27,6 +29,8 @@ type StateLayerTrackLines = {
   lastPoint: any;
   trackLineIsDraw: boolean;
   SHOW_TRACK: boolean;
+  front_cars_sensors_equipment: any[];// new props
+  equipmentChecked: boolean;// new props
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
@@ -41,13 +45,15 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     lastPoint: null,
     trackLineIsDraw: false,
     SHOW_TRACK: this.props.SHOW_TRACK,
+    front_cars_sensors_equipment: this.props.front_cars_sensors_equipment,// new props
+    equipmentChecked: false,// new props
   }
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLines', zIndex: 1 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
 
       const { track } = this.props;
-
+      
       if (track.length > 1) {
         this.drawTrackLines(track, this.state.SHOW_TRACK);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
@@ -57,34 +63,44 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
   componentWillReceiveProps(nextProps) {
     const { SHOW_TRACK } = nextProps;
-
+    const {front_cars_sensors_equipment} = nextProps;
+    let isChecked = false;
+    if(front_cars_sensors_equipment !== this.state.front_cars_sensors_equipment){
+      for(let key in front_cars_sensors_equipment){
+        isChecked = front_cars_sensors_equipment[key].show || isChecked;
+      }
+      this.setState({equipmentChecked: isChecked});
+      // this.changeStyleForPoint(SHOW_TRACK, isChecked);
+    }
+    
+    const { track } = nextProps;
     if (!this.state.trackLineIsDraw) {
-      const { track } = nextProps;
-
       if (track.length > 1) {
-        this.drawTrackLines(track, SHOW_TRACK);
+        this.drawTrackLines(track, SHOW_TRACK, isChecked);
         this.setState({ lastPoint: nextProps.lastPoint, trackLineIsDraw: true, SHOW_TRACK });
       }
     } else {
       const { lastPoint, track } = nextProps;
-
+      
       if (lastPoint !== this.state.lastPoint) {
         // можно оптимизировать и докидывать точку в последнюю "удачную" по цвету геометрию
-        this.drawTrackLines(track.slice(-2), SHOW_TRACK)
+        this.drawTrackLines(track.slice(-2), SHOW_TRACK, isChecked);
         this.setState({ lastPoint, SHOW_TRACK });
       } else if (SHOW_TRACK !== this.state.SHOW_TRACK) {
         this.changeStyleForPoint(SHOW_TRACK)
         this.setState({ SHOW_TRACK });
       }
-      
     }
+
+    console.log('isChecked = ', isChecked);
+    this.drawTrackLines(track, SHOW_TRACK, isChecked);// убрать вызов в другое место
   }
 
   componentWillUnmount() {
     this.props.removeLayer();
   }
 
-  drawTrackLines(track, SHOW_TRACK) {
+  drawTrackLines(track, SHOW_TRACK, equipmentChecked?: boolean) {
     let linePoints = [
       track[0],
     ];
@@ -95,8 +111,9 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     for (let index = 1, length = track.length; index < length; index++) {
       const currPoint = track[index];
       const currStatus = isMoreThenPermitted(currPoint, this.props);
-
+      
       if (currStatus !== lastStatus) {
+        console.log('111');
         linePoints.push(currPoint);
 
         const feature = new ol.Feature({
@@ -106,7 +123,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
         });
 
         feature.set('notSelected', true)
-        feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
         this.props.addFeaturesToSource(feature);
         feature.setId(lastTimestatmp);
         feature.set('status', lastStatus);
@@ -129,7 +146,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
       feature.setId(lastTimestatmp);
       feature.set('status', lastStatus);
 
-      feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK));
+      feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
       this.props.addFeaturesToSource(feature);
     }
   }
@@ -157,11 +174,13 @@ const mapStateToProps = state => ({
   forToday: state.monitorPage.carInfo.forToday,
   mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
   speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
 });
 
 const mapDispatchToProps = dispatch => ({
 })
 
+//рендериться пустой div, компонент не маунтиться, если нет в сторе path, указанного ниже (Lodash)
 export default hocAll(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],

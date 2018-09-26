@@ -27,15 +27,19 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
 
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
-    this.props.addLayer({ id: 'TrackLines', zIndex: 1 }).then(() => {
+    this.props.addLayer({ id: 'TrackLines', zIndex: 1, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
     });
   }
 
   componentDidUpdate(prevProps) {
     const { track } = this.props;
-    if (track && this.props.track.length > 1 && prevProps.track !== this.props.track) {
-      this.drawTrackLines(track);
+    if (track !== prevProps.track) {
+      if (track && this.props.track.length > 1) {
+        this.drawTrackLines(track);
+      } else {
+        this.props.removeFeaturesFromSource(null, true);
+      }
     }
   }
 

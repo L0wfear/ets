@@ -2,12 +2,9 @@ import * as React from 'react';
 import Overlay from 'components/map/new/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { carInfoSetTrackPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import { makeDate, makeTime } from 'utils/dates';
 import Preloader from 'components/ui/Preloader';
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
-import { getCarMissionsByTimestamp } from 'redux-main/trash-actions/car';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
 import { getDateWithMoscowTzByTimestamp } from 'utils/dates';
@@ -32,31 +29,22 @@ class OverlayTrackPoint extends React.Component<any, any> {
   state = { 
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
+    objectsString: '',
   }
 
   componentDidMount() {
-    if (this.state.trackPoint) {
-      this.getOtherDataOnTrackPoint(this.props);
-    }
+    this.getObjectData(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { trackPoint } = nextProps;
-    if (trackPoint) {
+  componentDidUpdate(prevProps) {
+    const { trackPoint } = this.props;
+    if (prevProps.trackPoint !== trackPoint) {
       if (!this.state.trackPoint || trackPoint.timestamp !== this.state.trackPoint.timestamp) {
-        this.getOtherDataOnTrackPoint(nextProps);
-        this.getOtherDataOnTrackPoint(nextProps);
-        this.setState({ trackPoint });
+        this.getObjectData(this.props);
       }
-    } else {
-      this.setState({ trackPoint });
     }
   }
 
-  getOtherDataOnTrackPoint = (props) => {
-    this.getObjectData(props);
-    this.getMissionsData(props);
-  }
   getObjectData = (props) => {
     const { track, trackPoint } = props;
     const index = track.findIndex(({ timestamp }) => timestamp === trackPoint.timestamp);
@@ -75,51 +63,26 @@ class OverlayTrackPoint extends React.Component<any, any> {
       }
 
       this.setState({
-        trackPoint: {
-          ...this.state.trackPoint,
-          objectsString,
-        },
+        objectsString,
       });
     });
   }
 
-  getMissionsData = (props) => {
-    const { asuods_id } = props;
-
-    this.props.getCarMissionsByTimestamp(asuods_id, props.trackPoint.timestamp * 1000)
-      .then(({ payload: { missionsByTimestamp: missions } }) => {
-        this.setState({
-          trackPoint: {
-            ...this.state.trackPoint,
-            missions,
-          },
-        });
-      });
-  }
-
   render() {
-    const { trackPoint } = this.state;
-
-    if (!trackPoint) {
-      return (
-        <Overlay
-          title={''}
-          map={this.props.map}
-          hidePopup={this.props.hidePopup}
-        />
-      )
-    }
+    const { objectsString } = this.state;
 
     const {
-      coords_msk,
-      timestamp,
-      objectsString = '',
-      missions,
-      speed_avg,
-      speed_max,
-      distance,
-      nsat,
-    } = trackPoint;
+      missionNumber,
+      trackPoint: {
+        coords_msk,
+        timestamp,
+        speed_avg,
+        speed_max,
+        distance,
+        nsat,
+      }
+    } = this.props;
+
     const moscowDateTime = getDateWithMoscowTzByTimestamp(timestamp * 1000);
 
     const datetime = `${makeDate(moscowDateTime)} ${makeTime(moscowDateTime, true)}`;
@@ -146,25 +109,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
       >
         <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader type="field" />}</OverlayLineInfoContainer>
         <OverlayLineInfoContainer>
-          {
-            missions === undefined ?
-            (
-              <Preloader type="field" />
-            )
-            :
-            (
-              missions.length === 0 ?
-              (
-                <div>Нет выполняемых заданий</div>
-              )
-              :
-              (
-                missions.map(({ number }) => (
-                  <div key={number}>{`Задание №${number}`}</div>
-                ))
-              )
-            )
-          }
+          <div>{`Задание №${missionNumber}`}</div>
         </OverlayLineInfoContainer>
         {
           !pointSensors.length ?
@@ -214,40 +159,17 @@ class OverlayTrackPoint extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
-  gps_code: state.monitorPage.carInfo.gps_code,
-  gov_number: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].gov_number,
-  asuods_id: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].asuods_id,
-  trackPoint: state.monitorPage.carInfo.popups.trackPoint,
-  track: state.monitorPage.carInfo.trackCaching.track,
-  cars_sensors: state.monitorPage.carInfo.trackCaching.cars_sensors,
-});
-
 const mapDispatchToProps = dispatch => ({
-  hidePopup: () => (
-    dispatch(
-      carInfoSetTrackPoint()
-    )
-  ),
   getVectorObject: (points) => (
     dispatch(
       getVectorObject('NONE', points),
     )
   ),
-  getCarMissionsByTimestamp: (asuods_id, timestamp) => (
-    dispatch(
-      getCarMissionsByTimestamp('NONE', asuods_id, timestamp),
-    )
-  ),
 });
 
 export default hocAll(
-  withShowByProps({
-    path: ['monitorPage', 'carActualGpsNumberIndex'],
-    type: 'none',
-  }),
   connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps,
   )
 )(OverlayTrackPoint);

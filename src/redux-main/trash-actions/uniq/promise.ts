@@ -76,8 +76,9 @@ export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
         sensors: 1,
       };
 
-      return TrackService.get(payloadToTrack).then(ans => (
-        checkAndModifyTrack(ans, payloadData.odh_mkad))
-      );
+      return TrackService.get(payloadToTrack).then(ans => ({
+        ...ans,
+        ...checkAndModifyTrack(ans, odh_mkad),
+      }));
     })
 )

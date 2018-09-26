@@ -2,12 +2,9 @@ import * as React from 'react';
 import * as ol from 'openlayers';
 
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
-import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForParking } from 'components/missions/mission/MissionInfoForm/new/map/layers/track/events/parking/feature-style';
 import OverlayParkingPoint from 'components/missions/mission/MissionInfoForm/new/map/layers/track/events/parking/OverlayParkingPoint';
-import { carInfoSetParkingPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
+import { DivNone } from 'global-styled/global-styled';
 
 type PropsLayerParkingPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -23,9 +20,13 @@ type PropsLayerParkingPoints = {
 };
 
 type StateLayerParkingPoints = {
+  parkingPoint: any| void;
 };
 
 class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateLayerParkingPoints> {
+  state = {
+    parkingPoint: null,
+  };
   componentDidMount() {
     this.props.addLayer({ id: 'ParkingPoints', zIndex: 4 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -34,9 +35,19 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { front_parkings } = this.props;
+    if (front_parkings !== prevProps.front_parkings) {
+      this.props.removeFeaturesFromSource(null, true);
+      if (this.state.parkingPoint) {
+        this.hidePopup()
+      }
+      this.drawTrackPoints(front_parkings);
+    }
+  }
+
   componentWillUnmount() {
     this.props.removeLayer();
-    this.props.carInfoSetParkingPoint();
   }
 
   singleclick = (feature) => {
@@ -45,10 +56,16 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     const parkingPoint = this.props.front_parkings.find(point => point.start_point.timestamp === timestamp);
 
     if (parkingPoint) {
-      this.props.carInfoSetParkingPoint(parkingPoint);
+      this.setState({ parkingPoint });
     } else {
       console.warn(`not find with timestamp = {timestamp}`);
     }
+  }
+
+  hidePopup = () => {
+    this.setState({
+      parkingPoint: null,
+    });
   }
 
   drawTrackPoints(front_parkings) {
@@ -66,37 +83,30 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
   }
 
   render() {
+    const { parkingPoint } = this.state;
+
     return (
       <div>
-        <OverlayParkingPoint map={this.props.map} />
+        {
+          parkingPoint ?
+          (
+            <OverlayParkingPoint
+              map={this.props.map}
+              hidePopup={this.hidePopup}
+              parkingPoint={parkingPoint}
+            />
+          )
+          :
+          (
+            <DivNone />
+          )
+        }
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  front_parkings: state.monitorPage.carInfo.trackCaching.front_parkings,
-});
-
-const mapDispatchToProps = dispatch => ({
-  carInfoSetParkingPoint: (parkingPoint) => (
-    dispatch(
-      carInfoSetParkingPoint(parkingPoint),
-    )
-  )
-})
-
-export default hocAll(
-  withShowByProps({
-    path: ['monitorPage', 'carInfo', 'trackCaching', 'front_parkings'],
-    type: 'none',
-  }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-  withLayerProps({
-    zoom: true,
-    map: true,
-  }),
-)(LayerParkingPoints);
+export default  withLayerProps({
+  zoom: true,
+  map: true,
+})(LayerParkingPoints);

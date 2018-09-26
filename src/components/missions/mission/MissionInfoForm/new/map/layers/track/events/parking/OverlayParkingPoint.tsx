@@ -1,8 +1,5 @@
 import * as React from 'react';
 import Overlay from 'components/map/new/overlay/Overlay';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
-import { connect } from 'react-redux';
-import { carInfoSetParkingPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 
 import {
@@ -10,21 +7,13 @@ import {
 } from 'components/map/new/overlay/styled/styled';
 
 const OverlayTrackPoint: React.SFC<any> = props => {
-  const { parkingPoint } = props;
-
-  if (!parkingPoint) {
-    return (
-      <Overlay map={props.map} hidePopup={props.hidePopup} />
-    );
-  }
-
   const {
     start_point: {
       coords_msk,
       timestamp: sp_timestamp,
     },
     end_point: { timestamp: ep_timestamp },
-  } = parkingPoint;
+  } = props.parkingPoint;
 
   const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
   const moscowEpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
@@ -48,22 +37,5 @@ const OverlayTrackPoint: React.SFC<any> = props => {
   );
 }
 
-const mapStateToProps = state => ({
-  parkingPoint: state.monitorPage.carInfo.popups.parkingPoint,
-});
-
-const mapDispatchToProps = dispatch => ({
-  hidePopup: () => (
-    dispatch(
-      carInfoSetParkingPoint(),
-    )
-  ),
-});
-
-export default hocAll(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )
-)(OverlayTrackPoint);
+export default OverlayTrackPoint;
 

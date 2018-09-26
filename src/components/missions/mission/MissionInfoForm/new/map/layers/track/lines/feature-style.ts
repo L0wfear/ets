@@ -1,14 +1,14 @@
 import * as ol from 'openlayers';
 import { TRACK_COLORS } from 'constants/track';
 
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 1; //window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
 const makeCacheStyle = (cacheStyleName, { greenSpeed } ) => {
   return CACHE_ICON[cacheStyleName] = new ol.style.Style({
     image: new ol.style.Circle({
-      radius: 5 / DEVICE_PIXEL_RATIO,
+      radius: 4 / DEVICE_PIXEL_RATIO,
       stroke: new ol.style.Stroke({
         color: 'rgba(0, 0, 0, 0.1)',
       }),

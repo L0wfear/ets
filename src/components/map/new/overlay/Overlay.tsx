@@ -43,6 +43,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
         stopEvent: false
       });
       this.props.map.addOverlay(marker);
+      this.props.map.updateSize();
 
       this.setState({ marker });
     } catch (e) {

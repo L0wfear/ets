@@ -21,7 +21,7 @@ class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, { firstCen
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.geoobjects !== this.props.geoobjects) {
       this.props.removeFeaturesFromSource(null, true);
       renderGeoobjects(this.props.geoobjects, this.props);
@@ -39,10 +39,12 @@ class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, { firstCen
           return false;
         })
       ))) {
-        this.props.centerOn({
-          extent: this.props.getOlLayer().getSource().getExtent(),
-          opt_options: { padding: [50, 50, 50, 50], maxZoom: 9, duration: 500 },
-        });
+        if (Object.values(this.props.geoobjects).length) {
+          this.props.centerOn({
+            extent: this.props.getOlLayer().getSource().getExtent(),
+            opt_options: { padding: [50, 50, 50, 50], maxZoom: 9, duration: 500 },
+          });
+        }
       }
     }
   }

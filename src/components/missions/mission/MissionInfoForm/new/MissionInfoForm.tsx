@@ -21,6 +21,7 @@ import {
   DivGreen,
   DivRed,
 } from 'global-styled/global-styled';
+import ToolBar from 'components/missions/mission/MissionInfoForm/new/tool-bar/ToolBar';
 
 import MapWrap from 'components/missions/mission/MissionInfoForm/new/map/MapWrap';
 import MissionReportByODH from 'components/reports/operational/mission/MissionReportByODH';
@@ -90,6 +91,9 @@ const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
+const emptyArr = [];
+const emptyObj = {};
+
 type PropsMissionInfoForm = {
   element: IMissionInfoFormState;
   onFormHide: any;
@@ -103,7 +107,13 @@ type StateMissionInfoForm = {
   polys: object;
   missionReport: any[];
   parkingCount: number | void;
-}
+  track: any[];
+  front_parkings: any[];
+  cars_sensors: object;
+  SHOW_TRACK: boolean;
+  SHOW_GEOOBJECTS: boolean;
+  SHOW_SELECTED_GEOOBJECTS: boolean;
+};
 
 class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissionInfoForm> {
   constructor(props) {
@@ -120,6 +130,12 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     } = props;
 
     this.state = {
+      SHOW_TRACK: true,
+      SHOW_GEOOBJECTS: true,
+      SHOW_SELECTED_GEOOBJECTS: true,
+      track: [],
+      front_parkings: [],
+      cars_sensors: {},
       polys: {},
       parkingCount: null,
       tooLongDates: (
@@ -176,7 +192,8 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       gps_code: element.car_data.gps_code,
       date_start: element.mission_data.date_start,
       date_end: element.mission_data.date_end,
-      odh_mkad: [],
+      odh_mkad: {},
+      cars_sensors: {},
     };
 
     if (this.props.element.route_data.has_mkad || true) {
@@ -188,9 +205,14 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       payload.odh_mkad = odh_mkad;
     }
 
-    const data = await loadTrackCaching(payload);
-    console.log(data)
-    console.log('load track');
+    const calcTrackData = await loadTrackCaching(payload);
+
+    this.setState({
+      track: calcTrackData.track,
+      front_parkings: calcTrackData.front_parkings,
+      parkingCount: Number(calcTrackData.time_of_parking),
+      cars_sensors: calcTrackData.cars_sensors,
+    })
   }
 
   async makePolysFromPoints(route_data) {
@@ -258,6 +280,14 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     })
   }
 
+  toggleStatusShow = (key: any) => {
+    const newState = {
+      ...this.state,
+      [key]: !this.state[key],
+    }
+    this.setState({ ...newState });
+  }
+
   render() {
     const {
       onFormHide,
@@ -269,8 +299,10 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
         speed_limits,
       },
     } = this.props;
+
     const {
       missionReport,
+      parkingCount,
     } = this.state;
 
     const titleArr = [
@@ -294,8 +326,6 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       report_data.time_high_speed,
     ]);
 
-    const parkingCount = 0;
-
     const allRunWithWorkEquipment = (
       mission_data.sensor_traveled_working !== null ?
       getDataTraveledYet(
@@ -304,6 +334,11 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       :
       'Нет данных'
     );
+
+    const {
+      SHOW_TRACK,
+      SHOW_GEOOBJECTS,
+    } = this.state;
 
     return (
 
@@ -318,10 +353,18 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
               <MapContainerDiv>
                 <MapWrap
                   gov_number={car_data.gov_number}
-                  geoobjects={this.state.polys}
-                  track={[]}
+                  geoobjects={SHOW_GEOOBJECTS ? this.state.polys : emptyObj}
+                  track={SHOW_TRACK ? this.state.track : emptyArr}
+                  parkings={SHOW_TRACK ? this.state.front_parkings : emptyArr}
                   speed_lim={speed_limits.speed_lim}
                   mkad_speed_lim={speed_limits.mkad_speed_lim}
+                  cars_sensors={this.state.cars_sensors}
+                  missionNumber={mission_data.number}
+                />
+                <ToolBar
+                  SHOW_TRACK={this.state.SHOW_TRACK}
+                  SHOW_GEOOBJECTS={SHOW_GEOOBJECTS}
+                  toggleStatusShow={this.toggleStatusShow}
                 />
               </MapContainerDiv>
               <div>
@@ -338,7 +381,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
                       <b>{'Пройдено с превышением рабочей скорости: '}</b>{withHightSpeed}
                     </DivRed>
                     <div>
-                      <b>{'Общее время стоянок: '}</b>{parkingCount ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}}
+                      <b>{'Общее время стоянок: '}</b>{parkingCount || parkingCount === 0 ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
                     </div>
                     <div>
                       <b>{'Общий пробег с работающим оборудованием: '}</b>{allRunWithWorkEquipment}

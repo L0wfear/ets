@@ -1152,6 +1152,11 @@ body.application {
   }
 }
 
+.none-event {
+  pointer-events: none;
+  cursor: default;
+}
+
 .tool_bar-wrap {
   position: absolute;
   top: 0;
@@ -1375,7 +1380,10 @@ div.car_legend-active {
 
     &.geoobject_select {
       background-color: yellow;
+    }
 
+    &.geoobject_mission_select {
+      background-color: #e67e22;
     }
   }
 }

@@ -6,7 +6,7 @@ import MissionInfoForm from 'components/missions/mission/MissionInfoForm/new/Mis
 class MissionInfoFormWrap extends React.Component<any, {}> {
   render() {
     const { showForm, ...props } = this.props;
-    console.log(showForm, props)
+
     return showForm ?
       (
         <MissionInfoForm {...props} />

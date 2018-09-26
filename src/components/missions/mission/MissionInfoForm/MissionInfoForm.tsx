@@ -55,7 +55,6 @@ const MissionInfoForm: React.SFC<any> = props => {
   }
 
   console.log(polys);
-
   return (
     <Div hidden={!props.gov_number}>
       <Modal id="modal-mission-info" show={props.show} onHide={props.onHide} bsSize="large" className="mission-info-modal" backdrop="static">

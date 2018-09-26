@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { formatDate, getFormattedTimeWithSecond, getDateWithMoscowTz } from 'utils/dates';
+import {
+  formatDate, getFormattedTimeWithSecond, getDateWithMoscowTz, getDateWithMoscowTzByTimestamp,
+} from 'utils/dates';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 import {
@@ -25,7 +27,7 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
         clearInterval(this.state.itervalId);
 
         this.setState({
-          date: getDateWithMoscowTz(time.timestamp * 1000),
+          date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
           itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
         })
       })

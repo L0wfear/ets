@@ -67,6 +67,9 @@ export class MissionForm extends Form {
       columnPermittedTechOps: [],
       showColumnAssignment: false,
       showBackButton: false,
+      firstFormState: {
+        ...this.props.formState
+      },
     };
   }
 
@@ -157,26 +160,44 @@ export class MissionForm extends Form {
   }
 
   handleCarIdChange = (car_id, dataCar) => {
-    let type_id = null;
-    let assign_to_waybill = this.props.formState.assign_to_waybill;
+    const { formState } = this.props;
 
-    if (Array.isArray(dataCar)) {
-      type_id = dataCar.map(({ type_id: car_type_id }) => car_type_id);
-      assign_to_waybill = Array(dataCar.length).fill('assign_to_new_draft');
-    } else if (car_id) {
-      type_id = dataCar.type_id;
-      assign_to_waybill = 'assign_to_new_draft';
+    if (car_id !== formState.car_id) {
+      let type_id = null;
+      let assign_to_waybill = formState.assign_to_waybill;
+      const IS_NOT_IN_WAYBILL = formState.can_edit_car_and_route;
+
+      if (Array.isArray(dataCar)) {
+        type_id = dataCar.map(({ type_id: car_type_id }) => car_type_id);
+        assign_to_waybill = Array(dataCar.length).fill('assign_to_new_draft');
+      } else if (car_id) {
+        type_id = dataCar.type_id;
+        assign_to_waybill = 'assign_to_new_draft';
+      }
+
+      if (IS_NOT_IN_WAYBILL && formState.car_id === this.state.firstFormState.car_id) {
+        global.NOTIFICATION_SYSTEM.notify({
+          title: 'Внимание!',
+          message: 'Данное задание было связано с черновиком путевого листа. При сохранении данного задания с новым ТС необходимо выбрать тип добавления в ПЛ. Из предыдущего ПЛ данное задание будет удалено.',
+          level: 'info',
+          dismissible: true,
+          position: 'tr',
+          uid: 'IS_NOT_IN_WAYBILL_car_id',
+          autoDismiss: 0,
+        });
+      }
+
+
+      this.props.handleMultiFormChange({
+        car_id,
+        type_id,
+        assign_to_waybill,
+        is_cleaning_norm: false,
+        norm_id: null,
+      });
+
+      this.handleRouteIdChange(undefined);
     }
-
-    this.props.handleMultiFormChange({
-      car_id,
-      type_id,
-      assign_to_waybill,
-      is_cleaning_norm: false,
-      norm_id: null,
-    });
-
-    this.handleRouteIdChange(undefined);
   }
 
   handleColumnFlag = (name, is_column) => {
@@ -468,24 +489,41 @@ export class MissionForm extends Form {
     const IS_POST_CREATING_ASSIGNED = IS_ASSIGNED && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
     const IS_DISABLED_ASSIGNED = state.status === 'assigned' ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено"
+    const IS_NOT_IN_WAYBILL = state.can_edit_car_and_route;
+    
     let title = `Задание № ${state.number}${state.status === 'fail' ? ' (Не выполнено)' : ''}`;
     if (state.column_id) {
       title = `${title} . Колонна № ${state.column_id}`;
     }
 
     const carEditionDisability = (
-      IS_POST_CREATING_ASSIGNED
-      || state.status === 'not_assigned'
-      || IS_DISPLAY
-      || this.props.fromWaybill
-      || (IS_CREATING && isEmpty(state.technical_operation_id))
-      || isEmpty(state.municipal_facility_id)
+      (
+        IS_POST_CREATING_ASSIGNED
+        || state.status === 'not_assigned'
+        || IS_DISPLAY
+        || this.props.fromWaybill
+        || (IS_CREATING && isEmpty(state.technical_operation_id))
+        || isEmpty(state.municipal_facility_id)
+      )
+      && !IS_NOT_IN_WAYBILL
     );
 
     const columnFlagDisability = (
       isEmpty(state.technical_operation_id)
       || isEmpty(state.municipal_facility_id)
       || !isOdhRouteTypePermitted(this.state.available_route_types)
+    );
+
+
+    const hiddenAssignToWaybill = (
+      (
+        !!state.status
+        || this.props.fromWaybill
+      )
+      && !(
+        IS_NOT_IN_WAYBILL
+        && this.state.firstFormState.car_id !== state.car_id
+      )
     );
 
     if (IS_CREATING) {
@@ -656,95 +694,87 @@ export class MissionForm extends Form {
                         onChange={this.handleColumnFlag}
                       />
                     </Col>
-                    )}
-                  </Row>
-                  <Row>
-                    <Col md={12}>
-                      <Field
-                        id="m-route-id"
-                        type="select"
-                        modalKey={modalKey}
-                        label="Маршрут"
-                        error={errors.route_id}
-                        disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}
-                        options={ROUTES}
-                        value={state.route_id}
-                        onChange={this.handleRouteIdChange}
-                      />
-                      <Div hidden={state.route_id}>
-                        <Button id="create-route" onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}>Создать новый</Button>
-                      </Div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={12}>
-                      <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                        <RouteInfo route={this.state.selectedRoute} mapOnly />
-                      </Div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={3}>
-                      <Field
-                        id="passes-count"
-                        type="number"
-                        label="Кол-во циклов"
-                        error={errors.passes_count}
-                        disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)}
-                        value={state.passes_count}
-                        onChange={this.handleChange.bind(this, 'passes_count')}
-                        min={0}
-                      />
-                    </Col>
-                    <Col md={3}>
-                      <Field
-                        id="m-source-id"
-                        type="select"
-                        modalKey={modalKey}
-                        label="Источник получения задания"
-                        error={errors.mission_source_id}
-                        disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || sourceIsOrder}
-                        options={MISSION_SOURCES}
-                        value={state.mission_source_id}
-                        onChange={this.handleChange.bind(this, 'mission_source_id')}
-                      />
-                      { IS_CREATING && !fromOrder && <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span> }
-                    </Col>
-                    {state.order_number != null && (
-                    <Col md={2}>
-                      <Field
-                        id="order-number"
-                        type="string"
-                        label="Номер централизованного задания"
-                        readOnly
-                        value={state.order_number}
-                      />
-                    </Col>
-                    )}
-                    <Col md={state.order_number != null ? 4 : 6}>
-                      <Field
-                        id="m-comment"
-                        type="string"
-                        label="Комментарий"
-                        value={state.comment}
-                        disabled={IS_FAIL || IS_COMPLETE}
-                        onChange={this.handleChange.bind(this, 'comment')}
-                        error={errors.comment}
-                      />
-                    </Col>
-                  </Row>
-                </ModalBody>
+                  )}
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <Field
+                      id="m-route-id"
+                      type="select"
+                      modalKey={modalKey}
+                      label="Маршрут"
+                      error={errors.route_id}
+                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id) && IS_NOT_IN_WAYBILL}
+                      options={ROUTES}
+                      value={state.route_id}
+                      onChange={this.handleRouteIdChange}
+                    />
+                    <Div hidden={state.route_id}>
+                      <Button id="create-route" onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}>Создать новый</Button>
+                    </Div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
+                      <RouteInfo route={this.state.selectedRoute} mapOnly />
+                    </Div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={3}>
+                    <Field
+                      id="passes-count"
+                      type="number"
+                      label="Кол-во циклов"
+                      error={errors.passes_count}
+                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)} 
+                      value={state.passes_count}
+                      onChange={this.handleChange.bind(this, 'passes_count')}
+                      min={0}
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <Field
+                      id="m-source-id"
+                      type="select"
+                      modalKey={modalKey}
+                      label="Источник получения задания"
+                      error={errors.mission_source_id}
+                      disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || fromOrder || sourceIsOrder}
+                      options={MISSION_SOURCES}
+                      value={state.mission_source_id}
+                      onChange={this.handleChange.bind(this, 'mission_source_id')}
+                    />
+                    { IS_CREATING && !fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+                  </Col>
+                  {state.order_number != null && <Col md={2}>
+                    <Field
+                      id="order-number"
+                      type="string"
+                      label="Номер централизованного задания"
+                      readOnly
+                      value={state.order_number}
+                    />
+                  </Col>}
+                  <Col md={state.order_number != null ? 4 : 6}>
+                    <Field
+                      id="m-comment"
+                      type="string"
+                      label="Комментарий"
+                      value={state.comment}
+                      disabled={IS_FAIL || IS_COMPLETE}
+                      onChange={this.handleChange.bind(this, 'comment')}
+                      error={errors.comment}
+                    />
+                  </Col>
+                </Row>
+              </ModalBody>
 
-                <Modal.Footer>
-                  <Div className="inline-block">
-                    {!state.is_column && (
-                    <Div
-                      className="inline-block assignToWaybillCheck"
-                      style={{
-                        width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px',
-                      }}
-                      hidden={!!state.status || this.props.fromWaybill}
-                    >
+              <Modal.Footer>
+                <Div className="inline-block">
+                  {!state.is_column && (
+                    <Div className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }} hidden={hiddenAssignToWaybill}>
                       <ReactSelect
                         id="assign-to-waybill"
                         type="select"

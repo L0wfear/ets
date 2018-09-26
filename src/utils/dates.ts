@@ -5,13 +5,19 @@ export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) => (
   moment(dateA).diff(moment(dateB), typeDiff as any, float)
 );
 
-export const getDateWithMoscowTz = (...dateArgument: [number]) => {
-  const newDate = new Date(...dateArgument);
+export const getDateWithMoscowTz = () => {
+  const newDate = new Date();
   newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
 
   return newDate;
 };
 
+export const getDateWithMoscowTzByTimestamp = (timestamp) => {
+  const newDate = new Date(timestamp);
+  newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
+
+  return newDate;
+};
 export const addSecond = (date, seconds) => (
   moment(date).add(seconds, 'seconds')
 );

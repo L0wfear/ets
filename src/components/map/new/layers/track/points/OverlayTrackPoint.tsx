@@ -10,7 +10,7 @@ import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { getCarMissionsByTimestamp } from 'redux-main/trash-actions/car';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
-import { getDateWithMoscowTz } from 'utils/dates';
+import { getDateWithMoscowTzByTimestamp } from 'utils/dates';
 
 import {
   OverlayInsideTrackContainer,
@@ -120,7 +120,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
       distance,
       nsat,
     } = trackPoint;
-    const moscowDateTime = getDateWithMoscowTz(timestamp * 1000);
+    const moscowDateTime = getDateWithMoscowTzByTimestamp(timestamp * 1000);
 
     const datetime = `${makeDate(moscowDateTime)} ${makeTime(moscowDateTime, true)}`;
     const pointSensors = get(this.state.trackPoint, ['sensors', 'equipment'], []).filter(s => s.val !== 0);

@@ -3,7 +3,7 @@ import Overlay from 'components/map/new/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import { carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
-import { secondsToTime, makeDate, makeTime, getDateWithMoscowTz } from 'utils/dates';
+import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 
 import {
   OverlayLineInfoContainer,
@@ -38,7 +38,7 @@ const OverlayFuelEventPoint: React.SFC<any> = props => {
     end_point: { timestamp: ep_timestamp },
   } = fuelEventPoint;
 
-  const moscowSpTimetamp = getDateWithMoscowTz(sp_timestamp * 1000);
+  const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
 
   const start = `${makeDate(moscowSpTimetamp)} ${makeTime(moscowSpTimetamp, true)}`;
   const diff = secondsToTime(ep_timestamp - sp_timestamp);

@@ -53,7 +53,7 @@ class TechnicalOperationRelationsListWrap extends React.Component {
 
           changesState.MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS;
 
-          if (changesState.MUNICIPAL_FACILITY_OPTIONS.length) {
+          if (changesState.MUNICIPAL_FACILITY_OPTIONS.length === 1) {
             changesState.municipal_facility_id = changesState.MUNICIPAL_FACILITY_OPTIONS[0].value;
 
             this.getFuncTypes(changesState.MUNICIPAL_FACILITY_OPTIONS[0].normatives.map(({ id }) => id).join(','));
@@ -87,10 +87,10 @@ class TechnicalOperationRelationsListWrap extends React.Component {
           changesState.ROUTE_TYPES = ROUTE_TYPES;
           changesState.FUNC_TYPE_OPTIONS = FUNC_TYPE_OPTIONS;
 
-          if (changesState.ROUTE_TYPES.length) {
+          if (changesState.ROUTE_TYPES.length === 1) {
             changesState.route_types = changesState.ROUTE_TYPES.map(({ value }) => value);
           }
-          if (changesState.FUNC_TYPE_OPTIONS.length) {
+          if (changesState.FUNC_TYPE_OPTIONS.length === 1) {
             changesState.func_type_id = changesState.FUNC_TYPE_OPTIONS[0].value;
           }
 

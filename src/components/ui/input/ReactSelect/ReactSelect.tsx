@@ -43,7 +43,7 @@ export default class ReactSelect extends React.Component<any, any> {
   optionRenderer = ({ innerProps, ...props }) => {
     const newInnerProps = {
       ...innerProps,
-      id: innerProps.id.replace(/option-\d+$/, props.value),
+      id: innerProps.id.replace(/option-\d+$/, `value-${props.value}`),
     };
 
     if (this.props.optionRenderer && typeof this.props.optionRenderer === 'function') {

@@ -61,7 +61,6 @@ export default class ReactSelect extends React.Component<any, any> {
     
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
 
-    console.log('singlValueRender')
     const newInnerProps = {
       ...innerProps,
       id,
@@ -99,10 +98,12 @@ export default class ReactSelect extends React.Component<any, any> {
           null;
     }
 
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-container` : undefined;
+
     return (
       <Select
         {...props}
-        id={props.id}
+        id={id}
         instanceId={instanceId}
         isClearable={clearable}
         isMulti={multi}

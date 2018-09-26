@@ -1,9 +1,17 @@
 import {
   CompanyService,
+  TrackService,
   TimeMoscowService,
 } from 'api/Services';
 import { keyBy } from 'lodash';
-import { getDateWithMoscowTz } from 'utils/dates';
+import { getDateWithMoscowTz, makeUnixTime } from 'utils/dates';
+import {
+  getCarGpsNumberByDateTime,
+} from 'redux-main/trash-actions/car/promise/promise';
+
+import {
+  checkAndModifyTrack,
+} from 'redux-main/trash-actions/uniq/utils/utils';
 
 const colors = [];
 
@@ -56,3 +64,20 @@ export const loadMoscowTime = () => (
     };
   })
 );
+
+export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
+  getCarGpsNumberByDateTime(payloadData as any)
+    .then(({ gps_code }) => {
+      const payloadToTrack = {
+        version: 3,
+        gps_code,
+        from_dt: makeUnixTime(payloadData.date_start),
+        to_dt: makeUnixTime(payloadData.date_end),
+        sensors: 1,
+      };
+
+      return TrackService.get(payloadToTrack).then(ans => (
+        checkAndModifyTrack(ans, payloadData.odh_mkad))
+      );
+    })
+)

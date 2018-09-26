@@ -11,8 +11,6 @@ import geoObjects from './GeoObjectsActions';
 import missions from './MissionsActions';
 import objects from './ObjectsActions';
 import odh from './ODHActions';
-// Временно
-import pointsHybrid from './PointsHybridActions';
 import repair from './RepairAction';
 import reports from './ReportsActions';
 import routes from './RoutesActions';
@@ -33,7 +31,6 @@ export {
   missions,
   objects,
   odh,
-  pointsHybrid,
   repair,
   reports,
   routes,

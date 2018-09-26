@@ -12,9 +12,6 @@ import missions from './MissionsStore';
 import notifications from './NotificationsStore';
 import objects from './ObjectsStore';
 import odh from './ODHStore';
-// Временно
-import pointsHybrid from './PointsHybridStore';
-
 import repair from './RepairStore';
 import reports from './ReportsStore';
 import routes from './RoutesStore';
@@ -35,7 +32,6 @@ export {
   notifications,
   objects,
   odh,
-  pointsHybrid,
   repair,
   reports,
   routes,

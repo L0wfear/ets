@@ -68,10 +68,6 @@ const MissionInfoForm: React.SFC<any> = props => {
             <Col md={6} style={{ height: 400 }}>
               <FluxComponent
                 connectToStores={{
-                  pointsHybrid: store => ({
-                    points: store.state.points,
-                    selected: store.getSelectedPoint(),
-                  }),
                   settings: store => ({
                     showPlates: store.state.showPlates,
                     showTrack: store.state.showTrack,

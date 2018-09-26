@@ -19,6 +19,7 @@ export interface ICarData {
   driver_phone: string;
   gov_number: string;
   asuods_id: number;
+  gps_code: string;
   car_func_type_id: number;
 }
 
@@ -59,6 +60,11 @@ export interface IWaybillData {
   fact_departure_date: string | Date;
 }
 
+export interface ISpeedLimits {
+  speed_lim: number;
+  mkad_speed_lim: number;
+}
+
 export interface IMissionInfoFormState {
   mission_data: IMIssionData;
   car_data: ICarData;
@@ -66,4 +72,5 @@ export interface IMissionInfoFormState {
   report_data: IReportData;
   technical_operation_data: ITechnicalOperationData;
   waybill_data: IWaybillData;
+  speed_limits: ISpeedLimits;
 }

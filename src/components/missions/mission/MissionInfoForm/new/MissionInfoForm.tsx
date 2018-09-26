@@ -44,6 +44,10 @@ import {
   IMissionInfoFormState,
 } from 'components/missions/mission/MissionInfoForm/new/MissionInfoForm.h';
 
+import {
+  loadTrackCaching,
+} from 'redux-main/trash-actions/uniq/promise';
+
 const maskStatusPoint = {
   fail: 1,
 }
@@ -91,6 +95,7 @@ type PropsMissionInfoForm = {
   onFormHide: any;
   loadGeozones: (serverName: string) => Promise<AnsLoadGeozonesFunc>,
   loadRouteDataById: (id: number) => Promise<AnsLoadRouteDataByIdFunc>,
+  loadTrackCaching: any;
 };
 
 type StateMissionInfoForm = {
@@ -163,7 +168,28 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     }
   }
 
-  loadTrack() {
+  async loadTrack() {
+    const { element } = this.props;
+
+    const payload: any = {
+      asuods_id: element.car_data.asuods_id,
+      gps_code: element.car_data.gps_code,
+      date_start: element.mission_data.date_start,
+      date_end: element.mission_data.date_end,
+      odh_mkad: [],
+    };
+
+    if (this.props.element.route_data.has_mkad || true) {
+      const type = 'odh_mkad';
+      const { serverName } = GEOOBJECTS_OBJ[type];
+
+      const { odh_mkad } = await this.props.loadGeozones(serverName).then(({ payload }) => payload);
+
+      payload.odh_mkad = odh_mkad;
+    }
+
+    const data = await loadTrackCaching(payload);
+    console.log(data)
     console.log('load track');
   }
 
@@ -240,6 +266,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
         mission_data,
         route_data,
         report_data,
+        speed_limits,
       },
     } = this.props;
     const {
@@ -292,6 +319,9 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
                 <MapWrap
                   gov_number={car_data.gov_number}
                   geoobjects={this.state.polys}
+                  track={[]}
+                  speed_lim={speed_limits.speed_lim}
+                  mkad_speed_lim={speed_limits.mkad_speed_lim}
                 />
               </MapContainerDiv>
               <div>
@@ -396,7 +426,16 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       loadRouteDataById('', id),
     )
-  )
+  ),
+  loadTrackCaching: (props) => (
+    dispatch({
+      type: '',
+      payload: loadTrackCaching(props),
+      meta: {
+        loading: true,
+      },
+    })
+  ),
 })
 
 export default compose(

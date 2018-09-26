@@ -115,7 +115,7 @@ function httpMethod(url, data = {}, method, type, params = {}) {
       return Promise.reject({ error: r, error_text });
     }
     try {
-      const responseBody = await ron();
+      const responseBody = await r.json();
       try {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);
@@ -147,7 +147,7 @@ function httpMethod(url, data = {}, method, type, params = {}) {
       return Promise.resolve(responseBody, r);
     } catch (error) {
       const error_text = 'Неверный формат ответа с сервера';
-
+      console.log(error)
       console.error(error_text, url);
       return Promise.reject({ error, error_text });
     }

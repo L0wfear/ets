@@ -10,7 +10,8 @@ export const InfoCardWrapContainer = styled.div`
   right: 0;
   z-index: 1;
   pointer-events: none;
-  min-width: 300px;
+  min-width: 220px;
+  max-width: 73%;
 
   @media screen and (max-width: 990px) {
     top: 100%;

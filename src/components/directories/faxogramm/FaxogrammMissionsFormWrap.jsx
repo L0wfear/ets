@@ -36,26 +36,6 @@ class FaxogrammMissionsFormWrap extends FormWrap {
       });
     }
   }
-  shouldComponentUpdate(props, state) {
-    const {
-      showForm: showForm_old,
-      element: element_old,
-    } = this.props;
-
-    const {
-      showForm: showForm_new,
-      element: element_new,
-    } = props;
-
-    const { missionJournalState } = this.state;
-    const { missionJournalState: missionJournalState_new } = state;
-
-    if (element_old !== element_new || showForm_old !== showForm_new || missionJournalState !== missionJournalState_new) {
-      return true;
-    }
-    return false;
-  }
-
 
   async handleFormSubmit() {
     const { flux } = this.context;

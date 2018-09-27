@@ -60,6 +60,13 @@ export default class FormWrap extends Component {
     this.inheritedComponentWillReceiveProps(props);
   }
 
+  shouldComponentUpdate(props, state) {
+    return (
+      Object.entries(props).some(([key, value]) => value !== this.props[key])
+      || Object.entries(state).some(([key, value]) => value !== this.state[key])
+    );
+  }
+
   inheritedComponentWillReceiveProps() {}
 
   validate(formState, errors) {

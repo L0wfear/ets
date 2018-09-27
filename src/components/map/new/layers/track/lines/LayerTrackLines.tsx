@@ -19,8 +19,7 @@ type PropsLayerTrackLines = {
   mkad_speed_lim: number;
   speed_lim: number;
   SHOW_TRACK: boolean;
-  front_cars_sensors_equipment: any[];// new props
-  equipmentChecked: boolean;
+  front_cars_sensors_equipment: any[];
 };
 
 type StateLayerTrackLines = {
@@ -29,8 +28,7 @@ type StateLayerTrackLines = {
   lastPoint: any;
   trackLineIsDraw: boolean;
   SHOW_TRACK: boolean;
-  front_cars_sensors_equipment: any[];// new props
-  equipmentChecked: boolean;// new props
+  front_cars_sensors_equipment: any[];
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
@@ -45,15 +43,12 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     lastPoint: null,
     trackLineIsDraw: false,
     SHOW_TRACK: this.props.SHOW_TRACK,
-    front_cars_sensors_equipment: this.props.front_cars_sensors_equipment,// new props
-    equipmentChecked: false,// new props
+    front_cars_sensors_equipment: this.props.front_cars_sensors_equipment,
   }
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLines', zIndex: 1 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
-
       const { track } = this.props;
-      
       if (track.length > 1) {
         this.drawTrackLines(track, this.state.SHOW_TRACK);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
@@ -63,37 +58,37 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
   componentWillReceiveProps(nextProps) {
     const { SHOW_TRACK } = nextProps;
-    const {front_cars_sensors_equipment} = nextProps;
-    let isChecked = false;
-    if(front_cars_sensors_equipment !== this.state.front_cars_sensors_equipment){
-      for(let key in front_cars_sensors_equipment){
-        isChecked = front_cars_sensors_equipment[key].show || isChecked;
-      }
-      this.setState({equipmentChecked: isChecked});
-      // this.changeStyleForPoint(SHOW_TRACK, isChecked);
-    }
-    
     const { track } = nextProps;
+
     if (!this.state.trackLineIsDraw) {
       if (track.length > 1) {
-        this.drawTrackLines(track, SHOW_TRACK, isChecked);
+        this.drawTrackLines(track, SHOW_TRACK);
         this.setState({ lastPoint: nextProps.lastPoint, trackLineIsDraw: true, SHOW_TRACK });
       }
     } else {
       const { lastPoint, track } = nextProps;
-      
+
       if (lastPoint !== this.state.lastPoint) {
         // можно оптимизировать и докидывать точку в последнюю "удачную" по цвету геометрию
-        this.drawTrackLines(track.slice(-2), SHOW_TRACK, isChecked);
+        this.drawTrackLines(track.slice(-2), SHOW_TRACK);
         this.setState({ lastPoint, SHOW_TRACK });
-      } else if (SHOW_TRACK !== this.state.SHOW_TRACK) {
-        this.changeStyleForPoint(SHOW_TRACK)
+      } else {
+        this.changeStyleForLines(SHOW_TRACK)
         this.setState({ SHOW_TRACK });
       }
     }
+  }
 
-    console.log('isChecked = ', isChecked);
-    this.drawTrackLines(track, SHOW_TRACK, isChecked);// убрать вызов в другое место
+  componentWillUpdate(nextProps){
+    const { SHOW_TRACK } = nextProps;
+    const {front_cars_sensors_equipment} = nextProps;
+    // выделен ли один из чекбоксов, датчиков во вкладке 
+    // трекинг карточки ТС, на странице мониторинга
+    let isChecked = false;
+    if(front_cars_sensors_equipment !== this.state.front_cars_sensors_equipment){
+      isChecked = Object.values(front_cars_sensors_equipment).some(elem => elem['show']);
+      this.changeStyleForLines(SHOW_TRACK, isChecked);
+    }
   }
 
   componentWillUnmount() {
@@ -104,18 +99,15 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     let linePoints = [
       track[0],
     ];
-
     let lastStatus = isMoreThenPermitted(linePoints[0], this.props);
     let lastTimestatmp = linePoints[0].timestamp;
 
     for (let index = 1, length = track.length; index < length; index++) {
       const currPoint = track[index];
       const currStatus = isMoreThenPermitted(currPoint, this.props);
-      
-      if (currStatus !== lastStatus) {
-        console.log('111');
-        linePoints.push(currPoint);
 
+      if (currStatus !== lastStatus) {
+        linePoints.push(currPoint);
         const feature = new ol.Feature({
           geometry: new ol.geom.LineString(
             linePoints.map(({ coords_msk }) => coords_msk)
@@ -151,12 +143,12 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     }
   }
 
-  changeStyleForPoint(SHOW_TRACK) {
+  changeStyleForLines(SHOW_TRACK, equipmentChecked?) {
     this.props.getAllFeatures().forEach(feature => {
       if (!SHOW_TRACK) {
-        feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK, equipmentChecked));
       } else {
-        feature.setStyle(getStyleForTrackLine(feature.get('status'), SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(feature.get('status'), SHOW_TRACK, equipmentChecked));
       }
     });
   }

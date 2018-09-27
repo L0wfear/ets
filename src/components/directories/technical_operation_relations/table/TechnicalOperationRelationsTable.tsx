@@ -42,7 +42,7 @@ const Table: React.SFC<any> = props => {
     <DataTable
       data={props.data}
       tableMeta={getTableMeta(props)}
-      uniqName={'gov_number'}
+      uniqName={'car_id'}
       onRowClick={props.onRowClick}
       onRowDoubleClick={props.onRowDoubleClick}
       selected={props.selected}

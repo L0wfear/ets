@@ -4,7 +4,7 @@ import { TRACK_COLORS } from 'constants/track.js';
 
 const CACHE_ICON = {};
 
-const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK } ) => {
+const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK, equipmentChecked } ) => {
   if (!SHOW_TRACK) {
     return CACHE_ICON[cacheStyleName] = new ol.style.Style({});
   }
@@ -20,23 +20,24 @@ const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK } ) => {
     }),
     stroke: new ol.style.Stroke({
       color: greenSpeed ? TRACK_COLORS.green : TRACK_COLORS.red,
-      width: 7 / DEVICE_PIXEL_RATIO,
+      width: equipmentChecked ? 12 / DEVICE_PIXEL_RATIO : 7 / DEVICE_PIXEL_RATIO,
     }),
     zIndex: 9,
   });
 }
 
-export const getStyleForTrackLine = (greenSpeed, SHOW_TRACK) => {
-  const cacheStyleName = !SHOW_TRACK ? 'SHOW_TRACK': `${greenSpeed}`;
+export const getStyleForTrackLine = (greenSpeed, SHOW_TRACK, equipmentChecked = false) => {
+  const cacheStyleName = !SHOW_TRACK ? '!SHOW_TRACK' : `${greenSpeed}/${equipmentChecked}`;
+
   const { [cacheStyleName] : cache_style } = CACHE_ICON;
+
   let icon = cache_style;
 
   if (!cache_style) {
     icon = makeCacheStyle(
       cacheStyleName,
-      { greenSpeed, SHOW_TRACK },
+      { greenSpeed, SHOW_TRACK, equipmentChecked },
     );
   }
-
   return icon;
 }

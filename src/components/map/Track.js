@@ -444,7 +444,7 @@ export default class Track {
 
     let prevCoords = firstPoint;
 
-    ctx.lineWidth = LINE_WIDTH + 8;
+    ctx.lineWidth = LINE_WIDTH;
     ctx.lineCap = 'butt';
     ctx.lineJoin = 'round';
 
@@ -506,14 +506,14 @@ export default class Track {
         // start new path
         // and reset color && lineWidth
         ctx.strokeStyle = rgbaColor;
-        ctx.lineWidth = LINE_WIDTH + 8;
+        ctx.lineWidth = LINE_WIDTH;
         ctx.beginPath();
         ctx.moveTo(coords.x, coords.y);
       } else {
  // если цвет не менялся
 
         ctx.strokeStyle = prevRgbaColor;
-        ctx.lineWidth = LINE_WIDTH + 8;
+        ctx.lineWidth = LINE_WIDTH;
         ctx.lineTo(coords.x, coords.y);
 
         // оптимизация, типа
@@ -524,7 +524,7 @@ export default class Track {
           this.drawTrackPoint(coords, hexColor);
 
           ctx.strokeStyle = rgbaColor;
-          ctx.lineWidth = LINE_WIDTH + 8;
+          ctx.lineWidth = LINE_WIDTH;
           ctx.beginPath();
           ctx.moveTo(coords.x, coords.y);
         }

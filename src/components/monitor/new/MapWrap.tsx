@@ -19,7 +19,6 @@ type PropsMapWrap = {
   enableInteractions: boolean;
   disabledCenterOn: boolean;
 }
-//Добавить props
 const MapWrap: React.SFC<PropsMapWrap> = (props) => (
   <Map disabledByType={props.disabledByType} enableInteractions={props.enableInteractions} disabledCenterOn={props.disabledCenterOn} >
     {

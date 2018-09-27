@@ -313,6 +313,7 @@ export class MissionForm extends Form {
         structure_id: this.props.formState.structure_id,
         object_list: [],
         input_lines: [],
+        is_main: true,
       },
     });
   }

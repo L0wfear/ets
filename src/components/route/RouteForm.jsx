@@ -52,14 +52,15 @@ const makeName = ({ number, name, object_list, draw_odh_list }, { fromMission })
 
   let generateName = `Маршрут №${number}`;
 
+  if (fromMission) {
+    generateName = `${generateName}-А`;
+  }
+
   if (first && first.name) {
     if (last && last.name) {
       generateName = `${generateName} от ${first.name} до ${last.name}`;
     } else {
       generateName = `${generateName} до ${first.name}`;
-    }
-    if (fromMission) {
-      generateName = `${generateName}-А`;
     }
   }
 

@@ -10,11 +10,12 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from './reportProps';
 
 const DutyMissionForm: any = DutyMissionFormSCC;
+const exportableTSX: any = exportable;
 
-@exportable({
+@exportableTSX({
   entity: serviceUrl,
 })
-class BrigadeEfficiencyReport extends React.Component<{}, IStateBrigadeEfficiency> {
+class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficiency> {
   constructor(props) {
     super(props);
     this.state = {

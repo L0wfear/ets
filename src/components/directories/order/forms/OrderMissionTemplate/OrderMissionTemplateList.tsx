@@ -119,7 +119,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
-    if (!checkStructureByTypeClick(typeClick, this.props, Object.values(checkedElements))) {
+    if (!checkStructureByTypeClick(typeClick, this.props as any, Object.values(checkedElements))) {
       this.setState({ canSubmit: false });
 
       const queryList = Object.entries(checkedElements).map(([id, value]) => {

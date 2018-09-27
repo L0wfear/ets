@@ -12,8 +12,9 @@ interface IStateTrackEventReport {
   mapFormVisibility: boolean;
   coords: number[];
 }
+const exportableTSX: any = exportable;
 
-@exportable({
+@exportableTSX({
   entity: serviceUrl,
 })
 class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {

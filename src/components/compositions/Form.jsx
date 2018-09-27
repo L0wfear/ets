@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 
 /**
@@ -9,7 +8,6 @@ import { FluxContext } from 'utils/decorators';
  * @abstract
  */
 @FluxContext
-@autobind
 export default class Form extends React.Component {
 
   static get propTypes() {
@@ -29,11 +27,11 @@ export default class Form extends React.Component {
     };
   }
 
-  handleChange(field, e) {
+  handleChange = (field, e) => {
     return this.props.handleFormChange(field, e);
   }
 
-  handleMultipleChange(fields) {
+  handleMultipleChange = (fields) => {
     this.props.handleMultipleChange(fields);
   }
 

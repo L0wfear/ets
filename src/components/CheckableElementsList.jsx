@@ -2,7 +2,6 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 
 import { Button, Glyphicon } from 'react-bootstrap';
-import { autobind } from 'core-decorators';
 import {
   cloneDeep,
   each,
@@ -34,8 +33,7 @@ export default class CheckableElementsList extends ElementsList {
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
-  @autobind
-  onFormHide(clearCheckedElements) {
+  onFormHide = (clearCheckedElements) => {
     this.setState({
       showForm: false,
       selectedElement: null,
@@ -147,7 +145,6 @@ export default class CheckableElementsList extends ElementsList {
    * Удаляет выбранные элементы
    * метод вызывает {@link ElementsList#removeElement} в случае отсутствия выбранных элементов
    */
-  @autobind
   async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') {
       return;
@@ -181,8 +178,7 @@ export default class CheckableElementsList extends ElementsList {
    * @param {object[]} rows - все элементы
    * @param {boolean} state - новое состояние выбора
    */
-  @autobind
-  checkAll(rows, state) {
+  checkAll = (rows, state) => {
     let checkedElements = cloneDeep(this.state.checkedElements);
     checkedElements = state ? rows : {};
 
@@ -194,8 +190,7 @@ export default class CheckableElementsList extends ElementsList {
    * @param {number} id - id выбранного элемента
    * @param {boolean} state - новое состояние выбора
    */
-  @autobind
-  checkElement(id, state) {
+  checkElement = (id, state) => {
     const elements = cloneDeep(this.state.checkedElements);
     if (state) {
       elements[parseInt(id, 10)] = find(this.state.elementsList, e => e.id === parseInt(id, 10));
@@ -209,8 +204,7 @@ export default class CheckableElementsList extends ElementsList {
    * Передает state в другой компонент
    * @todo избавиться от этой функции
    */
-  @autobind
-  stateChangeCallback() {
+  stateChangeCallback = () => {
     if (typeof this.props.onListStateChange === 'function') {
       this.props.onListStateChange(this.state);
     }

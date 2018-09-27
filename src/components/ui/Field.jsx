@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { FormControl } from 'react-bootstrap';
 import cx from 'classnames';
 
@@ -79,7 +78,6 @@ function TextAreaField(props) {
 }
 
 
-@autobind
 export default class Field extends React.Component {
 
   static get propTypes() {
@@ -95,7 +93,7 @@ export default class Field extends React.Component {
     };
   }
 
-  onChange(...args) {
+  onChange = (...args) => {
     this.props.onChange(this.props.key, ...args);
   }
 

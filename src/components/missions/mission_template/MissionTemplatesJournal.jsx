@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList';
@@ -45,7 +44,6 @@ const ButtonCopyTemplateMission = enhanceWithPermissions({
   tableComponent: MissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
-@autobind
 export default class MissionTemplatesJournal extends CheckableElementsList {
 
   static get propTypes() {
@@ -86,18 +84,18 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
   /**
    * @override
    */
-  showForm() {
+  showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
   }
 
-  createMissions() {
+  createMissions = () => {
     this.setState({ showForm: true, formType: 'MissionsCreationForm' });
   }
 
   /**
    * @override
    */
-  createElement() {
+  createElement = () => {
     this.setState({
       showForm: true,
       selectedElement: null,
@@ -105,7 +103,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-  copyElement() {
+  copyElement = () => {
     const copiedElement = _.cloneDeep(this.state.selectedElement);
     delete copiedElement.id;
     delete copiedElement.name;
@@ -116,7 +114,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-  getForms() {
+  getForms = () => {
     const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
     const { carsIndex = {} } = this.props;
 
@@ -140,7 +138,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
   }
 
-  getButtons() {
+  getButtons = () => {
     const buttons = super.getButtons();
     // TODO отображение Сформировать задание в зависимости от прав 
     const additionalButtons = [
@@ -166,7 +164,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     return buttons;
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
 

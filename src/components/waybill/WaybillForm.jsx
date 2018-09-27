@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import {
   Modal, Row, Col, Button,
@@ -68,7 +67,6 @@ const boundKeysObj = {
 
 const modalKey = 'waybill';
 
-@autobind
 class WaybillForm extends Form {
   constructor(props) {
     super(props);
@@ -208,7 +206,7 @@ class WaybillForm extends Form {
 
   employeeFIOLabelFunction = (...arg) => employeeFIOLabelFunction(this.context.flux)(...arg);
 
-  handlePlanDepartureDates(field, value) {
+  handlePlanDepartureDates = (field, value) => {
     if (value === null) {
       return;
     }
@@ -273,7 +271,7 @@ class WaybillForm extends Form {
         .catch(() => {}));
   }
 
-  getMissionsByCarAndDates(formState, notificate = true) {
+  getMissionsByCarAndDates = (formState, notificate = true) => {
     const {
       missionsList: oldMissionsList = [],
     } = this.state;
@@ -321,7 +319,7 @@ class WaybillForm extends Form {
     });
   }
 
-  getCarDistance(formState) {
+  getCarDistance = (formState) => {
     if (diffDates(formState.fact_arrival_date, formState.fact_departure_date, 'days') > 3) {
       this.setState({ tooLongFactDates: true });
       return;
@@ -382,7 +380,7 @@ class WaybillForm extends Form {
     }
   }
 
-  getLatestWaybillDriver(formState) {
+  getLatestWaybillDriver = (formState) => {
     const { car_id } = formState;
     this.context.flux.getActions('employees').getEmployeeBindedToCar(car_id);
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
@@ -435,7 +433,7 @@ class WaybillForm extends Form {
     .then(fieldsToChange => this.props.handleMultipleChange(fieldsToChange));
 
 
-  async handleEquipmentFuelChange(equipment_fuel) {
+  handleEquipmentFuelChange = async (equipment_fuel) => {
     const fieldsToChange = {
       equipment_fuel,
     };
@@ -450,7 +448,7 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(fieldsToChange);
   }
 
-  getFieldsToChangeBasedOnLastWaybill([lastCarUsedWaybill]) {
+  getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
     const fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fuel_end)) {
@@ -483,7 +481,7 @@ class WaybillForm extends Form {
     return fieldsToChange;
   }
 
-  onMissionFormHide(result) {
+  onMissionFormHide = (result) => {
     const id = result && result.result ? result.result.id : null;
     if (id) {
       const { mission_id_list: [...mission_id_list] } = this.props.formState;
@@ -495,7 +493,7 @@ class WaybillForm extends Form {
     this.setState({ showMissionForm: false, selectedMission: null });
   }
 
-  createMission() {
+  createMission = () => {
     const {
       carsList = [],
       formState,
@@ -533,7 +531,7 @@ class WaybillForm extends Form {
   /**
    * Обновляет данные формы на основе закрытого ПЛ
    */
-  async refresh() {
+  refresh = async () => {
     const state = this.props.formState;
     const { flux } = this.context;
 
@@ -543,7 +541,7 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(fieldsToChange);
   }
 
-  handleMissionsChange(newFormData) {
+  handleMissionsChange = (newFormData) => {
     this.handleChange('mission_id_list', newFormData);
   }
 

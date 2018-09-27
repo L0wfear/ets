@@ -1,5 +1,4 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import {
   Button,
@@ -41,7 +40,6 @@ const ButtonUpdateMission = enhanceWithPermissions({
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
-@autobind
 export default class MissionsJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -103,7 +101,7 @@ export default class MissionsJournal extends CheckableElementsList {
       this.refreshList(nextState);
     }
   }
-  async refreshList(state = this.state) {
+  refreshList = async (state = this.state) => {
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
 
     const { total_count } = missions.result.meta;
@@ -115,12 +113,12 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  removeElementCallback() {
+  removeElementCallback = () => {
     global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
     this.refreshList();
   }
 
-  checkDisabled() {
+  checkDisabled = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -130,7 +128,7 @@ export default class MissionsJournal extends CheckableElementsList {
     return !validateMissionsArr.some(({ status, can_be_closed }) => !(status !== 'assigned' || !can_be_closed));
   }
 
-  checkDisabledDelete() {
+  checkDisabledDelete = () => {
     return (
       super.checkDisabledDelete() ||
       (this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned') ||
@@ -138,7 +136,7 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  checkDisabledArchive() {
+  checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -150,7 +148,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   rejectMission = () => this.setState({ showMissionRejectForm: true });
 
-  completeCheckedElements() {
+  completeCheckedElements = () => {
     const { selectedElement } = this.state;
     const missionsObj = this.state.checkedElements || {};
     if (selectedElement) {
@@ -179,7 +177,7 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  rejectCheckedElements() {
+  rejectCheckedElements = () => {
     this.rejectMission();
   }
 
@@ -266,7 +264,7 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  onReject(refresh) {
+  onReject = (refresh) => {
     const newPropsState = {
       showMissionRejectForm: false,
     };
@@ -314,7 +312,7 @@ export default class MissionsJournal extends CheckableElementsList {
     .catch(() => {});
   }
 
-  async mapView(id) {
+  mapView = async (id) => {
     const { result, warnings = false } = await this.context.flux.getActions('missions').getMissionData(id);
     if (warnings && warnings.length > 0) {
       global.NOTIFICATION_SYSTEM.notify(warnings[0], 'error');
@@ -323,7 +321,7 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  getForms() {
+  getForms = () => {
     return [
       <div key={'forms'}>
         <MissionFormWrap
@@ -360,7 +358,7 @@ export default class MissionsJournal extends CheckableElementsList {
     this.props.history.push('/orders');
   }
 
-  getbuttonAddCZ() {
+  getbuttonAddCZ = () => {
     return (
       <div key={'00.1'} className="container-button-create-cz">
         <ButtonGoFaxogramm bsSize="small" bsStyle="success" onClick={this.goToOrders} disabled={false}>
@@ -370,7 +368,7 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  getButtons() {
+  getButtons = () => {
     const superButtons = super.getButtons({
       BCbuttonName: 'Создать децентрализованное задание',
     });
@@ -390,15 +388,15 @@ export default class MissionsJournal extends CheckableElementsList {
     return buttons;
   }
 
-  changeSort(field, direction) {
+  changeSort = (field, direction) => {
     this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
   }
 
-  changeFilter(filter) {
+  changeFilter = (filter) => {
     this.setState({ filter });
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     return {
       mapView: this.mapView,
       structures: this.props.companyStructureLinearList,
@@ -411,11 +409,11 @@ export default class MissionsJournal extends CheckableElementsList {
     };
   }
 
-  export() {
+  export = () => {
     this.setState({ showPrintForm: true });
   }
 
-  additionalRender() {
+  additionalRender = () => {
     return (
       <Paginator
         currentPage={this.state.page}

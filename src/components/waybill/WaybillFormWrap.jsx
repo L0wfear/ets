@@ -7,7 +7,6 @@ import {
   last,
   max,
 } from 'lodash';
-import { autobind } from 'core-decorators';
 import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { getWarningNotification } from 'utils/notifications';
@@ -62,7 +61,6 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) => (
 )
 
 @FluxContext
-@autobind
 export default class WaybillFormWrap extends FormWrap {
   static defaultProps = {
     onCallback: () => {},
@@ -181,7 +179,7 @@ export default class WaybillFormWrap extends FormWrap {
     clearTimeout(this.state.timeId);
   }
 
-  handleFieldsChange(formState) {
+  handleFieldsChange = (formState) => {
     let { formErrors } = this.state;
     const newState = {};
 
@@ -221,7 +219,7 @@ export default class WaybillFormWrap extends FormWrap {
     this.setState(newState);
   }
 
-  checkError(formState = this.state.formState) {
+  checkError = (formState = this.state.formState) => {
     let { formErrors } = this.state;
     const newState = {};
 
@@ -250,7 +248,7 @@ export default class WaybillFormWrap extends FormWrap {
   }
 
 
-  handleFormStateChange(field, e) {
+  handleFormStateChange = (field, e) => {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
@@ -296,7 +294,7 @@ export default class WaybillFormWrap extends FormWrap {
     this.handleMultipleChange(formState);
   }
 
-  handleMultipleChange(fields) {
+  handleMultipleChange = (fields) => {
     let formState = cloneDeep(this.state.formState);
 
     Object.entries(fields).forEach(([field, value]) => {
@@ -366,7 +364,7 @@ export default class WaybillFormWrap extends FormWrap {
    * @param {function} callback - функция, вызываемая после отправки
    * @return {undefined}
    */
-  async handleFormSubmit(state = this.state.formState, callback) {
+  handleFormSubmit = async (state = this.state.formState, callback) => {
     const formState = cloneDeep(state);
     const waybillStatus = formState.status;
     const { flux } = this.context;
@@ -449,7 +447,7 @@ export default class WaybillFormWrap extends FormWrap {
     return;
   }
 
-  async handleClose(taxesControl) {
+  handleClose = async (taxesControl) => {
     const { formState } = this.state;
     const prevStatus = formState.status;
     if (!taxesControl) {

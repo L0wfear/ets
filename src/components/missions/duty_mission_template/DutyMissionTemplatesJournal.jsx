@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
@@ -24,7 +23,6 @@ const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
   tableComponent: DutyMissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-@autobind
 export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
   constructor(props) {
@@ -60,7 +58,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-  showForm() {
+  showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
   }
 
@@ -70,7 +68,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   /**
    * @override
    */
-  createElement() {
+  createElement = () => {
     this.setState({
       showForm: true,
       selectedElement: null,
@@ -78,7 +76,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-  getForms() {
+  getForms = () => {
     const { employeesIndex = {} } = this.props;
 
     return [
@@ -105,7 +103,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   /**
    * @override
    */
-  getButtons() {
+  getButtons = () => {
     const buttons = super.getButtons();
     // TODO отображение Сформировать наряд-задание в зависимости от прав
     buttons.push(
@@ -122,7 +120,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     return buttons;
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     const { listData = [] } = this.state;
 
     const { structures } = this.context.flux.getStore('session').getCurrentUser();

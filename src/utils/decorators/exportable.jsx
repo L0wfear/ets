@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { saveData } from 'utils/functions';
 import { parseFilename } from 'utils/content-disposition';
 import config from 'config';
@@ -14,7 +13,7 @@ export function toUrlWithParams(url, data) {
 
 export default function exportable(options) {
   return function decorateWithExportableFeatures(ComposedComponent) {
-    return @autobind class Exportable extends React.Component {
+    return class Exportable extends React.Component {
       static get propTypes() {
         return {
           routeParams: PropTypes.object,
@@ -28,7 +27,7 @@ export default function exportable(options) {
         this.path = path;
       }
 
-      exportFunction(payload = {}, useRouteParams) {
+      exportFunction = (payload = {}, useRouteParams) => {
         const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
         let id = '';
         if (useRouteParams) {
@@ -60,7 +59,7 @@ export default function exportable(options) {
         });
       }
 
-      exportByPostFunction(bodyPayload = {}, urlPayload = {}) {
+      exportByPostFunction = (bodyPayload = {}, urlPayload = {}) => {
         const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
 
         const URL = toUrlWithParams(
@@ -88,7 +87,7 @@ export default function exportable(options) {
         });
       }
 
-      export(payload = {}, useRouteParams = false) {
+      export = (payload = {}, useRouteParams = false) => {
         if (typeof this.exportFunction === 'function') {
           return this.exportFunction(payload, useRouteParams)
             .then(({ blob, fileName }) => {
@@ -99,7 +98,7 @@ export default function exportable(options) {
         return Promise.resolve(false);
       }
 
-      exportByPostData(bodyPayload, urlPayload) {
+      exportByPostData = (bodyPayload, urlPayload) => {
         if (typeof this.exportByPostFunction === 'function') {
           return this.exportByPostFunction(bodyPayload, urlPayload)
             .then(({ blob, fileName }) => {

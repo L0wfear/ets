@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { withRouter } from 'react-router-dom';
 
-@autobind
 class LoginPage extends React.Component {
   static get contextTypes() {
     return {
@@ -21,7 +19,7 @@ class LoginPage extends React.Component {
     };
   }
 
-  onSigninClick(e) {
+  onSigninClick = (e) => {
     e.preventDefault();
     const { login, password } = this.state;
     const { flux } = this.context;
@@ -40,7 +38,7 @@ class LoginPage extends React.Component {
     });
   }
 
-  handleChange(field, e) {
+  handleChange = (field, e) => {
     const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     this.setState({
       [field]: value,

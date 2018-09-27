@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { Row, Col } from 'react-bootstrap';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
@@ -10,7 +9,6 @@ import CheckList from './CheckList';
 
 export default
 @connectToStores(['geoObjects'])
-@autobind
 class RouteInfo extends React.Component {
 
   static get propTypes() {
@@ -43,7 +41,7 @@ class RouteInfo extends React.Component {
     flux.getActions('geoObjects').getGeozones();
   }
 
-  onFeatureClick(feature, ev, map) {
+  onFeatureClick = (feature, ev, map) => {
     const { name, type } = feature.getProperties();
 
     if (name) {

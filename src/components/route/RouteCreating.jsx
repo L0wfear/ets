@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
-import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import {
   Row, Col, FormControl, Button, Glyphicon,
@@ -14,7 +13,6 @@ import cx from 'classnames';
 import { polyState } from 'constants/polygons';
 import CheckList from './CheckList';
 
-@autobind
 class RouteCreating extends React.Component {
   static get propTypes() {
     return {
@@ -52,7 +50,7 @@ class RouteCreating extends React.Component {
     }
   }
 
-  onGeozoneSelectChange(type, v) {
+  onGeozoneSelectChange = (type, v) => {
     let { object_list = [] } = this.props.route;
     const { polys = {} } = this.props.route;
     const { geozonePolys = {} } = this.props;
@@ -82,7 +80,7 @@ class RouteCreating extends React.Component {
     this.props.onChange('object_list', object_list);
   }
 
-  onObjectNameChange(i, v) {
+  onObjectNameChange = (i, v) => {
     const { object_list = [] } = this.props.route;
     object_list[i].name = v.target.value;
     this.props.onChange('object_list', object_list);
@@ -108,7 +106,7 @@ class RouteCreating extends React.Component {
     this.props.onChange('object_list', object_list);
   }
 
-  checkRoute() {
+  checkRoute = () => {
     const { flux } = this.context;
     if (!this.props.route.input_lines.length) {
       this.props.onChange('draw_odh_list', []);
@@ -127,7 +125,7 @@ class RouteCreating extends React.Component {
     });
   }
 
-  handleCheckbox(type, v, e) {
+  handleCheckbox = (type, v, e) => {
     let { object_list = [] } = this.props.route;
     const { polys = {} } = this.props.route;
     const { geozonePolys = {} } = this.props;
@@ -157,7 +155,7 @@ class RouteCreating extends React.Component {
     this.props.onChange('object_list', object_list);
   }
 
-  removeObject(i) {
+  removeObject = (i) => {
     const { object_list = [] } = this.props.route;
     object_list.splice(i, 1);
     this.props.onChange('object_list', object_list);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
 import {
   cloneDeep,
@@ -11,7 +10,6 @@ import { polyState } from 'constants/polygons';
 import RouteForm from './RouteForm';
 import FormWrap from '../compositions/FormWrap';
 
-@autobind
 class RouteFormWrap extends FormWrap {
   constructor(props) {
     super(props);
@@ -127,7 +125,7 @@ class RouteFormWrap extends FormWrap {
     this.setState({ formState });
   }
 
-  async handleFormSubmit(isTemplate) {
+  handleFormSubmit = async (isTemplate) => {
     const { flux } = this.context;
     const { formState } = this.state;
     let result;
@@ -141,7 +139,7 @@ class RouteFormWrap extends FormWrap {
     this.props.onFormHide(true, result);
   }
 
-  async handleFormStateChange(f, e) {
+  handleFormStateChange = async (f, e) => {
     await super.handleFormStateChange(f, e);
 
     // Проверка на наличие имени маршрута в списке маршрутов
@@ -162,7 +160,7 @@ class RouteFormWrap extends FormWrap {
     this.setState({ formErrors });
   }
 
-  additionalProps() {
+  additionalProps = () => {
     const { fromMission = false } = this.props;
 
     if (fromMission) {

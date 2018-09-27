@@ -1,13 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Modal, Button } from 'react-bootstrap';
-import { autobind } from 'core-decorators';
 
 const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';
 document.body.appendChild(promptDiv);
 
-@autobind
 class Prompt extends React.Component {
   constructor() {
     super();
@@ -20,9 +18,9 @@ class Prompt extends React.Component {
     window.confirmDialog = global.confirmDialog = this.showConfirm.bind(this);
   }
 
-  showConfirm({
+  showConfirm = ({
     title, body, bsSize = 'small', defaultState = {}, checkOnOk = () => true,
-  }) {
+  }) => {
     const promise = new Promise((res, rej) => {
       this.setState({
         isVisible: true,
@@ -38,18 +36,18 @@ class Prompt extends React.Component {
     return promise;
   }
 
-  hide() {
+  hide = () => {
     this.setState({ isVisible: false });
   }
 
-  ok() {
+  ok = () => {
     if (this.state.checkOnOk(this)) {
       this.state.res(this.state);
       this.hide();
     }
   }
 
-  cancel() {
+  cancel = () => {
     this.state.rej();
     this.hide();
   }

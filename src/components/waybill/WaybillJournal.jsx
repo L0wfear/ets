@@ -1,5 +1,4 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 import { Glyphicon, ButtonToolbar, Dropdown, MenuItem, Button } from 'react-bootstrap';
 import { get } from 'lodash';
 import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
@@ -26,7 +25,6 @@ import permissions from 'components/waybill/config-data/permissions';
   formComponent: WaybillFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-@autobind
 export default class WaybillJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -79,7 +77,7 @@ export default class WaybillJournal extends CheckableElementsList {
     }
   }
 
-  async updateList(state = this.state) {
+  updateList = async (state = this.state) => {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
@@ -99,7 +97,7 @@ export default class WaybillJournal extends CheckableElementsList {
   changeSort = (field, direction) =>
     this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     return {
       structures,
@@ -117,7 +115,7 @@ export default class WaybillJournal extends CheckableElementsList {
   /**
    * @override
    */
-  getButtons() {
+  getButtons = () => {
     // Операции, заданные в статической переменной operations класса-наследника
     const operations = this.constructor.operations || [];
     const buttons = [];
@@ -182,7 +180,7 @@ export default class WaybillJournal extends CheckableElementsList {
   /**
    * @override
    */
-  getForms() {
+  getForms = () => {
     const forms = super.getForms();
 
     forms.push(
@@ -197,12 +195,12 @@ export default class WaybillJournal extends CheckableElementsList {
     return forms;
   }
 
-  async formCallback() {
+  formCallback = async () => {
     await this.updateList(this.state);
     super.formCallback();
   }
 
-  additionalRender() {
+  additionalRender = () => {
     const additionalRender = [
       <Paginator key="pagination" currentPage={this.state.page} maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />,
     ];

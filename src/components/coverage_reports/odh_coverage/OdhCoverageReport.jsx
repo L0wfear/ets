@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
-import { autobind } from 'core-decorators';
 
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
@@ -26,11 +25,9 @@ const MenuItem = bindable(BootstrapMenuItem);
 //   formComponent: OdhCoverageReportPrintForm,
 //   operations: ['LIST'],
 // })
-// @autobind
 
 @connectToStores(['reports'])
 @FluxContext
-@autobind
 export default class OdhCoverageReport extends Component {
 
   constructor(props) {
@@ -60,7 +57,7 @@ export default class OdhCoverageReport extends Component {
   getReport = async () => {
     const { flux } = this.context;
     const { location: { query } } = this.props;
-    
+
     const res = await flux.getActions('reports').getOdhCoverageReport(this.state.date_start, this.state.date_end, query);
     const dates = res.result.meta;
 
@@ -70,11 +67,11 @@ export default class OdhCoverageReport extends Component {
   handleChangeDateStart = date_start => this.setState({ date_start });
   handleChangeDateEnd = date_end => this.setState({ date_end });
 
-  showForm(exportType) {
+  showForm = (exportType) => {
     this.setState({ showForm: true, exportType });
   }
 
-  export(date_start = this.state.date_start, date_end = this.state.date_end) {
+  export = (date_start = this.state.date_start, date_end = this.state.date_end) => {
     const { flux } = this.context;
 
     this.setState({ isExporting: true });

@@ -11,7 +11,6 @@ import Div from 'components/ui/Div';
 import { connect } from 'react-redux';
 
 import config from 'config';
-import { autobind } from 'core-decorators';
 import LoadingOverlay from 'components/ui/LoadingOverlay';
 import ModalTP from 'components/modalTP/ModalTP';
 import { connectToStores, FluxContext, HistoryContext } from 'utils/decorators';
@@ -114,8 +113,7 @@ export default class MainPage extends React.Component {
     });
   }
 
-  @autobind
-  logout() {
+  logout = () => {
     const { flux, history } = this.context;
     flux.getActions('session').logout().then(() => {
       this.props.sessionResetData();

@@ -3,7 +3,6 @@ import {
   find,
   union,
 } from 'lodash';
-import { autobind } from 'core-decorators';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -68,7 +67,6 @@ const makeName = ({ number, name, object_list, draw_odh_list }, { fromMission })
 };
 
 @connectToStores(['objects', 'geoObjects'])
-@autobind
 export default class RouteForm extends Form {
 
   constructor(props) {
@@ -98,7 +96,7 @@ export default class RouteForm extends Form {
     }
   }
 
-  changeRouteTypesAvailable(route_types_out) {
+  changeRouteTypesAvailable = (route_types_out) => {
     let route_types = union([...route_types_out]);
     const route_type_options = [];
 
@@ -148,7 +146,7 @@ export default class RouteForm extends Form {
     this.setState({ ...changeStateObj });
   }
 
-  handleTechChange(v) {
+  handleTechChange = (v) => {
     if (v !== this.props.formState.technical_operation_id) {
       this.handleChange('technical_operation_id', v);
 
@@ -163,7 +161,7 @@ export default class RouteForm extends Form {
     }
   }
 
-  handleClickSelectFromODH() {
+  handleClickSelectFromODH = () => {
     this.setState({ vector: false });
     this.handleChange('input_lines', []);
   }
@@ -183,7 +181,7 @@ export default class RouteForm extends Form {
       });
   }
 
-  handleSubmit(isTemplate) {
+  handleSubmit = (isTemplate) => {
     this.props.onSubmit(isTemplate);
   }
 

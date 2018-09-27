@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import Table from 'components/ui/table/Table';
 import { FormControl, Button } from 'react-bootstrap';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
@@ -14,7 +13,6 @@ import _ from 'lodash';
  * Компонент таксировки ТС
  * @extends React.Component
  */
-@autobind
 export default class Taxes extends React.Component {
 
   static get propTypes() {
@@ -141,7 +139,7 @@ export default class Taxes extends React.Component {
     this.setState({ operations, fuelRates, tableData: taxes });
   }
 
-  handleFactValueChange(index, e) {
+  handleFactValueChange = (index, e) => {
     const { tableData } = this.state;
     const current = tableData[index];
     current.FACT_VALUE = Math.abs(e.target.value);
@@ -157,7 +155,7 @@ export default class Taxes extends React.Component {
     this.props.onChange(tableData);
   }
 
-  handleOperationChange(index, value) {
+  handleOperationChange = (index, value) => {
     const { tableData, fuelRates } = this.state;
     tableData[index].OPERATION = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
@@ -175,7 +173,7 @@ export default class Taxes extends React.Component {
     this.props.onChange(tableData);
   }
 
-  addOperation() {
+  addOperation = () => {
     const { tableData } = this.state;
     const { correctionRate, baseFactValue } = this.props;
     const overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
@@ -185,14 +183,14 @@ export default class Taxes extends React.Component {
     this.setState({ tableData });
   }
 
-  removeOperation() {
+  removeOperation = () => {
     const { tableData } = this.state;
     tableData.splice(this.state.selectedOperation, 1);
     this.setState({ tableData });
     this.props.onChange(tableData);
   }
 
-  selectOperation(selectedOperation) {
+  selectOperation = (selectedOperation) => {
     this.setState({ selectedOperation });
   }
 

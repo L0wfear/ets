@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import * as queryString from 'query-string';
 
@@ -101,8 +100,7 @@ class ElementsList extends React.Component {
    * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
    * элементом
    */
-  @autobind
-  selectElement({ props }) {
+  selectElement = ({ props }) => {
     const selectedElement = { ...props.data };
 
     if (props.fromKey) {
@@ -140,8 +138,7 @@ class ElementsList extends React.Component {
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
    */
-  @autobind
-  createElement() {
+  createElement = () => {
     this.setState({
       showForm: true,
       selectedElement: null,
@@ -151,8 +148,7 @@ class ElementsList extends React.Component {
   /**
    * Открывает форму
    */
-  @autobind
-  showForm() {
+  showForm = () => {
     this.setState({
       showForm: true,
     });
@@ -161,16 +157,14 @@ class ElementsList extends React.Component {
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
-  @autobind
-  onFormHide() {
+  onFormHide = () => {
     this.setState({
       showForm: false,
       selectedElement: null,
     });
   }
 
-  @autobind
-  formCallback() {
+  formCallback = () => {
     this.onFormHide();
   }
 
@@ -180,8 +174,7 @@ class ElementsList extends React.Component {
    * определенной в классе-наследнике функции this.removeElementAction
    * this.removeElementCallback переопределяет операцию по умолчанию ([serviceName].get) после удаления
    */
-  @autobind
-  removeElement() {
+  removeElement = () => {
     if (typeof this.removeElementAction !== 'function' || this.state.selectedElement === null) {
       return Promise.reject();
     }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { autobind } from 'core-decorators';
 import clone from 'lodash/clone';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
@@ -97,7 +96,6 @@ export const createMissions = async (flux, element, payload) => {
   return error;
 };
 
-@autobind
 export default class MissionFormWrap extends FormWrap {
 
   constructor(props) {
@@ -146,7 +144,7 @@ export default class MissionFormWrap extends FormWrap {
     }
   }
 
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const {

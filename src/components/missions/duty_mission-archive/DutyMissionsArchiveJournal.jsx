@@ -1,5 +1,4 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button } from 'react-bootstrap';
 
@@ -32,7 +31,6 @@ const ButtonUpdateDutyMission = enhanceWithPermissions({
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
   exportable: true,
 })
-@autobind
 export default class DutyMissionsArchiveJournal extends CheckableElementsList {
 
   constructor(props) {
@@ -58,7 +56,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     }
   }
 
-  init() {
+  init = () => {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {
@@ -77,7 +75,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
-  async refreshList(state = this.state) {
+  refreshList = async (state = this.state) => {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
     const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, filter, is_archive);
@@ -91,7 +89,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     }
   }
 
-  checkDisabledArchive() {
+  checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -137,7 +135,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     .catch(() => {});
   }
 
-  getButtons() {
+  getButtons = () => {
     const buttons = super.getButtons();
 
     buttons.push(
@@ -147,7 +145,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     return buttons;
   }
 
-  getForms() {
+  getForms = () => {
     return [
       <div key={'forms'}>
         <DutyMissionFormWrap
@@ -167,15 +165,15 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     ];
   }
 
-  changeSort(field, direction) {
+  changeSort = (field, direction) => {
     this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });    
   }
 
-  changeFilter(filter) {
+  changeFilter = (filter) => {
     this.setState({ filter });
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     return {
       structures: this.props.companyStructureLinearList,
       changeSort: this.changeSort,
@@ -188,7 +186,7 @@ export default class DutyMissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
-  additionalRender() {
+  additionalRender = () => {
     return [
       <Paginator
         key={'paginator'}

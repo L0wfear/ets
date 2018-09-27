@@ -15,7 +15,7 @@ import {
   OverlayTrackTitleContainer,
   SensorsListContainer,
   OverlayBoxInfoContainer,
-} from 'components/missions/mission/MissionInfoForm/new/map/layers/track/points/styled/styled';
+} from 'components/missions/mission/MissionInfoForm/map/layers/track/points/styled/styled';
 
 import {
   OverlayLineInfoContainer,

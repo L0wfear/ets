@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DivNone } from 'global-styled/global-styled';
-import MissionInfoForm from 'components/missions/mission/MissionInfoForm/new/MissionInfoForm';
+import MissionInfoForm from 'components/missions/mission/MissionInfoForm/MissionInfoForm';
 
 // надеюсь временно
 class MissionInfoFormWrap extends React.Component<any, {}> {

@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import Map from 'components/map/new/Map';
 
-import LayerGeooobjects from 'components/missions/mission/MissionInfoForm/new/map/layers/geoobjects/LayerGeooobjects';
-import LayerCarMarker from 'components/missions/mission/MissionInfoForm/new/map/layers/car-markers/LayerCarMarker';
-import LayerTrackLines from 'components/missions/mission/MissionInfoForm/new/map/layers/track/lines/LayerTrackLines';
-import LayerTrackPoints from 'components/missions/mission/MissionInfoForm/new/map/layers/track/points/LayerTrackPoints';
-import LayerParkingPoints from 'components/missions/mission/MissionInfoForm/new/map/layers/track/events/parking/LayerParkingPoints';
+import LayerGeooobjects from 'components/missions/mission/MissionInfoForm/map/layers/geoobjects/LayerGeooobjects';
+import LayerCarMarker from 'components/missions/mission/MissionInfoForm/map/layers/car-markers/LayerCarMarker';
+import LayerTrackLines from 'components/missions/mission/MissionInfoForm/map/layers/track/lines/LayerTrackLines';
+import LayerTrackPoints from 'components/missions/mission/MissionInfoForm/map/layers/track/points/LayerTrackPoints';
+import LayerParkingPoints from 'components/missions/mission/MissionInfoForm/map/layers/track/events/parking/LayerParkingPoints';
 
 type PropsMapWrap = {
   gov_number: string;

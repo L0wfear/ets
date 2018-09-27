@@ -9,18 +9,19 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
   if (meta.promise && typeof action.payload.then === 'function') {
     dispatch(incLoadingCount(meta));
 
-    return {
-      ...action,
-      payload: action.payload
-        .then((result) => {
-          dispatch(decLoadingCount(meta));
-          return result;
-        })
-        .catch((error) => {
-          dispatch(decLoadingCount(meta));
-          throw error;
-        })
-      };
+    return action.payload
+      .then((result) => {
+        return {
+          ...action,
+          payload: result,
+        };
+      })
+      .catch((error) => {
+        throw error;
+      })
+      .finally(() => {
+        dispatch(decLoadingCount(meta));
+      })
   }
 
   return next(action);

@@ -29,4 +29,5 @@ export type AnsLoadGeozonesFunc = {
 export type loadGeozonesFunc = (
   type: string,
   type_geoobject: string,
+  meta?: any,
 ) => AnsLoadGeozonesFunc;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ol from 'openlayers';
 
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import { getStyleForTrackLine } from 'components/missions/mission/MissionInfoForm/new/map/layers/track/lines/feature-style';
+import { getStyleForTrackLine } from 'components/missions/mission/MissionInfoForm/map/layers/track/lines/feature-style';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

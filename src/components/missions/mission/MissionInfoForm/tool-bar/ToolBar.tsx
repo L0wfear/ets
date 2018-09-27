@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import BarGeoobjectLegend from 'components/missions/mission/MissionInfoForm/new/tool-bar/geoobject-legend/BarGeoobjectLegend';
+import BarGeoobjectLegend from 'components/missions/mission/MissionInfoForm/tool-bar/geoobject-legend/BarGeoobjectLegend';
 
 const ToolBar: React.SFC<any> = (props) => (
   <div className="tool_bar-wrap">

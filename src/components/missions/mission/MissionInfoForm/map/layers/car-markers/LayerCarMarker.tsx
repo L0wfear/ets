@@ -3,7 +3,7 @@ import * as ol from 'openlayers';
 
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
-import { getStyleForStatusDirectionType} from 'components/missions/mission/MissionInfoForm/new/map/layers/car-markers/feature-style';
+import { getStyleForStatusDirectionType} from 'components/missions/mission/MissionInfoForm/map/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
 import config from 'config';
@@ -13,7 +13,7 @@ import {
   PropsLayerCarMarker,
   StateLayerCarMarker,
   WsData,
-} from 'components/missions/mission/MissionInfoForm/new/map/layers/car-markers/LayerCarMarker.h';
+} from 'components/missions/mission/MissionInfoForm/map/layers/car-markers/LayerCarMarker.h';
 
 let updatePoints = true;
 

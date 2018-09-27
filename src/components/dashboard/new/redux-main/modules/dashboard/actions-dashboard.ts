@@ -57,7 +57,7 @@ export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispa
       ),
     );
 
-    loadMissionDataOption.payload.then(({ mission_data }) => (
+    loadMissionDataOption.then(({ payload: mission_data }) => (
       dispatch({
         ...loadMissionDataOption,
         payload: {
@@ -90,7 +90,7 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?:
       ),
     );
 
-    loadRouteDataOption.payload.then(({ route_data }) => (
+    loadRouteDataOption.then(({ payload: route_data }) => (
       dispatch({
         ...loadRouteDataOption,
         payload: {

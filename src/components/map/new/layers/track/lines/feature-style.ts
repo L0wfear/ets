@@ -27,11 +27,12 @@ const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK, equipmentCheck
 }
 
 export const getStyleForTrackLine = (greenSpeed, SHOW_TRACK, equipmentChecked = false) => {
-  let cacheStyleName = !SHOW_TRACK ? 'SHOW_TRACK':`greenSpeed/${greenSpeed}`;
-  cacheStyleName = equipmentChecked ? cacheStyleName + `/equipmentChecked/${equipmentChecked}` : cacheStyleName;
+  const cacheStyleName = !SHOW_TRACK ? '!SHOW_TRACK' : `${greenSpeed}/${equipmentChecked}`;
 
   const { [cacheStyleName] : cache_style } = CACHE_ICON;
+
   let icon = cache_style;
+
   if (!cache_style) {
     icon = makeCacheStyle(
       cacheStyleName,

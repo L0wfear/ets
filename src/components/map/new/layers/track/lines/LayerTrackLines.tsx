@@ -23,12 +23,6 @@ type PropsLayerTrackLines = {
 };
 
 type StateLayerTrackLines = {
-  gps_code: number | void;
-  zoomMore8: boolean,
-  lastPoint: any;
-  trackLineIsDraw: boolean;
-  SHOW_TRACK: boolean;
-  front_cars_sensors_equipment: any[];
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
@@ -36,58 +30,46 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;
 }
+
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
-  state = {
-    gps_code: null,
-    zoomMore8: this.props.zoom >= 8,
-    lastPoint: null,
-    trackLineIsDraw: false,
-    SHOW_TRACK: this.props.SHOW_TRACK,
-    front_cars_sensors_equipment: this.props.front_cars_sensors_equipment,
-  }
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLines', zIndex: 1 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
       const { track } = this.props;
       if (track.length > 1) {
-        this.drawTrackLines(track, this.state.SHOW_TRACK);
+        const isChecked = Object.values(this.props.front_cars_sensors_equipment)
+          .some(({ show }) => show);
+
+        this.drawTrackLines(track, this.props.SHOW_TRACK, isChecked);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { SHOW_TRACK } = nextProps;
-    const { track } = nextProps;
+  componentDidUpdate(prevProps) {
+    const {
+      SHOW_TRACK,
+      track,
+      lastPoint,
+      front_cars_sensors_equipment,
+    } = this.props;
 
-    if (!this.state.trackLineIsDraw) {
-      if (track.length > 1) {
-        this.drawTrackLines(track, SHOW_TRACK);
-        this.setState({ lastPoint: nextProps.lastPoint, trackLineIsDraw: true, SHOW_TRACK });
-      }
-    } else {
-      const { lastPoint, track } = nextProps;
+    const newIsChecked = Object.values(front_cars_sensors_equipment)
+      .some(({ show }) => show);
 
-      if (lastPoint !== this.state.lastPoint) {
-        // можно оптимизировать и докидывать точку в последнюю "удачную" по цвету геометрию
-        this.drawTrackLines(track.slice(-2), SHOW_TRACK);
-        this.setState({ lastPoint, SHOW_TRACK });
-      } else {
-        this.changeStyleForLines(SHOW_TRACK)
-        this.setState({ SHOW_TRACK });
+    const oldIsChecked = Object.values(prevProps.front_cars_sensors_equipment)
+      .some(({ show }) => show);
+
+    if (track !== prevProps.track) {
+      if (!prevProps.track || prevProps.track.length < 2) {
+        this.drawTrackLines(track, SHOW_TRACK, newIsChecked);
+      } else if (lastPoint !== prevProps.track) {
+        this.drawTrackLines(track.slice(-2), SHOW_TRACK, newIsChecked);
       }
     }
-  }
 
-  componentWillUpdate(nextProps){
-    const { SHOW_TRACK } = nextProps;
-    const {front_cars_sensors_equipment} = nextProps;
-    // выделен ли один из чекбоксов, датчиков во вкладке 
-    // трекинг карточки ТС, на странице мониторинга
-    let isChecked = false;
-    if(front_cars_sensors_equipment !== this.state.front_cars_sensors_equipment){
-      isChecked = Object.values(front_cars_sensors_equipment).some(elem => elem['show']);
-      this.changeStyleForLines(SHOW_TRACK, isChecked);
+    if (oldIsChecked !== newIsChecked || SHOW_TRACK !== prevProps.SHOW_TRACK)  {
+      this.changeStyleForLines(SHOW_TRACK, newIsChecked);
     }
   }
 
@@ -160,7 +142,6 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
 const mapStateToProps = state => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
-  gps_code: state.monitorPage.carInfo.gps_code,
   track: state.monitorPage.carInfo.trackCaching.track,
   lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
   forToday: state.monitorPage.carInfo.forToday,
@@ -186,7 +167,5 @@ export default hocAll(
     mapStateToProps,
     mapDispatchToProps,
   ),
-  withLayerProps({
-    zoom: true,
-  }),
+  withLayerProps({}),
 )(LayerTrackLines);

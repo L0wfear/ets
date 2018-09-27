@@ -17,17 +17,14 @@ export const CardContainer = styled.div`
 `;
 
 export const CardMainContainer = styled(CardContainer)`
-  min-width: 300px;
-  flex: 1 1 350px;
-  margin: 20px;
+    flex: 1 1;
+    margin: 20px;
+    min-width: 25%;
 
-  @media screen and (max-width: 1164px) {
-    max-width: 100%;
-  }
-
-  @media screen and (max-width: 793px) {
-    max-width: 100%;
-  }
+    @media screen and (max-width: 990px) {
+      min-width: 100%;
+      margin: 20px 0;
+    }
 `;
 
 export const CardTitleContainer = styled.div`

@@ -225,6 +225,7 @@ class RoutesList extends React.Component {
       draw_object_list: [],
       input_lines: [],
       type: '',
+      is_main: true,
     },
   });
 

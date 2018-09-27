@@ -312,6 +312,7 @@ export class MissionForm extends Form {
         structure_id: this.props.formState.structure_id,
         object_list: [],
         input_lines: [],
+        is_main: true,
       },
     });
   }
@@ -526,6 +527,15 @@ export class MissionForm extends Form {
       )
     );
 
+    const routeIdDisabled = (
+      (
+        IS_POST_CREATING_ASSIGNED
+        || IS_DISPLAY
+        || !state.car_id
+        || !state.municipal_facility_id
+      ) && !IS_NOT_IN_WAYBILL
+    );
+
     if (IS_CREATING) {
       title = (
         <div>
@@ -704,13 +714,13 @@ export class MissionForm extends Form {
                       modalKey={modalKey}
                       label="Маршрут"
                       error={errors.route_id}
-                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id) && IS_NOT_IN_WAYBILL}
+                      disabled={routeIdDisabled}
                       options={ROUTES}
                       value={state.route_id}
                       onChange={this.handleRouteIdChange}
                     />
                     <Div hidden={state.route_id}>
-                      <Button id="create-route" onClick={this.createNewRoute} disabled={IS_POST_CREATING_ASSIGNED || IS_DISPLAY || !state.car_id || !state.municipal_facility_id}>Создать новый</Button>
+                      <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
                     </Div>
                   </Col>
                 </Row>

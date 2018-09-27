@@ -39,7 +39,7 @@ class RouteFormWrap extends FormWrap {
         this.updateFromStatePolys(formState, true);
       } else {
         formState = {
-          is_main: false,
+          is_main: true,
         };
       }
 

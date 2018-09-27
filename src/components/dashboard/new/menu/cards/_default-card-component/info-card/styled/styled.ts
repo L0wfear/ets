@@ -9,10 +9,10 @@ export const InfoCardWrapContainer = styled.div`
   top: 0;
   right: 0;
   z-index: 1;
-  max-width: 350px;
   pointer-events: none;
+  min-width: 300px;
 
-  @media screen and (max-width: 736px) {
+  @media screen and (max-width: 990px) {
     top: 100%;
     width: 100%;
     max-width: initial;
@@ -28,7 +28,7 @@ export const InfoCardContainer = styled.div`
   transform: translate(100%) translate(20px);
   width: 100%;
 
-  @media screen and (max-width: 736px) {
+  @media screen and (max-width: 990px) {
     transform: translate(0, 20px);
   }
 `;
@@ -42,7 +42,7 @@ export const CardInfoContainer = styled(CardContainer)`
   transform: translate(100%) translate(20px);
   width: 100%;
 
-  @media screen and (max-width: 736px) {
+  @media screen and (max-width: 990px) {
     transform: translate(0, 20px);
   }
 `;

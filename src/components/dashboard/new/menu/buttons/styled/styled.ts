@@ -3,9 +3,10 @@ import styled from 'styled-components';
 export const DashboardMenuButtonsContainer = styled.div`
   flex: 3 3 0px;
   margin: 20px;
-  min-width: 350px;
-  @media screen and (max-width: 787px) {
-    min-width: 300px;
+  min-width: 300px;
+  @media screen and (max-width: 990px) {
+    min-width: 100%;
+    margin: 20px 0;
   }
 `;
 

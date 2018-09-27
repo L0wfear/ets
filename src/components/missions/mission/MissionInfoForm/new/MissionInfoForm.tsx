@@ -349,105 +349,106 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
           </Modal.Header>
           <ModalBody>
             <FormContainer>
-            <SideContainerDiv>
-              <MapContainerDiv>
-                <MapWrap
-                  gov_number={car_data.gov_number}
-                  geoobjects={SHOW_GEOOBJECTS ? this.state.polys : emptyObj}
-                  track={SHOW_TRACK ? this.state.track : emptyArr}
-                  parkings={SHOW_TRACK ? this.state.front_parkings : emptyArr}
-                  speed_lim={speed_limits.speed_lim}
-                  mkad_speed_lim={speed_limits.mkad_speed_lim}
-                  cars_sensors={this.state.cars_sensors}
-                  missionNumber={mission_data.number}
-                />
-                <ToolBar
-                  SHOW_TRACK={this.state.SHOW_TRACK}
-                  SHOW_GEOOBJECTS={SHOW_GEOOBJECTS}
-                  toggleStatusShow={this.toggleStatusShow}
-                />
-              </MapContainerDiv>
-              <div>
+              <SideContainerDiv>
+                <MapContainerDiv>
+                  <MapWrap
+                    gov_number={car_data.gov_number}
+                    geoobjects={SHOW_GEOOBJECTS ? this.state.polys : emptyObj}
+                    track={SHOW_TRACK ? this.state.track : emptyArr}
+                    parkings={SHOW_TRACK ? this.state.front_parkings : emptyArr}
+                    speed_lim={speed_limits.speed_lim}
+                    mkad_speed_lim={speed_limits.mkad_speed_lim}
+                    cars_sensors={this.state.cars_sensors}
+                    missionNumber={mission_data.number}
+                  />
+                  <ToolBar
+                    SHOW_TRACK={this.state.SHOW_TRACK}
+                    SHOW_GEOOBJECTS={SHOW_GEOOBJECTS}
+                    toggleStatusShow={this.toggleStatusShow}
+                    element={this.props.element}
+                  />
+                </MapContainerDiv>
+                <div>
+                {
+                  !this.state.tooLongDates ?
+                  (
+                    <>
+                      <div>* - расстояние, учитываемое при прохождении задания</div>
+                      <div>** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости</div>
+                      <DivGreen>
+                        <b>{'Пройдено с рабочей скоростью: '}</b>{withWorkSpeed}
+                      </DivGreen>
+                      <DivRed>
+                        <b>{'Пройдено с превышением рабочей скорости: '}</b>{withHightSpeed}
+                      </DivRed>
+                      <div>
+                        <b>{'Общее время стоянок: '}</b>{parkingCount || parkingCount === 0 ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
+                      </div>
+                      <div>
+                        <b>{'Общий пробег с работающим оборудованием: '}</b>{allRunWithWorkEquipment}
+                      </div>
+                      <div>
+                        <b>{'Процент выполнения задания, %: '}</b>{mission_data.traveled_percentage || '-'}
+                      </div>
+                    </>
+                  )
+                  :
+                  (
+                    <DivNone />
+                  )
+                }
+              </div>
+              </SideContainerDiv>
+              <SideContainerDiv>
               {
-                !this.state.tooLongDates ?
+                this.state.tooLongDates ?
                 (
-                  <>
-                    <div>* - расстояние, учитываемое при прохождении задания</div>
-                    <div>** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости</div>
-                    <DivGreen>
-                      <b>{'Пройдено с рабочей скоростью: '}</b>{withWorkSpeed}
-                    </DivGreen>
-                    <DivRed>
-                      <b>{'Пройдено с превышением рабочей скорости: '}</b>{withHightSpeed}
-                    </DivRed>
-                    <div>
-                      <b>{'Общее время стоянок: '}</b>{parkingCount || parkingCount === 0 ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
-                    </div>
-                    <div>
-                      <b>{'Общий пробег с работающим оборудованием: '}</b>{allRunWithWorkEquipment}
-                    </div>
-                    <div>
-                      <b>{'Процент выполнения задания, %: '}</b>{mission_data.traveled_percentage || '-'}
-                    </div>
-                  </>
+                    <span>Слишком большой период действия задания</span>
                 )
                 :
                 (
-                  <DivNone />
+                  !missionReport ?
+                  (
+                    <h5>Нет данных о прохождении задания</h5>
+                  )
+                  :
+                  (
+                    <>
+                      {
+                        route_data.type !== 'mixed' ?
+                        (
+                          <DivNone />
+                        )
+                        :
+                        (
+                          <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+                        )
+                      }
+                      {
+                        route_data.type !== 'simple_dt' ?
+                        (
+                          <DivNone />
+                        )
+                        :
+                        (
+                        <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
+                        )
+                      }
+                                          {
+                        route_data.type !== 'points' ?
+                        (
+                          <DivNone />
+                        )
+                        :
+                        (
+                          <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'frontIndex'}/>
+                        )
+                      }
+                    </>
+                  )
                 )
               }
-            </div>
-            </SideContainerDiv>
-            <SideContainerDiv>
-            {
-              this.state.tooLongDates ?
-              (
-                  <span>Слишком большой период действия задания</span>
-              )
-              :
-              (
-                !missionReport ?
-                (
-                  <h5>Нет данных о прохождении задания</h5>
-                )
-                :
-                (
-                  <>
-                    {
-                      route_data.type !== 'mixed' ?
-                      (
-                        <DivNone />
-                      )
-                      :
-                      (
-                        <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
-                      )
-                    }
-                    {
-                      route_data.type !== 'simple_dt' ?
-                      (
-                        <DivNone />
-                      )
-                      :
-                      (
-                      <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
-                      )
-                    }
-                                        {
-                      route_data.type !== 'points' ?
-                      (
-                        <DivNone />
-                      )
-                      :
-                      (
-                        <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'frontIndex'}/>
-                      )
-                    }
-                  </>
-                )
-              )
-            }
-            </SideContainerDiv>
+              </SideContainerDiv>
             </FormContainer>
           </ModalBody>
           <Modal.Footer>

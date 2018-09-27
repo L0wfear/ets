@@ -21,14 +21,10 @@ type PropsLayerTrackLines = {
   mkad_speed_lim: number;
   speed_lim: number;
   SHOW_TRACK: boolean;
+  front_cars_sensors_equipment: any[];
 };
 
 type StateLayerTrackLines = {
-  gps_code: number | void;
-  zoomMore8: boolean,
-  lastPoint: any;
-  trackLineIsDraw: boolean;
-  SHOW_TRACK: boolean;
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
@@ -36,49 +32,46 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;
 }
+
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
-  state = {
-    gps_code: null,
-    zoomMore8: this.props.zoom >= 8,
-    lastPoint: null,
-    trackLineIsDraw: false,
-    SHOW_TRACK: this.props.SHOW_TRACK,
-  }
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLines', zIndex: 1 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
-
       const { track } = this.props;
-
       if (track.length > 1) {
-        this.drawTrackLines(track, this.state.SHOW_TRACK);
+        const isChecked = Object.values(this.props.front_cars_sensors_equipment)
+          .some(({ show }) => show);
+
+        this.drawTrackLines(track, this.props.SHOW_TRACK, isChecked);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { SHOW_TRACK } = nextProps;
+  componentDidUpdate(prevProps) {
+    const {
+      SHOW_TRACK,
+      track,
+      lastPoint,
+      front_cars_sensors_equipment,
+    } = this.props;
 
-    if (!this.state.trackLineIsDraw) {
-      const { track } = nextProps;
+    const newIsChecked = Object.values(front_cars_sensors_equipment)
+      .some(({ show }) => show);
 
-      if (track.length > 1) {
-        this.drawTrackLines(track, SHOW_TRACK);
-        this.setState({ lastPoint: nextProps.lastPoint, trackLineIsDraw: true, SHOW_TRACK });
+    const oldIsChecked = Object.values(prevProps.front_cars_sensors_equipment)
+      .some(({ show }) => show);
+
+    if (track !== prevProps.track) {
+      if (!prevProps.track || prevProps.track.length < 2) {
+        this.drawTrackLines(track, SHOW_TRACK, newIsChecked);
+      } else if (lastPoint !== prevProps.track) {
+        this.drawTrackLines(track.slice(-2), SHOW_TRACK, newIsChecked);
       }
-    } else {
-      const { lastPoint, track } = nextProps;
+    }
 
-      if (lastPoint !== this.state.lastPoint) {
-        // можно оптимизировать и докидывать точку в последнюю "удачную" по цвету геометрию
-        this.drawTrackLines(track.slice(-2), SHOW_TRACK)
-        this.setState({ lastPoint, SHOW_TRACK });
-      } else if (SHOW_TRACK !== this.state.SHOW_TRACK) {
-        this.changeStyleForPoint(SHOW_TRACK)
-        this.setState({ SHOW_TRACK });
-      }
-      
+    if (oldIsChecked !== newIsChecked || SHOW_TRACK !== prevProps.SHOW_TRACK)  {
+      this.changeStyleForLines(SHOW_TRACK, newIsChecked);
     }
   }
 
@@ -86,11 +79,10 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     this.props.removeLayer();
   }
 
-  drawTrackLines(track, SHOW_TRACK) {
+  drawTrackLines(track, SHOW_TRACK, equipmentChecked?: boolean) {
     let linePoints = [
       track[0],
     ];
-
     let lastStatus = isMoreThenPermitted(linePoints[0], this.props);
     let lastTimestatmp = linePoints[0].timestamp;
 
@@ -100,7 +92,6 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
       if (currStatus !== lastStatus) {
         linePoints.push(currPoint);
-
         const feature = new ol.Feature({
           geometry: new ol.geom.LineString(
             linePoints.map(({ coords_msk }) => coords_msk)
@@ -108,7 +99,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
         });
 
         feature.set('notSelected', true)
-        feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
         this.props.addFeaturesToSource(feature);
         feature.setId(lastTimestatmp);
         feature.set('status', lastStatus);
@@ -131,17 +122,17 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
       feature.setId(lastTimestatmp);
       feature.set('status', lastStatus);
 
-      feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK));
+      feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
       this.props.addFeaturesToSource(feature);
     }
   }
 
-  changeStyleForPoint(SHOW_TRACK) {
+  changeStyleForLines(SHOW_TRACK, equipmentChecked?) {
     this.props.getAllFeatures().forEach(feature => {
       if (!SHOW_TRACK) {
-        feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK, equipmentChecked));
       } else {
-        feature.setStyle(getStyleForTrackLine(feature.get('status'), SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(feature.get('status'), SHOW_TRACK, equipmentChecked));
       }
     });
   }
@@ -153,17 +144,18 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
 const mapStateToProps = state => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
-  gps_code: state.monitorPage.carInfo.gps_code,
   track: state.monitorPage.carInfo.trackCaching.track,
   lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
   forToday: state.monitorPage.carInfo.forToday,
   mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
   speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
 });
 
 const mapDispatchToProps = dispatch => ({
 })
 
+//рендериться пустой div, компонент не маунтиться, если нет в сторе path, указанного ниже (Lodash)
 export default hocAll(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
@@ -177,7 +169,5 @@ export default hocAll(
     mapStateToProps,
     mapDispatchToProps,
   ),
-  withLayerProps({
-    zoom: true,
-  }),
+  withLayerProps({}),
 )(LayerTrackLines);

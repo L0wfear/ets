@@ -85,7 +85,6 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
             console.error(e)
           }
         }
-        this.forceUpdate();
       }
     }
 

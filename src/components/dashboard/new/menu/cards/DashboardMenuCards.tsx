@@ -26,7 +26,7 @@ class DashboardMenuCards extends React.Component<any, {}> {
   render() {
     return (
       <div className="dashboard_menu_cards">
-        <CurrentMissions timeDelay={0} />
+        <CurrentMissions timeDelay={0} timeInterval={60}/>
         <FutureMissions timeDelay={1} />
         <OdhNotCoveredByMissionsOfCurrentShift timeDelay={2} />
         <OdhNotCoveredByRoutes timeDelay={3} />

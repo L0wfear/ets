@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ol from 'openlayers';
 
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import { getStyleForTrackLine } from 'components/missions/mission/MissionInfoForm/map/layers/track/lines/feature-style';
-import OverlayTrackPoint from 'components/missions/mission/MissionInfoForm/map/layers/track/points/OverlayTrackPoint';
+import { getStyleForTrackLine } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/lines/feature-style';
+import OverlayTrackPoint from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/points/OverlayTrackPoint';
 import { DivNone } from 'global-styled/global-styled';
 
 type PropsLayerTrackPoints = {

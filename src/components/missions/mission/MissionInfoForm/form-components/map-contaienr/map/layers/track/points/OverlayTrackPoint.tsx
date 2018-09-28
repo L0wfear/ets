@@ -15,15 +15,11 @@ import {
   OverlayTrackTitleContainer,
   SensorsListContainer,
   OverlayBoxInfoContainer,
-} from 'components/missions/mission/MissionInfoForm/map/layers/track/points/styled/styled';
+} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/points/styled/styled';
 
-import {
-  OverlayLineInfoContainer,
-} from 'components/map/new/overlay/styled/styled';
+import { OverlayLineInfoContainer } from 'components/map/new/overlay/styled/styled';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import { DivNone } from 'global-styled/global-styled';
 
 class OverlayTrackPoint extends React.Component<any, any> {
   state = { 
@@ -131,9 +127,9 @@ class OverlayTrackPoint extends React.Component<any, any> {
         <OverlayBoxInfoContainer>
           <OverlayLineInfoContainer>
             <span>
-              V<sub>ср</sub> = {!isNaN(speed_avg) ? `${speed_avg}км/ч` : 'Нет данных'}
+              V<sub>ср</sub> = {speed_avg === 0 || speed_avg ? `${speed_avg} км/ч` : 'Нет данных'}
               <br/>
-              V<sub>макс</sub> = {!isNaN(speed_max) ? `${speed_max}км/ч` : 'Нет данных'}
+              V<sub>макс</sub> = {speed_max === 0 || speed_max ? `${speed_max} км/ч` : 'Нет данных'}
             </span>
           </OverlayLineInfoContainer>
           <OverlayLineInfoContainer>

@@ -1,3 +1,7 @@
+import { AnsLoadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
+import { AnsLoadRouteDataByIdFunc } from 'redux-main/trash-actions/route/@types/route.h';
+import { IMissionInfoFormState } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
+
 export interface IMIssionData {
   column_id: number | void;
   current_percentage: number;
@@ -27,8 +31,9 @@ export interface IRouteData {
   id: number;
   check_unit: string;
   name: string;
-  type: string;
+  type: 'mixed' | 'simple_dt' | 'points';
   has_mkad: boolean;
+  object_type_name: 'ОДХ' | 'ДТ' | 'ПН';
 }
 
 export interface IReportData {
@@ -74,3 +79,21 @@ export interface IMissionInfoFormState {
   waybill_data: IWaybillData;
   speed_limits: ISpeedLimits;
 }
+
+export type PropsMissionInfoForm = {
+  element: IMissionInfoFormState;
+  onFormHide: any;
+  loadGeozones: (serverName: string) => Promise<AnsLoadGeozonesFunc>,
+  loadRouteDataById: (id: number) => Promise<AnsLoadRouteDataByIdFunc>,
+  loadTrackCaching: any;
+};
+
+export type StateMissionInfoForm = {
+  tooLongDates: boolean;
+  polys: object;
+  missionReport: any[];
+  parkingCount: number | void;
+  track: any[];
+  front_parkings: any[];
+  cars_sensors: object;
+};

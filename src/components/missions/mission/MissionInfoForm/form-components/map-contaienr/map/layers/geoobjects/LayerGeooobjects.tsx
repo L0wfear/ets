@@ -4,10 +4,10 @@ import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps'
 
 import {
   PropsLayerPlayPoint,
-} from 'components/missions/mission/MissionInfoForm/map/layers/geoobjects/LayerGeooobjects.h';
+} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerGeooobjects.h';
 import {
   renderGeoobjects,
-} from 'components/missions/mission/MissionInfoForm/map/layers/geoobjects/utils';
+} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/utils';
 import { GeoJSON } from 'utils/ol';
 
 class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, { firstCentrIsWas: boolean }> {

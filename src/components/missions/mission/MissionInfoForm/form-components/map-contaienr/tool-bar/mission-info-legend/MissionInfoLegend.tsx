@@ -3,26 +3,21 @@ import * as cx from 'classnames';
 import { getClassNameByType } from 'components/monitor/new/tool-bar/car-data/car-legend-status/utils'
 import { DivNone } from 'global-styled/global-styled';
 
-class BarGeoobjectLegend extends React.Component<any, any> {
+class MissionInfoLegend extends React.PureComponent<any, any> {
   handleClick: React.MouseEventHandler<HTMLDivElement> = ({ currentTarget: { dataset: { type } } }) => {
     this.props.toggleStatusShow(type);
   }
 
   render() {
     const {
-      element: {
-        route_data: {
-          has_mkad,
-          object_type_name,
-        },
-        speed_limits: {
-          mkad_speed_lim,
-          speed_lim,
-        }
+      has_mkad,
+      object_type_name,
+      speed_limits: {
+        mkad_speed_lim,
+        speed_lim,
       },
     } = this.props;
 
-    console.log(this.props)
     return (
       <span>
         <div className="tool_bar-block">
@@ -73,4 +68,4 @@ class BarGeoobjectLegend extends React.Component<any, any> {
   }
 }
 
-export default BarGeoobjectLegend;
+export default MissionInfoLegend;

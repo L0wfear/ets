@@ -3,118 +3,37 @@ import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { keyBy } from 'lodash';
+
+import { maskStatusPoint } from 'components/missions/mission/MissionInfoForm/utils/constants';
+import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import {
-  compose,
-  withStateHandlers,
-} from 'recompose';
-import { diffDates, secondsToTime } from 'utils/dates';
-import { routeTypesBySlug, routeTypesByKey } from 'constants/route';
+  routeTypesBySlug,
+  routeTypesByKey,
+} from 'constants/route';
+
+import { diffDates } from 'utils/dates';
+import { makeTitle } from 'components/missions/mission/MissionInfoForm/utils/format';
+import { mapDispatchToProps } from 'components/missions/mission/MissionInfoForm/utils/redux-func';
 
 import {
   FormContainer,
   SideContainerDiv,
-  MapContainerDiv,
 } from 'components/missions/mission/MissionInfoForm/styled/styled';
+import { DivNone } from 'global-styled/global-styled';
+
+import MapContainer from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/MapContainer';
+import InfoTableData from 'components/missions/mission/MissionInfoForm/form-components/info-table-data/InfoTableData';
+import MissionInfoTableContainer from 'components/missions/mission/MissionInfoForm/form-components/table-continer/MissionInfoTableContainer';
 
 import {
-  DivNone,
-  DivGreen,
-  DivRed,
-} from 'global-styled/global-styled';
-import ToolBar from 'components/missions/mission/MissionInfoForm/tool-bar/ToolBar';
-
-import MapWrap from 'components/missions/mission/MissionInfoForm/map/MapWrap';
-import MissionReportByODH from 'components/reports/operational/mission/MissionReportByODH';
-import MissionReportByDT from 'components/reports/operational/mission/MissionReportByDT';
-import MissionReportByPoints from 'components/reports/operational/mission/MissionReportByPoints';
-import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-
-import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
-import { loadRouteDataById } from 'redux-main/trash-actions/route/route';
-
-import {
-  AnsLoadGeozonesFunc,
-} from 'redux-main/trash-actions/geometry/geometry.h';
-import {
-  AnsLoadRouteDataByIdFunc,
-} from 'redux-main/trash-actions/route/@types/route.h';
-import {
-  RouteType,
-} from 'redux-main/trash-actions/route/@types/promise.h';
-import {
-  IMissionInfoFormState,
+  PropsMissionInfoForm,
+  StateMissionInfoForm,
 } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
+import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
 
-import {
-  loadTrackCaching,
-} from 'redux-main/trash-actions/uniq/promise';
-
-const maskStatusPoint = {
-  fail: 1,
-}
-
-const VALUE_FOR_FIXED = {
-  TWO_F: {
-    val: 2,
-    list: [
-      'кв. м.',
-      'м.',
-    ],
-  },
-  THREE_F: {
-    val: 3,
-    list: [
-      'км',
-    ],
-  },
-  floatFixed: (data, val) => parseFloat(data).toFixed(val),
-};
-
-const checkFixed = (data, key) => {
-  const clone = [...data];
-
-  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
-    clone[0] = VALUE_FOR_FIXED.floatFixed(clone[0], VALUE_FOR_FIXED[key].val);
-  }
-
-  return clone;
-};
-
-const getDataTraveledYet = (data) => {
-  if (data === null) {
-    return 0;
-  }
-  if (Array.isArray(data)) {
-    return data.join(' ');
-  }
-
-  return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
-};
-
-const emptyArr = [];
-const emptyObj = {};
-
-type PropsMissionInfoForm = {
-  element: IMissionInfoFormState;
-  onFormHide: any;
-  loadGeozones: (serverName: string) => Promise<AnsLoadGeozonesFunc>,
-  loadRouteDataById: (id: number) => Promise<AnsLoadRouteDataByIdFunc>,
-  loadTrackCaching: any;
-};
-
-type StateMissionInfoForm = {
-  tooLongDates: boolean;
-  polys: object;
-  missionReport: any[];
-  parkingCount: number | void;
-  track: any[];
-  front_parkings: any[];
-  cars_sensors: object;
-  SHOW_TRACK: boolean;
-  SHOW_GEOOBJECTS: boolean;
-  SHOW_SELECTED_GEOOBJECTS: boolean;
-};
-
+/**
+ * Карточка информации о задании
+ */
 class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissionInfoForm> {
   constructor(props) {
     super(props);
@@ -130,9 +49,6 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     } = props;
 
     this.state = {
-      SHOW_TRACK: true,
-      SHOW_GEOOBJECTS: true,
-      SHOW_SELECTED_GEOOBJECTS: true,
       track: [],
       front_parkings: [],
       cars_sensors: {},
@@ -165,13 +81,17 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     };
   }
 
+  /**
+   * Исли разница дат в задании меньше 11 дней и есть данные по заданию
+   * то загружаются маршрут и геометрии к нему по типу (ДТ/ ОДХ/ ПН)
+   * и трек
+   */
   componentDidMount() {
     if (!this.state.tooLongDates && this.state.missionReport) {
       const {
         element,
       } = this.props;
 
-      console.log(this.props.loadRouteDataById(element.route_data.id))
       this.props.loadRouteDataById(element.route_data.id).then(({ payload: { route_data } }) => {
         switch (element.route_data.type) {
           case routeTypesBySlug.dt.key: return this.loadPolys(route_data, 'dt');
@@ -185,6 +105,11 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     }
   }
 
+  /**
+   * загрузка трека
+   * если в маршруте был геообъект мкада, то загружаются геоометрии мкада (для правильного раскрашивания точек), а после сам трек
+   * catch нет, тк счиатем, что экшены всегда вернут значение
+   */
   async loadTrack() {
     const { element } = this.props;
 
@@ -197,7 +122,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       cars_sensors: {},
     };
 
-    if (this.props.element.route_data.has_mkad || true) {
+    if (this.props.element.route_data.has_mkad) {
       const type = 'odh_mkad';
       const { serverName } = GEOOBJECTS_OBJ[type];
 
@@ -206,7 +131,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       payload.odh_mkad = odh_mkad;
     }
 
-    const calcTrackData = await loadTrackCaching(payload);
+    const calcTrackData = await this.props.loadTrackCaching(payload).then(({ payload }) => payload);
 
     this.setState({
       track: calcTrackData.track,
@@ -216,7 +141,11 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     })
   }
 
-  async makePolysFromPoints(route_data) {
+  /**
+   * Создание геометрий точек
+   * @param route_data данные по контрекному маршруту от route?id=
+   */
+  async makePolysFromPoints(route_data: RouteType) {
     const { missionReport } = this.state;
 
     this.setState({
@@ -234,6 +163,11 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     })
   }
 
+  /**
+   * Создание геометрий полигонов одх или дт
+   * @param route_data данные по контрекному маршруту от route?id=
+   * @param type тип маршрута (dt/ odh)
+   */
   loadPolys(route_data: RouteType, type: string) {
     const objectListIndex = keyBy(route_data.object_list, 'object_id');
     const { serverName } = GEOOBJECTS_OBJ[type];
@@ -269,29 +203,24 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     const { polys } = this.state;
     const { slug } = routeTypesByKey[this.props.element.route_data.type];
 
-    this.setState({
-      polys: {
-        [slug]: Object.entries(polys[slug]).reduce((newObj, [geoId, geoData]) => {
-          newObj[geoId] = {...geoData};
-          newObj[geoId].frontIsSelected = geoId === `${slug}/${id}`;
+    if (Object.values(polys).length) {
+      this.setState({
+        polys: {
+          [slug]: Object.entries(polys[slug]).reduce((newObj, [geoId, geoData]) => {
+            newObj[geoId] = {...geoData};
+            newObj[geoId].frontIsSelected = geoId === `${slug}/${id}`;
 
-          return newObj;
-        }, {}),
-      },
-    })
-  }
-
-  toggleStatusShow = (key: any) => {
-    const newState = {
-      ...this.state,
-      [key]: !this.state[key],
+            return newObj;
+          }, {}),
+        },
+      });
     }
-    this.setState({ ...newState });
   }
 
   render() {
     const {
       onFormHide,
+      element,
       element: {
         car_data,
         mission_data,
@@ -301,48 +230,11 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       },
     } = this.props;
 
-    const {
-      missionReport,
-      parkingCount,
-    } = this.state;
+    const { missionReport } = this.state;
 
-    const titleArr = [
-      `Информация о задании №${mission_data.number}.`,
-      `Рег. номер ТС: ${car_data.gov_number}`,
-    ];
-    if (mission_data.column_id) {
-      titleArr.push('.');
-      titleArr.push(`Колонна № ${mission_data.column_id}`);
-    }
-
-    const title = titleArr.join(' ');
-
-    const withWorkSpeed = getDataTraveledYet([
-      ...checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F'),
-      report_data.time_work_speed,
-    ]);
-
-    const withHightSpeed = getDataTraveledYet([
-      ...checkFixed([report_data.traveled_high_speed, report_data.check_unit], 'TWO_F'),
-      report_data.time_high_speed,
-    ]);
-
-    const allRunWithWorkEquipment = (
-      mission_data.sensor_traveled_working !== null ?
-      getDataTraveledYet(
-        checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F')
-      )
-      :
-      'Нет данных'
-    );
-
-    const {
-      SHOW_TRACK,
-      SHOW_GEOOBJECTS,
-    } = this.state;
+    const title = makeTitle(element);
 
     return (
-
       <Modal id="modal-mission-info" show onHide={onFormHide} bsSize="large" className="mission-info-modal" backdrop="static">
         <form onSubmit={onFormHide}>
           <Modal.Header closeButton>
@@ -351,101 +243,44 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
           <ModalBodyPreloader page="any" path="missionInfoForm" typePreloader="lazy">
             <FormContainer>
               <SideContainerDiv>
-                <MapContainerDiv>
-                  <MapWrap
-                    gov_number={car_data.gov_number}
-                    geoobjects={SHOW_GEOOBJECTS ? this.state.polys : emptyObj}
-                    track={SHOW_TRACK ? this.state.track : emptyArr}
-                    parkings={SHOW_TRACK ? this.state.front_parkings : emptyArr}
-                    speed_lim={speed_limits.speed_lim}
-                    mkad_speed_lim={speed_limits.mkad_speed_lim}
-                    cars_sensors={this.state.cars_sensors}
-                    missionNumber={mission_data.number}
-                  />
-                  <ToolBar
-                    SHOW_TRACK={this.state.SHOW_TRACK}
-                    SHOW_GEOOBJECTS={SHOW_GEOOBJECTS}
-                    toggleStatusShow={this.toggleStatusShow}
-                    element={this.props.element}
-                  />
-                </MapContainerDiv>
-                <div>
+                <MapContainer
+                  gov_number={car_data.gov_number}
+                  track={this.state.track}
+                  geoobjects={this.state.polys}
+                  front_parkings={this.state.front_parkings}
+                  speed_limits={speed_limits}
+                  cars_sensors={this.state.cars_sensors}
+                  missionNumber={mission_data.number}
+                  has_mkad={route_data.has_mkad}
+                  object_type_name={route_data.object_type_name}
+                />
                 {
                   !this.state.tooLongDates ?
                   (
-                    <>
-                      <div>* - расстояние, учитываемое при прохождении задания</div>
-                      <div>** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости</div>
-                      <DivGreen>
-                        <b>{'Пройдено с рабочей скоростью: '}</b>{withWorkSpeed}
-                      </DivGreen>
-                      <DivRed>
-                        <b>{'Пройдено с превышением рабочей скорости: '}</b>{withHightSpeed}
-                      </DivRed>
-                      <div>
-                        <b>{'Общее время стоянок: '}</b>{parkingCount || parkingCount === 0 ? secondsToTime(this.state.parkingCount) : 'Рассчитывается...'}
-                      </div>
-                      <div>
-                        <b>{'Общий пробег с работающим оборудованием: '}</b>{allRunWithWorkEquipment}
-                      </div>
-                      <div>
-                        <b>{'Процент выполнения задания, %: '}</b>{mission_data.traveled_percentage || '-'}
-                      </div>
-                    </>
+                    <InfoTableData
+                      mission_data={mission_data}
+                      report_data={report_data}
+                      parkingCount={this.state.parkingCount}
+                    />
                   )
                   :
-                  (
-                    <DivNone />
-                  )
+                  ( <DivNone /> )
                 }
-              </div>
               </SideContainerDiv>
               <SideContainerDiv>
               {
                 this.state.tooLongDates ?
-                (
-                    <span>Слишком большой период действия задания</span>
-                )
+                ( <span>Слишком большой период действия задания</span> )
                 :
-                (
-                  !missionReport ?
-                  (
-                    <h5>Нет данных о прохождении задания</h5>
-                  )
+                ( !missionReport ?
+                  ( <h5>Нет данных о прохождении задания</h5> )
                   :
                   (
-                    <>
-                      {
-                        route_data.type !== 'mixed' ?
-                        (
-                          <DivNone />
-                        )
-                        :
-                        (
-                          <MissionReportByODH renderOnly enumerated={false} selectedReportDataODHS={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
-                        )
-                      }
-                      {
-                        route_data.type !== 'simple_dt' ?
-                        (
-                          <DivNone />
-                        )
-                        :
-                        (
-                        <MissionReportByDT renderOnly enumerated={false} selectedReportDataDTS={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'object_id'} />
-                        )
-                      }
-                                          {
-                        route_data.type !== 'points' ?
-                        (
-                          <DivNone />
-                        )
-                        :
-                        (
-                          <MissionReportByPoints renderOnly enumerated={false} selectedReportDataPoints={missionReport} onElementChange={this.handleSelectedElementChange} selectField={'frontIndex'}/>
-                        )
-                      }
-                    </>
+                    <MissionInfoTableContainer
+                      type={route_data.type}
+                      missionReport={missionReport}
+                      handleSelectedElementChange={this.handleSelectedElementChange}
+                    />
                   )
                 )
               }
@@ -461,91 +296,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
   }
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  loadGeozones: (serverName) => (
-    dispatch(
-      loadGeozones(
-        '',
-        serverName,
-        {
-          promise: true,
-          page: 'any',
-          path: 'missionInfoForm',
-        }
-      ),
-    )
-  ),
-  loadRouteDataById: (id) => (
-    dispatch(
-      loadRouteDataById(
-        '',
-        id,
-        {
-          promise: true,
-          page: 'any',
-          path: 'missionInfoForm',
-        },
-      ),
-    )
-  ),
-  loadTrackCaching: (props) => (
-    dispatch({
-      type: '',
-      payload: loadTrackCaching(props),
-      meta: {
-        page: 'any',
-        path: 'missionInfoForm',
-      },
-    })
-  ),
-})
-
-export default compose(
-  withStateHandlers(
-    (props: any) => {
-      const {
-        element: {
-          report_data: {
-            entries,
-            check_unit,
-          },
-          mission_data,
-        },
-      } = props;
-
-      return  ({
-        tooLongDates: (
-          diffDates(
-            mission_data.date_end,
-            mission_data.date_start,
-            'days'
-          ) > 10
-        ),
-        missionReport: (
-          entries ?
-            check_unit ?
-            (
-              entries.map((report) => {
-                report.route_check_unit = check_unit;
-
-                return report;
-              })
-            )
-            :
-            (
-              entries
-            )
-          :
-            null
-        )
-      });
-    },
-    {
-
-    },
-  ),
-  connect(
-    null,
-    mapDispatchToProps,
-  )
+export default connect(
+  null,
+  mapDispatchToProps,
 )(MissionInfoForm);

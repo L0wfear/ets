@@ -159,7 +159,7 @@ export default class DataTable extends React.Component {
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
       data: [],
-      originalData: [],
+      originalData: this.props.data,
       uniqKey: Symbol(props.uniqKey || 'data-table'),
     };
 
@@ -178,6 +178,7 @@ export default class DataTable extends React.Component {
         originalData: this.state.originalData,
         data: this.state.data,
       };
+      console.log({ ...changesFields })
 
       if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
         changesFields.initialSort = props.initialSort;
@@ -200,7 +201,7 @@ export default class DataTable extends React.Component {
       }
 
       if (!props.useServerSort || !props.useServerFilter) {
-        changesFields.data = makeData(changesFields.data, this.state, { ...props, ...changesFields });
+        changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
       }
       this.state = {
         ...this.state,
@@ -451,7 +452,7 @@ export default class DataTable extends React.Component {
     };
   }
 
-  shouldBeRendered(obj) {
+  shouldBeRendered = (obj) => {
     if (this.props.externalFilter && !this.props.needMyFilter) {
       return true;
     }

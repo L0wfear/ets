@@ -296,6 +296,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
+    console.log(tableMetaInfo.fields, additionalSchemaMakers)
+
     const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
       const [[fieldName, { name: displayName, is_row }]] = Object.entries(field);
 
@@ -318,6 +320,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         tableMeta.push(renderer(initialSchema, this.props));
       }
 
+      console.log(tableMeta)
       return tableMeta;
     }, []).concat(...additionalSchemaMakers);
 
@@ -332,7 +335,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       schemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
-      additionalSchemaMakers,
+      additionalSchemaMakers = [],
       location: { search },
     } = this.props;
 

@@ -24,7 +24,7 @@ const makeGeoobjects = ({ geoobjectData, entity }) => {
   ));
 
   return geoobjects;
-}
+};
 
 type PropsMapGeoobjectWrap = {
   geoobjectData: object;
@@ -44,7 +44,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
 
     this.state = {
       geoobjects: makeGeoobjects(props),
-      geoobjectData
+      geoobjectData,
     }
   }
 

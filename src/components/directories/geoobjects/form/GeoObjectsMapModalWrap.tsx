@@ -11,7 +11,7 @@ import {
 } from 'components/ui/table/@types/schema.h';
 
 const GeoObjectsMapModal = loadable(
-  () => import(/* webpackChunkName: "mission_info_form" */ 'components/directories/geoobjects/form/GeoObjectsMapModalNew'), {
+  () => import(/* webpackChunkName: "geo-objects_map_modal" */ 'components/directories/geoobjects/form/GeoObjectsMapModal'), {
   LoadingComponent,
 });
 

@@ -134,6 +134,10 @@ class RouteFormWrap extends FormWrap {
     let result;
 
     if (!formState.id) {
+      if (this.props.fromMission) {
+        formState.name = formState.name.replace(/Маршрут №\{\{number\}\}-А/, 'Маршрут №\{\{number\}\}');
+      }
+
       result = await flux.getActions('routes').createRoute(formState, isTemplate);
     } else {
       result = await flux.getActions('routes').updateRoute(formState);

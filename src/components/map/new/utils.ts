@@ -1,6 +1,6 @@
 import { PROJECTION, ArcGisLayer } from 'components/map/new/config/MskAdapter';
 import { defaultZoom } from 'utils/ol';
-import { MapUtils } from 'components/map/new/Map.h';
+import { MapUtils } from 'components/map/new/MapEts.h';
 import * as ol from 'openlayers';
 
 /**

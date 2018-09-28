@@ -443,6 +443,7 @@ class ElementsList extends React.Component {
         element={this.state.selectedElement}
         setNewSelectedElement={this.setNewSelectedElement}
         entity={this.entity}
+        selectField={this.selectField}
         onCallback={this.formCallback}
         meta={this.constructor.formMeta}
         renderers={this.constructor.formRenderers}

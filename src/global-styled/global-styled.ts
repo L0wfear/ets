@@ -28,3 +28,7 @@ export const EtsPageWrap = styled.div`
     -webkit-appearance:none;
   }
 `;
+
+export const Flex = styled<{ grow?: number; shrink?: number; basis?: number }, "div">("div")`
+  flex: ${({ grow }) => grow | 0} ${({ shrink }) => shrink | 0} ${({ basis }) => basis | 0}px;
+`;

@@ -7,6 +7,6 @@ module.exports = merge(common, {
   output: {
     filename: 'app.[name].[hash].js',
     chunkFilename: 'app.[name].[hash]js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '..', 'dist'),
   },
 });

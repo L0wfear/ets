@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Map from 'components/map/new/Map';
+import MapEts from 'components/map/new/MapEts';
 import LayerGeooobjects from 'components/map/new/layers/geoobjects/LayerGeooobjects';
 import LayerSelectedGeooobjects from 'components/map/new/layers/geoobjects/selected/LayerSelectedGeooobjects';
 import LayerTrackLines from 'components/map/new/layers/track/lines/LayerTrackLines';
@@ -23,7 +23,7 @@ type PropsMapWrap = {
 };
 
 const MapWrap: React.SFC<PropsMapWrap> = (props) => (
-  <Map disabledByType={props.disabledByType} enableInteractions={props.enableInteractions} disabledCenterOn={props.disabledCenterOn} disabledMouseSingleClick={props.disabledMouseSingleClick}>
+  <MapEts disabledByType={props.disabledByType} enableInteractions={props.enableInteractions} disabledCenterOn={props.disabledCenterOn} disabledMouseSingleClick={props.disabledMouseSingleClick}>
     {
       ({ map, zoom, centerOn }) => (
         <div>
@@ -42,7 +42,7 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
         </div>
       )
     }
-  </Map>
+  </MapEts>
 );
 
 const mapStateToProps = state => ({

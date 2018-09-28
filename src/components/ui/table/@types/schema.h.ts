@@ -2,7 +2,7 @@ import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;
-  rowNumber: number;
+  rowNumber?: number;
 }
 
 interface IDataTableSelectedRowProps<TRowData> {

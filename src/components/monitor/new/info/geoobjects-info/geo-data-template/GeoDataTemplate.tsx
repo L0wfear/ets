@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import DateFormatter from 'components/ui/DateFormatter';
-import { WorkingHours } from 'components/directories/geoobjects/fountains/FountainsTable';
+import { WorkingHours } from 'components/directories/geoobjects/pages/fountains/FountainsTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { GeoJSON } from 'utils/ol';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/new/redux-main/models/actions-monitor-page';

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import Map from 'components/map/new/Map';
+import MapEts from 'components/map/new/MapEts';
 
 import LayerGeooobjects from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerGeooobjects';
 import LayerCarMarker from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/LayerCarMarker';
@@ -16,7 +16,7 @@ class MapWrap extends React.PureComponent<PropsMapMissionInfoWrap, {}> {
     const { gov_number } = this.props;
 
     return (
-      <Map enableInteractions>
+      <MapEts enableInteractions>
         {
           ({ map, centerOn }) => (
             <>
@@ -28,7 +28,7 @@ class MapWrap extends React.PureComponent<PropsMapMissionInfoWrap, {}> {
             </>
           )
         }
-      </Map>
+      </MapEts>
     );
   }
 }

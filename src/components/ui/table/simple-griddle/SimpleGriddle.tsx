@@ -103,6 +103,7 @@ class SimpleGriddle extends React.Component<any, any> {
   mapTbodyTr = (rowData, index) => (
     <TrTable
       key={rowData[this.props.selectField] || index}
+      columns={this.props.columns}
       rowData={rowData}
       index={index}
       rowMetadata={this.props.rowMetadata}

@@ -14,6 +14,7 @@ type PropsTrTable = {
   selectField: string;
   currentPage: number;
   resultsPerPage: number;
+  columns: string[];
 }
 
 class TrTable extends React.Component<PropsTrTable, any> {
@@ -59,7 +60,12 @@ class TrTable extends React.Component<PropsTrTable, any> {
         onDoubleClick={this.handleDoubleClickTbodyTr}
       >
       {
-        this.props.columnMetadata.map(({ columnName, customComponent }, colIndex) => (
+        this.props.columns.map((columnNameOuter, colIndex) => {
+          const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
+
+          const { columnName, customComponent } = field;
+
+          return (
             <td key={columnName} className={cx(this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
               {
                 rowData._isParent && colIndex === 0 ?
@@ -101,7 +107,8 @@ class TrTable extends React.Component<PropsTrTable, any> {
                     rowData[columnName]
               }
             </td>
-          ))
+          )
+        })
       }
     </tr>
     )

@@ -13,6 +13,9 @@ import {
   centerOn,
 } from 'components/map/new/utils';
 
+/**
+ * @todo свои кнопки зума на styled-components чтобы убрать импорт css
+ */
 class MapEts extends React.Component<PropsMapEts, StateMapEts> {
   _container: HTMLDivElement;
 

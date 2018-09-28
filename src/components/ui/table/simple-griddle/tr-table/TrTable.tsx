@@ -63,10 +63,10 @@ class TrTable extends React.Component<PropsTrTable, any> {
         this.props.columns.map((columnNameOuter, colIndex) => {
           const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
 
-          const { columnName, customComponent } = field;
+          const { columnName, customComponent, cssClassName } = field;
 
           return (
-            <td key={columnName} className={cx(this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
+            <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
               {
                 rowData._isParent && colIndex === 0 ?
                 (

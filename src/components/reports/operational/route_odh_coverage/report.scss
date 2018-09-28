@@ -15,3 +15,10 @@
 .griddle-body table tbody tr:nth-child(even) > td.highlight-td-green {
   background-color: $colorHalfGreen !important;
 }
+
+.griddle-body table tbody tr.highlight-tr-pink > td {
+  background-color: $colorPink !important;
+}
+.griddle-body table tbody tr.highlight-tr-green > td {
+  background-color: $colorHalfGreen !important;
+}

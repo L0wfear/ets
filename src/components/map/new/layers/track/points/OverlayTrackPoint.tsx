@@ -186,9 +186,9 @@ class OverlayTrackPoint extends React.Component<any, any> {
         <OverlayBoxInfoContainer>
           <OverlayLineInfoContainer>
             <span>
-              V<sub>ср</sub> = {!isNaN(speed_avg) ? `${speed_avg}км/ч` : 'Нет данных'}
+              V<sub>ср</sub> = {speed_avg === 0 || speed_avg ? `${speed_avg} км/ч` : 'Нет данных'}
               <br/>
-              V<sub>макс</sub> = {!isNaN(speed_max) ? `${speed_max}км/ч` : 'Нет данных'}
+              V<sub>макс</sub> = {speed_max === 0 || speed_max ? `${speed_max} км/ч` : 'Нет данных'}
             </span>
           </OverlayLineInfoContainer>
           <OverlayLineInfoContainer>

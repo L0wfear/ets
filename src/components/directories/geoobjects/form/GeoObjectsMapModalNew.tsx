@@ -2,9 +2,7 @@ import * as React from 'react';
 import { Modal } from 'react-bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
-import {
-  FlexWrapContainer,
-} from 'components/directories/geoobjects/form/styled/styled';
+import { FlexWrapContainer } from 'components/directories/geoobjects/form/styled/styled';
 import { Flex } from 'global-styled/global-styled';
 import FieldsData from 'components/directories/geoobjects/form/form-components/fields-data/FieldsData';
 import MapGeoobjectWrap from 'components/directories/geoobjects/form/form-components/map-geoobject/MapGeoobjectWrap';
@@ -18,12 +16,13 @@ type PropsGeoObjectsMapModalNew = {
   onFormHide: () => any;
   meta: IDataTableSchema;
   renderers: ISchemaRenderer;
-  [key: string]: any;
+  entity: string;
+  element: object;
+  selectField: string;
 };
 
 type StateGeoObjectsMapModalNew = {
 };
-
 
 class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalNew, StateGeoObjectsMapModalNew> {
   render() {
@@ -33,8 +32,6 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
       selectField,
     } = this.props;
 
-    console.log(this.props)
-
     return (
       <Modal id="modal-geoobjects-map" show onHide={this.props.onFormHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
@@ -42,15 +39,18 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
         </Modal.Header>
         <ModalBodyPreloader page={entity} path={`${entity}/${element[selectField]}`} typePreloader="lazy">
           <FlexWrapContainer>
-            <Flex grow={1} shrink={1}>
+            <Flex grow={1} shrink={1} basis={200}>
               <FieldsData
                 element={element}
                 meta={this.props.meta}
                 renderers={this.props.renderers}
               />
             </Flex>
-            <Flex grow={2} shrink={2}>
-              <MapGeoobjectWrap />
+            <Flex grow={2} shrink={2} basis={600}>
+              <MapGeoobjectWrap
+                geoobjectData={element}
+                entity={this.props.entity}
+              />
             </Flex>
           </FlexWrapContainer>
         </ModalBodyPreloader>

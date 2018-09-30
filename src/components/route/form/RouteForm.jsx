@@ -8,10 +8,10 @@ import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
 import { connectToStores } from 'utils/decorators';
-import RouteCreating from './RouteCreating';
-import Form from '../compositions/Form';
+import RouteCreating from 'components/route/form/RouteCreating';
+import Form from 'components/compositions/Form';
 
-import MunicipalFacility from './inside_fields/MunicipalFacility';
+import MunicipalFacility from 'components/route/form/inside_fields/MunicipalFacility';
 
 const OBJECTS_BY_TYPE = {
   points: 3,

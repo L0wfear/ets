@@ -7,8 +7,8 @@ import {
 } from 'lodash';
 import { routeSchema } from 'models/RouteModel';
 import { polyState } from 'constants/polygons';
-import RouteForm from './RouteForm';
-import FormWrap from '../compositions/FormWrap';
+import RouteForm from 'components/route/form/RouteForm';
+import FormWrap from 'components/compositions/FormWrap';
 
 class RouteFormWrap extends FormWrap {
   constructor(props) {

@@ -26,7 +26,6 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
       } = this.props;
 
       if (inputLines) {
-        console.log(inputLines)
         renderInputLines(this.props.inputLines, this.props);
       }
       if (geoobjectsArr) {
@@ -66,7 +65,6 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
       });
     }
   }
-
 
   singleclick = (feature, eventOl) => {
     const id = feature.getId();

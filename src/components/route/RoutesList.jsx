@@ -20,7 +20,7 @@ import Filter from 'components/ui/table/filter/Filter';
 import FilterButton from 'components/ui/table/filter/FilterButton';
 import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils';
 import RouteInfo from 'components/route/route-info/RouteInfo';
-import RouteFormWrap from 'components/route/RouteFormWrap';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 
 import {
   ButtonCreateRoute,

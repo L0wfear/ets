@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import {
   uniqBy,
+  find,
 } from 'lodash';
 
 import { checkRouteByNew } from 'components/missions/utils/utils';
@@ -15,7 +16,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
 import RouteInfo from 'components/route/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-import RouteFormWrap from 'components/route/RouteFormWrap';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
@@ -56,7 +57,7 @@ class MissionTemplateForm extends MissionForm {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 0) {
       STRUCTURE_FIELD_VIEW = true;
@@ -192,7 +193,7 @@ class MissionTemplateForm extends MissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={!state.technical_operation_id}>Создать новый</Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -226,7 +227,7 @@ class MissionTemplateForm extends MissionForm {
               </Dropdown.Menu>
             </Dropdown>
             <Div hidden={state.status === 'closed'}>
-              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+              <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
           </Div>
 
@@ -239,7 +240,7 @@ class MissionTemplateForm extends MissionForm {
         />
         <RouteFormWrap
           element={route}
-          onFormHide={this.onFormHide.bind(this)}
+          onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission

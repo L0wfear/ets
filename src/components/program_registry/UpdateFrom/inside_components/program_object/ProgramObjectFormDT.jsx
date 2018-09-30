@@ -221,11 +221,11 @@ class ProgramObjectFormDT extends Form {
     this.handleChange('draw_object_list', draw_object_list);
   }
 
-  handleDrawFeatureClick = ({ index, nextState }) => {
+  handleDrawFeatureClick = ({ index, state }) => {
     const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
 
-    draw_object_list[index].state = nextState;
+    draw_object_list[index].state = state;
 
     this.handleChange('draw_object_list', draw_object_list);
   }

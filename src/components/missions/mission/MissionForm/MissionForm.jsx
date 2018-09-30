@@ -11,7 +11,7 @@ import {
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-import RouteFormWrap from 'components/route/RouteFormWrap';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import Field from 'components/ui/Field';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';

@@ -57,7 +57,7 @@ export interface IPropsHandleDrawFeatureAdd {
 }
 export interface IPropsIHandleDrawFeatureClick {
   index: number;
-  nextState: number;
+  state: number;
 }
 export type IObjectsType = 'mixed' | 'simple_dt' | 'points';
 export type IObjectList = IOneobject[];

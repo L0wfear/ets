@@ -6,9 +6,8 @@ import {
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
-import last from 'lodash/last';
 import ModalBody from 'components/ui/Modal';
-import RouteFormWrap from 'components/route/RouteFormWrap';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
@@ -74,7 +73,7 @@ export class DutyMissionForm extends Form {
     this.handleChange('structure_id', v);
   }
 
-  handleTechnicalOperationChange(v) {
+  handleTechnicalOperationChange = (v) => {
     const {
       flux,
     } = this.context;
@@ -262,7 +261,6 @@ export class DutyMissionForm extends Form {
 
   getDataByNormatives = async (normatives) => {
     const norm_ids = normatives.map(({ id }) => id).join(',');
-    const { kind_task_ids } = this.state;
     this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids, kind_task_ids: this.state.kind_task_ids })
       .then(({ result: normativesData }) => {
         const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
@@ -436,7 +434,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange.bind(this)}
+                onChange={this.handleTechnicalOperationChange}
               />
             </Col>
 

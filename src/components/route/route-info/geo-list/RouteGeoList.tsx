@@ -6,6 +6,7 @@ import { uniqBy } from 'lodash';
 import {
   RouteGeoListContainer,
   NameListLineContainer,
+  TitleList,
 } from 'components/route/route-info/geo-list/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 import { routeTypesByKey } from 'constants/route';
@@ -46,8 +47,6 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
       nameFailList,
     } = makeNameByProps(props.type);
 
-    console.log(this.props)
-
     return (
       <RouteGeoListContainer>
         {
@@ -70,7 +69,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
           ? (
             <div>
               <NameListLineContainer>
-              <h4>{nameObjectList}</h4>
+              <TitleList>{nameObjectList}</TitleList>
                 {
                   object_list.map(({ type, ...data }, index) => {
                     let title = data.name;
@@ -80,7 +79,12 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
                       title = `${title} (${data.state === polyState.IDLE ? 'холостой' : 'рабочий'} ход)`;
                     } 
                     if (type === 'points') {
-                      title = `Пункт назначения №${index + 1} (${title})`;
+                      const pnNumber = `Пункт назначения №${index + 1}`;
+                      if (title) {
+                        title = `${pnNumber} (${title})`
+                      } else {
+                        title = pnNumber;
+                      }
                       key = index;
                     }
 
@@ -103,7 +107,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
           ? (
             <div>
               <NameListLineContainer>
-              <h4>{nameDrawObjectList}</h4>
+              <TitleList>{nameDrawObjectList}</TitleList>
                 {
                   uniqBy(draw_object_list, o => o.name + o.state).map(({type, ...data }, index) => {
                     let title = data.name;
@@ -135,7 +139,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
           ? (
             <div>
               <NameListLineContainer>
-              <h4>{nameFailList}</h4>
+              <TitleList>{nameFailList}</TitleList>
                 {
                   fail_list.map((data, index) => (
                     <li key={index}>

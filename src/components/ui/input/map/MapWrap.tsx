@@ -107,7 +107,7 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
         });
 
         try {
-          this.props.handleDrawFeatureClick({ index, nextState });
+          this.props.handleDrawFeatureClick({ index, state: nextState });
         } catch (e) {
           /* tslint:disable:no-console */
           console.warn('define handleDrawFeatureClick in father');

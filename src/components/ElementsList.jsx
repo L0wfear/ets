@@ -57,15 +57,14 @@ class ElementsList extends React.Component {
   }
 
   componentDidMount() {
-    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
-    this.setState({ readPermission });
-  }
-
-  componentDidMount() {
     if (!this.keyPressDisabled) {
       this.node.setAttribute('tabindex', 1);
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
+
+    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
+    this.setState({ readPermission });
+
     this.init();
   }
 

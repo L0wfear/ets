@@ -20,10 +20,8 @@ import {
 class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
   render() {
     const { props } = this;
-
     const { route } = props;
 
-    console.log(route)
     return (
       <RouteInfoContainerDiv>
         <RouteNameDiv none={props.noRouteName}><b>{route.name}</b></RouteNameDiv>

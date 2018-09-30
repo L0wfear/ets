@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
-import MapWrap from 'components/ui/input/map/MapWrap';
+import RouteCreatingMap from 'components/route/form/map/RouteCreatingMap';
 import cx from 'classnames';
 
 import { polyState } from 'constants/polygons';
@@ -18,24 +18,16 @@ import { DivNone } from 'global-styled/global-styled';
 class RouteCreating extends React.Component {
   static get propTypes() {
     return {
-      route: PropTypes.object,
-      onChange: PropTypes.func,
-      geozonePolys: PropTypes.object,
-      manual: PropTypes.bool,
-      formErrors: PropTypes.object,
+      manual: PropTypes.bool.isRequired,
+      route: PropTypes.object.isRequired,
+      formErrors: PropTypes.object.isRequired,
+      onChange: PropTypes.func.isRequired,
+      geozonePolys: PropTypes.object.isRequired,
     };
   }
 
-  constructor(props, context) {
-    super(props);
-
-    const sessionStore = context.flux.getStore('session');
-
-    this.state = {
-      routeName: '',
-      zoom: sessionStore.getCurrentUser().getCompanyMapConfig().zoom,
-      center: sessionStore.getCurrentUser().getCompanyMapConfig().coordinates,
-    };
+  state = {
+    bridgesPolys: {},
   }
 
   async componentDidMount() {
@@ -52,11 +44,15 @@ class RouteCreating extends React.Component {
     }
   }
 
-  onGeozoneSelectChange = (type, v) => {
-    let { object_list = [] } = this.props.route;
-    const { polys = {} } = this.props.route;
-    const { geozonePolys = {} } = this.props;
-    const odhs = v;
+  onGeozoneSelectChange = (type, odhs) => {
+    const { props } = this;
+    const {
+      route,
+      geozonePolys = {},
+    } = props;
+
+    let { object_list = [] } = route;
+    const { polys = {} } = route;
 
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);
@@ -66,15 +62,15 @@ class RouteCreating extends React.Component {
       polys[object_id].state = polyState.ENABLED;
     } else {
       object_list = object_list.filter((o) => {
-        const index = odhs.indexOf(o.object_id.toString());
-        if (index === -1) {
+        const hasInOdh = odhs.includes(o.object_id.toString());
+        if (!hasInOdh) {
           polys[o.object_id].state = polyState.SELECTABLE;
         }
-        return index > -1;
+        return hasInOdh;
       });
     }
     Object.entries(polys).forEach(([id, poly_data]) => {
-      if (!v.includes(id) && poly_data.state === polyState.SELECTABLE && poly_data.old) {
+      if (!odhs.includes(id) && poly_data.state === polyState.SELECTABLE && poly_data.old) {
         delete polys[id];
       }
     });
@@ -89,9 +85,13 @@ class RouteCreating extends React.Component {
   }
 
   setODH(id, name, state) {
-    const { object_list = [] } = this.props.route;
+    const {
+      route,
+      onChange,
+    } = this.props;
+    const { object_list = [] } = route;
     const objectIndex = object_list.findIndex(d => d.object_id === +id);
-    const type = this.props.route.type === 'simple_dt' ? 'dt' : 'odh';
+    const type = route.type === 'simple_dt' ? 'dt' : 'odh';
 
     if (state === polyState.SELECTABLE) {
       object_list.splice(objectIndex, 1);
@@ -105,25 +105,30 @@ class RouteCreating extends React.Component {
       });
     }
 
-    this.props.onChange('object_list', object_list);
+    onChange('object_list', object_list);
   }
 
   checkRoute = () => {
     const { flux } = this.context;
-    if (!this.props.route.input_lines.length) {
-      this.props.onChange('draw_odh_list', []);
+    const {
+      route,
+      onChange,
+    } = this.props;
+
+    if (!route.input_lines.length) {
+      onChange('draw_odh_list', []);
       return;
     }
-    flux.getActions('routes').validateRoute(this.props.route).then((r) => {
-      const result = r.result;
-
-      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
-        name: o.odh_name,
-        object_id: o.odh_id,
-        state: 2,
-        type: 'odh',
-      }));
-      this.props.onChange('draw_odh_list', draw_odh_list);
+    flux.getActions('routes').validateRoute(route).then(({ result: { odh_validate_result } }) => {
+      onChange(
+        'draw_odh_list',
+        odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
+          name: o.odh_name,
+          object_id: o.odh_id,
+          state: 2,
+          type: 'odh',
+        })),
+      );
     });
   }
 
@@ -163,7 +168,7 @@ class RouteCreating extends React.Component {
     this.props.onChange('object_list', object_list);
   }
 
-  handleFeatureClick = ({ id, name, nextState }) => {
+  handleFeatureClick = ({ id, name, state }) => {
     const {
       route: {
         polys: polysOld,
@@ -172,13 +177,13 @@ class RouteCreating extends React.Component {
 
     const polys = _.cloneDeep(polysOld);
 
-    polys[id].state = nextState;
+    polys[id].state = state;
     if (polys[id].state === 1 && polys[id].old) {
       delete polys[id];
     }
 
     this.props.onChange('polys', polys);
-    this.setODH(id, name, nextState);
+    this.setODH(id, name, state);
   }
 
   handlePointAdd = ({ newPointObject }) => {
@@ -202,10 +207,9 @@ class RouteCreating extends React.Component {
     this.props.onChange('input_lines', input_lines);
   }
 
-  handleDrawFeatureClick = ({ index, nextState }) => {
+  handleDrawFeatureClick = ({ index, state }) => {
     const input_lines = _.cloneDeep(this.props.route.input_lines);
-
-    input_lines[index].state = nextState;
+    input_lines[index].state = state;
 
     this.props.onChange('input_lines', input_lines);
   }
@@ -218,10 +222,12 @@ class RouteCreating extends React.Component {
   }
 
   render() {
-    const [errors = []] = [this.props.formErrors];
-
-    const { route = {} } = this.props;
     const { bridgesPolys = {} } = this.state;
+    const {
+      formErrors: errors,
+      route = {},
+      manual,
+    } = this.props;
     const {
       object_list = [],
       input_lines = [],
@@ -250,20 +256,34 @@ class RouteCreating extends React.Component {
       <div>
         <Row>
           <Col md={9}>
-            <Div>
-              <MapWrap
-                objectsType={route.type}
-                manual={this.props.manual}
-                polys={MapPolys}
-                objectList={object_list}
-                drawObjectList={input_lines}
-                handleFeatureClick={this.handleFeatureClick}
-                handlePointAdd={this.handlePointAdd}
-                handleDrawFeatureAdd={this.handleDrawFeatureAdd}
-                handleDrawFeatureClick={this.handleDrawFeatureClick}
-                handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
-              />
-            </Div>
+            {
+              /*
+                <MapWrap
+                  objectsType={route.type}
+                  manual={this.props.manual}
+                  polys={MapPolys}
+                  objectList={object_list}
+                  drawObjectList={input_lines}
+                  handleFeatureClick={this.handleFeatureClick}
+                  handlePointAdd={this.handlePointAdd}
+                  handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                  handleDrawFeatureClick={this.handleDrawFeatureClick}
+                  handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+                />
+              */
+            }
+            <RouteCreatingMap
+              objectsType={route.type}
+              manual={manual}
+              polys={MapPolys}
+              objectList={object_list}
+              drawObjectList={input_lines}
+              handleFeatureClick={this.handleFeatureClick}
+              handlePointAdd={this.handlePointAdd}
+              handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+              handleDrawFeatureClick={this.handleDrawFeatureClick}
+              handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+            />
           </Col>
           <Col md={3}>
             <div style={{ overflowY: 'auto', height: 510 }}>

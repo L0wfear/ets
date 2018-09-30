@@ -14,7 +14,7 @@ import InsideField from 'components/missions/duty_mission_template/inside_fields
 import RouteInfo from 'components/route/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
-import RouteFormWrap from '../../route/RouteFormWrap';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm';
 
 const modalKey = 'duty_mission_template';

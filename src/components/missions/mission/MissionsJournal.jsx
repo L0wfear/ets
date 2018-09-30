@@ -73,8 +73,7 @@ export default class MissionsJournal extends CheckableElementsList {
     };
   }
 
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {

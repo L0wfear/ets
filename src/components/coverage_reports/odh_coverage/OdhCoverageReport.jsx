@@ -4,7 +4,6 @@ import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import Preloader from 'components/ui/Preloader';
 import DataPicker from 'components/ui/input/date-picker/DatePicker';
 
 import {

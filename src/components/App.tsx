@@ -11,6 +11,8 @@ import { loginErrorNotification, getErrorNotification } from 'utils/notification
 import Login from 'components/login/LoginPage';
 import MainAppTSX from 'components/MainApp';
 
+import { MapEtsProvider } from 'components/map/new/context/MapetsContext';
+
 import LoadingPage from './LoadingPage';
 
 const MainApp: any = MainAppTSX;
@@ -126,12 +128,14 @@ class App extends React.Component <any, any> {
         const LoginPage = withProps({ flux })(getLoginPage);
         const MainPage = withProps({ flux })(getMainApp);
         return (
-          <HashRouter>
-            <Switch>
-              <Route path="/login" render={LoginPage} />
-              <Route path="*" render={MainPage} />
-            </Switch>
-          </HashRouter>
+          <MapEtsProvider>
+            <HashRouter>
+              <Switch>
+                <Route path="/login" render={LoginPage} />
+                <Route path="*" render={MainPage} />
+              </Switch>
+            </HashRouter>
+          </MapEtsProvider>
         );
     }
   }

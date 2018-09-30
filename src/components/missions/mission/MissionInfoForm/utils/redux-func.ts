@@ -6,7 +6,7 @@ export const mapDispatchToProps = (dispatch) => ({
   loadGeozones: (serverName) => (
     dispatch(
       loadGeozones(
-        '',
+        'none',
         serverName,
         {
           promise: true,
@@ -19,7 +19,7 @@ export const mapDispatchToProps = (dispatch) => ({
   loadRouteDataById: (id) => (
     dispatch(
       loadRouteDataById(
-        '',
+        'none',
         id,
         {
           promise: true,
@@ -39,4 +39,4 @@ export const mapDispatchToProps = (dispatch) => ({
       },
     })
   ),
-})
+});

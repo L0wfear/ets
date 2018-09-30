@@ -10,11 +10,7 @@ import {
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/utils';
 import { GeoJSON } from 'utils/ol';
 
-class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, { firstCentrIsWas: boolean }> {
-  state = {
-    firstCentrIsWas: false,
-  };
-
+class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
     this.props.addLayer({ id: 'GeoObject', zIndex: 0 }).then(() => {
       this.props.setDataInLayer('singleclick', null);

@@ -66,15 +66,16 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, prevState) {
     if (
-      nextState.page !== this.state.page ||
-      nextState.sortBy !== this.state.sortBy ||
-      nextState.filter !== this.state.filter
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy ||
+      prevState.filter !== this.state.filter
     ) {
-      this.refreshList(nextState);
+      this.refreshList(this.state);
     }
   }
+
   refreshList = async (state = this.state) => {
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
 

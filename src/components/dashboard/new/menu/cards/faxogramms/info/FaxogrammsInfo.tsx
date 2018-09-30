@@ -173,7 +173,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveOrder: (id, payload) => (
     dispatch(
       saveOrderBlob(
-        '',
+        'none',
         id,
         payload,
         {

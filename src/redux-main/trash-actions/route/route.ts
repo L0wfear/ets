@@ -5,13 +5,9 @@ import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 
 export const loadRouteDataById = (type, id, meta = { loading: true } as TypeMeta) => ({
   type,
-  payload: getRouteDataById(id).then(({ route_data }) => new Promise(res => {
-    
-    setTimeout(() => res({
-        route_data,
-      }), 10000);
-    })
-  ),
+  payload: getRouteDataById(id).then(({ route_data }) => (
+    route_data
+  )),
   meta: {
     ...meta,
   }

@@ -1,3 +1,8 @@
+import {
+  SetMapToContextType,
+  RemoveMapToContextType,
+} from 'components/map/new/context/MapetsContext.h';
+
 export type StateMapEts = {
   map: ol.Map,
   center: [number, number];
@@ -16,6 +21,10 @@ export type PropsMapEts = {
   disabledMousePointerMove?: boolean;
   disabledMouseSingleClick?: boolean;
   disabledMouseMoveend?: boolean;
+  setMapToContext: SetMapToContextType;
+  removeMapToContext: RemoveMapToContextType;
+  mapKey: string;
+  rotationAngle?: number;
 };
 
 export module MapUtils {
@@ -53,7 +62,7 @@ export module MapUtils {
     dataArr: defaultRetValType[],
   ) => defaultRetValType;
 
-  export type triggerFuncOnComponentWillReceivePropsFunc = (
+  export type triggerFuncOnNewPRopsInMapEtsFunc = (
     nextProps: PropsMapEts,
     thisState: StateMapEts,
   ) => defaultRetValType;

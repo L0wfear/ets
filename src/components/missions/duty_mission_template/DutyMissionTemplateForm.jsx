@@ -11,8 +11,9 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import InsideField from 'components/missions/duty_mission_template/inside_fields/index';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 
-import RouteInfo from '../../route/RouteInfo';
 import RouteFormWrap from '../../route/RouteFormWrap';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm';
 
@@ -223,9 +224,19 @@ class MissionTemplateForm extends DutyMissionForm {
           </Row>
           <Row>
             <Col md={12}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapDutyMissionTemplateFrom"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
 

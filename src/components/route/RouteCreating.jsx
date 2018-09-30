@@ -11,7 +11,9 @@ import MapWrap from 'components/ui/input/map/MapWrap';
 import cx from 'classnames';
 
 import { polyState } from 'constants/polygons';
-import CheckList from './CheckList';
+
+import RouteGeoList from 'components/route/route-info/geo-list/RouteGeoList';
+import { DivNone } from 'global-styled/global-styled';
 
 class RouteCreating extends React.Component {
   static get propTypes() {
@@ -248,7 +250,7 @@ class RouteCreating extends React.Component {
       <div>
         <Row>
           <Col md={9}>
-            <Div className="route-creating">
+            <Div>
               <MapWrap
                 objectsType={route.type}
                 manual={this.props.manual}
@@ -305,16 +307,22 @@ class RouteCreating extends React.Component {
                   error={errors.object_list}
                 />
               </Div>
-              <Div hidden={route.type === 'points'}>
-                <CheckList
-                  name={route.type === 'simple_dt' ? 'ДТ' : 'ОДХ'}
-                  list={list}
-                  draw_list={draw_list}
-                  fail_list={fail_list}
-                  checkRoute={route.type === 'mixed' ? this.checkRoute : null}
-                  disabledCheckRoute={!input_lines || !input_lines.length}
-                />
-              </Div>
+              {
+                route.type !== 'points'
+                  ? (
+                    <RouteGeoList
+                      type={route.type}
+                      object_list={route.object_list}
+                      draw_object_list={route.draw_odh_list}
+                      fail_list={fail_list}
+                      checkRoute={route.type === 'mixed' ? this.checkRoute : null}
+                      disabledCheckRoute={!input_lines || !input_lines.length}
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
               <Div className="destination-points" hidden={route.type !== 'points'}>
                 {object_list.map((o, i) => {
                   const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;

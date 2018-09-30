@@ -26,14 +26,6 @@ export const EtsPageWrapRoute = styled(EtsPageWrap)`
     .route-image {
       margin-top:20px;
     }
-    .route-odhs-on-map {
-      position: relative;
-      height: 500px;
-      width: 600px;
-      margin-top: 20px;
-      /*margin-left: 20px;*/
-      border: 4px solid #ccc;
-    }
     .route-odhs-list {
       position: absolute;;
       left:620px;

@@ -6,15 +6,13 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-import PreloaderComponent from 'components/ui/new/preloader/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 type TypeConfig = {
   typePreloader?: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
   page?: string;
   path?: string;
 };
-
-require('components/ui/new/preloader/preloader.scss');
 
 const withPreloader = (cofing: TypeConfig) => (Component) => (
   connect(
@@ -29,7 +27,7 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
           {
             isLoading ?
             (
-              <PreloaderComponent typePreloader={cofing.typePreloader || typePreloader} />
+              <Preloader typePreloader={cofing.typePreloader || typePreloader} />
             )
             :
             (

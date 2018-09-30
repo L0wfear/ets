@@ -63,14 +63,14 @@ class MissionsCreationForm extends Form {
               <Col md={6}>
                 <label>Время выполнения</label>
                 <Div>
-c
+                  c
                   <Datepicker date={state.date_start} onChange={this.handleChangeDateStart} />
                 </Div>
               </Col>
               <Col md={6}>
                 <label style={{ minHeight: 15 }} />
                 <Div>
-по
+                  по
                   <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} />
                 </Div>
               </Col>

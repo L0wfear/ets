@@ -29,6 +29,12 @@ export const EtsPageWrap = styled.div`
   }
 `;
 
-export const Flex = styled<{ grow?: number; shrink?: number; basis?: number }, "div">("div")`
+export const FlexWrapContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const Flex = styled<{ grow?: number; shrink?: number; basis?: number, none?: boolean }, "div">("div")`
   flex: ${({ grow }) => grow | 0} ${({ shrink }) => shrink | 0} ${({ basis }) => basis | 0}px;
+  display: ${({ none }) => none ? 'none': 'initial'};
 `;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 import {
   DivNone,
@@ -16,7 +16,7 @@ const HiddenComponent: React.SFC<any> = ({ type }) => {
   if (type === 'loader-field') {
     return (
       <div className="center-preloader">
-        <Preloader type="field" />
+        <Preloader typePreloader="field" />
       </div>
     );
   }

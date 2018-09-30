@@ -62,7 +62,7 @@ const Table: React.SFC<any> = props  => (
     onAllRowsChecked={props.onAllRowsChecked}
     selected={props.selected}
     checked={props.checked}
-    selectField={'customId'}
+    selectField={'frontId'}
   />
 );
 

@@ -152,14 +152,14 @@ const mapDispatchToProps = (dispatch) => ({
   getWaybillById: (id) => (
     dispatch(
       loadWaybillById(
-        '',
+        'none',
         id,
         {
           promise: true,
           page: 'dashboard',
         },
       ),
-    ).payload
+    )
   ),
 });
 

@@ -19,7 +19,7 @@ const STATUS_SELECT_OPTIONS = Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, 
 @loadingOverlay
 @connectToStores(['autobase', 'objects'])
 export default class BaseTechInspectionForm extends Form {
-  componentWillMount() {
+  componentDidMount() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
     const state = this.props.formState;

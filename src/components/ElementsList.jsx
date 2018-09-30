@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Button, Glyphicon } from 'react-bootstrap';
 import * as queryString from 'query-string';
 
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { FluxContext } from 'utils/decorators';
 
 import {
@@ -56,7 +56,7 @@ class ElementsList extends React.Component {
     this.clicks = 0;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
     this.setState({ readPermission });
   }
@@ -471,7 +471,7 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
-    const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
+    const preloader = this.state.exportFetching && <Preloader typePreloader="mainpage" />;
 
     return (
       <EtsPageWrap innerRef={this.setNode}>

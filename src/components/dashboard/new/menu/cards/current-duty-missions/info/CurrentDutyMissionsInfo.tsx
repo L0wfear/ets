@@ -5,7 +5,7 @@ import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { get } from 'lodash';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import RouteInfoForm from 'components/route/route-info-form/RouteInfoForm';
+import RouteInfoFormWrap from 'components/route/route-info/RouteInfoFormWrap';
 
 import InfoCard from 'components/dashboard/new/menu/cards/_default-card-component/info-card/InfoCard';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -60,44 +60,44 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
   rejectDutyMission = () => {
     this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
-    .then(({ duty_mission }) => {
-      // надо уйти от этого
-      // react 16 Portal
-      return global.confirmDialog({
-        title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
-        body: self => (
-          <ExtField
-            type="string"
-            label="Причина"
-            value={self.state.comment}
-            onChange={({ target: { value: comment } }) => self.setState({ comment })}
-          />
-        ),
-        defaultState: {
-          comment: '',
-        },
-        checkOnOk: ({ state }) => {
-          if (!state.comment) {
-            global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
-            return false;
-          }
-          return true;
-        },
-      })
-      .then(({ comment }) => (
-        this.updateDutyMission({
-          ...duty_mission,
-          status: 'fail',
-          comment,
+      .then(({ duty_mission }) => {
+        // надо уйти от этого
+        // react 16 Portal
+        return global.confirmDialog({
+          title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
+          body: self => (
+            <ExtField
+              type="string"
+              label="Причина"
+              value={self.state.comment}
+              onChange={({ target: { value: comment } }) => self.setState({ comment })}
+            />
+          ),
+          defaultState: {
+            comment: '',
+          },
+          checkOnOk: ({ state }) => {
+            if (!state.comment) {
+              global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
+              return false;
+            }
+            return true;
+          },
         })
-      ))
-      .catch(() => {
-        //
+        .then(({ comment }) => (
+          this.updateDutyMission({
+            ...duty_mission,
+            status: 'fail',
+            comment,
+          })
+        ))
+        .catch(() => {
+          //
+        });
+      }).catch(e => {
+        // tslint:disable-next-line
+        console.log(e);
       });
-    }).catch(e => {
-      // tslint:disable-next-line
-      console.log(e);
-    });
   }
 
   updateDutyMission = (newProps) => (
@@ -158,11 +158,12 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           <ButtonUpdateDutyMission onClick={this.completeDutyMission} >Выполнено</ButtonUpdateDutyMission>
           <ButtonUpdateDutyMission onClick={this.rejectDutyMission} >Не выполнено</ButtonUpdateDutyMission>
         </RightButton_BlockContainer>
-        <RouteInfoForm
-          show={this.state.showRouteInfoForm}
+        <RouteInfoFormWrap
+          showForm={this.state.showRouteInfoForm}
           onHide={this.handleRouteInfoFormHide}
           title={`Бригадир ${duty_mission_data.foreman_fio}`}
           route={route}
+          mapKey="mapCurrentMissionInfo"
         />
       </InfoCard>
     )
@@ -187,26 +188,26 @@ const mapDispatchToProps = (dispatch) => ({
   getDutyMissionById: (id) => (
     dispatch(
       loadDutyMissionById(
-        '',
+        'none',
         id,
         {
           promise: true,
           page: 'dashboard',
         },
       ),
-    ).payload
+    )
   ),
   updateDutyMission: (payload) => (
     dispatch(
       updateDutyMissionByPayload(
-        '',
+        'none',
         payload,
         {
           promise: true,
           page: 'dashboard',
         },
       ),
-    ).payload
+    )
   ),
 });
 

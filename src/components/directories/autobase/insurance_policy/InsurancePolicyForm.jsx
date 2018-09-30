@@ -15,7 +15,7 @@ export default class InsurancePolicyForm extends Form {
   state = {
     areFilesLoading: false,
   }
-  componentWillMount() {
+  componentDidMount() {
     const { flux } = this.context;
     flux.getActions('objects').getCars();
 

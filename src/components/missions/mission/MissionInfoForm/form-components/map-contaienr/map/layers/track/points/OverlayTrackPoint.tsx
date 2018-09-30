@@ -3,7 +3,7 @@ import Overlay from 'components/map/new/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import { makeDate, makeTime } from 'utils/dates';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
@@ -103,7 +103,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
         coordsMsk={coords_msk}
         hidePopup={this.props.hidePopup}
       >
-        <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader type="field" />}</OverlayLineInfoContainer>
+        <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader typePreloader="field" />}</OverlayLineInfoContainer>
         <OverlayLineInfoContainer>
           <div>{`Задание №${missionNumber}`}</div>
         </OverlayLineInfoContainer>

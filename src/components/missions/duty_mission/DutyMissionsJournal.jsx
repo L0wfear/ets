@@ -51,13 +51,13 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, prevState) {
     if (
-      nextState.page !== this.state.page ||
-      nextState.sortBy !== this.state.sortBy ||
-      nextState.filter !== this.state.filter
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy ||
+      prevState.filter !== this.state.filter
     ) {
-      this.refreshList(nextState);
+      this.refreshList(this.state);
     }
   }
 
@@ -148,7 +148,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const query = this.removeElementAction(mission.id);
 
     query.then(() => {
-      console.log('here')
       this.refreshList(this.state);
       this.setState({
         checkedElements: {},

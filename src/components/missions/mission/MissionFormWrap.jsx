@@ -7,13 +7,16 @@ import {
 import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { getDefaultMission } from 'stores/MissionsStore';
-import { saveData, printData, resizeBase64 } from 'utils/functions';
+import { saveData, printData } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import MissionFormOld from 'components/missions/mission/MissionFormOld';
+import withMapInConsumer from 'components/map/new/context/withMapInConsumer';
 
-export default class MissionFormWrap extends FormWrap {
+const printMapKeySmall = 'mapMissionTemplateFormA4';
+
+class MissionFormWrap extends FormWrap {
   constructor(props) {
     super(props);
 
@@ -229,15 +232,13 @@ export default class MissionFormWrap extends FormWrap {
     return ansError;
   }
 
-  handlePrint(ev, print_form_type = 1) {
+  handlePrint(print_form_type = 1) {
     const f = this.state.formState;
     const { flux } = this.context;
     const data = { mission_id: f.id };
-    global.map.reset();
-    global.map.once('postcompose', async (event) => {
-      const routeImageBase64Data = await resizeBase64(event.context.canvas.toDataURL('image/png'));
-      data.image = routeImageBase64Data;
 
+    this.props.getMapImageInBase64ByKey(printMapKeySmall).then((image) => {
+      data.image = image;
       flux.getActions('missions').printMission(data).then(({ blob }) => {
         if (print_form_type === 1) {
           saveData(blob, `Задание №${f.number}.pdf`);
@@ -246,7 +247,6 @@ export default class MissionFormWrap extends FormWrap {
         }
       });
     });
-    global.map.render();
   }
 
   handlMultiFormStateChange = (changesObj) => {
@@ -290,6 +290,7 @@ export default class MissionFormWrap extends FormWrap {
             handleFormChange={this.handleFormStateChange.bind(this)}
             handleMultiFormChange={this.handlMultiFormStateChange}
             handlePrint={this.handlePrint.bind(this)}
+            printMapKeySmall={printMapKeySmall}
             {...props}
             {...this.state}
           />
@@ -305,3 +306,5 @@ export default class MissionFormWrap extends FormWrap {
     );
   }
 }
+
+export default withMapInConsumer()(MissionFormWrap);

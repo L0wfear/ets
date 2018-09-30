@@ -8,7 +8,6 @@ import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
 import last from 'lodash/last';
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo';
 import RouteFormWrap from 'components/route/RouteFormWrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
@@ -16,6 +15,8 @@ import { isEmpty } from 'utils/functions';
 import { getKindTaskIds, getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
 import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 
 import { FormTitle, onlyActiveEmployeeNotification } from './utils';
 
@@ -657,9 +658,19 @@ export class DutyMissionForm extends Form {
               </Div>
             </Col>
             <Col md={6}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapDutyMissionFrom"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
 

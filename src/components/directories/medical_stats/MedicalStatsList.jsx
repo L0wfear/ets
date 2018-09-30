@@ -33,13 +33,13 @@ export default class MedicalStatsList extends ElementsList {
     await flux.getActions('objects').getMedicalStats(this.state);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.date_from !== nextState.date_from || this.state.date_to !== nextState.date_to) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.date_from !== prevState.date_from || this.state.date_to !== prevState.date_to) {
       this.exportPayload = {
-        date_from: createValidDateTime(nextState.date_from),
-        date_to: createValidDateTime(nextState.date_to),
+        date_from: createValidDateTime(this.state.date_from),
+        date_to: createValidDateTime(this.state.date_to),
       };
-      this.context.flux.getActions('objects').getMedicalStats(nextState);
+      this.context.flux.getActions('objects').getMedicalStats(this.state);
     }
   }
 

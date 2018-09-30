@@ -4,6 +4,8 @@ import MapEts from 'components/map/new/MapEts';
 import { MapEtsContainer } from 'components/directories/geoobjects/form/form-components/map-geoobject/styled/styled';
 import LayerOneGeometry from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
 
+import { MapEtsConsumer } from 'components/map/new/context/MapetsContext';
+
 const makeGeoobjects = ({ geoobjectData, entity }) => {
   const geoobjects: any = {
     [entity]: {
@@ -62,17 +64,23 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
 
   render() {
     return (
-      <MapEtsContainer>
-        <MapEts enableInteractions>
-          {
-            ({ map, centerOn }) => (
-              <>
-                <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
-              </>
-            )
-          }
-        </MapEts>
-      </MapEtsContainer>
+      <MapEtsConsumer>
+        {
+          ({ setMapToContext, removeMapToContext }) => (
+            <MapEtsContainer>
+              <MapEts enableInteractions setMapToContext={setMapToContext} removeMapToContext={removeMapToContext} mapKey="goobjectInfo">
+                {
+                  ({ map, centerOn }) => (
+                    <>
+                      <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
+                    </>
+                  )
+                }
+              </MapEts>
+            </MapEtsContainer>
+          )
+        }
+      </MapEtsConsumer>
     )
   }
 }

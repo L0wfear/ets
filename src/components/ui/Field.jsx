@@ -8,9 +8,9 @@ import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
-// import TextInput from 'components/ui/input/TextInput/TextInput';
+import Preloader from 'components/ui/new/preloader/Preloader';
+
 import Div from './Div';
-import Preloader from './Preloader';
 
 function StringField(props) {
   const { error, ...mainProps } = props; 
@@ -24,7 +24,7 @@ function StringField(props) {
     return (
       <Div hidden={hidden}>
         <label style={{ paddingTop: 5 }}>{label}</label>)<br />
-        <Preloader type="field" />
+        <Preloader typePreloader="field" />
       </Div>
     );
   }

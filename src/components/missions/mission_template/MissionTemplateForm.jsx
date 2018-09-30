@@ -13,7 +13,8 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
-import RouteInfo from 'components/route/RouteInfo';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/route/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
@@ -195,9 +196,19 @@ class MissionTemplateForm extends MissionForm {
               </Div>
             </Col>
             <Col md={6}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapMissionTemplateFrom"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
 
@@ -210,8 +221,8 @@ class MissionTemplateForm extends MissionForm {
                 <Glyphicon id="m-print" glyph="print" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <MenuItem eventKey={3}>Формате А3</MenuItem>
-                <MenuItem eventKey={4}>Формате А4</MenuItem>
+                <MenuItem eventKey={this.props.printMapKeyBig}>Формате А3</MenuItem>
+                <MenuItem eventKey={this.props.printMapKeySmall}>Формате А4</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
             <Div hidden={state.status === 'closed'}>
@@ -221,8 +232,11 @@ class MissionTemplateForm extends MissionForm {
 
 
         </Modal.Footer>
-        <HiddenMapForPrint printFormat={this.props.printFormat} route={this.state.selectedRoute} keyGlobal={this.props.keyGlobal} />
-
+        <HiddenMapForPrint
+          route={route}
+          printMapKeyBig={this.props.printMapKeyBig}
+          printMapKeySmall={this.props.printMapKeySmall}
+        />
         <RouteFormWrap
           element={route}
           onFormHide={this.onFormHide.bind(this)}

@@ -15,6 +15,8 @@ import LayerMeasure from 'components/map/new/layers/measure/LayerMeasure';
 import LayerFuelEventLeakPoint from 'components/map/new/layers/fuel-event/leak/LayerFuelEventLeakPoint';
 import MapInfo from 'components/monitor/new/info/MapInfo';
 
+import { MapEtsConsumer } from 'components/map/new/context/MapetsContext';
+
 type PropsMapWrap = {
   disabledByType: any;
   enableInteractions: boolean;
@@ -23,26 +25,40 @@ type PropsMapWrap = {
 };
 
 const MapWrap: React.SFC<PropsMapWrap> = (props) => (
-  <MapEts disabledByType={props.disabledByType} enableInteractions={props.enableInteractions} disabledCenterOn={props.disabledCenterOn} disabledMouseSingleClick={props.disabledMouseSingleClick}>
-    {
-      ({ map, zoom, centerOn }) => (
-        <div>
-          <LayerGeooobjects map={map} />
-          <LayerSelectedGeooobjects map={map} />
-          <LayerTrackLines map={map} />
-          <LayerTrackPoints map={map} />
-          <LayerTrackLinesBySensor map={map} />
-          <LayerParkingPoints map={map} />
-          <LayerFuelEventPoint map={map} />
-          <LayerPlayPoint map={map} centerOn={centerOn} />
-          <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
-          <LayerMeasure map={map} />
-          <LayerFuelEventLeakPoint map={map} />
-          <MapInfo map={map} centerOn={centerOn}/>
-        </div>
-      )
-    }
-  </MapEts>
+  <MapEtsConsumer>
+  {
+    ({ setMapToContext, removeMapToContext }) => (
+      <MapEts
+        disabledByType={props.disabledByType}
+        enableInteractions={props.enableInteractions}
+        disabledCenterOn={props.disabledCenterOn}
+        disabledMouseSingleClick={props.disabledMouseSingleClick}
+        setMapToContext={setMapToContext}
+        removeMapToContext={removeMapToContext}
+        mapKey="monitor"
+      >
+        {
+          ({ map, zoom, centerOn }) => (
+            <div>
+              <LayerGeooobjects map={map} />
+              <LayerSelectedGeooobjects map={map} />
+              <LayerTrackLines map={map} />
+              <LayerTrackPoints map={map} />
+              <LayerTrackLinesBySensor map={map} />
+              <LayerParkingPoints map={map} />
+              <LayerFuelEventPoint map={map} />
+              <LayerPlayPoint map={map} centerOn={centerOn} />
+              <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
+              <LayerMeasure map={map} />
+              <LayerFuelEventLeakPoint map={map} />
+              <MapInfo map={map} centerOn={centerOn}/>
+            </div>
+          )
+        }
+      </MapEts>
+    )
+  }
+  </MapEtsConsumer>
 );
 
 const mapStateToProps = state => ({

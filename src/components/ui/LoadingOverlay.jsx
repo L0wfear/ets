@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { connect } from 'react-redux';
-import Preloader from './Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extends React.Component {
   handleOverlayLoading = (isLoading) => {
@@ -52,9 +52,9 @@ export default class LoadingOverlay extends React.Component {
 
     if (this.state.show) {
       if (storeIsLoading) {
-        return <Preloader type="mainpage" />;
+        return <Preloader typePreloader="mainpage" />;
       } else if (!storeIsLoading && (isLoading || storeIsLazyLoading)) {
-        return <Preloader type="lazy" />;
+        return <Preloader typePreloader="lazy" />;
       }
     }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { attributeList } from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/attribute-list';
 import { PropsCarAttributeInformation } from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
 import {
@@ -21,7 +21,7 @@ const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = props =
                 <span className="car_info-attr_title">{`${attr.title}: `}</span>
                 {
                   !value && value !== null ?
-                    <Preloader type="field" />
+                    <Preloader typePreloader="field" />
                   :
                     <span className="car_info-attr_value">{value || '-'}</span>
                 }

@@ -6,6 +6,7 @@ import MapEts from 'components/map/new/MapEts';
 import { MapEtsContainer } from 'components/reports/operational/track_events/form/map-geoobject/styled/styled';
 import LayerOneGeometry from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
 
+import { MapEtsConsumer } from 'components/map/new/context/MapetsContext';
 
 type PropsGeoObjectsMapModalNew = {
   onFormHide: () => any;
@@ -54,7 +55,6 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
   }
 
   render() {
-    console.log(this.state.geoobjects)
     return (
       <Modal id="modal-geoobjects-map" show onHide={this.props.onFormHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
@@ -62,15 +62,26 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
         </Modal.Header>
         <ModalBodyPreloader>
           <MapEtsContainer>
-            <MapEts enableInteractions>
-              {
-                ({ map, centerOn }) => (
-                  <>
-                    <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
-                  </>
-                )
-              }
-            </MapEts>
+            <MapEtsConsumer>
+            {
+              ({ setMapToContext, removeMapToContext }) => (
+                <MapEts
+                  enableInteractions
+                  setMapToContext={setMapToContext}
+                  removeMapToContext={removeMapToContext}
+                  mapKey="reportForm"
+                >
+                  {
+                    ({ map, centerOn }) => (
+                      <>
+                        <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
+                      </>
+                    )
+                  }
+                </MapEts>
+              )
+            }
+            </MapEtsConsumer>
           </MapEtsContainer>
         </ModalBodyPreloader>
       </Modal>

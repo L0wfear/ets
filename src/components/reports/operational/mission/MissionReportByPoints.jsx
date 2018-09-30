@@ -59,7 +59,7 @@ class MissionReportByPoints extends ElementsList {
   constructor(props) {
     super(props);
 
-    this.selectField = props.selectField || 'customId';
+    this.selectField = props.selectField || 'frontId';
     this.mainListName = 'selectedReportDataPoints';
   }
 

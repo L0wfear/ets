@@ -143,8 +143,8 @@ class RouteFormWrap extends FormWrap {
     this.props.onFormHide(true, result);
   }
 
-  handleFormStateChange = async (f, e) => {
-    await super.handleFormStateChange(f, e);
+  handleFormStateChangeRoute = (f, e) => {
+    this.handleFormStateChange(f, e);
 
     // Проверка на наличие имени маршрута в списке маршрутов
     const { formErrors, formState } = this.state;
@@ -181,14 +181,14 @@ class RouteFormWrap extends FormWrap {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     return props.showForm
       ? (
         <RouteForm
           formState={this.state.formState}
           onSubmit={this.handleFormSubmit}
-          handleFormChange={this.handleFormStateChange}
+          handleFormChange={this.handleFormStateChangeRoute}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
           resetState={this.resetFormState}

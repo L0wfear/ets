@@ -22,7 +22,7 @@ import { IPropsReportContainer, IStateReportContainer } from './@types/ReportCon
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux-main/modules/@types/report.h';
 
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
 import * as reportActionCreators from 'components/reports/redux-main/modules/report';
 import DataTable from 'components/ui/table/DataTable';
@@ -296,8 +296,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
-    console.log(tableMetaInfo.fields, additionalSchemaMakers)
-
     const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
       const [[fieldName, { name: displayName, is_row }]] = Object.entries(field);
 
@@ -320,7 +318,6 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         tableMeta.push(renderer(initialSchema, this.props));
       }
 
-      console.log(tableMeta)
       return tableMeta;
     }, []).concat(...additionalSchemaMakers);
 
@@ -353,7 +350,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         this.props.reportDataFetching ||
         this.state.exportFetching
       ) &&
-      <Preloader type="mainpage"/>
+      <Preloader typePreloader="mainpage"/>
     );
     const moveUpButton = (
       moveUpIsPermitted &&

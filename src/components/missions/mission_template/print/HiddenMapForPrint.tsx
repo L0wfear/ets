@@ -1,28 +1,52 @@
 import * as React from 'react';
-import Div from 'components/ui/Div';
-import RouteInfo from 'components/route/RouteInfo';
-
-require('components/missions/mission_template/print/HiddenMapForPrint.scss');
+import RouteInfoMap from 'components/route/route-info/map/RouteInfoMap';
+import { DivNone } from 'global-styled/global-styled';
+import { AbsoluteHiddenOverflow } from 'components/missions/mission_template/print/styled/styled';
+import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
 
 interface IPropsHiddenMapForPrint {
-  route: any;
-  printFormat: string;
-  keyGlobal: string;
+  route: RouteType;
+  printMapKeyBig: string;
+  printMapKeySmall: string;
 }
 
-const HiddenMapForPrint: React.SFC<IPropsHiddenMapForPrint> = ({ route, ...props }) => (
-  <div className="hidden_map">
-    <div className="a3">
-      <Div hidden={!route}>
-        <RouteInfo route={route} mapOnly keyGlobal={`${props.keyGlobal}/a3`} rotationAngle={Math.PI / 2} onlyMap />
-      </Div>
-    </div>
-    <div className="a4" >
-      <Div hidden={!route}>
-        <RouteInfo route={route} mapOnly keyGlobal={`${props.keyGlobal}/a4`} onlyMap />
-      </Div>
-    </div>
-  </div>
-);
+class HiddenMapForPrint extends React.PureComponent<IPropsHiddenMapForPrint, {}> {
+  render() {
+    const { props } = this;
+    const { route } = props;
+
+    return (
+      <AbsoluteHiddenOverflow className="map_hidden">
+      {
+        route
+        ? (
+          <>
+            <RouteInfoMap
+              input_lines={route.input_lines}
+              object_list={route.object_list}
+              type={route.type}
+              width="1132px"
+              height="1688px"
+              mapKey={this.props.printMapKeyBig}
+              rotationAngle={Math.PI / 2}
+            />
+            <RouteInfoMap
+              input_lines={route.input_lines}
+              object_list={route.object_list}
+              type={route.type}
+              width="602px"
+              height="912px"
+              mapKey={this.props.printMapKeySmall}
+            />
+          </>
+        )
+        : (
+          <DivNone />
+        )
+      }
+      </AbsoluteHiddenOverflow>
+    );
+  }
+}
 
 export default HiddenMapForPrint;

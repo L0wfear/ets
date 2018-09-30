@@ -26,7 +26,7 @@ function getFio(f, i, o) {
 @loadingOverlay
 @connectToStores(['autobase', 'employees', 'objects'])
 export default class BaseRoadAccidentFrom extends Form {
-  componentWillMount() {
+  componentDidMount() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
 

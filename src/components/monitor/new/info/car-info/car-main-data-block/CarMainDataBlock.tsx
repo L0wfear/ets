@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import config from 'config';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { getMaxSpeedToLegend } from 'components/monitor/new/info/car-info/car-main-data-block/utils';
 import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/new/info/car-info/redux-main/modules/actions-car-info';
 import {
@@ -37,7 +37,7 @@ const CarMainDataBlock: React.SFC<PropsCarMainDataBlock> = ({ type_image_name, m
         type_image_name !== '' ?
         <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
         :
-        <Preloader type="field" />
+        <Preloader typePreloader="field" />
       }
       </div>
       <div>

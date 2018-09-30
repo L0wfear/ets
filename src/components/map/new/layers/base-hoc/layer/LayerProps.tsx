@@ -21,7 +21,7 @@ type TypeConfig = {
 };
 
 const withLayerProps = (config: TypeConfig = {}) => Component => (
-  class LayerProps extends React.Component<PropsLayerProps, StateLayerProps> {
+  class LayerProps extends React.PureComponent<PropsLayerProps, StateLayerProps> {
     state: StateLayerProps = {
       vectorSource: null,
       olLayer: null,

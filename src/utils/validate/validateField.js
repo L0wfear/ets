@@ -2,27 +2,15 @@ import {
   find,
 } from 'lodash';
 
-// import * as string from './validateString';
-// import * as text from './validateText';
 import * as number from './validateNumber';
 import * as floatFixed3 from './validateFloatFixed3';
 import * as datetime from './validateDateTime';
 import * as string from './validateString';
 import * as array from './validateArray';
 import * as date from './validateDate';
-// import * as integer from './validateInteger';
-// import * as bool from './validateBool';
-// import * as reference from './validateReference';
-// import * as file from './validateFile';
-// import * as list from './validateList';
-// import * as computable from './validateComputable';
-// import * as object from './validateObject';
-// import * as geodata from './validateGeodata';
 import dependencyValidators from './dependency';
 
 const validators = {
-  // string,
-  // text,
   number,
   datetime,
   floatFixed3,
@@ -30,14 +18,6 @@ const validators = {
   text: string,
   array,
   date,
-  // integer,
-  // bool,
-  // reference,
-  // file,
-  // list,
-  // object,
-  // computable,
-  // geodata,
 };
 
 function validateFieldByType(config, value, formData) {

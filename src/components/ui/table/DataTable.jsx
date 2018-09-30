@@ -178,7 +178,6 @@ export default class DataTable extends React.Component {
         originalData: this.state.originalData,
         data: this.state.data,
       };
-      console.log({ ...changesFields })
 
       if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
         changesFields.initialSort = props.initialSort;

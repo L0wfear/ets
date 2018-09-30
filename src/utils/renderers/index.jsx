@@ -13,11 +13,6 @@ function floatFixed3({ data }) {
   return <div>{value}</div>;
 }
 
-floatFixed3.propTypes = {
-  data: PropTypes.any,
-};
-
-
 function floatFixed1Percentage({ data }) {
   let value;
   try {

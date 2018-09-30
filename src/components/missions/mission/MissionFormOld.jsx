@@ -9,7 +9,8 @@ import {
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 import Field from 'components/ui/Field';
 
 import Div from 'components/ui/Div';
@@ -158,9 +159,19 @@ class MissionFormOld extends React.Component {
           </Row>
           <Row>
             <Col md={12}>
-              <Div hidden={this.state.selectedRoute ? this.state.selectedRoute.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapMissionFromOld"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
           <Row>

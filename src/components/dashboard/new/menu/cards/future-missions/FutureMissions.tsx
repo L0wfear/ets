@@ -62,14 +62,14 @@ const mapDispatchToProps = (dispatch) => ({
   getMissionById: (id) => (
     dispatch(
       loadMissionById(
-        '',
+        'none',
         id,
         {
           promise: true,
           page: 'dashboard',
         },
       )
-    ).payload
+    )
   ),
 });
 

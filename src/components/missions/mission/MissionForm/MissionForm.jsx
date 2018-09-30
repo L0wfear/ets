@@ -9,7 +9,8 @@ import {
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/route/RouteFormWrap';
 import Field from 'components/ui/Field';
 
@@ -35,6 +36,8 @@ import {
 import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/types';
 
 import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssignment';
+
+import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 
 const modalKey = 'mission';
 
@@ -726,9 +729,19 @@ export class MissionForm extends Form {
                 </Row>
                 <Row>
                   <Col md={12}>
-                    <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                      <RouteInfo route={this.state.selectedRoute} mapOnly />
-                    </Div>
+                    {
+                      route && route.id !== null
+                        ? (
+                          <RouteInfo
+                            route={route}
+                            noRouteName
+                            mapKey="mapMissionFrom"
+                          />
+                        )
+                        : (
+                          <DivNone />
+                        )
+                    }
                   </Col>
                 </Row>
                 <Row>
@@ -796,21 +809,25 @@ export class MissionForm extends Form {
                       />
                     </Div>
                     )}
-                    {!state.is_column && (
-                    <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-                      <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
-                        <Glyphicon id="m-print" glyph="print" />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                        <MenuItem eventKey={2}>Печать</MenuItem>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    {
+                      !state.is_column && (
+                      <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
+                        <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
+                          <Glyphicon id="m-print" glyph="print" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+                          <MenuItem eventKey={2}>Печать</MenuItem>
+                        </Dropdown.Menu>
+                      </Dropdown>
                     )}
                     <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
                   </Div>
                 </Modal.Footer>
-
+                <HiddenMapForPrint
+                  route={route}
+                  printMapKeySmall={this.props.printMapKeySmall}
+                />
                 <RouteFormWrap
                   element={route}
                   onFormHide={this.onFormHide}

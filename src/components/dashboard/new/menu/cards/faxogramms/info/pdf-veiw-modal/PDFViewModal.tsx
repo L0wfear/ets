@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import PDF from 'react-pdf-js';
 
 import ModalBody from 'components/ui/Modal';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 import {
   PropsPDFViewModal,
@@ -29,7 +29,7 @@ class PDFViewModal extends React.Component<PropsPDFViewModal, StatePDFViewModal>
         <ModalBody bsClass="null">
           {
             !this.state.url
-            ? <Preloader type="mainpage" />
+            ? <Preloader typePreloader="mainpage" />
             : <PDF file={this.state.url} />
           }
         </ModalBody>

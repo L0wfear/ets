@@ -92,7 +92,7 @@ const calcChangedData: MapUtils.calcChangedDataFunc  = (dataArr) => (
  * @param nextProps следующие пропсы компонента карты
  * @param thisState текущее состояние компонента карты
  */
-export const triggerFuncOnComponentWillReceiveProps: MapUtils.triggerFuncOnComponentWillReceivePropsFunc = (nextProps, thisState) => {
+export const triggerFuncOnNewPRopsInMapEts: MapUtils.triggerFuncOnNewPRopsInMapEtsFunc = (nextProps, thisState) => {
   return calcChangedData(
     [
       defaultRetVal,
@@ -146,7 +146,7 @@ const handleClickOnRowLayer: MapUtils.handleClickOnRowLayerFunc = (eventOl) => (
     eventOl.pixel,
     (feature, layer) => {
       if (layer && layer.get('singleclick')) {
-        layer.get('singleclick')(feature);
+        layer.get('singleclick')(feature, eventOl);
 
         return true;
       }

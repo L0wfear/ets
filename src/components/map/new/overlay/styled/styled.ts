@@ -30,6 +30,7 @@ export const EtsOverlayTitleContainer = styled.div`
 `;
 
 export const OverlayCloseContainer = styled.div`
+  margin-left: 10px;
   cursor: pointer;
 `;
 

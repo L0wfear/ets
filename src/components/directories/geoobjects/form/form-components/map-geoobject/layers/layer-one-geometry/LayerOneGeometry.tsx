@@ -5,11 +5,7 @@ import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps'
 import { PropsLayerPlayPoint } from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
 import { renderGeoobjects } from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/utils';
 
-class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, { firstCentrIsWas: boolean }> {
-  state = {
-    firstCentrIsWas: false,
-  };
-
+class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
     this.props.addLayer({ id: 'LayerOneGeometry', zIndex: 0 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);

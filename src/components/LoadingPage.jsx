@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Preloader from './ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 export default function LoadingPage({ loaded }) {
-  return <Preloader type="mainpage" visible={loaded} />;
+  return <Preloader typePreloader="mainpage" visible={loaded} />;
 }
 
 LoadingPage.propTypes = {

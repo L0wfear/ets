@@ -11,24 +11,38 @@ import LayerParkingPoints from 'components/missions/mission/MissionInfoForm/form
 
 import { PropsMapMissionInfoWrap } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/MapMissionInfoWrap.h';
 
+import { MapEtsConsumer } from 'components/map/new/context/MapetsContext';
+
 class MapWrap extends React.PureComponent<PropsMapMissionInfoWrap, {}> {
   render() {
     const { gov_number } = this.props;
 
     return (
-      <MapEts enableInteractions>
-        {
-          ({ map, centerOn }) => (
-            <>
-              <LayerGeooobjects geoobjects={this.props.geoobjects} map={map} centerOn={centerOn}/>
-              <LayerTrackLines map={map} track={this.props.track} mkad_speed_lim={this.props.mkad_speed_lim} speed_lim={this.props.speed_lim} />
-              <LayerTrackPoints map={map} track={this.props.track} mkad_speed_lim={this.props.mkad_speed_lim} speed_lim={this.props.speed_lim} gov_number={gov_number} cars_sensors={this.props.cars_sensors} missionNumber={this.props.missionNumber}/>
-              <LayerParkingPoints map={map} front_parkings={this.props.parkings} />
-              <LayerCarMarker gov_number={gov_number} map={map}/>
-            </>
-          )
-        }
-      </MapEts>
+      <MapEtsConsumer>
+      {
+        ({ setMapToContext, removeMapToContext }) => (
+          <MapEts
+            enableInteractions
+            setMapToContext={setMapToContext}
+            removeMapToContext={removeMapToContext}
+            mapKey="missionInfoForm"
+          >
+            {
+              ({ map, centerOn }) => (
+                <>
+                  <LayerGeooobjects geoobjects={this.props.geoobjects} map={map} centerOn={centerOn}/>
+                  <LayerTrackLines map={map} track={this.props.track} mkad_speed_lim={this.props.mkad_speed_lim} speed_lim={this.props.speed_lim} />
+                  <LayerTrackPoints map={map} track={this.props.track} mkad_speed_lim={this.props.mkad_speed_lim} speed_lim={this.props.speed_lim} gov_number={gov_number} cars_sensors={this.props.cars_sensors} missionNumber={this.props.missionNumber}/>
+                  <LayerParkingPoints map={map} front_parkings={this.props.parkings} />
+                  <LayerCarMarker gov_number={gov_number} map={map}/>
+                </>
+              )
+            }
+          </MapEts>
+        )
+      }
+      </MapEtsConsumer>
+
     );
   }
 }

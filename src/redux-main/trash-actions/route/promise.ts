@@ -16,7 +16,7 @@ export const getRouteDataById = (id) => (
                 coordinates: el.coordinates,
               };
             }
-
+            el.type = 'points';
             return el;
           });
         } else if (route_data.type === 'mixed') {
@@ -30,6 +30,7 @@ export const getRouteDataById = (id) => (
                 type: 'LineString',
                 coordinates: [start, end],
               };
+              object.type = 'odh';
               return object;
             });
           } else {
@@ -42,6 +43,7 @@ export const getRouteDataById = (id) => (
               type: 'LineString',
               coordinates: [start, end],
             };
+            object.type = 'odh';
             return object;
           });
   

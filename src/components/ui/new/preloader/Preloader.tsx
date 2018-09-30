@@ -5,7 +5,6 @@ import {
   GostWeakLoadingOverlay,
 } from 'components/ui/new/preloader/styled/styled';
 
-
 type PropsPreloaderComponent = {
   typePreloader: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 export default () => (
-  <Preloader type="mainpage" />
+  <Preloader typePreloader="mainpage" />
 );

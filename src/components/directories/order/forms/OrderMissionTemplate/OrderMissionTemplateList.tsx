@@ -56,7 +56,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       
       this.setState({
         missionsList,
-        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.frontId]: mission }), {}),
         structures,
         timeInterval,
       });
@@ -78,7 +78,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     this.setState({
       missionsList,
-      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.frontId]: mission }), {}),
       timeInterval,
     });
   }
@@ -162,17 +162,17 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
   }
 
-  onRowSelected = ({ props: { data: { customId } } }) => this.setState({ selectedElement: this.state.missionsIndex[customId] });
+  onRowSelected = ({ props: { data: { frontId } } }) => this.setState({ selectedElement: this.state.missionsIndex[frontId] });
 
-  onRowChecked = (customId, state) => {
+  onRowChecked = (frontId, state) => {
     const {
       checkedElements: { ...checkedElements },
     } = this.state;
 
     if (state) {
-      checkedElements[customId] = this.state.missionsIndex[customId];
+      checkedElements[frontId] = this.state.missionsIndex[frontId];
     } else {
-      delete checkedElements[customId];
+      delete checkedElements[frontId];
     }
 
     this.setState({ checkedElements });

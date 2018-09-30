@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 type PropsDistanceAgg = {
   distance_agg2: any;
@@ -11,7 +11,7 @@ const DistanceAgg: React.SFC<PropsDistanceAgg> = ({ distance_agg2 }) => (
     <span>Протяженность, км: </span>
     {
       distance_agg2 === -1 ?
-        ( <Preloader type="field" /> )
+        ( <Preloader typePreloader="field" /> )
       :
       (
         distance_agg2 === null ?

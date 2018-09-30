@@ -206,7 +206,7 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new ManifestPlugin(),
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin([path.resolve(__dirname, '..', 'dist')]),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
@@ -215,6 +215,14 @@ module.exports = {
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'images'),
         to: 'images'
+      },
+      {
+        from: path.join(__dirname, 'otherToDist', 'construct'),
+        to: 'construct'
+      },
+      {
+        from: path.join(__dirname, 'otherToDist', 'robots.txt'),
+        to: 'robots.txt'
       },
     ]),
     new HtmlWebpackPlugin({

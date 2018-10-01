@@ -24,7 +24,7 @@ export default class ReactSelect extends React.Component<any, any> {
   static get propTypes() {
     return {
       placeholder: PropTypes.string,
-      noResultsText: PropTypes.string,
+      noOptionsMessage: PropTypes.func,
       options: PropTypes.array,
       sortingFunction: PropTypes.func,
       emptyValue: PropTypes.string,
@@ -71,7 +71,7 @@ export default class ReactSelect extends React.Component<any, any> {
   render() {
     const {
       placeholder = 'Выберите...',
-      noResultsText = 'Ничего не найдено',
+      noOptionsMessage = () => {return 'Нет данных'},
       options = [],
       sortingFunction = defaultSortingFunction,
       className,
@@ -116,7 +116,7 @@ export default class ReactSelect extends React.Component<any, any> {
         onChange={this.handleChange}
         options={sortedOptions}
         placeholder={placeholder}
-        noResultsText={noResultsText}
+        noOptionsMessage={noOptionsMessage}
         components={
           {
             Option: this.optionRenderer,

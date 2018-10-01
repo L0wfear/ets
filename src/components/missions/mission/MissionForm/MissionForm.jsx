@@ -169,6 +169,7 @@ export class MissionForm extends Form {
       let type_id = null;
       let assign_to_waybill = formState.assign_to_waybill;
       const IS_NOT_IN_WAYBILL = formState.can_edit_car_and_route;
+      const IS_ASSIGNED = formState.status === 'assigned';
 
       if (Array.isArray(dataCar)) {
         type_id = dataCar.map(({ type_id: car_type_id }) => car_type_id);
@@ -178,7 +179,7 @@ export class MissionForm extends Form {
         assign_to_waybill = 'assign_to_new_draft';
       }
 
-      if (IS_NOT_IN_WAYBILL && formState.car_id === this.state.firstFormState.car_id) {
+      if (IS_ASSIGNED && IS_NOT_IN_WAYBILL && formState.car_id === this.state.firstFormState.car_id) {
         global.NOTIFICATION_SYSTEM.notify({
           title: 'Внимание!',
           message: 'Данное задание было связано с черновиком путевого листа. При сохранении данного задания с новым ТС необходимо выбрать тип добавления в ПЛ. Из предыдущего ПЛ данное задание будет удалено.',
@@ -385,13 +386,23 @@ export class MissionForm extends Form {
   }
 
   getDataByNormatives = (normatives) => {
-    if (!this.props.formState.normatives || normatives.some(({ id }) => !this.props.formState.normatives.find(({ id: formStateNormativeId }) => id === formStateNormativeId))) {
-      const { flux } = this.context;
-      const {
-        formState,
-        fromWaybill,
-      } = this.props;
+    const { formState } = this.props;
 
+    const trigger = (
+      !formState.normatives
+      || normatives.some(({ id }) => (
+        !formState.normatives.find(({ id: formStateNormativeId }) => (
+          id === formStateNormativeId
+        ))
+      ))
+      || formState.can_edit_car_and_route
+    );
+
+    if (trigger) {
+      const { flux } = this.context;
+      const { fromWaybill } = this.props;
+
+      console.log('here')
       return getDataByNormatives(
         normatives,
         this.state.kind_task_ids,

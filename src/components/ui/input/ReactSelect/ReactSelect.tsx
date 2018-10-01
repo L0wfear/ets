@@ -54,6 +54,8 @@ export default class ReactSelect extends React.Component<any, any> {
     return <components.Option innerProps={newInnerProps} {...props} />;
   }
 
+  noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
+
   singleValueRender = ({ innerProps, ...props }) => {
     const {
       modalKey,
@@ -71,7 +73,6 @@ export default class ReactSelect extends React.Component<any, any> {
   render() {
     const {
       placeholder = 'Выберите...',
-      noResultsText = 'Ничего не найдено',
       options = [],
       sortingFunction = defaultSortingFunction,
       className,
@@ -116,7 +117,7 @@ export default class ReactSelect extends React.Component<any, any> {
         onChange={this.handleChange}
         options={sortedOptions}
         placeholder={placeholder}
-        noResultsText={noResultsText}
+        noOptionsMessage={this.noOptionsMessage}
         components={
           {
             Option: this.optionRenderer,

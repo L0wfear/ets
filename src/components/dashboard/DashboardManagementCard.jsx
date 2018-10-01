@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { Panel, Button } from 'react-bootstrap';
 import BaseDiv from 'components/ui/Div.jsx';
 
@@ -17,7 +16,6 @@ import WaybillFormWrap from 'components/waybill/WaybillFormWrap.jsx';
 
 const Div = enhanceWithPermissions({})(BaseDiv);
 
-@autobind
 export default class MasterManagementCard extends React.Component {
 
   static get propTypes() {
@@ -45,12 +43,12 @@ export default class MasterManagementCard extends React.Component {
     this.setState({ showWaybillForm: false });
   }
 
-  onMissionFormHide() {
+  onMissionFormHide = () => {
     this.props.refreshCard(null, null, 'waybill_draft');
     this.setState({ showMissionForm: false });
   }
 
-  onDutyMissionFormHide() {
+  onDutyMissionFormHide = () => {
     this.props.refreshCard(null, null, 'current_duty_missions');
     this.setState({ showDutyMissionForm: false });
   }

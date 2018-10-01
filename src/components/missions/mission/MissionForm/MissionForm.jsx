@@ -168,6 +168,7 @@ export class MissionForm extends Form {
       let type_id = null;
       let assign_to_waybill = formState.assign_to_waybill;
       const IS_NOT_IN_WAYBILL = formState.can_edit_car_and_route;
+      const IS_ASSIGNED = formState.status === 'assigned';
 
       if (Array.isArray(dataCar)) {
         type_id = dataCar.map(({ type_id: car_type_id }) => car_type_id);
@@ -177,7 +178,7 @@ export class MissionForm extends Form {
         assign_to_waybill = 'assign_to_new_draft';
       }
 
-      if (IS_NOT_IN_WAYBILL && formState.car_id === this.state.firstFormState.car_id) {
+      if (IS_ASSIGNED && IS_NOT_IN_WAYBILL && formState.car_id === this.state.firstFormState.car_id) {
         global.NOTIFICATION_SYSTEM.notify({
           title: 'Внимание!',
           message: 'Данное задание было связано с черновиком путевого листа. При сохранении данного задания с новым ТС необходимо выбрать тип добавления в ПЛ. Из предыдущего ПЛ данное задание будет удалено.',

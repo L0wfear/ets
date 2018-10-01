@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 
-import { PropsLayerPlayPoint } from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
+import { PropsLayerOneGeometry  } from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
 import { renderGeoobjects } from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/utils';
 
-class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, {}> {
+class LayerOneGeometry extends React.PureComponent<PropsLayerOneGeometry , {}> {
   componentDidMount() {
     this.props.addLayer({ id: 'LayerOneGeometry', zIndex: 0 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);

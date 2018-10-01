@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 
 import {
   PropsLayerEditGeoobjRoute,
@@ -50,6 +50,17 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
     this.props.removeLayer();
   }
 
+  centerMapOnFeature() {
+    const extent = this.props.getOlLayer().getSource().getExtent();
+
+    if (isFinite(extent[0])) {
+      this.props.centerOn({
+        extent,
+        opt_options: { padding: [50, 50, 50, 50], maxZoom: 13, duration: 500 },
+      });
+    }
+  }
+
   singleclick = (feature, eventOl) => {
     const id = feature.getId();
     const objData = this.props.geoobjects[id];
@@ -59,17 +70,6 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
         ...objData,
         id,
         state: (objData.state + 1) % countLinesState + 1,
-      });
-    }
-  }
-
-  centerMapOnFeature() {
-    const extent = this.props.getOlLayer().getSource().getExtent();
-
-    if (isFinite(extent[0])) {
-      this.props.centerOn({
-        extent,
-        opt_options: { padding: [50, 50, 50, 50], maxZoom: 13, duration: 500 },
       });
     }
   }

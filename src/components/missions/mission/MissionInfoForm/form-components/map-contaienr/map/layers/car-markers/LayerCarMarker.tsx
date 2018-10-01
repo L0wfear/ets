@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ol from 'openlayers';
 
-import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { getStyleForStatusDirectionType} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/feature-style';
 import { connect } from 'react-redux';

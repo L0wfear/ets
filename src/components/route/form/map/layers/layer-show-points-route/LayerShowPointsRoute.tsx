@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 
 import {
   PropsLayerLayerShowPointsRoute,
@@ -36,13 +36,8 @@ class LayerShowPointsRoute extends React.PureComponent<PropsLayerLayerShowPoints
 
       if (objectList && objectList.length) {
         renderGeoobjects(objectList, this.props);
-        this.centerMapOnFeature();
       }
     }
-  }
-
-  componentWillUnmount() {
-    this.props.removeLayer();
   }
 
   centerMapOnFeature() {
@@ -54,6 +49,10 @@ class LayerShowPointsRoute extends React.PureComponent<PropsLayerLayerShowPoints
         opt_options: { padding: [50, 50, 50, 50], maxZoom: 13, duration: 500 },
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.removeLayer();
   }
 
   render() {

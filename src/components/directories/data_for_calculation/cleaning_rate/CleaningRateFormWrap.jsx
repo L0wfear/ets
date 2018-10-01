@@ -45,7 +45,6 @@ export default class CleaningRateFormWrap extends FormWrap {
     this.schema = cleaningRateSchema;
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this, props.type);
-    this.handleFormStateChange = this.handleFormStateChange.bind(this);
   }
 
   inheritedComponentWillReceiveProps(props) {

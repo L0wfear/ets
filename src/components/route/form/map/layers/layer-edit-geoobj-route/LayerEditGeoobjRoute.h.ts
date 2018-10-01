@@ -17,8 +17,7 @@ export type PropsLayerEditGeoobjRoute = {
     };
   };
   map: ol.Map;
-  centerOn: Function;
-
+  centerOn: any;
   handleFeatureClick: any;
 };
 

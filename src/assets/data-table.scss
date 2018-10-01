@@ -43,17 +43,6 @@ th.width-fuel-report-xlarge {
 
 .date-table-input {
   .griddle-body {
-    /*
-  .rw-calendar-popup {
-    table {
-      td, th {
-        padding: 0px;
-      }
-      border-collapse: initial;
-      border-spacing: 0px;
-    }
-  }
-  */
     height: 350px;
     tbody {
       tr {
@@ -67,12 +56,6 @@ th.width-fuel-report-xlarge {
         }
       }
 
-      /*
-      & .chart-datepicker{
-        position: relative;
-        top: -5px;
-      }
-      */
       & .form-control{
         position: relative;
         top: 20px;
@@ -142,17 +125,6 @@ th.width-fuel-report-xlarge {
       [data-title="tk_operation_name"] {
         width: auto;
       }
-      /*
-      .rw-calendar-popup {
-        table {
-          td, th {
-            padding: 0px;
-          }
-          border-collapse: initial;
-          border-spacing: 0px;
-        }
-      }
-      */
       
       & .flex-row {
         display: flex;
@@ -183,12 +155,6 @@ th.width-fuel-report-xlarge {
       }
       
       & tbody {
-        /*
-        & .chart-datepicker{
-          position: relative;
-          top: -5px;
-        }
-        */
         & .form-control{
           position: relative;
           top: 20px;

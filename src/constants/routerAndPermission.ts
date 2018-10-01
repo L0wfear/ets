@@ -1,5 +1,5 @@
-import monitor from 'components/monitor/new/config-data';
-import dashboard from 'components/dashboard/new/config-data/index';
+import monitor from 'components/monitor/config-data';
+import dashboard from 'components/dashboard/config-data/index';
 import coverageReports from 'components/coverage_reports/config-data';
 import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';

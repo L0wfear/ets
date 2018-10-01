@@ -4,7 +4,7 @@ import * as ol from 'openlayers';
 import { getCasheStyleForGeoobject } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/feature-style';
 import {
   LayerGeoobjectsUtilsTypes,
-} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerGeooobjects.h';
+} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerMissionGeoobject.h';
 
 /**
  * изменение геометрии фичи, если shape разный

@@ -20,8 +20,6 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
     };
   }
 
-  handleFormStateChangeWrap = (...arg) => this.handleFormStateChange(...arg);
-
   handleSubmitFirstForm = () => {
     this.setState({
       saveButtonLabel: 'Сохранение...',
@@ -72,7 +70,7 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
         isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleSubmitFirstForm}
-        handleFormChange={this.handleFormStateChangeWrap}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
       />

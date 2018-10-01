@@ -31,7 +31,6 @@ export default class MaintenanceWorkFormWrap extends FormWrap {
     this.schema = organizationsSchema;
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.handleFormStateChange = this.handleFormStateChange.bind(this);
   }
 
   render() {

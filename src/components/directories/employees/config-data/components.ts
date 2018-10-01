@@ -1,7 +1,13 @@
-import EmployeesList from 'components/directories/employees/EmployeesList';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "employees" */ 'components/directories/employees/EmployeesList'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: EmployeesList,
+    component,
+    loadable: true,
   },
 ];

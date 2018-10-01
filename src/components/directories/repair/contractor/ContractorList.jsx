@@ -20,6 +20,10 @@ export default class ContractorList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeСontractor;
+
+    state = {
+      ...this.state,
+    };
   }
   componentDidMount() {
     super.componentDidMount();

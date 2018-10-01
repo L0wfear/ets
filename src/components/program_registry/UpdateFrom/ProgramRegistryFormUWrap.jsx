@@ -78,8 +78,6 @@ class ProgramRegistryFormWrap extends FormWrap {
    */
   validate = (state, errors) => this.props.validate(state, errors);
 
-  handleFormStateChangeWrap = (...arg) => this.handleFormStateChange(...arg);
-
   updateVersionList({ id, additionalState }) {
     this.setState({ isLoading: true });
 
@@ -258,7 +256,7 @@ class ProgramRegistryFormWrap extends FormWrap {
         isPermittedByStatus={isPermittedByStatus}
         isPermittetForContractorL={isPermittetForContractorL}
         canSave={canSave}
-        handleFormChange={this.handleFormStateChangeWrap}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         fromCreating={fromCreating}

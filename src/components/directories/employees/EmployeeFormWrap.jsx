@@ -30,8 +30,8 @@ export default class EmployeeFormWrap extends FormWrap {
     this.props.onFormHide();
   }
 
-  handleFormSubmit = () => {
-    super.handleFormSubmit().then(() => {
+  handleFormSubmitWrap = () => {
+    this.handleFormSubmit().then(() => {
       const { location: { search } } = this.props;
 
       const searchObject = queryString.parse(search);
@@ -42,8 +42,6 @@ export default class EmployeeFormWrap extends FormWrap {
     });
   }
 
-  handleFormStateChange = (...arg) => super.handleFormStateChange(...arg);
-
   render() {
     return this.props.showForm
       ? (
@@ -53,7 +51,7 @@ export default class EmployeeFormWrap extends FormWrap {
           permissions={['employee.update']}
           addPermissionProp
           canSave={this.state.canSave}
-          onSubmit={this.handleFormSubmit}
+          onSubmit={this.handleFormSubmitWrap}
           handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.handleFormHide}

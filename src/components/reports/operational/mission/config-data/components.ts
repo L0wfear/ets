@@ -1,7 +1,13 @@
-import MissionReport from 'components/reports/operational/mission/report';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "mission" */ 'components/reports/operational/mission/report'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: MissionReport,
+    component,
+    loadable: true,
   },
 ];

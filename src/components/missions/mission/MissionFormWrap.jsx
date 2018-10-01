@@ -12,7 +12,7 @@ import { diffDates, setZeroSecondsToDate } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import MissionFormOld from 'components/missions/mission/MissionFormOld';
-import withMapInConsumer from 'components/map/new/context/withMapInConsumer';
+import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
 

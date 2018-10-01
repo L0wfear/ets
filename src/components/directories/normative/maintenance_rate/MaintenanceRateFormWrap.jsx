@@ -57,7 +57,6 @@ export default class MaintenanceRateFormWrap extends FormWrap {
     this.schema = maintenanceRateSchema;
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this, props.type);
-    this.handleFormStateChange = this.handleFormStateChange.bind(this);
   }
 
   inheritedComponentWillReceiveProps(props) {

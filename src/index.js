@@ -5,7 +5,6 @@
  */
 /* 3rd party js */
 import './assets/main.scss';
-import 'react-widgets/lib/scss/react-widgets.scss';
 
 /* Старт приложения */
 import './bootstrap';

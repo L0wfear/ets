@@ -1,8 +1,13 @@
-import OrderList from 'components/directories/order/OrderList';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "order" */ 'components/directories/order/OrderList'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: OrderList,
-    exact: true,
+    component,
+    loadable: true,
   },
 ];

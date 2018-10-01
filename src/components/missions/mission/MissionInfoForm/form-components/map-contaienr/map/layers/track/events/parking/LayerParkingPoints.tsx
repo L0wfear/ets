@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ol from 'openlayers';
 
-import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { getStyleForParking } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/events/parking/feature-style';
 import OverlayParkingPoint from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/events/parking/OverlayParkingPoint';
 import { DivNone } from 'global-styled/global-styled';

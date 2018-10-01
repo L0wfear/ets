@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { cloneDeep } from 'lodash';
-import MapEts from 'components/map/new/MapEts';
+import MapEts from 'components/map/MapEts';
 /*
-import LayerMeasure from 'components/map/new/layers/measure/LayerMeasure';
+import LayerMeasure from 'components/map/layers/measure/LayerMeasure';
 */
 
 import LayerEditGeoobjRoute from 'components/route/form/map/layers/layer-edit-geoobj-route/LayerEditGeoobjRoute';
@@ -11,8 +10,14 @@ import LayerEditDrawRoute from 'components/route/form/map/layers/layer-edit-draw
 
 import { MapEtsContainer } from 'components/route/form/map/styled/styled';
 
-import { MapEtsConsumer } from 'components/map/new/context/MapetsContext';
+import { MapEtsConsumer } from 'components/map/context/MapetsContext';
 import { DivNone } from 'global-styled/global-styled';
+
+import LayerDraw from 'components/map/layers/default/layer-draw/LayerDraw';
+import { checkRouteHasObjectLineByBegCoor } from 'components/route/form/map/utils/utils';
+import { CACHE_ROUTE_DRAW_STYLES } from 'components/route/form/map/utils/draw-styles';
+
+import RouteDrawButtons from 'components/route/form/map/draw-buttons/RouteDrawButtons';
 
 /**
  * @todo описать polys
@@ -40,20 +45,107 @@ type PropsRouteCreatingMap = {
 };
 
 type StatePropsRouteCreatingMap = {
+  inDraw: boolean;
 };
 
 class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StatePropsRouteCreatingMap> {
+  state = {
+    inDraw: false,
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const {
+      objectsType,
+      drawObjectList,
+    } = nextProps;
+
+    if (objectsType === 'points' || objectsType === 'mixed') {
+      if (!drawObjectList || !drawObjectList.length) {
+        return {
+          inDraw: true,
+        };
+      }
+    }
+
+    return null;
+  }
+
+  handleClickOnStartDraw = () => {
+    this.setState({ inDraw: !this.state.inDraw });
+  }
+
+  handleClickOnRemove = () => {
+    this.props.handleRemoveLastDrawFeature();
+  }
+
+  handleEndDraw = (coordinatesArr, distance, type, lines) => {
+    const { objectsType } = this.props;
+
+    if (objectsType === 'mixed') {
+      const { drawObjectList } = this.props;
+      let index = drawObjectList ? drawObjectList.length : 1;
+
+      const drawLines = [];
+
+      lines.forEach(coordinates => {
+        const routeHasObject = checkRouteHasObjectLineByBegCoor(drawObjectList, coordinates);
+
+        if (!routeHasObject) {
+          drawLines.push({
+            begin: { x_msk: coordinates[0][0], y_msk: coordinates[0][1] },
+            end: { x_msk: coordinates[1][0], y_msk: coordinates[1][1] },
+            state: 2,
+            object_id: index,
+            distance,
+            shape: {
+              type,
+              coordinates,
+            },
+          });
+
+          index += 1;
+        }
+      });
+
+      if (drawLines.length) {
+        this.props.handleAddDrawLines(drawLines);
+      }
+      this.setState({ inDraw: false });
+    }
+    if (objectsType === 'points') {
+      const newPointObject = {
+        shape: {
+          type,
+          coordinates: coordinatesArr,
+        },
+        name: '',
+      };
+
+      this.props.handlePointAdd({ newPointObject });
+    }
+  }
+
   render() {
     const { props } = this;
+    const {
+      objectsType,
+      objectList,
+      drawObjectList,
+      disabled,
+      manual,
+    } = props;
+    const {
+      inDraw,
+    } = this.state;
 
-    console.log(cloneDeep(props));
     return (
       <MapEtsContainer>
         <MapEtsConsumer>
         {
           ({ setMapToContext, removeMapToContext }) => (
             <MapEts
-              enableInteractions={!props.disabled}
+              enableInteractions={!disabled}
+              disabledMouseSingleClick={disabled || inDraw}
               setMapToContext={setMapToContext}
               removeMapToContext={removeMapToContext}
               mapKey="routeCreatingForm"
@@ -61,20 +153,28 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
               {
                 ({ map, centerOn }) => (
                   <>
-                    <LayerEditGeoobjRoute
-                      map={map}
-                      geoobjects={props.polys}
-                      handleFeatureClick={props.handleFeatureClick}
-                      centerOn={centerOn}
-                      />
                     {
-                      props.objectsType === 'points'
+                      objectsType === 'mixed' || objectsType === 'simple_dt'
+                      ? (
+                        <LayerEditGeoobjRoute
+                          map={map}
+                          geoobjects={props.polys}
+                          centerOn={centerOn}
+                          handleFeatureClick={props.handleFeatureClick}
+                          />
+                      )
+                      : (
+                        <DivNone />
+                      )
+                    }
+                    {
+                      objectsType === 'points'
                       ? (
                         <LayerShowPointsRoute
                           map={map}
-                          objectList={props.objectList}
-                          handleFeatureClick={props.handleFeatureClick}
+                          objectList={objectList}
                           centerOn={centerOn}
+                          handleFeatureClick={props.handleFeatureClick}
                         />
                       )
                       : (
@@ -84,15 +184,38 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
                     
                     <LayerEditDrawRoute
                       map={map}
-                      drawObjectList={props.drawObjectList}
+                      drawObjectList={drawObjectList}
                       handleDrawFeatureClick={props.handleDrawFeatureClick}
                     />
-                  {
-                    /*
-                    <LayerMeasure map={map} />
-                    */
-                  }
-
+                    {
+                      manual && (objectsType === 'mixed' || objectsType === 'points')
+                      ? (
+                        <LayerDraw
+                          map={map}
+                          type={objectsType === 'mixed' ? 'LineString' : 'Point'}
+                          inDraw={this.state.inDraw}
+                          handleEndDraw={this.handleEndDraw}
+                          styled={CACHE_ROUTE_DRAW_STYLES.blue}
+                        />
+                      ): (
+                        <DivNone />
+                      )
+                    }
+                    {
+                      objectsType === 'mixed' && manual
+                      ? (
+                        <RouteDrawButtons
+                          disabledDraw={disabled || !drawObjectList || !drawObjectList.length}
+                          disabledRemove={disabled || !drawObjectList || !drawObjectList.length || inDraw}
+                          hidden={this.props.disabled || this.props.objectsType === 'points' || !objectList || !objectList.length}
+                          handleClickOnStartDraw={this.handleClickOnStartDraw}
+                          handleClickOnRemove={this.handleClickOnRemove}
+                        />
+                      )
+                      : (
+                        <DivNone />
+                      )
+                    }
                   </>
                 )
               }

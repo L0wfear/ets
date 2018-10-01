@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Overlay from 'components/map/new/overlay/Overlay';
+import Overlay from 'components/map/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import { makeDate, makeTime } from 'utils/dates';
@@ -17,7 +17,7 @@ import {
   OverlayBoxInfoContainer,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/points/styled/styled';
 
-import { OverlayLineInfoContainer } from 'components/map/new/overlay/styled/styled';
+import { OverlayLineInfoContainer } from 'components/map/overlay/styled/styled';
 
 import { DivNone } from 'global-styled/global-styled';
 

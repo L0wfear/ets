@@ -20,6 +20,10 @@ import TabInfo from 'components/program_registry/UpdateFrom/inside_components/pr
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
+import {
+  SpanContractor,
+  PanelObjectInfo,
+} from 'components/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -213,10 +217,10 @@ class ProgramObjectFormDT extends Form {
     this.handleChange('draw_object_list', []);
   }
 
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+  handleAddDrawLines = (drawObjectNew) => {
     const { formState: { draw_object_list = [] } } = this.props;
 
-    draw_object_list.push(drawObjectNew);
+    draw_object_list.push(...drawObjectNew);
 
     this.handleChange('draw_object_list', draw_object_list);
   }
@@ -396,7 +400,7 @@ class ProgramObjectFormDT extends Form {
           <div>
             <Row style={{ marginBottom: 20 }}>
               <Col md={12}>
-                <Panel className="panel-object-info">
+                <PanelObjectInfo>
                   <Col md={12}>
                     <span style={{ fontWeight: 600 }}>Информация об объекте</span>
                   </Col>
@@ -421,7 +425,7 @@ class ProgramObjectFormDT extends Form {
                       <span>{`Заказчик: ${company_name || prCompanyName}`}</span>
                     </Col>
                   </Col>
-                </Panel>
+                </PanelObjectInfo>
               </Col>
             </Row>
             <Row>
@@ -432,7 +436,7 @@ class ProgramObjectFormDT extends Form {
                   </Col>
                   <div>
                     <Col md={2}>
-                      <span className="span-contractor">Номер контракта</span>
+                      <SpanContractor>Номер контракта</SpanContractor>
                     </Col>
                     <Col md={3}>
                       <ExtField
@@ -445,7 +449,7 @@ class ProgramObjectFormDT extends Form {
                       />
                     </Col>
                     <Col mdOffset={2} md={1}>
-                      <span className="span-contractor">Подрядчик</span>
+                      <SpanContractor>Подрядчик</SpanContractor>
                     </Col>
                     <Col style={{ position: 'relative', top: -20 }} md={4}>
                       <ExtField
@@ -518,7 +522,7 @@ class ProgramObjectFormDT extends Form {
                     setManualOnFalse={this.setManualOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
-                    handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                    handleAddDrawLines={this.handleAddDrawLines}
                     handleDrawFeatureClick={this.handleDrawFeatureClick}
                     handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
                   />

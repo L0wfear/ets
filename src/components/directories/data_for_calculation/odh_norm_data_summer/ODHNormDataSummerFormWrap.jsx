@@ -20,8 +20,8 @@ export default class ODHNormDataSummerFormWrap extends FormWrap {
           formState={this.state.formState}
           formErrors={this.state.formErrors}
           canSave={this.state.canSave}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
           show={this.props.showForm}
           onHide={this.props.onFormHide}
         />

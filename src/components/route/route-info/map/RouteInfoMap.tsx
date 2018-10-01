@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 
-import MapEts from 'components/map/new/MapEts';
+import MapEts from 'components/map/MapEts';
 
 import { MapEtsContainer } from 'components/route/route-info/map/styled/styled';
 
@@ -17,7 +17,7 @@ import { routeTypesByKey } from 'constants/route';
 import LayerRouteInfoGeometry from 'components/route/route-info/map/layers/layer-route-info-geometry/LayerRouteInfoGeometry';
 import { isNumber } from 'util';
 
-import { MapEtsConsumer } from 'components/map/new/context/MapetsContext';
+import { MapEtsConsumer } from 'components/map/context/MapetsContext';
 
 const makeObjectListWithShape = (object_list) => (
   object_list.map((data) => ({

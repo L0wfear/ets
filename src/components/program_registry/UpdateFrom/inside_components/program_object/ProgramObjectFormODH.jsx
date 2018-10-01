@@ -209,10 +209,10 @@ class ProgramObjectFormodh extends Form {
     this.handleChange('draw_object_list', []);
   }
 
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+  handleAddDrawLines = (drawObjectNew) => {
     const { formState: { draw_object_list = [] } } = this.props;
 
-    draw_object_list.push(drawObjectNew);
+    draw_object_list.push(...drawObjectNew);
 
     this.handleChange('draw_object_list', draw_object_list);
   }
@@ -487,7 +487,7 @@ class ProgramObjectFormodh extends Form {
                     setManualOnFalse={this.setManualOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
-                    handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                    handleAddDrawLines={this.handleAddDrawLines}
                     handleDrawFeatureClick={this.handleDrawFeatureClick}
                     handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
                   />

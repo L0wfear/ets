@@ -1,7 +1,13 @@
-import BatteryManufacturerList from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerList';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "battery_manufacturer" */ 'components/directories/autobase/battery_manufacturer/BatteryManufacturerList'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: BatteryManufacturerList,
+    component,
+    loadable: true,
   },
 ];

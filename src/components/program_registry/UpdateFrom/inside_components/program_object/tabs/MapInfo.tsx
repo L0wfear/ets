@@ -15,8 +15,8 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
   handlePointAdd = ({ newPointObject }) => {
     /* Смотри routeCreating */
   }
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
-    this.props.handleDrawFeatureAdd({ drawObjectNew });
+  handleAddDrawLines = (newInputLines) => {
+    this.props.handleDrawFeatureAdd(newInputLines);
   }
   handleDrawFeatureClick = ({ index, state }) => {
     this.props.handleDrawFeatureClick({ index, state });
@@ -81,7 +81,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 drawObjectList={drawObjectList}
                 handleFeatureClick={this.handleFeatureClick}
                 handlePointAdd={this.handlePointAdd}
-                handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                handleAddDrawLines={this.handleAddDrawLines}
                 handleDrawFeatureClick={this.handleDrawFeatureClick}
                 handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
               />

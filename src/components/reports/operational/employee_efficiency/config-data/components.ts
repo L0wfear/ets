@@ -1,7 +1,13 @@
-import EmployeeEfficiency from 'components/reports/operational/employee_efficiency/report';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "employee_efficiency" */ 'components/reports/operational/employee_efficiency/report'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: EmployeeEfficiency,
+    component,
+    loadable: true,
   },
 ];

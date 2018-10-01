@@ -1,7 +1,13 @@
-import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "tech_inspection" */ 'components/directories/autobase/tech_inspection/TechInspectionList'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: TechInspectionList,
+    component,
+    loadable: true,
   },
 ];

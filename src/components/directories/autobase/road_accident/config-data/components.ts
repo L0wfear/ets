@@ -1,7 +1,13 @@
-import RoadAccidentList from 'components/directories/autobase/road_accident/RoadAccidentList';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "hidden_road_accident" */ 'components/directories/autobase/road_accident/RoadAccidentList'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: RoadAccidentList,
+    component,
+    loadable: true,
   },
 ];

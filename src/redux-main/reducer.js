@@ -6,8 +6,8 @@ import rootReducers from 'components/redux-main/reducer';
 
 import order from 'redux-main/modules/order/order';
 import session from 'redux-main/modules/session/session';
-import monitorPage from 'components/monitor/new/redux-main/models/monitor-page';
-import dashboard from 'components/dashboard/new/redux-main/modules/dashboard/dashboard';
+import monitorPage from 'components/monitor/redux-main/models/monitor-page';
+import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboard';
 
 // sorry
 import paginator from 'components/ui/new/paginator/redux-main/paginator';

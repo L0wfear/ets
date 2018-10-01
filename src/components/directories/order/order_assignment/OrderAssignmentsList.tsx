@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col, Button as BootstrapButton } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
@@ -8,26 +8,28 @@ import {
 } from 'redux-main/modules/order/action-order';
 import Div from 'components/ui/Div';
 import connectToStores from 'flummox/connect';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import permissions_mission from 'components/missions/mission/config-data/permissions';
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
 
 import OrderAssignmentsInfoTable from 'components/directories/order/order_assignment/OrderAssignmentsInfoTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
 
-const Button = enhanceWithPermissions({})(BootstrapButton);
-const style: any = { marginLeft: 20, fontWeight: 'bold' };
+import {
+  ColOrderAssignmentHeaderTitleContainer,
+  ButtonOrderAssignment,
+  TitleText,
+} from 'components/directories/order/order_assignment/styled/styled';
 
 const OrderAssignmentsList: React.SFC<any> = props => (
   <Div className="data-table data-other" hidden={props.hidden} >
     <Row>
-      <Col md={8} className="flex-space-beetwen">
-        <h4 style={style}>Расшифровка централизованного задания</h4>
-        <div className="flex-button-group">
-          <Button permission={permissions_mission.create} onClick={props.handleClickOnCM} disabled={props.disabledAssignmentButtonMission}>Создать задание</Button>
-          <Button permission={permissions_duty_mission.create} onClick={props.handleClickOnCDM} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</Button>
+      <ColOrderAssignmentHeaderTitleContainer md={8}>
+        <TitleText>Расшифровка централизованного задания</TitleText>
+        <div>
+          <ButtonOrderAssignment permission={permissions_mission.create} onClick={props.handleClickOnCM} disabled={props.disabledAssignmentButtonMission}>Создать задание</ButtonOrderAssignment>
+          <ButtonOrderAssignment permission={permissions_duty_mission.create} onClick={props.handleClickOnCDM} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
         </div>
-      </Col>
+      </ColOrderAssignmentHeaderTitleContainer>
       <Col md={8}>
         <OrderAssignmentsInfoTable />
       </Col>

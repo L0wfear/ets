@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import Overlay from 'components/map/new/overlay/Overlay';
+import Overlay from 'components/map/overlay/Overlay';
 
 import { PropsOverlayLayerRouteInfoGeometry } from 'components/route/route-info/map/layers/layer-route-info-geometry/LayerRouteInfoGeometry.h';
 import { RouteInfoOverlayContainer } from 'components/route/route-info/map/layers/layer-route-info-geometry/styled/styled';

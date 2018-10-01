@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 
 import {
   PropsLayerEditDrawRoute,
@@ -14,7 +14,7 @@ import { linesState } from 'components/route/form/map/layers/layer-edit-draw-rou
 
 class LayerEditDrawRoute extends React.PureComponent<PropsLayerEditDrawRoute, StateLayerEditDrawRoute> {
   componentDidMount() {
-    this.props.addLayer({ id: 'LayerEditDrawRoute', zIndex: 0 }).then(() => {
+    this.props.addLayer({ id: 'LayerEditDrawRoute', zIndex: 10 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
       const {
         drawObjectList,

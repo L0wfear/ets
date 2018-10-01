@@ -16,7 +16,7 @@ export type PropsLayerLayerShowPointsRoute = {
     type: 'odh' | 'dt' | 'points',
   }[];
 
-  centerOn: Function;
+  centerOn: any;
 };
 
 export type StateLayerLayerShowPointsRoute = {

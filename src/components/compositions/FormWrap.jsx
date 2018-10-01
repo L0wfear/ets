@@ -98,6 +98,8 @@ export default class FormWrap extends React.Component {
     newState.formErrors = formErrors;
 
     this.setState(newState);
+
+    return newState;
   }
   nullValueForField = (field, value) => {
     const { schema = {} } = this;

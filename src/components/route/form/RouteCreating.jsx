@@ -199,10 +199,10 @@ class RouteCreating extends React.Component {
     this.props.onChange('object_list', object_list);
   }
 
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+  handleAddDrawLines = (newInputLines) => {
     const { route: { input_lines: [...input_lines] = [] } } = this.props;
 
-    input_lines.push(drawObjectNew);
+    input_lines.push(...newInputLines);
 
     this.props.onChange('input_lines', input_lines);
   }
@@ -256,22 +256,6 @@ class RouteCreating extends React.Component {
       <div>
         <Row>
           <Col md={9}>
-            {
-              /*
-                <MapWrap
-                  objectsType={route.type}
-                  manual={this.props.manual}
-                  polys={MapPolys}
-                  objectList={object_list}
-                  drawObjectList={input_lines}
-                  handleFeatureClick={this.handleFeatureClick}
-                  handlePointAdd={this.handlePointAdd}
-                  handleDrawFeatureAdd={this.handleDrawFeatureAdd}
-                  handleDrawFeatureClick={this.handleDrawFeatureClick}
-                  handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
-                />
-              */
-            }
             <RouteCreatingMap
               objectsType={route.type}
               manual={manual}
@@ -280,7 +264,7 @@ class RouteCreating extends React.Component {
               drawObjectList={input_lines}
               handleFeatureClick={this.handleFeatureClick}
               handlePointAdd={this.handlePointAdd}
-              handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+              handleAddDrawLines={this.handleAddDrawLines}
               handleDrawFeatureClick={this.handleDrawFeatureClick}
               handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
             />
@@ -355,7 +339,7 @@ class RouteCreating extends React.Component {
                         </div>
                         <Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove" /></Button>
                       </div>
-                      <Div hidden={!!o.name} className="error">{`Имя Пункт назначения №${i + 1} должно быть заполнено`}</Div>
+                      <Div hidden={!!o.name} className="error">{`Имя Пункта назначения №${i + 1} должно быть заполнено`}</Div>
                     </Div>
                   );
                 })}

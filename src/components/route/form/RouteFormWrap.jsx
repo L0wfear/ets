@@ -9,6 +9,7 @@ import { routeSchema } from 'models/RouteModel';
 import { polyState } from 'constants/polygons';
 import RouteForm from 'components/route/form/RouteForm';
 import FormWrap from 'components/compositions/FormWrap';
+import { DivNone } from 'global-styled/global-styled';
 
 class RouteFormWrap extends FormWrap {
   constructor(props) {
@@ -144,24 +145,30 @@ class RouteFormWrap extends FormWrap {
   }
 
   handleFormStateChangeRoute = (f, e) => {
-    this.handleFormStateChange(f, e);
+    const { formErrors, formState } = this.handleFormStateChange(f, e);
 
     // Проверка на наличие имени маршрута в списке маршрутов
-    const { formErrors, formState } = this.state;
     const { routesList } = this.props;
     const routesByName = routesList
       .filter(r => r.id !== formState.id)
       .map(r => r.name);
     const value = formState.name;
 
+    let hasChanges = false;
+
     if (routesByName.includes(value)) {
       if (!formErrors.name) {
+        hasChanges = true;
         formErrors.name = 'Маршрут с данным названием уже существует!';
       }
     } else if (formErrors.name === 'Маршрут с данным названием уже существует!') {
+      hasChanges = true;
       delete formErrors.name;
     }
-    this.setState({ formErrors });
+
+    if (hasChanges) {
+      this.setState({ formErrors });
+    }
   }
 
   additionalProps = () => {
@@ -201,7 +208,9 @@ class RouteFormWrap extends FormWrap {
           {...this.additionalProps()}
         />
       )
-      : null;
+      : (
+        <DivNone />
+      );
   }
 }
 

@@ -24,7 +24,7 @@ export default class ReactSelect extends React.Component<any, any> {
   static get propTypes() {
     return {
       placeholder: PropTypes.string,
-      noOptionsMessage: PropTypes.func,
+      noResultsText: PropTypes.string,
       options: PropTypes.array,
       sortingFunction: PropTypes.func,
       emptyValue: PropTypes.string,
@@ -54,6 +54,8 @@ export default class ReactSelect extends React.Component<any, any> {
     return <components.Option innerProps={newInnerProps} {...props} />;
   }
 
+  noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
+
   singleValueRender = ({ innerProps, ...props }) => {
     const {
       modalKey,
@@ -71,7 +73,6 @@ export default class ReactSelect extends React.Component<any, any> {
   render() {
     const {
       placeholder = 'Выберите...',
-      noOptionsMessage = () => {return 'Нет данных'},
       options = [],
       sortingFunction = defaultSortingFunction,
       className,
@@ -116,7 +117,7 @@ export default class ReactSelect extends React.Component<any, any> {
         onChange={this.handleChange}
         options={sortedOptions}
         placeholder={placeholder}
-        noOptionsMessage={noOptionsMessage}
+        noOptionsMessage={this.noOptionsMessage}
         components={
           {
             Option: this.optionRenderer,

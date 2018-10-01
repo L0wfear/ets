@@ -62,7 +62,7 @@ export const schema = {
             if (isEmpty(formData.drivers_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
-          } 
+          }
           return undefined;
         },
       },

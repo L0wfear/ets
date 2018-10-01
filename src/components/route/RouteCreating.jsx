@@ -302,7 +302,7 @@ class RouteCreating extends React.Component {
                   draw_list={draw_list}
                   fail_list={fail_list}
                   checkRoute={route.type === 'mixed' ? this.checkRoute : null}
-                  disabledCheckRoute={!input_lines.length}
+                  disabledCheckRoute={!input_lines || !input_lines.length}
                 />
               </Div>
               <Div className="destination-points" hidden={route.type !== 'points'}>
@@ -310,11 +310,14 @@ class RouteCreating extends React.Component {
                   const label = `Пункт назначения №${i + 1} ${o.name ? `( ${o.name} )` : ''}`;
                   return (
                     <Div className="destination-point" key={i}>
-                      <div className="form-group">
-                        <label className=""><span>{label}</span></label>
-                        <FormControl type="text" label={label} value={o.name} onChange={this.onObjectNameChange.bind(this, i)} />
+                      <div>
+                        <div className="form-group">
+                          <label className=""><span>{label}</span></label>
+                          <FormControl type="text" label={label} value={o.name} className={cx({ 'has-error': !o.name })} onChange={this.onObjectNameChange.bind(this, i)} />
+                        </div>
+                        <Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove" /></Button>
                       </div>
-                      <Button className="inline-block" onClick={this.removeObject.bind(this, i)}><Glyphicon glyph="remove" /></Button>
+                      <Div hidden={!!o.name} className="error">{`Имя Пункт назначения №${i + 1} должно быть заполнено`}</Div>
                     </Div>
                   );
                 })}

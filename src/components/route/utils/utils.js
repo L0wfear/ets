@@ -1,4 +1,3 @@
-
 export const getTypeRoute = (type) => {
   switch (type) {
     case 'mixed':
@@ -14,11 +13,17 @@ export const getTypeRoute = (type) => {
   }
 };
 
-export const makeRoutesListForRender = (routesListFromStore, technicalOperationsList, STRUCTURES) => {
-  routesListFromStore.forEach((r) => {
-    r.technical_operation_name = _.get(technicalOperationsList.find(t => t.id === r.technical_operation_id), 'name');
-    r.structure_name = _.get(STRUCTURES.find(t => t.value === r.structure_name), 'label');
-    r.type_name = getTypeRoute(r.type);
-  });
-  return routesListFromStore;
+export const makeRoutesListForRender = (routesListFromStore) => {
+  return routesListFromStore.reduce((newRouteList, r) => {
+    r.work_types.forEach(({ work_type_id, work_type_name }) => (
+      newRouteList.push({
+        ...r,
+        front_work_type_id: work_type_id,
+        front_work_type_name: work_type_name,
+        type_name: getTypeRoute(r.type),
+      })
+    ));
+
+    return newRouteList;
+  }, []);
 };

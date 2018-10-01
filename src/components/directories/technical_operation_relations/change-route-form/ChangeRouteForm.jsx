@@ -58,6 +58,7 @@ export default class ChangeRouteForm extends React.Component {
         structure_id: null,
         object_list: [],
         input_lines: [],
+        is_main: true,
       },
     });
   }

@@ -53,7 +53,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       const date = (new Date()).getTime();
 
       const timeInterval = setTimeout(this.checkMissionsList, new Date(date - (date % 60000) + 60 * 1000).getTime() - date + 1000);
-
+      
       this.setState({
         missionsList,
         missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),

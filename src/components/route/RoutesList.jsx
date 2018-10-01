@@ -9,6 +9,10 @@ import * as queryString from 'query-string';
 
 import {
   EtsPageWrapRoute,
+  RouteHeaderContainer,
+  SeasonsFilterContainer,
+  SidebarListContainer,
+  SpanTitleRouteGroup,
 } from 'components/route/styled/styled';
 
 import Div from 'components/ui/Div';
@@ -23,11 +27,59 @@ import {
   ButtonUpdateRoute,
   ButtonDeleteRoute,
 } from 'components/route/buttons/buttons';
+import { ExtField } from 'components/ui/Field';
+
+import { getCurrentSeason } from 'utils/dates';
+
+const SEASONS_OPTIONS = [
+  {
+    value: 1,
+    label: 'Лето',
+  },
+  {
+    value: 2,
+    label: 'Зима',
+  },
+  {
+    value: 3,
+    label: 'Всесезон',
+  },
+];
+
+const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
+  const ROUTES = _.groupBy(INPUT_ROUTES, r => r.type_name);
+  _.forOwn(ROUTES, (ar1, key1) => {
+    ROUTES[key1] = _(ar1)
+      .sortBy(r => r.structure_id)
+      .groupBy(r => r.structure_name || 'Без подразделения')
+      .value();
+
+    if (Object.keys(ROUTES[key1]).length === 1 && Object.keys(ROUTES[key1])[0] === 'Без подразделения') {
+      ROUTES[key1] = _.groupBy(ar1, r => r.front_work_type_name);
+
+      Object.entries(ROUTES[key1]).forEach(([key, arr]) => {
+        ROUTES[key1][key] = _.groupBy(arr, r => r.technical_operation_name);
+      });
+    } else {
+      Object.entries(ROUTES[key1]).forEach(([key2, arr2]) => {
+        ROUTES[key1][key2] = _.groupBy(arr2, r => r.front_work_type_name);
+
+        Object.entries(ROUTES[key1][key2]).forEach(([key, arr]) => {
+          ROUTES[key1][key2][key] = _.groupBy(arr, r => r.technical_operation_name);
+        });
+      });
+    }
+  });
+
+  console.log(ROUTES)
+  return ROUTES;
+};
 
 class RoutesList extends React.Component {
 
   static get propTypes() {
     return {
+      appConfig: PropTypes.object,
       technicalOperationsList: PropTypes.array,
       technicalOperationsObjectsList: PropTypes.array,
     };
@@ -40,6 +92,8 @@ class RoutesList extends React.Component {
   constructor(props) {
     super(props);
 
+    const season = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+
     this.state = {
       selectedRoute: null,
       selectedRoute_old: null,
@@ -47,6 +101,7 @@ class RoutesList extends React.Component {
       filterValues: {},
       filterModalIsOpen: false,
       showId: [-1],
+      season_id: [3, season === 'winter' ? 2 : 1],
     };
   }
 
@@ -98,9 +153,8 @@ class RoutesList extends React.Component {
       this.context.flux.getActions('routes').getRoutes().then(({ result }) => result),
       Promise.resolve(this.getStructures()),
     ])
-    .then(([routesListFromStore, STRUCTURES]) => {
-      const { technicalOperationsList = [] } = this.props;
-      const routesList = makeRoutesListForRender(routesListFromStore, technicalOperationsList, STRUCTURES);
+    .then(([routesListFromStore]) => {
+      const routesList = makeRoutesListForRender(routesListFromStore);
 
       this.setState({ ...withState, routesList });
 
@@ -108,19 +162,21 @@ class RoutesList extends React.Component {
     })
   )
 
-  shouldBeRendered(obj) {
-    let isValid = true;
-    _.mapKeys(this.state.filterValues, ({ value }, key) => {
-      if (_.isArray(value)) {
-        if (!obj[key]) {
-          isValid = false;
-        } else if (value.indexOf(obj[key].toString()) === -1) {
-          isValid = false;
-        }
-      }
-    });
+  handleChangeSeasonId = (season_id) => {
+    this.setState({ season_id });
+  }
 
-    return isValid;
+  shouldBeRendered(obj) {
+    if (this.state.season_id.some(season_id => (obj.seasons.some(seasonData => seasonData.season_id === season_id)))) {
+      return Object.entries(this.state.filterValues).every(([key, { value }]) => {
+        if (Array.isArray(obj[key])) {
+          return obj[key].some(data => value.includes(data));
+        }
+        return value.includes(obj[key]);
+      });
+    }
+
+    return false;
   }
 
   closeFilter = () => {
@@ -142,14 +198,13 @@ class RoutesList extends React.Component {
     return this.context.flux.getActions('routes').getRouteById(id).then((route) => {
       const { showId } = this.state;
 
-      const STRUCTURES = this.getStructures();
-      const { technicalOperationsList = [] } = this.props;
+      const pathToIsMain = route.is_main ? 'main' : 'other';
+      const pathTo_type = pathToIsMain + getTypeRoute(route.type);
+      const pathTo_structure_name = pathTo_type + route.structure_name || 'Без подразделения';
+      const pathToWorkTypeName = pathTo_structure_name + route.front_work_type_name;
+      const pathTo_technical_operation_name = pathTo_structure_name + route.technical_operation_name;
 
-      const pathTo_type = getTypeRoute(route.type);
-      const pathTo_structure_name = pathTo_type + ((STRUCTURES.length > 0 && route.structure_id) ? (_.get(STRUCTURES.find(t => t.value === route.structure_id), 'label') || 'Без подразделения') : 'Без подразделения');
-      const pathTo_technical_operation_name = pathTo_structure_name + _.get(technicalOperationsList.find(t => t.id === route.technical_operation_id), 'name');
-
-      [pathTo_type, pathTo_structure_name, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
+      [pathToIsMain, pathTo_type, pathTo_structure_name, pathToWorkTypeName, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
 
       this.setState({
         showForm: false,
@@ -172,6 +227,7 @@ class RoutesList extends React.Component {
         draw_object_list: [],
         input_lines: [],
         type: '',
+        is_main: true,
       },
     });
 
@@ -179,6 +235,8 @@ class RoutesList extends React.Component {
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);
     delete copiedRoute.name;
     delete copiedRoute.id;
+    delete copiedRoute.comment;
+    delete copiedRoute.number;
     copiedRoute.copy = true;
 
     this.setState({
@@ -290,20 +348,11 @@ class RoutesList extends React.Component {
     ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
     ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
 
-    ROUTES = _.groupBy(ROUTES, r => r.type_name);
-    _.forOwn(ROUTES, (ar1, key1) => {
-      ROUTES[key1] = _(ar1)
-        .sortBy(r => r.structure_id)
-        .groupBy(r => r.structure_name || 'Без подразделения')
-        .value();
-      if (Object.keys(ROUTES[key1]).length === 1 && Object.keys(ROUTES[key1])[0] === 'Без подразделения') {
-        ROUTES[key1] = _.groupBy(ar1, r => r.technical_operation_name);
-      } else {
-        _.forOwn(ROUTES[key1], (ar2, key2) => {
-          ROUTES[key1][key2] = _.groupBy(ar2, r => r.technical_operation_name);
-        });
-      }
-    });
+    ROUTES = Object.entries(_.groupBy(ROUTES, r => r.is_main ? 'main' : 'other')).reduce((newObj, [key, arr]) => {
+      newObj[key] = makeMainGroupRoute(arr);
+
+      return newObj;
+    }, {});
 
     return (
       <EtsPageWrapRoute inheritDisplay>
@@ -313,13 +362,32 @@ class RoutesList extends React.Component {
               Список маршрутов
             </div>
           </header>
-          <div className="sidebar__list-container" style={{ marginLeft: 20, top: '70px' }}>
-            {this.renderItem(ROUTES)}
-          </div>
+          <SidebarListContainer>
+            <div>
+              <SpanTitleRouteGroup>Основные:</SpanTitleRouteGroup>
+              {this.renderItem(ROUTES.main, 'main')}
+            </div>
+            <div>
+              <SpanTitleRouteGroup className="second">Дополнительные:</SpanTitleRouteGroup>
+              {this.renderItem(ROUTES.other, 'other')}
+            </div>
+          </SidebarListContainer>
         </Col>
         <Col xs={7} md={9} >
-          <div className="some-header clearfix">
+          <RouteHeaderContainer className="some-header">
             <div className="waybills-buttons">
+              <span>{'Сезон: '}</span>
+              <SeasonsFilterContainer>
+                <ExtField
+                  id="season_id"
+                  type="select"
+                  multi
+                  label={false}
+                  options={SEASONS_OPTIONS}
+                  value={this.state.season_id}
+                  onChange={this.handleChangeSeasonId}
+                />
+              </SeasonsFilterContainer>
               <FilterButton
                 show={this.state.filterModalIsOpen}
                 active={!!_.keys(this.state.filterValues).length}
@@ -330,7 +398,7 @@ class RoutesList extends React.Component {
               <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
               <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
             </div>
-          </div>
+          </RouteHeaderContainer>
           <Filter
             show={this.state.filterModalIsOpen}
             onSubmit={this.saveFilter}

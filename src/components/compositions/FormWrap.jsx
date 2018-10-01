@@ -22,7 +22,7 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  * @handleFormSubmit обработка отправки формы
  * @render дефолтный, обязательно переопределяется
  */
-@FluxContext
+ @FluxContext
 @autobind
 export default class FormWrap extends React.Component {
 

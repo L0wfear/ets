@@ -29,7 +29,6 @@ export default class FormWrap extends React.Component {
     }
   }
 
-
   handleFormStateChange(field, e) {
     const value = !!e.target ? e.target.value : e;
     const formState = this.state.formState;

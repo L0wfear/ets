@@ -3,6 +3,8 @@ import * as PropTypes from 'prop-types';
 import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 
+
+console.log(components)
 import {
   onChangeSelectLegacy,
   defaultSortingFunction,
@@ -43,7 +45,7 @@ export default class ReactSelect extends React.Component<any, any> {
   optionRenderer = ({ innerProps, ...props }) => {
     const newInnerProps = {
       ...innerProps,
-      id: innerProps.id.replace(/option-\d+$/, props.value),
+      id: innerProps.id.replace(/option-\d+$/, `value-${props.value}`),
     };
 
     if (this.props.optionRenderer && typeof this.props.optionRenderer === 'function') {
@@ -51,10 +53,26 @@ export default class ReactSelect extends React.Component<any, any> {
     }
     return <components.Option innerProps={newInnerProps} {...props} />;
   }
+
+  noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
+
+  singleValueRender = ({ innerProps, ...props }) => {
+    const {
+      modalKey,
+    } = this.props;
+    
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
+
+    const newInnerProps = {
+      ...innerProps,
+      id,
+    };
+
+    return <components.SingleValue innerProps={newInnerProps} {...props} />;
+  }
   render() {
     const {
       placeholder = 'Выберите...',
-      noResultsText = 'Ничего не найдено',
       options = [],
       sortingFunction = defaultSortingFunction,
       className,
@@ -67,7 +85,6 @@ export default class ReactSelect extends React.Component<any, any> {
     } = this.props;
 
     const sortedOptions = options.sort(sortingFunction);
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
     const instanceId = modalKey ? `${modalKey}-${this.props.id}` : this.props.id;
 
     let value = props.value;
@@ -81,6 +98,8 @@ export default class ReactSelect extends React.Component<any, any> {
         :
           null;
     }
+
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-container` : undefined;
 
     return (
       <Select
@@ -98,10 +117,11 @@ export default class ReactSelect extends React.Component<any, any> {
         onChange={this.handleChange}
         options={sortedOptions}
         placeholder={placeholder}
-        noResultsText={noResultsText}
+        noOptionsMessage={this.noOptionsMessage}
         components={
           {
-            Option: this.optionRenderer
+            Option: this.optionRenderer,
+            SingleValue: this.singleValueRender,
           }
         }
         isDisabled={disabled}

@@ -33,7 +33,7 @@ class OrderList extends React.Component<any, any> {
     order_mission_source_id: null,
   };
 
-  componentDidUpdate(prevProps, prevState){  
+  componentDidUpdate(prevProps){  
     if (prevProps.configDateStart !== this.props.configDateStart ) {
       prevProps.getOrders({date_start: this.props.configDateStart, date_end: this.props.configDateEnd});
     }
@@ -48,11 +48,10 @@ class OrderList extends React.Component<any, any> {
       location: { search },
     } = this.props;
 
-
     const {
       idOrder,
-      dateFrom: date_start,
-      dateTo: date_end,
+      dateFrom: date_start = this.props.configDateStart,
+      dateTo: date_end = this.props.configDateEnd,
     } = queryString.parse(search);
     const outerIdFax = Number.parseInt(idOrder, 0);
 
@@ -102,6 +101,7 @@ const mapStateToProps = (state) => ({
   selectedElementOrder: state.order.selectedElementOrder,
   configDateStart: state.session.appConfig.shift.shift_start,
   configDateEnd: state.session.appConfig.shift.shift_end,
+  shift: state.session.appConfig.shift,
 });
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(

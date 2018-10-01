@@ -178,7 +178,7 @@ export const getNormDataByNormatives = (normatives, kind_task_ids, action) =>
   action({ norm_ids: normatives.map(({ id }) => id).join(','), kind_task_ids }).then(({ result: normativesData }) => normativesData)
 ;
 export const getCarsByNormNormatives = (normatives, formState, fromWaybill, action) => {
-  if (!formState.status && !fromWaybill) {
+  if (!formState.status && !fromWaybill || formState.can_edit_car_and_route) {
     return action({ norm_ids: normatives.map(({ id }) => id).join(',') }).then(({ result: { rows: carsList } }) => carsList);
   }
 

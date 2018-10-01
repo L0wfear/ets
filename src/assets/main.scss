@@ -201,6 +201,7 @@ body {
   .legend-color {
     display: flex;
     align-items: center;
+    font-weight: 200;
     >div {
       margin: 0px 2px;
     }
@@ -3608,4 +3609,11 @@ div.car-movement-time-report {
 
 .font-bold {
   font-weight: bold;
+}
+
+.flex-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: baseline;
 }

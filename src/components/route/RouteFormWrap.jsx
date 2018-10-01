@@ -29,6 +29,7 @@ class RouteFormWrap extends FormWrap {
       let formState = null;
       if (props.element !== null) {
         formState = cloneDeep(props.element);
+        formState.is_main = Boolean(formState.is_main);
 
         if (!formState.id) {
           formState.is_new = true;
@@ -38,8 +39,16 @@ class RouteFormWrap extends FormWrap {
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
         this.updateFromStatePolys(formState, true);
       } else {
-        formState = {};
+        formState = {
+          is_main: true,
+        };
       }
+
+      if (!formState.id) {
+        formState.number = '{{number}}';
+        formState.name = formState.name || '';
+      }
+
       formState.structure_id = props.element.structure_id || this.context.flux.getStore('session').getCurrentUser().structure_id;
       const formErrors = this.validate(formState, {});
       this.setState({
@@ -125,6 +134,10 @@ class RouteFormWrap extends FormWrap {
     let result;
 
     if (!formState.id) {
+      if (this.props.fromMission) {
+        formState.name = formState.name.replace(/Маршрут №\{\{number\}\}-А/, 'Маршрут №\{\{number\}\}');
+      }
+
       result = await flux.getActions('routes').createRoute(formState, isTemplate);
     } else {
       result = await flux.getActions('routes').updateRoute(formState);

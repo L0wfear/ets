@@ -6,6 +6,8 @@ import withDefaultCard from 'components/dashboard/new/menu/cards/_default-card-c
 import ListByTypeMission from 'components/dashboard/new/menu/cards/current-missions/collapse-list/ListByTypeMission';
 import CurrentMissionInfo from 'components/dashboard/new/menu/cards/current-missions/info/CurrentMissionInfo';
 
+import { IsCurrentMissionsWidget } from 'components/dashboard/new/menu/cards/current-missions/styled/styled'
+
 import {
   dashboardLoadCurrentMissions,
   dashboardLoadMissionDataForCurrentMission,
@@ -22,10 +24,10 @@ class CurrentMissions extends React.Component<PropsCurrentMissions, {}> {
 
   render() {
     return (
-      <div>
+      <IsCurrentMissionsWidget>
         <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
         <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
-      </div>
+      </IsCurrentMissionsWidget>
     )
   }
 }

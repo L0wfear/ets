@@ -99,6 +99,28 @@ class MissionFormWrap extends FormWrap {
     }
   }
 
+  shouldComponentUpdate(props, state) {
+    return (
+      Object.entries(props).some(([key, value]) => {
+        return value !== this.props[key];
+      })
+      || Object.entries(state).some(([key, value]) => {
+        if (key === 'formErrors' && state[key]) {
+          return Object.entries(state[key]).some(([nameField, titleError]) => {
+            return this.state[key][nameField] !== titleError;
+          });
+        }
+        if (key === 'formState' && state[key]) {
+          return Object.entries(state[key]).some(([nameField, titleError]) => {
+            return this.state[key][nameField] !== titleError;
+          });
+        }
+
+        return value !== this.state[key];
+      })
+    );
+  }
+
   /**
    * @override
    * @param {*} formState

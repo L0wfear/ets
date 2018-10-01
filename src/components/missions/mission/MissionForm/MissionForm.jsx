@@ -385,13 +385,23 @@ export class MissionForm extends Form {
   }
 
   getDataByNormatives = (normatives) => {
-    if (!this.props.formState.normatives || normatives.some(({ id }) => !this.props.formState.normatives.find(({ id: formStateNormativeId }) => id === formStateNormativeId))) {
-      const { flux } = this.context;
-      const {
-        formState,
-        fromWaybill,
-      } = this.props;
+    const { formState } = this.props;
 
+    const trigger = (
+      !formState.normatives
+      || normatives.some(({ id }) => (
+        !formState.normatives.find(({ id: formStateNormativeId }) => (
+          id === formStateNormativeId
+        ))
+      ))
+      || formState.can_edit_car_and_route
+    );
+
+    if (trigger) {
+      const { flux } = this.context;
+      const { fromWaybill } = this.props;
+
+      console.log('here')
       return getDataByNormatives(
         normatives,
         this.state.kind_task_ids,

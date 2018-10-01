@@ -28,13 +28,6 @@ export default class FormWrap extends Component {
     }
   }
 
-  shouldComponentUpdate(props, state) {
-    return (
-      Object.entries(props).some(([key, value]) => value !== this.props[key])
-      || Object.entries(state).some(([key, value]) => value !== this.state[key])
-    );
-  }
-
   handleFormStateChange(field, e) {
     const value = !!e.target ? e.target.value : e;
     const formState = this.state.formState;

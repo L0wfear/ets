@@ -87,7 +87,7 @@ export default class RouteForm extends Form {
     }
   }
 
-  handleTypeChange(type) {
+  handleTypeChange = (type) => {
     if (type !== this.props.formState.type) {
       this.setState({ vector: false });
       this.handleChange('type', type);

@@ -31,8 +31,6 @@ export type TypeGeoobjects = {
 };
 
 export type StateLayerGeooobjects= {
-  geoobjects: TypeGeoobjects,
-  SHOW_GEOOBJECTS: boolean;
 }
 
 export module InjectetLayerProps {
@@ -126,8 +124,8 @@ export module LayerGeoobjectsUtilsTypes {
   }
 
   export type diffInputPropsFunc = (
-    nextProps: PropsLayerGeooobjects,
-    thisState: StateLayerGeooobjects,
+    thisProps: PropsLayerGeooobjects,
+    prevProps: PropsLayerGeooobjects,
   ) => DiffAnsForClass;
 
   export type mergeRetvalWithCaclDataFunc = (

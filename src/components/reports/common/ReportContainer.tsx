@@ -46,8 +46,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       selectedRow: null,
       filterValues: {},
       uniqName: props.uniqName || '_uniq_field',
+      lastSearchObject: queryString.parse(this.props.location.search),
     };
   }
+
   componentDidMount() {
     // Так как стор один на все отчёты, необходимо его чистить в начале.
     this.props.setInitialState();
@@ -61,31 +63,37 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  async componentWillReceiveProps(nextProps: IPropsReportContainer) {
-    const { location: { search } } = this.props;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { lastSearchObject } = prevState;
     const { location: { search: search_next } } = nextProps;
+
+    const searchNextxObject = queryString.parse(search_next);
+
+    // Если урл поменялся и он не пустой, то делаем запрос данных.
+    if (!isEqual(lastSearchObject, searchNextxObject)) {
+      return {
+        filterValues: {},
+        lastSearchObject: searchNextxObject,
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps) {
+    const { location: { search } } = prevProps;
+    const { location: { search: search_next } } = this.props;
 
     const searchObject = queryString.parse(search);
     const searchNextxObject = queryString.parse(search_next);
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(searchObject, searchNextxObject)) {
-      /**
-       * Первый запрос с кнопки меняет урл, поэтому происходит повторный запрос.
-       * Данная проверка исключает такую ситуацию.
-       */
-      if (this.state.fetchedBySubmitButton) {
-        this.setState({ fetchedBySubmitButton: false });
-        return;
-      }
-
       if (Object.keys(searchNextxObject).length > 0) {
-        await this.getReportData(searchNextxObject);
-        this.setState({ filterValues: {} });
+        this.getReportData(searchNextxObject);
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
-        this.setState({ filterValues: {} });
       }
     }
   }

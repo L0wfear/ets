@@ -16,19 +16,12 @@ type PropsLayerTrackLines = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
   track: any[];
-  zoom: number,
   lastPoint: any;
   front_cars_sensors_equipment: any[];
   SHOW_TRACK: boolean;
 };
 
 type StateLayerTrackLines = {
-  zoomMore8: boolean,
-  lastPoint: any;
-  trackLineIsDraw: boolean;
-  SHOW_TRACK: boolean;
-
-  front_cars_sensors_equipment: any[];
 };
 
 const countWorkSensor = (trackPoint, front_cars_sensors_equipment) => {
@@ -39,13 +32,6 @@ const countWorkSensor = (trackPoint, front_cars_sensors_equipment) => {
   return pointSensors.length;
 }
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
-  state = {
-    zoomMore8: this.props.zoom >= 8,
-    lastPoint: null,
-    trackLineIsDraw: false,
-    front_cars_sensors_equipment: this.props.front_cars_sensors_equipment,
-    SHOW_TRACK: this.props.SHOW_TRACK,
-  }
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLinesBySensor', zIndex: 2 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
@@ -53,37 +39,41 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
       const { track, front_cars_sensors_equipment } = this.props;
 
       if (track.length > 1) {
-        this.drawTrackLines(track, front_cars_sensors_equipment, this.state.SHOW_TRACK);
+        this.drawTrackLines(track, front_cars_sensors_equipment, this.props.SHOW_TRACK);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { SHOW_TRACK } = nextProps;
-
-    if (!this.state.trackLineIsDraw) {
-      const { track, front_cars_sensors_equipment } = nextProps;
+  componentDidUpdate(prevProps) {
+    const { SHOW_TRACK } = this.props;
+    
+    if (!(prevProps.track.length > 1)) {  // Если трек не было отрисован
+      const {
+        track,
+        front_cars_sensors_equipment,
+      } = this.props;
 
       if (track.length > 1) {
         this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK);
-        this.setState({ lastPoint: nextProps.lastPoint, trackLineIsDraw: true, front_cars_sensors_equipment, SHOW_TRACK });
       }
     } else {
-      const { lastPoint, front_cars_sensors_equipment } = nextProps;
-      if (this.state.front_cars_sensors_equipment !== front_cars_sensors_equipment) {
-        this.props.removeFeaturesFromSource(null, true);
+      const {
+        track,
+        lastPoint,
+        front_cars_sensors_equipment,
+      } = this.props;
 
-        this.drawTrackLines(nextProps.track, nextProps.front_cars_sensors_equipment, SHOW_TRACK)
-        this.setState({ front_cars_sensors_equipment, SHOW_TRACK });
-      } else if (lastPoint !== this.state.lastPoint) {
-        // можно оптимизировать и докидывать точку в последнюю "удачную" по цвету геометрию
-        this.drawTrackLines(nextProps.track.slice(-2), front_cars_sensors_equipment, SHOW_TRACK)
-        this.setState({ lastPoint, SHOW_TRACK });
-      } else if (SHOW_TRACK !== this.state.SHOW_TRACK) {
-        
-        this.changeStyleForPoint(SHOW_TRACK);
-        this.setState({ SHOW_TRACK });
+      
+      if (prevProps.front_cars_sensors_equipment !== front_cars_sensors_equipment) {  // Если состояние датчиков навесного оборудования изменилось
+        this.props.removeFeaturesFromSource(null, true);
+        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK)
+
+      } else if (prevProps.lastPoint !== lastPoint) { // если получили новую точку в трек
+        this.drawTrackLines(track.slice(-2), front_cars_sensors_equipment, SHOW_TRACK);
+
+      } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {  //  Если изменился глобавльный флаг отображние трека на карте
+        this.changeStyleForLines(SHOW_TRACK);
       }
     }
   }
@@ -140,7 +130,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     }
   }
 
-  changeStyleForPoint(SHOW_TRACK) {
+  changeStyleForLines(SHOW_TRACK) {
     this.props.getAllFeatures().forEach(feature => {
       if (!SHOW_TRACK) {
         feature.setStyle(getStyleForTrackLineBySensor(true, SHOW_TRACK));

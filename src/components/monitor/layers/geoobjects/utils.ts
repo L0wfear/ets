@@ -104,11 +104,11 @@ export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithC
 
 /**
  * 
- * @param nextProps следующие пропсы компонента
- * @param thisState текуще состояние компонента
+ * @param thisProps текущие состояние пропсов
+ * @param prevProps прошлое состояние пропсов
  */
-export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (nextProps, thisState) => {
-  const { geoobjects, SHOW_GEOOBJECTS } = nextProps;
+export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (thisProps, prevProps) => {
+  const { geoobjects, SHOW_GEOOBJECTS } = thisProps;
   let retValue = {
     hasDiff: false,
     diffGeoobjects: {},
@@ -122,28 +122,12 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (nex
       serverName,
       data,
       SHOW_GEOOBJECTS && data.show,
-      thisState.geoobjects[serverName],
+      prevProps.geoobjects[serverName],
     );
   }
 
   return retValue;
 }
-
-
-/**
- * merge изменённых геообъектов в текущие
- * @param geoobjects текущие геообъекты
- * @param diffGeoobjects изменённые геообъекты
- */
-export const getMergedGeoobjects: LayerGeoobjectsUtilsTypes.getMergedGeoobjectsFunc = (geoobjects, diffGeoobjects) => ({
-  ...Object.entries(geoobjects).reduce((newObj, [serverName, data]) => ({
-    ...newObj,
-    [serverName]: {
-      ...data,
-      ...diffGeoobjects[serverName],
-    },
-  }), {}),
-});
 
 /**
  * изменение геометрии фичи, если shape разный
@@ -198,7 +182,19 @@ export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serve
     if (oldFeature) {
       checkShowTrueHasOldFeature(geoobj, geoobj_old, oldFeature);
     } else {
-      checkShowTrueHasNotOldFeature(serverName, id, geoobj, thisProps, selected, isManyCompany && geoobj.front_key.includes('odh') ? thisProps.companiesIndex[geoobj.company_id].rgb_color : '');
+      checkShowTrueHasNotOldFeature(
+        serverName,
+        id,
+        geoobj,
+        thisProps,
+        selected,
+        (
+          isManyCompany
+          && geoobj.front_key.includes('odh')
+        )
+        ? thisProps.companiesIndex[geoobj.company_id].rgb_color
+        : ''
+      );
     }
   }
 };

@@ -11,35 +11,26 @@ import {
 } from 'components/monitor/layers/geoobjects/LayerGeooobjects.h';
 import {
   diffInputProps,
-  getMergedGeoobjects,
   renderGeoobjects,
 } from 'components/monitor/layers/geoobjects/utils';
 
 class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayerGeooobjects> {
-  state = {
-    geoobjects: this.props.geoobjects,
-    SHOW_GEOOBJECTS: this.props.SHOW_GEOOBJECTS,
-  }
   componentDidMount() {
-    this.props.addLayer({ id: 'GeoObject', zIndex: 0 }).then(() => {
+    this.props.addLayer({ id: 'GeoObject', zIndex: 0, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
-      renderGeoobjects(this.state.geoobjects, this.state.geoobjects, this.props);
+      renderGeoobjects(this.props.geoobjects, this.props.geoobjects, this.props);
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const {
       hasDiff,
       diffGeoobjects,
-    } = diffInputProps(nextProps, this.state);
-    
+    } = diffInputProps(this.props, prevProps);
+
     if (hasDiff) {
-      renderGeoobjects(this.state.geoobjects, diffGeoobjects, nextProps);
-      this.setState({
-        geoobjects: getMergedGeoobjects(this.state.geoobjects, diffGeoobjects),
-        SHOW_GEOOBJECTS: nextProps.SHOW_GEOOBJECTS,
-      })
+      renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props);
     }
   }
 
@@ -54,7 +45,7 @@ class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayer
     this.props.monitorPageAddToSelectedGeoobjects(
       serverName,
       id,
-      this.state.geoobjects[serverName].data[id],
+      this.props.geoobjects[serverName].data[id],
     )
   }
 

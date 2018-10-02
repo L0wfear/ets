@@ -69,8 +69,8 @@ class MissionReportByPoints extends ElementsList {
     }
   }
 
-  selectElement = (el) => {
-    super.selectElement(el);
+  onRowSelectedWrap = (el) => {
+    this.selectElement(el);
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
@@ -82,7 +82,7 @@ class MissionReportByPoints extends ElementsList {
     return (
       <MissionReportByPointsTable
         noHeader={renderOnly}
-        onRowSelected={this.selectElement}
+        onRowSelected={this.onRowSelectedWrap}
         selected={this.state.selectedElement}
         selectField={this.selectField}
         data={this.props.selectedReportDataPoints || []}

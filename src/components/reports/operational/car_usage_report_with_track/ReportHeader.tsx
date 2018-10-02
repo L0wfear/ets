@@ -45,6 +45,10 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       geozone_type,
     } = this.getState();
 
+    console.log(date_start)
+    console.log(date_end)
+    console.log(geozone_type)
+
 
     this.props.onClick({
       date_start: createValidDateTime(date_start),

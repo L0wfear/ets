@@ -32,4 +32,5 @@ export interface IStateReportContainer {
   exportFetching: boolean;
   filterValues: any;
   uniqName: string;
+  lastSearchObject: any;
 }

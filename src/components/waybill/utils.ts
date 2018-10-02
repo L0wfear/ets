@@ -211,7 +211,7 @@ export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mi
         if (mission.isOrderSource) {
           if (status === 'complete' || status === 'fail') {
             errors.fromOrder.cf_list.push(number);
-          } else if (status === 'assigned') {
+          } else if (status === 'assigned' || status === 'expired' || status === 'in_progress') {
             if (diffDates(mission.date_to, fact_departure_date) <= 0 || diffDates(fact_arrival_date, mission.date_from) <= 0) {
               errors.fromOrder.confirmDialogList.push(number);
             }

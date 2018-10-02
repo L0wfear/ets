@@ -200,6 +200,10 @@ class ElementsList extends React.Component {
 
     if (e.code === 'Backspace' && this.state.selectedElement !== null) {
       e.preventDefault();
+      /**
+       * @todo посмотреть
+       */
+      /*
       if (typeof this.removeDisabled === 'function') {
         if (!this.removeDisabled()) {
           this.removeElement();
@@ -207,6 +211,7 @@ class ElementsList extends React.Component {
       } else {
         this.removeElement();
       }
+      */
     }
   }
 

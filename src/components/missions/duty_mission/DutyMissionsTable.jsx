@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
-import { get, find, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 
 /**
  * подсветка строк таблицы "провальных" поручений

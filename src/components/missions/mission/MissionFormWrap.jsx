@@ -48,8 +48,11 @@ class MissionFormWrap extends FormWrap {
       if (mission.structure_id == null) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
+      const IS_ASSIGNED = status === 'assigned';
+      const IS_IN_PROGRESS = status === 'in_progress';
+      const IS_EXPIRED = status === 'expired';
 
-      if (status === 'assigned') {
+      if (IS_ASSIGNED || IS_IN_PROGRESS || IS_EXPIRED) {
         waybillsActions.getWaybill(mission.waybill_id).then(({ result: inWaybill }) => {
           const formErrors = this.validate(mission, {}, { inWaybill });
 

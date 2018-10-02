@@ -2,7 +2,6 @@ import MSPTable, { tableMeta } from 'components/directories/geoobjects/pages/msp
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import GeoObjectsMapModalWrap from 'components/directories/geoobjects/form/GeoObjectsMapModalWrap';
-import schema from 'components/directories/geoobjects/pages/msp/schema';
 import permissions from 'components/directories/geoobjects/pages/msp/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])
@@ -11,7 +10,6 @@ import permissions from 'components/directories/geoobjects/pages/msp/config-data
   path: 'geozones',
   permissions,
   entity: 'msp',
-  schema,
   listName: 'mspsList',
   tableComponent: MSPTable,
   formComponent: GeoObjectsMapModalWrap,

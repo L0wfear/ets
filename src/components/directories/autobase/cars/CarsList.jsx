@@ -6,8 +6,6 @@ import permissions from 'components/directories/autobase/cars/config-data/permis
 
 import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import CarsTable from 'components/directories/autobase/cars/CarsTable';
-import schema from 'components/directories/autobase/cars/schema';
-
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })
@@ -15,7 +13,6 @@ import schema from 'components/directories/autobase/cars/schema';
   entity: 'car',
   permissions,
   listName: 'carsList',
-  schema,
   selectField: 'asuods_id',
   tableComponent: CarsTable,
   formComponent: CarFormWrap,

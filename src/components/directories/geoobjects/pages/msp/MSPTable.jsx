@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from 'components/ui/table/DataTable';
 
+import { isNumber } from 'util';
+
 export const tableMeta = ({
   isKgh = false,
   isOkrug = false,
@@ -48,11 +50,16 @@ export const tableMeta = ({
   ],
 });
 
+const renderers = {
+  productivity: ({ data }) => isNumber(data) ? parseFloat(data.toString()).toFixed(2) : '',
+};
+
 export default props => (
   <Table
     title="Мобильные снегоплавильные пункты"
     results={props.data}
     tableMeta={tableMeta(props)}
+    renderers={renderers}
     {...props}
   />
 );

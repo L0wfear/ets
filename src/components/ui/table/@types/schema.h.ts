@@ -90,7 +90,7 @@ export interface IExtractedDataTableSchema {
 }
 
 export interface ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> {
-  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => JSX.Element;
+  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => any;
 }
 
 export interface ISchemaMaker  {

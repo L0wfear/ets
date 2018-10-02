@@ -2,6 +2,8 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
+import { isNumber } from 'util';
+
 export const tableMeta = ({
   isKgh = false,
   isOkrug = false,
@@ -60,6 +62,7 @@ export const tableMeta = ({
 
 const renderers = {
   is_mobile: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+  productivity: ({ data }) => isNumber(data) ? parseFloat(data.toString()).toFixed(2) : '',
 };
 
 export default props => (

@@ -118,6 +118,7 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
           type,
           coordinates: coordinatesArr,
         },
+        coordinates: coordinatesArr,
         name: '',
       };
 

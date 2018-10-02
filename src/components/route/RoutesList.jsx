@@ -431,7 +431,7 @@ class RoutesList extends React.Component {
           />
           <div className="clearfix">
             {
-              route !== null
+              route !== null && route.id
                 ? (
                   <RouteInfo
                     route={route}

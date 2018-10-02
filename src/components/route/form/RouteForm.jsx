@@ -32,40 +32,6 @@ const boundKeys = {
   comment: ['comment'],
 };
 
-const makeName = ({ number, name, object_list, draw_odh_list }, { fromMission }) => {
-  if (number === null) {
-    return name;
-  }
-
-  const list = [];
-  if (object_list) {
-    list.push(...object_list);
-  }
-
-  if (draw_odh_list) {
-    list.push(...draw_odh_list);
-  }
-
-  const [first, ...other] = list;
-  const [last] = other.slice(-1);
-
-  let generateName = `Маршрут №${number}`;
-
-  if (fromMission) {
-    generateName = `${generateName}-А`;
-  }
-
-  if (first && first.name) {
-    if (last && last.name) {
-      generateName = `${generateName} от ${first.name} до ${last.name}`;
-    } else {
-      generateName = `${generateName} до ${first.name}`;
-    }
-  }
-
-  return generateName;
-};
-
 @connectToStores(['objects', 'geoObjects'])
 export default class RouteForm extends Form {
 
@@ -76,15 +42,6 @@ export default class RouteForm extends Form {
       ROUTE_TYPE_OPTIONS: [],
     };
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
-  }
-
-  componentDidUpdate(prevProps) {
-    const name = makeName(this.props.formState, this.props);
-
-    // todo тригерить на изменения зависимых значений
-    if (name !== prevProps.formState.name) {
-      this.handleChange('name', name);
-    }
   }
 
   handleTypeChange = (type) => {
@@ -248,13 +205,6 @@ export default class RouteForm extends Form {
         <ModalBody>
           <Row>
             <Col md={12}>
-              <div>
-                <b>{'Название маршрута '}</b>{state.number !== null ? state.name.replace(/\{\{number\}\}/, '-') : state.name}
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
               <ExtField
                 type="boolean"
                 label="Основной маршрут"
@@ -265,36 +215,47 @@ export default class RouteForm extends Form {
             </Col>
           </Row>
           <Row>
-          <Div hidden={this.props.forceTechnicalOperation}>
-            <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
-              <Row>
-                <Col md={6} style={{ zIndex: 10001 }}>
-                  <ExtField
-                    id="route-technical-operation-id"
-                    type="select"
-                    label="Технологическая операция"
-                    options={TECH_OPERATIONS}
-                    value={state.technical_operation_id}
-                    onChange={this.handleTechChange}
-                    disabled={this.props.fromMission || !!state.id}
-                    clearable={false}
-                    error={errors.technical_operation_id}
-                  />
-                </Col>
-                <Col md={6}>
-                  <MunicipalFacility
-                    id={'municipal_facility_id'}
-                    label={'municipal_facility_name'}
-                    errors={errors}
-                    state={state}
-                    disabled={!!this.props.fromMission || !!state.id}
-                    handleChange={this.handleChange}
-                    getDataByNormId={this.getDataByNormId}
-                    clearable={false}
-                    technicalOperationsList={technicalOperationsList}
-                    getNormIdFromState={this.props.fromMission}
-                  />
-                </Col>
+            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
+              <ExtField
+                id="route-name"
+                type="string"
+                label="Название маршрута"
+                value={state.name}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.name}
+                error={errors.name}
+              />
+            </Col>
+            <Div hidden={this.props.forceTechnicalOperation}>
+              <Col md={STRUCTURE_FIELD_VIEW ? 6 : 7}>
+                <Row>
+                  <Col md={6} style={{ zIndex: 10001 }}>
+                    <ExtField
+                      id="route-technical-operation-id"
+                      type="select"
+                      label="Технологическая операция"
+                      options={TECH_OPERATIONS}
+                      value={state.technical_operation_id}
+                      onChange={this.handleTechChange}
+                      disabled={this.props.fromMission || !!state.id}
+                      clearable={false}
+                      error={errors.technical_operation_id}
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <MunicipalFacility
+                      id={'municipal_facility_id'}
+                      label={'municipal_facility_name'}
+                      errors={errors}
+                      state={state}
+                      disabled={!!this.props.fromMission || !!state.id}
+                      handleChange={this.handleChange}
+                      getDataByNormId={this.getDataByNormId}
+                      clearable={false}
+                      technicalOperationsList={technicalOperationsList}
+                      getNormIdFromState={this.props.fromMission}
+                    />
+                  </Col>
                 </Row>
               </Col>
             </Div>
@@ -326,16 +287,6 @@ export default class RouteForm extends Form {
                 disabled={!state.municipal_facility_id || state.copy}
                 onChange={this.handleTypeChange}
               />
-            </Col>
-            <Col md={STRUCTURE_FIELD_VIEW ? 2 : 3}>
-              <ExtField
-                id="comment"
-                type="string"
-                label="Примечание"
-                value={state.comment}
-                onChange={this.handleChange}
-                boundKeys={boundKeys.comment}
-                />
             </Col>
           </Row>
 

@@ -42,11 +42,6 @@ class RouteFormWrap extends FormWrap {
         };
       }
 
-      if (!formState.id) {
-        formState.number = '{{number}}';
-        formState.name = formState.name || '';
-      }
-
       formState.structure_id = props.element.structure_id || this.context.flux.getStore('session').getCurrentUser().structure_id;
       const formErrors = this.validate(formState, {});
       this.setState({
@@ -132,10 +127,6 @@ class RouteFormWrap extends FormWrap {
     let result;
 
     if (!formState.id) {
-      if (this.props.fromMission) {
-        formState.name = formState.name.replace(/Маршрут №\{\{number\}\}-А/, 'Маршрут №\{\{number\}\}');
-      }
-
       result = await flux.getActions('routes').createRoute(formState, isTemplate);
     } else {
       result = await flux.getActions('routes').updateRoute(formState);

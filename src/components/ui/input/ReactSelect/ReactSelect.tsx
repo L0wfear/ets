@@ -3,8 +3,6 @@ import * as PropTypes from 'prop-types';
 import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 
-
-console.log(components)
 import {
   onChangeSelectLegacy,
   defaultSortingFunction,

@@ -63,14 +63,6 @@ export const routeSchema = {
           return false;
         },
       },
-      {
-        validator: (value = []) => {
-          if (value.some(({ name }) => !name)) {
-            return 'Поле "Имя Пунтка назначения" должно быть заполнено';
-          }
-          return false;
-        },
-      },
     ],
     'draw_object_list': [
       {

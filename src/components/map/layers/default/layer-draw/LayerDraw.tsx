@@ -73,6 +73,13 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
       style: this.props.styles,
     });
 
+    this.props.map.getInteractions().forEach((interaction) => {
+      if (interaction instanceof ol.interaction.DoubleClickZoom) {
+        this.props.map.removeInteraction(interaction);
+      }
+    });
+
+
     interactionDraw.on('drawend', (event: any) => {
       const feature: ol.Feature = event.feature;
 
@@ -113,7 +120,7 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
         );
       }
 
-        feature.setGeometry(null)
+      feature.setGeometry(null)
     });
 
     this.props.map.addInteraction(interactionDraw);

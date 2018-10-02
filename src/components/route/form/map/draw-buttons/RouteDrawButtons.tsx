@@ -15,11 +15,10 @@ type PropsRouteDrawButtons = {
 
 class RouteDrawButtons extends React.PureComponent<PropsRouteDrawButtons, {}> {
   handleClickOnStartDraw: React.MouseEventHandler<Button> = () => {
-    console.log('handleClickOnStartDraw', this.props.handleClickOnStartDraw)
     this.props.handleClickOnStartDraw();
   }
   handleClickOnRemove: React.MouseEventHandler<Button> = () => {
-    console.log('handleClickOnRemove', this.props.handleClickOnRemove())
+    this.props.handleClickOnRemove();
   }
 
   render() {

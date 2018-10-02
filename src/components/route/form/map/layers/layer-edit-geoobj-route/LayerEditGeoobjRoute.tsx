@@ -12,9 +12,9 @@ import {
   renderGeoobjects,
 } from 'components/route/form/map/layers/layer-edit-geoobj-route/utils';
 
-import {linesState } from 'components/route/form/map/layers/layer-edit-geoobj-route/feature-style';
+import { polyState } from 'components/route/form/map/layers/layer-edit-geoobj-route/feature-style';
 
-const countLinesState = Object.values(linesState).length;
+const countPolyState = Object.values(polyState).length;
 
 class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute, StateLayerEditGeoobjRoute> {
   componentDidMount() {
@@ -65,11 +65,13 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
     const id = feature.getId();
     const objData = this.props.geoobjects[id];
 
+    const newState = objData.state + 1;
+
     if (objData) {
       this.props.handleFeatureClick({
         ...objData,
         id,
-        state: (objData.state + 1) % countLinesState + 1,
+        state: newState > countPolyState ? 1 : newState,
       });
     }
   }

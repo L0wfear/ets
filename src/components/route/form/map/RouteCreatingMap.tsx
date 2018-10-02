@@ -53,13 +53,14 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
     inDraw: false,
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     const {
       objectsType,
       drawObjectList,
+      manual,
     } = nextProps;
 
-    if (objectsType === 'points' || objectsType === 'mixed') {
+    if ((objectsType === 'points' || objectsType === 'mixed') && manual) {
       if (!drawObjectList || !drawObjectList.length) {
         return {
           inDraw: true,

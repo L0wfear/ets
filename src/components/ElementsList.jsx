@@ -80,7 +80,6 @@ class ElementsList extends React.Component {
       });
     }
     this.setState({ elementsList });
-    this.inheritedComponentWillReceiveProps(props);
   }
 
   /**
@@ -88,11 +87,6 @@ class ElementsList extends React.Component {
    * может быть переопределена в дочерних классах
    */
   init() {}
-
-  /**
-   * Дополнительный ComponentWillReceiveProps унаследованных компонентов
-   */
-  inheritedComponentWillReceiveProps() {}
 
   /**
    * Выбирает элемент

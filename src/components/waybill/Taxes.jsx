@@ -131,12 +131,18 @@ export default class Taxes extends React.Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    const { fuelRates, taxes = this.state.tableData } = props;
-    let { operations } = props;
-    operations = operations.map(({ id, name, measure_unit_name, is_excluding_mileage }) => ({ value: id, label: name, measure_unit_name, is_excluding_mileage }));
+  static getDerivedStateFromProps(nexProps, prevProps) {
+    const { fuelRates, taxes = prevProps.tableData } = nexProps;
+    let { operations } = nexProps;
+    operations = operations.map(data => ({
+      value: data.id,
+      label: data.name,
+      measure_unit_name: data.measure_unit_name,
+      is_excluding_mileage: data.is_excluding_mileage,
+    }));
     taxes.map(tax => ({ ...tax, RESULT: Taxes.getResult(tax) }));
-    this.setState({ operations, fuelRates, tableData: taxes });
+
+    return { operations, fuelRates, tableData: taxes };
   }
 
   handleFactValueChange = (index, e) => {

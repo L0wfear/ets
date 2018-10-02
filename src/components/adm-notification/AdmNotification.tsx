@@ -12,13 +12,14 @@ type stateAdmNotification = {
 @connectToStores(['userNotifications'])
 @FluxContext
 class AdmNotification extends React.Component<propsAdmNotification, stateAdmNotification> {
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
+    const { props } = this;
 
-    this.props.admNotReadNotificationsList.filter(({ id }) => !nextProps.admNotReadNotificationsList.find(admN => admN.id === id)).forEach(({ id }) => {
+    prevProps.admNotReadNotificationsList.filter(({ id }) => !props.admNotReadNotificationsList.find(admN => admN.id === id)).forEach(({ id }) => {
       global.NOTIFICATION_SYSTEM.removeNotification(id);
     });
 
-    nextProps.admNotReadNotificationsList.forEach(notify => (
+    props.admNotReadNotificationsList.forEach(notify => (
       global.NOTIFICATION_SYSTEM.notify({
         title: notify.title,
         message: (

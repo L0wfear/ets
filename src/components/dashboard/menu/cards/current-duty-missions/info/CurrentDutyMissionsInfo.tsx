@@ -27,7 +27,7 @@ import {
   StateCurrentMissionInfo,
 } from 'components/dashboard/menu/cards/current-duty-missions/info/@types/CurrentDutyMissionsInfo.h';
 import {
-  RightButton_BlockContainer,
+  RightButtonBlockContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
@@ -154,10 +154,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           }
         </ul>
         <LinkToOpenRouteInfoForm openRouteInfoForm={this.openRouteInfoForm}/>
-        <RightButton_BlockContainer>
+        <RightButtonBlockContainer>
           <ButtonUpdateDutyMission onClick={this.completeDutyMission} >Выполнено</ButtonUpdateDutyMission>
           <ButtonUpdateDutyMission onClick={this.rejectDutyMission} >Не выполнено</ButtonUpdateDutyMission>
-        </RightButton_BlockContainer>
+        </RightButtonBlockContainer>
         <RouteInfoFormWrap
           showForm={this.state.showRouteInfoForm}
           onHide={this.handleRouteInfoFormHide}

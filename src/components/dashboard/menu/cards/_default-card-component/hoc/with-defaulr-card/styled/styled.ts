@@ -101,9 +101,10 @@ type RightButtonBlockContainerType = {
 };
 
 
-export const RightButton_BlockContainer = styled.div`
+export const RightButtonBlockContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
 
   >button:nth-of-type(n + 1) {
     margin-left: 5px;

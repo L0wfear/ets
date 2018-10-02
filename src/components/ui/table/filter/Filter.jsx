@@ -22,12 +22,22 @@ export default class Filter extends React.Component {
     super(props);
 
     this.state = {
+      propsFilterValues: props.values,
       filterValues: props.values || {},
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({ filterValues: props.values });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { values } = nextProps;
+
+    if (prevState.propsFilterValues !== values) {
+      return {
+        propsFilterValues: values,
+        filterValues: values,
+      };
+    }
+
+    return null;
   }
 
   // TODO сделано для adv...-select-like

@@ -39,9 +39,9 @@ export default class ProgramRemarkList extends CheckableElementsList {
     this.updateAction = context.flux.getActions('repair').getRepairListByType.bind(this, 'objects', { program_version_id });
   }
 
-  inheritedComponentWillReceiveProps(props) {
-    const { program_version_id: new_version } = props;
-    const { program_version_id: old_version } = this.props;
+  componentDidUpdate(prevProps) {
+    const { program_version_id: new_version } = this.props;
+    const { program_version_id: old_version } = prevProps;
 
     if (new_version !== old_version) {
       this.init(false);

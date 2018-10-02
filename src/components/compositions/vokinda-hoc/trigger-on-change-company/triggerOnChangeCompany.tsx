@@ -12,9 +12,8 @@ const triggerOnChangeCompany = Component =>
         loading: false,
       };
     }
-
-    componentWillReceiveProps(props) {
-      const { currentUser: { company_id } } = props;
+    componentDidUpdate() {
+      const { currentUser: { company_id } } = this.props;
       if (company_id !== this.state.company_id) {
         this.changeStatusLoading(true, company_id);
       }

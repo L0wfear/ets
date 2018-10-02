@@ -31,9 +31,9 @@ class BarShowGeoobjects extends React.Component<any, any> {
     isOpen: false,
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.show) {
-      this.props.loadFuelLeakEvents(nextProps);
+  componentDidUpdate() {
+    if (this.props.show) {
+      this.props.loadFuelLeakEvents(this.props);
     }
   }
 

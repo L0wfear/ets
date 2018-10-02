@@ -8,10 +8,20 @@ const FilterRowTSX: any = FilterRow;
 
 class Fiter extends React.Component<any, any> {
   state = {
-    filterValues: {},
+    propsFilterValues: this.props.filterValues,
+    filterValues: this.props.filterValues,
   };
-  componentWillReceiveProps(props) {
-    this.setState({ filterValues: props.filterValues });
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { filterValues } = nextProps;
+    if (filterValues !== prevState.propsFilterValues) {
+      return {
+        propsFilterValues: filterValues,
+        filterValues,
+      };
+    }
+
+    return null;
   }
 
   handleFilterValueChange = ({ name: key, type, customFilter }, e) => {

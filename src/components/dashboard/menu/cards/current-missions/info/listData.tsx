@@ -73,14 +73,13 @@ export const listData: ListDataType = [
     path: ['car_data', 'driver_allowed'],
     title: 'Задание',
     RenderComponent: ({ infoData }) => (
-      infoData.car_data.driver_allowed ?
-      (
+      infoData.car_data.driver_allowed
+      ? (
         <div style={{ marginBottom: 5, marginTop: 5 }}>
           <span style={{ fontSize: 16, color: 'red' }}>Не пройден внеплановый мед. осмотр</span>
         </div>
       )
-      :
-      (
+      : (
         <DivNone />
       )
     )

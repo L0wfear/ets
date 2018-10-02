@@ -13,7 +13,12 @@ class Paginator extends React.Component<any, any> {
 
     this.props.paginatorUpdateData(uniqKey, props);
   }
-  componentWillReceiveProps({ uniqKey, ...props }) {
+  componentDidUpdate() {
+    const {
+      uniqKey,
+      ...props
+    } = this.props;
+ 
     this.props.paginatorUpdateData(uniqKey, props);
   }
 

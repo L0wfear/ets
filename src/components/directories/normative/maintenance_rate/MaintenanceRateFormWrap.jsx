@@ -49,25 +49,24 @@ export const maintenanceRateSchema = {
 };
 
 export default class MaintenanceRateFormWrap extends FormWrap {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.uniqueField = 'id';
-    this.createAction = context.flux.getActions('objects').createMaintenanceRate.bind(this, props.type);
-    this.updateAction = context.flux.getActions('objects').updateMaintenanceRate.bind(this, props.type);
     this.schema = maintenanceRateSchema;
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this, props.type);
   }
 
-  inheritedComponentWillReceiveProps(props) {
-    if (props.type !== this.props.type) {
-      this.createAction = this.context.flux.getActions('objects').createMaintenanceRate.bind(this, props.type);
-      this.updateAction = this.context.flux.getActions('objects').updateMaintenanceRate.bind(this, props.type);
-    }
-  }
+  createAction = (...arg) => (
+    this.context.flux.getActions('objects').createMaintenanceRate(this.props.type, ...arg)
+  );
+
+  updateAction = (...arg) => (
+    this.context.flux.getActions('objects').updateMaintenanceRate(this.props.type, ...arg)
+  );
 
   render() {
-    const props = this.props;
+    const { props } = this;
     return props.showForm
       ? (
         <MaintenanceRateForm
@@ -76,9 +75,9 @@ export default class MaintenanceRateFormWrap extends FormWrap {
           addPermissionProp
           onSubmit={this.handleFormSubmit}
           handleFormChange={this.handleFormStateChange}
-          show={this.props.showForm}
-          onHide={this.props.onFormHide}
-          type={this.props.type}
+          show={props.showForm}
+          onHide={props.onFormHide}
+          type={props.type}
           {...this.state}
         />
       )

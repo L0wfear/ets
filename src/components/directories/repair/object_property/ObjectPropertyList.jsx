@@ -41,20 +41,26 @@ class ObjectPropertyList extends ElementsList {
     };
   }
 
-  async inheritedComponentWillReceiveProps(props) {
-    const { typeData } = props;
+  componentDidUpdate(prevProps) {
+    const { typeData } = this.props;
     const { iHaveType = { 'odh': true } } = this.state;
 
-    if (typeData !== this.props.typeData) {
-      const { flux } = this.context;
+    if (typeData !== prevProps.typeData) {
       this.setExportType(typeData);
+      const { flux } = this.context;
 
       if (!iHaveType[typeData]) {
         iHaveType[typeData] = true;
 
-        await flux.getActions('repair').getObjectProperty({ object_type: typeData }, { name: typeData });
-
-        this.setState({ iHaveType });
+        flux.getActions('repair').getObjectProperty({ object_type: typeData }, { name: typeData })
+          .then(() => {
+            this.setState({
+              iHaveType,
+            });
+          })
+          .catch((error) => {
+            console.warn(error);
+          });
       }
       flux.getActions('repair').setActiveList('objectPropertyList', `objectProperty${typeData[0].toUpperCase()}${typeData.slice(1)}List`);
     }

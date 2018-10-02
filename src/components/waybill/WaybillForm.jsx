@@ -87,25 +87,25 @@ class WaybillForm extends Form {
     };
   }
 
-  componentWillReceiveProps(props) {
-    const currentState = this.props.formState;
-    const nextState = props.formState;
-    if (nextState.car_id !== currentState.car_id && nextState.car_id) {
-      this.getLatestWaybillDriver(nextState);
+  componentDidUpdate(prevProps) {
+    const oldFormState = prevProps.formState;
+    const nextFormState = this.props.formState;
+    if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
+      this.getLatestWaybillDriver(nextFormState);
     }
 
     // при смене планируемых дат или ТС запрашиваются новые доступные задания
-    if (currentState.car_id !== nextState.car_id
-        || !isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date)
-        || !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
-      this.getMissionsByCarAndDates(nextState);
+    if (oldFormState.car_id !== nextFormState.car_id
+        || !isEqual(oldFormState.plan_arrival_date, nextFormState.plan_arrival_date)
+        || !isEqual(oldFormState.plan_departure_date, nextFormState.plan_departure_date)) {
+      this.getMissionsByCarAndDates(nextFormState);
     }
-    if (currentState.status === 'active' && diffDates(nextState.fact_departure_date, nextState.fact_arrival_date, 'minutes') <= 0) {
-      if (currentState.car_id !== nextState.car_id
-          || !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date)
-          || !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
-        this.getCarDistance(nextState);
-        this.getMissionsByCarAndDates(nextState);
+    if (oldFormState.status === 'active' && diffDates(nextFormState.fact_departure_date, nextFormState.fact_arrival_date, 'minutes') <= 0) {
+      if (oldFormState.car_id !== nextFormState.car_id
+          || !isEqual(oldFormState.fact_arrival_date, nextFormState.fact_arrival_date)
+          || !isEqual(oldFormState.fact_departure_date, nextFormState.fact_departure_date)) {
+        this.getCarDistance(nextFormState);
+        this.getMissionsByCarAndDates(nextFormState);
       }
     }
   }

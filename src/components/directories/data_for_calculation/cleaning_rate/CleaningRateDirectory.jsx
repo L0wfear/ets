@@ -30,10 +30,13 @@ class CleaningRateDirectory extends ElementsList {
     flux.getActions('odh').getMeasureUnits();
   }
 
-  inheritedComponentWillReceiveProps(props) {
-    if (props.type !== this.props.type) {
-      this.context.flux.getActions('objects').getCleaningRate(props.type);
-      this.removeElementAction = this.context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
+  removeElementAction = (...arg) => this.context.flux.getActions('objects').deleteCleaningRate(this.props.type, ...arg);
+
+  componentDidUpdate(prevProps) {
+    const { type } = this.props;
+
+    if (prevProps.type !== type) {
+      this.context.flux.getActions('objects').getCleaningRate(type);
     }
   }
 }

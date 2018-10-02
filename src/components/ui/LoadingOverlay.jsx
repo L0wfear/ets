@@ -35,12 +35,14 @@ export default class LoadingOverlay extends React.Component {
     show: true,
   };
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     const modals = document.getElementsByClassName('modal-body');
     const modalsSmall = document.getElementsByClassName('modal-sm');
     const showLoading = !(modals.length - modalsSmall.length) || !nextProps.main;
 
-    this.setState({ show: showLoading });
+    return {
+      show: showLoading,
+    };
   }
 
   render() {

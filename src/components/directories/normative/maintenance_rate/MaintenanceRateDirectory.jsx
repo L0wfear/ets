@@ -37,11 +37,16 @@ class MaintenanceRateDirectory extends ElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
 
-  inheritedComponentWillReceiveProps(props) {
-    if (props.type !== this.props.type) {
-      this.setExportType(props.type);
-      this.context.flux.getActions('objects').getMaintenanceRate(props.type);
-      this.removeElementAction = this.context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
+  removeElementAction = (...arg) => (
+    this.context.flux.getActions('objects').deleteMaintenanceRate(this.props.type, ...arg)
+  );
+
+  componentDidUpdate(prevProps) {
+    const { type } = this.props;
+
+    if (prevProps.type !== type) {
+      this.setExportType(type);
+      this.context.flux.getActions('objects').getMaintenanceRate(type);
     }
   }
 }

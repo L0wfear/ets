@@ -40,16 +40,26 @@ class OverlayTrackPoint extends React.Component<any, any> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { trackPoint } = nextProps;
     if (trackPoint) {
-      if (!this.state.trackPoint || trackPoint.timestamp !== this.state.trackPoint.timestamp) {
-        this.getOtherDataOnTrackPoint(nextProps);
-        this.getOtherDataOnTrackPoint(nextProps);
-        this.setState({ trackPoint });
+      if (!prevState.trackPoint || trackPoint.timestamp !== prevState.trackPoint.timestamp) {
+        return { trackPoint };
       }
     } else {
-      this.setState({ trackPoint });
+      return { trackPoint };
+    }
+
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { trackPoint } = this.props;
+    if (trackPoint) {
+      if (!prevState.trackPoint || trackPoint.timestamp !== prevState.trackPoint.timestamp) {
+        this.getOtherDataOnTrackPoint(this.props);
+        this.getOtherDataOnTrackPoint(this.props);
+      }
     }
   }
 

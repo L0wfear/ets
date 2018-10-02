@@ -136,9 +136,13 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
           sensors: 1,
         };
 
-        return TrackService.get(payloadToTrack).then(ans => (
-          carInfoSetTrack(ans, payloadData.gps_code, odh_mkad))
-        );
+        return TrackService.get(payloadToTrack).then(ans => ({
+          trackCaching: {
+            ...ans,
+            ...checkAndModifyTrack(ans, odh_mkad),
+          },
+          gps_code: payloadData.gps_code,
+        }));
       }),
     meta: {
       ...meta,
@@ -154,9 +158,11 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) 
       car_id: payloadData.asuods_id,
       date_start: createValidDateTime(payloadData.date_start),
       date_end: createValidDateTime(payloadData.date_end),
-    }).then((ans) => (
-      carInfoSetMissionsData(ans.result, payloadData.gps_code)
-    )),
+    }).then(({ result: { missions} }) => ({
+      missions: missions,
+      ...getMaxSpeeds(missions),
+      gps_code: payloadData.gps_code,
+    })),
     meta: {
       ...meta,
     },

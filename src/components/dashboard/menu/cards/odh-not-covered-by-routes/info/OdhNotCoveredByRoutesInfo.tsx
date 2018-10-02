@@ -13,9 +13,7 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import { PropsOdhNotCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo.h'
-import {
-  RightButton_BlockContainer,
-} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 const OdhNotCoveredByRoutesInfo: React.SFC<PropsOdhNotCoveredByRoutesInfo> = ({ infoData, ...props }) => (
   <InfoCard title="Список объектов" handleClose={props.handleClose}>
@@ -28,11 +26,11 @@ const OdhNotCoveredByRoutesInfo: React.SFC<PropsOdhNotCoveredByRoutesInfo> = ({ 
         ))
       }
     </ul>
-    <RightButton_BlockContainer>
+    <RightButtonBlockContainer>
       <LinkToRouteListPermitted to={`/routes-list/?technical_operation_id=${infoData.technical_operation_id}`}>
         <Button>Перейти к маршрутам</Button>
       </LinkToRouteListPermitted>
-    </RightButton_BlockContainer>
+    </RightButtonBlockContainer>
   </InfoCard>
 );
 

@@ -11,12 +11,12 @@ const filterTypeIf = filterMatch => R.propEq('filterType', filterMatch);
 
 function singleFilterTypeHandler(SourcerFilterInput) {
   return class FilterInputHOC extends React.Component<IPropsExtendedInput, any> {
-    componentWillReceiveProps(nextProps: IPropsExtendedInput) {
+    componentDidUpdate(prevProps: IPropsExtendedInput) {
       if (
-        !isEqual(this.props.filterType, nextProps.filterType) ||
-        !isEqual(this.props.value, nextProps.value)
+        !isEqual(prevProps.filterType, this.props.filterType) ||
+        !isEqual(prevProps.value, this.props.value)
       ) {
-        this.handleChange(nextProps.value, nextProps.filterType);
+        this.handleChange(this.props.value, this.props.filterType);
       }
     }
     handleChange = (value, defaultFilterType = this.props.filterType) => {

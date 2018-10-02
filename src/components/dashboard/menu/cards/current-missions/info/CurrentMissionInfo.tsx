@@ -31,9 +31,7 @@ import {
   PropsCurrentMissionInfo,
   StateCurrentMissionInfo,
 } from 'components/dashboard/menu/cards/current-missions/info/@types/CurrentMissionInfo.h';
-import {
-  RightButton_BlockContainer,
-} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import {
   DivNone,
 } from 'global-styled/global-styled';
@@ -113,10 +111,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           }
         </ul>
         <LinkToOpenMissionInfoForm openMissiomInfoForm={this.openMissiomInfoForm}/>
-        <RightButton_BlockContainer>
+        <RightButtonBlockContainer>
           <ButtenUpdateMission onClick={this.completeMission} >Выполнено</ButtenUpdateMission>
           <ButtenUpdateMission onClick={this.rejectMission} >Не выполнено</ButtenUpdateMission>
-        </RightButton_BlockContainer>
+        </RightButtonBlockContainer>
         {
           this.state.showMissionRejectForm ?
           (

@@ -41,19 +41,21 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { carActualGpsNumberIndex } = nextProps;
 
-    if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
+    if (carActualGpsNumberIndex !== prevState.carActualGpsNumberIndex) {
       const calcData = makeOptions(carActualGpsNumberIndex);
 
-      this.setState({
+      return {
         carActualGpsNumberIndex,
         carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
         carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
         carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
-      });
+      };
     }
+
+    return null;
   }
 
   toggleHidden: any = () => {

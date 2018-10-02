@@ -55,16 +55,16 @@ class CarForm extends Form {
     };
   }
 
-  componentWillReceiveProps(props) {
-    const { flux } = this.context;
-    const currentState = this.props.formState;
-    const nextState = props.formState;
+  componentDidUpdate(prevProps) {
+    const lastFormState = prevProps.formState;
+    const currentFormState = this.props.formState;
 
-    if (nextState.asuods_id !== currentState.asuods_id && nextState.asuods_id) {
+    if (currentFormState.asuods_id !== lastFormState.asuods_id && currentFormState.asuods_id) {
       this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
       const payload = {
-        car_id: nextState.asuods_id,
+        car_id: currentFormState.asuods_id,
       };
+      const { flux } = this.context;
 
       flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
       flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);

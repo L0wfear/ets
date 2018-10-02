@@ -64,7 +64,7 @@ export default class WaybillJournal extends CheckableElementsList {
       prevState.sortBy !== this.state.sortBy ||
       prevState.filter !== this.state.filter
     ) {
-      this.refreshList(this.state);
+      this.updateList();
     }
   }
 

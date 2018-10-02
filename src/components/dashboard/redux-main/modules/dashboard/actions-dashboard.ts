@@ -46,7 +46,7 @@ export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispa
   });
 
   if (id) {
-    const loadMissionDataOption = dispatch(
+    dispatch(
       loadMissionDataById(
         'none',
         id,
@@ -55,9 +55,7 @@ export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispa
           page: 'dashboard',
         },
       ),
-    );
-
-    loadMissionDataOption.then(({ payload: mission_data }) => (
+    ).then(({ payload: { mission_data } }) => (
       dispatch({
         type: DASHBOARD_SET_INFO_DATA,
         payload: {
@@ -79,7 +77,7 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?:
   });
 
   if (id) {
-    const loadRouteDataOption = dispatch(
+    dispatch(
       loadRouteDataById(
         'none',
         id,
@@ -88,9 +86,7 @@ export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?:
           page: 'dashboard',
         },
       ),
-    );
-
-    loadRouteDataOption.then(({ payload: route_data, type }) => (
+    ).then(({ payload: { route_data } }) => (
       dispatch({
         type: DASHBOARD_SET_INFO_DATA,
         payload: {
@@ -192,6 +188,7 @@ export const dashboardLoadCardData = (path: string, payload = {}) => ({
     })
     .then(({ result }) => new Promise(res => (
       setTimeout(() => {
+        // киллер фича из прошлого
         res({
           [path.split('/').join('_')]: result,
         });

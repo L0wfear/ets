@@ -24,6 +24,7 @@ interface IPropsFilterInput {
 interface IStateFilterInput {
   type: string;
   value: any[];
+  filterValue: string | object;
 }
 
 const InputFilter = filterTypeHandler(Input);
@@ -47,16 +48,23 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     this.state = {
       type: 'eq',
       value: [],
+      filterValue: props.filterValue,
     };
   }
-  componentWillReceiveProps(nextProps: IPropsFilterInput) {
+
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (
-      !isEqual(this.props.filterValue, nextProps.filterValue) &&
+      !isEqual(prevState.filterValue, nextProps.filterValue) &&
       isEmpty(nextProps.filterValue)
     ) {
-      this.setState({ value: [null] });
+      return {
+        value: [null],
+      };
     }
+
+    return null;
   }
+
   handleTypeChange = newType => {
     this.setState({ type: newType });
   }

@@ -25,9 +25,7 @@ import {
   PropsFaxogrammsInfo,
   StateFaxogrammsInfo,
 } from 'components/dashboard/menu/cards/faxogramms/info/FaxogrammsInfo.h';
-import {
-  RightButton_BlockContainer,
-} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 import {
   DivNone,
@@ -131,7 +129,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
             <DivNone />
           )
         }
-        <RightButton_BlockContainer needMarginBottom>
+        <RightButtonBlockContainer needMarginBottom>
           <DropdownButtonTSX id="save-faxogramm" onSelect={this.seclectDownload} title={<Glyphicon glyph="download-alt" />} pullRight>
             <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
             <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
@@ -140,7 +138,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
             <Button >Сформировать задания</Button>
           </LinkToOrder>
-        </RightButton_BlockContainer>
+        </RightButtonBlockContainer>
         {
           this.state.showPDFViewModal ?
           (

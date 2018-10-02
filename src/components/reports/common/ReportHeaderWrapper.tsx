@@ -18,21 +18,14 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
       this.state = {
       };
     }
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
       const { queryState } = nextProps;
       const queryStateLength = Object.keys(queryState).length;
 
-      if (
-        queryStateLength > 0 &&
-        !isEqual(this.state, queryState)
-      ) {
-        this.setState({ ...queryState });
-        return;
+      if ( queryStateLength > 0 && !isEqual(prevState, queryState)) {
+        return queryState;
       }
-
-      // if (queryStateLength === 0) {
-      //   this.setState({ headerState: {} });
-      // }
+      return null;
     }
     handleChange = (field: string, value: any) => {
       this.setState({

@@ -24,14 +24,9 @@ type PropsLayerFuelEventLeakPoint = {
 };
 
 type StateLayerFuelEventLeakPoint = {
-  leakData: any;
 };
 
 class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoint, StateLayerFuelEventLeakPoint> {
-  state = {
-    leakData: this.props.leakData,
-  };
-
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventsLeak', zIndex: 11 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -45,16 +40,11 @@ class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoi
     this.props.monitorPageSetFuelEventsLeakOverlayData();
   }
 
-  componentWillReceiveProps({ leakData }) {
-    if (this.state.leakData !== leakData) {
-      this.setState({ leakData });
-    }
-  }
-
-  componentDidUpdate({ leakData }) {
-    if (leakData !== this.state.leakData) {
+  componentDidUpdate(prevProps) {
+    const { leakData } = this.props;
+    if (prevProps.leakData !== leakData) {
       this.props.removeFeaturesFromSource(null, true);
-      this.drawFuelEventsLeakPoints(this.state.leakData);
+      this.drawFuelEventsLeakPoints(leakData);
     }
   }
 

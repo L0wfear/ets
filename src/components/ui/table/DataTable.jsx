@@ -220,34 +220,30 @@ export default class DataTable extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
+
+  static getDerivedStateFromProps(nextProps, preveState) {
     const {
       initialSort,
       firstUseExternalInitialSort,
       initialSortAscending,
-    } = this.state;
+      originalData,
+      data,
+    } = preveState;
 
     const changesFields = {
       initialSort,
       initialSortAscending,
       firstUseExternalInitialSort,
-      originalData: this.state.originalData,
-      data: this.state.data,
+      originalData,
+      data,
     };
 
     if (firstUseExternalInitialSort) {
-      if (props.initialSort && props.initialSort !== initialSort) {
-        changesFields.initialSort = props.initialSort;
+      if (nextProps.initialSort && nextProps.initialSort !== initialSort) {
+        changesFields.initialSort = nextProps.initialSort;
       }
-      if (props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
-        changesFields.initialSortAscending = props.initialSortAscending;
+      if (nextProps.initialSortAscending && nextProps.initialSortAscending !== initialSortAscending) {
+        changesFields.initialSortAscending = nextProps.initialSortAscending;
       }
       changesFields.firstUseExternalInitialSort = false;
     }
@@ -257,29 +253,35 @@ export default class DataTable extends React.Component {
       changesFields.firstUseExternalInitialSort = false;
     }
 
-    if (props.useServerFilter) {
-      changesFields.filterValues = props.filterValues;
+    if (nextProps.useServerFilter) {
+      changesFields.filterValues = nextProps.filterValues;
     }
-    if (props.filterResetting) {
+    if (nextProps.filterResetting) {
       changesFields.filterValues = {};
     }
 
-    if (Array.isArray(props.results) && props.results !== this.state.originalData) {
-      changesFields.originalData = props.results;
-      changesFields.data = props.results;
+    if (Array.isArray(nextProps.results) && nextProps.results !== originalData) {
+      changesFields.originalData = nextProps.results;
+      changesFields.data = nextProps.results;
     }
 
-    if (!props.useServerSort || !props.useServerFilter) {
-      changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
+    if (!nextProps.useServerSort || !nextProps.useServerFilter) {
+      changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
     }
 
-    this.setState(changesFields);
+    return changesFields;
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (!this.state.isHierarchical) return true;
+  componentDidUpdate() {
+    const { props } = this;
 
-    return !_.isEqual(nextProps.results, this.props.results);
+    if (props.checked) {
+      // хак, т.к. гридл не умеет в обновление хедера
+      // TODO переделать
+      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
+      const el = document.getElementById('checkedColumn');
+      if (el) el.checked = checked;
+    }
   }
 
   getFilterTypeByKey(key) {

@@ -69,16 +69,18 @@ class CarFuelChart extends React.Component <PropsCarFuelChart, StateCarFuelChart
       front_cars_sensors_level,
     }
   }
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { front_cars_sensors_level } = nextProps;
-    if (front_cars_sensors_level !== this.state.front_cars_sensors_level) {
-      const data = makeData(front_cars_sensors_level, this.state);
+    if (front_cars_sensors_level !== prevState.front_cars_sensors_level) {
+      const data = makeData(front_cars_sensors_level, prevState);
 
-      this.setState({
+      return {
         front_cars_sensors_level,
         data,
-      });
+      };
     }
+
+    return null;
   }
   handleClick = () => {
     const sensorRawData = !this.state.sensorRawData;

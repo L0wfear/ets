@@ -15,7 +15,6 @@ export type PropsLayerSelectedGeooobjects = {
 }
 
 export type StateLayerSelectedGeooobjects = {
-  selectedGeoobjects: FrontGeozonesDataByIndex;
 };
 
 

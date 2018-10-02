@@ -25,16 +25,9 @@ type PropsLayerFuelEventPoints = {
 };
 
 type StateLayerFuelEventPoints = {
-  fuelEventPoint: any;
-  front_cars_sensors_level: any;
 };
 
 class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
-  state = {
-    fuelEventPoint: this.props.fuelEventPoint,
-    front_cars_sensors_level: this.props.front_cars_sensors_level,
-  };
-
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -46,25 +39,23 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
       );
     });
   }
-  componentWillReceiveProps(nextProps) {
-    const { fuelEventPoint, front_cars_sensors_level} = nextProps;
+  componentDidUpdate(prevProps) {
+    const { props } = this;
+    const {
+      fuelEventPoint,
+      front_cars_sensors_level,
+    } = props;
 
-    if (front_cars_sensors_level !== this.state.front_cars_sensors_level) {
+    if (front_cars_sensors_level !== prevProps.front_cars_sensors_level) {
       this.drawTrackPoints(
         fuelEventPoint,
-        nextProps.front_events_list,
+        props.front_events_list,
         front_cars_sensors_level,
       );
-
-      this.setState({ front_cars_sensors_level });
     } else {
-      if (fuelEventPoint !== this.state.fuelEventPoint) {
-        this.removeOneFuelEventPoint(this.state.fuelEventPoint);
+      if (fuelEventPoint !== prevProps.fuelEventPoint) {
+        this.removeOneFuelEventPoint(fuelEventPoint);
         this.addOneFuelEventPoint(fuelEventPoint);
-
-        this.setState({
-          fuelEventPoint,
-        });
       }
     }
   }

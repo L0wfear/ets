@@ -21,13 +21,16 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, {}> {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.playTrackStatus === 'play') {
-      actionOnPlay(nextProps);
+  componentDidUpdate(prevProps) {
+    const { props } = this;
+    const { playTrackStatus } = props;
+
+    if (playTrackStatus === 'play') {
+      actionOnPlay(props);
     }
 
-    if (nextProps.playTrackStatus === 'stop') {
-      actionOnStop(nextProps);
+    if (playTrackStatus === 'stop') {
+      actionOnStop(props);
     }
   }
 

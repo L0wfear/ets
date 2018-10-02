@@ -19,19 +19,18 @@ type PropsActionTrackTab = {
 
 type StateActionTrackTab = {
   intervalId: any
-  gps_code: number;
 }
 
 class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTrackTab> {
   state = {
     intervalId: null,
-    gps_code: this.props.gps_code,
   }
 
-  componentWillReceiveProps({ gps_code }) {
-    if (gps_code !== this.state.gps_code) {
-      clearInterval(this.state.intervalId);
-      this.setState({ gps_code });
+  componentDidUpdate(prevProps, prevState) {
+    const { gps_code } = this.props;
+
+    if (gps_code !== prevProps.gps_code) {
+      clearInterval(prevState.intervalId)
     }
   }
 

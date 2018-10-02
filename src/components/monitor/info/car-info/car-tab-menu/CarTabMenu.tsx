@@ -22,64 +22,49 @@ type PropsCarTabMenu = {
 
 type StateCarTabMenu = {
   selectedTab: number;
-  asuods_id: number | void;
-  odh_mkad: -1 | null | any[];
 };
 
 class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
   state = {
     selectedTab: 1,
-    asuods_id: this.props.asuods_id,
-    odh_mkad: this.props.odh_mkad,
-    gps_code: this.props.gps_code,
   }
 
   componentDidMount() {
-    if (this.state.asuods_id) {
+    if (this.props.asuods_id) {
       this.props.fetchMissionsData({
-        asuods_id: this.state.asuods_id,
-        gps_code: this.state.gps_code,
+        asuods_id: this.props.asuods_id,
+        gps_code: this.props.gps_code,
       });
-      if (this.state.odh_mkad !== -1) {
+      if (this.props.odh_mkad !== -1) {
         this.props.fetchTrack({
-          asuods_id: this.state.asuods_id,
-          gps_code: this.state.gps_code,
+          asuods_id: this.props.asuods_id,
+          gps_code: this.props.gps_code,
         });
       }
     }
   }
-  
-  componentWillReceiveProps({ asuods_id, odh_mkad, gps_code }) {
-    if (asuods_id !== this.state.asuods_id) {
-      const changeStateObj = {
-        asuods_id,
-        odh_mkad: this.state.odh_mkad,
-      };
 
+  componentDidUpdate(prevProps) {
+    const { asuods_id, odh_mkad, gps_code } = this.props;
+    if (asuods_id !== prevProps.asuods_id) {
       this.props.fetchMissionsData({
         asuods_id,
         gps_code,
       });
 
-      if (this.state.odh_mkad !== -1) {
+      if (odh_mkad !== -1) {
         this.props.fetchTrack({
           asuods_id,
           gps_code,
         });
-
-        changeStateObj.odh_mkad = odh_mkad;
       }
-
-      this.setState(changeStateObj);
-    } else if (odh_mkad !== this.state.odh_mkad) {
+    } else if (odh_mkad !== prevProps.odh_mkad) {
       this.props.fetchTrack({
         asuods_id,
         gps_code,
       });
-
-      this.setState({ odh_mkad });
     }
-  }
+  }  
 
   handleClick: any = ({ target: { dataset: { number } } }) => {
     const selectedTab = Number(number);

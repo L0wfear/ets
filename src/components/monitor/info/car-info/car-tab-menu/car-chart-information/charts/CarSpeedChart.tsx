@@ -98,12 +98,12 @@ class CarSpeedChart extends React.Component <PropsCarSpeedChart, StateCarSpeedCh
       speed_lim,
     }
   }
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.track !== -1) {
       let changedState: any = {};
       let hasChange = false;
 
-      if (['front_cars_sensors_equipment', 'mkad_speed_lim', 'speed_lim'].some((key) => this.state[key] !== nextProps[key])) {
+      if (['front_cars_sensors_equipment', 'mkad_speed_lim', 'speed_lim'].some((key) => prevState[key] !== nextProps[key])) {
         hasChange = true;
         changedState = {
           front_cars_sensors_equipment: nextProps.front_cars_sensors_equipment,
@@ -112,16 +112,18 @@ class CarSpeedChart extends React.Component <PropsCarSpeedChart, StateCarSpeedCh
           speed_lim: nextProps.front_cars_sensors_equipment,
         };
       }
-      if (this.state.lastPoint !== nextProps.lastPoint) {
-        changedState.data = addPointToSeries(changedState.data || this.state.data, nextProps);
+      if (prevState.lastPoint !== nextProps.lastPoint) {
+        changedState.data = addPointToSeries(changedState.data || prevState.data, nextProps);
         hasChange = true;
         changedState.lastPoint = nextProps.lastPoint;
       }
 
       if (hasChange) {
-        this.setState(changedState);
+        return changedState;
       }
     }
+
+    return null;
   }
 
   handleChartClick = ({ point: { x: timestamp } } ) => {

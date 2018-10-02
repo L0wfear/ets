@@ -1,6 +1,6 @@
 import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
-import { get, uniqBy, find } from 'lodash';
+import { uniqBy } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';

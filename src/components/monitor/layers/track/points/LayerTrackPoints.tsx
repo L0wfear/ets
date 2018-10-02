@@ -60,26 +60,20 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { SHOW_TRACK } = nextProps;
-
-    if (!this.state.trackLineIsDraw) {
-      const { track } = nextProps;
-
+  componentDidUpdate(prevProps) {
+    const { SHOW_TRACK } = this.props;
+    if (!(prevProps.track.length > 1)) {
+      const { track } = this.props;
       if (track.length > 1) {
         this.drawTrackPoints(track, SHOW_TRACK);
-        this.setState({ lastPoint: nextProps.lastPoint, trackLineIsDraw: true, SHOW_TRACK });
       }
     } else {
-      const { lastPoint } = nextProps;
-      if (lastPoint !== this.state.lastPoint) {
-        this.drawTrackPoints([lastPoint], SHOW_TRACK)
-        this.setState({ lastPoint, SHOW_TRACK });
-      } else if (SHOW_TRACK !== this.state) {
-        const { track } = nextProps;
-
+      const { lastPoint } = this.props;
+      if (lastPoint !== prevProps.lastPoint) {
+        this.drawTrackPoints([lastPoint], SHOW_TRACK);
+      } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {
+        const { track } = this.props;
         this.changeStyleForPoint(track, SHOW_TRACK)
-        this.setState({ lastPoint, SHOW_TRACK });
       }
     }
   }

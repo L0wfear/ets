@@ -209,7 +209,7 @@ export default class DrawMap extends PolyMap {
     draw.setActive(false);
   }
 
-  addPoint() {
+  addPoint = () => {
     this.draw.setActive(true);
     this.drawSetToEnd = false;
     if (typeof this.props.startDraw === 'function') {
@@ -225,12 +225,14 @@ export default class DrawMap extends PolyMap {
     // this.draw.extend(featureSegment);
   }
 
-  removeLastPoint() {
-    const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
-    if (objectList.length === 1) {
-      this.draw.setActive(true);
+  removeLastPoint = () => {
+    if (!this.draw.getActive()) {
+      const objectList = this.props.objectsType === 'mixed' ? this.props.draw_object_list : this.props.object_list;
+      if (objectList.length === 1) {
+        this.draw.setActive(true);
+      }
+      this.props.removeLastDrawFeature();
     }
-    this.props.removeLastDrawFeature();
   }
 
   render() {

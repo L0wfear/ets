@@ -71,7 +71,6 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
     }
   });
 
-  console.log(ROUTES)
   return ROUTES;
 };
 

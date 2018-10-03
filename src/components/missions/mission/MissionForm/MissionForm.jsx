@@ -511,6 +511,8 @@ export class MissionForm extends Form {
       title = `${title} . Колонна № ${state.column_id}`;
     }
 
+    const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
+
     const carEditionDisability = (
       (
         IS_POST_CREATING_ASSIGNED
@@ -550,6 +552,22 @@ export class MissionForm extends Form {
       ) && !IS_NOT_IN_WAYBILL
     );
 
+    const municipalFacilityIdDisabled = (
+      (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
+      || sourceIsOrder
+    );
+
+    const alreadyDefineNormId = (
+      sourceIsOrder
+      || (
+        !IS_CREATING
+        && (
+          IS_POST_CREATING_ASSIGNED
+          || IS_DISPLAY
+        )
+      )
+    );
+
     if (IS_CREATING) {
       title = (
         <div>
@@ -559,7 +577,6 @@ export class MissionForm extends Form {
     }
     // Старые задания нельзя редактирвоать
 
-    const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     return (
       <div>
@@ -617,24 +634,28 @@ export class MissionForm extends Form {
                           onChange={this.handleStructureIdChange}
                         />
                       </Col>
-                  )}
+                    )
+                }
                 </Row>
                 <Row>
                   <Col md={6}>
                     <InsideField.MunicipalFacility
-                      id="municipal_facility_id"
-                      label="municipal_facility_name"
-                      errors={errors}
-                      state={state}
+                      modalKey={modalKey}
+                      error={errors.municipal_facility_id}
+                      name={state.municipal_facility_name}
+                      value={state.municipal_facility_id}
+                      date_start={state.date_start}
+                      technical_operation_id={state.technical_operation_id}
+                      norm_id={state.norm_id}
                       clearable={false}
-                      disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
+                      disabled={municipalFacilityIdDisabled}
+                      alreadyDefineNormId={alreadyDefineNormId}
                       handleChange={this.handleChangeMF}
-                      getDataByNormatives={this.getDataByNormatives}
                       technicalOperationsList={technicalOperationsList}
-                      getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
-                      fromWaybill={this.props.fromWaybill}
-                      type_id={this.props.fromWaybill ? state.type_id : null}
                       kind_task_ids={kind_task_ids}
+                      getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
+                      typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
+                      getDataByNormatives={this.getDataByNormatives}
                     />
                   </Col>
                   <Col md={6}>
@@ -741,7 +762,7 @@ export class MissionForm extends Form {
                 <Row>
                   <Col md={12}>
                     {
-                      route && route.id !== null
+                      route && route.id
                         ? (
                           <RouteInfo
                             route={route}
@@ -782,15 +803,19 @@ export class MissionForm extends Form {
                     />
                     { IS_CREATING && !fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
                   </Col>
-                  {state.order_number != null && <Col md={2}>
-                    <Field
-                      id="order-number"
-                      type="string"
-                      label="Номер централизованного задания"
-                      readOnly
-                      value={state.order_number}
-                    />
-                  </Col>}
+                  {state.order_number != null
+                    && (
+                      <Col md={2}>
+                        <Field
+                          id="order-number"
+                          type="string"
+                          label="Номер централизованного задания"
+                          readOnly
+                          value={state.order_number}
+                        />
+                      </Col>
+                    )
+                  }
                   <Col md={state.order_number != null ? 4 : 6}>
                     <Field
                       id="m-comment"

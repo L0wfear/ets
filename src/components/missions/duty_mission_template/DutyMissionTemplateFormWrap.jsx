@@ -47,7 +47,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     }
   }
 
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const { _employeesIndex = {} } = this.props;
@@ -55,6 +55,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     if (this.props.formType === 'ViewForm') {
       try {
         if (isEmpty(formState.id)) {
+          console.log(formState)
           await flux.getActions('missions').createDutyMissionTemplate(formState);
         } else {
           await flux.getActions('missions').updateDutyMissionTemplate(formState);

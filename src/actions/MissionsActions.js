@@ -472,7 +472,11 @@ export default class MissionsActions extends Actions {
       delete payload.kind_task_ids;
     }
 
-    return Cleaning.path('municipal_facility').get(payload, false, 'json');
+    return Cleaning.path('municipal_facility')
+      .get(payload, false, 'json')
+      .then(({ result: { rows } }) => ({
+        municipal_facility_list: rows,
+      }));
   }
 
   getCleaningMunicipalFacilityAllList(outerPyload) {

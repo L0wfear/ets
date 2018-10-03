@@ -54,12 +54,12 @@ class CarFormWrap extends FormWrap {
     this.props.onFormHide();
   }
 
-  handleFormSubmit = () => {
+  handleFormSubmitWrap = () => {
     if (this.props.location.search) {
       this.props.history.push(this.props.match.url);
     }
 
-    return super.handleFormSubmit().then(() => {
+    return this.handleFormSubmit().then(() => {
       if (this.props.refreshList) {
         this.props.refreshList();
       }
@@ -153,7 +153,7 @@ class CarFormWrap extends FormWrap {
       ? (
         <CarForm
           formState={this.state.formState}
-          onSubmit={this.handleFormSubmit}
+          onSubmit={this.handleFormSubmitWrap}
           handleFormOnlySubmit={this.handleFormOnlySubmit}
           permissions={[`${entity}.update`]}
           addPermissionProp

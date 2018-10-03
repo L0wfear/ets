@@ -412,6 +412,20 @@ export class DutyMissionForm extends Form {
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
+    const municipalFacilityIdDisabled = (
+      IS_DISPLAY
+      || !!state.route_id
+      || readOnly
+      || sourceIsOrder
+    );
+
+    const alreadyDefineNormId = (
+      IS_DISPLAY
+      || !!state.route_id
+      || readOnly
+      || sourceIsOrder
+    );
+
     return (
       <Modal id="modal-duty-mission" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
@@ -512,17 +526,21 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id="municipal_facility_id"
-                label="municipal_facility_name"
-                errors={errors}
-                state={state}
+                modalKey={modalKey}
+                error={errors.municipal_facility_id}
+                name={state.municipal_facility_name}
+                value={state.municipal_facility_id}
+                date_start={state.plan_date_start}
+                technical_operation_id={state.technical_operation_id}
+                norm_id={state.norm_id}
                 clearable={false}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
-                handleChange={this.handleChange.bind(this)}
+                disabled={municipalFacilityIdDisabled}
+                alreadyDefineNormId={alreadyDefineNormId}
+                handleChange={this.handleChange}
                 getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
-                getNormIdFromState={!!fromOrder || IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 kind_task_ids={kind_task_ids}
+                getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
               />
             </Col>
           </Row>

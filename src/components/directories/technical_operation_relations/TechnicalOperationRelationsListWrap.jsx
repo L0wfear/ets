@@ -40,14 +40,14 @@ class TechnicalOperationRelationsListWrap extends React.Component {
       };
 
       this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payload)
-        .then(({ result: { rows = [] } = {} }) => {
+        .then(({ municipal_facility_list }) => {
           const changesState = {
             MUNICIPAL_FACILITY_OPTIONS: this.state.MUNICIPAL_FACILITY_OPTIONS,
             municipal_facility_id: null,
           };
 
           const { MUNICIPAL_FACILITY_OPTIONS } = makeOptions({
-            data: rows,
+            data: municipal_facility_list,
             options: customOptionsMunicipalFacility,
           });
 

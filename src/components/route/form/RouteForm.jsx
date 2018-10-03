@@ -147,12 +147,10 @@ export default class RouteForm extends Form {
 
   toggleIsMain = () => this.handleChange('is_main', !this.props.formState.is_main);
 
-  getDataByNormId = (data) => {
+  getDataBySelectedMunicipalFacility = (data) => {
     if (!data) {
-      this.handleChange('norm_id', data);
       return;
     }
-    this.handleChange('norm_id', data.norm_id);
 
     this.changeRouteTypesAvailable(data.route_types);
   }
@@ -244,16 +242,17 @@ export default class RouteForm extends Form {
                   </Col>
                   <Col md={6}>
                     <MunicipalFacility
-                      id={'municipal_facility_id'}
-                      label={'municipal_facility_name'}
-                      errors={errors}
-                      state={state}
+                      id="municipal_facility_id"
+                      error={errors.municipal_facility_id}
+                      value={state.municipal_facility_id}
+                      name={state.municipal_facility_name}
+                      technical_operation_id={state.technical_operation_id}
                       disabled={!!this.props.fromMission || !!state.id}
                       handleChange={this.handleChange}
-                      getDataByNormId={this.getDataByNormId}
+                      getDataBySelectedMunicipalFacility={this.getDataBySelectedMunicipalFacility}
                       clearable={false}
                       technicalOperationsList={technicalOperationsList}
-                      getNormIdFromState={this.props.fromMission}
+                      getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
                     />
                   </Col>
                 </Row>

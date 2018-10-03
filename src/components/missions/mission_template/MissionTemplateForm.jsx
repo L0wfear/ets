@@ -132,16 +132,20 @@ class MissionTemplateForm extends MissionForm {
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id="municipal_facility_id"
-                label="municipal_facility_name"
-                errors={errors}
-                state={state}
+                modalKey={modalKey}
+                error={errors.municipal_facility_id}
+                name={state.municipal_facility_name}
+                value={state.municipal_facility_id}
+                technical_operation_id={state.technical_operation_id}
+                norm_id={state.norm_id}
                 clearable={false}
-                disabled={!!state.route_id}
+                disabled={state.route_id}
                 handleChange={this.handleChangeMF}
-                getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
-                getNormIdFromState={!IS_CREATING}
+                getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
+                typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
+                getDataByNormatives={this.getDataByNormatives}
+                alreadyDefineNormId={!IS_CREATING}
               />
             </Col>
           </Row>

@@ -566,7 +566,7 @@ export default class DataTable extends React.Component {
       el.isSelected = false;
       return el;
     }
-    if (typeof selectField !== 'undefined') {
+    if (typeof selectField !== 'undefined' && selected[selectField]) {
       el.isSelected = el[selectField] === selected[selectField];
     }
     return el;

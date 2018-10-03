@@ -13,7 +13,7 @@ module.exports = {
   entry: [
     'whatwg-fetch',
     '@babel/polyfill',
-    './src/index.js',
+    './src/index',
   ],
   output: {
     filename: '[name].bundle.js',

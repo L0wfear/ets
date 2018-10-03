@@ -1,6 +1,6 @@
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { diffDates } from 'utils/dates';
-import { getMElement, getDMElement, getMissionTemplateData } from 'redux-main/modules/order/utils';
+import { getMElement, getDMElement, getMissionTemplateData } from 'redux-main/reducers/modules/order/utils';
 import {
   SET_ORDERS,
   SET_SELECTED_ELEMENT_ORDER,
@@ -13,7 +13,7 @@ import {
   SET_MISSION_TEMPLATE_DATA,
   SET_EMPTY_MISSION_TEMPLATE_DATA,
   RESET_ORDER,
-} from 'redux-main/modules/order/action-order';
+} from 'redux-main/reducers/modules/order/action-order';
 
 const initialState = {
   OrdersList: [],

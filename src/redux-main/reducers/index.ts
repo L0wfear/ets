@@ -4,8 +4,8 @@ import { etsLoading } from 'redux-main/_middleware/etsLoading';
 
 import rootReducers from 'components/redux-main/reducer';
 
-import order from 'redux-main/modules/order/order';
-import session from 'redux-main/modules/session/session';
+import order from 'redux-main/reducers/modules/order/order';
+import session from 'redux-main/reducers/modules/session/session';
 import monitorPage from 'components/monitor/redux-main/models/monitor-page';
 import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboard';
 

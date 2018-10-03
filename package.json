@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.53",
+    "version": "2.0.23.54",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -38,6 +38,7 @@
         "react-sparklines": "=1.7.0",
         "react-widgets": "=4.4.5",
         "recompose": "=0.30.0",
+        "reconnecting-websocket": "^4.1.1",
         "redux": "=4.0.0",
         "redux-logger": "=3.0.6",
         "redux-promise": "=0.6.0",
@@ -68,6 +69,7 @@
         "@types/react-dom": "=16.0.8",
         "@types/recompose": "=0.26.5",
         "@types/styled-components": "=3.0.1",
+        "@types/webpack-env": "^1.13.6",
         "babel-eslint": "=10.0.1",
         "babel-loader": "=8.0.4",
         "clean-webpack-plugin": "=0.1.19",

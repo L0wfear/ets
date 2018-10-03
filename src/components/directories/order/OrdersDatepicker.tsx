@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { getOrders } from 'redux-main/modules/order/action-order';
+import { getOrders } from 'redux-main/reducers/modules/order/action-order';
 import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/compositions/hoc';
 
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';

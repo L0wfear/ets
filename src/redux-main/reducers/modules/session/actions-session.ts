@@ -3,7 +3,7 @@ import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
   SESSION_SET_CONFIG
-} from 'redux-main/modules/session/session';
+} from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService } from 'api/Services';
 

@@ -4,7 +4,7 @@ import {
   setEmptyMissionData,
   setEmptyDutyMissionData,
   setEmptyDutyMissionTemplateData,
-} from 'redux-main/modules/order/action-order';
+} from 'redux-main/reducers/modules/order/action-order';
   
 import Div from 'components/ui/Div';
 

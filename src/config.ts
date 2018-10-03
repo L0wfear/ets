@@ -7,6 +7,7 @@ const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
 
 const WS_PROTO = 'wss:';
+const STAND = process.env.STAND;
 
 const DOC_URL = {
   develop: {
@@ -60,12 +61,16 @@ const STANDS = {
   },
 };
 
-const configs = {};
+const configs = {
+  ws: config.develop.ws,
+  images: config.develop.images,
+  docs: config.develop.docs,
+  backend: STANDS.develop.dev,
+  notification_ws: notification_config.develop.dev,
+};
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
 try {
-  const STAND = process.env.STAND;
-
   configs.ws = config[pathToConfig].ws;
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;

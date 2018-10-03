@@ -14,8 +14,17 @@ import Div from './Div';
 
 function StringField(props) {
   const { error, ...mainProps } = props; 
-  const { label = '', readOnly = false, disabled = false, className = '',
-    wrapStyle, hidden, isLoading, inline = false, id } = props;
+  const {
+    label = '',
+    readOnly = false,
+    disabled = false,
+    className = '',
+    wrapStyle,
+    hidden,
+    isLoading,
+    inline = false,
+    id,
+  } = props;
   let { value } = props;
 
   const inputClassName = cx({ 'has-error': error });

@@ -31,6 +31,17 @@ export default class ReactSelect extends React.Component<any, any> {
       selectType: PropTypes.string,
     };
   }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      components: {
+        Option: this.optionRenderer,
+        SingleValue: this.singleValueRender,
+        MultiValue: this.multiValueRender,
+      }
+    };
+  }
 
   handleChange = (objectValue) => {
     const {
@@ -55,9 +66,7 @@ export default class ReactSelect extends React.Component<any, any> {
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
 
   singleValueRender = ({ innerProps, ...props }) => {
-    const {
-      modalKey,
-    } = this.props;
+    const { modalKey } = this.props;
     
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
 
@@ -67,6 +76,24 @@ export default class ReactSelect extends React.Component<any, any> {
     };
 
     return <components.SingleValue innerProps={newInnerProps} {...props} />;
+  }
+
+  multiValueRender = ({ innerProps, ...props }) => {
+    const {
+      selectProps: { instanceId },
+      data: { value },
+    } = props;
+    
+    const id = instanceId? `${instanceId}-value-${value}` : undefined;
+
+    const newInnerProps = {
+      ...innerProps,
+      id,
+    };
+
+    console.log(innerProps, props)
+
+    return <components.MultiValue innerProps={newInnerProps} {...props} />;
   }
   render() {
     const {
@@ -116,12 +143,7 @@ export default class ReactSelect extends React.Component<any, any> {
         options={sortedOptions}
         placeholder={placeholder}
         noOptionsMessage={this.noOptionsMessage}
-        components={
-          {
-            Option: this.optionRenderer,
-            SingleValue: this.singleValueRender,
-          }
-        }
+        components={this.state.components}
         isDisabled={disabled}
       />
     );

@@ -17,8 +17,7 @@ import permissions from 'components/directories/geoobjects/pages/snow_storage/co
   operations: ['READ'],
 })
 export default class SnowStorageDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('snow_storage');
   }

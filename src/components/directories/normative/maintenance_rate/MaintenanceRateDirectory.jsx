@@ -28,8 +28,7 @@ class MaintenanceRateDirectory extends ElementsList {
     this.exportPayload = { type };
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getMaintenanceRate(this.props.type);
     flux.getActions('objects').getMaintenanceWork();

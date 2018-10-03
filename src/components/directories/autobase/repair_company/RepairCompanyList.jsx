@@ -20,9 +20,7 @@ export default class RepairCompanyList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeRepairCompany;
   }
-  componentDidMount() {
-    super.componentDidMount();
-
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('repairCompany');
   }

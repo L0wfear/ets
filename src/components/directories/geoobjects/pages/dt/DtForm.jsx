@@ -12,12 +12,12 @@ import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 export default class DtForm extends Form {
   myHandleSubmit = () => this.handleSubmit();
 
-  handleChange = (key, value) => {
+  handleChangeWrap = (key, value) => {
     if (key === 'company_structure_id') {
       global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
     }
 
-    super.handleChange(key, value);
+    this.handleChange(key, value);
   }
 
   render() {
@@ -73,7 +73,7 @@ export default class DtForm extends Form {
                 error={errors.company_structure_id}
                 options={COMPANY_ELEMENTS}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.handleChangeWrap}
                 boundKeys={['company_structure_id']}
               />
             </Col>

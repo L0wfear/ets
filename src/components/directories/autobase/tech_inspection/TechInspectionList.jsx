@@ -23,8 +23,7 @@ export default class TechInspectionList extends ElementsList {
     this.removeElementAction = context.flux.getActions('autobase').removeTechInspection.bind(null, car_id === -1 ? {} : { car_id });
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
 

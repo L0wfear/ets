@@ -17,8 +17,7 @@ import permissions from 'components/directories/geoobjects/pages/odh/config-data
   operations: ['READ'],
 })
 export default class ODHDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const linear = true;
     const descendants_by_user = true;

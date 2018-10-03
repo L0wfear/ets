@@ -23,8 +23,7 @@ export default class FuelRatesDirectory extends ElementsList {
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations();
     flux.getActions('fuelRates').getFuelRates();

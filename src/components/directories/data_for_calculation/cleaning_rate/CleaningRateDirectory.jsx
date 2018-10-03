@@ -22,8 +22,7 @@ class CleaningRateDirectory extends ElementsList {
     this.removeElementAction = context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getCleaningRate(this.props.type);
     flux.getActions('technicalOperation').getTechnicalOperations();

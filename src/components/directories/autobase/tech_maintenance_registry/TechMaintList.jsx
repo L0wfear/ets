@@ -21,8 +21,7 @@ export default class TechMaintList extends ElementsList {
     const { car_id = -1 } = props;
     this.removeElementAction = context.flux.getActions('autobase').removeTechMaint.bind(null, car_id === -1 ? {} : { car_id });
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
 

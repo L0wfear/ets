@@ -22,8 +22,7 @@ export default class BatteryRegList extends ElementsList {
     this.removeElementAction = context.flux.getActions('autobase').removeBatteryRegistry;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
 
     flux.getActions('autobase').getAutobaseListByType('batteryRegistry');

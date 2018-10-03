@@ -41,9 +41,7 @@ export default class WaybillJournal extends CheckableElementsList {
     });
   }
 
-  componentDidMount() {
-    super.componentDidMount();
-
+  init() {
     const { flux } = this.context;
     this.updateList();
     flux.getActions('employees').getEmployees();

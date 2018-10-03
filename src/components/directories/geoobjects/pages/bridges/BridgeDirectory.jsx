@@ -18,8 +18,7 @@ import permissions from 'components/directories/geoobjects/pages/bridges/config-
   operations: ['READ'],
 })
 export default class BridgeDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('bridges', 'GormostService');
   }

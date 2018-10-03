@@ -22,8 +22,7 @@ export default class List extends ElementsList {
     this.removeElementAction = context.flux.getActions('objects').deleteMaterialConsumptionRate;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getMaterialConsumptionRate();
     flux.getActions('objects').getCleanCategories();

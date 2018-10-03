@@ -17,8 +17,7 @@ import permissions from 'components/directories/geoobjects/pages/danger_zones/co
   formMeta: tableMeta(),
 })
 export default class DangerZonesDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('danger_zone');
   }

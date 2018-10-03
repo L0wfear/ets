@@ -27,8 +27,7 @@ class ObjectPropertyList extends ElementsList {
     this.exportPayload = { object_type };
   }
 
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
 
     await flux.getActions('repair').getObjectProperty({ object_type: 'odh' }, { name: 'odh' });

@@ -16,8 +16,7 @@ import permissions from 'components/directories/geoobjects/pages/pgm/config-data
   formMeta: tableMeta(),
 })
 export default class PGMDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('pgm_store');
   }

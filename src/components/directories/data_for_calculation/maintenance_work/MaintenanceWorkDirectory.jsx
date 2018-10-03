@@ -21,8 +21,7 @@ export default class MaintenanceWorkDirectory extends ElementsList {
     this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceWork;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getMaintenanceWork();
     flux.getActions('odh').getMeasureUnits();

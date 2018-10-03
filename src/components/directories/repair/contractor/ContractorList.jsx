@@ -18,15 +18,11 @@ import permissions from 'components/directories/repair/contractor/config-data/pe
 })
 export default class ContractorList extends CheckableElementsList {
   constructor(props, context) {
+
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeСontractor;
-
-    state = {
-      ...this.state,
-    };
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('repair').getRepairListByType('contractor');
   }

@@ -20,8 +20,7 @@ export default class TireList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeTire;
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('tire');
   }

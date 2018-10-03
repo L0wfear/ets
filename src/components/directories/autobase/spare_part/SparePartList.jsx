@@ -20,9 +20,7 @@ export default class SparePartList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeSparePart;
   }
-  componentDidMount() {
-    super.componentDidMount();
-
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('sparePart');
   }

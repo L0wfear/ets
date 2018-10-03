@@ -35,8 +35,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
   removeElementAction = id => this.context.flux.getActions('missions').removeDutyMissionTemplate(id).then(this.updateTable);
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
 
     flux.getActions('technicalOperation').getTechnicalOperations();

@@ -22,10 +22,9 @@ const ButtonAddStructure = enhanceWithPermissions({
   permissions,
   listName: 'companyStructureLinearList',
 })
-export default class CompanyStructure extends ElementsList {
+class CompanyStructure extends ElementsList {
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     this.refreshState();
   }
 
@@ -100,3 +99,5 @@ export default class CompanyStructure extends ElementsList {
     );
   }
 }
+
+export default CompanyStructure;

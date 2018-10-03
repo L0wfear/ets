@@ -61,8 +61,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     }
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {

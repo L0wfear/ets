@@ -16,8 +16,7 @@ import permissions from 'components/directories/geoobjects/pages/ssp/config-data
   formMeta: tableMeta(),
 })
 export default class SSPDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('ssp');
   }

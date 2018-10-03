@@ -12,8 +12,7 @@ import OrganizationsFormWrap from './OrganizationsFormWrap';
   operations: ['LIST', 'READ', 'UPDATE'],
 })
 export default class OrganizationsDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getOrganizations();
   }

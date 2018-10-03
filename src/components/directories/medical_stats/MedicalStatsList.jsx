@@ -27,10 +27,9 @@ export default class MedicalStatsList extends ElementsList {
     date_to: createValidDateTime(this.state.date_to),
   };
 
-  async componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
-    await flux.getActions('objects').getMedicalStats(this.state);
+    flux.getActions('objects').getMedicalStats(this.state);
   }
 
   componentDidUpdate(prevProps, prevState) {

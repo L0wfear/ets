@@ -17,8 +17,7 @@ import permissions from 'components/directories/geoobjects/pages/carpool/config-
   operations: ['READ'],
 })
 export default class CarpoolDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('carpool');
   }

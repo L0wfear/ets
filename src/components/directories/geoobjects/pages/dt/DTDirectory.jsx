@@ -18,8 +18,7 @@ import permissions from 'components/directories/geoobjects/pages/dt/config-data/
   operations: ['READ'],
 })
 export default class DTDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const linear = true;
     const descendants_by_user = true;

@@ -19,8 +19,7 @@ import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOp
 })
 export default class TechOperationsDirectory extends ElementsList {
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperationsRegistry().then((ans) => {
       const options = makeOptions({

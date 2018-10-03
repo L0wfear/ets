@@ -17,8 +17,7 @@ import permissions from 'components/directories/geoobjects/pages/pedestrian_tunn
   operations: ['READ'],
 })
 export default class PedestrianTunnelsDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('pedestrian_tunnels', 'GormostService');
   }

@@ -23,8 +23,7 @@ export default class CarsList extends ElementsList {
     super();
     this.preventUrlFilters = true;
   }
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
 
     const {

@@ -22,8 +22,7 @@ export default class ODHNormList extends ElementsList {
     this.removeElementAction = context.flux.getActions('odh').deleteODHNorm;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('odh').getODHNorm();
     flux.getActions('odh').getMeasureUnits();

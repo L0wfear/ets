@@ -18,8 +18,7 @@ import permissions from 'components/directories/geoobjects/pages/fountains/confi
   operations: ['READ'],
 })
 export default class FountainsTunnelsDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('fountains', 'GormostService');
   }

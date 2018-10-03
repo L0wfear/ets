@@ -16,13 +16,9 @@ import permissions from 'components/directories/autobase/battery_manufacturer/co
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class BatteryManufacturerList extends ElementsList {
-  constructor(props, context) {
-    super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeBatteryManufacturer;
-  }
+  removeElementAction = (...arg) => context.flux.getActions('autobase').removeBatteryManufacturer(...arg);
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('batteryManufacturer');
   }

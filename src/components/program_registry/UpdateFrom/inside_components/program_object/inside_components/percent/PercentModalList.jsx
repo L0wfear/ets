@@ -29,8 +29,7 @@ export default class PercentModalList extends ElementsList {
 
   removeElementAction = id => this.context.flux.getActions('repair').removePercent(id).then(this.checkMinVals);
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     this.checkMinVals();
   }
 

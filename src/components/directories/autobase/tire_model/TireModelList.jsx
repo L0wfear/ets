@@ -20,8 +20,7 @@ export default class TireBrandList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeTireModel;
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('tireModel');
     flux.getActions('autobase').getAutobaseListByType('tireManufacturer');

@@ -16,8 +16,7 @@ import permissions from 'components/directories/data_for_calculation/odh_norm_da
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 export default class ODHNormDataSummerList extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('odh').getODHNormDataSummer();
     flux.getActions('odh').getODHNorm();

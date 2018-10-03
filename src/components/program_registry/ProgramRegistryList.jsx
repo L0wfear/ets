@@ -60,8 +60,7 @@ export default class ProgramRegistryList extends CheckableElementsList {
       }, DOUBLECLICK_TIMEOUT);
     }
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
 
     flux.getActions('repair').getRepairListByType('programRegistry');

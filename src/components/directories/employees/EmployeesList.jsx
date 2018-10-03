@@ -22,8 +22,7 @@ export default class EmployeesList extends ElementsList {
     super();
     this.preventUrlFilters = true;
   }
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const linear = true;
     const descendants_by_user = true;
 

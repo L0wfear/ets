@@ -74,8 +74,10 @@ export const ButtonContainer = styled.div`
   }
 `;
 
-export const ButtonDraw = styled(Button)`
-  background-image: url(${ruler});
-  background-blend-mode: difference;
-  background-size: cover;
+export const ButtonDraw = styled(Button).attrs({ className: 'ruler' })`
+  &.ruler {
+    background-image: url(${ruler});
+    background-blend-mode: difference;
+    background-size: cover;
+  }
 `;

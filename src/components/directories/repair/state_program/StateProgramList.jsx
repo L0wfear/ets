@@ -21,8 +21,7 @@ export default class StateProgramList extends CheckableElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeStateProgram;
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
 
     flux.getActions('repair').getRepairListByType('stateProgram');

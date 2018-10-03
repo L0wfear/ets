@@ -200,11 +200,11 @@ class RoutesList extends React.Component {
       const pathToIsMain = route.is_main ? 'main' : 'other';
       const pathTo_type = pathToIsMain + getTypeRoute(route.type);
       const pathTo_structure_name = pathTo_type + route.structure_name || 'Без подразделения';
-      const pathToWorkTypeName = pathTo_structure_name + route.front_work_type_name;
-      const pathTo_technical_operation_name = pathTo_structure_name + route.technical_operation_name;
 
-      [pathToIsMain, pathTo_type, pathTo_structure_name, pathToWorkTypeName, pathTo_technical_operation_name].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
+      let pathTo_technical_operation_name_arr = [];
+      route.work_types.forEach((elem) => pathTo_technical_operation_name_arr.push(pathTo_structure_name + elem.work_type_name, pathTo_structure_name + elem.work_type_name + route.technical_operation_name));
 
+      [pathToIsMain, pathTo_type, pathTo_structure_name, ...pathTo_technical_operation_name_arr].filter(r => !!r).forEach(r => showId.includes(r) ? '' : showId.push(r));
       this.setState({
         showForm: false,
         selectedRoute: route,
@@ -260,6 +260,8 @@ class RoutesList extends React.Component {
   handleChange = selectedRoute => this.setState({ selectedRoute });
 
   handleDropdown = (name) => {
+    console.log('handleDropdown name ===', name);
+    console.log('this.state.showId === ', this.state.showId);
     const { showId } = this.state;
     const i = this.state.showId.indexOf(name);
     if (i < 0) {

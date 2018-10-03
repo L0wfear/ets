@@ -355,7 +355,6 @@ class RoutesList extends React.Component {
 
       return newObj;
     }, {});
-    console.log('ROUTES here -- > ', ROUTES);
     return (
       <EtsPageWrapRoute inheritDisplay>
         <Col xs={5} md={3} className="sidebar">

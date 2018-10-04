@@ -61,7 +61,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
     }
 
     this.props.saveOrder(this.props.infoData.data.id, payload)
-      .then(({ blob, fileName }) => saveData(blob, fileName))
+      .then(({ payload: { blob, fileName } }) => saveData(blob, fileName))
       .catch((error) => {
         console.warn(error)
       })
@@ -69,14 +69,12 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
 
   showPDFViewModal = () => {
     this.props.saveOrder(this.props.infoData.data.id)
-      .then(({ blob }) => {
-        if (!!blob) {
+      .then(({ payload: { blob } }) => {
+        if (blob) {
           this.setState({
             showPDFViewModal: true,
             blob,
           });
-        } else {
-          console.error('no blob')
         }
       })
       .catch((error) => {

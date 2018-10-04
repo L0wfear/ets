@@ -8,6 +8,10 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
 import CompanyStructureFormWrap from 'components/company_structure/CompanyStructureFormWrap.jsx';
 import CompanyStructureTable from 'components/company_structure/CompanyStructureTable.jsx';
 
+import {
+  EtsPageWrapCompanyStructure,
+} from 'components/company_structure/styled/styled';
+
 const ButtonAddStructure = enhanceWithPermissions({
   permission: permissions.create,
 })(Button);
@@ -68,11 +72,15 @@ export default class CompanyStructure extends ElementsList {
       });
   }
 
+  setNode = (node) => {
+    this.node = node;
+  }
+
   render() {
     const { companyStructureList = [] } = this.props;
 
     return (
-      <div className="ets-page-wrap company-structure" ref={node => (this.node = node)}>
+      <EtsPageWrapCompanyStructure innerRef={this.setNode}>
         <CompanyStructureTable
           data={companyStructureList}
           onActionEdit={this.editElement}
@@ -88,7 +96,7 @@ export default class CompanyStructure extends ElementsList {
           refreshState={this.refreshState}
           {...this.props}
         />
-      </div>
+      </EtsPageWrapCompanyStructure>
     );
   }
 }

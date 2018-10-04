@@ -7,7 +7,7 @@ import Div from 'components/ui/Div.jsx';
 import { ExtField } from 'components/ui/Field.jsx';
 
 import { connectToStores } from 'utils/decorators';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 const PermittedSlug = ['dt', 'odh'];
 const setTypeOptionsBySlug = (slug, allOptions) => {

@@ -6,11 +6,9 @@ import filterTypeHandler from './filterTypeHandler';
 import Input from './Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from './constants';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import { IPropsEtsSelect } from 'components/ui/@types/EtsSelect.h';
-import ETSSelect from 'components/ui/input/EtsSelect';
-import { isEqualOr } from 'utils/functions';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-const EtsSelect: React.ComponentClass<IPropsEtsSelect> = ETSSelect;
+import { isEqualOr } from 'utils/functions';
 
 interface IPropsFilterInput {
   nativeDatetime: boolean;
@@ -43,8 +41,8 @@ const datetimeFilterValueMaker = (value, type) => R.cond([
 });
 
 class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       type: 'eq',
@@ -101,11 +99,12 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
 
     return (
       <div className="advanced-string-input">
-        <EtsSelect
+        <ReactSelect
           options={FILTER_SELECT_TYPES}
           value={this.state.type}
           clearable={false}
           onChange={this.handleTypeChange}
+          className="width70"
         />
         {filterField}
       </div>

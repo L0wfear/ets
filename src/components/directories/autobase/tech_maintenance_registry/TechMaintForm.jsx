@@ -11,7 +11,7 @@ import {
  } from 'components/ui/input/fields';
 import { connectToStores } from 'utils/decorators';
 import { ExtDiv } from 'components/ui/Div.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import Form from 'components/compositions/Form.jsx';
 import {
   hasMotohours,

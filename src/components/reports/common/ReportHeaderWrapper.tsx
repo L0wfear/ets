@@ -13,8 +13,8 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
 
   return class Header extends React.Component<IPropsHeader, IStateReportHeaderWrapper> {
     clonedState: any;
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
       this.state = {
       };
     }

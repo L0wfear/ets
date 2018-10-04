@@ -202,6 +202,7 @@ export class DutyMissionForm extends Form {
         structure_id: formState.structure_id,
         object_list: [],
         input_lines: [],
+        is_main: true,
       };
       this.setState({
         showRouteForm: true,

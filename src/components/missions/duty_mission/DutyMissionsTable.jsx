@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { MISSION_STATUS_LABELS as DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter.jsx';
 import Table from 'components/ui/table/DataTable.jsx';
-import { get, find, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 
-const highlight = [{ is_suspended: true }];
+/**
+ * подсветка строк таблицы "провальных" поручений
+ */
+const highlight = [{ is_valid_to_order_operation: false }];
 
 export const getTableMeta = ({
   structures = [],
@@ -36,6 +39,16 @@ export const getTableMeta = ({
           type: 'advanced-number',
         },
         cssClassName: 'width60',
+      },
+      {
+        name: 'order_number',
+        displayName: 'Факсограмма №',
+        type: 'number',
+        sortable: true,
+        filter: {
+          type: 'advanced-string-like',
+        },
+        cssClassName: 'width120',
       },
       {
         name: 'mission_source_id',
@@ -157,6 +170,19 @@ export const getTableMeta = ({
         },
         display: structures.length,
       },
+      {
+        name: 'is_valid_to_order_operation',
+        displayName: 'Не соответствующие поручению',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          options: [{
+            value: 0,
+            label: 'Да',
+          }],
+        },
+        display: false,
+      },
     ],
   };
 
@@ -165,14 +191,12 @@ export const getTableMeta = ({
 
 export default (props) => {
   const renderers = {
-    rowNumber: ({ data }) => <span>{props.rowNumberOffset + data}</span>,
-    mission_source_name: ({ rowData: { mission_source_text } }) => <span>{mission_source_text}</span>,
     status: ({ data }) => <div>{DUTY_MISSION_STATUS_LABELS[data]}</div>,
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
-    structure_id: ({ data }) => <div>{props.structures.find(s => s.id === data) ? props.structures.find(s => s.id === data).name : ''}</div>,
-    mission_source_id: ({ data }) => <div>{get(find(props.missionSourcesList, { 'id': data }), 'name', '')}</div>,
-    technical_operation_id: ({ data }) => <div>{get(find(props.technicalOperationsList, { 'id': data }), 'name', '')}</div>,
+    structure_id: ({ rowData }) => <div>{rowData.structure_name}</div>,
+    mission_source_id: ({ rowData }) => <div>{rowData.mission_source_name}</div>,
+    technical_operation_id: ({ rowData }) => <div>{rowData.technical_operation_name}</div>,
     object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
   };
 

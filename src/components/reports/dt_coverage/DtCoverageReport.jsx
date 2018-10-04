@@ -7,6 +7,10 @@ import { saveData } from 'utils/functions';
 import DtCoverageReportTable from './DtCoverageReportTable.jsx';
 import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 // const TWO_MINUTES = 1000 * 60 * 2;
 
 const MenuItem = bindable(BootstrapMenuItem);
@@ -91,7 +95,7 @@ export default class DtCoverageReport extends Component {
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
-      <div className="ets-page-wrap auto-height">
+      <EtsPageWrap inheritDisplay>
         <DtCoverageReportTable data={dtCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
@@ -119,7 +123,7 @@ export default class DtCoverageReport extends Component {
           exportType={this.state.exportType}
           onExport={this.export}
         />
-      </div>
+      </EtsPageWrap>
     );
   }
 }

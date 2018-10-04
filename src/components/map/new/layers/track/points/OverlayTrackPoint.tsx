@@ -12,6 +12,22 @@ import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
 import { getDateWithMoscowTz } from 'utils/dates';
 
+import {
+  OverlayInsideTrackContainer,
+  EtsOverlayTrackContainer,
+  OverlayTrackTitleContainer,
+  SensorsListContainer,
+  OverlayBoxInfoContainer,
+} from 'components/map/new/layers/track/points/styled/styled';
+
+import {
+  OverlayLineInfoContainer,
+} from 'components/map/new/overlay/styled/styled';
+
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class OverlayTrackPoint extends React.Component<any, any> {
   state = { 
     gps_code: this.props.gps_code,
@@ -86,7 +102,11 @@ class OverlayTrackPoint extends React.Component<any, any> {
 
     if (!trackPoint) {
       return (
-        <Overlay className="track-overlay" map={this.props.map} hidePopup={this.props.hidePopup} />
+        <Overlay
+          title={''}
+          map={this.props.map}
+          hidePopup={this.props.hidePopup}
+        />
       )
     }
 
@@ -109,16 +129,23 @@ class OverlayTrackPoint extends React.Component<any, any> {
     const [latitude, longitude] = roundCoordinates(coords_msk, 6);
 
     const Title = (
-      <div className="overlay-track-title">
-        <span className="gov-number">{this.props.gov_number}</span>
-        <span className="dt">{datetime}</span>
-      </div>
+      <OverlayTrackTitleContainer>
+        <span>{this.props.gov_number}</span>
+        <span>{datetime}</span>
+      </OverlayTrackTitleContainer>
     );
 
     return (
-      <Overlay className="track-overlay" title={Title} map={this.props.map} coordsMsk={coords_msk} hidePopup={this.props.hidePopup} >
-        <div className="overlay-line-info">{objectsString ? objectsString : <Preloader type="field" />}</div>
-        <div className="overlay-line-info">
+      <Overlay
+        OverlayInside={OverlayInsideTrackContainer}
+        EtsOverlay={EtsOverlayTrackContainer}
+        title={Title}
+        map={this.props.map}
+        coordsMsk={coords_msk}
+        hidePopup={this.props.hidePopup}
+      >
+        <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader type="field" />}</OverlayLineInfoContainer>
+        <OverlayLineInfoContainer>
           {
             missions === undefined ?
             (
@@ -138,50 +165,50 @@ class OverlayTrackPoint extends React.Component<any, any> {
               )
             )
           }
-        </div>
+        </OverlayLineInfoContainer>
         {
           !pointSensors.length ?
-          ( <div className="none"></div> )
+          ( <DivNone /> )
           :
           (
-            <div className="overlay-line-info">
+            <OverlayLineInfoContainer>
               <div>Работающие датчики навесного оборудования</div>
-              <div className="sensors-list">
+              <SensorsListContainer>
                 {
                   pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
                     <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
                   ))
                 }
-              </div>
-            </div>
+              </SensorsListContainer>
+            </OverlayLineInfoContainer>
           )
         }
-        <div className="overlay-box-info">
-          <div className="overlay-line-info">
+        <OverlayBoxInfoContainer>
+          <OverlayLineInfoContainer>
             <span>
-              V<sub>ср</sub> = {!isNaN(speed_avg) ? `${speed_avg}км/ч` : 'Нет данных'}
+              V<sub>ср</sub> = {speed_avg === 0 || speed_avg ? `${speed_avg} км/ч` : 'Нет данных'}
               <br/>
-              V<sub>макс</sub> = {!isNaN(speed_max) ? `${speed_max}км/ч` : 'Нет данных'}
+              V<sub>макс</sub> = {speed_max === 0 || speed_max ? `${speed_max} км/ч` : 'Нет данных'}
             </span>
-          </div>
-          <div className="overlay-line-info">
+          </OverlayLineInfoContainer>
+          <OverlayLineInfoContainer>
             <span>
               {isNaN(distanceCount) ? 'Н/Д' : `${distanceCount}м`}
             </span>
-          </div>
-          <div className="overlay-line-info">
+          </OverlayLineInfoContainer>
+          <OverlayLineInfoContainer>
             <span>
               {longitude}
               <br/>
               {latitude}
             </span>
-          </div>
-          <div className="overlay-line-info">
+          </OverlayLineInfoContainer>
+          <OverlayLineInfoContainer>
             <span>
               {isNaN(nsatCount) ? 0 : nsatCount} спутников
             </span>
-          </div>
-        </div>
+          </OverlayLineInfoContainer>
+        </OverlayBoxInfoContainer>
       </Overlay>
     );
   }

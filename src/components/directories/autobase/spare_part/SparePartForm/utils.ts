@@ -1,4 +1,4 @@
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 export const componentDidMount = props => {
   props.flux.getActions('autobase').getAutobaseListByType('measureUnit', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });

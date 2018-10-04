@@ -6,6 +6,10 @@ import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { monitorPageRemoveAllFromSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
 import * as cx from 'classnames';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type PropsGeoobjectsInfo ={
   handleClickOnClose: any;
   centerOn: Function;
@@ -32,7 +36,7 @@ class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobject
     return (
       !this.props.showSelectedGeoobjects ?
       (
-        <div className="none"></div>
+        <DivNone />
       )
       :
       (
@@ -40,7 +44,7 @@ class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobject
           {
             shortVersion ?
             (
-              <div className="none"></div>
+              <DivNone />
             )
             :
             (

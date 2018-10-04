@@ -2,7 +2,11 @@ const ParkingIcon = require('assets/icons/track/parking.svg');
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 
-const CACHE_ICON = {};
+type TYPE_CACHE_ICON = {
+  [key: string]: any;
+};
+
+const CACHE_ICON: TYPE_CACHE_ICON = {};
 
 const makeCacheStyle = (cacheStyleName ) => {
   return CACHE_ICON[cacheStyleName] = new ol.style.Style({
@@ -17,7 +21,7 @@ const makeCacheStyle = (cacheStyleName ) => {
 
 export const getStyleForParking = () => {
   const cacheStyleName = `parking`;
-  const { [cacheStyleName] : cache_style } = CACHE_ICON;
+  const cache_style = CACHE_ICON[cacheStyleName];
   let icon = cache_style;
 
   if (!cache_style) {

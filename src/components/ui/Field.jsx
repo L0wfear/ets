@@ -7,7 +7,7 @@ import cx from 'classnames';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
 // import TextInput from 'components/ui/input/TextInput/TextInput';
 import Div from './Div.jsx';
@@ -15,8 +15,17 @@ import Preloader from './Preloader.jsx';
 
 function StringField(props) {
   const { error, ...mainProps } = props; 
-  const { label = '', readOnly = false, disabled = false, className = '',
-    wrapStyle, hidden, isLoading, inline = false, id } = props;
+  const {
+    label = '',
+    readOnly = false,
+    disabled = false,
+    className = '',
+    wrapStyle,
+    hidden,
+    isLoading,
+    inline = false,
+    id,
+  } = props;
   let { value } = props;
 
   const inputClassName = cx({ 'has-error': error });
@@ -100,14 +109,17 @@ export default class Field extends React.Component {
   }
 
   renderBoolean() {
-    const { label = '' } = this.props;
+    const {
+      label = '',
+      className = 'default-boolean-input',
+    } = this.props;
     return (
-      <Div hidden={this.props.hidden}>
+      <Div hidden={this.props.hidden} className={className}>
         <label>{label}</label>
         <input
           id={this.props.id}
           type="checkbox"
-          style={{ fontSize: '20px', marginLeft: '5px' }}
+          style={{ fontSize: '20px', margin: '5px' }}
           checked={this.props.value}
           onChange={this.props.onChange}
           disabled={this.props.disabled}
@@ -180,7 +192,7 @@ export default class Field extends React.Component {
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
         { typeof label === 'string' && <label id={id}>{label}</label> }
-        <EtsSelect {...props} disabled={readOnly || this.props.disabled} className={selectClassName} />
+        <ReactSelect {...props} disabled={readOnly || this.props.disabled} className={selectClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>
     );

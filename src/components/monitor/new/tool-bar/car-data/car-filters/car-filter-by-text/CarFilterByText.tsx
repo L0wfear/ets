@@ -10,6 +10,10 @@ import {
   StateCarFilterByText,
 } from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
   state = {
     hidden: true,
@@ -38,7 +42,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                 {
                   this.state.hidden ?
                   (
-                    <div className="none"></div>
+                    <DivNone />
                   )
                   :
                   (

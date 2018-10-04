@@ -11,6 +11,10 @@ import {
   MONITOR_PAGE_SET_GEOMETRY,
 } from 'components/monitor/new/redux/models/monitor-page';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 const getActiveClassName = (activeMain) => (
   cx(
     'legen_option',
@@ -82,7 +86,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
     const activeMain = !FILTRED_GEOOBJECTS_LIST.some((key) => !this.props[GEOOBJECTS_OBJ[key].serverName]);
     return FILTRED_GEOOBJECTS_LIST.length === 0 ?
       (
-        <div className="none"></div>
+        <DivNone />
       )
       :
       (
@@ -90,13 +94,13 @@ class BarShowGeoobjects extends React.Component<any, any> {
           <div className={cx('tool_bar-block', { disabled: this.props.companiesIndex === -1 })}>
             <div className="default_cube dark">
               <div className={getActiveClassName(activeMain)} onClick={this.toggleList}>
-                <input type="checkbox" checked={activeMain} onClick={this.toggleAllStatus} />
+                <input type="checkbox" checked={activeMain} readOnly onClick={this.toggleAllStatus} />
                 <span>{`Объекты ${showGeoObjList ? ' \u25BC' : ' \u25BA'}`}</span>
               </div>
               {
                 !showGeoObjList ?
                 (
-                  <div className="none"></div>
+                  <DivNone />
                 )
                 :
                 (

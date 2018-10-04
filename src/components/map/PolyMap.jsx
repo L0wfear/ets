@@ -125,7 +125,10 @@ export default class PolyMap extends React.Component {
 
   fitToExtent(polysLayer) {
     const extent = polysLayer.getSource().getExtent();
-    extent[0] !== Infinity && this.map.getView().fit(extent);
+
+    if (isFinite(extent[0])) {
+      this.map.getView().fit(extent);
+    }
   }
 
   enableInteractions() {

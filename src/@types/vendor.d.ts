@@ -15,6 +15,7 @@ declare module NodeJS  {
     CURRENT_USER2: string;
     NOTIFICATION_READ_ARR: string;
     APP_TIME_FORMAT: string;
+    APP_TIME_WITH_SECOND_FORMAT: string;
     toggleUpdateCarPoints: Function;
     confirmDialog: (props: any) => Promise<any>;
   }

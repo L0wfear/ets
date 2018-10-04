@@ -7,9 +7,18 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { carInfoToggleSensorShow } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type PropsSensorsTrackTab = {
   track: any;
-  front_cars_sensors_level: any;
+  front_cars_sensors_level: {
+    [key: string]: {
+      data: any[];
+      show: boolean;
+    };
+  };
   toggleSensorOnMap: any;
 };
 
@@ -40,7 +49,7 @@ const SensorsLevelList: React.SFC<PropsSensorsTrackTab> = props => {
                   data.data.length === 0 ?
                     <span> (Нет данных)</span>
                   :
-                    ( <div className="none"></div> )
+                    ( <DivNone /> )
                 }
               </div>
             ))

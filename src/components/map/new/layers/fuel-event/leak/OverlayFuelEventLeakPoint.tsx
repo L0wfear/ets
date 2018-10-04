@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/new/redux/models/actions-monitor-page';
 import { getFormattedDateTime } from 'utils/dates';
 
+import {
+  OverlayLineInfoContainer,
+} from 'components/map/new/overlay/styled/styled';
+
 const OverlayFuelEventLeakPoint: React.SFC<any> = props => {
   const { overlayData } = props;
 
@@ -26,21 +30,21 @@ const OverlayFuelEventLeakPoint: React.SFC<any> = props => {
 
   return (
     <Overlay title="Слив топлива:" map={props.map} coordsMsk={coordinates} hidePopup={props.hidePopup} >
-      <div className="overlay-line-info">
+      <OverlayLineInfoContainer>
         <span className="font-bold">Рег номер: </span><span>{gov_number}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Датчик: </span><span>{sensor_id}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Кол-во: </span><span>{`${value} л.`}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Дата и время: </span><span>{started_at_format}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Потраченное время: </span><span>{duration}</span>
-      </div>
+      </OverlayLineInfoContainer>
     </Overlay>
   );
 }

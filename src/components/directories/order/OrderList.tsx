@@ -20,6 +20,12 @@ import OrderAssignmentsList from 'components/directories/order/order_assignment/
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 import Paginator from 'components/directories/order/Paginator';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
+require('components/directories/order/Order.scss');
+
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;
@@ -27,6 +33,11 @@ class OrderList extends React.Component<any, any> {
     order_mission_source_id: null,
   };
 
+  componentDidUpdate(prevProps){  
+    if (prevProps.configDateStart !== this.props.configDateStart ) {
+      prevProps.getOrders({date_start: this.props.configDateStart, date_end: this.props.configDateEnd});
+    }
+  }
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('missions').getMissionSources().then(({ order_mission_source_id }) => this.setState({ order_mission_source_id }));
@@ -37,11 +48,10 @@ class OrderList extends React.Component<any, any> {
       location: { search },
     } = this.props;
 
-
     const {
       idOrder,
-      dateFrom: date_start,
-      dateTo: date_end,
+      dateFrom: date_start = this.props.configDateStart,
+      dateTo: date_end = this.props.configDateEnd,
     } = queryString.parse(search);
     const outerIdFax = Number.parseInt(idOrder, 0);
 
@@ -72,7 +82,7 @@ class OrderList extends React.Component<any, any> {
 
   render() {
     return (
-      <div className="ets-page-wrap none-flex">
+      <EtsPageWrap inheritDisplay>
         <OrdersDatepicker />
         <OrdersTable>
           <OrderTableChildren order_mission_source_id={this.state.order_mission_source_id} />
@@ -81,7 +91,7 @@ class OrderList extends React.Component<any, any> {
         <OrderAssignmentsList order_mission_source_id={this.state.order_mission_source_id} />
         <HistoryOrderList />
         <OrderFormWrap />
-      </div>
+      </EtsPageWrap>
     );
   }
 }
@@ -89,6 +99,9 @@ class OrderList extends React.Component<any, any> {
 const mapStateToProps = (state) => ({
   OrdersList: state.order.OrdersList,
   selectedElementOrder: state.order.selectedElementOrder,
+  configDateStart: state.session.appConfig.shift.shift_start,
+  configDateEnd: state.session.appConfig.shift.shift_end,
+  shift: state.session.appConfig.shift,
 });
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(

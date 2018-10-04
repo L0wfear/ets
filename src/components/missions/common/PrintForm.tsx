@@ -19,7 +19,7 @@ export interface IStatePrintForm {
   date_to: Date;
 }
 
-class PrintForm extends React.Component<IPropsPrintForm, IStatePrintForm> {
+class PrintForm extends React.Component<IPropsPrintForm, any> {
   constructor(props) {
     super(props);
 

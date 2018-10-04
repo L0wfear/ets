@@ -46,13 +46,37 @@ export const MISSION_STATUS_LABELS = {
   complete: 'Выполнено',
   fail: 'Не выполнено',
 };
+/*
+  expired: 'Просрочено',
+  in_progress: 'Выполняется',
+*/
+
+export const DUTY_MISSION_STATUS_LABELS = {
+  assigned: 'Назначено',
+  not_assigned: 'Не назначено',
+  complete: 'Выполнено',
+  fail: 'Не выполнено',
+};
+
+export const ORDER_STATUS_KEYS = {
+  published: 'published',
+  cancelled: 'cancelled',
+  partially_cancelled: 'partially_cancelled',
+  suspended: 'suspended',
+  partially_suspended: 'partially_suspended',
+};
+
+export const ORDER_ASSIGNMENTS_STATUS_KEYS = {
+  full: 'full',
+  partial: 'partial'
+};
 
 export const ORDER_STATUS_LABELS = {
-  published: 'Опубликовано',
-  cancelled: 'Отменено',
-  partially_cancelled: 'Частично отменено',
-  suspended: 'Приостановлено',
-  partially_suspended: 'Частично приостановлено',
+  [ORDER_STATUS_KEYS.published]: 'Опубликовано',
+  [ORDER_STATUS_KEYS.cancelled]: 'Отменено',
+  [ORDER_STATUS_KEYS.partially_cancelled]: 'Частично отменено',
+  [ORDER_STATUS_KEYS.suspended]: 'Приостановлено',
+  [ORDER_STATUS_KEYS.partially_suspended]: 'Частично приостановлено',
 };
 
 export const GEOZONE_OBJECTS = [

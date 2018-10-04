@@ -42,6 +42,7 @@ export default class TechnicalOperationsActions extends Actions {
     const payload = {
       technical_operation_id: props.technical_operation_id,
       municipal_facility_id: props.municipal_facility_id,
+      route_types: props.route_types,
       func_type_id: props.func_type_id,
     };
     return TechnicalOperationRelationsService.get(payload).then(({ result: { rows } }) => ({ result: rows }));

@@ -6,6 +6,11 @@ import * as queryString from 'query-string';
 
 import Preloader from 'components/ui/Preloader';
 import { FluxContext } from 'utils/decorators';
+
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 import {
   ButtonCreateNew, ButtonReadNew, ButtonDeleteNew,
   ButtonCreate, ButtonRead, ButtonDelete,
@@ -16,6 +21,9 @@ import {
  * используется для наследования
  * @extends React.Component
  */
+
+let lastDate = +(new Date());
+
 @FluxContext
 class ElementsList extends React.Component {
 
@@ -96,8 +104,6 @@ class ElementsList extends React.Component {
    */
   @autobind
   selectElement({ props }) {
-    const DOUBLECLICK_TIMEOUT = 400;
-
     const selectedElement = { ...props.data };
 
     if (props.fromKey) {
@@ -106,21 +112,7 @@ class ElementsList extends React.Component {
     }
     this.clicks += 1;
 
-    if (this.clicks === 1) {
-      this.setState({ selectedElement },
-        () => {
-          setTimeout(() => {
-            // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
-            if (this.clicks !== 1) {
-              if (this.state.selectedElement && selectedElement[this.selectField] === this.state.selectedElement[this.selectField] && this.state.readPermission) {
-                this.showForm();
-              }
-            }
-            this.clicks = 0;
-          }, DOUBLECLICK_TIMEOUT);
-        },
-      );
-    }
+    this.setState({ selectedElement })
   }
 
   onRowClick = ({ props: { data } }) => {
@@ -224,6 +216,10 @@ class ElementsList extends React.Component {
 
     if (e.code === 'Backspace' && this.state.selectedElement !== null) {
       e.preventDefault();
+      /**
+       * @todo посмотреть
+       */
+      /*
       if (typeof this.removeDisabled === 'function') {
         if (!this.removeDisabled()) {
           this.removeElement();
@@ -231,6 +227,7 @@ class ElementsList extends React.Component {
       } else {
         this.removeElement();
       }
+      */
     }
   }
 
@@ -468,6 +465,10 @@ class ElementsList extends React.Component {
     return '';
   }
 
+  setNode = (node) => {
+    this.node = node;
+  }
+
   /**
    * React render
    */
@@ -478,12 +479,12 @@ class ElementsList extends React.Component {
     const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
 
     return (
-      <div className="ets-page-wrap" ref={node => (this.node = node)}>
+      <EtsPageWrap innerRef={this.setNode}>
         {table}
         {additionalRender}
         {forms}
         {preloader}
-      </div>
+      </EtsPageWrap>
     );
   }
 

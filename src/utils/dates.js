@@ -1,6 +1,10 @@
 import moment from 'moment';
 import { isEqualOr } from './functions';
 
+export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) => (
+  moment(dateA).diff(moment(dateB), typeDiff, float)
+);
+
 export const getDateWithMoscowTz = (...dateProps) => {
   const newDate = new Date(...dateProps);
   newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
@@ -48,9 +52,27 @@ export function createValidDateTime(date) {
   return moment(date).seconds(0).format('YYYY-MM-DDTHH:mm:ss');
 }
 
+export function formatDate(date, format) {
+  if (!date) {
+    return null;
+  }
+
+  return moment(date).format(format);
+}
+
 export function getFormattedDateTime(date) {
   if (!date) return '';
   return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
+}
+
+export function getFormattedDateTimeWithSecond(date) {
+  if (!date) return '';
+  return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_WITH_SECOND_FORMAT}`);
+}
+
+export function getFormattedTimeWithSecond(date) {
+  if (!date) return '';
+  return moment(date).format(`${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
 export function getFormattedDateTimeSeconds(date) {
@@ -151,16 +173,14 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
   }
 
   const date = new Date();
-  const currentDay = date.getDate();
-  const currentMonth = date.getMonth();
 
   const [summerStartMonth, summerStartDay] = summerStart;
   const [summerEndMonth, summerEndDay] = summerEnd;
 
-  const isLessOrEqualThanEnd = currentMonth <= summerEndMonth && currentDay <= summerEndDay;
-  const isBiggerOrEqualThanStart = currentMonth >= summerStartMonth && currentDay >= summerStartDay;
+  const begDateForSummerSeason = new Date(2018, summerStartMonth, summerStartDay);
+  const endDateForSummerSeason = new Date(2018, summerEndMonth, summerEndDay);
 
-  if (isLessOrEqualThanEnd && isBiggerOrEqualThanStart) {
+  if (diffDates(date, begDateForSummerSeason) >= 0 && diffDates(endDateForSummerSeason, date) >= 0) {
     return 'summer';
   }
 
@@ -173,9 +193,6 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  * @param {string} typeDiff - type compare (see moment .diff())
  */
 export const setZeroSecondsToDate = date => moment(date).seconds(0);
-
-export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
-  moment(dateA).diff(moment(dateB), typeDiff, float);
 
 export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();
 

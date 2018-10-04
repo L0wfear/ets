@@ -17,7 +17,7 @@ import {
 import Title from './Title';
 import { filterFunction } from 'components/ui/tableNew/utils';
 import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 'components/ui/table/@types/schema.h';
-import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';
@@ -27,6 +27,10 @@ import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notif
 import * as reportActionCreators from 'components/reports/redux/modules/report';
 import DataTable from 'components/ui/table/DataTable.jsx';
 import DataTableNew from 'components/ui/tableNew/DataTable';
+
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -406,7 +410,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       />;
 
     return (
-      <div className="ets-page-wrap auto-height">
+      <EtsPageWrap inheritDisplay>
         <Header
           tableMeta={mergedTableMetaInfo}
           queryState={queryState}
@@ -438,7 +442,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         </ Table>
         {summaryTable}
         {preloader}
-      </div>
+      </EtsPageWrap>
     );
   }
 }

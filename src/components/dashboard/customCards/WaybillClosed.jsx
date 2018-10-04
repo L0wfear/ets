@@ -54,7 +54,6 @@ export default class WaybillClosed extends DashboardCardMedium {
         showForm={this.state.showWaybillForm}
         element={this.state.selectedWaybill}
         entity={'waybill'}
-        {...this.props}
         fromDashboard
       />
     );

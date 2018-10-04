@@ -7,7 +7,12 @@ const typeObj = {
   mission: 'задания',
 };
 
-export const rejectMissionsPack = ([mission, ...missions], methods, type) => (
+type TypeMission = {
+  number: number;
+  [key: string]: any;
+};
+
+export const rejectMissionsPack = ([mission, ...missions]: TypeMission[], methods, type) => (
   mission ?
   new Promise(async res => {
     try {

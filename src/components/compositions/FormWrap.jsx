@@ -22,7 +22,7 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  * @handleFormSubmit обработка отправки формы
  * @render дефолтный, обязательно переопределяется
  */
-@FluxContext
+ @FluxContext
 @autobind
 export default class FormWrap extends React.Component {
 
@@ -64,13 +64,6 @@ export default class FormWrap extends React.Component {
       });
     }
     this.inheritedComponentWillReceiveProps(props);
-  }
-
-  shouldComponentUpdate(props, state) {
-    return (
-      Object.entries(props).some(([key, value]) => value !== this.props[key])
-      || Object.entries(state).some(([key, value]) => value !== this.state[key])
-    );
   }
 
   inheritedComponentWillReceiveProps() {}

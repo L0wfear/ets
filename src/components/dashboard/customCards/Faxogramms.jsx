@@ -30,7 +30,7 @@ export default class Faxogramms extends DashboardCardMedium {
     if (blob === null) {
       return;
     }
-    this.setState({ showPDFViewModal: true, url });
+    this.setState({ showPDFViewModal: true, url, blob });
   }
 
   saveOrder(typeSave) {
@@ -84,6 +84,7 @@ export default class Faxogramms extends DashboardCardMedium {
               {<MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>}
             </DropdownButton>
           </div>
+          
           {canViewPDF ? <Button className="dashboard-card-action-button" onClick={(e) => { e.preventDefault(); this.showPDFViewModal(data); }}><Glyphicon glyph="info-sign" /></Button> : ''}
           {canCreateMission ? <Link to={`/orders?idOrder=${data.id}&dateFrom=${date_from}&dateTo=${date_to}`}><Button className="dashboard-card-action-button">Сформировать задания</Button></Link> : ''}
         </Div>

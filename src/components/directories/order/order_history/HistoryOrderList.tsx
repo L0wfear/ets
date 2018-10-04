@@ -3,13 +3,12 @@ import { Row, Col, Panel, Glyphicon } from 'react-bootstrap';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 
-import EtsSelect from 'components/ui/input/EtsSelect';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+
 import Div from 'components/ui/Div.jsx';
 
 import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
-
-const EtsSelectTSX: any = EtsSelect;
 
 class HistoryOrderList extends React.Component<any, any> {
   state: any = {
@@ -89,7 +88,7 @@ class HistoryOrderList extends React.Component<any, any> {
               <Col style={{ marginBottom: -15, display: 'flex' }} md={12}>
                 <div>Версия централизованного задания</div>
                 <Col md={3}>
-                  <EtsSelectTSX
+                  <ReactSelect
                     type="select"
                     options={VERSION_OPTIONS}
                     value={activeList}

@@ -13,6 +13,14 @@ const tableMeta = {
       cssClassName: 'width300',
     },
     {
+      name: 'group_name',
+      displayName: 'Группа',
+      type: 'select',
+      filter: {
+        type: 'multiselect',
+      },
+    },
+    {
       name: 'short_name',
       displayName: 'Краткое наименование',
       type: 'select',
@@ -20,14 +28,6 @@ const tableMeta = {
         type: 'multiselect',
       },
       cssClassName: 'width300',
-    },
-    {
-      name: 'season_name',
-      displayName: 'Сезон',
-      type: 'select',
-      filter: {
-        type: 'multiselect',
-      },
     },
   ],
 };

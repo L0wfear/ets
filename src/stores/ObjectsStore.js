@@ -60,6 +60,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getCountry, this.handleGetCountry);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
+    this.register(objectsActions.getTypesAttr, this.handleGetTypesAttr);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructureAfterCUD);
@@ -73,7 +74,7 @@ export default class ObjectsStore extends Store {
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
     this.register(technicalOperationsActions.getTechnicalOperationsTypes, this.handleGetTechnicalOperationsTypes);
 
-
+    
     this.state = {
       carsList: [],
       carListBuyTO: [],
@@ -114,7 +115,14 @@ export default class ObjectsStore extends Store {
 
       workMode: [],
       workModeOptions: [],
+      typesAttrList: [],
     };
+  }
+
+  handleGetTypesAttr({ result: { rows } }) {
+    this.setState({
+      typesAttrList: rows,
+    });
   }
 
   handleGetTechnicalOperationsObjects({ result: { rows = [] } = {} }) {

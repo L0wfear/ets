@@ -12,6 +12,7 @@ import {
   CarService,
   CustomersService,
   TypesService,
+  TypesAttr,
   PositionService,
   ModelsService,
   SpecialModelService,
@@ -38,6 +39,9 @@ function getMaterialConsumptionRates(payload = {}) {
 }
 
 export default class ObjectsActions extends Actions {
+  getTypesAttr(payload = {}) {
+    return TypesAttr.get(payload);
+  }
 
   getCars(technical_operation_id) {
     const payload = {};

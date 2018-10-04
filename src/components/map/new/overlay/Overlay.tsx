@@ -1,23 +1,37 @@
 import * as React from 'react';
-import * as cx from 'classnames';
 import {
   PropsOverlay,
   StateOverlay,
 } from 'components/map/new/overlay/Overlay.h';
 import {
-  hideOverlay,
   makeOverlay,
+  hideOverlay,
 } from 'components/map/new/overlay/utils';
+import { createPortal } from 'react-dom';
+
+import {
+  OverlayInsideContainer,
+  EtsOverlayContainer,
+  EtsOverlayTitleContainer,
+  OverlayCloseContainer,
+  EtsOverlayBodyContainer,
+  EtsTriangleWrapContainer,
+  EtsTriangleContainer,
+} from 'components/map/new/overlay/styled/styled';
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 
 class Overlay extends React.Component<PropsOverlay, StateOverlay> {
   node: any;
 
   constructor(props) {
     super(props);
-
+    const container = document.createElement('div');
+    
     this.state = {
-      coordsMsk: props.coordsMsk,
       marker: null,
+      container,
     }
   }
   componentDidMount() {
@@ -25,7 +39,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
       const marker = makeOverlay({
         position: this.props.coordsMsk,
         positioning: 'bottom-center',
-        element: this.node,
+        element: this.state.container,
         stopEvent: false
       });
       this.props.map.addOverlay(marker);
@@ -35,60 +49,77 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
       console.warn('не могу создать попап');
     }
   }
-  componentWillReceiveProps(nextProps) {
-    const { coordsMsk } = nextProps;
-    if (coordsMsk !== this.state.coordsMsk) {
-      try {
-        this.state.marker.setPosition(coordsMsk);
-        this.setState({ coordsMsk });
-      } catch (e) {
-        console.warn('не могу свдинуть попап');
-      }
+
+  componentDidUpdate(prevProps) {
+    const { coordsMsk } = this.props;
+
+    if (coordsMsk !== prevProps.coordsMsk) {
+      let marker = this.state.marker;
+
+      this.state.marker.setPosition(coordsMsk);
+      this.props.map.addOverlay(marker);
+
+      this.setState({
+        marker,
+      });
     }
   }
 
   componentWillUnmount() {
     try {
-      hideOverlay(this.state.marker);
+      hideOverlay(this.state.marker, this.props.map);
     } catch (e) {
       console.warn('не могу скрыть попап');
     }
   }
 
-  hidePopup = () => {
+  hidePopup: React.MouseEventHandler<HTMLElement> = (e) => {
     try {
-      hideOverlay(this.state.marker);
+      hideOverlay(this.state.marker, this.props.map);
     } catch (e) {
       console.warn('не могу скрыть попап');
     }
-
     this.props.hidePopup();
   }
 
-  getNode = (node) => this.node = node;
-
   render() {
-    return (
-      <div ref={this.getNode} className={cx('overlay_inside', this.props.className)}>
-        <div className="ets_overlay" >
-          <div className="ets_overlay-title">
-            {this.props.title}
+    const {
+      OverlayInside = OverlayInsideContainer,
+      EtsOverlay = EtsOverlayContainer,
+      EtsOverlayTitle = EtsOverlayTitleContainer,
+      OverlayClose = OverlayCloseContainer,
+      EtsOverlayBody = EtsOverlayBodyContainer,
+      EtsTriangleWrap = EtsTriangleWrapContainer,
+      EtsTriangle = EtsTriangleContainer,
+      title,
+      children,
+      ...props
+    } = this.props;
+
+    return createPortal(
+      <OverlayInside { ...props } >
+        <EtsOverlay { ...props }>
+          <EtsOverlayTitle { ...props }>
+            {title}
             {
               this.props.hidePopup ?
-                <div className="overlay_close"onClick={this.hidePopup}>x</div>
+                <OverlayClose { ...props } onClick={this.hidePopup}>x</OverlayClose>
               :
-                <div className="none"></div>
+                <DivNone />
             }
-          </div>
-          <div className="ets_overlay-body" >
-            {this.props.children}
-          </div>
-        </div>
-        <div className="ets_triangle-wrap">
-          <div className="ets_triangle"></div>
-        </div>
-      </div>
-    )
+          </EtsOverlayTitle>
+          <EtsOverlayBody { ...props } >
+            {
+              children
+            }
+          </EtsOverlayBody>
+        </EtsOverlay>
+        <EtsTriangleWrap { ...props } >
+          <EtsTriangle { ...props } ></EtsTriangle>
+        </EtsTriangleWrap>
+      </OverlayInside>,
+      this.state.container,
+    );
   }
 }
 

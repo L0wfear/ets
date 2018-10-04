@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { carInfoSetParkingPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTz } from 'utils/dates';
 
+import {
+  OverlayLineInfoContainer,
+} from 'components/map/new/overlay/styled/styled';
+
 const OverlayTrackPoint: React.SFC<any> = props => {
   const { parkingPoint } = props;
 
@@ -31,15 +35,15 @@ const OverlayTrackPoint: React.SFC<any> = props => {
 
   return (
     <Overlay title="Зона стоянки:" map={props.map} coordsMsk={coords_msk} hidePopup={props.hidePopup} >
-      <div className="overlay-line-info">
+      <OverlayLineInfoContainer>
         <span className="font-bold">Начало: </span><span>{start}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Конец: </span><span>{end}</span>
-      </div>
-      <div className="overlay-line-info">
+      </OverlayLineInfoContainer>
+      <OverlayLineInfoContainer>
         <span className="font-bold">Время стоянки: </span><span>{diff}</span>
-      </div>
+      </OverlayLineInfoContainer>
     </Overlay>
   );
 }

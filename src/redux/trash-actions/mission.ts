@@ -1,51 +1,62 @@
-import {
-  MissionService,
-  MissionDataService,
-} from 'api/missions';
+import { 
+  getMissionById,
+  updateMission,
+  getDutyMissionById,
+  updateDutyMission,
+  getMissionDataById,
+}  from 'redux/trash-actions/mission/promise';
 
-export const loadMissionById = (type, id) => {
-  const payload = {
-    id,
-  };
+import { TypeMeta } from 'redux/trash-actions/@types/common.h';
+
+export const loadMissionById = (type, id, meta = { loading: true } as TypeMeta) => {
   return {
     type,
-    payload: MissionService.get(payload)
-      .catch((error) => {
-        console.warn(error);
-
-        return {
-          result: {
-            rows: [],
-          },
-        };
-      })
-      .then(({ result: { rows: [mission] } }) => ({
-        mission,
-        id,
-      })),
+    payload: getMissionById(id),
     meta: {
-      loading: true,
+      ...meta,
     },
   };
-}
+};
 
-export const loadMissionDataById = (type, id) => {
+export const updateMissionByPayload = (type, payload, meta = { loading: true } as TypeMeta) => {
   return {
     type,
-    payload: MissionDataService.path(id).get()
-      .catch((error) => {
-        console.warn(error);
-
-        return {
-          result: null,
-        };
-      })
-      .then(({ result }) => ({
-        mission_data: result,
-        id,
-      })),
+    payload: updateMission(payload),
     meta: {
-      loading: true,
+      ...meta,
+    },
+  };
+};
+
+export const loadDutyMissionById = (type, id, meta = { loading: true } as TypeMeta) => {
+  return {
+    type,
+    payload: getDutyMissionById(id),
+    meta: {
+      ...meta,
+    },
+  };
+};
+
+export const updateDutyMissionByPayload = (type, payload, meta = { loading: true } as TypeMeta) => {
+  return {
+    type,
+    payload: updateDutyMission(payload),
+    meta: {
+      ...meta,
+    },
+  };
+};
+
+/**
+ * используй в meta = { loading: true } для старого отслежтивания состояния загрузки
+ */
+export const loadMissionDataById = (type, id, meta = { loading: true } as TypeMeta) => {
+  return {
+    type,
+    payload: getMissionDataById(id),
+    meta: {
+      ...meta,
     },
   };
 };

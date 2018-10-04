@@ -4,15 +4,10 @@ import { OverlayUtils } from 'components/map/new/overlay/Overlay.h';
  * Т.к. реакт, то оверлей просто уходит в закат
  * @param marker оверлей
  */
-export const hideOverlay: OverlayUtils.hideOverlay = (marker) => (
+export const hideOverlay: OverlayUtils.hideOverlay = (marker, map) => (
   marker
-  && setMakerPosition(
-      marker,
-      [
-        -Number.MAX_SAFE_INTEGER,
-        -Number.MAX_SAFE_INTEGER,
-      ]
-    )
+  && map
+  && map.removeOverlay(marker)
 );
 
 /**

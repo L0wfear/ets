@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { get } from 'lodash';
 import Preloader from 'components/ui/Preloader';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 type TypeConfigToShow = {
   path: string[],
   type?: 'loader-field' | 'hidden' | 'none',
@@ -16,7 +20,7 @@ const HiddenComponent: React.SFC<any> = ({ type }) => {
       </div>
     );
   }
-  return <div className="none"></div>
+  return <DivNone />
 }
 
 const withShowByProps = (configToShow: TypeConfigToShow) => Component => (

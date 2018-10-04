@@ -24,7 +24,7 @@ export const getInitialDataForReduce = rowCol =>
     return newwArr;
   }, []);
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols], allCols, aggr_fields, filedsRule) => {
+export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCols, aggr_fields, filedsRule) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))

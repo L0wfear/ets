@@ -12,9 +12,13 @@ import {
   StateCarFieldBytextInput,
 } from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput.h';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
 class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
   focusOn = node => {
-    const element: HTMLDivElement = findDOMNode(node);
+    const element: any = findDOMNode(node);
     if (element) {
       (element.querySelector('.form-control') as HTMLInputElement).focus();
     }
@@ -40,7 +44,7 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
               </div>
             </div>
           :
-            <div className="none"></div>
+            <DivNone />
         }
       </div>
     )

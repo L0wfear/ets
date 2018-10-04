@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import { IReactSelectOption } from 'components/ui/@types/EtsSelect.h';
+import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle, IVehicleRegister } from 'api/@types/services/index.h';
 

@@ -17,8 +17,8 @@ interface IStateTrackEventReport {
   entity: serviceUrl,
 })
 class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       mapFormVisibility: false,
       coords: [],

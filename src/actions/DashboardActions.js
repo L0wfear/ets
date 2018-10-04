@@ -47,63 +47,6 @@ const getKeyBackEndByFrontEnd = (key) => {
   }
 };
 
-
-/*
-удалить, если увидел
-Надо, если бэкеры заленяться собирать
-const makeDataForWaybillComplete = (result) => {
-  const { items: [{ subItems: allItems }] } = result;
-  const [withMissionsItems, withoutMissionsItems] = allItems.reduce((newArr, item) => {
-    if (item.has_missions) {
-      newArr[0].push(item);
-    } else {
-      newArr[1].push(item);
-    }
-
-    return newArr;
-  }, [[], []]);
-
-  const items = [
-    {
-      title: `${result.title_all}: ${allItems.length}`,
-      subItems: allItems,
-      subItemsTitle: 'Информация о ПЛ (всего)',
-    },
-    {
-      title: `${result.title_with_missions}: ${withMissionsItems.length}`,
-      subItems: withMissionsItems,
-      subItemsTitle: 'Информация о ПЛ с привязанными заданиями',
-    },
-    {
-      title: `${result.title_without_missions}: ${withoutMissionsItems.length}`,
-      subItems: withoutMissionsItems,
-      subItemsTitle: 'Информация о ПЛ без привязанных заданий',
-    },
-  ];
-
-  return {
-    ...result,
-    items,
-  };
-}
-
-const updateDataByWaybillKey = ({ component: data, key }) => {
-  let component = data;
-
-  if (key.includes('completed')) {
-    component = {
-      ...component,
-      result: makeDataForWaybillComplete(component.result),
-    };
-  }
-  console.log(component)
-  return {
-    component,
-    key,
-  }
-}
-*/
-
 export default class DashboardActions extends Actions {
   getDashboardComponent(key) {
     let payload = {};

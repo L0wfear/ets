@@ -5,11 +5,26 @@ import { GEOOBJECTS_OBJ_BY_SERVER_NAME } from 'constants/geoobjects-new';
 import GeoDataTemplate from 'components/monitor/new/info/geoobjects-info/geo-data-template/GeoDataTemplate';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 
-const GeoobjectData: React.SFC<any> = ({ selectedGeoobjectData, serverName, ...props }) => (
+type PropsGeoobjectData = {
+  selectedGeoobjectData: {
+    [key: string]: {
+      front_add_at: number;
+      front_show: boolean;
+    };
+  };
+  serverName: string;
+  handleClickOnClose: any;
+  centerOn: any;
+};
+
+const GeoobjectData: React.SFC<PropsGeoobjectData> = ({ selectedGeoobjectData, serverName, ...props }) => (
   !selectedGeoobjectData ?
   (
-    <div className="none"></div>
+    <DivNone />
   )
   :
   (

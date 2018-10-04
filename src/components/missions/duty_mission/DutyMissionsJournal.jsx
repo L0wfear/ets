@@ -86,6 +86,11 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   async refreshList(state = this.state) {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
+    this.setState({
+      selectedElement: null,
+      checkedElements: {},
+    });
+
     const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, filter, is_archive);
 
     const { total_count } = missions.result.meta;
@@ -117,7 +122,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       validateMissionsArr.push(selectedElement);
     }
 
-    return validateMissionsArr.length === 0;
+    return validateMissionsArr.length === 0 || validateMissionsArr.some(({ status }) => status === 'assigned');
   }
 
   completeMission() {
@@ -163,28 +168,22 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       return;
     }
     if (checkedElements.length) {
-      let hasNotAssigned = false;
+      const allQuerys = Object.values(this.state.checkedElements).map((mission) => {
+        const updatedMission = _.cloneDeep(mission);
+        updatedMission.status = 'complete';
 
-      const querysToCompleted = checkedElements.map((mission) => {
-        if (mission.status === 'assigned') {
-          const updatedMission = _.cloneDeep(mission);
-          updatedMission.status = 'complete';
-          return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
-        }
-        hasNotAssigned = true;
-        return Promise.resolve();
+        return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
       });
-
       try {
-        await Promise.all(querysToCompleted);
+        await Promise.all(allQuerys);
       } catch (error) {
         console.warn(error); // eslint-disable-line
       }
 
       this.refreshList(this.state);
       this.setState({
-        selectedElement: null,
         checkedElements: {},
+        selectedElement: null,
       });
     } else {
       this.completeMission();
@@ -235,7 +234,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     });
   }
 
-  async removeCheckedElements() {
+  removeCheckedElements = async () => {
     const missions = Object.values(this.state.checkedElements);
 
     if (missions.some(({ status }) => status !== 'not_assigned')) {

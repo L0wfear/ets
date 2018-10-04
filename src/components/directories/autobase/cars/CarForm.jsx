@@ -11,7 +11,7 @@ import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import TabContent from 'components/ui/containers/TabContent';
 import Form from 'components/compositions/Form.jsx';
-import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList.jsx';
 import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList.jsx';

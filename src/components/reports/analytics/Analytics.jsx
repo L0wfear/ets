@@ -7,6 +7,10 @@ import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 @connectToStores(['reports', 'objects'])
 @FluxContext
 export default class Analytics extends Component {
@@ -98,7 +102,7 @@ export default class Analytics extends Component {
     const COMPANY = organizations && organizations.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
     return (
-      <div className="ets-page-wrap">
+      <EtsPageWrap>
         <Div>
           <Col mdOffset={1} md={4}>
             <Row>
@@ -140,7 +144,7 @@ export default class Analytics extends Component {
           </Col>
           <Col md={2} />
         </Div>
-      </div>
+      </EtsPageWrap>
     );
   }
 }

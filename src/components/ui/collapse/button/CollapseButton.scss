@@ -1,0 +1,12 @@
+.glyphicon_wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+
+  .glyphicon {
+    cursor: pointer;
+  }
+  &.is_open {
+    transform: rotateX(180deg) translateY(-50%);
+  }
+}

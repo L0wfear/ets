@@ -5,7 +5,7 @@ const withClassMethods = (methodObjects: any = {}) => Component =>
     constructor(props) {
       super(props);
 
-      Object.entries(methodObjects).forEach(([methodName, action]) => this[methodName] = (...arg) => action(this.props)(...arg));
+      Object.entries(methodObjects).forEach(([methodName, action]) => this[methodName] = (...arg) => (action as any)(this.props)(...arg));
     }
 
     render() {

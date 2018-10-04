@@ -13,11 +13,27 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
-import { ORDER_STATUS_LABELS } from 'constants/dictionary';
+import { ORDER_STATUS_LABELS, ORDER_STATUS_KEYS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 const STATUS_OPTIONS = Object.entries(ORDER_STATUS_LABELS).map(([value, label]) => ({ value, label }));
+
+
+/**
+ * подсветка строк таблицы в зависимости от статуса ц. задания
+ * @param rowData строка реестра ц. заданий
+ */
+const highlightClassMapper = ({ status }) => {
+  if (status === ORDER_STATUS_KEYS.cancelled || status === ORDER_STATUS_KEYS.suspended) {
+    return 'standart-row red_line';
+  }
+  if (status === ORDER_STATUS_KEYS.partially_cancelled || status === ORDER_STATUS_KEYS.partially_suspended) {
+    return 'standart-row yellow_line';
+  }
+
+  return 'standart-row';
+};
 
 export const tableMeta = {
   cols: [
@@ -97,6 +113,7 @@ const Table: React.SFC<any> = props  => (
     initialSortAscending={false}
     className="order"
     selectField={'id'}
+    highlightClassMapper={highlightClassMapper}
     {...props}
   />
 );

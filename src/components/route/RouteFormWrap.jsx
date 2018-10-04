@@ -29,6 +29,7 @@ class RouteFormWrap extends FormWrap {
       let formState = null;
       if (props.element !== null) {
         formState = cloneDeep(props.element);
+        formState.is_main = Boolean(formState.is_main);
 
         if (!formState.id) {
           formState.is_new = true;
@@ -36,10 +37,13 @@ class RouteFormWrap extends FormWrap {
         }
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
-        this.updateFromStatePolys(formState);
+        this.updateFromStatePolys(formState, true);
       } else {
-        formState = {};
+        formState = {
+          is_main: true,
+        };
       }
+
       formState.structure_id = props.element.structure_id || this.context.flux.getStore('session').getCurrentUser().structure_id;
       const formErrors = this.validate(formState, {});
       this.setState({
@@ -50,7 +54,7 @@ class RouteFormWrap extends FormWrap {
     }
   }
 
-  updateFromStatePolys = (formState) => {
+  updateFromStatePolys = (formState, isInitOpen) => {
     const {
       municipal_facility_id,
       type: object_type,
@@ -66,6 +70,11 @@ class RouteFormWrap extends FormWrap {
         ...cloneDeep(this.props.odhPolys),
       };
     }
+    each(formState.object_list.filter(o => !!o.object_id), (o) => {
+      if (new_polys[o.object_id]) {
+        new_polys[o.object_id].state = o.state;
+      }
+    });
 
     if (municipal_facility_id && (object_type === 'mixed' || object_type === 'simple_dt')) {
       const object_type_id = this.props.technicalOperationsObjectsList.find(({ type }) => object_type === type).id;
@@ -80,28 +89,30 @@ class RouteFormWrap extends FormWrap {
             },
           }), {});
 
-          each(formState.object_list.filter(o => !!o.object_id), (o) => {
-            if (polys[o.object_id]) {
-              polys[o.object_id].state = o.state;
-            } else if (new_polys[o.object_id]) {
-              polys[o.object_id] = {
-                ...new_polys[o.object_id],
-                state: o.state,
-                old: true,
-              };
-            }
-          });
+          if (isInitOpen) {
+            each(formState.object_list.filter(o => !!o.object_id), (o) => {
+              if (polys[o.object_id]) {
+                polys[o.object_id].state = o.state;
+              } else if (new_polys[o.object_id]) {
+                polys[o.object_id] = {
+                  ...new_polys[o.object_id],
+                  state: o.state,
+                  old: true,
+                };
+              }
+            });
+          } else {
+            this.handleFormStateChange('object_list', []);
+            this.handleFormStateChange('input_lines', []);
+            this.handleFormStateChange('draw_list', []);
+            this.handleFormStateChange('draw_odh_list', []);
+          }
 
           this.handleFormStateChange('polys', polys);
         });
     }
-    each(formState.object_list.filter(o => !!o.object_id), (o) => {
-      if (new_polys[o.object_id]) {
-        new_polys[o.object_id].state = o.state;
-      }
-    });
 
-    this.handleFormStateChange('polys', new_polys);
+    this.handleFormStateChange('polys', {});
   }
 
   resetFormState = async () => {

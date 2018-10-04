@@ -8,6 +8,10 @@ import { saveData } from 'utils/functions';
 import OdhCoverageReportTable from './OdhCoverageReportTable.jsx';
 import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm.jsx';
 
+import {
+  EtsPageWrap,
+} from 'global-styled/global-styled';
+
 // const TWO_MINUTES = 1000 * 60 * 2;
 
 const MenuItem = bindable(BootstrapMenuItem);
@@ -85,7 +89,7 @@ export default class OdhCoverageReport extends Component {
     const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
-      <div className="ets-page-wrap auto-height">
+      <EtsPageWrap inheritDisplay>
         <OdhCoverageReportTable data={odhCoverageReport}>
           <div className="daily-cleaning-report-period">
             Период формирования:
@@ -113,7 +117,7 @@ export default class OdhCoverageReport extends Component {
           exportType={this.state.exportType}
           onExport={this.export}
         />
-      </div>
+      </EtsPageWrap>
     );
   }
 }

@@ -1,6 +1,55 @@
 import { Store } from 'flummox';
 import get from 'lodash/get';
 
+const initialState = {
+  odhsList: [],
+  sspsList: [],
+  bridgessList: [],
+  pedestrian_tunnelssList: [],
+  pedestrian_tunnel_exitssList: [],
+  fountainssList: [],
+  mspsList: [],
+  pgmsList: [],
+  snowStoragesList: [],
+  dtsList: [],
+  fuelingWaterStationsList: [],
+  carpoolsList: [],
+  dangerZonesList: [],
+
+  bridgessIndex: {},
+  fountainssIndex: {},
+  pedestrian_tunnelssIndex: {},
+  pedestrian_tunnel_exitssIndex: {},
+  odhsIndex: {},
+  dtsIndex: {},
+  sspsIndex: {},
+  pgmsIndex: {},
+  snowStoragesIndex: {},
+  fuelingWaterStationsIndex: {},
+  carpoolsIndex: {},
+  dangerZonesIndex: {},
+
+  /* Геометрии */
+  geozonePolys: {},
+  odhPolys: {},
+  dtPolys: {},
+  sspPolys: {},
+  mspPolys: {},
+  pgmPolys: {},
+  bridgesPolys: {},
+  fountainsPolys: {},
+  pedestrian_tunnelsPolys: {},
+  pedestrian_tunnel_exitsPolys: {},
+  snowStoragePolys: {},
+  fuelingWaterStationPolys: {},
+  carpoolPolys: {},
+
+  odh_mkad: {},
+
+  selectedPolysTypes: [],
+  selectedFeature: null,
+};
+
 export default class GeoObjectsStore extends Store {
 
   constructor(flux) {
@@ -18,55 +67,15 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
     this.register(geoObjectsActions.getOdhMkad, this.handleGetOdhMkad);
+    this.register(geoObjectsActions.resetState, this.handleResetState);
 
-    this.state = {
-      odhsList: [],
-      sspsList: [],
-      bridgessList: [],
-      pedestrian_tunnelssList: [],
-      pedestrian_tunnel_exitssList: [],
-      fountainssList: [],
-      mspsList: [],
-      pgmsList: [],
-      snowStoragesList: [],
-      dtsList: [],
-      fuelingWaterStationsList: [],
-      carpoolsList: [],
-      dangerZonesList: [],
+    this.state = { ...initialState };
+  }
 
-      bridgessIndex: {},
-      fountainssIndex: {},
-      pedestrian_tunnelssIndex: {},
-      pedestrian_tunnel_exitssIndex: {},
-      odhsIndex: {},
-      dtsIndex: {},
-      sspsIndex: {},
-      pgmsIndex: {},
-      snowStoragesIndex: {},
-      fuelingWaterStationsIndex: {},
-      carpoolsIndex: {},
-      dangerZonesIndex: {},
-
-      /* Геометрии */
-      geozonePolys: {},
-      odhPolys: {},
-      dtPolys: {},
-      sspPolys: {},
-      mspPolys: {},
-      pgmPolys: {},
-      bridgesPolys: {},
-      fountainsPolys: {},
-      pedestrian_tunnelsPolys: {},
-      pedestrian_tunnel_exitsPolys: {},
-      snowStoragePolys: {},
-      fuelingWaterStationPolys: {},
-      carpoolPolys: {},
-
-      odh_mkad: {},
-
-      selectedPolysTypes: [],
-      selectedFeature: null,
-    };
+  handleResetState() {
+    this.setState({
+      ...initialState,
+    });
   }
 
   handleGetList(name, { result }) {

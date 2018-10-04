@@ -25,6 +25,8 @@ class MonitorPage extends Component {
   async componentDidMount() {
     this.props.getTypes();
     const { flux } = this.context;
+    flux.getActions('geoObjects').resetState();
+
     await Promise.all([
       flux.getActions('objects').getOrganizations(),
       flux.getActions('geoObjects').getOdhMkad(),

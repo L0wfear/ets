@@ -57,6 +57,7 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getCountry, this.handleGetCountry);
+    this.register(objectsActions.getTypesAttr, this.handleGetTypesAttr);
 
     this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
     this.register(companyStructreActions.getLinearCompanyStructure, this.handleGetLinearCompanyStructure);
@@ -69,7 +70,7 @@ export default class ObjectsStore extends Store {
     this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
     this.register(technicalOperationsActions.getTechnicalOperationsTypes, this.handleGetTechnicalOperationsTypes);
 
-
+    
     this.state = {
       carsList: [],
       track: {},
@@ -102,7 +103,15 @@ export default class ObjectsStore extends Store {
       technicalOperationsObjectsIndex: {},
 
       faxogrammsTotalCount: 0,
+
+      typesAttrList: [],
     };
+  }
+
+  handleGetTypesAttr({ result: { rows } }) {
+    this.setState({
+      typesAttrList: rows,
+    });
   }
 
   handleGetTechnicalOperationsObjects(technicalOperationsObjects) {

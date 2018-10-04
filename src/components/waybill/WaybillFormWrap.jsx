@@ -23,7 +23,6 @@ function calculateWaybillMetersDiff(waybill, field, value) {
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
-      console.log(value)
       waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
@@ -50,6 +49,28 @@ export default class WaybillFormWrap extends FormWrap {
       canClose: false,
       canPrint: false,
     };
+  }
+
+  shouldComponentUpdate(props, state) {
+    return (
+      Object.entries(props).some(([key, value]) => {
+        return value !== this.props[key];
+      })
+      || Object.entries(state).some(([key, value]) => {
+        if (key === 'formErrors' && state[key]) {
+          return Object.entries(state[key]).some(([nameField, titleError]) => {
+            return this.state[key][nameField] !== titleError;
+          });
+        }
+        if (key === 'formState' && state[key]) {
+          return Object.entries(state[key]).some(([nameField, titleError]) => {
+            return this.state[key][nameField] !== titleError;
+          });
+        }
+
+        return value !== this.state[key];
+      })
+    );
   }
 
   componentWillReceiveProps(props) {
@@ -262,8 +283,11 @@ export default class WaybillFormWrap extends FormWrap {
     const callback = (createdWaybillId) => {
       const waybill_id = createdWaybillId || currentWaybillId;
       return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then(({ blob, fileName }) => {
-          saveData(blob, fileName);
+        .then((respoce) => (
+          saveData(respoce.blob, respoce.fileName)
+        ))
+        .catch(error => {
+          console.warn('waybillFormWrap saveData', error);
         });
     };
 
@@ -337,7 +361,9 @@ export default class WaybillFormWrap extends FormWrap {
           return;
         }
         callback();
-        (await this.props.onCallback()) && this.props.onCallback();
+        if (this.props.onCallback) {
+          await this.props.onCallback();
+        }
       } else {
         try {
           await flux.getActions('waybills').updateWaybill(formState);

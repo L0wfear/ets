@@ -77,7 +77,6 @@ class MissionTemplateForm extends MissionForm {
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
                 options={TECH_OPERATIONS}
-                disabled={!!state.route_id}
                 value={state.technical_operation_id}
                 onChange={this.handleTechnicalOperationChange.bind(this)}
               />
@@ -106,7 +105,7 @@ class MissionTemplateForm extends MissionForm {
                 error={errors.car_id}
                 className="white-space-pre-wrap"
                 options={CARS}
-                disabled={isEmpty(state.technical_operation_id)}
+                disabled={isEmpty(state.technical_operation_id) || !CARS.length}
                 value={state.car_id}
                 onChange={this.handleChange.bind(this, 'car_id')}
               />

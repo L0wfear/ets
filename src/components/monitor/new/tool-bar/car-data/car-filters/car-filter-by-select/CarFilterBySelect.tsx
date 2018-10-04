@@ -14,6 +14,12 @@ import {
 } from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
 import DefaultInput from 'components/monitor/new/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput';
 
+const placeholder = {
+  carFilterMultyType: 'Тип техники',
+  carFilterMultyStructure: 'Подразделение',
+  carFilterMultyOwner: 'Организации',
+};
+
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
   constructor(props) {
     super(props);
@@ -84,6 +90,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                               key={keyField}
                               keyField={keyField}
                               OPTIONS={this.state[`${keyField}Options`]}
+                              placeholder={placeholder[keyField]}
                             />
                           ))
                         }
@@ -93,6 +100,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                             <DefaultInput
                               keyField={'carFilterMultyOwner'}
                               OPTIONS={this.state.carFilterMultyOwnerOptions}
+                              placeholder={placeholder.carFilterMultyOwner}
                             />
                           )
                           :

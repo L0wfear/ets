@@ -36,7 +36,7 @@ body {
 }
 .app-content {
   justify-self: flex-start;
-  flex: 1 1;
+  flex: 1 1 100%;
   position: relative;
   overflow-x: hidden;
 }
@@ -97,7 +97,7 @@ body {
     >.data_container, >.data_container-wrap>.data_container {
       overflow-y: auto;
       pointer-events: all;
-      flex: 1 1;
+      flex: 1 1 auto;
       max-width: 500px;
       background-color: hsla(0,0%,95%,.8);
       border-left: 1px solid rgba(0,0,0,.3);
@@ -209,6 +209,7 @@ body {
   .legend-color {
     display: flex;
     align-items: center;
+    font-weight: 200;
     >div {
       margin: 0px 2px;
     }
@@ -234,10 +235,10 @@ body {
     flex-direction: column;
   }
   >div {
-    flex: 1 1;
+    flex: 1 1 auto;
   }
   >div.car_info-img {
-    flex: 3 1;
+    flex: 3 1 auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -259,7 +260,7 @@ body {
 .car_info-buttons_row {
   display: flex;
   >button {
-    flex: 1 1;
+    flex: 1 1 auto;
     &:nth-child(2) {
       margin: 0px 5px;
     }
@@ -271,7 +272,7 @@ body {
   .car_info-chart_buttons_row {
     display: flex;
     >button {
-      flex: 1 1;
+      flex: 1 1 auto;
       &:first-child {
         margin-right: 2.5px;
       }
@@ -1188,10 +1189,11 @@ body.application {
     flex-direction: column;
 
     .tool_bar-block {
-      margin: 10px;
+      margin: 5px;
       pointer-events: all;
       display: inline-block;
-      min-width: 195px;
+      min-width: 175px;
+
       &.disabled {
         .legen_option, input { 
           cursor: not-allowed;
@@ -1213,6 +1215,7 @@ body.application {
         box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
         border-radius: 6px;
         padding: 6px 1pc;
+        font-weight: 200;
 
         &.companies {
           padding: 6px 0 6px 1pc;
@@ -1240,6 +1243,9 @@ body.application {
             align-items: center;
             &.multi>div {
               min-width: 250px;
+              &>*:nth-of-type(n + 2) {
+                margin-top: 5px;
+              }
             }
             .input_text_action-wrap {
               position: relative;
@@ -1275,10 +1281,15 @@ body.application {
           display: flex;
           align-items: center;
           &.multi {
-            align-items: baseline;
+            align-items: end;
+
+            >div:nth-child(n + 2) {
+              padding: 10px 0px;
+            }
           }
           >div:nth-child(n + 2) {
             margin-right: 10px;
+            padding: 5px 0px;
           }
           .form-group {
             margin: 0;
@@ -3526,11 +3537,6 @@ div.none {
     background-color: $colorButton;
     cursor: pointer;
   }
-
-
-
-
-
 }
 
 .glyphicon-spin {
@@ -4137,7 +4143,7 @@ div.car-movement-time-report {
 
         >div {
           border-bottom: 1px solid #d7d7d7;
-          flex: 1 1;
+          flex: 1 1 auto;
           border-left: 1px solid #d7d7d7;
           border-right: 1px solid #d7d7d7;
           text-align: center;

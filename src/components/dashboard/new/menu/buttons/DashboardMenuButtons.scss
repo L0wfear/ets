@@ -1,0 +1,29 @@
+.dashboard_menu_buttons {
+  flex: 3 3 0px;
+  margin: 20px;
+  min-width: 300px;
+  @media screen and (max-width: 990px) {
+    min-width: 100%;
+    margin: 20px 0;
+  }
+
+  .card_container {
+    .card_title {
+      padding: 20px;
+      padding-bottom: 5px;
+      font-weight: bold;
+    }
+    .card_body {
+      align-items: center;
+      >button {
+        margin: 5px;
+        width: 100%;
+        white-space: normal;
+
+        &:hover {
+          word-break: break-word;
+        }
+      }
+    }
+  }
+}

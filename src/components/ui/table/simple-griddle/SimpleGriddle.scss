@@ -1,0 +1,18 @@
+.simple-griddle {
+
+  table {
+    width: 100%;
+    td, th {
+      padding: 5px;
+    }
+    th.glyphicon {
+      margin-left: 5px;
+    }
+
+    th {
+      &.sortable {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+.card_container {
+  position: relative;
+  background-color: #eee;
+  border-radius: 4px;
+
+  box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.3);
+
+  &.main {
+    flex: 1 1;
+    margin: 20px;
+    min-width: 25%;
+
+    @media screen and (max-width: 990px) {
+      min-width: 100%;
+      margin: 20px 0;
+    }
+
+
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  .card_title {
+    padding: 20px;
+    padding-bottom: 5px;
+    font-weight: bold;
+
+    &:after {
+      display: block;
+      content: '';
+      width: 100%;
+      height: 1px;
+      bottom: 1px;
+      left: 20px;
+      background-color: #d6d6d6;
+    }
+
+    >div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+
+      &>div:nth-of-type(n + 2) {
+        margin-left: 10px;
+      }
+    }
+  }
+  .card_body {
+    padding: 20px;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+
+    &.is_loading {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .line_data {
+      padding: 15px 0;
+      border-bottom: 1px solid #d6d6d6;
+    }
+
+    .right_button_block {
+      display: flex;
+      justify-content: flex-end;
+
+      >button:nth-of-type(n + 1) {
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+.button_refresh {
+  .glyphicon {
+    -webkit-animation: none;
+    animation: none;
+
+    &.glyphicon-spin {
+      -webkit-animation: spin 1000ms infinite linear;
+      animation: spin 1000ms infinite linear;
+    }
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}

@@ -50,7 +50,7 @@ const MedViewLabel = props =>
 const Panel = wrappedRef(BootstrapPanel);
 
 const getDataTraveledYet = (data) => {
-  if (typeof data === 'object') {
+  if (Array.isArray(data)) {
     return data.join(' ');
   }
 

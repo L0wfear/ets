@@ -19,6 +19,7 @@ import efficiency from './efficiency/EfficiencyList.jsx';
 import userActionLog from './user_action_log/UserActionLogList.jsx';
 import organizations from './organizations/OrganizationsDirectory.jsx';
 import technicalOperations from './technical_operation/TechnicalOperationsDirectory.jsx';
+import typesAttr from 'components/directories/types-attr/TypesAttrList';
 import * as geoobjects from './geoobjects';
 import * as autobase from './autobase';
 
@@ -40,6 +41,7 @@ export {
   fuelRates,
   organizations,
   technicalOperations,
+  typesAttr,
   geoobjects,
   userActionLog,
 };

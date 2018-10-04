@@ -54,9 +54,11 @@ const renderers = {
 const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['technical_operations_ids']);
 
 const tableProps = {
-  highlightClassColMapper: ([field_key, field_value]) => {
-    if (field_key === 'is_covered') {
-      return !field_value ? 'highlight-td-pink' : 'highlight-td-green';
+  highlightClassMapper: (rowData) => {
+    if (rowData.is_covered) {
+      return 'highlight-tr-green';
+    }else{
+      return 'highlight-tr-pink';
     }
   },
 };

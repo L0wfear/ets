@@ -51,7 +51,7 @@ export const car_in_work_overall: CarInWorkOverallAnsType = {
 
 // orders
 export const faxogramms: FaxogrammsAnsType = {
-  title: 'Текущие централизованные задания (1)',
+  title: 'Текущие централизованные задания (0)',
   items: [],
   meta: {
     date_from: null,

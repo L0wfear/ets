@@ -33,6 +33,13 @@ class DashboardMenuButtons extends React.Component<any, any> {
     showDutyMissionFormWrap: false,
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      Object.entries(nextProps).some(([key, value]) => this.props[key] !== value)
+      || Object.entries(nextState).some(([key, value]) => this.state[key] !== value)
+    )
+  }
+
   showWaybillFormWrap = () => {
     this.setState({ showWaybillFormWrap: true });
   }

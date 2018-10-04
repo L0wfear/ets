@@ -222,7 +222,7 @@ export class DutyMissionForm extends Form {
 
     const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
 
-    if (!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
+    if (state.technical_operation_id && !TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
     const MISSION_SOURCES = missionSourcesList.map(({ id, name }) => ({ value: id, label: name }));
@@ -258,7 +258,7 @@ export class DutyMissionForm extends Form {
 
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {
+      if (key && !BRIGADES.some(({ value }) => value === key)) {
         const employee = this.props.employeesIndex[key] || {};
 
         BRIGADES.push({

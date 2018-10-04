@@ -42,13 +42,13 @@ export const AUTOBASE_REPAIR_STATUS = {
 
 export const MISSION_STATUS_LABELS = {
   assigned: 'Назначено',
-  in_progress: 'Выполняется',
+  not_assigned: 'Не назначено',
   complete: 'Выполнено',
   fail: 'Не выполнено',
 };
 /*
   expired: 'Просрочено',
-  not_assigned: 'Не назначено',
+  in_progress: 'Выполняется',
 */
 
 export const DUTY_MISSION_STATUS_LABELS = {

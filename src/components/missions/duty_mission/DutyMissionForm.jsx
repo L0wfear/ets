@@ -304,7 +304,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    if (!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
+    if (state.technical_operation_id && !!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
 
@@ -355,7 +355,7 @@ export class DutyMissionForm extends Form {
 
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {
+      if (key && !BRIGADES.some(({ value }) => value === key)) {
         const employee = this.props.employeesIndex[key] || {};
 
         BRIGADES.push({

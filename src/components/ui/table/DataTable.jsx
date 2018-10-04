@@ -242,6 +242,7 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort,
       originalData: this.state.originalData,
       data: this.state.data,
+      globalCheckboxState: false,
     };
 
     if (firstUseExternalInitialSort) {
@@ -275,12 +276,38 @@ export default class DataTable extends React.Component {
       changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
     }
 
+    // let globalCheckboxState = false;
+    if(Object.values(props.checked).length < props.results.length){
+      changesFields.globalCheckboxState = false; // возможн обудет ошибка из-за const
+    }else {
+      changesFields.globalCheckboxState = props.results.some((elem)=> props.checked[elem.id] );
+      console.log('globalCheckboxState222 = ', changesFields.globalCheckboxState);
+    }
+      
     this.setState(changesFields);
   }
 
+  // componentDidUpdate(prevProps, prevState){
+  //   let globalCheckboxState;
+  //   console.log('prevState == ', prevState);
+  //   console.log('state == ', this.state);
+    
+  //   if(this.state.globalCheckboxState !== prevState.globalCheckboxState || this.state.data !== prevState.data ){
+  //     if(Object.values(this.props.checked).length < this.props.results.length){
+  //       globalCheckboxState = false; // возможн обудет ошибка из-за const
+  //     }else {
+  //       globalCheckboxState = this.props.results.some((elem)=> this.props.checked[elem.id] );
+  //       console.log('globalCheckboxState222 = ', globalCheckboxState);
+  //     }
+  //     this.setState({globalCheckboxState}, () => {
+  //       this.forceUpdate();
+  //     });
+  //   }
+  // }
+
   shouldComponentUpdate(nextProps) {
     if (!this.state.isHierarchical) return true;
-
+    
     return !_.isEqual(nextProps.results, this.props.results);
   }
 

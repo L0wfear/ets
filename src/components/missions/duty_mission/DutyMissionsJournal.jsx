@@ -1,22 +1,21 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import { Button, Glyphicon, ButtonToolbar } from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
-import Paginator from 'components/ui/Paginator.jsx';
-import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject.jsx';
+import Paginator from 'components/ui/Paginator';
+import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject';
 import Div from 'components/ui/Div';
-import PrintForm from 'components/missions/common/PrintForm.tsx';
+import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable.jsx';
-import DutyMissionFormWrap from './DutyMissionFormWrap.jsx';
+import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable';
+import DutyMissionFormWrap from './DutyMissionFormWrap';
 
 const is_archive = false;
 
@@ -35,7 +34,6 @@ const ButtonUpdateDutyMission = enhanceWithPermissions({
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
   exportable: true,
 })
-@autobind
 export default class DutyMissionsJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -53,18 +51,17 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, prevState) {
     if (
-      nextState.page !== this.state.page ||
-      nextState.sortBy !== this.state.sortBy ||
-      nextState.filter !== this.state.filter
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy ||
+      prevState.filter !== this.state.filter
     ) {
-      this.refreshList(nextState);
+      this.refreshList(this.state);
     }
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {
@@ -83,7 +80,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
-  async refreshList(state = this.state) {
+  refreshList = async (state = this.state) => {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
     this.setState({
@@ -115,7 +112,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     return !(selectedDutyMissions.length || (selectedElement && selectedElement.status === 'assigned'));
   }
-  checkDisabledArchive() {
+  checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -125,7 +122,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     return validateMissionsArr.length === 0 || validateMissionsArr.some(({ status }) => status === 'assigned');
   }
 
-  completeMission() {
+  completeMission = () => {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
     this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
@@ -150,7 +147,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const query = this.removeElementAction(mission.id);
 
     query.then(() => {
-      console.log('here')
       this.refreshList(this.state);
       this.setState({
         checkedElements: {},
@@ -307,7 +303,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     .catch(() => {});
   }
 
-  getButtons() {
+  getButtons = () => {
     const buttons = super.getButtons();
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
@@ -319,7 +315,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     return buttons;
   }
 
-  getForms() {
+  getForms = () => {
     return [
       <div key={'forms'}>
         <DutyMissionFormWrap
@@ -345,15 +341,15 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     ];
   }
 
-  changeSort(field, direction) {
+  changeSort = (field, direction) => {
     this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
   }
 
-  changeFilter(filter) {
+  changeFilter = (filter) => {
     this.setState({ filter });
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     return {
       structures: this.props.companyStructureLinearList,
       changeSort: this.changeSort,
@@ -365,11 +361,11 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     };
   }
 
-  export() {
+  export = () => {
     this.setState({ showPrintForm: true });
   }
 
-  additionalRender() {
+  additionalRender = () => {
     return [
       <Paginator
         key={'paginator'}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import {
   Button,
@@ -8,14 +7,14 @@ import {
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import permissions from 'components/missions/mission/config-data/permissions';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
-import PrintForm from 'components/missions/common/PrintForm.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import PrintForm from 'components/missions/common/PrintForm';
 
-import Paginator from 'components/ui/Paginator.jsx';
-import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable.jsx';
+import Paginator from 'components/ui/Paginator';
+import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 
 const is_archive = true;
@@ -33,7 +32,6 @@ const ButtonUpdateMission = enhanceWithPermissions({
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
 })
-@autobind
 export default class MissionsArchiveJournal extends CheckableElementsList {
 
   constructor(props) {
@@ -50,7 +48,7 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
-  async init() {
+  init = async () => {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {
@@ -68,16 +66,17 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, prevState) {
     if (
-      nextState.page !== this.state.page ||
-      nextState.sortBy !== this.state.sortBy ||
-      nextState.filter !== this.state.filter
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy ||
+      prevState.filter !== this.state.filter
     ) {
-      this.refreshList(nextState);
+      this.refreshList(this.state);
     }
   }
-  async refreshList(state = this.state) {
+
+  refreshList = async (state = this.state) => {
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
 
     const { total_count } = missions.result.meta;
@@ -89,7 +88,7 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     }
   }
 
-  checkDisabledArchive() {
+  checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -135,7 +134,7 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     .catch(() => {});
   }
 
-  async mapView(id) {
+  mapView = async (id) => {
     const { result, warnings = false } = await this.context.flux.getActions('missions').getMissionData(id);
     if (warnings && warnings.length > 0) {
       global.NOTIFICATION_SYSTEM.notify(warnings[0], 'error');
@@ -144,7 +143,7 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     }
   }
 
-  getForms() {
+  getForms = () => {
     return [
       <div key={'forms'}>
         <MissionFormWrap
@@ -170,7 +169,7 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     ];
   }
 
-  getButtons() {
+  getButtons = () => {
     const buttons = super.getButtons();
 
     buttons.push(
@@ -180,15 +179,15 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     return buttons;
   }
 
-  changeSort(field, direction) {
+  changeSort = (field, direction) => {
     this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
   }
 
-  changeFilter(filter) {
+  changeFilter = (filter) => {
     this.setState({ filter });
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     return {
       mapView: this.mapView,
       structures: this.props.companyStructureLinearList,
@@ -202,7 +201,7 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
-  additionalRender() {
+  additionalRender = () => {
     return (
       <Paginator
         currentPage={this.state.page}

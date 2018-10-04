@@ -1,7 +1,7 @@
-import SSPMock from './ssp.js';
-import FuelingWaterMock from './fueling_water.js';
-import CarPoolMock from './carpool.js';
-import DangerZoneMock from './danger_zone.js';
+import SSPMock from './ssp';
+import FuelingWaterMock from './fueling_water';
+import CarPoolMock from './carpool';
+import DangerZoneMock from './danger_zone';
 
 export default {
   ssp: new SSPMock(),

@@ -41,33 +41,44 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     this.state = state;
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const {
       enumerated,
       tableMeta: tableMeta_next,
       data: data_next,
       filterValues,
     } = nextProps;
-    const { tableMeta_original } = this.state;
+    const { tableMeta_original } = prevState;
     const changesState: any = {};
+    let hasChanges = false;
 
-    if (this.state.enumerated !== enumerated || tableMeta_original !== tableMeta_next) {
+    if (prevState.enumerated !== enumerated || tableMeta_original !== tableMeta_next) {
       changesState.tableMeta = makeTableMeta(tableMeta_next, nextProps);
       changesState.enumerated = enumerated;
+
+      hasChanges = true;
     }
 
-    if (this.state.propsData !== data_next) {
+    if (prevState.propsData !== data_next) {
       changesState.propsData = data_next;
       changesState.hasData = !!data_next.length;
+
+      hasChanges = true;
     }
 
-    if (this.state.filterValuesOrigina !== filterValues) {
+    if (prevState.filterValuesOrigina !== filterValues) {
       changesState.filterValuesOrigina = filterValues;
       changesState.filterValues = filterValues;
       changesState.activeFilter = !!Object.keys(filterValues).length;
+
+      hasChanges = true;
     }
 
-    this.setState(changesState);
+    if (hasChanges) {
+      return changesState;
+    }
+
+    return null;
   }
 
   toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
-import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap.jsx';
-import CleaningRateTable from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateTable.jsx';
+import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap';
+import CleaningRateTable from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateTable';
 import permissions from 'components/directories/data_for_calculation/cleaning_rate/config-data/permissions';
 
 @connectToStores(['objects'])
@@ -17,24 +17,25 @@ import permissions from 'components/directories/data_for_calculation/cleaning_ra
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class CleaningRateDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getCleaningRate(this.props.type);
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('odh').getMeasureUnits();
   }
 
-  inheritedComponentWillReceiveProps(props) {
-    if (props.type !== this.props.type) {
-      this.context.flux.getActions('objects').getCleaningRate(props.type);
-      this.removeElementAction = this.context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
+  removeElementAction = (...arg) => this.context.flux.getActions('objects').deleteCleaningRate(this.props.type, ...arg);
+
+  componentDidUpdate(prevProps) {
+    const { type } = this.props;
+
+    if (prevProps.type !== type) {
+      this.context.flux.getActions('objects').getCleaningRate(type);
     }
   }
 }
@@ -43,6 +44,7 @@ export default class CleaningRate extends Component {
   state = {
     type: 'odh',
   }
+
   render() {
     const { type } = this.state;
     return (

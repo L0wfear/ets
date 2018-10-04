@@ -5,9 +5,8 @@ import {
   cloneDeep,
   omit,
 } from 'lodash';
-import { autobind } from 'core-decorators';
 
-import { validateField } from 'utils/validate/validateField.js';
+import { validateField } from 'utils/validate/validateField';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
@@ -22,8 +21,7 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  * @handleFormSubmit обработка отправки формы
  * @render дефолтный, обязательно переопределяется
  */
- @FluxContext
-@autobind
+@FluxContext
 export default class FormWrap extends React.Component {
 
   static get propTypes() {
@@ -68,7 +66,7 @@ export default class FormWrap extends React.Component {
 
   inheritedComponentWillReceiveProps() {}
 
-  validate(state, errors) {
+  validate = (state, errors) => {
     if (typeof this.schema === 'undefined') return errors;
 
     const schema = this.schema;
@@ -83,7 +81,7 @@ export default class FormWrap extends React.Component {
     );
   }
 
-  handleFormStateChange(field, e) {
+  handleFormStateChange = (field, e) => {
     const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
@@ -100,8 +98,10 @@ export default class FormWrap extends React.Component {
     newState.formErrors = formErrors;
 
     this.setState(newState);
+
+    return newState;
   }
-  nullValueForField(field, value) {
+  nullValueForField = (field, value) => {
     const { schema = {} } = this;
     const { properties = [] } = schema;
     const fieldsType = properties.reduce((obj, val) => Object.assign(obj, { [val.key]: val.type }), {});
@@ -127,7 +127,7 @@ export default class FormWrap extends React.Component {
   }
 
   // отправка формы
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const uniqueField = this.uniqueField || 'id';
     let { formState } = this.state;
     let result = null;

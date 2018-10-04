@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { getToday9am, getTomorrow9am, getDateWithMoscowTz } from 'utils/dates';
 
 class MissionsStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -15,7 +14,6 @@ class MissionsStore extends Store {
     this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
-    this.register(missionsActons.getMissionReports, this.handleGetMissionReports);
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
     this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
@@ -41,6 +39,7 @@ class MissionsStore extends Store {
       dutyMissionsTotalCount: 0,
     };
   }
+
   handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
     this.setState({ municipalFacilityList });
   }
@@ -75,18 +74,6 @@ class MissionsStore extends Store {
     return _.find(this.state.missionSourcesList, ms => ms.id === id) || {};
   }
 
-  handleGetMissionReports(data) {
-    // let selectedReportData = data.result[0].result.result.map((r,i) => {
-    //   r.index = i;
-    //   return r;
-    // });
-    const selectedReportData = data.result.rows.map((r, i) => {
-      r.index = i;
-      return r;
-    });
-    this.setState({ selectedReportData });
-  }
-
   handleGetMissionReportByODHs(index) {
     // TODO убрать добавку route_check_unit
     const missionReport = this.state.selectedReportData[index];
@@ -108,7 +95,6 @@ class MissionsStore extends Store {
     _.each(selectedReportDataDTS, r => (r.route_check_unit = missionReport.route_check_unit));
     this.setState({ selectedReportDataDTS });
   }
-
 }
 
 export default MissionsStore;

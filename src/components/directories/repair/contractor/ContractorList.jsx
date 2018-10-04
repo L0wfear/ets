@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
 
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import ContractorTable from 'components/directories/repair/contractor/ContractorTable';
 import ContractorFormWrap from 'components/directories/repair/contractor/ContractorFormWrap';
 import permissions from 'components/directories/repair/contractor/config-data/permissions';
@@ -18,11 +18,11 @@ import permissions from 'components/directories/repair/contractor/config-data/pe
 })
 export default class ContractorList extends CheckableElementsList {
   constructor(props, context) {
+
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeСontractor;
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('repair').getRepairListByType('contractor');
   }

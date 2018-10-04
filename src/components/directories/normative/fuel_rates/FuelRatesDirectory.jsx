@@ -1,8 +1,8 @@
-import FuelRateFormWrap from 'components/directories/normative/fuel_rates/FuelRateFormWrap.jsx';
-import FuelRatesTable from 'components/directories/normative/fuel_rates/FuelRatesTable.tsx';
-import ElementsList from 'components/ElementsList.jsx';
+import FuelRateFormWrap from 'components/directories/normative/fuel_rates/FuelRateFormWrap';
+import FuelRatesTable from 'components/directories/normative/fuel_rates/FuelRatesTable';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema.js';
+import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema';
 import permissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
 @connectToStores(['odh', 'fuelRates', 'objects', 'session', 'companyStructure'])
@@ -23,8 +23,7 @@ export default class FuelRatesDirectory extends ElementsList {
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations();
     flux.getActions('fuelRates').getFuelRates();

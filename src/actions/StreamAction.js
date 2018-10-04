@@ -19,6 +19,6 @@ export default class StreamAction extends Actions {
   closeLink(type) {
     return {
       type,
-    }
+    };
   }
 }

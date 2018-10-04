@@ -1,7 +1,13 @@
-import CarsList from 'components/directories/autobase/cars/CarsList';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "cars" */ 'components/directories/autobase/cars/CarsList'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: CarsList,
+    component,
+    loadable: true,
   },
 ];

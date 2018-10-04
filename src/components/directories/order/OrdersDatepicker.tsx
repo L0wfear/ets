@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { getOrders } from 'redux/modules/order/action-order';
+import { getOrders } from 'redux-main/reducers/modules/order/action-order';
 import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/compositions/hoc';
 
 import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 
-const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker);
+const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker) as any;
 
 
 const OrdersDatepicker: React.SFC<any> = props =>

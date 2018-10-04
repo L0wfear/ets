@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
+import Table from 'components/ui/table/DataTable';
+import ElementsList from 'components/ElementsList';
 
 const tableMeta = {
   cols: [
@@ -47,7 +47,6 @@ const MissionReportByPointsTable = (props) => {
 };
 
 class MissionReportByPoints extends ElementsList {
-
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,
@@ -60,7 +59,7 @@ class MissionReportByPoints extends ElementsList {
   constructor(props) {
     super(props);
 
-    this.selectField = props.selectField || 'customId';
+    this.selectField = props.selectField || 'frontId';
     this.mainListName = 'selectedReportDataPoints';
   }
 
@@ -70,8 +69,8 @@ class MissionReportByPoints extends ElementsList {
     }
   }
 
-  selectElement = (el) => {
-    super.selectElement(el);
+  onRowSelectedWrap = (el) => {
+    this.selectElement(el);
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
@@ -83,7 +82,7 @@ class MissionReportByPoints extends ElementsList {
     return (
       <MissionReportByPointsTable
         noHeader={renderOnly}
-        onRowSelected={this.selectElement}
+        onRowSelected={this.onRowSelectedWrap}
         selected={this.state.selectedElement}
         selectField={this.selectField}
         data={this.props.selectedReportDataPoints || []}

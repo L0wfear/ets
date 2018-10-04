@@ -1,13 +1,11 @@
 import * as queryString from 'query-string';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import permissions from 'components/directories/autobase/cars/config-data/permissions';
 
-import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap.jsx';
-import CarsTable from 'components/directories/autobase/cars/CarsTable.tsx';
-import schema from 'components/directories/autobase/cars/schema';
-
+import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
+import CarsTable from 'components/directories/autobase/cars/CarsTable';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })
@@ -15,7 +13,6 @@ import schema from 'components/directories/autobase/cars/schema';
   entity: 'car',
   permissions,
   listName: 'carsList',
-  schema,
   selectField: 'asuods_id',
   tableComponent: CarsTable,
   formComponent: CarFormWrap,
@@ -26,8 +23,7 @@ export default class CarsList extends ElementsList {
     super();
     this.preventUrlFilters = true;
   }
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
 
     const {

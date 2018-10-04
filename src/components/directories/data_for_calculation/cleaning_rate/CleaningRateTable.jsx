@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 
 const tableMeta = {
   cols: [
@@ -35,13 +35,11 @@ const tableMeta = {
   ],
 };
 
-export default (props) => {
-  return (
-    <Table
-      title="Показатели для расчета эффективности работы бригад"
-      results={props.data}
-      tableMeta={tableMeta}
-      {...props}
-    />
-  );
-};
+export default props => (
+  <Table
+    title="Показатели для расчета эффективности работы бригад"
+    results={props.data}
+    tableMeta={tableMeta}
+    {...props}
+  />
+);

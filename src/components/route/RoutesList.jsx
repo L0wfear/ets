@@ -18,18 +18,19 @@ import {
 import Div from 'components/ui/Div';
 import Filter from 'components/ui/table/filter/Filter';
 import FilterButton from 'components/ui/table/filter/FilterButton';
-import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils.js';
-import RouteInfo from 'components/route/RouteInfo';
-import RouteFormWrap from 'components/route/RouteFormWrap';
+import { getTypeRoute, makeRoutesListForRender } from 'components/route/utils/utils';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 
 import {
   ButtonCreateRoute,
   ButtonUpdateRoute,
   ButtonDeleteRoute,
 } from 'components/route/buttons/buttons';
-import { ExtField } from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { getCurrentSeason } from 'utils/dates';
+import { DivNone } from 'global-styled/global-styled';
 
 const SEASONS_OPTIONS = [
   {
@@ -75,7 +76,6 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
 };
 
 class RoutesList extends React.Component {
-
   static get propTypes() {
     return {
       appConfig: PropTypes.object,
@@ -216,19 +216,18 @@ class RoutesList extends React.Component {
     });
   }
 
-  createRoute = () =>
-    this.setState({
-      showForm: true,
-      selectedRoute: {
-        name: '',
-        polys: {},
-        object_list: [],
-        draw_object_list: [],
-        input_lines: [],
-        type: '',
-        is_main: true,
-      },
-    });
+  createRoute = () => this.setState({
+    showForm: true,
+    selectedRoute: {
+      name: '',
+      polys: {},
+      object_list: [],
+      draw_object_list: [],
+      input_lines: [],
+      type: '',
+      is_main: true,
+    },
+  });
 
   copyRoute = () => {
     const copiedRoute = _.cloneDeep(this.state.selectedRoute);
@@ -242,7 +241,7 @@ class RoutesList extends React.Component {
     });
   }
 
-  deleteRoute = async() => {
+  deleteRoute = async () => {
     try {
       await confirmDialog({
         title: 'Внимание!',
@@ -257,6 +256,7 @@ class RoutesList extends React.Component {
   }
 
   editRoute = route => this.setState({ selectedRoute: route });
+
   handleChange = selectedRoute => this.setState({ selectedRoute });
 
   handleDropdown = (name) => {
@@ -281,23 +281,27 @@ class RoutesList extends React.Component {
     }
     return _.map(collection, (childrenCollection, name) => {
       const hidden = !(this.state.showId.indexOf(parentName + name) + 1);
-      return (<div key={name}>
-        <h5>
-          <span style={{ cursor: 'pointer' }} onClick={() => this.handleDropdown(parentName + name)}>
-            {name}
-            <span
-              style={{
-                fontSize: 9,
-                position: 'relative',
-                top: -1,
-              }}
-            >{!hidden ? ' \u25BC' : ' \u25BA'}</span>
-          </span>
-        </h5>
-        <Div hidden={hidden} style={{ paddingLeft: 10 }}>
-          {this.renderItem(childrenCollection, parentName + name)}
-        </Div>
-      </div>);
+      return (
+        <div key={name}>
+          <h5>
+            <span style={{ cursor: 'pointer' }} onClick={() => this.handleDropdown(parentName + name)}>
+              {name}
+              <span
+                style={{
+                  fontSize: 9,
+                  position: 'relative',
+                  top: -1,
+                }}
+              >
+                {!hidden ? ' \u25BC' : ' \u25BA'}
+              </span>
+            </span>
+          </h5>
+          <Div hidden={hidden} style={{ paddingLeft: 10 }}>
+            {this.renderItem(childrenCollection, parentName + name)}
+          </Div>
+        </div>
+      );
     });
   }
 
@@ -308,7 +312,7 @@ class RoutesList extends React.Component {
 
     const TECH_OPERATIONS = _.uniqBy(
       technicalOperationsList.map(({ name }) => ({ value: name, label: name })),
-      'value'
+      'value',
     );
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
     const STRUCTURES = this.getStructures();
@@ -352,6 +356,9 @@ class RoutesList extends React.Component {
 
       return newObj;
     }, {});
+
+    const { showForm } = this.state;
+
     return (
       <EtsPageWrapRoute inheritDisplay>
         <Col xs={5} md={3} className="sidebar">
@@ -391,10 +398,26 @@ class RoutesList extends React.Component {
                 active={!!_.keys(this.state.filterValues).length}
                 onClick={this.toggleFilter}
               />
-              <ButtonCreateRoute bsSize="small" onClick={this.createRoute}><Glyphicon glyph="plus" /> Создать маршрут</ButtonCreateRoute>
-              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}><Glyphicon glyph="pencil" /> Изменить маршрут</ButtonUpdateRoute>
-              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}><Glyphicon glyph="copy" /> Копировать маршрут</ButtonUpdateRoute>
-              <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}><Glyphicon glyph="remove" /> Удалить</ButtonDeleteRoute>
+              <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
+                <Glyphicon glyph="plus" />
+                {' '}
+                Создать маршрут
+              </ButtonCreateRoute>
+              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={() => this.setState({ showForm: true })}>
+                <Glyphicon glyph="pencil" />
+                {' '}
+                Изменить маршрут
+              </ButtonUpdateRoute>
+              <ButtonUpdateRoute bsSize="small" disabled={route === null} onClick={this.copyRoute}>
+                <Glyphicon glyph="copy" />
+                {' '}
+                Копировать маршрут
+              </ButtonUpdateRoute>
+              <ButtonDeleteRoute bsSize="small" disabled={route === null} onClick={this.deleteRoute}>
+                <Glyphicon glyph="remove" />
+                {' '}
+                Удалить
+              </ButtonDeleteRoute>
             </div>
           </RouteHeaderContainer>
           <Filter
@@ -407,13 +430,22 @@ class RoutesList extends React.Component {
             options={filterOptions}
           />
           <div className="clearfix">
-            <Div hidden={this.state.showForm || route === null}>
-              <RouteInfo route={route} />
-            </Div>
+            {
+              route !== null && route.id
+                ? (
+                  <RouteInfo
+                    route={route}
+                    mapKey="mapRouteList"
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
             <RouteFormWrap
               element={route}
               onFormHide={this.onFormHide}
-              showForm={this.state.showForm}
+              showForm={showForm}
               routesList={routesList}
             />
           </div>

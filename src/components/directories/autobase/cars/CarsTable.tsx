@@ -7,6 +7,8 @@ import DataTableComponent from 'components/ui/table/DataTable';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
+import { isNumber } from 'util';
+
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 export function tableMeta({
@@ -188,7 +190,7 @@ export function tableMeta({
 }
 
 const renderers = {
-  fuel_correction_rate: ({ data }) => <div>{data ? parseFloat(data).toFixed(2) : ''}</div>,
+  fuel_correction_rate: ({ data }) => isNumber(data) ? parseFloat(data.toString()).toFixed(2) : '',
   garage_number: ({ data }) => <div>{data && data !== 'null' ? data : ''}</div>,
   model_name: ({ data }) => <div className="white-space-pre-wrap">{data}</div>,
   is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,

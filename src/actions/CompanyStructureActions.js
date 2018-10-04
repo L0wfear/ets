@@ -3,7 +3,6 @@ import { CompanyStructureService } from 'api/Services';
 import { cloneDeep } from 'lodash';
 
 export default class CompanyStructureActions extends Actions {
-
   createCompanyElement(data) {
     const payload = { ...data };
 

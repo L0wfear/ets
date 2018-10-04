@@ -1,8 +1,8 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-import TechnicalOperationsTable from 'components/directories/technical_operation/table/TechnicalOperationsTable.jsx';
-import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap.jsx';
+import TechnicalOperationsTable from 'components/directories/technical_operation/table/TechnicalOperationsTable';
+import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap';
 import permissions from 'components/directories/technical_operation/config-data/permissions';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOptionsTableFromSensorTypes } from 'components/directories/technical_operation/table/helpData';
@@ -19,8 +19,7 @@ import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOp
 })
 export default class TechOperationsDirectory extends ElementsList {
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperationsRegistry().then((ans) => {
       const options = makeOptions({

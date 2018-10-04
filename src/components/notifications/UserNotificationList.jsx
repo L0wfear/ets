@@ -18,8 +18,7 @@ import permissions from 'components/notifications/config-data/permissions';
   operations: ['LIST', 'READ', 'CHECK'],
 })
 export default class UserNotificationList extends CheckableElementsList {
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
 
     try {

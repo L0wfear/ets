@@ -1,7 +1,6 @@
-import Mock from '../Mock.js';
+import Mock from '../Mock';
 
 export default class DangerZoneMock extends Mock {
-
   constructor() {
     super();
     this.data = [
@@ -15,5 +14,4 @@ export default class DangerZoneMock extends Mock {
       },
     ];
   }
-
 }

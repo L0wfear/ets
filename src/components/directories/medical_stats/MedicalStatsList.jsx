@@ -1,9 +1,9 @@
 import React from 'react';
 import { staticProps, exportable, connectToStores } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
-import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable.jsx';
+import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable';
 import permissions from 'components/directories/medical_stats/config-data/permissions';
 
 @connectToStores(['objects', 'session'])
@@ -27,19 +27,18 @@ export default class MedicalStatsList extends ElementsList {
     date_to: createValidDateTime(this.state.date_to),
   };
 
-  async componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
-    await flux.getActions('objects').getMedicalStats(this.state);
+    flux.getActions('objects').getMedicalStats(this.state);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.date_from !== nextState.date_from || this.state.date_to !== nextState.date_to) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.date_from !== prevState.date_from || this.state.date_to !== prevState.date_to) {
       this.exportPayload = {
-        date_from: createValidDateTime(nextState.date_from),
-        date_to: createValidDateTime(nextState.date_to),
+        date_from: createValidDateTime(this.state.date_from),
+        date_to: createValidDateTime(this.state.date_to),
       };
-      this.context.flux.getActions('objects').getMedicalStats(nextState);
+      this.context.flux.getActions('objects').getMedicalStats(this.state);
     }
   }
 

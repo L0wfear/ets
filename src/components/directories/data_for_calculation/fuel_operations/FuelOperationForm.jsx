@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import { ExtField } from 'components/ui/Field.jsx';
-import Form from 'components/compositions/Form.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import Form from 'components/compositions/Form';
 
 export default class FuelOperationForm extends Form {
   render() {
@@ -14,7 +16,11 @@ export default class FuelOperationForm extends Form {
     return (
       <Modal id="modal-fuel-operation" show={this.props.show} onHide={this.props.onHide} backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} операции для расчета топлива</Modal.Title>
+          <Modal.Title>
+            {!state.id ? 'Добавление' : 'Изменение'}
+            {' '}
+операции для расчета топлива
+          </Modal.Title>
         </Modal.Header>
 
         <ModalBody>
@@ -32,7 +38,7 @@ export default class FuelOperationForm extends Form {
             </Col>
             <Col md={12}>
               <ExtField
-                type={'select'}
+                type="select"
                 label="Единица измерения"
                 value={state.measure_unit_id}
                 error={errors.measure_unit_id}
@@ -48,7 +54,7 @@ export default class FuelOperationForm extends Form {
                 type="checkbox"
                 style={{ marginLeft: '10px' }}
                 checked={!!state.is_excluding_mileage}
-                onClick={this.handleChange.bind(this, 'is_excluding_mileage', !!!state.is_excluding_mileage)}
+                onClick={this.handleChange.bind(this, 'is_excluding_mileage', !state.is_excluding_mileage)}
                 disabled={!isPermitted}
               />
             </Col>
@@ -58,7 +64,7 @@ export default class FuelOperationForm extends Form {
                 type="checkbox"
                 style={{ marginLeft: '10px' }}
                 checked={!!state.equipment}
-                onClick={this.handleChange.bind(this, 'equipment', !!!state.equipment)}
+                onClick={this.handleChange.bind(this, 'equipment', !state.equipment)}
                 disabled={!isPermitted}
               />
             </Col>
@@ -72,5 +78,4 @@ export default class FuelOperationForm extends Form {
       </Modal>
     );
   }
-
 }

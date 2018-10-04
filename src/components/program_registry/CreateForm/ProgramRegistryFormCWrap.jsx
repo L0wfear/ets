@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormCreate from 'components/program_registry/CreateForm/ProgramRegistryFormC';
 
@@ -20,8 +20,6 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
     };
   }
 
-  handleFormStateChangeWrap = (...arg) => this.handleFormStateChange(...arg);
-
   handleSubmitFirstForm = () => {
     this.setState({
       saveButtonLabel: 'Сохранение...',
@@ -40,12 +38,12 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
         saveButtonEnability: true,
       });
     })
-    .catch(() => {
-      this.setState({
-        saveButtonLabel: 'Сохранить',
-        saveButtonEnability: true,
+      .catch(() => {
+        this.setState({
+          saveButtonLabel: 'Сохранить',
+          saveButtonEnability: true,
+        });
       });
-    });
   }
 
   validate = (state, errors) => this.props.validate(state, errors);
@@ -72,7 +70,7 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
         isPermitted={isPermitted}
         canSave={canSave}
         onSubmit={this.handleSubmitFirstForm}
-        handleFormChange={this.handleFormStateChangeWrap}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
       />

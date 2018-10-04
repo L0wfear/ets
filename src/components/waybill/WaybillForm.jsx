@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import {
   isEqual,
   find,
@@ -13,15 +14,16 @@ import {
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import {
   isNotNull,
   isEmpty,
   hasMotohours,
 } from 'utils/functions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
@@ -37,26 +39,24 @@ import {
   getFuelCorrectionRate,
   getFuelRatesByCarModel,
   getTitleByStatus,
-  driverHasLicenseWithActiveDate,
-  driverHasSpecialLicenseWithActiveDate,
   getTrailers,
   getWaybillDrivers,
   validateTaxesControl,
 } from 'components/waybill/utils';
-import permissions_mission from 'components/missions/mission/config-data/permissions';
+import permissionsMission from 'components/missions/mission/config-data/permissions';
 
 import { confirmDialogChangeDate } from 'components/waybill/utils_react';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import Form from '../compositions/Form.jsx';
-import Taxes from './Taxes.jsx';
+import Form from '../compositions/Form';
+import Taxes from './Taxes';
 import WaybillFooter from './form/WaybillFooter';
 import BsnoStatus from './form/BsnoStatus';
-import MissionFormWrap from '../missions/mission/MissionFormWrap.jsx';
-import { getDefaultMission } from '../../stores/MissionsStore.js';
+import MissionFormWrap from '../missions/mission/MissionFormWrap';
+import { getDefaultMission } from '../../stores/MissionsStore';
 
 const ButtonCreateMission = enhanceWithPermissions({
-  permission: permissions_mission.create,
+  permission: permissionsMission.create,
 })(Button);
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
@@ -67,9 +67,7 @@ const boundKeysObj = {
 
 const modalKey = 'waybill';
 
-@autobind
 class WaybillForm extends Form {
-
   constructor(props) {
     super(props);
 
@@ -89,25 +87,25 @@ class WaybillForm extends Form {
     };
   }
 
-  componentWillReceiveProps(props) {
-    const currentState = this.props.formState;
-    const nextState = props.formState;
-    if (nextState.car_id !== currentState.car_id && nextState.car_id) {
-      this.getLatestWaybillDriver(nextState);
+  componentDidUpdate(prevProps) {
+    const oldFormState = prevProps.formState;
+    const nextFormState = this.props.formState;
+    if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
+      this.getLatestWaybillDriver(nextFormState);
     }
 
     // при смене планируемых дат или ТС запрашиваются новые доступные задания
-    if (currentState.car_id !== nextState.car_id ||
-        !isEqual(currentState.plan_arrival_date, nextState.plan_arrival_date) ||
-        !isEqual(currentState.plan_departure_date, nextState.plan_departure_date)) {
-      this.getMissionsByCarAndDates(nextState);
+    if (oldFormState.car_id !== nextFormState.car_id
+        || !isEqual(oldFormState.plan_arrival_date, nextFormState.plan_arrival_date)
+        || !isEqual(oldFormState.plan_departure_date, nextFormState.plan_departure_date)) {
+      this.getMissionsByCarAndDates(nextFormState);
     }
-    if (currentState.status === 'active' && diffDates(nextState.fact_departure_date, nextState.fact_arrival_date, 'minutes') <= 0) {
-      if (currentState.car_id !== nextState.car_id ||
-          !isEqual(currentState.fact_arrival_date, nextState.fact_arrival_date) ||
-          !isEqual(currentState.fact_departure_date, nextState.fact_departure_date)) {
-        this.getCarDistance(nextState);
-        this.getMissionsByCarAndDates(nextState);
+    if (oldFormState.status === 'active' && diffDates(nextFormState.fact_departure_date, nextFormState.fact_arrival_date, 'minutes') <= 0) {
+      if (oldFormState.car_id !== nextFormState.car_id
+          || !isEqual(oldFormState.fact_arrival_date, nextFormState.fact_arrival_date)
+          || !isEqual(oldFormState.fact_departure_date, nextFormState.fact_departure_date)) {
+        this.getCarDistance(nextFormState);
+        this.getMissionsByCarAndDates(nextFormState);
       }
     }
   }
@@ -135,9 +133,7 @@ class WaybillForm extends Form {
     );
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
-        .then(({ result: fuelRateAll }) =>
-          this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) })
-        )
+        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))
         .catch((e) => {
           console.error(e);
           this.setState({ fuelRateAllList: [] });
@@ -146,12 +142,10 @@ class WaybillForm extends Form {
 
     if (!IS_CREATING) {
       flux.getActions('waybills').getWaybill(formState.id)
-        .then(({ result: { closed_editable } }) =>
-          this.setState({
-            canEditIfClose: closed_editable ? flux.getStore('session').getPermission('waybill.update_closed') : false,
-            origFormState: formState,
-          })
-        )
+        .then(({ result: { closed_editable } }) => this.setState({
+          canEditIfClose: closed_editable ? flux.getStore('session').getPermission('waybill.update_closed') : false,
+          origFormState: formState,
+        }))
         .catch((e) => {
           console.error(e);
           this.setState({
@@ -170,25 +164,25 @@ class WaybillForm extends Form {
           getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState),
           getFuelCorrectionRate(this.props.carsList, formState),
         ])
-        .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
-          this.setState({
-            fuelRates,
-            operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]),
-            fuel_correction_rate,
-            equipmentFuelRates,
-            equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]),
+          .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
+            this.setState({
+              fuelRates,
+              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]),
+              fuel_correction_rate,
+              equipmentFuelRates,
+              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]),
+            });
+          })
+          .catch((e) => {
+            console.error(e);
+            this.setState({
+              fuelRates: [],
+              operations: [],
+              fuel_correction_rate: 1,
+              equipmentFuelRates: [],
+              equipmentOperations: [],
+            });
           });
-        })
-        .catch((e) => {
-          console.error(e);
-          this.setState({
-            fuelRates: [],
-            operations: [],
-            fuel_correction_rate: 1,
-            equipmentFuelRates: [],
-            equipmentOperations: [],
-          });
-        });
 
         this.getCarDistance(formState);
       } else {
@@ -196,12 +190,10 @@ class WaybillForm extends Form {
           отобразить их в таксировке как ТС, так и оборудования, так как
           выбор операций в любом случае недоступен */
         flux.getActions('fuelRates').getFuelOperations()
-          .then(({ result: fuelOperations }) =>
-            this.setState({
-              operations: fuelOperations,
-              equipmentOperations: fuelOperations,
-            })
-          ).catch((e) => {
+          .then(({ result: fuelOperations }) => this.setState({
+            operations: fuelOperations,
+            equipmentOperations: fuelOperations,
+          })).catch((e) => {
             console.error(e);
             this.setState({
               operations: [],
@@ -214,7 +206,7 @@ class WaybillForm extends Form {
 
   employeeFIOLabelFunction = (...arg) => employeeFIOLabelFunction(this.context.flux)(...arg);
 
-  handlePlanDepartureDates(field, value) {
+  handlePlanDepartureDates = (field, value) => {
     if (value === null) {
       return;
     }
@@ -243,25 +235,21 @@ class WaybillForm extends Form {
         }
         return missions;
       },
-      [],
-    );
+      []);
 
-    Promise.all(missionsFromOrder.map(mission =>
-      this.context.flux.getActions('objects').getOrderById(mission.order_id)
-        .then(({ result: [order] }) => ({
-          ...mission,
-          ...getDatesToByOrderOperationId(order, mission.order_operation_id),
-        }))
-    ))
-    .then(missions => missions.reduce((newObj, { id, number, dateTo }) => {
-      if (checkDateMission({ dateTo, dateWaybill })) {
-        newObj[id] = number;
-      }
+    Promise.all(missionsFromOrder.map(mission => this.context.flux.getActions('objects').getOrderById(mission.order_id)
+      .then(({ result: [order] }) => ({
+        ...mission,
+        ...getDatesToByOrderOperationId(order, mission.order_operation_id),
+      }))))
+      .then(missions => missions.reduce((newObj, { id, number, dateTo }) => {
+        if (checkDateMission({ dateTo, dateWaybill })) {
+          newObj[id] = number;
+        }
 
-      return newObj;
-    }, {}))
-    .then(missionsWithSourceOrder =>
-      confirmDialogChangeDate(Object.values(missionsWithSourceOrder).map(num => `задание ${num}`))
+        return newObj;
+      }, {}))
+      .then(missionsWithSourceOrder => confirmDialogChangeDate(Object.values(missionsWithSourceOrder).map(num => `задание ${num}`))
         .then(() => {
           if (Object.keys(missionsWithSourceOrder).length) {
             this.handleChange('mission_id_list', mission_id_list.filter(id => !missionsWithSourceOrder[id]));
@@ -276,15 +264,14 @@ class WaybillForm extends Form {
             {
               ...this.props.formState,
               [field]: value,
-            }
+            },
           );
           this.handleChange(field, value);
         })
-        .catch(() => {})
-    );
+        .catch(() => {}));
   }
 
-  getMissionsByCarAndDates(formState, notificate = true) {
+  getMissionsByCarAndDates = (formState, notificate = true) => {
     const {
       missionsList: oldMissionsList = [],
     } = this.state;
@@ -304,7 +291,7 @@ class WaybillForm extends Form {
       car_id,
       status === 'active' ? formState.fact_departure_date : formState.plan_departure_date,
       status === 'active' ? formState.fact_arrival_date : formState.plan_arrival_date,
-      status
+      status,
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);
@@ -318,8 +305,7 @@ class WaybillForm extends Form {
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions
             .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
-            .map(id => oldMissionsList.find(el => el.id === id))
-          )
+            .map(id => oldMissionsList.find(el => el.id === id)))
           .filter(m => m);
       }
 
@@ -333,7 +319,7 @@ class WaybillForm extends Form {
     });
   }
 
-  getCarDistance(formState) {
+  getCarDistance = (formState) => {
     if (diffDates(formState.fact_arrival_date, formState.fact_departure_date, 'days') > 3) {
       this.setState({ tooLongFactDates: true });
       return;
@@ -394,12 +380,12 @@ class WaybillForm extends Form {
     }
   }
 
-  getLatestWaybillDriver(formState) {
+  getLatestWaybillDriver = (formState) => {
     const { car_id } = formState;
     this.context.flux.getActions('employees').getEmployeeBindedToCar(car_id);
     this.context.flux.getActions('waybills').getLatestWaybillDriver(
       car_id,
-      formState.driver_id
+      formState.driver_id,
     ).then(({ result: { driver_id = null } }) => {
       if (driver_id) {
         const DRIVERS = getDrivers({ ...formState, driver_id }, this.props.employeesIndex, this.props.waybillDriversList);
@@ -417,39 +403,37 @@ class WaybillForm extends Form {
     });
   }
 
-  onCarChange = (car_id, selectedCar = {}) =>
-    new Promise((res) => {
-      const fieldsToChange = {
-        car_id,
-        gov_number: '',
-      };
+  onCarChange = (car_id, selectedCar = {}) => new Promise((res) => {
+    const fieldsToChange = {
+      car_id,
+      gov_number: '',
+    };
 
-      if (!isEmpty(car_id)) {
-        if (!this.state.fuelRateAllList.includes(selectedCar.model_id)) {
-          global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
-        }
-
-        this.props.clearSomeData();
-        return this.context.flux.getActions('waybills').getLastClosedWaybill(car_id)
-          .then(({ result: lastCarUsedWaybill }) =>
-            res({
-              ...fieldsToChange,
-              ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
-              gov_number: selectedCar.gov_number,
-            }));
+    if (!isEmpty(car_id)) {
+      if (!this.state.fuelRateAllList.includes(selectedCar.model_id)) {
+        global.NOTIFICATION_SYSTEM.notify(notifications.missionFuelRateByCarUpdateNotification);
       }
-      /**
+
+      this.props.clearSomeData();
+      return this.context.flux.getActions('waybills').getLastClosedWaybill(car_id)
+        .then(({ result: lastCarUsedWaybill }) => res({
+          ...fieldsToChange,
+          ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
+          gov_number: selectedCar.gov_number,
+        }));
+    }
+    /**
        * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
        */
-      return Promise.resolve(res({
-        ...fieldsToChange,
-        driver_id: '',
-      }));
-    })
+    return Promise.resolve(res({
+      ...fieldsToChange,
+      driver_id: '',
+    }));
+  })
     .then(fieldsToChange => this.props.handleMultipleChange(fieldsToChange));
 
 
-  async handleEquipmentFuelChange(equipment_fuel) {
+  handleEquipmentFuelChange = async (equipment_fuel) => {
     const fieldsToChange = {
       equipment_fuel,
     };
@@ -464,7 +448,7 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(fieldsToChange);
   }
 
-  getFieldsToChangeBasedOnLastWaybill([lastCarUsedWaybill]) {
+  getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
     const fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fuel_end)) {
@@ -497,7 +481,7 @@ class WaybillForm extends Form {
     return fieldsToChange;
   }
 
-  onMissionFormHide(result) {
+  onMissionFormHide = (result) => {
     const id = result && result.result ? result.result.id : null;
     if (id) {
       const { mission_id_list: [...mission_id_list] } = this.props.formState;
@@ -509,7 +493,7 @@ class WaybillForm extends Form {
     this.setState({ showMissionForm: false, selectedMission: null });
   }
 
-  createMission() {
+  createMission = () => {
     const {
       carsList = [],
       formState,
@@ -540,13 +524,14 @@ class WaybillForm extends Form {
         car_id,
         type_id,
         structure_id: formState.structure_id,
-      } });
+      },
+    });
   }
 
   /**
    * Обновляет данные формы на основе закрытого ПЛ
    */
-  async refresh() {
+  refresh = async () => {
     const state = this.props.formState;
     const { flux } = this.context;
 
@@ -556,7 +541,7 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(fieldsToChange);
   }
 
-  handleMissionsChange(newFormData) {
+  handleMissionsChange = (newFormData) => {
     this.handleChange('mission_id_list', newFormData);
   }
 
@@ -587,13 +572,12 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(changeObj);
   }
 
-  handleClose = taxesControl =>
-    checkMissionSelectBeforeClose(
-      this.props.formState,
-      groupBy([...this.state.missionsList, ...this.state.notAvailableMissions], 'id'),
-      this.props.missionSourcesList.find(({ auto }) => auto).id,
-      this.context.flux.getActions('objects').getOrderById,
-    )
+  handleClose = taxesControl => checkMissionSelectBeforeClose(
+    this.props.formState,
+    groupBy([...this.state.missionsList, ...this.state.notAvailableMissions], 'id'),
+    this.props.missionSourcesList.find(({ auto }) => auto).id,
+    this.context.flux.getActions('objects').getOrderById,
+  )
     .then(() => this.props.handleClose(taxesControl))
     .catch(() => {});
 
@@ -644,7 +628,9 @@ class WaybillForm extends Form {
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));
-    const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne, number, className: 'yellow' }));
+    const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({
+      value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne, number, className: 'yellow',
+    }));
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -691,40 +677,49 @@ class WaybillForm extends Form {
     }
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
 
-    const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3) :
-                                    isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3) :
-                                    'Нет данных';
+    const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3)
+      : isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3)
+        : 'Нет данных';
 
     return (
       <Modal id="modal-waybill" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
         <Modal.Header closeButton>
-          <Modal.Title>{title} { IS_DRAFT && '(возможна корректировка)'} { (IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}</Modal.Title>
+          <Modal.Title>
+            {title}
+            {' '}
+            { IS_DRAFT && '(возможна корректировка)'}
+            {' '}
+            { (IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}
+          </Modal.Title>
         </Modal.Header>
 
         <ModalBody>
           <Row>
             <Div>
-              {IS_CLOSED || IS_ACTIVE ? <Col md={3}>
-                <Field
-                  id="activated-by-employee-name"
-                  type="string"
-                  label="Выдан"
-                  readOnly
-                  hidden={!IS_CLOSED && !IS_ACTIVE}
-                  value={state.activated_by_employee_name}
-                />
-                <Field
-                  id="closed-by-employee-name"
-                  type="string"
-                  label="Закрыт"
-                  readOnly
-                  hidden={!IS_CLOSED}
-                  value={state.closed_by_employee_name}
-                />
-              </Col> : ''}
+              {IS_CLOSED || IS_ACTIVE ? (
+                <Col md={3}>
+                  <Field
+                    id="activated-by-employee-name"
+                    type="string"
+                    label="Выдан"
+                    readOnly
+                    hidden={!IS_CLOSED && !IS_ACTIVE}
+                    value={state.activated_by_employee_name}
+                  />
+                  <Field
+                    id="closed-by-employee-name"
+                    type="string"
+                    label="Закрыт"
+                    readOnly
+                    hidden={!IS_CLOSED}
+                    value={state.closed_by_employee_name}
+                  />
+                </Col>
+              ) : ''}
               <Col md={!IS_CLOSED && !IS_ACTIVE ? 6 : 3}>
-                {STRUCTURE_FIELD_VIEW &&
+                {STRUCTURE_FIELD_VIEW
+                  && (
                   <Field
                     id="waybill-structure-id"
                     type="select"
@@ -737,7 +732,8 @@ class WaybillForm extends Form {
                     emptyValue={null}
                     value={state.structure_id}
                     onChange={this.handleStructureIdChange}
-                  />}
+                  />
+                  )}
                 <Field
                   id="accompanying-person-id"
                   type="select"
@@ -791,7 +787,7 @@ class WaybillForm extends Form {
                 options={workModeOptions}
                 value={state.work_mode_id}
                 onChange={this.handleChange.bind(this, 'work_mode_id')}
-                />
+              />
             </Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
               <Col md={3}>
@@ -1106,7 +1102,7 @@ class WaybillForm extends Form {
                     boundKeys={boundKeysObj.fact_fuel_end}
                     showRedBorder={state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)}
                   />
-                  <div>{'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}</div>
+                  <div>Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.</div>
                   <Row />
                 </Col>
               </Div>
@@ -1118,7 +1114,7 @@ class WaybillForm extends Form {
               <Taxes
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
                 readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
-                title={'Расчет топлива по норме'}
+                title="Расчет топлива по норме"
                 taxes={state.tax_data}
                 operations={this.state.operations}
                 fuelRates={this.state.fuelRates}
@@ -1128,17 +1124,17 @@ class WaybillForm extends Form {
                 type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               />
               <Taxes
-                hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !!!state.equipment_tax_data)}
+                hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !state.equipment_tax_data)}
                 readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}
                 operations={this.state.equipmentOperations}
                 fuelRates={this.state.equipmentFuelRates}
-                title={'Расчет топлива по норме для оборудования'}
-                noDataMessage={'Для данного ТС нормы расхода топлива для спецоборудования не указаны.'}
+                title="Расчет топлива по норме для оборудования"
+                noDataMessage="Для данного ТС нормы расхода топлива для спецоборудования не указаны."
                 onChange={this.handleChange.bind(this, 'equipment_tax_data')}
                 correctionRate={this.state.fuel_correction_rate}
                 baseFactValue={state.motohours_equip_diff}
-                type={'motohours'}
+                type="motohours"
               />
               <Div>
                 <Field
@@ -1191,7 +1187,7 @@ class WaybillForm extends Form {
                   <div className="form-group">
                     <div className="checkbox">
                       <label htmlFor="show-fuel-consumption">
-                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !!!state.equipment_fuel)} />
+                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} />
                         <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
                       </label>
                     </div>
@@ -1304,7 +1300,7 @@ class WaybillForm extends Form {
               <Div style={{ paddingLeft: 15 }}>
                 <Col md={4}>
                   <Field
-                    id={'downtime-hours-work'}
+                    id="downtime-hours-work"
                     type="string"
                     label="Работа"
                     disabled={IS_CLOSED || !isPermittedByKey.update}
@@ -1315,7 +1311,7 @@ class WaybillForm extends Form {
                 </Col>
                 <Col md={4}>
                   <Field
-                    id={'downtime-hours-duty'}
+                    id="downtime-hours-duty"
                     type="string"
                     label="Дежурство"
                     disabled={IS_CLOSED || !isPermittedByKey.update}
@@ -1330,7 +1326,7 @@ class WaybillForm extends Form {
               <Div style={{ paddingLeft: 15 }}>
                 <Col md={4}>
                   <Field
-                    id={'downtime-hours-dinner'}
+                    id="downtime-hours-dinner"
                     type="string"
                     label="Обед"
                     disabled={IS_CLOSED || !isPermittedByKey.update}
@@ -1341,7 +1337,7 @@ class WaybillForm extends Form {
                 </Col>
                 <Col md={4}>
                   <Field
-                    id={'downtime-hours-repair'}
+                    id="downtime-hours-repair"
                     type="string"
                     label="Ремонт"
                     disabled={IS_CLOSED || !isPermittedByKey.update}

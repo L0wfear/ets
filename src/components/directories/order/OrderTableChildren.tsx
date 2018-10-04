@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {
   setMInMissionTemplateData,
   setDMInMissionTemplateData,
-} from 'redux/modules/order/action-order';
+} from 'redux-main/reducers/modules/order/action-order';
 
 import permissions_mission_template from 'components/missions/mission_template/config-data/permissions';
 import permissions_duty_mission_template from 'components/missions/duty_mission_template/config-data/permissions';

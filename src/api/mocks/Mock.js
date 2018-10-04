@@ -5,7 +5,6 @@ const ERROR_METHOD_NOT_ALLOWED = {
 };
 
 export default class Mock {
-
   static wrapData({ data, warnings = [], errors = [] }) {
     return {
       warnings,
@@ -72,5 +71,4 @@ export default class Mock {
     }
     return Mock.wrapData({ data: this.data });
   }
-
 }

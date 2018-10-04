@@ -1,5 +1,5 @@
-import ApiServiceFactory from './ApiServiceFactory.js';
-import config from '../config.js';
+import ApiServiceFactory from './ApiServiceFactory';
+import config from '../config';
 
 const conf: any = config;
 

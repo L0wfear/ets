@@ -8,7 +8,7 @@ import { OBJ_TAB_INDEX } from 'components/program_registry/UpdateFrom/inside_com
 import Table from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table';
 import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
 
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 const nullFunc = () => null;
 

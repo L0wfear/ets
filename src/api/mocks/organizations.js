@@ -1,7 +1,6 @@
-import Mock from './Mock.js';
+import Mock from './Mock';
 
 export default class OrganizationsMock extends Mock {
-
   constructor() {
     super();
     this.data = [
@@ -18,5 +17,4 @@ export default class OrganizationsMock extends Mock {
       },
     ];
   }
-
 }

@@ -6,18 +6,17 @@ import {
   isEmpty,
 } from 'lodash';
 
-import Div from 'components/ui/Div.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { getDefaultDutyMission } from 'stores/MissionsStore.js';
+import Div from 'components/ui/Div';
+import FormWrap from 'components/compositions/FormWrap';
+import { getDefaultDutyMission } from 'stores/MissionsStore';
 import { saveData } from 'utils/functions';
-import { diffDates } from 'utils/dates.js';
-import dutyMissionSchema from 'models/DutyMissionModel.js';
+import { diffDates } from 'utils/dates';
+import dutyMissionSchema from 'models/DutyMissionModel';
 
-import DutyMissionForm from './DutyMissionForm.jsx';
-import DutyMissionFormOld from './DutyMissionFormOld.jsx';
+import DutyMissionForm from './DutyMissionForm';
+import DutyMissionFormOld from './DutyMissionFormOld';
 
 class DutyMissionFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -25,14 +24,15 @@ class DutyMissionFormWrap extends FormWrap {
     this.defaultElement = getDefaultDutyMission();
     this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
   }
+
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       const mission = props.element === null ? getDefaultDutyMission() : clone(props.element);
       const ordersActions = this.context.flux.getActions('objects');
 
       const {
-       order_id,
-       faxogramm_id,
+        order_id,
+        faxogramm_id,
       } = mission;
 
       const id = faxogramm_id || order_id;
@@ -190,7 +190,7 @@ class DutyMissionFormWrap extends FormWrap {
   render() {
     return (
       <Div hidden={!this.props.showForm}>
-        <Div hidden={!this.state.formState.is_new} >
+        <Div hidden={!this.state.formState.is_new}>
           <DutyMissionForm
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
@@ -203,7 +203,7 @@ class DutyMissionFormWrap extends FormWrap {
             {...this.state}
           />
         </Div>
-        <Div hidden={this.state.formState.is_new} >
+        <Div hidden={this.state.formState.is_new}>
           <DutyMissionFormOld
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
@@ -219,7 +219,6 @@ class DutyMissionFormWrap extends FormWrap {
       </Div>
     );
   }
-
 }
 
 export default DutyMissionFormWrap;

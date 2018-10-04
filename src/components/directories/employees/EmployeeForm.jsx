@@ -5,13 +5,13 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtDiv } from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { diffDates } from 'utils/dates';
 
-import Form from '../../compositions/Form.jsx';
+import Form from '../../compositions/Form';
 
 function filterCars(car, formState) {
   let norm = false;

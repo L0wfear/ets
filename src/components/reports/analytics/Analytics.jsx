@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { Button, Row, Col } from 'react-bootstrap';
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';

@@ -1,4 +1,4 @@
-import ApiServiceFactory from './ApiServiceFactory.js';
+import ApiServiceFactory from './ApiServiceFactory';
 import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';
@@ -87,7 +87,6 @@ export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('ca
 export const RouteReportsService = ETS_API_FACTORY.createApiServiceAdapter('route_odh_covering_report', {});
 export const WaybillJournalReportService = ETS_API_FACTORY.createApiServiceAdapter('waybill_journal_report', {});
 export const WaybillsReportService = ETS_API_FACTORY.createApiServiceAdapter('waybills_report', {});
-export const MissionLastReportService = ETS_API_FACTORY.createApiServiceAdapter('mission_last_report', {});
 export const AnalyticsService = ETS_API_FACTORY.createApiServiceAdapter('analytical_reports', {});
 export const CarFuncTypeUsageReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_company', {});
 export const CarFuncTypeUsageDetailReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_func_type', {});

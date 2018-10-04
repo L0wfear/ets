@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { IVehicle } from 'api/@types/services/index.h';
 import {

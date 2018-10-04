@@ -8,7 +8,6 @@ import { formValidationSchema } from './schema';
 
 @connectToStores(['session'])
 class TechMaintFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
     const { car_id = -1 } = props;
@@ -18,6 +17,7 @@ class TechMaintFormWrap extends FormWrap {
     this.createAction = context.flux.getActions('autobase').techMaint.bind(null, 'post', car_id === -1 ? {} : { car_id });
     this.updateAction = context.flux.getActions('autobase').techMaint.bind(null, 'put', car_id === -1 ? {} : { car_id });
   }
+
   // TODO Надо избавляться от наследования и делать композицию компонентов
   inheritedComponentWillReceiveProps(nextProps) {
     if (this.props.showForm !== nextProps.showForm) {
@@ -40,6 +40,7 @@ class TechMaintFormWrap extends FormWrap {
       });
     }
   }
+
   render() {
     const { entity } = this.props;
     const { saveButtonEnability = true } = this.state;
@@ -48,19 +49,21 @@ class TechMaintFormWrap extends FormWrap {
     const isBelongToUserCompany = company_id === null || company_id === userCompanyId;
     const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability && (isBelongToUserCompany || can_edit === true);
 
-    return this.props.showForm ?
-      <TechMaintForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        canSave={canSave}
-        isPermitted={this.props.isPermitted && (isBelongToUserCompany || can_edit === true)}
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <TechMaintForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          canSave={canSave}
+          isPermitted={this.props.isPermitted && (isBelongToUserCompany || can_edit === true)}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
       : null;
   }
 }

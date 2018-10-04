@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
-import { ExtField } from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import Div from 'components/ui/Div';
 import connectToStores from 'flummox/connect';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 

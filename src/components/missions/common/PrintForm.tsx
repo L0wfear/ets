@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import * as moment from 'moment';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import ModalBody from 'components/ui/Modal';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';

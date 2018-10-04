@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
@@ -31,21 +31,24 @@ class HistoryOrderList extends React.Component<any, any> {
     };
   }
 
-  componentWillReceiveProps(props) {
-    const changedState: any = {};
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.data !== nextProps.data) {
+      const changedState: any = {};
 
-    if (this.state.data !== props.data) {
-      changedState.data = props.data;
+      changedState.data = nextProps.data;
       const [activeData] = changedState.data;
       
       changedState.haveData = !!activeData;
       changedState.activeList = !!activeData ? 1 : null;
-      changedState.activeData = activeData || this.state.activeData;
+      changedState.activeData = activeData || prevState.activeData;
       changedState.VERSION_OPTIONS = changedState.data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`}));
       changedState.historytableIsOpen = false;
+
+      return changedState;
     }
 
-    this.setState(changedState);
+    return null
+
   }
 
   handleChangeVersion = num => {

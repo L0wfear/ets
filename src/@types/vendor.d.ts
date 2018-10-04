@@ -21,6 +21,10 @@ declare module NodeJS  {
   }
 }
 
+declare const __CLIENT__: boolean;
+declare const __SERVER__: boolean;
+declare const __DEVELOPMENT__: boolean;
+
 declare module '*.png';
 declare module '*.mp3'
 declare module '*.ogg'

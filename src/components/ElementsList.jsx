@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { Button, Glyphicon } from 'react-bootstrap';
 import * as queryString from 'query-string';
 
-import Preloader from 'components/ui/Preloader';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { FluxContext } from 'utils/decorators';
 
 import {
@@ -22,11 +21,10 @@ import {
  * @extends React.Component
  */
 
-let lastDate = +(new Date());
+const lastDate = +(new Date());
 
 @FluxContext
 class ElementsList extends React.Component {
-
   static get propTypes() {
     return {
       location: PropTypes.object,
@@ -58,32 +56,16 @@ class ElementsList extends React.Component {
     this.clicks = 0;
   }
 
-  componentWillMount() {
-    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
-    this.setState({ readPermission });
-  }
-
   componentDidMount() {
     if (!this.keyPressDisabled) {
       this.node.setAttribute('tabindex', 1);
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
-    this.init();
-  }
 
-  componentWillReceiveProps(props) {
-    const elementsList = props[this.mainListName] || [];
-    const schemaProperties = this.constructor.schema ? this.constructor.schema.properties : null;
-    if (schemaProperties) {
-      elementsList.forEach((el) => {
-        Object.keys(el).forEach((k) => {
-          const field = schemaProperties.find(p => (p.key === k) && p.float);
-          if (field && el[k] != null && el[k] !== '') el[k] = parseFloat(el[k]).toFixed(field.float);
-        });
-      });
-    }
-    this.setState({ elementsList });
-    this.inheritedComponentWillReceiveProps(props);
+    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
+    this.setState({ readPermission });
+
+    this.init();
   }
 
   /**
@@ -93,17 +75,11 @@ class ElementsList extends React.Component {
   init() {}
 
   /**
-   * Дополнительный ComponentWillReceiveProps унаследованных компонентов
-   */
-  inheritedComponentWillReceiveProps() {}
-
-  /**
    * Выбирает элемент
    * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
    * элементом
    */
-  @autobind
-  selectElement({ props }) {
+  selectElement = ({ props }) => {
     const selectedElement = { ...props.data };
 
     if (props.fromKey) {
@@ -112,7 +88,7 @@ class ElementsList extends React.Component {
     }
     this.clicks += 1;
 
-    this.setState({ selectedElement })
+    this.setState({ selectedElement });
   }
 
   onRowClick = ({ props: { data } }) => {
@@ -130,20 +106,18 @@ class ElementsList extends React.Component {
     }
   }
 
-  setNewSelectedElement = (selectedElement) =>
-    Promise.resolve(this.setState({ showForm: false }))
-      .then(() => {
-        this.setState({
-          showForm: true,
-          selectedElement,
-        });
+  setNewSelectedElement = selectedElement => Promise.resolve(this.setState({ showForm: false }))
+    .then(() => {
+      this.setState({
+        showForm: true,
+        selectedElement,
       });
+    });
 
   /**
    * Обнуляет выбранный элемент и открывает форму для создания нового
    */
-  @autobind
-  createElement() {
+  createElement = () => {
     this.setState({
       showForm: true,
       selectedElement: null,
@@ -153,8 +127,7 @@ class ElementsList extends React.Component {
   /**
    * Открывает форму
    */
-  @autobind
-  showForm() {
+  showForm = () => {
     this.setState({
       showForm: true,
     });
@@ -163,16 +136,14 @@ class ElementsList extends React.Component {
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
-  @autobind
-  onFormHide() {
+  onFormHide = () => {
     this.setState({
       showForm: false,
       selectedElement: null,
     });
   }
 
-  @autobind
-  formCallback() {
+  formCallback = () => {
     this.onFormHide();
   }
 
@@ -182,8 +153,7 @@ class ElementsList extends React.Component {
    * определенной в классе-наследнике функции this.removeElementAction
    * this.removeElementCallback переопределяет операцию по умолчанию ([serviceName].get) после удаления
    */
-  @autobind
-  removeElement() {
+  removeElement = () => {
     if (typeof this.removeElementAction !== 'function' || this.state.selectedElement === null) {
       return Promise.reject();
     }
@@ -194,13 +164,13 @@ class ElementsList extends React.Component {
       title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
-    .then(() => {
-      const query = this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
+      .then(() => {
+        const query = this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
 
-      this.setState({ selectedElement: null });
-      return query;
-    })
-    .catch(() => {});
+        this.setState({ selectedElement: null });
+        return query;
+      })
+      .catch(() => {});
   }
 
   onKeyPress(e) {
@@ -238,23 +208,7 @@ class ElementsList extends React.Component {
   checkDisabledRead() {
     return this.state.selectedElement === null;
   }
-  processExport = async (exportPayload = this.exportPayload) => {
-    try {
-      this.setState({ exportFetching: true });
-      await this.props.export(exportPayload, this.exportUseRouteParams);
-      this.setState({ exportFetching: false });
-    } catch (error) {
-      this.setState({ exportFetching: false });
-    }
-  }
-  handleExport = () => {
-    if (typeof this.export === 'function') {
-      this.export();
-      return;
-    }
 
-    this.processExport();
-  }
   /**
    * Определяет и возвращает массив кнопок для CRUD операций
    * @return {Component[]} Buttons - массив кнопок
@@ -274,62 +228,68 @@ class ElementsList extends React.Component {
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
         this.permissions.create
-        ?
-          <ButtonCreateNew
-            key={'button-create'}
-            buttonName={BCbuttonName}
-            onClick={this.createElement}
-            permission={this.permissions.create}
-          />
-        :
-          <ButtonCreate
-            buttonName={BCbuttonName}
-            key={buttons.length}
-            onClick={this.createElement}
-            permissions={[`${entity}.create`]}
-          />
+          ? (
+            <ButtonCreateNew
+              key="button-create"
+              buttonName={BCbuttonName}
+              onClick={this.createElement}
+              permission={this.permissions.create}
+            />
+          )
+          : (
+            <ButtonCreate
+              buttonName={BCbuttonName}
+              key={buttons.length}
+              onClick={this.createElement}
+              permissions={[`${entity}.create`]}
+            />
+          ),
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
         this.permissions.read
-        ?
-          <ButtonReadNew
-            key={'button-read'}
-            buttonName={BRbuttonName}
-            onClick={this.showForm}
-            permission={this.permissions.read}
-            disabled={this.checkDisabledRead()}
-          />
-        :
-          <ButtonRead
-            buttonName={BRbuttonName}
-            key={buttons.length}
-            onClick={this.showForm}
-            disabled={this.checkDisabledRead()}
-            permissions={[`${entity}.read`]}
-          />
+          ? (
+            <ButtonReadNew
+              key="button-read"
+              buttonName={BRbuttonName}
+              onClick={this.showForm}
+              permission={this.permissions.read}
+              disabled={this.checkDisabledRead()}
+            />
+          )
+          : (
+            <ButtonRead
+              buttonName={BRbuttonName}
+              key={buttons.length}
+              onClick={this.showForm}
+              disabled={this.checkDisabledRead()}
+              permissions={[`${entity}.read`]}
+            />
+          ),
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
         this.permissions.read
-        ?
-          <ButtonDeleteNew
-            key={'button-delete'}
-            buttonName={BDbuttonName}
-            onClick={this.removeElement}
-            permission={this.permissions.delete}
-            disabled={this.checkDisabledDelete()}
-          />
-        :
-          <ButtonDelete
-            buttonName={BDbuttonName}
-            key={buttons.length}
-            onClick={this.removeElement}
-            disabled={this.checkDisabledDelete()}
-            permissions={[`${entity}.delete`]}
-          />
+          ? (
+            <ButtonDeleteNew
+              key="button-delete"
+              buttonName={BDbuttonName}
+              onClick={this.removeElement}
+              permission={this.permissions.delete}
+              disabled={this.checkDisabledDelete()}
+            />
+          )
+          : (
+            <ButtonDelete
+              buttonName={BDbuttonName}
+              key={buttons.length}
+              onClick={this.removeElement}
+              disabled={this.checkDisabledDelete()}
+              permissions={[`${entity}.delete`]}
+            />
+          ),
       );
     }
     if (this.props.exportable) {
@@ -343,10 +303,29 @@ class ElementsList extends React.Component {
           onClick={this.handleExport}
         >
           <Glyphicon glyph="download-alt" />
-        </Button>
+        </Button>,
       );
     }
     return buttons;
+  }
+
+  processExport = async (exportPayload = this.exportPayload) => {
+    try {
+      this.setState({ exportFetching: true });
+      await this.props.export(exportPayload, this.exportUseRouteParams);
+      this.setState({ exportFetching: false });
+    } catch (error) {
+      this.setState({ exportFetching: false });
+    }
+  }
+
+  handleExport = () => {
+    if (typeof this.export === 'function') {
+      this.export();
+      return;
+    }
+
+    this.processExport();
   }
 
   /**
@@ -401,8 +380,7 @@ class ElementsList extends React.Component {
     return Object.assign({},
       this.getBasicProps(),
       this.getSelectedProps(),
-      this.getAdditionalProps()
-    );
+      this.getAdditionalProps());
   }
 
   /**
@@ -449,13 +427,14 @@ class ElementsList extends React.Component {
         element={this.state.selectedElement}
         setNewSelectedElement={this.setNewSelectedElement}
         entity={this.entity}
+        selectField={this.selectField}
         onCallback={this.formCallback}
         meta={this.constructor.formMeta}
         renderers={this.constructor.formRenderers}
         permissions={[`${this.entity}.read`]}
         flux={this.context.flux}
         {...this.props}
-      />
+      />,
     );
 
     return forms;
@@ -476,7 +455,7 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
-    const preloader = this.state.exportFetching && <Preloader type="mainpage" />;
+    const preloader = this.state.exportFetching && <Preloader typePreloader="mainpage" />;
 
     return (
       <EtsPageWrap innerRef={this.setNode}>
@@ -487,7 +466,6 @@ class ElementsList extends React.Component {
       </EtsPageWrap>
     );
   }
-
 }
 
 export default ElementsList;

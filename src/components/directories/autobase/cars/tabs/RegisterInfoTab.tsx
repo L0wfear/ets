@@ -5,8 +5,8 @@ import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle, IVehicleRegister } from 'api/@types/services/index.h';
 
-import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import config from 'config';
 const styles = require('components/directories/autobase/cars/cars.module.scss');
 

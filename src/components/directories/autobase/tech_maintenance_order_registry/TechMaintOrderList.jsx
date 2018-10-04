@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import TechMaintOrderFormWrap from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderFormWrap';
 import TechMaintOrderTable from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderTable';
 import permissions from 'components/directories/autobase/tech_maintenance_order_registry/config-data/permissions';
@@ -20,8 +20,7 @@ export default class TechMaintOrderList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeTechMaintOrder;
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
 

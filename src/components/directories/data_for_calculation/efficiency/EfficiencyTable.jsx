@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
+import Table from 'components/ui/table/DataTable';
+import DateFormatter from 'components/ui/DateFormatter';
 
 const tableMeta = {
   cols: [
@@ -42,13 +42,15 @@ const EfficiencyTable = (props) => {
     source: ({ data }) => +data ? <div>Справочник показателей норм на содержание ОДХ</div> : <div>Реестр ОДХ</div>,
   };
 
-  return (<Table
-    title="Реестр показателей для расчета эффективности"
-    results={props.data}
-    tableMeta={tableMeta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Реестр показателей для расчета эффективности"
+      results={props.data}
+      tableMeta={tableMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };
 
 export default EfficiencyTable;

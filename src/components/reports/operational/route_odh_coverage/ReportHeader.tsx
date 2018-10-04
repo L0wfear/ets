@@ -9,7 +9,7 @@ import {
 import { ITechnicalOperationType } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
-import FieldComponent from 'components/ui/Field.jsx';
+import FieldComponent from 'components/ui/Field';
 import { bindable, FluxContext } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';

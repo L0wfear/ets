@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import Thead from 'components/ui/tableNew/table/thead/Thead';
 import Tbody from 'components/ui/tableNew/table/tbody/Tbody';
-import Paginator from 'components/ui/Paginator.jsx';
+import Paginator from 'components/ui/Paginator';
 
 import {
   makeData,
@@ -56,32 +56,33 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     this.state = state;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const changesState: any = {};
-
-    if (nextProps.data !== this.state.originalData || nextProps.filterValues !== this.state.filterValues) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.data !== prevState.originalData || nextProps.filterValues !== prevState.filterValues) {
+      const changesState: any = {};
       changesState.data = makeData({
         data: nextProps.data,
-        sortField: this.state.sortField,
-        sortAscending: this.state.sortAscending,
-        uniqName: this.props.uniqName,
+        sortField: prevState.sortField,
+        sortAscending: prevState.sortAscending,
+        uniqName: nextProps.uniqName,
         filterValues: nextProps.filterValues,
         activeFilter: nextProps.activeFilter,
-        tableMeta: this.props.tableMeta,
+        tableMeta: nextProps.tableMeta,
       });
       changesState.originalData = nextProps.data;
       changesState.filterValues = nextProps.filterValues;
       changesState.activeFilter = nextProps.activeFilter;
-      changesState.pagination = { ...this.state.pagination, totalCount: changesState.data.length };
+      changesState.pagination = { ...prevState.pagination, totalCount: changesState.data.length };
       changesState.pagination.maxPage = Math.ceil(changesState.pagination.totalCount / changesState.pagination.perPageCount);
 
       if (changesState.pagination.maxPage - 1 < changesState.pagination.offset) {
         changesState.pagination.offset = changesState.pagination.maxPage === 0 ? 0 : changesState.pagination.maxPage - 1;
       }
-      changesState.showData = makeDataByPagination(changesState.data || this.state.data, changesState.pagination, nextProps.uniqName);
+      changesState.showData = makeDataByPagination(changesState.data || prevState.data, changesState.pagination, nextProps.uniqName);
+
+      return changesState;
     }
 
-    this.setState(changesState);
+    return null;
   }
 
   handleClickTh = sortField => {

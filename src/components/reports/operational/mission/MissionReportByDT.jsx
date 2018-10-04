@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
-import { sortFunc } from 'components/reports/mission/utils/sortFunction.ts';
+import Table from 'components/ui/table/DataTable';
+import ElementsList from 'components/ElementsList';
+import { sortFunc } from 'components/reports/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/reports/mission/utils/main';
 
 const VALUE_FOR_FIXED = {
@@ -43,12 +43,12 @@ const checkFixed = (data, key) => {
   if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
     clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].type](
       clone[0],
-      VALUE_FOR_FIXED[key].val
+      VALUE_FOR_FIXED[key].val,
     );
   } else if ('another' in VALUE_FOR_FIXED[key]) {
     clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].another.type](
       clone[0],
-      VALUE_FOR_FIXED[key].another.val
+      VALUE_FOR_FIXED[key].another.val,
     );
   }
 
@@ -137,7 +137,6 @@ const MissionReportByDTTable = (props) => {
 };
 
 class MissionReportByDT extends ElementsList {
-
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,

@@ -3,11 +3,11 @@ import { Button } from 'react-bootstrap';
 import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
-import Table from 'components/ui/table/DataTable.jsx';
+import DateFormatter from 'components/ui/DateFormatter';
+import Table from 'components/ui/table/DataTable';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 import permissions from 'components/directories/autobase/tire/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 const CloneButton = enhanceWithPermissions({
   permission: permissions.create,
@@ -18,7 +18,7 @@ const CloneButton = enhanceWithPermissions({
     }
 
     return newProps;
-  }, {})
+  }, {}),
 )(Button)));
 
 export const tableMeta = ({
@@ -111,24 +111,28 @@ export const tableMeta = ({
 };
 
 export default (props) => {
-
   const renderers = {
     installed_at: ({ data }) => <DateFormatter date={data} />,
-    cloneButton: meta =>
+    cloneButton: meta => (
       <CloneButton
         onClick={props.onCloneClick}
         boundKeys={[meta.rowData.id]}
-      >Создать копированием</CloneButton>,
+      >
+Создать копированием
+      </CloneButton>
+    ),
   };
 
   const meta = tableMeta(props);
   const sortedMeta = sortSchemaCols(meta);
 
-  return (<Table
-    title="Реестр шин"
-    results={props.data}
-    tableMeta={sortedMeta}
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Реестр шин"
+      results={props.data}
+      tableMeta={sortedMeta}
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Col } from 'react-bootstrap';
 
 import { IPropsMapInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.h';
-import MapWrap from 'components/ui/input/map/MapWrap';
+import RouteCreatingMap from 'components/route/form/map/RouteCreatingMap';
 
 class MapInfo extends React.Component<IPropsMapInfo, any> {
-  handleFeatureClick = ({ id, name, nextState }) => {
+  handleFeatureClick = ({ id }) => {
     this.props.handleFeatureClick({ id });
     return;
   }
@@ -15,11 +15,11 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
   handlePointAdd = ({ newPointObject }) => {
     /* Смотри routeCreating */
   }
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
-    this.props.handleDrawFeatureAdd({ drawObjectNew });
+  handleAddDrawLines = (newInputLines) => {
+    this.props.handleDrawFeatureAdd(newInputLines);
   }
-  handleDrawFeatureClick = ({ index, nextState }) => {
-    this.props.handleDrawFeatureClick({ index, nextState });
+  handleDrawFeatureClick = ({ index, state }) => {
+    this.props.handleDrawFeatureClick({ index, state });
   }
   handleRemoveLastDrawFeature = () => {
     this.props.handleRemoveLastDrawFeature();
@@ -72,17 +72,16 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
           </Col>
           <Col md={12}>
             <div style={{ minHeight: 500 }}>
-              <MapWrap
+              <RouteCreatingMap
                 disabled={!isPermittedMap}
                 objectsType={objectsType}
                 manual={manual}
                 polys={polys}
                 objectList={objectList}
-                startDraw={this.startDraw}
                 drawObjectList={drawObjectList}
                 handleFeatureClick={this.handleFeatureClick}
                 handlePointAdd={this.handlePointAdd}
-                handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                handleAddDrawLines={this.handleAddDrawLines}
                 handleDrawFeatureClick={this.handleDrawFeatureClick}
                 handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
               />

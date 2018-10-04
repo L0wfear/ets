@@ -5,11 +5,11 @@ import { connectToStores } from 'utils/decorators';
 import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
-import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtDiv } from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { AUTOBASE_REPAIR_STATUS } from 'constants/dictionary';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 const STATUS_SELECT_OPTIONS = Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, value]) => !value.disabled).map(([key, value]) => ({
   value: key,
@@ -19,7 +19,7 @@ const STATUS_SELECT_OPTIONS = Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, 
 @loadingOverlay
 @connectToStores(['autobase', 'objects'])
 export default class BaseTechInspectionForm extends Form {
-  componentWillMount() {
+  componentDidMount() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
     const state = this.props.formState;

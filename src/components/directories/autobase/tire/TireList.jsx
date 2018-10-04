@@ -1,8 +1,8 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
-import ElementsList from 'components/ElementsList.jsx';
-import TireFormWrap from 'components/directories/autobase/tire/TireFormWrap.jsx';
-import TireTable from 'components/directories/autobase/tire/TireTable.jsx';
+import ElementsList from 'components/ElementsList';
+import TireFormWrap from 'components/directories/autobase/tire/TireFormWrap';
+import TireTable from 'components/directories/autobase/tire/TireTable';
 import permissions from 'components/directories/autobase/tire/config-data/permissions';
 
 @connectToStores(['autobase', 'objects', 'session'])
@@ -20,8 +20,7 @@ export default class TireList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeTire;
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('tire');
   }

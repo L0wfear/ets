@@ -1,10 +1,12 @@
 import React from 'react';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
-import Form from 'components/compositions/Form.jsx';
+import Div from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import Form from 'components/compositions/Form';
 
 export default class SparePartForm extends Form {
   handleSubmitWrap = () => this.handleSubmit();

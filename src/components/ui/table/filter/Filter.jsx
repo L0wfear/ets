@@ -3,11 +3,10 @@ import * as PropTypes from 'prop-types';
 import { Button, Glyphicon, Collapse } from 'react-bootstrap';
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
-import Div from '../../Div.jsx';
-import FilterRow from './FilterRow.jsx';
+import Div from '../../Div';
+import FilterRow from './FilterRow';
 
 export default class Filter extends React.Component {
-
   static get propTypes() {
     return {
       values: PropTypes.object,
@@ -23,12 +22,22 @@ export default class Filter extends React.Component {
     super(props);
 
     this.state = {
+      propsFilterValues: props.values,
       filterValues: props.values || {},
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({ filterValues: props.values });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { values } = nextProps;
+
+    if (prevState.propsFilterValues !== values) {
+      return {
+        propsFilterValues: values,
+        filterValues: values,
+      };
+    }
+
+    return null;
   }
 
   // TODO сделано для adv...-select-like
@@ -103,7 +112,9 @@ export default class Filter extends React.Component {
 
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
-      const { type, labelFunction, options, byKey, byLabel } = filter;
+      const {
+        type, labelFunction, options, byKey, byLabel,
+      } = filter;
 
       return (
         <FilterRow
@@ -136,5 +147,4 @@ export default class Filter extends React.Component {
       </Collapse>
     );
   }
-
 }

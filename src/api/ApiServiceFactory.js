@@ -1,8 +1,7 @@
 import urljoin from 'url-join';
-import APIService from './APIService.js';
+import APIService from './APIService';
 
 export default class ApiServiceFactory {
-
   constructor(options) {
     this._apiUrl = options.apiUrl || null;
     if (typeof options.headers === 'function') {
@@ -12,13 +11,11 @@ export default class ApiServiceFactory {
     }
   }
 
-  createApiServiceAdapter = (path, options) =>
-    new APIService(
-      urljoin(this._apiUrl, path),
-      {
-        headers: this._providedHeaders,
-        ...options,
-      }
-    );
-
+  createApiServiceAdapter = (path, options) => new APIService(
+    urljoin(this._apiUrl, path),
+    {
+      headers: this._providedHeaders,
+      ...options,
+    },
+  );
 }

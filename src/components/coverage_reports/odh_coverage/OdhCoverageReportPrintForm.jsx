@@ -1,17 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { autobind } from 'core-decorators';
 import { FluxContext } from 'utils/decorators';
 import { Button, Modal } from 'react-bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { saveData } from 'utils/functions';
 import { getToday9am, getTomorrow9am, getDate9am, getYesterday9am, getToday859am, getFormattedDateTime } from 'utils/dates';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
 @FluxContext
-@autobind
 export default class OdhCoverageReportPrintForm extends React.Component {
 
   static propTypes = {
@@ -30,7 +28,7 @@ export default class OdhCoverageReportPrintForm extends React.Component {
     };
   }
 
-  export() {
+  export = () => {
     const payload = { date: this.state.date };
     const { date_start, date_end } = this.state;
     const { exportType } = this.props;

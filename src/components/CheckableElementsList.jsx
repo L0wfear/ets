@@ -2,13 +2,12 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 
 import { Button, Glyphicon } from 'react-bootstrap';
-import { autobind } from 'core-decorators';
 import {
   cloneDeep,
   each,
   find,
 } from 'lodash';
-import ElementsList from './ElementsList.jsx';
+import ElementsList from './ElementsList';
 import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CRUD';
 
 /**
@@ -16,7 +15,6 @@ import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CR
  * @extends React.Component
  */
 export default class CheckableElementsList extends ElementsList {
-
   static get propTypes() {
     return {
       onListStateChange: PropTypes.func,
@@ -35,8 +33,7 @@ export default class CheckableElementsList extends ElementsList {
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
-  @autobind
-  onFormHide(clearCheckedElements) {
+  onFormHide = (clearCheckedElements) => {
     this.setState({
       showForm: false,
       selectedElement: null,
@@ -92,38 +89,38 @@ export default class CheckableElementsList extends ElementsList {
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
         <ButtonCreateNew
-          key={'button-create'}
+          key="button-create"
           buttonName={BCbuttonName}
           onClick={this.createElement}
           permission={this.permissions.create}
-        />
+        />,
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
         <ButtonReadNew
-          key={'button-read'}
+          key="button-read"
           buttonName={BRbuttonName}
           onClick={this.showForm}
           permission={this.permissions.read}
           disabled={this.checkDisabledRead()}
-        />
+        />,
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
         <ButtonDeleteNew
-          key={'button-delete'}
+          key="button-delete"
           buttonName={BDbuttonName}
           onClick={this.removeCheckedElements}
           permission={this.permissions.delete}
           disabled={this.checkDisabledDelete()}
-        />
+        />,
       );
     }
     if (this.props.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>
+        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>,
       );
     }
     return buttons;
@@ -148,7 +145,6 @@ export default class CheckableElementsList extends ElementsList {
    * Удаляет выбранные элементы
    * метод вызывает {@link ElementsList#removeElement} в случае отсутствия выбранных элементов
    */
-  @autobind
   async removeCheckedElements() {
     if (typeof this.removeElementAction !== 'function') {
       return;
@@ -182,8 +178,7 @@ export default class CheckableElementsList extends ElementsList {
    * @param {object[]} rows - все элементы
    * @param {boolean} state - новое состояние выбора
    */
-  @autobind
-  checkAll(rows, state) {
+  checkAll = (rows, state) => {
     let checkedElements = cloneDeep(this.state.checkedElements);
     checkedElements = state ? rows : {};
 
@@ -195,8 +190,7 @@ export default class CheckableElementsList extends ElementsList {
    * @param {number} id - id выбранного элемента
    * @param {boolean} state - новое состояние выбора
    */
-  @autobind
-  checkElement(id, state) {
+  checkElement = (id, state) => {
     const elements = cloneDeep(this.state.checkedElements);
     if (state) {
       elements[parseInt(id, 10)] = find(this.state.elementsList, e => e.id === parseInt(id, 10));
@@ -210,11 +204,9 @@ export default class CheckableElementsList extends ElementsList {
    * Передает state в другой компонент
    * @todo избавиться от этой функции
    */
-  @autobind
-  stateChangeCallback() {
+  stateChangeCallback = () => {
     if (typeof this.props.onListStateChange === 'function') {
       this.props.onListStateChange(this.state);
     }
   }
-
 }

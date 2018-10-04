@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import TireForm from './TireForm';
 
@@ -30,7 +30,6 @@ export const tireSchema = {
 
 
 class TireFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -45,19 +44,21 @@ class TireFormWrap extends FormWrap {
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm ?
-      <TireForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        isPermitted={isPermitted}
-        canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <TireForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          isPermitted={isPermitted}
+          canSave={canSave}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
       : null;
   }
 }

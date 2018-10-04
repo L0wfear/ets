@@ -1,6 +1,6 @@
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
-import OrganizationsTable from './OrganizationsTable.jsx';
+import OrganizationsTable from './OrganizationsTable';
 import OrganizationsFormWrap from './OrganizationsFormWrap';
 @connectToStores(['objects'])
 @staticProps({
@@ -12,8 +12,7 @@ import OrganizationsFormWrap from './OrganizationsFormWrap';
   operations: ['LIST', 'READ', 'UPDATE'],
 })
 export default class OrganizationsDirectory extends ElementsList {
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getOrganizations();
   }

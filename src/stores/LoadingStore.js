@@ -2,7 +2,6 @@ import { Store } from 'flummox';
 
 let notTime = true;
 export default class LoadingStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -112,7 +111,6 @@ export default class LoadingStore extends Store {
       missionsActons.printMissionTemplate,
       missionsActons.createMissionTemplate,
       missionsActons.removeMissionTemplate,
-      missionsActons.getMissionReports,
       missionsActons.createMissions,
       missionsActons.getDutyMissions,
       missionsActons.getCarDutyMissions,
@@ -164,8 +162,7 @@ export default class LoadingStore extends Store {
       carActions.getDataByNormNormatives,
 
       geoObjectsActions.getGeozones,
-      geoObjectsActions.getOdhMkad,
-    );
+      geoObjectsActions.getOdhMkad);
 
     this.reg(true,
       geoObjectsActions.getODHs,
@@ -178,8 +175,7 @@ export default class LoadingStore extends Store {
       carActions.getCarsByTechnicalOperation,
       carActions.getCarMissionsByTimestamp,
 
-      missionsActons.getMissionsByCarAndDates,
-    );
+      missionsActons.getMissionsByCarAndDates);
 
     this.state = {
       operationsCount: 0,
@@ -191,8 +187,7 @@ export default class LoadingStore extends Store {
     actions.forEach(action => this.registerAsync(action,
       () => this.inc(action, lazy),
       () => this.dec(lazy),
-      () => this.dec(lazy)
-    ));
+      () => this.dec(lazy)));
   }
 
   inc(action, lazy) {
@@ -236,5 +231,4 @@ export default class LoadingStore extends Store {
   isLazyLoading() {
     return this.state.lazyOperationsCount > 0;
   }
-
 }

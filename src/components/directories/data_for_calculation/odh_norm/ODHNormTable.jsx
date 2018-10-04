@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 
 const tableMeta = {
   cols: [
@@ -12,7 +12,7 @@ const tableMeta = {
       },
     },
     {
-      name: 'measure_unit_name', //unit
+      name: 'measure_unit_name', // unit
       displayName: 'Единица измерения',
       type: 'text',
       filter: {

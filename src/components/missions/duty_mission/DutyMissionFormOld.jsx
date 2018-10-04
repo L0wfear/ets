@@ -1,16 +1,19 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import {
   uniqBy,
- } from 'lodash';
+} from 'lodash';
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
-import Form from 'components/compositions/Form.jsx';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
+import Form from 'components/compositions/Form';
 
 import { FormTitle } from './utils';
 
@@ -68,6 +71,7 @@ class DutyMissionFormOld extends Form {
     } = this.props;
     const {
       routesList = [],
+      selectedRoute: route,
     } = this.state;
 
     const ROUTES = uniqBy(
@@ -100,7 +104,7 @@ class DutyMissionFormOld extends Form {
 
     return (
       <Modal id="modal-duty-mission-old" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
-      
+
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -117,7 +121,12 @@ class DutyMissionFormOld extends Form {
             <Col md={6}>
               <Row>
                 <Col md={6}>
-                  <span style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</span>
+                  <span style={{
+                    position: 'absolute', right: -7, top: 31, fontWeight: 400,
+                  }}
+                  >
+—
+                  </span>
                   <Div>
                     <Field
                       type="date"
@@ -139,7 +148,12 @@ class DutyMissionFormOld extends Form {
                 </Col>
                 <Div hidden={!(IS_CLOSING || IS_COMPLETED)}>
                   <Col md={6}>
-                    <span style={{ position: 'absolute', right: -7, top: 31, fontWeight: 400 }}>—</span>
+                    <span style={{
+                      position: 'absolute', right: -7, top: 31, fontWeight: 400,
+                    }}
+                    >
+—
+                    </span>
                     <Div>
                       <Field
                         type="date"
@@ -182,7 +196,7 @@ class DutyMissionFormOld extends Form {
                 value={brigade_employee_id_list}
               />
             </Col>
-            <Div hidden={!state.structure_name} >
+            <Div hidden={!state.structure_name}>
               <Col md={3}>
                 <Field
                   type="string"
@@ -213,13 +227,15 @@ class DutyMissionFormOld extends Form {
           </Row>
           <Row>
             <Col md={6}>
-              { !!state.order_number &&
+              { !!state.order_number
+                && (
                 <Field
                   type="string"
                   label="Номер централизованного задания"
                   readOnly
                   value={state.order_number}
                 />
+                )
               }
             </Col>
             <Col md={6}>
@@ -243,9 +259,19 @@ class DutyMissionFormOld extends Form {
               />
             </Col>
             <Col md={6}>
-              <Div hidden={this.state.selectedRoute ? this.state.selectedRoute.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapDutyMissionFromOld"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
         </ModalBody>

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
-import Table from 'components/ui/table/Table.jsx';
+import Table from 'components/ui/table/Table';
 import { FormControl, Button } from 'react-bootstrap';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
 import cx from 'classnames';
 import _ from 'lodash';
@@ -14,7 +13,6 @@ import _ from 'lodash';
  * Компонент таксировки ТС
  * @extends React.Component
  */
-@autobind
 export default class Taxes extends React.Component {
 
   static get propTypes() {
@@ -133,15 +131,21 @@ export default class Taxes extends React.Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    const { fuelRates, taxes = this.state.tableData } = props;
-    let { operations } = props;
-    operations = operations.map(({ id, name, measure_unit_name, is_excluding_mileage }) => ({ value: id, label: name, measure_unit_name, is_excluding_mileage }));
+  static getDerivedStateFromProps(nexProps, prevProps) {
+    const { fuelRates, taxes = prevProps.tableData } = nexProps;
+    let { operations } = nexProps;
+    operations = operations.map(data => ({
+      value: data.id,
+      label: data.name,
+      measure_unit_name: data.measure_unit_name,
+      is_excluding_mileage: data.is_excluding_mileage,
+    }));
     taxes.map(tax => ({ ...tax, RESULT: Taxes.getResult(tax) }));
-    this.setState({ operations, fuelRates, tableData: taxes });
+
+    return { operations, fuelRates, tableData: taxes };
   }
 
-  handleFactValueChange(index, e) {
+  handleFactValueChange = (index, e) => {
     const { tableData } = this.state;
     const current = tableData[index];
     current.FACT_VALUE = Math.abs(e.target.value);
@@ -157,7 +161,7 @@ export default class Taxes extends React.Component {
     this.props.onChange(tableData);
   }
 
-  handleOperationChange(index, value) {
+  handleOperationChange = (index, value) => {
     const { tableData, fuelRates } = this.state;
     tableData[index].OPERATION = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
@@ -175,7 +179,7 @@ export default class Taxes extends React.Component {
     this.props.onChange(tableData);
   }
 
-  addOperation() {
+  addOperation = () => {
     const { tableData } = this.state;
     const { correctionRate, baseFactValue } = this.props;
     const overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
@@ -185,14 +189,14 @@ export default class Taxes extends React.Component {
     this.setState({ tableData });
   }
 
-  removeOperation() {
+  removeOperation = () => {
     const { tableData } = this.state;
     tableData.splice(this.state.selectedOperation, 1);
     this.setState({ tableData });
     this.props.onChange(tableData);
   }
 
-  selectOperation(selectedOperation) {
+  selectOperation = (selectedOperation) => {
     this.setState({ selectedOperation });
   }
 

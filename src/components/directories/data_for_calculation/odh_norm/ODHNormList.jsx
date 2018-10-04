@@ -1,6 +1,6 @@
-import ElementsList from 'components/ElementsList.jsx';
-import ODHNormFormWrap from 'components/directories/data_for_calculation/odh_norm/ODHNormFormWrap.jsx';
-import ODHNormTable from 'components/directories/data_for_calculation/odh_norm/ODHNormTable.jsx';
+import ElementsList from 'components/ElementsList';
+import ODHNormFormWrap from 'components/directories/data_for_calculation/odh_norm/ODHNormFormWrap';
+import ODHNormTable from 'components/directories/data_for_calculation/odh_norm/ODHNormTable';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import permissions from 'components/directories/data_for_calculation/odh_norm/config-data/permissions';
 
@@ -22,8 +22,7 @@ export default class ODHNormList extends ElementsList {
     this.removeElementAction = context.flux.getActions('odh').deleteODHNorm;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
     flux.getActions('odh').getODHNorm();
     flux.getActions('odh').getMeasureUnits();

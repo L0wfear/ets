@@ -1,8 +1,13 @@
 import { withHandlers, compose, withState, shouldUpdate } from 'recompose';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 
+type TypePropsOnChangeWithKeys = {
+  boundKeys?: any[];
+  [key: string]: any;
+};
+
 export const onChangeWithKeys = compose(
-  shouldUpdate((props, nextProps) => Object.entries(nextProps).some(([key, value]) => {
+  shouldUpdate((props: TypePropsOnChangeWithKeys, nextProps: TypePropsOnChangeWithKeys) => Object.entries(nextProps).some(([key, value]) => {
     if (key === 'boundKeys') {
       const { boundKeys: new_boundKeys = [] } = nextProps;
       const { boundKeys: old_boundKeys = [] } = props;
@@ -26,7 +31,7 @@ export const onClickWithKeys = withHandlers({
 });
 
 export const tabable = compose(
-  withState('tabKey', 'setTabKey'),
+  withState('tabKey', 'setTabKey', null),
   withHandlers({ handleTabSelect: ({ setTabKey }) => (key1, key2) => setTabKey(typeof key1 === 'string' ? key1 : key2) }),
 );
 

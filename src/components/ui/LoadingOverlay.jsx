@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { connect } from 'react-redux';
-import Preloader from './Preloader.jsx';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extends React.Component {
   handleOverlayLoading = (isLoading) => {
@@ -35,12 +35,14 @@ export default class LoadingOverlay extends React.Component {
     show: true,
   };
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     const modals = document.getElementsByClassName('modal-body');
     const modalsSmall = document.getElementsByClassName('modal-sm');
     const showLoading = !(modals.length - modalsSmall.length) || !nextProps.main;
 
-    this.setState({ show: showLoading });
+    return {
+      show: showLoading,
+    };
   }
 
   render() {
@@ -52,9 +54,9 @@ export default class LoadingOverlay extends React.Component {
 
     if (this.state.show) {
       if (storeIsLoading) {
-        return <Preloader type="mainpage" />;
+        return <Preloader typePreloader="mainpage" />;
       } else if (!storeIsLoading && (isLoading || storeIsLazyLoading)) {
-        return <Preloader type="lazy" />;
+        return <Preloader typePreloader="lazy" />;
       }
     }
 

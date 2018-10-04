@@ -2,18 +2,17 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { withProps } from 'recompose';
-import requireAuth from 'utils/auth.js';
+import requireAuth from 'utils/auth';
 
 import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
-import Login from 'components/login/LoginPage.jsx';
-import MainAppTSX from 'components/MainApp.jsx';
+import LoginPage from 'components/login/LoginPage';
+import MainAppTSX from 'components/MainApp';
 
-import LoadingPage from './LoadingPage.jsx';
+import { MapEtsProvider } from 'components/map/context/MapetsContext';
 
-const MainApp: any = MainAppTSX;
+import LoadingPage from 'components/LoadingPage';
 
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
@@ -23,39 +22,53 @@ global.APP_TIME_WITH_SECOND_FORMAT = 'HH:mm:ss';
 global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
 global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 
-const getLoginPage = props => {
-  const {
-    flux,
-  } = props;
+import WithContext from 'components/compositions/vokinda-hoc/with-contetx/WithContext';
+class Login extends React.Component<any, any> {
+  render() {
+    const {
+      flux,
+    } = this.props;
 
-  if (flux.getStore('session').isLoggedIn()) {
-    const user = flux.getStore('session').getCurrentUser();
+    if (flux.getStore('session').isLoggedIn()) {
+      const user = flux.getStore('session').getCurrentUser();
 
-    return <Redirect to={requireAuth(flux, `/${user.default_path}`)} />;
-  } else {
-    return <Login {...props} />;
+      return <Redirect to={requireAuth(flux, `/${user.default_path}`)} />;
+    } else {
+      return <LoginPage {...this.props} />;
+    }
   }
-};
+}
 
-const getMainApp = props => {
-  const {
-    flux,
-    match: { url },
-  } = props;
+class Main extends React.Component <any, any> {
+  render() {
+    const {
+      flux,
+      match: { url },
+    } = this.props;
 
-  const permittedPath = requireAuth(flux, url);
+    const permittedPath = requireAuth(flux, url);
 
-  if (!flux.getStore('session').isLoggedIn()) {
-    return <Redirect to="/login" />;
-  } else if (url !== permittedPath) {
-    return <Redirect to={permittedPath} />;
+    if (!flux.getStore('session').isLoggedIn()) {
+      return <Redirect to="/login" />;
+    } else if (url !== permittedPath) {
+      return <Redirect to={permittedPath} />;
+    }
+    if (url === '/change-company' && !flux.getStore('session').state.isGlavControl) {
+      return <Redirect to={requireAuth(flux, '/monitor')} />
+    }
+
+    return <MainAppTSX {...this.props} />;
   }
-  if (url === '/change-company' && !flux.getStore('session').state.isGlavControl) {
-    return <Redirect to={requireAuth(flux, '/monitor')} />
-  }
+}
 
-  return <MainApp {...props} />;
-};
+
+const LoginWrap = WithContext({
+  flux: PropTypes.object,
+})(Login)
+
+const MainWrap = WithContext({
+  flux: PropTypes.object,
+})(Main)
 
 class App extends React.Component <any, any> {
 
@@ -83,8 +96,10 @@ class App extends React.Component <any, any> {
 
   componentDidMount() {
     this.loadData();
-
-    document.body.removeChild(document.getElementById('main-background'));
+    const el = document.getElementById('main-background');
+    if (el) {
+      document.body.removeChild(el);
+    }
   }
 
   loadData() {
@@ -115,19 +130,15 @@ class App extends React.Component <any, any> {
     switch (this.state.loading) {
       case true: return  <LoadingPage loaded={this.state.loading} />;
       case false:
-        const {
-          flux,
-        } = this.props;
-
-        const LoginPage = withProps({ flux })(getLoginPage);
-        const MainPage = withProps({ flux })(getMainApp);
         return (
-          <HashRouter>
-            <Switch>
-              <Route path="/login" render={LoginPage} />
-              <Route path="*" render={MainPage} />
-            </Switch>
-          </HashRouter>
+          <MapEtsProvider>
+            <HashRouter>
+              <Switch>
+                <Route path="/login" component={LoginWrap} />
+                <Route path="*" component={MainWrap} />
+              </Switch>
+            </HashRouter>
+          </MapEtsProvider>
         );
     }
   }

@@ -4,7 +4,6 @@ import { Glyphicon } from 'react-bootstrap';
 import cx from 'classnames';
 
 export default class Paginator extends React.Component {
-
   static get propTypes() {
     return {
       currentPage: PropTypes.number,
@@ -72,7 +71,7 @@ export default class Paginator extends React.Component {
       options.push(
         <li className="aui-nav-first" key="first">
           <a className="pointer" onClick={this.first}>Первая</a>
-        </li>
+        </li>,
       );
     }
 
@@ -82,7 +81,7 @@ export default class Paginator extends React.Component {
           <a className="pointer pagination-control" onClick={this.previous}>
             <Glyphicon glyph="chevron-left" />
           </a>
-        </li>
+        </li>,
       );
     }
 
@@ -93,13 +92,13 @@ export default class Paginator extends React.Component {
         options.push(
           <li className="active" key={i}>
             <a className="pointer">{i + 1}</a>
-          </li>
+          </li>,
         );
       } else {
         options.push(
           <li key={i}>
             <a className="pointer" onClick={this.setPage(i)}>{i + 1}</a>
-          </li>
+          </li>,
         );
       }
     }
@@ -111,7 +110,7 @@ export default class Paginator extends React.Component {
           <a className={nextClasses} onClick={this.next.bind(this, !(currentPage < maxPage - 1))}>
             <Glyphicon glyph="chevron-right" />
           </a>
-        </li>
+        </li>,
       );
     }
 
@@ -119,7 +118,7 @@ export default class Paginator extends React.Component {
       options.push(
         <li className="aui-nav-last" key="last">
           <a className="pointer" onClick={this.last}>Последняя</a>
-        </li>
+        </li>,
       );
     }
 
@@ -129,5 +128,4 @@ export default class Paginator extends React.Component {
       </ol>
     );
   }
-
 }

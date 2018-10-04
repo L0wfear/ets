@@ -3,8 +3,8 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
-import ElementsList from 'components/ElementsList.jsx';
-import ObjectPropertyTable from 'components/directories/repair/object_property/ObjectPropertyTable.tsx';
+import ElementsList from 'components/ElementsList';
+import ObjectPropertyTable from 'components/directories/repair/object_property/ObjectPropertyTable';
 import permissions from 'components/directories/repair/object_property/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
@@ -27,8 +27,7 @@ class ObjectPropertyList extends ElementsList {
     this.exportPayload = { object_type };
   }
 
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
 
     await flux.getActions('repair').getObjectProperty({ object_type: 'odh' }, { name: 'odh' });
@@ -40,20 +39,27 @@ class ObjectPropertyList extends ElementsList {
       typeData: this.props.typeData,
     };
   }
-  async inheritedComponentWillReceiveProps(props) {
-    const { typeData } = props;
+
+  componentDidUpdate(prevProps) {
+    const { typeData } = this.props;
     const { iHaveType = { 'odh': true } } = this.state;
 
-    if (typeData !== this.props.typeData) {
-      const { flux } = this.context;
+    if (typeData !== prevProps.typeData) {
       this.setExportType(typeData);
+      const { flux } = this.context;
 
       if (!iHaveType[typeData]) {
         iHaveType[typeData] = true;
 
-        await flux.getActions('repair').getObjectProperty({ object_type: typeData }, { name: typeData });
-
-        this.setState({ iHaveType });
+        flux.getActions('repair').getObjectProperty({ object_type: typeData }, { name: typeData })
+          .then(() => {
+            this.setState({
+              iHaveType,
+            });
+          })
+          .catch((error) => {
+            console.warn(error);
+          });
       }
       flux.getActions('repair').setActiveList('objectPropertyList', `objectProperty${typeData[0].toUpperCase()}${typeData.slice(1)}List`);
     }
@@ -70,6 +76,7 @@ export default class ObjectProperty extends Component {
       this.setState({ typeData: typeDateNew });
     }
   }
+
   render() {
     const { typeData } = this.state;
 

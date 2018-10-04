@@ -1,19 +1,21 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button, Glyphicon,
+} from 'react-bootstrap';
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
-import last from 'lodash/last';
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
-import { getKindTaskIds, getPermittetEmployeeForBrigade } from 'components/missions/utils/utils.ts';
-import Form from 'components/compositions/Form.jsx';
+import { getKindTaskIds, getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
+import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 
 import { FormTitle, onlyActiveEmployeeNotification } from './utils';
 
@@ -27,7 +29,6 @@ const makePayloadFromState = formState => ({
 const modalKey = 'duty_mission';
 
 export class DutyMissionForm extends Form {
-
   constructor(props) {
     super(props);
 
@@ -72,7 +73,7 @@ export class DutyMissionForm extends Form {
     this.handleChange('structure_id', v);
   }
 
-  handleTechnicalOperationChange(v) {
+  handleTechnicalOperationChange = (v) => {
     const {
       flux,
     } = this.context;
@@ -260,7 +261,6 @@ export class DutyMissionForm extends Form {
 
   getDataByNormatives = async (normatives) => {
     const norm_ids = normatives.map(({ id }) => id).join(',');
-    const { kind_task_ids } = this.state;
     this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids, kind_task_ids: this.state.kind_task_ids })
       .then(({ result: normativesData }) => {
         const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
@@ -270,9 +270,9 @@ export class DutyMissionForm extends Form {
           technical_operation_id: formState.technical_operation_id,
           type: available_route_types.join(','),
         })
-        .then((routesList) => {
-          this.setState({ routesList });
-        });
+          .then((routesList) => {
+            this.setState({ routesList });
+          });
 
         this.setState({ available_route_types, normatives });
       });
@@ -280,7 +280,7 @@ export class DutyMissionForm extends Form {
 
   handleChangePDS = (plan_date_start) => {
     if (plan_date_start) {
-      this.handleChange('plan_date_start', plan_date_start)
+      this.handleChange('plan_date_start', plan_date_start);
     }
   }
 
@@ -318,9 +318,9 @@ export class DutyMissionForm extends Form {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -412,6 +412,20 @@ export class DutyMissionForm extends Form {
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
+    const municipalFacilityIdDisabled = (
+      IS_DISPLAY
+      || !!state.route_id
+      || readOnly
+      || sourceIsOrder
+    );
+
+    const alreadyDefineNormId = (
+      IS_DISPLAY
+      || !!state.route_id
+      || readOnly
+      || sourceIsOrder
+    );
+
     return (
       <Modal id="modal-duty-mission" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
@@ -434,7 +448,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange.bind(this)}
+                onChange={this.handleTechnicalOperationChange}
               />
             </Col>
 
@@ -512,17 +526,21 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id={'municipal_facility_id'}
-                label={'municipal_facility_name'}
-                errors={errors}
-                state={state}
+                modalKey={modalKey}
+                error={errors.municipal_facility_id}
+                name={state.municipal_facility_name}
+                value={state.municipal_facility_id}
+                date_start={state.plan_date_start}
+                technical_operation_id={state.technical_operation_id}
+                norm_id={state.norm_id}
                 clearable={false}
-                disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
-                handleChange={this.handleChange.bind(this)}
+                disabled={municipalFacilityIdDisabled}
+                alreadyDefineNormId={alreadyDefineNormId}
+                handleChange={this.handleChange}
                 getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
-                getNormIdFromState={!!fromOrder || IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 kind_task_ids={kind_task_ids}
+                getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
               />
             </Col>
           </Row>
@@ -555,7 +573,8 @@ export class DutyMissionForm extends Form {
                 onChange={this.handleBrigadeIdListChange}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+            {STRUCTURE_FIELD_VIEW && (
+            <Col md={3}>
               <Field
                 id="dm-structure-id"
                 type="select"
@@ -569,7 +588,8 @@ export class DutyMissionForm extends Form {
                 value={state.structure_id}
                 onChange={this.handleChangeStructureId}
               />
-            </Col>}
+            </Col>
+            )}
           </Row>
 
 
@@ -586,7 +606,7 @@ export class DutyMissionForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
-              { IS_CREATING && !this.props.fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
+              { IS_CREATING && !this.props.fromOrder && <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span> }
             </Col>
             <Col md={6}>
               <Field
@@ -603,7 +623,8 @@ export class DutyMissionForm extends Form {
 
           <Row>
             <Col md={6}>
-              { !!state.order_number &&
+              { !!state.order_number
+                && (
                 <Field
                   id="order-number"
                   type="string"
@@ -611,6 +632,7 @@ export class DutyMissionForm extends Form {
                   readOnly
                   value={state.order_number}
                 />
+                )
               }
             </Col>
             <Col md={6}>
@@ -618,7 +640,8 @@ export class DutyMissionForm extends Form {
                 id="car-mission-id"
                 type="select"
                 modalKey={modalKey}
-                label="Задание на ТС" error={errors.car_mission_id}
+                label="Задание на ТС"
+                error={errors.car_mission_id}
                 disabled={IS_DISPLAY || readOnly}
                 options={MISSIONS}
                 value={state.car_mission_id}
@@ -645,23 +668,38 @@ export class DutyMissionForm extends Form {
                   id="dm-create-route"
                   onClick={this.createNewRoute.bind(this)}
                   disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
-                >Создать новый</Button>
+                >
+Создать новый
+                </Button>
               </Div>
             </Col>
             <Col md={6}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapDutyMissionFrom"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
 
         </ModalBody>
 
         <Modal.Footer>
-          <Div className="inline-block" >
+          <Div className="inline-block">
             <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
-              <Glyphicon id="dm-download-all" glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
-            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
+              <Glyphicon id="dm-download-all" glyph="download-alt" />
+              {' '}
+              {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}
+            </Button>
+            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

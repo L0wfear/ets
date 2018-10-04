@@ -10,7 +10,6 @@ import {
 } from 'api/Services';
 
 export default class RoutesActions extends Actions {
-
   getRoutes(technical_operation_id) {
     const payload = {};
     if (technical_operation_id) {
@@ -68,7 +67,7 @@ export default class RoutesActions extends Actions {
         route.object_list.forEach((el, i) => {
           // todo
           // заставить бэк выдавать id
-          el.customId = i;
+          el.frontId = i;
 
           if (!el.shape && el.coordinates) {
             el.shape = {
@@ -76,6 +75,7 @@ export default class RoutesActions extends Actions {
               coordinates: el.coordinates,
             };
           }
+          el.type = 'points';
           return el;
         });
       } else if (route.type === 'mixed') {
@@ -89,6 +89,8 @@ export default class RoutesActions extends Actions {
               type: 'LineString',
               coordinates: [start, end],
             };
+
+            object.type = 'odh';
             return object;
           });
         } else {
@@ -101,6 +103,8 @@ export default class RoutesActions extends Actions {
             type: 'LineString',
             coordinates: [start, end],
           };
+
+          object.type = 'odh';
           return object;
         });
 
@@ -174,5 +178,4 @@ export default class RoutesActions extends Actions {
     };
     return RouteValidateService.post(payload, false, 'json');
   }
-
 }

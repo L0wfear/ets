@@ -61,18 +61,18 @@ class SimpleGriddle extends React.Component<any, any> {
       initialSortAscending: this.props.initialSortAscending,
     };
   }
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { results, resultsPerPage } = nextProps;
 
-    if (results !== this.state.results || resultsPerPage !== this.state.resultsPerPage) {
-      const { currentPage } = this.state;
-
-      this.setState({
+    if (results !== prevState.results || resultsPerPage !== prevState.resultsPerPage) {
+      return {
         results,
         resultsPerPage,
-        shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
-      });
+        shortResult: makeShortResults(results, prevState.currentPage, resultsPerPage, nextProps.selectField),
+      };
     }
+
+    return null;
   }
 
   setPage = (currentPage) => (
@@ -250,7 +250,7 @@ class SimpleGriddle extends React.Component<any, any> {
                   <PaginatorWrap
                     uniqKey={this.props.uniqKey}
                     currentPage={currentPage}
-                    maxPage={Math.ceil(this.props.results.length / this.props.resultsPerPage)}
+                    maxPage={Math.ceil(this.state.results.length / this.state.resultsPerPage)}
                     setPage={this.setPage}
                   />
                 )

@@ -1,4 +1,4 @@
-import Model from './Model.js';
+import Model from './Model';
 
 const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
@@ -8,7 +8,6 @@ const MAP_INITIAL_ZOOM = 3;
  * @extends Model
  */
 export default class User extends Model {
-
   static get schema() {
     return {
       company_id: 'integer',

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import Table from 'components/ui/table/DataTable.jsx';
-import ElementsList from 'components/ElementsList.jsx';
-import { sortFunc } from 'components/reports/mission/utils/sortFunction.ts';
+import Table from 'components/ui/table/DataTable';
+import ElementsList from 'components/ElementsList';
+import { sortFunc } from 'components/reports/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/reports/mission/utils/main';
 
 
@@ -44,12 +44,12 @@ const checkFixed = (data, key) => {
   if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
     clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].type](
       clone[0],
-      VALUE_FOR_FIXED[key].val
+      VALUE_FOR_FIXED[key].val,
     );
   } else if ('another' in VALUE_FOR_FIXED[key]) {
     clone[0] = VALUE_FOR_FIXED[VALUE_FOR_FIXED[key].another.type](
       clone[0],
-      VALUE_FOR_FIXED[key].another.val
+      VALUE_FOR_FIXED[key].another.val,
     );
   }
 
@@ -98,28 +98,27 @@ const getTableMeta = (props) => {
   return tableMeta;
 };
 
+const renderers = {
+  traveled_percentage: ({ data, rowData }) => (
+    <div>
+      {`${checkFixed([rowData.traveled, rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      <br />
+      {`(${`${parseFloat(parseFloat(data) * 100).toFixed(0)}%`})`}
+    </div>
+  ),
+  left_percentage: ({ data, rowData }) => (
+    <div>
+      {`${checkFixed([rowData.left, rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      <br />
+      {`(${`${VALUE_FOR_FIXED.floatFixed(data * 100, 0)}%`})`}
+    </div>
+  ),
+  check_value: ({ data, rowData }) => <div>{ `${checkFixed([data, rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
+  route_with_speed: ({ rowData }) => <div>{`${VALUE_FOR_FIXED.floatFixed(rowData.traveled / (getDelForUnitRender(rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(rowData.traveled_high_speed / (getDelForUnitRender(rowData.route_check_unit)), 3)}`}</div>,
+};
 
 const MissionReportByODHTable = (props) => {
   const tableMeta = getTableMeta(props);
-
-  const renderers = {
-    traveled_percentage: ({ data, rowData }) => (
-      <div>
-        {`${checkFixed([rowData.traveled, rowData.route_check_unit], 'TEN_I').join(' ')}`}
-        <br />
-        {`(${`${parseFloat(parseFloat(data) * 100).toFixed(0)}%`})`}
-      </div>
-    ),
-    left_percentage: ({ data, rowData }) => (
-      <div>
-        {`${checkFixed([rowData.left, rowData.route_check_unit], 'TEN_I').join(' ')}`}
-        <br />
-        {`(${`${VALUE_FOR_FIXED.floatFixed(data * 100, 0)}%`})`}
-      </div>
-    ),
-    check_value: ({ data, rowData }) => <div>{ `${checkFixed([data, rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-    route_with_speed: ({ rowData }) => <div>{`${VALUE_FOR_FIXED.floatFixed(rowData.traveled / (getDelForUnitRender(rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(rowData.traveled_high_speed / (getDelForUnitRender(rowData.route_check_unit)), 3)}`}</div>,
-  };
 
   if (!(props.data && props.data.length)) {
     return <div>Нет данных о прохождении задания</div>;
@@ -137,8 +136,9 @@ const MissionReportByODHTable = (props) => {
   );
 };
 
-class MissionReportByODH extends ElementsList {
+const emptyArr = [];
 
+class MissionReportByODH extends ElementsList {
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,
@@ -159,8 +159,8 @@ class MissionReportByODH extends ElementsList {
     }
   }
 
-  selectElement(el) {
-    super.selectElement(el);
+  selectElement = (el) => {
+    this.onRowClick(el);
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
@@ -172,10 +172,10 @@ class MissionReportByODH extends ElementsList {
     return (
       <MissionReportByODHTable
         noHeader={renderOnly}
-        onRowSelected={this.selectElement.bind(this)}
+        onRowSelected={this.selectElement}
         selected={this.state.selectedElement}
         selectField={this.selectField}
-        data={this.props.selectedReportDataODHS || []}
+        data={this.props[this.mainListName] || emptyArr}
         {...this.props}
       />
     );

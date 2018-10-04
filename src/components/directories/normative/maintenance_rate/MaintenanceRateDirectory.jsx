@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateFormWrap.jsx';
-import MaintenanceRateTable from 'components/directories/normative/maintenance_rate/MaintenanceRateTable.jsx';
+import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateFormWrap';
+import MaintenanceRateTable from 'components/directories/normative/maintenance_rate/MaintenanceRateTable';
 import permissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
 
 @connectToStores(['objects'])
@@ -17,18 +17,18 @@ import permissions from 'components/directories/normative/maintenance_rate/confi
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class MaintenanceRateDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
 
     this.setExportType(props.type);
   }
+
   setExportType(type) {
     this.exportPayload = { type };
   }
-  componentDidMount() {
-    super.componentDidMount();
+
+  init() {
     const { flux } = this.context;
     flux.getActions('objects').getMaintenanceRate(this.props.type);
     flux.getActions('objects').getMaintenanceWork();
@@ -36,11 +36,16 @@ class MaintenanceRateDirectory extends ElementsList {
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
 
-  inheritedComponentWillReceiveProps(props) {
-    if (props.type !== this.props.type) {
-      this.setExportType(props.type);
-      this.context.flux.getActions('objects').getMaintenanceRate(props.type);
-      this.removeElementAction = this.context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
+  removeElementAction = (...arg) => (
+    this.context.flux.getActions('objects').deleteMaintenanceRate(this.props.type, ...arg)
+  );
+
+  componentDidUpdate(prevProps) {
+    const { type } = this.props;
+
+    if (prevProps.type !== type) {
+      this.setExportType(type);
+      this.context.flux.getActions('objects').getMaintenanceRate(type);
     }
   }
 }
@@ -49,6 +54,7 @@ export default class MaintenanceRate extends Component {
   state = {
     type: 'odh',
   }
+
   render() {
     const { type } = this.state;
     return (

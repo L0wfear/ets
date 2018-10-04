@@ -1,6 +1,6 @@
-import ElementsList from 'components/ElementsList.jsx';
-import EfficiencyFormWrap from 'components/directories/data_for_calculation/efficiency/EfficiencyFormWrap.jsx';
-import EfficiencyTable from 'components/directories/data_for_calculation/efficiency/EfficiencyTable.jsx';
+import ElementsList from 'components/ElementsList';
+import EfficiencyFormWrap from 'components/directories/data_for_calculation/efficiency/EfficiencyFormWrap';
+import EfficiencyTable from 'components/directories/data_for_calculation/efficiency/EfficiencyTable';
 import { connectToStores, staticProps } from 'utils/decorators';
 import permissions from 'components/directories/data_for_calculation/efficiency/config-data/permissions';
 
@@ -21,10 +21,9 @@ export default class EfficiencyList extends ElementsList {
     this.removeElementAction = context.flux.getActions('odh').deleteEfficiency;
   }
 
-  async componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
-    await flux.getActions('odh').getEfficiency();
+    flux.getActions('odh').getEfficiency();
   }
 
 }

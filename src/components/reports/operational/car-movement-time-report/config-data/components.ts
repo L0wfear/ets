@@ -1,7 +1,13 @@
-import CarMovementTimeReport from 'components/reports/operational/car-movement-time-report/report';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "car_movement_time_report" */ 'components/reports/operational/car-movement-time-report/report'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: CarMovementTimeReport,
+    component,
+    loadable: true,
   },
 ];

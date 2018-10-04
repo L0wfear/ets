@@ -1,9 +1,9 @@
 import React from 'react';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
-import UserActionLogTable from 'components/directories/user_action_log/UserActionLogTable.jsx';
+import UserActionLogTable from 'components/directories/user_action_log/UserActionLogTable';
 import permissions from 'components/directories/user_action_log/config-data/permissions';
 
 @connectToStores(['objects', 'session'])
@@ -25,13 +25,13 @@ export default class UserActionLogList extends ElementsList {
     this.setState(state);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.date_start !== nextState.date_start || this.state.date_end !== nextState.date_end) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.date_start !== prevState.date_start || this.state.date_end !== prevState.date_end) {
       this.exportPayload = {
-        date_start: createValidDateTime(nextState.date_start),
-        date_end: createValidDateTime(nextState.date_end),
+        date_start: createValidDateTime(this.state.date_start),
+        date_end: createValidDateTime(this.state.date_end),
       };
-      this.getUserActionLog(nextState);
+      this.context.flux.getActions('objects').getMedicalStats(this.state);
     }
   }
 

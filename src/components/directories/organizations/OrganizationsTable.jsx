@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 const tableMeta = {
@@ -29,12 +29,12 @@ const renderers = {
   has_remote_checkup: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
 };
 
-export default (props) => {
-  return (<Table
+export default props => (
+  <Table
     title="Реестр организаций"
     results={props.data}
     tableMeta={tableMeta}
     renderers={renderers}
     {...props}
-  />);
-};
+  />
+);

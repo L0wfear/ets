@@ -91,8 +91,6 @@ export default class ReactSelect extends React.Component<any, any> {
       id,
     };
 
-    console.log(innerProps, props)
-
     return <components.MultiValue innerProps={newInnerProps} {...props} />;
   }
   render() {

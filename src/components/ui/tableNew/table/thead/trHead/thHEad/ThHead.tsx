@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import * as cx from 'classnames';
 import { Glyphicon } from 'react-bootstrap';
 

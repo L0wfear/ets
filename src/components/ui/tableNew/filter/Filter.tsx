@@ -1,17 +1,27 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { Button, Glyphicon, Collapse } from 'react-bootstrap';
 import { isEmpty } from 'utils/functions';
-import FilterRow from './FilterRow.jsx';
+import FilterRow from './FilterRow';
 const FilterRowTSX: any = FilterRow;
 
 class Fiter extends React.Component<any, any> {
   state = {
-    filterValues: {},
+    propsFilterValues: this.props.filterValues,
+    filterValues: this.props.filterValues,
   };
-  componentWillReceiveProps(props) {
-    this.setState({ filterValues: props.filterValues });
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { filterValues } = nextProps;
+    if (filterValues !== prevState.propsFilterValues) {
+      return {
+        propsFilterValues: filterValues,
+        filterValues,
+      };
+    }
+
+    return null;
   }
 
   handleFilterValueChange = ({ name: key, type, customFilter }, e) => {

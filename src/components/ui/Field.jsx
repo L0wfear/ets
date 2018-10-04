@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
 import { FormControl } from 'react-bootstrap';
 import cx from 'classnames';
 
@@ -9,9 +8,9 @@ import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
-// import TextInput from 'components/ui/input/TextInput/TextInput';
-import Div from './Div.jsx';
-import Preloader from './Preloader.jsx';
+import Preloader from 'components/ui/new/preloader/Preloader';
+
+import Div from './Div';
 
 function StringField(props) {
   const { error, ...mainProps } = props; 
@@ -34,7 +33,7 @@ function StringField(props) {
     return (
       <Div hidden={hidden}>
         <label style={{ paddingTop: 5 }}>{label}</label>)<br />
-        <Preloader type="field" />
+        <Preloader typePreloader="field" />
       </Div>
     );
   }
@@ -88,7 +87,6 @@ function TextAreaField(props) {
 }
 
 
-@autobind
 export default class Field extends React.Component {
 
   static get propTypes() {
@@ -104,7 +102,7 @@ export default class Field extends React.Component {
     };
   }
 
-  onChange(...args) {
+  onChange = (...args) => {
     this.props.onChange(this.props.key, ...args);
   }
 
@@ -232,9 +230,3 @@ export default class Field extends React.Component {
     return this.renderFieldByType(type);
   }
 }
-
-export const ExtField = onChangeWithKeys(
-  withMergeProps(
-    ({ boundKeys, ...props }) => props
-  )(Field)
-);

@@ -1,6 +1,8 @@
 import React from 'react';
 
-export const ExtDiv = ({ className = '', hidden = false, nonExist = false, ...props }) => (
+export const ExtDiv = ({
+  className = '', hidden = false, nonExist = false, ...props
+}) => (
   !nonExist
     ? (
       <div {...props} className={`${className} ${hidden ? 'hidden' : ''}`}>

@@ -16,7 +16,6 @@ function getFuelRates(payload = {}) {
 }
 
 export default class FuelRateActions extends Actions {
-
   getFuelRates() {
     return getFuelRates();
   }
@@ -112,5 +111,4 @@ export default class FuelRateActions extends Actions {
     };
     return FuelOperationsService.delete(payload, getFuelOperations, 'json');
   }
-
 }

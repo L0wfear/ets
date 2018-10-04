@@ -10,18 +10,19 @@ import {
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import Div from 'components/ui/Div.jsx';
-import Field, { ExtField } from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 import {
   ProgramRemarkList,
   ProgramObjectList,
 } from 'components/program_registry/UpdateFrom/inside_components';
-import MakeVersionFrom from 'components/program_registry/UpdateFrom/MakeVersionFrom.tsx';
+import MakeVersionFrom from 'components/program_registry/UpdateFrom/MakeVersionFrom';
 
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (

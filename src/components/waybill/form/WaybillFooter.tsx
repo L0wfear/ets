@@ -3,7 +3,7 @@ import { Button, Dropdown, MenuItem, Glyphicon, OverlayTrigger, Popover } from '
 
 import { isEmpty } from 'utils/functions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
-import DivForEnhance from 'components/ui/Div.jsx';
+import DivForEnhance from 'components/ui/Div';
 import permissions from 'components/waybill/config-data/permissions';
 
 const Div = enhanceWithPermissions({})(DivForEnhance);

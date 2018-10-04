@@ -4,7 +4,6 @@ import * as actions from '../actions';
 import * as stores from '../stores';
 
 export default class Flux extends Flummox {
-
   constructor() {
     super();
 

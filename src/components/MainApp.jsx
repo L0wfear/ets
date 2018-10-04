@@ -1,15 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Col } from 'react-bootstrap';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import { connect } from 'react-redux';
 
-import LoadingOverlay from 'components/ui/LoadingOverlay.jsx';
-import ModalTP from 'components/modalTP/ModalTP.tsx';
-import Routes from 'components/indexRoute.tsx';
+import LoadingOverlay from 'components/ui/LoadingOverlay';
+import ModalTP from 'components/modalTP/ModalTP';
+import Routes from 'components/indexRoute';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
-import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders.tsx';
+import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders';
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
@@ -18,7 +18,7 @@ import Header from 'components/navbar/Header';
 import {
   sessionResetData,
   sessionSetData,
-} from 'redux/modules/session/actions-session';
+} from 'redux-main/reducers/modules/session/actions-session';
 
 let VERSION_DESCRIPTION;
 try {
@@ -38,7 +38,6 @@ try {
   }),
 )
 class MainApp extends React.Component {
-
   static get propTypes() {
     return {
       currentUser: PropTypes.object,
@@ -56,7 +55,7 @@ class MainApp extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.currentUser.user_id){
+    if (this.props.currentUser.user_id) {
       this.props.sessionSetData(this.props);
     } else {
       this.props.sessionResetData();
@@ -70,6 +69,7 @@ class MainApp extends React.Component {
   logout = () => this.context.flux.getActions('session').logout();
 
   hideFormTp = () => this.setState({ showFormTp: false });
+
   showFormTp = () => this.setState({ showFormTp: true });
 
   render() {

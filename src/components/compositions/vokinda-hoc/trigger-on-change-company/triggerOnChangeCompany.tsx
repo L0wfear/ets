@@ -1,6 +1,6 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
-import Preloader from 'components/ui/Preloader.jsx';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 const triggerOnChangeCompany = Component =>
   connectToStores(class extends React.Component<any, any> {
@@ -12,9 +12,8 @@ const triggerOnChangeCompany = Component =>
         loading: false,
       };
     }
-
-    componentWillReceiveProps(props) {
-      const { currentUser: { company_id } } = props;
+    componentDidUpdate() {
+      const { currentUser: { company_id } } = this.props;
       if (company_id !== this.state.company_id) {
         this.changeStatusLoading(true, company_id);
       }
@@ -36,7 +35,7 @@ const triggerOnChangeCompany = Component =>
 
     render() {
       if (this.state.loading) {
-        return <Preloader type="mainpage" />;;
+        return <Preloader typePreloader="mainpage" />;;
       }
 
       return (

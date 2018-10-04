@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
-import { autobind } from 'core-decorators';
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import DtCoverageReportTable from './DtCoverageReportTable.jsx';
-import DtCoverageReportPrintForm from './DtCoverageReportPrintForm.jsx';
+import DtCoverageReportTable from './DtCoverageReportTable';
+import DtCoverageReportPrintForm from './DtCoverageReportPrintForm';
 
 import {
   EtsPageWrap,
@@ -22,11 +21,9 @@ const MenuItem = bindable(BootstrapMenuItem);
 //   formComponent: DtCoverageReportPrintForm,
 //   operations: ['LIST'],
 // })
-// @autobind
 
 @connectToStores(['reports'])
 @FluxContext
-@autobind
 export default class DtCoverageReport extends Component {
 
   constructor(props) {
@@ -73,11 +70,11 @@ export default class DtCoverageReport extends Component {
   handleChangeDateStart = date_start => this.setState({ date_start });
   handleChangeDateEnd = date_end => this.setState({ date_end });
 
-  showForm(exportType) {
+  showForm = (exportType) => {
     this.setState({ showForm: true, exportType });
   }
 
-  export(date_start, date_end) {
+  export = (date_start, date_end) => {
     const { flux } = this.context;
 
     this.setState({ isExporting: true });

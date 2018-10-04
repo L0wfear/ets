@@ -4,8 +4,8 @@ import * as queryString from 'query-string';
 
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
-import Form from 'components/compositions/Form.jsx';
+import DateFormatter from 'components/ui/DateFormatter';
+import Form from 'components/compositions/Form';
 import { CAR_TAB_INDEX } from 'components/directories/autobase/cars/CarForm';
 
 const TYPE_CODE = {

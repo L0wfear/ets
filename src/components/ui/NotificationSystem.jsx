@@ -11,7 +11,6 @@ document.body.appendChild(notificationsDiv);
   https://github.com/igorprado/react-notification-system
  */
 class AppNotificationSystem extends React.Component {
-
   constructor(props) {
     super(props);
     this._notify = this.notify.bind(this);

@@ -1,18 +1,21 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button,
+} from 'react-bootstrap';
 import { find, uniqBy } from 'lodash';
 
-import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
+import Field from 'components/ui/Field';
+import Div from 'components/ui/Div';
 import InsideField from 'components/missions/duty_mission_template/inside_fields/index';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
 
-import RouteInfo from '../../route/RouteInfo.jsx';
-import RouteFormWrap from '../../route/RouteFormWrap.jsx';
-import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import { DutyMissionForm } from '../duty_mission/DutyMissionForm';
 
 const modalKey = 'duty_mission_template';
 
@@ -34,9 +37,9 @@ class MissionTemplateForm extends DutyMissionForm {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -107,8 +110,8 @@ class MissionTemplateForm extends DutyMissionForm {
     }
 
     const brigade_employee_id_list = !state.brigade_employee_id_list
-    ? []
-    : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
+      ? []
+      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     return (
       <Modal id="modal-duty-missio-template" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
@@ -146,15 +149,20 @@ class MissionTemplateForm extends DutyMissionForm {
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id={'municipal_facility_id'}
-                label={'municipal_facility_name'}
-                errors={errors}
-                state={state}
+                modalKey={modalKey}
+                error={errors.municipal_facility_id}
+                name={state.municipal_facility_name}
+                value={state.municipal_facility_id}
+                technical_operation_id={state.technical_operation_id}
+                norm_id={state.norm_id}
+                clearable={false}
                 disabled={!!state.route_id}
-                handleChange={this.handleChange.bind(this)}
-                getDataByNormatives={this.getDataByNormatives}
+                alreadyDefineNormId={!IS_CREATING}
+                handleChange={this.handleChange}
                 technicalOperationsList={technicalOperationsList}
-                getNormIdFromState={!IS_CREATING}
+                getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
+                typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
+                getDataByNormatives={this.getDataByNormatives}
               />
             </Col>
           </Row>
@@ -202,7 +210,8 @@ class MissionTemplateForm extends DutyMissionForm {
                 <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={6}>
+            {STRUCTURE_FIELD_VIEW && (
+            <Col md={6}>
               <Field
                 type="select"
                 modalKey={modalKey}
@@ -215,13 +224,24 @@ class MissionTemplateForm extends DutyMissionForm {
                 value={state.structure_id}
                 onChange={this.handleChangeStructureId}
               />
-            </Col>}
+            </Col>
+            )}
           </Row>
           <Row>
             <Col md={12}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapDutyMissionTemplateFrom"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
 
@@ -229,7 +249,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
           </Div>
         </Modal.Footer>
 

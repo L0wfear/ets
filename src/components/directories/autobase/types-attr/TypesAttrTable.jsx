@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 
 const tableMeta = {
   cols: [
@@ -48,14 +48,12 @@ const tableMeta = {
   ],
 };
 
-export default (props) => {
-  return (
-    <Table
-      title="Таблица нормативных скоростей и ширин"
-      results={props.data}
-      tableMeta={tableMeta}
-      {...props}
-      onRowSelected={undefined}
-    />
-  );
-};
+export default props => (
+  <Table
+    title="Таблица нормативных скоростей и ширин"
+    results={props.data}
+    tableMeta={tableMeta}
+    {...props}
+    onRowSelected={undefined}
+  />
+);

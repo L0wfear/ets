@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
-import Table from 'components/ui/table/DataTable.jsx';
+import DateFormatter from 'components/ui/DateFormatter';
+import Table from 'components/ui/table/DataTable';
 import { uniqBy } from 'lodash';
 
 /**
@@ -210,7 +210,7 @@ export default (props) => {
       serverPagination
       externalFilter={props.changeFilter}
       externalChangeSort={props.changeSort}
-      initialSort={'number'}
+      initialSort="number"
       initialSortAscending={false}
       multiSelection
       highlight={highlight}

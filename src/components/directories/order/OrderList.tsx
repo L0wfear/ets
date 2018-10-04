@@ -5,7 +5,7 @@ import {
   getOrders,
   resetOrder,
   setSelectedElementOrder,
-} from 'redux/modules/order/action-order';
+} from 'redux-main/reducers/modules/order/action-order';
 import connectToStores from 'flummox/connect';
 import * as queryString from 'query-string';
 

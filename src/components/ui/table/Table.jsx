@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
-import Div from '../Div.jsx';
+import Div from '../Div';
 
 const HeaderCell = ({ renderer, children, value }) => {
   if (typeof renderer === 'function') {
@@ -17,7 +17,6 @@ HeaderCell.propTypes = {
 };
 
 export default class Table extends React.Component {
-
   static get propTypes() {
     return {
       headerRenderers: PropTypes.any,
@@ -92,7 +91,7 @@ export default class Table extends React.Component {
   render() {
     const page = this.getPage();
     const { usePagination = true } = this.props;
-    const rows = page.data.map((o, i) =>
+    const rows = page.data.map((o, i) => (
       <Row
         renderers={this.props.cellRenderers}
         key={i}
@@ -102,11 +101,11 @@ export default class Table extends React.Component {
         selected={o.ID ? this.state.selectedRow === o.ID : this.state.selectedRow === i}
         handleClick={this.onRowClick.bind(this)}
       />
-    );
+    ));
 
     return (
       <div className="ets-table">
-        {/* <p className="ets-table-caption">{this.props.title}</p>*/}
+        {/* <p className="ets-table-caption">{this.props.title}</p> */}
         <table>
           <tbody>
             {this.renderHeader()}
@@ -123,7 +122,7 @@ export default class Table extends React.Component {
 
 const Row = (props) => {
   const cells = [];
-  const renderers = !!props.renderers ? props.renderers : {};
+  const renderers = props.renderers ? props.renderers : {};
 
   if (props.tableCols !== undefined) {
     _.each(props.tableCols, (col) => {
@@ -146,15 +145,16 @@ const Row = (props) => {
     });
   }
 
-  const cn = 'ets-table-row' + (props.selected ? ' selected' : '');
+  const cn = `ets-table-row${props.selected ? ' selected' : ''}`;
 
   return <tr className={cn} onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>{cells}</tr>;
 };
 
-const PageLink = props =>
+const PageLink = props => (
   <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
     {props.children}
-  </span>;
+  </span>
+);
 
 const Pager = (props) => {
   const links = [];
@@ -168,7 +168,13 @@ const Pager = (props) => {
     links.push(' ');
   }
 
-  links.push(<span key={links.length} className="table-current-page">Страница {props.currentPage} из {props.numPages}</span>);
+  links.push(<span key={links.length} className="table-current-page">
+Страница
+    {props.currentPage}
+    {' '}
+из
+    {props.numPages}
+  </span>);
 
   if (props.currentPage < props.numPages) {
     links.push(' ');

@@ -4,34 +4,35 @@ import {
   isEmpty,
   filter,
 } from 'lodash';
-import Div from 'components/ui/Div.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { getDefaultMission } from 'stores/MissionsStore.js';
-import { saveData, printData, resizeBase64 } from 'utils/functions';
-import { diffDates, setZeroSecondsToDate } from 'utils/dates.js';
-import { missionSchema } from 'models/MissionModel.js';
-import MissionForm from 'components/missions/mission/MissionForm/MissionForm.jsx';
-import MissionFormOld from 'components/missions/mission/MissionFormOld.jsx';
+import Div from 'components/ui/Div';
+import FormWrap from 'components/compositions/FormWrap';
+import { getDefaultMission } from 'stores/MissionsStore';
+import { saveData, printData } from 'utils/functions';
+import { diffDates, setZeroSecondsToDate } from 'utils/dates';
+import { missionSchema } from 'models/MissionModel';
+import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
+import MissionFormOld from 'components/missions/mission/MissionFormOld';
+import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
-export default class MissionFormWrap extends FormWrap {
+const printMapKeySmall = 'mapMissionTemplateFormA4';
 
+class MissionFormWrap extends FormWrap {
   constructor(props) {
     super(props);
 
     this.schema = missionSchema;
   }
 
-  createAction = formState =>
-    this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
-      if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
-        try {
-          this.props.refreshTableList();
-        } catch (e) {
-          // function refreshTableList not in father modules
-        }
+  createAction = formState => this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
+    if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
+      try {
+        this.props.refreshTableList();
+      } catch (e) {
+        // function refreshTableList not in father modules
       }
-      return r;
-    });
+    }
+    return r;
+  });
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
@@ -210,7 +211,7 @@ export default class MissionFormWrap extends FormWrap {
     const {
       order_date,
       order_date_to,
-      technical_operations = [],        
+      technical_operations = [],
     } = order;
 
     const {
@@ -234,15 +235,13 @@ export default class MissionFormWrap extends FormWrap {
     return ansError;
   }
 
-  handlePrint(ev, print_form_type = 1) {
+  handlePrint(print_form_type = 1) {
     const f = this.state.formState;
     const { flux } = this.context;
     const data = { mission_id: f.id };
-    global.map.reset();
-    global.map.once('postcompose', async (event) => {
-      const routeImageBase64Data = await resizeBase64(event.context.canvas.toDataURL('image/png'));
-      data.image = routeImageBase64Data;
 
+    this.props.getMapImageInBase64ByKey(printMapKeySmall).then((image) => {
+      data.image = image;
       flux.getActions('missions').printMission(data).then(({ blob }) => {
         if (print_form_type === 1) {
           saveData(blob, `Задание №${f.number}.pdf`);
@@ -251,7 +250,6 @@ export default class MissionFormWrap extends FormWrap {
         }
       });
     });
-    global.map.render();
   }
 
   handlMultiFormStateChange = (changesObj) => {
@@ -288,18 +286,19 @@ export default class MissionFormWrap extends FormWrap {
 
     return (
       <Div hidden={!this.props.showForm}>
-        <Div hidden={!this.state.formState.is_new} >
+        <Div hidden={!this.state.formState.is_new}>
           <MissionForm
             formState={this.state.formState}
             onSubmit={this.handleFormSubmit.bind(this)}
             handleFormChange={this.handleFormStateChange.bind(this)}
             handleMultiFormChange={this.handlMultiFormStateChange}
             handlePrint={this.handlePrint.bind(this)}
+            printMapKeySmall={printMapKeySmall}
             {...props}
             {...this.state}
           />
         </Div>
-        <Div hidden={this.state.formState.is_new} >
+        <Div hidden={this.state.formState.is_new}>
           <MissionFormOld
             formState={this.state.formState}
             {...props}
@@ -309,5 +308,6 @@ export default class MissionFormWrap extends FormWrap {
       </Div>
     );
   }
-
 }
+
+export default withMapInConsumer()(MissionFormWrap);

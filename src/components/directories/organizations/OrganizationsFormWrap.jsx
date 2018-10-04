@@ -1,6 +1,6 @@
 import React from 'react';
-import enhanceWithPermissions from 'components/util/RequirePermissions.jsx';
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import enhanceWithPermissions from 'components/util/RequirePermissions';
+import FormWrap from 'components/compositions/FormWrap';
 import BaseOrganizationsForm from './OrganizationsForm';
 
 const OrganizationsForm = enhanceWithPermissions(BaseOrganizationsForm);
@@ -23,7 +23,6 @@ export const organizationsSchema = {
 };
 
 export default class MaintenanceWorkFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -32,24 +31,24 @@ export default class MaintenanceWorkFormWrap extends FormWrap {
     this.schema = organizationsSchema;
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.handleFormStateChange = this.handleFormStateChange.bind(this);
   }
 
   render() {
     const props = this.props;
 
-    return props.showForm ?
-      <OrganizationsForm
-        formState={this.state.formState}
-        permissions={['company.update']}
-        addPermissionProp
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        {...this.state}
-      />
-    : null;
+    return props.showForm
+      ? (
+        <OrganizationsForm
+          formState={this.state.formState}
+          permissions={['company.update']}
+          addPermissionProp
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          {...this.state}
+        />
+      )
+      : null;
   }
-
 }

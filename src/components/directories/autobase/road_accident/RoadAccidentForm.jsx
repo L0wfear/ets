@@ -5,10 +5,10 @@ import { get } from 'lodash';
 import ModalBody from 'components/ui/Modal';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
-import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtDiv } from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
 import { connectToStores } from 'utils/decorators';
 
@@ -26,7 +26,7 @@ function getFio(f, i, o) {
 @loadingOverlay
 @connectToStores(['autobase', 'employees', 'objects'])
 export default class BaseRoadAccidentFrom extends Form {
-  componentWillMount() {
+  componentDidMount() {
     const { flux } = this.context;
     const { car_id = -1 } = this.props;
 

@@ -2,7 +2,7 @@ import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 
 export interface IDataTableSelectedRowPropsData {
   [fieldName: string]: any;
-  rowNumber: number;
+  rowNumber?: number;
 }
 
 interface IDataTableSelectedRowProps<TRowData> {
@@ -90,7 +90,7 @@ export interface IExtractedDataTableSchema {
 }
 
 export interface ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> {
-  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => JSX.Element;
+  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => any;
 }
 
 export interface ISchemaMaker  {

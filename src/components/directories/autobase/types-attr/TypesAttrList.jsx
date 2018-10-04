@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import CarTypesTable from 'components/directories/autobase/types-attr/TypesAttrTable';
 

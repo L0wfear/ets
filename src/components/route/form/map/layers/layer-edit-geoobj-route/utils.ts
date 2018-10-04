@@ -1,0 +1,37 @@
+import { GeoJSON } from 'utils/ol';
+import * as ol from 'openlayers';
+
+import {
+  TYPES_STYLE,
+  getCasheStyleForGeoobject,
+} from 'components/route/form/map/layers/layer-edit-geoobj-route/feature-style';
+
+const renderGeometry= (id, geoobj, thisProps) => {
+  if (geoobj.shape) {
+    const feature = new ol.Feature({
+      geometry: GeoJSON.readGeometry(geoobj.shape),
+    });
+
+    feature.setId(id);
+    feature.set('state', geoobj.state);
+
+    thisProps.addFeaturesToSource(feature);
+
+    return feature;
+  }
+
+  return null;
+}
+
+export const renderGeoobjects = (geoobjects, thisProps) => {
+  for (let id in geoobjects) {
+    const geoobj = geoobjects[id];
+
+    const feature = renderGeometry(id, geoobj, thisProps);
+
+    if (feature) {
+      feature.setStyle(getCasheStyleForGeoobject(TYPES_STYLE.geoobj, geoobj.state));
+    }
+  }
+};
+

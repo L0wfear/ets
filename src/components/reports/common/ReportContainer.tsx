@@ -20,12 +20,12 @@ import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 
 import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
-import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux/modules/@types/report.h';
+import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux-main/modules/@types/report.h';
 
-import Preloader from 'components/ui/Preloader.jsx';
+import Preloader from 'components/ui/new/preloader/Preloader';
 import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
-import * as reportActionCreators from 'components/reports/redux/modules/report';
-import DataTable from 'components/ui/table/DataTable.jsx';
+import * as reportActionCreators from 'components/reports/redux-main/modules/report';
+import DataTable from 'components/ui/table/DataTable';
 import DataTableNew from 'components/ui/tableNew/DataTable';
 
 import {
@@ -46,8 +46,10 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       selectedRow: null,
       filterValues: {},
       uniqName: props.uniqName || '_uniq_field',
+      lastSearchObject: queryString.parse(this.props.location.search),
     };
   }
+
   componentDidMount() {
     // Так как стор один на все отчёты, необходимо его чистить в начале.
     this.props.setInitialState();
@@ -61,31 +63,37 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  async componentWillReceiveProps(nextProps: IPropsReportContainer) {
-    const { location: { search } } = this.props;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { lastSearchObject } = prevState;
     const { location: { search: search_next } } = nextProps;
+
+    const searchNextxObject = queryString.parse(search_next);
+
+    // Если урл поменялся и он не пустой, то делаем запрос данных.
+    if (!isEqual(lastSearchObject, searchNextxObject)) {
+      return {
+        filterValues: {},
+        lastSearchObject: searchNextxObject,
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps) {
+    const { location: { search } } = prevProps;
+    const { location: { search: search_next } } = this.props;
 
     const searchObject = queryString.parse(search);
     const searchNextxObject = queryString.parse(search_next);
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(searchObject, searchNextxObject)) {
-      /**
-       * Первый запрос с кнопки меняет урл, поэтому происходит повторный запрос.
-       * Данная проверка исключает такую ситуацию.
-       */
-      if (this.state.fetchedBySubmitButton) {
-        this.setState({ fetchedBySubmitButton: false });
-        return;
-      }
-
       if (Object.keys(searchNextxObject).length > 0) {
-        await this.getReportData(searchNextxObject);
-        this.setState({ filterValues: {} });
+        this.getReportData(searchNextxObject);
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
-        this.setState({ filterValues: {} });
       }
     }
   }
@@ -332,7 +340,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       schemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
-      additionalSchemaMakers,
+      additionalSchemaMakers = [],
       location: { search },
     } = this.props;
 
@@ -350,7 +358,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         this.props.reportDataFetching ||
         this.state.exportFetching
       ) &&
-      <Preloader type="mainpage"/>
+      <Preloader typePreloader="mainpage"/>
     );
     const moveUpButton = (
       moveUpIsPermitted &&

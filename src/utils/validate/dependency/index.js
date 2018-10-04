@@ -1,5 +1,5 @@
-import gt from './gt.js';
-import gte from './gte.js';
+import gt from './gt';
+import gte from './gte';
 
 const validators = {
   gt,

@@ -6,8 +6,8 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Div from 'components/ui/Div.jsx';
-import FieldComponent from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import FieldComponent from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday859am, getYesterday9am , createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';

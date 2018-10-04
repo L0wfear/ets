@@ -2,11 +2,11 @@ import React from 'react';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 
 import ModalBody from 'components/ui/Modal';
-import { ExtDiv } from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtDiv } from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 
@@ -15,7 +15,7 @@ export default class InsurancePolicyForm extends Form {
   state = {
     areFilesLoading: false,
   }
-  componentWillMount() {
+  componentDidMount() {
     const { flux } = this.context;
     flux.getActions('objects').getCars();
 

@@ -1,9 +1,9 @@
 import * as queryString from 'query-string';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import ElementsList from 'components/ElementsList.jsx';
-import EmployeeFormWrap from 'components/directories/employees/EmployeeFormWrap.jsx';
-import EmployeesTable from 'components/directories/employees/EmployeesTable.tsx';
+import ElementsList from 'components/ElementsList';
+import EmployeeFormWrap from 'components/directories/employees/EmployeeFormWrap';
+import EmployeesTable from 'components/directories/employees/EmployeesTable';
 
 import permissions from 'components/directories/employees/config-data/permissions';
 
@@ -22,8 +22,7 @@ export default class EmployeesList extends ElementsList {
     super();
     this.preventUrlFilters = true;
   }
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const linear = true;
     const descendants_by_user = true;
 

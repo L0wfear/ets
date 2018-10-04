@@ -1,20 +1,25 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
+} from 'react-bootstrap';
 import {
   uniqBy,
+  find,
 } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { checkRouteByNew } from 'components/missions/utils/utils';
 
 import ModalBody from 'components/ui/Modal';
-import Field, { ExtField } from 'components/ui/Field.jsx';
-import Div from 'components/ui/Div.jsx';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
+import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import Div from 'components/ui/Div';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
-import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm.jsx';
+import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
 import HiddenMapForPrint from 'components/missions/mission_template/print/HiddenMapForPrint';
 
 
@@ -52,7 +57,7 @@ class MissionTemplateForm extends MissionForm {
     if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && _.find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
     } else if (currentStructureId === null && STRUCTURES.length > 0) {
       STRUCTURE_FIELD_VIEW = true;
@@ -62,9 +67,9 @@ class MissionTemplateForm extends MissionForm {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -107,7 +112,8 @@ class MissionTemplateForm extends MissionForm {
                 onChange={this.handleTechnicalOperationChange}
               />
             </Col>
-            {STRUCTURE_FIELD_VIEW && <Col md={3}>
+            {STRUCTURE_FIELD_VIEW && (
+            <Col md={3}>
               <Field
                 type="select"
                 modalKey={modalKey}
@@ -120,21 +126,26 @@ class MissionTemplateForm extends MissionForm {
                 value={state.structure_id}
                 onChange={this.handleStructureIdChange}
               />
-            </Col>}
+            </Col>
+            )}
           </Row>
           <Row>
             <Col md={12}>
               <InsideField.MunicipalFacility
-                id={'municipal_facility_id'}
-                label={'municipal_facility_name'}
-                errors={errors}
-                state={state}
+                modalKey={modalKey}
+                error={errors.municipal_facility_id}
+                name={state.municipal_facility_name}
+                value={state.municipal_facility_id}
+                technical_operation_id={state.technical_operation_id}
+                norm_id={state.norm_id}
                 clearable={false}
-                disabled={!!state.route_id}
+                disabled={state.route_id}
                 handleChange={this.handleChangeMF}
-                getDataByNormatives={this.getDataByNormatives}
                 technicalOperationsList={technicalOperationsList}
-                getNormIdFromState={!IS_CREATING}
+                getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
+                typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
+                getDataByNormatives={this.getDataByNormatives}
+                alreadyDefineNormId={!IS_CREATING}
               />
             </Col>
           </Row>
@@ -156,7 +167,8 @@ class MissionTemplateForm extends MissionForm {
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
-                onChange={this.handleChange.bind(this, 'passes_count')} min="0"
+                onChange={this.handleChange.bind(this, 'passes_count')}
+                min="0"
               />
             </Col>
 
@@ -185,13 +197,23 @@ class MissionTemplateForm extends MissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={!state.technical_operation_id}>Создать новый</Button>
               </Div>
             </Col>
             <Col md={6}>
-              <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                <RouteInfo route={this.state.selectedRoute} mapOnly />
-              </Div>
+              {
+                route && route.id !== null
+                  ? (
+                    <RouteInfo
+                      route={route}
+                      noRouteName
+                      mapKey="mapMissionTemplateFrom"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
             </Col>
           </Row>
 
@@ -204,22 +226,25 @@ class MissionTemplateForm extends MissionForm {
                 <Glyphicon id="m-print" glyph="print" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <MenuItem eventKey={3}>Формате А3</MenuItem>
-                <MenuItem eventKey={4}>Формате А4</MenuItem>
+                <MenuItem eventKey={this.props.printMapKeyBig}>Формате А3</MenuItem>
+                <MenuItem eventKey={this.props.printMapKeySmall}>Формате А4</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
             <Div hidden={state.status === 'closed'}>
-              <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+              <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>
           </Div>
 
-          
-        </Modal.Footer>
-        <HiddenMapForPrint printFormat={this.props.printFormat} route={this.state.selectedRoute} keyGlobal={this.props.keyGlobal} />
 
+        </Modal.Footer>
+        <HiddenMapForPrint
+          route={route}
+          printMapKeyBig={this.props.printMapKeyBig}
+          printMapKeySmall={this.props.printMapKeySmall}
+        />
         <RouteFormWrap
           element={route}
-          onFormHide={this.onFormHide.bind(this)}
+          onFormHide={this.onFormHide}
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission

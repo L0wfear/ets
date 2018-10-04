@@ -9,12 +9,22 @@ type TypeConfig = {
   withIsPermittedProps?: boolean;
   permissions?: string | string[];
   every?: boolean;
-}
+  byEntity?: boolean;
+  type?: string;
+};
+
+const makePermissionOnCheck = (config, props) => {
+  if (config.byEntity) {
+    return [`${props.entity}.${config.type}`];
+  }
+
+  const permissionsOnCheck = config.permissions || props.permissions;
+
+  return Array.isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck]
+};
 
 const checkOnIsPermitter = (config, props, permissions) => {
-  let permissionsOnCheck = config.permissions || props.permissions;
-
-  permissionsOnCheck = Array.isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck];
+  let permissionsOnCheck = makePermissionOnCheck(config, props);
 
   if (config.every) {
     return permissionsOnCheck.some(permission => !permissions.includes(permission));
@@ -39,16 +49,15 @@ const withRequirePermissionsNew = (config: TypeConfig = {}) => Component => (
     }
 
     return (
-
       config.withIsPermittedProps || isPermitter ?
-      (
-        <Component { ...newProps } />
-      )
+        (
+          <Component { ...newProps } />
+        )
       :
-      (
-        <DivNone />
-      )
-    )
+        (
+          <DivNone />
+        )
+    );
   })
 );
 

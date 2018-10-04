@@ -1,19 +1,18 @@
 import * as React from 'react';
 import clone from 'lodash/clone';
 import filter from 'lodash/filter';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 
-import { getDefaultDutyMissionTemplate, getDefaultDutyMissionsCreationTemplate } from 'stores/MissionsStore.js';
+import { getDefaultDutyMissionTemplate, getDefaultDutyMissionsCreationTemplate } from 'stores/MissionsStore';
 import { isEmpty } from 'utils/functions';
-import dutyMissionTemplateSchema from 'models/DutyMissionTemplateModel.js';
-import dutyMissionsCreationTemplateSchema from 'models/DutyMissionsCreationTemplateModel.js';
-import FormWrap from 'components/compositions/FormWrap.jsx';
-import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/customValidate.ts';
-import DutyMissionTemplateForm from './DutyMissionTemplateForm.jsx';
-import DutyMissionsCreationForm from './DutyMissionsCreationForm.jsx';
+import dutyMissionTemplateSchema from 'models/DutyMissionTemplateModel';
+import dutyMissionsCreationTemplateSchema from 'models/DutyMissionsCreationTemplateModel';
+import FormWrap from 'components/compositions/FormWrap';
+import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/customValidate';
+import DutyMissionTemplateForm from './DutyMissionTemplateForm';
+import DutyMissionsCreationForm from './DutyMissionsCreationForm';
 
-export const createDutyMissions = async (flux, element, payload) =>
-  flux.getActions('missions').createDutyMissions(element, payload);
+export const createDutyMissions = async (flux, element, payload) => flux.getActions('missions').createDutyMissions(element, payload);
 
 class DutyMissionTemplateFormWrap extends FormWrap {
   constructor(props) {
@@ -48,7 +47,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     }
   }
 
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const { _employeesIndex = {} } = this.props;
@@ -56,6 +55,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     if (this.props.formType === 'ViewForm') {
       try {
         if (isEmpty(formState.id)) {
+          console.log(formState)
           await flux.getActions('missions').createDutyMissionTemplate(formState);
         } else {
           await flux.getActions('missions').updateDutyMissionTemplate(formState);
@@ -88,23 +88,21 @@ class DutyMissionTemplateFormWrap extends FormWrap {
           />
         </Div>
       );
-    } else {
-      return (
-        <Div hidden={!this.props.showForm}>
-          <DutyMissionsCreationForm
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            missions={this.props.missions}
-            {...this.state}
-          />
-        </Div>
-      );
     }
+    return (
+      <Div hidden={!this.props.showForm}>
+        <DutyMissionsCreationForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          missions={this.props.missions}
+          {...this.state}
+        />
+      </Div>
+    );
   }
-
 }
 
 export default DutyMissionTemplateFormWrap;

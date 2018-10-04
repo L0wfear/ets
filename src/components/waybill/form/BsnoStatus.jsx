@@ -1,17 +1,16 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Raven from 'raven-js';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { FluxContext } from 'utils/decorators';
-import Field from 'components/ui/Field.jsx';
+import Field from 'components/ui/Field';
 
 import config from '../../../config';
-import ReconnectingWebSocket from '../../../vendor/ReconnectingWebsocket.js';
+import ReconnectingWebSocket from '../../../vendor/ReconnectingWebsocket';
 
 @FluxContext
 class BsnoStaus extends React.Component {
-
   static get propTypes() {
     return {
       okStatus: PropTypes.bool,
@@ -112,14 +111,14 @@ class BsnoStaus extends React.Component {
 
     return (
       <Field
-        id={'is_bnso_broken'}
+        id="is_bnso_broken"
         type="string"
         label="Исправность датчика ГЛОНАСС"
         value={value}
         error={error}
         disabled
       />
-    )
+    );
   }
 }
 

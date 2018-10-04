@@ -1,8 +1,8 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
-import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTable.tsx';
-import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch.tsx';
+import CheckableElementsList from 'components/CheckableElementsList';
+import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTable';
+import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch';
 import permissions from 'components/program_registry/config-data/permissions';
 
 @connectToStores(['repair', 'session'])
@@ -60,8 +60,7 @@ export default class ProgramRegistryList extends CheckableElementsList {
       }, DOUBLECLICK_TIMEOUT);
     }
   }
-  componentDidMount() {
-    super.componentDidMount();
+  init() {
     const { flux } = this.context;
 
     flux.getActions('repair').getRepairListByType('programRegistry');

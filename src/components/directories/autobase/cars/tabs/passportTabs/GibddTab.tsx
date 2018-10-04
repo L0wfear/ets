@@ -5,7 +5,7 @@ import { loadingOverlay } from 'components/ui/LoadingOverlay';
 
 import { IPropsPassportInfoTab } from '../PasportInfoTab';
 
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
 
 @loadingOverlay

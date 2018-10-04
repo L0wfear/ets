@@ -3,8 +3,8 @@ import { Glyphicon } from 'react-bootstrap';
 import { uniqBy } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
-import DateFormatter from 'components/ui/DateFormatter.jsx';
-import Table from 'components/ui/table/DataTable.jsx';
+import DateFormatter from 'components/ui/DateFormatter';
+import Table from 'components/ui/table/DataTable';
 
 /**
  * подсветка строк таблицы "провальных" поручений
@@ -269,7 +269,7 @@ export default (props) => {
       externalFilter={props.changeFilter}
       externalChangeSort={props.changeSort}
       tableMeta={getTableMeta(props)}
-      initialSort={'number'}
+      initialSort="number"
       initialSortAscending={false}
       multiSelection
       highlight={highlight}

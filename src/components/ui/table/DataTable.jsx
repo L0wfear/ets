@@ -6,7 +6,6 @@ import _ from 'lodash';
 import cx from 'classnames';
 
 import ClickOutHandler from 'react-onclickout';
-import { autobind } from 'core-decorators';
 import { diffDates } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import SimpleGriddle from 'components/ui/table/simple-griddle/SimpleGriddle';
@@ -20,10 +19,10 @@ import {
   getFilterTypeByKey,
   makeData,
 } from './utils';
-import ColumnControl from './ColumnControl.jsx';
-import Filter from './filter/Filter.jsx';
-import FilterButton from './filter/FilterButton.jsx';
-import Div from '../Div.jsx';
+import ColumnControl from './ColumnControl';
+import Filter from './filter/Filter';
+import FilterButton from './filter/FilterButton';
+import Div from '../Div';
 import PaginatorToPortalData from 'components/ui/new/paginator/PaginatorToPortalData';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
@@ -37,7 +36,6 @@ const style = {
   },
 };
 
-@autobind
 export default class DataTable extends React.Component {
 
   /**
@@ -161,7 +159,7 @@ export default class DataTable extends React.Component {
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
       data: [],
-      originalData: [],
+      originalData: this.props.data,
       uniqKey: Symbol(props.uniqKey || 'data-table'),
     };
 
@@ -202,7 +200,7 @@ export default class DataTable extends React.Component {
       }
 
       if (!props.useServerSort || !props.useServerFilter) {
-        changesFields.data = makeData(changesFields.data, this.state, { ...props, ...changesFields });
+        changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
       }
       this.state = {
         ...this.state,
@@ -222,34 +220,30 @@ export default class DataTable extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
+
+  static getDerivedStateFromProps(nextProps, preveState) {
     const {
       initialSort,
       firstUseExternalInitialSort,
       initialSortAscending,
-    } = this.state;
+      originalData,
+      data,
+    } = preveState;
 
     const changesFields = {
       initialSort,
       initialSortAscending,
       firstUseExternalInitialSort,
-      originalData: this.state.originalData,
-      data: this.state.data,
+      originalData,
+      data,
     };
 
     if (firstUseExternalInitialSort) {
-      if (props.initialSort && props.initialSort !== initialSort) {
-        changesFields.initialSort = props.initialSort;
+      if (nextProps.initialSort && nextProps.initialSort !== initialSort) {
+        changesFields.initialSort = nextProps.initialSort;
       }
-      if (props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
-        changesFields.initialSortAscending = props.initialSortAscending;
+      if (nextProps.initialSortAscending && nextProps.initialSortAscending !== initialSortAscending) {
+        changesFields.initialSortAscending = nextProps.initialSortAscending;
       }
       changesFields.firstUseExternalInitialSort = false;
     }
@@ -259,50 +253,56 @@ export default class DataTable extends React.Component {
       changesFields.firstUseExternalInitialSort = false;
     }
 
-    if (props.useServerFilter) {
-      changesFields.filterValues = props.filterValues;
+    if (nextProps.useServerFilter) {
+      changesFields.filterValues = nextProps.filterValues;
     }
-    if (props.filterResetting) {
+    if (nextProps.filterResetting) {
       changesFields.filterValues = {};
     }
 
-    if (Array.isArray(props.results) && props.results !== this.state.originalData) {
-      changesFields.originalData = props.results;
-      changesFields.data = props.results;
+    if (Array.isArray(nextProps.results) && nextProps.results !== originalData) {
+      changesFields.originalData = nextProps.results;
+      changesFields.data = nextProps.results;
     }
 
-    if (!props.useServerSort || !props.useServerFilter) {
-      changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
+    if (!nextProps.useServerSort || !nextProps.useServerFilter) {
+      changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
     }
 
-    this.setState(changesFields);
+    return changesFields;
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (!this.state.isHierarchical) return true;
+  componentDidUpdate() {
+    const { props } = this;
 
-    return !_.isEqual(nextProps.results, this.props.results);
+    if (props.checked) {
+      // хак, т.к. гридл не умеет в обновление хедера
+      // TODO переделать
+      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
+      const el = document.getElementById('checkedColumn');
+      if (el) el.checked = checked;
+    }
   }
 
   getFilterTypeByKey(key) {
     return getFilterTypeByKey(key, this.props.tableMeta);
   }
 
-  closeFilter() {
+  closeFilter = () => {
     if (this.state.filterModalIsOpen === true) {
       this.setState({ filterModalIsOpen: false });
     }
   }
 
-  toggleFilter() {
+  toggleFilter = () => {
     this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   }
 
-  toggleColumnControl() {
+  toggleColumnControl = () => {
     this.setState({ columnControlModalIsOpen: !this.state.columnControlModalIsOpen });
   }
 
-  saveFilter(filterValues) {
+  saveFilter = (filterValues) => {
     console.log('SAVE FILTER', filterValues); // eslint-disable-line
 
     if (this.props.externalFilter) {
@@ -315,13 +315,13 @@ export default class DataTable extends React.Component {
     this.setState({ filterValues, globalCheckboxState: false });
   }
 
-  closeColumnControl() {
+  closeColumnControl = () => {
     if (this.state.columnControlModalIsOpen === true) {
       this.setState({ columnControlModalIsOpen: false });
     }
   }
 
-  saveColumnControl(column) {
+  saveColumnControl = (column) => {
     const { columnControlValues } = this.state;
     const i = columnControlValues.indexOf(column);
     if (i === -1) {
@@ -331,14 +331,6 @@ export default class DataTable extends React.Component {
     }
     this.setState({ columnControlValues });
     localStorage.setItem(this.props.columnControlStorageName, JSON.stringify(columnControlValues));
-  }
-
-  cloneObject(object) {
-    const clonedObject = {};
-    for (const key of Object.keys(object)) {
-      clonedObject[key] = object[key];
-    }
-    return clonedObject;
   }
 
   handleRowCheck = (id) => {
@@ -352,7 +344,7 @@ export default class DataTable extends React.Component {
     });
   }
 
-  globalCheckHandler(event) {
+  globalCheckHandler = (event) => {
     const checked = _(this.props.results)
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
@@ -417,7 +409,7 @@ export default class DataTable extends React.Component {
 
     return initialArray;
   }
-  cutString = (callback, props) => {
+  cutString(callback, props) {
     const newProps = { ...props };
     let { data = '' } = props;
 
@@ -461,7 +453,7 @@ export default class DataTable extends React.Component {
     };
   }
 
-  shouldBeRendered(obj) {
+  shouldBeRendered = (obj) => {
     if (this.props.externalFilter && !this.props.needMyFilter) {
       return true;
     }
@@ -608,7 +600,7 @@ export default class DataTable extends React.Component {
           .filter(this.shouldBeRendered);
   }
 
-  handleChangeSort(sortingColumnName, ascendingSort) {
+  handleChangeSort = (sortingColumnName, ascendingSort) => {
     const nextProps = {
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
@@ -628,7 +620,7 @@ export default class DataTable extends React.Component {
     });
   }
 
-  handleKeyPress(data, keyCode, e) {
+  handleKeyPress = (data, keyCode, e) => {
     if (isEmpty(this.props.selected)) {
       return;
     }

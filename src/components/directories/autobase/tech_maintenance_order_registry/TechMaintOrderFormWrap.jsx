@@ -6,7 +6,6 @@ import TechMaintOrderForm from './TechMaintOrderForm';
 import { formValidationSchema } from './schema';
 
 class TechMaintOrderFormWrap extends FormWrap {
-
   constructor(props, context) {
     super(props);
 
@@ -21,22 +20,23 @@ class TechMaintOrderFormWrap extends FormWrap {
     const { saveButtonEnability = true } = this.state;
     const canSave = this.props.isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm ?
-      <TechMaintOrderForm
-        formState={this.state.formState}
-        formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        canSave={canSave}
-        isPermitted={this.props.isPermitted}
-        onSubmit={this.handleFormSubmit}
-        handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-      />
+    return this.props.showForm
+      ? (
+        <TechMaintOrderForm
+          formState={this.state.formState}
+          formErrors={this.state.formErrors}
+          permissions={[`${entity}.update`]}
+          addPermissionProp
+          canSave={canSave}
+          isPermitted={this.props.isPermitted}
+          onSubmit={this.handleFormSubmit}
+          handleFormChange={this.handleFormStateChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+        />
+      )
       : null;
   }
-
 }
 
 export default enhanceWithPermissions(TechMaintOrderFormWrap);

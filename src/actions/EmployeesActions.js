@@ -27,19 +27,17 @@ const makeFilesToBackendOne = (formState) => {
   return payload;
 };
 
-const makeFilesToFrontendAll = rows =>
-  rows.map(({ files = [], ...other }) => ({
-    ...other,
-    driver_license_files: files.filter(file => file.kind === 'driver_license'),
-    medical_certificate_files: files.filter(file => file.kind === 'medical_certificate'),
-  }));
+const makeFilesToFrontendAll = rows => rows.map(({ files = [], ...other }) => ({
+  ...other,
+  driver_license_files: files.filter(file => file.kind === 'driver_license'),
+  medical_certificate_files: files.filter(file => file.kind === 'medical_certificate'),
+}));
 
 function getEmployees(payload = {}) {
   return EmployeeService.get(payload).then(r => ({ result: makeFilesToFrontendAll(r.result.rows) }));
 }
 
 export default class EmployeesActions extends Actions {
-
   async getEmployees(props) {
     const payload = {
       ...props,
@@ -71,7 +69,9 @@ export default class EmployeesActions extends Actions {
     return LastBrigadeService.path(id).get().then(({ result: { last_brigade } }) => last_brigade || []);
   }
 
-  getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {
+  getWaybillDrivers({
+    type = 'before', date_from, date_to, ...restPayload
+  }) {
     const opts = {
       ...restPayload,
       date_from: createValidDateTime(date_from),
@@ -123,6 +123,4 @@ export default class EmployeesActions extends Actions {
     const payload = { id };
     return EmployeeService.path(`${id}`).delete(payload, getEmployees, 'json');
   }
-
 }
-

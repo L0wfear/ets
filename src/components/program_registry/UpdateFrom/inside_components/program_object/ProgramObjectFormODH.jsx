@@ -1,5 +1,7 @@
 import React from 'react';
-import { Row, Col, Modal, Button, Nav, NavItem } from 'react-bootstrap';
+import {
+  Row, Col, Modal, Button, Nav, NavItem,
+} from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
 import { cloneDeep, isEmpty } from 'lodash';
@@ -8,14 +10,14 @@ import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/
 
 import { tabable } from 'components/compositions/hoc';
 
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
-import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import ModalBody from 'components/ui/Modal';
 
-import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
-import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
+import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo';
+import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
 
@@ -83,7 +85,13 @@ class ProgramObjectFormodh extends Form {
           changesFormState.objectsType = getObjectsType(type);
         }
         changesState.odhPolys = odhPolysOut;
-        changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({ data: { id: value, name: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+        changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({
+          data: {
+            id: value, name: label, total_area, id, name,
+          },
+        }) => ({
+          value, label, total_area, id, name,
+        }));
 
         const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
 
@@ -104,7 +112,13 @@ class ProgramObjectFormodh extends Form {
           const changesState = { manual };
           changesState.odhPolys = cloneDeep(odhPolysOrigal);
 
-          changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({ data: { id: value, name: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+          changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({
+            data: {
+              id: value, name: label, total_area, id, name,
+            },
+          }) => ({
+            value, label, total_area, id, name,
+          }));
 
           this.setState({ ...changesState });
 
@@ -132,6 +146,7 @@ class ProgramObjectFormodh extends Form {
     });
     this.setState({ manual: false, odhPolys });
   }
+
   setManualOnTrue = () => {
     const { formState: { objectsType, object_list, object_list: [selectedShape] } } = this.props;
     const { odhPolys: odhPolysOld } = this.props;
@@ -154,6 +169,7 @@ class ProgramObjectFormodh extends Form {
   }
 
   showPercentForm = () => this.setState({ showPercentForm: true });
+
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => {
@@ -181,6 +197,7 @@ class ProgramObjectFormodh extends Form {
     }
     return new Promise(() => this.handleSubmit());
   }
+
   handleFeatureClick = ({ id: object_id }) => {
     const { odhPolys } = this.state;
     const { data: { id: asuods_id } } = odhPolys[object_id];
@@ -191,21 +208,24 @@ class ProgramObjectFormodh extends Form {
   startDraw = () => {
     this.handleChange('draw_object_list', []);
   }
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+
+  handleAddDrawLines = (drawObjectNew) => {
     const { formState: { draw_object_list = [] } } = this.props;
 
-    draw_object_list.push(drawObjectNew);
+    draw_object_list.push(...drawObjectNew);
 
     this.handleChange('draw_object_list', draw_object_list);
   }
-  handleDrawFeatureClick = ({ index, nextState }) => {
+
+  handleDrawFeatureClick = ({ index, state }) => {
     const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
 
-    draw_object_list[index].state = nextState;
+    draw_object_list[index].state = state;
 
     this.handleChange('draw_object_list', draw_object_list);
   }
+
   handleRemoveLastDrawFeature = () => {
     const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
@@ -385,7 +405,7 @@ class ProgramObjectFormodh extends Form {
             </Row>
             <Row>
               <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
-                <span >Подрядчик</span>
+                <span>Подрядчик</span>
               </Col>
               <Col md={6}>
                 <ExtField
@@ -413,7 +433,7 @@ class ProgramObjectFormodh extends Form {
             </Row>
             <Nav style={{ marginBottom: 20 }} bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
               <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
-              <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
+              <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
             </Nav>
             <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <Row style={{ marginBottom: 20 }}>
@@ -454,7 +474,7 @@ class ProgramObjectFormodh extends Form {
                 />
               </Col>
               <Col md={5}>
-                <Div hidden={!IS_CREATING && isEmpty(odhPolys)} >
+                <Div hidden={!IS_CREATING && isEmpty(odhPolys)}>
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
                     manual={manual}
@@ -467,7 +487,7 @@ class ProgramObjectFormodh extends Form {
                     setManualOnFalse={this.setManualOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
-                    handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                    handleAddDrawLines={this.handleAddDrawLines}
                     handleDrawFeatureClick={this.handleDrawFeatureClick}
                     handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
                   />
@@ -494,4 +514,3 @@ class ProgramObjectFormodh extends Form {
 
 
 export default tabable(connectToStores(ProgramObjectFormodh, ['repair', 'geoObjects']));
-

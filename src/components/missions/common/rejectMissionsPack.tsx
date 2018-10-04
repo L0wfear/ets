@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/Field.jsx';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { cloneDeep } from 'lodash';
 
 const typeObj = {

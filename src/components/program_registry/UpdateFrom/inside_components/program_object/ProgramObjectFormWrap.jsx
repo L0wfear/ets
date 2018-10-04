@@ -1,8 +1,8 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import { validateField } from 'utils/validate/validateField.js';
+import { validateField } from 'utils/validate/validateField';
 
 import ProgramObjectFormDT from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
 import ProgramObjectFormODH from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormODH';
@@ -10,13 +10,14 @@ import ProgramObjectFormODH from 'components/program_registry/UpdateFrom/inside_
 import { formValidationSchema, elementsValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_object/schema';
 
 class ProgramObjectFormWrap extends FormWrap {
-
   constructor(props) {
     super(props);
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
   }
+
   createAction = formState => this.context.flux.getActions('repair').programObject('post', formState);
+
   updateAction = formState => this.context.flux.getActions('repair').programObject('put', formState);
 
   handleMultiChange = (fields) => {
@@ -57,8 +58,7 @@ class ProgramObjectFormWrap extends FormWrap {
       formErrors[key] = validateField(prop, formState[key], formState, this.schema);
       return formErrors;
     },
-      { ...errors },
-    );
+    { ...errors });
 
     newFormErrors = {
       ...newFormErrors,
@@ -115,7 +115,7 @@ class ProgramObjectFormWrap extends FormWrap {
         this.props.onFormHide();
       });
     }
-    return <div>{''}</div>;
+    return <div />;
   }
 
   getFormDt() {
@@ -171,8 +171,8 @@ class ProgramObjectFormWrap extends FormWrap {
   }
 
   render() {
-    return this.props.showForm ?
-      this.switchFormByType()
+    return this.props.showForm
+      ? this.switchFormByType()
       : null;
   }
 }

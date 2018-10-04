@@ -1,7 +1,13 @@
-import CarTypesDirectory from 'components/directories/autobase/car_types/CarTypesDirectory.jsx';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import loadable from 'loadable-components';
+
+export const component = loadable(() => import(/* webpackChunkName: "car_types" */ 'components/directories/autobase/car_types/CarTypesDirectory'), {
+  LoadingComponent,
+});
 
 export default [
   {
-    component: CarTypesDirectory,
+    component,
+    loadable: true,
   },
 ];

@@ -1,5 +1,4 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
 import {
   cloneDeep,
   get,
@@ -14,16 +13,16 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import permissions from 'components/missions/mission/config-data/permissions';
 import order_permissions from 'components/directories/order/config-data/permissions';
-import CheckableElementsList from 'components/CheckableElementsList.jsx';
+import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew.tsx';
-import PrintForm from 'components/missions/common/PrintForm.tsx';
+import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import PrintForm from 'components/missions/common/PrintForm';
 
-import Paginator from 'components/ui/Paginator.jsx';
-import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable.jsx';
+import Paginator from 'components/ui/Paginator';
+import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
-import MissionRejectForm from 'components/missions/mission/MissionRejectForm.jsx';
+import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 
 const is_archive = false;
 
@@ -44,7 +43,6 @@ const ButtonUpdateMission = enhanceWithPermissions({
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
-@autobind
 export default class MissionsJournal extends CheckableElementsList {
 
   constructor(props, context) {
@@ -64,8 +62,7 @@ export default class MissionsJournal extends CheckableElementsList {
     };
   }
 
-  async componentDidMount() {
-    super.componentDidMount();
+  async init() {
     const { flux } = this.context;
     const linear = true;
     const outerPayload = {
@@ -83,16 +80,17 @@ export default class MissionsJournal extends CheckableElementsList {
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, prevState) {
     if (
-      nextState.page !== this.state.page ||
-      nextState.sortBy !== this.state.sortBy ||
-      nextState.filter !== this.state.filter
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy ||
+      prevState.filter !== this.state.filter
     ) {
-      this.refreshList(nextState);
+      this.refreshList(this.state);
     }
   }
-  async refreshList(state = this.state) {
+
+  refreshList = async (state = this.state) => {
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
 
     const { total_count } = missions.result.meta;
@@ -104,12 +102,12 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  removeElementCallback() {
+  removeElementCallback = () => {
     global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены', 'success');
     this.refreshList();
   }
 
-  checkDisabled() {
+  checkDisabled = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -126,7 +124,7 @@ export default class MissionsJournal extends CheckableElementsList {
     ));
   }
 
-  checkDisabledDelete() {
+  checkDisabledDelete = () => {
     return (
       super.checkDisabledDelete() ||
       (this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned') ||
@@ -134,7 +132,7 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  checkDisabledArchive() {
+  checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
     if (selectedElement) {
@@ -150,7 +148,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
   rejectMission = () => this.setState({ showMissionRejectForm: true });
 
-  completeCheckedElements() {
+  completeCheckedElements = () => {
     const { selectedElement } = this.state;
     const missionsObj = this.state.checkedElements || {};
     if (selectedElement) {
@@ -173,7 +171,7 @@ export default class MissionsJournal extends CheckableElementsList {
     });
   }
 
-  rejectCheckedElements() {
+  rejectCheckedElements = () => {
     this.rejectMission();
   }
 
@@ -260,7 +258,7 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  onReject(refresh) {
+  onReject = (refresh) => {
     const newPropsState = {
       showMissionRejectForm: false,
     };
@@ -308,7 +306,7 @@ export default class MissionsJournal extends CheckableElementsList {
     .catch(() => {});
   }
 
-  async mapView(id) {
+  mapView = async (id) => {
     const { result, warnings = false } = await this.context.flux.getActions('missions').getMissionData(id);
     if (warnings && warnings.length > 0) {
       global.NOTIFICATION_SYSTEM.notify(warnings[0], 'error');
@@ -317,7 +315,7 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  getForms() {
+  getForms = () => {
     return [
       <div key={'forms'}>
         <MissionFormWrap
@@ -356,7 +354,7 @@ export default class MissionsJournal extends CheckableElementsList {
     this.props.history.push('/orders');
   }
 
-  getbuttonAddCZ() {
+  getbuttonAddCZ = () => {
     return (
       <div key={'00.1'} className="container-button-create-cz">
         <ButtonGoFaxogramm bsSize="small" bsStyle="success" onClick={this.goToOrders} disabled={false}>
@@ -366,7 +364,7 @@ export default class MissionsJournal extends CheckableElementsList {
     );
   }
 
-  getButtons() {
+  getButtons = () => {
     const superButtons = super.getButtons({
       BCbuttonName: 'Создать децентрализованное задание',
     });
@@ -386,15 +384,15 @@ export default class MissionsJournal extends CheckableElementsList {
     return buttons;
   }
 
-  changeSort(field, direction) {
+  changeSort = (field, direction) => {
     this.setState({ sortBy: getServerSortingField(field, direction, get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
   }
 
-  changeFilter(filter) {
+  changeFilter = (filter) => {
     this.setState({ filter });
   }
 
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     return {
       mapView: this.mapView,
       structures: this.props.companyStructureLinearList,
@@ -407,11 +405,11 @@ export default class MissionsJournal extends CheckableElementsList {
     };
   }
 
-  export() {
+  export = () => {
     this.setState({ showPrintForm: true });
   }
 
-  additionalRender() {
+  additionalRender = () => {
     return (
       <Paginator
         currentPage={this.state.page}

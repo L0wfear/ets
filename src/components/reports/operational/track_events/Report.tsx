@@ -1,19 +1,18 @@
 import * as React from 'react';
 
-import { IPropsMapModal } from 'components/reports/@types/MapModal.h';
-import MapModalSCC from 'components/reports/MapModal.jsx';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from './reportProps';
 
-const MapModal: React.ComponentClass<IPropsMapModal> = MapModalSCC;
+import ReportFormWrap from 'components/reports/operational/track_events/form/ReportFormWrap';
 
 interface IStateTrackEventReport {
   mapFormVisibility: boolean;
-  coords: number[];
+  coords: [number, number];
 }
+const exportableTSX: any = exportable;
 
-@exportable({
+@exportableTSX({
   entity: serviceUrl,
 })
 class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
@@ -21,7 +20,7 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
     super(props);
     this.state = {
       mapFormVisibility: false,
-      coords: [],
+      coords: [0, 0],
     };
   }
   handleMapVisibility = data => {
@@ -37,6 +36,7 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
       mapFormVisibility: false,
     });
   }
+
   render() {
     return (
       <div>
@@ -45,11 +45,21 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
           renderers={renderers(this.handleMapVisibility)}
           {...this.props}
         />
-        <MapModal
-          coords={this.state.coords}
+        {
+          /*
+          <MapModal
+            coords={this.state.coords}
+            showForm={this.state.mapFormVisibility}
+            onFormHide={this.onMapFormHide}
+          />
+          */
+        }
+        <ReportFormWrap
           showForm={this.state.mapFormVisibility}
           onFormHide={this.onMapFormHide}
+          coords={this.state.coords}
         />
+        
       </div>
     );
   }

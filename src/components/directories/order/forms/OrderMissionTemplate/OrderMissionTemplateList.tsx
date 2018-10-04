@@ -5,16 +5,16 @@ import { isEmpty } from 'lodash';
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div.jsx';
+import Div from 'components/ui/Div';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import MissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
 import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
 
-import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap.jsx';
-import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap.jsx';
+import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap';
+import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
-import { diffDates } from 'utils/dates.js';
+import { diffDates } from 'utils/dates';
 
 import { checkStructureByTypeClick } from 'components/directories/order/forms/utils/customValidate';
 import {
@@ -56,7 +56,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       
       this.setState({
         missionsList,
-        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.frontId]: mission }), {}),
         structures,
         timeInterval,
       });
@@ -78,7 +78,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     this.setState({
       missionsList,
-      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.frontId]: mission }), {}),
       timeInterval,
     });
   }
@@ -119,7 +119,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
-    if (!checkStructureByTypeClick(typeClick, this.props, Object.values(checkedElements))) {
+    if (!checkStructureByTypeClick(typeClick, this.props as any, Object.values(checkedElements))) {
       this.setState({ canSubmit: false });
 
       const queryList = Object.entries(checkedElements).map(([id, value]) => {
@@ -162,17 +162,17 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
   }
 
-  onRowSelected = ({ props: { data: { customId } } }) => this.setState({ selectedElement: this.state.missionsIndex[customId] });
+  onRowSelected = ({ props: { data: { frontId } } }) => this.setState({ selectedElement: this.state.missionsIndex[frontId] });
 
-  onRowChecked = (customId, state) => {
+  onRowChecked = (frontId, state) => {
     const {
       checkedElements: { ...checkedElements },
     } = this.state;
 
     if (state) {
-      checkedElements[customId] = this.state.missionsIndex[customId];
+      checkedElements[frontId] = this.state.missionsIndex[frontId];
     } else {
-      delete checkedElements[customId];
+      delete checkedElements[frontId];
     }
 
     this.setState({ checkedElements });

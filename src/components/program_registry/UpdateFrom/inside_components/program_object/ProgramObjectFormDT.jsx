@@ -1,5 +1,7 @@
 import React from 'react';
-import { Row, Col, Modal, Button, Nav, NavItem, Panel } from 'react-bootstrap';
+import {
+  Row, Col, Modal, Button, Nav, NavItem, Panel,
+} from 'react-bootstrap';
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
 import { cloneDeep, isEmpty } from 'lodash';
@@ -8,16 +10,20 @@ import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/
 
 import { tabable } from 'components/compositions/hoc';
 
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 
-import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import ModalBody from 'components/ui/Modal';
 
-import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo.tsx';
-import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.tsx';
+import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo';
+import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
+import {
+  SpanContractor,
+  PanelObjectInfo,
+} from 'components/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -76,7 +82,13 @@ class ProgramObjectFormDT extends Form {
           changesFormState.objectsType = getObjectsType(type);
         }
         changesState.dtPolys = dtPolysOut;
-        changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name } }) => ({ value, label, total_area, id, name }));
+        changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({
+          data: {
+            yard_id: value, object_address: label, total_area, id, name,
+          },
+        }) => ({
+          value, label, total_area, id, name,
+        }));
 
         const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
@@ -97,7 +109,13 @@ class ProgramObjectFormDT extends Form {
           const changesState = { manual };
           changesState.dtPolys = cloneDeep(dtPolysOrigal);
 
-          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({ data: { yard_id: value, object_address: label, total_area, id, name, company_name } }) => ({ value, label, company_name, total_area, id, name }));
+          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({
+            data: {
+              yard_id: value, object_address: label, total_area, id, name, company_name,
+            },
+          }) => ({
+            value, label, company_name, total_area, id, name,
+          }));
 
           this.setState({ ...changesState });
 
@@ -108,7 +126,11 @@ class ProgramObjectFormDT extends Form {
 
     if (!IS_CREATING) {
       this.context.flux.getActions('repair').getObjectVersions(this.props.formState.id)
-        .then(ans => this.setState({ VERSIONS_OPTIONS: ans.map(({ object_id, program_version_id }, index) => ({ value: object_id, label: `Версия №${index}`, object_id, program_version_id })) }));
+        .then(ans => this.setState({
+          VERSIONS_OPTIONS: ans.map(({ object_id, program_version_id }, index) => ({
+            value: object_id, label: `Версия №${index}`, object_id, program_version_id,
+          })),
+        }));
     }
   }
 
@@ -132,6 +154,7 @@ class ProgramObjectFormDT extends Form {
     });
     this.setState({ manual: false, dtPolys });
   }
+
   setManualOnTrue = () => {
     const { formState: { objectsType, object_list, object_list: [selectedShape] } } = this.props;
     const { dtPolys: dtPolysOld } = this.props;
@@ -154,6 +177,7 @@ class ProgramObjectFormDT extends Form {
   }
 
   showPercentForm = () => this.setState({ showPercentForm: true });
+
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => {
@@ -181,6 +205,7 @@ class ProgramObjectFormDT extends Form {
     }
     return new Promise(() => this.handleSubmit());
   }
+
   handleFeatureClick = ({ id: object_id }) => {
     const { dtPolys } = this.state;
     const { data: { yard_id: asuods_id } } = dtPolys[object_id];
@@ -191,21 +216,24 @@ class ProgramObjectFormDT extends Form {
   startDraw = () => {
     this.handleChange('draw_object_list', []);
   }
-  handleDrawFeatureAdd = ({ drawObjectNew }) => {
+
+  handleAddDrawLines = (drawObjectNew) => {
     const { formState: { draw_object_list = [] } } = this.props;
 
-    draw_object_list.push(drawObjectNew);
+    draw_object_list.push(...drawObjectNew);
 
     this.handleChange('draw_object_list', draw_object_list);
   }
-  handleDrawFeatureClick = ({ index, nextState }) => {
+
+  handleDrawFeatureClick = ({ index, state }) => {
     const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
 
-    draw_object_list[index].state = nextState;
+    draw_object_list[index].state = state;
 
     this.handleChange('draw_object_list', draw_object_list);
   }
+
   handleRemoveLastDrawFeature = () => {
     const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
@@ -289,7 +317,7 @@ class ProgramObjectFormDT extends Form {
       [
         ...this.props.formState.elements,
         { ...ELEMENT_NULL_OBJECT },
-      ]
+      ],
     );
   }
 
@@ -372,7 +400,7 @@ class ProgramObjectFormDT extends Form {
           <div>
             <Row style={{ marginBottom: 20 }}>
               <Col md={12}>
-                <Panel className={'panel-object-info'}>
+                <PanelObjectInfo>
                   <Col md={12}>
                     <span style={{ fontWeight: 600 }}>Информация об объекте</span>
                   </Col>
@@ -397,18 +425,18 @@ class ProgramObjectFormDT extends Form {
                       <span>{`Заказчик: ${company_name || prCompanyName}`}</span>
                     </Col>
                   </Col>
-                </Panel>
+                </PanelObjectInfo>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
                 <Panel>
                   <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
-                    <span >Подрядчик</span>
+                    <span>Подрядчик</span>
                   </Col>
                   <div>
                     <Col md={2}>
-                      <span className={'span-contractor'}>{'Номер контракта'}</span>
+                      <SpanContractor>Номер контракта</SpanContractor>
                     </Col>
                     <Col md={3}>
                       <ExtField
@@ -421,7 +449,7 @@ class ProgramObjectFormDT extends Form {
                       />
                     </Col>
                     <Col mdOffset={2} md={1}>
-                      <span className={'span-contractor'}>{'Подрядчик'}</span>
+                      <SpanContractor>Подрядчик</SpanContractor>
                     </Col>
                     <Col style={{ position: 'relative', top: -20 }} md={4}>
                       <ExtField
@@ -440,7 +468,7 @@ class ProgramObjectFormDT extends Form {
             </Row>
             <Nav style={{ marginBottom: 20 }} bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
               <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
-              <NavItem eventKey={OBJ_TAB_INDEX.FACT} >Факт</NavItem>
+              <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
             </Nav>
             <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <Row style={{ marginBottom: 20 }}>
@@ -481,7 +509,7 @@ class ProgramObjectFormDT extends Form {
                 />
               </Col>
               <Col md={5}>
-                <Div hidden={!IS_CREATING && isEmpty(dtPolys)} >
+                <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
                     manual={manual}
@@ -494,7 +522,7 @@ class ProgramObjectFormDT extends Form {
                     setManualOnFalse={this.setManualOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
-                    handleDrawFeatureAdd={this.handleDrawFeatureAdd}
+                    handleAddDrawLines={this.handleAddDrawLines}
                     handleDrawFeatureClick={this.handleDrawFeatureClick}
                     handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
                   />
@@ -522,4 +550,3 @@ class ProgramObjectFormDT extends Form {
 
 
 export default tabable(connectToStores(ProgramObjectFormDT, ['repair', 'geoObjects']));
-

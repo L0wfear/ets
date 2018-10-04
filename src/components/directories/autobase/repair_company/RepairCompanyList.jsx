@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
-import ElementsList from 'components/ElementsList.jsx';
+import ElementsList from 'components/ElementsList';
 import RepairCompanyTable from 'components/directories/autobase/repair_company/RepairCompanyTable';
 import RepairCompanyFormWrap from 'components/directories/autobase/repair_company/RepairCompanyFormWrap';
 import permissions from 'components/directories/autobase/repair_company/config-data/permissions';
@@ -20,9 +20,7 @@ export default class RepairCompanyList extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('autobase').removeRepairCompany;
   }
-  componentDidMount() {
-    super.componentDidMount();
-
+  init() {
     const { flux } = this.context;
     flux.getActions('autobase').getAutobaseListByType('repairCompany');
   }

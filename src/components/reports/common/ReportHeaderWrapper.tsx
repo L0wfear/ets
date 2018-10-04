@@ -16,30 +16,33 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
     constructor(props) {
       super(props);
       this.state = {
+        lastQueryState: this.props.queryState,
+        ...this.props.queryState,
       };
     }
-    componentWillReceiveProps(nextProps) {
+
+    static getDerivedStateFromProps(nextProps, prevState) {
       const { queryState } = nextProps;
       const queryStateLength = Object.keys(queryState).length;
 
-      if (
-        queryStateLength > 0 &&
-        !isEqual(this.state, queryState)
-      ) {
-        this.setState({ ...queryState });
-        return;
+      console.log(queryState, prevState.lastQueryState, !isEqual(prevState.lastQueryState, queryState))
+      console.log(queryStateLength > 0 && !isEqual(prevState.lastQueryState, queryState))
+      if (queryStateLength > 0 && !isEqual(prevState.lastQueryState, queryState)) {
+        return {
+          ...queryState,
+          lastQueryState: queryState,
+        };
       }
-
-      // if (queryStateLength === 0) {
-      //   this.setState({ headerState: {} });
-      // }
+      return null;
     }
+
     handleChange = (field: string, value: any) => {
       this.setState({
         [field]: value,
       });
     }
     render() {
+      console.log(this.state)
       return (
         <SourceHeader
           {...this.props}

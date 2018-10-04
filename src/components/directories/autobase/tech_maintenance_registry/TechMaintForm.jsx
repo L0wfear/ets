@@ -10,9 +10,9 @@ import {
   FileField,
  } from 'components/ui/input/fields';
 import { connectToStores } from 'utils/decorators';
-import { ExtDiv } from 'components/ui/Div.jsx';
+import { ExtDiv } from 'components/ui/Div';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import {
   hasMotohours,
 } from 'utils/functions';

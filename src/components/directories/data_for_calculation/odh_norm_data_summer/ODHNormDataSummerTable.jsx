@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from 'components/ui/table/DataTable.jsx';
+import Table from 'components/ui/table/DataTable';
 
 const tableMeta = {
   cols: [
@@ -109,12 +109,14 @@ const tableMeta = {
 export default (props) => {
   const renderers = {};
 
-  return (<Table
-    title="Показатели норм по содержанию ОДХ (лето)"
-    results={props.data}
-    tableMeta={tableMeta}
-    className="small-table"
-    renderers={renderers}
-    {...props}
-  />);
+  return (
+    <Table
+      title="Показатели норм по содержанию ОДХ (лето)"
+      results={props.data}
+      tableMeta={tableMeta}
+      className="small-table"
+      renderers={renderers}
+      {...props}
+    />
+  );
 };

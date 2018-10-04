@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 
 export default class FuelRatesStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -28,5 +27,4 @@ export default class FuelRatesStore extends Store {
   handleGetFuelOperations({ result }) {
     this.setState({ operations: result });
   }
-
 }

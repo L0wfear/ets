@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
 import flummoxConnectToStores from 'flummox/connect';
-import exportable from './exportable.jsx';
-import bindable from './bindable.jsx';
-import wrappedRef from './wrappedRef.jsx';
+import exportable from './exportable';
+import bindable from './bindable';
+import wrappedRef from './wrappedRef';
 
 // TODO перенести HOC в отдельную папку, т.к. они могут использоваться не только как декораторы
 

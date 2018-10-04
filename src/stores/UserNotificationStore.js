@@ -68,7 +68,6 @@ const getUserNotificationList = (commonNotificationList, admNotificationList) =>
 ));
 
 export default class UserNotificationStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -107,6 +106,7 @@ export default class UserNotificationStore extends Store {
   handleSetNotifyFromArr({ result: { rows }, group }) {
     this.handleSetNotifyFromWs(rows.map(r => ({ ...r, group })));
   }
+
   handleSetNotifyFromWs(props) {
     let notifyArr = props;
     if (!Array.isArray(notifyArr)) {
@@ -173,6 +173,7 @@ export default class UserNotificationStore extends Store {
 
     this.setState(changedState);
   }
+
   handleGetAdmNotifications({ result: { rows } }) {
     const changedState = {
       admNotificationList: [],
@@ -249,7 +250,7 @@ export default class UserNotificationStore extends Store {
       ));
     }
 
-    changedObj.userNotificationList = getUserNotificationList(changedObj.admNotificationList || this.state.admNotificationList, changedObj.commonNotificationList || this.state.commonNotificationList)
+    changedObj.userNotificationList = getUserNotificationList(changedObj.admNotificationList || this.state.admNotificationList, changedObj.commonNotificationList || this.state.commonNotificationList);
 
     this.setState(changedObj);
   }

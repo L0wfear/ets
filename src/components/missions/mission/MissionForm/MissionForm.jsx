@@ -1,27 +1,30 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import { Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import {
+  Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
+} from 'react-bootstrap';
 import {
   uniqBy,
   isEmpty as lodashIsEmpty,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/RouteInfo.jsx';
-import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
-import Field from 'components/ui/Field.jsx';
+import RouteInfo from 'components/route/route-info/RouteInfo';
+import { DivNone } from 'global-styled/global-styled';
+import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import Field from 'components/ui/Field';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div.jsx';
-import { ExtField } from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import { isEmpty } from 'utils/functions';
-import Form from 'components/compositions/Form.jsx';
+import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/mission/inside_fields/index';
-import { checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { checkRouteByNew } from 'components/missions/utils/utils';
 import { routeTypesByKey } from 'constants/route';
 
-import { addTime, diffDates } from 'utils/dates.js';
+import { addTime, diffDates } from 'utils/dates';
 import {
   getDataByNormatives,
   getDataBySelectedRoute,
@@ -30,9 +33,11 @@ import {
   handleRouteFormHide,
   isOdhRouteTypePermitted,
 } from 'components/missions/mission/MissionForm/utils';
-import { AvailableRouteTypes } from "components/missions/mission/MissionForm/types";
+import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/types';
 
 import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssignment';
+
+import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 
 const modalKey = 'mission';
 
@@ -52,7 +57,6 @@ const makePayloadFromState = (formState, type_id) => ({
 });
 
 export class MissionForm extends Form {
-
   constructor(props) {
     super(props);
 
@@ -86,14 +90,12 @@ export class MissionForm extends Form {
       getDataBySelectedRoute(formState, routesActions.getRouteById),
       getRoutesByMissionId(formState, this.props.template, routesActions.getRoutesByMissionId, this.props.routesList),
     ])
-    .then(([technicalOperationsData, selectedRoute, routesList]) =>
-      this.setState({
+      .then(([technicalOperationsData, selectedRoute, routesList]) => this.setState({
         ...technicalOperationsData,
         selectedRoute,
         routesList,
         carsList: this.props.carsList,
-      })
-    );
+      }));
   }
 
   handleRouteIdChange = (route_id) => {
@@ -110,22 +112,21 @@ export class MissionForm extends Form {
           const { formState } = this.props;
 
           (
-            formState.is_column ?
-            Promise.all(
-              formState.type_id.map(type_id => (
-                flux.getActions('missions').getCleaningOneNorm({
-                  ...makePayloadFromState(formState, type_id),
-                  route_type: route.type,
-                  kind_task_ids: this.state.kind_task_ids,
-                })
-              ))
-            )
-            :
-            flux.getActions('missions').getCleaningOneNorm({
-              ...makePayloadFromState(formState),
-              route_type: route.type,
-              kind_task_ids: this.state.kind_task_ids,
-            }).then(Array)
+            formState.is_column
+              ? Promise.all(
+                formState.type_id.map(type_id => (
+                  flux.getActions('missions').getCleaningOneNorm({
+                    ...makePayloadFromState(formState, type_id),
+                    route_type: route.type,
+                    kind_task_ids: this.state.kind_task_ids,
+                  })
+                )),
+              )
+              : flux.getActions('missions').getCleaningOneNorm({
+                ...makePayloadFromState(formState),
+                route_type: route.type,
+                kind_task_ids: this.state.kind_task_ids,
+              }).then(Array)
           ).then((ans) => {
             const changesObjSecond = ans.reduce((newObj, normData) => ({
               norm_id: [...newObj.norm_id, normData.norm_id],
@@ -276,6 +277,7 @@ export class MissionForm extends Form {
 
     this.handleRouteIdChange(undefined);
   }
+
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);
     this.handleRouteIdChange(undefined);
@@ -330,7 +332,7 @@ export class MissionForm extends Form {
         this.state,
         routesActions.getRoutesBySomeData,
       ).then((ans) => {
-        this.setState({ ...ans })
+        this.setState({ ...ans });
       });
 
       this.handleRouteIdChange(result.createdRoute.result[0].id);
@@ -365,11 +367,9 @@ export class MissionForm extends Form {
     }
   }
 
-  handleChangeHoursDateEnd = countHours =>
-    this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
+  handleChangeHoursDateEnd = countHours => this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
 
-  handleChangeDateEnd = newDate =>
-    this.handleChange('date_end', newDate);
+  handleChangeDateEnd = newDate => this.handleChange('date_end', newDate);
 
   handleSubmit = (...props) => {
     if (this.props.formState.is_column && !this.props.template) {
@@ -402,7 +402,6 @@ export class MissionForm extends Form {
       const { flux } = this.context;
       const { fromWaybill } = this.props;
 
-      console.log('here')
       return getDataByNormatives(
         normatives,
         this.state.kind_task_ids,
@@ -411,8 +410,7 @@ export class MissionForm extends Form {
         flux.getActions('technicalOperation').getTechOperationsByNormIds,
         flux.getActions('routes').getRoutesBySomeData,
         flux.getActions('cars').getCarsByNormIds,
-      )
-      .then((newStateData) => {
+      ).then((newStateData) => {
         const changesObj = {
           normatives,
         };
@@ -471,9 +469,9 @@ export class MissionForm extends Form {
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
 
     const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
+      route !== null
+      && route.id !== undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -512,6 +510,8 @@ export class MissionForm extends Form {
     if (state.column_id) {
       title = `${title} . Колонна № ${state.column_id}`;
     }
+
+    const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     const carEditionDisability = (
       (
@@ -552,6 +552,22 @@ export class MissionForm extends Form {
       ) && !IS_NOT_IN_WAYBILL
     );
 
+    const municipalFacilityIdDisabled = (
+      (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
+      || sourceIsOrder
+    );
+
+    const alreadyDefineNormId = (
+      sourceIsOrder
+      || (
+        !IS_CREATING
+        && (
+          IS_POST_CREATING_ASSIGNED
+          || IS_DISPLAY
+        )
+      )
+    );
+
     if (IS_CREATING) {
       title = (
         <div>
@@ -561,22 +577,23 @@ export class MissionForm extends Form {
     }
     // Старые задания нельзя редактирвоать
 
-    const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
     return (
       <div>
         {
-          this.state.showColumnAssignment ?
-            <ColumnAssignment
-              ASSIGN_OPTIONS={ASSIGN_OPTIONS}
-              formState={state}
-              showBackButton={this.state.showBackButton}
-              hideColumnAssignment={this.hideColumnAssignment}
-              handleChange={this.handleChange}
-              CARS={CARS}
-              handleSubmit={this.handleSubmitFromAssignmentModal}
-            />
-          :
+          this.state.showColumnAssignment
+            ? (
+              <ColumnAssignment
+                ASSIGN_OPTIONS={ASSIGN_OPTIONS}
+                formState={state}
+                showBackButton={this.state.showBackButton}
+                hideColumnAssignment={this.hideColumnAssignment}
+                handleChange={this.handleChange}
+                CARS={CARS}
+                handleSubmit={this.handleSubmitFromAssignmentModal}
+              />
+            )
+            : (
             <Modal id="modal-mission" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
               <Modal.Header closeButton>
@@ -599,39 +616,46 @@ export class MissionForm extends Form {
                       clearable={false}
                     />
                   </Col>
-                  {STRUCTURES.length > 0 && <Col md={3}>
-                    <Field
-                      id="m-structure-id"
-                      type="select"
-                      modalKey={modalKey}
-                      label="Подразделение"
-                      error={errors.structure_id}
-                      disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !this.props.fromWaybill) || !IS_CREATING}
-                      clearable={STRUCTURE_FIELD_DELETABLE}
-                      options={STRUCTURES}
-                      emptyValue={null}
-                      placeholder={''}
-                      value={structureValue}
-                      onChange={this.handleStructureIdChange}
-                    />
-                  </Col>}
+                  {
+                    STRUCTURES.length > 0 && (
+                      <Col md={3}>
+                        <Field
+                          id="m-structure-id"
+                          type="select"
+                          modalKey={modalKey}
+                          label="Подразделение"
+                          error={errors.structure_id}
+                          disabled={STRUCTURE_FIELD_READONLY || this.props.fromWaybill || (!IS_CREATING && !this.props.fromWaybill) || !IS_CREATING}
+                          clearable={STRUCTURE_FIELD_DELETABLE}
+                          options={STRUCTURES}
+                          emptyValue={null}
+                          placeholder=""
+                          value={structureValue}
+                          onChange={this.handleStructureIdChange}
+                        />
+                      </Col>
+                    )
+                }
                 </Row>
                 <Row>
                   <Col md={6}>
                     <InsideField.MunicipalFacility
-                      id={'municipal_facility_id'}
-                      label={'municipal_facility_name'}
-                      errors={errors}
-                      state={state}
+                      modalKey={modalKey}
+                      error={errors.municipal_facility_id}
+                      name={state.municipal_facility_name}
+                      value={state.municipal_facility_id}
+                      date_start={state.date_start}
+                      technical_operation_id={state.technical_operation_id}
+                      norm_id={state.norm_id}
                       clearable={false}
-                      disabled={(!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) || this.props.fromOrder || sourceIsOrder}
+                      disabled={municipalFacilityIdDisabled}
+                      alreadyDefineNormId={alreadyDefineNormId}
                       handleChange={this.handleChangeMF}
-                      getDataByNormatives={this.getDataByNormatives}
                       technicalOperationsList={technicalOperationsList}
-                      getNormIdFromState={!!fromOrder || !IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) || this.props.fromOrder || sourceIsOrder}
-                      fromWaybill={this.props.fromWaybill}
-                      type_id={this.props.fromWaybill ? state.type_id : null}
                       kind_task_ids={kind_task_ids}
+                      getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
+                      typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
+                      getDataByNormatives={this.getDataByNormatives}
                     />
                   </Col>
                   <Col md={6}>
@@ -737,9 +761,19 @@ export class MissionForm extends Form {
                 </Row>
                 <Row>
                   <Col md={12}>
-                    <Div hidden={route ? route.id == null : true} className="mission-form-map-wrapper">
-                      <RouteInfo route={this.state.selectedRoute} mapOnly />
-                    </Div>
+                    {
+                      route && route.id
+                        ? (
+                          <RouteInfo
+                            route={route}
+                            noRouteName
+                            mapKey="mapMissionFrom"
+                          />
+                        )
+                        : (
+                          <DivNone />
+                        )
+                    }
                   </Col>
                 </Row>
                 <Row>
@@ -769,15 +803,19 @@ export class MissionForm extends Form {
                     />
                     { IS_CREATING && !fromOrder && <span className="help-block-mission-source">{'Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".'}</span> }
                   </Col>
-                  {state.order_number != null && <Col md={2}>
-                    <Field
-                      id="order-number"
-                      type="string"
-                      label="Номер централизованного задания"
-                      readOnly
-                      value={state.order_number}
-                    />
-                  </Col>}
+                  {state.order_number != null
+                    && (
+                      <Col md={2}>
+                        <Field
+                          id="order-number"
+                          type="string"
+                          label="Номер централизованного задания"
+                          readOnly
+                          value={state.order_number}
+                        />
+                      </Col>
+                    )
+                  }
                   <Col md={state.order_number != null ? 4 : 6}>
                     <Field
                       id="m-comment"
@@ -806,33 +844,38 @@ export class MissionForm extends Form {
                         onChange={this.handleChange.bind(this, 'assign_to_waybill')}
                       />
                     </Div>
-                  )}
-                  {!state.is_column && (
-                    <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>  
-                      <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
-                        <Glyphicon id="m-print" glyph="print" />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                        <MenuItem eventKey={2}>Печать</MenuItem>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
-                  <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
-                </Div>
-              </Modal.Footer>
-
-              <RouteFormWrap
-                element={route}
-                onFormHide={this.onFormHide}
-                showForm={this.state.showRouteForm}
-                fromMission
-                notTemplate
-                fromOrder={this.props.fromOrder}
-                available_route_types={state.is_column ? available_route_types.filter(type => type === 'mixed') : available_route_types}
-                structureId={state.structure_id}
-              />
-            </Modal>
+                    )}
+                    {
+                      !state.is_column && (
+                      <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
+                        <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
+                          <Glyphicon id="m-print" glyph="print" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+                          <MenuItem eventKey={2}>Печать</MenuItem>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
+                    <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
+                  </Div>
+                </Modal.Footer>
+                <HiddenMapForPrint
+                  route={route}
+                  printMapKeySmall={this.props.printMapKeySmall}
+                />
+                <RouteFormWrap
+                  element={route}
+                  onFormHide={this.onFormHide}
+                  showForm={this.state.showRouteForm}
+                  fromMission
+                  notTemplate
+                  fromOrder={this.props.fromOrder}
+                  available_route_types={state.is_column ? available_route_types.filter(type => type === 'mixed') : available_route_types}
+                  structureId={state.structure_id}
+                />
+              </Modal>
+            )
         }
       </div>
     );

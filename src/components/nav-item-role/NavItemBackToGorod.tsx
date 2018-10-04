@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {
   sessionSetData,
-} from 'redux/modules/session/actions-session';
+} from 'redux-main/reducers/modules/session/actions-session';
 
 import { NavItem, Glyphicon } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';

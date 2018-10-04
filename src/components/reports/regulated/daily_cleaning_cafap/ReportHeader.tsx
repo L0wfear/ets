@@ -10,8 +10,8 @@ import {
 import { IAppConfig } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
-import Div from 'components/ui/Div.jsx';
-import FieldComponent from 'components/ui/Field.jsx';
+import Div from 'components/ui/Div';
+import FieldComponent from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
 import { bindable, FluxContext } from 'utils/decorators';

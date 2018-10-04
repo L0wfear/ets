@@ -1,27 +1,28 @@
 import * as React from 'react';
-import { autobind } from 'core-decorators';
 import clone from 'lodash/clone';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
-import Div from 'components/ui/Div.jsx';
-import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore.js';
+import Div from 'components/ui/Div';
+import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
 import { isEmpty } from 'utils/functions';
-import { getToday9am, getTomorrow9am, addTime } from 'utils/dates.js';
-import { missionTemplateSchema } from 'models/MissionTemplateModel.js';
-import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel.js';
+import { getToday9am, getTomorrow9am, addTime } from 'utils/dates';
+import { missionTemplateSchema } from 'models/MissionTemplateModel';
+import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel';
 
-import FormWrap from 'components/compositions/FormWrap.jsx';
+import FormWrap from 'components/compositions/FormWrap';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import {
   checkMissionsByRouteType,
   checkMissionsOnStructureIdCar,
-} from 'components/missions/utils/customValidate.ts';
-import { printData, resizeBase64 } from 'utils/functions';
+} from 'components/missions/utils/customValidate';
+import { printData } from 'utils/functions';
+import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
-import MissionTemplateForm from './MissionTemplateForm.jsx';
-import MissionsCreationForm from './MissionsCreationForm.jsx';
+import MissionTemplateForm from './MissionTemplateForm';
+import MissionsCreationForm from './MissionsCreationForm';
 
-const keyGlobal = 'mission_template_hidden';
+const printMapKeyBig = 'mapMissionTemplateFormA3';
+const printMapKeySmall = 'mapMissionTemplateFormA4';
 
 export const createMissions = async (flux, element, payload) => {
   let error = false;
@@ -53,14 +54,17 @@ export const createMissions = async (flux, element, payload) => {
     if (e && e.message.code === 'invalid_period') {
       const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
 
-      const body = self => <div>
-        <div>{e.message.message}</div><br />
-        <center>Введите даты задания:</center>
-        <IntervalPicker
-          interval={self.state.interval}
-          onChange={interval => self.setState({ interval })}
-        />
-      </div>;
+      const body = self => (
+        <div>
+          <div>{e.message.message}</div>
+          <br />
+          <center>Введите даты задания:</center>
+          <IntervalPicker
+            interval={self.state.interval}
+            onChange={interval => self.setState({ interval })}
+          />
+        </div>
+      );
 
       let cancel = false;
       let state;
@@ -97,9 +101,7 @@ export const createMissions = async (flux, element, payload) => {
   return error;
 };
 
-@autobind
-export default class MissionFormWrap extends FormWrap {
-
+class MissionTemplateFormWrap extends FormWrap {
   constructor(props) {
     super(props);
 
@@ -146,7 +148,7 @@ export default class MissionFormWrap extends FormWrap {
     }
   }
 
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const {
@@ -220,25 +222,27 @@ export default class MissionFormWrap extends FormWrap {
     this.setState(newState);
   }
 
-  handlePrint = (print_format) => {
+  handlePrint = (mapKey) => {
     const f = this.state.formState;
     const { flux } = this.context;
     const data = {
       template_id: f.id,
-      size: `a${print_format}`,
+      size: '',
     };
-    const mapKey = `map${keyGlobal}/${data.size}`;
 
-    global[mapKey].once('postcompose', async (event) => {
-      const routeImageBase64Data = await resizeBase64(event.context.canvas.toDataURL('image/png'));
-      data.image = routeImageBase64Data;
+    if (mapKey === printMapKeyBig) {
+      data.size = 'a3';
+    }
+    if (mapKey === printMapKeySmall) {
+      data.size = 'a4';
+    }
 
+    this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
+      data.image = image;
       flux.getActions('missions').printMissionTemplate(data).then(({ blob }) => {
         printData(blob);
       });
     });
-
-    global[mapKey].render();
   }
 
 
@@ -256,7 +260,8 @@ export default class MissionFormWrap extends FormWrap {
             template
             handleMultiFormChange={this.handlMultiFormStateChange}
             handlePrint={this.handlePrint}
-            keyGlobal={keyGlobal}
+            printMapKeyBig={printMapKeyBig}
+            printMapKeySmall={printMapKeySmall}
             {...this.state}
           />
         </Div>
@@ -278,5 +283,6 @@ export default class MissionFormWrap extends FormWrap {
       </Div>
     );
   }
-
 }
+
+export default withMapInConsumer()(MissionTemplateFormWrap);

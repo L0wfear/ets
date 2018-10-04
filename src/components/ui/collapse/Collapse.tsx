@@ -40,12 +40,15 @@ class Collapse extends React.Component<PropsCollapse, StateCollapse> {
     }
   }
 
-  componentWillReceiveProps({ isOpen, dependentData }) {
-    if (isOpen || this.state.isOpen || dependentData !== this.state.dependentData )
-    this.setState({
-      isOpen,
-      dependentData,
-    });
+  static getDerivedStateFromProps({ isOpen, dependentData }, prevState) {
+    if (isOpen || prevState.isOpen || dependentData !== prevState.dependentData ) {
+      return {
+        isOpen,
+        dependentData,
+      };
+    }
+
+    return null;
   }
 
   componentDidUpdate() {

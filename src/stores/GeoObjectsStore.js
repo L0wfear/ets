@@ -56,7 +56,6 @@ const initialState = {
 };
 
 export default class GeoObjectsStore extends Store {
-
   constructor(flux) {
     super();
 
@@ -91,9 +90,9 @@ export default class GeoObjectsStore extends Store {
       return;
     }
     const selectedPolys = this.state[nameOfSelectedPolys]; // [] при первом клике
-    const typeIndex = selectedPolys.indexOf(type);  // -1 при активации чекбокса
+    const typeIndex = selectedPolys.indexOf(type); // -1 при активации чекбокса
     if (typeIndex > -1) {
-      selectedPolys.splice(typeIndex, 1);  // после снятия чекбокса удаляется из политик объект того типа данных, с которого снимается флажок
+      selectedPolys.splice(typeIndex, 1); // после снятия чекбокса удаляется из политик объект того типа данных, с которого снимается флажок
       const stateSelectedFeature = this.state[nameOfSelectedFeature];
       if (stateSelectedFeature) {
         if (stateSelectedFeature.featureType === type) { // если снимаем флажок с того типа объекта, который выделен на карте
@@ -101,7 +100,7 @@ export default class GeoObjectsStore extends Store {
         }
       }
     } else {
-      selectedPolys.push(type);  // пополняется объект политик при активации чекбокса
+      selectedPolys.push(type); // пополняется объект политик при активации чекбокса
     }
 
     this.setState({ nameOfSelectedPolys });
@@ -136,7 +135,7 @@ export default class GeoObjectsStore extends Store {
     this.setState({ geozonePolys, dtPolys, odhPolys });
   }
 
-  handleGetGeozonesByTypeWithGeometry(response) {  // данные гео объектов, полученные с сервера, записываются в отдельные свойства this.state
+  handleGetGeozonesByTypeWithGeometry(response) { // данные гео объектов, полученные с сервера, записываются в отдельные свойства this.state
     const { data = {} } = response;
     const { rows = [] } = data.result;
     const type = response.type || rows[0].type;

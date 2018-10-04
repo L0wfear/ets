@@ -1,17 +1,15 @@
 import { Actions } from 'flummox';
-import { mapKeys, clone, cloneDeep, keys } from 'lodash';
+import { clone, cloneDeep, keys } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
-  MissionReportsService,
   MissionService,
   MissionArchiveService,
   MissionReassignationService,
   MissionSourceService,
   MissionTemplateService,
   MissionTemplatesForFaxogramm,
-  MissionLastReportService,
   DutyMissionService,
   DutyMissionArchiveService,
   DutyMissionTemplateService,
@@ -23,20 +21,18 @@ import {
   Cleaning,
 } from 'api/missions';
 
-export const parseFilterObject = filter =>
+export const parseFilterObject = filter => (
   Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
     ...newFilter,
     [Array.isArray(value) ? `${key}__in` : key]: value,
   }),
-  {},
+  {})
 );
 
 // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
 // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
 const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
 export default class MissionsActions extends Actions {
-
-
   /* ---------- MISSION ---------- */
 
   getMissions(technical_operation_id, limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
@@ -58,7 +54,7 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionReassignationParameters(payload) {
-    if (!payload.car_id) return Promise.reject('empty car_id');
+    if (!payload.car_id) return Promise.reject(new Error('empty car_id'));
     return MissionReassignationService.get(payload);
   }
 
@@ -187,7 +183,7 @@ export default class MissionsActions extends Actions {
         },
       } = ans;
       if (entries) {
-        ans.result.report_data.entries.forEach((data, i) => { data.customId = i; });
+        ans.result.report_data.entries.forEach((data, i) => { data.frontId = i; });
       }
       // todo
       // убрать
@@ -263,7 +259,7 @@ export default class MissionsActions extends Actions {
   }
 
   printMissionTemplate(data) {
-    const payload = _.cloneDeep(data);
+    const payload = cloneDeep(data);
 
     return MissionTemplatePrintService.postBlob(payload);
   }
@@ -418,15 +414,6 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION REPORTS ---------- */
 
-
-  getMissionReports({ mission_date_start_from, mission_date_end_to }) {
-    const payload = {
-      mission_date_start_from: createValidDateTime(mission_date_start_from),
-      mission_date_end_to: createValidDateTime(mission_date_end_to),
-    };
-    return MissionReportsService.get(payload);
-  }
-
   getMissionReportByODHs(index) {
     return index;
   }
@@ -439,12 +426,6 @@ export default class MissionsActions extends Actions {
     return index;
   }
 
-  getMissionLastReport(mission_id) {
-    const payload = {
-      mission_id,
-    };
-    return MissionLastReportService.get(payload);
-  }
   getCleaningOneNorm(outerData) {
     const payload = {
       datetime: createValidDateTime(outerData.datetime || new Date()),
@@ -475,9 +456,11 @@ export default class MissionsActions extends Actions {
     };
     return Cleaning.path(type).get(payload, false, 'json');
   }
+
   getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
     return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }
+
   getCleaningMunicipalFacilityList(outerPyload) {
     const payload = {
       ...outerPyload,
@@ -489,8 +472,13 @@ export default class MissionsActions extends Actions {
       delete payload.kind_task_ids;
     }
 
-    return Cleaning.path('municipal_facility').get(payload, false, 'json');
+    return Cleaning.path('municipal_facility')
+      .get(payload, false, 'json')
+      .then(({ result: { rows } }) => ({
+        municipal_facility_list: rows,
+      }));
   }
+
   getCleaningMunicipalFacilityAllList(outerPyload) {
     const payload = {
       start_date: createValidDate(outerPyload.start_date || new Date()),

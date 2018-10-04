@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {
   sessionSetData,
-} from 'redux/modules/session/actions-session';
+} from 'redux-main/reducers/modules/session/actions-session';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 

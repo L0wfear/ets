@@ -108,7 +108,7 @@ const PERMISSIONS = {
     },
     car_movement_time_report: {
       list: 'car_movement_time_report.list',
-    }
+    },
   },
   'odh_coverage_report': 'odh_coverage_report',
   'dt_coverage_report': 'dt_coverage_report',

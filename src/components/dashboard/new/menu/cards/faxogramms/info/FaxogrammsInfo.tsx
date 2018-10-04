@@ -183,7 +183,7 @@ const mapDispatchToProps = (dispatch) => ({
           page: 'dashboard',
         },
       ),
-    )
+    ).payload
   ),
 });
 

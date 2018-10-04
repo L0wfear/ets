@@ -25,7 +25,7 @@ class PDFViewModal extends React.Component<PropsPDFViewModal, StatePDFViewModal>
 
   render() {
     return (
-      <Modal onHide={this.props.onHide}>
+      <Modal show onHide={this.props.onHide}>
         <ModalBody bsClass="null">
           {
             !this.state.url

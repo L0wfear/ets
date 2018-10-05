@@ -223,13 +223,6 @@ export default class DataTable extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
     const {
       initialSort,
       firstUseExternalInitialSort,
@@ -276,34 +269,16 @@ export default class DataTable extends React.Component {
       changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
     }
 
-    // let globalCheckboxState = false;
     if(Object.values(props.checked).length < props.results.length){
-      changesFields.globalCheckboxState = false; // возможн обудет ошибка из-за const
+      changesFields.globalCheckboxState = false;
     }else {
-      changesFields.globalCheckboxState = props.results.some((elem)=> props.checked[elem.id] );
-      console.log('globalCheckboxState222 = ', changesFields.globalCheckboxState);
+      changesFields.globalCheckboxState = props.results.every((elem)=> props.checked[elem.id] );
     }
-      
+    const el = document.getElementById('checkedColumn');
+    if (el) el.checked = changesFields.globalCheckboxState;
+
     this.setState(changesFields);
   }
-
-  // componentDidUpdate(prevProps, prevState){
-  //   let globalCheckboxState;
-  //   console.log('prevState == ', prevState);
-  //   console.log('state == ', this.state);
-    
-  //   if(this.state.globalCheckboxState !== prevState.globalCheckboxState || this.state.data !== prevState.data ){
-  //     if(Object.values(this.props.checked).length < this.props.results.length){
-  //       globalCheckboxState = false; // возможн обудет ошибка из-за const
-  //     }else {
-  //       globalCheckboxState = this.props.results.some((elem)=> this.props.checked[elem.id] );
-  //       console.log('globalCheckboxState222 = ', globalCheckboxState);
-  //     }
-  //     this.setState({globalCheckboxState}, () => {
-  //       this.forceUpdate();
-  //     });
-  //   }
-  // }
 
   shouldComponentUpdate(nextProps) {
     if (!this.state.isHierarchical) return true;
@@ -380,10 +355,11 @@ export default class DataTable extends React.Component {
   }
 
   globalCheckHandler(event) {
-    const checked = _(this.props.results)
+    const willCheckedArr = [...Object.values(this.props.checked), ...this.props.results ];
+    const checked = _(willCheckedArr)
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
-    this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
+      this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });

@@ -6,7 +6,6 @@ import _ from 'lodash';
 import cx from 'classnames';
 
 import ClickOutHandler from 'react-onclickout';
-import { autobind } from 'core-decorators';
 import { diffDates } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import SimpleGriddle from 'components/ui/table/simple-griddle/SimpleGriddle';
@@ -20,10 +19,10 @@ import {
   getFilterTypeByKey,
   makeData,
 } from './utils';
-import ColumnControl from './ColumnControl.jsx';
-import Filter from './filter/Filter.jsx';
-import FilterButton from './filter/FilterButton.jsx';
-import Div from '../Div.jsx';
+import ColumnControl from './ColumnControl';
+import Filter from './filter/Filter';
+import FilterButton from './filter/FilterButton';
+import Div from '../Div';
 import PaginatorToPortalData from 'components/ui/new/paginator/PaginatorToPortalData';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
@@ -37,7 +36,6 @@ const style = {
   },
 };
 
-@autobind
 export default class DataTable extends React.Component {
 
   /**
@@ -161,7 +159,7 @@ export default class DataTable extends React.Component {
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
       data: [],
-      originalData: [],
+      originalData: this.props.data,
       uniqKey: Symbol(props.uniqKey || 'data-table'),
     };
 
@@ -202,7 +200,7 @@ export default class DataTable extends React.Component {
       }
 
       if (!props.useServerSort || !props.useServerFilter) {
-        changesFields.data = makeData(changesFields.data, this.state, { ...props, ...changesFields });
+        changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
       }
       this.state = {
         ...this.state,
@@ -221,6 +219,8 @@ export default class DataTable extends React.Component {
       this.setState({ columnControlValues });
     }
   }
+
+
   static getDerivedStateFromProps(nextProps, preveState) {
     const {
       initialSort,
@@ -292,21 +292,21 @@ export default class DataTable extends React.Component {
     return getFilterTypeByKey(key, this.props.tableMeta);
   }
 
-  closeFilter() {
+  closeFilter = () => {
     if (this.state.filterModalIsOpen === true) {
       this.setState({ filterModalIsOpen: false });
     }
   }
 
-  toggleFilter() {
+  toggleFilter = () => {
     this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   }
 
-  toggleColumnControl() {
+  toggleColumnControl = () => {
     this.setState({ columnControlModalIsOpen: !this.state.columnControlModalIsOpen });
   }
 
-  saveFilter(filterValues) {
+  saveFilter = (filterValues) => {
     console.log('SAVE FILTER', filterValues); // eslint-disable-line
 
     if (this.props.externalFilter) {
@@ -319,13 +319,13 @@ export default class DataTable extends React.Component {
     this.setState({ filterValues, globalCheckboxState: false });
   }
 
-  closeColumnControl() {
+  closeColumnControl = () => {
     if (this.state.columnControlModalIsOpen === true) {
       this.setState({ columnControlModalIsOpen: false });
     }
   }
 
-  saveColumnControl(column) {
+  saveColumnControl = (column) => {
     const { columnControlValues } = this.state;
     const i = columnControlValues.indexOf(column);
     if (i === -1) {
@@ -335,14 +335,6 @@ export default class DataTable extends React.Component {
     }
     this.setState({ columnControlValues });
     localStorage.setItem(this.props.columnControlStorageName, JSON.stringify(columnControlValues));
-  }
-
-  cloneObject(object) {
-    const clonedObject = {};
-    for (const key of Object.keys(object)) {
-      clonedObject[key] = object[key];
-    }
-    return clonedObject;
   }
 
   handleRowCheck = (id) => {
@@ -356,12 +348,12 @@ export default class DataTable extends React.Component {
     });
   }
 
-  globalCheckHandler(event) {
+  globalCheckHandler = (event) => {
     const willCheckedArr = [...Object.values(this.props.checked), ...this.props.results ];
     const checked = _(willCheckedArr)
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
-      this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
+    this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });
@@ -422,7 +414,7 @@ export default class DataTable extends React.Component {
 
     return initialArray;
   }
-  cutString = (callback, props) => {
+  cutString(callback, props) {
     const newProps = { ...props };
     let { data = '' } = props;
 
@@ -466,7 +458,7 @@ export default class DataTable extends React.Component {
     };
   }
 
-  shouldBeRendered(obj) {
+  shouldBeRendered = (obj) => {
     if (this.props.externalFilter && !this.props.needMyFilter) {
       return true;
     }
@@ -534,7 +526,7 @@ export default class DataTable extends React.Component {
             if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
               isValid = false;
             }
-          } else if (a.filter.some) {
+          } else if (a && a.filter && a.filter.some) {
             if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
               isValid = false;
             }
@@ -579,7 +571,7 @@ export default class DataTable extends React.Component {
       el.isSelected = false;
       return el;
     }
-    if (typeof selectField !== 'undefined') {
+    if (typeof selectField !== 'undefined' && selected[selectField]) {
       el.isSelected = el[selectField] === selected[selectField];
     }
     return el;
@@ -613,7 +605,7 @@ export default class DataTable extends React.Component {
           .filter(this.shouldBeRendered);
   }
 
-  handleChangeSort(sortingColumnName, ascendingSort) {
+  handleChangeSort = (sortingColumnName, ascendingSort) => {
     const nextProps = {
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
@@ -633,7 +625,7 @@ export default class DataTable extends React.Component {
     });
   }
 
-  handleKeyPress(data, keyCode, e) {
+  handleKeyPress = (data, keyCode, e) => {
     if (isEmpty(this.props.selected)) {
       return;
     }

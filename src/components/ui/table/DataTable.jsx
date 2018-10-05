@@ -221,29 +221,31 @@ export default class DataTable extends React.Component {
       this.setState({ columnControlValues });
     }
   }
-
-  componentWillReceiveProps(props) {
+  static getDerivedStateFromProps(nextProps, preveState) {
     const {
       initialSort,
       firstUseExternalInitialSort,
       initialSortAscending,
-    } = this.state;
+      originalData,
+      data,
+      globalCheckboxState,
+    } = preveState;
 
     const changesFields = {
       initialSort,
       initialSortAscending,
       firstUseExternalInitialSort,
-      originalData: this.state.originalData,
-      data: this.state.data,
-      globalCheckboxState: false,
+      originalData,
+      data,
+      globalCheckboxState
     };
 
     if (firstUseExternalInitialSort) {
-      if (props.initialSort && props.initialSort !== initialSort) {
-        changesFields.initialSort = props.initialSort;
+      if (nextProps.initialSort && nextProps.initialSort !== initialSort) {
+        changesFields.initialSort = nextProps.initialSort;
       }
-      if (props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
-        changesFields.initialSortAscending = props.initialSortAscending;
+      if (nextProps.initialSortAscending && nextProps.initialSortAscending !== initialSortAscending) {
+        changesFields.initialSortAscending = nextProps.initialSortAscending;
       }
       changesFields.firstUseExternalInitialSort = false;
     }
@@ -253,31 +255,31 @@ export default class DataTable extends React.Component {
       changesFields.firstUseExternalInitialSort = false;
     }
 
-    if (props.useServerFilter) {
-      changesFields.filterValues = props.filterValues;
+    if (nextProps.useServerFilter) {
+      changesFields.filterValues = nextProps.filterValues;
     }
-    if (props.filterResetting) {
+    if (nextProps.filterResetting) {
       changesFields.filterValues = {};
     }
 
-    if (Array.isArray(props.results) && props.results !== this.state.originalData) {
-      changesFields.originalData = props.results;
-      changesFields.data = props.results;
+    if (Array.isArray(nextProps.results) && nextProps.results !== originalData) {
+      changesFields.originalData = nextProps.results;
+      changesFields.data = nextProps.results;
     }
 
-    if (!props.useServerSort || !props.useServerFilter) {
-      changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
+    if (!nextProps.useServerSort || !nextProps.useServerFilter) {
+      changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
     }
 
-    if(Object.values(props.checked).length < props.results.length){
+    if(Object.values(nextProps.checked).length < nextProps.results.length){
       changesFields.globalCheckboxState = false;
     }else {
-      changesFields.globalCheckboxState = props.results.every((elem)=> props.checked[elem.id] );
+      changesFields.globalCheckboxState = nextProps.results.every((elem)=> nextProps.checked[elem.id] );
     }
     const el = document.getElementById('checkedColumn');
     if (el) el.checked = changesFields.globalCheckboxState;
 
-    this.setState(changesFields);
+    return changesFields;
   }
 
   shouldComponentUpdate(nextProps) {

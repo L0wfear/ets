@@ -170,16 +170,10 @@ export default class DataTable extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
     let {
       initialSort, initialSortAscending,
       firstUseExternalInitialSort,
+      globalCheckboxState,
     } = this.state;
 
     if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== this.state.initialSort) {
@@ -191,18 +185,28 @@ export default class DataTable extends React.Component {
       initialSortAscending = props.initialSortAscending;
     }
 
+    if(Object.values(props.checked).length < props.results.length){
+      globalCheckboxState = false;
+    }else {
+      globalCheckboxState = props.results.every((elem)=> props.checked[elem.id] );
+    }
+    const el = document.getElementById('checkedColumn');
+    if (el) el.checked = globalCheckboxState;
+
     if (props.externalFilter) {
       this.setState({
         initialSort,
         initialSortAscending,
         filterValues: props.filterValues,
         firstUseExternalInitialSort,
+        globalCheckboxState,
       });
     } else {
       this.setState({
         initialSort,
         initialSortAscending,
         firstUseExternalInitialSort,
+        globalCheckboxState,
       });
     }
 
@@ -282,7 +286,8 @@ export default class DataTable extends React.Component {
   }
 
   globalCheckHandler(event) {
-    const checked = _(this.props.results)
+    const willCheckedArr = [...Object.values(this.props.checked), ...this.props.results ];
+    const checked = _(willCheckedArr)
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);

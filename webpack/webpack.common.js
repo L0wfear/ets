@@ -179,20 +179,6 @@ module.exports = {
     ],
   },
   resolve: {
-    alias: {
-      actions: path.join(__dirname, '..', 'src', 'actions'),
-      api: path.join(__dirname, '..', 'src', 'api'),
-      assets: path.join(__dirname, '..', 'src', 'assets'),
-      components: path.join(__dirname, '..', 'src', 'components'),
-      config: path.join(__dirname, '..', 'src', 'config'),
-      constants: path.join(__dirname, '..', 'src', 'constants'),
-      'global-styled': path.join(__dirname, '..', 'src', 'global-styled'),
-      models: path.join(__dirname, '..', 'src', 'models'),
-      'redux-main': path.join(__dirname, '..', 'src', 'redux-main'),
-      stores: path.join(__dirname, '..', 'src', 'stores'),
-      utils: path.join(__dirname, '..', 'src', 'utils'),
-      vendor: path.join(__dirname, '..', 'src', 'vendor'),
-    },
     extensions: [
       '.json',
       '.js',

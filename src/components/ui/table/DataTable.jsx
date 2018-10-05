@@ -228,6 +228,7 @@ export default class DataTable extends React.Component {
       initialSortAscending,
       originalData,
       data,
+      globalCheckboxState,
     } = preveState;
 
     const changesFields = {
@@ -236,6 +237,7 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort,
       originalData,
       data,
+      globalCheckboxState
     };
 
     if (firstUseExternalInitialSort) {
@@ -269,19 +271,21 @@ export default class DataTable extends React.Component {
       changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
     }
 
+    if(Object.values(nextProps.checked).length < nextProps.results.length){
+      changesFields.globalCheckboxState = false;
+    }else {
+      changesFields.globalCheckboxState = nextProps.results.every((elem)=> nextProps.checked[elem.id] );
+    }
+    const el = document.getElementById('checkedColumn');
+    if (el) el.checked = changesFields.globalCheckboxState;
+
     return changesFields;
   }
 
-  componentDidUpdate() {
-    const { props } = this;
-
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
+  shouldComponentUpdate(nextProps) {
+    if (!this.state.isHierarchical) return true;
+    
+    return !_.isEqual(nextProps.results, this.props.results);
   }
 
   getFilterTypeByKey(key) {
@@ -345,7 +349,8 @@ export default class DataTable extends React.Component {
   }
 
   globalCheckHandler = (event) => {
-    const checked = _(this.props.results)
+    const willCheckedArr = [...Object.values(this.props.checked), ...this.props.results ];
+    const checked = _(willCheckedArr)
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);

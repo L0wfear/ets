@@ -8,5 +8,6 @@ module.exports = merge(common, {
   output: {
     filename: 'app.[name].[hash].js',
     path: path.join(__dirname, '..', 'dist'),
+    publicPath: '/',
   },
 });

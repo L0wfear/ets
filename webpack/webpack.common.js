@@ -17,7 +17,7 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, '..', 'dist'),
+    path: path.join(__dirname, '..', 'dist'),
   },
   devServer: {
     contentBase: './dist',
@@ -180,18 +180,18 @@ module.exports = {
   },
   resolve: {
     alias: {
-      actions: path.resolve(__dirname, '..', 'src', 'actions'),
-      api: path.resolve(__dirname, '..', 'src', 'api'),
-      assets: path.resolve(__dirname, '..', 'src', 'assets'),
-      components: path.resolve(__dirname, '..', 'src', 'components'),
-      config: path.resolve(__dirname, '..', 'src', 'config'),
-      constants: path.resolve(__dirname, '..', 'src', 'constants'),
-      'global-styled': path.resolve(__dirname, '..', 'src', 'global-styled'),
-      models: path.resolve(__dirname, '..', 'src', 'models'),
-      'redux-main': path.resolve(__dirname, '..', 'src', 'redux-main'),
-      stores: path.resolve(__dirname, '..', 'src', 'stores'),
-      utils: path.resolve(__dirname, '..', 'src', 'utils'),
-      vendor: path.resolve(__dirname, '..', 'src', 'vendor'),
+      actions: path.join(__dirname, '..', 'src', 'actions'),
+      api: path.join(__dirname, '..', 'src', 'api'),
+      assets: path.join(__dirname, '..', 'src', 'assets'),
+      components: path.join(__dirname, '..', 'src', 'components'),
+      config: path.join(__dirname, '..', 'src', 'config'),
+      constants: path.join(__dirname, '..', 'src', 'constants'),
+      'global-styled': path.join(__dirname, '..', 'src', 'global-styled'),
+      models: path.join(__dirname, '..', 'src', 'models'),
+      'redux-main': path.join(__dirname, '..', 'src', 'redux-main'),
+      stores: path.join(__dirname, '..', 'src', 'stores'),
+      utils: path.join(__dirname, '..', 'src', 'utils'),
+      vendor: path.join(__dirname, '..', 'src', 'vendor'),
     },
     extensions: [
       '.json',
@@ -200,7 +200,7 @@ module.exports = {
       '.ts',
       '.tsx',
     ],
-    modules: [path.resolve(__dirname, '..', 'src'), 'node_modules'],
+    modules: [__dirname, 'src', 'node_modules'],
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),

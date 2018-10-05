@@ -19,12 +19,6 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.join(__dirname, '..', 'dist'),
   },
-  devServer: {
-    contentBase: './dist',
-    port: 3000,
-    open: true,
-    hot: true,
-  },
   module: {
     rules: [
       {

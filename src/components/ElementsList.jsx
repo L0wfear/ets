@@ -39,14 +39,6 @@ class ElementsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      elementsList: [],
-      showForm: false,
-      selectedElement: null,
-      readPermission: false,
-      exportFetching: false,
-    };
-
     this.selectField = this.constructor.selectField || 'id';
     this.mainListName = this.constructor.listName || undefined;
     this.entity = this.constructor.entity;
@@ -54,6 +46,22 @@ class ElementsList extends React.Component {
     this.preventUrlFilters = false;
     this.permissions = this.constructor.permissions || {};
     this.clicks = 0;
+
+    this.state = {
+      mainListName: this.mainListName,
+      elementsList: [],
+      showForm: false,
+      selectedElement: null,
+      readPermission: false,
+      exportFetching: false,
+    };
+  }
+
+  // Удалить
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      elementsList: nextProps[prevState.mainListName],
+    };
   }
 
   componentDidMount() {

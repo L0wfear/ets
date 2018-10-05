@@ -1,14 +1,18 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
-import loadable from 'loadable-components';
+// import LoadingComponent from 'components/ui/PreloaderMainPage';
+// import loadable from 'loadable-components';
 
 import { DivNone } from 'global-styled/global-styled';
-import { PropsRouteInfoFormWrap } from './RouteInfoForm.h';
+import { PropsRouteInfoFormWrap } from 'components/route/route-info/RouteInfoForm.h';
 
+import RouteInfoForm from 'components/route/route-info/RouteInfoForm';
+
+/*
 const RouteInfoForm = loadable(
-  () => import(/* webpackChunkName: "route_info_form" */ 'components/route/route-info/RouteInfoForm'), {
+  () => import(/* webpackChunkName: "route_info_form" *//* 'components/route/route-info/RouteInfoForm'), {
   LoadingComponent,
 });
+*/
 
 class RouteInfoFormWrap extends React.PureComponent<PropsRouteInfoFormWrap, {}> {
   render() {

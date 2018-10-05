@@ -1,13 +1,16 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
-import loadable from 'loadable-components';
+// import LoadingComponent from 'components/ui/PreloaderMainPage';
+// import loadable from 'loadable-components';
 
 import { DivNone } from 'global-styled/global-styled';
+import ReportForm from 'components/reports/operational/track_events/form/ReportForm';
 
+/*
 const ReportForm = loadable(
-  () => import(/* webpackChunkName: "ReportForm" */ 'components/reports/operational/track_events/form/ReportForm'), {
+  () => import(/* webpackChunkName: "ReportForm" *//* 'components/reports/operational/track_events/form/ReportForm'), {
   LoadingComponent,
 });
+*/
 
 type PropsReportFormWrap = {
   showForm: boolean;

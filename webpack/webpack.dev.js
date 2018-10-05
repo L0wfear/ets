@@ -7,7 +7,6 @@ module.exports = merge(common, {
   devtool: 'eval',
   output: {
     filename: 'app.[name].js',
-    chunkFilename: 'app.[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
   devServer: {

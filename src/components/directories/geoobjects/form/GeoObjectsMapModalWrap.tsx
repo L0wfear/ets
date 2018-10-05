@@ -1,19 +1,23 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
-import loadable from 'loadable-components';
+// import LoadingComponent from 'components/ui/PreloaderMainPage';
+// import loadable from 'loadable-components';
 
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import GeoObjectsMapModal from 'components/directories/geoobjects/form/GeoObjectsMapModal';
 
 import {
   IDataTableSchema,
   ISchemaRenderer,
 } from 'components/ui/table/@types/schema.h';
 
+
+/*
 const GeoObjectsMapModal = loadable(
-  () => import(/* webpackChunkName: "geo-objects_map_modal" */ 'components/directories/geoobjects/form/GeoObjectsMapModal'), {
+  () => import(/* webpackChunkName: "geo-objects_map_modal" *//* 'components/directories/geoobjects/form/GeoObjectsMapModal'), {
   LoadingComponent,
 });
+*/
 
 type PropsGeoObjectsMapModalWrap = {
   showForm: boolean;

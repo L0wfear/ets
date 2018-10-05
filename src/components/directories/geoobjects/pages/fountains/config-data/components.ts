@@ -1,9 +1,19 @@
+/*
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 import loadable from 'loadable-components';
 
-export const component = loadable(() => import(/* webpackChunkName: "fountains" */ 'components/directories/geoobjects/pages/fountains/FountainsDirectory'), {
+export const component = loadable(() => import(/* webpackChunkName: "fountains" *//* 'components/directories/geoobjects/pages/fountains/FountainsDirectory'), {
   LoadingComponent,
 });
+
+export default [
+  {
+    component,
+  },
+];
+*/
+
+import component from 'components/directories/geoobjects/pages/fountains/FountainsDirectory';
 
 export default [
   {

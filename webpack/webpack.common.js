@@ -17,7 +17,6 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
-    chunkFilename: '[name].js',
     path: path.resolve(__dirname, '..', 'dist'),
   },
   devServer: {
@@ -243,9 +242,6 @@ module.exports = {
     }),
   ],
   optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
     noEmitOnErrors: true,
   },
 };

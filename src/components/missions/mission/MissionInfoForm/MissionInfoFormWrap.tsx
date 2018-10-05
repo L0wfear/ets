@@ -1,13 +1,16 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
-import loadable from 'loadable-components';
+// import LoadingComponent from 'components/ui/PreloaderMainPage';
+// import loadable from 'loadable-components';
 
 import { DivNone } from 'global-styled/global-styled';
+import MissionInfoForm from 'components/missions/mission/MissionInfoForm/MissionInfoForm';
 
+/*
 const MissionInfoForm = loadable(
-  () => import(/* webpackChunkName: "mission_info_form" */ 'components/missions/mission/MissionInfoForm/MissionInfoForm'), {
+  () => import(/* webpackChunkName: "mission_info_form" *//* 'components/missions/mission/MissionInfoForm/MissionInfoForm'), {
   LoadingComponent,
 });
+*/
 
 class MissionInfoFormWrap extends React.Component<any, {}> {
   render() {

@@ -5,9 +5,10 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'eval',
+  context: path.resolve(__dirname, '..'),
   output: {
     filename: 'app.[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.join(__dirname, '..', 'dist'),
   },
   devServer: {
     contentBase: './dist',

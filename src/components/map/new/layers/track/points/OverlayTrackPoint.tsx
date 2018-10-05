@@ -3,7 +3,7 @@ import Overlay from 'components/map/new/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { carInfoSetTrackPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetTrackPoint } from 'components/monitor/info/car-info/redux/modules/actions-car-info';
 import { makeDate, makeTime } from 'utils/dates';
 import Preloader from 'components/ui/Preloader';
 import { getVectorObject } from 'redux/trash-actions/uniq';

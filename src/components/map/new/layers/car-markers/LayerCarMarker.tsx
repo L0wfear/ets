@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
 import config from 'config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import { carInfoSetGpsNumber, carInfoSetStatus, carInfoPushPointIntoTrack } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetGpsNumber, carInfoSetStatus, carInfoPushPointIntoTrack } from 'components/monitor/info/car-info/redux/modules/actions-car-info';
 import {
   CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
-import { monitoPageChangeCarsByStatus, monitorPageResetCarStatus, monitorPageMergeFiltredCarGpsCode } from 'components/monitor/new/redux/models/actions-monitor-page';
+} from 'components/monitor/info/car-info/redux/modules/car-info';
+import { monitoPageChangeCarsByStatus, monitorPageResetCarStatus, monitorPageMergeFiltredCarGpsCode } from 'components/monitor/redux/models/actions-monitor-page';
 import {
   getFrontStatus,
   checkOnVisible,

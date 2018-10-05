@@ -2,7 +2,7 @@ import * as React from 'react';
 import Overlay from 'components/map/new/overlay/Overlay';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
-import { carInfoSetFuelEventPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux/modules/actions-car-info';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTz } from 'utils/dates';
 
 const getTitleByType = (event_type) => {

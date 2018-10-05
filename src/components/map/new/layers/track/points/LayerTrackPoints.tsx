@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForTrackLine } from 'components/map/new/layers/track/lines/feature-style';
 import OverlayTrackPoint from 'components/map/new/layers/track/points/OverlayTrackPoint';
-import { carInfoSetTrackPoint } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
+import { carInfoSetTrackPoint } from 'components/monitor/info/car-info/redux/modules/actions-car-info';
 
 type PropsLayerTrackPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

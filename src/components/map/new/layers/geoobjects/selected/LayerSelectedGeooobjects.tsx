@@ -3,7 +3,7 @@ import * as React from 'react';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux/models/actions-monitor-page';
 
 import {
   PropsLayerSelectedGeooobjects,

@@ -1,0 +1,199 @@
+import * as React from 'react';
+import { DropdownButton, MenuItem, Glyphicon } from 'react-bootstrap';
+
+import { connect } from 'react-redux';
+import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { saveData } from 'utils/functions';
+
+import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+
+import InfoCard from 'components/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
+
+import {
+  dashboardSetInfoDataInFaxogramms,
+} from 'components/dashboard/redux/modules/dashboard/actions-dashboard';
+import {
+  saveFaxogrammBlob,
+} from 'redux/trash-actions/faxogramm/faxogramm';
+
+import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
+import { ButtonReadFaxogramm } from 'components/directories/faxogramm/buttons/buttons';
+import FaxogrammMissionsFormWrap from 'components/directories/faxogramm/FaxogrammMissionsFormWrap.jsx';
+import PDFViewModal from 'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal';
+
+import {
+  PropsFaxogrammsInfo,
+  StateFaxogrammsInfo,
+} from 'components/dashboard/menu/cards/faxogramms/info/FaxogrammsInfo.h';
+
+require('components/dashboard/menu/cards/faxogramms/info/FaxogrammInfo.scss');
+
+const DropdownButtonTSX: any = DropdownButton;
+
+const TypeDownload = {
+  old: 'old',
+  new: 'new',
+};
+
+class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogrammsInfo> {
+  state = {
+    showFaxogrammMissionsFormWrap: false,
+    elementFaxogrammMissionsFormWrap: null,
+    blob: null,
+    showPDFViewModal: false,
+  };
+
+  showFaxogrammFormWrap = () => {
+    this.setState({
+      showFaxogrammMissionsFormWrap: true,
+      elementFaxogrammMissionsFormWrap: this.props.infoData.data,
+    });
+  }
+
+  handleFaxogrammMissionsFormWrapHide = () => (
+    this.setState({
+      showFaxogrammMissionsFormWrap: false,
+      elementFaxogrammMissionsFormWrap: null,
+    })
+  )
+
+  seclectDownload = (event, eventKey) => {
+    const payload: any = {};
+
+    if (eventKey === TypeDownload.new) {
+      payload.format = 'xls';
+    }
+
+    this.props.saveFaxogramm(this.props.infoData.data.id, payload)
+      .then(({ blob, fileName }) => saveData(blob, fileName))
+      .catch((error) => {
+        console.warn(error)
+      })
+  }
+
+  showPDFViewModal = () => {
+    this.props.saveFaxogramm(this.props.infoData.data.id)
+      .then(({ blob }) => {
+        if (!!blob) {
+          this.setState({
+            showPDFViewModal: true,
+            blob,
+          });
+        } else {
+          console.error('no blob')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+  handleHidePDFViewModal = () => {
+    this.setState({
+      showPDFViewModal: false,
+      blob: null,
+    });
+  }
+
+  render() {
+    const {
+      infoData,
+      infoData: {
+        subItems = [],
+        data: {
+          order_info
+        },
+      },
+      ...props,
+    } = this.props;
+
+    return (
+      <InfoCard title="Расшифровка факсограммы" handleClose={props.handleClose}>
+        <ul>
+          {
+            subItems.map(({ title }, index) => (
+              <li key={index}>
+                <span>{title}</span>
+              </li>
+            ))
+          }
+        </ul>
+        {
+          order_info ?
+          (
+            <div>
+              <div className="line_data"><b>Доп. информация</b></div>
+              <div>{order_info}</div>
+            </div>
+          )
+          :
+          (
+            <div className="none"></div>
+          )
+        }
+        <div className="right_button_block buttons_faxogramm_info">
+          <DropdownButtonTSX id="save-faxogramm" onSelect={this.seclectDownload} title={<Glyphicon glyph="download-alt" />} pullRight>
+            <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
+            <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
+          </DropdownButtonTSX>
+          <ButtonReadFaxogramm onClick={this.showPDFViewModal}><Glyphicon glyph="info-sign" /></ButtonReadFaxogramm>
+          <ButtonCreateMission onClick={this.showFaxogrammFormWrap}>Сформировать задания</ButtonCreateMission>
+        </div>
+        {
+          this.state.showPDFViewModal ?
+          (
+            <PDFViewModal
+              blob={this.state.blob}
+              onHide={this.handleHidePDFViewModal}
+            />
+          )
+          :
+          (
+            <div className="none"></div>
+          )
+        }
+        <FaxogrammMissionsFormWrap
+          onFormHide={this.handleFaxogrammMissionsFormWrapHide}
+          showForm={this.state.showFaxogrammMissionsFormWrap}
+          element={this.state.elementFaxogrammMissionsFormWrap}
+        />
+      </InfoCard>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  infoData: state.dashboard.faxogramms.infoData,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  handleClose: () => (
+    dispatch(
+      dashboardSetInfoDataInFaxogramms(null),
+    )
+  ),
+  saveFaxogramm: (id, payload) => (
+    dispatch(
+      saveFaxogrammBlob(
+        '',
+        id,
+        payload,
+        {
+          promise: true,
+          page: 'dashboard',
+        },
+      ),
+    ).payload
+  ),
+});
+
+export default hocAll(
+  withShowByProps({
+    path: ['dashboard', 'faxogramms', 'infoData'],
+    type: 'none',
+  }),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(FaxogrammsInfo);

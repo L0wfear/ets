@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 import Overlay from 'components/map/new/overlay/Overlay';
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
-import { monitorPageToggleMeasureActive } from 'components/monitor/new/redux/models/actions-monitor-page';
+import { monitorPageToggleMeasureActive } from 'components/monitor/redux/models/actions-monitor-page';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { getStyleForLineMeasure } from 'components/map/new/layers/measure/feature-style';
 import * as cx from 'classnames';

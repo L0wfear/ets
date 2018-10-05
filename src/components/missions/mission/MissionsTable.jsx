@@ -52,6 +52,16 @@ export const getTableMeta = ({
         cssClassName: 'width120',
       },
       {
+        name: 'order_number',
+        displayName: 'Факсограмма №',
+        type: 'number',
+        sortable: true,
+        filter: {
+          type: 'advanced-string-like',
+        },
+        cssClassName: 'width120',
+      },
+      {
         name: 'mission_source_id',
         displayName: 'Источник',
         type: 'number',

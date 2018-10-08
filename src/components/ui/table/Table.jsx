@@ -4,18 +4,18 @@ import _ from 'lodash';
 import cx from 'classnames';
 import Div from '../Div.jsx';
 
-const HeaderCell = ({ renderer, children, value, cssClassName }) => {
+const HeaderCell = ({ renderer, children, value, className }) => {
   if (typeof renderer === 'function') {
-    return <th className={cx('ets-table-header-cell', cssClassName)}>{renderer(value)}</th>;
+    return <th className={cx('ets-table-header-cell', className)}>{renderer(value)}</th>;
   }
-  return <th className={cx('ets-table-header-cell', cssClassName)}>{children}</th>;
+  return <th className={cx('ets-table-header-cell', className)}>{children}</th>;
 };
 
 HeaderCell.propTypes = {
   renderer: PropTypes.func,
   children: PropTypes.node,
   value: PropTypes.any,
-  cssClassName: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default class Table extends React.Component {

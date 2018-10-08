@@ -18,12 +18,10 @@ const boundKeysObj = {
 export default class TechnicalOperationForm extends Form {
 
   handleCarFuncTypesChange = (v) => {
-    const data = v.map(d => +d);
+    const data = v.map(d => Number(d));
 
     const { typesList = [] } = this.props;
 
-    // не спрашивайте почему нельзя было сразу прислать поле asuods_id, не id а
-    // я не знаю
     const types = data.map(d => typesList.find(({ asuods_id }) => d === asuods_id)).map(d => ({
       ...d,
       id: d.asuods_id,

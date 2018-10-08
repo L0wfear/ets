@@ -16,15 +16,16 @@ export const CardContainer = styled.div`
   }
 `;
 
-export const CardMainContainer = styled(CardContainer)`
-    flex: 1 1;
-    margin: 20px;
-    min-width: 25%;
+export const CardMainContainer = styled.div`
+  width: 33%;
+  @media screen and (max-width: 990px) {
+    min-width: 100%;
+    margin: 20px 0;
+  }
+`;
 
-    @media screen and (max-width: 990px) {
-      min-width: 100%;
-      margin: 20px 0;
-    }
+export const CardMainContainerWrap = styled(CardContainer)`
+  margin: 20px;
 `;
 
 export const CardTitleContainer = styled.div`

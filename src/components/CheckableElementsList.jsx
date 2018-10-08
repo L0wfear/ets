@@ -145,7 +145,7 @@ export default class CheckableElementsList extends ElementsList {
    * Удаляет выбранные элементы
    * метод вызывает {@link ElementsList#removeElement} в случае отсутствия выбранных элементов
    */
-  async removeCheckedElements() {
+  removeCheckedElements = async () => {
     if (typeof this.removeElementAction !== 'function') {
       return;
     }

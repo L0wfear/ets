@@ -63,11 +63,12 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
   constructor(props, context) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('missions').removeMissionTemplate;
     this.state = Object.assign(this.state, {
       formType: 'ViewForm',
     });
   }
+
+  removeElementAction = (...arg) => this.context.flux.getActions('missions').removeMissionTemplate(...arg);
 
   init() {
     const { flux } = this.context;

@@ -1,18 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
+import cx from 'classnames';
 import Div from '../Div.jsx';
 
-const HeaderCell = ({ renderer, children, value }) => {
+const HeaderCell = ({ renderer, children, value, cssClassName }) => {
   if (typeof renderer === 'function') {
-    return <th className="ets-table-header-cell">{renderer(value)}</th>;
+    return <th className={cx('ets-table-header-cell', cssClassName)}>{renderer(value)}</th>;
   }
-  return <th className="ets-table-header-cell">{children}</th>;
+  return <th className={cx('ets-table-header-cell', cssClassName)}>{children}</th>;
 };
 
 HeaderCell.propTypes = {
   renderer: PropTypes.func,
   children: PropTypes.node,
   value: PropTypes.any,
+  cssClassName: PropTypes.string,
 };
 
 export default class Table extends Component {
@@ -82,7 +84,7 @@ export default class Table extends Component {
       <tr className="ets-table-header">
         {this.props.columnCaptions.map((o, i) => {
           const renderer = this.props.headerRenderers[this.props.tableCols[i]];
-          return <HeaderCell key={i} renderer={renderer} value={o}>{o}</HeaderCell>;
+          return <HeaderCell key={i} className={o.cssClassName} renderer={renderer} value={o.value}>{o.value}</HeaderCell>;
         })}
       </tr>
     );

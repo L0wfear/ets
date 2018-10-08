@@ -14,6 +14,7 @@ import {
 
 import {
   CardMainContainer,
+  CardMainContainerWrap,
   CardTitleContainer,
   CardTitleContainerWrap,
   CardBodyContainer,
@@ -96,32 +97,34 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
 
         return (
           <CardMainContainer>
-            <CardTitleContainer>
-              <CardTitleContainerWrap>
-                <div>{title}</div>
-                <div className="button_refresh">
-                  <Button onClick={this.loadData}>
-                    <Glyphicon
-                      className={cx({ 'glyphicon-spin': isLoading })}
-                      glyph="refresh"
-                    />
-                  </Button>
-                </div>
-              </CardTitleContainerWrap>
-            </CardTitleContainer>
-            <CardBodyContainer isLoading={isLoading}>
-              <Component {...props} />
-            </CardBodyContainer>
-            {
-              InfoComponent ?
-              (
-                <InfoComponent />
-              )
-              :
-              (
-                <DivNone />
-              )
-            }
+            <CardMainContainerWrap>
+              <CardTitleContainer>
+                <CardTitleContainerWrap>
+                  <div>{title}</div>
+                  <div className="button_refresh">
+                    <Button onClick={this.loadData}>
+                      <Glyphicon
+                        className={cx({ 'glyphicon-spin': isLoading })}
+                        glyph="refresh"
+                      />
+                    </Button>
+                  </div>
+                </CardTitleContainerWrap>
+              </CardTitleContainer>
+              <CardBodyContainer isLoading={isLoading}>
+                <Component {...props} />
+              </CardBodyContainer>
+              {
+                InfoComponent ?
+                (
+                  <InfoComponent />
+                )
+                :
+                (
+                  <DivNone />
+                )
+              }
+            </CardMainContainerWrap>
           </CardMainContainer>
         )
       }

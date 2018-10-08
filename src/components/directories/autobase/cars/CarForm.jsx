@@ -167,19 +167,19 @@ class CarForm extends Form {
                 eventKey={CAR_TAB_INDEX.main_info}
                 active={tabKey === CAR_TAB_INDEX.main_info}
               >
-Общая информация
+                Общая информация
               </MenuItem>
               <MenuItem
                 eventKey={CAR_TAB_INDEX.register_info}
                 active={tabKey === CAR_TAB_INDEX.register_info}
               >
-Информация о регистрации
+                Информация о регистрации
               </MenuItem>
               <MenuItem
                 eventKey={CAR_TAB_INDEX.passport_info}
                 active={tabKey === CAR_TAB_INDEX.passport_info}
               >
-Паспорт ТС
+                Паспорт ТС
               </MenuItem>
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
@@ -191,13 +191,13 @@ class CarForm extends Form {
                 eventKey={CAR_TAB_INDEX.tech_maintenance}
                 active={tabKey === CAR_TAB_INDEX.tech_maintenance}
               >
-Тех. обслуживание
+                Тех. обслуживание
               </MenuItem>
               <MenuItem
                 eventKey={CAR_TAB_INDEX.repair}
                 active={tabKey === CAR_TAB_INDEX.repair}
               >
-Ремонты ТС
+                Ремонты ТС
               </MenuItem>
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.tech_inspection}>Техосмотр</NavItem>

@@ -72,7 +72,7 @@ class DashboardMenuButtons extends React.Component<any, any> {
   render() {
     return (
       <div className="dashboard_menu_buttons">
-        <div className="card_container">
+        <div className="card_container control">
           <div className="card_title">Управление</div>
           <div className="card_body">
             <ButtonCreateWaybill onClick={this.showWaybillFormWrap} >Создать путевой лист</ButtonCreateWaybill>

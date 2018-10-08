@@ -296,7 +296,7 @@ export class DutyMissionForm extends Form {
       fromOrder = false,
     } = this.props;
     const {
-      TECH_OPERATIONS = [],
+      TECH_OPERATIONS: [...TECH_OPERATIONS] = [],
       routesList = [],
       available_route_types = [],
       technicalOperationsList = [],
@@ -304,7 +304,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    if (state.technical_operation_id && !!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
+    if (state.technical_operation_id && !TECH_OPERATIONS.find(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
 

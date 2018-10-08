@@ -505,7 +505,7 @@ export class MissionForm extends Form {
     const IS_EXPIRED = state.status === 'expired';
     const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && isDeferred;
     const IS_DISPLAY = !IS_CREATING && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED);// (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    const IS_DISABLED_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
+    const IS_DISABLED_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
     const IS_NOT_IN_WAYBILL = state.can_edit_car_and_route;
     
     let title = `Задание № ${state.number}${state.status === 'fail' ? ' (Не выполнено)' : ''}`;

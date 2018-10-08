@@ -15,6 +15,7 @@ export default class Filter extends React.Component {
       onHide: PropTypes.func,
       onSubmit: PropTypes.func.isRequired,
       options: PropTypes.array,
+      entity: PropTypes.string,
     };
   }
 
@@ -119,6 +120,7 @@ export default class Filter extends React.Component {
       return (
         <FilterRow
           tableData={tableData}
+          entity={this.props.entity}
           key={i}
           value={(filterValues[this.getName(byKey || name, type)] || {}).value}
           type={type}

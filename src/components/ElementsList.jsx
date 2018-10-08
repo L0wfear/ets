@@ -359,6 +359,7 @@ class ElementsList extends React.Component {
     const listName = this.constructor.listName;
     let basicProps = {
       data: this.props[listName],
+      entity: this.entity,
     };
     const { location: { search = '' } = {} } = this.props;
     const searchObject = queryString.parse(search);

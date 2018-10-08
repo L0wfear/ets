@@ -22,6 +22,7 @@ export default class FilterRow extends React.Component {
       displayName: PropTypes.string,
       onChange: PropTypes.func,
       onMultiChange: PropTypes.func,
+      entity: PropTypes.string,
     };
   }
 
@@ -44,14 +45,19 @@ export default class FilterRow extends React.Component {
       onMultiChange,
       tableData,
       type,
+      entity,
     } = this.props;
     let { value } = this.props;
 
+    const idValue = name ? `${entity ? `${entity}-` : ''}${name}-value` : undefined;
+    const idLabel = name ? `${entity ? `${entity}-` : ''}${name}-label` : undefined;
+
     let input = (
       <div className="form-group">
-        <FormControl type="text" value={value || ''} onChange={onChange} />
+        <FormControl id={idValue} type="text" value={value || ''} onChange={onChange} />
       </div>
     );
+
     if (type) {
       if (type === 'select' || type === 'multiselect' || type === 'advanced-select-like') {
         let options = availableOptions || _(tableData)
@@ -69,45 +75,46 @@ export default class FilterRow extends React.Component {
           if (name === 'operation_id') {
             options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
           }
-          input = <ReactSelect options={options} value={value} onChange={onChange} />;
+          input = <ReactSelect modalKey={entity} id={name} options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
           if (value && !!value.length) value = value.filter(v => _.find(options, o => o.value === v));
+
           input = (
             <Div className="filter-multiselect-container">
-              <ReactSelect options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />
+              <ReactSelect modalKey={entity} id={name} options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />
             </Div>
           );
         }
       }
       if (type === 'advanced-number') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="number" onChange={onChange} lang="en" />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="number" onChange={onChange} lang="en" />;
       }
       if (type === 'advanced-string') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={onChange} />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="string" onChange={onChange} />;
       }
       if (type === 'advanced-string-like') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={onChange} single filterType="like" />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="string" onChange={onChange} single filterType="like" />;
       }
       if (type === 'advanced-date') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={onChange} />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="date" onChange={onChange} />;
       }
       if (type === 'advanced-datetime') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} />;
       }
       if (type === 'date') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={onChange} single />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="date" onChange={onChange} single />;
       }
       if (type === 'datetime') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} single />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} single />;
       }
       if (type === 'date_interval') {
-        input = <IntervalPicker interval={value} onChange={onChange} />;
+        input = <IntervalPicker entity={entity} interval={value} onChange={onChange} />;
       }
     }
 
     return (
       <Div className="filter-row">
-        <label htmlFor="input">{displayName}</label>
+        <label id={idLabel} htmlFor="input">{displayName}</label>
         {input}
       </Div>
     );

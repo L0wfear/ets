@@ -19,6 +19,8 @@ interface IPropsFilterInput {
   single?: boolean;
   onChange(value: any): void;
   lang?: string;
+  entity?: string;
+  modalKey?: string;
 }
 
 interface IStateFilterInput {
@@ -74,6 +76,9 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     this.props.onChange(filterValue);
   }
   render() {
+    const { entity } = this.props;
+    const id = this.props.fieldName;
+
     const isDatetimeInput = isEqualOr(['date', 'datetime'], this.props.inputType);
     const filterValueMaker = isDatetimeInput && !this.props.nativeDatetime
       ? datetimeFilterValueMaker
@@ -82,6 +87,8 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     if (this.props.single) {
       return (
         <InputFilter
+          modalKey={entity}
+          id={id}
           type={this.props.inputType}
           onChange={this.handleFilterValueChange}
           fieldName={this.props.fieldName}
@@ -94,6 +101,8 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
 
     const filterField = (
       <InputFilter
+        modalKey={entity}
+        id={id}
         type={this.props.inputType}
         onChange={this.handleFilterValueChange}
         fieldName={this.props.fieldName}
@@ -108,6 +117,8 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     return (
       <div className="advanced-string-input">
         <ReactSelect
+          modalKey={entity}
+          id={id}
           options={FILTER_SELECT_TYPES}
           value={this.state.type}
           clearable={false}

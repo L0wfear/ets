@@ -14,7 +14,7 @@ export default [
 ];
 */
 
-import component from 'components/reports/operational/track_events/reportProps';
+import component from 'components/reports/operational/track_events/Report';
 
 export default [
   {

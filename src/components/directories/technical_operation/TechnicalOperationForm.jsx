@@ -51,8 +51,9 @@ export default class TechnicalOperationForm extends Form {
       typesList = [],
       technicalOperationsObjectsList = [],
       technicalOperationsTypesList = [],
-      isPermitted = false,
+      isPermitted: isPermittedOuter = false,
     } = this.props;
+    const isPermitted = false;
 
     const WORK_KINDS = workKindsList.map(({ id, name }) => ({ value: id, label: name }));
     const SEASONS = seasonsList.map(({ id, name }) => ({ value: id, label: name }));
@@ -148,7 +149,7 @@ export default class TechnicalOperationForm extends Form {
                 value={_.uniq(state.car_func_types.map(cft => cft.asuods_id)).join(',')}
                 options={CAR_TYPES}
                 onChange={this.handleCarFuncTypesChange.bind(this)}
-                disabled={!isPermitted}
+                disabled={!isPermittedOuter}
               />
             </Col>
             <Col md={3} className="vehicle-types-container">
@@ -159,7 +160,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.sensor_type_ids.join(',')}
                 options={SENSORS_TYPE_OPTIONS}
                 onChange={this.handleChangeSensorTypeIds}
-                disabled={!isPermitted}
+                disabled={!isPermittedOuter}
               />
             </Col>
           </Row>
@@ -168,7 +169,7 @@ export default class TechnicalOperationForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={!isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+            <Button disabled={!isPermittedOuter} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
           </Div>
         </Modal.Footer>
       </Modal>

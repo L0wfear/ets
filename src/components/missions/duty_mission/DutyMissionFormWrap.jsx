@@ -105,6 +105,7 @@ class DutyMissionFormWrap extends FormWrap {
         await this.props.refreshTableList();
       }
     } catch (error) {
+      return 'isError';
       // function refreshTableList not in father modules
     }
   }

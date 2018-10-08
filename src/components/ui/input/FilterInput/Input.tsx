@@ -115,7 +115,6 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     const idValueBeg = id ? `${modalKey ? `${modalKey}-` : ''}${id}-beg-value` : undefined;
     const idValueEnd = id ? `${modalKey ? `${modalKey}-` : ''}${id}-end-value` : undefined;
 
-    console.log(this.props)
     return (
       <div className="inputs">
         <div className="form-group">

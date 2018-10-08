@@ -25,7 +25,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
   switch (key) {
     case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, wsData.car.gov_number, car_actualData);
     case 'carFilterMultyType': return !value.length || value.includes(wsData.car.type_id);
-    case 'carFilterMultyStructure': return !value.length || value.includes(wsData.car.company_id);
+    case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOwner': return !value.length || value.includes(wsData.car.owner_id);
     default: return false;
   }

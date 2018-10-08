@@ -21,6 +21,7 @@ import {
   StateLayerCarMarker,
   WsData,
 } from 'components/map/new/layers/car-markers/LayerCarMarker.h';
+import isEmpty = require('lodash/isEmpty');
 
 let updatePoints = true;
 
@@ -45,38 +46,134 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.openWs();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      gps_code: prev_gps_code,
+    } = prevProps;
+
     if (updatePoints) {
-      const changeState: any = {};
-      let whatPointChange = {};
-      let hasWhatChage = false;
-      const { gps_code: state_gps_code } = this.state;
+      const {
+        statusShow,
+        gps_code,
+        zoom,
+        STATUS_SHOW_GOV_NUMBER,
+        lastPoint,
+        filters,
+        carActualGpsNumberIndex,
+        STATUS_TC_FOLLOW_ON_CAR,
+        odh_mkad,
+      } = this.props;
 
-      const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
       const zoomMore8 = zoom > 8;
+      const prevZoomMore8 = prevProps.zoom > 8;
 
-      if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
-        hasWhatChage = true;
-        whatPointChange = this.state.carPointsDataWs;
-        changeState.carActualGpsNumberIndex = carActualGpsNumberIndex;
+      const propsObjToChangeStyle: any = {
+        carPointsDataWs: {},
+        old_carPointsDataWs: this.state.carPointsDataWs,
+        zoomMore8,
+        gps_code,
+        statusShow,
+        STATUS_SHOW_GOV_NUMBER,
+        filters,
+        carActualGpsNumberIndex,
+      };
+      let hasWhatChage = false
+
+      if (gps_code !== prev_gps_code) {  // Если произошёл перевыбор или сброс ТС
+        if (gps_code) {  // Если ТС выборана
+          const {
+            carPointsDataWs: {
+              [gps_code]: carPointData,
+            },
+          } = this.state;
+
+          if (carPointData) {
+            hasWhatChage = true;
+
+            propsObjToChangeStyle.carPointsDataWs[gps_code] = carPointData;
+            if (prev_gps_code) {  // Нужно ли обновить состояние предыдущего выбранного ТС
+              const {
+                carPointsDataWs: {
+                  [prev_gps_code]: prevGpsCodeCarPointData,
+                },
+              } = this.state;
+              if (prevGpsCodeCarPointData) {
+                propsObjToChangeStyle.carPointsDataWs[prev_gps_code] = prevGpsCodeCarPointData;
+              }
+            }
+
+            this.props.carInfoSetStatus(carPointData.status);  // Обновление статуса на карточке ТС
+            const { coords_msk } = carPointData;
+
+            const extent: [number, number, number, number] = [
+              coords_msk[0],
+              coords_msk[1],
+              coords_msk[0],
+              coords_msk[1],
+            ];
+
+            const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
+            const noCheckDisabledCenterOn = true; //  игнор дисейбла центрирование (только при enableInteractions)
+
+            this.props.centerOn(
+              {
+                extent,
+                opt_options,
+              },
+              noCheckDisabledCenterOn,
+            );
+          }
+        }
       }
 
-      if (gps_code !== state_gps_code) {
-        const { carPointsDataWs: { [gps_code]: carPointData } = {} } = this.state;
-        if (carPointData) {
-          this.props.carInfoSetStatus(carPointData.status);
-        }
-        hasWhatChage = true;
-        whatPointChange = {
-          [gps_code]: this.state.carPointsDataWs[gps_code],
-        };
-        if (state_gps_code) {
-          whatPointChange[state_gps_code] = this.state.carPointsDataWs[state_gps_code];
-        }
-        changeState.gps_code = gps_code;
+      const tgiggerOnChangeStyleForAllCars = (
+        carActualGpsNumberIndex !== prevProps.carActualGpsNumberIndex // для фильтрации (тс должна быть с списке и для гаражного номер)
+        || zoomMore8 !== prevZoomMore8  // размер иконок на 8 зуме
+        || STATUS_SHOW_GOV_NUMBER !== prevProps.STATUS_SHOW_GOV_NUMBER  // (не)отображение гаражного номера
+        || statusShow !== prevProps.statusShow  // Отображение иконок по статусу ТС (Активен, стоянка ...)
+        || filters !== prevProps.filters  // отображение ТС по фильтрам
+      );
 
-        if (gps_code) {
-          const { coords_msk } = this.state.carPointsDataWs[gps_code];
+      if (tgiggerOnChangeStyleForAllCars) { // для фильтрации (тс должна быть с списке и для гаражного номер)
+        hasWhatChage = true;
+        propsObjToChangeStyle.carPointsDataWs = this.state.carPointsDataWs;
+      }
+
+      if (gps_code && lastPoint !== prevProps.lastPoint && this.props.forToday && !isEmpty(odh_mkad)) {
+        const {
+          carPointsDataWs: {
+            [gps_code]: carPointData,
+          },
+        } = this.state;
+
+        if (lastPoint) {
+          if (lastPoint.timestamp > this.state.carPointsDataWs[gps_code].timestamp) {
+            hasWhatChage = true;
+            propsObjToChangeStyle.carPointsDataWs[gps_code] = {
+              ...this.state.carPointsDataWs[gps_code],
+              ...lastPoint,
+            };
+          } else if (lastPoint.timestamp < this.state.carPointsDataWs[gps_code].timestamp) {
+            this.props.carInfoPushPointIntoTrack(carPointData, odh_mkad);
+          }
+        } else {
+          this.props.carInfoPushPointIntoTrack(carPointData, odh_mkad);
+        }
+      }
+
+      if (hasWhatChage) {
+        this.changeStyle(propsObjToChangeStyle);
+      }
+
+      if (STATUS_TC_FOLLOW_ON_CAR && gps_code) {  // Следование за ТС
+        const {
+          carPointsDataWs: {
+            [gps_code]: carPointData, //  текущеее состояние ТС
+          },
+        } = this.state;
+
+        if (carPointData) {
+          const { coords_msk } = carPointData;
 
           const extent: [number, number, number, number] = [
             coords_msk[0],
@@ -85,73 +182,12 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             coords_msk[1],
           ];
 
-          const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
           const noCheckDisabledCenterOn = true;
-          this.props.centerOn({ extent, opt_options }, noCheckDisabledCenterOn);
+          this.props.centerOn(
+            { extent },
+            noCheckDisabledCenterOn,
+          );
         }
-        
-      }
-      if (zoomMore8 !== this.state.zoomMore8) {
-        hasWhatChage = true;
-        whatPointChange = this.state.carPointsDataWs;
-        changeState.zoomMore8 = zoomMore8;
-      }
-
-      if (STATUS_SHOW_GOV_NUMBER !== this.state.STATUS_SHOW_GOV_NUMBER) {
-        hasWhatChage = true;
-        whatPointChange = this.state.carPointsDataWs;
-        changeState.STATUS_SHOW_GOV_NUMBER = STATUS_SHOW_GOV_NUMBER;
-      }
-
-      if (gps_code && lastPoint !== this.state.lastPoint && nextProps.forToday && Object.values(nextProps.odh_mkad).length) {
-        if (lastPoint) {
-          if (lastPoint.timestamp > this.state.carPointsDataWs[gps_code].timestamp) {
-            changeState.carPointsDataWs = {
-              ...this.state.carPointsDataWs,
-              [gps_code]: {
-                ...this.state.carPointsDataWs[gps_code],
-                ...lastPoint,
-              },
-            };
-          } else if (lastPoint.timestamp < this.state.carPointsDataWs[gps_code].timestamp) {
-            this.props.carInfoPushPointIntoTrack(this.state.carPointsDataWs[gps_code], nextProps.odh_mkad);
-          }
-        } else {
-          this.props.carInfoPushPointIntoTrack(this.state.carPointsDataWs[gps_code], nextProps.odh_mkad);
-        }
-        hasWhatChage = true;
-        changeState.lastPoint = lastPoint;
-      }
-
-      if (nextProps.STATUS_TC_FOLLOW_ON_CAR) {
-        const { coords_msk } = (changeState.carPointsDataWs || this.state.carPointsDataWs)[gps_code];
-
-        const extent: [number, number, number, number] = [
-          coords_msk[0],
-          coords_msk[1],
-          coords_msk[0],
-          coords_msk[1],
-        ];
-        const noCheckDisabledCenterOn = true;
-        this.props.centerOn({ extent }, noCheckDisabledCenterOn);
-      }
-
-      if (statusShow !== this.state.statusShow) {
-        hasWhatChage = true;
-        whatPointChange = this.state.carPointsDataWs;
-        changeState.statusShow = statusShow;
-      }
-
-      if (filters !== this.state.filters) {
-        hasWhatChage = true;
-        whatPointChange = this.state.carPointsDataWs;
-        changeState.filters = filters;
-      }
-
-      if (hasWhatChage) {
-        this.changeStyle({ ...this.state, carPointsDataWs: whatPointChange, ...changeState, old_carPointsDataWs: this.state.carPointsDataWs });
-
-        this.setState(changeState);
       }
     }
   }

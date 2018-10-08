@@ -94,32 +94,34 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
 
         return (
           <div className="card_container main">
-            <div className="card_title">
-              <div>
-                <div>{title}</div>
-                <div className="button_refresh">
-                  <Button onClick={this.loadData}>
-                    <Glyphicon
-                      className={cx({ 'glyphicon-spin': isLoading })}
-                      glyph="refresh"
-                    />
-                  </Button>
+            <div className="card_container-wrap">
+              <div className="card_title">
+                <div>
+                  <div>{title}</div>
+                  <div className="button_refresh">
+                    <Button onClick={this.loadData}>
+                      <Glyphicon
+                        className={cx({ 'glyphicon-spin': isLoading })}
+                        glyph="refresh"
+                      />
+                    </Button>
+                  </div>
                 </div>
               </div>
+              <div className={cx('card_body', { is_loading: isLoading })}>
+                <Component {...props} />
+              </div>
+              {
+                InfoComponent ?
+                (
+                  <InfoComponent />
+                )
+                :
+                (
+                  <div className="none"></div>
+                )
+              }
             </div>
-            <div className={cx('card_body', { is_loading: isLoading })}>
-              <Component {...props} />
-            </div>
-            {
-              InfoComponent ?
-              (
-                <InfoComponent />
-              )
-              :
-              (
-                <div className="none"></div>
-              )
-            }
           </div>
         )
       }

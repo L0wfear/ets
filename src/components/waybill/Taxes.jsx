@@ -69,12 +69,25 @@ export default class Taxes extends Component {
     const { type } = props;
 
     this.tableCaptions = [
-      'Операция',
-      'Ед. измерения',
-      'Норма',
-      'Поправочный коэффициент',
-      `Значение (${type === 'odometr' ? 'км | м/ч | раз | час' : 'м/ч | раз | час'})`,
-      'Результат (л)',
+      {
+        value: 'Операция',
+        cssClassName: 'min-width250',
+      },
+      {
+        value: 'Ед. измерения',
+      },
+      {
+        value: 'Норма',
+      },
+      {
+        value: 'Поправочный коэффициент',
+      },
+      {
+        value: `Значение (${type === 'odometr' ? 'км | м/ч | раз | час' : 'м/ч | раз | час'})`,
+      },
+      {
+        value: 'Результат (л)',
+      },
     ];
 
     this.tableCols = [

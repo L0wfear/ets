@@ -8,10 +8,12 @@
   }
 
   .card_container {
-    .card_title {
-      padding: 20px;
-      padding-bottom: 5px;
-      font-weight: bold;
+    &.control {
+      background-color: #eee;
+      position: relative;
+      border-radius: 4px;
+    
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.3);
     }
     .card_body {
       align-items: center;

@@ -195,7 +195,7 @@ export default class WaybillJournal extends CheckableElementsList {
 
   formCallback = async () => {
     await this.updateList(this.state);
-    super.formCallback();
+    this.onFormHide();
   }
 
   additionalRender = () => {

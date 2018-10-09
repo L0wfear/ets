@@ -32,6 +32,8 @@ class MissionFormWrap extends FormWrap {
       }
     }
     return r;
+  }).catch((error) => {
+    console.log(error);
   });
 
   componentWillReceiveProps(props) {
@@ -106,20 +108,13 @@ class MissionFormWrap extends FormWrap {
    * @override
    * @param {*} formState
    */
-  updateAction(formState) {
-    return new Promise(async (resolve) => {
-      try {
-        await this.context.flux.getActions('missions').updateMission(formState);
-        try {
-          await this.props.refreshTableList();
-        } catch (e) {
-          // function refreshTableList not in father modules
-        }
-        resolve();
-      } catch (error) {
-        // function refreshTableList not in father modules
-      }
-    });
+  async updateAction(formState) {
+    try {
+      await this.context.flux.getActions('missions').updateMission(formState);
+      await this.props.refreshTableList();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   validate(formState, errors, otherData = {}) {

@@ -48,7 +48,6 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
       };
 
       componentDidMount() {
-
         this.setState({
           timerId: setTimeout(() => {
             this.loadData();

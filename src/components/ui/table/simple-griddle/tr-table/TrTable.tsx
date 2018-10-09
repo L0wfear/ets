@@ -35,7 +35,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
     );
   }
 
-  handleRowCheck: React.MouseEventHandler<HTMLInputElement> = () => {
+  handleRowCheck: any = () => {
     const { props } = this;
 
     props.handleRowCheck(props.rowData[props.selectField] || props.index);
@@ -99,7 +99,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
                           readOnly
                           id={`checkbox-${rowData[this.props.selectField] || index}`}
                           checked={rowData.isChecked}
-                          onClick={this.handleRowCheck}
+                          onChange={this.handleRowCheck}
                         />
                       </div>
                     )

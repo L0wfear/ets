@@ -212,7 +212,7 @@ export default class FormWrap extends React.Component {
     }
 
     // закрываем форму только в случае отсутствия исключительных ситуаций
-    if (typeof this.props.onFormHide === 'function') {
+    if (typeof this.props.onFormHide === 'function' && result !== 'isError') {
       this.props.onFormHide(result);
     }
   }

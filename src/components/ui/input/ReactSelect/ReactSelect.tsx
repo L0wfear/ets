@@ -48,7 +48,14 @@ export default class ReactSelect extends React.Component<any, any> {
       emptyValue = '',
     } = this.props;
 
-    this.props.onChange(onChangeSelectLegacy(objectValue === null ? emptyValue : objectValue), objectValue);
+    this.props.onChange(
+      onChangeSelectLegacy(
+        (objectValue === null) || (Array.isArray(objectValue) && objectValue.length === 0)
+        ? emptyValue
+        : objectValue
+      ),
+      objectValue,
+    );
   }
 
   optionRenderer = ({ innerProps, ...props }) => {

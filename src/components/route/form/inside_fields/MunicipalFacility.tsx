@@ -90,6 +90,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
 
     const triggerOnUpdate = (
       technicalOperationsList.length
+      && technical_operation_id
       && (
         technical_operation_id !== prevProps.technical_operation_id  // или изменилась ТО на форме
         || !prevProps.technicalOperationsList.length && technical_operation_id // или в предыдущих пропсах не было данных по ТО

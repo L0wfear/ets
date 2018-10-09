@@ -57,7 +57,7 @@ const tableProps = {
   highlightClassMapper: (rowData) => {
     if (rowData.is_covered) {
       return 'highlight-tr-green';
-    }else{
+    } else {
       return 'highlight-tr-pink';
     }
   },

@@ -271,13 +271,16 @@ export default class DataTable extends React.Component {
       changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
     }
 
-    if(Object.values(nextProps.checked).length < nextProps.results.length){
+    if (Object.values(nextProps.checked).length < nextProps.results.length) {
       changesFields.globalCheckboxState = false;
-    }else {
+    } else {
       changesFields.globalCheckboxState = nextProps.results.every((elem)=> nextProps.checked[elem.id] );
     }
+
     const el = document.getElementById('checkedColumn');
-    if (el) el.checked = changesFields.globalCheckboxState;
+    if (el) {
+      el.checked = changesFields.globalCheckboxState;
+    }
 
     return changesFields;
   }

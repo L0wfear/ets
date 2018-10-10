@@ -47,13 +47,13 @@ const initialState: InitialStateType = {
     isLoading: false,
     dateLoad: null,
     data: defAns.car_in_work_overall,
-    infoData: null, 
+    infoData: null,
   },
   faxogramms: {
     isLoading: false,
     dateLoad: null,
     data: defAns.faxogramms,
-    infoData: null, 
+    infoData: null,
   },
   current_duty_missions: {
     isLoading: false,
@@ -99,7 +99,7 @@ export default (state = initialState, { type, payload }) => {
             isLoading: false,
             data,
             dateLoad: new Date(),
-          }
+          },
         }), {}),
       };
     }
@@ -140,4 +140,4 @@ export default (state = initialState, { type, payload }) => {
       return state;
     }
   }
-}
+};

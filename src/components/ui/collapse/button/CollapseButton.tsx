@@ -19,7 +19,6 @@ class ButtonCollapse extends React.Component<PropsButtonCollapse, StateButtonCol
     isOpen: false,
   };
 
-
   toggleIsOpen = () => (
     this.setState({
       isOpen: !this.state.isOpen,
@@ -36,7 +35,7 @@ class ButtonCollapse extends React.Component<PropsButtonCollapse, StateButtonCol
           <Glyphicon glyph={'menu-down'} onClick={this.toggleIsOpen} />
         </div>
       </div>
-    )
+    );
   }
 }
 

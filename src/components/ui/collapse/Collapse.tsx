@@ -1,11 +1,12 @@
 import * as React from 'react';
-import * as cx from 'classnames';
-
-require('components/ui/collapse/Collapse.scss');
+import {
+  timeTransition,
+  EtsCollapse,
+} from 'components/ui/collapse/styled/styled';
 
 type PropsCollapse = {
   isOpen: boolean;
-  changeMaxHeight?: Function;
+  changeMaxHeight?: any;
   dependentData: any;
 };
 
@@ -18,10 +19,9 @@ class Collapse extends React.Component<PropsCollapse, StateCollapse> {
   state = {
     isOpen: this.props.isOpen,
     maxHeight: 0,
+    overFlow: 'hidden',
     dependentData: this.props.dependentData,
-    style: {
-      maxHeight: 0,
-    }
+    timerId: null,
   };
 
   componentDidMount() {
@@ -29,15 +29,13 @@ class Collapse extends React.Component<PropsCollapse, StateCollapse> {
       const maxHeight = this._node.scrollHeight;
       this.setState({
         maxHeight,
-        style: {
-          maxHeight,
-        },
       });
 
       if (this.props.changeMaxHeight) {
         this.props.changeMaxHeight(maxHeight);
       }
     }
+    
   }
 
   static getDerivedStateFromProps({ isOpen, dependentData }, prevState) {
@@ -51,56 +49,84 @@ class Collapse extends React.Component<PropsCollapse, StateCollapse> {
     return null;
   }
 
-  componentDidUpdate() {
+  getSnapshotBeforeUpdate(prevProps, prevState) {
     const scrollHeight = this._node.scrollHeight;
+    return this.state.isOpen ? (scrollHeight < this.state.maxHeight ? this.state.maxHeight : scrollHeight) : 0;
+  }
 
-    const maxHeight = this.state.isOpen ? (scrollHeight < this.state.maxHeight ? this.state.maxHeight : scrollHeight) : 0;
+  componentDidUpdate(prevProps, prevState, maxHeight) {
+    const { maxHeight: stateMaxHeight } = this.state;
 
-    if (maxHeight !== this.state.maxHeight) {
-      this.setState({
-        maxHeight,
-        style: {
-          maxHeight,
-        },
-      });
-      if (this.props.changeMaxHeight) {
-        this.props.changeMaxHeight(maxHeight - this.state.maxHeight);
-      }
+    if (maxHeight !== stateMaxHeight) {
+      this.asyncUpdateMaxHeight(maxHeight, stateMaxHeight);
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.state.timerId);
+  }
+
+  asyncUpdateMaxHeight(maxHeight, stateMaxHeight) {
+    new Promise(() => {
+      const changeStateObj = {
+        ...this.state,
+        maxHeight,
+      };
+
+      if (this.props.changeMaxHeight) {
+        this.props.changeMaxHeight(maxHeight - stateMaxHeight);
+      }
+
+      if (maxHeight > 0) {
+        if (stateMaxHeight === 0) {
+          changeStateObj.timerId = setTimeout(() => (
+            this.setState({
+              overFlow: 'visible',
+            })
+          ), timeTransition + 100);
+        }
+      } else {
+        changeStateObj.overFlow = 'hidden';
+      }
+
+      this.setState(changeStateObj);
+    });
   }
 
   changeMaxHeight = (childHeight) => {
     const maxHeight = this.state.maxHeight + childHeight;
 
-    if (maxHeight!== this.state.maxHeight) {
+    if (maxHeight !== this.state.maxHeight) {
       if (this.props.changeMaxHeight) {
         this.props.changeMaxHeight(maxHeight);
       }
       this.setState({
         maxHeight,
-        style: {
-          maxHeight,
-        },
       });
     }
   }
-  
+
   addPropsToChildren = (Component) => (
     <Component.type {...Component.props} changeMaxHeight={this.changeMaxHeight} />
   )
 
   getNode = node => this._node = node;
-  
+
   render() {
+    const {
+      overFlow,
+      maxHeight,
+    } = this.state;
+
     return (
-      <div className={cx('ets_collapse')} style={this.state.style}>
+      <EtsCollapse maxHeight={maxHeight} overFlow={overFlow}>
         <div ref={this.getNode}>
           {
             React.Children.map(this.props.children, this.addPropsToChildren)
           }
         </div>
-      </div>
-    )
+      </EtsCollapse>
+    );
   }
 }
 

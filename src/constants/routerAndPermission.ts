@@ -4,6 +4,7 @@ import coverageReports from 'components/coverage_reports/config-data';
 import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
+// import nsiNew from 'components/new/pages/nsi/_config-data';
 import reports from 'components/reports/config-data';
 import routeList from 'components/route/config-data';
 import companyStructure from 'components/company_structure/config-data';
@@ -22,6 +23,7 @@ const routerAndPermission = {
   waybillJournal,
   missions,
   nsi,
+  // nsiNew,
   reports,
   routeList,
   companyStructure,

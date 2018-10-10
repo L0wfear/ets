@@ -1,12 +1,8 @@
 import styled from 'styled-components';
 
-import {
-  EtsPageWrap,
-} from 'global-styled/global-styled';
+import { EtsPageWrap } from 'global-styled/global-styled';
 
-import {
-  constant,
-} from 'global-styled/global-constants';
+import { constantColor } from 'global-styled/global-constants';
 
 export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
   .griddle-body {
@@ -29,7 +25,7 @@ export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
     
       tr {
         &.expanded > td {
-          background-color: ${constant.colorGreen} !important;
+          background-color: ${constantColor.colorGreen} !important;
           color: white !important;
         }
         
@@ -41,12 +37,12 @@ export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
           }
 
           &:hover > td, &.selected-row > td {
-            background-color: ${constant.colorGreen} !important;
+            background-color: ${constantColor.colorGreen} !important;
             color: white !important;
           }
 
           &.child-row:hover > td, &.highlighted-row > td {
-            background-color: ${constant.colorYellow} !important;
+            background-color: ${constantColor.colorYellow} !important;
           }
         }
       }

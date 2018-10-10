@@ -19,7 +19,7 @@ class MapInfo extends React.Component<PropsMapInfo, StateMapInfo> {
         <CarInfo {...this.props} />
         <GeoobjectsInfo {...this.props} />
       </div>
-    )
+    );
   }
 }
 

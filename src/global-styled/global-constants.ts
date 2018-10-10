@@ -1,4 +1,4 @@
-export const constant = {
+export const constantColor = {
   colorLink: '#0081d6',
   colorGreen: '#6a9e56',
   colorLightGreen: '#96bb88',

@@ -12,6 +12,8 @@ import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboa
 // sorry
 import paginator from 'components/ui/new/paginator/redux-main/paginator';
 
+import registry from 'components/new/ui/registry/module/registry';
+
 export default combineReducers({
   ...rootReducers,
   dashboard,
@@ -21,4 +23,5 @@ export default combineReducers({
   session,
   monitorPage,
   paginator,
+  registry,
 });

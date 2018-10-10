@@ -1,0 +1,102 @@
+import * as React from 'react';
+import { Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import {
+  registryToggleIsOpenFilter,
+  registryResetAllTypeFilter,
+  registryApplyRawFilters
+} from 'components/new/ui/registry/module/actions-registy';
+
+import {
+  getFilterData,
+  getListData,
+} from 'components/new/ui/registry/module/selectors-registry';
+import { isBoolean } from 'util';
+import {
+  EtsFiltersButtonsLine, EtsFiltersCloseContainer, EtsFilterActionButton, EtsFilterActionButtonConteiner,
+} from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
+
+type PropsButtonsLIne = {
+  registryKey: string;
+  isOpen: boolean;
+  canApply: boolean;
+  canResetFilters: boolean;
+
+  handleClose: any;
+  resetAllTypeFilter: any;
+  hanleClickApplyRawFilters: any;
+};
+
+type StateButtonsLIne = {
+
+};
+
+class ButtonsLIne extends React.Component<PropsButtonsLIne, StateButtonsLIne> {
+  render() {
+    const { props } = this;
+
+    return (
+      <EtsFiltersButtonsLine>
+        <div></div>
+        <EtsFilterActionButtonConteiner>
+          <EtsFilterActionButton onClick={props.hanleClickApplyRawFilters}>Применить</EtsFilterActionButton>
+          <EtsFilterActionButton onClick={props.resetAllTypeFilter} disabled={!props.canResetFilters}>Сброс</EtsFilterActionButton>
+        </EtsFilterActionButtonConteiner>
+        <EtsFiltersCloseContainer onClick={props.handleClose}>
+          <Glyphicon glyph="remove"/>
+        </EtsFiltersCloseContainer>
+      </EtsFiltersButtonsLine>
+    );
+  }
+}
+
+const mapStateToProps = (state, { registryKey }) => {
+  const canApply = (
+    Object.values(
+      getFilterData(state.registry, registryKey).rawFilterValues
+    ).some((valuesObj) => (
+      Object.values(valuesObj).some(({ value }: any) => (
+        !value
+        || isBoolean(value)
+        || Array.isArray(value) && value.length > 0
+      ))
+    ))
+  );
+
+  return {
+    canApply,
+    canResetFilters: (
+      canApply
+      || (
+        Boolean(
+          Object.values(
+            getListData(state.registry, registryKey).processed.filterValues
+          ).length
+        )
+      )
+    ),
+  };
+};
+
+const mapDispatchToProps = (dispatch, { registryKey }) => ({
+  handleClose: () => (
+    dispatch(
+      registryToggleIsOpenFilter(registryKey),
+    )
+  ),
+  hanleClickApplyRawFilters: () => (
+    dispatch(
+      registryApplyRawFilters(registryKey),
+    )
+  ),
+  resetAllTypeFilter: () => (
+    dispatch(
+      registryResetAllTypeFilter(registryKey),
+    )
+  ),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ButtonsLIne);

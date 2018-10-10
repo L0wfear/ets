@@ -157,10 +157,6 @@ export default hocAll(
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',
   }),
-  withShowByProps({
-    path: ['monitorPage', 'carInfo', 'missionsData', 'missions'],
-    type: 'none',
-  }),
   connect(
     mapStateToProps,
   ),

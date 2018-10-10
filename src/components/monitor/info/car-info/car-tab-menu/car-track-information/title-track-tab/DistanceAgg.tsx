@@ -1,32 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import DistanceAggValue from 'components/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
 
 type PropsDistanceAgg = {
-  distance_agg2: any;
 };
 
-const DistanceAgg: React.SFC<PropsDistanceAgg> = ({ distance_agg2 }) => (
+const DistanceAgg: React.SFC<PropsDistanceAgg> = () => (
   <div className="car_info-distance">
-    <span>Протяженность, км: </span>
-    {
-      distance_agg2 === -1 ?
-        ( <Preloader typePreloader="field" /> )
-      :
-      (
-        distance_agg2 === null ?
-          <span>{'---'}</span>
-        :
-          <span>{distance_agg2 / 1000}</span>
-      )
-    }
+    <span>Протяженность, км: </span><DistanceAggValue />
   </div>
       
 )
-const mapStateToProps = state => ({
-  distance_agg2: state.monitorPage.carInfo.trackCaching.distance_agg2,
-});
-
 export default connect(
-  mapStateToProps,
 )(DistanceAgg);

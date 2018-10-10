@@ -12,5 +12,6 @@ export type PropsCarAttributeInformation = {
   type_name: string,
   model_name: string,
   lastPoint: TypeLastPoint,
+  errorInLoadTrack: boolean;
   map: ol.Map;
 };

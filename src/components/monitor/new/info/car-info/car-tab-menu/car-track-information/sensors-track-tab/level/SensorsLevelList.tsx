@@ -87,6 +87,7 @@ export default hocAll(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'loader-field',
+    checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
   connect(
     mapStateToProps,

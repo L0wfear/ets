@@ -5,9 +5,6 @@ import config from 'config';
 import Preloader from 'components/ui/Preloader';
 import { getMaxSpeedToLegend } from 'components/monitor/new/info/car-info/car-main-data-block/utils';
 import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
-import {
-  CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;
@@ -59,7 +56,7 @@ const mapStateToProps = state => ({
   STATUS_TC_FOLLOW_ON_CAR: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR,
   maxSpeed: getMaxSpeedToLegend(state.monitorPage.carInfo),
   disabledFollow: state.monitorPage.carInfo.playTrack.status !== 'stop', 
-  disabledShowTrack: state.monitorPage.carInfo.playTrack.status === 'play' || state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) ? true : state.monitorPage.carInfo.trackCaching.track.length <= 1,
+  disabledShowTrack: state.monitorPage.carInfo.playTrack.status === 'play' || state.monitorPage.carInfo.trackCaching.track.length <= 1 || state.monitorPage.carInfo.trackCaching.error,
 });
 
 const mapDispatchToProps = (dispatch, props) => ({

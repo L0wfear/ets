@@ -3,37 +3,68 @@ import { connect } from 'react-redux';
 import Preloader from 'components/ui/Preloader';
 import { attributeList } from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/attribute-list';
 import { PropsCarAttributeInformation } from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
-import {
-  CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/new/info/car-info/redux/modules/car-info';
 import CarMissions from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/car-missions/CarMissions';
 
-const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = props => (
-  <div>
-    <div className="car_info_block tab-data">
-      <div className="car_info-attributes" >
-        {
-          attributeList.map((attr) => {
-            const value = attr.value(props);
+import { makeDate, makeTime } from 'utils/dates';
+import { roundCoordinates } from 'utils/geo';
+import {
+  TypeLastPoint,
+} from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
 
-            return (
-              <div key={attr.title}>
-                <span className="car_info-attr_title">{`${attr.title}: `}</span>
-                {
-                  !value && value !== null ?
-                    <Preloader type="field" />
-                  :
-                    <span className="car_info-attr_value">{value || '-'}</span>
-                }
-              </div>
-            )
-          })
-        }
+const makeLastPointString = (lastPoint: TypeLastPoint): string => {
+  const dt = new Date(lastPoint.timestamp * 1000);
+
+  return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
+};
+
+const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = (props) => {
+  const { lastPoint, errorInLoadTrack } = props;
+
+  return (
+    <div>
+      <div className="car_info_block tab-data">
+        <div className="car_info-attributes" >
+          {
+            attributeList.map((attr) => {
+              const value = attr.value(props);
+
+              return (
+                <div key={attr.title}>
+                  <span className="car_info-attr_title">{`${attr.title}: `}</span>
+                  {
+                    !value && value !== null ?
+                      <Preloader type="field" />
+                    :
+                      <span className="car_info-attr_value">{value || '-'}</span>
+                  }
+                </div>
+              )
+            })
+          }
+          <div>
+            <span className="car_info-attr_title">{'Последняя точка: '}</span>
+            {
+              !lastPoint && lastPoint !== null
+              ? (
+                errorInLoadTrack
+                ? (
+                  'Ошибка загрузки трека'
+                )
+                : (
+                  <Preloader type="field" />
+                )
+              )
+              : (
+                <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
+              )
+            }
+          </div>
+        </div>
       </div>
+      <CarMissions />
     </div>
-    <CarMissions />
-  </div>
-)
+  );
+}
 
 const mapStateToProps = state => ({
   ...attributeList.reduce((newObj, attr) => {
@@ -46,7 +77,8 @@ const mapStateToProps = state => ({
     return newObj;
   }, {}),
   status: state.monitorPage.carInfo.status,
-  lastPoint: state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) || state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+  errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
 })
 
 export default connect(

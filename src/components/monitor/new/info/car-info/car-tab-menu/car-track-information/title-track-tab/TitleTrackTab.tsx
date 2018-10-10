@@ -146,6 +146,7 @@ const mapStateToProps = state => ({
   gps_code: state.monitorPage.carInfo.gps_code,
   asuods_id: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { asuods_id: null}).asuods_id,
   track: state.monitorPage.carInfo.trackCaching.track,
+  error: state.monitorPage.carInfo.trackCaching.error,
   status: state.monitorPage.carInfo.playTrack.status,
 });
 
@@ -161,7 +162,7 @@ const mapDispatchToProps = dispatch => ({
 const mergedProps = (stateProps, dispatchProps) => ({
   ...stateProps,
   ...dispatchProps,
-  disabledForToday: !stateProps.asuods_id || stateProps.track === -1,
+  disabledForToday: ((!stateProps.asuods_id || stateProps.track === -1) && !stateProps.error) || stateProps.error,
   fetchTrack: (props) => (
     dispatchProps.dispatch(fetchTrack(props, stateProps.odh_mkad))
   ),

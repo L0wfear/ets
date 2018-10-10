@@ -16,6 +16,7 @@ import {
   CAR_INFO_SET_POPUP_TRACK_POINT,
   CAR_INFO_SET_POPUP_PARKING_POINT,
   CAR_INFO_SET_POPUP_FUEL_EVENT_POINT,
+  initialState,
 } from 'components/monitor/new/info/car-info/redux/modules/car-info';
 import { makeUnixTime, createValidDateTime, diffDayOfDate } from 'utils/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad } from 'components/monitor/new/info/car-info/redux/modules/utils';
@@ -61,6 +62,7 @@ export const carInfoSetTrack = (trackCaching, gps_code, odh_mkad) => ({
       ...trackCaching,
       ...checkAndModifyTrack(trackCaching, odh_mkad),
     },
+    error: false,
     gps_code,
   }
 });
@@ -137,8 +139,18 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
         };
 
         return TrackService.get(payloadToTrack).then(ans => (
-          carInfoSetTrack(ans, payloadData.gps_code, odh_mkad).payload)
-        );
+          carInfoSetTrack(ans, payloadData.gps_code, odh_mkad).payload
+        ));
+      })
+      .catch((error) => {
+        console.log(error)
+        return {
+          trackCaching: {
+            ...initialState.trackCaching,
+            error: true,
+          },
+          gps_code: payloadData.gps_code,
+        };
       }),
     meta: {
       ...meta,
@@ -154,9 +166,14 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) 
       car_id: payloadData.asuods_id,
       date_start: createValidDateTime(payloadData.date_start),
       date_end: createValidDateTime(payloadData.date_end),
-    }).then((ans) => (
-      carInfoSetMissionsData(ans.result, payloadData.gps_code).payload
-    )),
+    }).then((ans) => {
+      return carInfoSetMissionsData(ans.result, payloadData.gps_code).payload
+    })
+    .catch((error) => ({
+      ...initialState.missionsData,
+      error: true,
+      gps_code: payloadData.gps_code,
+    })),
     meta: {
       ...meta,
     },

@@ -6,10 +6,13 @@ import Preloader from 'components/ui/Preloader';
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { isArray, isUndefined, isNullOrUndefined } from 'util';
 
 type TypeConfigToShow = {
   path: string[],
-  type?: 'loader-field' | 'hidden' | 'none',
+  checkErrorPath?: string[];
+  canNull?: boolean;
+  type?: 'loader-field' | 'small-loader-field' | 'hidden' | 'none',
 }
 
 const HiddenComponent: React.SFC<any> = ({ type }) => {
@@ -20,23 +23,49 @@ const HiddenComponent: React.SFC<any> = ({ type }) => {
       </div>
     );
   }
+  if (type === 'small-loader-field') {
+    return (
+      <Preloader type="field" />
+    );
+  }
   return <DivNone />
 }
 
 const withShowByProps = (configToShow: TypeConfigToShow) => Component => (
   connect(
     state => {
+      const { checkErrorPath } = configToShow;
+      let show = false;
       const value = get(state, configToShow.path, -1);
+      const error = isArray(checkErrorPath) ? get(state, checkErrorPath, false) : false;
 
-      return { show: !!value ? value !== -1 : false };
+      if (configToShow.canNull) {
+        show = !isUndefined(value) ? value !== -1 : false;
+      } else {
+        show = !isNullOrUndefined(value) ? value !== -1 : false;
+      }
+
+      return {
+        show,
+        error,
+      };
     }
   )
   (
-    ({ show, ...props }) => (
-      show ?
-        <Component {...props} />
-      :
-        <HiddenComponent type={configToShow.type} />
+    ({ show, error, ...props }) => (
+      error
+      ? (
+        <span>Ошибка загрузки данных</span>
+      )
+      : (
+        show
+        ? (
+          <Component {...props} />
+        )
+        : (
+          <HiddenComponent type={configToShow.type} />
+        )
+      )
     )
   )
 );

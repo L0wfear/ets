@@ -1,16 +1,5 @@
-import { makeDate, makeTime } from 'utils/dates';
 import { getStatusById } from 'constants/statuses';
-import { roundCoordinates } from 'utils/geo';
-import {
-  TypeLastPoint,
-  PropsCarAttributeInformation,
-} from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
-
-const makeLastPointString = (lastPoint: TypeLastPoint): string => {
-  const dt = new Date(lastPoint.timestamp * 1000);
-
-  return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
-};
+import { PropsCarAttributeInformation } from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
 
 type OneAtt<P> = {
   key?: string,
@@ -62,11 +51,5 @@ export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
     title: 'Шасси',
     value: ({ model_name }) => model_name,
     carActualGpsNumberIndex: true,
-  },
-  {
-    key: 'lastPoint',
-    title: 'Последняя точка',
-    value: ({ lastPoint }) => lastPoint && makeLastPointString(lastPoint),
-    loader: true,
   },
 ];

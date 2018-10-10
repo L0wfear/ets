@@ -28,11 +28,13 @@ export const initialState = {
   gps_code: null,
   gov_number: null,
   missionsData: {
+    error: false,
     missions: -1,
     mkad_speed_lim: initialMaxSpeed,
     speed_lim: initialMaxSpeed,
   },
   trackCaching: {
+    error: false,
     cars_sensors: {}, 
     front_cars_sensors_level: {},
     front_cars_sensors_equipment: {},
@@ -112,6 +114,7 @@ export default (state: any = initialState, { type, payload }: any) => {
         newState = {
           ...state,
           missionsData: {
+            error: Boolean(payload.error),
             missions: payload.missions,
             mkad_speed_lim: payload.mkad_speed_lim,
             speed_lim: payload.speed_lim,

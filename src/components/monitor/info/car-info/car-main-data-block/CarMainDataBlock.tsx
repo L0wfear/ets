@@ -43,7 +43,7 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
             type_image_name !== '' ?
             <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
             :
-            <Preloader type="field" />
+            <Preloader typePreloader="field" />
           }
           </div>
           <div>

@@ -96,6 +96,7 @@ export default class DataTable extends React.Component {
       // TODO перенести на более высокий уровень абстракции
       columnControlStorageName: PropTypes.string,
       normInitialData: PropTypes.bool,
+      currentPage: PropTypes.any,
     };
   }
 
@@ -142,6 +143,7 @@ export default class DataTable extends React.Component {
       // TODO перенести на более высокий уровень абстракции
       columnControlStorageName: 'ets-storage',
       normInitialData: false,
+      currentPage: 0,
     };
   }
 
@@ -160,7 +162,7 @@ export default class DataTable extends React.Component {
       initialSortAscending: this.props.initialSortAscending,
       data: [],
       originalData: this.props.data,
-      uniqKey: Symbol(props.uniqKey || 'data-table'),
+      currentPage: props.page || 0,
     };
 
     // временно до выпиливания гридла
@@ -280,6 +282,10 @@ export default class DataTable extends React.Component {
     const el = document.getElementById('checkedColumn');
     if (el) {
       el.checked = changesFields.globalCheckboxState;
+    }
+
+    if (nextProps.serverPagination) {
+      changesFields.currentPage = nextProps.page || 0;
     }
 
     return changesFields;
@@ -628,6 +634,10 @@ export default class DataTable extends React.Component {
     });
   }
 
+  setPage = (currentPage) => {
+    this.setState({ currentPage });
+  }
+
   handleKeyPress = (data, keyCode, e) => {
     if (isEmpty(this.props.selected)) {
       return;
@@ -734,9 +744,7 @@ export default class DataTable extends React.Component {
           columnMetadata={columnMetadata}
           columns={tableCols}
           resultsPerPage={15}
-          useCustomPagerComponent
           externalChangeSort={externalChangeSort || this.handleChangeSort}
-          customPagerComponent={serverPagination ? false : PaginatorToPortalData}
           onRowClick={!isHierarchical ? onRowSelected : null}
           onRowDoubleClick={this.props.onRowDoubleClick}
           onRowClickNew={this.props.onRowClick}
@@ -746,6 +754,7 @@ export default class DataTable extends React.Component {
           rowNumberOffset={serverPagination ? this.props.rowNumberOffset : 0}
           handleRowCheck={this.handleRowCheck}
           serverPagination={serverPagination}
+          currentPage={this.state.currentPage}
         />
         {
           serverPagination ?
@@ -754,7 +763,11 @@ export default class DataTable extends React.Component {
           )
           :
           (
-            <Paginator uniqKey={this.state.uniqKey} />
+            <Paginator
+              currentPage={this.state.currentPage}
+              maxPage={Math.ceil(results.length / 15)}
+              setPage={this.setPage}
+            />
           )
         }
       </Div>

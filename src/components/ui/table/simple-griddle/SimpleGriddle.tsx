@@ -3,10 +3,6 @@ import { Glyphicon } from 'react-bootstrap';
 import * as cx from 'classnames';
 import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
-
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 
 const emptyArr = [];
@@ -48,15 +44,13 @@ const makeShortResults = (results, currentPage, resultsPerPage, selectField) => 
 class SimpleGriddle extends React.Component<any, any> {
   constructor(props) {
     super(props);
-    const currentPage = props.rowNumberOffset || 0;
     const results = props.results;
     const { resultsPerPage } = props;
     
     this.state = {
-      currentPage,
       results,
       resultsPerPage,
-      shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
+      shortResult: makeShortResults(results, props.currentPage, resultsPerPage, this.props.selectField),
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
     };
@@ -68,19 +62,12 @@ class SimpleGriddle extends React.Component<any, any> {
       return {
         results,
         resultsPerPage,
-        shortResult: makeShortResults(results, prevState.currentPage, resultsPerPage, nextProps.selectField),
+        shortResult: makeShortResults(results, nextProps.currentPage, resultsPerPage, nextProps.selectField),
       };
     }
 
     return null;
   }
-
-  setPage = (currentPage) => (
-    this.setState({
-      currentPage,
-      shortResult: makeShortResults(this.state.results, currentPage, this.state.resultsPerPage, this.props.selectField),
-    })
-  )
 
   mapTheadTrTh = (columnNameOuter) => {
     const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
@@ -113,7 +100,7 @@ class SimpleGriddle extends React.Component<any, any> {
       rowNumberOffset={this.props.rowNumberOffset}
       handleRowCheck={this.props.handleRowCheck}
       selectField={this.props.selectField}
-      currentPage={this.state.currentPage}
+      currentPage={this.props.currentPage}
       resultsPerPage={this.state.resultsPerPage}
     />
   )
@@ -214,11 +201,8 @@ class SimpleGriddle extends React.Component<any, any> {
   }
   render() {
     const {
-      currentPage,
       shortResult,
     } = this.state;
-
-    const { customPagerComponent: PaginatorWrap } = this.props;
 
     return (
       <div className="griddle simple-griddle">
@@ -244,21 +228,6 @@ class SimpleGriddle extends React.Component<any, any> {
                   }
                 </tbody>
               </table>
-              {
-                PaginatorWrap ?
-                (
-                  <PaginatorWrap
-                    uniqKey={this.props.uniqKey}
-                    currentPage={currentPage}
-                    maxPage={Math.ceil(this.state.results.length / this.state.resultsPerPage)}
-                    setPage={this.setPage}
-                  />
-                )
-                :
-                (
-                  <DivNone />
-                )
-              }
             </div>
           </div>
         </div>

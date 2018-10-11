@@ -112,10 +112,5 @@ class Paginator extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state, { uniqKey }) => ({
-  ...state.paginator[uniqKey],
-})
-
 export default connect(
-  mapStateToProps,
 )(Paginator);

@@ -31,6 +31,7 @@ export interface ICarData {
   driver_fio: string;
   driver_phone: string;
   gov_number: string;
+  asuods_id: number;
 }
 export interface IRouteData{
   id: number;

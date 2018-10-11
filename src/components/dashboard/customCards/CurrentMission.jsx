@@ -9,7 +9,7 @@ import { getFormattedDateTimeSeconds } from 'utils/dates';
 import { wrappedRef } from 'utils/decorators';
 // TODO move to HOC
 import Preloader from 'components/ui/Preloader.jsx';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import DashboardCardMedium from '../DashboardCardMedium.jsx';
 import DashboardCardHeader from '../DashboardCardHeader.jsx';
 import DashboardItemChevron from '../DashboardItemChevron.jsx';

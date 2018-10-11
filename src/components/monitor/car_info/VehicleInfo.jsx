@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { get } from 'lodash';
 import { Glyphicon } from 'react-bootstrap';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import moment from 'moment';
 
 import Panel from 'components/ui/Panel.jsx';

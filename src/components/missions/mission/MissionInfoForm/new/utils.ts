@@ -47,7 +47,7 @@ const getDataTraveledYet = (data) => {
 export const componentWillUnmount: IComponentWillUnmount = props => {
   if (!props.tooLongDates) {
     props.flux.getActions('pointsHybrid').closeConnection();
-    props.flux.getActions('pointsHybrid').setSingleCarTrack(null);
+    props.flux.getActions('pointsHybrid').setSingleCarTrack(null, null);
   }
 };
 
@@ -74,7 +74,7 @@ export const componentDidMount: IComponentDidMount = async props => {
 
   if (!props.tooLongDates) {
     flux.getActions('pointsHybrid').createConnection();
-    flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number);
+    flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number, car_data.asuods_id);
     flux.getActions('pointsHybrid').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
   }
 

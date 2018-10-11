@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import MissionInfoFormWrap from 'components/dashboard/MissionInfoForm/MissionInfoFormWrap.jsx';
+import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
 import { rejectMissionsPack } from 'components/missions/common/rejectMissionsPack';
 
 import CheckableElementsList from 'components/CheckableElementsList.jsx';

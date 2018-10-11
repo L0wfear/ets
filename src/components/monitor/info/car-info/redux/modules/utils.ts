@@ -5,14 +5,21 @@ import { makeDate, makeTime } from 'utils/dates';
 
 import { initialMaxSpeed } from 'components/monitor/info/car-info/redux/modules/constatnts';
 
-export const getMaxSpeeds = missions => missions.reduce((maxSpeeds, mission) => {
-  const { speed_limits } = mission
-  maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
-  maxSpeeds.speed_lim = Math.max(speed_limits.speed_lim, maxSpeeds.mkad_speed_lim);
+export const getMaxSpeeds = missions => (
+  missions.length
+  ? (
+    missions.reduce((maxSpeeds, mission) => {
+      const { speed_limits } = mission
+      maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
+      maxSpeeds.speed_lim = Math.max(speed_limits.speed_lim, maxSpeeds.speed_lim);
 
-  return maxSpeeds;
-}, { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed });
-
+      return maxSpeeds;
+    }, { mkad_speed_lim: 0, speed_lim: 0 })
+  )
+  : (
+    { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed }
+  )
+);
 
 export const checkOnMkad = ({ coords_msk }, odh_mkad) => (
   Object.values(odh_mkad).some(({  shape: { coordinates, type } }) => {

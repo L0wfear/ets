@@ -17,4 +17,5 @@ export const EtsFilterActionButtonConteiner = styled.div``;
 
 export const EtsFilterActionButton = styled(Button)`
   font-size: 20px;
+  margin: 0 5px;
 `;

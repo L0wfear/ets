@@ -365,6 +365,7 @@ export class MissionForm extends Form {
 
       this.props.handleMultiFormChange(changesObj);
     }
+    this.handleChange('date_start', date_start);
   }
 
   handleChangeHoursDateEnd = countHours => this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));

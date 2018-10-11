@@ -56,13 +56,13 @@ export function tableMeta({
         },
       },
       {
-        name: 'prefer_car',
+        name: 'prefer_car_text',
         displayName: 'Основное ТС',
         type: 'string',
         filter: false,
       },
       {
-        name: 'secondary_car',
+        name: 'secondary_car_text',
         displayName: 'Вторичное ТС',
         type: 'string',
         filter: false,

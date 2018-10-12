@@ -11,6 +11,7 @@ export const DailyCleaningReportsServiceETS = ETS_API_FACTORY.createApiServiceAd
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});
 export const CarConditionReport = ETS_API_FACTORY.createApiServiceAdapter('car_condition_report', {});
 export const CarDowntimeAndOvermileageReport = ETS_API_FACTORY.createApiServiceAdapter('car_downtime_and_overmileage_report', {});
+export const cleaningVolume = ETS_API_FACTORY.createApiServiceAdapter('cleaning_volume', {});
 
 export const DailyCleaningReportsServiceCAFAP = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning_status_cafap_report', {},

@@ -59,11 +59,13 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
             this.loadData();
 
             this.setState({
-              timerId: setInterval(() => (
-                this.loadData()
-              ), (this.props.timeInterval || 2 * 60) * 1000),
+              timerId: setInterval(() => {
+                if (!this.props.isLoading) {
+                  this.loadData();
+                }
+              }, (this.props.timeInterval || 2 * 60) * 1000),
             })
-          }, this.props.timeDelay * 1000 || 0),
+          }, this.props.timeDelay * 100 || 0),
         })
       }
 

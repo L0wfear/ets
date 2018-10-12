@@ -36,12 +36,20 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
 
     return (
       <div>
-        <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
+        <List
+          items={firstTwoItem}
+          handleClick={this.handleClickMission}
+          classNameContainer="line_data"
+        />
         { 
           collapsetItems.length ? 
           (
-            <CollapseButton dependentData={collapsetItems}>
-              <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
+            <CollapseButton >
+              <List
+                items={collapsetItems}
+                handleClick={this.handleClickMission}
+                classNameContainer="line_data"
+              />
             </CollapseButton>
           )
           :

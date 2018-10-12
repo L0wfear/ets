@@ -16,7 +16,7 @@ type PropsListByTypeMission = {
 }
 
 const ListByTypeMission: React.SFC<PropsListByTypeMission> = ({ title, items = [], ...props }) => (
-  <CollapseText title={title} dependentData={items} classNameContainer={cx('line_data', 'bold', { pointer: items.length, 'no-pointer-events': !items.length })}>
+  <CollapseText title={title} classNameContainer={cx('line_data', 'bold', { pointer: items.length, 'no-pointer-events': !items.length })}>
     <CollapseList collapsetItems={items} handleClick={props.handleClick} />
   </CollapseText>
 );

@@ -6,12 +6,10 @@ import Collapse from 'components/ui/collapse/Collapse';
 type PropsCollapseText= {
   classNameTitle?: string;
   title: any;
-  dependentData: any;
   classNameContainer?: string;
 };
 
 type StateCollapseText= {
-
 };
 
 class CollapseText extends React.Component<PropsCollapseText, StateCollapseText> {
@@ -22,7 +20,7 @@ class CollapseText extends React.Component<PropsCollapseText, StateCollapseText>
   toggleIsOpen = () => {
     this.setState({
       isOpen: !this.state.isOpen,
-    })
+    });
   }
 
   render() {

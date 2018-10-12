@@ -947,7 +947,7 @@ body.application {
 }
 
 .no-pointer-events {
-  pointer-events:  !important;
+  pointer-events: none !important;
   cursor: default !important;
 }
 
@@ -3417,4 +3417,8 @@ div.car-movement-time-report {
   flex-direction: row-reverse;
   justify-content: flex-end;
   align-items: baseline;
+}
+
+.bold {
+  font-weight: 800;
 }

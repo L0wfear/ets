@@ -11,13 +11,15 @@ import {
   DashboardPageContainer,
 } from 'components/dashboard/styled/styled';
 
-const DashboardPage: React.SFC<any> = (props) => {
-  return (
-    <DashboardPageContainer>
-      <DashboardTime />
-      <DashboardMenu />
-    </DashboardPageContainer>
-  );
+class DashboardPage extends React.PureComponent<{}, {}> {
+  render() {
+    return (
+      <DashboardPageContainer>
+        <DashboardTime />
+        <DashboardMenu />
+      </DashboardPageContainer>
+    );
+  }
 }
 
 export default hocAll(

@@ -16,9 +16,6 @@ declare namespace ETSCore {
       type FuncGetFeatureById = (id: string) => ol.Feature;
       type FuncSetDataInLayer = (name: string, value: any) => void;
       type FuncGetAllFeatures = () => ol.Feature[];
-
-
-
     }
   }
 }

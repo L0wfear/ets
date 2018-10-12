@@ -41,7 +41,7 @@ class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateO
         { 
           collapsetItems.length ? 
           (
-            <CollapseButton dependentData={collapsetItems}>
+            <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
             </CollapseButton>
           )

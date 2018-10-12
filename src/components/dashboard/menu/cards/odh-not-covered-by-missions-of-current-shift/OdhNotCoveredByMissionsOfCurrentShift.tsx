@@ -42,7 +42,7 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
         { 
           collapsetItems.length ? 
           (
-            <CollapseButton dependentData={collapsetItems}>
+            <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
             </CollapseButton>
           )

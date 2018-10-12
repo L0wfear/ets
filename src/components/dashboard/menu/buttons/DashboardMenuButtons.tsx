@@ -25,8 +25,16 @@ import {
 import {
   CardContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { ReduxState } from 'redux-main/@types/state';
+import {
+  StatePropsDashboardMenuButtons,
+  DispatchPropsDashboardMenuButtons,
+  OwnerPropsDashboardMenuButtons,
+  PropsDashboardMenuButtons,
+  StateDashboardMenuButtons,
+} from 'components/dashboard/menu/buttons/DashboardMenuButtons.h';
 
-class DashboardMenuButtons extends React.Component<any, any> {
+class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, StateDashboardMenuButtons> {
   state = {
     showWaybillFormWrap: false,
     showMissionFormWrap: false,
@@ -103,25 +111,23 @@ class DashboardMenuButtons extends React.Component<any, any> {
   }
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  loadDataAfterCreateWaybill: () => (
-    dispatch(
-      dashboardLoadDependentDataByWaybillDraft(),
-    )
-  ),
-  loadDataAfterCreateMission: () => (
-    dispatch(
-      dashboardLoadDependentDataByNewMission(),
-    )
-  ),
-  loadDataAfterCreateDutyMission: () => (
-    dispatch(
-      dashboardLoadDependentDataByNewDutyMission(),
-    )
-  ),
-});
-
-export default connect(
+export default connect<StatePropsDashboardMenuButtons, DispatchPropsDashboardMenuButtons, OwnerPropsDashboardMenuButtons, ReduxState>(
   null,
-  mapDispatchToProps,
+  (dispatch) => ({
+    loadDataAfterCreateWaybill: () => (
+      dispatch(
+        dashboardLoadDependentDataByWaybillDraft(),
+      )
+    ),
+    loadDataAfterCreateMission: () => (
+      dispatch(
+        dashboardLoadDependentDataByNewMission(),
+      )
+    ),
+    loadDataAfterCreateDutyMission: () => (
+      dispatch(
+        dashboardLoadDependentDataByNewDutyMission(),
+      )
+    ),
+  }),
 )(DashboardMenuButtons);

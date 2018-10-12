@@ -4,7 +4,6 @@ import { dashBoardResetData } from 'components/dashboard/redux-main/modules/dash
 
 import CurrentMissions from 'components/dashboard/menu/cards/current-missions/CurrentMissions';
 import FutureMissions from 'components/dashboard/menu/cards/future-missions/FutureMissions';
-
 import OdhNotCoveredByMissionsOfCurrentShift from 'components/dashboard/menu/cards/odh-not-covered-by-missions-of-current-shift/OdhNotCoveredByMissionsOfCurrentShift';
 import OdhNotCoveredByRoutes from 'components/dashboard/menu/cards/odh-not-covered-by-routes/OdhNotCoveredByRoutes';
 import OdhCoveredByRoutes from 'components/dashboard/menu/cards/odh-covered-by-routes/OdhCoveredByRoutes';
@@ -16,11 +15,18 @@ import WaybillInProgress from 'components/dashboard/menu/cards/waybill-in-progre
 import WaybillCompleted from 'components/dashboard/menu/cards/waybill-completed/WaybillCompleted';
 import WaybillClosed from 'components/dashboard/menu/cards/waybill-closed/WaybillClosed';
 
-import {
-  DashboardMenuCardsContainer,
-} from 'components/dashboard/menu/cards/styled/styled';
+import { DashboardMenuCardsContainer } from 'components/dashboard/menu/cards/styled/styled';
 
-class DashboardMenuCards extends React.Component<any, {}> {
+import { ReduxState } from 'redux-main/@types/state';
+import {
+  StatePropsDashboardMenuCards,
+  DispatchPropsDashboardMenuCards,
+  OwnerPropsDashboardMenuCards,
+  PropsDashboardMenuCards,
+  StateDashboardMenuCards,
+} from 'components/dashboard/menu/cards/DashboardMenuCards.h';
+
+class DashboardMenuCards extends React.Component<PropsDashboardMenuCards, StateDashboardMenuCards> {
   componentWillUnmount() {
     this.props.dashBoardResetData();
   }
@@ -45,7 +51,7 @@ class DashboardMenuCards extends React.Component<any, {}> {
   }
 }
 
-export default connect(
+export default connect<StatePropsDashboardMenuCards, DispatchPropsDashboardMenuCards, OwnerPropsDashboardMenuCards, ReduxState>(
   null,
   (dispatch) => ({
     dashBoardResetData: () => (

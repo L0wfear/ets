@@ -7,7 +7,6 @@ import Collapse from 'components/ui/collapse/Collapse';
 require('components/ui/collapse/button/CollapseButton.scss');
 
 type PropsButtonCollapse = {
-  dependentData: any;
 };
 
 type StateButtonCollapse = {
@@ -30,7 +29,7 @@ class ButtonCollapse extends React.Component<PropsButtonCollapse, StateButtonCol
 
     return (
       <div>
-        <Collapse {...this.props} isOpen={isOpen}/>
+        <Collapse isOpen={isOpen}/>
         <div className={cx('glyphicon_wrap', { is_open: isOpen})}>
           <Glyphicon glyph={'menu-down'} onClick={this.toggleIsOpen} />
         </div>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
@@ -13,9 +14,17 @@ import {
   dashboardLoadMissionDataForCurrentMission,
 } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { PropsCurrentMissions } from 'components/dashboard/menu/cards/current-missions/CurrentMissions.h';
+import {
+  PropsCurrentMissions,
+  InnerPropsCurrentMissions,
+  StatePropsCurrentMissions,
+  DispatchPropsCurrentMissions,
+  OwnPropsCurrentMissions,
+  StateCurrentMissions,
+} from 'components/dashboard/menu/cards/current-missions/CurrentMissions.h';
+import { ReduxState } from 'redux-main/@types/state';
 
-class CurrentMissions extends React.Component<PropsCurrentMissions, {}> {
+class CurrentMissions extends React.Component<PropsCurrentMissions, StateCurrentMissions> {
   handleClick: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const id = Number.parseInt((path as string).split('/').slice(-1)[0])
 
@@ -32,21 +41,20 @@ class CurrentMissions extends React.Component<PropsCurrentMissions, {}> {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  loadMissionDataById: (id) => (
-    dispatch(
-      dashboardLoadMissionDataForCurrentMission(id),
-    )
-  ),
-});
-
-export default withDefaultCard({
-  path: 'current_missions',
-  loadData: dashboardLoadCurrentMissions,
-  InfoComponent: CurrentMissionInfo,
-})(
-  connect(
+export default compose<PropsCurrentMissions, InnerPropsCurrentMissions>(
+  withDefaultCard({
+    path: 'current_missions',
+    loadData: dashboardLoadCurrentMissions,
+    InfoComponent: CurrentMissionInfo,
+  }),
+  connect<StatePropsCurrentMissions, DispatchPropsCurrentMissions, OwnPropsCurrentMissions, ReduxState>(
     null,
-    mapDispatchToProps,
-  )(CurrentMissions)
-);
+    (dispatch) => ({
+      loadMissionDataById: (id) => (
+        dispatch(
+          dashboardLoadMissionDataForCurrentMission(id),
+        )
+      ),
+    }),
+  ),
+)(CurrentMissions);

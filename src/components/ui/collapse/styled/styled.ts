@@ -1,10 +1,20 @@
 import styled from 'styled-components';
+import { Panel } from 'react-bootstrap';
 
-export const timeTransition = 300;
+export const PanelWrap = styled(Panel)`
+  &&& {
+    margin: 0;
+    border: none;
+    background-color: initial;
+    box-shadow: none;
+  }
+`;
 
-export const EtsCollapse = styled<{ maxHeight?: number, overFlow: string }, 'div'>('div')`
-  overflow: ${({ overFlow }) => overFlow};
-  will-change: max-height;
-  transition: max-height ${timeTransition}ms;
-  max-height: ${({ maxHeight }) => maxHeight}px;
+export const PanelCollapseWrap = styled(Panel.Collapse)`
+`;
+
+export const PanelBodyWrap = styled(Panel.Body)`
+  &&& {
+    padding: 0px;
+  }
 `;

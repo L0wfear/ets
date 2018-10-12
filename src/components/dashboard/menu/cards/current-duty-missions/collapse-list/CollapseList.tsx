@@ -24,7 +24,7 @@ const CollapseList: React.SFC<PropsCollapseList> = (props) => (
         <li key={item.title} >
           <CollapseText
             title={item.title}
-            dependentData={item}
+            classNameTitle="bold"
             classNameContainer={cx(
               {
                 pointer: subItems.length,

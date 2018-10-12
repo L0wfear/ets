@@ -36,7 +36,7 @@ const CollapseList: React.SFC<PropsCollapseList> = props => (
     {
       props.collapsetItems.map(({ subItems = [], ...item }, index) => (
         <li key={item.title.split(' ').map(word => word[0]).join('')} >
-          <CollapseText title={item.title} dependentData={item} classNameContainer={cx('initial_font_weight', { pointer: subItems.length, 'no-pointer-events': !subItems.length })} {...props}>
+          <CollapseText title={item.title} classNameTitle="bold" classNameContainer={cx('initial_font_weight', { pointer: subItems.length, 'no-pointer-events': !subItems.length })} {...props}>
             <ListFirstLine collapsetItems={subItems} path={index} handleClick={props.handleClick} />
           </CollapseText>
         </li>

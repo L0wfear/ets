@@ -17,4 +17,3 @@ export const TimeLineContainer = styled.div`
 export const DateLineContainer = styled.div`
   font-size: 22px;
 `;
-

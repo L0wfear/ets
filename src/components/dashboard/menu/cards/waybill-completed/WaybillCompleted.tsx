@@ -39,7 +39,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
         { 
           collapsetItems.length ?
           (
-            <CollapseButton dependentData={collapsetItems}>
+            <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
             </CollapseButton>
           )

@@ -41,7 +41,7 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
         { 
           collapsetItems.length ? 
           (
-            <CollapseButton dependentData={collapsetItems}>
+            <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
             </CollapseButton>
           )

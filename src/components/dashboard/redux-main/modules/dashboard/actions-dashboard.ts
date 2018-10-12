@@ -31,12 +31,12 @@ export const dashboardSetIsLoadingForCardData = (path) => ({
   },
 });
 
-export const dashBoardResetData = () => ({
+export const dashBoardResetData: Function = () => ({
   type: DASHBOARD_RESET,
   payload: {},
 });
 
-export const dashboardLoadMissionDataForCurrentMission = (id?: number) => (dispatch) => {
+export const dashboardLoadMissionDataForCurrentMission: (id?: number) => any = (id) => (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {
@@ -259,7 +259,7 @@ export const dashboardLoadAllWaybill = () => (dispatch) => {
   dispatch(dashboardLoadWaybillClosed());
 };
 
-export const dashboardLoadDependentDataByWaybillDraft = () => (dispatch) => {
+export const dashboardLoadDependentDataByWaybillDraft: Function = () => (dispatch) => {
   dispatch(dashboardLoadWaybillDraft());
   dispatch(dashboardLoadFutureMissions());
   dispatch(dashboardLoadWaybillInProgress());
@@ -290,7 +290,7 @@ export const dashboardLoadDependentDataByWaybillCompleted = () => (dispatch) => 
   dispatch(dashboardLoadCarInWorkOverall());
 };
 
-export const dashboardLoadDependentDataByNewMission = () => (dispatch) => {
+export const dashboardLoadDependentDataByNewMission: Function = () => (dispatch) => {
   dispatch(dashboardLoadWaybillDraft());
   dispatch(dashboardLoadFutureMissions());
   dispatch(dashboardLoadCurrentMissions());
@@ -300,7 +300,7 @@ export const dashboardLoadDependentDataByNewMission = () => (dispatch) => {
   dispatch(dashboardLoadCarInWorkOverall());
 };
 
-export const dashboardLoadDependentDataByNewDutyMission = () => (dispatch) => {
+export const dashboardLoadDependentDataByNewDutyMission: Function = () => (dispatch) => {
   dispatch(dashboardLoadCurrentDutyMissions());
   dispatch(dashboardLoadFutureMissions());
   dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());

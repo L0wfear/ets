@@ -3,7 +3,7 @@ import { InitialStateDashboard } from "components/dashboard/redux-main/modules/d
 export type StatePropsDefaultCard = {
   isLoading: boolean;
   title: any;
-  dateLoad: Date;
+  dateLoad: void | Date;
 };
 
 export type DispatchPropsDefaultCard = {

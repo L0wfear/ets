@@ -12,7 +12,7 @@ import {
 
 type StateDashboardTime = {
   date: Date;
-  itervalId: any;
+  itervalId: NodeJS.Timeout;
 };
 
 class DashboardTime extends React.Component<{}, StateDashboardTime> {

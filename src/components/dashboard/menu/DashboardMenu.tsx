@@ -6,11 +6,15 @@ import {
   DashboardMenuContainer
 } from 'components/dashboard/menu/styled/styled';
 
-const DashboardMenu: React.SFC<any> = ({ history }) => (
-  <DashboardMenuContainer>
-    <DashboardMenuCards />
-    <DashboardMenuButtons />
-  </DashboardMenuContainer>
-);
+class DashboardMenu extends React.PureComponent<{}, {}> {
+  render() {
+    return (
+      <DashboardMenuContainer>
+        <DashboardMenuCards />
+        <DashboardMenuButtons />
+      </DashboardMenuContainer>
+    );
+  }
+}
 
 export default DashboardMenu;

@@ -54,10 +54,10 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
       };
 
       componentDidMount() {
+        this.loadData();
+
         this.setState({
           timerId: setTimeout(() => {
-            this.loadData();
-
             this.setState({
               timerId: setInterval(() => {
                 if (!this.props.isLoading) {
@@ -107,7 +107,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
                 <CardTitleContainerWrap>
                   <div>{title}</div>
                   <div className="button_refresh">
-                    <Button onClick={this.loadData}>
+                    <Button onClick={this.loadData} disabled={isLoading}>
                       <Glyphicon
                         className={cx({ 'glyphicon-spin': isLoading })}
                         glyph="refresh"

@@ -3,8 +3,8 @@ import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable';
 import ElementsList from 'components/ElementsList';
-import { sortFunc } from 'components/reports/mission/utils/sortFunction';
-import { getDelForUnitRender } from 'components/reports/mission/utils/main';
+import { sortFunc } from 'components/reports/operational/mission/utils/sortFunction';
+import { getDelForUnitRender } from 'components/reports/operational/mission/utils/main';
 
 
 const VALUE_FOR_FIXED = {

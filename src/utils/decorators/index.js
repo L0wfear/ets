@@ -2,7 +2,6 @@ import * as PropTypes from 'prop-types';
 import flummoxConnectToStores from 'flummox/connect';
 import exportable from './exportable';
 import bindable from './bindable';
-import wrappedRef from './wrappedRef';
 
 // TODO перенести HOC в отдельную папку, т.к. они могут использоваться не только как декораторы
 
@@ -16,16 +15,6 @@ function FluxContext(target) {
   });
 
   return target;
-}
-
-/**
- * Добавляет history в static contextTypes класса
- * @param {Component} target - декорируемый класс
- */
-function HistoryContext(target) {
-  target.contextTypes = Object.assign({}, target.contextTypes, {
-    history: PropTypes.object,
-  });
 }
 
 /**
@@ -54,9 +43,7 @@ function connectToStores(...args) {
 export {
   exportable,
   bindable,
-  wrappedRef,
   connectToStores,
   FluxContext,
-  HistoryContext,
   staticProps,
 };

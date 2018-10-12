@@ -8,7 +8,7 @@ import {
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Div from 'components/ui/Div';
-import { getDatesByShift, createValidDate } from 'utils/dates';
+import { getToday0am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
@@ -20,22 +20,25 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
 }
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
-  handleSubmit = () => {
-    const timeShift = getDatesByShift();
+  getState() {
     const {
-      start_date = timeShift[0],
+      start_date = getToday0am(),
     } = this.props;
 
+    return {
+      start_date,
+    };
+  }
+
+  handleSubmit = () => {
     this.props.onClick({
-      start_date: createValidDate(start_date),
+      start_date: createValidDateTime(this.state.start_date),
     });
   }
   render() {
-    const timeShift = getDatesByShift();
     const {
-      start_date = timeShift[0],
-      readOnly,
-    } = this.props;
+      start_date,
+    } = this.getState();
 
     return (
       <Row>
@@ -45,7 +48,6 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               date={start_date}
               onChange={this.props.handleChange}
               bindOnChange={'start_date'}
-              disabled={readOnly}
               time={false}
             />
           </Div>
@@ -53,7 +55,6 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Col md={3}>
           <Button
             bsSize="small"
-            disabled={readOnly}
             onClick={this.handleSubmit}
           >Сформировать отчёт</Button>
         </Col>

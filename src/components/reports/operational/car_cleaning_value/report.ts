@@ -8,7 +8,7 @@ import ReportHeader from './ReportHeader';
 
 const serviceUrl = 'cleaning_volume';
 const reportUrl = 'cleaning_volume';
-const serviceName = 'СleaningVolume';
+const serviceName = 'CleaningVolume';
 
 const schemaMakers = {};
 

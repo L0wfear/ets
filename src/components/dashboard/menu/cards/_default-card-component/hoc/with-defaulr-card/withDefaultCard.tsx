@@ -25,7 +25,7 @@ import { ReduxState } from 'redux-main/@types/state';
 interface StatePropsDefaultCard {
   isLoading: boolean;
   title: string;
-  dateLoad: Date;
+  dateLoad: Date | void;
 };
 
 interface DispatchPropsDefaultCard {
@@ -43,11 +43,13 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
       permissions: `dashboard.${path}`,
     }),
     connect<StatePropsDefaultCard, DispatchPropsDefaultCard, OwnerPropsDefaultCard, ReduxState>(
-      (state) => ({
-        isLoading: state.dashboard[path].isLoading,
-        title: state.dashboard[path].data.title,
-        dateLoad: state.dashboard[path].dateLoad,
-      }),
+      (state) => {
+        return ({
+          isLoading: state.dashboard[path].isLoading,
+          title: state.dashboard[path].data.title,
+          dateLoad: state.dashboard[path].dateLoad,
+        })
+      },
       (dispatch) => ({
         loadData: () => (
           dispatch(

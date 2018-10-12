@@ -8,11 +8,9 @@ export const DASHBOARD_CHANGE_CART_DATA = DASHBOARD`CHANGE_CART_DATA`;
 export const DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA = DASHBOARD`CHANGE_IS_LOADING_IN_CART_DATA`;
 export const DASHBOARD_SET_INFO_DATA = DASHBOARD`SET_INFO_DATA`;
 
-import {
-  InitialStateType,
-} from 'components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
+import { InitialStateDashboard } from 'components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 
-const initialState: InitialStateType = {
+const initialState: InitialStateDashboard = {
   current_missions: {
     isLoading: false,
     dateLoad: null,

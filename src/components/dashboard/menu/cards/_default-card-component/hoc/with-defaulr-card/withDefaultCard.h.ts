@@ -1,6 +1,8 @@
+import { InitialStateDashboard } from "components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h";
+
 export type StatePropsDefaultCard = {
   isLoading: boolean;
-  title: string;
+  title: any;
   dateLoad: Date;
 };
 
@@ -16,7 +18,6 @@ export type OwnerPropsDefaultCard = {
 export type PropsDefaultCard = StatePropsDefaultCard
   & DispatchPropsDefaultCard
   & OwnerPropsDefaultCard;
-};
 
 export type StateDefaultCard = {
   inLoadByLocalRefresh: boolean;
@@ -24,7 +25,7 @@ export type StateDefaultCard = {
 };
 
 export type ConfigType = {
-  path: string;
+  path: keyof InitialStateDashboard;
   loadData: Function;
   InfoComponent?: React.ComponentClass<{}>;
 };

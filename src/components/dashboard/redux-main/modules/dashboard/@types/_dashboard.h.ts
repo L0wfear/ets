@@ -60,13 +60,13 @@ import {
 
 
 export type DefaultCardType<T, I> = {
-  data: T | void,
+  data: T,
   isLoading: boolean;
   dateLoad: Date | void;
   infoData: I | void;
 }
 
-export type InitialStateType = {
+export type InitialStateDashboard = {
   current_missions: DefaultCardType<CurrentMissionsAnsType, CurrentMissionsInfoDataType>;
   future_missions: DefaultCardType<FutureMissionsAnsType, FutureMissionsInfoDataType>;
   odh_not_covered_by_missions_of_current_shift: DefaultCardType<OdhNotCoveredByMissionsOfCurrentShiftAnsType, OdhNotCoveredByMissionsOfCurrentShiftInfoDataType>;

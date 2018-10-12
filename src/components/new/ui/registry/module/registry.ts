@@ -7,7 +7,7 @@ export const REGISTRY_REMOVE_DATA = REGISTRY`REMOVE_DATA`;
 export const REGISTRY_CHANGE_FILTER = REGISTRY`CHANGE_FILTER_DATA`;
 export const REGISTRY_CHANGE_LIST = REGISTRY`CHANGE_LIST`;
 
-type InitialStateType = {
+export type InitialStateTypeRegistry = {
   [key: string]: {
     Service: any;
     header: {
@@ -38,7 +38,7 @@ type InitialStateType = {
   };
 };
 
-const initialState: InitialStateType = {
+const initialState: InitialStateTypeRegistry = {
 };
 
 export default (state = initialState, { type, payload }) => {

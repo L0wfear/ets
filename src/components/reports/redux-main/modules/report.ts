@@ -4,7 +4,7 @@ import { hasWarningNotification } from 'utils/notifications';
 import * as ReduxTypes from './@types/report.h';
 import { makeDataForSummerTable } from 'components/reports/redux-main/modules/report_utils';
 
-type IState = ReduxTypes.IReportStateProps;
+export type IStateReport = ReduxTypes.IReportStateProps;
 
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 const SET_SUMMARY_TABLE_DATA = 'SET_SUMMARY_TABLE_DATA';
@@ -22,7 +22,7 @@ const metaFetchingStatusReducer = FetchingStatusReducerFactory('reportMeta');
 const dataFetchingStatusReducer = FetchingStatusReducerFactory('reportData');
 
 
-const initialState: IState = {
+const initialState: IStateReport = {
   data: {},
   list: [],
   meta: {
@@ -73,7 +73,7 @@ export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = serviceName => dis
     }
   });
 
-const getTableMetaInfoReducer = (state: IState, { payload }) => ({
+const getTableMetaInfoReducer = (state: IStateReport, { payload }) => ({
   ...state,
   tableMetaInfo: {
     ...payload,
@@ -127,7 +127,7 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
     }
   });
 
-const getReportDataReducer = (state: IState, { payload }) => {
+const getReportDataReducer = (state: IStateReport, { payload }) => {
   const { data, reportType } = payload;
   const newState = reportType !== 'summary' ? {
     data,
@@ -158,7 +158,7 @@ const getReportDataReducer = (state: IState, { payload }) => {
   return newState;
 };
 
-const getReportDataWithSummerDataReducer = (state: IState, { payload }) => {
+const getReportDataWithSummerDataReducer = (state: IStateReport, { payload }) => {
   const { data, summerData } = payload;
   return {
     data,

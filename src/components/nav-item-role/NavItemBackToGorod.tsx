@@ -12,40 +12,45 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import { ReduxState } from 'redux-main/@types/state';
 
-@withRouter
-@connect(
-  null,
-  dispatch => ({
-    sessionSetData: props => dispatch(sessionSetData(props)),
-  }),
-)
-@connectToStores(['session'])
-@FluxContext
-class NavItemBackToGorod extends React.Component<any, any> {
-  handleSelect = () =>
-    this.context.flux.getActions('session').cahngeCompanyOnAnother(null)
-      .then(({ payload, token }) => {
-        this.props.sessionSetData({
-          currentUser: payload,
-          session: token,
+const NavItemBackToGorodWrap = compose(
+  withRouter,
+  connect< any, any, any, ReduxState>(
+    null,
+    dispatch => ({
+      sessionSetData: props => dispatch(sessionSetData(props)),
+    }),
+  )
+)(
+  @connectToStores(['session'])
+  @FluxContext
+  class extends React.Component<any, any> {
+    handleSelect = () =>
+      this.context.flux.getActions('session').cahngeCompanyOnAnother(null)
+        .then(({ payload, token }) => {
+          this.props.sessionSetData({
+            currentUser: payload,
+            session: token,
+          });
+
+          this.props.history.push('/change-company')
         });
 
-        this.props.history.push('/change-company')
-      });
-
-  render() {
-    return (
-      this.props.isGlavControl && this.props.currentUser.company_id !== null
-      ?
-      <NavItem id="button-back-to-city" className={'company-switcher-back-to-city'} onSelect={this.handleSelect}>
-        <div className="switcher-tooltiptext">Возврат на уровень города</div>
-        <Glyphicon glyph="arrow-left"/>
-      </NavItem>
-      :
-      <DivNone />
-    )
+    render() {
+      return (
+        this.props.isGlavControl && this.props.currentUser.company_id !== null
+        ?
+        <NavItem id="button-back-to-city" className={'company-switcher-back-to-city'} onSelect={this.handleSelect}>
+          <div className="switcher-tooltiptext">Возврат на уровень города</div>
+          <Glyphicon glyph="arrow-left"/>
+        </NavItem>
+        :
+        <DivNone />
+      )
+    }
   }
-}
+);
 
-export default NavItemBackToGorod;
+export default NavItemBackToGorodWrap;

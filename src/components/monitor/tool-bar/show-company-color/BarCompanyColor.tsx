@@ -10,6 +10,7 @@ import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 require('components/monitor/tool-bar/show-company-color/BarCompanyColor.scss');
 
@@ -96,7 +97,7 @@ export default hocAll(
     path: ['monitorPage', 'geoobjects', GEOOBJECTS_OBJ.odh.serverName, 'show'],
     type: 'none',
   }),
-  connect(
+  connect<any, any, any, ReduxState>(
     state => ({
       companiesIndex: state.monitorPage.companiesIndex,
     }),

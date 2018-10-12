@@ -8,6 +8,7 @@ import { carInfoToggleForToday, fetchTrack, fetchCarInfo, carInfoChangeDate } fr
 import DistanceAgg from 'components/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
 import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
 import { diffDates } from 'utils/dates';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -168,7 +169,7 @@ const mergedProps = (stateProps, dispatchProps) => ({
   ),
 })
 
-export default connect(
+export default connect<any, any, any, ReduxState>(
   mapStateToProps,
   mapDispatchToProps,
   mergedProps,

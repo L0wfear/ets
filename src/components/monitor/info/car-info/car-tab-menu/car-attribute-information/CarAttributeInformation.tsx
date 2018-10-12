@@ -10,6 +10,7 @@ import CarMissions from 'components/monitor/info/car-info/car-tab-menu/car-attri
 import { makeDate, makeTime } from 'utils/dates';
 
 import { roundCoordinates } from 'utils/geo';
+import { ReduxState } from 'redux-main/@types/state';
 
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
@@ -80,7 +81,7 @@ const mapStateToProps = state => ({
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
 })
 
-export default connect(
+export default connect<any, any, any, ReduxState>(
   mapStateToProps,
 )(CarAttributeInformation);
 

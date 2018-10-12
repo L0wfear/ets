@@ -13,6 +13,7 @@ import {
   PropsRegistryWrap,
   StateRegistryWrap,
 } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { ReduxState } from 'redux-main/@types/state';
 
 const withRegistry = (configData: TypeConfigData) => Component => (
   hocAll(
@@ -20,10 +21,10 @@ const withRegistry = (configData: TypeConfigData) => Component => (
       page: 'registry',
       typePreloader: 'mainpage',
     }),
-    connect(
+    connect<any, any, any, ReduxState>(
       null,
       dispatch => ({
-        registryAddInitialData: config => (
+        registryAddInitialData: (config: TypeConfigData) => (
           dispatch(
             registryAddInitialData(config),
           )

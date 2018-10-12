@@ -4,29 +4,22 @@ import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
+import { ReduxState } from 'redux-main/@types/state';
 import {
-  ConfigType,
-} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+  TypeConfigWithDefaultWaybill,
+  StatePropsDefaultWaybill,
+  DispatchPropsDefaultWaybill,
+  PropsDefaultWaybill,
+} from './withDefaultWaybill.h';
 
-type TypeConfig = ConfigType & {
-  setInfoData: Function;
-  setInfoDataPropsMake: Function;
-  ListComponent: any;
-};
-
-type PropsDefaultWaybill = {
-  setInfoData: Function;
-  items: any[];
-};
-
-const withDefaultWaybill = (config: TypeConfig) => (Component) => (
+const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component) => (
   hocAll(
     withDefaultCard({
       path: config.path,
       loadData: config.loadData,
       InfoComponent: config.InfoComponent,
     }),
-    connect(
+    connect<StatePropsDefaultWaybill, DispatchPropsDefaultWaybill, {}, ReduxState>(
       (state) => ({
         items: state.dashboard[config.path].data.items,
       }),
@@ -38,30 +31,32 @@ const withDefaultWaybill = (config: TypeConfig) => (Component) => (
         ),
       }),
     ),
-  )(class DefaultWaybill extends React.Component<PropsDefaultWaybill, {}> {
-    handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
-      this.props.setInfoData(
-        config.setInfoDataPropsMake(
-          this.props,
-          path,
+  )(
+    class DefaultWaybill extends React.Component<PropsDefaultWaybill, {}> {
+      handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
+        this.props.setInfoData(
+          config.setInfoDataPropsMake(
+            this.props,
+            path,
+          )
+        );
+      }
+    
+      render() {
+        const { ListComponent } = config;
+    
+        return (
+          <div>
+            <ListComponent
+              items={this.props.items}
+              handleClick={this.handleClick}
+            />
+            <Component />
+          </div>
         )
-      );
+      }
     }
-  
-    render() {
-      const { ListComponent } = config;
-  
-      return (
-        <div>
-          <ListComponent
-            items={this.props.items}
-            handleClick={this.handleClick}
-          />
-          <Component />
-        </div>
-      )
-    }
-  })
+  )
 );
 
 export default withDefaultWaybill;

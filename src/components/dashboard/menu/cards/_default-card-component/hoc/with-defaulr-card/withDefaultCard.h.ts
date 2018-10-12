@@ -1,10 +1,21 @@
-export type PropsDefaultCard = {
-  title: string;
+export type StatePropsDefaultCard = {
   isLoading: boolean;
-  loadData: () => Promise<any>;
+  title: string;
+  dateLoad: Date;
+};
+
+export type DispatchPropsDefaultCard = {
+  loadData: () => Promise<any>
+};
+
+export type OwnerPropsDefaultCard = {
   timeInterval?: number;
   timeDelay: number;
-  dateLoad: Date;
+};
+
+export type PropsDefaultCard = StatePropsDefaultCard
+  & DispatchPropsDefaultCard
+  & OwnerPropsDefaultCard;
 };
 
 export type StateDefaultCard = {

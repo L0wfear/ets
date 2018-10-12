@@ -15,6 +15,7 @@ import { isBoolean } from 'util';
 import {
   EtsFiltersButtonsLine, EtsFiltersCloseContainer, EtsFilterActionButton, EtsFilterActionButtonConteiner,
 } from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsButtonsLIne = {
   registryKey: string;
@@ -96,7 +97,7 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
   ),
 });
 
-export default connect(
+export default connect<any, any, any, ReduxState>(
   mapStateToProps,
   mapDispatchToProps,
 )(ButtonsLIne);

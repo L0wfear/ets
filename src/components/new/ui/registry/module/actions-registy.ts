@@ -19,7 +19,15 @@ import {
 } from 'components/new/ui/registry/module/utils/merge';
 
 export const registryAddInitialData = ({ registryKey, ...config }) => dispatch => {
-  dispatch({
+  if (!config.noInitialLoad) {
+    setTimeout(() => (
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      )
+    ), 100);
+  }
+
+  return dispatch({
     type: REGISTRY_ADD_INITIAL_DATA,
     payload: {
       registryKey,
@@ -32,14 +40,6 @@ export const registryAddInitialData = ({ registryKey, ...config }) => dispatch =
       },
     },
   });
-
-  if (!config.noInitialLoad) {
-    setTimeout(() => (
-      dispatch(
-        registryLoadDataByKey(registryKey),
-      )
-    ), 100);
-  }
 };
 
 export const registryRemoveData = registryKey => ({

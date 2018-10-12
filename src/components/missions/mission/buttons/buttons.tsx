@@ -17,7 +17,7 @@ export const ButtenUpdateMission = withRequirePermissionsNew({
   permissions: 'mission.update',
 })(Button);
 
-export const LinkToOpenMissionInfoForm: React.SFC<any> = withRequirePermissionsNew({
+export const LinkToOpenMissionInfoForm = withRequirePermissionsNew({
   permissions: 'mission.read',
 })(props => (
   <div>

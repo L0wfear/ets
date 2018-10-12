@@ -14,6 +14,7 @@ import {
   EtsFilterTitle,
   EtsFilterInputContainer,
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsMultiselectRegestryFilter = {
   filterData: {
@@ -113,6 +114,6 @@ const mapStateToProps = (state, { registryKey, filterData }) => ({
 });
 
 
-export default connect(
+export default connect<any, any, any, ReduxState>(
   mapStateToProps,
 )(MultiselectRegestryFilter);

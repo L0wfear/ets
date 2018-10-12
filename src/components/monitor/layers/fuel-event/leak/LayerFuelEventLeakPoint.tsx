@@ -4,7 +4,7 @@ import * as ol from 'openlayers';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
-import withShowByPropsObj from 'components/compositions/vokinda-hoc/show-by-props/withShowByPropsObj';
+import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForFuelEventLeak} from 'components/monitor/layers/fuel-event/leak/feature-style';
 import OverlayFuelEventLeakPoint from 'components/monitor/layers/fuel-event/leak/OverlayFuelEventLeakPoint';
 import { GeoJSON } from 'utils/ol';
@@ -97,9 +97,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default hocAll(
-  withShowByPropsObj({
+  withShowByProps({
     path: ['monitorPage', 'fuelEvents', 'leak', 'data'],
     type: 'none',
+    isObj: true,
   }),
   connect(
     mapStateToProps,

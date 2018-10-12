@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 type TypeConfig = {
   withIsPermittedProps?: boolean;
@@ -33,33 +34,49 @@ const checkOnIsPermitter = (config, props, permissions) => {
   return permissionsOnCheck.some(permission => permissions.includes(permission));
 }
 
+type StateProps = {
+  permissions: string[];
+};
+
+type OwnerProps = {
+  [key: string]: any;
+}
+
+type PropsRequirePermissions = StateProps & OwnerProps;
+
 const withRequirePermissionsNew = (config: TypeConfig = {}) => Component => (
-  connect(
+  connect<StateProps, {}, OwnerProps, ReduxState>(
     state => ({
       permissions: state.session.userData.permissions,
     }),
-    null,
   )
-  (({ permissions, dispatch, ...props }) => {
-    const isPermitter = checkOnIsPermitter(config, props, permissions);
-    const newProps = { ...props };
+  (
+    class RequirePermissions extends React.Component<PropsRequirePermissions, {}> {
+      render() {
+        const { permissions, dispatch, ...props } = this.props;
 
-    if (config.withIsPermittedProps) {
-      newProps.isPermitter = isPermitter;
+        const isPermitter = checkOnIsPermitter(config, props, permissions);
+        const newProps = { ...props };
+
+        if (config.withIsPermittedProps) {
+          newProps.isPermitter = isPermitter;
+        }
+
+        return (
+          config.withIsPermittedProps || isPermitter ?
+            (
+              <Component { ...newProps } />
+            )
+          :
+            (
+              <DivNone />
+            )
+        );
+      }
     }
-
-    return (
-      config.withIsPermittedProps || isPermitter ?
-        (
-          <Component { ...newProps } />
-        )
-      :
-        (
-          <DivNone />
-        )
-    );
-  })
+  )
 );
+  
 
 export default withRequirePermissionsNew;
 

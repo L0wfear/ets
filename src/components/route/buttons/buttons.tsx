@@ -5,7 +5,7 @@ import permissionsRoute from 'components/route/config-data/permissions';
 
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-export const LinkToOpenRouteInfoForm: React.SFC<any> = withRequirePermissionsNew({
+export const LinkToOpenRouteInfoForm = withRequirePermissionsNew({
   permissions: permissionsRoute.read,
 })(props => (
   <div>

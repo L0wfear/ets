@@ -20,13 +20,29 @@ import {
   CardBodyContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
+import { ReduxState } from 'redux-main/@types/state';
+
+interface StatePropsDefaultCard {
+  isLoading: boolean;
+  title: string;
+  dateLoad: Date;
+};
+
+interface DispatchPropsDefaultCard {
+  loadData: () => Promise<any>
+};
+
+interface OwnerPropsDefaultCard  {
+  timeInterval?: number;
+  timeDelay: number;
+};
 
 const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Component) => (
   hocAll(
     withRequirePermissionsNew({
       permissions: `dashboard.${path}`,
     }),
-    connect(
+    connect<StatePropsDefaultCard, DispatchPropsDefaultCard, OwnerPropsDefaultCard, ReduxState>(
       (state) => ({
         isLoading: state.dashboard[path].isLoading,
         title: state.dashboard[path].data.title,

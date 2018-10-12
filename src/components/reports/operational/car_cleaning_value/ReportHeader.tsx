@@ -8,7 +8,7 @@ import {
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Div from 'components/ui/Div';
-import { getToday0am, createValidDateTime, createValidDate } from 'utils/dates';
+import { getToday0am, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';

@@ -8,7 +8,7 @@ import {
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Div from 'components/ui/Div';
-import { getToday0am, createValidDateTime } from 'utils/dates';
+import { getToday0am, createValidDateTime, createValidDate } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
@@ -31,8 +31,12 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   }
 
   handleSubmit = () => {
+    const {
+      start_date,
+    } = this.getState();
+
     this.props.onClick({
-      start_date: createValidDateTime(this.state.start_date),
+      start_date: createValidDate(start_date),
     });
   }
   render() {

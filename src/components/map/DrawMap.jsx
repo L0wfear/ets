@@ -5,9 +5,11 @@ import { getVectorArrowStyle } from 'constants/vectors.js';
 import Div from 'components/ui/Div.jsx';
 import _ from 'lodash';
 import PolyMap from './PolyMap.jsx';
+import { connectToStores } from 'utils/decorators';
 
 // Компонент используется для отрисовки векторов и точек на карте
 @autobind
+@connectToStores(['session'])
 export default class DrawMap extends PolyMap {
   static defaultProps = {
     draw_object_list: [],
@@ -39,6 +41,19 @@ export default class DrawMap extends PolyMap {
 
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
+      // костыль
+      const coords_msk = this.props.currentUser.getCompanyMapConfig().coordinates;
+      const zoom = this.props.currentUser.getCompanyMapConfig().zoom;
+      const extent = [
+        coords_msk[0],
+        coords_msk[1],
+        coords_msk[0],
+        coords_msk[1],
+      ];
+      this.map.getView().fit(
+        extent,
+        { padding: [50, 550, 50, 150], maxZoom: zoom },
+      );
     }
     if (this.props.objectsType === 'points') {
       this.renderRoutePoints(this.props.object_list);
@@ -50,8 +65,10 @@ export default class DrawMap extends PolyMap {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.polys !== undefined) {
-      this.renderPolygons(nextProps.polys);
+    const { polys = {} } = nextProps;
+
+    if (!polys || Object.keys(polys).length) {
+      this.renderPolygons(nextProps.polys, nextProps.objectsType !== 'points');
     }
     if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'mixed') {
       this.draw.setActive(false);

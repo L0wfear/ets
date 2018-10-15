@@ -38,9 +38,13 @@ export default class DrawMap extends PolyMap {
     this.enableInteractions();
 
     this.renderPolygons(this.props.polys);
-
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
+    }
+    if (this.props.objectsType === 'points') {
+      this.renderRoutePoints(this.props.object_list);
+    }
+    if(this.props.objectsType === 'mixed' || this.props.objectsType === 'points'){
       // костыль
       const coords_msk = this.props.currentUser.getCompanyMapConfig().coordinates;
       const zoom = this.props.currentUser.getCompanyMapConfig().zoom;
@@ -54,9 +58,6 @@ export default class DrawMap extends PolyMap {
         extent,
         { padding: [50, 550, 50, 150], maxZoom: zoom },
       );
-    }
-    if (this.props.objectsType === 'points') {
-      this.renderRoutePoints(this.props.object_list);
     }
     if (this.props.draw_object_list && this.props.draw_object_list.length) {
       this.draw.setActive(false);

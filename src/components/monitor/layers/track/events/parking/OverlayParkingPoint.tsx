@@ -27,7 +27,7 @@ const OverlayTrackPoint: React.SFC<any> = props => {
   } = parkingPoint;
 
   const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
-  const moscowEpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
+  const moscowEpTimetamp = getDateWithMoscowTzByTimestamp(ep_timestamp * 1000);
 
   const start = `${makeDate(moscowSpTimetamp)} ${makeTime(moscowSpTimetamp, true)}`;
   const end = `${makeDate(moscowEpTimetamp)} ${makeTime(moscowEpTimetamp, true)}`;

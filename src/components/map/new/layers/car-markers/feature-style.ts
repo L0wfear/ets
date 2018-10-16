@@ -1,7 +1,7 @@
 import { listObj }  from 'constants/statuses';
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
-  zoomMore8: 40 / (DEVICE_PIXEL_RATIO / 2),
+  zoomMore8: 30 / (DEVICE_PIXEL_RATIO / 2),
   zoomNotMore8: 20 / (DEVICE_PIXEL_RATIO / 2),
 };
 
@@ -93,7 +93,7 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
 
 
     ctx.fillStyle = 'black';
-    ctx.font = `${(zoomMore8 || selected ? 10 : 8) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
+    ctx.font = `${(zoomMore8 || selected ? 8 : 8) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
     ctx.textBaseline = "middle";
     ctx.fillText(
       gov_number,
@@ -111,7 +111,7 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
     ctx.arc(
       (canvas.width)/2,
       (canvas.width)/2,
-      getRaidus(width),
+      getRaidus(width - 4),
       directionInRad + (1/4) * Math.PI, directionInRad - (1/4) * Math.PI,
       false,
     );
@@ -147,7 +147,7 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
 const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
   if (zoomMore8 || selected) {
     const temp_ctx = icons.drugoe;
-    ctx.drawImage(temp_ctx, (canvas.width)/2 - getRaidus(width) + 2, (canvas.width)/2 - getRaidus(width) + 2, width - 4, width - 4);
+    ctx.drawImage(temp_ctx, (canvas.width)/2 - getRaidus(width) + 4, (canvas.width)/2 - getRaidus(width) + 4, width - 8, width - 8);
   }
 }
 

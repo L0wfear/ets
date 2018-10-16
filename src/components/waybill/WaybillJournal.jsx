@@ -6,7 +6,8 @@ import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/b
 import { getServerSortingField, extractTableMeta, toServerFilteringObject } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList';
-import Paginator from 'components/ui/Paginator';
+import Paginator from 'components/ui/new/paginator/Paginator';
+
 import { connectToStores, staticProps } from 'utils/decorators';
 import { waybillClosingSchema } from 'models/WaybillModel';
 import WaybillFormWrap from './WaybillFormWrap';

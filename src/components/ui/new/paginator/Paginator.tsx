@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { Glyphicon } from 'react-bootstrap';
 import * as cx from 'classnames';
 
-class Paginator extends React.Component<any, any> {
-  setPage(i) {
-    return (e) => {
-      e.preventDefault();
-      this.props.setPage(i);
-    };
+interface Paginator {
+  maxPage: number;
+  currentPage: number;
+  setPage: (pageNumber: number) => void;
+}
+
+class Paginator extends React.PureComponent<Paginator, any> {
+  setPageFromA: React.MouseEventHandler<HTMLAnchorElement> = ({ currentTarget: { dataset: { index } } }) => {
+    this.props.setPage(Number(index));
   }
 
   first = (e) => {
@@ -79,7 +81,7 @@ class Paginator extends React.Component<any, any> {
       } else {
         options.push(
           <li key={i}>
-            <a className="pointer" onClick={this.setPage(i)}>{i + 1}</a>
+            <a className="pointer" data-index={i} onClick={this.setPageFromA}>{i + 1}</a>
           </li>
         );
       }
@@ -112,5 +114,4 @@ class Paginator extends React.Component<any, any> {
   }
 }
 
-export default connect(
-)(Paginator);
+export default Paginator;

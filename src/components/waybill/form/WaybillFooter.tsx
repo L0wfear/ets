@@ -67,7 +67,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
               <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
+          <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup pullRight disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
             <Dropdown.Toggle disabled={!props.canSave}>
               <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
             </Dropdown.Toggle>

@@ -7,7 +7,7 @@ import CheckableElementsList from 'components/CheckableElementsList';
 import { getWarningNotification } from 'utils/notifications';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
-import Paginator from 'components/ui/Paginator';
+import Paginator from 'components/ui/new/paginator/Paginator';
 import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject';
 import Div from 'components/ui/Div';
 import PrintForm from 'components/missions/common/PrintForm';

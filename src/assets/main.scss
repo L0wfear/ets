@@ -11,9 +11,6 @@
 @import './mission.scss';
 @import './duty-mission.scss';
 
-.all-width {
-  width: 100%;
-}
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -25,6 +22,7 @@
 html, body {
   height: 100%;
   overflow: hidden;
+  color: #000;
 }
 .app {
   display: flex;
@@ -33,9 +31,7 @@ html, body {
   height: 100vh;
   overflow: hidden;
 }
-body {
-  color: #000;
-}
+
 .app-content {
   justify-self: flex-start;
   flex: 1 1 100%;
@@ -216,7 +212,6 @@ body {
   }
 }
 
-
 .car_info_block {
   display: flex;
   &.column {
@@ -270,8 +265,6 @@ body {
     }
   }
 }
-
-
 
 .car_info-attr_title {
   color: #666;
@@ -536,23 +529,28 @@ a {
 body.application {
   background: #f2f2f2;
   padding: 60px 20px 0;
-}
-body.application > .container-fluid {
-  padding-left: 0;
-  padding-right: 0;
-}
-body.application div[class^="col-"] {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-body.application div[class^="col-"] div[class^="col-"] {
-  padding-left: 15px;
-  padding-right: 15px;
-}
+  padding: 0;
+  margin: 0;
 
-body.application hr {
-  border-color: #d7d7d7;
-  margin: 10px 0;
+  > .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  div[class^="col-"] {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  div[class^="col-"] div[class^="col-"] {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  hr {
+    border-color: #d7d7d7;
+    margin: 10px 0;
+  }
 }
 
 .btn, .btn-default {
@@ -682,7 +680,6 @@ body.application hr {
   }
 }
 
-
 .company-switcher {
   width: 250px;
 
@@ -709,7 +706,6 @@ body.application hr {
   }
 
 }
-
 .navbar-user {
   text-decoration: none;
 
@@ -749,12 +745,12 @@ body.application hr {
     }
   }
 }
-
 .navbar-inverse {
   background-color: #3d4a57;
   border-color: #333;
 }
 
+/* route-list */
 .sidebar {
   background-color: #eee;
   height: 100%;
@@ -770,77 +766,11 @@ body.application hr {
   }
 }
 
-.sidebar__list-container {
-  margin: auto;
-  position: absolute;
-  left: 0;
-  top: 120px;
-  bottom: 0;
-  right: 0;
-  padding-right: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  h5 {
-    font-weight: normal;
-  }
-}
-
-.sidebar__list {
-  margin: 0 0 20px 0;
-  padding: 0;
-
-  &-item {
-    display: block;
-    margin: 0 0 8px 0;
-    padding: 5px 5px;
-    //height: 32px;
-    font-size: 16px;
-    color: $colorLink;
-    cursor: pointer;
-
-    &:hover, &.active {
-      background-color: $colorGreen;
-      color: #fff;
-    }
-  }
-}
-
-.main-nav > li > a:hover {
-  border-bottom: 2px solid transparent;
-  -webkit-transition: border 300ms ease;
-  -o-transition: border 300ms ease;
-  transition: border 300ms ease;
-  border-bottom-color: white;
-}
-
-.return-link, .return-link:focus, .return-link:hover {
-  text-decoration: none;
-}
-
 .small-table {
   th, td {
     font-size: 12px !important;
     padding: 4px !important;
     word-break: normal !important;
-  }
-}
-
-.chart-checkbox {
-  margin-bottom: 10px;
-  text-align: left;
-  width: 100%;
-  position: absolute;
-  top: 310px;
-  cursor: pointer;
-  user-select: none;
-  input {
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
-    margin-left: 5px;
-    cursor: pointer;
-    position: relative;
-    top: 1px;
   }
 }
 
@@ -868,39 +798,6 @@ body.application hr {
   }
 }
 
-body.application {
-  padding: 0;
-  margin: 0;
-}
-
-.analytics-input {
-  margin-right: 10px;
-}
-
-.bnso-filter {
-  padding: 3px;
-  padding-bottom: 0;
-  padding-top: 4px;
-  outline: 0 none;
-  /* margin-right: 21px; */
-  /* border-radius: 4px; */
-  /* background-color: #fff; */
-  color: white;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0 none;
-  /*border-bottom: 1px solid white;*/
-  font-size: 18px;
-  font-weight: 200;
-  width: 240px;
-  margin-left: -14px;
-  &::-webkit-input-placeholder {
-    font-style: italic;
-    font-size:16px;
-    margin-top:10px;
-  }
-}
-
 .no-pointer-events {
   pointer-events: none !important;
   cursor: default !important;
@@ -908,16 +805,6 @@ body.application {
 
 .not-allowed {
   cursor: not-allowed !important;
-}
-
-.cars-legend {
-  & .cars-filters {
-   & .button-cars-filter {
-     max-width: 20px;
-     max-height: 20px;
-     background-color: red;
-   }
-  }
 }
 
 .car_info-track_player {
@@ -960,25 +847,6 @@ body.application {
   display: flex;
 }
 
-.tool_bar-wrap {
-  .tool_bar {
-    .car_filters-container-wrap {
-      position: relative;
-      width: 100%;
-
-      .car_filters-container {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        >span>.tool_bar-block {
-          min-width: 0px;
-          max-width: 310px;
-        }
-      }
-    }
-  }
-}
-
 .none-event {
   pointer-events: none;
   cursor: default;
@@ -997,6 +865,21 @@ body.application {
     margin: 10px;
     display: flex;
     flex-direction: column;
+
+    .car_filters-container-wrap {
+      position: relative;
+      width: 100%;
+
+      .car_filters-container {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        >span>.tool_bar-block {
+          min-width: 0px;
+          max-width: 310px;
+        }
+      }
+    }
 
     .tool_bar-block {
       margin: 5px;
@@ -1111,13 +994,6 @@ body.application {
   }
 }
 
-div.car_legend-active {
-  font-size: large;
-  cursor: pointer;
-  >div {
-    margin: 0 auto;
-  }
-}
 .car_block_legend {
 
   &.left {
@@ -1215,81 +1091,6 @@ div.car_legend-active {
   }
 }
 
-.list-item-checkbox {
-
-  input[type=checkbox] {
-    position: absolute;
-    left: 7px;
-    top: -1px;
-  }
-}
-
-.tools {
-  min-height: 75px;
-  padding: 0 5px 0 0;
-}
-
-.tool input, .tool select {
-  background: rgba(0,0,0,.5);
-  border: medium none;
-  box-shadow: none;
-  color: #e7e7e7;
-  float: left;
-  margin: 0 1%;
-}
-.radius input, .radius select {
-  width: 48%;
-}
-.tool input,
-.tool label,
-.tool h5 {
-  text-shadow: 0 0 1px #000;
-}
-
-.ReactModal__Overlay {
-  z-index: 1000;
-}
-
-.ReactModal__Overlay {
-  -webkit-perspective: 600;
-  perspective: 600;
-  opacity: 0;
-}
-
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-  transition: opacity 150ms ease-out;
-}
-
-.ReactModal__Content {
-  -webkit-transform: scale(0.5) rotateX(-30deg);
-  transform: scale(0.5) rotateX(-30deg);
-}
-
-.ReactModal__Content--after-open {
-  -webkit-transform: scale(1) rotateX(0deg);
-  transform: scale(1) rotateX(0deg);
-  transition: all 150ms ease-in;
-}
-
-.ReactModal__Overlay--before-close {
-  opacity: 0;
-}
-
-.ReactModal__Content--before-close {
-  -webkit-transform: scale(0.5) rotateX(30deg);
-  transform: scale(0.5) rotateX(30deg);
-  transition: all 150ms ease-in;
-}
-
-.ReactModal__Content {
-  padding: 0 !important;
-}
-
-.tools {
-  padding-bottom: 10px;
-}
-
 .form-signin {
   max-width: 330px;
   padding: 15px;
@@ -1377,14 +1178,13 @@ div.car_legend-active {
   }
 }
 
+/** OPENLAYERS */
 .openlayers-container {
   width:100%;
   height:100%;
   position:absolute;
 }
 
-
-/** OPENLAYERS */
 .ol-zoom, .ol-zoom:hover {
   background: rgba(0, 0, 0, 0.75);;
   color: white;
@@ -1491,11 +1291,6 @@ div.car_legend-active {
   border-radius: 0;
 }
 
-/*
-.chart-datepicker {
-  padding-bottom:2px;
-}
-*/
 .modal-footer {
   background-color: #e9f0f5;
   border: none;
@@ -1563,32 +1358,6 @@ div.car_legend-active {
   font-size: 24px;
 }
 
-.pointer_completed {
-  cursor: pointer;
-  list-style-type: none;
-}
-
-.pointer_in_progress {
-  cursor: pointer;
-  list-style-type: none;
-}
-
-.pointer_completed:before {
-    color: green; /* Цвет маркера */
-    content: "\25CF"; /* Сам маркер */
-    padding-right: 10px; /* Расстояние от маркера до текста */
-}
-
-.pointer_in_progress:before {
-    color: red; /* Цвет маркера */
-    content: "\25CF"; /* Сам маркер */
-    padding-right: 10px; /* Расстояние от маркера до текста */
-}
-
-.underline {
-  text-decoration: underline;
-}
-
 .pagination-control {
   background: #4C4C4C !important;
   color: white !important;
@@ -1605,10 +1374,6 @@ div.car_legend-active {
       margin-left: 5px;
     }
   }
-}
-
-.filter-datepicker {
-  padding-bottom: 2px;
 }
 
 .filter-container {
@@ -1823,25 +1588,6 @@ div.car_legend-active {
 
 }
 
-.custom-table {
-  cursor: pointer;
-  & .sm-active {
-    &>td {
-      background-color: $colorLightGreen;
-    }
-  }
-  & td {
-    &>div {
-      margin: 0 !important;
-    }
-    & label {
-      display: none !important;
-    }
-  }
-  & .form-group {
-    margin: 0;
-  }
-}
 .no-label {
   & label {
     display: none;
@@ -1867,14 +1613,6 @@ div.none {
 
 .pagination>li:first-child>a, .pagination>li:first-child>span, .pagination>li:last-child>a, .pagination>li:last-child>span {
   border-radius: 0 !important;
-}
-
-.print .dropdown-menu {
-  margin-left: -90px;
-}
-
-.pdf .dropdown-menu {
-  margin-left: -140px;
 }
 
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
@@ -2192,11 +1930,6 @@ div.none {
   transform: translateY(-75%);
 }
 
-.link-to-ruleTp {
-  cursor: pointer;
-  font-weight: bold;
-}
-
 .app-footer {
   height: 30px;
   width: 100%;
@@ -2256,19 +1989,6 @@ div.none {
   }
 }
 
-.coverage-report-radio {
-  position: relative;
-    top: 27px;
-  input {
-    margin-right: 6px;
-    position: relative;
-    top: -1px;
-  }
-  span {
-    margin-right: 15px;
-  }
-}
-
 .daily-cleaning-report-period {
   position: absolute;
   width: 100%;
@@ -2293,22 +2013,6 @@ div.none {
 
 .btn-toolbar {
   margin-left: 5px !important;
-}
-
-
-.track-player {
-  padding: 4px;
-  padding-top: 10px;
-  text-align: left;
-  .btn {
-    outline: none;
-    border-color: inherit;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    &:focus, &:active, &:active:focus {
-      background-color: #4c4c4c;
-    }
-  }
 }
 
 .cleaning-rate-header {
@@ -2390,9 +2094,6 @@ div.none {
   color: green;
 }
 
-.listStyleTypeNone{
-  list-style-type: none;
-}
 .flex-space-between {
   display: flex;
   justify-content: space-between;
@@ -2408,16 +2109,6 @@ div.none {
       margin: 0 4px;
     }
   }
-}
-.flex-space-beetwen-center {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.flex-space-beetwen-baseline {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
 }
 
 .carinfo-divider {

@@ -23,7 +23,6 @@ import ColumnControl from './ColumnControl';
 import Filter from './filter/Filter';
 import FilterButton from './filter/FilterButton';
 import Div from '../Div';
-import PaginatorToPortalData from 'components/ui/new/paginator/PaginatorToPortalData';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
 const style = {

@@ -18,8 +18,8 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import PrintForm from 'components/missions/common/PrintForm';
+import Paginator from 'components/ui/new/paginator/Paginator';
 
-import Paginator from 'components/ui/Paginator';
 import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';

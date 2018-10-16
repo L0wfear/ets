@@ -22,7 +22,7 @@ const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK, equipmentCheck
     }),
     stroke: new ol.style.Stroke({
       color: greenSpeed ? TRACK_COLORS.green : TRACK_COLORS.red,
-      width: equipmentChecked ? 12 / DEVICE_PIXEL_RATIO : 7 / DEVICE_PIXEL_RATIO,
+      width: equipmentChecked ? 12 / DEVICE_PIXEL_RATIO : 4 / DEVICE_PIXEL_RATIO,
     }),
     zIndex: 9,
   });

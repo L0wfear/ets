@@ -57,10 +57,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
   completeMission = () => {
     this.props.getMissionById(this.props.infoData.mission_data.id)
-      .then(({ mission }) => {
+      .then((res) => {
+        const { mission } = res.payload;
         if (mission) {
           mission.status = 'complete';
-
           return this.props.updateMission(mission);
         }
 

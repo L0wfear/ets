@@ -67,7 +67,7 @@ export const dashboardLoadMissionDataForCurrentMission: (id?: number) => any = (
   }
 };
 
-export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?: CurrentDutyMissionsItemsSubItemDatasType, id?: number) => (dispatch) => {
+export const dashboardLoadRouteDataForCurrentDutyMissions: Function = (duty_mission_data?: CurrentDutyMissionsItemsSubItemDatasType, id?: number) => (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {

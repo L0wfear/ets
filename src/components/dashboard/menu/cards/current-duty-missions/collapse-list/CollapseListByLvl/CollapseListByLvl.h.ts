@@ -1,11 +1,12 @@
 import {
   CurrentDutyMissionsItemsType,
+  CurrentDutyMissionsItemsSubItemsType,
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
-
-export type PropsCollapseList = {
+export type PropsCollapseListByLvl = {
   collapsetItems: CurrentDutyMissionsItemsType[];
-  handleClickMission: React.MouseEventHandler<HTMLLIElement>;
+  handleClick: (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => any;
   classNameContainer?: string;
-  path: string;
 }
+
+export interface StateCollapseListByLvl {};

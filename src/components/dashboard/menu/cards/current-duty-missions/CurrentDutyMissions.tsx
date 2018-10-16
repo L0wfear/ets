@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
-import ListByTypeMission from 'components/dashboard/menu/cards/current-duty-missions/collapse-list/ListByTypeMission';
+import ListByTypeCurerntDutyMission from 'components/dashboard/menu/cards/current-duty-missions/collapse-list/ListByTypeCurerntDutyMission';
 
 import {
   dashboardLoadCurrentDutyMissions,
@@ -12,60 +12,54 @@ import {
 import CurrentDutyMissionInfo from 'components/dashboard/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
 
 import {
+  InnerPropsCurrentDutyMissions,
+  StatePropsCurrentDutyMissions,
+  DispatchPropsCurrentDutyMissions,
+  OwnPropsCurrentDutyMissions,
   PropsCurrentDutyMissions,
   StateCurrentDutyMissions,
 } from 'components/dashboard/menu/cards/current-duty-missions/CurrentDutyMissions.h';
+import {
+  CurrentDutyMissionsItemsSubItemsType,
+} from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
+import { compose } from 'recompose';
+import { ReduxState } from 'redux-main/@types/state';
 
 class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, StateCurrentDutyMissions> {
-  handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    const [
-      itemsKey,
-      subItemsIndex,
-      dataIndex,
-    ] = path.split('/');
-
-    // items_centralized | items_decentralized
-    const duty_mission_data = this.props[itemsKey][subItemsIndex].subItems[dataIndex].data;
-
+  handleClick = (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => {
     this.props.loadRouteDataById(
-      duty_mission_data,
-      duty_mission_data.duty_mission_route_id,
+      lastSubItem.data,
+      lastSubItem.data.duty_mission_route_id,
     );
   }
 
   render() {
     return (
       <div>
-        <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClickMission={this.handleClickMission} />
-        <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClickMission={this.handleClickMission} />
+        <ListByTypeCurerntDutyMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
+        <ListByTypeCurerntDutyMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  items_centralized: state.dashboard.current_duty_missions.data.items_centralized,
-  items_decentralized: state.dashboard.current_duty_missions.data.items_decentralized,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  loadRouteDataById: (duty_mission_data, id) => (
-    dispatch(
-      dashboardLoadRouteDataForCurrentDutyMissions(
-        duty_mission_data,
-        id,
-      ),
-    )
-  )
-});
-
-export default withDefaultCard({
-  path: 'current_duty_missions',
-  loadData: dashboardLoadCurrentDutyMissions,
-  InfoComponent: CurrentDutyMissionInfo,
-})(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(CurrentDutyMissions)
-);
+export default compose<PropsCurrentDutyMissions, InnerPropsCurrentDutyMissions>(
+  withDefaultCard({
+    path: 'current_duty_missions',
+    loadData: dashboardLoadCurrentDutyMissions,
+    InfoComponent: CurrentDutyMissionInfo,
+  }),
+  connect<StatePropsCurrentDutyMissions, DispatchPropsCurrentDutyMissions, OwnPropsCurrentDutyMissions, ReduxState>(
+    null,
+    (dispatch) => ({
+      loadRouteDataById: (duty_mission_data, id) => (
+        dispatch(
+          dashboardLoadRouteDataForCurrentDutyMissions(
+            duty_mission_data,
+            id,
+          ),
+        )
+      )
+    }),
+  ),
+)(CurrentDutyMissions);

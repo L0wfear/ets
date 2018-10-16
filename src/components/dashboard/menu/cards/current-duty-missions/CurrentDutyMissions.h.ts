@@ -1,17 +1,29 @@
 import {
-  CurrentDutyMissionsItemsType,
   CurrentDutyMissionsItemsSubItemDatasType,
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
+import {
+  OwnerPropsDefaultCard,
+} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
-export type PropsCurrentDutyMissions = {
-  items_centralized: CurrentDutyMissionsItemsType[];
-  items_decentralized: CurrentDutyMissionsItemsType[];
+export interface InnerPropsCurrentDutyMissions extends OwnerPropsDefaultCard {
+};
+
+export interface StatePropsCurrentDutyMissions {}
+export interface DispatchPropsCurrentDutyMissions {
   loadRouteDataById: (
     duty_mission_data: CurrentDutyMissionsItemsSubItemDatasType,
     duty_mission_route_id: number,
   ) => any;
 }
+
+export interface OwnPropsCurrentDutyMissions {}
+
+export type PropsCurrentDutyMissions = (
+  StatePropsCurrentDutyMissions
+  & DispatchPropsCurrentDutyMissions
+  & OwnPropsCurrentDutyMissions
+);
 
 export type StateCurrentDutyMissions = {
 };

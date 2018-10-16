@@ -55,6 +55,11 @@ export const CardTitleContainerWrap = styled.div`
   }
 `;
 
+export const LineData = styled.div`
+  padding: 15px 0;
+  border-bottom: 1px solid #d6d6d6;
+`;
+
 export const CardBodyContainer = styled.div`
   padding: 20px;
   padding-top: 5px;

@@ -467,7 +467,7 @@ class ElementsList extends React.Component {
     const preloader = this.state.exportFetching && <Preloader typePreloader="mainpage" />;
 
     return (
-      <EtsPageWrap ref={this.setNode}>
+      <EtsPageWrap innerRef={this.setNode}>
         {table}
         {additionalRender}
         {forms}

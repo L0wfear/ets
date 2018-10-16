@@ -79,7 +79,7 @@ class CompanyStructure extends ElementsList {
     const { companyStructureList = [] } = this.props;
 
     return (
-      <EtsPageWrapCompanyStructure innerRef={this.setNode}>
+      <EtsPageWrapCompanyStructure ref={this.setNode}>
         <CompanyStructureTable
           data={companyStructureList}
           onActionEdit={this.editElement}

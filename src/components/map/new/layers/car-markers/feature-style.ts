@@ -2,7 +2,7 @@ import { listObj }  from 'constants/statuses';
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
   zoomMore8: 25 / (DEVICE_PIXEL_RATIO / 2),
-  zoomNotMore8: 10 / (DEVICE_PIXEL_RATIO / 2),
+  zoomNotMore8: 14 / (DEVICE_PIXEL_RATIO / 2),
 };
 
 // let textPadding = 6 * DEVICE_PIXEL_RATIO;

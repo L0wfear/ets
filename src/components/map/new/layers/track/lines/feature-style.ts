@@ -10,7 +10,7 @@ const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK, equipmentCheck
   }
   return CACHE_ICON[cacheStyleName] = new ol.style.Style({
     image: new ol.style.Circle({
-      radius: 5 / DEVICE_PIXEL_RATIO,
+      radius: 2.8 / DEVICE_PIXEL_RATIO,
       stroke: new ol.style.Stroke({
         color: 'rgba(0, 0, 0, 0.1)',
       }),

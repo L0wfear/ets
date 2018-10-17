@@ -1,8 +1,8 @@
 import { listObj }  from 'constants/statuses';
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
-  zoomMore8: 30 / (DEVICE_PIXEL_RATIO / 2),
-  zoomNotMore8: 20 / (DEVICE_PIXEL_RATIO / 2),
+  zoomMore8: 25 / (DEVICE_PIXEL_RATIO / 2),
+  zoomNotMore8: 10 / (DEVICE_PIXEL_RATIO / 2),
 };
 
 // let textPadding = 6 * DEVICE_PIXEL_RATIO;
@@ -60,8 +60,8 @@ const getCanvasWH = (width, ctx, show_gov_number, gov_number, checkZoomSelect) =
   let canvasHeight = width + 4;
 
   if (show_gov_number && gov_number) {
-    ctx.font = `${(checkZoomSelect ? 10 : 8) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
-    canvasHeight = canvasWidth = Math.max(canvasWidth, 2 * ctx.measureText(gov_number).width + 4 * getRaidus(width));
+    ctx.font = `${(checkZoomSelect ? 5 : 5) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
+    canvasHeight = canvasWidth = Math.max(canvasWidth, 2.5 * ctx.measureText(gov_number).width + 4 * getRaidus(width));
   }
   if (checkZoomSelect) {
     canvasWidth = Math.max(canvasWidth, Math.sqrt(2) * width + 4);
@@ -79,9 +79,9 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
       rect: !directionToRight ? canvas.width/2 : 2,
       gov_number: !directionToRight ? canvas.width/2 + 1.25  * getRaidus(width) : 3/4 * getRaidus(width),
     };
-
+    const selectedRate = selected || zoomMore8 ? 1 : 1.7;
     ctx.beginPath();
-    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)), canvas.width/2 - 2, getRaidus(width) * 2);
+    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)*selectedRate), canvas.width/2 + 2, getRaidus(width) * 2 * selectedRate);// изменение размера четырёхугольника
     ctx.closePath();
 
     ctx.fillStyle = 'white';
@@ -93,7 +93,7 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
 
 
     ctx.fillStyle = 'black';
-    ctx.font = `${(zoomMore8 || selected ? 8 : 8) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
+    ctx.font = `${(zoomMore8 || selected ? 5 : 6) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
     ctx.textBaseline = "middle";
     ctx.fillText(
       gov_number,

@@ -3,7 +3,7 @@ import * as React from 'react';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
-import ListByTypeMission from 'components/dashboard/menu/cards/future-missions/list/ListByTypeMission';
+import ListByTypeFutureMission from 'components/dashboard/menu/cards/future-missions/list/ListByTypeFutureMission';
 
 import { dashboardLoadFutureMissions } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import { PermittedMissionFormWrap } from 'components/missions/mission/buttons/buttons';
@@ -12,7 +12,13 @@ import { loadMissionById } from 'redux-main/trash-actions/mission';
 import {
   PropsFutureMissions,
   StateFutureMissions,
+  StatePropsFutureMissions,
+  DispatchPropsFutureMissions,
+  OwnPropsFutureMissions,
+  OutterPropsFutureMissions,
 } from 'components/dashboard/menu/cards/future-missions/FutureMissions.h';
+import { ReduxState } from 'redux-main/@types/state';
+import { compose } from 'recompose';
 
 class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMissions> {
   state = {
@@ -20,10 +26,8 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
     elementMissionFormWrap: null,
   }
 
-  handleClick: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    const id = Number.parseInt((path as string).split('/').slice(-1)[0])
-
-    this.props.getMissionById(id).then(({ mission }) => {
+  handleClick = (id: number) => {
+    this.props.getMissionById(id).then(({ payload: { mission } }) => {
       if (mission) {
         this.setState({
           showMissionFormWrap: true,
@@ -43,8 +47,8 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   render() {
     return (
       <div>
-        <ListByTypeMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
-        <ListByTypeMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
+        <ListByTypeFutureMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
+        <ListByTypeFutureMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
         <PermittedMissionFormWrap
           onFormHide={this.handleFormHide}
           showForm={this.state.showMissionFormWrap}
@@ -56,29 +60,26 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   }
 }
 
-const mapStateToProps = null
-
-const mapDispatchToProps = (dispatch) => ({
-  getMissionById: (id) => (
-    dispatch(
-      loadMissionById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      )
-    )
+export default compose<PropsFutureMissions, OutterPropsFutureMissions>(
+  withDefaultCard({
+    path: 'future_missions',
+    loadData: dashboardLoadFutureMissions,
+  }),
+  connect<StatePropsFutureMissions, DispatchPropsFutureMissions, OwnPropsFutureMissions, ReduxState>(
+    null,
+    (dispatch) => ({
+      getMissionById: (id) => (
+        dispatch(
+          loadMissionById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          )
+        )
+      ),
+    }),
   ),
-});
-
-export default withDefaultCard({
-  path: 'future_missions',
-  loadData: dashboardLoadFutureMissions,
-})(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(FutureMissions)
-);
+)(FutureMissions);

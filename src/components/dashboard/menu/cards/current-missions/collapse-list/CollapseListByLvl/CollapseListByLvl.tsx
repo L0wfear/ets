@@ -5,7 +5,7 @@ import {
   StateCollapseListByLvl,
 } from 'components/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/CollapseListByLvl.h';
 import CollapseListFirstLvl from 'components/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/CollapseListFirstLvl/CollapseListFirstLvl';
-import CollapseText from 'components/ui/collapse/new/text/CollapseText';
+import CollapseText from 'components/ui/collapse/text/CollapseText';
 
 import { CollapseTitleContainer } from 'components/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/styled/styled';
 

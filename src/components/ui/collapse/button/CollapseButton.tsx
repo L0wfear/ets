@@ -1,15 +1,15 @@
 import * as React from 'react';
 
-import Collapse from 'components/ui/collapse/new/Collapse';
+import Collapse from 'components/ui/collapse/Collapse';
 import {
   GlyphiconCollapseButtonWrap,
   GlyphiconPointer,
-} from 'components/ui/collapse/new/button/styled/styled';
+} from 'components/ui/collapse/button/styled/styled';
 
 import {
   PropsCollapseButton,
   StateCollapseButton,
-} from 'components/ui/collapse/new/button/CollapseButton.h';
+} from 'components/ui/collapse/button/CollapseButton.h';
 
 class CollapseButton extends React.Component<PropsCollapseButton, StateCollapseButton> {
   state = {

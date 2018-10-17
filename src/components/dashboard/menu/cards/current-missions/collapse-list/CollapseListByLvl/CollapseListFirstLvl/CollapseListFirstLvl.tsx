@@ -6,7 +6,7 @@ import {
   PropsCollapseListFirstLvl,
   StateCollapseListFirstLvl,
 } from 'components/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/CollapseListFirstLvl/CollapseListFirstLvl.h';
-import CollapseText from 'components/ui/collapse/new/text/CollapseText';
+import CollapseText from 'components/ui/collapse/text/CollapseText';
 
 class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl, StateCollapseListFirstLvl> {
   rednerMap = ({ subItems, ...item }, index) => {

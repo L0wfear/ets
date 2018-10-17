@@ -8,7 +8,7 @@ import {
 
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 
-export const loadMissionById = (type, id, meta = { loading: true } as TypeMeta) => {
+export const loadMissionById: any = (type, id, meta = { loading: true } as TypeMeta) => {
   return {
     type,
     payload: getMissionById(id),

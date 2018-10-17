@@ -9,7 +9,7 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
 import CollapseListFirstLvl from 'components/dashboard/menu/cards/current-duty-missions/collapse-list/CollapseListByLvl/CollapseListFirstLvl/CollapseListFirstLvl';
-import CollapseText from 'components/ui/collapse/new/text/CollapseText';
+import CollapseText from 'components/ui/collapse/text/CollapseText';
 
 import { CollapseTitleContainer } from 'components/dashboard/menu/cards/current-duty-missions/collapse-list/CollapseListByLvl/styled/styled';
 

@@ -3,7 +3,7 @@ import * as React from 'react';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
-import CollapseButton from 'components/ui/collapse/button/CollapseButton';
+import CollapseButton from 'components/ui/collapse/new/button/CollapseButton';
 import List from 'components/dashboard/menu/cards/car-in-work-overall/list/List';
 
 import {
@@ -34,6 +34,7 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
     const firstTwoItem = items.slice(0, 2);
     const collapsetItems = items.slice(2);
 
+    console.log(collapsetItems)
     return (
       <div>
         <List

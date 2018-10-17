@@ -3,7 +3,7 @@ import * as React from 'react';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
-import CollapseButton from 'components/ui/collapse/button/CollapseButton';
+import CollapseButton from 'components/ui/collapse/new/button/CollapseButton';
 
 import List from 'components/dashboard/menu/cards/odh-not-covered-by-missions-of-current-shift/list/List';
 import {

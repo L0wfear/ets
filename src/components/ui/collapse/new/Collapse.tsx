@@ -18,6 +18,7 @@ class Collapse extends React.Component<PropsCollapse, StateCollapse> {
   }
 
   render() {
+    console.log(this.props.isOpen)
     return (
       <PanelWrap onToggle={this.onToggle} expanded={this.props.isOpen}>
         <PanelCollapseWrap>

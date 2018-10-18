@@ -19,40 +19,51 @@ type PropsCarMainDataBlock = {
   carInfoToggleStatusTCShowTrack: any;
 };
 
-const CarMainDataBlock: React.SFC<PropsCarMainDataBlock> = ({ type_image_name, maxSpeed, STATUS_TC_FOLLOW_ON_CAR, ...props }) => (
-  <div className="car_info-main_data_container">
-    <div className="car_info_block">
-      <div>
-        <div className="legend-color">
-          <div className="car_info-legend-color red"></div>
-          <div>{`0-${maxSpeed} км/ч`}</div>
+class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
+  render() {
+    const {
+      type_image_name,
+      maxSpeed,
+      STATUS_TC_FOLLOW_ON_CAR,
+      ...props
+    } = this.props;
+
+    return (
+      <div className="car_info-main_data_container">
+        <div className="car_info_block">
+          <div>
+            <div className="legend-color">
+              <div className="car_info-legend-color green"></div>
+              <div>{`0-${maxSpeed} км/ч`}</div>
+            </div>
+            <div className="legend-color">
+              <div className="car_info-legend-color red"></div>
+              <div>{`+${maxSpeed + 1} км/ч`}</div>
+            </div>
+          </div>
+          <div className="car_info-img">
+          {
+            type_image_name !== '' ?
+            <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
+            :
+            <Preloader type="field" />
+          }
+          </div>
+          <div>
+            <Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
+              <Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
+              {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
+            </Button>
+            <Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
+              <Glyphicon glyph="resize-full" className="car_info-main_block-button" />
+              Трек
+            </Button>
+          </div>
         </div>
-        <div className="legend-color">
-          <div className="car_info-legend-color green"></div>
-          <div>{`+${maxSpeed + 1} км/ч`}</div>
-        </div>
       </div>
-      <div className="car_info-img">
-      {
-        type_image_name !== '' ?
-        <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
-        :
-        <Preloader type="field" />
-      }
-      </div>
-      <div>
-        <Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
-          <Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
-          {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
-        </Button>
-        <Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
-          <Glyphicon glyph="resize-full" className="car_info-main_block-button" />
-          Трек
-        </Button>
-      </div>
-    </div>
-  </div>
-);
+    );
+  };
+}
 
 const mapStateToProps = state => ({
   type_image_name: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { type_image_name: ''}).type_image_name,

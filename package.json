@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.142",
+    "version": "2.0.23.143",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -68,7 +68,7 @@
         "babel-eslint": "=10.0.1",
         "babel-loader": "=8.0.4",
         "clean-webpack-plugin": "=0.1.19",
-        "copy-webpack-plugin": "=4.5.3",
+        "copy-webpack-plugin": "=4.5.4",
         "cross-env": "=5.2.0",
         "css-loader": "=1.0.0",
         "csv-loader": "=3.0.2",

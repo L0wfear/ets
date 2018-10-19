@@ -24,11 +24,11 @@ export const getMaxSpeeds = missions => (
   ? (
     missions.reduce((maxSpeeds, mission) => {
       const { speed_limits } = mission
-      maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
-      maxSpeeds.speed_lim = Math.max(speed_limits.speed_lim, maxSpeeds.speed_lim);
+      maxSpeeds.mkad_speed_lim = Math.min(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
+      maxSpeeds.speed_lim = Math.min(speed_limits.speed_lim, maxSpeeds.speed_lim);
 
       return maxSpeeds;
-    }, { mkad_speed_lim: 0, speed_lim: 0 })
+    }, { mkad_speed_lim: missions[0].speed_limits.mkad_speed_lim, speed_lim: missions[0].speed_limits.speed_lim })
   )
   : (
     { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed }

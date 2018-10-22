@@ -29,6 +29,7 @@ export interface IPropsDataTableInputWrapper {
 export interface IStateDataTableInputWrapper {
   outputListErrors?: ETSCore.Types.IStringKeyHashTable<string>[];
   isValidInput?: boolean;
+  selectedIndex: number;
 }
 
 /**

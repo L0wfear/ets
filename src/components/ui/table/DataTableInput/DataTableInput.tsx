@@ -15,15 +15,13 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     selected: null,
   }
   handleRowSelected = (selected: IDataTableSelectedRow) => {
+    this.props.onRowSelected(selected);
     if (this.state.selected !== null && selected.props.data.rowNumber === this.state.selected.rowNumber) {
       return;
     }
-
     this.setState({
       selected: selected.props.data,
     });
-
-    this.props.onRowSelected(selected);
   }
   handleAddVehicle = () => {
     this.props.onItemAdd();

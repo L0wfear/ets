@@ -24,18 +24,18 @@ export function tableMeta({
         },
       },
       {
-        name: 'gov_number',
-        displayName: 'Рег. номер ТС',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
-      },
-      {
         name: 'title',
         displayName: 'Заголовок',
         type: 'string',
         filter: false,
+      },
+      {
+        name: 'additional_info',
+        displayName: 'Дополнительная информация',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
       },
       {
         name: 'created_at',
@@ -115,7 +115,14 @@ const renderers: ISchemaRenderer<IUserNotification> = {
       {meta.rowData.priority === 'warning' && <Icon type="warning" />}
       {meta.rowData.priority === 'info' && <Icon type="info" />}
     </div>,
+  additional_info: ({rowData}) => 
+    <div>
+        {console.log('asddddddddddd', rowData.data)}
+        {JSON.stringify(rowData.data)}
+    </div>,
 };
+
+// console.log('props.data == ', props.data);
 
 const Table: React.SFC<any> = props  => (
   <DataTable

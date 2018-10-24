@@ -69,6 +69,7 @@ class MissionTemplateForm extends DutyMissionForm {
     }, []);
 
     const FOREMANS = [...EMPLOYEES];
+    console.log('state.foreman_id == ', state.foreman_id); //comm-l
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
       const employee = this.props.employeesIndex[state.foreman_id] || {};
 
@@ -79,9 +80,17 @@ class MissionTemplateForm extends DutyMissionForm {
     }
 
     const BRIGADES = [...EMPLOYEES];
+    /*
+      Список активных сотрудников EMPLOYEES
+      После выбора бригадира, подгружается бригада
+      Если кого-то из бригады нет в списке сотрудников BRIGADES, то он добавляется в этот список с пометкой (Неактивный сотрудник)
+      Если в бригаде есть неактивный сотрудник, то выводится сообщение "В наряд-задание можно добавить только активного на данный момент времени сотрудника"
+    */
+    console.log('state.brigade_employee_id_list == ', state.brigade_employee_id_list);
+    console.log('BRIGADES == ', BRIGADES); //comm-l
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {
+      if (!BRIGADES.some(({ value }) => value === key)) {//если сотрудника из бригады нет в списке сотрудников
         const employee = this.props.employeesIndex[key] || {};
 
         BRIGADES.push({

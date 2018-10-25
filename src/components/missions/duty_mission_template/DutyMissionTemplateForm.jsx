@@ -19,7 +19,6 @@ const modalKey = 'duty_mission_template';
 class MissionTemplateForm extends DutyMissionForm {
   render() {
     const state = this.props.formState;
-    console.log('stateformState == ', this.props);//comm-l
     const errors = this.props.formErrors;
     const {
       employeesList = [],
@@ -29,8 +28,7 @@ class MissionTemplateForm extends DutyMissionForm {
       technicalOperationsList = [],
       routesList = [],
       TECH_OPERATIONS = [],
-      selectedRoute: route = null,
-      hasNotActiveEmployees = false,//comm-l
+      selectedRoute: route = null
     } = this.state;
 
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
@@ -69,7 +67,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
       return [...newArr];
     }, []);
-
+    let hasNotActiveEmployees = false;
     const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
       const employee = this.props.employeesIndex[state.foreman_id] || {};
@@ -78,6 +76,7 @@ class MissionTemplateForm extends DutyMissionForm {
         value: state.foreman_id,
         label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
       });
+      hasNotActiveEmployees = true;
     }
 
     const BRIGADES = [...EMPLOYEES];
@@ -96,6 +95,7 @@ class MissionTemplateForm extends DutyMissionForm {
           value: key,
           label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
         });
+        hasNotActiveEmployees = true;
       }
     });
 
@@ -117,7 +117,6 @@ class MissionTemplateForm extends DutyMissionForm {
     const brigade_employee_id_list = !state.brigade_employee_id_list
     ? []
     : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
-
     return (
       <Modal id="modal-duty-missio-template" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
@@ -237,7 +236,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

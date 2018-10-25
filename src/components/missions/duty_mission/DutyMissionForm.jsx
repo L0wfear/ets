@@ -23,6 +23,7 @@ const makePayloadFromState = formState => ({
   municipal_facility_id: formState.municipal_facility_id,
   route_type: formState.route_type,
   needs_brigade: true,
+  hasNotActiveEmployees: false,
 });
 const modalKey = 'duty_mission';
 
@@ -113,12 +114,11 @@ export class DutyMissionForm extends Form {
   // И не искать каждый раз всех
   handleBrigadeIdListChange = (v) => {
     let brigade_employee_id_list = [];
-
     if (v) {
-      let hasNotActive = false;
+      let hasNotActiveEmployees = false;
       brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
         if (!this.isActiveEmployee(brigade_id)) {
-          hasNotActive = true;
+          hasNotActiveEmployees = true;
           return [...newArr];
         }
         return [
@@ -127,12 +127,14 @@ export class DutyMissionForm extends Form {
         ];
       }, []);
 
-      if (hasNotActive) {
+      if (hasNotActiveEmployees) {
         console.log('onlyActiveEmployeeNotification2');//comm-l
         onlyActiveEmployeeNotification();
       }
+      console.log('hasNotActive == ', hasNotActiveEmployees);//comm-l
+      this.setState({hasNotActiveEmployees});//comm-l
     }
-
+    console.log('11SetState');//comm-l
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 

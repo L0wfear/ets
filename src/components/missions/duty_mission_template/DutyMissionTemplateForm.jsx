@@ -31,7 +31,7 @@ class MissionTemplateForm extends DutyMissionForm {
       technicalOperationsList = [],
       routesList = [],
       TECH_OPERATIONS = [],
-      selectedRoute: route = null,
+      selectedRoute: route = null
     } = this.state;
 
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
@@ -70,7 +70,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
       return [...newArr];
     }, []);
-
+    let hasNotActiveEmployees = false;
     const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
       const employee = this.props.employeesIndex[state.foreman_id] || {};
@@ -79,18 +79,26 @@ class MissionTemplateForm extends DutyMissionForm {
         value: state.foreman_id,
         label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
       });
+      hasNotActiveEmployees = true;
     }
 
     const BRIGADES = [...EMPLOYEES];
+    /*
+      Список активных сотрудников EMPLOYEES
+      После выбора бригадира, подгружается бригада
+      Если кого-то из бригады нет в списке сотрудников BRIGADES, то он добавляется в этот список с пометкой (Неактивный сотрудник)
+      Если в бригаде есть неактивный сотрудник, то выводится сообщение "В наряд-задание можно добавить только активного на данный момент времени сотрудника"
+    */
     state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
       const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {
+      if (!BRIGADES.some(({ value }) => value === key)) {//если сотрудника из бригады нет в списке сотрудников
         const employee = this.props.employeesIndex[key] || {};
 
         BRIGADES.push({
           value: key,
           label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
         });
+        hasNotActiveEmployees = true;
       }
     });
 
@@ -249,7 +257,11 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
+<<<<<<< HEAD
             <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
+=======
+            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</Button>
+>>>>>>> hotfix/DITETS-4276
           </Div>
         </Modal.Footer>
 

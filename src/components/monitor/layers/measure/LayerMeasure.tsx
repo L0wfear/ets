@@ -4,7 +4,10 @@ import Point from 'ol/geom/Point';
 import Draw from 'ol/interaction/Draw';
 
 import { connect } from 'react-redux';
-import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 import Overlay from 'components/map/overlay/Overlay';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { monitorPageToggleMeasureActive } from 'components/monitor/redux-main/models/actions-monitor-page';

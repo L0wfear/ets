@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';

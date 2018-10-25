@@ -1,7 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { Modal, Row, Col } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
+
 import ModalBody from 'components/ui/Modal';
 import ChangeRouteTable from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteTable';
 import RouteFormWrap from 'components/route/form/RouteFormWrap';

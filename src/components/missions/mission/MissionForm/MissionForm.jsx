@@ -1,8 +1,13 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import {
-  Modal, Row, Col, Button, Dropdown, Glyphicon, MenuItem,
-} from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+
 import {
   uniqBy,
   isEmpty as lodashIsEmpty,

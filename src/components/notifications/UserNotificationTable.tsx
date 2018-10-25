@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { IDataTableSchema, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';

@@ -1,5 +1,8 @@
 import * as React from 'react';
-import * as RB from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
 
 import Div from 'components/ui/Div';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
@@ -32,14 +35,14 @@ class MakeFileModal extends React.Component<any, any> {
     const { TextBody } = this.props;
 
     return (
-      <RB.Modal {...this.props} id="modal-make-version" onHide={this.onHide} backdrop="static">
-        <RB.Modal.Header closeButton>
-          <RB.Modal.Title>{this.props.title}</RB.Modal.Title>
-        </RB.Modal.Header>
+      <Modal {...this.props} id="modal-make-version" onHide={this.onHide} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>{this.props.title}</Modal.Title>
+        </Modal.Header>
         <Div style={{ padding: '0px 15px' }}>
           {TextBody}
-          <RB.Row>
-            <RB.Col md={12}>
+          <Row>
+            <Col md={12}>
               <FileField
                 label="Файл"
                 value={this.state.files}
@@ -47,14 +50,14 @@ class MakeFileModal extends React.Component<any, any> {
                 boundKeys={['files']}
                 isLoading={this.props.onOverlayLoading}
               />
-            </RB.Col>
-          </RB.Row>
+            </Col>
+          </Row>
         </Div>
         <ModalBody />
-        <RB.Modal.Footer>
-          <RB.Button disabled={!canSave} onClick={this.onSubmit}>{this.props.btName}</RB.Button>
-        </RB.Modal.Footer>
-      </RB.Modal>
+        <Modal.Footer>
+          <Button disabled={!canSave} onClick={this.onSubmit}>{this.props.btName}</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }

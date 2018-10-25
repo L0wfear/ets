@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Label } from 'react-bootstrap';
+import * as Label from 'react-bootstrap/lib/Label';
 
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 

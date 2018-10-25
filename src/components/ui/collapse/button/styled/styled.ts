@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 export const GlyphiconCollapseButtonWrap = styled<{ isOpen: boolean }, 'div'>('div')`
   display: flex;

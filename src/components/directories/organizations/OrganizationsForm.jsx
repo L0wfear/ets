@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form';

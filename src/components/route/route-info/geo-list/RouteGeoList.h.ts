@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import * as Button from 'react-bootstrap/lib/Button';
 
 export type PropsRouteGeoList = {
   checkRoute?: React.MouseEventHandler<Button>;

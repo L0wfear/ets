@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { Button, Glyphicon } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import {
   registryChangeDataPaginatorCurrentPage,

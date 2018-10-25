@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { Row, Col, Button as BootstrapButton } from 'react-bootstrap';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as BootstrapButton from 'react-bootstrap/lib/Button';
+
 import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from './FileInput.h';

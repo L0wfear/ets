@@ -1,5 +1,4 @@
 import { Store } from 'flummox';
-import moment from 'moment';
 
 import { userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';

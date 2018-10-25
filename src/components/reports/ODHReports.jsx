@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {
-  Row, Col, Button, ButtonToolbar,
-} from 'react-bootstrap';
+import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Field from 'components/ui/Field';
 import connectToStores from 'flummox/connect';

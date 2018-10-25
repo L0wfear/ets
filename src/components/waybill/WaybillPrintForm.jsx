@@ -3,9 +3,11 @@ import * as PropTypes from 'prop-types';
 import Div from 'components/ui/Div';
 import { get } from 'lodash';
 
-import {
-  Modal, Button, Row, Col,
-} from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
+
 import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';

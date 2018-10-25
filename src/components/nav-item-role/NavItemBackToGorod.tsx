@@ -5,7 +5,9 @@ import {
   sessionSetData,
 } from 'redux-main/reducers/modules/session/actions-session';
 
-import { NavItem, Glyphicon } from 'react-bootstrap';
+import * as NavItem from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 import { withRouter } from 'react-router-dom';
 import { connectToStores, FluxContext } from 'utils/decorators';
 

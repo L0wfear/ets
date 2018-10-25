@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Button, Dropdown, MenuItem, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import * as Popover from 'react-bootstrap/lib/Popover';
+import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 
 import { isEmpty } from 'utils/functions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';

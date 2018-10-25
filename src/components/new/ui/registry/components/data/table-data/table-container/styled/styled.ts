@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Table } from 'react-bootstrap';
+import * as Table from 'react-bootstrap/lib/Table';
 
 export const EtsTableWrap = styled.div`
   max-height: calc(100vh - 250px);

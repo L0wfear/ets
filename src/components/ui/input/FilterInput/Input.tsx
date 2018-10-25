@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormControl } from 'react-bootstrap';
+import * as FormControl from 'react-bootstrap/lib/FormControl';
 import * as R from 'ramda';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';

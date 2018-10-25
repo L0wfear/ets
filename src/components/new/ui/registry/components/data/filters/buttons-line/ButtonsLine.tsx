@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { connect } from 'react-redux';
 import {
   registryToggleIsOpenFilter,

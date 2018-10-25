@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
+
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { FluxContext } from 'utils/decorators';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { IReportProps } from 'components/reports/@types/common.h';
 

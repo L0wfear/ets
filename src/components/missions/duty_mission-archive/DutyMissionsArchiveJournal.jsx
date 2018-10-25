@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList';

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 export const EtsFiltersButtonsLine = styled.div`
   display: flex;

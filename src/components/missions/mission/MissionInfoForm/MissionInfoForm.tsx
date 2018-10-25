@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { keyBy } from 'lodash';
 

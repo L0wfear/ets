@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { Row, Col, Panel, Glyphicon } from 'react-bootstrap';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Panel from 'react-bootstrap/lib/Panel';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 

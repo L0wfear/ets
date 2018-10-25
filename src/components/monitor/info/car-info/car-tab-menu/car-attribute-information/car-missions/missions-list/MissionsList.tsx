@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { getFormattedDateTime } from 'utils/dates';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { NO_DATA_TEXT } from 'constants/statuses';
 
 import TimeParking from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/time-parking/TimeParking';

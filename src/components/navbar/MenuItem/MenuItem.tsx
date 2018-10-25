@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MenuItem } from 'react-bootstrap';
+import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import connectToStores from 'flummox/connect';
 
 

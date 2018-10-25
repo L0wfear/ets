@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import * as Table from 'react-bootstrap/lib/Table';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 class TablePrev extends React.Component<any, any> {

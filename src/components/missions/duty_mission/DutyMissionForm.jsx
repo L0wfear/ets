@@ -1,8 +1,12 @@
 import React from 'react';
 import connectToStores from 'flummox/connect';
-import {
-  Modal, Row, Col, Button, Glyphicon,
-} from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
+
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';

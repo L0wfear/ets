@@ -1,5 +1,5 @@
 import React from 'react';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { uniqBy } from 'lodash';
 
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';

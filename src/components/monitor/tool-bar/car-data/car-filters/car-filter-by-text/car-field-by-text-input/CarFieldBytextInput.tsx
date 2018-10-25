@@ -2,7 +2,7 @@ import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 
 import { connect } from 'react-redux';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { monitorPageChangeFilter } from 'components/monitor/redux-main/models/actions-monitor-page';
 import { carInfoSetGpsNumber } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';

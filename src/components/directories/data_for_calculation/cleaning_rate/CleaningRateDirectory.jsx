@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap';

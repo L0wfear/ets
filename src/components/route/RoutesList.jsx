@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Glyphicon, Col } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as Col from 'react-bootstrap/lib/Col';
+
 import _ from 'lodash';
 import cx from 'classnames';
 

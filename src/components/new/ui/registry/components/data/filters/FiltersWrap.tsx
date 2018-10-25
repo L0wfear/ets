@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Panel } from 'react-bootstrap';
+import * as Panel from 'react-bootstrap/lib/Panel';
 
 import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';

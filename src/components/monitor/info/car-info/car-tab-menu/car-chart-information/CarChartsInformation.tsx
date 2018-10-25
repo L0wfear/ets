@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import CarFuelChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart';
 import CarSpeedChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
 import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';

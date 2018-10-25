@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
 
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 

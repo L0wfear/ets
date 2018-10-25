@@ -1,6 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Button, Glyphicon, Collapse } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as Collapse from 'react-bootstrap/lib/Collapse';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
 import Div from '../../Div';

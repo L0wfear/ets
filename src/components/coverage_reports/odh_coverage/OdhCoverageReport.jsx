@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon, Dropdown, MenuItem as BootstrapMenuItem, FormControl } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import * as BootstrapMenuItem from 'react-bootstrap/lib/MenuItem';
+import * as FormControl from 'react-bootstrap/lib/FormControl';
+
 
 import { connectToStores, FluxContext, bindable } from 'utils/decorators';
 import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';

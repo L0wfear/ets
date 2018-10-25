@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import Table from 'components/ui/table/DataTable';
 import permissions from 'components/company_structure/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';

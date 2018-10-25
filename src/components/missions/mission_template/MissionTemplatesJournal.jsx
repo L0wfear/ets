@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Button, Glyphicon } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import permissions from 'components/missions/mission_template/config-data/permissions';

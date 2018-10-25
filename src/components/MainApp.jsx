@@ -1,7 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Col } from 'react-bootstrap';
-import Div from 'components/ui/Div';
 import { connect } from 'react-redux';
 
 import LoadingOverlay from 'components/ui/LoadingOverlay';

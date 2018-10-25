@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Button from 'react-bootstrap/lib/Button';
 import connectToStores from 'flummox/connect';
 import { createValidDate } from 'utils/dates';
 

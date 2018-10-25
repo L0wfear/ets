@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';

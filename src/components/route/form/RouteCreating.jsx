@@ -2,9 +2,13 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 import connectToStores from 'flummox/connect';
-import {
-  Row, Col, FormControl, Button, Glyphicon,
-} from 'react-bootstrap';
+
+import * as FormControl from 'react-bootstrap/lib/FormControl';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import RouteCreatingMap from 'components/route/form/map/RouteCreatingMap';

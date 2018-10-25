@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PropsRouteGeoList } from 'components/route/route-info/geo-list/RouteGeoList.h';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 import { uniqBy } from 'lodash';
 
 import {

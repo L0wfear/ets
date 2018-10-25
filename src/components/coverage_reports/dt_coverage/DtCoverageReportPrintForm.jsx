@@ -2,7 +2,9 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 import { FluxContext } from 'utils/decorators';
-import { Button, Modal } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import ModalBody from 'components/ui/Modal';
 import { getYesterday9am, getToday859am } from 'utils/dates';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';

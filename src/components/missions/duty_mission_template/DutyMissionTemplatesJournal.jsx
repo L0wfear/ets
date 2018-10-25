@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';

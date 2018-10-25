@@ -1,7 +1,11 @@
 import React from 'react';
-import {
-  Row, Col, Modal, Button, Nav, NavItem,
-} from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Nav from 'react-bootstrap/lib/Nav';
+import * as NavItem from 'react-bootstrap/lib/NavItem';
+
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
 import { cloneDeep, isEmpty } from 'lodash';

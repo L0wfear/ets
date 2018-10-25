@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import permissions from 'components/company_structure/config-data/permissions';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';

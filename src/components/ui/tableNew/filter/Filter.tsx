@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import Div from 'components/ui/Div';
-import { Button, Glyphicon, Collapse } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as Collapse from 'react-bootstrap/lib/Collapse';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import { isEmpty } from 'utils/functions';
 import FilterRow from './FilterRow';
 const FilterRowTSX: any = FilterRow;

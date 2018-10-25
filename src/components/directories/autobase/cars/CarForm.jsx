@@ -1,7 +1,11 @@
 import React from 'react';
-import {
-  Modal, Button, Nav, NavItem, NavDropdown, MenuItem,
-} from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Nav from 'react-bootstrap/lib/Nav';
+import * as NavItem from 'react-bootstrap/lib/NavItem';
+import * as NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+
 import connectToStores from 'flummox/connect';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import * as queryString from 'query-string';

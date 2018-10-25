@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {
-  Glyphicon,
-  Navbar,
-  Nav,
-} from 'react-bootstrap';
+import * as Navbar from 'react-bootstrap/lib/Navbar';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as Nav from 'react-bootstrap/lib/Nav';
+
 import NavDropdown from 'components/navbar/NavDropdown/NavDropdown';
 import NavItem from 'components/navbar/NavItem/NavItem';
 import MenuItem from 'components/navbar/MenuItem/MenuItem';

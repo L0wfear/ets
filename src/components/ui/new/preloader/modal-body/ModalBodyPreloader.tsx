@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
 import whitPreloader from 'components/ui/new/preloader/hoc/with-preloader/whitPreloader';
 
 

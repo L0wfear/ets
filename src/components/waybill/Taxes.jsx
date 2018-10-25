@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/Table';
-import { FormControl, Button } from 'react-bootstrap';
+import * as FormControl from 'react-bootstrap/lib/FormControl';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/ui/Div';

@@ -1,5 +1,9 @@
 import React from 'react';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';

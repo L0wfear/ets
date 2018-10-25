@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import { NavItem } from 'react-bootstrap';
+import * as  NavItem from 'react-bootstrap/lib/NavItem';
 import { connectToStores } from 'utils/decorators';
 import CompanyOptions from 'components/nav-item-role/CompanyOptions';
 

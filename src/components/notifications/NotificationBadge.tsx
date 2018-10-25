@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Badge } from 'react-bootstrap';
+import * as Badge from 'react-bootstrap/lib/Badge';
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 /* ETS2 */

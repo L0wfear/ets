@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-  Modal as Modals,
-} from 'react-bootstrap';
+import * as ModalRb from 'react-bootstrap/lib/Modal';
 
 export interface IPropsModal {
   show: boolean;
@@ -22,11 +20,11 @@ const Modal: React.SFC<IPropsModal> = props  => {
   } = props;
 
   return (
-    <Modals show={show} onHide={props.onHide} dialogClassName={dialogClassName}>
+    <ModalRb show={show} onHide={props.onHide} dialogClassName={dialogClassName}>
       {Header}
       {Body}
       {Footer}
-    </Modals>
+    </ModalRb>
   );
 };
 

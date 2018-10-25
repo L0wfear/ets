@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Button, Glyphicon } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import moment from 'moment';
 import _ from 'lodash';
 import cx from 'classnames';

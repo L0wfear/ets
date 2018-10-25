@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Div from 'components/ui/Div';
-import { Button, Row, Col } from 'react-bootstrap';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import Field from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am } from 'utils/dates';

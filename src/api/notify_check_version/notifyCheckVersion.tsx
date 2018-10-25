@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {
-  Button,
-  Glyphicon,
-} from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 interface IPropsNotifiVersionPopup {
   currV: string;

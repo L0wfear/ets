@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Div from 'components/ui/Div';
 import * as cx from 'classnames';
-import { Glyphicon } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 class ThHead extends React.Component<any, any> {
   handleClick = (e) => {

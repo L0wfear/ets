@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, ButtonToolbar } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';

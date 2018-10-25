@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 import { fetchTrack, fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
 

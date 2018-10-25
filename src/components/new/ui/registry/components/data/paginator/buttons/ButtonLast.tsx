@@ -5,7 +5,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import {
   registryChangeDataPaginatorCurrentPage,
 } from 'components/new/ui/registry/module/actions-registy';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 type PropsButtonLast = {
   registryKey: string;

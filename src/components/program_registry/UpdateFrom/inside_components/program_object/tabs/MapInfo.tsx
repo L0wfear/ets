@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
+import * as Col from 'react-bootstrap/lib/Col';
 
 import { IPropsMapInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.h';
 import RouteCreatingMap from 'components/route/form/map/RouteCreatingMap';

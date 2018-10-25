@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
+import * as Table from 'react-bootstrap/lib/Table';
 import Thead from 'components/ui/tableNew/table/thead/Thead';
 import Tbody from 'components/ui/tableNew/table/tbody/Tbody';
 import Paginator from 'components/ui/new/paginator/Paginator';

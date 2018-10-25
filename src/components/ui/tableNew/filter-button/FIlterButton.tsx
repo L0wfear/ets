@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
 
 const FilterButton: React.SFC<any> = ({ active, disabled, onClick, noFilter }) =>

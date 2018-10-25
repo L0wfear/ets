@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { FormControl } from 'react-bootstrap';
+import * as FormControl from 'react-bootstrap/lib/FormControl';
 import _ from 'lodash';
 
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';

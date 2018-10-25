@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 import { Link } from 'react-router-dom';
 import permissionsRoute from 'components/route/config-data/permissions';
 

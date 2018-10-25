@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Panel } from 'react-bootstrap';
+import * as Panel from 'react-bootstrap/lib/Panel';
 
 export const EtsFilterCntainer = styled.div`
   margin: 10px 25px;

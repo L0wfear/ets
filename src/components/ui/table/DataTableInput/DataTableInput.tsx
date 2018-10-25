@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Button, ButtonToolbar } from 'react-bootstrap';
+import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import * as Button from 'react-bootstrap/lib/Button';
+
 
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import { IDataTableSelectedRow, ISchemaRenderer } from 'components/ui/table/@types/schema.h';

@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
 import Field from 'components/ui/Field';

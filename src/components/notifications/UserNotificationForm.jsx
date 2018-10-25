@@ -1,5 +1,8 @@
 import React from 'react';
-import { Modal, Row, Col } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+
 import * as queryString from 'query-string';
 
 import ModalBody from 'components/ui/Modal';

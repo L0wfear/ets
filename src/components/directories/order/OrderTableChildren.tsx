@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { DropdownButton, MenuItem, Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
+import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import * as BootstrapButton from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {

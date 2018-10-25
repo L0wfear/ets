@@ -1,5 +1,7 @@
 import * as React from 'react';
-import * as RB from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import { isEmpty } from 'lodash';
 
 import { FluxContext, connectToStores } from 'utils/decorators';
@@ -29,7 +31,6 @@ import {
 import {
   IStateOrderMissionTemplate,
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
-const ModalTSX: any = RB.Modal;
 
 @connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
@@ -211,10 +212,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
 
     return (
-      <ModalTSX id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
-        <RB.Modal.Header closeButton>
-          <RB.Modal.Title>{title}</RB.Modal.Title>
-        </RB.Modal.Header>
+      <Modal id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
 
         <ModalBody>
           <Div hidden={typeClick !== typeTemplate.missionTemplate} >
@@ -244,7 +245,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
             />
           </Div>
         </ModalBody>
-        <RB.Modal.Footer>
+        <Modal.Footer>
           <Div className="inline-block">
             <Div hidden={typeClick === typeTemplate.missionDutyTemplate} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
               <ReactSelect
@@ -255,10 +256,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
                 onChange={this.handleChangeTypePrint}
               />
             </Div>
-            <RB.Button disabled={this.checkDisabledSubmit()} onClick={this.handleSubmit}>{'Сформировать'}</RB.Button>
+            <Button disabled={this.checkDisabledSubmit()} onClick={this.handleSubmit}>{'Сформировать'}</Button>
           </Div>
-        </RB.Modal.Footer>
-      </ModalTSX>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }

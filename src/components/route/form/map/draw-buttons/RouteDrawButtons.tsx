@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {
-  Glyphicon,
-  Button,
-} from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as Button from 'react-bootstrap/lib/Button';
 
 import {
   RouteDrawButtonsContaineWrapr,

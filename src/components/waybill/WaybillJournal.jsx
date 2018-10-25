@@ -1,5 +1,10 @@
 import React from 'react';
-import { Glyphicon, ButtonToolbar, Dropdown, MenuItem, Button } from 'react-bootstrap';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import * as Button from 'react-bootstrap/lib/Button';
+
 import { get } from 'lodash';
 import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
 

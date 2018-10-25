@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button as BootstrapButton } from 'react-bootstrap';
+import * as BootstrapButton from 'react-bootstrap/lib/Button';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import enhanceWithPermissions from 'components/util/RequirePermissions';

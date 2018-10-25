@@ -10,7 +10,7 @@ import {
   EtsOverlayTitleContainer,
   EtsTriangleContainer,
 } from 'components/map/overlay/styled/styled';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 const ruler = require('components/monitor/layers/measure/styled/image/ruler.png');
 

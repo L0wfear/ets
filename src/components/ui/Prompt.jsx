@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Modal, Button } from 'react-bootstrap';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Button from 'react-bootstrap/lib/Button';
 
 const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';

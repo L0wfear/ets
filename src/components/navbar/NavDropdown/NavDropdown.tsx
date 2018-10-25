@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { NavDropdown } from 'react-bootstrap';
+import * as NavDropdown from 'react-bootstrap/lib/NavDropdown';
+
 import connectToStores from 'flummox/connect';
 
 const checkShow = props => {

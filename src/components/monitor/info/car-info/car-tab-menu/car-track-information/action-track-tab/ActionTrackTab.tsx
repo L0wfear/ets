@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { makeDateFromUnix } from 'utils/dates';
 import { carInfoTogglePlay, carInfoStopPlay, carInfoIncTrackPointIndex } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 

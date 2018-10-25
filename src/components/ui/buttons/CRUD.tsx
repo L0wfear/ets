@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button as BootstrapButton, Glyphicon } from 'react-bootstrap';
+import * as BootstrapButton from 'react-bootstrap/lib/Button';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { ICRUDButton } from 'components/ui/buttons/@types/index.h';
 import ButtonPermission from 'components/ui/buttons/ButtonPermission';

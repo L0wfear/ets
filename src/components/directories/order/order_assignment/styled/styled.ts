@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { Col, Button as BootstrapButton } from 'react-bootstrap';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as BootstrapButton from 'react-bootstrap/lib/Button';
+
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 const Button = enhanceWithPermissions({})(BootstrapButton);

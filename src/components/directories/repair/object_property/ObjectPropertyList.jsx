@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
+import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';

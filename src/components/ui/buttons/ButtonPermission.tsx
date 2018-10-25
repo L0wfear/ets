@@ -1,4 +1,4 @@
-import { Button as BootstrapButton } from 'react-bootstrap';
+import * as BootstrapButton from 'react-bootstrap/lib/Button';
 import enhanceWithPermissionsNew from 'components/util/RequirePermissionsNew';
 
 const ButtonWithMergeProps = enhanceWithPermissionsNew({

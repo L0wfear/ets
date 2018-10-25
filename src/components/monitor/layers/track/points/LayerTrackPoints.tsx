@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
@@ -99,8 +100,8 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
       const currPoint = track[index];
       const currStatus = isMoreThenPermitted(currPoint, this.props);
 
-      const feature = new ol.Feature({
-        geometry: new ol.geom.Point(currPoint.coords_msk),
+      const feature = new Feature({
+        geometry: new Point(currPoint.coords_msk),
       });
 
       feature.setId(currPoint.timestamp);

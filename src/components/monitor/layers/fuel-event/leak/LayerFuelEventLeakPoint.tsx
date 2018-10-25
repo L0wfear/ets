@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
@@ -62,7 +62,7 @@ class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoi
       if (id in leakData) {
         const currPoint = leakData[id];
 
-        const feature = new ol.Feature({
+        const feature = new Feature({
           geometry: GeoJSON.readGeometry(currPoint.shape),
         });
 

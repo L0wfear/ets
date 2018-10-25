@@ -1,4 +1,7 @@
-import * as ol from 'openlayers';
+import Tile from 'ol/layer/Tile';
+import TileImage from 'ol/source/TileImage';
+import TileGrid from 'ol/tilegrid/TileGrid';
+import Projection from 'ol/proj/Projection';
 
 import { debounce } from 'lodash';
 import EverGisTokenService from 'api/map/EverGisTokenService';
@@ -52,7 +55,7 @@ export function projectToPixelNew(map, coordinates) {
 }
 
 export const EXTENT: [number, number, number, number] = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax];
-export const PROJECTION = new ol.proj.Projection({
+export const PROJECTION = new Projection({
   code: 'MSK77',
   units: 'pixels',
   extent: EXTENT,
@@ -76,11 +79,11 @@ function tileUrl(tileCoord) {
   return `${TILES_URL}/${z}/${y}/${x}?_sb=${evergisTokenService.getToken()}`;
 }
 
-const ArcGisSource = new ol.source.TileImage({
+const ArcGisSource = new TileImage({
   tileUrlFunction: tileUrl,
   crossOrigin: 'anonymous',
   projection: PROJECTION,
-  tileGrid: new ol.tilegrid.TileGrid({
+  tileGrid: new TileGrid({
     origin: [ORIGIN.x, ORIGIN.y],
     resolutions: RESOLUTIONS,
     tileSize: TILE_SIZE,
@@ -108,7 +111,7 @@ ArcGisSource.on('tileloaderror', () => {
   }
 });
 
-export const ArcGisLayer = new ol.layer.Tile({
+export const ArcGisLayer = new Tile({
   source: ArcGisSource,
   extent: EXTENT,
 });

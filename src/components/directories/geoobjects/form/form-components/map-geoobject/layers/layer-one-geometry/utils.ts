@@ -1,5 +1,5 @@
 import { GeoJSON } from 'utils/ol';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
 
 import { getCasheStyleForGeoobject } from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/feature-style';
 import { LayerGeoobjectsUtilsTypes } from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
@@ -29,7 +29,7 @@ const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldF
  */
 const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (serverName, id, geoobj, thisProps) => {
   if (geoobj.shape) {
-    const feature = new ol.Feature({
+    const feature = new Feature({
       geometry: GeoJSON.readGeometry(geoobj.shape),
     });
     feature.setId(id);

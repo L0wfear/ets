@@ -1,5 +1,5 @@
 import { OverlayUtils } from 'components/map/overlay/Overlay.h';
-import * as ol from 'openlayers';
+import Overlay from 'ol/Overlay';
 
 /**
  * hide оверлея
@@ -29,7 +29,7 @@ export const setMakerPosition: OverlayUtils.setMakerPosition = (marker, coords_m
  * @param props пропсы создания оверлея
  */
 export const makeOverlay: OverlayUtils.makeOverlay = (props) => (
-  new ol.Overlay({
+  new Overlay({
     ...props,
   })
 );

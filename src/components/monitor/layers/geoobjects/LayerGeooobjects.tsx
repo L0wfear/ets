@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
 
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';

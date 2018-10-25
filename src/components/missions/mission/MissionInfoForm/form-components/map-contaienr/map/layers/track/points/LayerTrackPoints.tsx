@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { getStyleForTrackLine } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/lines/feature-style';
@@ -88,8 +89,8 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
       const currPoint = track[index];
       const currStatus = isMoreThenPermitted(currPoint, this.props);
 
-      const feature = new ol.Feature({
-        geometry: new ol.geom.Point(currPoint.coords_msk),
+      const feature = new Feature({
+        geometry: new Point(currPoint.coords_msk),
       });
 
       feature.setStyle(getStyleForTrackLine(currStatus));

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import LineString from 'ol/geom/LineString';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
@@ -97,8 +98,8 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
         if (currStatus !== lastStatus) {
           linePoints.push(currPoint);
 
-          const feature = new ol.Feature({
-            geometry: new ol.geom.LineString(
+          const feature = new Feature({
+            geometry: new LineString(
               linePoints.map(({ coords_msk }) => coords_msk)
             ),
           });
@@ -116,8 +117,8 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
       }
 
       if (linePoints.length > 1) {
-        const feature = new ol.Feature({
-          geometry: new ol.geom.LineString(
+        const feature = new Feature({
+          geometry: new LineString(
             linePoints.map(({ coords_msk }) => coords_msk)
           ),
         });

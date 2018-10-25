@@ -1,5 +1,7 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
@@ -81,8 +83,8 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
       try {
         const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
         if (!featureOld) {
-          const feature = new ol.Feature({
-            geometry: new ol.geom.Point(fuelEventPoint.start_point.coords_msk),
+          const feature = new Feature({
+            geometry: new Point(fuelEventPoint.start_point.coords_msk),
           });
 
           feature.setId(fuelEventPoint.start_point.timestamp);

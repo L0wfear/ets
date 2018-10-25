@@ -1,22 +1,27 @@
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Circle from 'ol/style/Circle';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
+import Feature from 'ol/Feature';
+
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 
 const radius = 10 / (DEVICE_PIXEL_RATIO / 2);
 
 export const getStroke = () => (
-  new ol.style.Stroke({
+  new Stroke({
     color: 'rgb(255, 255, 255)',
   })
 );
 
 export const getFill = () => (
-  new ol.style.Fill({
+  new Fill({
     color: 'rgb(0, 0, 0)',
   })
 )
 
 export const getImageStyle = () => (
-  new ol.style.Circle({
+  new Circle({
     stroke: getStroke(),
     fill: getFill(),
     radius,
@@ -25,14 +30,14 @@ export const getImageStyle = () => (
 
 export const setStyle = (feature) => (
   feature.setStyle(
-    new ol.style.Style({
+    new Style({
       image: getImageStyle(),
     })
   )
 )
 
 export const makeFeaute = () => {
-  const feature = new ol.Feature();
+  const feature = new Feature();
   setStyle(feature);
   
 

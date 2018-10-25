@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
@@ -79,8 +80,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         if (point.car && point.car.gov_number === gov_number) {
           carPointsDataWs[gps_code] = point;
 
-          const feature = new ol.Feature({
-            geometry: new ol.geom.Point(point.coords_msk),
+          const feature = new Feature({
+            geometry: new Point(point.coords_msk),
           });
     
           const style = getStyleForStatusDirectionType({
@@ -107,7 +108,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           const feature = this.props.getFeatureById(gps_code);
 
-          feature.setGeometry(new ol.geom.Point(carPointsDataWs[gps_code].coords_msk));
+          feature.setGeometry(new Point(carPointsDataWs[gps_code].coords_msk));
 
           const style = getStyleForStatusDirectionType({
             status: carPointsDataWs[gps_code].status,

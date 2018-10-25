@@ -1,7 +1,10 @@
 import { PROJECTION, ArcGisLayer } from 'components/map/config/MskAdapter';
 import { defaultZoom } from 'utils/ol';
 import { MapUtils } from 'components/map/MapEts.h';
-import * as ol from 'openlayers';
+import View from 'ol/View';
+import Map from 'ol/Map';
+// Попробовать с большим количеством точек
+// import Map from 'ol/WebGLMap';
 
 /**
  * получние mapView
@@ -9,7 +12,7 @@ import * as ol from 'openlayers';
  * @param zoom начальный зум
  */
 export const getMapView: MapUtils.getMapViewFunc = (center, zoom) => (
-  new ol.View({
+  new View({
     center,
     zoom,
     minZoom: 2,
@@ -25,7 +28,7 @@ export const getMapView: MapUtils.getMapViewFunc = (center, zoom) => (
  * @param zoom начальный зум
  */
 export const getMap: MapUtils.getMapFunc = (center, zoom) => (
-  new ol.Map({
+  new Map({
     view: getMapView(center, zoom),
     controls: [defaultZoom],
     layers: [ArcGisLayer],

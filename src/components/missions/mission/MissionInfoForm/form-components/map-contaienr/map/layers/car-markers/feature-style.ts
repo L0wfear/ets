@@ -1,5 +1,6 @@
 import { listObj }  from 'constants/statuses';
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Icon from 'ol/style/Icon';
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
@@ -165,8 +166,8 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
   drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad);
   drawCarIcon(canvas, ctx, width, zoomMore8, selected);
 
-  return CACHE_ICON[cacheStyleName] = new ol.style.Style({
-    image: new ol.style.Icon({
+  return CACHE_ICON[cacheStyleName] = new Style({
+    image: new Icon({
       src: undefined,
       img: canvas,
       imgSize: [canvas.width, canvas.height],
@@ -194,7 +195,7 @@ export const getStyleForStatusDirectionType = ({ status, direction, selected, zo
   } else {
     let not_visible = 'not_visible';
     if (!CACHE_ICON[not_visible]) {
-      return CACHE_ICON[not_visible] = new ol.style.Style({});
+      return CACHE_ICON[not_visible] = new Style({});
     } else {
       return CACHE_ICON[not_visible];
     }

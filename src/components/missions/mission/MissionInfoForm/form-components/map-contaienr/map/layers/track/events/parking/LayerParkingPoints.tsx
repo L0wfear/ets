@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { getStyleForParking } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/track/events/parking/feature-style';
@@ -72,8 +73,8 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     for (let index = 0, length = front_parkings.length; index < length; index++) {
       const currPoint = front_parkings[index];
 
-      const feature = new ol.Feature({
-        geometry: new ol.geom.Point(currPoint.start_point.coords_msk),
+      const feature = new Feature({
+        geometry: new Point(currPoint.start_point.coords_msk),
       });
 
       feature.setId(currPoint.start_point.timestamp);

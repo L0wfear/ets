@@ -1,4 +1,9 @@
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Circle from 'ol/style/Circle';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
+import RegularShape from 'ol/style/RegularShape';
+import Point from 'ol/geom/Point';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
 
@@ -14,13 +19,13 @@ export const createArrowStyle = (start, end) => {
   const dy = end[1] - start[1];
   const rotation = Math.atan2(dy, dx);
 
-  return new ol.style.Style({
-    geometry: new ol.geom.Point(end),
-    image: new ol.style.RegularShape({
-      fill: new ol.style.Fill({ color: 'red' }),
+  return new Style({
+    geometry: new Point(end),
+    image: new RegularShape({
+      fill: new Fill({ color: 'red' }),
       points: 3,
       radius: 4,
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'red',
       }),
       rotation: -rotation + (Math.PI / 2),
@@ -41,64 +46,64 @@ export const linesState = {
 
 const stylesByPolyState = {
   [polyState.ENABLE]: (
-    new ol.style.Style({
-      image: new ol.style.Circle({
+    new Style({
+      image: new Circle({
         radius: 6 / DEVICE_PIXEL_RATIO,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(0, 0, 0, 1)',
           width: 2,
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: 'rgba(0, 0, 0, 0.2)',
         }),
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'rgba(0, 0, 0, 1)',
         width: 1,
       }),
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color: 'rgba(0, 0, 0, 0.2)',
       }),
     })
   ),
   [polyState.SELECTED]: (
-    new ol.style.Style({
-      image: new ol.style.Circle({
+    new Style({
+      image: new Circle({
         radius: 6 / DEVICE_PIXEL_RATIO,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(255, 0, 0, 1)',
           width: 2,
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: 'rgba(255, 0, 0, 0.1)',
         }),
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'rgba(255, 0, 0, 1)',
         width: 1,
       }),
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color: 'rgba(255, 0, 0, 0.1)',
       }),
     })
   ),
   [polyState.SELECTED_IDLING]: (
-    new ol.style.Style({
-      image: new ol.style.Circle({
+    new Style({
+      image: new Circle({
         radius: 6 / DEVICE_PIXEL_RATIO,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(0, 0, 255, 1)',
           width: 2,
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: 'rgba(0, 0, 255, 0.1)',
         }),
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'rgba(0, 0, 255, 1)',
         width: 1,
       }),
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color: 'rgba(0, 0, 255, 0.1)',
       }),
     })
@@ -107,8 +112,8 @@ const stylesByPolyState = {
 
 const stylesByLinesState = {
   [linesState.SELECTED]: (
-    new ol.style.Style({
-      stroke: new ol.style.Stroke({
+    new Style({
+      stroke: new Stroke({
         color: 'rgba(255, 0, 0, 1)',
         width: 4,
       }),
@@ -116,8 +121,8 @@ const stylesByLinesState = {
     })
   ),
   [linesState.SELECTED_IDLING]: (
-    new ol.style.Style({
-      stroke: new ol.style.Stroke({
+    new Style({
+      stroke: new Stroke({
         color: 'rgba(255, 0, 0, 1)',
         width: 4,
         lineDash: [12],

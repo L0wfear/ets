@@ -1,5 +1,5 @@
 import { GeoJSON } from 'utils/ol';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
 
 import {
   TYPES_STYLE,
@@ -9,7 +9,7 @@ import {
 
 const renderGeometry= (id, geoobj, thisProps) => {
   if (geoobj.shape) {
-    const feature = new ol.Feature({
+    const feature = new Feature({
       geometry: GeoJSON.readGeometry(geoobj.shape),
     });
 

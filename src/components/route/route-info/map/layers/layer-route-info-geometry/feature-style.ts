@@ -1,4 +1,9 @@
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Circle from 'ol/style/Circle';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
+import RegularShape from 'ol/style/RegularShape';
+import Point from 'ol/geom/Point';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
 
@@ -14,13 +19,13 @@ export const createArrowStyle = (start, end) => {
   const dy = end[1] - start[1];
   const rotation = Math.atan2(dy, dx);
 
-  return new ol.style.Style({
-    geometry: new ol.geom.Point(end),
-    image: new ol.style.RegularShape({
-      fill: new ol.style.Fill({ color: 'red' }),
+  return new Style({
+    geometry: new Point(end),
+    image: new RegularShape({
+      fill: new Fill({ color: 'red' }),
       points: 3,
       radius: 4,
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'red',
       }),
       rotation: -rotation + (Math.PI / 2),
@@ -30,30 +35,30 @@ export const createArrowStyle = (start, end) => {
 
 const makeCacheStyle = ({ type, state = 2 }) => {
   if (type === TYPES_STYLE.geoobj) {
-    return new ol.style.Style({
-      image: new ol.style.Circle({
+    return new Style({
+      image: new Circle({
         radius: 6 / DEVICE_PIXEL_RATIO,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: state === 2 ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255, 1)',
           width: 2,
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: state === 2 ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 0, 255, 0.1)',
         }),
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: state === 2 ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255, 1)',
         width: 1,
       }),
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color: state === 2 ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 0, 255, 0.1)',
       }),
       zIndex: 9,
     });
   }
   if (type === TYPES_STYLE.input_lines) {
-    return new ol.style.Style({
-      stroke: new ol.style.Stroke({
+    return new Style({
+      stroke: new Stroke({
         color: 'rgba(255, 0, 0, 1)',
         width: 4,
         lineDash: state === 3 ? [12] : undefined,

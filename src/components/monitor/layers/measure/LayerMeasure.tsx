@@ -1,5 +1,7 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import Draw from 'ol/interaction/Draw';
 
 import { connect } from 'react-redux';
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
@@ -69,7 +71,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     this.props.monitorPageToggleMeasureActive();
 
     if (!this.props.measureActive) {
-      const interactionDraw = new ol.interaction.Draw({
+      const interactionDraw = new Draw({
         source: this.props.getVectorSource(),
         type: 'LineString',
         style: getStyleForLineMeasure({ type: 'template' }),
@@ -129,8 +131,8 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
 
             const style = getStyleForLineMeasure({ type: 'diffColor' });
             lineData.feature.setStyle(style);
-            const endPoint = new ol.Feature({
-              geometry: new ol.geom.Point(lineData.feature.getGeometry().getLastCoordinate()),
+            const endPoint = new Feature({
+              geometry: new Point(lineData.feature.getGeometry().getLastCoordinate()),
             });
             endPoint.setStyle(style);
             this.props.addFeaturesToSource(endPoint);

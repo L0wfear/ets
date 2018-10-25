@@ -1,20 +1,24 @@
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Circle from 'ol/style/Circle';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
+
 const CACHE_ICON = {};
 
 const makeCacheStyle = (cacheStyleName, { type }) => {
   if (type === 'template') {
-    return CACHE_ICON[cacheStyleName] = new ol.style.Style({
-      stroke: new ol.style.Stroke({
+    return CACHE_ICON[cacheStyleName] = new Style({
+      stroke: new Stroke({
         color: 'rgba(0, 0, 0, 0.5)',
         lineDash: [10, 10],
         width: 2,
       }),
-      image: new ol.style.Circle({
+      image: new Circle({
         radius: 5,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(0, 0, 0, 0.1)',
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: 'rgba(0, 0, 255, 0.8)',
         }),
       }),
@@ -25,17 +29,17 @@ const makeCacheStyle = (cacheStyleName, { type }) => {
     Array(3).fill(1).map(() => Math.round(Math.random() * 255)),
     ')']
     .join('');
-  return new ol.style.Style({
-    stroke: new ol.style.Stroke({
+  return new Style({
+    stroke: new Stroke({
       color,
       width: 2,
     }),
-    image: new ol.style.Circle({
+    image: new Circle({
       radius: 5,
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'rgba(0, 0, 0, 0.1)',
       }),
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color,
     }),
     }),

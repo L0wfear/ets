@@ -1,5 +1,5 @@
 import { PropsLayerPlayPoint } from 'components/monitor/layers/track/play-point/LayerPlayPoint.h';
-import * as ol from 'openlayers';
+import Point from 'ol/geom/Point';
 
 type TypeActionOnPlay = (props: PropsLayerPlayPoint) => void;
 type TypeActionOnStop = (props: PropsLayerPlayPoint) => void;
@@ -13,7 +13,7 @@ const opt_options = {
 
 export const setGeomentry = (feature, coords_msk) => (
   feature.setGeometry(
-    new ol.geom.Point(coords_msk),
+    new Point(coords_msk),
   )
 );
 

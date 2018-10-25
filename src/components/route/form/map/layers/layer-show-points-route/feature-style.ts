@@ -1,4 +1,7 @@
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Circle from 'ol/style/Circle';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
 
@@ -10,22 +13,22 @@ export const TYPES_STYLE = {
 };
 
 const makeCacheStyle = () => {
-  return new ol.style.Style({
-    image: new ol.style.Circle({
+  return new Style({
+    image: new Circle({
       radius: 6 / DEVICE_PIXEL_RATIO,
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: 'rgba(255, 0, 0, 1)',
         width: 2,
       }),
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color:'rgba(255, 0, 0, 0.1)',
       }),
     }),
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: 'rgba(255, 0, 0, 1)',
       width: 1,
     }),
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: 'rgba(255, 0, 0, 0.1)',
     }),
     zIndex: 9,

@@ -1,4 +1,7 @@
-import * as ol from 'openlayers';
+import Style from 'ol/style/Style';
+import Circle from 'ol/style/Circle';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
 
@@ -17,18 +20,18 @@ const maskStatusPoint = {
 
 export const PointStyles = {
   [maskStatusPoint.fail]: {
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: 'white',
     }),
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: 'red',
     }),
   },
   [maskStatusPoint.any]: {
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: 'white',
     }),
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: 'green',
     }),
   },
@@ -36,55 +39,55 @@ export const PointStyles = {
 
 export const polyStyles = {
   [polyState.SELECTABLE]: {
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: 'rgba(0,0,0,0.2)',
     }),
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: '#333',
       width: 1,
     }),
   },
   [polyState.ENABLED]: {
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: 'rgba(255,255,255,0.5)',
     }),
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: 'red',
       width: 1,
     }),
   },
   [polyState.IDLE]: {
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: 'rgba(255,255,255,0.5)',
     }),
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: 'blue',
       width: 1,
     }),
   },
 };
 
-const defStroke = new ol.style.Stroke({
+const defStroke = new Stroke({
   color: 'rgba(0, 0, 0, 0)',
   width: 1,
 });
 
-const defFill = new ol.style.Fill({
+const defFill = new Fill({
   color: 'rgba(0, 0, 0, 0)',
 });
 
-const selectedStroke = new ol.style.Stroke({
+const selectedStroke = new Stroke({
   color: '#e67e22',
   width: 1,
 });
 
-const selectedFill = new ol.style.Fill({
+const selectedFill = new Fill({
   color: '#e67e22',
 });
 
 const makeCacheStyle = (cacheStyleName, { selected, state } ) => {
-  return CACHE_ICON[cacheStyleName] = new ol.style.Style({
-    image: new ol.style.Circle({
+  return CACHE_ICON[cacheStyleName] = new Style({
+    image: new Circle({
       radius: 6 / DEVICE_PIXEL_RATIO,
       stroke: PointStyles[state] ? PointStyles[state].stroke : defStroke,
       fill: !selected ? PointStyles[state] && PointStyles[state].fill || defFill : selectedFill,

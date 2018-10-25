@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import sourceVector from 'ol/source/Vector';
+import layerVector from 'ol/layer/Vector';
 
 type PropsLayerProps = {
   map: ol.Map;
@@ -28,9 +29,9 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
     }
     addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
       return new Promise((res) => {
-        const vectorSource = new ol.source.Vector();
+        const vectorSource = new sourceVector();
 
-        const olLayer = new ol.layer.Vector({
+        const olLayer = new layerVector({
           source: vectorSource,
           renderMode,
         });

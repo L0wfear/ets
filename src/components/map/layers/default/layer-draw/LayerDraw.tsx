@@ -1,5 +1,7 @@
 import * as React from 'react';
-import * as ol from 'openlayers';
+import olInteractionDraw from 'ol/interaction/Draw';
+import olInteractionDoubleClickZoom from'ol/interaction/DoubleClickZoom';
+import Feature from 'ol/Feature';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 
@@ -67,21 +69,21 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
   }
 
   letsDraw() {
-    const interactionDraw = new ol.interaction.Draw({
+    const interactionDraw = new olInteractionDraw({
       source: this.props.getVectorSource(),
       type: this.props.type,
       style: this.props.styles,
     });
 
     this.props.map.getInteractions().forEach((interaction) => {
-      if (interaction instanceof ol.interaction.DoubleClickZoom) {
+      if (interaction instanceof olInteractionDoubleClickZoom) {
         this.props.map.removeInteraction(interaction);
       }
     });
 
 
     interactionDraw.on('drawend', (event: any) => {
-      const feature: ol.Feature = event.feature;
+      const feature: Feature = event.feature;
 
       const geometry = feature.getGeometry();
       const type = geometry.getType();

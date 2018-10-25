@@ -452,8 +452,8 @@ class WaybillForm extends Form {
   getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
     const fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
-      if (isNotNull(lastCarUsedWaybill.fuel_end)) {
-        fieldsToChange.fuel_start = lastCarUsedWaybill.fuel_end;
+      if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
+        fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end;
         fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {

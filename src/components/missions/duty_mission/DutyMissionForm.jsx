@@ -128,13 +128,9 @@ export class DutyMissionForm extends Form {
       }, []);
 
       if (hasNotActiveEmployees) {
-        console.log('onlyActiveEmployeeNotification2');//comm-l
         onlyActiveEmployeeNotification();
       }
-      console.log('hasNotActive == ', hasNotActiveEmployees);//comm-l
-      this.setState({hasNotActiveEmployees});//comm-l
     }
-    console.log('11SetState');//comm-l
     this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
   }
 

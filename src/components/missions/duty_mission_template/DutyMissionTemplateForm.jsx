@@ -257,11 +257,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
-<<<<<<< HEAD
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>Сохранить</Button>
-=======
             <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</Button>
->>>>>>> hotfix/DITETS-4276
           </Div>
         </Modal.Footer>
 

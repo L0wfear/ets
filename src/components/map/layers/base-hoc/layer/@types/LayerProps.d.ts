@@ -1,7 +1,7 @@
 type FuncAddLayerProps = {
   id: number | string;
   zIndex?: number;
-  renderMode?: olx.layer.VectorRenderType,
+  renderMode?: ol.olx.layer.VectorRenderType,
 }
 
 declare namespace ETSCore {

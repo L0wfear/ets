@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.156",
+    "version": "2.0.23.157",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -70,7 +70,7 @@
         "cross-env": "=5.2.0",
         "css-loader": "=1.0.0",
         "csv-loader": "=3.0.2",
-        "eslint": "=5.7.0",
+        "eslint": "=5.8.0",
         "eslint-config-airbnb": "=17.1.0",
         "eslint-import-resolver-webpack": "=0.10.1",
         "eslint-loader": "=2.1.1",

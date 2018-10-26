@@ -28,7 +28,7 @@ export const createArrowStyle = (start, end) => {
       stroke: new Stroke({
         color: 'red',
       }),
-      rotation: -rotation + (Math.PI / 2),
+      angle: -rotation + (Math.PI / 2),
     }),
   });
 }

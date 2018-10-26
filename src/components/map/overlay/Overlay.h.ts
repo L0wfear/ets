@@ -30,6 +30,6 @@ export module OverlayUtils {
   ) => void;
 
   export type makeOverlay = (
-    props: ol.olx.OverlayOptions,
+    props: olx.OverlayOptions,
   ) => ol.Overlay;
 }

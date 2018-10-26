@@ -1,0 +1,57 @@
+import * as React from 'react';
+import { connect } from 'react-redux';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+
+import {
+  DivNone,
+} from 'global-styled/global-styled';
+
+type PropsGeoobjectsInfo ={
+  centerOn: Function;
+  showSelectedGeoobjects: boolean;
+};
+
+type StateGeoobjectsInfo = {
+};
+
+const ReactTest: any = React;
+
+const GeoobjectsInfo = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "geoobjects_info" */'components/monitor/info/geoobjects-info/GeoobjectsInfo')
+));
+
+class GeoobjectsInfoWrap extends React.Component<PropsGeoobjectsInfo, StateGeoobjectsInfo> {
+  state = {
+    shortVersion: false,
+  }
+  toggleShortVersion: any = () => {
+    this.setState({
+      shortVersion: !this.state.shortVersion,
+    })
+  }
+  render() {
+    return (
+      !this.props.showSelectedGeoobjects
+      ? (
+        <DivNone />
+      )
+      : (
+        <ReactTest.Suspense fallback={<LoadingComponent />}>
+          <GeoobjectsInfo
+            centerOn={this.props.centerOn}
+          />
+        </ReactTest.Suspense>
+      )
+    )
+  }
+};
+
+const mapStateToProps = state => ({
+  showSelectedGeoobjects: Object.values(state.monitorPage.selectedGeoobjects).some((dataObj) => (
+    Object.values(dataObj).some(({ front_show }) => front_show)
+  )),
+});
+
+export default connect(
+  mapStateToProps,
+)(GeoobjectsInfoWrap);

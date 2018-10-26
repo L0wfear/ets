@@ -1,13 +1,12 @@
 import * as React from 'react';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 import { fetchTrack, fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
 
-import CarAttributeInformation from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation';
-import CarChartsInformation from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation';
-import CarTrackInformation from 'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation';
+import { DivNone } from 'global-styled/global-styled';
 
 type PropsCarTabMenu = {
   fetchMissionsData: Function;
@@ -23,6 +22,21 @@ type PropsCarTabMenu = {
 type StateCarTabMenu = {
   selectedTab: number;
 };
+
+const ReactTest: any = React;
+
+const CarAttributeInformation = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "car_attribute_information" */'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation')
+));
+
+const CarChartsInformation = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "car_charts_information" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation')
+));
+
+const CarTrackInformation = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "car_track_information" */'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation')
+));
+
 
 class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
   state = {
@@ -85,22 +99,37 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
         </div>
         <div>
           {
-            selectedTab === 1 ?
-            ( <CarAttributeInformation map={this.props.map} /> )
-            :
-            ( <div></div> )
+            selectedTab === 1
+            ? ( 
+              <ReactTest.Suspense fallback={<LoadingComponent />}>
+                <CarAttributeInformation map={this.props.map} />
+              </ReactTest.Suspense>
+            )
+            : (
+              <DivNone />
+            )
           }
           {
-            selectedTab === 2 ?
-            ( <CarChartsInformation centerOn={this.props.centerOn} /> )
-            :
-            ( <div></div> )
+            selectedTab === 2
+            ? (
+              <ReactTest.Suspense fallback={<LoadingComponent />}>
+                <CarChartsInformation centerOn={this.props.centerOn} />
+              </ReactTest.Suspense>
+            )
+            : (
+              <DivNone />
+            )
           }
           {
-            selectedTab === 3 ?
-            ( <CarTrackInformation map={this.props.map} /> )
-            :
-            ( <div></div> )
+            selectedTab === 3
+            ? (
+              <ReactTest.Suspense fallback={<LoadingComponent />}>
+                <CarTrackInformation map={this.props.map} />
+              </ReactTest.Suspense>
+            )
+            : (
+              <DivNone />
+            )
           }
         </div>
       </div>

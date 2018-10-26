@@ -10,8 +10,8 @@ import { getDefaultMission } from 'stores/MissionsStore';
 import { saveData, printData } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
-import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
-import MissionFormOld from 'components/missions/mission/MissionFormOld';
+import MissionFormLazy from 'components/missions/mission/MissionForm/MissionFormLazy';
+import MissionFormOldLazy from 'components/missions/mission/MissionForm/MissionFormOldLazy';
 import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
@@ -280,27 +280,25 @@ class MissionFormWrap extends FormWrap {
     };
 
     return (
-      <Div hidden={!this.props.showForm}>
-        <Div hidden={!this.state.formState.is_new}>
-          <MissionForm
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            handleMultiFormChange={this.handlMultiFormStateChange}
-            handlePrint={this.handlePrint.bind(this)}
-            printMapKeySmall={printMapKeySmall}
-            {...props}
-            {...this.state}
-          />
-        </Div>
-        <Div hidden={this.state.formState.is_new}>
-          <MissionFormOld
-            formState={this.state.formState}
-            {...props}
-            {...this.state}
-          />
-        </Div>
-      </Div>
+      <>
+        <MissionFormLazy
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          handleMultiFormChange={this.handlMultiFormStateChange}
+          handlePrint={this.handlePrint.bind(this)}
+          printMapKeySmall={printMapKeySmall}
+          {...props}
+          {...this.state}
+          show={this.props.showForm && this.state.formState.is_new}
+        />
+        <MissionFormOldLazy
+          formState={this.state.formState}
+          {...props}
+          {...this.state}
+          show={this.props.showForm && !this.state.formState.is_new}
+        />
+      </>
     );
   }
 }

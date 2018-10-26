@@ -1,16 +1,13 @@
 import * as React from 'react';
-// import LoadingComponent from 'components/ui/PreloaderMainPage';
-// import loadable from 'loadable-components';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { DivNone } from 'global-styled/global-styled';
-import ReportForm from 'components/reports/operational/track_events/form/ReportForm';
 
-/*
-const ReportForm = loadable(
-  () => import(/* webpackChunkName: "ReportForm" *//* 'components/reports/operational/track_events/form/ReportForm'), {
-  LoadingComponent,
-});
-*/
+const ReactTest: any = React;
+
+const ReportForm = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "ReportForm" */'components/reports/operational/track_events/form/ReportForm')
+));
 
 type PropsReportFormWrap = {
   showForm: boolean;
@@ -28,10 +25,12 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
     return (
       showForm ?
       (
-        <ReportForm
-          onFormHide={props.onFormHide}
-          coords={props.coords}
-        />
+        <ReactTest.Suspense fallback={<LoadingComponent />}>
+          <ReportForm
+            onFormHide={props.onFormHide}
+            coords={props.coords}
+          />
+        </ReactTest.Suspense>
       )
       :
       ( <DivNone /> )

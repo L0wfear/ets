@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import CarInfo from 'components/monitor/info/car-info/CarInfo';
-import GeoobjectsInfo from 'components/monitor/info/geoobjects-info/GeoobjectsInfo';
+import CarInfoWrap from 'components/monitor/info/car-info/CarInfoWrap';
+import GeoobjectsInfoWrap from 'components/monitor/info/geoobjects-info/GeoobjectsInfoWrap';
 
 type PropsMapInfo = {
   map: ol.Map,
@@ -16,8 +16,8 @@ class MapInfo extends React.Component<PropsMapInfo, StateMapInfo> {
   render() {
     return (
       <div className="map_info-container">
-        <CarInfo {...this.props} />
-        <GeoobjectsInfo {...this.props} />
+        <CarInfoWrap {...this.props} />
+        <GeoobjectsInfoWrap {...this.props} />
       </div>
     );
   }

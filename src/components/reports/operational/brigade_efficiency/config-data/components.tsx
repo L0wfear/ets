@@ -1,0 +1,17 @@
+import * as React from 'react';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+
+const ReactTest: any = React;
+const Component = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "brigade_efficiency" */'components/reports/operational/brigade_efficiency/report')
+));
+
+export default [
+  {
+    component: (props) => (
+      <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <Component {...props}/>
+      </ReactTest.Suspense>
+    ),
+  },
+];

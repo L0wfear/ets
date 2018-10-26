@@ -1,16 +1,13 @@
 import * as React from 'react';
-// import LoadingComponent from 'components/ui/PreloaderMainPage';
-// import loadable from 'loadable-components';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { DivNone } from 'global-styled/global-styled';
-import MissionInfoForm from 'components/missions/mission/MissionInfoForm/MissionInfoForm';
 
-/*
-const MissionInfoForm = loadable(
-  () => import(/* webpackChunkName: "mission_info_form" *//* 'components/missions/mission/MissionInfoForm/MissionInfoForm'), {
-  LoadingComponent,
-});
-*/
+const ReactTest: any = React;
+
+const MissionInfoForm = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "mission_info_form" */'components/missions/mission/MissionInfoForm/MissionInfoForm')
+));
 
 class MissionInfoFormWrap extends React.Component<any, {}> {
   render() {
@@ -18,7 +15,9 @@ class MissionInfoFormWrap extends React.Component<any, {}> {
 
     return showForm ?
       (
-        <MissionInfoForm {...props} />
+        <ReactTest.Suspense fallback={<LoadingComponent />}>
+          <MissionInfoForm {...props} />
+        </ReactTest.Suspense>
       )
       :
       (

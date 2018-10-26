@@ -9,7 +9,7 @@ export type DrawData = {
     y_msk: number;  
   };
   object_id: number;
-  shape: GlobalObject;
+  shape: ol.GlobalObject;
   state: 1 | 2 | 3;
 };
 

@@ -22,7 +22,7 @@ import {
   LinkToOrder,
 } from 'components/directories/order/buttons/buttons';
 
-import PDFViewModal from 'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal';
+import PDFViewModalLazy from 'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModalLazy';
 
 import {
   PropsFaxogrammsInfo,
@@ -140,19 +140,11 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
             <Button >Сформировать задания</Button>
           </LinkToOrder>
         </RightButtonBlockContainer>
-        {
-          this.state.showPDFViewModal ?
-          (
-            <PDFViewModal
-              blob={this.state.blob}
-              onHide={this.handleHidePDFViewModal}
-            />
-          )
-          :
-          (
-            <DivNone />
-          )
-        }
+        <PDFViewModalLazy
+          show={this.state.showPDFViewModal}
+          blob={this.state.blob}
+          onHide={this.handleHidePDFViewModal}
+        />
       </InfoCard>
     );
   }

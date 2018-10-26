@@ -2,8 +2,13 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import requireAuth from 'utils/auth';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
 
-import LoginPage from 'components/login/LoginPage';
+const ReactTest: any = React;
+
+const LoginPage = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "login_page" */'components/login/LoginPage')
+));
 
 class LoginPageWrap extends React.Component<any, any> {
   static get contextTypes() {
@@ -23,7 +28,11 @@ class LoginPageWrap extends React.Component<any, any> {
 
       return <Redirect to={requireAuth(flux, `/${user.default_path}`)} />;
     } else {
-      return <LoginPage {...this.props} />;
+      return (
+        <ReactTest.Suspense fallback={<LoadingComponent />}>
+          <LoginPage {...this.props} />;
+        </ReactTest.Suspense>
+      )
     }
   }
 }

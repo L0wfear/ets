@@ -18,7 +18,6 @@ class LoginPageWrap extends React.Component<any, any> {
   }
 
   render() {
-    console.log(this.context)
     const {
       flux,
     } = this.context;
@@ -30,7 +29,11 @@ class LoginPageWrap extends React.Component<any, any> {
     } else {
       return (
         <ReactTest.Suspense fallback={<LoadingComponent />}>
-          <LoginPage {...this.props} />;
+          <LoginPage
+            {...this.props}
+            login={flux.getActions('session').login}
+            loadData={this.props.loadData}
+          />;
         </ReactTest.Suspense>
       )
     }

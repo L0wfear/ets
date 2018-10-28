@@ -53,7 +53,7 @@ class App extends React.Component <any, any> {
     }
   }
 
-  loadData() {
+  loadData = () => {
     const { flux } = this.props;
     this.setState({ loading: true });
     if (!flux.getStore('session').isLoggedIn()) {
@@ -85,7 +85,9 @@ class App extends React.Component <any, any> {
           <MapEtsProvider>
             <HashRouter>
               <Switch>
-                <Route path="/login" component={LoginPageWrap} />
+                <Route path="/login" render={(props) => (
+                  <LoginPageWrap {...props} loadData={this.loadData} />
+                )} />
                 <Route path="*" component={MainAppWrap} />
               </Switch>
             </HashRouter>

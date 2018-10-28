@@ -15,8 +15,6 @@ import repair from './RepairAction';
 import reports from './ReportsActions';
 import routes from './RoutesActions';
 import session from './SessionActions';
-import settings from './SettingsActions';
-import stream from './StreamAction';
 import technicalOperation from './TechnicalOperationsActions';
 import userNotifications from './UserNotificationActions';
 import waybills from './WaybillsActions';
@@ -35,8 +33,6 @@ export {
   reports,
   routes,
   session,
-  settings,
-  stream,
   technicalOperation,
   userNotifications,
   waybills,

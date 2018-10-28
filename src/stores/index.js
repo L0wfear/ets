@@ -16,8 +16,6 @@ import repair from './RepairStore';
 import reports from './ReportsStore';
 import routes from './RoutesStore';
 import session from './SessionStore';
-import stream from './StreamStore';
-import settings from './SettingsStore';
 import userNotifications from './UserNotificationStore';
 import waybills from './WaybillsStore';
 
@@ -36,8 +34,6 @@ export {
   reports,
   routes,
   session,
-  settings,
-  stream,
   waybills,
   userNotifications,
 };

@@ -2,9 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 
-import CarFuelChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart';
-import CarSpeedChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
 import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import {
   DivNone,
@@ -19,6 +18,16 @@ type PropsCarChartsInformation = {
 type StateCarChartsInformation = {
   selectedTab: number;
 }
+
+const ReactTest: any = React;
+
+const CarFuelChart = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "car_fuel_chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart')
+));
+
+const CarSpeedChart = ReactTest.lazy(() => (
+  import(/* webpackChunkName: "car_speed_Chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart')
+));
 
 class CarChartsInformation extends React.Component<PropsCarChartsInformation, StateCarChartsInformation> {
   state = {
@@ -76,25 +85,31 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
         </div>
         <div className="car_info_block tab-data">
           {
-            selectedTab === 1 ?
-            (
-              <CarFuelChart
-                handleChartClick={this.handleChartClick}
-                handleEventClick={this.handleEventClick}
-              />
+            selectedTab === 1
+            ? (
+              <ReactTest.Suspense fallback={<LoadingComponent />}>
+                <CarFuelChart
+                  handleChartClick={this.handleChartClick}
+                  handleEventClick={this.handleEventClick}
+                />
+              </ReactTest.Suspense>
             )
-            :
-            ( <DivNone /> )
+            : (
+              <DivNone />
+            )
           }
           {
-            selectedTab === 2 ?
-            (
-              <CarSpeedChart
-                handleChartClick={this.handleChartClick}
-              />
+            selectedTab === 2
+            ? (
+              <ReactTest.Suspense fallback={<LoadingComponent />}>
+                <CarSpeedChart
+                  handleChartClick={this.handleChartClick}
+                />
+              </ReactTest.Suspense>
             )
-            :
-            ( <DivNone /> )
+            : (
+              <DivNone />
+            )
           }
         </div>
       </div>

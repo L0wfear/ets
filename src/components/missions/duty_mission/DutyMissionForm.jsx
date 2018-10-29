@@ -72,7 +72,11 @@ export class DutyMissionForm extends Form {
     this.handleChange('structure_id', v);
   }
 
-  handleTechnicalOperationChange(v) {
+  handleTechnicalOperationChange = (v) => {
+    if (Array.isArray(v) || !v) {
+      return;
+    }
+
     const {
       flux,
     } = this.context;
@@ -304,7 +308,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    if (!TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
+    if (state.technical_operation_id && !TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
 
@@ -434,7 +438,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || !!state.route_id || readOnly || fromOrder || sourceIsOrder}
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange.bind(this)}
+                onChange={this.handleTechnicalOperationChange}
               />
             </Col>
 

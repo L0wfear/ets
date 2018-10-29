@@ -28,13 +28,15 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
     this.props.setInfoData(this.props.items[index]);
   }
 
+  handleClickMissionCollapse: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
+  }
+
   render() {
     const { items, } = this.props;
 
     const firstTwoItem = items.slice(0, 2);
     const collapsetItems = items.slice(2);
 
-    console.log(collapsetItems)
     return (
       <div>
         <List

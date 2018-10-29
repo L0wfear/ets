@@ -79,6 +79,10 @@ export class DutyMissionForm extends Form {
   }
 
   handleTechnicalOperationChange = (v) => {
+    if (Array.isArray(v) || !v) {
+      return;
+    }
+
     const {
       flux,
     } = this.context;
@@ -307,7 +311,7 @@ export class DutyMissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    if (state.technical_operation_id && !TECH_OPERATIONS.find(({ value }) => value === state.technical_operation_id)) {
+    if (state.technical_operation_id && !TECH_OPERATIONS.some(({ value }) => value === state.technical_operation_id)) {
       TECH_OPERATIONS.push({ value: state.technical_operation_id, label: state.technical_operation_name });
     }
 

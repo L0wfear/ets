@@ -951,7 +951,7 @@ body.application {
 }
 
 .no-pointer-events {
-  pointer-events:  !important;
+  pointer-events: none !important;
   cursor: default !important;
 }
 

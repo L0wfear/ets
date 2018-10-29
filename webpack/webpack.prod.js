@@ -7,7 +7,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const stand = process.env.STAND || 'dev';
-const CLOUD = process.env.CLOUD ? JSON.stringify(process.env.CLOUD) : false;
 
 module.exports = {
   entry: [
@@ -215,7 +214,6 @@ module.exports = {
       __SERVER__: false,
       __DEVELOPMENT__: false,
       __DEVTOOLS__: false,
-      CLOUD,
       'process.env': {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),

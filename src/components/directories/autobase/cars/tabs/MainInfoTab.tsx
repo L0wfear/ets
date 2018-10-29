@@ -113,7 +113,7 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           type="select"
           multi
           label="Основной водитель/машинист"
-          options={props.DRIVERS}
+          options={props.DRIVERS.filter(({ value }) => !props.state.car_drivers_secondary_drivers.includes(value))}
           value={props.state.car_drivers_primary_drivers}
           onChange={props.onChange}
           boundKeys={['car_drivers_primary_drivers']}
@@ -125,7 +125,7 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
           type="select"
           multi
           label="Вторичный водитель/машинист"
-          options={props.DRIVERS}
+          options={props.DRIVERS.filter(({ value }) => !props.state.car_drivers_primary_drivers.includes(value))}
           value={props.state.car_drivers_secondary_drivers}
           onChange={props.onChange}
           boundKeys={['car_drivers_secondary_drivers']}

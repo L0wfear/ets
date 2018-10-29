@@ -330,6 +330,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
       const filtredCarGpsCode = {};
       let hasDiffInFiltredCarGpsCode = false;
+      const minZoom = zoom <= MIN_ZOOM_VAL;
 
       Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
         let point = {
@@ -385,7 +386,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
-            minZoom: this.state.minZoom,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {
@@ -465,7 +466,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
-            minZoom: this.state.minZoom,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {

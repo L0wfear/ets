@@ -38,7 +38,7 @@ export default class TechnicalOperationForm extends Form {
     this.props.handleFormChange('objects', objects);
   }
   handleChangeSensorTypeIds = (sensor_type_ids) => {
-    this.props.handleFormChange('sensor_type_ids', sensor_type_ids);
+    this.props.handleFormChange('sensor_type_ids', sensor_type_ids || []);
   }
 
   componentDidMount() {

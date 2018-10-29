@@ -9,7 +9,7 @@ export interface GeozonesDataByIndex {
   front_key: string;
   front_id: string;
   company_id: number;
-  shape: (Document | Node | ol.GlobalObject | string),
+  shape: (Document | Node | GlobalObject | string),
   frontIsSelected?: boolean;
 };
 

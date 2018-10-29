@@ -7,8 +7,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const versionUtils = require('./utils/version');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-
-const CLOUD = process.env.CLOUD ? JSON.stringify(process.env.CLOUD) : false;
 const stand = process.env.STAND || 'production';
 const useSourceMaps = process.env.USE_SOURCE_MAPS || false;
 
@@ -148,7 +146,6 @@ module.exports = {
       __SERVER__: false,
       __DEVELOPMENT__: false,
       __DEVTOOLS__: false
-      CLOUD,
     }),
     // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),

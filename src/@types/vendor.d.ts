@@ -18,11 +18,8 @@ declare module NodeJS  {
     APP_TIME_WITH_SECOND_FORMAT: string;
     toggleUpdateCarPoints: Function;
     confirmDialog: (props: any) => Promise<any>;
-    CLOUD: boolean;
   }
 }
-
-declare const CLOUD: boolean;
 
 declare module '*.png';
 declare module '*.mp3'

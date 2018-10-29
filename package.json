@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.22.264",
+    "version": "2.0.22.263",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -116,9 +116,6 @@
         "build:stage": "cross-env STAND=stage NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
         "build:prod": "cross-env STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true webpack --config webpack/prod.config.js",
         "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/prod.config.js ",
-        "build:cloudStage": "cross-env STAND=stage NODE_ENV=production USE_SOURCE_MAPS=true CLOUD=true webpack --config webpack/prod.config.js",
-        "build:cloudProd": "cross-env STAND=prod NODE_ENV=production USE_SOURCE_MAPS=true CLOUD=true webpack --config webpack/prod.config.js",
-        "build:cloud": "cross-env STAND=dev NODE_ENV=production CLOUD=true webpack --config webpack/prod.config.js ",
         "dev:stage": "cross-env STAND=stage NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev:prod": "cross-env STAND=prod NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",
         "dev": "cross-env STAND=dev NODE_ENV=development PORT=3000 nodemon --watch webpack webpack/webpack-dev-server.js",

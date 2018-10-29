@@ -38,8 +38,6 @@ const makeNavDropChildren = ([key, data]) => {
   return null;
 }
 
-console.log(CLOUD)
-
 const makeNavChildren = ([key, data]) => {
   if (data.path && !data.renderNav) {
     return <NavItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
@@ -88,8 +86,7 @@ const dataGuide = {
         title: 'Руководство окружного пользователя',
         path: `${config.docs}Руководство-окружного-пользователя.docx`,
         noHash: true,
-        alwaysShow: CLOUD ? false : true,
-        permissions: {},
+        alwaysShow: true,
       },
       report: {
         title: 'Общие рекомендации по обращению',

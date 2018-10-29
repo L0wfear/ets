@@ -51,7 +51,7 @@ class SimpleGriddle extends React.Component<any, any> {
     this.state = {
       results,
       resultsPerPage,
-      shortResult: makeShortResults(results, props.currentPage, resultsPerPage, this.props.selectField),
+      shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
     };

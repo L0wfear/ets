@@ -44,9 +44,9 @@ const makeShortResults = (results, currentPage, resultsPerPage, selectField) => 
 class SimpleGriddle extends React.Component<any, any> {
   constructor(props) {
     super(props);
-    const currentPage = props.rowNumberOffset || 0;
     const results = props.results;
     const { resultsPerPage } = props;
+    const currentPage = props.rowNumberOffset ? props.rowNumberOffset / resultsPerPage : 0;
     
     this.state = {
       currentPage,
@@ -61,12 +61,24 @@ class SimpleGriddle extends React.Component<any, any> {
     const { results, resultsPerPage } = nextProps;
 
     if (results !== this.state.results || resultsPerPage !== this.state.resultsPerPage) {
-      const { currentPage } = this.state;
+      const currentPage = nextProps.serverPagination
+        ? nextProps.rowNumberOffset / resultsPerPage
+        : (
+          Math.max(
+            Math.min(
+              this.state.currentPage,
+              Math.ceil(results.length / resultsPerPage) - 1
+            ),
+            0,
+          )
+        );
+
 
       this.setState({
         results,
         resultsPerPage,
-        shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
+        currentPage,
+        shortResult: makeShortResults(results, nextProps.serverPagination ? 0 : currentPage, resultsPerPage, this.props.selectField),
       });
     }
   }

@@ -9,8 +9,14 @@ class Paginator extends React.Component<any, any> {
 
     this.props.paginatorUpdateData(uniqKey, props);
   }
-  componentWillReceiveProps({ uniqKey, ...props }) {
-    this.props.paginatorUpdateData(uniqKey, props);
+  componentWillReceiveProps({ uniqKey, currentPage, maxPage, ...props }) {
+    const currentPageCheck = currentPage >= maxPage ? Math.max(maxPage - 1, 0) : currentPage;
+
+    this.props.paginatorUpdateData(uniqKey, {
+      ...props,
+      currentPage: currentPageCheck,
+      maxPage,
+    });
   }
 
   componentWillUnmount() {

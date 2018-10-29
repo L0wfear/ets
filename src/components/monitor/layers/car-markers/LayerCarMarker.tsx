@@ -27,6 +27,7 @@ import {
 import { isEmpty } from 'lodash';
 
 let updatePoints = true;
+const MIN_ZOOM_VAL = 3;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
 
@@ -63,11 +64,14 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
       const zoomMore8 = zoom > 8;
       const prevZoomMore8 = prevProps.zoom > 8;
+      const minZoom = zoom <= MIN_ZOOM_VAL;
+      const prevMinZoom = prevProps.zoom <= MIN_ZOOM_VAL;
 
       const propsObjToChangeStyle: any = {
         carPointsDataWs: {},
         old_carPointsDataWs: this.state.carPointsDataWs,
         zoomMore8,
+        minZoom,
         gps_code,
         statusShow,
         STATUS_SHOW_GOV_NUMBER,
@@ -126,6 +130,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       const tgiggerOnChangeStyleForAllCars = (
         carActualGpsNumberIndex !== prevProps.carActualGpsNumberIndex // для фильтрации (тс должна быть с списке и для гаражного номер)
         || zoomMore8 !== prevZoomMore8  // размер иконок на 8 зуме
+        || minZoom !== prevMinZoom // максимальное отдоление карты
         || STATUS_SHOW_GOV_NUMBER !== prevProps.STATUS_SHOW_GOV_NUMBER  // (не)отображение гаражного номера
         || statusShow !== prevProps.statusShow  // Отображение иконок по статусу ТС (Активен, стоянка ...)
         || filters !== prevProps.filters  // отображение ТС по фильтрам
@@ -195,7 +200,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.closeWs();
   }
 
-  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs }) {
+  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs, minZoom }) {
     const carsByStatus = {
       in_move: 0,
       stop: 0,
@@ -257,6 +262,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           show_gov_number: STATUS_SHOW_GOV_NUMBER,
           gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
           visible,
+          minZoom,
         });
 
         feature.setStyle(style);
@@ -326,6 +332,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       let hasDiffInFiltredCarGpsCode = false;
 
       Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
+        const minZoom = zoom <= MIN_ZOOM_VAL;
         let point = {
           coords_msk: [...coords_msk].reverse() as ol.Coordinate,
           coords: [...coords].reverse() as ol.Coordinate,
@@ -379,6 +386,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {
@@ -458,6 +466,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {

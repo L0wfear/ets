@@ -1,12 +1,9 @@
 import { listObj }  from 'constants/statuses';
-import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
-
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
   zoomMore8: 25 / (DEVICE_PIXEL_RATIO / 2),
   zoomNotMore8: 14 / (DEVICE_PIXEL_RATIO / 2),
-  minZoom: 11 / (DEVICE_PIXEL_RATIO / 2),
+  minZoom: 110 / (DEVICE_PIXEL_RATIO / 2),
 };
 
 // let textPadding = 6 * DEVICE_PIXEL_RATIO;
@@ -171,8 +168,8 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
   drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad, minZoom);
   drawCarIcon(canvas, ctx, width, zoomMore8, selected);
 
-  return CACHE_ICON[cacheStyleName] = new Style({
-    image: new Icon({
+  return CACHE_ICON[cacheStyleName] = new ol.style.Style({
+    image: new ol.style.Icon({
       src: undefined,
       img: canvas,
       imgSize: [canvas.width, canvas.height],

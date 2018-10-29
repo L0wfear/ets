@@ -21,7 +21,6 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     if (this.state.selected !== null && selected.props.data.rowNumber === this.state.selected.rowNumber) {
       return;
     }
-
     this.setState({
       selected: selected.props.data,
     });

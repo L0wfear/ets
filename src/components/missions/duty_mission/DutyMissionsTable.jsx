@@ -44,7 +44,6 @@ export const getTableMeta = ({
         name: 'order_number',
         displayName: 'Факсограмма №',
         type: 'number',
-        sortable: true,
         filter: {
           type: 'advanced-string-like',
         },

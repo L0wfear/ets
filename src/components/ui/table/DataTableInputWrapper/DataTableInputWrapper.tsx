@@ -36,7 +36,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
           .filter(ev => ev === true)
           .length;
       }).some(value => value > 0);
-
+      
       const validityOptions = {
         outputListErrors,
         isValidInput,
@@ -65,7 +65,6 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       const newItems = this.props.tableSchema.cols
         .map(columnMeta => ({ [columnMeta.name]: undefined }))
         .reduce((acc, curr) => ({ ...acc, ...curr }));
-
       const finalValue = this.props.stackOrder
         ? [newItems, ...this.props.inputList]
         : [...this.props.inputList, newItems];
@@ -77,9 +76,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       if (this.props.inputList.length === 0) {
         return;
       }
-
       const newItems = this.props.inputList.filter((item, i: number) => i !== index);
-
       this.props.onChange(newItems);
       this.validate(newItems);
     }

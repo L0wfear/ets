@@ -43,23 +43,24 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     }
   }
 
-  handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const { _employeesIndex = {} } = this.props;
 
     if (this.props.formType === 'ViewForm') {
       if (isEmpty(formState.id)) {
-        flux.getActions('missions').createDutyMissionTemplate(formState);
+        await flux.getActions('missions').createDutyMissionTemplate(formState);
       } else {
-        flux.getActions('missions').updateDutyMissionTemplate(formState);
+        await flux.getActions('missions').updateDutyMissionTemplate(formState);
       }
       this.props.onFormHide();
     } else if (!checkMissionsOnStructureIdBrigade(Object.values(this.props.missions), _employeesIndex)) {
-      flux.getActions('missions').createDutyMissions(this.props.missions, formState).then(() => {
+      await flux.getActions('missions').createDutyMissions(this.props.missions, formState).then(() => {
         this.props.onFormHide(true);
       });
     }
+    flux.getActions('missions').getDutyMissionTemplates();
   }
 
   render() {
@@ -68,7 +69,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
         <Div hidden={!this.props.showForm}>
           <DutyMissionTemplateForm
             formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
+            onSubmit={this.handleFormSubmit}
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}

@@ -16,14 +16,20 @@ import DutyMissionTemplatesTable from './DutyMissionTemplatesTable.jsx';
 @autobind
 export default class DutyMissionTemplatesJournal extends CheckableElementsList {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('missions').removeDutyMissionTemplate;
     this.state = Object.assign(this.state, {
       formType: 'ViewForm',
     });
   }
+
+  removeElementAction = (...props) => (
+    this.context.flux.getActions('missions').removeDutyMissionTemplate(...props)
+      .then(() => (
+        this.context.flux.getActions('missions').getDutyMissionTemplates()
+      ))
+  )
 
   componentDidMount() {
     super.componentDidMount();

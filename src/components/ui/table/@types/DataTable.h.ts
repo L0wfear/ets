@@ -5,7 +5,7 @@ export interface IPropsDataTable<TResultObject> {
   tableMeta?: IDataTableSchema;
   results: TResultObject[];
   renderers?: ISchemaRenderer;
-  onRowSelected?(IDataTableSelectedRow): void;
+  onRowSelected?(IDataTableSelectedRow, number): void;
   enumerated?: boolean;
   enableSort?: boolean;
   initialSort?: boolean | string;

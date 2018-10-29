@@ -200,7 +200,7 @@ export const getStyleForStatusDirectionType = ({ status, direction, selected, zo
   } else {
     let not_visible = 'not_visible';
     if (!CACHE_ICON[not_visible]) {
-      return CACHE_ICON[not_visible] = new ol.style.Style({});
+      return CACHE_ICON[not_visible] = new Style({});
     } else {
       return CACHE_ICON[not_visible];
     }

@@ -23,6 +23,7 @@ import {
 } from 'components/map/new/layers/car-markers/LayerCarMarker.h';
 
 let updatePoints = true;
+const MIN_ZOOM_VAL = 3;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
 
@@ -32,6 +33,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     carPointsDataWs: {},
     gps_code: this.props.gps_code,
     zoomMore8: this.props.zoom >= 8,
+    minZoom: this.props.zoom <= MIN_ZOOM_VAL,
     STATUS_SHOW_GOV_NUMBER: this.props.STATUS_SHOW_GOV_NUMBER,
     lastPoint: this.props.lastPoint,
     statusShow: this.props.statusShow,
@@ -54,6 +56,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
       const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
       const zoomMore8 = zoom > 8;
+      const minZoom = zoom <= MIN_ZOOM_VAL;
 
       if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
         hasWhatChage = true;
@@ -91,10 +94,11 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         }
         
       }
-      if (zoomMore8 !== this.state.zoomMore8) {
+      if (zoomMore8 !== this.state.zoomMore8 || minZoom !== this.state.minZoom) {
         hasWhatChage = true;
         whatPointChange = this.state.carPointsDataWs;
         changeState.zoomMore8 = zoomMore8;
+        changeState.minZoom = minZoom;
       }
 
       if (STATUS_SHOW_GOV_NUMBER !== this.state.STATUS_SHOW_GOV_NUMBER) {
@@ -162,7 +166,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.closeWs();
   }
 
-  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs }) {
+  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs, minZoom }) {
     const carsByStatus = {
       in_move: 0,
       stop: 0,
@@ -223,6 +227,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           show_gov_number: STATUS_SHOW_GOV_NUMBER,
           gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
           visible,
+          minZoom,
         });
 
         feature.setStyle(style);
@@ -332,6 +337,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
+            minZoom: this.state.minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {
@@ -411,6 +417,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
+            minZoom: this.state.minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {

@@ -3,6 +3,7 @@ const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
   zoomMore8: 25 / (DEVICE_PIXEL_RATIO / 2),
   zoomNotMore8: 14 / (DEVICE_PIXEL_RATIO / 2),
+  minZoom: 11 / (DEVICE_PIXEL_RATIO / 2),
 };
 
 // let textPadding = 6 * DEVICE_PIXEL_RATIO;
@@ -104,7 +105,7 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
   }
 }
 
-const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directionInRad) => {
+const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directionInRad, minZoom) => {
   ctx.beginPath();
 
   if ((zoomMore8 || selected)) {
@@ -151,8 +152,11 @@ const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
   }
 }
 
-const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number }) => {
-  const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : 'zoomNotMore8'];
+const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom }) => {
+  const zoomSelect = minZoom ? 'minZoom':
+  zoomMore8 ? 'zoomMore8':
+    'zoomNotMore8';
+  const width = widthIcon[selected || zoomSelect];
   const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) %360) );
 
   const canvas = document.createElement('canvas');
@@ -160,7 +164,7 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
   [canvas.width, canvas.height] = getCanvasWH(width, ctx, show_gov_number, gov_number, zoomMore8 || selected);
 
   drawGovNumber(canvas, ctx, width, status, show_gov_number, gov_number, directionInRad, selected, zoomMore8);
-  drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad);
+  drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad, minZoom);
   drawCarIcon(canvas, ctx, width, zoomMore8, selected);
 
   return CACHE_ICON[cacheStyleName] = new ol.style.Style({
@@ -173,18 +177,18 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
   });
 }
 
-export const getStyleForStatusDirectionType = ({ status, direction, selected, zoomMore8, gov_number, show_gov_number, visible }) => {
+export const getStyleForStatusDirectionType = ({ status, direction, selected, zoomMore8, gov_number, show_gov_number, visible, minZoom }) => {
   if (visible || selected) {
     let trueDirection = selected || zoomMore8 ? direction : 0;
 
-    const cacheStyleName = `${status}/${selected}/${zoomMore8}/${trueDirection}/${show_gov_number ? gov_number : null}`;
+    const cacheStyleName = `${status}/${selected}/${zoomMore8}/${minZoom}/${trueDirection}/${show_gov_number ? gov_number : null}`;
     const { [cacheStyleName] : cache_icon } = CACHE_ICON;
     let icon = cache_icon;
   
     if (!cache_icon) {
       icon = makeCacheIcon(
         cacheStyleName,
-        { status, direction: trueDirection, selected, zoomMore8, gov_number, show_gov_number },
+        { status, direction: trueDirection, selected, zoomMore8, gov_number, show_gov_number, minZoom },
       );
     }
   

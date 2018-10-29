@@ -55,7 +55,6 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     if (this.props.formType === 'ViewForm') {
       try {
         if (isEmpty(formState.id)) {
-          console.log(formState)
           await flux.getActions('missions').createDutyMissionTemplate(formState);
         } else {
           await flux.getActions('missions').updateDutyMissionTemplate(formState);
@@ -79,7 +78,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
         <Div hidden={!this.props.showForm}>
           <DutyMissionTemplateForm
             formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
+            onSubmit={this.handleFormSubmit}
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}

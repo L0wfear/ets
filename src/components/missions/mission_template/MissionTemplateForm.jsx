@@ -226,15 +226,23 @@ class MissionTemplateForm extends MissionForm {
 
         <Modal.Footer>
           <Div className="text-right-flex">
-            <Dropdown id="waybill-print-dropdown" dropup disabled={!state.id} onSelect={this.props.handlePrint}>
-              <Dropdown.Toggle>
-                <Glyphicon id="m-print" glyph="print" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <MenuItem eventKey={this.props.printMapKeyBig}>Формате А3</MenuItem>
-                <MenuItem eventKey={this.props.printMapKeySmall}>Формате А4</MenuItem>
-              </Dropdown.Menu>
-            </Dropdown>
+            {
+              state.id
+              ? (
+                <Dropdown id="waybill-print-dropdown" dropup onSelect={this.props.handlePrint}>
+                  <Dropdown.Toggle>
+                    <Glyphicon id="m-print" glyph="print" />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <MenuItem eventKey={this.props.printMapKeyBig}>Формате А3</MenuItem>
+                    <MenuItem eventKey={this.props.printMapKeySmall}>Формате А4</MenuItem>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )
+              : (
+                <DivNone />
+              )
+            }
             <Div hidden={state.status === 'closed'}>
               <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
             </Div>

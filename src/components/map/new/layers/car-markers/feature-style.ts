@@ -82,7 +82,7 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
     };
     const selectedRate = selected || zoomMore8 ? 1 : 1.7;
     ctx.beginPath();
-    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)*selectedRate), canvas.width/2 + 2, getRaidus(width) * 2 * selectedRate);// РёР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂР° С‡РµС‚С‹СЂС‘С…СѓРіРѕР»СЊРЅРёРєР°
+    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)*selectedRate), canvas.width/2 + 2, getRaidus(width) * 2 * selectedRate);// изменение размера четырёхугольника
     ctx.closePath();
 
     ctx.fillStyle = 'white';

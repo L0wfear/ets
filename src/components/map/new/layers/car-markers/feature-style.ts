@@ -82,7 +82,7 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
     };
     const selectedRate = selected || zoomMore8 ? 1 : 1.7;
     ctx.beginPath();
-    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)*selectedRate), canvas.width/2 + 2, getRaidus(width) * 2 * selectedRate);// РёР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂР° С‡РµС‚С‹СЂС‘С…СѓРіРѕР»СЊРЅРёРєР°
+    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)*selectedRate), canvas.width/2 + 2, getRaidus(width) * 2 * selectedRate);// изменение размера четырёхугольника
     ctx.closePath();
 
     ctx.fillStyle = 'white';
@@ -153,9 +153,12 @@ const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
 }
 
 const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom }) => {
-  const zoomSelect = minZoom ? 'minZoom':
-  zoomMore8 ? 'zoomMore8':
-    'zoomNotMore8';
+  const zoomSelect = minZoom
+  ? 'minZoom'
+  : zoomMore8
+    ? 'zoomMore8'
+    : 'zoomNotMore8';
+
   const width = widthIcon[selected || zoomSelect];
   const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) %360) );
 

@@ -117,7 +117,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
               coords_msk[1],
             ];
 
-            const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
+            const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom: this.props.zoom };
             const noCheckDisabledCenterOn = true; //  игнор дисейбла центрирование (только при enableInteractions)
 
             this.props.centerOn(

@@ -1,11 +1,11 @@
 import ElementsList from 'components/ElementsList';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import MaintenanceWorkFormWrap from 'components/directories/data_for_calculation/maintenance_work/MaintenanceWorkFormWrap';
 import MaintenanceWorkTable from 'components/directories/data_for_calculation/maintenance_work/MaintenanceWorkTable';
 import permissions from 'components/directories/data_for_calculation/maintenance_work/config-data/permissions';
 
 @connectToStores(['objects'])
-// @exportable({ entity: 'maintenance_work' })
+@exportable({ entity: 'maintenance_work' })
 @staticProps({
   entity: 'maintenance_work',
   permissions,

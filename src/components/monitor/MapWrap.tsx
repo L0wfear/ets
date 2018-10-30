@@ -11,7 +11,6 @@ import LayerParkingPoints from 'components/monitor/layers/track/events/parking/L
 import LayerFuelEventPoint from 'components/monitor/layers/track/events/fuel-event/LayerFuelEventPoints';
 import LayerPlayPoint from 'components/monitor/layers/track/play-point/LayerPlayPoint';
 import LayerCarMarker from 'components/monitor/layers/car-markers/LayerCarMarker';
-import LayerMeasure from 'components/monitor/layers/measure/LayerMeasure';
 import LayerFuelEventLeakPoint from 'components/monitor/layers/fuel-event/leak/LayerFuelEventLeakPoint';
 import MapInfo from 'components/monitor/info/MapInfo';
 
@@ -49,7 +48,6 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
               <LayerFuelEventPoint map={map} />
               <LayerPlayPoint map={map} centerOn={centerOn} />
               <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
-              <LayerMeasure map={map} />
               <LayerFuelEventLeakPoint map={map} />
               <MapInfo map={map} centerOn={centerOn}/>
             </div>

@@ -35,14 +35,19 @@ export const EtsTriangleMeasure = styled(EtsTriangleContainer)`
 `;
 
 export const ButtonContainer = styled.div`
-  position: absolute;
   pointer-events: all;
-  bottom: 23px;
-  left: 70px;
   background-color: rgba(0, 0, 0, 0.75);;
   box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   padding: 2px;
+
+  &&& {
+    button {
+      height: 25px;
+      width: 25px;
+      margin:0;
+    }
+  }
 
   /* from ol-control */
   button {
@@ -54,8 +59,7 @@ export const ButtonContainer = styled.div`
     font-weight: 700;
     text-decoration: none;
     text-align: center;
-    height: 1.375em;
-    width: 1.375em;
+
     line-height: .4em;
     background-color: rgba(0,60,136,.5);
     border: none;

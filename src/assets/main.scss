@@ -44,6 +44,27 @@ html, body {
   height: 100%;
   width: 100%;
 
+  >div.olmap {
+    height: 100%;
+    width: 100%;
+    >div {
+      height: 100%;
+      width: 100%;
+
+      .layer-container {
+        height: 100%;
+        width: 100%;
+        pointer-events: none;
+        position: relative;
+        &.measure {
+          display: flex;
+          flex-direction: row-reverse;
+          align-items: center;
+        }
+      }
+    }
+  }
+
   .map_info-container {
     position: absolute;
     top: 0;
@@ -53,6 +74,19 @@ html, body {
     display: flex;
     flex-direction: row-reverse;
     z-index: 1;
+    >.icon-map-help {
+      flex: 1 1;
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+
+      >div {
+        position: relative;
+        margin: 10px;
+      }
+    }
 
     >.data_container-wrap {
       height: 100%;

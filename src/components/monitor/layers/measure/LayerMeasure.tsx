@@ -276,7 +276,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
           ))
         }
         <ButtonContainer>
-          <ButtonGroup>
+          <ButtonGroup vertical>
             <ButtonDraw onClick={this.toggleMeasureActive} />
             <Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
               <Glyphicon glyph="remove" />

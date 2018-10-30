@@ -89,8 +89,7 @@ export default class WaybillJournal extends CheckableElementsList {
     const resultCount = waybills.result.length;
 
     if (resultCount === 0 && total_count > 0) {
-      const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, offset, state.sortBy, filter);
+      this.setState({ page: (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) });
     }
   }
 
@@ -101,6 +100,7 @@ export default class WaybillJournal extends CheckableElementsList {
 
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
+
     return {
       structures,
       changeSort: this.changeSort,

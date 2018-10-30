@@ -24,7 +24,7 @@ const makePermissionOnCheck = (config, props) => {
   return Array.isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck]
 };
 
-const checkOnIsPermitter = (config, props, permissions) => {
+const checkOnisPermitted = (config, props, permissions) => {
   let permissionsOnCheck = makePermissionOnCheck(config, props);
 
   if (config.every) {
@@ -55,15 +55,15 @@ const withRequirePermissionsNew = (config: TypeConfig = {}) => Component => (
       render() {
         const { permissions, dispatch, ...props } = this.props;
 
-        const isPermitter = checkOnIsPermitter(config, props, permissions);
+        const isPermitted = checkOnisPermitted(config, props, permissions);
         const newProps = { ...props };
 
         if (config.withIsPermittedProps) {
-          newProps.isPermitter = isPermitter;
+          newProps.isPermitted = isPermitted;
         }
 
         return (
-          config.withIsPermittedProps || isPermitter ?
+          config.withIsPermittedProps || isPermitted ?
             (
               <Component { ...newProps } />
             )

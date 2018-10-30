@@ -171,14 +171,10 @@ class DutyMissionFormWrap extends FormWrap {
    * @override
    * @param {*} formState
    */
-  updateAction(formState) {
+  updateAction = async (formState) => {
     try {
       await this.context.flux.getActions('missions').updateDutyMission(formState);
-      try {
-        await this.props.refreshTableList();
-      } catch (e) {
-        // ну а вдруг
-      }
+      this.props.refreshTableList();
       resolve();
     } catch (error) {
       // function refreshTableList not in father modules

@@ -11,7 +11,7 @@ export interface IPropsDataTable<TResultObject> {
   title?: string;
   tableMeta?: IDataTableSchema;
   renderers?: ISchemaRenderer;
-  onRowSelected?(IDataTableSelectedRow, number): void;
+  onRowSelected?(IDataTableSelectedRow, number): any;
   onRowChecked?(any): any;
   onAllRowsChecked?(any): any;
   enumerated?: boolean;

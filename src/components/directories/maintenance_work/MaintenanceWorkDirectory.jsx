@@ -1,10 +1,10 @@
 import ElementsList from 'components/ElementsList.jsx';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import MaintenanceWorkFormWrap from './MaintenanceWorkFormWrap.jsx';
 import MaintenanceWorkTable from './MaintenanceWorkTable.jsx';
 
 @connectToStores(['objects'])
-// @exportable({ entity: 'maintenance_work' })
+@exportable({ entity: 'maintenance_work' })
 @staticProps({
   entity: 'maintenance_work',
   listName: 'maintenanceWorkList',

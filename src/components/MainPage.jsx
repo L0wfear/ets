@@ -69,7 +69,7 @@ const styleNotificationInfo = {
     sessionResetData: () => dispatch(sessionResetData()),
   }),
 )
-@connectToStores(['session'])
+@connectToStores(['session', 'objects'])
 @FluxContext
 @HistoryContext
 export default class MainPage extends React.Component {
@@ -78,6 +78,7 @@ export default class MainPage extends React.Component {
     return {
       location: PropTypes.object,
       children: PropTypes.node,
+      appConfig: PropTypes.object,
     };
   }
 
@@ -95,9 +96,9 @@ export default class MainPage extends React.Component {
     if (user.user_id) {
       this.props.sessionSetData(this.props);
     }
+
     this.setState({
       user,
-      needShowHrefOnNewProd: [10227244, 102266640].includes(user.company_id),
     });
   }
 
@@ -230,6 +231,12 @@ export default class MainPage extends React.Component {
       },
     } = this.state;
 
+    const {
+      appConfig: {
+        footer_url,
+      },
+    } = this.props;
+
     return (
       <div className="app">
         <div className="app-navigation">{this.renderHeader()}</div>
@@ -246,17 +253,17 @@ export default class MainPage extends React.Component {
 
         <div className="app-footer">
           <Col md={3}>
-            <Div hidden={this.state.needShowHrefOnNewProd}>
+            <Div hidden={footer_url}>
               <Col md={12}>
                 <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
               </Col>
             </Div>
-            <Div hidden={!this.state.needShowHrefOnNewProd}>
+            <Div hidden={!footer_url}>
               <Col md={6}>
                 <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
               </Col>
               <Col md={6}>
-                <a className="tp not-red" href='https://ets2.mos.ru' >Переход на новую версию</a>
+                <a className="tp not-red" href={footer_url}>{footer_url}</a>
               </Col>
             </Div>
           </Col>

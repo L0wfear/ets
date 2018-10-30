@@ -154,6 +154,6 @@ const all = connectToStores(hocAll(
     componentWillReceiveProps,
     componentWillUnmount,
   })
-)(MissionInfoForm), ['objects', 'employees', 'missions', 'routes', 'geoObjects']);
+)(MissionInfoForm), ['objects', 'employees', 'missions', 'routes', 'geoObjects', 'session']);
 
 export default all;

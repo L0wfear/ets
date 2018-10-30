@@ -70,6 +70,7 @@ export const componentDidMount: IComponentDidMount = async props => {
     },
     flux,
     fromMonitor,
+    currentUser,
   } = props;
 
   if (!props.tooLongDates) {
@@ -89,11 +90,12 @@ export const componentDidMount: IComponentDidMount = async props => {
 
   const {
     has_mkad,
-  } = route_data
+  } = route_data;
 
+  console.log(currentUser)
   const [route] = await Promise.all([
     flux.getActions('routes').getRouteById(route_data.id, true),
-    flux.getActions('geoObjects').getGeozones(),
+    flux.getActions('geoObjects').getGeozones(currentUser.company_id),
     has_mkad && !fromMonitor ? flux.getActions('geoObjects').getOdhMkad() : Promise.resolve(),
   ]);
 

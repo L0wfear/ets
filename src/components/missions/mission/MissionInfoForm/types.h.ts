@@ -80,6 +80,9 @@ export interface IComponentDidMountProps {
   tooLongDates: boolean;
   multyChange: any;
   fromMonitor?: boolean;
+  currentUser: {
+    company_id: number;
+  };
 }
 
 export type IComponentDidMount = (props: IComponentDidMountProps) => void;

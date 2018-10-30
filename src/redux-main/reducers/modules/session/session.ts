@@ -12,24 +12,26 @@ const MAP_INITIAL_ZOOM = 3;
 
 export const CONFIG_INITIAL = { // дефолтное значение конфигурации
   enums:{
-     FUEL_TYPE: {}
+    FUEL_TYPE: {},
   },
   defaults:{
-     FUEL_TYPE: "DT"
+    FUEL_TYPE: "DT",
   },
   shift:{ 
-     shift_end: null, // todo: сделать вызов тех же методов что и в факсограмме
-     shift_start: null // todo: сделать вызов тех же методов что и в факсограмме
+    shift_end: null, // todo: сделать вызов тех же методов что и в факсограмме
+    shift_start: null, // todo: сделать вызов тех же методов что и в факсограмме
   },
   summer_start:[
-     4,
-     6
+    4,
+    6,
   ],
   summer_end:[
-     11,
-     1
-  ]
-}
+    11,
+    1
+  ],
+  footer_url: '',
+  project_name: '',
+};
 
 const initialState = {
   userData: {
@@ -41,7 +43,7 @@ const initialState = {
   },
   token: null,
   appConfig: CONFIG_INITIAL,
-}
+};
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {

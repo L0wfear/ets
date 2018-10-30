@@ -2,12 +2,12 @@ import { getFullAccess } from 'api/mocks/permissions';
 import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
-  SESSION_SET_CONFIG
+  SESSION_SET_CONFIG,
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService } from 'api/Services';
 
-export const getSpecificPermissions = (user) => {
+export const withSpecificPermissions = (user) => {
   const permissions = [];
 
   if (user.login === 'gormost') {
@@ -23,17 +23,14 @@ export const getSpecificPermissions = (user) => {
     permissions.push('pgm_store.read');
   }
 
-  return [
-    ...user.permissions,
-    ...permissions,
-  ]
+  return permissions;
 };
 
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
   payload: ConfigService.get()
     .then((appConfig) =>({
-        appConfig
+      appConfig,
     }))
     .catch((ErrorData) => {
       console.warn(ErrorData);
@@ -46,7 +43,11 @@ export const sessionSetAppConfig = () => ({
 export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
   const userData = { ...currentUser };
 
-  userData.permissions = getSpecificPermissions(currentUser);
+  userData.permissions = [
+    ...currentUser.permissions,
+    ...withSpecificPermissions(currentUser),
+  ];
+
   userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
   

@@ -14,7 +14,6 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
     state = {
       outputListErrors: [],
       isValidInput: true,
-      selectedIndex: null,
     };
     componentDidMount() {
       this.validate(this.props.inputList);
@@ -36,11 +35,10 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
           .filter(ev => ev === true)
           .length;
       }).some(value => value > 0);
-      
+
       const validityOptions = {
         outputListErrors,
         isValidInput,
-        selectedIndex: this.state.selectedIndex,
       };
 
       this.setState(validityOptions);
@@ -48,8 +46,6 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.props.onValidation(validityOptions);
     }
     handleItemChange = (index, key, value) => {
-      ///Не передаётся индекс!!! index is NaN
-      index = index || this.state.selectedIndex || 0;
       const newItems = this.props.inputList.map(
         (item: any, i) => i === index
           ? ({
@@ -65,6 +61,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       const newItems = this.props.tableSchema.cols
         .map(columnMeta => ({ [columnMeta.name]: undefined }))
         .reduce((acc, curr) => ({ ...acc, ...curr }));
+
       const finalValue = this.props.stackOrder
         ? [newItems, ...this.props.inputList]
         : [...this.props.inputList, newItems];
@@ -72,21 +69,17 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.validate(finalValue);
     }
     handleItemRemove = (index: number = this.props.inputList.length - 1) => {
-      index = index || this.state.selectedIndex || 0;
       if (this.props.inputList.length === 0) {
         return;
       }
+
       const newItems = this.props.inputList.filter((item, i: number) => i !== index);
+
       this.props.onChange(newItems);
       this.validate(newItems);
     }
     handleRowSelected = selectedRow => {
-      //костыль
-      let selectedIndex = 0;
-      this.props.inputList.forEach(function(item, index){
-        selectedIndex = item.id === selectedRow.props.data.id ? index : selectedIndex;
-      });
-      this.setState({ selectedIndex });
+      // noDefine
     }
     render() {
 

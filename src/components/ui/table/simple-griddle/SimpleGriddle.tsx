@@ -131,7 +131,7 @@ class SimpleGriddle extends React.Component<any, any> {
   }
   handleClickTbodyTr: any = (rowData, index) => {
     const numberIndex = index;
-
+    const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
     const { _isParent } = rowData;
 
     if (!_isParent) {
@@ -149,13 +149,13 @@ class SimpleGriddle extends React.Component<any, any> {
             props: {
               data,
             },
-          });
+          }, rowNumber);
         } catch (e) {
           this.props.onRowClick({
             props: {
               data,
             },
-          });
+          }, rowNumber);
         }
       }
     } else {

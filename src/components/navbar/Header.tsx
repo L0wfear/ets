@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as Navbar from 'react-bootstrap/lib/Navbar';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Nav from 'react-bootstrap/lib/Nav';
 
 import NavDropdown from 'components/navbar/NavDropdown/NavDropdown';
@@ -12,7 +11,7 @@ import NavItemLogout from 'components/navbar/NavItemLogout/NavItemLogout';
 import NavItemRole from 'components/nav-item-role/NavItemRole';
 import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 
-import config from 'config';
+import docs from 'components/doc-header/_config-data/index';
 
 import rWithP from 'constants/routerAndPermission';
 
@@ -59,48 +58,12 @@ const makeNavChildren = ([key, data]) => {
 
 const dataGuide = {
   backToCity: {
-    renderNav: (key) => <NavItemBackToGorod key={'change-role-to-city'}/>
+    renderNav: () => <NavItemBackToGorod key={'change-role-to-city'}/>
   },
   changeRole: {
-    renderNav: (key) => <NavItemRole key={'change-role'}/>
+    renderNav: () => <NavItemRole key={'change-role'}/>
   },
-  guide: {
-    title: <Glyphicon glyph="book" />,
-    className: "user-guide",
-    alwaysShow: true,
-    children: {
-      master: {
-        title: 'Руководство Мастера',
-        path: `${config.docs}Руководство-мастера.docx`,
-        noHash: true,
-        alwaysShow: true,
-      },
-      dispather: {
-        title: 'Руководство Диспетчера',
-        path: `${config.docs}Руководство-диспетчера.docx`,
-        noHash: true,
-        alwaysShow: true,
-      },
-      okrug: {
-        title: 'Руководство окружного пользователя',
-        path: `${config.docs}Руководство-окружного-пользователя.docx`,
-        noHash: true,
-        alwaysShow: true,
-      },
-      report: {
-        title: 'Общие рекомендации по обращению',
-        path: `${config.docs}Общие_рекомендации_по_обращению.docx`,
-        noHash: true,
-        alwaysShow: true,
-      },
-      engineer: {
-        title: 'Руководство инженера ТО',
-        path: `${config.docs}Руководство-Инженер ТО.docx`,
-        noHash: true,
-        alwaysShow: true,
-      }
-    }
-  },
+  docs,
   userData: {
     renderNav: (key) => <NavItemUser key={'info-user-data'} />,
   },

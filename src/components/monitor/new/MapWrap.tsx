@@ -12,7 +12,6 @@ import LayerTrackLinesBySensor from 'components/map/new/layers/track/lines-by-se
 import LayerFuelEventPoint from 'components/map/new/layers/track/events/fuel-event/LayerFuelEventPoints';
 import LayerGeooobjects from 'components/map/new/layers/geoobjects/LayerGeooobjects';
 import LayerSelectedGeooobjects from 'components/map/new/layers/geoobjects/selected/LayerSelectedGeooobjects';
-import LayerMeasure from 'components/map/new/layers/measure/LayerMeasure';
 
 type PropsMapWrap = {
   disabledByType: any;
@@ -33,7 +32,6 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
           <LayerFuelEventPoint map={map} />
           <LayerPlayPoint map={map} centerOn={centerOn} />
           <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
-          <LayerMeasure map={map} />
           <MapInfo map={map} centerOn={centerOn}/>
         </div>
       )

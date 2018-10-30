@@ -240,7 +240,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
 
   render() {
     return (
-      <div className="layer-container">
+      <div>
         {
           this.state.lines.map(({ overlayData: { lineStringLength, active, ...overlayData } }, index) => (
             <Overlay
@@ -253,7 +253,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
           ))
         }
         <div className="ol-control ol-measure-new">
-          <ButtonGroup>
+          <ButtonGroup vertical>
             <Button className="draw-point" onClick={this.toggleMeasureActive} />
             <Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}><Glyphicon glyph="remove" /></Button>
           </ButtonGroup>

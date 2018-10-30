@@ -1,5 +1,4 @@
 import { PROJECTION, ArcGisLayer } from '../MskAdapter.js';
-import { defaultZoom } from 'utils/ol';
 import { MapUtils } from 'components/map/new/Map.h';
 
 /**
@@ -26,7 +25,7 @@ export const getMapView: MapUtils.getMapViewFunc = (center, zoom) => (
 export const getMap: MapUtils.getMapFunc = (center, zoom) => (
   new ol.Map({
     view: getMapView(center, zoom),
-    controls: [defaultZoom],
+    controls: [],
     layers: [ArcGisLayer],
     loadTilesWhileAnimating: true,
   })

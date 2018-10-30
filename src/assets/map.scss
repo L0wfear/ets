@@ -18,16 +18,17 @@
   max-height: none !important;
 }
 
-.ol-control.ol-measure-new{
+.ol-control.ol-measure-new {
+  position: relative;
   pointer-events: all;
-  bottom: 23px;
-  left: 70px;
   background-color: rgba(0, 0, 0, 0.75);;
   box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
 
   button.btn.btn-default {
     background-color: inherit;
     color: white;
+    width: 25px;
+    height: 25px;
 
     :hover {
       background-color: initial;

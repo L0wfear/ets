@@ -30,4 +30,5 @@ export type loadGeozonesFunc = (
   type: string,
   type_geoobject: string,
   meta?: any,
+  company_id?: number | null,
 ) => AnsLoadGeozonesFunc;

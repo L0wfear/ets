@@ -3,7 +3,7 @@ import { loadRouteDataById } from 'redux-main/trash-actions/route/route';
 import { loadTrackCaching } from 'redux-main/trash-actions/uniq/promise';
 
 export const mapDispatchToProps = (dispatch) => ({
-  loadGeozones: (serverName) => (
+  loadGeozones: (serverName, company_id) => (
     dispatch(
       loadGeozones(
         'none',
@@ -12,7 +12,8 @@ export const mapDispatchToProps = (dispatch) => ({
           promise: true,
           page: 'any',
           path: 'missionInfoForm',
-        }
+        },
+        company_id,
       ),
     )
   ),

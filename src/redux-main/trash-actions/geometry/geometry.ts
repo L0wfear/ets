@@ -8,12 +8,14 @@ import { loadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
 
 const CACHE_GEOMETRY = {};
 
-export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { loading: true }) => {
+export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { loading: true }, company_id = null) => {
+  const cacheTypeGeoobjectName = `${type_geoobject}${company_id}`;
+
   if (CACHE_GEOMETRY[type]) {
-    if (CACHE_GEOMETRY[type][type_geoobject]) {
+    if (CACHE_GEOMETRY[type][cacheTypeGeoobjectName]) {
       return ({
         type,
-        payload: Promise.resolve(CACHE_GEOMETRY[type][type_geoobject]),
+        payload: Promise.resolve(CACHE_GEOMETRY[type][cacheTypeGeoobjectName]),
         meta: {
           ...meta,
         }
@@ -22,9 +24,14 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
   } else {
     CACHE_GEOMETRY[type] = {};
   }
+  const payload: any = {};
+  if (company_id) {
+    payload.company_id = company_id;
+  }
+
   return ({
     type,
-    payload: GeozonesService.path(type_geoobject).get()
+    payload: GeozonesService.path(type_geoobject).get(payload)
       .catch((error) => {
         console.warn(error);
 
@@ -35,7 +42,7 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
         };
       })
       .then(({ result: { rows } }) => (
-        CACHE_GEOMETRY[type][type_geoobject] = {
+        CACHE_GEOMETRY[type][cacheTypeGeoobjectName] = {
           [type_geoobject]: rows.reduce((newObj, data) => {
             const geom = data;
             const front_id = data.odh_id || data.dt_id || data.global_id || data.id;

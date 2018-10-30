@@ -32,6 +32,7 @@ import {
   StateMissionInfoForm,
 } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
 import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
+import { ReduxState } from 'redux-main/@types/state';
 
 /**
  * Карточка информации о задании
@@ -174,7 +175,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     const objectListIndex = keyBy(route_data.object_list, 'object_id');
     const { serverName } = GEOOBJECTS_OBJ[type];
 
-    this.props.loadGeozones(serverName).then(({ payload: { [serverName]: polysObj } }) => {
+    this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }) => {
       const { missionReport } = this.state;
       const missionReportObjectIdIndex = new Set();
       missionReport.forEach(({ object_id }) => {
@@ -298,7 +299,9 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
   }
 };
 
-export default connect(
-  null,
+export default connect<any, any, any, ReduxState>(
+  state => ({
+    company_id: state.session.userData.company_id,
+  }),
   mapDispatchToProps,
 )(MissionInfoForm);

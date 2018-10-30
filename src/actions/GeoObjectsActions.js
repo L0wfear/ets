@@ -24,14 +24,21 @@ export default class GeoObjectsActions extends Actions {
     };
     return services.DTService.put(payload, false, 'json');
   }
+  async getGeozones(company_id) {
+    let cacheName = 'GeozoneService.get()';
+    const payload = {};
 
-  async getGeozones() {
-    const cachedValue = getValueFromCache('GeozoneService.get()');
+    if (company_id) {
+      cacheName = `GeozoneService.get(${company_id})`;
+      payload.company_id = company_id;
+    }
+
+    const cachedValue = getValueFromCache(cacheName);
     if (cachedValue) {
       return cachedValue;
     }
-    const geozones = await services.GeozoneService.get();
-    put('GeozoneService.get()', geozones);
+    const geozones = await services.GeozoneService.get(payload);
+    put(cacheName, geozones);
     return geozones;
   }
 

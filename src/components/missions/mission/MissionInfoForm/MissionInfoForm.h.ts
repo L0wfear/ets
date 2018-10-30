@@ -83,9 +83,10 @@ export interface IMissionInfoFormState {
 export type PropsMissionInfoForm = {
   element: IMissionInfoFormState;
   onFormHide: any;
-  loadGeozones: (serverName: string) => Promise<AnsLoadGeozonesFunc>,
+  loadGeozones: (serverName: string, company_id?: number | null) => Promise<AnsLoadGeozonesFunc>,
   loadRouteDataById: (id: number) => Promise<AnsLoadRouteDataByIdFunc>,
   loadTrackCaching: any;
+  company_id: number | null;
 };
 
 export type StateMissionInfoForm = {

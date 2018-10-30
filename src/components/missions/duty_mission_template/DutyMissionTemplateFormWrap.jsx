@@ -48,7 +48,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     }
   }
 
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const { _employeesIndex = {} } = this.props;
@@ -79,7 +79,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
         <Div hidden={!this.props.showForm}>
           <DutyMissionTemplateForm
             formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
+            onSubmit={this.handleFormSubmit}
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}

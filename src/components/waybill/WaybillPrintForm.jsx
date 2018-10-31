@@ -12,6 +12,7 @@ import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
+import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
 
 const FORMATION_PERIOD_OPTIONS = [
   { value: 'date', label: 'Дневной' },
@@ -51,11 +52,7 @@ class WaybillPrintForm extends React.Component {
       dismissible: false,
       autoDismiss: 0,
       uid: 'waybilPrintForm',
-      children: (
-        <div>
-          <p>Формирование печатной формы</p>
-        </div>
-      ),
+      children: makeReactMessange('Формирование печатной формы'),
     });
     if (this.props.show === 1) {
       const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',

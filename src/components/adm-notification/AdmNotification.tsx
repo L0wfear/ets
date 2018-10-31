@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
+import { makeReactMessange } from 'utils/helpMessangeWarning';
 
 type propsAdmNotification = {
   admNotReadNotificationsList: any[];
@@ -22,16 +23,7 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
     props.admNotReadNotificationsList.forEach(notify => (
       global.NOTIFICATION_SYSTEM.notify({
         title: notify.title,
-        message: (
-          <div>
-          {
-            notify.description.split('\n').map((text, index) => [
-              <div key={index}>{text}</div>,
-              <br key={`$1/${index}`} />,
-            ])
-          }
-          </div>
-        ),
+        message: makeReactMessange(notify.description),
         level: 'info',
         position: 'tr',
         autoDismiss: 0,

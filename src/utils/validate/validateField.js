@@ -20,37 +20,26 @@ const validators = {
   date,
 };
 
-function validateFieldByType(config, value, formData) {
+function validateFieldByType(config, value, formData, componentProps) {
   const { type } = config;
   const validator = validators[type];
 
-  return validator ? validator.validate(config, value, formData) : undefined;
+  return validator ? validator.validate(config, value, formData, componentProps) : undefined;
 }
 
-function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
+function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps) {
   if (typeof type === 'undefined') {
     return undefined;
   }
   const validator = dependencyValidators[type];
 
-  return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) : undefined;
+  return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps) : undefined;
 }
 
-export function validateField(config, value, formData, schema) {
+export function validateField(config, value, formData, schema, componentProps) {
   // console.warn(`VALIDATING ${config.key} with data = ${value}`);
 
-  const error = validateFieldByType(config, value, formData);
-
-  // if (!error && config.extends) {
-  //   error = validateFieldByType(config.extends, config, value, formData);
-  // }
-  // Версия из gistek-forms
-  // if (!error && config.config.customValidations) {
-  //   return _(config.config.customValidations)
-  //     .map(({expression, message}) => eval(expression) ? message : undefined)
-  //     .filter()
-  //     .first();
-  // }
+  const error = validateFieldByType(config, value, formData, componentProps);
 
   // If field validation is ok, we should check if it has some dependencies on other fields
   if (!error && schema.dependencies && schema.dependencies[config.key]) {
@@ -58,7 +47,7 @@ export function validateField(config, value, formData, schema) {
       .map((dependencyValidationConfig) => {
         const { type, field, validator } = dependencyValidationConfig;
         if (typeof validator === 'function') {
-          return validator(value, formData);
+          return validator(value, formData, componentProps);
         }
         // If no field was specified we should abort validation
         // TODO check schema before validation to remove this block
@@ -71,11 +60,11 @@ export function validateField(config, value, formData, schema) {
           throw new Error(`Dependent field "${field}" for key "${config.key}" was not found in schema`);
         }
         const dependentFieldValue = formData[field];
-        const dependentFieldValidationError = validateFieldByType(dependentFieldConfig, dependentFieldValue, formData);
+        const dependentFieldValidationError = validateFieldByType(dependentFieldConfig, dependentFieldValue, formData, componentProps);
         if (dependentFieldValidationError) {
           return `Для проверки поля ${config.title} необходимо правильное заполнение поля ${dependentFieldConfig.title}`;
         }
-        return validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema);
+        return validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps);
       })
       .filter(d => !!d)[0];
   }

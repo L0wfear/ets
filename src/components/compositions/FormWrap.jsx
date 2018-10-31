@@ -74,7 +74,7 @@ export default class FormWrap extends React.Component {
 
     return schema.properties.reduce((formErrors, prop) => {
       const { key } = prop;
-      formErrors[key] = validateField(prop, formState[key], formState, this.schema);
+      formErrors[key] = validateField(prop, formState[key], formState, this.schema, this.props);
       return formErrors;
     },
       { ...errors },

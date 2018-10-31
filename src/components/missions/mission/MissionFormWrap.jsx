@@ -224,7 +224,7 @@ class MissionFormWrap extends FormWrap {
       ansError.date_end = 'Дата не должна выходить за пределы поручения (факсограммы)';
     }
     if (Number.parseInt(new_pc, 0) > order_pc) {
-      ansError.passes_count = 'Поле "Кол-во циклов" должно быть не больше Кол-ва выполнений поручения (факсограммы)';
+      ansError.passes_count = 'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
     }
 
     return ansError;

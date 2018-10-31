@@ -787,7 +787,7 @@ export class MissionForm extends Form {
                     <Field
                       id="passes-count"
                       type="number"
-                      label="Кол-во циклов"
+                      label="Количество циклов"
                       error={errors.passes_count}
                       disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)} 
                       value={state.passes_count}

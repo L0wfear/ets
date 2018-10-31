@@ -163,7 +163,7 @@ export function tableMeta({
         displayName: 'Установленные КБМ',
         type: 'string',
         filter: {
-          type: 'select',
+          type: 'multiselect',
           options: sensorTypesList.map(defaultSelectListMapper),
         },
       },

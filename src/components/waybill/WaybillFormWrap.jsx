@@ -19,7 +19,7 @@ import permissions from 'components/waybill/config-data/permissions';
 import WaybillFormLazy from 'components/waybill/form/WaybillFormLazy';
 import { getDefaultBill } from '../../stores/WaybillsStore';
 import Taxes from './Taxes';
-import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
+import { makeReactMessange } from 'utils/helpMessangeWarning';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ

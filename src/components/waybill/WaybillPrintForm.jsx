@@ -12,7 +12,7 @@ import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { getToday9am, getTomorrow9am, makeDate } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
+import { makeReactMessange } from 'utils/helpMessangeWarning';
 
 const FORMATION_PERIOD_OPTIONS = [
   { value: 'date', label: 'Дневной' },

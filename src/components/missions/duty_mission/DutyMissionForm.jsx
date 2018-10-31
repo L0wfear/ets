@@ -102,7 +102,6 @@ export class DutyMissionForm extends Form {
       brigade_employee_id_list = v.split(',').map(id => Number(id)).reduce((newArr, brigade_id) => {
         if (!this.isActiveEmployee(brigade_id)) {
           hasNotActive = true;
-          return [...newArr];
         }
         return [
           ...newArr,
@@ -243,7 +242,7 @@ export class DutyMissionForm extends Form {
 
       return [...newArr];
     }, []);
-
+    let hasNotActiveEmployees = false;
     const FOREMANS = [...EMPLOYEES];
     if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
       const employee = this.props.employeesIndex[state.foreman_id] || {};
@@ -252,6 +251,7 @@ export class DutyMissionForm extends Form {
         value: state.foreman_id,
         label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
       });
+      hasNotActiveEmployees = true;
     }
 
     const BRIGADES = [...EMPLOYEES];
@@ -265,6 +265,7 @@ export class DutyMissionForm extends Form {
           value: key,
           label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
         });
+        hasNotActiveEmployees = true;
       }
     });
 
@@ -542,9 +543,9 @@ export class DutyMissionForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block" >
-            <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
+            <Button onClick={this.props.onPrint} disabled={!this.props.canSave || hasNotActiveEmployees}>
               <Glyphicon id="dm-download-all" glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
-            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
+            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly || hasNotActiveEmployees}>{'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

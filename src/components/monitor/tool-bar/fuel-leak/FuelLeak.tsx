@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/monitor/redux-main/models/actions-monitor-page';
 import { loadFuelEvents } from 'redux-main/trash-actions/geometry/geometry';
+import { compose } from 'recompose'
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
@@ -166,8 +168,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
-(BarShowGeoobjects);
+export default compose(
+  withRequirePermissionsNew({
+    permissions: 'map.leak_and_refill',
+  }),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(BarShowGeoobjects);

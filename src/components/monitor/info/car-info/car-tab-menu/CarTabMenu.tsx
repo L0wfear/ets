@@ -4,7 +4,6 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 import { fetchTrack, fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
-import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -154,8 +153,6 @@ const mergeProps = ({ asuods_id, odh_mkad, gps_code, ...otherStateProps }, { dis
     dispatch(fetchCarInfo({
       asuods_id: props.asuods_id,
       gps_code: props.gps_code,
-      date_start: initialState.date_start,
-      date_end: initialState.date_end,
     }))
   ),
   fetchTrack: (props) => (
@@ -163,8 +160,6 @@ const mergeProps = ({ asuods_id, odh_mkad, gps_code, ...otherStateProps }, { dis
       {
         asuods_id: props.asuods_id,
         gps_code: props.gps_code,
-        date_start: initialState.date_start,
-        date_end: initialState.date_end,
       },
       odh_mkad,
     ))

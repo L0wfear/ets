@@ -85,6 +85,8 @@ export default (state: any = initialState, { type, payload }: any) => {
         ...initialState,
         gps_code: payload.gps_code,
         gov_number: payload.gov_number,
+        date_start: getStartOfToday(),
+        date_end: new Date(),
       };
 
       return newState;

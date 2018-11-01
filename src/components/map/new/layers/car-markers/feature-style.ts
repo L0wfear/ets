@@ -105,7 +105,7 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
   }
 }
 
-const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directionInRad, minZoom) => {
+const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directionInRad) => {
   ctx.beginPath();
 
   if ((zoomMore8 || selected)) {
@@ -152,11 +152,8 @@ const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
   }
 }
 
-const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom}) => {
-  const zoomSelect = minZoom ? 'minZoom':
-    zoomMore8 ? 'zoomMore8':
-    'zoomNotMore8';
-  const width = widthIcon[selected || zoomSelect];
+const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom }) => {
+  const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : minZoom ? 'minZoom' : 'zoomNotMore8'];
   
   const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) %360) );
 
@@ -165,7 +162,7 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
   [canvas.width, canvas.height] = getCanvasWH(width, ctx, show_gov_number, gov_number, zoomMore8 || selected);
 
   drawGovNumber(canvas, ctx, width, status, show_gov_number, gov_number, directionInRad, selected, zoomMore8);
-  drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad, minZoom);
+  drawCarMarker(canvas, ctx, width, status, zoomMore8, selected, directionInRad);
   drawCarIcon(canvas, ctx, width, zoomMore8, selected);
 
   return CACHE_ICON[cacheStyleName] = new ol.style.Style({

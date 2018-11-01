@@ -33,7 +33,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     carPointsDataWs: {},
     gps_code: this.props.gps_code,
     zoomMore8: this.props.zoom >= 8,
-    minZoom: this.props.zoom <= MIN_ZOOM_VAL,
     STATUS_SHOW_GOV_NUMBER: this.props.STATUS_SHOW_GOV_NUMBER,
     lastPoint: this.props.lastPoint,
     statusShow: this.props.statusShow,
@@ -55,8 +54,12 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       const { gps_code: state_gps_code } = this.state;
 
       const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
+
       const zoomMore8 = zoom > 8;
+      
       const minZoom = zoom <= MIN_ZOOM_VAL;
+      const oldMinZoom = this.props.zoom <= MIN_ZOOM_VAL;
+
       if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
         hasWhatChage = true;
         whatPointChange = this.state.carPointsDataWs;
@@ -87,17 +90,16 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             coords_msk[1],
           ];
 
-          const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom: this.props.zoom };
+          const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom: zoom };
           const noCheckDisabledCenterOn = true;
           this.props.centerOn({ extent, opt_options }, noCheckDisabledCenterOn);
         }
         
       }
-      if (zoomMore8 !== this.state.zoomMore8 || minZoom !== this.state.minZoom) {
+      if (zoomMore8 !== this.state.zoomMore8 || minZoom !== oldMinZoom) {
         hasWhatChage = true;
         whatPointChange = this.state.carPointsDataWs;
         changeState.zoomMore8 = zoomMore8;
-        changeState.minZoom = minZoom;
       }
 
       if (STATUS_SHOW_GOV_NUMBER !== this.state.STATUS_SHOW_GOV_NUMBER) {
@@ -152,7 +154,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       }
 
       if (hasWhatChage) {
-        this.changeStyle({ ...this.state, carPointsDataWs: whatPointChange, ...changeState, old_carPointsDataWs: this.state.carPointsDataWs });
+        this.changeStyle({ ...this.state, carPointsDataWs: whatPointChange, ...changeState, old_carPointsDataWs: this.state.carPointsDataWs, minZoom });
 
         this.setState(changeState);
       }
@@ -271,6 +273,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
   handleReveiveData(data: WsData, statusShow) {
     if (updatePoints) {
+      const minZoom = this.props.zoom <= MIN_ZOOM_VAL;
+
       const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
       const { odh_mkad  } = this.props;
       const carsByStatus = {
@@ -336,7 +340,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
-            minZoom: this.state.minZoom,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {
@@ -416,7 +420,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
-            minZoom: this.state.minZoom,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {

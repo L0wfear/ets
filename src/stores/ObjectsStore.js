@@ -26,6 +26,7 @@ export default class ObjectsStore extends Store {
     this.register(carActions.getCarsByTechnicalOperation, this.handleGetCarsByTechnicalOperation);
 
     this.register(objectsActions.getCars, this.handleGetCars);
+    this.register(objectsActions.getSomeCars, this.handleGetCars);
     this.register(objectsActions.getModels, this.handleGetModels);
     this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
@@ -160,7 +161,7 @@ export default class ObjectsStore extends Store {
     return 'companyStructureList';
   }
 
-  handleGetCars(cars) {
+  handleGetCars(cars) { // Обработчик используется для getSomeCars() и для getCars()
     const carsList = cars.result.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';

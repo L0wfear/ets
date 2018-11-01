@@ -50,7 +50,7 @@ export default class WaybillJournal extends CheckableElementsList {
     this.updateList();
     flux.getActions('employees').getEmployees();
     flux.getActions('employees').getDrivers();
-    flux.getActions('objects').getCars();
+    flux.getActions('objects').getSomeCars('WaybillCarService');
     flux.getActions('objects').getWorkMode();
 
     this.setState({
@@ -58,6 +58,7 @@ export default class WaybillJournal extends CheckableElementsList {
         flux.getStore('session').state.userPermissions.includes(pName)
       )),
     });
+
   }
 
   async componentWillUpdate(nextProps, nextState) {

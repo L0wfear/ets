@@ -17,6 +17,8 @@ export const ConfigService = ETS_API_FACTORY.createApiServiceAdapter('config', {
 
 /* Путевые листы */
 export const WaybillService = ETS_API_FACTORY.createApiServiceAdapter('waybill', {});
+export const WaybillCarService = ETS_API_FACTORY.createApiServiceAdapter('waybill/cars', {});
+export const MissionCarService = ETS_API_FACTORY.createApiServiceAdapter('mission/cars', {});
 export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapter('latest_waybill_driver', {});
 
 /* ТС */

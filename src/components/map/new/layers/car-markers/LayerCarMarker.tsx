@@ -34,7 +34,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     carPointsDataWs: {},
     gps_code: this.props.gps_code,
     zoomMore8: this.props.zoom >= 8,
-    minZoom: this.props.zoom <= MIN_ZOOM_VAL,
     STATUS_SHOW_GOV_NUMBER: this.props.STATUS_SHOW_GOV_NUMBER,
     lastPoint: this.props.lastPoint,
     statusShow: this.props.statusShow,
@@ -310,6 +309,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
   handleReveiveData(data: WsData, statusShow) {
     if (updatePoints) {
+      const minZoom = this.props.zoom <= MIN_ZOOM_VAL;
+
       const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
       const { odh_mkad  } = this.props;
       const carsByStatus = {
@@ -375,7 +376,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
-            minZoom: this.state.minZoom,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {
@@ -455,7 +456,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
-            minZoom: this.state.minZoom,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {

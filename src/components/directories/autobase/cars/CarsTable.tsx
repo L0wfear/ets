@@ -5,7 +5,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/ui/input/EtsSelect';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 

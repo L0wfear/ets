@@ -17,7 +17,7 @@ import permissions from 'components/directories/geoobjects/pages/fueling_water/c
   operations: ['READ'],
 })
 export default class FuelingWaterStationsDirectory extends ElementsList {
-  componentinitDidMount() {
+  init() {
     const { flux } = this.context;
     flux.getActions('geoObjects').getGeozoneByType('fueling_water');
   }

@@ -122,7 +122,16 @@ export const getCarGpsNumberByDateTime = ({ asuods_id, gps_code, date_start }) =
   return Promise.resolve({ gps_code });
 }
 
-export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as TypeMeta) => (dispatch) => {
+export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as TypeMeta) => (dispatch, getState) => {
+  const {
+    monitorPage: {
+      carInfo: {
+        date_start,
+        date_end,
+      },
+    },
+  } = getState();
+
   dispatch(carInfoResetTrackCahing())
   dispatch({
     type: CAR_INFO_SET_TRACK_CACHING,
@@ -131,8 +140,8 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
         const payloadToTrack = {
           version: 3,
           gps_code,
-          from_dt: makeUnixTime(payloadData.date_start),
-          to_dt: makeUnixTime(payloadData.date_end),
+          from_dt: makeUnixTime(payloadData.date_start || date_start),
+          to_dt: makeUnixTime(payloadData.date_end || date_end),
           sensors: 1,
         };
 
@@ -146,14 +155,23 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
   });
 };
 
-export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) => (dispatch) => {
+export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) => (dispatch, getState) => {
+  const {
+    monitorPage: {
+      carInfo: {
+        date_start,
+        date_end,
+      },
+    },
+  } = getState();
+
   dispatch(carInfoResetMissionsData());
   dispatch({
     type: CAR_INFO_SET_MISSIONS_DATA,
     payload: CarInfoService.get({
       car_id: payloadData.asuods_id,
-      date_start: createValidDateTime(payloadData.date_start),
-      date_end: createValidDateTime(payloadData.date_end),
+      date_start: createValidDateTime(payloadData.date_start || date_start),
+      date_end: createValidDateTime(payloadData.date_end || date_end),
     }).then((ans) => (
       carInfoSetMissionsData(ans.result, payloadData.gps_code).payload
     )),

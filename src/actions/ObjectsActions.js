@@ -8,6 +8,8 @@ import {
   FaxogrammService,
   WorkKindsService,
   CarService,
+  WaybillCarService,
+  MissionCarService,
   CustomersService,
   TypesService,
   TypesAttr,
@@ -52,6 +54,19 @@ export default class ObjectsActions extends Actions {
     }
     return CarService.get(payload).then(r => ({ result: r.result.rows }));
   }
+
+  getSomeCars(serviceType) {
+    const payload = {};
+    switch (serviceType) {
+      case 'WaybillCarService':
+        return WaybillCarService.get(payload).then(r => ({ result: r.result }));
+      case 'MissionCarService':
+        return MissionCarService.get(payload).then(r => ({ result: r.result }));
+      default:
+        return CarService.get(payload).then(r => ({ result: r.result.rows }));
+    }
+  }
+  
 
   getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;

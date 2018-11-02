@@ -10,6 +10,7 @@ import {
   MissionReassignationService,
   MissionSourceService,
   MissionTemplateService,
+  MissionTemplateCarService,
   MissionTemplatesForFaxogramm,
   MissionLastReportService,
   DutyMissionService,
@@ -207,6 +208,13 @@ export default class MissionsActions extends Actions {
 
     payload.actual_seasons = true;
     return MissionTemplateService.get(payload);
+  }
+  getMissionTemplatesCars(payload = {}) {
+    if (payload.faxogramm_id) {
+      return MissionTemplatesForFaxogramm.get(payload);
+    }
+
+    return MissionTemplateCarService.get(payload);
   }
 
   createMissionTemplate(missionTemplate) {

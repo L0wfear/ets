@@ -76,7 +76,8 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
     const { flux } = this.context;
     const { payload = {} } = this.props;
-    flux.getActions('missions').getMissionTemplates(payload);
+    // flux.getActions('missions').getMissionTemplates(payload);
+    flux.getActions('missions').getMissionTemplatesCars(payload);
     // flux.getActions('objects').getWorkKinds();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('routes').getRoutes();
@@ -169,7 +170,6 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
   getAdditionalProps() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
-
     const missionTemplatesList = this.props.missionTemplatesList
       .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
 

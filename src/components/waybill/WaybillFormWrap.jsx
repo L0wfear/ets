@@ -21,6 +21,7 @@ import permissions from 'components/waybill/config-data/permissions';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import Taxes from './Taxes.jsx';
+import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -329,11 +330,7 @@ export default class WaybillFormWrap extends FormWrap {
       dismissible: false,
       autoDismiss: 0,
       uid: 'waybilPrintCurrForm',
-      children: (
-        <div>
-          <p>Формирование печатной формы</p>
-        </div>
-      ),
+      children: makeReactMessange('Формирование печатной формы'),
     });
     const callback = (waybill_id = currentWaybillId) => {
       return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)

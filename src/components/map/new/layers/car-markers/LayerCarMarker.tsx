@@ -32,13 +32,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   state = {
     ws: null,
     carPointsDataWs: {},
-    gps_code: this.props.gps_code,
-    zoomMore8: this.props.zoom >= 8,
-    STATUS_SHOW_GOV_NUMBER: this.props.STATUS_SHOW_GOV_NUMBER,
-    lastPoint: this.props.lastPoint,
-    statusShow: this.props.statusShow,
-    filters: this.props.filters,
-    carActualGpsNumberIndex: this.props.carActualGpsNumberIndex,
   }
   componentDidMount() {
     this.props.addLayer({ id: 'CarMarker', zIndex: 10, renderMode: 'image' }).then(() => {
@@ -234,6 +227,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           },
           gps_code,
         );
+
         const old_visible = feature.get('visible');
         const old_status = feature.get('status');
 
@@ -285,7 +279,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
     ws.onmessage = ({ data }) => {
-      this.handleReveiveData(JSON.parse(data), this.state.statusShow);
+      this.handleReveiveData(JSON.parse(data), this.props.statusShow);
     };
 
     ws.onclose = (event) => {
@@ -310,8 +304,16 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   handleReveiveData(data: WsData, statusShow) {
     if (updatePoints) {
       const minZoom = this.props.zoom <= MIN_ZOOM_VAL;
+      const zoomMore8 = this.props.zoom > 8;
 
-      const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
+      const { carPointsDataWs } = this.state;
+      const {
+        carActualGpsNumberIndex,
+        gps_code: state_gps_code,
+        lastPoint,
+        STATUS_SHOW_GOV_NUMBER,
+        filters,
+      } = this.props;
       const { odh_mkad  } = this.props;
       const carsByStatus = {
         in_move: 0,
@@ -351,7 +353,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           const visible = selected || checkOnVisible(
             {
-              filters: this.state.filters,
+              filters,
               wsData: carPointsDataWs[gps_code],
               statusShow,
               car_actualData: carActualGpsNumberIndex[gps_code],
@@ -372,7 +374,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             status: point.status,
             direction: point.direction,
             selected,
-            zoomMore8: this.state.zoomMore8,
+            zoomMore8,
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
@@ -420,7 +422,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           const visible = selected || checkOnVisible(
             {
-              filters: this.state.filters,
+              filters,
               wsData: carPointsDataWs[gps_code],
               statusShow,
               car_actualData: carActualGpsNumberIndex[gps_code],
@@ -452,7 +454,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             status: carPointsDataWs[gps_code].status,
             direction: carPointsDataWs[gps_code].direction,
             selected,
-            zoomMore8: this.state.zoomMore8,
+            zoomMore8: zoomMore8,
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
@@ -482,7 +484,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
   singleclick = (feature) => {
     const gps_code = (feature as any).getId();
-    if (gps_code !== this.state.gps_code) {
+    if (gps_code !== this.props.gps_code) {
       const gps_code = (feature as any).getId();
       this.props.carInfoSetGpsNumber(gps_code, this.state.carPointsDataWs[gps_code].car.gov_number);
     }

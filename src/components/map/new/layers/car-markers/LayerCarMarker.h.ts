@@ -69,13 +69,8 @@ export type CarPointsDataWsType = {
 }
 
 export type StateLayerCarMarker = {
-  zoomMore8: boolean,
-  gps_code: string | void;
   carPointsDataWs: CarPointsDataWsType;
-  lastPoint: any;
-  statusShow: any;
   ws: any,
-  filters: any;
 };
 
 

@@ -49,7 +49,7 @@ export default class WaybillJournal extends CheckableElementsList {
     flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter);
     flux.getActions('employees').getEmployees();
     flux.getActions('employees').getDrivers();
-    flux.getActions('objects').getCars();
+    flux.getActions('objects').getSomeCars('WaybillCarService');
   }
 
   async componentWillUpdate(nextProps, nextState) {

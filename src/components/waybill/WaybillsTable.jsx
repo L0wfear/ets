@@ -11,7 +11,7 @@ function waybillMissionsCompleteStatusLabelFunction(status) {
 export const getTableMeta = ({
   employeeFIOLabelFunction = () => {},
   driversList = [],
-  carsList = [],
+  carsFilterList = [],
   employeesList = [],
   structures = [],
 } = {}) => {
@@ -81,7 +81,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsFilterList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
       },
       {
@@ -106,7 +106,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: carsList.reduce((newArr, { garage_number }) => {
+          options: carsFilterList.reduce((newArr, { garage_number }) => {
             if (garage_number) {
               newArr.push({ value: garage_number, label: garage_number });
             }

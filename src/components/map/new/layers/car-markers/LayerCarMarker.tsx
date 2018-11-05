@@ -57,6 +57,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
       const zoomMore8 = zoom > 8;
       const minZoom = zoom <= MIN_ZOOM_VAL;
+
+
       if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
         hasWhatChage = true;
         whatPointChange = this.state.carPointsDataWs;

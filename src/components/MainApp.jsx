@@ -31,7 +31,9 @@ try {
 @connectToStores(['session'])
 @FluxContext
 @connect(
-  null,
+  state => ({
+    appConfig: state.session.appConfig,
+  }),
   dispatch => ({
     sessionSetData: props => dispatch(sessionSetData(props)),
     sessionResetData: () => dispatch(sessionResetData()),
@@ -44,6 +46,7 @@ class MainApp extends React.Component {
       currentUser: PropTypes.object,
       sessionSetData: PropTypes.func,
       sessionResetData: PropTypes.func,
+      appConfig: PropTypes.object,
     };
   }
 
@@ -75,6 +78,9 @@ class MainApp extends React.Component {
   render() {
     const {
       currentUser,
+      appConfig: {
+        footer_url,
+      },
     } = this.props;
 
     const company_name = currentUser.company_name || '';
@@ -101,6 +107,17 @@ class MainApp extends React.Component {
         <div className="app-footer">
           <div className="container-tp">
             <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
+            {
+              footer_url
+              ? (
+                <div className="container-tp">
+                  <a className="tp not-red" href={footer_url}>{footer_url}</a>
+                </div>
+              )
+              : (
+                <div className="none"></div>
+              )
+            }
           </div>
           <div className="container-company">
             <span>{`${company_name} ${structure_name}`}</span>

@@ -40,6 +40,7 @@ export default class DrawMap extends PolyMap {
     }
 
     this.renderPolygons(this.props.polys);
+
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
     }

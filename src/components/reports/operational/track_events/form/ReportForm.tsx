@@ -42,7 +42,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsGeoObjectsMapModalNew, prevState: StateGeoObjectsMapModalNew) {
     const { coords } = nextProps;
     if (coords !== prevState.coords) {
       return {

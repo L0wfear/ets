@@ -42,7 +42,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
     ),
   }
 
-  static getDerivedStateFromProps({ infoData }, state) {
+  static getDerivedStateFromProps({ infoData }: PropsWaybillDraftInfo, state: StateWaybillDraftInfo) {
     if (infoData !== state.infoData) {
       if (infoData) {
         return {

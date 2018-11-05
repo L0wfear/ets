@@ -54,7 +54,7 @@ const makeData = (front_cars_sensors_level, { sensorRawData = false }) => (
   }, [])
 )
 
-class CarFuelChart extends React.Component <PropsCarFuelChart, StateCarFuelChart> {
+class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart> {
   constructor(props) {
     super(props);
 
@@ -69,7 +69,7 @@ class CarFuelChart extends React.Component <PropsCarFuelChart, StateCarFuelChart
       front_cars_sensors_level,
     }
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsCarFuelChart, prevState: StateCarFuelChart) {
     const { front_cars_sensors_level } = nextProps;
     if (front_cars_sensors_level !== prevState.front_cars_sensors_level) {
       const data = makeData(front_cars_sensors_level, prevState);

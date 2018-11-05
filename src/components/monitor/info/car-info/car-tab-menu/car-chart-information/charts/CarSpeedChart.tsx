@@ -82,7 +82,7 @@ const addPointToSeries = (data, { lastPoint: { timestamp, speed_avg, checkCoords
   })
 }
 
-class CarSpeedChart extends React.Component <PropsCarSpeedChart, StateCarSpeedChart> {
+class CarSpeedChart extends React.Component<PropsCarSpeedChart, StateCarSpeedChart> {
   constructor(props) {
     super(props);
 
@@ -98,7 +98,7 @@ class CarSpeedChart extends React.Component <PropsCarSpeedChart, StateCarSpeedCh
       speed_lim,
     }
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsCarSpeedChart, prevState: StateCarSpeedChart) {
     if (nextProps.track !== -1) {
       let changedState: any = {};
       let hasChange = false;

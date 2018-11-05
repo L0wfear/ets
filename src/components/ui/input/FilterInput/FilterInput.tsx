@@ -54,7 +54,7 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: IPropsFilterInput, prevState: IStateFilterInput) {
     if (
       !isEqual(prevState.filterValue, nextProps.filterValue) &&
       isEmpty(nextProps.filterValue)

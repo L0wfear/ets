@@ -42,7 +42,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
     ),
   }
 
-  static getDerivedStateFromProps({ infoData }, state) {
+  static getDerivedStateFromProps({ infoData }: PropsWaybillCompletedInfo, state: StateWaybillCompletedInfo) {
     if (infoData !== state.infoData) {
       if (infoData) {
         return {

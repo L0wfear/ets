@@ -50,7 +50,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsMapGeoobjectWrap, prevState: StateMapGeoobjectWrap) {
     const { geoobjectData } = nextProps;
     if (geoobjectData !== prevState.geoobjectData) {
       return {

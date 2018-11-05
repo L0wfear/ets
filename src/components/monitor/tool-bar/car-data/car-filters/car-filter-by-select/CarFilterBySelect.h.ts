@@ -10,6 +10,7 @@ export type PropsCarFilterByText = {
   changeCarFilterMulty: Function;
   active: boolean;
   isOkrug: boolean;
+  carActualGpsNumberIndex: any;
 };
 
 export type StateCarFilterByText = {

@@ -46,7 +46,7 @@ class Paginator extends React.Component<PropsPaginator, StatePaginator> {
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsPaginator, prevState: StatePaginator) {
     const { processedArray, paginator: { perPage } } = nextProps;
 
     if (processedArray !== prevState.processedArray || perPage !== prevState.perPage) {

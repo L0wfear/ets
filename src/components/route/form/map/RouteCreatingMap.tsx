@@ -53,7 +53,7 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
     inDraw: false,
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps: PropsRouteCreatingMap) {
     const {
       objectsType,
       drawObjectList,

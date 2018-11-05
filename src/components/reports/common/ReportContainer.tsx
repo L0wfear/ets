@@ -64,7 +64,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: IPropsReportContainer, prevState: IStateReportContainer) {
     const { lastSearchObject } = prevState;
     const { location: { search: search_next } } = nextProps;
 

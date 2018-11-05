@@ -42,7 +42,7 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
     ),
   }
   
-  static getDerivedStateFromProps({ infoData }, state) {
+  static getDerivedStateFromProps({ infoData }: PropsWaybillInProgressInfo, state: StateWaybillInProgressInfo) {
     if (infoData !== state.infoData) {
       if (infoData) {
         return {

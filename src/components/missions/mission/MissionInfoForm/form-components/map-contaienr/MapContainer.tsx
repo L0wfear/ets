@@ -10,7 +10,7 @@ import {
   StateMapContainer,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/MapContainer.h';
 
-class MapContainer extends React.PureComponent <PropsMapContainer, StateMapContainer> {
+class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContainer> {
   state = {
     SHOW_GEOOBJECTS: true,
     SHOW_TRACK: true,
@@ -19,7 +19,7 @@ class MapContainer extends React.PureComponent <PropsMapContainer, StateMapConta
     front_parkings: this.props.front_parkings,
   }
 
-  static getDerivedStateFromProps(nextProps, state) {
+  static getDerivedStateFromProps(nextProps: PropsMapContainer, state: StateMapContainer) {
     const {
       SHOW_TRACK,
       SHOW_GEOOBJECTS,

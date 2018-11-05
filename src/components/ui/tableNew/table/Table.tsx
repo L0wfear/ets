@@ -56,7 +56,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     this.state = state;
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: DataTableProps, prevState: DataTableState) {
     if (nextProps.data !== prevState.originalData || nextProps.filterValues !== prevState.filterValues) {
       const changesState: any = {};
       changesState.data = makeData({

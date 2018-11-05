@@ -25,7 +25,7 @@ const placeholder = {
 };
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
-  constructor(props) {
+  constructor(props: PropsCarFilterByText) {
     super(props);
 
     const { carActualGpsNumberIndex } = props;
@@ -41,7 +41,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsCarFilterByText, prevState: StateCarFilterByText) {
     const { carActualGpsNumberIndex } = nextProps;
 
     if (carActualGpsNumberIndex !== prevState.carActualGpsNumberIndex) {

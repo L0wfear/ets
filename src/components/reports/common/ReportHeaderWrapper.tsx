@@ -21,7 +21,7 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
       };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps: IPropsHeader, prevState: IStateReportHeaderWrapper) {
       const { queryState } = nextProps;
       const queryStateLength = Object.keys(queryState).length;
 

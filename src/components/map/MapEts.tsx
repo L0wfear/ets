@@ -52,7 +52,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PropsMapEts, prevState: StateMapEts) {
     const {
       hasChange,
       newChnagedStateObj,

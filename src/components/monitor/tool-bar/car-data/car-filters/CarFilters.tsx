@@ -2,7 +2,7 @@ import * as React from 'react';
 import CarFilterByText from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText';
 import CarFilterBySelect from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect';
 
-const CarFilters: React.SFC<{}> = () => (
+const CarFilters: React.SFC = () => (
   <span className="car_filters-container-wrap">
     <span className="car_filters-container">
       <CarFilterByText />

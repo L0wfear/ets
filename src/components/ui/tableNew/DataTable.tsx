@@ -41,7 +41,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     this.state = state;
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: DataTableProps, prevState: DataTableState) {
     const {
       enumerated,
       tableMeta: tableMeta_next,

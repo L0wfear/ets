@@ -7,7 +7,6 @@ import {
 } from 'components/ui/@types/ReactSelect.h';
 
 export type PropsCarFilterByText = {
-  changeCarFilterMulty: Function;
   active: boolean;
   isOkrug: boolean;
   carActualGpsNumberIndex: any;

@@ -17,6 +17,7 @@ import DefaultInput from 'components/monitor/tool-bar/car-data/car-filters/car-f
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 const placeholder = {
   carFilterMultyType: 'Тип техники',
@@ -41,7 +42,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     };
   }
 
-  static getDerivedStateFromProps(nextProps: PropsCarFilterByText, prevState: StateCarFilterByText) {
+  static getDerivedStateFromProps(nextProps: any, prevState: StateCarFilterByText) {
     const { carActualGpsNumberIndex } = nextProps;
 
     if (carActualGpsNumberIndex !== prevState.carActualGpsNumberIndex) {
@@ -126,15 +127,13 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
   }
 }
 
-const mapStateToProps = state => ({
-  isOkrug: state.session.userData.isOkrug,
-  carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
-  
-  active: ['carFilterMultyType', 'carFilterMultyStructure', 'carFilterMultyOwner'].some(key => (
-    state.monitorPage.filters.data[key].length
-  )),
-});
-
- export default connect(
-  mapStateToProps,
+export default connect<any, any, any, ReduxState>(
+  (state) => ({
+    isOkrug: state.session.userData.isOkrug,
+    carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
+    
+    active: ['carFilterMultyType', 'carFilterMultyStructure', 'carFilterMultyOwner'].some(key => (
+      state.monitorPage.filters.data[key].length
+    )),
+  }),
  )(CarFilterByText);

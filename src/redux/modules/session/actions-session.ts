@@ -4,7 +4,7 @@ import {
   SESSION_RESET_DATA,
 } from 'redux/modules/session/session';
 
-export const getSpecificPermissions = (user) => {
+export const withSpecificPermissions = (user) => {
   const permissions = [];
 
   if (user.login === 'gormost') {
@@ -20,16 +20,17 @@ export const getSpecificPermissions = (user) => {
     permissions.push('pgm_store.read');
   }
 
-  return [
-    ...user.permissions,
-    ...permissions,
-  ]
+  return permissions;
 };
 
 export const sessionSetData = ({ currentUser, session }) => {
   const userData = { ...currentUser };
 
-  userData.permissions = getSpecificPermissions(currentUser);
+  userData.permissions = [
+    ...currentUser.permissions,
+    ...withSpecificPermissions(currentUser),
+  ];
+
   userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
 

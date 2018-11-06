@@ -19,6 +19,7 @@ export default class ObjectsStore extends Store {
     this.register(carActions.getCarsByTechnicalOperation, this.handleGetCarsByTechnicalOperation);
 
     this.register(objectsActions.getCars, this.handleGetCars);
+    this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
     this.register(objectsActions.getModels, this.handleGetModels);
     this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
@@ -169,6 +170,17 @@ export default class ObjectsStore extends Store {
 
   handleGetCarsByTechnicalOperation(result) {
     this.setState({ carListBuyTO: result });
+  }
+  handleGetSomeCars(cars) {
+    const carsFilterList = cars.result.map((c) => {
+      const model = _.find(this.state.modelsList, m => m.id === c.model_id);
+      c.model = model ? model.title : 'Н/Д';
+      const type = _.find(this.state.typesList, t => t.asuods_id === c.type_id);
+      c.type = type ? type.title : 'Н/Д';
+      return c;
+    });
+    const carsIndex = _.keyBy(carsFilterList, 'asuods_id');
+    this.setState({ carsFilterList, carsIndex });
   }
 
   handleGetTrack(track) {

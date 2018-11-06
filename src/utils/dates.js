@@ -177,8 +177,8 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
   const [summerStartMonth, summerStartDay] = summerStart;
   const [summerEndMonth, summerEndDay] = summerEnd;
 
-  const begDateForSummerSeason = new Date(2018, summerStartMonth, summerStartDay);
-  const endDateForSummerSeason = new Date(2018, summerEndMonth, summerEndDay);
+  const begDateForSummerSeason = new Date(2018, summerStartMonth - 1, summerStartDay);
+  const endDateForSummerSeason = new Date(2018, summerEndMonth - 1, summerEndDay);
 
   if (diffDates(date, begDateForSummerSeason) >= 0 && diffDates(endDateForSummerSeason, date) >= 0) {
     return 'summer';

@@ -11,6 +11,11 @@ import RouteForm from 'components/route/form/RouteForm';
 import FormWrap from 'components/compositions/FormWrap';
 import { DivNone } from 'global-styled/global-styled';
 
+let lastObjectList = {
+  object_type: null,
+  object_list: [],
+};
+
 class RouteFormWrap extends FormWrap {
   constructor(props) {
     super(props);
@@ -55,8 +60,24 @@ class RouteFormWrap extends FormWrap {
   updateFromStatePolys = (formState, isInitOpen) => {
     const {
       municipal_facility_id,
+      object_list,
       type: object_type,
     } = formState;
+
+    let oldObjectList = object_list;
+
+    if (municipal_facility_id && object_type) {
+      if (object_type === lastObjectList.object_type) {
+        if (!object_list.length) {
+          oldObjectList = lastObjectList.object_list;
+        } else {
+          lastObjectList.object_list = oldObjectList;
+        }
+      } else {
+        lastObjectList.object_list = object_list;
+        lastObjectList.object_type = object_type;
+      }
+    }
 
     let new_polys = {};
     if (object_type !== 'mixed') {
@@ -68,7 +89,7 @@ class RouteFormWrap extends FormWrap {
         ...cloneDeep(this.props.odhPolys),
       };
     }
-    each(formState.object_list.filter(o => !!o.object_id), (o) => {
+    each(oldObjectList.filter(o => !!o.object_id), (o) => {
       if (new_polys[o.object_id]) {
         new_polys[o.object_id].state = o.state;
       }
@@ -87,11 +108,18 @@ class RouteFormWrap extends FormWrap {
             },
           }), {});
 
+          const newObjectList = [];
+
+          each(oldObjectList.filter(o => !!o.object_id), (o) => {
+            if (polys[o.object_id]) {
+              polys[o.object_id].state = o.state;
+              newObjectList.push(o);
+            }
+          });
+
           if (isInitOpen) {
-            each(formState.object_list.filter(o => !!o.object_id), (o) => {
-              if (polys[o.object_id]) {
-                polys[o.object_id].state = o.state;
-              } else if (new_polys[o.object_id]) {
+            each(oldObjectList.filter(o => !!o.object_id), (o) => {
+              if (new_polys[o.object_id]) {
                 polys[o.object_id] = {
                   ...new_polys[o.object_id],
                   state: o.state,
@@ -100,7 +128,8 @@ class RouteFormWrap extends FormWrap {
               }
             });
           } else {
-            this.handleFormStateChange('object_list', []);
+            lastObjectList.object_list = newObjectList.length ? newObjectList : lastObjectList.object_list;
+            this.handleFormStateChange('object_list', newObjectList);
             this.handleFormStateChange('input_lines', []);
             this.handleFormStateChange('draw_list', []);
             this.handleFormStateChange('draw_odh_list', []);
@@ -136,7 +165,7 @@ class RouteFormWrap extends FormWrap {
       console.log(error);
     }
 
-    this.props.onFormHide(true, result);
+    this.onFormHide(true, result);
   }
 
   handleFormStateChangeRoute = (f, e) => {
@@ -182,6 +211,15 @@ class RouteFormWrap extends FormWrap {
     };
   }
 
+  onFormHide = (...arg) => {
+    lastObjectList = {
+      object_list: [],
+      object_type: null,
+    };
+
+    this.props.onFormHide(...arg);
+  }
+
   render() {
     const { props } = this;
 
@@ -192,7 +230,7 @@ class RouteFormWrap extends FormWrap {
           onSubmit={this.handleFormSubmit}
           handleFormChange={this.handleFormStateChangeRoute}
           show={this.props.showForm}
-          onHide={this.props.onFormHide}
+          onHide={this.onFormHide}
           resetState={this.resetFormState}
           fromMission={this.props.fromMission}
           notTemplate={this.props.notTemplate}

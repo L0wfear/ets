@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { fetchTrack, fetchCarInfo } from 'components/monitor/new/info/car-info/redux/modules/actions-car-info';
-import { initialState } from 'components/monitor/new/info/car-info/redux/modules/car-info';
 
 import CarAttributeInformation from 'components/monitor/new/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation';
 import CarChartsInformation from 'components/monitor/new/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation';
@@ -139,8 +138,6 @@ const mergeProps = ({ asuods_id, odh_mkad, gps_code, ...otherStateProps }, { dis
     dispatch(fetchCarInfo({
       asuods_id: props.asuods_id,
       gps_code: props.gps_code,
-      date_start: initialState.date_start,
-      date_end: initialState.date_end,
     }))
   ),
   fetchTrack: (props) => (
@@ -148,8 +145,6 @@ const mergeProps = ({ asuods_id, odh_mkad, gps_code, ...otherStateProps }, { dis
       {
         asuods_id: props.asuods_id,
         gps_code: props.gps_code,
-        date_start: initialState.date_start,
-        date_end: initialState.date_end,
       },
       odh_mkad,
     ))

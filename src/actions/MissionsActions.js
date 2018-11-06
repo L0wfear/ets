@@ -9,6 +9,7 @@ import {
   MissionReassignationService,
   MissionSourceService,
   MissionTemplateService,
+  MissionTemplateCarService,
   MissionTemplatesForFaxogramm,
   DutyMissionService,
   DutyMissionArchiveService,
@@ -202,6 +203,13 @@ export default class MissionsActions extends Actions {
     }
 
     return MissionTemplateService.get(payload);
+  }
+  getMissionTemplatesCars(payload = {}) {
+    if (payload.faxogramm_id) {
+      return MissionTemplatesForFaxogramm.get(payload);
+    }
+
+    return MissionTemplateCarService.get(payload);
   }
 
   createMissionTemplate(missionTemplate) {

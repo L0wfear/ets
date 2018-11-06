@@ -23,6 +23,7 @@ export default class FilterRow extends React.Component {
       onChange: PropTypes.func,
       onMultiChange: PropTypes.func,
       entity: PropTypes.string,
+      customOptions: PropTypes.array,
     };
   }
 
@@ -45,6 +46,7 @@ export default class FilterRow extends React.Component {
       onMultiChange,
       tableData,
       type,
+      customOptions,
       entity,
     } = this.props;
     let { value } = this.props;
@@ -60,7 +62,7 @@ export default class FilterRow extends React.Component {
 
     if (type) {
       if (type === 'select' || type === 'multiselect' || type === 'advanced-select-like') {
-        let options = availableOptions || _(tableData)
+        let options = availableOptions || customOptions || _(tableData)
                         .uniqBy(name)
                         .map(d => ({
                           value: typeof d[name] === 'boolean' ? +d[name] : d[name],

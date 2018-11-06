@@ -2,12 +2,16 @@ import { isString, isNumber } from 'lodash';
 
 export const defaultSelectListMapper = ({ id, name }) => ({ value: id, label: name });
 
-export const onChangeSelectLegacy = (sValue) => {
+export const onChangeSelectLegacy = (sValue, multi) => {
   let newValue = null;
 
   if (sValue) {
     if (Array.isArray(sValue)) {
-      newValue = sValue.map(({ value }) => value);
+      if (!multi && !sValue.length) {
+        newValue = null;
+      } else {
+        newValue = sValue.map(({ value }) => value);
+      }
     } else {
       newValue = sValue.value;
     }

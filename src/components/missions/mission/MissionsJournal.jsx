@@ -71,7 +71,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
     flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
-    flux.getActions('objects').getCars();
+    flux.getActions('objects').getSomeCars('MissionCarService');
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
     flux.getActions('companyStructure').getCompanyStructure(linear);

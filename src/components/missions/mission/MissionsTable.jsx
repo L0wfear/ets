@@ -13,7 +13,7 @@ const highlight = [{ is_valid_to_order_operation: false }];
 
 export const getTableMeta = ({
   missionSourcesList = [],
-  carsList = [],
+  carsFilterList = [],
   structures = [],
   technicalOperationsList = [],
   municipalFacilityList = [],
@@ -114,7 +114,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: carsList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsFilterList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },
@@ -127,7 +127,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: uniqBy(carsList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
+          options: uniqBy(carsFilterList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
         },
         cssClassName: 'width120',
       },

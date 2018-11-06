@@ -684,6 +684,9 @@ export default class DataTable extends React.Component {
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
 
+    const customFiltersValues = { // для кастомизации значений фильтров, ключи должны совпадать
+      car_gov_number: this.props.govNumberFilter
+    };
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
@@ -730,6 +733,7 @@ export default class DataTable extends React.Component {
               options={tableMetaCols.filter(el => el.filter !== false)}
               tableData={this.props.results}
               entity={this.props.entity}
+              customFiltersValues={customFiltersValues}
             />
           }
         </Div>

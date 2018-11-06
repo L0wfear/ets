@@ -308,18 +308,17 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   handleReveiveData(data: WsData, statusShow) {
     if (updatePoints) {
       const {
-        carPointsDataWs,
-      } = this.state;
-      const {
         gps_code: state_gps_code,
         lastPoint,
         carActualGpsNumberIndex,
         STATUS_SHOW_GOV_NUMBER,
         zoom,
         odh_mkad,
+        filters,
       } = this.props;
 
       const zoomMore8 = zoom > 8;
+      const { carPointsDataWs } = this.state;
 
       const carsByStatus = {
         in_move: 0,
@@ -361,7 +360,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           const visible = selected || checkOnVisible(
             {
-              filters: this.props.filters,
+              filters,
               wsData: carPointsDataWs[gps_code],
               statusShow,
               car_actualData: carActualGpsNumberIndex[gps_code],
@@ -430,7 +429,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           const visible = selected || checkOnVisible(
             {
-              filters: this.props.filters,
+              filters,
               wsData: carPointsDataWs[gps_code],
               statusShow,
               car_actualData: carActualGpsNumberIndex[gps_code],

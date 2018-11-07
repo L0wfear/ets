@@ -402,7 +402,6 @@ export class MissionForm extends Form {
       const { flux } = this.context;
       const { fromWaybill } = this.props;
 
-      console.log('here')
       return getDataByNormatives(
         normatives,
         this.state.kind_task_ids,

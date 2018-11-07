@@ -22,5 +22,3 @@ export default {
   children,
   permissions: getChildrenPermissions(children),
 };
-
-console.log(getChildrenPermissions(children))

@@ -149,7 +149,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const query = this.removeElementAction(mission.id);
 
     query.then(() => {
-      console.log('here')
       this.refreshList(this.state);
       this.setState({
         checkedElements: {},

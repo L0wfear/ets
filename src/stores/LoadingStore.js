@@ -126,6 +126,7 @@ export default class LoadingStore extends Store {
       missionsActons.printMission,
       missionsActons.printDutyMission,
       missionsActons.getCleaningMunicipalFacilityList,
+      missionsActons.getCleaningOneNorm,
 
       routesActions.getRoutes,
       routesActions.createRoute,

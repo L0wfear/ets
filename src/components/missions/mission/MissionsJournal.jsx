@@ -94,6 +94,11 @@ export default class MissionsJournal extends CheckableElementsList {
   }
 
   async refreshList(state = this.state) {
+    this.setState({
+      selectedElement: null,
+      checkedElements: {},
+    });
+
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
 
     const { total_count } = missions.result.meta;
@@ -115,6 +120,8 @@ export default class MissionsJournal extends CheckableElementsList {
     if (selectedElement) {
       validateMissionsArr.push(selectedElement);
     }
+
+    console.log(validateMissionsArr)
 
     return !validateMissionsArr.length || !validateMissionsArr.every(({ status, can_be_closed }) => (
       (
@@ -170,7 +177,7 @@ export default class MissionsJournal extends CheckableElementsList {
       !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
       this.refreshList(this.state);
       this.setState({ checkedElements: {} });
-    });
+    })
   }
 
   rejectCheckedElements() {

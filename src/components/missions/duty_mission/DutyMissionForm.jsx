@@ -126,8 +126,7 @@ export class DutyMissionForm extends Form {
           this.props.employeesIndex[brigade_id],
         ];
       }, []);
-
-      if (hasNotActiveEmployees) {
+      if (hasNotActiveEmployees && brigade_employee_id_list.length) {
         onlyActiveEmployeeNotification();
       }
     }

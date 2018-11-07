@@ -31,6 +31,13 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
     };
   }
 
+  setLastZoomAndExtends = (zoom, center) => {
+    this.setState({
+      zoom,
+      center,
+    })
+  }
+
   startDraw = () => {
     if (typeof this.props.startDraw === 'function') {
       this.props.startDraw();
@@ -155,6 +162,9 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
           onDrawFeatureAdd={this.onDrawFeatureAdd}
           onDrawFeatureClick={this.onDrawFeatureClick}
           removeLastDrawFeature={this.removeLastDrawFeature}
+          setLastZoomAndExtends={this.setLastZoomAndExtends}
+          zoom={zoom}
+          center={center}
         />
       );
     }
@@ -168,6 +178,7 @@ class MapWrap extends React.Component<IMapWrapProps, IMapWrapState> {
         objectsType={objectsType}
         draw_object_list={drawObjectList}
         onFeatureClick={this.onFeatureClick}
+        setLastZoomAndExtends={this.setLastZoomAndExtends}
       />
     );
   }

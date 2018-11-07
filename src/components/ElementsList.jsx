@@ -109,13 +109,13 @@ class ElementsList extends React.Component {
       return;
     }
 
-    if (selectedElement[this.selectElement]) {
+    if (selectedElement[this.selectField]) {
       this.setState({ selectedElement });
     }
   }
 
   onRowClick = ({ props: { data } }) => {
-    if (data[this.selectElement]) {
+    if (data[this.selectField]) {
       this.setState({
         selectedElement: data,
       });
@@ -123,7 +123,7 @@ class ElementsList extends React.Component {
   }
 
   onRowDoubleClick = ({ props: { data } }) => {
-    if (this.state.readPermission && data[this.selectElement]) {
+    if (this.state.readPermission && data[this.selectField]) {
       this.setState({
         selectedElement: data,
         showForm: true,

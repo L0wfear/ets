@@ -12,8 +12,8 @@ const STAND = process.env.STAND;
 const DOC_URL = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/docs/',
-    stage: 'https://ets-test.mos.ru/ets-stage2/docs/',
-    prod: 'http://ets2.mos.ru/docs/',
+    stage: 'https://ets-test.mos.ru/docs/',
+    prod: 'http://ets.mos.ru/docs/',
   },
   origin: {
     dev: 'http://dev2-ets.gost-group.com/docs/',
@@ -37,8 +37,8 @@ const config = {
 
 const notification_config = {
   develop: {
-    stage: 'wss://ets-test.mos.ru/ets-stage2/services/notification_ws',
-    prod: 'wss://ets2.mos.ru/services/notification_ws',
+    stage: 'wss://ets-test.mos.ru/services/notification_ws',
+    prod: 'wss://ets.mos.ru/services/notification_ws',
     dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
   },
   origin: {
@@ -50,8 +50,8 @@ const notification_config = {
 
 const STANDS = {
   develop: {
-    stage: 'https://ets-test.mos.ru/ets-stage2/services',
-    prod: 'https://ets2.mos.ru/services',
+    stage: 'https://ets-test.mos.ru/services',
+    prod: 'https://ets.mos.ru/services',
     dev: 'http://dev2-ets.gost-group.com/services',
   },
   origin: {

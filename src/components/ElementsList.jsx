@@ -103,26 +103,27 @@ class ElementsList extends React.Component {
    * элементом
    */
   @autobind
-  selectElement({ props }) {
-    const selectedElement = { ...props.data };
-
+  selectElement({ props: { data: selectedElement } }) {
     if (props.fromKey) {
       this.setState({ selectedElement });
       return;
     }
-    this.clicks += 1;
 
-    this.setState({ selectedElement })
+    if (selectedElement[this.selectElement]) {
+      this.setState({ selectedElement });
+    }
   }
 
   onRowClick = ({ props: { data } }) => {
-    this.setState({
-      selectedElement: data,
-    });
+    if (data[this.selectElement]) {
+      this.setState({
+        selectedElement: data,
+      });
+    }
   }
 
   onRowDoubleClick = ({ props: { data } }) => {
-    if (this.state.readPermission) {
+    if (this.state.readPermission && data[this.selectElement]) {
       this.setState({
         selectedElement: data,
         showForm: true,

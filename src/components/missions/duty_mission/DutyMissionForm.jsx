@@ -127,7 +127,7 @@ export class DutyMissionForm extends Form {
       let hasNotActiveEmployees = false;
       brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
         if (!this.isActiveEmployee(brigade_id)) {
-          hasNotActive = true;
+          hasNotActiveEmployees = true;
         }
         return [
           ...newArr,

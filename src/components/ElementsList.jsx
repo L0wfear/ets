@@ -90,8 +90,6 @@ class ElementsList extends React.Component {
    * элементом
    */
   selectElement = ({ props: { data: selectedElement } }) => {
-    const selectedElement = { ...props.data };
-
     if (props.fromKey) {
       this.setState({ selectedElement });
       return;

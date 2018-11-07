@@ -14,12 +14,10 @@ import { DivNone } from 'global-styled/global-styled';
 let lastObjectList = {
   object_type: null,
   object_list: [],
-  draw_odh_list: [],
-  draw_list: [],
-  input_lines: [],
 };
 
 class RouteFormWrap extends FormWrap {
+
   constructor(props) {
     super(props);
 
@@ -64,36 +62,21 @@ class RouteFormWrap extends FormWrap {
     const {
       municipal_facility_id,
       object_list,
-      draw_odh_list,
-      draw_list,
-      input_lines,
       type: object_type,
     } = formState;
 
     let oldObjectList = object_list;
-    let oldOdhObjectList = draw_odh_list;
-    let oldDrawList = draw_list;
-    let oldInputLines = input_lines;
 
     if (municipal_facility_id && object_type) {
       if (object_type === lastObjectList.object_type) {
         if (!object_list.length) {
           oldObjectList = lastObjectList.object_list;
-          oldOdhObjectList = lastObjectList.draw_odh_list;
-          oldDrawList = lastObjectList.draw_list;
-          oldInputLines = lastObjectList.input_lines;
         } else {
           lastObjectList.object_list = oldObjectList;
-          lastObjectList.draw_odh_list = oldOdhObjectList;
-          lastObjectList.draw_list = oldDrawList;
-          lastObjectList.input_lines = oldInputLines;
         }
       } else {
         lastObjectList.object_list = object_list;
         lastObjectList.object_type = object_type;
-        lastObjectList.draw_odh_list = oldOdhObjectList;
-        lastObjectList.draw_list = oldDrawList;
-        lastObjectList.input_lines = oldInputLines;
       }
     }
 
@@ -148,9 +131,9 @@ class RouteFormWrap extends FormWrap {
           } else {
             lastObjectList.object_list = newObjectList.length ? newObjectList : lastObjectList.object_list;
             this.handleFormStateChange('object_list', newObjectList);
-            this.handleFormStateChange('draw_odh_list', oldOdhObjectList);
-            this.handleFormStateChange('input_lines', oldInputLines);
-            this.handleFormStateChange('draw_list', oldDrawList);
+            this.handleFormStateChange('input_lines', []);
+            this.handleFormStateChange('draw_list', []);
+            this.handleFormStateChange('draw_odh_list', []);
           }
 
           this.handleFormStateChange('polys', polys);

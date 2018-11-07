@@ -137,6 +137,7 @@ export interface IUserNotification extends IResponseRowObject<number> {
   priority: 'info' | 'warning' | 'alert';
   created_at: string;
   data: {};
+  additional_info: string;
 }
 
   // "defaults": {

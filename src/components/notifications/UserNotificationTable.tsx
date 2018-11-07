@@ -117,8 +117,7 @@ const renderers: ISchemaRenderer<IUserNotification> = {
     </div>,
   additional_info: ({rowData}) => 
     <div>
-        {console.log('asddddddddddd', rowData.data)}
-        {JSON.stringify(rowData.data)}
+        { rowData.gov_number ? `Рег. номер: ${rowData.gov_number}` : null }
     </div>,
 };
 

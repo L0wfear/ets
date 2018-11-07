@@ -32,6 +32,7 @@ import DataTableNew from 'components/ui/tableNew/DataTable';
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -461,7 +462,10 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators<any, any>(reportActionCreators, dispatch);
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ReportContainer));
+export default compose<IPropsReportContainer,any>(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(ReportContainer);

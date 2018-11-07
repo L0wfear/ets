@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.228",
+    "version": "2.0.23.233",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -59,6 +59,7 @@
         "@types/react-bootstrap": "=0.32.14",
         "@types/react-dom": "=16.0.9",
         "@types/react-redux": "=6.0.9",
+        "@types/react-router-dom": "^4.3.1",
         "@types/recompose": "=0.27.0",
         "@types/styled-components": "=4.0.3",
         "@types/webpack-env": "=1.13.6",

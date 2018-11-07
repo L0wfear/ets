@@ -89,26 +89,27 @@ class ElementsList extends React.Component {
    * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
    * элементом
    */
-  selectElement = ({ props }) => {
-    const selectedElement = { ...props.data };
-
+  selectElement = ({ props: { data: selectedElement } }) => {
     if (props.fromKey) {
       this.setState({ selectedElement });
       return;
     }
-    this.clicks += 1;
 
-    this.setState({ selectedElement });
+    if (selectedElement[this.selectField]) {
+      this.setState({ selectedElement });
+    }
   }
 
   onRowClick = ({ props: { data } }) => {
-    this.setState({
-      selectedElement: data,
-    });
+    if (data[this.selectField]) {
+      this.setState({
+        selectedElement: data,
+      });
+    }
   }
 
   onRowDoubleClick = ({ props: { data } }) => {
-    if (this.state.readPermission) {
+    if (this.state.readPermission && data[this.selectField]) {
       this.setState({
         selectedElement: data,
         showForm: true,

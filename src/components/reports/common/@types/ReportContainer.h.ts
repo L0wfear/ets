@@ -1,11 +1,12 @@
-import { IHistoryInjected, IExportableTableList } from 'utils/@types/common.h';
+import { IExportableTableList } from 'utils/@types/common.h';
 import { IDataTableSelectedRowPropsData } from 'components/ui/table/@types/schema.h';
 import { IReportProps } from 'components/reports/@types/common.h';
 import * as ReduxTypes from 'components/reports/redux-main/modules/@types/report.h';
+import { RouteComponentProps } from 'react-router';
 
 export interface IPropsReportContainer extends
   IExportableTableList,
-  IHistoryInjected,
+  RouteComponentProps,
   IReportProps,
   ReduxTypes.IReportStateProps {
   /**

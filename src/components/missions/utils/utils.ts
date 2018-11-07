@@ -1,10 +1,9 @@
 import createFio from 'utils/create-fio';
+const positions = require('components/missions/utils/position.json');
 
-// DutyMission
-const PermittedPosiotosNames = [
-  'дорожный рабочий',
-  'дворник',
-];
+const PermittedPosiotosNamesSet = new Set(
+  positions.filter(({ canToPut }) => canToPut).map(({ namePosition }) => namePosition.toString().toLowerCase()),
+);
 
 export function getPermittetEmployeeForBrigade(employeesList) {
   return employeesList.reduce((opt, e) => {
@@ -12,7 +11,7 @@ export function getPermittetEmployeeForBrigade(employeesList) {
       position_name,
     } = e;
 
-    if (!!position_name && PermittedPosiotosNames.includes(position_name.toLowerCase())) {
+    if (!!position_name && PermittedPosiotosNamesSet.has(position_name.toLowerCase())) {
       opt.push({
         value: e.id,
         label: createFio(e, true),

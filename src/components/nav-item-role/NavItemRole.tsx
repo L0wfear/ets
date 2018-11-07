@@ -8,7 +8,6 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-@withRouter
 @connectToStores(['session'])
 class NavItemRole extends React.Component<any, any> {
   render() {
@@ -25,4 +24,4 @@ class NavItemRole extends React.Component<any, any> {
   }
 }
 
-export default NavItemRole;
+export default withRouter(NavItemRole);

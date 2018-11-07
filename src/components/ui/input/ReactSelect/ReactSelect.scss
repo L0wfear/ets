@@ -29,7 +29,7 @@
 
   .react-select__control {
     border-radius: 0;
-    background-color: initial;
+    background-color: inherit;
 
     &.react-select__control--is-focused {
       border-color: #66afe9;

@@ -12,7 +12,7 @@ const DOC_URL = {
   develop: {
     dev: 'http://dev-ets.gost-group.com/docs/',
     stage: 'https://ets-test.mos.ru/ets-stage/docs/',
-    prod: 'https://ets.mos.ru/ets-study/docs/',
+    prod: 'https://213.79.88.5/ets-study/docs/',
   },
   origin: {
     dev: 'http://dev-ets.gost-group.com/docs/',
@@ -37,7 +37,7 @@ const config = {
 const notification_config = {
   develop: {
     stage: 'wss://ets-test.mos.ru/ets-stage/services/notification_ws',
-    prod: 'wss://ets.mos.ru/ets-study/services/notification_ws',
+    prod: 'wss://213.79.88.5/ets-study/services/notification_ws',
     dev: 'ws://dev-ets.gost-group.com/services/notification_ws',
   },
   origin: {
@@ -50,7 +50,7 @@ const notification_config = {
 const STANDS = {
   develop: {
     stage: 'https://ets-test.mos.ru/ets-stage/services',
-    prod: 'https://ets.mos.ru/ets-study/services',
+    prod: 'https://213.79.88.5/ets-study/services',
     dev: 'http://dev-ets.gost-group.com/services',
   },
   origin: {

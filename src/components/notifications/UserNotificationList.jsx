@@ -72,14 +72,17 @@ export default class UserNotificationList extends CheckableElementsList {
       return obj;
     }, []);
     const allNotIsRead = !isEmpty(checkedItems) && !userNotificationList.some(oneN => !oneN.is_read);
+    const buttons = [];
 
-    const buttons = [
-      <ButtonToolbar key={baseButtons.length}>
-        {checkedItems.length > 0 && <Button onClick={this.handleMarkAsRead.bind(null, checkedItems)}>Отметить как прочитанное</Button>}
-        <Button disabled={allNotIsRead} onClick={this.handleMarkAllAsRead}>Отметить все как прочитанные</Button>
-      </ButtonToolbar>,
-      ...baseButtons,
-    ];
+    if (checkedItems.length > 0) {
+      buttons.push(
+        <Button key="makeIsRead" onClick={this.handleMarkAsRead.bind(null, checkedItems)}>Отметить как прочитанное</Button>,
+      );
+    }
+    buttons.push(
+      <Button disabled={allNotIsRead}key="makeIsReadAll"  onClick={this.handleMarkAllAsRead}>Отметить все как прочитанные</Button>
+    );
+    buttons.push(...baseButtons);
 
     return buttons;
   }

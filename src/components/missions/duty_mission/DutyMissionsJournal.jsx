@@ -128,10 +128,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     mission.status = 'complete';
     this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
       this.refreshList(this.state);
-      this.setState({
-        selectedElement: null,
-        checkedElements: {},
-      });
     });
   }
 
@@ -149,10 +145,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
 
     query.then(() => {
       this.refreshList(this.state);
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
     }).catch((error) => (
       console.warn(error) // eslint-disable-line
     ));
@@ -178,10 +170,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       }
 
       this.refreshList(this.state);
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
     } else {
       this.completeMission();
     }
@@ -259,12 +247,9 @@ export default class DutyMissionsJournal extends CheckableElementsList {
       }
 
       this.refreshList(this.staet);
-      this.setState({
-        checkedElements: {},
-        selectedElement: null,
-      });
     } else {
-      this.removeElement().then(() => this.refreshList());
+      this.removeElement()
+        .then(() => this.refreshList());
     }
   }
 
@@ -293,12 +278,6 @@ export default class DutyMissionsJournal extends CheckableElementsList {
         })
         .catch(() => {
           this.refreshList();
-        })
-        .then(() => {
-          this.setState({
-            selectedElement: null,
-            checkedElements: {},
-          });
         })
     )
     .catch(() => {});

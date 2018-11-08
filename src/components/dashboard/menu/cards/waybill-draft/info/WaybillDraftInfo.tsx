@@ -71,7 +71,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     this.props.getWaybillById(Number.parseInt(path))
-      .then(({ waybill_data }) => {
+      .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
             showWaybillFormWrap: true,

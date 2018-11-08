@@ -113,19 +113,31 @@ export class DutyMissionForm extends Form {
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange = (v) => {
+    //из-за того, что после удаления приходит массив ид, то неактивные сотрудники, которые были сформированы из последней бригады удаляются
     let brigade_employee_id_list = [];
+    console.log('vvvv ==== ', v);
     if (v) {
-      let hasNotActiveEmployees = false;
-      brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
+      let hasNotActiveEmployees = false,
+          brigade_id;
+
+      //.map(employee => typeof employee === 'object' ? employee : Number(employee))
+      //Пофиксить удаление
+      brigade_employee_id_list = v.reduce((newArr, empObj) => {
+        brigade_id = Number(empObj.id) || empObj;
         if (!this.isActiveEmployee(brigade_id)) {
           hasNotActiveEmployees = true;
-          return [...newArr];
+          if(typeof empObj === 'object'){
+            return [...newArr, empObj];
+          }else {
+            return [...newArr, brigade_id];
+          }
         }
         return [
           ...newArr,
           this.props.employeesIndex[brigade_id],
         ];
       }, []);
+      console.log('brigade_employee_id_list === ', brigade_employee_id_list);
       if (hasNotActiveEmployees && brigade_employee_id_list.length) {
         onlyActiveEmployeeNotification();
       }

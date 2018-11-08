@@ -6,6 +6,7 @@ export const MissionArchiveService = ETS_API_FACTORY.createApiServiceAdapter('mi
 
 export const MissionReassignationService = ETS_API_FACTORY.createApiServiceAdapter('mission_reassignation', {});
 export const MissionTemplateService = ETS_API_FACTORY.createApiServiceAdapter('mission_template', {});
+export const MissionTemplateCarService = ETS_API_FACTORY.createApiServiceAdapter('mission_template/cars', {});
 export const MissionSourceService = ETS_API_FACTORY.createApiServiceAdapter('mission_source', {});
 export const MissionTemplatesForFaxogramm = ETS_API_FACTORY.createApiServiceAdapter('get_mission_templates_for_faxogramm', {});
 export const DutyMissionService = ETS_API_FACTORY.createApiServiceAdapter('duty_mission', {});

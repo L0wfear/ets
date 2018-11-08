@@ -178,6 +178,8 @@ export default class Taxes extends React.Component {
 
   handleOperationChange = (index, value) => {
     const { tableData, fuelRates } = this.state;
+    const last_is_excluding_mileage = tableData[index].is_excluding_mileage;
+
     tableData[index].OPERATION = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
     tableData[index].FUEL_RATE = fuelRateByOperation.rate_on_date || 0;
@@ -189,6 +191,8 @@ export default class Taxes extends React.Component {
 
     if (tableData[index].is_excluding_mileage) {
       tableData[index].FACT_VALUE = 0;
+    } else if (last_is_excluding_mileage) {
+      tableData[index].FACT_VALUE = tableData[index].iem_FACT_VALUE;
     }
     this.setState({ tableData });
     this.props.onChange(tableData);

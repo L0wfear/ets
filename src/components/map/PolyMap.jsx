@@ -19,7 +19,6 @@ export default class PolyMap extends React.Component {
       zoom: PropTypes.number,
       onFeatureClick: PropTypes.func,
       polys: PropTypes.object,
-      setLastZoomAndExtends: PropTypes.func,
     };
   }
 
@@ -28,8 +27,6 @@ export default class PolyMap extends React.Component {
 
     this.markers = {};
     this._handlers = null; // map event handlers
-
-    console.log(props.zoom, props.center)
 
     this.initialView = new ol.View({
       center: props.center,
@@ -75,7 +72,7 @@ export default class PolyMap extends React.Component {
     if (!this.props.disabled) {
       this.enableInteractions();
     }
-    this.renderPolygons(this.props.polys);
+    this.renderPolygons(this.props.polys, true);
 
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
@@ -92,24 +89,10 @@ export default class PolyMap extends React.Component {
     if (nextProps.draw_object_list !== undefined) {
       this.renderRoute(nextProps.draw_object_list);
     }
-
-    if (nextProps.zoom !== this.props.zoom || nextProps.center !== this.props.center) {
-      this.map.getView().setCenter(nextProps.center);
-      this.map.getView().setZoom(nextProps.zoom);
-    }
   }
 
   shouldComponentUpdate() {
     return false;
-  }
-
-  componentWillUnmount() {
-    if (this.props.setLastZoomAndExtends) {
-      this.props.setLastZoomAndExtends(
-        this.map.getView().getZoom(),
-        this.map.getView().getCenter(),
-      );
-    }
   }
 
   onMouseMove(ev) {

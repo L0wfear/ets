@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.247",
+    "version": "2.0.23.248",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -104,9 +104,9 @@
         "xml-loader": "=1.2.1"
     },
     "scripts": {
-        "dev": "cross-env STAND=dev NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
-        "dev:stage": "cross-env STAND=stage NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
-        "dev:prod": "cross-env STAND=prod NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
+        "dev": "cross-env STAND=dev NODE_ENV=development webpack-dev-server --progress --config webpack/webpack.dev.js",
+        "dev:stage": "cross-env STAND=stage NODE_ENV=development webpack-dev-server --progress --config webpack/webpack.dev.js",
+        "dev:prod": "cross-env STAND=prod NODE_ENV=development webpack-dev-server --progress --config webpack/webpack.dev.js",
         "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:stage": "cross-env STAND=stage NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js",

@@ -24,6 +24,7 @@ module.exports = {
     hot: true,
     quiet: false,
     inline: true,
+    noInfo: true,
     lazy: false,
   },
   output: {

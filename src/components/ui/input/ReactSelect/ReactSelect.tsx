@@ -7,6 +7,8 @@ import {
   onChangeSelectLegacy,
   defaultSortingFunction,
 } from 'components/ui/input/ReactSelect/utils';
+import { SingleValueProps } from 'react-select/lib/components/SingleValue';
+import { MultiValueProps } from 'react-select/lib/components/MultiValue';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -58,7 +60,7 @@ export default class ReactSelect extends React.Component<any, any> {
     );
   }
 
-  optionRenderer = ({ innerProps, ...props }) => {
+  optionRenderer = ({ innerProps, ...props }: any) => {
     const newInnerProps = {
       ...innerProps,
       id: innerProps.id.replace(/option-\d+$/, `value-${props.value}`),
@@ -72,7 +74,7 @@ export default class ReactSelect extends React.Component<any, any> {
 
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
 
-  singleValueRender = ({ innerProps, ...props }) => {
+  singleValueRender = ({ innerProps, ...props }: SingleValueProps<any>) => {
     const { modalKey } = this.props;
     
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
@@ -85,7 +87,7 @@ export default class ReactSelect extends React.Component<any, any> {
     return <components.SingleValue innerProps={newInnerProps} {...props} />;
   }
 
-  multiValueRender = ({ innerProps, ...props }) => {
+  multiValueRender = ({ innerProps, ...props }: MultiValueProps<any>) => {
     const {
       selectProps: { instanceId },
       data: { value },

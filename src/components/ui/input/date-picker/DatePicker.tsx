@@ -7,6 +7,8 @@ import * as moment from 'moment';
 moment.locale('ru');
 momentLocalizer();
 
+const DTPicker: any= DateTimePicker;
+
 interface DatePickerProps {
   date: any;
   onChange: (date: Date | null, dateString: string) => any;
@@ -30,7 +32,7 @@ const DatePicker: React.SFC<DatePickerProps> = props => {
   }
 
   return (
-    <DateTimePicker
+    <DTPicker
       id={props.id}
       className={cx('chart-datepicker', props.className)}
       value={value}

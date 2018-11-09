@@ -23,6 +23,7 @@ import Paginator from 'components/directories/order/Paginator';
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
+import { isString } from 'util';
 
 require('components/directories/order/Order.scss');
 
@@ -53,7 +54,11 @@ class OrderList extends React.Component<any, any> {
       dateFrom: date_start = this.props.configDateStart,
       dateTo: date_end = this.props.configDateEnd,
     } = queryString.parse(search);
-    const outerIdFax = Number.parseInt(idOrder, 0);
+
+    let outerIdFax = null;
+    if (isString(idOrder)) {
+      outerIdFax = Number.parseInt(idOrder, 0);
+    }
 
     const newPartPageOptions = {
       limit: !!outerIdFax ? 10000 : 15,

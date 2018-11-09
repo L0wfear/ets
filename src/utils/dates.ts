@@ -148,6 +148,11 @@ export function getTomorrow9am(seconds = 0) {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59, seconds);
 }
 
+export function getTomorrow0am() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0);
+}
+
 export function getDatesByShift() {
   const now = new Date();
   if (now.getHours() > 18) {

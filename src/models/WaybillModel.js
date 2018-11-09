@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
+import { diffDates, getDateWithMoscowTz, getNextDay859am } from 'utils/dates';
 
 export const waybillSchema = {
   properties: [
@@ -135,9 +136,12 @@ export const waybillSchema = {
           if (status === 'active' || status === 'closed') {
             return false;
           }
-          if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
-            // return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
+
+          if(diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
             return '';
+          }
+          if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
+            return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
           }
 
           return false;

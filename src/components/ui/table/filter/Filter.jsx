@@ -120,7 +120,13 @@ export default class Filter extends React.Component {
         type, labelFunction, options, byKey, byLabel,
       } = filter;
 
-      const optionListValues = option.name === 'car_gov_number' ?  customFiltersValues['car_gov_number'].map(obj => ({ value: obj.asuods_id, label: obj.gov_number, })) : null;
+      let optionListValues = null;
+      try {
+        optionListValues = option.name === 'car_gov_number' ?  customFiltersValues['car_gov_number'].map(obj => ({ value: obj.asuods_id, label: obj.gov_number, })) : null;
+      } catch (e) {
+        optionListValues = null;
+      }
+
       return (
         <FilterRow
           customOptions = {optionListValues || null}

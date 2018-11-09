@@ -14,6 +14,7 @@ import { DivNone } from 'global-styled/global-styled';
 let lastObjectList = {
   object_type: null,
   object_list: [],
+  input_lines: [],
 };
 
 class RouteFormWrap extends FormWrap {
@@ -58,14 +59,43 @@ class RouteFormWrap extends FormWrap {
     }
   }
 
-  updateFromStatePolys = (formState, isInitOpen) => {
+  checkRoute = (route, notChangeState = false) => {
+    const { flux } = this.context;
+    if (!route.input_lines.length) {
+      if (!notChangeState) {
+        this.handleFormStateChange('draw_odh_list', []);
+      }
+      return Promise.resolve([]);
+    }
+    return flux.getActions('routes').validateRoute(route).then((r) => {
+      const result = r.result;
+
+      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
+        name: o.odh_name,
+        object_id: o.odh_id,
+        state: o.state || 2,
+        type: 'odh',
+      }));
+      if (!notChangeState) {
+        this.handleFormStateChange('draw_odh_list', draw_odh_list);
+      }
+
+      return draw_odh_list;
+    });
+  }
+
+  updateFromStatePolys = async (formState, isInitOpen) => {
     const {
       municipal_facility_id,
       object_list,
+      input_lines,
+      draw_odh_list,
       type: object_type,
     } = formState;
 
     let oldObjectList = object_list;
+    let oldInputLines = input_lines;
+    let oldDrawOdhLines = draw_odh_list;
 
     if (municipal_facility_id && object_type) {
       if (object_type === lastObjectList.object_type) {
@@ -74,8 +104,23 @@ class RouteFormWrap extends FormWrap {
         } else {
           lastObjectList.object_list = oldObjectList;
         }
+        if (object_type === 'mixed') {
+          if (!input_lines.length) {
+            oldInputLines = lastObjectList.input_lines;
+            oldDrawOdhLines = await this.checkRoute(
+              {
+                ...formState,
+                input_lines: oldInputLines,
+              },
+              true,
+              );
+          } else {
+            lastObjectList.input_lines = oldInputLines;
+          }
+        }
       } else {
         lastObjectList.object_list = object_list;
+        lastObjectList.input_lines = oldInputLines;
         lastObjectList.object_type = object_type;
       }
     }
@@ -131,9 +176,9 @@ class RouteFormWrap extends FormWrap {
           } else {
             lastObjectList.object_list = newObjectList.length ? newObjectList : lastObjectList.object_list;
             this.handleFormStateChange('object_list', newObjectList);
-            this.handleFormStateChange('input_lines', []);
-            this.handleFormStateChange('draw_list', []);
-            this.handleFormStateChange('draw_odh_list', []);
+            this.handleFormStateChange('input_lines', oldInputLines);
+            this.handleFormStateChange('draw_list', oldInputLines);
+            this.handleFormStateChange('draw_odh_list', oldDrawOdhLines);
           }
 
           this.handleFormStateChange('polys', polys);
@@ -238,6 +283,7 @@ class RouteFormWrap extends FormWrap {
           structureId={this.props.structureId}
           fromOrder={this.props.fromOrder}
           updateFromStatePolys={this.updateFromStatePolys}
+          checkRoute={this.checkRoute}
           {...this.state}
           {...this.additionalProps()}
         />

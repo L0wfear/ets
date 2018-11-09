@@ -101,23 +101,8 @@ class RouteCreating extends React.Component {
     this.props.onChange('object_list', object_list);
   }
 
-  checkRoute() {
-    const { flux } = this.context;
-    if (!this.props.route.input_lines.length) {
-      this.props.onChange('draw_odh_list', []);
-      return;
-    }
-    flux.getActions('routes').validateRoute(this.props.route).then((r) => {
-      const result = r.result;
-
-      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
-        name: o.odh_name,
-        object_id: o.odh_id,
-        state: 2,
-        type: 'odh',
-      }));
-      this.props.onChange('draw_odh_list', draw_odh_list);
-    });
+  checkRoute = () => {
+    this.props.checkRoute(this.props.route);
   }
 
   handleCheckbox(type, v, e) {

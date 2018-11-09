@@ -7,6 +7,8 @@ import * as Raven from 'raven-js';
 /* ETS2 */
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
+  context!: ETSCore.LegacyContext;
+
   state = {
     getNotReadInterval: 0,
   }

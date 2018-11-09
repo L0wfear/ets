@@ -14,6 +14,8 @@ interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExter
 @connectToStores(['autobase'])
 @FluxContext
 class BatteryToVehicleBlock extends React.Component<IPropsBatteryToVehicleBlock, any> {
+  context!: ETSCore.LegacyContext;
+
   componentDidMount() {
     this.context.flux.getActions('autobase').getAutobaseListByType('batteryAvailableCar', {
       battery_id: this.props.batteryId,

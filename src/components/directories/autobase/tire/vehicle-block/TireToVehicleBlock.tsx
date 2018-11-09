@@ -14,6 +14,8 @@ interface IPropsTireToVehicleBlock extends ISharedPropsDataTableInput, IExternal
 @connectToStores(['autobase'])
 @FluxContext
 class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> {
+  context!: ETSCore.LegacyContext;
+
   componentDidMount() {
     this.context.flux.getActions('autobase').getAutobaseListByType('tireAvailibleCar', {
       tire_id: this.props.tireId,

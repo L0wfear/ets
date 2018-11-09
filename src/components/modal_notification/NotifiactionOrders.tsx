@@ -20,6 +20,7 @@ type StateNotifiactionOrders = {
 @FluxContext
 class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, StateNotifiactionOrders> {
   refAudio: any;
+  context!: ETSCore.LegacyContext;
 
   onHide = () => {
     const { orderNotReadList: [{ id }] } = this.props;

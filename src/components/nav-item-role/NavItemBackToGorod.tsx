@@ -29,6 +29,8 @@ const NavItemBackToGorodWrap = compose(
   @connectToStores(['session'])
   @FluxContext
   class extends React.Component<any, any> {
+    context!: ETSCore.LegacyContext;
+
     handleSelect = () =>
       this.context.flux.getActions('session').cahngeCompanyOnAnother(null)
         .then(({ payload, token }) => {

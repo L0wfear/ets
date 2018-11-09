@@ -27,6 +27,8 @@ interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IP
 @connectToStores(['objects'])
 @FluxContext
 class MissionProgressReportHeader extends React.Component<IPropsMissionProgressReportHeader, any> {
+  context!: ETSCore.LegacyContext;
+
   componentDidMount() {
     this.context.flux.getActions('objects').getOrganizations().then(({ result: [company] }) => {
       if (company) {

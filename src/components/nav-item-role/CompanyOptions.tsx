@@ -23,6 +23,8 @@ const CompanyOptionsWrap = compose(
   @connectToStores(['session'])
   @FluxContext
   class extends React.Component<any, any> {
+    context!: ETSCore.LegacyContext;
+
     constructor(props) {
       super(props);
       const { currentUser } = props;

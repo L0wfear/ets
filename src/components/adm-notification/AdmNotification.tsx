@@ -13,6 +13,8 @@ type stateAdmNotification = {
 @connectToStores(['userNotifications'])
 @FluxContext
 class AdmNotification extends React.Component<propsAdmNotification, stateAdmNotification> {
+  context!: ETSCore.LegacyContext;
+
   componentDidUpdate(prevProps) {
     const { props } = this;
 

@@ -35,6 +35,8 @@ import {
 @connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
 class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTemplate> {
+  context!: ETSCore.LegacyContext;
+
   state: any = {
     assign_to_waybill: 'assign_to_new_draft',
     missionsList: [],

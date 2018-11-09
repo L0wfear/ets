@@ -6,6 +6,8 @@ import { FluxContext, connectToStores } from 'utils/decorators';
 @connectToStores(['userNotifications'])
 @FluxContext
 class NotificationBadge extends React.Component<any, any> {
+  context!: ETSCore.LegacyContext;
+
   state = {
     socketIsWork: false,
     checkUsNotifInterval: 0,

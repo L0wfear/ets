@@ -11,4 +11,6 @@ declare namespace ETSCore {
     type TReactComponent<TInjectedProps> = React.ComponentClass<TInjectedProps> | React.SFC<TInjectedProps>;
     type THOCFunction<TSourceProps, TResultHOCProps> = (SourceComponent: ETSCore.Types.TReactComponent<TSourceProps>) => React.ComponentClass<TResultHOCProps>;
   }
+
+  type LegacyContext = any;
 }

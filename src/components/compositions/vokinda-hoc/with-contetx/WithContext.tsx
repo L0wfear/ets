@@ -2,6 +2,8 @@ import * as React from 'react';
 
 const WithContext = contextObj => Component =>
   class WithContext extends React.Component<any, any> {
+    context!: ETSCore.LegacyContext;
+
     static get contextTypes() {
       return {
         ...contextObj,

@@ -11,6 +11,8 @@ const LoginPage = ReactTest.lazy(() => (
 ));
 
 class LoginPageWrap extends React.Component<any, any> {
+  context!: ETSCore.LegacyContext;
+
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,

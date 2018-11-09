@@ -8,6 +8,8 @@ import requireAuth from 'utils/auth';
 @connectToStores(['session'])
 @FluxContext
 class CahngeCompany extends React.Component<any, any> {
+  context!: ETSCore.LegacyContext;
+
   render() {
     if (!this.props.isGlavControl) {
       return <Redirect to={requireAuth(this.context.flux, '/monitor')} />

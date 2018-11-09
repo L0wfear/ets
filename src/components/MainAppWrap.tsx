@@ -6,6 +6,8 @@ import requireAuth from 'utils/auth';
 import MainApp from 'components/MainApp';
 
 class MainAppWrap extends React.Component <any, any> {
+  context!: ETSCore.LegacyContext;
+
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,

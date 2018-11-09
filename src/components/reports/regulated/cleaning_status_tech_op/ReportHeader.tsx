@@ -35,6 +35,8 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
 @connectToStores(['objects'])
 @FluxContext
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
+  context!: ETSCore.LegacyContext;
+
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('objects').getTypes();

@@ -19,7 +19,6 @@ export default class Filter extends React.Component {
       onSubmit: PropTypes.func.isRequired,
       options: PropTypes.array,
       entity: PropTypes.string,
-      customFiltersValues: PropTypes.object,
     };
   }
 
@@ -113,23 +112,12 @@ export default class Filter extends React.Component {
 
   render() {
     const { filterValues } = this.state;
-    const { tableData, options: filters, customFiltersValues } = this.props;
+    const { tableData, options: filters } = this.props;
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
-      const {
-        type, labelFunction, options, byKey, byLabel,
-      } = filter;
-
-      let optionListValues = null;
-      try {
-        optionListValues = option.name === 'car_gov_number' ?  customFiltersValues['car_gov_number'].map(obj => ({ value: obj.asuods_id, label: obj.gov_number, })) : null;
-      } catch (e) {
-        optionListValues = null;
-      }
-
+      const { type, labelFunction, options, byKey, byLabel } = filter;
       return (
         <FilterRow
-          customOptions = {optionListValues || null}
           tableData={tableData}
           entity={this.props.entity}
           key={i}

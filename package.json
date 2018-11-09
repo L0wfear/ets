@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.257",
+    "version": "2.0.23.258",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -10,7 +10,6 @@
         "bootstrap3": "=3.3.5",
         "classnames": "=2.2.6",
         "flummox": "=3.6.9",
-        "handlebars": "=4.0.12",
         "highcharts": "=6.2.0",
         "history": "=4.7.2",
         "lodash": "=4.17.11",

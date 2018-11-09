@@ -16,7 +16,6 @@ export default class Filter extends React.Component {
       onHide: PropTypes.func,
       onSubmit: PropTypes.func.isRequired,
       options: PropTypes.array,
-      customFiltersValues: PropTypes.object,
     };
   }
 
@@ -100,14 +99,12 @@ export default class Filter extends React.Component {
 
   render() {
     const { filterValues } = this.state;
-    const { tableData, options: filters, customFiltersValues } = this.props;
+    const { tableData, options: filters } = this.props;
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options, byKey, byLabel } = filter;
-      const optionListValues = option.name === 'car_gov_number' ?  customFiltersValues['car_gov_number'].map(obj => ({ value: obj.asuods_id, label: obj.gov_number, })) : null;
       return (
         <FilterRow
-          customOptions = {optionListValues || null}
           tableData={tableData}
           key={i}
           value={(filterValues[this.getName(byKey || name, type)] || {}).value}

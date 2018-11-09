@@ -82,6 +82,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionTemplatesCars();
+    
   }
 
   /**

@@ -94,6 +94,13 @@ export default class FuelRateForm extends Form {
               />
 
               <Field
+                label="Примечание"
+                type="string"
+                value={state.comment}
+                onChange={this.handleChange.bind(this, 'comment')}
+              />
+
+              <Field
                 label="Норма для летнего периода"
                 type="number"
                 error={errors.summer_rate}

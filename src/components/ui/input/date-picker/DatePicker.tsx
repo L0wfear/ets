@@ -32,7 +32,7 @@ const DatePicker: React.SFC<DatePickerProps> = props => {
   return (
     <DateTimePicker
       id={props.id}
-      className={cx('chart-datepicker', props.className)}
+      containerClassName={cx('chart-datepicker', props.className)}
       value={value}
       format={format}
       timeFormat={global.APP_TIME_FORMAT}

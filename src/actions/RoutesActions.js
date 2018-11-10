@@ -5,7 +5,6 @@ import {
 } from 'lodash';
 import {
   RouteService,
-  RouteReportsService,
   RouteValidateService,
 } from 'api/Services';
 
@@ -154,19 +153,6 @@ export default class RoutesActions extends Actions {
     const routes = await RouteService.get();
 
     return { createdRoute, routes };
-  }
-
-  getRouteReports() {
-    return RouteReportsService.get();
-  }
-
-  getRouteReportById(id) {
-    return RouteReportsService.path(id).get();
-  }
-
-  createRouteReport(operation_id) {
-    const payload = { operation_id };
-    return RouteReportsService.post(payload, null, 'json');
   }
 
   validateRoute(route) {

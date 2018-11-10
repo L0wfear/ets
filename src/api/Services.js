@@ -86,7 +86,6 @@ export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost',
 
 /* Reports - Отчеты */
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});
-export const RouteReportsService = ETS_API_FACTORY.createApiServiceAdapter('route_odh_covering_report', {});
 export const WaybillJournalReportService = ETS_API_FACTORY.createApiServiceAdapter('waybill_journal_report', {});
 export const WaybillsReportService = ETS_API_FACTORY.createApiServiceAdapter('waybills_report', {});
 export const AnalyticsService = ETS_API_FACTORY.createApiServiceAdapter('analytical_reports', {});

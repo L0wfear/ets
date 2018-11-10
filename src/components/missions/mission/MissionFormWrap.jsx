@@ -13,6 +13,7 @@ import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import MissionFormOld from 'components/missions/mission/MissionForm/MissionFormOld';
 import withMapInConsumer from 'components/map/context/withMapInConsumer';
+import { DivNone } from 'global-styled/global-styled';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
 
@@ -281,23 +282,38 @@ class MissionFormWrap extends FormWrap {
 
     return (
       <>
-        <MissionForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
-          handleMultiFormChange={this.handlMultiFormStateChange}
-          handlePrint={this.handlePrint.bind(this)}
-          printMapKeySmall={printMapKeySmall}
-          {...props}
-          {...this.state}
-          show={this.props.showForm && this.state.formState.is_new}
-        />
-        <MissionFormOld
-          formState={this.state.formState}
-          {...props}
-          {...this.state}
-          show={this.props.showForm && !this.state.formState.is_new}
-        />
+        {
+          this.props.showForm && this.state.formState.is_new
+            ? (
+              <MissionForm
+                formState={this.state.formState}
+                onSubmit={this.handleFormSubmit.bind(this)}
+                handleFormChange={this.handleFormStateChange.bind(this)}
+                handleMultiFormChange={this.handlMultiFormStateChange}
+                handlePrint={this.handlePrint.bind(this)}
+                printMapKeySmall={printMapKeySmall}
+                {...props}
+                {...this.state}
+                show
+              />
+            )
+            : (
+              <DivNone />
+            )
+        }
+        {
+          this.props.showForm && !this.state.formState.is_new
+            ? (
+              <MissionFormOld
+                formState={this.state.formState}
+                {...props}
+                {...this.state}
+              />
+            )
+            : (
+              <DivNone />
+            )
+        }
       </>
     );
   }

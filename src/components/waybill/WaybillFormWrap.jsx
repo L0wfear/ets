@@ -20,6 +20,7 @@ import WaybillForm from 'components/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from './Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
+import { DivNone } from 'global-styled/global-styled';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -496,23 +497,27 @@ export default class WaybillFormWrap extends FormWrap {
   render() {
     const { entity } = this.props;
 
-    return (
-      <WaybillForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit}
-        handlePrint={this.handlePrint}
-        handleClose={this.handleClose}
-        handleFormChange={this.handleFormStateChange}
-        handleMultipleChange={this.handleMultipleChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        entity={entity || 'waybill'}
-        handlePrintFromMiniButton={this.handlePrintFromMiniButton}
-        clearSomeData={this.clearSomeData}
-        isPermittedByKey={this.state.isPermittedByKey}
-        {...this.state}
-      />
-    );
+    return this.props.showForm
+      ? (
+        <WaybillForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit}
+          handlePrint={this.handlePrint}
+          handleClose={this.handleClose}
+          handleFormChange={this.handleFormStateChange}
+          handleMultipleChange={this.handleMultipleChange}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          entity={entity || 'waybill'}
+          handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+          clearSomeData={this.clearSomeData}
+          isPermittedByKey={this.state.isPermittedByKey}
+          {...this.state}
+        />
+      )
+      : (
+        <DivNone />
+      )
   }
 
 }

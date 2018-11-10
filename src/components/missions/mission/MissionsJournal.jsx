@@ -117,8 +117,6 @@ export default class MissionsJournal extends CheckableElementsList {
       validateMissionsArr.push(selectedElement);
     }
 
-    console.log(validateMissionsArr)
-
     return !validateMissionsArr.length || !validateMissionsArr.every(({ status, can_be_closed }) => (
       (
         status === 'assigned'

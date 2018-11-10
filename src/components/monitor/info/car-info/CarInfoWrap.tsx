@@ -2,29 +2,29 @@ import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { OwnPropsCarInfo } from './CarInfo';
 
-type PropsCarInfo = {
+type PropsCarInfoWrap = {
   map: ol.Map,
   centerOn: Function;
 };
-type StateCarInfo = {
+type StateCarInfoWrap = {
 }
 
-const ReactTest: any = React;
 
-const CarInfo = ReactTest.lazy(() => (
+const CarInfo = React.lazy<React.ComponentType<OwnPropsCarInfo>>(() => (
   import(/* webpackChunkName: "car_info" */'components/monitor/info/car-info/CarInfo')
 ));
 
-class CarInfoWrap extends React.Component<PropsCarInfo, StateCarInfo> {
+class CarInfoWrap extends React.Component<PropsCarInfoWrap, StateCarInfoWrap> {
   render() {
     return (
-      <ReactTest.Suspense fallback={<LoadingComponent />}>
+      <React.Suspense fallback={<LoadingComponent />}>
         <CarInfo
           map={this.props.map}
           centerOn={this.props.centerOn}
         />
-      </ReactTest.Suspense>
+      </React.Suspense>
     )
   }
 }

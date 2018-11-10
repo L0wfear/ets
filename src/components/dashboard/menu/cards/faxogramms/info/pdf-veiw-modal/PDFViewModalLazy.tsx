@@ -7,9 +7,9 @@ import {
   PropsPDFViewModal,
 } from 'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal.h';
 
-const ReactTest: any = React;
 
-const PDFViewModal = ReactTest.lazy(() => (
+
+const PDFViewModal = React.lazy(() => (
   import(/* webpackChunkName: "pdf_view_modal" */'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal')
 ));
 
@@ -23,11 +23,11 @@ class MissionFormLazy extends React.PureComponent<PropsPDFViewModal & { show: bo
     return (
       this.props.show ?
       (
-        <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <React.Suspense fallback={<LoadingComponent />}>
           <PDFViewModal
             {...props}
           />
-        </ReactTest.Suspense>
+        </React.Suspense>
       )
       :
       ( <DivNone /> )

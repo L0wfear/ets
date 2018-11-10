@@ -16,8 +16,8 @@ import {
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
 import { FluxContext } from 'utils/decorators';
 import permissions from 'components/waybill/config-data/permissions';
-import WaybillFormLazy from 'components/waybill/form/WaybillFormLazy';
-import { getDefaultBill } from '../../stores/WaybillsStore';
+import WaybillForm from 'components/waybill/WaybillForm';
+import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from './Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 
@@ -497,7 +497,7 @@ export default class WaybillFormWrap extends FormWrap {
     const { entity } = this.props;
 
     return (
-      <WaybillFormLazy
+      <WaybillForm
         formState={this.state.formState}
         onSubmit={this.handleFormSubmit}
         handlePrint={this.handlePrint}

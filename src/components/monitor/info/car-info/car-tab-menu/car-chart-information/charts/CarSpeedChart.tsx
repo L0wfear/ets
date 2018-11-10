@@ -7,37 +7,17 @@ import {
 import { NO_DATA_TEXT } from 'constants/statuses';
 import { sensorsMapOptions } from 'constants/sensors';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 
-type TypeFrontCarsSensorsEquipment = {
-  [key: string]: {
-    data: any[];
-    type_name: string;
-    color: string;
-    connectNulls: number;
-    name: string;
-    show: boolean;
-  };
-};
-
-type PropsCarSpeedChart = {
-  track: any;
-  lastPoint: any;
-  has_cars_sensors: boolean;
-  front_cars_sensors_equipment: TypeFrontCarsSensorsEquipment;
-  handleChartClick: any;
-  handleEventClick: any;
-  mkad_speed_lim: number;
-  speed_lim: number;
-};
-
-type StateCarSpeedChart = {
-  lastPoint: any,
-  data: any[],
-  front_cars_sensors_equipment: TypeFrontCarsSensorsEquipment;
-  mkad_speed_lim: number;
-  speed_lim: number;
-};
+import {
+  TypeFrontCarsSensorsEquipment,
+  PropsCarSpeedChart,
+  OwnPropsCarSpeedChart,
+  StatePropsCarSpeedChart,
+  DispatchPropsCarSpeedChart,
+  StateCarSpeedChart,
+} from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
+import { ReduxState } from 'redux-main/@types/state';
 
 const makeData = ({ track, front_cars_sensors_equipment, mkad_speed_lim, speed_lim }) => ([
   {
@@ -172,22 +152,20 @@ class CarSpeedChart extends React.Component<PropsCarSpeedChart, StateCarSpeedCha
   }
 }
 
-const mapStateToProps = state => ({
-  has_cars_sensors: Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level'),
-  track: state.monitorPage.carInfo.trackCaching.track,
-  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
-  mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
-  speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
-  lastPoint: state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) || state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
-});
-
-export default hocAll(
+export default compose<PropsCarSpeedChart, OwnPropsCarSpeedChart>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
-  connect(
-    mapStateToProps,
+  connect<StatePropsCarSpeedChart, DispatchPropsCarSpeedChart, OwnPropsCarSpeedChart, ReduxState>(
+    state => ({
+      has_cars_sensors: Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level'),
+      track: state.monitorPage.carInfo.trackCaching.track,
+      front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
+      mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
+      speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+      lastPoint: state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) || state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+    }),
   )
 )(CarSpeedChart);

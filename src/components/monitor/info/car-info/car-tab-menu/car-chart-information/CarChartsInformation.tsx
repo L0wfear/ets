@@ -8,6 +8,10 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import {
+  OwnPropsCarFuelChart,
+  OwnPropsCarSpeedChart,
+} from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 
 type PropsCarChartsInformation = {
   centerOn: Function;
@@ -19,13 +23,11 @@ type StateCarChartsInformation = {
   selectedTab: number;
 }
 
-const ReactTest: any = React;
-
-const CarFuelChart = ReactTest.lazy(() => (
+const CarFuelChart = React.lazy<React.ComponentType<OwnPropsCarFuelChart>>(() => (
   import(/* webpackChunkName: "car_fuel_chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart')
 ));
 
-const CarSpeedChart = ReactTest.lazy(() => (
+const CarSpeedChart = React.lazy<React.ComponentType<OwnPropsCarSpeedChart>>(() => (
   import(/* webpackChunkName: "car_speed_Chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart')
 ));
 
@@ -87,12 +89,12 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
           {
             selectedTab === 1
             ? (
-              <ReactTest.Suspense fallback={<LoadingComponent />}>
+              <React.Suspense fallback={<LoadingComponent />}>
                 <CarFuelChart
                   handleChartClick={this.handleChartClick}
                   handleEventClick={this.handleEventClick}
                 />
-              </ReactTest.Suspense>
+              </React.Suspense>
             )
             : (
               <DivNone />
@@ -101,11 +103,11 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
           {
             selectedTab === 2
             ? (
-              <ReactTest.Suspense fallback={<LoadingComponent />}>
+              <React.Suspense fallback={<LoadingComponent />}>
                 <CarSpeedChart
                   handleChartClick={this.handleChartClick}
                 />
-              </ReactTest.Suspense>
+              </React.Suspense>
             )
             : (
               <DivNone />

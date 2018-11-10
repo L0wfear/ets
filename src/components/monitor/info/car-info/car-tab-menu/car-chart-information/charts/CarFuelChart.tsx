@@ -1,40 +1,23 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import LineChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
-import {
-  CAR_INFO_SET_TRACK_CACHING,
-} from 'components/monitor/info/car-info/redux-main/modules/car-info';
 import { NO_DATA_TEXT, NO_SENSORS_LEVEL_TEXT } from 'constants/statuses';
 import EventTable from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/event-table/EventTable';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
+import { ReduxState } from 'redux-main/@types/state';
 
-type TypeFrontCarsSensorsLevel = {
-  [key: string]: {
-    data: any[];
-    show: boolean;
-    color: string;
-    connectNulls: number;
-    name: string;
-  };
-};
+import {
+  TypeFrontCarsSensorsLevel,
+  PropsCarFuelChart,
+  StateCarFuelChart,
+  StatePropsCarFuelChart,
+  OwnPropsCarFuelChart,
+  DispatchPropsCarFuelChart,
+} from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 
-type PropsCarFuelChart = {
-  track: any;
-  has_cars_sensors: boolean;
-  front_cars_sensors_level: TypeFrontCarsSensorsLevel;
-  handleChartClick: any;
-  handleEventClick: any;
-};
-
-type StateCarFuelChart = {
-  sensorRawData: boolean,
-  data: any[],
-  front_cars_sensors_level: TypeFrontCarsSensorsLevel;
-};
-
-const makeData = (front_cars_sensors_level, { sensorRawData = false }) => (
-  Object.values(front_cars_sensors_level as TypeFrontCarsSensorsLevel).reduce((newArr, sensor) => {
+const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, { sensorRawData = false }) => (
+  Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {
     const data = sensor[sensorRawData ? 'raw_data' : 'data'];
 
     if (sensor.data.length) {
@@ -162,19 +145,17 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
   }
 }
 
-const mapStateToProps = state => ({
-  has_cars_sensors: state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) ? -1 : Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level'),
-  track: state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) ? -1 : state.monitorPage.carInfo.trackCaching.track,
-  front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
-});
-
-export default hocAll(
+export default compose<PropsCarFuelChart, OwnPropsCarFuelChart>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
-  connect(
-    mapStateToProps,
-  )
+  connect<StatePropsCarFuelChart, DispatchPropsCarFuelChart, OwnPropsCarFuelChart, ReduxState>(
+    (state) => ({
+      has_cars_sensors: Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level'),
+      track: state.monitorPage.carInfo.trackCaching.track,
+      front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
+    }),
+  ),
 )(CarFuelChart);

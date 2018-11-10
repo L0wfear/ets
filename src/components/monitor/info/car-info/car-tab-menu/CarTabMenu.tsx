@@ -22,17 +22,17 @@ type StateCarTabMenu = {
   selectedTab: number;
 };
 
-const ReactTest: any = React;
 
-const CarAttributeInformation = ReactTest.lazy(() => (
+
+const CarAttributeInformation = React.lazy(() => (
   import(/* webpackChunkName: "car_attribute_information" */'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation')
 ));
 
-const CarChartsInformation = ReactTest.lazy(() => (
+const CarChartsInformation = React.lazy(() => (
   import(/* webpackChunkName: "car_charts_information" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation')
 ));
 
-const CarTrackInformation = ReactTest.lazy(() => (
+const CarTrackInformation = React.lazy(() => (
   import(/* webpackChunkName: "car_track_information" */'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation')
 ));
 
@@ -100,9 +100,9 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
           {
             selectedTab === 1
             ? ( 
-              <ReactTest.Suspense fallback={<LoadingComponent />}>
+              <React.Suspense fallback={<LoadingComponent />}>
                 <CarAttributeInformation map={this.props.map} />
-              </ReactTest.Suspense>
+              </React.Suspense>
             )
             : (
               <DivNone />
@@ -111,9 +111,9 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
           {
             selectedTab === 2
             ? (
-              <ReactTest.Suspense fallback={<LoadingComponent />}>
+              <React.Suspense fallback={<LoadingComponent />}>
                 <CarChartsInformation centerOn={this.props.centerOn} />
-              </ReactTest.Suspense>
+              </React.Suspense>
             )
             : (
               <DivNone />
@@ -122,9 +122,9 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
           {
             selectedTab === 3
             ? (
-              <ReactTest.Suspense fallback={<LoadingComponent />}>
+              <React.Suspense fallback={<LoadingComponent />}>
                 <CarTrackInformation map={this.props.map} />
-              </ReactTest.Suspense>
+              </React.Suspense>
             )
             : (
               <DivNone />

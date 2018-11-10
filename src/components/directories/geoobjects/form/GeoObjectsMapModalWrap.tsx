@@ -9,9 +9,9 @@ import {
   ISchemaRenderer,
 } from 'components/ui/table/@types/schema.h';
 
-const ReactTest: any = React;
 
-const GeoObjectsMapModal = ReactTest.lazy(() => (
+
+const GeoObjectsMapModal = React.lazy(() => (
   import(/* webpackChunkName: "geo-objects_map_modal" */'components/directories/geoobjects/form/GeoObjectsMapModal')
 ));
 
@@ -36,7 +36,7 @@ class GeoObjectsMapModalWrap extends React.PureComponent<PropsGeoObjectsMapModal
     return (
       showForm ?
       (
-        <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <React.Suspense fallback={<LoadingComponent />}>
           <GeoObjectsMapModal
             onFormHide={props.onFormHide}
             meta={props.meta}
@@ -45,7 +45,7 @@ class GeoObjectsMapModalWrap extends React.PureComponent<PropsGeoObjectsMapModal
             element={props.element}
             selectField={props.selectField}
           />
-        </ReactTest.Suspense>
+        </React.Suspense>
       )
       :
       ( <DivNone /> )

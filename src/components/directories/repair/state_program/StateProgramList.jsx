@@ -16,11 +16,12 @@ import permissions from 'components/directories/repair/state_program/config-data
   tableComponent: StateProgramTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class StateProgramList extends CheckableElementsList {
+class StateProgramList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeStateProgram;
   }
+
   init() {
     const { flux } = this.context;
 
@@ -28,3 +29,5 @@ export default class StateProgramList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('stateProgramStatus');
   }
 }
+
+export default StateProgramList;

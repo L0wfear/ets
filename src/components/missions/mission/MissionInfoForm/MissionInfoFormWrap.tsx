@@ -3,9 +3,9 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { DivNone } from 'global-styled/global-styled';
 
-const ReactTest: any = React;
 
-const MissionInfoForm = ReactTest.lazy(() => (
+
+const MissionInfoForm = React.lazy(() => (
   import(/* webpackChunkName: "mission_info_form" */'components/missions/mission/MissionInfoForm/MissionInfoForm')
 ));
 
@@ -15,9 +15,9 @@ class MissionInfoFormWrap extends React.Component<any, {}> {
 
     return showForm ?
       (
-        <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <React.Suspense fallback={<LoadingComponent />}>
           <MissionInfoForm {...props} />
-        </ReactTest.Suspense>
+        </React.Suspense>
       )
       :
       (

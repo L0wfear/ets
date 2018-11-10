@@ -1,17 +1,17 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
-const ReactTest: any = React;
-const Component = ReactTest.lazy(() => (
-  import(/* webpackChunkName: "track_events" */'components/reports/operational/track_events/reportProps')
+
+const Component = React.lazy(() => (
+  import(/* webpackChunkName: "track_events" */'components/reports/operational/track_events/Report')
 ));
 
 export default [
   {
     component: (props) => (
-      <ReactTest.Suspense fallback={<LoadingComponent />}>
+      <React.Suspense fallback={<LoadingComponent />}>
         <Component {...props}/>
-      </ReactTest.Suspense>
+      </React.Suspense>
     ),
   },
 ];

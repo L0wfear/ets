@@ -3,9 +3,9 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { DivNone } from 'global-styled/global-styled';
 
-const ReactTest: any = React;
 
-const ReportForm = ReactTest.lazy(() => (
+
+const ReportForm = React.lazy(() => (
   import(/* webpackChunkName: "ReportForm" */'components/reports/operational/track_events/form/ReportForm')
 ));
 
@@ -25,12 +25,12 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
     return (
       showForm ?
       (
-        <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <React.Suspense fallback={<LoadingComponent />}>
           <ReportForm
             onFormHide={props.onFormHide}
             coords={props.coords}
           />
-        </ReactTest.Suspense>
+        </React.Suspense>
       )
       :
       ( <DivNone /> )

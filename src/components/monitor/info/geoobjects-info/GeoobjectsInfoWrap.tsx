@@ -14,9 +14,9 @@ type PropsGeoobjectsInfo ={
 type StateGeoobjectsInfo = {
 };
 
-const ReactTest: any = React;
 
-const GeoobjectsInfo = ReactTest.lazy(() => (
+
+const GeoobjectsInfo = React.lazy(() => (
   import(/* webpackChunkName: "geoobjects_info" */'components/monitor/info/geoobjects-info/GeoobjectsInfo')
 ));
 
@@ -36,11 +36,11 @@ class GeoobjectsInfoWrap extends React.Component<PropsGeoobjectsInfo, StateGeoob
         <DivNone />
       )
       : (
-        <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <React.Suspense fallback={<LoadingComponent />}>
           <GeoobjectsInfo
             centerOn={this.props.centerOn}
           />
-        </ReactTest.Suspense>
+        </React.Suspense>
       )
     )
   }

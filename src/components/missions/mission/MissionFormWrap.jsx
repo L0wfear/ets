@@ -10,8 +10,8 @@ import { getDefaultMission } from 'stores/MissionsStore';
 import { saveData, printData } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
-import MissionFormLazy from 'components/missions/mission/MissionForm/MissionFormLazy';
-import MissionFormOldLazy from 'components/missions/mission/MissionForm/MissionFormOldLazy';
+import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
+import MissionFormOld from 'components/missions/mission/MissionForm/MissionFormOld';
 import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
@@ -281,7 +281,7 @@ class MissionFormWrap extends FormWrap {
 
     return (
       <>
-        <MissionFormLazy
+        <MissionForm
           formState={this.state.formState}
           onSubmit={this.handleFormSubmit.bind(this)}
           handleFormChange={this.handleFormStateChange.bind(this)}
@@ -292,7 +292,7 @@ class MissionFormWrap extends FormWrap {
           {...this.state}
           show={this.props.showForm && this.state.formState.is_new}
         />
-        <MissionFormOldLazy
+        <MissionFormOld
           formState={this.state.formState}
           {...props}
           {...this.state}

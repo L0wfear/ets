@@ -16,14 +16,16 @@ import permissions from 'components/directories/repair/contractor/config-data/pe
   tableComponent: ContractorTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class ContractorList extends CheckableElementsList {
+class ContractorList extends CheckableElementsList {
   constructor(props, context) {
-
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeСontractor;
   }
+
   init() {
     const { flux } = this.context;
     flux.getActions('repair').getRepairListByType('contractor');
   }
 }
+
+export default ContractorList;

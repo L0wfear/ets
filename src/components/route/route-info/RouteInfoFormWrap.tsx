@@ -4,9 +4,9 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import { DivNone } from 'global-styled/global-styled';
 import { PropsRouteInfoFormWrap } from 'components/route/route-info/RouteInfoForm.h';
 
-const ReactTest: any = React;
 
-const RouteInfoForm = ReactTest.lazy(() => (
+
+const RouteInfoForm = React.lazy(() => (
   import(/* webpackChunkName: "route_info_form" */'components/route/route-info/RouteInfoForm')
 ));
 
@@ -20,14 +20,14 @@ class RouteInfoFormWrap extends React.PureComponent<PropsRouteInfoFormWrap, {}> 
     return (
       showForm ?
       (
-        <ReactTest.Suspense fallback={<LoadingComponent />}>
+        <React.Suspense fallback={<LoadingComponent />}>
           <RouteInfoForm
             route={props.route}
             title={props.title}
             onHide={props.onHide}
             mapKey={props.mapKey}
           />
-        </ReactTest.Suspense>
+        </React.Suspense>
       )
       :
       ( <DivNone /> )

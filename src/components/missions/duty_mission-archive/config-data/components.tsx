@@ -1,17 +1,7 @@
-import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
-
-const ReactTest: any = React;
-const Component = ReactTest.lazy(() => (
-  import(/* webpackChunkName: "duty-missions-archive-journal" */'components/missions/duty_mission-archive/config-data/DutyMissionsArchiveJournalWrap')
-));
+import Component from 'components/missions/duty_mission-archive/DutyMissionsArchiveJournal';
 
 export default [
   {
-    component: (props) => (
-      <ReactTest.Suspense fallback={<LoadingComponent />}>
-        <Component {...props}/>
-      </ReactTest.Suspense>
-    ),
+    component: Component,
   },
 ];

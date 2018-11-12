@@ -1,5 +1,6 @@
 export type PropsMapMissionInfoWrap = {
   gov_number: string;
+  gps_code: string | null;
   geoobjects: object;
 
   speed_lim: number;

@@ -153,65 +153,6 @@ export default class CarActions extends Actions {
     return CarService.get(payload);
   }
 
-  async getCarsByTechnicalOperation(technical_operation_id) {
-    const payload = {};
-    if (!isEmpty(technical_operation_id)) {
-      payload.technical_operation_id = technical_operation_id;
-    } else {
-      delete payload.technical_operation_id;
-    }
-    const response = await CarService.get(payload);
-    return response.result.rows || [];
-  }
-
-  getCarInfoByDateTime(asuods_id, datetime) {
-    const payload = {
-      asuods_id,
-      datetime: createValidDateTime(datetime),
-    };
-
-    return Car.get(payload).then(({ result: { rows: [carData] } }) => carData);
-  }
-
-  getCarGpsNumberByDateTime({ asuods_id, gps_code }, datetime) {
-    if (diffDayOfDate(new Date(), datetime, 'days', false) > 0) {
-      const payloadToCar = {
-        asuods_id,
-        datetime: createValidDateTime(datetime),
-      };
-
-      return Car.get(payloadToCar).then(({ result: { rows: [carData] } }) => carData);
-    }
-
-    return Promise.resolve({ gps_code });
-  }
-
-  getTrack(carData, from_dt, to_dt) {
-    return this.getCarGpsNumberByDateTime(carData, from_dt)
-      .then(({ gps_code }) => {
-        const payloadToTrack = {
-          version: 3,
-          gps_code,
-          from_dt: makeUnixTime(from_dt),
-          to_dt: makeUnixTime(to_dt),
-          sensors: 1,
-        };
-
-        return TrackService.get(payloadToTrack);
-      })
-      .then((obj) => {
-        const { track = [] } = obj;
-
-        obj.track = track.map((point) => {
-          // wrap coords for OpenLayers
-          point.coords = swapCoords(point.coords);
-          point.coords_msk = swapCoords(point.coords_msk);
-          return point;
-        });
-        return obj;
-      });
-  }
-
   getInfoFromCar(gps_code, from_dt, to_dt) {
     const payload = {
       gps_code,
@@ -221,22 +162,5 @@ export default class CarActions extends Actions {
     };
 
     return InfoService.get(payload);
-  }
-
-  getCarInfo(car_id, date_start, date_end) {
-    const payload = {
-      car_id,
-      date_start: createValidDateTime(date_start),
-      date_end: createValidDateTime(date_end),
-    };
-    return CarInfoService.get(payload).then(({ result = {} }) => result);
-  }
-
-  getCarMissionsByTimestamp(car_id, point_timestamp) {
-    const payload = {
-      car_id,
-      point_timestamp,
-    };
-    return CarInfoService.get(payload).then(({ result: { missions = [] } }) => missions);
   }
 }

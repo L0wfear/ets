@@ -85,6 +85,7 @@ export type PropsMissionInfoForm = {
   onFormHide: any;
   loadGeozones: (serverName: string, company_id?: number | null) => Promise<AnsLoadGeozonesFunc>,
   loadRouteDataById: (id: number) => Promise<AnsLoadRouteDataByIdFunc>,
+  loadCarGpsCode: ({ asuods_id, date_start }) => Promise<any>,
   loadTrackCaching: any;
   company_id: number | null;
 };
@@ -97,4 +98,5 @@ export type StateMissionInfoForm = {
   track: any[];
   front_parkings: any[];
   cars_sensors: object;
+  gps_code: string | null;
 };

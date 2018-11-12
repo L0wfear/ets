@@ -2,6 +2,7 @@ import { ISpeedLimits } from 'components/missions/mission/MissionInfoForm/Missio
 
 export type PropsMapContainer = {
   gov_number: string;
+  gps_code: string | null;
   geoobjects: object;
   front_parkings: any[];
   track: any[];

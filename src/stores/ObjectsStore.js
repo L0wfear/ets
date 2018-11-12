@@ -15,8 +15,6 @@ export default class ObjectsStore extends Store {
     const companyStructreActions = flux.getActions('companyStructure');
 
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
-    this.register(carActions.getTrack, this.handleGetTrack);
-    this.register(carActions.getCarsByTechnicalOperation, this.handleGetCarsByTechnicalOperation);
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
@@ -71,8 +69,6 @@ export default class ObjectsStore extends Store {
 
     this.state = {
       carsList: [],
-      carListBuyTO: [],
-      track: {},
       customersList: [],
       typesList: [],
       sensorTypesList: [],
@@ -168,9 +164,6 @@ export default class ObjectsStore extends Store {
     this.setState({ carsList, carsIndex });
   }
 
-  handleGetCarsByTechnicalOperation(result) {
-    this.setState({ carListBuyTO: result });
-  }
   handleGetSomeCars(cars) {
     const carsFilterList = cars.result.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
@@ -181,10 +174,6 @@ export default class ObjectsStore extends Store {
     });
     const carsIndex = _.keyBy(carsFilterList, 'asuods_id');
     this.setState({ carsFilterList, carsIndex });
-  }
-
-  handleGetTrack(track) {
-    this.setState({ track });
   }
 
   handleGetModels({ result: { rows = [] } }) {

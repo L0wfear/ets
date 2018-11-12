@@ -73,6 +73,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
       <MapContainerDiv>
         <MapMissionInfoWrap
           gov_number={props.gov_number}
+          gps_code={props.gps_code}
           geoobjects={state.geoobjects}
           track={state.track}
           parkings={state.front_parkings}

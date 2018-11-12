@@ -57,6 +57,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       cars_sensors: {},
       polys: {},
       parkingCount: null,
+      gps_code: null,
       tooLongDates: (
         diffDates(
           mission_data.date_end,
@@ -104,8 +105,20 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
         }
       })
 
+      this.loadGpsCode();
       this.loadTrack();
     }
+  }
+
+  async loadGpsCode() {
+    const { element } = this.props;
+
+    const { payload: { gps_code } } = await this.props.loadCarGpsCode({
+      asuods_id: element.car_data.asuods_id,
+      date_start: element.mission_data.date_start,
+    });
+
+    this.setState({ gps_code });
   }
 
   /**
@@ -248,6 +261,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
               <SideContainerDiv>
                 <MapContainer
                   gov_number={car_data.gov_number}
+                  gps_code={this.state.gps_code}
                   track={this.state.track}
                   geoobjects={this.state.polys}
                   front_parkings={this.state.front_parkings}

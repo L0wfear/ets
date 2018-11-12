@@ -18,12 +18,12 @@ import {
   CAR_INFO_SET_POPUP_FUEL_EVENT_POINT,
   initialState,
 } from 'components/monitor/info/car-info/redux-main/modules/car-info';
-import { makeUnixTime, createValidDateTime, diffDayOfDate } from 'utils/dates';
+import { makeUnixTime, createValidDateTime } from 'utils/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad } from 'components/monitor/info/car-info/redux-main/modules/utils';
+import { getCarGpsNumberByDateTime } from 'redux-main/trash-actions/car/promise/promise';
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 
 import {
-  Car,
   TrackService,
   CarInfoService,
 } from 'api/Services';
@@ -109,21 +109,6 @@ export const carInfoToggleSensorShow = (type, key) => ({
   }
 })
 
-
-
-export const getCarGpsNumberByDateTime = ({ asuods_id, gps_code, date_start }) => {
-  if (diffDayOfDate(new Date(), date_start) > 0) {
-    const payloadToCar = {
-      asuods_id,
-      datetime: createValidDateTime(date_start),
-    };
-
-    return Car.get(payloadToCar).then(({ result: { rows: [carData] } }) => carData);
-  }
-
-  return Promise.resolve({ gps_code });
-}
-
 export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as TypeMeta) => (dispatch, getState) => {
   const {
     monitorPage: {
@@ -134,7 +119,7 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
     },
   } = getState();
 
-  dispatch(carInfoResetTrackCahing())
+  dispatch(carInfoResetTrackCahing());
   dispatch({
     type: CAR_INFO_SET_TRACK_CACHING,
     payload: getCarGpsNumberByDateTime(payloadData)

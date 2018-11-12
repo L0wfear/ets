@@ -169,10 +169,6 @@ export default class LoadingStore extends Store {
       geoObjectsActions.getGeozoneByTypeWithGeometry,
       geoObjectsActions.getGeozoneByType,
 
-      carActions.getTrack,
-      carActions.getCarsByTechnicalOperation,
-      carActions.getCarMissionsByTimestamp,
-
       missionsActons.getMissionsByCarAndDates);
 
     this.state = {

@@ -1,6 +1,7 @@
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { loadRouteDataById } from 'redux-main/trash-actions/route/route';
 import { loadTrackCaching } from 'redux-main/trash-actions/uniq/promise';
+import { loadCarGpsCode } from 'redux-main/trash-actions/car/car';
 
 export const mapDispatchToProps = (dispatch) => ({
   loadGeozones: (serverName, company_id) => (
@@ -39,5 +40,20 @@ export const mapDispatchToProps = (dispatch) => ({
         path: 'missionInfoForm',
       },
     })
+  ),
+  loadCarGpsCode: ({ asuods_id, date_start }) => (
+    dispatch(
+      loadCarGpsCode(
+        'none',
+        {
+          asuods_id,
+          date_start,
+        },
+        {
+          page: 'any',
+          path: 'missionInfoForm',
+        },
+      ),
+    )
   ),
 });

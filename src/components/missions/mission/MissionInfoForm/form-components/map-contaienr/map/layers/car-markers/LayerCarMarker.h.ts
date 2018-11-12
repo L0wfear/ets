@@ -7,7 +7,7 @@ export type PropsLayerCarMarker = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
 
   token: string;
-  gov_number: string;
+  gps_code: string | null;
 };
 
 export type OneWsDataCardata = {
@@ -16,7 +16,6 @@ export type OneWsDataCardata = {
   contractor_ids: number[] | void;
   customer_ids: number[] | void;
   gov_number: string;
-  gps_code: string;
   model_id: number | void;
   owner_id: number | void;
   provider_ids: number[] | void;

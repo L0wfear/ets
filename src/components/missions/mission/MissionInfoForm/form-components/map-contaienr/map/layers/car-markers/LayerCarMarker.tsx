@@ -36,6 +36,14 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.openWs();
   }
 
+  componentDidUpdate(prevProps: PropsLayerCarMarker) {
+    const { gps_code } = this.props;
+
+    if (gps_code !== prevProps.gps_code) {
+      this.updateStyleForAllPoints();
+    }
+  }
+
   componentWillUnmount() {
     this.props.removeLayer();
     this.closeWs();
@@ -69,8 +77,30 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     }
   }
 
+  updateStyleForAllPoints() {
+    const { gps_code: outerGpsCode } = this.props;
+    const { carPointsDataWs } = this.state;
+
+    Object.entries(carPointsDataWs).forEach(([gps_code, { coords, coords_msk, ...data }]: any) => {
+      const feature = this.props.getFeatureById(gps_code);
+
+      const style = getStyleForStatusDirectionType({
+        status: carPointsDataWs[gps_code].status,
+        direction: carPointsDataWs[gps_code].direction,
+        selected: gps_code === outerGpsCode,
+        zoomMore8: true,
+        minZoom: false,
+        show_gov_number: false,
+        gov_number: '',
+        visible: gps_code === outerGpsCode,
+      });
+
+      feature.setStyle(style);
+    });
+  }
+
   handleReveiveData(data: WsData) {
-    const { gov_number } = this.props;
+    const { gps_code: outerGpsCode } = this.props;
     const { carPointsDataWs } = this.state;
 
     Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
@@ -81,53 +111,49 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       };
 
       if (!carPointsDataWs[gps_code]) {
-        if (point.car && point.car.gov_number === gov_number) {
-          carPointsDataWs[gps_code] = point;
+        carPointsDataWs[gps_code] = point;
 
-          const feature = new Feature({
-            geometry: new Point(point.coords_msk),
-          });
-    
-          const style = getStyleForStatusDirectionType({
-            status: point.status,
-            direction: point.direction,
-            selected: true,
-            zoomMore8: true,
-            minZoom: false,
-            show_gov_number: false,
-            gov_number: '',
-            visible: true,
-          });
+        const feature = new Feature({
+          geometry: new Point(point.coords_msk),
+        });
+  
+        const style = getStyleForStatusDirectionType({
+          status: point.status,
+          direction: point.direction,
+          selected: gps_code === outerGpsCode,
+          zoomMore8: true,
+          minZoom: false,
+          show_gov_number: false,
+          gov_number: '',
+          visible: gps_code === outerGpsCode,
+        });
 
-          feature.setId(point.id);
-          feature.setStyle(style);
+        feature.setId(point.id);
+        feature.setStyle(style);
 
-          this.props.addFeaturesToSource(feature);
-        }
+        this.props.addFeaturesToSource(feature);
       } else if (carPointsDataWs[gps_code].timestamp < point.timestamp) {
-        if (carPointsDataWs[gps_code].car.gov_number === gov_number) {
-          carPointsDataWs[gps_code] = {
-            ...carPointsDataWs[gps_code],
-            ...point,
-          };
+        carPointsDataWs[gps_code] = {
+          ...carPointsDataWs[gps_code],
+          ...point,
+        };
 
-          const feature = this.props.getFeatureById(gps_code);
+        const feature = this.props.getFeatureById(gps_code);
 
-          feature.setGeometry(new Point(carPointsDataWs[gps_code].coords_msk));
+        feature.setGeometry(new Point(carPointsDataWs[gps_code].coords_msk));
 
-          const style = getStyleForStatusDirectionType({
-            status: carPointsDataWs[gps_code].status,
-            direction: carPointsDataWs[gps_code].direction,
-            selected: true,
-            zoomMore8: true,
-            minZoom: false,
-            show_gov_number: false,
-            gov_number: '',
-            visible: true,
-          });
+        const style = getStyleForStatusDirectionType({
+          status: carPointsDataWs[gps_code].status,
+          direction: carPointsDataWs[gps_code].direction,
+          selected: gps_code === outerGpsCode,
+          zoomMore8: true,
+          minZoom: false,
+          show_gov_number: false,
+          gov_number: '',
+          visible: gps_code === outerGpsCode,
+        });
 
-          feature.setStyle(style);
-        }
+        feature.setStyle(style);
       }
     });
 

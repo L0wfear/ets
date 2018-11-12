@@ -2,7 +2,7 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { get } from 'lodash';
 
-export const getTableMeta = ({ structures = [] }) => {
+export const getTableMeta = ({ structures = [], govNumberFilter = [], }) => {
   const tableMeta = {
     cols: [
       {
@@ -28,6 +28,7 @@ export const getTableMeta = ({ structures = [] }) => {
         type: 'number',
         filter: {
           type: 'multiselect',
+          options: govNumberFilter.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },

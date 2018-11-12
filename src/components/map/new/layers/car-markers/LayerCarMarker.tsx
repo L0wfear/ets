@@ -1,3 +1,7 @@
+/**
+ * Не использовать данные из сокета для фильтрации!!!
+ */
+
 import * as React from 'react';
 import withLayerProps from 'components/map/new/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
@@ -448,7 +452,12 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     const gps_code = (feature as any).getId();
     if (gps_code !== this.state.gps_code) {
       const gps_code = (feature as any).getId();
-      this.props.carInfoSetGpsNumber(gps_code, this.state.carPointsDataWs[gps_code].car.gov_number);
+      this.props.carInfoSetGpsNumber(
+        gps_code,
+        this.props.carActualGpsNumberIndex[gps_code]
+          ? this.props.carActualGpsNumberIndex[gps_code].gov_number
+          : null,
+      );
     }
   }
 

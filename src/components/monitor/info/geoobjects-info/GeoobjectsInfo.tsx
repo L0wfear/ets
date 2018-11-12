@@ -42,7 +42,7 @@ class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobject
           (
             <div className="data_container geoobjects_info">
               <div className="map_info-title_container geoobject_title">
-                <div className=" car_info-gov_number">
+                <div className="car_info-gov_number">
                   <div className="car_info_block">
                     <span>Список выбранных геообъектов</span>
                   </div>

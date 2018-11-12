@@ -1,4 +1,8 @@
-import * as React from 'react';
+/**
+ * Не использовать данные из сокета для фильтрации!!!
+ */
+
+ import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 

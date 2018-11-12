@@ -1,3 +1,7 @@
+/**
+ * Не использовать данные из сокета для фильтрации!!!
+ */
+
 import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
@@ -493,7 +497,12 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     const gps_code = (feature as any).getId();
     if (gps_code !== this.props.gps_code) {
       const gps_code = (feature as any).getId();
-      this.props.carInfoSetGpsNumber(gps_code, this.state.carPointsDataWs[gps_code].car.gov_number);
+      this.props.carInfoSetGpsNumber(
+        gps_code,
+        this.props.carActualGpsNumberIndex[gps_code]
+          ? this.props.carActualGpsNumberIndex[gps_code].gov_number
+          : null,
+      );
     }
   }
 

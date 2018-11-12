@@ -2,7 +2,10 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable.jsx';
 import { get } from 'lodash';
 
-export const getTableMeta = ({ structures = [], govNumberFilter = [], }) => {
+export const getTableMeta = ({
+    structures = [],
+    govNumberFilter = [],
+  }) => {
   const tableMeta = {
     cols: [
       {
@@ -23,7 +26,7 @@ export const getTableMeta = ({ structures = [], govNumberFilter = [], }) => {
         },
       },
       {
-        name: 'car_gov_number',
+        name: 'car_id',
         displayName: 'Рег. номер ТС',
         type: 'number',
         filter: {
@@ -100,6 +103,7 @@ export const getTableMeta = ({ structures = [], govNumberFilter = [], }) => {
 
 const renderers = {
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
 };
 
 export default (props) => {

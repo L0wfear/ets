@@ -170,7 +170,6 @@ class RouteFormWrap extends FormWrap {
                 polys[o.object_id] = {
                   ...new_polys[o.object_id],
                   state: o.state,
-                  old: true,
                 };
               }
             });

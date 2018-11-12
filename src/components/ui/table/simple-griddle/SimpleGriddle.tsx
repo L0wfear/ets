@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
 import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
+import { isNullOrUndefined } from 'util';
 
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -107,7 +108,7 @@ class SimpleGriddle extends React.Component<any, any> {
 
   mapTbodyTr = (rowData, index) => (
     <TrTable
-      key={rowData[this.props.selectField] || index}
+      key={isNullOrUndefined(rowData[this.props.selectField]) ? index : rowData[this.props.selectField]}
       columns={this.props.columns}
       rowData={rowData}
       index={index}

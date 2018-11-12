@@ -29,8 +29,6 @@ export default class PolyMap extends React.Component {
     this.markers = {};
     this._handlers = null; // map event handlers
 
-    console.log(props.zoom, props.center)
-
     this.initialView = new ol.View({
       center: props.center,
       zoom: props.zoom,
@@ -87,7 +85,14 @@ export default class PolyMap extends React.Component {
       if (this.popup) {
         this.popup.hide();
       }
-      this.renderPolygons(nextProps.polys);
+      const nextPolysMapId = Object.keys(nextProps.polys).map((key) => key);
+      const prevPolysMapId = Object.keys(this.props.polys || {}).map((key) => key);
+
+      this.renderPolygons(
+        nextProps.polys,
+        nextPolysMapId.length !== prevPolysMapId.length
+        || nextPolysMapId.some((id) => !prevPolysMapId.includes(id))
+      );
     }
     if (nextProps.draw_object_list !== undefined) {
       this.renderRoute(nextProps.draw_object_list);

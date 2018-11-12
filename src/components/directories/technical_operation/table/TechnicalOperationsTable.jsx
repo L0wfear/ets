@@ -36,12 +36,12 @@ const getTableMeta = ({
         },
       },
       {
-        name: 'elements_text',
+        name: 'elements_names',
         displayName: 'Элемент',
         type: 'string',
         filter: {
           type: 'multiselect',
-          some: true,
+          someInRowValue: true,
           options: ELEMENTS,
         },
       },
@@ -60,7 +60,7 @@ const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          some: true,
+          someInRowValue: true,
           options: KIND_TASK_NAMES,
         },
       },
@@ -97,13 +97,13 @@ const getTableMeta = ({
         },
       },
       {
-        name: 'objects_text',
+        name: 'objects_names',
         displayName: 'Объект',
         type: 'string',
         filter: {
           type: 'multiselect',
+          someInRowValue: true,
           options: OBJECT,
-          some: true,
         },
         cssClassName: 'width60',
       },
@@ -124,7 +124,7 @@ const getTableMeta = ({
         fullString: true,
         filter: {
           type: 'multiselect',
-          some: true,
+          someInRowValue: true,
           options: CAR_TYPES,
         },
       },
@@ -146,7 +146,9 @@ const getTableMeta = ({
 export default props => {
   const renderers = {
     use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+    elements_names: ({ data }) => <div>{data.join(',\n')}</div>,
     kind_task_names: ({ data }) => <div>{data.join(',\n')}</div>,
+    objects_names: ({ data }) => <div>{data.join(',\n')}</div>,
     sensor_type_ids: ({ data }) => <span>{data.map(id => (props.sensorTypesList.find(({ id: id_s }) => id_s === id) || { name: '' }).name).join(',')}</span>,
   };
 

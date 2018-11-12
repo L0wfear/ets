@@ -26,7 +26,7 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'car_gov_number',
+        name: 'car_id',
         displayName: 'Рег. номер ТС',
         type: 'number',
         filter: {
@@ -103,6 +103,7 @@ export const getTableMeta = ({
 
 const renderers = {
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
 };
 
 export default props => (

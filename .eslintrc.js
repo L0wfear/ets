@@ -28,7 +28,8 @@ module.exports = {
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "jsx-a11y/no-static-element-interactions": ["off"],
         // react
-        "react/forbid-prop-types": ["off"]
+        "react/forbid-prop-types": ["off"],
+        "react/destructuring-assignment": [false]
       },
     "settings": {
         "import/resolver": {

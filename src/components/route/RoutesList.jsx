@@ -80,9 +80,11 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
 class RoutesList extends React.Component {
   static get propTypes() {
     return {
-      appConfig: PropTypes.object,
-      technicalOperationsList: PropTypes.array,
-      technicalOperationsObjectsList: PropTypes.array,
+      appConfig: PropTypes.object.isRequired,
+      technicalOperationsList: PropTypes.array.isRequired,
+      technicalOperationsObjectsList: PropTypes.array.isRequired,
+      history: PropTypes.object.isRequired,
+      location: PropTypes.object.isRequired,
     };
   }
 
@@ -138,8 +140,10 @@ class RoutesList extends React.Component {
       this.refreshRoutes({ showForm: false })
         .then(() => this.selectRoute(result.createdRoute.result[0].id));
     } else {
+      const { selectedRoute_old } = this.state;
+
       this.setState({
-        selectedRoute: this.state.selectedRoute_old,
+        selectedRoute: selectedRoute_old,
         showForm: false,
       });
     }
@@ -154,30 +158,17 @@ class RoutesList extends React.Component {
       this.context.flux.getActions('routes').getRoutes().then(({ result }) => result),
       Promise.resolve(this.getStructures()),
     ])
-    .then(([routesListFromStore]) => {
-      const routesList = makeRoutesListForRender(routesListFromStore);
+      .then(([routesListFromStore]) => {
+        const routesList = makeRoutesListForRender(routesListFromStore);
 
-      this.setState({ ...withState, routesList });
+        this.setState({ ...withState, routesList });
 
-      return routesList;
-    })
+        return routesList;
+      })
   )
 
   handleChangeSeasonId = (season_id) => {
     this.setState({ season_id });
-  }
-
-  shouldBeRendered(obj) {
-    if (this.state.season_id.some(season_id => (obj.seasons.some(seasonData => seasonData.season_id === season_id)))) {
-      return Object.entries(this.state.filterValues).every(([key, { value }]) => {
-        if (Array.isArray(obj[key])) {
-          return obj[key].some(data => value.includes(data));
-        }
-        return value.includes(obj[key]);
-      });
-    }
-
-    return false;
   }
 
   closeFilter = () => {
@@ -186,7 +177,10 @@ class RoutesList extends React.Component {
     }
   }
 
-  toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
+  toggleFilter = () => {
+    const { filterModalIsOpen } = this.state;
+    this.setState({ filterModalIsOpen: !filterModalIsOpen });
+  }
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues); // eslint-disable-line
@@ -203,7 +197,7 @@ class RoutesList extends React.Component {
       const pathTo_type = pathToIsMain + getTypeRoute(route.type);
       const pathTo_structure_name = pathTo_type + route.structure_name || 'Без подразделения';
 
-      let pathTo_technical_operation_name_arr = [];
+      const pathTo_technical_operation_name_arr = [];
       route.work_types.forEach((elem) => {
         const pathToStructureWorkType = `${pathTo_structure_name}${elem.work_type_name}`;
 
@@ -277,6 +271,19 @@ class RoutesList extends React.Component {
       showId.splice(i, 1);
     }
     this.setState({ showId });
+  }
+
+  shouldBeRendered(obj) {
+    if (this.state.season_id.some(season_id => (obj.seasons.some(seasonData => seasonData.season_id === season_id)))) {
+      return Object.entries(this.state.filterValues).every(([key, { value }]) => {
+        if (Array.isArray(obj[key])) {
+          return obj[key].some(data => value.includes(data));
+        }
+        return value.includes(obj[key]);
+      });
+    }
+
+    return false;
   }
 
   renderItem = (collection, parentName = '') => {
@@ -385,7 +392,7 @@ class RoutesList extends React.Component {
             </div>
           </SidebarListContainer>
         </Col>
-        <Col xs={7} md={9} >
+        <Col xs={7} md={9}>
           <RouteHeaderContainer className="some-header">
             <div className="waybills-buttons">
               <span>{'Сезон: '}</span>

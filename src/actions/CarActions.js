@@ -166,17 +166,13 @@ export default class CarActions extends Actions {
     return Car.get(payload).then(({ result: { rows: [carData] } }) => carData);
   }
 
-  getCarGpsNumberByDateTime({ asuods_id, gps_code }, datetime) {
-    if (diffDayOfDate(new Date(), datetime, 'days', false) > 0) {
-      const payloadToCar = {
-        asuods_id,
-        datetime: createValidDateTime(datetime),
-      };
+  getCarGpsNumberByDateTime({ asuods_id }, datetime) {
+    const payloadToCar = {
+      asuods_id,
+      datetime: createValidDateTime(datetime),
+    };
 
-      return Car.get(payloadToCar).then(({ result: { rows: [carData] } }) => carData);
-    }
-
-    return Promise.resolve({ gps_code });
+    return Car.get(payloadToCar).then(({ result: { rows: [carData] } }) => carData);
   }
 
   getTrack(carData, from_dt, to_dt) {

@@ -1,17 +1,7 @@
-import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
-
-
-const Component = React.lazy(() => (
-  import(/* webpackChunkName: "brigade_efficiency" */'components/reports/operational/brigade_efficiency/report')
-));
+import  Component from 'components/reports/operational/brigade_efficiency/report';
 
 export default [
   {
-    component: (props) => (
-      <React.Suspense fallback={<LoadingComponent />}>
-        <Component {...props}/>
-      </React.Suspense>
-    ),
+    component: Component,
   },
 ];

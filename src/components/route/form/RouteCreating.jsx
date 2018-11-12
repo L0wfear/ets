@@ -73,11 +73,7 @@ class RouteCreating extends React.Component {
         return hasInOdh;
       });
     }
-    Object.entries(polys).forEach(([id, poly_data]) => {
-      if (!odhs.includes(id) && poly_data.state === polyState.SELECTABLE && poly_data.old) {
-        delete polys[id];
-      }
-    });
+
     this.props.onChange('polys', polys);
     this.props.onChange('object_list', object_list);
   }
@@ -136,11 +132,6 @@ class RouteCreating extends React.Component {
       object_list = [];
       _.forEach(polys, e => (e.state = polyState.SELECTABLE));
     }
-    Object.entries(polys).forEach(([id, poly_data]) => {
-      if (!v.includes(id) && poly_data.state === polyState.SELECTABLE && poly_data.old) {
-        delete polys[id];
-      }
-    });
 
     this.props.onChange('polys', polys);
     this.props.onChange('object_list', object_list);
@@ -162,9 +153,6 @@ class RouteCreating extends React.Component {
     const polys = _.cloneDeep(polysOld);
 
     polys[id].state = state;
-    if (polys[id].state === 1 && polys[id].old) {
-      delete polys[id];
-    }
 
     this.props.onChange('polys', polys);
     this.setODH(id, name, state);

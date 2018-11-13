@@ -24,6 +24,10 @@ import {
   Cleaning,
 } from 'api/missions';
 
+import {
+  WaybillService,
+} from 'api/Services';
+
 export const parseFilterObject = filter =>
   Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
     ...newFilter,
@@ -100,7 +104,7 @@ export default class MissionsActions extends Actions {
       payload.in_between = inBetween;
     }
 
-    return MissionService.get(payload);
+    return WaybillService.path('available_missions').get(payload);
   }
 
   getMissionById(id) {

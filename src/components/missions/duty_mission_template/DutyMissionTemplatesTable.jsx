@@ -92,6 +92,7 @@ export const getTableMeta = ({
 
 export const getRenderers = props => ({
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  brigade_employee_names: ({ data }) => <div>{data.join(',')}</div>,
 });
 
 const DataTable = props => (

@@ -519,7 +519,7 @@ export default class DataTable extends React.Component {
                 isValid = false;
               }
             } else if (a.filter.someInRowValue) {
-              if (!value.every(val => obj[key].some(el => el.toString().includes(val.toString())))) {
+              if (!value.some(val => obj[key].some(el => el.toString().includes(val.toString())))) {
                 isValid = false;
               }
             } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
@@ -673,7 +673,7 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
+    console.log(results)
     const customFiltersValues = { // для кастомизации значений фильтров, ключи должны совпадать
       car_gov_number: this.props.govNumberFilter
     };

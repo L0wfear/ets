@@ -302,8 +302,8 @@ class WaybillForm extends Form {
 
     this.context.flux.getActions('missions').getMissionsByCarAndDates(
       car_id,
-      status === 'active' ? formState.fact_departure_date : formState.plan_departure_date,
-      status === 'active' ? formState.fact_arrival_date : formState.plan_arrival_date,
+      formState.fact_departure_date || formState.plan_departure_date,
+      formState.fact_arrival_date || formState.plan_arrival_date,
       status
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');

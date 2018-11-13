@@ -136,10 +136,11 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
 
         if (value) {
           const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOption) => mfOption.value === value);
-          if (mfOption) {
-            this.props.getDataBySelectedMunicipalFacility(
-              mfOption.mfData,
-            );
+          if (!mfOption) {
+            this.props.handleChange('municipal_facility_id', null);
+            this.props.getDataBySelectedMunicipalFacility({
+              route_types: [],
+            });
           }
         }
 
@@ -149,7 +150,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
   }
 
   handleChange = (value, option) => {
-    if (value !== this.props.value) {
+    if (value && value !== this.props.value) {
       this.props.handleChange(
         'municipal_facility_id',
         value,

@@ -11,10 +11,17 @@ import RouteForm from 'components/route/form/RouteForm';
 import FormWrap from 'components/compositions/FormWrap';
 import { DivNone } from 'global-styled/global-styled';
 
-let lastObjectList = {
-  object_type: null,
-  object_list: [],
-  input_lines: [],
+const lastObjectList = {
+  mixed: {
+    object_list: [],
+    input_lines: [],
+  },
+  simple_dt: {
+    object_list: [],
+  },
+  points: {
+    object_list: [],
+  },
 };
 
 class RouteFormWrap extends FormWrap {
@@ -42,10 +49,31 @@ class RouteFormWrap extends FormWrap {
         }
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
+        const { type } = formState;
+          if (type) {
+            lastObjectList[type].object_list = [...formState.object_list];
+            if (type === 'mixed') {
+              lastObjectList[type].input_lines = [...formState.input_lines];
+            }
+          }
         this.updateFromStatePolys(formState, true);
       } else {
         formState = {
           is_main: true,
+        };
+        lastObjectList = {
+          mixed: {
+            municipal_facility_id: null,
+            object_list: [],
+            input_lines: [],
+          },
+          simple_dt: {
+            municipal_facility_id: null,
+            object_list: [],
+          },
+          points: {
+            object_list: [],
+          },
         };
       }
 
@@ -93,35 +121,23 @@ class RouteFormWrap extends FormWrap {
       type: object_type,
     } = formState;
 
-    let oldObjectList = object_list;
-    let oldInputLines = input_lines;
-    let oldDrawOdhLines = draw_odh_list;
+    let oldObjectList = [];
+    let oldInputLines = [];
+    let oldDrawOdhLines = [];
+    console.log('updateFromStatePolys', {...formState})
 
-    if (municipal_facility_id && object_type) {
-      if (object_type === lastObjectList.object_type) {
-        if (!object_list.length) {
-          oldObjectList = lastObjectList.object_list;
-        } else {
-          lastObjectList.object_list = oldObjectList;
-        }
-        if (object_type === 'mixed') {
-          if (!input_lines.length) {
-            oldInputLines = lastObjectList.input_lines;
-            oldDrawOdhLines = await this.checkRoute(
-              {
-                ...formState,
-                input_lines: oldInputLines,
-              },
-              true,
-              );
-          } else {
-            lastObjectList.input_lines = oldInputLines;
-          }
-        }
-      } else {
-        lastObjectList.object_list = object_list;
-        lastObjectList.input_lines = oldInputLines;
-        lastObjectList.object_type = object_type;
+    if (object_type) {
+      oldObjectList = lastObjectList[object_type].object_list;
+      if (object_type === 'mixed') {
+        oldInputLines = lastObjectList[object_type].input_lines;
+
+        oldDrawOdhLines = await this.checkRoute(
+          {
+            ...formState,
+            input_lines: oldInputLines,
+          },
+          true,
+        );
       }
     }
 
@@ -173,7 +189,6 @@ class RouteFormWrap extends FormWrap {
               }
             });
           } else {
-            lastObjectList.object_list = newObjectList.length ? newObjectList : lastObjectList.object_list;
             this.handleFormStateChange('object_list', newObjectList);
             this.handleFormStateChange('input_lines', oldInputLines);
             this.handleFormStateChange('draw_list', oldInputLines);
@@ -215,6 +230,14 @@ class RouteFormWrap extends FormWrap {
 
   handleFormStateChangeRoute = (f, e) => {
     const { formErrors, formState } = this.handleFormStateChange(f, e);
+    const { type } = formState;
+
+    if (type) {
+      lastObjectList[type].object_list = [...formState.object_list];
+      if (type === 'mixed') {
+        lastObjectList[type].input_lines = [...formState.input_lines];
+      }
+    }
 
     // Проверка на наличие имени маршрута в списке маршрутов
     const { routesList } = this.props;
@@ -257,11 +280,6 @@ class RouteFormWrap extends FormWrap {
   }
 
   onFormHide = (...arg) => {
-    lastObjectList = {
-      object_list: [],
-      object_type: null,
-    };
-
     this.props.onFormHide(...arg);
   }
 

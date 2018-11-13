@@ -54,7 +54,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
         listData: result.map(r => ({
           ...r,
           brigade_employee_id_list_array: (r.brigade_employee_id_list || []).map(({ employee_id }) => employee_id),
-          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
+          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)),
         })),
       });
     });

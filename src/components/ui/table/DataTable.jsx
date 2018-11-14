@@ -342,13 +342,7 @@ export default class DataTable extends React.Component {
   }
 
   handleRowCheck = (id) => {
-    console.log('handleRowCheck- id', id);
-    console.log('this.props.checked', this.props.checked);
-    console.log('this.props.checkedArr',  Object.values(this.props.checked));
-    
-    // const value = !this.props.checked[id] || Object.values(this.props.checked).some( item => item.customId ? item.customId === id : false);
     const value = !this.props.checked[id];
-    console.log('value == ', value);
     const clonedData = _.cloneDeep(this.props.checked);
     clonedData[id] = value;
     if (value === false) delete clonedData[id];
@@ -363,7 +357,6 @@ export default class DataTable extends React.Component {
       .filter(r => this.shouldBeRendered(r))
       .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
-    console.log('checked === ', checked);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });
@@ -576,10 +569,7 @@ export default class DataTable extends React.Component {
   }
 
   processSelected(selected, selectField, onRowSelected, el) {
-    const someFlag = Object.values(this.props.checked).some( item2 => typeof item2.customId !== undefined ? item2.customId === el.id : false);
-    el.isChecked = this.props.checked && (this.props.checked[el.id] || someFlag) && this.shouldBeRendered(el);
-    console.log('elelelelelelel  ', this.props.checked);
-    console.log('atatat === ', someFlag);
+    el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
       return el;

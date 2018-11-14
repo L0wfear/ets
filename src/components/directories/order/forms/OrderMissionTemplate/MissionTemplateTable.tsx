@@ -57,7 +57,7 @@ const Table: React.SFC<any> = props  => {
   return (
     <DataTable
       multiSelection={true}
-      results={props.data}
+      results={props.data.map(d => ({ ...d }))}
       renderers={getRenders(props)}
       tableMeta={getTableMeta(props)}
       onRowSelected={props.onRowSelected}

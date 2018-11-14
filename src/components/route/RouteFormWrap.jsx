@@ -11,7 +11,7 @@ import RouteForm from './RouteForm.jsx';
 import FormWrap from '../compositions/FormWrap.jsx';
 import { polyState } from 'constants/polygons.js';
 
-lastObjectList = {
+let lastObjectList = {
   mixed: {
     object_list: [],
     input_lines: [],
@@ -51,13 +51,12 @@ class RouteFormWrap extends FormWrap {
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
         const { type } = formState;
-          if (type) {
-            console.log(type)
-            lastObjectList[type].object_list = [...formState.object_list];
-            if (type === 'mixed') {
-              lastObjectList[type].input_lines = [...formState.input_lines];
-            }
+        if (type) {
+          lastObjectList[type].object_list = [...formState.object_list];
+          if (type === 'mixed') {
+            lastObjectList[type].input_lines = [...formState.input_lines];
           }
+        }
         this.updateFromStatePolys(formState, true);
       } else {
         formState = {

@@ -236,6 +236,7 @@ export default class RouteForm extends Form {
                       label={'municipal_facility_name'}
                       errors={errors}
                       state={state}
+                      copy={this.props.copy}
                       disabled={!!this.props.fromMission || !!state.id}
                       handleChange={this.handleChange}
                       getDataByNormId={this.getDataByNormId}

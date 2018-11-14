@@ -58,7 +58,11 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
   getCleaningMunicipalFacilityList = (outerPayload, new_v) => {
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPayload).then(({ result: { rows = [] } = {} }) => {
-      const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types }) => ({ value, label, norm_id, route_types }));
+      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types }) => ({ value, label, norm_id, route_types }));
+
+      if (this.props.state.copy) {
+        MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS.filter(({ route_types }) => route_types.includes(this.props.state.type))
+      }
 
       if (new_v) {
         if (!MUNICIPAL_FACILITY_OPTIONS.some(({ value }) => value === new_v)) {

@@ -7,7 +7,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 
 import { find, uniqBy } from 'lodash';
 
-import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils';
+import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
@@ -18,6 +18,7 @@ import { DivNone } from 'global-styled/global-styled';
 
 import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm';
+import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from '../duty_mission/utils';
 
 const modalKey = 'duty_mission_template';
 
@@ -26,29 +27,13 @@ class MissionTemplateForm extends DutyMissionForm {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
-      employeesList = [],
-    } = this.props;
-    const {
       available_route_types = [],
       technicalOperationsList = [],
-      routesList = [],
       TECH_OPERATIONS = [],
-      selectedRoute: route = null
+      selectedRoute: route = null,
     } = this.state;
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
-
-    const filteredRoutes = (
-      route !== null
-      && route.id !== undefined
-      && routes.find(item => item.value === route.id) === undefined
-    ) ? routes.concat([route]) : routes;
-
-    const ROUTES = uniqBy(
-      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
-      'value',
-    );
-
+    const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
     const IS_CREATING = true;
 
     let title = 'Задание';
@@ -59,51 +44,12 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).reduce((newArr, employee) => {
-      if (employee.active && (!state.structure_id || (employee.company_structure_id === state.structure_id))) {
-        return [
-          ...newArr,
-          {
-            value: employee.value,
-            label: employee.label,
-          },
-        ];
-      }
 
-      return [...newArr];
-    }, []);
-    let hasNotActiveEmployees = false;
-    const FOREMANS = [...EMPLOYEES];
-    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id] || {};
-
-      FOREMANS.push({
-        value: state.foreman_id,
-        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-      });
-      hasNotActiveEmployees = true;
-    }
-
-    const BRIGADES = [...EMPLOYEES];
-    /*
-      Список активных сотрудников EMPLOYEES
-      После выбора бригадира, подгружается бригада
-      Если кого-то из бригады нет в списке сотрудников BRIGADES, то он добавляется в этот список с пометкой (Неактивный сотрудник)
-      Если в бригаде есть неактивный сотрудник, то выводится сообщение "В наряд-задание можно добавить только активного на данный момент времени сотрудника"
-    */
-    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
-      const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {//если сотрудника из бригады нет в списке сотрудников
-        const employee = this.props.employeesIndex[key] || {};
-
-        BRIGADES.push({
-          value: key,
-          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-        });
-        hasNotActiveEmployees = true;
-      }
-    });
-
+    const {
+      FOREMANS,
+      BRIGADES,
+      hasNotActiveEmployees,
+    } = getEmployeeFormDutyMission(this.props);
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
@@ -118,10 +64,6 @@ class MissionTemplateForm extends DutyMissionForm {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
-
-    const brigade_employee_id_list = !state.brigade_employee_id_list
-      ? []
-      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     return (
       <Modal id="modal-duty-missio-template" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
@@ -196,9 +138,10 @@ class MissionTemplateForm extends DutyMissionForm {
                 label="Бригада"
                 error={errors.brigade_employee_id_list}
                 multi
+                multiValueContainerReander={this.multiValueContainerReander}
                 disabled={false}
                 options={BRIGADES}
-                value={brigade_employee_id_list}
+                value={state.brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
               />
             </Col>

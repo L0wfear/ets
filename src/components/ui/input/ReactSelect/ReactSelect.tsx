@@ -41,6 +41,7 @@ export default class ReactSelect extends React.Component<any, any> {
         Option: this.optionRenderer,
         SingleValue: this.singleValueRender,
         MultiValue: this.multiValueRender,
+        MultiValueContainer: this.multiValueContainerReander,
       }
     };
   }
@@ -58,6 +59,13 @@ export default class ReactSelect extends React.Component<any, any> {
       ),
       objectValue,
     );
+  }
+  multiValueContainerReander = (props: any) => {
+    if (this.props.multiValueContainerReander) {
+      return this.props.multiValueContainerReander(props)
+    }
+
+    return <components.MultiValueContainer {...props} />;
   }
 
   optionRenderer = ({ innerProps, ...props }: any) => {

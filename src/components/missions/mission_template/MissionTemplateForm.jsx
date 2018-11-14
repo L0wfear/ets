@@ -13,8 +13,6 @@ import {
   find,
 } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/utils/utils';
-
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -69,7 +67,7 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
       route !== null

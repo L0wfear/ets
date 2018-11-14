@@ -21,7 +21,8 @@ import InsideField from 'components/missions/duty_mission/inside_fields/index';
 import RouteInfo from 'components/route/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
-import { FormTitle, onlyActiveEmployeeNotification } from './utils';
+import { FormTitle, onlyActiveEmployeeNotification, makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from './utils';
+import { components } from 'react-select';
 
 const makePayloadFromState = formState => ({
   datetime: formState.plan_date_start,
@@ -43,6 +44,15 @@ export class DutyMissionForm extends Form {
       routesList: [],
       available_route_types: [],
     };
+  }
+
+  multiValueContainerReander({ innerProps, ...props }) {
+    const newInnerProps = {
+      ...innerProps,
+      className: `${innerProps.className}${typeof props.data.active === 'boolean' && !props.data.active ? ' red' : ''}`,
+    };
+
+    return <components.MultiValueContainer innerProps={newInnerProps} {...props} />;
   }
 
   handleRouteIdChange = (v) => {
@@ -68,14 +78,29 @@ export class DutyMissionForm extends Form {
   }
 
   handleChangeStructureId = (v) => {
-    if (!v) {
-      this.handleChange('brigade_employee_id_list', []);
-      this.handleChange('foreman_id', null);
-    } else if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
-      this.handleRouteIdChange(undefined);
-    }
+    if (v !== this.props.formState.structure_id) {
+      if (v) {
+        const {
+          formState: {
+            foreman_id,
+          },
+        } = this.props;
 
-    this.handleChange('structure_id', v);
+        this.handleChange('brigade_employee_id_list', this.props.formState.brigade_employee_id_list.filter(id => (
+          this.props.employeesIndex[id]
+            ? this.props.employeesIndex[id].company_structure_id === v
+            : false
+        )));
+
+        this.handleChange('foreman_id', this.props.employeesIndex[foreman_id] && this.props.employeesIndex[foreman_id].company_structure_id === v ? foreman_id : null);
+
+        if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
+          this.handleRouteIdChange(undefined);
+        }
+      }
+
+      this.handleChange('structure_id', v);
+    }
   }
 
   handleTechnicalOperationChange = (v) => {
@@ -97,49 +122,20 @@ export class DutyMissionForm extends Form {
     flux.getActions('missions').getMissions(v);
   }
 
-  isActiveEmployee(id) {
-    return this.props.employeesList
-      .filter(employee => employee.active)
-      .map(employee => employee.id)
-      .indexOf(parseInt(id, 10)) !== -1;
-  }
-
   handleForemanIdChange = async (foreman_id) => {
-    if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
-      onlyActiveEmployeeNotification();
-      return;
-    }
-
-    if (!isEmpty(foreman_id)) {
+    if (foreman_id && foreman_id !== this.props.formState.foreman_id) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
-      this.handleBrigadeIdListChange(lastBrigade);
-    }
 
-    this.props.handleFormChange('foreman_id', foreman_id);
+      this.handleBrigadeIdListChange(lastBrigade.map(({ id }) => id));
+      this.props.handleFormChange('foreman_id', foreman_id);
+    }
   }
 
   // Можно принять второй параметр
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange = (v) => {
-    let brigade_employee_id_list = [];
-    if (v) {
-      let hasNotActiveEmployees = false;
-      brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
-        if (!this.isActiveEmployee(brigade_id)) {
-          hasNotActiveEmployees = true;
-          return [...newArr];
-        }
-        return [
-          ...newArr,
-          this.props.employeesIndex[brigade_id],
-        ];
-      }, []);
-      if (hasNotActiveEmployees && brigade_employee_id_list.length) {
-        onlyActiveEmployeeNotification();
-      }
-    }
-    this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
+    this.props.handleFormChange('brigade_employee_id_list', v);
   }
 
   async componentDidMount() {
@@ -296,7 +292,6 @@ export class DutyMissionForm extends Form {
 
     const {
       missionSourcesList = [],
-      employeesList = [],
       missionsList = [],
       readOnly = false,
       fromOrder = false,
@@ -321,57 +316,12 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
-
-    const filteredRoutes = (
-      route !== null
-      && route.id !== undefined
-      && routes.find(item => item.value === route.id) === undefined
-    ) ? routes.concat([route]) : routes;
-
-    const ROUTES = uniqBy(
-      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
-      'value',
-    );
-    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).reduce((newArr, employee) => {
-      if (employee.active) {
-        return [
-          ...newArr,
-          {
-            value: employee.value,
-            label: employee.label,
-          },
-        ];
-      }
-
-      return [...newArr];
-    }, []);
-    let hasNotActiveEmployees = false;
-    const FOREMANS = [...EMPLOYEES];
-    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id] || {};
-
-      FOREMANS.push({
-        value: state.foreman_id,
-        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-      });
-      hasNotActiveEmployees = true;
-    }
-
-    const BRIGADES = [...EMPLOYEES];
-
-    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
-      const key = id || employee_id;
-      if (key && !BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[key] || {};
-
-        BRIGADES.push({
-          value: key,
-          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-        });
-        hasNotActiveEmployees = true;
-      }
-    });
+    const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
+    const {
+      FOREMANS,
+      BRIGADES,
+      hasNotActiveEmployees,
+    } = getEmployeeFormDutyMission(this.props);
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
@@ -384,16 +334,16 @@ export class DutyMissionForm extends Form {
     const IS_COMPLETED = state.status && state.status === 'complete';
     const IS_CLOSED = state.status === 'complete' || state.status === 'fail';
 
-    let title = (
+    const title = IS_CREATING
+    ? (
+      'Создание наряд-задания'
+    )
+    : (
       <FormTitle
         number={state.number || ''}
         status={state.status}
       />
     );
-
-    if (IS_CREATING) {
-      title = 'Создание наряд-задания';
-    }
 
     const IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
@@ -413,10 +363,6 @@ export class DutyMissionForm extends Form {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
-
-    const brigade_employee_id_list = !state.brigade_employee_id_list
-      ? []
-      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
@@ -577,8 +523,9 @@ export class DutyMissionForm extends Form {
                 multi
                 disabled={IS_DISPLAY || readOnly}
                 options={BRIGADES}
-                value={brigade_employee_id_list}
+                value={state.brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
+                multiValueContainerReander={this.multiValueContainerReander}
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && (

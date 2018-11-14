@@ -8,6 +8,7 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import { getTableMeta as getMissionTempalteTableMeta } from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -47,7 +48,15 @@ const getRenders = props => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    brigade_employee_names: ({ data }) => <div>{data.join(',')}</div>,
+    brigade_employee_id_list: ({ data }) => (
+      <div>
+        {
+          data.map((id) => (
+            props.flux ? employeeFIOLabelFunction(props.flux)(id) : '-'
+          )).join(', ')
+        }
+      </div>
+    ),
   };
   return renderers;
 };

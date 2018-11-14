@@ -99,10 +99,6 @@ class DutyMissionFormOld extends Form {
       />
     );
 
-    const brigade_employee_id_list = !state.brigade_employee_id_list
-      ? []
-      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
-
     return (
       <Modal id="modal-duty-mission-old" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 
@@ -194,7 +190,7 @@ class DutyMissionFormOld extends Form {
                 multi
                 disabled
                 options={EMPLOYEES}
-                value={brigade_employee_id_list}
+                value={state.brigade_employee_id_list}
               />
             </Col>
             <Div hidden={!state.structure_name}>

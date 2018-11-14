@@ -12,7 +12,7 @@ interface IDutyMission {
   structure_id: number | void;
   number: number;
   foreman_id: number;
-  brigade_employee_id_list: { employee_id: number }[];
+  brigade_employee_id_list: number[];
 }
 
 interface ICar {
@@ -71,9 +71,9 @@ export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBriga
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {
-    const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { foreman_id, brigade_employee_id_list = [], structure_id, number }) => {
-      brigade_employee_id_list.forEach(({ employee_id }) => {
-        const { company_structure_id: employee_structure_id = null, is_common = false } = employeesIndex[employee_id] || {};
+    const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { foreman_id, brigade_employee_id_list, structure_id, number }) => {
+      brigade_employee_id_list.forEach((id) => {
+        const { company_structure_id: employee_structure_id = null, is_common = false } = employeesIndex[id] || {};
         if (!is_common && employee_structure_id !== structure_id) {
           newArr.push(`<${number}>`);
         }

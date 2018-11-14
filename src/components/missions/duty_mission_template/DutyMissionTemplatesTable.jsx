@@ -54,14 +54,14 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_names',
+        name: 'brigade_employee_id_list',
         displayName: 'Бригада',
         type: 'string',
         filter: {
           type: 'multiselect',
           someInRowValue: true,
           options: uniqBy(employeesList.map(({ id }) => ({
-            value: flux && employeeFIOLabelFunction(flux)(id),
+            value: id,
             label: flux && employeeFIOLabelFunction(flux)(id),
           })), 'value'),
         },
@@ -91,8 +91,16 @@ export const getTableMeta = ({
 };
 
 export const getRenderers = props => ({
+  brigade_employee_id_list: ({ data }) => (
+    <div>
+      {
+        data.map((id) => (
+          props.flux ? employeeFIOLabelFunction(props.flux)(id) : '-'
+        )).join(', ')
+      }
+    </div>
+  ),
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-  brigade_employee_names: ({ data }) => <div>{data.join(',')}</div>,
 });
 
 const DataTable = props => (

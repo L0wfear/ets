@@ -26,7 +26,6 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { isEmpty } from 'utils/functions';
 import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/mission/inside_fields/index';
-import { checkRouteByNew } from 'components/missions/utils/utils';
 import { routeTypesByKey } from 'constants/route';
 
 import { addTime, diffDates } from 'utils/dates';
@@ -472,7 +471,7 @@ export class MissionForm extends Form {
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
         type_id: c.type_id,
       }));
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
       route !== null

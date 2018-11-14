@@ -74,7 +74,7 @@ class RouteFormWrap extends FormWrap {
       const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
         name: o.odh_name,
         object_id: o.odh_id,
-        state: 2,
+        state: o.state || 2,
         type: 'odh',
       }));
       if (!notChangeState) {

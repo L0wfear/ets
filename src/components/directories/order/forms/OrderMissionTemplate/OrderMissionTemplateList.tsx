@@ -56,11 +56,13 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       
       this.setState({
         missionsList,
-        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+        missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.id]: mission }), {}),
         structures,
         timeInterval,
       });
-    });
+
+      console.log('state = componentDidMount === ', this.state);
+;    });
   }
 
   componentWillUnmount() {
@@ -78,7 +80,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
     this.setState({
       missionsList,
-      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.customId]: mission }), {}),
+      missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.id]: mission }), {}),
       timeInterval,
     });
   }
@@ -168,17 +170,40 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     const {
       checkedElements: { ...checkedElements },
     } = this.state;
+    const missionId = this.state.missionsList[customId].id;
+    console.log('missionId === ', missionId);
+    
+    console.log('staete === ', this.state);
+    console.log('custom id == ', customId);
+    console.log('this.state == ', this.state);
 
     if (state) {
-      checkedElements[customId] = this.state.missionsIndex[customId];
+      checkedElements[missionId] = this.state.missionsIndex[missionId];
+      console.log('+++++++++++++++addInChecked');
     } else {
-      delete checkedElements[customId];
+      console.log('+++++++++++++++removeFromChecked');
+      delete checkedElements[missionId];
     }
-
+    console.log('checkedElements[missionId] === ', checkedElements[missionId]);
     this.setState({ checkedElements });
   }
 
-  onAllChecked = (rows, state) => this.setState({ checkedElements: state ? this.state.missionsIndex: {} });
+  onAllChecked = (rows, state) => {
+    const {missionsIndex} = this.state;
+    let checkedElements = {};
+    if(state){
+      const missionsList =  Object.keys(missionsIndex).map( (key, index) => {
+        checkedElements[missionsIndex[key].id] = {...missionsIndex[key]}
+        return {...missionsIndex[key]};
+      });
+      console.log('this.state === ', this.state);
+      console.log('this.props === ', this.props);
+      // console.log('checkedElements === ', checkedElements);
+      // console.log('missionsList === ', this.state.missionsList);
+    }
+    this.setState({ checkedElements });
+    // console.log('this.state.missionsList', missionsList);
+  }
 
   checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 
@@ -195,7 +220,6 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       checkedElements,
       structures,
     } = this.state;
-
     const {
       showForm,
       typeClick,
@@ -209,7 +233,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     if (typeClick === typeTemplate.missionDutyTemplate) {
       title = 'Создание наряд-заданий';
     }
-
+    console.log('missionsListRender == ', missionsList);
     return (
       <ModalTSX id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
         <RB.Modal.Header closeButton>

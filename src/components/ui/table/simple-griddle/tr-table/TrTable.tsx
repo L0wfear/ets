@@ -46,7 +46,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
       rowData,
       index,
     } = this.props;
-
+    // console.log('rowData here ===>>> ', rowData);
     const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
 
     return (

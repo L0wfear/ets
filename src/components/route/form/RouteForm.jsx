@@ -50,6 +50,12 @@ export default class RouteForm extends Form {
   }
 
   changeRouteTypesAvailable = (route_types_out) => {
+    if (this.props.formState.copy) {
+      if (route_types_out.length) {
+        this.props.updateFromStatePolys(this.props.formState, true);
+      }
+      return;
+    }
     let route_types = union([...route_types_out]);
     const route_type_options = [];
 
@@ -282,7 +288,7 @@ export default class RouteForm extends Form {
           </Row>
 
           <Row className={'routes-form-map-wrapper'}>
-            <Div hidden={!state.type}>
+            <Div hidden={!state.type || !state.municipal_facility_id}>
               <Col md={12}>
                 <Div hidden={state.type !== 'mixed'} className="vector-toggle">
                   <Button

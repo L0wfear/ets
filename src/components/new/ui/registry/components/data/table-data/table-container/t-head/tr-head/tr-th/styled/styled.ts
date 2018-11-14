@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const EtsTheadTh = styled<{ canClick: boolean, width: number } , 'th'>('th')`
+export const EtsTheadTh = styled.th<{ canClick: boolean, width: number }>`
   &.ets-th {
     vertical-align: middle;
     user-select: none;

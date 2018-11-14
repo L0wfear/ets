@@ -3,7 +3,6 @@ import { autobind } from 'core-decorators';
 import { Button } from 'react-bootstrap';
 import CheckableElementsList from 'components/CheckableElementsList.jsx';
 import { connectToStores, staticProps } from 'utils/decorators';
-import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 import permissions from 'components/missions/duty_mission_template/config-data/permissions';
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
@@ -49,15 +48,7 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   updateTable = () => {
     const { flux } = this.context;
 
-    return flux.getActions('missions').getDutyMissionTemplates().then(({ result }) => {
-      this.setState({
-        listData: result.map(r => ({
-          ...r,
-          brigade_employee_id_list_array: (r.brigade_employee_id_list || []).map(({ employee_id }) => employee_id),
-          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
-        })),
-      });
-    });
+    return flux.getActions('missions').getDutyMissionTemplates();
   }
 
   showForm() {
@@ -123,7 +114,8 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
 
   getAdditionalProps() {
-    const { listData = [] } = this.state;
+    const listName = this.constructor.listName;
+    const listData = this.props[listName];
 
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);

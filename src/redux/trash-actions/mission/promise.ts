@@ -86,12 +86,5 @@ export const updateDutyMission = (duty_mission) => {
   payload.fact_date_start = createValidDateTime(payload.fact_date_start);
   payload.fact_date_end = createValidDateTime(payload.fact_date_end);
 
-  payload.brigade_employee_id_list = Object.values(
-    payload.brigade_employee_id_list.reduce((newObj, data) => ({
-      ...newObj,
-      [data.id || data.employee_id]: data.id || data.employee_id,
-    }), {})
-  );
-
   return DutyMissionService.put(payload, false, 'json');
 }

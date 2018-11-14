@@ -290,7 +290,16 @@ export default class MissionsActions extends Actions {
       is_archive,
     };
 
-    return DutyMissionService.get(payload);
+    return DutyMissionService.get(payload).then(({ result }) => ({
+      result: {
+        ...result,
+        rows: result.rows.map(({ brigade_employee_id_list = [], ...empl }) => {
+          empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
+
+          return empl;
+        }),
+      },
+    }));
   }
 
   getDutyMissionById(id) {
@@ -305,11 +314,6 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_employee_id_list = Object.values(payload.brigade_employee_id_list.reduce((newObj, data) => {
-      const key = data.id || data.employee_id;
-      newObj[key] = key;
-      return newObj;
-    }, {}));
 
     return DutyMissionService.post(payload, false, 'json');
   }
@@ -325,11 +329,6 @@ export default class MissionsActions extends Actions {
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    payload.brigade_employee_id_list = Object.values(payload.brigade_employee_id_list.reduce((newObj, data) => {
-      const key = data.id || data.employee_id;
-      newObj[key] = key;
-      return newObj;
-    }, {}));
 
     return DutyMissionService.put(payload, false, 'json');
   }
@@ -365,13 +364,18 @@ export default class MissionsActions extends Actions {
       payload.order_id = data.order_id;
     }
 
-    return DutyMissionTemplateService.get(payload);
+    return DutyMissionTemplateService.get(payload).then(({ result }) => ({
+      result: result.map(({ brigade_employee_id_list = [], ...empl }) => {
+        empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
+
+        return empl;
+      }),
+    }));
   }
 
-  createDutyMissionTemplate(mission) {
-    const payload = cloneDeep(mission);
+  createDutyMissionTemplate(mainMissionData) {
+    const payload = cloneDeep(mainMissionData);
     payload.created_at = createValidDate(payload.created_at);
-    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
 
     return DutyMissionTemplateService.post(payload, false, 'json');
   }
@@ -379,7 +383,6 @@ export default class MissionsActions extends Actions {
   updateDutyMissionTemplate(mission) {
     const payload = cloneDeep(mission);
     payload.created_at = createValidDate(payload.created_at);
-    payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(b => b.id || b.employee_id);
 
     delete payload.number;
     delete payload.technical_operation_name;
@@ -398,7 +401,6 @@ export default class MissionsActions extends Actions {
     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
     const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map((query) => {
       const payload = cloneDeep(query);
-      const { brigade_employee_id_list = [] } = payload;
 
       payload.status = 'not_assigned';
       payload.plan_date_start = date_start;
@@ -406,7 +408,7 @@ export default class MissionsActions extends Actions {
       payload.fact_date_start = date_start;
       payload.fact_date_end = date_end;
       payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
-      payload.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
+
       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
       }

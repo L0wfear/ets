@@ -54,10 +54,9 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_id_list_array',
+        name: 'brigade_employee_id_list',
         displayName: 'Бригада',
         type: 'string',
-        display: false,
         filter: {
           type: 'multiselect',
           some: true,
@@ -66,12 +65,6 @@ export const getTableMeta = ({
             label: flux && employeeFIOLabelFunction(flux)(value),
           })),
         },
-      },
-      {
-        name: 'brigade_employee_names',
-        displayName: 'Бригада',
-        type: 'string',
-        filter: false,
       },
       {
         name: 'structure_id',
@@ -98,6 +91,15 @@ export const getTableMeta = ({
 };
 
 export const getRenderers = props => ({
+  brigade_employee_id_list: ({ data }) => (
+    <div>
+      {
+        data.map((id) => (
+          props.flux ? employeeFIOLabelFunction(props.flux)(id) : '-'
+        )).join(', ')
+      }
+    </div>
+  ),
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
 });
 

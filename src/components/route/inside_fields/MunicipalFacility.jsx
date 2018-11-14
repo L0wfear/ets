@@ -65,9 +65,12 @@ class MunicipalFacility extends MunicipalFacilityMission {
       }
 
       if (new_v) {
-        if (!MUNICIPAL_FACILITY_OPTIONS.some(({ value }) => value === new_v)) {
+        const element = MUNICIPAL_FACILITY_OPTIONS.find(({ value }) => value === new_v)
+        if (!element) {
           this.props.handleChange('municipal_facility_id', null);
           this.props.getDataByNormId({ route_types: [] });
+        } else {
+          this.props.getDataByNormId(element);
         }
       }
 

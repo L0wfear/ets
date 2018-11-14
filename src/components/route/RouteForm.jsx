@@ -68,7 +68,7 @@ export default class RouteForm extends Form {
     // C текущего момента это спорный вопрос
     // Здесь тоже появилась проверка на доступные типы объектов
     // Нужно чекнуть надо ли это
-    if (!!this.props.fromMission && !!this.props.notTemplate) {
+    if (this.props.fromMission && this.props.notTemplate) {
       route_types = route_types.filter(name => this.props.available_route_types.includes(name));
     }
 

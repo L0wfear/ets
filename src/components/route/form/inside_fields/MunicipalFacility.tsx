@@ -148,6 +148,8 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
             this.props.getDataBySelectedMunicipalFacility({
               route_types: [],
             });
+          } else {
+            this.props.getDataBySelectedMunicipalFacility(mfOption.mfData);
           }
         }
 

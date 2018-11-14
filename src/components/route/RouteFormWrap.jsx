@@ -62,20 +62,6 @@ class RouteFormWrap extends FormWrap {
         formState = {
           is_main: true,
         };
-        lastObjectList = {
-          mixed: {
-            municipal_facility_id: null,
-            object_list: [],
-            input_lines: [],
-          },
-          simple_dt: {
-            municipal_facility_id: null,
-            object_list: [],
-          },
-          points: {
-            object_list: [],
-          },
-        };
       }
 
       formState.structure_id = props.element.structure_id || this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -85,6 +71,23 @@ class RouteFormWrap extends FormWrap {
         canSave: !filter(formErrors).length,
         formErrors,
       });
+    }
+
+    if (!props.showForm && props.showForm !== this.props.showForm) {
+      lastObjectList = {
+        mixed: {
+          municipal_facility_id: null,
+          object_list: [],
+          input_lines: [],
+        },
+        simple_dt: {
+          municipal_facility_id: null,
+          object_list: [],
+        },
+        points: {
+          object_list: [],
+        },
+      };
     }
   }
 
@@ -113,7 +116,7 @@ class RouteFormWrap extends FormWrap {
     });
   }
 
-  updateFromStatePolys = async (formState, isInitOpen) => {
+  updateFromStatePolys = async (formState, refreshGeoState) => {
     const {
       municipal_facility_id,
       object_list,
@@ -125,13 +128,11 @@ class RouteFormWrap extends FormWrap {
     let oldObjectList = [];
     let oldInputLines = [];
     let oldDrawOdhLines = [];
-    console.log('updateFromStatePolys', {...formState})
 
     if (object_type) {
       oldObjectList = lastObjectList[object_type].object_list;
       if (object_type === 'mixed') {
         oldInputLines = lastObjectList[object_type].input_lines;
-        console.log(oldInputLines)
         oldDrawOdhLines = await this.checkRoute(
           {
             ...formState,
@@ -180,7 +181,7 @@ class RouteFormWrap extends FormWrap {
             }
           });
 
-          if (isInitOpen) {
+          if (refreshGeoState) {
             each(oldObjectList.filter(o => !!o.object_id), (o) => {
               if (new_polys[o.object_id]) {
                 polys[o.object_id] = {

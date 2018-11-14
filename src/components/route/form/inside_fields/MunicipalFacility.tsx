@@ -18,6 +18,7 @@ type MunicipalFacilityType = {
   car_func_types: {
     id: number;
   }[];
+  route_types: any[];
 };
 
 type TechnicalOperationsType = {
@@ -45,9 +46,11 @@ type PropsMunicipalFacilityField = {
   technical_operation_id: number | void;
   getCleaningMunicipalFacilityList: GetMunicipalFacilityFunc,
   technicalOperationsList: TechnicalOperationsType[];
+  copy: boolean | void;
+  type: string | null;
 
   handleChange: (name: string, value: number | null) => any;
-  getDataBySelectedMunicipalFacility: (mfData: MunicipalFacilityType) => any;
+  getDataBySelectedMunicipalFacility: (props: { route_types: MunicipalFacilityType['route_types'] }) => any;
 };
 
 type StateMunicipalFacilityField = {
@@ -128,11 +131,15 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
       .then(({ municipal_facility_list }) => {
         const { value } = this.props;
 
-        const MUNICIPAL_FACILITY_OPTIONS = municipal_facility_list.map((mfData) => ({
+        let MUNICIPAL_FACILITY_OPTIONS = municipal_facility_list.map((mfData) => ({
           value: mfData.municipal_facility_id,
           label: mfData.municipal_facility_name,
           mfData,
         }));
+
+        if (this.props.copy) {
+          MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS.filter(({ mfData }: any) => mfData.route_types.includes(this.props.type))
+        }
 
         if (value) {
           const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOption) => mfOption.value === value);

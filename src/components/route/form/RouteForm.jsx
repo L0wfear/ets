@@ -16,13 +16,6 @@ import Form from 'components/compositions/Form';
 
 import MunicipalFacility from 'components/route/form/inside_fields/MunicipalFacility';
 
-const OBJECTS_BY_TYPE = {
-  points: 3,
-  simple_dt: 2,
-};
-
-const getObjectIdByType = type => OBJECTS_BY_TYPE[type] || 1;
-
 const initial_ROUTE_TYPES_OPTIONS = [
   { value: 'mixed', label: 'Выбор из ОДХ' },
   { value: 'simple_dt', label: 'Выбор из ДТ' },
@@ -118,7 +111,7 @@ export default class RouteForm extends Form {
     this.setState({ vector: false });
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { formState } = this.props;
 
     this.context.flux.getActions('technicalOperation').getTechnicalOperations()
@@ -126,7 +119,13 @@ export default class RouteForm extends Form {
         const changesState = { technicalOperationsList };
 
         if (formState.copy) {
-          changesState.technicalOperationsList = changesState.technicalOperationsList.filter(to => to.objects.find(o => o.id === getObjectIdByType(formState.type)));
+          console.log('here', changesState.technicalOperationsList)
+          changesState.technicalOperationsList = changesState.technicalOperationsList
+            .filter(to => (
+              to.route_types.some(type => (
+                type === formState.type
+              ))
+            ));
         }
 
         this.setState(changesState);
@@ -142,8 +141,8 @@ export default class RouteForm extends Form {
 
   toggleIsMain = () => this.handleChange('is_main', !this.props.formState.is_main);
 
-  getDataBySelectedMunicipalFacility = (data) => {
-    this.changeRouteTypesAvailable(data.route_types);
+  getDataBySelectedMunicipalFacility = ({ route_types }) => {
+    this.changeRouteTypesAvailable(route_types);
   }
 
   render() {
@@ -238,6 +237,8 @@ export default class RouteForm extends Form {
                       value={state.municipal_facility_id}
                       name={state.municipal_facility_name}
                       technical_operation_id={state.technical_operation_id}
+                      type={state.type}
+                      copy={state.copy}
                       disabled={!!this.props.fromMission || !!state.id}
                       handleChange={this.handleChange}
                       getDataBySelectedMunicipalFacility={this.getDataBySelectedMunicipalFacility}

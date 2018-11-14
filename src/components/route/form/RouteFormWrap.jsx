@@ -11,7 +11,7 @@ import RouteForm from 'components/route/form/RouteForm';
 import FormWrap from 'components/compositions/FormWrap';
 import { DivNone } from 'global-styled/global-styled';
 
-const lastObjectList = {
+let lastObjectList = {
   mixed: {
     object_list: [],
     input_lines: [],
@@ -49,13 +49,14 @@ class RouteFormWrap extends FormWrap {
         }
 
         formState.draw_odh_list = cloneDeep(formState.draw_object_list);
+
         const { type } = formState;
-          if (type) {
-            lastObjectList[type].object_list = [...formState.object_list];
-            if (type === 'mixed') {
-              lastObjectList[type].input_lines = [...formState.input_lines];
-            }
+        if (type) {
+          lastObjectList[type].object_list = [...formState.object_list];
+          if (type === 'mixed') {
+            lastObjectList[type].input_lines = [...formState.input_lines];
           }
+        }
         this.updateFromStatePolys(formState, true);
       } else {
         formState = {

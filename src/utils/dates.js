@@ -142,6 +142,11 @@ export function getTomorrow9am(seconds = 0) {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59, seconds);
 }
 
+export function getTomorrow0am() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0);
+}
+
 export function getDatesByShift() {
   const now = new Date();
   if (now.getHours() > 18) {
@@ -177,8 +182,8 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
   const [summerStartMonth, summerStartDay] = summerStart;
   const [summerEndMonth, summerEndDay] = summerEnd;
 
-  const begDateForSummerSeason = new Date(2018, summerStartMonth, summerStartDay);
-  const endDateForSummerSeason = new Date(2018, summerEndMonth, summerEndDay);
+  const begDateForSummerSeason = new Date(2018, summerStartMonth - 1, summerStartDay);
+  const endDateForSummerSeason = new Date(2018, summerEndMonth - 1, summerEndDay);
 
   if (diffDates(date, begDateForSummerSeason) >= 0 && diffDates(endDateForSummerSeason, date) >= 0) {
     return 'summer';

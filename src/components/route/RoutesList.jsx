@@ -260,8 +260,6 @@ class RoutesList extends React.Component {
   handleChange = selectedRoute => this.setState({ selectedRoute });
 
   handleDropdown = (name) => {
-    console.log('handleDropdown name ===', name);
-    console.log('this.state.showId === ', this.state.showId);
     const { showId } = this.state;
     const i = this.state.showId.indexOf(name);
     if (i < 0) {

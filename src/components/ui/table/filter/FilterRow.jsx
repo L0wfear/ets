@@ -24,6 +24,7 @@ export default class FilterRow extends React.Component {
       displayName: PropTypes.string,
       onChange: PropTypes.func,
       onMultiChange: PropTypes.func,
+      customOptions: PropTypes.array,
     };
   }
 
@@ -46,9 +47,9 @@ export default class FilterRow extends React.Component {
       onMultiChange,
       tableData,
       type,
+      customOptions,
     } = this.props;
     let { value } = this.props;
-
     let input = (
       <div className="form-group">
         <FormControl type="text" value={value || ''} onChange={onChange} />
@@ -56,7 +57,7 @@ export default class FilterRow extends React.Component {
     );
     if (type) {
       if (type === 'select' || type === 'multiselect' || type === 'advanced-select-like') {
-        let options = availableOptions || _(tableData)
+        let options = availableOptions || customOptions || _(tableData)
                         .uniqBy(name)
                         .map(d => ({
                           value: typeof d[name] === 'boolean' ? +d[name] : d[name],

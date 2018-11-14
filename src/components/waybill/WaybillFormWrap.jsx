@@ -21,6 +21,7 @@ import permissions from 'components/waybill/config-data/permissions';
 import WaybillForm from './WaybillForm.jsx';
 import { getDefaultBill } from '../../stores/WaybillsStore.js';
 import Taxes from './Taxes.jsx';
+import { makeReactMessange } from 'utils/helpMessangeWarning.jsx';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -259,19 +260,35 @@ export default class WaybillFormWrap extends FormWrap {
 
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
-      const lastTax = formState.tax_data.find(({ is_excluding_mileage }) => !is_excluding_mileage);
+      const lastTax = last(formState.tax_data);
+
       if (lastTax) {
         if (field === 'odometr_end' && formState.odometr_diff >= 0) {
-          lastTax.FACT_VALUE = formState.odometr_diff;
-          lastTax.RESULT = Taxes.getResult(lastTax);
+          if (lastTax.is_excluding_mileage) {
+            lastTax.iem_FACT_VALUE = formState.odometr_diff;
+            lastTax.iem_RESULT = Taxes.getResult(lastTax);
+          } else {
+            lastTax.FACT_VALUE = formState.odometr_diff;
+            lastTax.RESULT = Taxes.getResult(lastTax);
+          }
         }
         if (field === 'motohours_end' && formState.motohours_diff >= 0) {
-          lastTax.FACT_VALUE = formState.motohours_diff;
-          lastTax.RESULT = Taxes.getResult(lastTax);
+          if (lastTax.is_excluding_mileage) {
+            lastTax.iem_FACT_VALUE = formState.odometr_diff;
+            lastTax.iem_RESULT = Taxes.getResult(lastTax);
+          } else {
+            lastTax.FACT_VALUE = formState.motohours_diff;
+            lastTax.RESULT = Taxes.getResult(lastTax);
+          }
         }
         if (formState.odometr_diff < 0 || formState.motohours_diff < 0) {
-          lastTax.FACT_VALUE = null;
-          lastTax.RESULT = Taxes.getResult(lastTax);
+          if (lastTax.is_excluding_mileage) {
+            lastTax.iem_FACT_VALUE = formState.odometr_diff;
+            lastTax.iem_RESULT = Taxes.getResult(lastTax);
+          } else {
+            lastTax.FACT_VALUE = null;
+            lastTax.RESULT = Taxes.getResult(lastTax);
+          }
         }
         if (field === 'motohours_equip_end' && formState.equipment_tax_data
           && formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
@@ -329,11 +346,7 @@ export default class WaybillFormWrap extends FormWrap {
       dismissible: false,
       autoDismiss: 0,
       uid: 'waybilPrintCurrForm',
-      children: (
-        <div>
-          <p>Формирование печатной формы</p>
-        </div>
-      ),
+      children: makeReactMessange('Формирование печатной формы'),
     });
     const callback = (waybill_id = currentWaybillId) => {
       return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)

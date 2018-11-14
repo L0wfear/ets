@@ -26,7 +26,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       if (props.formType === 'ViewForm') {
         const mission = props.element === null ? getDefaultDutyMissionTemplate() : clone(props.element);
-        if (mission.structure_id == null) {
+        if (!mission.structure_idl) {
           mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
         }
         const formErrors = this.validate(mission, {});
@@ -48,7 +48,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
     }
   }
 
-  async handleFormSubmit() {
+  handleFormSubmit = async () => {
     const { flux } = this.context;
     const { formState } = this.state;
     const { _employeesIndex = {} } = this.props;
@@ -79,7 +79,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
         <Div hidden={!this.props.showForm}>
           <DutyMissionTemplateForm
             formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
+            onSubmit={this.handleFormSubmit}
             handleFormChange={this.handleFormStateChange.bind(this)}
             show={this.props.showForm}
             onHide={this.props.onFormHide}

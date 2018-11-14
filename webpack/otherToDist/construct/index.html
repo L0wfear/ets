@@ -3,10 +3,40 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta name="version" content= />
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
     <link rel="shortcut icon" href="images/favicon.png?v=2" type="image/png">
     <title>ЕТС</title>
-  <link href="./css/construct.6735b10c84dd8a0820bc.css" rel="stylesheet"></head>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      }
+      #main-background {
+        width: 100%;
+        height: 100%;
+        background-image: url(./images/bg.jpg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+      }
+      #main-background>div {
+        background-color: grey;
+        color: white;
+        padding: 20px;
+        font-size: 40px;
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+      }
+    </style>
+  </head>
   <body>
+    <div id="main-background"><div>Идет загрузка приложения...</div></div>
     <div id="container"></div>
-  <script type="text/javascript" src="construct.6735b10c84dd8a0820bc.js"></script></body>
+  <script type="text/javascript" src="/construct/app.main.e1d397a51724a9950091.js"></script></body>
 </html>

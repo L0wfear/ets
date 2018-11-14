@@ -23,6 +23,7 @@ import {
 } from 'components/map/new/layers/car-markers/LayerCarMarker.h';
 
 let updatePoints = true;
+const MIN_ZOOM_VAL = 3;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
 
@@ -53,7 +54,11 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       const { gps_code: state_gps_code } = this.state;
 
       const { statusShow, gps_code, zoom, STATUS_SHOW_GOV_NUMBER, lastPoint, filters, carActualGpsNumberIndex } = nextProps;
+
       const zoomMore8 = zoom > 8;
+      
+      const minZoom = zoom <= MIN_ZOOM_VAL;
+      const oldMinZoom = this.props.zoom <= MIN_ZOOM_VAL;
 
       if (carActualGpsNumberIndex !== this.state.carActualGpsNumberIndex) {
         hasWhatChage = true;
@@ -85,13 +90,13 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             coords_msk[1],
           ];
 
-          const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom:this.props.zoom };
+          const opt_options = { padding: [50, 550, 50, 150], duration: 500, maxZoom: zoom };
           const noCheckDisabledCenterOn = true;
           this.props.centerOn({ extent, opt_options }, noCheckDisabledCenterOn);
         }
         
       }
-      if (zoomMore8 !== this.state.zoomMore8) {
+      if (zoomMore8 !== this.state.zoomMore8 || minZoom !== oldMinZoom) {
         hasWhatChage = true;
         whatPointChange = this.state.carPointsDataWs;
         changeState.zoomMore8 = zoomMore8;
@@ -149,7 +154,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       }
 
       if (hasWhatChage) {
-        this.changeStyle({ ...this.state, carPointsDataWs: whatPointChange, ...changeState, old_carPointsDataWs: this.state.carPointsDataWs });
+        this.changeStyle({ ...this.state, carPointsDataWs: whatPointChange, ...changeState, old_carPointsDataWs: this.state.carPointsDataWs, minZoom });
 
         this.setState(changeState);
       }
@@ -162,7 +167,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     this.closeWs();
   }
 
-  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs }) {
+  changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs, minZoom }) {
     const carsByStatus = {
       in_move: 0,
       stop: 0,
@@ -223,6 +228,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           show_gov_number: STATUS_SHOW_GOV_NUMBER,
           gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
           visible,
+          minZoom,
         });
 
         feature.setStyle(style);
@@ -267,6 +273,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
   handleReveiveData(data: WsData, statusShow) {
     if (updatePoints) {
+      const minZoom = this.props.zoom <= MIN_ZOOM_VAL;
+
       const { carPointsDataWs, gps_code: state_gps_code, lastPoint, carActualGpsNumberIndex, STATUS_SHOW_GOV_NUMBER } = this.state;
       const { odh_mkad  } = this.props;
       const carsByStatus = {
@@ -332,6 +340,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {
@@ -411,6 +420,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             show_gov_number: STATUS_SHOW_GOV_NUMBER,
             gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
             visible,
+            minZoom,
           });
 
           if (state_gps_code && state_gps_code === gps_code) {

@@ -152,7 +152,7 @@ export function getErrorNotificationFromBack(message) {
 export function getInfoNotification(message) {
   return {
     title: 'Информация.',
-    message: `${message}`,
+    children: makeReactMessange(message),
     level: 'info',
     dismissible: true,
     position: 'tr',

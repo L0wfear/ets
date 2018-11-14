@@ -12,6 +12,7 @@ class MissionsStore extends Store {
     this.register(missionsActons.getMissionsByCarAndDates, this.handleGetMissions);
     this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
     this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
+    this.register(missionsActons.getMissionTemplatesCars, this.handleGetMissionTemplatesCars);
     this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
@@ -39,6 +40,7 @@ class MissionsStore extends Store {
       municipalFacilityList: [],
       missionsTotalCount: 0,
       dutyMissionsTotalCount: 0,
+      govNumberFilter: [],
     };
   }
   handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
@@ -56,6 +58,9 @@ class MissionsStore extends Store {
 
   handleGetMissionTemplates(missionTemplate) {
     this.setState({ missionTemplatesList: missionTemplate.result });
+  }
+  handleGetMissionTemplatesCars(govNumbers) {
+    this.setState({ govNumberFilter: govNumbers.result });
   }
 
   handleGetDutyMissions(dutyMissions) {

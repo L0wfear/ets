@@ -40,6 +40,7 @@ export default class DrawMap extends PolyMap {
     }
 
     this.renderPolygons(this.props.polys);
+
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
     }
@@ -69,9 +70,21 @@ export default class DrawMap extends PolyMap {
 
   componentWillReceiveProps(nextProps) {
     const { polys = {} } = nextProps;
+    const { polys: oldPolys = {} } = this.props;
+    const polysAsArr = Object.entries(polys);
+    const countPolys = polysAsArr.length;
 
-    if (!polys || Object.keys(polys).length) {
-      this.renderPolygons(nextProps.polys, nextProps.objectsType !== 'points');
+    if (countPolys) {
+      this.renderPolygons(
+        nextProps.polys,
+        (
+          nextProps.objectsType !== 'points'
+          && (
+            Object.keys(oldPolys).length !== countPolys
+            || polysAsArr.some(([key]) => !oldPolys[key])
+          )
+        ),
+      );
     }
     if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'mixed') {
       this.draw.setActive(false);

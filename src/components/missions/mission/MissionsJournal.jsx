@@ -75,7 +75,7 @@ export default class MissionsJournal extends CheckableElementsList {
 
     flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
-    flux.getActions('objects').getCars();
+    flux.getActions('objects').getSomeCars('MissionCarService');
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
     flux.getActions('companyStructure').getCompanyStructure(linear);
@@ -92,6 +92,7 @@ export default class MissionsJournal extends CheckableElementsList {
       this.refreshList(nextState);
     }
   }
+
   async refreshList(state = this.state) {
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
 
@@ -99,8 +100,7 @@ export default class MissionsJournal extends CheckableElementsList {
     const resultCount = missions.result.rows.length;
 
     if (resultCount === 0 && total_count > 0) {
-      const offset = (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) * MAX_ITEMS_PER_PAGE;
-      this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, offset, state.sortBy, state.filter, is_archive);
+      this.setState({ page: (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) });
     }
   }
 

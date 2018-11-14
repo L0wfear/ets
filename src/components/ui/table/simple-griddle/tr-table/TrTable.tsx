@@ -47,6 +47,8 @@ class TrTable extends React.Component<PropsTrTable, any> {
       index,
     } = this.props;
 
+    const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
+
     return (
       <tr
         className={cx(
@@ -86,10 +88,10 @@ class TrTable extends React.Component<PropsTrTable, any> {
               }
               {
                 customComponent ?
-                  customComponent({ rowData, data: rowData[columnName] })
+                  customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] })
                 :
                   columnName === 'rowNumber' ?
-                  (this.props.rowNumberOffset || this.props.currentPage * this.props.resultsPerPage) + index + 1
+                  rowNumber
                   :
                     columnName === 'isChecked' ?
                     (

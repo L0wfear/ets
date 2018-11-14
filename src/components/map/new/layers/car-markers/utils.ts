@@ -16,9 +16,9 @@ export const getFrontStatus = (statusId) => {
 };
 
 export const checkOnIncludesCar = (filterData, gps_code, gov_number, { garage_number = '' } = {}) => (
-  gps_code.includes(filterData)
-  || gov_number && gov_number.includes(filterData)
-  || garage_number && garage_number.includes(filterData)
+  gps_code && gps_code.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
+  || gov_number && gov_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
+  || garage_number && garage_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
 );
 
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {

@@ -76,6 +76,7 @@ export default class LoadingStore extends Store {
       objectsActions.getModels,
       objectsActions.getTypes,
       objectsActions.getCars,
+      objectsActions.getSomeCars,
       objectsActions.getSpecialModels,
       objectsActions.getCustomers,
       objectsActions.getWorkKinds,
@@ -126,6 +127,7 @@ export default class LoadingStore extends Store {
       missionsActons.printMission,
       missionsActons.printDutyMission,
       missionsActons.getCleaningMunicipalFacilityList,
+      missionsActons.getCleaningOneNorm,
 
       routesActions.getRoutes,
       routesActions.createRoute,

@@ -190,13 +190,9 @@ export const dashboardLoadCardData = (path: string, payload = {}) => ({
         result: defAns[path.split('/').join('_')],
       };
     })
-    .then(({ result }) => new Promise(res => (
-      setTimeout(() => {
-        res({
-          [path.split('/').join('_')]: result,
-        });
-      }, 500)
-    )),
+    .then(({ result }) => ({
+      [path.split('/').join('_')]: result,
+    }),
   ),
 });
 

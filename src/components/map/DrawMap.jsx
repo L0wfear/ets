@@ -47,21 +47,6 @@ export default class DrawMap extends PolyMap {
     if (this.props.objectsType === 'points') {
       this.renderRoutePoints(this.props.object_list);
     }
-    if(this.props.objectsType === 'mixed' || this.props.objectsType === 'points'){
-      // костыль
-      const coords_msk = this.props.currentUser.getCompanyMapConfig().coordinates;
-      const zoom = this.props.currentUser.getCompanyMapConfig().zoom;
-      const extent = [
-        coords_msk[0],
-        coords_msk[1],
-        coords_msk[0],
-        coords_msk[1],
-      ];
-      this.map.getView().fit(
-        extent,
-        { padding: [50, 550, 50, 150], maxZoom: zoom },
-      );
-    }
     if (this.props.draw_object_list && this.props.draw_object_list.length) {
       this.draw.setActive(false);
       this.drawSetToEnd = true;
@@ -70,20 +55,12 @@ export default class DrawMap extends PolyMap {
 
   componentWillReceiveProps(nextProps) {
     const { polys = {} } = nextProps;
-    const { polys: oldPolys = {} } = this.props;
     const polysAsArr = Object.entries(polys);
     const countPolys = polysAsArr.length;
 
     if (countPolys) {
       this.renderPolygons(
         nextProps.polys,
-        (
-          nextProps.objectsType !== 'points'
-          && (
-            Object.keys(oldPolys).length !== countPolys
-            || polysAsArr.some(([key]) => !oldPolys[key])
-          )
-        ),
       );
     }
     if (nextProps.draw_object_list !== undefined && nextProps.objectsType === 'mixed') {
@@ -105,6 +82,11 @@ export default class DrawMap extends PolyMap {
       } else {
         this.addDrawInteraction('Point');
       }
+    }
+
+    if (nextProps.zoom !== this.props.zoom || nextProps.center !== this.props.center) {
+      this.map.getView().setCenter(nextProps.center);
+      this.map.getView().setZoom(nextProps.zoom);
     }
   }
 

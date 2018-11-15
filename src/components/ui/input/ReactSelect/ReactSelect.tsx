@@ -67,7 +67,13 @@ export default class ReactSelect extends React.Component<any, any> {
   }
 
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
+  filterOption = (option, filterValue: string) => {
+    const label: string = option.label.toString()
 
+    return label.toLocaleLowerCase().includes(
+      filterValue.toLocaleLowerCase()
+    );
+  }
   singleValueRender = ({ innerProps, ...props }) => {
     const {
       modalKey,
@@ -117,6 +123,7 @@ export default class ReactSelect extends React.Component<any, any> {
       <Select
         {...props}
         id={id}
+        filterOption={this.filterOption}
         instanceId={instanceId}
         isClearable={clearable}
         isMulti={multi}

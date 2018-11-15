@@ -58,10 +58,21 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
   getCleaningMunicipalFacilityList = (outerPayload, new_v) => {
     this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(outerPayload).then(({ result: { rows = [] } = {} }) => {
-      if (new_v) {
-        this.props.getDataByNormId(rows.find(({ municipal_facility_id }) => municipal_facility_id === new_v));
+      let MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types }) => ({ value, label, norm_id, route_types }));
+
+      if (this.props.state.copy) {
+        MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS.filter(({ route_types }) => route_types.includes(this.props.state.type))
       }
-      const MUNICIPAL_FACILITY_OPTIONS = rows.map(({ municipal_facility_id: value, municipal_facility_name: label, norm_id, route_types }) => ({ value, label, norm_id, route_types }));
+
+      if (new_v) {
+        const element = MUNICIPAL_FACILITY_OPTIONS.find(({ value }) => value === new_v)
+        if (!element) {
+          this.props.handleChange('municipal_facility_id', null);
+          this.props.getDataByNormId({ route_types: [] });
+        } else {
+          this.props.getDataByNormId(element);
+        }
+      }
 
       this.setState({
         myDisable: false,
@@ -72,10 +83,13 @@ class MunicipalFacility extends MunicipalFacilityMission {
 
   handleChange = (value) => {
     const {
-      MUNICIPAL_FACILITY_OPTIONS = [],
-    } = this.state;
-    this.props.handleChange('municipal_facility_id', value);
-    if (value) {
+      value: oldValue,
+    } = this.getStateByProps(this.props);
+    if (value && oldValue !== value) {
+      const {
+        MUNICIPAL_FACILITY_OPTIONS = [],
+      } = this.state;
+      this.props.handleChange('municipal_facility_id', value);
       this.props.getDataByNormId(MUNICIPAL_FACILITY_OPTIONS.find(({ value: m_value }) => m_value === value));
     }
   }

@@ -47,7 +47,7 @@ export default class RouteForm extends Form {
   }
 
   handleTypeChange(type) {
-    if (type !== this.props.formState.type) {
+    if (type && type !== this.props.formState.type) {
       this.setState({ vector: false });
       this.handleChange('type', type);
       this.props.updateFromStatePolys({ ...this.props.formState, type });
@@ -56,13 +56,19 @@ export default class RouteForm extends Form {
   }
 
   changeRouteTypesAvailable(route_types_out) {
+    if (this.props.formState.copy) {
+      if (route_types_out.length) {
+        this.props.updateFromStatePolys(this.props.formState, true);
+      }
+      return;
+    }
     let route_types = union([...route_types_out]);
     const route_type_options = [];
 
     // C текущего момента это спорный вопрос
     // Здесь тоже появилась проверка на доступные типы объектов
     // Нужно чекнуть надо ли это
-    if (!!this.props.fromMission && !!this.props.notTemplate) {
+    if (this.props.fromMission && this.props.notTemplate) {
       route_types = route_types.filter(name => this.props.available_route_types.includes(name));
     }
 
@@ -94,7 +100,7 @@ export default class RouteForm extends Form {
 
     if (!hasOldTypeInNew) {
       changeStateObj.vector = false;
-      const type = route_type_options[0].value;
+      const type = route_type_options[0] ? route_type_options[0].value : null;
       this.handleChange('type', type);
       this.props.resetState();
       this.props.updateFromStatePolys({ ...this.props.formState, type }, false);
@@ -106,23 +112,15 @@ export default class RouteForm extends Form {
   }
 
   handleTechChange(v) {
-    if (v !== this.props.formState.technical_operation_id) {
+    if (v && v !== this.props.formState.technical_operation_id) {
       this.handleChange('technical_operation_id', v);
 
       this.setState({ vector: false });
-      this.handleChange('municipal_facility_id', null);
-      this.handleChange('type', null);
-
-      if (!this.props.formState.copy) {
-        this.handleChange('input_lines', []);
-        this.handleChange('draw_object_list', []);
-      }
     }
   }
 
   handleClickSelectFromODH() {
     this.setState({ vector: false });
-    this.handleChange('input_lines', []);
   }
 
   async componentDidMount() {
@@ -150,12 +148,6 @@ export default class RouteForm extends Form {
   toggleIsMain = () => this.handleChange('is_main', !this.props.formState.is_main);
 
   getDataByNormId = (data) => {
-    if (!data) {
-      this.handleChange('norm_id', data);
-      return;
-    }
-    this.handleChange('norm_id', data.norm_id);
-
     this.changeRouteTypesAvailable(data.route_types);
   }
 
@@ -250,6 +242,7 @@ export default class RouteForm extends Form {
                       label={'municipal_facility_name'}
                       errors={errors}
                       state={state}
+                      copy={this.props.copy}
                       disabled={!!this.props.fromMission || !!state.id}
                       handleChange={this.handleChange}
                       getDataByNormId={this.getDataByNormId}
@@ -293,7 +286,7 @@ export default class RouteForm extends Form {
           </Row>
 
           <Row className={'routes-form-map-wrapper'}>
-            <Div hidden={!state.type}>
+            <Div hidden={!state.type || !state.municipal_facility_id}>
               <Col md={12}>
                 <Div hidden={state.type !== 'mixed'} className="vector-toggle">
                   <Button

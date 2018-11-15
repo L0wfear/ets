@@ -5,7 +5,7 @@ import { DutyMissionType } from 'redux-main/trash-actions/mission/@types/promise
 
 export type PropsCurrentMissionInfo = {
   infoData: CurrentDutyMissionsInfoDataType;
-  getDutyMissionById: (id) => Promise<DutyMissionType>;
+  getDutyMissionById: (id) => Promise<any>;
   updateDutyMission: (dutyMission: DutyMissionType) => any;
   handleClose: Function;
   loadData: Function;

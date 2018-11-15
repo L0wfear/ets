@@ -60,7 +60,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
   rejectDutyMission = () => {
     this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
-      .then(({ duty_mission }) => {
+      .then(({ payload: { duty_mission } }) => {
         // надо уйти от этого
         // react 16 Portal
         return global.confirmDialog({
@@ -103,11 +103,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   updateDutyMission = (newProps) => (
     (
       newProps.number ?
-      Promise.resolve({ duty_mission: newProps })
+      Promise.resolve({ payload: { duty_mission: newProps } })
       :
       this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
     )
-      .then(({ duty_mission }) => {
+      .then(({ payload: { duty_mission } }) => {
         if (duty_mission) {
           this.props.updateDutyMission(
             {

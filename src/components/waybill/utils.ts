@@ -10,6 +10,7 @@ import {
   isNotEqualAnd,
   hasMotohours,
 } from 'utils/functions';
+import { isArray } from 'util';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
@@ -88,9 +89,27 @@ export const getDrivers = (state, employeesIndex, driversList) => {
       if (!driverData) {
         return false;
       }
+      
+      let whatCarIWantDrive: boolean | number[] = false;
+
+      if (Boolean(driverData.prefer_car)) {
+        whatCarIWantDrive = [driverData.prefer_car];
+      }
+      if (isArray(driverData.secondary_car)) {
+        if (isArray(whatCarIWantDrive)) {
+          whatCarIWantDrive = [
+            ...whatCarIWantDrive,
+            ...driverData.secondary_car,
+          ];
+        } else {
+          whatCarIWantDrive = [
+            ...driverData.secondary_car,
+          ];
+        }
+      }
 
       return (
-        (!driverData.prefer_car ? true : driverData.prefer_car === state.car_id) &&
+        (isArray(whatCarIWantDrive) ? whatCarIWantDrive.some(car => car === state.car_id) : true) &&
         (!state.structure_id || ((driverData.is_common) || state.structure_id === driverData.company_structure_id)) &&
         driverFilter(driverData)
       );

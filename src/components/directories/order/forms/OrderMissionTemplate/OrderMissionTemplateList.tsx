@@ -165,7 +165,6 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   onRowSelected = ({ props: { data: { customId } } }) => this.setState({ selectedElement: this.state.missionsIndex[customId] });
 
   onRowChecked = (customId, state) => {
-    console.log(customId)
     const {
       checkedElements: { ...checkedElements },
     } = this.state; 
@@ -179,10 +178,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     this.setState({ checkedElements });
   }
 
-  onAllChecked = (checkedElements: object, state) => {
-    console.log(checkedElements)
-    this.setState({ checkedElements: state ? checkedElements : {} });
-  }
+  onAllChecked = (rows, state) => this.setState({ checkedElements: state ? this.state.missionsIndex: {} });
 
   checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 

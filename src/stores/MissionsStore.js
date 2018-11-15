@@ -60,7 +60,7 @@ class MissionsStore extends Store {
     this.setState({ missionTemplatesList: missionTemplate.result });
   }
   handleGetMissionTemplatesCars(govNumbers) {
-    this.setState({ govNumberFilter: govNumbers.result });
+    this.setState({ govNumberFilter: govNumbers.result.rows });
   }
 
   handleGetDutyMissions(dutyMissions) {

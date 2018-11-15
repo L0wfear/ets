@@ -11,7 +11,7 @@ export function getPermittetEmployeeForBrigade(employeesList, structure_id) {
       position_name,
     } = e;
 
-    if (!!position_name && PermittedPosiotosNamesSet.has(position_name.toLowerCase()) && e.active && (!structure_id || (e.company_structure_id === structure_id))) {
+    if (!!position_name && PermittedPosiotosNamesSet.has(position_name.toLowerCase()) && e.active && (!structure_id || !e.company_structure_id || (e.company_structure_id === structure_id))) {
       opt.push({
         value: e.id,
         label: createFio(e, true),

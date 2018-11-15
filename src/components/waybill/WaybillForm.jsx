@@ -29,6 +29,7 @@ import { diffDates } from 'utils/dates';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import { isNumeric } from 'utils/validate/dataTypes';
+import { getCurrentSeason } from 'utils/dates';
 
 import {
   checkDateMission,
@@ -160,10 +161,12 @@ class WaybillForm extends Form {
     if (IS_ACTIVE || IS_CLOSED) {
       this.getCarDistance(formState);
       if (IS_ACTIVE) {
+        const currentSeason = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+
         Promise.all([
-          getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState),
+          getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState, currentSeason),
           flux.getActions('fuelRates').getFuelOperations({ is_active: true }).then(({ result: fuelOperationsList }) => fuelOperationsList),
-          getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState),
+          getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState, currentSeason),
           getFuelCorrectionRate(this.props.carsList, formState),
         ])
           .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {

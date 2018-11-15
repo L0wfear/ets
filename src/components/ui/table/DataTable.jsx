@@ -518,8 +518,8 @@ export default class DataTable extends React.Component {
               if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
                 isValid = false;
               }
-            } else if (a.filter.some) {
-              if (!obj[key].some(el => value.every(val => el.toString().includes(val)))) {
+            } else if (a.filter.someInRowValue) {
+              if (!value.some(val => obj[key].some(el => el.toString().includes(val.toString())))) {
                 isValid = false;
               }
             } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
@@ -529,7 +529,7 @@ export default class DataTable extends React.Component {
             if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
               isValid = false;
             }
-          } else if (a && a.filter && a.filter.some) {
+          } else if (a && a.filter && a.filter.someInRowValue) {
             if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
               isValid = false;
             }
@@ -673,7 +673,7 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
+    console.log(results)
     const customFiltersValues = { // для кастомизации значений фильтров, ключи должны совпадать
       car_gov_number: this.props.govNumberFilter
     };

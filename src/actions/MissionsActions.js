@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { clone, cloneDeep, keys } from 'lodash';
+import { keyBy, clone, cloneDeep, keys } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
@@ -297,6 +297,7 @@ export default class MissionsActions extends Actions {
       result: {
         ...result,
         rows: result.rows.map(({ brigade_employee_id_list = [], ...empl }) => {
+          empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
           empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
 
           return empl;
@@ -305,18 +306,13 @@ export default class MissionsActions extends Actions {
     }));
   }
 
-  getDutyMissionById(id) {
-    const payload = { id };
-
-    return DutyMissionService.get(payload);
-  }
-
   createDutyMission(mission) {
     const payload = cloneDeep(mission);
     payload.plan_date_start = createValidDateTime(payload.plan_date_start);
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
     payload.fact_date_end = createValidDateTime(payload.fact_date_end);
+    delete payload.brigadeEmployeeIdIndex;
 
     return DutyMissionService.post(payload, false, 'json');
   }
@@ -328,6 +324,8 @@ export default class MissionsActions extends Actions {
     delete payload.route_name;
     delete payload.foreman_fio;
     delete payload.car_mission_name;
+    delete payload.brigadeEmployeeIdIndex;
+
     payload.plan_date_start = createValidDateTime(payload.plan_date_start);
     payload.plan_date_end = createValidDateTime(payload.plan_date_end);
     payload.fact_date_start = createValidDateTime(payload.fact_date_start);
@@ -369,6 +367,7 @@ export default class MissionsActions extends Actions {
 
     return DutyMissionTemplateService.get(payload).then(({ result }) => ({
       result: result.map(({ brigade_employee_id_list = [], ...empl }) => {
+        empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
         empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
 
         return empl;
@@ -379,6 +378,7 @@ export default class MissionsActions extends Actions {
   createDutyMissionTemplate(mainMissionData) {
     const payload = cloneDeep(mainMissionData);
     payload.created_at = createValidDate(payload.created_at);
+    delete payload.brigadeEmployeeIdIndex;
 
     return DutyMissionTemplateService.post(payload, false, 'json');
   }
@@ -387,6 +387,7 @@ export default class MissionsActions extends Actions {
     const payload = cloneDeep(mission);
     payload.created_at = createValidDate(payload.created_at);
 
+    delete payload.brigadeEmployeeIdIndex;
     delete payload.number;
     delete payload.technical_operation_name;
     delete payload.route_name;
@@ -402,7 +403,7 @@ export default class MissionsActions extends Actions {
     const dutyMissionsCreationTemplateCopy = clone(dutyMissionsCreationTemplate);
     const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
-    const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map((query) => {
+    const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map(({ brigadeEmployeeIdIndex, ...query }) => {
       const payload = cloneDeep(query);
 
       payload.status = 'not_assigned';

@@ -76,7 +76,12 @@ export const componentDidMount: IComponentDidMount = async props => {
     flux.getActions('pointsHybrid').createConnection();
     flux.getActions('pointsHybrid').setSingleCarTrack(car_data.gov_number, car_data.asuods_id);
     flux.getActions('pointsHybrid').setSingleCarTrackDates([mission_data.date_start, mission_data.date_end]);
+    flux.getActions('cars').getCarGpsNumberByDateTime({ asuods_id: car_data.asuods_id }, mission_data.date_start)
+      .then(({ gps_code }) => {
+        props.multyChange({ gps_code });
+      })
   }
+
 
   const missionReport = report_data.entries || [];
 
@@ -112,6 +117,7 @@ export const initialState = {
   selectedObjects: [],
   parkingCount: -1,
   route: {},
+  gps_code: null,
   column_id: ({ formState: { mission_data: { column_id } } }) => column_id,
   tooLongDates: ({ formState: { mission_data } }) => diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
   number: ({ formState: { mission_data } }) => mission_data.number,
@@ -134,4 +140,4 @@ export const initialState = {
     checkFixed([sensor_traveled_working / 1000, 'км'], 'THREE_F')
   ),
   gov_number: ({ formState: { car_data: { gov_number } }}) => gov_number,
-}
+};

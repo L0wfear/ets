@@ -15,7 +15,7 @@ export const getFrontStatus = (statusId) => {
   }
 };
 
-export const checkOnIncludesCar = (filterData, gps_code, gov_number, { garage_number = '' } = {}) => (
+export const checkOnIncludesCar = (filterData, gps_code, { garage_number = '', gov_number = '' } = {}) => (
   gps_code && gps_code.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
   || gov_number && gov_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
   || garage_number && garage_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
@@ -23,10 +23,10 @@ export const checkOnIncludesCar = (filterData, gps_code, gov_number, { garage_nu
 
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {
   switch (key) {
-    case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, wsData.car.gov_number, car_actualData);
-    case 'carFilterMultyType': return !value.length || value.includes(wsData.car.type_id);
+    case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
+    case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
-    case 'carFilterMultyOwner': return !value.length || value.includes(wsData.car.owner_id);
+    case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
     default: return false;
   }
 };

@@ -47,11 +47,11 @@ const getRenders = props => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    brigade_employee_id_list: ({ data }) => (
+    brigade_employee_id_list: ({ data, rowData }) => (
       <div>
         {
           data.map((id) => (
-            props.flux ? employeeFIOLabelFunction(props.flux)(id) : '-'
+            rowData.brigadeEmployeeIdIndex[id] || '-'
           )).join(', ')
         }
       </div>

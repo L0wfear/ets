@@ -68,7 +68,9 @@ export default class ReactSelect extends React.Component<any, any> {
 
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
   filterOption = (option, filterValue: string) => {
-    const label: string = option.label.toString()
+    let { label = '' } = option;
+
+    label = label.toString();
 
     return label.toLocaleLowerCase().includes(
       filterValue.toLocaleLowerCase()

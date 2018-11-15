@@ -68,7 +68,7 @@ export default class RoutesActions extends Actions {
         route.object_list.forEach((el, i) => {
           // todo
           // заставить бэк выдавать id
-          el.customId = i;
+          el.customId = i + 1;
 
           if (!el.shape && el.coordinates) {
             el.shape = {

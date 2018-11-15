@@ -94,10 +94,26 @@ class SimpleGriddle extends React.Component<any, any> {
     })
   )
 
+  globalCheckHandler = (e) => {
+    this.props.globalCheckHandler(
+      this.state.shortResult,
+      e,
+    );
+  }
+
   mapTheadTrTh = (columnNameOuter) => {
     const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
 
     const { columnName } = field;
+
+    if (columnName === 'isChecked') {
+      return (
+        <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
+          <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />
+        </th>
+      )
+    }
+
 
     return (
       <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
@@ -222,7 +238,7 @@ class SimpleGriddle extends React.Component<any, any> {
           initialSortAscending: initialSortAscending,
         })
       }
-    } 
+    }
   }
   render() {
     const {

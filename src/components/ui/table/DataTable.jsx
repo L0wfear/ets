@@ -352,10 +352,15 @@ export default class DataTable extends React.Component {
     });
   }
 
-  globalCheckHandler(event) {
-    const checked = _(this.props.results)
-      .filter(r => this.shouldBeRendered(r))
-      .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
+  globalCheckHandler = (shortResult, event) => {
+    const checked = (shortResult)
+      .reduce((cur, val) => {
+        cur[val[this.props.selectField]] = val;
+        return cur;
+      },
+      {},
+    );
+
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
@@ -397,7 +402,7 @@ export default class DataTable extends React.Component {
     if (multiSelection) {
       initialArray.push({
         columnName: 'isChecked',
-        displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />,
+        displayName: '',
         sortable: false,
         cssClassName: 'width25 pointer text-center',
       });
@@ -749,6 +754,8 @@ export default class DataTable extends React.Component {
           rowNumberOffset={serverPagination ? this.props.rowNumberOffset : 0}
           handleRowCheck={this.handleRowCheck}
           serverPagination={serverPagination}
+
+          globalCheckHandler={this.globalCheckHandler}
         />
         {
           serverPagination ?

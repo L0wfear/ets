@@ -159,7 +159,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
   }
 
-  onRowSelected = ({ props: { data: { frontId } } }) => this.setState({ selectedElement: this.state.missionsIndex[frontId] });
+  onRowSelected = ({ props: { data: { frontId } } }) => {
+    this.setState({ selectedElement: this.state.missionsIndex[frontId] });
+  }
 
   onRowChecked = (frontId, state) => {
     const {
@@ -171,6 +173,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     } else {
       delete checkedElements[frontId];
     }
+
+    console.log()
 
     this.setState({ checkedElements });
   }

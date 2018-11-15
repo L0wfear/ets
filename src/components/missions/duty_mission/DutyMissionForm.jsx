@@ -88,11 +88,16 @@ export class DutyMissionForm extends Form {
 
         this.handleChange('brigade_employee_id_list', this.props.formState.brigade_employee_id_list.filter(id => (
           this.props.employeesIndex[id]
-            ? this.props.employeesIndex[id].company_structure_id === v
+            ? !this.props.employeesIndex[id].company_structure_id || this.props.employeesIndex[id].company_structure_id === v
             : false
         )));
 
-        this.handleChange('foreman_id', this.props.employeesIndex[foreman_id] && this.props.employeesIndex[foreman_id].company_structure_id === v ? foreman_id : null);
+        this.handleChange('foreman_id',
+          this.props.employeesIndex[foreman_id]
+            && (!this.props.employeesIndex[foreman_id].company_structure_id || this.props.employeesIndex[foreman_id].company_structure_id === v)
+              ? foreman_id
+              : null
+        );
 
         if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
           this.handleRouteIdChange(undefined);

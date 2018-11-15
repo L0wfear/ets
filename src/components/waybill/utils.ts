@@ -149,15 +149,20 @@ export const getFuelCorrectionRate = (carsList, { car_id }) => Promise.resolve(
   (carsList.find(({ asuods_id }) => asuods_id === car_id ) || { fuel_correction_rate: 1 }).fuel_correction_rate || 1,
 );
 
-export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }) =>
+export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }, currentSeason) =>
   action({ car_id, datetime })
-    .then(({ result: fuelRatesList}) => ({
+    .then(({ result: fuelRatesList}) => (
+      fuelRatesList.filter(({ season }) => season === currentSeason)
+    ))
+    .then((fuelRatesList) => ({
       fuelRates: fuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
       fuelRatesIndex: fuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),
     }));
-export const getEquipmentFuelRatesByCarModel = (action, { car_id, date_create: datetime }) =>
+export const getEquipmentFuelRatesByCarModel = (action, { car_id, date_create: datetime }, currentSeason) =>
   action({ car_id, datetime })
-    .then(({ result: equipmentFuelRatesList }) => ({
+    .then(({ result: equipmentFuelRatesList }) => (
+      equipmentFuelRatesList.filter(({ season }) => season === currentSeason)
+    )).then((equipmentFuelRatesList) => ({
       equipmentFuelRates: equipmentFuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
       equipmentFuelRatesIndex: equipmentFuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),
     }));

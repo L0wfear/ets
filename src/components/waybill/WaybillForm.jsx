@@ -304,7 +304,8 @@ class WaybillForm extends Form {
       car_id,
       status === 'active' ? formState.fact_departure_date : formState.plan_departure_date,
       status === 'active' ? formState.fact_arrival_date : formState.plan_arrival_date,
-      status
+      status,
+      formState.id,
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);

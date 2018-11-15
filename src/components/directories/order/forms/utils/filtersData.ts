@@ -5,7 +5,7 @@ export const getMissionListByFilter = (missionsList) => (
     if (m.date_to && diffDates(new Date(), m.date_to, 'minutes') < 0) {
       arr.push({
         ...m,
-        frontId: arr.length,
+        customId: arr.length + 1,
       });
     }
 

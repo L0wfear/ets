@@ -164,7 +164,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   onRowChecked = (frontId, state) => {
     const {
       checkedElements: { ...checkedElements },
-    } = this.state;
+    } = this.state; 
 
     if (state) {
       checkedElements[frontId] = this.state.missionsIndex[frontId];

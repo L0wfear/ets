@@ -575,7 +575,7 @@ export default class DataTable extends React.Component {
   }
 
   processSelected(selected, selectField, onRowSelected, el) {
-    el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
+    el.isChecked = this.props.checked && this.props.checked[el[selectField]] && this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
       return el;

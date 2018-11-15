@@ -293,7 +293,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const searchObject = queryString.parse(search);
     this.setState({ exportFetching: true });
 
-    let payload = {
+    let payload: any = {
       rows: [
         ...this.props.list,
       ],

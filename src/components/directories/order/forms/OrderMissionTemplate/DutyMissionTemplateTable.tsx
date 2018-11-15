@@ -51,7 +51,7 @@ const getRenders = props => {
       <div>
         {
           data.map((id) => (
-            rowData.brigadeEmployeeIdIndex[id] || '-'
+            get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
           )).join(', ')
         }
       </div>

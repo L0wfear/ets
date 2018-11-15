@@ -188,7 +188,7 @@ export default class MissionsActions extends Actions {
         },
       } = ans;
       if (entries) {
-        ans.result.report_data.entries.forEach((data, i) => { data.frontId = i; });
+        ans.result.report_data.entries.forEach((data, i) => { data.customId = i + 1; });
       }
       // todo
       // убрать

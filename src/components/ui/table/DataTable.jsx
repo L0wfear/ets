@@ -223,13 +223,6 @@ export default class DataTable extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
     const {
       initialSort,
       firstUseExternalInitialSort,
@@ -366,6 +359,14 @@ export default class DataTable extends React.Component {
       this.forceUpdate();
     });
     event && event.stopPropagation();
+  }
+  updateShortResult = (shortResult) => {
+    // хак 2.0, т.к. гридл не умеет в обновление хедера
+    // TODO переделать
+    const checked = shortResult.every(item => this.props.checked[item.customId || item.id]);
+
+    const el = document.getElementById('checkedColumn');
+    if (el) el.checked = checked;
   }
   defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
     return tableMetaCols.reduce((cur, col) => {
@@ -754,7 +755,7 @@ export default class DataTable extends React.Component {
           rowNumberOffset={serverPagination ? this.props.rowNumberOffset : 0}
           handleRowCheck={this.handleRowCheck}
           serverPagination={serverPagination}
-
+          updateShortResult={this.updateShortResult}
           globalCheckHandler={this.globalCheckHandler}
         />
         {

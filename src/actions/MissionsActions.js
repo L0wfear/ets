@@ -104,7 +104,7 @@ export default class MissionsActions extends Actions {
       payload.in_between = inBetween;
     }
 
-    if (!isEmpty(inBetween)) {
+    if (!isEmpty(waybill_id)) {
       payload.waybill_id = waybill_id;
     }
 

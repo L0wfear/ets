@@ -346,16 +346,22 @@ export default class DataTable extends React.Component {
     });
   }
 
-  globalCheckHandler = (event) => {
-    const checked = _(this.props.results)
-      .filter(r => this.shouldBeRendered(r))
-      .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
+  globalCheckHandler = (shortResult, event) => {
+    const checked = (shortResult)
+      .reduce((cur, val) => {
+        cur[val[this.props.selectField]] = val;
+        return cur;
+      },
+      {},
+    );
+
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });
     event && event.stopPropagation();
   }
+
   defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
     return tableMetaCols.reduce((cur, col) => {
       if (col.display === false) {
@@ -391,7 +397,7 @@ export default class DataTable extends React.Component {
     if (multiSelection) {
       initialArray.push({
         columnName: 'isChecked',
-        displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />,
+        displayName: '',
         sortable: false,
         cssClassName: 'width25 pointer text-center',
       });
@@ -671,7 +677,6 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
@@ -743,6 +748,7 @@ export default class DataTable extends React.Component {
           handleRowCheck={this.handleRowCheck}
           serverPagination={serverPagination}
           currentPage={this.state.currentPage}
+          globalCheckHandler={this.globalCheckHandler}
         />
         {
           serverPagination ?

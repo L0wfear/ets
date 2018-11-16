@@ -88,7 +88,6 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 1000000,
-              mimetype: 'images/[name].[ext]',
             },
           },
         ],
@@ -110,7 +109,6 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 100000,
-              mimetype: 'fonts/[name].[ext]',
             },
           },
         ],

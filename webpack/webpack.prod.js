@@ -5,6 +5,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const stand = process.env.STAND || 'dev';
 
@@ -103,10 +104,10 @@ module.exports = {
         ],
       },
       {
-        test: /^((?!\.module).)*\.s?css$/,
+        test: /\.(sc|c)ss$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             loader: 'css-loader',
@@ -158,6 +159,11 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new ManifestPlugin(),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+    }),
     new CleanWebpackPlugin([path.resolve(__dirname, '..', 'dist')]),
     new CopyWebpackPlugin([
       {
@@ -197,5 +203,15 @@ module.exports = {
   ],
   optimization: {
     noEmitOnErrors: true,
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
   },
 };

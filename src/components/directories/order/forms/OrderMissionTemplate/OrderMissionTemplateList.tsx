@@ -179,7 +179,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     this.setState({ checkedElements });
   }
 
-  onAllChecked = (rows, state) => this.setState({ checkedElements: state ? this.state.missionsIndex: {} });
+  onAllChecked = (checkedElements: object, state) => this.setState({ checkedElements: state ? checkedElements : {} });
+  
 
   checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 

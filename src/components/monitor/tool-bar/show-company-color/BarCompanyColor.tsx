@@ -11,8 +11,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
-
-require('components/monitor/tool-bar/show-company-color/BarCompanyColor.scss');
+import { LegenCompanyLegendOption, CubeColor } from './styled';
 
 type PropsBarCompanyColor = {
   companiesIndex: TypeCompaniesIndex,
@@ -68,10 +67,10 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
                   this.state.isOpen ?
                   (
                     companiesOption.map((companyData) => (
-                      <div key={companyData.company_id} className="legen_option company_legend">
+                      <LegenCompanyLegendOption key={companyData.company_id}>
                         <div>{companyData.short_name}</div>
-                        <div className="cube_color" style={companyData.style}></div>
-                      </div>
+                        <CubeColor backgroundColor={companyData.style.backgroundColor}></CubeColor>
+                      </LegenCompanyLegendOption>
                     ))
                   )
                   :

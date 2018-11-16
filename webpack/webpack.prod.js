@@ -77,10 +77,14 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 1000000,
-              mimetype: 'images/[name].[ext]',
+              name: 'images/[name].[ext]',
             },
           },
         ],
+      },
+      { 
+        test: /\.hbs?$/,
+        use: 'handlebars-loader'
       },
       {
         test: /\.svg/,

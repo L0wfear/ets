@@ -185,8 +185,22 @@ class RouteCreating extends React.Component {
     const {
       object_list = [],
       input_lines = [],
-      polys = {},
+      polys: outerPolys = {},
+      structure_id,
     } = route;
+    const polys = (
+      structure_id
+        ? Object.entries(outerPolys).reduce((newPolys, [key, polyData]) => {
+          if (polyData.company_structure_id === structure_id) {
+            newPolys[key] = polyData;
+          }
+
+          return newPolys;
+        }, {})
+        : outerPolys
+    );
+
+    console.log(polys)
     const [draw_list = []] = [route.draw_odh_list];
     const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter(o => o.type) || [];

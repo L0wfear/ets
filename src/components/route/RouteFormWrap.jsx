@@ -119,9 +119,6 @@ class RouteFormWrap extends FormWrap {
   updateFromStatePolys = async (formState, refreshGeoState) => {
     const {
       municipal_facility_id,
-      object_list,
-      input_lines,
-      draw_odh_list,
       type: object_type,
     } = formState;
 
@@ -143,32 +140,17 @@ class RouteFormWrap extends FormWrap {
       }
     }
 
-    let new_polys = {};
-    if (object_type !== 'mixed') {
-      new_polys = cloneDeep(this.props.dtPolys);
-    }
-    if (object_type !== 'simple_dt') {
-      new_polys = {
-        ...new_polys,
-        ...cloneDeep(this.props.odhPolys),
-      };
-    }
-    each(oldObjectList.filter(o => !!o.object_id), (o) => {
-      if (new_polys[o.object_id]) {
-        new_polys[o.object_id].state = o.state;
-      }
-    });
-
     if (municipal_facility_id && (object_type === 'mixed' || object_type === 'simple_dt')) {
       const object_type_id = this.props.technicalOperationsObjectsList.find(({ type }) => object_type === type).id;
       this.context.flux.getActions('geoObjects').getGeozoneMunicipalFacility(municipal_facility_id, object_type_id)
         .then((rows) => {
-          const polys = rows.reduce((newObj, { id, name, shape }) => ({
+          const polys = rows.reduce((newObj, { id, name, shape, company_structure_id }) => ({
             ...newObj,
             [id]: {
               name,
               shape: JSON.parse(shape),
               state: polyState.SELECTABLE,
+              company_structure_id,
             },
           }), {});
 
@@ -181,16 +163,7 @@ class RouteFormWrap extends FormWrap {
             }
           });
 
-          if (refreshGeoState) {
-            each(oldObjectList.filter(o => !!o.object_id), (o) => {
-              if (new_polys[o.object_id]) {
-                polys[o.object_id] = {
-                  ...new_polys[o.object_id],
-                  state: o.state,
-                };
-              }
-            });
-          } else {
+          if (!refreshGeoState) {
             this.handleFormStateChange('object_list', newObjectList);
             this.handleFormStateChange('input_lines', oldInputLines);
             this.handleFormStateChange('draw_list', oldInputLines);

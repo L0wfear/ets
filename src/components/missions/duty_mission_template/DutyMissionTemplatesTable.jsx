@@ -54,7 +54,7 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_names',
+        name: 'brigade_employee_id_list',
         displayName: 'Бригада',
         type: 'string',
         filter: {
@@ -91,8 +91,16 @@ export const getTableMeta = ({
 };
 
 export const getRenderers = props => ({
+  brigade_employee_id_list: ({ data, rowData }) => (
+    <div>
+      {
+        data.map((id) => (
+          get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
+        )).join(', ')
+      }
+    </div>
+  ),
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-  brigade_employee_names: ({ data }) => <div>{data.join(',')}</div>,
 });
 
 const DataTable = props => (

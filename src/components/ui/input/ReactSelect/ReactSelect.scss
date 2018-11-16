@@ -49,6 +49,11 @@
       display: flex;
       flex-direction: row-reverse;
 
+      &.red {
+        background-color: rgba(226, 0, 255, 0.08);
+        border: 1px solid rgba(226, 0, 255, 0.24);
+      }
+
       .react-select__multi-value__label {
         color: #007eff;
         white-space: initial;

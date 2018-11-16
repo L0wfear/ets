@@ -4,7 +4,10 @@ import {
   DutyMissionService,
 } from 'api/missions';
 
-import { cloneDeep } from 'lodash';
+import {
+  keyBy,
+  cloneDeep,
+} from 'lodash';
 import { createValidDateTime } from 'utils/dates';
 
 export const getMissionById = (id) => (
@@ -61,13 +64,17 @@ export const getDutyMissionById = (id) => (
 
       return {
         result: {
-          rows: [],
+          rows: [{}],
         },
       };
     })
     .then(({ result: { rows: [duty_mission] } }) => {
       return {
-        duty_mission,
+        duty_mission: {
+          ...duty_mission,
+          brigadeEmployeeIdIndex: keyBy(duty_mission.brigade_employee_id_list, 'employee_id'),
+          brigade_employee_id_list: duty_mission.brigade_employee_id_list.map(({ employee_id }) => employee_id),
+        },
       };
     })
 );
@@ -85,13 +92,6 @@ export const updateDutyMission = (duty_mission) => {
   payload.plan_date_end = createValidDateTime(payload.plan_date_end);
   payload.fact_date_start = createValidDateTime(payload.fact_date_start);
   payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-
-  payload.brigade_employee_id_list = Object.values(
-    payload.brigade_employee_id_list.reduce((newObj, data) => ({
-      ...newObj,
-      [data.id || data.employee_id]: data.id || data.employee_id,
-    }), {})
-  );
 
   return DutyMissionService.put(payload, false, 'json');
 }

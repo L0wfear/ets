@@ -4,7 +4,6 @@ import { Modal, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
 import lodashIsEmpty from 'lodash/isEmpty';
-import last from 'lodash/last';
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route/RouteInfo.jsx';
 import RouteFormWrap from 'components/route/RouteFormWrap.jsx';
@@ -15,7 +14,8 @@ import { getKindTaskIds, getPermittetEmployeeForBrigade } from 'components/missi
 import Form from 'components/compositions/Form.jsx';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 
-import { FormTitle, onlyActiveEmployeeNotification } from './utils';
+import { FormTitle, onlyActiveEmployeeNotification, makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from './utils';
+import { components } from 'react-select';
 
 const makePayloadFromState = formState => ({
   datetime: formState.plan_date_start,
@@ -23,6 +23,7 @@ const makePayloadFromState = formState => ({
   municipal_facility_id: formState.municipal_facility_id,
   route_type: formState.route_type,
   needs_brigade: true,
+  hasNotActiveEmployees: false,
 });
 const modalKey = 'duty_mission';
 
@@ -37,6 +38,15 @@ export class DutyMissionForm extends Form {
       routesList: [],
       available_route_types: [],
     };
+  }
+
+  multiValueContainerReander({ innerProps, ...props }) {
+    const newInnerProps = {
+      ...innerProps,
+      className: `${innerProps.className}${typeof props.data.active === 'boolean' && !props.data.active ? ' red' : ''}`,
+    };
+
+    return <components.MultiValueContainer innerProps={newInnerProps} {...props} />;
   }
 
   handleRouteIdChange = (v) => {
@@ -62,14 +72,44 @@ export class DutyMissionForm extends Form {
   }
 
   handleChangeStructureId = (v) => {
-    if (!v) {
-      this.handleChange('brigade_employee_id_list', []);
-      this.handleChange('foreman_id', null);
-    } else if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
-      this.handleRouteIdChange(undefined);
-    }
+    if (v !== this.props.formState.structure_id) {
+      if (v) {
+        const {
+          formState: {
+            foreman_id,
+            foreman_full_fio,
+            brigade_employee_id_list,
+          },
+        } = this.props;
 
-    this.handleChange('structure_id', v);
+        const newBrigadeEmployeeIdList = brigade_employee_id_list.filter(id => (
+          this.props.employeesIndex[id]
+            ? !this.props.employeesIndex[id].company_structure_id || this.props.employeesIndex[id].company_structure_id === v
+            : false
+        ));
+        const newForemanId = (
+          this.props.employeesIndex[foreman_id]
+            && (
+              !this.props.employeesIndex[foreman_id].company_structure_id
+              || this.props.employeesIndex[foreman_id].company_structure_id === v
+            )
+              ? foreman_id
+              : null
+        );
+
+        this.handleChange('brigade_employee_id_list', newBrigadeEmployeeIdList);
+        this.handleChange('foreman_id', newForemanId);
+        if (!newForemanId) {
+          this.handleChange('foreman_full_fio', null);
+        }
+
+        if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
+          this.handleRouteIdChange(undefined);
+        }
+      }
+
+      this.handleChange('structure_id', v);
+    }
   }
 
   handleTechnicalOperationChange(v) {
@@ -87,52 +127,20 @@ export class DutyMissionForm extends Form {
     flux.getActions('missions').getMissions(v);
   }
 
-  isActiveEmployee(id) {
-    return this.props.employeesList
-      .filter(employee => employee.active)
-      .map(employee => employee.id)
-      .indexOf(parseInt(id, 10)) !== -1;
-  }
-
   handleForemanIdChange = async (foreman_id) => {
-    if (!isEmpty(foreman_id) && !this.isActiveEmployee(foreman_id)) {
-      onlyActiveEmployeeNotification();
-      return;
-    }
-
-    if (!isEmpty(foreman_id)) {
+    if (foreman_id && foreman_id !== this.props.formState.foreman_id) {
       const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
-      this.handleBrigadeIdListChange(lastBrigade);
-    }
 
-    this.props.handleFormChange('foreman_id', foreman_id);
+      this.handleBrigadeIdListChange(lastBrigade.map(({ id }) => id));
+      this.props.handleFormChange('foreman_id', foreman_id);
+    }
   }
 
   // Можно принять второй параметр
   // Туда попадает вся опция
   // И не искать каждый раз всех
   handleBrigadeIdListChange = (v) => {
-    let brigade_employee_id_list = [];
-
-    if (v) {
-      let hasNotActive = false;
-      brigade_employee_id_list = v.map(id => Number(id)).reduce((newArr, brigade_id) => {
-        if (!this.isActiveEmployee(brigade_id)) {
-          hasNotActive = true;
-          return [...newArr];
-        }
-        return [
-          ...newArr,
-          this.props.employeesIndex[brigade_id],
-        ];
-      }, []);
-
-      if (hasNotActive) {
-        onlyActiveEmployeeNotification();
-      }
-    }
-
-    this.props.handleFormChange('brigade_employee_id_list', brigade_employee_id_list);
+    this.props.handleFormChange('brigade_employee_id_list', v);
   }
 
   async componentDidMount() {
@@ -260,7 +268,7 @@ export class DutyMissionForm extends Form {
 
   getDataByNormatives = async (normatives) => {
     const norm_ids = normatives.map(({ id }) => id).join(',');
-    const { kind_task_ids } = this.state;
+
     this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids, kind_task_ids: this.state.kind_task_ids })
       .then(({ result: normativesData }) => {
         const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
@@ -290,14 +298,12 @@ export class DutyMissionForm extends Form {
 
     const {
       missionSourcesList = [],
-      employeesList = [],
       missionsList = [],
       readOnly = false,
       fromOrder = false,
     } = this.props;
     const {
       TECH_OPERATIONS = [],
-      routesList = [],
       available_route_types = [],
       technicalOperationsList = [],
       selectedRoute: route = null,
@@ -315,55 +321,12 @@ export class DutyMissionForm extends Form {
       return newArr;
     }, []);
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
-
-    const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
-    ) ? routes.concat([route]) : routes;
-
-    const ROUTES = uniqBy(
-      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
-      'value',
-    );
-    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).reduce((newArr, employee) => {
-      if (employee.active) {
-        return [
-          ...newArr,
-          {
-            value: employee.value,
-            label: employee.label,
-          },
-        ];
-      }
-
-      return [...newArr];
-    }, []);
-
-    const FOREMANS = [...EMPLOYEES];
-    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id] || {};
-
-      FOREMANS.push({
-        value: state.foreman_id,
-        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-      });
-    }
-
-    const BRIGADES = [...EMPLOYEES];
-
-    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
-      const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[key] || {};
-
-        BRIGADES.push({
-          value: key,
-          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-        });
-      }
-    });
+    const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
+    const {
+      FOREMANS,
+      BRIGADES,
+      hasNotActiveEmployees,
+    } = getEmployeeFormDutyMission(this.props);
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({
       id,
@@ -376,16 +339,16 @@ export class DutyMissionForm extends Form {
     const IS_COMPLETED = state.status && state.status === 'complete';
     const IS_CLOSED = state.status === 'complete' || state.status === 'fail';
 
-    let title = (
+    const title = IS_CREATING
+    ? (
+      'Создание наряд-задания'
+    )
+    : (
       <FormTitle
         number={state.number || ''}
         status={state.status}
       />
     );
-
-    if (IS_CREATING) {
-      title = 'Создание наряд-задания';
-    }
 
     const IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
@@ -405,10 +368,6 @@ export class DutyMissionForm extends Form {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
-
-    const brigade_employee_id_list = !state.brigade_employee_id_list
-      ? []
-      : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
@@ -551,8 +510,9 @@ export class DutyMissionForm extends Form {
                 multi
                 disabled={IS_DISPLAY || readOnly}
                 options={BRIGADES}
-                value={brigade_employee_id_list}
+                value={state.brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
+                multiValueContainerReander={this.multiValueContainerReander}
               />
             </Col>
             {STRUCTURE_FIELD_VIEW && <Col md={3}>
@@ -659,9 +619,9 @@ export class DutyMissionForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block" >
-            <Button onClick={this.props.onPrint} disabled={!this.props.canSave}>
+            <Button onClick={this.props.onPrint} disabled={!this.props.canSave || hasNotActiveEmployees}>
               <Glyphicon id="dm-download-all" glyph="download-alt" /> {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}</Button>
-            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly}>{'Сохранить'}</Button>
+            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly || hasNotActiveEmployees}>{'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

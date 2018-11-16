@@ -56,21 +56,6 @@ export default class CurrentDutyMissions extends DashboardCardMedium {
     this.props.openSubitemsList(this.state.selectedItem === null);
   }
 
-  async completeMission(id) {
-    let mission = await this.context.flux.getActions('missions').getDutyMissionById(id);
-    mission = mission.result.rows[0];
-    mission.status = 'complete';
-    await this.context.flux.getActions('missions').updateDutyMission(mission);
-    this.selectItem(this.state.selectetdType, null);
-    this.props.refreshCard();
-  }
-
-  async rejectMission(id) {
-    const mission = await this.context.flux.getActions('missions').getDutyMissionById(id).then(({ result: { rows: [m] } }) => m);
-    this.setState({ dutyMissionToRejectList: [mission] });
-    this.selectItem(this.state.selectetdType, null);
-    this.props.refreshCard();
-  }
   handleRejectAll = (allQuery, needUpdate) => {
     Promise.all(allQuery).then(() => {
       if (needUpdate) {

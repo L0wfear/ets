@@ -47,7 +47,15 @@ const getRenders = props => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    brigade_employee_names: ({ data }) => <div>{data.join(',')}</div>,
+    brigade_employee_id_list: ({ data, rowData }) => (
+      <div>
+        {
+          data.map((id) => (
+            get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
+          )).join(', ')
+        }
+      </div>
+    ),
   };
   return renderers;
 };

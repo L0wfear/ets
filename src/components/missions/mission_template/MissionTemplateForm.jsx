@@ -5,8 +5,6 @@ import {
   uniqBy,
 } from 'lodash';
 
-import { checkRouteByNew } from 'components/missions/utils/utils.ts';
-
 import ModalBody from 'components/ui/Modal';
 import Field, { ExtField } from 'components/ui/Field.jsx';
 import Div from 'components/ui/Div.jsx';
@@ -59,7 +57,7 @@ class MissionTemplateForm extends MissionForm {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
+    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
 
     const filteredRoutes = (
       route !== null &&

@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.22.316",
+    "version": "2.0.22.319",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -37,7 +37,7 @@
         "query-string": "^5.0.1",
         "ramda": "=0.25.0",
         "raven-js": "^3.24.2",
-        "react": "=16.5.2",
+        "react": "^16.5.2",
         "react-bootstrap": "^0.31.3",
         "react-dom": "^16.5.2",
         "react-notification-system": "^0.2.17",

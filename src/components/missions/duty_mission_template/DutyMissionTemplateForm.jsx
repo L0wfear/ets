@@ -1,9 +1,7 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import { Modal, Row, Col, Button } from 'react-bootstrap';
-import { find, uniqBy } from 'lodash';
-
-import { getPermittetEmployeeForBrigade, checkRouteByNew } from 'components/missions/utils/utils.ts';
+import { find } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field.jsx';
@@ -13,6 +11,7 @@ import InsideField from 'components/missions/duty_mission_template/inside_fields
 import RouteInfo from '../../route/RouteInfo.jsx';
 import RouteFormWrap from '../../route/RouteFormWrap.jsx';
 import { DutyMissionForm } from '../duty_mission/DutyMissionForm.jsx';
+import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from '../duty_mission/utils';
 
 const modalKey = 'duty_mission_template';
 
@@ -21,29 +20,13 @@ class MissionTemplateForm extends DutyMissionForm {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const {
-      employeesList = [],
-    } = this.props;
-    const {
       available_route_types = [],
       technicalOperationsList = [],
-      routesList = [],
       TECH_OPERATIONS = [],
       selectedRoute: route = null,
     } = this.state;
 
-    const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id) && checkRouteByNew(state, r, available_route_types));
-
-    const filteredRoutes = (
-      route !== null &&
-      route.id !== undefined &&
-      routes.find(item => item.value === route.id) === undefined
-    ) ? routes.concat([route]) : routes;
-
-    const ROUTES = uniqBy(
-      filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
-      'value',
-    );
-
+    const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
     const IS_CREATING = true;
 
     let title = 'Задание';
@@ -54,43 +37,12 @@ class MissionTemplateForm extends DutyMissionForm {
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
-    const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList).reduce((newArr, employee) => {
-      if (employee.active && (!state.structure_id || (employee.company_structure_id === state.structure_id))) {
-        return [
-          ...newArr,
-          {
-            value: employee.value,
-            label: employee.label,
-          },
-        ];
-      }
 
-      return [...newArr];
-    }, []);
-
-    const FOREMANS = [...EMPLOYEES];
-    if (state.foreman_id && !FOREMANS.some(({ value }) => value === state.foreman_id)) {
-      const employee = this.props.employeesIndex[state.foreman_id] || {};
-
-      FOREMANS.push({
-        value: state.foreman_id,
-        label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-      });
-    }
-
-    const BRIGADES = [...EMPLOYEES];
-    state.brigade_employee_id_list.forEach(({ id, employee_id }) => {
-      const key = id || employee_id;
-      if (!BRIGADES.some(({ value }) => value === key)) {
-        const employee = this.props.employeesIndex[key] || {};
-
-        BRIGADES.push({
-          value: key,
-          label: `${employee.last_name || ''} ${employee.first_name || ''} ${employee.middle_name || ''} (Неактивный сотрудник)`,
-        });
-      }
-    });
-
+    const {
+      FOREMANS,
+      BRIGADES,
+      hasNotActiveEmployees,
+    } = getEmployeeFormDutyMission(this.props);
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
@@ -105,10 +57,6 @@ class MissionTemplateForm extends DutyMissionForm {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
-
-    const brigade_employee_id_list = !state.brigade_employee_id_list
-    ? []
-    : state.brigade_employee_id_list.filter(b => b.id || b.employee_id).map(b => b.id || b.employee_id).join(',');
 
     return (
       <Modal id="modal-duty-missio-template" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
@@ -178,9 +126,10 @@ class MissionTemplateForm extends DutyMissionForm {
                 label="Бригада"
                 error={errors.brigade_employee_id_list}
                 multi
+                multiValueContainerReander={this.multiValueContainerReander}
                 disabled={false}
                 options={BRIGADES}
-                value={brigade_employee_id_list}
+                value={state.brigade_employee_id_list}
                 onChange={this.handleBrigadeIdListChange}
               />
             </Col>
@@ -229,7 +178,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave}>{'Сохранить'}</Button>
+            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</Button>
           </Div>
         </Modal.Footer>
 

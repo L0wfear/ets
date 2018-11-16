@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Label } from 'react-bootstrap';
-import { uniqBy } from 'lodash';
+import { uniqBy, get } from 'lodash';
 import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
 
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
@@ -60,7 +60,7 @@ export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_
       if (employee || brigadeEmployeeIdIndex[key]) {
         BRIGADES.push({
           value: key,
-          label: `${brigadeEmployeeIdIndex[key] || createFio(employee, true)} (Неактивный сотрудник)`,
+          label: `${get(brigadeEmployeeIdIndex, [key, 'employee_fio'], createFio(employee, true))} (Неактивный сотрудник)`,
           active: false,
           company_structure_id: employee ? employee.company_structure_id : -1,
         });

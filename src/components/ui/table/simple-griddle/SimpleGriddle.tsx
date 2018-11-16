@@ -60,7 +60,6 @@ class SimpleGriddle extends React.Component<any, any> {
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     const { results, resultsPerPage } = nextProps;
-    console.log('getDerivedStateFromProps');
     if (results !== prevState.results || resultsPerPage !== prevState.resultsPerPage) {
       const currentPage = nextProps.serverPagination
         ? 0

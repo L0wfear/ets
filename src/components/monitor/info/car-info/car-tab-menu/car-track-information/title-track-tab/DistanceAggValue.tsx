@@ -4,25 +4,25 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 
 type PropsDistanceAggValue = {
-  distance_agg2: any;
+  distance: any;
 };
 
-const DistanceAggValue: React.SFC<PropsDistanceAggValue> = ({ distance_agg2 }) => (
+const DistanceAggValue: React.SFC<PropsDistanceAggValue> = ({ distance }) => (
     <span>
     {
-      distance_agg2 === null
+      distance === null
       ? (
         <span>{'---'}</span>
       )
       : (
-        <span>{distance_agg2 / 1000}</span>
+        <span>{distance / 1000}</span>
       )
     }
     </span>
 );
 
 const mapStateToProps = state => ({
-  distance_agg2: state.monitorPage.carInfo.trackCaching.distance_agg2,
+  distance: state.monitorPage.carInfo.trackCaching.distance,
 });
 
 export default hocAll(

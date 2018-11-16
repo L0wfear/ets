@@ -82,10 +82,6 @@ module.exports = {
           },
         ],
       },
-      { 
-        test: /\.hbs?$/,
-        use: 'handlebars-loader'
-      },
       {
         test: /\.svg/,
         use: {

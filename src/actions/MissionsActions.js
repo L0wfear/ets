@@ -75,7 +75,7 @@ export default class MissionsActions extends Actions {
     return MissionReassignationService.put(payload, false, 'json');
   }
 
-  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus, inBetween, waybill_id) {
+  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus, waybill_id) {
     const payload = {};
 
     const status = getMissionFilterStatus(waybillStatus);
@@ -94,10 +94,6 @@ export default class MissionsActions extends Actions {
 
     if (!isEmpty(status)) {
       payload.status = status;
-    }
-
-    if (!isEmpty(inBetween)) {
-      payload.in_between = inBetween;
     }
 
     if (!!waybill_id && !isEmpty(waybill_id)) {

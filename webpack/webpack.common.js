@@ -125,32 +125,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.module\.s?css$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              modules: true,
-              importLoaders: 2,
-              localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
-            },
-          },
-          {
-            loader: 'resolve-url-loader',
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-        ],
-      },
-      {
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
         use: [
           'file-loader',

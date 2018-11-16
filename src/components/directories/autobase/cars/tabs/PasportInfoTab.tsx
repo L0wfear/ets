@@ -10,7 +10,7 @@ import { IVehicle, IVehiclePassport } from 'api/@types/services/index.h';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import GntTab from './passportTabs/GtnTab';
 import GibddTab from './passportTabs/GibddTab';
-const styles = require('components/directories/autobase/cars/cars.module.scss');
+import { CarTab } from '../styled/styled';
 
 export type TFormState = IVehicle & IVehiclePassport;
 
@@ -27,46 +27,48 @@ export interface IPropsPassportInfoTab extends IBaseForm<IVehicle> {
 }
 
 const RegisterPassportInfoTab: React.SFC<IPropsPassportInfoTab> = props => {
-  return  <div className={styles.carTab}>
-    <Row>
-      <Col md={6}>
+  return (
+    <CarTab>
+      <Row>
         <Col md={6}>
-          <ExtField
-            type="boolean"
-            label="ГИБДД"
-            value={props.state.passport_type === 'GIBDD'}
-            emptyValue={null}
-            onChange={props.onChange}
-            boundKeys={['passport_type', 'GIBDD']}
-            disabled={!props.isPermitted}
+          <Col md={6}>
+            <ExtField
+              type="boolean"
+              label="ГИБДД"
+              value={props.state.passport_type === 'GIBDD'}
+              emptyValue={null}
+              onChange={props.onChange}
+              boundKeys={['passport_type', 'GIBDD']}
+              disabled={!props.isPermitted}
+            />
+          </Col>
+          <Col md={6}>
+            <ExtField
+              type="boolean"
+              label="ГТН (Гостехнадзор)"
+              value={props.state.passport_type === 'GTN'}
+              emptyValue={null}
+              onChange={props.onChange}
+              boundKeys={['passport_type', 'GTN']}
+              disabled={!props.isPermitted}
           />
+          </Col>
         </Col>
-        <Col md={6}>
-          <ExtField
-            type="boolean"
-            label="ГТН (Гостехнадзор)"
-            value={props.state.passport_type === 'GTN'}
-            emptyValue={null}
-            onChange={props.onChange}
-            boundKeys={['passport_type', 'GTN']}
-            disabled={!props.isPermitted}
+      </Row>
+      {
+        props.state.passport_type === 'GTN' &&
+        <GntTab
+          {...props}
         />
-        </Col>
-      </Col>
-    </Row>
-    {
-      props.state.passport_type === 'GTN' &&
-      <GntTab
-        {...props}
-      />
-    }
-    {
-      props.state.passport_type === 'GIBDD' &&
-      <GibddTab
-        {...props}
-      />
-    }
-  </div>;
+      }
+      {
+        props.state.passport_type === 'GIBDD' &&
+        <GibddTab
+          {...props}
+        />
+      }
+    </CarTab>
+  );
 };
 
 export default RegisterPassportInfoTab;

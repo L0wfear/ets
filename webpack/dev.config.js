@@ -14,6 +14,7 @@ module.exports = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'app': [
+      'babel-polyfill',
       'webpack-dev-server/client?http://' + host + ':' + port,
       'webpack/hot/only-dev-server',
       './src/index.js',
@@ -50,17 +51,21 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.(jpe?g|png|gif)$/,
+      { 
+        test: /\.(png|jpe?g|gif)$/,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 1000000,
-              mimetype: 'images/[name].[ext]',
+              name: 'images/[name].[ext]',
             },
-          }
+          },
         ],
+      },
+      { 
+        test: /\.hbs?$/,
+        use: 'handlebars-loader'
       },
       {
         test: /\.svg/,

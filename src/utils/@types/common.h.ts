@@ -1,6 +1,6 @@
 export interface IExportableTableList {
   export(payload: object, useRouteParams?: boolean): Promise<any>;
-  exportByPostData(bodyPayload: object, urlPayload: object): Promise<any>;
+  exportByPostData(bodyPayload: any, urlPayload: object): Promise<any>;
 }
 
 export interface IHistoryLocation {

@@ -165,7 +165,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetSomeCars(cars) {
-    const carsFilterList = cars.result.map((c) => {
+    const carsFilterList = cars.result.rows.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';
       const type = _.find(this.state.typesList, t => t.asuods_id === c.type_id);

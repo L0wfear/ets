@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Label } from 'react-bootstrap';
-import { uniqBy } from 'lodash';
+import { uniqBy, get } from 'lodash';
 import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
 
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
@@ -34,7 +34,7 @@ export const makeRoutesForDutyMissionForm = ({ selectedRoute: route }, { formSta
   );
 }
 
-export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_id, brigade_employee_id_list } , employeesList, employeesIndex }) => {
+export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_id, brigade_employee_id_list, brigadeEmployeeIdIndex, foreman_full_fio } , employeesList, employeesIndex }) => {
   const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList, structure_id);
 
   let hasNotActiveEmployees = false;
@@ -42,12 +42,12 @@ export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_
   const FOREMANS = [...EMPLOYEES];
   if (foreman_id && !FOREMANS.some(({ value }) => value === foreman_id)) {
     const employee = employeesIndex[foreman_id] || {};
-    if (employee) {
+    if (employee || foreman_full_fio) {
       FOREMANS.push({
         value: foreman_id,
-        label: `${createFio(employee, true)} (Неактивный сотрудник)`,
+        label: `${foreman_full_fio || createFio(employee, true)} (Неактивный сотрудник)`,
         active: false,
-        company_structure_id: employee.company_structure_id,
+        company_structure_id: employee ? employee.company_structure_id : -1,
       });
       hasNotActiveEmployees = true;
     }
@@ -57,12 +57,12 @@ export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_
   brigade_employee_id_list.forEach((key) => {
     if (!BRIGADES.some(({ value }) => value === key)) {//если сотрудника из бригады нет в списке сотрудников
       const employee = employeesIndex[key] || {};
-      if (employee) {
+      if (employee || brigadeEmployeeIdIndex[key]) {
         BRIGADES.push({
           value: key,
-          label: `${createFio(employee, true)} (Неактивный сотрудник)`,
+          label: `${get(brigadeEmployeeIdIndex, [key, 'employee_fio'], createFio(employee, true))} (Неактивный сотрудник)`,
           active: false,
-          company_structure_id: employee.company_structure_id,
+          company_structure_id: employee ? employee.company_structure_id : -1,
         });
         hasNotActiveEmployees = true;
       }

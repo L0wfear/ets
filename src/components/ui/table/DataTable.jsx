@@ -230,7 +230,6 @@ export default class DataTable extends React.Component {
       initialSortAscending,
       originalData,
       data,
-      globalCheckboxState,
     } = preveState;
 
     const changesFields = {
@@ -239,7 +238,6 @@ export default class DataTable extends React.Component {
       firstUseExternalInitialSort,
       originalData,
       data,
-      globalCheckboxState
     };
 
     if (firstUseExternalInitialSort) {
@@ -273,28 +271,19 @@ export default class DataTable extends React.Component {
       changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
     }
 
-    if (Object.values(nextProps.checked).length < nextProps.results.length) {
-      changesFields.globalCheckboxState = false;
-    } else {
-      changesFields.globalCheckboxState = nextProps.results.every((elem)=> nextProps.checked[elem.id] );
-    }
-
-    const el = document.getElementById('checkedColumn');
-    if (el) {
-      el.checked = changesFields.globalCheckboxState;
-    }
-
-    if (nextProps.serverPagination) {
-      changesFields.currentPage = nextProps.page || 0;
-    }
-
     return changesFields;
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (!this.state.isHierarchical) return true;
-    
-    return !_.isEqual(nextProps.results, this.props.results);
+  componentDidUpdate() {
+    const { props } = this;
+
+    if (props.checked) {
+      // хак, т.к. гридл не умеет в обновление хедера
+      // TODO переделать
+      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
+      const el = document.getElementById('checkedColumn');
+      if (el) el.checked = checked;
+    }
   }
 
   getFilterTypeByKey(key) {
@@ -357,17 +346,22 @@ export default class DataTable extends React.Component {
     });
   }
 
-  globalCheckHandler = (event) => {
-    const willCheckedArr = [...Object.values(this.props.checked), ...this.props.results ];
-    const checked = _(willCheckedArr)
-      .filter(r => this.shouldBeRendered(r))
-      .reduce((cur, val) => { cur[val.id] = val; return cur; }, {});
+  globalCheckHandler = (shortResult, event) => {
+    const checked = (shortResult)
+      .reduce((cur, val) => {
+        cur[val[this.props.selectField]] = val;
+        return cur;
+      },
+      {},
+    );
+
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
       this.forceUpdate();
     });
     event && event.stopPropagation();
   }
+
   defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
     return tableMetaCols.reduce((cur, col) => {
       if (col.display === false) {
@@ -403,7 +397,7 @@ export default class DataTable extends React.Component {
     if (multiSelection) {
       initialArray.push({
         columnName: 'isChecked',
-        displayName: <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />,
+        displayName: '',
         sortable: false,
         cssClassName: 'width25 pointer text-center',
       });
@@ -575,7 +569,7 @@ export default class DataTable extends React.Component {
   }
 
   processSelected(selected, selectField, onRowSelected, el) {
-    el.isChecked = this.props.checked && this.props.checked[el.id] && this.shouldBeRendered(el);
+    el.isChecked = this.props.checked && this.props.checked[el[selectField]] && this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
       return el;
@@ -683,7 +677,6 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
@@ -755,6 +748,7 @@ export default class DataTable extends React.Component {
           handleRowCheck={this.handleRowCheck}
           serverPagination={serverPagination}
           currentPage={this.state.currentPage}
+          globalCheckHandler={this.globalCheckHandler}
         />
         {
           serverPagination ?

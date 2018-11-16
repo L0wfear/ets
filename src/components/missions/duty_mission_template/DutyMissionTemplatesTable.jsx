@@ -91,11 +91,11 @@ export const getTableMeta = ({
 };
 
 export const getRenderers = props => ({
-  brigade_employee_id_list: ({ data }) => (
+  brigade_employee_id_list: ({ data, rowData }) => (
     <div>
       {
         data.map((id) => (
-          props.flux ? employeeFIOLabelFunction(props.flux)(id) : '-'
+          get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
         )).join(', ')
       }
     </div>

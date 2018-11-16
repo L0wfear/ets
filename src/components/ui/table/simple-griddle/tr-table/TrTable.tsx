@@ -100,8 +100,8 @@ class TrTable extends React.Component<PropsTrTable, any> {
                           type="checkbox"
                           readOnly
                           id={`checkbox-${rowData[this.props.selectField] || index}`}
-                          checked={rowData.isChecked}
-                          onChange={this.handleRowCheck}
+                          checked={Boolean(rowData.isChecked)}
+                          onClick={this.handleRowCheck}
                         />
                       </div>
                     )

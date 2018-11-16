@@ -29,6 +29,7 @@ import { diffDates } from 'utils/dates';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
 import { isNumeric } from 'utils/validate/dataTypes';
+import { getCurrentSeason } from 'utils/dates';
 
 import {
   checkDateMission,
@@ -160,10 +161,12 @@ class WaybillForm extends Form {
     if (IS_ACTIVE || IS_CLOSED) {
       this.getCarDistance(formState);
       if (IS_ACTIVE) {
+        const currentSeason = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+
         Promise.all([
-          getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState),
+          getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState, currentSeason),
           flux.getActions('fuelRates').getFuelOperations({ is_active: true }).then(({ result: fuelOperationsList }) => fuelOperationsList),
-          getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState),
+          getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState, currentSeason),
           getFuelCorrectionRate(this.props.carsList, formState),
         ])
           .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
@@ -294,6 +297,7 @@ class WaybillForm extends Form {
       formState.fact_departure_date || formState.plan_departure_date,
       formState.fact_arrival_date || formState.plan_arrival_date,
       status,
+      formState.id,
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
       const availableMissions = missionsList.map(el => el.id);
@@ -347,10 +351,10 @@ class WaybillForm extends Form {
       this.setState({ loadingFields });
 
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
-        .then(({ distance_agg2, consumption }) => {
+        .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance: distance_agg2,
+            distance: distance,
             consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
           });
 

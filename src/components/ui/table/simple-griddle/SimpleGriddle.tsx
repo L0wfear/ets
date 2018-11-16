@@ -55,11 +55,11 @@ class SimpleGriddle extends React.Component<any, any> {
       shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
+      GlobalCheckboxState: false,
     };
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     const { results, resultsPerPage } = nextProps;
-
     if (results !== prevState.results || resultsPerPage !== prevState.resultsPerPage) {
       const currentPage = nextProps.serverPagination
         ? 0
@@ -73,25 +73,55 @@ class SimpleGriddle extends React.Component<any, any> {
           )
         );
 
+
+      const shortResult = makeShortResults(
+        results,
+        currentPage,
+        resultsPerPage,
+        nextProps.selectField,
+      ); 
       return {
         results,
         resultsPerPage,
-        shortResult: makeShortResults(
-          results,
-          currentPage,
-          resultsPerPage,
-          nextProps.selectField,
-        ),
+        shortResult,
       };
     }
 
     return null;
   }
 
+  setPage = (currentPage) => {
+    const shortResult = makeShortResults(this.state.results, currentPage, this.state.resultsPerPage, this.props.selectField);
+
+    return this.setState({
+      currentPage,
+      shortResult,
+    })
+  }
+
+  globalCheckHandler = (e) => {
+    this.setState({
+      GlobalCheckboxState: this.getGlobalCheckboxState(this.state.shortResult)
+    });
+    this.props.globalCheckHandler(
+      this.state.shortResult,
+      e,
+    );
+  }
+
+  getGlobalCheckboxState = (shortResult) => !shortResult.some(item => !item.isChecked);
+
   mapTheadTrTh = (columnNameOuter) => {
     const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
-
     const { columnName } = field;
+    const { shortResult } = this.state;
+    if (columnName === 'isChecked') {
+      return (
+        <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
+          <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={this.getGlobalCheckboxState(shortResult)} />
+        </th>
+      )
+    }
 
     return (
       <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
@@ -216,7 +246,7 @@ class SimpleGriddle extends React.Component<any, any> {
           initialSortAscending: initialSortAscending,
         })
       }
-    } 
+    }
   }
   render() {
     const {

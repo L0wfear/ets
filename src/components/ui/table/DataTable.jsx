@@ -346,6 +346,7 @@ export default class DataTable extends React.Component {
   }
 
   globalCheckHandler = (shortResult, event) => {
+    console.log('globalCheckHandler event clicked/change');
     const checked = (shortResult)
       .reduce((cur, val) => {
         cur[val[this.props.selectField]] = val;
@@ -672,7 +673,6 @@ export default class DataTable extends React.Component {
     const tableClassName = cx('data-table', className);
 
     const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
-    console.log(results)
     const customFiltersValues = { // для кастомизации значений фильтров, ключи должны совпадать
       car_gov_number: this.props.govNumberFilter
     };

@@ -360,14 +360,7 @@ export default class DataTable extends React.Component {
     });
     event && event.stopPropagation();
   }
-  updateShortResult = (shortResult) => {
-    // хак 2.0, т.к. гридл не умеет в обновление хедера
-    // TODO переделать
-    const checked = shortResult.every(item => this.props.checked[item.customId || item.id]);
 
-    const el = document.getElementById('checkedColumn');
-    if (el) el.checked = checked;
-  }
   defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
     return tableMetaCols.reduce((cur, col) => {
       if (col.display === false) {
@@ -755,7 +748,6 @@ export default class DataTable extends React.Component {
           rowNumberOffset={serverPagination ? this.props.rowNumberOffset : 0}
           handleRowCheck={this.handleRowCheck}
           serverPagination={serverPagination}
-          updateShortResult={this.updateShortResult}
           globalCheckHandler={this.globalCheckHandler}
         />
         {

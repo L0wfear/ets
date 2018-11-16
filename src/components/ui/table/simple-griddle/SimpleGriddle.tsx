@@ -79,7 +79,6 @@ class SimpleGriddle extends React.Component<any, any> {
         );
 
       const shortResult = makeShortResults(results, nextProps.serverPagination ? 0 : currentPage, resultsPerPage, this.props.selectField);
-      this.props.updateShortResult(shortResult);
 
       this.setState({
         results,
@@ -92,7 +91,7 @@ class SimpleGriddle extends React.Component<any, any> {
 
   setPage = (currentPage) => {
     const shortResult = makeShortResults(this.state.results, currentPage, this.state.resultsPerPage, this.props.selectField);
-    this.props.updateShortResult(shortResult);
+
     return this.setState({
       currentPage,
       shortResult,
@@ -112,13 +111,13 @@ class SimpleGriddle extends React.Component<any, any> {
     const { columnName } = field;
 
     if (columnName === 'isChecked') {
+      const isChecked = !this.state.shortResult.some(item => !item.isChecked);
       return (
         <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
-          <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} />
+          <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={isChecked} />
         </th>
       )
     }
-
 
     return (
       <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>

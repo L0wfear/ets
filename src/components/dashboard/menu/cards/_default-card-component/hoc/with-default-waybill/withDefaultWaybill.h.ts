@@ -9,11 +9,10 @@ export type DispatchPropsDefaultWaybill = {
 };
 
 export type TypeConfigWithDefaultWaybill = ConfigType & {
-  setInfoData: Function;
-  setInfoDataPropsMake: Function;
+  setInfoData: any;
+  setInfoDataPropsMake: any;
   ListComponent: any;
 };
 
 export type PropsDefaultWaybill = StatePropsDefaultWaybill
   & DispatchPropsDefaultWaybill;
-};

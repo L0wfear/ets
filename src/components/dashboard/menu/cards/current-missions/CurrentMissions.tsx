@@ -7,7 +7,7 @@ import withDefaultCard from 'components/dashboard/menu/cards/_default-card-compo
 import ListByTypeCurerntMission from 'components/dashboard/menu/cards/current-missions/collapse-list/ListByTypeCurerntMission';
 import CurrentMissionInfo from 'components/dashboard/menu/cards/current-missions/info/CurrentMissionInfo';
 
-import { CurrentMissionsLineDates } from 'components/dashboard/menu/cards/current-missions/styled/styled'
+import { CurrentMissionsLineDates } from 'components/dashboard/menu/cards/current-missions/styled/styled';
 
 import {
   dashboardLoadCurrentMissions,
@@ -39,7 +39,7 @@ class CurrentMissions extends React.Component<PropsCurrentMissions, StateCurrent
         <ListByTypeCurerntMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
         <ListByTypeCurerntMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
       </CurrentMissionsLineDates>
-    )
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import SensorsEquipmentList from 'components/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/SensorsEquipmentList'
+import SensorsEquipmentList from 'components/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/SensorsEquipmentList';
 import SensorsLevelList from 'components/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/level/SensorsLevelList';
 
 type PropsSensorsTrackTab = {
@@ -22,6 +22,6 @@ const SensorsTrackTab: React.SFC<PropsSensorsTrackTab> = () => (
       </div>
     </div>
   </div>
-)
+);
 
 export default SensorsTrackTab;

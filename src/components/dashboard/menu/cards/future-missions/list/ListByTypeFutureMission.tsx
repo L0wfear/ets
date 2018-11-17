@@ -23,7 +23,7 @@ class ListByTypeMission extends React.Component<PropsListByTypeMission, StateLis
 
     return (
       <DefaultDashboardCardList
-        title={props.title} 
+        title={props.title}
         noClickOnTitle={!items.length}
       >
         <CollapseListFutureMission collapsetItems={items} handleClick={props.handleClick} />
@@ -36,5 +36,5 @@ export default connect<StatePropsFutureMissionsList, DispatchPropsFutureMissions
   (state, { titleKey, itemsKey } ) => ({
     title: state.dashboard.future_missions.data[titleKey],
     items: state.dashboard.future_missions.data[itemsKey],
-  })
+  }),
 )(ListByTypeMission);

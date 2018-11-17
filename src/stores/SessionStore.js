@@ -40,10 +40,10 @@ const getPermission = ({ permissions = [], permissionName, some = 1 }) => {
     if (!some) {
       return permissions.includes(permissionName);
     }
-    return permissions.some(p => p.includes(permissionName));
+    return permissions.some((p) => p.includes(permissionName));
   }
   if (!some) {
-    return !permissionName.some(pN => !permissions.some(p => p === pN));
+    return !permissionName.some(pN => !permissions.some((p) => p === pN));
   }
   return permissionName.some(pN => permissions.includes(pN));
 };

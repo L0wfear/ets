@@ -10,8 +10,8 @@ export const makeOptions = ({ data, options }) => {
     options.forEach(({ name, fields }) => {
       const destructuringRow = {};
 
-      fields.forEach(field =>
-        destructuringRow[field] = row[field]
+      fields.forEach((field) =>
+        destructuringRow[field] = row[field],
       );
 
       reducedData[name].push(destructuringRow);
@@ -25,9 +25,9 @@ export const makeOptions = ({ data, options }) => {
     const ans = afterCallBack[config.name] = get(config.callBack(firstSelect[config.name]), config.optionsPath, []);
 
     if (Array.isArray(ans)) {
-      ans.sort(defaultSortingFunction)
+      ans.sort(defaultSortingFunction);
     }
 
     return afterCallBack;
   }, { ...intiData });
-}
+};

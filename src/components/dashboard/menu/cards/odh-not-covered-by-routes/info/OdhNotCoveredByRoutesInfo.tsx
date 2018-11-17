@@ -12,7 +12,7 @@ import {
   dashboardSetInfoDataInOdhNotCoveredByRoutes,
 } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { PropsOdhNotCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo.h'
+import { PropsOdhNotCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo.h';
 import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 const OdhNotCoveredByRoutesInfo: React.SFC<PropsOdhNotCoveredByRoutesInfo> = ({ infoData, ...props }) => (

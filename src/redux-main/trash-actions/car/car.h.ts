@@ -1,4 +1,3 @@
-
 export type OneCarData = {
   asuods_id: number;
   available: boolean;
@@ -69,5 +68,5 @@ export type LoadCarActualIndexFunc = (
   payload: Promise<LoadCarActualIndexPromise>
   meta: {
     loading: boolean,
-  }
-}
+  };
+};

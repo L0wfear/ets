@@ -12,15 +12,15 @@ import {
 } from 'components/monitor/tool-bar/car-data/car-legend-status/const';
 
 import {
-  PropsCarLegendStatus
+  PropsCarLegendStatus,
 } from 'components/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus.h';
 
-const CarLegendStatus: React.SFC<PropsCarLegendStatus> = props => (
+const CarLegendStatus: React.SFC<PropsCarLegendStatus> = (props) => (
   <span className="car-toolbar">
     <div className="tool_bar-block">
       <div className="default_cube dark">
         <div className={getActiveClassName(props)} onClick={props.toggleActiveStatus}>
-          <div>{`Активно: ${listStatus.slice(0,3).reduce((summ, { key }) => summ + props.carsByStatus[key], 0)}`}</div>
+          <div>{`Активно: ${listStatus.slice(0, 3).reduce((summ, { key }) => summ + props.carsByStatus[key], 0)}`}</div>
         </div>
         <div className="car_block_legend">
           {
@@ -37,13 +37,13 @@ const CarLegendStatus: React.SFC<PropsCarLegendStatus> = props => (
   </span>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   statusTC: state.monitorPage.carInfo.status,
   carsByStatus: state.monitorPage.carsByStatus,
   ...state.monitorPage.status,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   toggleShowStatus: ({ currentTarget: { dataset: { type } } }) => (
     dispatch(
       monitorPageToggleStatusShow([type]),
@@ -61,7 +61,7 @@ const mergeProps = ({ statusTC, carsByStatus, ...stateProps}, dispatchProps, own
     [key]: stateProps[key] ? count : statusTC && getFrontStatus(statusTC).slug === key ? 1 : 0,
   }), {}),
   toggleActiveStatus: () => {
-    const activeStatus = listStatus.slice(0,3).map(({ storeName }) => storeName);
+    const activeStatus = listStatus.slice(0, 3).map(({ storeName }) => storeName);
 
     const isNotActiveList = activeStatus.filter((storeName) => !stateProps[storeName]);
 
@@ -74,8 +74,8 @@ const mergeProps = ({ statusTC, carsByStatus, ...stateProps}, dispatchProps, own
         monitorPageToggleStatusShow(activeStatus),
       );
     }
-  }
-})
+  },
+});
 
 export default connect(
   mapStateToProps,

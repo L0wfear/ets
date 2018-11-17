@@ -2,7 +2,7 @@
 import formatGeoJSON from 'ol/format/GeoJSON';
 import Zoom from 'ol/control/Zoom';
 
-export const GeoJSON = new formatGeoJSON();
+export const geoJSON = new formatGeoJSON();
 
 export const defaultZoom = new Zoom({
   duration: 400,

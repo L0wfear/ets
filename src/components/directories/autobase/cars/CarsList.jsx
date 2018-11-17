@@ -41,7 +41,7 @@ export default class CarsList extends ElementsList {
 
     if (searchObject.asuods_id) {
       const asuods_id = parseInt(searchObject.asuods_id, 10);
-      const selectedElement = cars.result.find(car => car.asuods_id === asuods_id);
+      const selectedElement = cars.result.find((car) => car.asuods_id === asuods_id);
 
       // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
       this.setState({

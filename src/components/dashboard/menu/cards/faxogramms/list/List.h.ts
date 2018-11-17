@@ -4,4 +4,4 @@ export type PropsList = {
   items: FaxogrammsItemsType[];
   handleClick: React.MouseEventHandler<HTMLLIElement>;
   classNameContainer?: string;
-}
+};

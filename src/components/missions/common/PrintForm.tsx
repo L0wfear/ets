@@ -73,10 +73,10 @@ class PrintForm extends React.Component<IPropsPrintForm, any> {
           <span style={{ marginBottom: 10, display: 'block' }}>Выберите период:</span>
           <Row>
             <Col md={12} style={{ marginBottom: 5 }}>
-              <Datepicker time={false} date={this.state.date_from} onChange={v => this.handleChange('date_from', v)} />
+              <Datepicker time={false} date={this.state.date_from} onChange={(v) => this.handleChange('date_from', v)} />
             </Col>
             <Col md={12}>
-              <Datepicker time={false} date={this.state.date_to} onChange={v => this.handleChange('date_to', v)} />
+              <Datepicker time={false} date={this.state.date_to} onChange={(v) => this.handleChange('date_to', v)} />
             </Col>
           </Row>
         </ModalBody>

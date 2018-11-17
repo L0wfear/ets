@@ -7,7 +7,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 
 export const LinkToOpenRouteInfoForm = withRequirePermissionsNew({
   permissions: permissionsRoute.read,
-})(props => (
+})((props) => (
   <div>
     <a className="pointer" onClick={props.openRouteInfoForm} >Подробнее...</a>
   </div>
@@ -16,7 +16,6 @@ export const LinkToOpenRouteInfoForm = withRequirePermissionsNew({
 export const LinkToRouteListPermitted = withRequirePermissionsNew({
   permissions: permissionsRoute.read,
 })(Link);
-
 
 export const ButtonCreateRoute = withRequirePermissionsNew({
   permissions: permissionsRoute.create,

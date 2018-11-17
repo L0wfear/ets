@@ -38,8 +38,8 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
     return (
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
-        { 
-          collapsetItems.length ? 
+        {
+          collapsetItems.length ?
           (
             <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
@@ -51,7 +51,7 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
           )
         }
       </div>
-    )
+    );
   }
 }
 
@@ -62,9 +62,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInFaxogramms(infoData)
+      dashboardSetInfoDataInFaxogramms(infoData),
     )
-  )
+  ),
 });
 
 export default withDefaultCard({
@@ -75,5 +75,5 @@ export default withDefaultCard({
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(Faxogramms)
+  )(Faxogramms),
 );

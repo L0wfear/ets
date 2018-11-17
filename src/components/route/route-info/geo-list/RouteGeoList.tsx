@@ -24,13 +24,12 @@ const makeNameByProps = (type: PropsRouteGeoList['type']) => {
     nameObjectList = `${nameObjectList}  (Выбор из ${title})`;
   }
 
-
   return {
     nameObjectList,
     nameDrawObjectList,
     nameFailList,
   };
-}
+};
 
 class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
   render() {
@@ -77,11 +76,12 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
 
                     if (type === 'dt' || type === 'odh') {
                       title = `${title} (${data.state === polyState.IDLE ? 'холостой' : 'рабочий'} ход)`;
-                    } 
+                    }
+
                     if (type === 'points') {
                       const pnNumber = `Пункт назначения №${index + 1}`;
                       if (title) {
-                        title = `${pnNumber} (${title})`
+                        title = `${pnNumber} (${title})`;
                       } else {
                         title = pnNumber;
                       }
@@ -92,7 +92,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
                       <li key={key}>
                         {title}
                       </li>
-                    )
+                    );
                   })
                 }
               </NameListLineContainer>
@@ -109,22 +109,22 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
               <NameListLineContainer>
               <TitleList>{nameDrawObjectList}</TitleList>
                 {
-                  uniqBy(draw_object_list, o => o.name + o.state).map(({type, ...data }, index) => {
+                  uniqBy(draw_object_list, (o) => o.name + o.state).map(({type, ...data }, key) => {
                     let title = data.name;
-                    let key = index;
 
                     if (type === 'dt' || type === 'odh') {
                       title = `${title} (${data.state === polyState.IDLE ? 'холостой' : 'рабочий'} ход)`;
-                    } 
+                    }
+
                     if (type === 'points') {
-                      title = `Пункт назначения №${index + 1} (${title})`;
+                      title = `Пункт назначения №${key + 1} (${title})`;
                     }
 
                     return (
                       <li key={key}>
                         {title}
                       </li>
-                    )
+                    );
                   })
                 }
               </NameListLineContainer>
@@ -155,7 +155,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
           )
         }
       </RouteGeoListContainer>
-    )
+    );
   }
 }
 

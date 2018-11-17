@@ -52,7 +52,7 @@ export default class Mock {
         errors: [ERROR_METHOD_NOT_ALLOWED],
       });
     }
-    payload.id = Math.max.apply(null, this.data.map(d => d.id)) + 1;
+    payload.id = Math.max.apply(null, this.data.map((d) => d.id)) + 1;
     this.data.push(payload);
     return Mock.wrapData({ data: this.data });
   }
@@ -64,7 +64,7 @@ export default class Mock {
       });
     }
     if (typeof payload.id !== 'undefined') {
-      const index = this.data.findIndex(e => e.id === payload.id);
+      const index = this.data.findIndex((e) => e.id === payload.id);
       if (index > -1) {
         this.data.splice(index, 1);
       }

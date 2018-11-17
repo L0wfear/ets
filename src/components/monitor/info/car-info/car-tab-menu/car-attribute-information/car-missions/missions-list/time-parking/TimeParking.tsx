@@ -29,7 +29,7 @@ class TimeParking extends React.PureComponent<PropsTimeParking, {}> {
 
     return (
       <span>{secondsToTime(parkingTime)}</span>
-    )
+    );
   }
 }
 
@@ -45,5 +45,5 @@ export default hocAll(
   }),
   connect(
     mapStateToProps,
-  )
+  ),
 )(TimeParking);

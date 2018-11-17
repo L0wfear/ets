@@ -77,7 +77,7 @@ const renderers = {
   timestamp: ({ data }) => <DateFormatter date={data} time />,
 };
 
-const UserActionLogTable = props => (
+const UserActionLogTable = (props) => (
   <Table
     title="Журнал действий пользователей"
     initialSort="timestamp"

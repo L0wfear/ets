@@ -106,7 +106,7 @@ export default class UserNotificationList extends CheckableElementsList {
     data.is_read = false;
 
     if (props.fromKey) {
-      const selectedElement = this.state.elementsList.find(el => el.id === id);
+      const selectedElement = this.state.elementsList.find((el) => el.id === id);
       if (selectedElement) {
         this.setState({ selectedElement });
       }
@@ -116,7 +116,7 @@ export default class UserNotificationList extends CheckableElementsList {
     this.clicks += 1;
 
     if (this.clicks === 1) {
-      const selectedElement = this.state.elementsList.find(el => el.id === id);
+      const selectedElement = this.state.elementsList.find((el) => el.id === id);
 
       this.setState({ selectedElement });
       setTimeout(() => {

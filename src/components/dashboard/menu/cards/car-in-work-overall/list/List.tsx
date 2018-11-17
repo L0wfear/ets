@@ -5,7 +5,7 @@ import {
   PropsList,
 } from 'components/dashboard/menu/cards/car-in-work-overall/list/List.h';
 
-const List: React.SFC<PropsList> = props => (
+const List: React.SFC<PropsList> = (props) => (
   <ul>
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (
@@ -15,7 +15,7 @@ const List: React.SFC<PropsList> = props => (
           title={item.tooltip || title}
           className={cx(
             {
-              pointer: subItems.length,
+              'pointer': subItems.length,
               'no-pointer-events': !subItems.length,
             },
             props.classNameContainer,
@@ -28,5 +28,5 @@ const List: React.SFC<PropsList> = props => (
     }
   </ul>
 );
-               
+
 export default List;

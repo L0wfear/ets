@@ -1,4 +1,4 @@
-import { listObj }  from 'constants/statuses';
+import { listObj } from 'constants/statuses';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 
@@ -10,7 +10,7 @@ const widthIcon = {
 };
 
 // let textPadding = 6 * DEVICE_PIXEL_RATIO;
-const getRaidus = width => width/2;
+const getRaidus = (width) => width / 2;
 
 /*
 const greider = require('assets/icons/car/greider.svg');
@@ -53,7 +53,7 @@ Object.entries(images).forEach(([name, src]) => {
   const img = new Image();
   img.onload = () => {
     icons[name] = img;
-  }
+  };
   img.src = src;
 });
 
@@ -64,7 +64,7 @@ const getCanvasWH = (width, ctx, show_gov_number, gov_number, checkZoomSelect) =
   let canvasHeight = width + 4;
 
   if (show_gov_number && gov_number) {
-    ctx.font = `${(checkZoomSelect ? 5 : 5) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
+    ctx.font = `${(checkZoomSelect ? 5 : 5) * 4 / DEVICE_PIXEL_RATIO}px Verdana`;
     canvasHeight = canvasWidth = Math.max(canvasWidth, 2.5 * ctx.measureText(gov_number).width + 4 * getRaidus(width));
   }
   if (checkZoomSelect) {
@@ -73,19 +73,19 @@ const getCanvasWH = (width, ctx, show_gov_number, gov_number, checkZoomSelect) =
   }
 
   return [canvasWidth, canvasHeight];
-}
+};
 
 const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, directionInRad, selected, zoomMore8) => {
   if (show_gov_number && gov_number) {
-    const directionToRight = directionInRad > 3/2 * Math.PI || directionInRad < 1/2 * Math.PI;
+    const directionToRight = directionInRad > 3 / 2 * Math.PI || directionInRad < 1 / 2 * Math.PI;
 
     const begCoord = {
-      rect: !directionToRight ? canvas.width/2 : 2,
-      gov_number: !directionToRight ? canvas.width/2 + 1.25  * getRaidus(width) : 3/4 * getRaidus(width),
+      rect: !directionToRight ? canvas.width / 2 : 2,
+      gov_number: !directionToRight ? canvas.width / 2 + 1.25  * getRaidus(width) : 3 / 4 * getRaidus(width),
     };
     const selectedRate = selected || zoomMore8 ? 1 : 1.7;
     ctx.beginPath();
-    ctx.rect(begCoord.rect, (canvas.height/2 - getRaidus(width)*selectedRate), canvas.width/2 + 2, getRaidus(width) * 2 * selectedRate);// изменение размера четырёхугольника
+    ctx.rect(begCoord.rect, (canvas.height / 2 - getRaidus(width) * selectedRate), canvas.width / 2 + 2, getRaidus(width) * 2 * selectedRate); // изменение размера четырёхугольника
     ctx.closePath();
 
     ctx.fillStyle = 'white';
@@ -95,28 +95,27 @@ const drawGovNumber = (canvas, ctx, width, status, show_gov_number, gov_number, 
     ctx.strokeStyle = selected ? listObj[status].color : 'black';
     ctx.stroke();
 
-
     ctx.fillStyle = 'black';
-    ctx.font = `${(zoomMore8 || selected ? 5 : 6) * 4/DEVICE_PIXEL_RATIO}px Verdana`;
-    ctx.textBaseline = "middle";
+    ctx.font = `${(zoomMore8 || selected ? 5 : 6) * 4 / DEVICE_PIXEL_RATIO}px Verdana`;
+    ctx.textBaseline = 'middle';
     ctx.fillText(
       gov_number,
       begCoord.gov_number,
-      (canvas.height/2),
+      (canvas.height / 2),
     );
     ctx.closePath();
   }
-}
+};
 
 const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directionInRad) => {
   ctx.beginPath();
 
   if ((zoomMore8 || selected)) {
     ctx.arc(
-      (canvas.width)/2,
-      (canvas.width)/2,
+      (canvas.width) / 2,
+      (canvas.width) / 2,
       getRaidus(width - 4),
-      directionInRad + (1/4) * Math.PI, directionInRad - (1/4) * Math.PI,
+      directionInRad + (1 / 4) * Math.PI, directionInRad - (1 / 4) * Math.PI,
       false,
     );
     const lineToZero = {
@@ -125,13 +124,13 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
     };
 
     ctx.lineTo(
-      lineToZero.x * Math.cos(directionInRad) - lineToZero.y * Math.sin(directionInRad) + (canvas.width)/2,
-      lineToZero.x * Math.sin(directionInRad) + lineToZero.y * Math.cos(directionInRad) + (canvas.width)/2,
+      lineToZero.x * Math.cos(directionInRad) - lineToZero.y * Math.sin(directionInRad) + (canvas.width) / 2,
+      lineToZero.x * Math.sin(directionInRad) + lineToZero.y * Math.cos(directionInRad) + (canvas.width) / 2,
     );
   } else {
     ctx.arc(
-      (canvas.width)/2,
-      (canvas.width)/2,
+      (canvas.width) / 2,
+      (canvas.width) / 2,
       getRaidus(width),
       0,
       2 * Math.PI,
@@ -146,19 +145,19 @@ const drawCarMarker = (canvas, ctx, width, status, zoomMore8, selected, directio
   ctx.lineWidth = 2;
   ctx.strokeStyle = !selected ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)';
   ctx.stroke();
-}
+};
 
 const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
   if (zoomMore8 || selected) {
     const temp_ctx = icons.drugoe;
-    ctx.drawImage(temp_ctx, (canvas.width)/2 - getRaidus(width) + 4, (canvas.width)/2 - getRaidus(width) + 4, width - 8, width - 8);
+    ctx.drawImage(temp_ctx, (canvas.width) / 2 - getRaidus(width) + 4, (canvas.width) / 2 - getRaidus(width) + 4, width - 8, width - 8);
   }
-}
+};
 
 const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom }) => {
   const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : minZoom ? 'minZoom' : 'zoomNotMore8'];
 
-  const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) %360) );
+  const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) % 360) );
 
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -176,30 +175,30 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
     }),
     zIndex: selected ? Infinity : 10,
   });
-}
+};
 
 export const getStyleForStatusDirectionType = ({ status, direction, selected, zoomMore8, gov_number, show_gov_number, visible, minZoom }) => {
   if (visible || selected) {
-    let trueDirection = selected || zoomMore8 ? direction : 0;
+    const trueDirection = selected || zoomMore8 ? direction : 0;
 
     const cacheStyleName = `${status}/${selected}/${zoomMore8}/${minZoom}/${trueDirection}/${show_gov_number ? gov_number : null}`;
     const { [cacheStyleName] : cache_icon } = CACHE_ICON;
     let icon = cache_icon;
-  
+
     if (!cache_icon) {
       icon = makeCacheIcon(
         cacheStyleName,
         { status, direction: trueDirection, selected, zoomMore8, gov_number, show_gov_number, minZoom },
       );
     }
-  
+
     return icon;
   } else {
-    let not_visible = 'not_visible';
+    const not_visible = 'not_visible';
     if (!CACHE_ICON[not_visible]) {
       return CACHE_ICON[not_visible] = new Style({});
     } else {
       return CACHE_ICON[not_visible];
     }
   }
-}
+};

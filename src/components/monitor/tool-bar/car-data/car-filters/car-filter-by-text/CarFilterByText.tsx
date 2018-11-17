@@ -17,7 +17,8 @@ import {
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
   state = {
     hidden: true,
-  }
+  };
+
   toggleHidden: React.MouseEventHandler<HTMLDivElement> = () => {
     const hidden = !this.state.hidden;
 
@@ -53,13 +54,13 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
           </div>
         </ClickOutHandler>
       </span>
-    )
+    );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   active: state.monitorPage.filters.data.carFilterText.length > 0,
 });
 
- export default connect(
+export default connect(
   mapStateToProps,
- )(CarFilterByText);
+)(CarFilterByText);

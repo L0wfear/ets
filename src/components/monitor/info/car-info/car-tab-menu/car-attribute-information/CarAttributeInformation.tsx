@@ -12,14 +12,13 @@ import { makeDate, makeTime } from 'utils/dates';
 import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
 
-
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
 
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
 };
 
-const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = props => {
+const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = (props) => {
   const { lastPoint, errorInLoadTrack } = props;
 
   return (
@@ -40,7 +39,7 @@ const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = props =
                       <span className="car_info-attr_value">{value || '-'}</span>
                   }
                 </div>
-              )
+              );
             })
           }
           <span className="car_info-attr_title">{'Последняя точка: '}</span>
@@ -64,9 +63,9 @@ const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = props =
       <CarMissions />
     </div>
   );
-}
+};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   ...attributeList.reduce((newObj, attr) => {
     const { key } = attr;
 
@@ -79,9 +78,8 @@ const mapStateToProps = state => ({
   status: state.monitorPage.carInfo.status,
   lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
-})
+});
 
 export default connect<any, any, any, ReduxState>(
   mapStateToProps,
 )(CarAttributeInformation);
-

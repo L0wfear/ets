@@ -1,5 +1,5 @@
 export type PropsPDFViewModal = {
-  onHide: Function;
+  onHide: any;
   blob: any;
 };
 

@@ -2,7 +2,7 @@ import { FaxogrammsItemsType } from 'components/dashboard/redux-main/modules/das
 
 export type PropsFaxogramms = {
   items: FaxogrammsItemsType[];
-  setInfoData: Function;
+  setInfoData: any;
 };
 
 export type StateFaxogramms = {

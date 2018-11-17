@@ -1,11 +1,11 @@
 import {
-  IReactSelectOption
+  IReactSelectOption,
 } from 'components/ui/@types/ReactSelect.h';
 
 export type PropsDefaultInput = {
   value: number[];
   keyField: string;
-  changeFilter: Function;
+  changeFilter: any;
   OPTIONS: IReactSelectOption[];
   placeholder: string;
-}
+};

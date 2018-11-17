@@ -76,14 +76,14 @@ export default class CarActions extends Actions {
     return AutoBase
       .path('car_registration_registry')
       .get({ car_id })
-      .then(data => data.result.rows[0]);
+      .then((data) => data.result.rows[0]);
   }
 
   getCarPassportRegistryInfo(car_id) {
     return AutoBase
       .path('car_passport_registry')
       .get({ car_id })
-      .then(data => data.result.rows[0]);
+      .then((data) => data.result.rows[0]);
   }
 
   getCarDriversInfo(car_id) {

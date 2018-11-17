@@ -5,9 +5,9 @@ type PropsList = {
   items: any[];
   handleClick: any;
   classNameContainer?: string;
-}
+};
 
-const List: React.SFC<PropsList> = props => (
+const List: React.SFC<PropsList> = (props) => (
   <div>
     {
       props.items.map(({ subItems = [], value, ...item } , index) => (
@@ -16,7 +16,7 @@ const List: React.SFC<PropsList> = props => (
           data-path={index}
           className={cx(
             {
-              pointer: subItems.length,
+              'pointer': subItems.length,
               'no-pointer-events': !subItems.length,
             },
             'line_data',
@@ -32,5 +32,5 @@ const List: React.SFC<PropsList> = props => (
     }
   </div>
 );
-               
+
 export default List;

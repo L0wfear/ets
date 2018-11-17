@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import connectToStores from 'flummox/connect';
 
-
-const checkShow = props => {
+const checkShow = (props) => {
   let isShow = true;
 
   if (props.data.hiddenNav) {
@@ -17,7 +16,7 @@ const checkShow = props => {
       const { userPermissions } = props;
       const { list } = permissions;
       if (Array.isArray(list)) {
-        isShow = list.some(permission => userPermissions.includes(permission));
+        isShow = list.some((permission) => userPermissions.includes(permission));
       } else {
         isShow = userPermissions.includes(list);
       }
@@ -60,4 +59,3 @@ const MenuItemCustom: React.SFC<any> = (props, context) =>
 ;
 
 export default connectToStores(MenuItemCustom, ['session']);
-  

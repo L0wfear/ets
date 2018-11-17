@@ -20,7 +20,7 @@ const getFrontType = (group) => {
 
 export default class UserNotificationActions extends Actions {
   getOrderNotRead() {
-    return UserNotificationService.get({ is_read: false, type_id: 6 }).then(ans => ({ ...ans, group: 'personal' }));
+    return UserNotificationService.get({ is_read: false, type_id: 6 }).then((ans) => ({ ...ans, group: 'personal' }));
   }
 
   setMakeReadOrderNotification(id) {
@@ -28,7 +28,7 @@ export default class UserNotificationActions extends Actions {
   }
 
   getAdmNotReadNotifications() {
-    return UserAdmNotificationService.get({ is_read: false }).then(ans => ({ ...ans, group: 'common' }));
+    return UserAdmNotificationService.get({ is_read: false }).then((ans) => ({ ...ans, group: 'common' }));
   }
 
   setMakeReadAdmNotification(id) {

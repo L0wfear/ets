@@ -22,7 +22,7 @@ import {
 
 class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, StateOdhNotCoveredByRoutes> {
   handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
-    const index = Number.parseInt((path as string).split('/').slice(-1)[0])
+    const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
 
     this.props.setInfoData(this.props.items[index]);
   }
@@ -36,8 +36,8 @@ class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, 
     return (
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
-        { 
-          collapsetItems.length ? 
+        {
+          collapsetItems.length ?
           (
             <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
@@ -65,9 +65,9 @@ const mapDispatchToProps = (dispatch) => ({
   ),
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInOdhNotCoveredByRoutes(infoData)
+      dashboardSetInfoDataInOdhNotCoveredByRoutes(infoData),
     )
-  )
+  ),
 });
 
 export default withDefaultCard({
@@ -78,5 +78,5 @@ export default withDefaultCard({
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(OdhNotCoveredByRoutes)
+  )(OdhNotCoveredByRoutes),
 );

@@ -9,4 +9,4 @@ export default {
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
   components,
   permissions,
-}
+};

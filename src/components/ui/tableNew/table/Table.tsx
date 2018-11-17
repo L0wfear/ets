@@ -85,7 +85,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     return null;
   }
 
-  handleClickTh = sortField => {
+  handleClickTh = (sortField) => {
     const changesState: any = {
       sortField,
       sortAscending: this.state.sortField === sortField ? !this.state.sortAscending : false,
@@ -104,26 +104,26 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     this.setState(changesState);
   }
 
-  handleRowSelect = rowData => {
+  handleRowSelect = (rowData) => {
     try {
       this.props.onRowClick({ props: { data: rowData }});
     } catch (e) {
       // function handleRowSelect not defined in father
     }
   }
-  handleRowDoubleClick = rowData => {
+  handleRowDoubleClick = (rowData) => {
     try {
       this.props.onRowDoubleClick({ props: { data: rowData }});
     } catch (e) {
       // function onRowDoubleClick not defined in father
     }
   }
-  toggleChildren = rowData => {
+  toggleChildren = (rowData) => {
     const { uniqName } = this.props;
 
     this.setState({
       showData: makeData({
-        data: this.state.showData.map(row => ({
+        data: this.state.showData.map((row) => ({
           ...row,
           showChildren: rowData[uniqName] === row[uniqName] ? !row.showChildren : row.showChildren,
         })),
@@ -137,12 +137,12 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     });
   }
 
-  setPaginationOffset = offset => {
+  setPaginationOffset = (offset) => {
     const changesState: any = {};
     changesState.pagination = { ...this.state.pagination, offset };
     changesState.showData = makeDataByPagination(this.state.data, changesState.pagination, this.props.uniqName);
-    
-    this.setState({ ...changesState })
+
+    this.setState({ ...changesState });
   }
 
   render() {

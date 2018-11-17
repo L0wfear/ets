@@ -1,7 +1,7 @@
 export const getFrontStatus = (statusId) => {
   switch (statusId) {
     case 1: return {
-      slug: 'in_move'
+      slug: 'in_move',
     };
     case 2: return {
       slug: 'stop',
@@ -11,7 +11,7 @@ export const getFrontStatus = (statusId) => {
     };
     default: return {
       slug: 'not_in_touch',
-    }; 
+    };
   }
 };
 

@@ -4,6 +4,6 @@ import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props
 
 export const ExtField: any = onChangeWithKeys(
   withMergeProps(
-    ({ boundKeys, ...props }) => props
-  )(Field as any)
+    ({ boundKeys, ...props }) => props,
+  )(Field as any),
 );

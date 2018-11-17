@@ -41,7 +41,7 @@ export default class TechOperationsDirectory extends ElementsList {
       return ans;
     });
 
-    flux.getActions('objects').getSensorTypes().then(ans => {
+    flux.getActions('objects').getSensorTypes().then((ans) => {
       const options = makeOptions({
         data: ans.result,
         options: customOptionsTableFromSensorTypes,

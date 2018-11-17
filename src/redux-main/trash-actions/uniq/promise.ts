@@ -15,17 +15,17 @@ import {
 
 const colors = [];
 
-Array(16).fill(1).map((d, r) => 
-  Array(16).fill(1).map((d, g) => 
-    Array(16).fill(1).map((d, b) => 
-    colors.push(`rgb(${r * 16}, ${g * 16}, ${b * 16})`)
+Array(16).fill(1).map((d, r) =>
+  Array(16).fill(1).map((_, g) =>
+    Array(16).fill(1).map((__, b) =>
+      colors.push(`rgb(${r * 16}, ${g * 16}, ${b * 16})`),
     ),
   ),
 );
 
 export const loadCompany = () => (
   CompanyService.get().then(({ result }) => {
-    const companies = result.map(company => ({
+    const companies = result.map((company) => ({
       ...company,
       rgb_color: company.rgb_color || colors[Math.ceil(Math.random() * 4096)],
     }));
@@ -36,12 +36,13 @@ export const loadCompany = () => (
     };
   })
   .catch((error) => {
+    // tslint:disable-next-line
     console.warn(error);
 
     return {
       companies: [],
       companiesIndex: {},
-    }
+    };
   })
 );
 
@@ -50,10 +51,11 @@ export const loadMoscowTime = () => (
     time: result,
   }))
   .catch((error) => {
+    // tslint:disable-next-line
     console.warn(error);
     return TimeMoscowService.get().then(({ result }) => ({
       time: result,
-    }))
+    }));
   })
   .catch(() => {
     return {
@@ -76,9 +78,9 @@ export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
         sensors: 1,
       };
 
-      return TrackService.get(payloadToTrack).then(ans => ({
+      return TrackService.get(payloadToTrack).then((ans) => ({
         ...ans,
         ...checkAndModifyTrack(ans, odh_mkad),
       }));
     })
-)
+);

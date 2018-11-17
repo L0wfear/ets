@@ -9,7 +9,7 @@ import {
 
 import { validateField } from 'utils/validate/validateField';
 
-const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableInputWrapper, TPropsDataTableInputWrapper> = SourceComponent =>
+const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableInputWrapper, TPropsDataTableInputWrapper> = (SourceComponent) =>
   class DataTableInputWrapperHOC extends React.Component<TPropsDataTableInputWrapper, IStateDataTableInputWrapper> {
     state = {
       outputListErrors: [],
@@ -23,20 +23,20 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       const outputListErrors = inputList.map((rowData, i) => {
         const errors = this.state.outputListErrors[i] ? { ...this.state.outputListErrors[i] } : {};
 
-        each(this.props.validationSchema.properties, prop => {
+        each(this.props.validationSchema.properties, (prop) => {
           errors[prop.key] = validateField(prop, rowData[prop.key], rowData, this.props.validationSchema);
         });
 
         return errors;
       });
 
-      const isValidInput = !outputListErrors.map(errorItem => {
+      const isValidInput = !outputListErrors.map((errorItem) => {
         return toArray(errorItem)
-          .map(v => !!v)
-          .filter(ev => ev === true)
+          .map((v) => !!v)
+          .filter((ev) => ev === true)
           .length;
-      }).some(value => value > 0);
-      
+      }).some((value) => value > 0);
+
       const validityOptions = {
         outputListErrors,
         isValidInput,
@@ -48,7 +48,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.props.onValidation(validityOptions);
     }
     handleItemChange = (index, key, value) => {
-      ///Не передаётся индекс!!! index is NaN
+      /// Не передаётся индекс!!! index is NaN
       index = index || this.state.selectedIndex || 0;
       const newItems = this.props.inputList.map(
         (item: any, i) => i === index
@@ -63,7 +63,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
     }
     handleItemAdd = () => {
       const newItems = this.props.tableSchema.cols
-        .map(columnMeta => ({ [columnMeta.name]: undefined }))
+        .map((columnMeta) => ({ [columnMeta.name]: undefined }))
         .reduce((acc, curr) => ({ ...acc, ...curr }));
       const finalValue = this.props.stackOrder
         ? [newItems, ...this.props.inputList]
@@ -80,9 +80,9 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.props.onChange(newItems);
       this.validate(newItems);
     }
-    handleRowSelected = selectedRow => {
+    handleRowSelected = (selectedRow) => {
       let selectedIndex = 0;
-      this.props.inputList.forEach(function(item, index){
+      this.props.inputList.forEach((item, index) => {
         selectedIndex = item.id === selectedRow.props.data.id ? index : selectedIndex;
       });
       this.setState({ selectedIndex });

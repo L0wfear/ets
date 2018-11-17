@@ -16,7 +16,7 @@ import {
   componentDidMount,
 } from 'components/directories/autobase/spare_part/SparePartForm/utils';
 
-const SparePartForm = props => {
+const SparePartForm = (props) => {
   const {
     formState: state,
     formErrors: errors,
@@ -30,7 +30,9 @@ const SparePartForm = props => {
   const IS_CREATING = !state.id;
 
   let title = 'Изменение записи';
-  if (IS_CREATING) title = 'Создание записи';
+  if (IS_CREATING) {
+    title = 'Создание записи';
+  }
 
   return (
     <Modal id="modal-spare-part" show={props.show} onHide={props.onHide} backdrop="static">
@@ -105,12 +107,12 @@ const SparePartForm = props => {
         <Button disabled={!props.canSave} onClick={props.handleSubmit}>Сохранить</Button>
       </Modal.Footer>
     </Modal>
-  )
-}
+  );
+};
 
 export default hocAll(
   WithFormMethods(),
   WithLifeCycle({
     componentDidMount,
-  })
+  }),
 )(connectToStores(SparePartForm, ['autobase']));

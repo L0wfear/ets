@@ -6,7 +6,7 @@ import {
   OverlayLineInfoContainer,
 } from 'components/map/overlay/styled/styled';
 
-const OverlayTrackPoint: React.SFC<any> = props => {
+const OverlayTrackPoint: React.SFC<any> = (props) => {
   const {
     start_point: {
       coords_msk,
@@ -35,7 +35,6 @@ const OverlayTrackPoint: React.SFC<any> = props => {
       </OverlayLineInfoContainer>
     </Overlay>
   );
-}
+};
 
 export default OverlayTrackPoint;
-

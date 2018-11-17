@@ -1,11 +1,9 @@
-
-
 import * as React from 'react';
 import DataTable from 'components/ui/tableNew/DataTable';
 
 const filterByRoutes = (f_data, value, rowData) => {
-  return !f_data.value.some(val => rowData.routes.some(({ id }) => id === val));
-}
+  return !f_data.value.some((val) => rowData.routes.some(({ id }) => id === val));
+};
 
 export const getTableMeta = (props) => {
   return {
@@ -35,9 +33,9 @@ export const getTableMeta = (props) => {
       },
     ],
   };
-}
+};
 
-const Table: React.SFC<any> = props => {
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       data={props.data}
@@ -49,7 +47,7 @@ const Table: React.SFC<any> = props => {
       enumerated={false}
       children={props.children}
     />
-  )
-}
+  );
+};
 
 export default Table;

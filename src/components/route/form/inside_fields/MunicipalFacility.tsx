@@ -35,7 +35,6 @@ type GetMunicipalFacilityFuncAns = {
 
 type GetMunicipalFacilityFunc = (props: GetMunicipalFacilityFuncProps) => Promise<GetMunicipalFacilityFuncAns>;
 
-
 type PropsMunicipalFacilityField = {
   error: string | void;
   disabled?: boolean;
@@ -81,7 +80,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
     this.state = {
       MUNICIPAL_FACILITY_OPTIONS,
       myDisable: false,
-    }
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -113,15 +112,13 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
             start_date: new Date(),
             end_date: new Date(),
             norm_ids: normatives.map(({ id }) => id).join(','),
-          }
+          };
 
           this.loadMunicipalFacility(outerPayload);
         } else {
+          // tslint:disable-next-line
           console.log('старая то без элемента');
         }
-
-      } else {
-        throw 'Не найдена ТО';
       }
     }
   }
@@ -138,11 +135,11 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         }));
 
         if (this.props.copy) {
-          MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS.filter(({ mfData }: any) => mfData.route_types.includes(this.props.type))
+          MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS.filter(({ mfData }: any) => mfData.route_types.includes(this.props.type));
         }
 
         if (value) {
-          const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOption) => mfOption.value === value);
+          const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOptionData) => mfOptionData.value === value);
           if (!mfOption) {
             this.props.handleChange('municipal_facility_id', null);
             this.props.getDataBySelectedMunicipalFacility({
@@ -152,7 +149,6 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
             this.props.getDataBySelectedMunicipalFacility(mfOption.mfData);
           }
         }
-
 
         this.setState({ MUNICIPAL_FACILITY_OPTIONS });
       });
@@ -191,7 +187,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         onChange={this.handleChange}
         clearable={clearable}
       />
-    )
+    );
   }
 }
 

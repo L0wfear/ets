@@ -29,21 +29,21 @@ export const setOrders = (OrdersList, pageOptions, total_count) => ({
     OrdersList,
     pageOptions,
     total_count,
-  }
+  },
 });
 
-export const setSelectedElementAssignment = selectedElementAssignment => ({
+export const setSelectedElementAssignment = (selectedElementAssignment) => ({
   type: SET_SELECTED_ELEMENT_ASSIGNMENT,
   payload: {
-    selectedElementAssignment
+    selectedElementAssignment,
   },
-})
+});
 
-export const setSelectedElementOrder = selectedElementOrder => ({
+export const setSelectedElementOrder = (selectedElementOrder) => ({
   type: SET_SELECTED_ELEMENT_ORDER,
   payload: {
     selectedElementOrder,
-  }
+  },
 });
 
 export const resetOrder = () => ({
@@ -51,12 +51,12 @@ export const resetOrder = () => ({
   payload: {},
 });
 
-export const setOrderHistory = HistoryOrderDataList => ({
+export const setOrderHistory = (HistoryOrderDataList) => ({
   type: SET_ORDER_HISTORY,
   payload: {
     HistoryOrderDataList,
-  }
-})
+  },
+});
 
 export const setMissionData = ({ mission_source_id }) => ({
   type: SET_MISSION_DATA,
@@ -68,7 +68,8 @@ export const setMissionData = ({ mission_source_id }) => ({
 export const setEmptyMissionData = () => ({
   type: SET_EMPTY_MISSION_DATA,
   payload: {},
-})
+});
+
 export const setDutyMissionData = ({ mission_source_id }) => ({
   type: SET_DUTY_MISSION_DATA,
   payload: {
@@ -79,28 +80,28 @@ export const setDutyMissionData = ({ mission_source_id }) => ({
 export const setEmptyDutyMissionData = () => ({
   type: SET_EMPTY_DUTY_MISSION_DATA,
   payload: {},
-})
+});
 
 export const setMInMissionTemplateData = ({ mission_source_id }) => ({
   type: SET_MISSION_TEMPLATE_DATA,
   payload: {
     mission_source_id,
     typeClick: typeTemplate.missionTemplate,
-  }
-})
+  },
+});
 
 export const setDMInMissionTemplateData = ({ mission_source_id }) => ({
   type: SET_MISSION_TEMPLATE_DATA,
   payload: {
     mission_source_id,
     typeClick: typeTemplate.missionDutyTemplate,
-  }
-})
+  },
+});
 
 export const setEmptyDutyMissionTemplateData = () => ({
   type: SET_EMPTY_MISSION_TEMPLATE_DATA,
   payload: {},
-})
+});
 
 export const getOrders: any = ({ limit, offset, sort_by, filter, date_start, date_end, haveMax }) => (dispatch, getState) => {
   const { pageOptions: { ...pageOptionsStore } } = getState().order;
@@ -136,13 +137,16 @@ export const getOrders: any = ({ limit, offset, sort_by, filter, date_start, dat
           haveMax: haveMax || pageOptionsStore.haveMax,
         },
         total_count,
-      )
-      );
+      ),
+    );
   });
-}
+};
 
-export const getOrderHistory = ({ id }) => (dispatch) =>
+export const getOrderHistory = ({ id }) => (dispatch) => (
   OrderService.path(`${id}/history/`).get()
-    .then(({ result: { rows: HistoryOrderDataList } }) =>
-      dispatch(setOrderHistory(HistoryOrderDataList))
-    )
+    .then(({ result: { rows: HistoryOrderDataList } }) => (
+      dispatch(
+        setOrderHistory(HistoryOrderDataList),
+      )
+    ))
+);

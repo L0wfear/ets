@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 import DataTable from 'components/ui/tableNew/DataTable';
 
@@ -7,13 +5,13 @@ const ROUTE_TYPE_OPTIONS = {
   mixed: {
     label: 'ОДХ',
   },
-  'simple_dt': {
+  simple_dt: {
     label: 'ДТ',
   },
   points: {
     label: 'Пункты назначения',
   },
-}
+};
 
 export const getTableMeta = (props) => {
   return {
@@ -42,10 +40,9 @@ export const getTableMeta = (props) => {
       },
     ],
   };
-}
+};
 
-
-const Table: React.SFC<any> = props => {
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       data={props.data}
@@ -57,7 +54,7 @@ const Table: React.SFC<any> = props => {
       uniqName={'id'}
       children={props.children}
     />
-  )
-}
+  );
+};
 
 export default Table;

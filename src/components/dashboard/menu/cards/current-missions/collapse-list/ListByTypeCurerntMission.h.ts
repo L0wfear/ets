@@ -4,8 +4,8 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
 export interface StatePropsListByTypeCurerntMission {
-  title: InitialStateDashboard['current_missions']['data']['title']
-  items: InitialStateDashboard['current_missions']['data']['items']
+  title: InitialStateDashboard['current_missions']['data']['title'];
+  items: InitialStateDashboard['current_missions']['data']['items'];
 }
 
 export interface DispatchPropsListByTypeCurerntMission {

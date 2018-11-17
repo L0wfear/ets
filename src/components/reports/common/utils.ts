@@ -48,7 +48,7 @@ export function parseMultiSelectListQueryParams(query: any, params: Array<string
     return query;
   }
 
-  return params.map(p => {
+  return params.map((p) => {
 
     const paramValue = query[p] || '';
 

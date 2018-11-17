@@ -27,7 +27,7 @@ class TablePrev extends React.Component<any, any> {
     this.props.handleChangeInTable(rowChange);
   }
 
-  handleClick = e => {
+  handleClick = (e) => {
     const {
       currentTarget: {
         rowIndex,
@@ -50,8 +50,8 @@ class TablePrev extends React.Component<any, any> {
     } = this.props;
 
     const tableProps: any = {
-      bsClass: 'custom-ta,ble overflow-visible table'
-    }
+      bsClass: 'custom-table overflow-visible table',
+    };
 
     return (
       <div style={{

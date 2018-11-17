@@ -9,7 +9,7 @@ import {
   OverlayLineInfoContainer,
 } from 'components/map/overlay/styled/styled';
 
-const OverlayFuelEventLeakPoint: React.SFC<any> = props => {
+const OverlayFuelEventLeakPoint: React.SFC<any> = (props) => {
   const { overlayData } = props;
 
   if (!overlayData) {
@@ -47,13 +47,13 @@ const OverlayFuelEventLeakPoint: React.SFC<any> = props => {
       </OverlayLineInfoContainer>
     </Overlay>
   );
-}
+};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   overlayData: state.monitorPage.fuelEvents.leak.overlayData,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   hidePopup: () => (
     dispatch(
       monitorPageSetFuelEventsLeakOverlayData(),
@@ -65,6 +65,5 @@ export default hocAll(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )
+  ),
 )(OverlayFuelEventLeakPoint);
-

@@ -56,7 +56,7 @@ export const tableMeta = ({
   ],
 });
 
-export default props => (
+export default (props) => (
   <Table
     title="Пункты отпуска ПГМ"
     results={props.data}

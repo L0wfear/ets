@@ -9,7 +9,7 @@ const OPERATIONS = {
 
 export function getFullAccess(entity, permission = ['L', 'C', 'R', 'U', 'D']) {
 
-  return permission.map(op => `${entity}.${OPERATIONS[op]}`);
+  return permission.map((op) => `${entity}.${OPERATIONS[op]}`);
 }
 export const userNotification: string[] = [
   ...getFullAccess('userNotification'),

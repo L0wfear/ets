@@ -3,11 +3,11 @@ import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.
 export type FrontGeozonesDataByIndex = GeozonesDataByIndex & {
   front_show: boolean;
   front_add_at: any;
-}
+};
 
-interface selectedGeoobjectsByserverName {
+interface SelectedGeoobjectsByserverName {
   [id: string]: FrontGeozonesDataByIndex;
 }
 export type TypeSelectedGeoobjects = {
-  [serverName: string]: selectedGeoobjectsByserverName;
-}
+  [serverName: string]: SelectedGeoobjectsByserverName;
+};

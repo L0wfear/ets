@@ -1,4 +1,4 @@
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
 
 import {
@@ -6,10 +6,10 @@ import {
   getCasheStyleForGeoobject,
 } from 'components/route/form/map/layers/layer-show-points-route/feature-style';
 
-const renderGeometry= (id, geoobj, thisProps) => {
+const renderGeometry = (id, geoobj, thisProps) => {
   if (geoobj.shape) {
     const feature = new Feature({
-      geometry: GeoJSON.readGeometry(geoobj.shape),
+      geometry: geoJSON.readGeometry(geoobj.shape),
     });
 
     feature.setId(id);
@@ -21,10 +21,10 @@ const renderGeometry= (id, geoobj, thisProps) => {
   }
 
   return null;
-}
+};
 
 export const renderGeoobjects = (objectList, thisProps) => {
-  for (let geoobj of objectList) {
+  for (const geoobj of objectList) {
     const id = geoobj.frontId;
     const feature = renderGeometry(id, geoobj, thisProps);
 

@@ -44,7 +44,7 @@ export default class FuelRateForm extends Form {
       isPermitted = false,
     } = this.props;
 
-    const COMPANY_ELEMENTS = companyStructureList.map(el => ({ value: el.id, label: el.name }));
+    const COMPANY_ELEMENTS = companyStructureList.map((el) => ({ value: el.id, label: el.name }));
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.full_name }));
     const SPECIALMODELS = specialModelsList.map(m => ({ value: m.id, label: m.name }));
     const OPERATIONS = operations

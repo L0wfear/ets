@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 import DataTable from 'components/ui/tableNew/DataTable';
 
@@ -46,9 +44,9 @@ export const getTableMeta = (props) => {
       },
     ],
   };
-}
+};
 
-const Table: React.SFC<any> = props => {
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       data={props.data}
@@ -60,7 +58,7 @@ const Table: React.SFC<any> = props => {
       onRowDoubleClick={props.onRowDoubleClick}
       selected={props.selected}
     />
-  )
-}
+  );
+};
 
 export default Table;

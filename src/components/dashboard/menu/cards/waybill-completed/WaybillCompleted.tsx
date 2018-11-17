@@ -21,7 +21,7 @@ import {
 
 class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
   handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
-    const index = Number.parseInt((path as string).split('/').slice(-1)[0])
+    const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
 
     this.props.setInfoData(
       this.props.items[index],
@@ -36,7 +36,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
     return (
       <div>
         <List items={firstTwoItem} handleClick={this.handleClick} classNameContainer="line_data" />
-        { 
+        {
           collapsetItems.length ?
           (
             <CollapseButton >
@@ -49,7 +49,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
           )
         }
       </div>
-    )
+    );
   }
 }
 
@@ -60,7 +60,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInWaybillCompleted(infoData)
+      dashboardSetInfoDataInWaybillCompleted(infoData),
     )
   ),
 });
@@ -73,5 +73,5 @@ export default withDefaultCard({
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(WaybillCompleted)
+  )(WaybillCompleted),
 );

@@ -20,7 +20,7 @@ const makeCacheStyle = (cacheStyleName ) => {
     }),
     zIndex: 9,
   });
-}
+};
 
 export const getStyleForFuelEventLeak = () => {
   const cacheStyleName = `fuelEvents/leak`;
@@ -34,4 +34,4 @@ export const getStyleForFuelEventLeak = () => {
   }
 
   return icon;
-}
+};

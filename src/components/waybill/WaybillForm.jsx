@@ -136,7 +136,7 @@ class WaybillForm extends Form {
     );
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
-        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))
+        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map((d) => d.car_model_id) }))
         .catch((e) => {
           console.error(e);
           this.setState({ fuelRateAllList: [] });
@@ -300,18 +300,18 @@ class WaybillForm extends Form {
       formState.id,
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
-      const availableMissions = missionsList.map(el => el.id);
+      const availableMissions = missionsList.map((el) => el.id);
       let { notAvailableMissions = [] } = this.state;
 
       let newMissionIdList = formState.mission_id_list;
 
       if (formState.car_id !== oldFormState.car_id) {
-        newMissionIdList = currentMissions.filter(el => availableMissions.includes(el));
+        newMissionIdList = currentMissions.filter((el) => availableMissions.includes(el));
       } else {
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions
-            .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
-            .map(id => oldMissionsList.find(el => el.id === id)))
+            .filter((el) => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
+            .map(id => oldMissionsList.find((el) => el.id === id)))
           .filter(m => m);
       }
 
@@ -678,7 +678,7 @@ class WaybillForm extends Form {
     const taxesTotal = allTaxes.reduce((summ, { FUEL_RATE, FACT_VALUE }) => summ + (FUEL_RATE * FACT_VALUE), 0);
     const taxeTotalHidden = allTaxes.length === 0;
 
-    if (state.driver_id && !DRIVERS.some(d => d.value === state.driver_id)) {
+    if (state.driver_id && !DRIVERS.some((d) => d.value === state.driver_id)) {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};

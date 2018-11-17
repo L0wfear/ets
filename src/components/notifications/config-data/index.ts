@@ -10,4 +10,4 @@ export default {
   components,
   permissions,
   renderNav,
-}
+};

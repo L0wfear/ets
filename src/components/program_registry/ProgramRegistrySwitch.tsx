@@ -18,10 +18,10 @@ const defSendFromState = ({ callback, outFormState }) => {
       };
     }
 
-    return { ...newFormState,  [key]: val };
+    return { ...newFormState, [key]: val };
   }, {});
 
-  schema.properties.forEach(p => {
+  schema.properties.forEach((p) => {
     if (p.type === 'number' && p.float) {
       formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
     }
@@ -46,7 +46,7 @@ const getFrowmStateAndErrorAndCanSave = (elementOld = null) => {
   return {
     formState: element,
     formErrors,
-    canSave: !Object.values(formErrors).some(value => !!value),
+    canSave: !Object.values(formErrors).some((value) => !!value),
   };
 };
 

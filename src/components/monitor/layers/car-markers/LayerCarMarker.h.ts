@@ -11,20 +11,20 @@ export type PropsLayerCarMarker = {
   forToday: boolean;
   STATUS_SHOW_GOV_NUMBER: boolean;
   STATUS_TC_FOLLOW_ON_CAR: boolean;
-  
+
   carActualGpsNumberIndex: any;
   lastPoint: any;
   odh_mkad: any[],
   statusShow: any;
   filters: any;
-  
-  carInfoSetStatus: Function;
-  carInfoPushPointIntoTrack: Function;
-  monitorPageResetCarStatus: Function;
-  centerOn: Function;
-  monitoPageChangeCarsByStatus: Function;
-  monitorPageMergeFiltredCarGpsCode: Function;
-  carInfoSetGpsNumber: Function;
+
+  carInfoSetStatus: any;
+  carInfoPushPointIntoTrack: any;
+  monitorPageResetCarStatus: any;
+  centerOn: any;
+  monitoPageChangeCarsByStatus: any;
+  monitorPageMergeFiltredCarGpsCode: any;
+  carInfoSetGpsNumber: any;
 };
 
 export type OneWsDataCardata = {
@@ -37,8 +37,8 @@ export type OneWsDataCardata = {
   model_id: number | void;
   owner_id: number | void;
   provider_ids: number[] | void;
-  type_id: number | void;  
-}
+  type_id: number | void;
+};
 
 export type OneWsData = {
   car: OneWsDataCardata;
@@ -58,7 +58,7 @@ export type OneWsData = {
 
 export type WsData = {
   [gps_code: string]: OneWsData;
-}
+};
 
 export type OneCarPointDataWsType = OneWsData | {
   front_status: string;
@@ -66,13 +66,12 @@ export type OneCarPointDataWsType = OneWsData | {
 
 export type CarPointsDataWsType = {
   [gps_code: string]: OneCarPointDataWsType;
-}
+};
 
 export type StateLayerCarMarker = {
   carPointsDataWs: CarPointsDataWsType;
   ws: any,
 };
 
-
-export module LayerCarMarkerUtils {
+export namespace LayerCarMarkerUtils {
 }

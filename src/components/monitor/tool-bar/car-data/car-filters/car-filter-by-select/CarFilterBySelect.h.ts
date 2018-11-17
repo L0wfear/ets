@@ -3,7 +3,7 @@ import {
 } from 'redux-main/trash-actions/car/car.h';
 
 import {
-  IReactSelectOption
+  IReactSelectOption,
 } from 'components/ui/@types/ReactSelect.h';
 
 export type PropsCarFilterByText = {
@@ -23,13 +23,13 @@ export type StateCarFilterByText = {
 export type DefOneAnsData = {
   obj: {[id: string]: string},
   arr: IReactSelectOption[],
-}
+};
 
 export type DefAns = {
   carFilterMultyTypeOptions: DefOneAnsData,
   carFilterMultyStructureOptions: DefOneAnsData,
   carFilterMultyOwnerOptions: DefOneAnsData,
-}
+};
 
 export type CheckByIdAndNameFunc = (
   store: DefOneAnsData,

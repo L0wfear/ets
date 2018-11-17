@@ -17,10 +17,9 @@ class CollapseButton extends React.Component<PropsCollapseButton, StateCollapseB
   };
 
   toggleIsOpen = () => {
-    console.log('here')
     this.setState({
       isOpen: !this.state.isOpen,
-    })
+    });
   }
 
   render() {

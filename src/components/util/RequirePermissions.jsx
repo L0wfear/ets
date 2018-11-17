@@ -45,7 +45,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
       } = this.props;
       // В случае, если в на
       if (includesPartOfText) {
-        return userPermissions.some(d => includesPartOfText.some(p => d.includes(p)));
+        return userPermissions.some((d) => includesPartOfText.some((p) => d.includes(p)));
       }
       // В случае если достаточно наличия хоть одного доступа
       if (oneOfPermissions.length) {
@@ -57,7 +57,7 @@ export default function enhanceWithPermissions(ComposedComponent) {
         return true;
       }
 
-      return !!permissions.filter(p => userPermissions.indexOf(p) + 1).length;
+      return !!permissions.filter((p) => userPermissions.indexOf(p) + 1).length;
     }
 
     /**

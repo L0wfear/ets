@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.327",
+    "version": "2.0.23.328",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -116,13 +116,14 @@
         "build:stage": "cross-env STAND=stage NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
+        "lint:ts": "tslint --project tsconfig.json -c tslint.json 'src/**/*{.ts,.tsx}'",
         "esdoc": "esdoc -c esdoc.json",
         "bump": "node webpack/utils/updateVersion.js",
         "esling:rud": "eslint --init"
     },
     "config": {
         "ghooks": {
-            "pre-commit": "npm run bump && git add package.json"
+            "pre-commit": "npm run lint:ts && npm run bump && git add package.json"
         }
     },
     "engines": {

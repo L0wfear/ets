@@ -99,7 +99,7 @@ class ProgramObjectFormDT extends Form {
 
         changesState.selectedObj = changesState.dtPolys[object_id];
 
-        changesFormState.elements = elements.map(d => ({
+        changesFormState.elements = elements.map((d) => ({
           ...d,
           measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
         }));
@@ -131,7 +131,7 @@ class ProgramObjectFormDT extends Form {
 
     if (!IS_CREATING) {
       this.context.flux.getActions('repair').getObjectVersions(this.props.formState.id)
-        .then(ans => this.setState({
+        .then((ans) => this.setState({
           VERSIONS_OPTIONS: ans.map(({ object_id, program_version_id }, index) => ({
             value: object_id, label: `Версия №${index}`, object_id, program_version_id,
           })),

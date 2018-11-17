@@ -15,7 +15,7 @@ type TypeConfigToShow = {
   canNull?: boolean;
   type?: 'loader-field' | 'small-loader-field' | 'hidden' | 'none',
   isObj?: boolean;
-}
+};
 
 const HiddenComponent: React.SFC<any> = ({ type }) => {
   if (type === 'loader-field') {
@@ -30,24 +30,23 @@ const HiddenComponent: React.SFC<any> = ({ type }) => {
       <Preloader typePreloader="field" />
     );
   }
-  return <DivNone />
-}
+  return <DivNone />;
+};
 
 type StateProps = {
   show: boolean;
   error: boolean;
-}
+};
 
 type OwnerProps = {
   [key: string]: any;
-}
+};
 
 type PropsShowByProps = StateProps & OwnerProps;
 
-
-const withShowByProps = (configToShow: TypeConfigToShow) => Component => (
+const withShowByProps = (configToShow: TypeConfigToShow) => (Component) => (
   connect<StateProps, {}, OwnerProps, ReduxState>(
-    state => {
+    (state) => {
       const { checkErrorPath } = configToShow;
       let show = false;
       const value = get(state, configToShow.path, -1);
@@ -65,7 +64,7 @@ const withShowByProps = (configToShow: TypeConfigToShow) => Component => (
         show,
         error,
       };
-    }
+    },
   )
   (
     class ShowByProps extends React.Component<PropsShowByProps, {}> {
@@ -88,7 +87,7 @@ const withShowByProps = (configToShow: TypeConfigToShow) => Component => (
           )
         );
       }
-    }
+    },
   )
 );
 

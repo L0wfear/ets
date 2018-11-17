@@ -2,11 +2,11 @@ type FuncAddLayerProps = {
   id: number | string;
   zIndex?: number;
   renderMode?: ol.olx.layer.VectorRenderType,
-}
+};
 
 declare namespace ETSCore {
-  export module Map {
-    export module InjectetLayerProps {
+  export namespace Map {
+    export namespace InjectetLayerProps {
       type FuncAddLayer = (props: FuncAddLayerProps) => Promise<{}>;
       type FuncRemoveLayer = () => void;
       type FuncGetVectorSource = () => ol.source.Vector;

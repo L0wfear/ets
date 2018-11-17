@@ -13,7 +13,7 @@ export type PropsLayerPlayPoint = {
   inputLines: any[];
   map: ol.Map;
 
-  centerOn: Function;
+  centerOn: any;
 };
 
 export type TypeSelectedGeoobj = {
@@ -24,7 +24,7 @@ export type TypeSelectedGeoobj = {
 
 export type PropsOverlayLayerRouteInfoGeometry = TypeSelectedGeoobj & {
   map: ol.Map;
-  hidePopup: () => any;
+  hidePopup: any;
 };
 
 export type StateLayerPLayPoint = {
@@ -39,30 +39,29 @@ export type TypeGeoObjectData = {
   show: boolean;
   data?: TypeGeoObjectDataIndex;
   oldData?: TypeGeoObjectDataIndex;
-  
-}
+};
 
 export type TypeGeoobjects = {
   [serverName: string]: TypeGeoObjectData;
 };
 
-export module InjectetLayerProps {
+export namespace InjectetLayerProps {
 }
 
-export module LayerGeoobjectsUtilsTypes {
+export namespace LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
     companiesIndex?: TypeCompaniesIndex;
-  }
+  };
 
   type checkShowFalseFuncThisProps = {
     removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
-  }
+  };
 
   type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
     getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
     companiesIndex?: TypeCompaniesIndex;
-  }
+  };
 
   export type renderGeoobjectsFunc = (
     geoobjects: TypeGeoobjects,
@@ -90,4 +89,4 @@ export module LayerGeoobjectsUtilsTypes {
     geoobj: GeozonesDataByIndex & { state: number },
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
-};
+}

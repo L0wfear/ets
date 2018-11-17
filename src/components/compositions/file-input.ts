@@ -10,7 +10,7 @@ export const fileFormatter = withHandlers({
     isLoading = identity,
     value = [],
     multiple = false,
-  }) => async e => {
+  }) => async (e) => {
     if (Array.isArray(e)) {
       onChange(e);
       return;
@@ -24,7 +24,7 @@ export const fileFormatter = withHandlers({
 
     const fileArray: IFileWrapper[] = [];
 
-    newFiles.forEach(file => {
+    newFiles.forEach((file) => {
       fileArray.push({
         nativeFile: file,
         name: file.name,
@@ -35,11 +35,11 @@ export const fileFormatter = withHandlers({
     const base64PromiseList = [];
 
     try {
-      fileArray.forEach(fileWrapper => {
+      fileArray.forEach((fileWrapper) => {
         const fileReader = new FileReader();
         fileReader.readAsDataURL(fileWrapper.nativeFile);
 
-        const readingPromise = new Promise(resolve => {
+        const readingPromise = new Promise((resolve) => {
           fileReader.onload = ((event: any) => {
             resolve(event.target.result);
           });
@@ -90,7 +90,7 @@ export const fileCountLimiter = withHandlers({
     maxSizePerFile = mbToBytes(MAX_SIZE_PER_FILE_MB),
     onChange,
     value = [],
-  }) => e => {
+  }) => (e) => {
     if (Array.isArray(e)) {
       onChange(e);
       return;

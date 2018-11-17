@@ -73,7 +73,7 @@ export default class BaseBatteryForm extends Form {
               <ExtField
                 type={'string'}
                 label={'Изготовитель'}
-                value={get(batteryBrandList.find(s => s.id === state.brand_id), 'manufacturer_name', '')}
+                value={get(batteryBrandList.find((s) => s.id === state.brand_id), 'manufacturer_name', '')}
                 disabled
               />
               <ExtField

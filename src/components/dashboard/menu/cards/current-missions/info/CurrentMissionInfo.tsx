@@ -40,7 +40,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   state = {
     showMissionInfoForm: false,
     showMissionRejectForm: false,
-  }
+  };
+
   refreshCard = () => (
     this.props.loadData()
   )
@@ -73,7 +74,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       .then(() => {
         this.props.handleClose();
         this.refreshCard();
-      })
+      });
   }
 
   rejectMission = () => {
@@ -139,9 +140,9 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           element={this.props.infoData}
         />
       </InfoCard>
-    )
+    );
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   infoData: state.dashboard.current_missions.infoData,
@@ -167,7 +168,7 @@ const mapDispatchToProps = (dispatch) => ({
           promise: true,
           page: 'dashboard',
         },
-      )
+      ),
     )
   ),
   updateMission: (payload) => (

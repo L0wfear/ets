@@ -18,8 +18,8 @@ export const onChangeWithKeys = compose(
     return value !== props[key];
   })),
   withHandlers({
-    onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...other) =>  onChange(...boundKeys, e, ...other),
-  })
+    onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...otherOther) =>  onChange(...boundKeys, e, ...otherOther),
+  }),
 );
 
 export const onChangeWithKeyOfObject = withHandlers({
@@ -27,7 +27,7 @@ export const onChangeWithKeyOfObject = withHandlers({
 });
 
 export const onClickWithKeys = withHandlers({
-  onClick: ({ onClick, boundKeys = []}) => e => onClick(...boundKeys, e),
+  onClick: ({ onClick, boundKeys = []}) => (e) => onClick(...boundKeys, e),
 });
 
 export const tabable = compose(
@@ -39,7 +39,7 @@ export const tabable = compose(
  * Input fields enhacers
  */
 export const dateTimeFormatter = withHandlers({
-  onChange: ({ time = true, onChange }) => eventValue => {
+  onChange: ({ time = true, onChange }) => (eventValue) => {
     const validationFunction = time ? createValidDateTime : createValidDate;
     onChange(validationFunction(eventValue));
   },
@@ -48,7 +48,7 @@ export const dateTimeFormatter = withHandlers({
 export const multiSelectFormatter = withHandlers({
   onChange: ({ onChange, delimiter = ',', integer = false }) => (eventValue = []) => {
     const itemList = eventValue
-      .map(item => integer ? parseInt(item, 10) : item);
+      .map((item) => integer ? parseInt(item, 10) : item);
     onChange(itemList);
   },
 });

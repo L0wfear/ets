@@ -49,12 +49,16 @@ export function getStartOfToday() {
 }
 
 export function createValidDate(date) {
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
   return moment(date).format('YYYY-MM-DD');
 }
 
 export function createValidDateTime(date) {
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
   return moment(date).seconds(0).format('YYYY-MM-DDTHH:mm:ss');
 }
 
@@ -67,27 +71,37 @@ export function formatDate(date, format) {
 }
 
 export function getFormattedDateTime(date) {
-  if (!date) return '';
+  if (!date) {
+    return '';
+  }
   return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
 }
 
 export function getFormattedDateTimeWithSecond(date) {
-  if (!date) return '';
+  if (!date) {
+    return '';
+  }
   return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
 export function getFormattedTimeWithSecond(date) {
-  if (!date) return '';
+  if (!date) {
+    return '';
+  }
   return moment(date).format(`${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
 export function getFormattedDateTimeSeconds(date) {
-  if (!date) return '';
+  if (!date) {
+    return '';
+  }
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
 export function makeDateFromUnix(date) {
-  if (!date) return '-';
+  if (!date) {
+    return '-';
+  }
   return moment.unix(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
@@ -171,11 +185,11 @@ function pad(num) {
   return (`0${num}`).slice(-2);
 }
 export function secondsToTime(secs) {
-  let m_minutes = Math.floor(secs / 60);
-  const m_secs = secs % 60;
-  const m_hours = Math.floor(m_minutes / 60);
-  m_minutes %= 60;
-  return `${pad(m_hours)}:${pad(m_minutes)}:${pad(m_secs)}`;
+  let mMinutes = Math.floor(secs / 60);
+  const mSecs = secs % 60;
+  const mHours = Math.floor(mMinutes / 60);
+  mMinutes %= 60;
+  return `${pad(mHours)}:${pad(mMinutes)}:${pad(mSecs)}`;
 }
 
 export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
@@ -203,7 +217,7 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  * @param {date | string} dataB - date end compare
  * @param {string} typeDiff - type compare (see moment .diff())
  */
-export const setZeroSecondsToDate = date => moment(date).seconds(0);
+export const setZeroSecondsToDate = (date) => moment(date).seconds(0);
 
 export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();
 

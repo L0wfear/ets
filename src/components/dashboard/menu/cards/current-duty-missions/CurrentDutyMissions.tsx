@@ -39,7 +39,7 @@ class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, Stat
         <ListByTypeCurerntDutyMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
         <ListByTypeCurerntDutyMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
       </div>
-    )
+    );
   }
 }
 
@@ -59,7 +59,7 @@ export default compose<PropsCurrentDutyMissions, InnerPropsCurrentDutyMissions>(
             id,
           ),
         )
-      )
+      ),
     }),
   ),
 )(CurrentDutyMissions);

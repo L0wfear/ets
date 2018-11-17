@@ -17,20 +17,22 @@ export const setGeomentry = (feature, coords_msk) => (
   )
 );
 
-export const makeExtent: TypeMakeExtent = coords_msk => (
+export const makeExtent: TypeMakeExtent = (coords_msk) => (
   Array<number>(4).fill(1).map((d, i) => (
-    coords_msk[i%2]
+    coords_msk[i % 2]
   )) as [number, number, number, number]
-)
-export const centerOn = (coords_msk, { centerOn }) => {
+);
+
+export const centerOn = (coords_msk, props) => {
   const noCheckDisabledCenterOn = true;
-  centerOn(
+
+  props.centerOn(
     {
       extent: makeExtent(coords_msk),
       opt_options,
     },
     noCheckDisabledCenterOn,
-  )
+  );
 };
 
 export const setNullGeometryToFeature = (feature) => (

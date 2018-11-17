@@ -7,7 +7,7 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
 import { meta, renderers, validationSchema } from './table-schema';
 
-interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper{
+interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
   batteryId: number;
 }
 

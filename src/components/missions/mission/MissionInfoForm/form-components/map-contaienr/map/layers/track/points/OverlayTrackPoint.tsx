@@ -22,11 +22,11 @@ import { OverlayLineInfoContainer } from 'components/map/overlay/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 
 class OverlayTrackPoint extends React.Component<any, any> {
-  state = { 
+  state = {
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
     objectsString: '',
-  }
+  };
 
   componentDidMount() {
     this.getObjectData(this.props);
@@ -76,13 +76,13 @@ class OverlayTrackPoint extends React.Component<any, any> {
         speed_max,
         distance,
         nsat,
-      }
+      },
     } = this.props;
 
     const moscowDateTime = getDateWithMoscowTzByTimestamp(timestamp * 1000);
 
     const datetime = `${makeDate(moscowDateTime)} ${makeTime(moscowDateTime, true)}`;
-    const pointSensors = get(this.state.trackPoint, ['sensors', 'equipment'], []).filter(s => s.val !== 0);
+    const pointSensors = get(this.state.trackPoint, ['sensors', 'equipment'], []).filter((s) => s.val !== 0);
     const distanceCount = parseInt(distance, 10);
     const nsatCount = parseInt(nsat, 10);
     const [latitude, longitude] = roundCoordinates(coords_msk, 6);
@@ -155,7 +155,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getVectorObject: (points) => (
     dispatch(
       getVectorObject('NONE', points),
@@ -167,6 +167,5 @@ export default hocAll(
   connect(
     null,
     mapDispatchToProps,
-  )
+  ),
 )(OverlayTrackPoint);
-

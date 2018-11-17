@@ -26,7 +26,7 @@ export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extend
 };
 
 @connect(
-  state => state.loading
+  (state) => state.loading
 )
 @connectToStores(['loading'])
 @FluxContext

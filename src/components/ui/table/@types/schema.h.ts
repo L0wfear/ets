@@ -77,7 +77,7 @@ export interface IDataTableColSchema {
    */
   customHeaderComponent?: JSX.Element;
   render?: any;
-  orderNum?: any,
+  orderNum?: any;
   sortByKey?: string;
 }
 

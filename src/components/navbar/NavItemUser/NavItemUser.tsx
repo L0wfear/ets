@@ -13,7 +13,7 @@ const ROLES = {
 
 const data = {
   alwaysShow: true,
-}
+};
 
 const NavItemUser: React.SFC<any> = ({ currentUser }) => {
   const role = ROLES[currentUser.role || ''] || '';
@@ -28,6 +28,6 @@ const NavItemUser: React.SFC<any> = ({ currentUser }) => {
       </div>
     </NavItem>
   );
-}
+};
 
 export default connectToStores(NavItemUser, ['session']);

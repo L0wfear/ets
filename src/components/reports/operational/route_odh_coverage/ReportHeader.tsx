@@ -65,8 +65,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const { technicalOperationsList = [], readOnly } = this.props;
 
     const TECH_OPERATION_TYPES = technicalOperationsList
-      .filter(route => route.objects_text.includes('ОДХ'))
-      .map(t => ({ value: t.id, label: t.name }));
+      .filter((route) => route.objects_text.includes('ОДХ'))
+      .map((t) => ({ value: t.id, label: t.name }));
 
     return (
       <Row>

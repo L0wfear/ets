@@ -28,4 +28,4 @@ export const makeOptions: MakeOptionsFunc = (carActualGpsNumberIndex) => (
     carFilterMultyStructureOptions: { obj: {}, arr: [] },
     carFilterMultyOwnerOptions: { obj: {}, arr: [] },
   })
-)
+);

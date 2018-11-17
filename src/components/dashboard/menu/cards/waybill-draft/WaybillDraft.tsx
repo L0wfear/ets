@@ -19,7 +19,7 @@ class WaybillDraft extends React.Component<PropsWaybillDraft, StateWaybillDraft>
   render() {
     return (
       <div className="waybill_draft"></div>
-    )
+    );
   }
 }
 

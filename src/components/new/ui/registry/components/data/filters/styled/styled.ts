@@ -6,7 +6,7 @@ export const EtsFilterCntainer = styled.div`
   display: flex;
   background-color: #eee;
   border: 1px solid #ddd;
-  padding: 10px; 
+  padding: 10px;
 
   flex-direction: column;
 `;

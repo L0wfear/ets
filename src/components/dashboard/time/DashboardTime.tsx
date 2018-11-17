@@ -19,7 +19,7 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
   state = {
     date: getDateWithMoscowTz(),
     itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
-  }
+  };
 
   componentDidMount() {
     loadMoscowTime()
@@ -29,8 +29,8 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
         this.setState({
           date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
           itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
-        })
-      })
+        });
+      });
   }
 
   componentWillUnmount() {
@@ -39,7 +39,7 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
 
   updateDateOnSecond = () => {
     const { date } = this.state;
-    
+
     date.setSeconds(date.getSeconds() + 1);
 
     this.setState({ date });
@@ -53,8 +53,8 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
         <TimeLineContainer>{getFormattedTimeWithSecond(date) || '--:--:--'}</TimeLineContainer>
         <DateLineContainer>{formatDate(date, 'DD MMMM YYYY') || '--:------:--'}</DateLineContainer>
       </DashboardTimeContainer>
-    )
+    );
   }
-};
+}
 
 export default DashboardTime;

@@ -17,7 +17,7 @@ type PropsLayerParkingPoints = {
   map: ol.Map;
 
   front_parkings: any;
-  carInfoSetParkingPoint: Function;
+  carInfoSetParkingPoint: any;
 };
 
 type StateLayerParkingPoints = {
@@ -41,7 +41,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     if (front_parkings !== prevProps.front_parkings) {
       this.props.removeFeaturesFromSource(null, true);
       if (this.state.parkingPoint) {
-        this.hidePopup()
+        this.hidePopup();
       }
       this.drawTrackPoints(front_parkings);
     }
@@ -54,11 +54,12 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
 
-    const parkingPoint = this.props.front_parkings.find(point => point.start_point.timestamp === timestamp);
+    const parkingPoint = this.props.front_parkings.find((point) => point.start_point.timestamp === timestamp);
 
     if (parkingPoint) {
       this.setState({ parkingPoint });
     } else {
+      // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
   }

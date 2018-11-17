@@ -24,14 +24,13 @@ const TitleBlock: React.SFC<PropsTitleBlock> = ({ gov_number, ...props }) => (
   </div>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   gps_code: state.monitorPage.carInfo.gps_code,
   gov_number: state.monitorPage.carInfo.gov_number,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   handleClickOnClose: () => dispatch(carInfoSetGpsNumber(null, null)),
 });
-
 
 export default connect(
   mapStateToProps,

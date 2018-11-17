@@ -5,5 +5,5 @@ export const RouteInfoContainerDiv = styled.div`
 `;
 
 export const RouteNameDiv = styled.div<{ none?: boolean }>`
-  display: ${({ none }) => none ? 'none': 'initial'}
+  display: ${({ none }) => none ? 'none' : 'initial'}
 `;

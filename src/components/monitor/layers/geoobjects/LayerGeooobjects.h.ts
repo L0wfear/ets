@@ -12,8 +12,8 @@ export type PropsLayerGeooobjects= {
   SHOW_GEOOBJECTS: boolean;
   companiesIndex: TypeCompaniesIndex;
 
-  monitorPageAddToSelectedGeoobjects: Function;
-}
+  monitorPageAddToSelectedGeoobjects: any;
+};
 
 interface TypeGeoObjectDataIndex {
   [id: string]: GeozonesDataByIndex;
@@ -23,33 +23,29 @@ export type TypeGeoObjectData = {
   show: boolean;
   data?: TypeGeoObjectDataIndex;
   oldData?: TypeGeoObjectDataIndex;
-  
-}
+};
 
 export type TypeGeoobjects = {
   [serverName: string]: TypeGeoObjectData;
 };
 
 export type StateLayerGeooobjects= {
-}
+};
 
-export module InjectetLayerProps {
-}
-
-export module LayerGeoobjectsUtilsTypes {
+export namespace LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
     companiesIndex?: TypeCompaniesIndex;
-  }
+  };
 
   type checkShowFalseFuncThisProps = {
     removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
-  }
+  };
 
   type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
     getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
     companiesIndex?: TypeCompaniesIndex;
-  }
+  };
 
   export type renderGeoobjectsFunc = (
     geoobjects: TypeGeoobjects,
@@ -92,36 +88,36 @@ export module LayerGeoobjectsUtilsTypes {
   type DiffAns = {
     hasDiff: boolean,
     changedGeoobjects: TypeGeoobjects,
-  }
+  };
 
   export type checkShowStatusFunc = (
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
-    stateData: TypeGeoObjectData 
+    stateData: TypeGeoObjectData,
   ) => DiffAns;
 
   export type checkDataFunc = (
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
-    stateData: TypeGeoObjectData 
+    stateData: TypeGeoObjectData,
   ) => DiffAns;
 
   export type ansCheck = (
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
-    stateData: TypeGeoObjectData 
+    stateData: TypeGeoObjectData,
   ) => {
     checkShowStatus: DiffAns,
     checkData: DiffAns,
-  }
+  };
 
   type DiffAnsForClass = {
     hasDiff: boolean,
     diffGeoobjects: TypeGeoobjects,
-  }
+  };
 
   export type diffInputPropsFunc = (
     thisProps: PropsLayerGeooobjects,
@@ -133,7 +129,7 @@ export module LayerGeoobjectsUtilsTypes {
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
-    stateData: TypeGeoObjectData 
+    stateData: TypeGeoObjectData,
   ) => DiffAnsForClass;
 
   export type checkShowFalseFunc = (
@@ -141,4 +137,4 @@ export module LayerGeoobjectsUtilsTypes {
     oldFeature: ol.Feature,
     thisProps: checkShowFalseFuncThisProps,
   ) => void;
-};
+}

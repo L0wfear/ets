@@ -9,7 +9,7 @@ const getClassNameByType = (props, type) => (
     'with_checkbox',
     {
       off: !props[type],
-    }
+    },
   )
 );
 
@@ -19,11 +19,11 @@ class BarGeoobjectLegend extends React.Component<any, any> {
       <span>
         <div className="tool_bar-block">
           <div className="default_cube dark">
-            <div data-type="SHOW_TRACK" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, "SHOW_TRACK")}>
+            <div data-type="SHOW_TRACK" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, 'SHOW_TRACK')}>
               <input readOnly type="checkbox" checked={this.props.SHOW_TRACK} />
               <div>Трек</div>
             </div>
-            <div data-type="SHOW_GEOOBJECTS" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, "SHOW_GEOOBJECTS")}>
+            <div data-type="SHOW_GEOOBJECTS" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, 'SHOW_GEOOBJECTS')}>
               <input readOnly type="checkbox" checked={this.props.SHOW_GEOOBJECTS} />
               <div>Геообъекты</div>
             </div>
@@ -34,11 +34,11 @@ class BarGeoobjectLegend extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   ...state.monitorPage.statusGeo,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   toggleShowStatus: ({ currentTarget: { dataset: { type } } }) => (
     dispatch(
       monitorPageToggleStatusGeo([type]),

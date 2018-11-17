@@ -7,7 +7,7 @@ import {
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 export interface InnerPropsCurrentDutyMissions extends OwnerPropsDefaultCard {
-};
+}
 
 export interface StatePropsCurrentDutyMissions {}
 export interface DispatchPropsCurrentDutyMissions {

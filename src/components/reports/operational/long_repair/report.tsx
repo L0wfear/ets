@@ -14,7 +14,7 @@ const serviceUrl = 'autobase/reports/long_repair';
 const reportUrl = 'long-repair';
 const serviceName = 'LongRepair';
 
-const testEndRepairWithLongTime20 = lineData => {
+const testEndRepairWithLongTime20 = (lineData) => {
   const {
     fact_date_start,
     fact_date_end,
@@ -25,7 +25,7 @@ const testEndRepairWithLongTime20 = lineData => {
   return ansTest;
 };
 
-const testEndRepairWithFactMorePlan = lineData => {
+const testEndRepairWithFactMorePlan = (lineData) => {
   const {
     fact_date_start,
     fact_date_end,
@@ -41,7 +41,7 @@ const testEndRepairWithFactMorePlan = lineData => {
   return ansTest;
 };
 
-const testEndRepairWithLongTime20NotEndFact = lineData => {
+const testEndRepairWithLongTime20NotEndFact = (lineData) => {
   const {
     fact_date_start,
     fact_date_end,
@@ -56,7 +56,7 @@ const testEndRepairWithLongTime20NotEndFact = lineData => {
   return ansTest;
 };
 
-const testEndRepairWithFactMorePlanNotEndFact = lineData => {
+const testEndRepairWithFactMorePlanNotEndFact = (lineData) => {
   const {
     fact_date_start,
     fact_date_end,
@@ -77,25 +77,25 @@ const testEndRepairWithFactMorePlanNotEndFact = lineData => {
 };
 
 const schemaMakers: ISchemaMaker = {
-  fact_date_start: schema => ({
+  fact_date_start: (schema) => ({
     ...schema,
     filter: {
       type: 'date',
     },
   }),
-  fact_date_end: schema => ({
+  fact_date_end: (schema) => ({
     ...schema,
     filter: {
       type: 'date',
     },
   }),
-  plan_date_start: schema => ({
+  plan_date_start: (schema) => ({
     ...schema,
     filter: {
       type: 'date',
     },
   }),
-  plan_date_end: schema => ({
+  plan_date_end: (schema) => ({
     ...schema,
     filter: {
       type: 'date',

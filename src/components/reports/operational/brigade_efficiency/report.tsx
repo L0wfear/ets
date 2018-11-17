@@ -23,7 +23,7 @@ class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficien
       dutyMissionSelectedItem: null,
     };
   }
-  handleDutyNumberLinkClick = async dutyNumber => {
+  handleDutyNumberLinkClick = async (dutyNumber) => {
     try {
       const dutyMission = await DutyMissionService.path(`${dutyNumber}/`).get();
 
@@ -34,6 +34,7 @@ class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficien
         dutyMissionSelectedItem: dutyMission.result[0],
       });
     } catch ({ error_text }) {
+      // tslint:disable-next-line
       console.warn(error_text);
     }
   }

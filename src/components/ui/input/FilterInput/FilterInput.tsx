@@ -31,8 +31,8 @@ interface IStateFilterInput {
 
 const InputFilter = filterTypeHandler(Input);
 
-const inputTypeIf = inputType => R.propEq('inputType', inputType);
-const dateTimeFormatter = formatter =>  R.pipe(R.prop('inputValue'), R.map(formatter));
+const inputTypeIf = (inputType) => R.propEq('inputType', inputType);
+const dateTimeFormatter = (formatter) =>  R.pipe(R.prop('inputValue'), R.map(formatter));
 
 const datetimeFilterValueMaker = (value, type) => R.cond([
   [inputTypeIf('datetime'), dateTimeFormatter(createValidDateTime)],
@@ -67,7 +67,7 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     return null;
   }
 
-  handleTypeChange = newType => {
+  handleTypeChange = (newType) => {
     this.setState({ type: newType });
   }
   handleFilterValueChange = ({ value, filterValue}) => {

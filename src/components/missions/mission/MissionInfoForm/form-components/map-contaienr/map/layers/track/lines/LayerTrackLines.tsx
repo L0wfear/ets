@@ -24,7 +24,7 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   const { checkCoordsMsk: { onMkad = false } = {}, speed_avg } = trackPoint;
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;
-}
+};
 
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
@@ -64,7 +64,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
         const feature = new Feature({
           geometry: new LineString(
-            linePoints.map(({ coords_msk }) => coords_msk)
+            linePoints.map(({ coords_msk }) => coords_msk),
           ),
         });
 
@@ -82,11 +82,11 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     if (linePoints.length > 1) {
       const feature = new Feature({
         geometry: new LineString(
-          linePoints.map(({ coords_msk }) => coords_msk)
+          linePoints.map(({ coords_msk }) => coords_msk),
         ),
       });
 
-      feature.set('notSelected', true)
+      feature.set('notSelected', true);
 
       feature.setStyle(getStyleForTrackLine(lastStatus));
       this.props.addFeaturesToSource(feature);
@@ -94,7 +94,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
   }
 
   render() {
-    return <div></div>
+    return <div></div>;
   }
 }
 

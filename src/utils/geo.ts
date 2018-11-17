@@ -6,6 +6,7 @@ export function swapCoords(props) {
 
     return [y, x];
   } catch (e) {
+    // tslint:disable-next-line
     console.warn('cant swap coords', props);
     return [0, 0];
   }
@@ -27,7 +28,7 @@ export function roundCoordinates(coords, level = 4) {
   if (!coords.length) {
     result = unwrapCoords(coords);
   }
-  const round = coord => Math.round(coord * Math.pow(10, level)) / Math.pow(10, level);
+  const round = (coord) => Math.round(coord * Math.pow(10, level)) / Math.pow(10, level);
   return result.map(round);
 }
 
@@ -67,4 +68,4 @@ export const nameOfFeature = (type, forWhat) => {
     }
   }
   return null;
-}
+};

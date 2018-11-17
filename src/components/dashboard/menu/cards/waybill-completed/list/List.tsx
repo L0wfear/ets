@@ -17,10 +17,10 @@ const List: React.SFC<PropsList> = ({ addIndex = 0, ...props }) => (
           data-path={`${index + addIndex}`}
           className={cx(
             {
-              pointer: subItems.length,
+              'pointer': !!subItems.length,
               'no-pointer-events': !subItems.length,
             },
-            props.classNameContainer
+            props.classNameContainer,
           )}
           onClick={props.handleClick}
           title={item.tooltip || title}
@@ -31,5 +31,5 @@ const List: React.SFC<PropsList> = ({ addIndex = 0, ...props }) => (
     }
   </ul>
 );
-               
+
 export default List;

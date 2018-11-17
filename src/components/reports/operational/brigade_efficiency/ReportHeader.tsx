@@ -47,7 +47,6 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       object_type,
     } = this.getState();
 
-
     this.props.onClick({
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),

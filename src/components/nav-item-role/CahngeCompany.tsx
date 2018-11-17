@@ -12,14 +12,14 @@ class CahngeCompany extends React.Component<any, any> {
 
   render() {
     if (!this.props.isGlavControl) {
-      return <Redirect to={requireAuth(this.context.flux, '/monitor')} />
+      return <Redirect to={requireAuth(this.context.flux, '/monitor')} />;
     }
     return (
       <div className={'company-switcher-big'}>
         <span className={'company-switcher-big-label'}>Выберите организацию</span>
         <CompanyOptions />
       </div>
-    )
+    );
   }
 }
 

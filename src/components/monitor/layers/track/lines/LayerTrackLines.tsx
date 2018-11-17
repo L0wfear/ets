@@ -32,7 +32,7 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   const { checkCoordsMsk: { onMkad = false } = {}, speed_avg } = trackPoint;
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;
-}
+};
 
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
@@ -95,11 +95,11 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
         linePoints.push(currPoint);
         const feature = new Feature({
           geometry: new LineString(
-            linePoints.map(({ coords_msk }) => coords_msk)
+            linePoints.map(({ coords_msk }) => coords_msk),
           ),
         });
 
-        feature.set('notSelected', true)
+        feature.set('notSelected', true);
         feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
         this.props.addFeaturesToSource(feature);
         feature.setId(lastTimestatmp);
@@ -115,11 +115,11 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
     if (linePoints.length > 1) {
       const feature = new Feature({
         geometry: new LineString(
-          linePoints.map(({ coords_msk }) => coords_msk)
+          linePoints.map(({ coords_msk }) => coords_msk),
         ),
       });
 
-      feature.set('notSelected', true)
+      feature.set('notSelected', true);
       feature.setId(lastTimestatmp);
       feature.set('status', lastStatus);
 
@@ -129,7 +129,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
   }
 
   changeStyleForLines(SHOW_TRACK, equipmentChecked?) {
-    this.props.getAllFeatures().forEach(feature => {
+    this.props.getAllFeatures().forEach((feature) => {
       if (!SHOW_TRACK) {
         feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK, equipmentChecked));
       } else {
@@ -139,11 +139,11 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
   }
 
   render() {
-    return <div></div>
+    return <div></div>;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
   track: state.monitorPage.carInfo.trackCaching.track,
   lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
@@ -153,10 +153,10 @@ const mapStateToProps = state => ({
   front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
 });
 
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = (dispatch) => ({
+});
 
-//рендериться пустой div, компонент не маунтиться, если нет в сторе path, указанного ниже (Lodash)
+// рендериться пустой div, компонент не маунтиться, если нет в сторе path, указанного ниже (Lodash)
 export default hocAll(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],

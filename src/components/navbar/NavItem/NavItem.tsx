@@ -13,7 +13,7 @@ const propsToNaItem = [
   'className',
 ];
 
-const checkPermission = props => {
+const checkPermission = (props) => {
   let show = true;
 
   if (props.data.hiddenNav) {
@@ -27,7 +27,7 @@ const checkPermission = props => {
       const { userPermissions } = props;
       const { list } = permissions;
       if (Array.isArray(list)) {
-        show = list.some(permission => userPermissions.includes(permission));
+        show = list.some((permission) => userPermissions.includes(permission));
       } else {
         show = userPermissions.includes(list);
       }
@@ -39,9 +39,9 @@ const checkPermission = props => {
   }
 
   return show;
-}
+};
 
-const NavItemCustom: React.SFC<any> = props => (
+const NavItemCustom: React.SFC<any> = (props) => (
   checkPermission(props)
   ?
   <NavItem { ...propsToNaItem.reduce((newProps, key) => ({ ...newProps, [key]: props[key] }), {}) }>
@@ -53,4 +53,3 @@ const NavItemCustom: React.SFC<any> = props => (
 );
 
 export default connectToStores(NavItemCustom, ['session']);
-  

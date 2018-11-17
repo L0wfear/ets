@@ -3,8 +3,8 @@ import { WaybillCompletedItemsType } from 'components/dashboard/redux-main/modul
 export type PropsWaybillCompleted = {
   items: WaybillCompletedItemsType[];
 
-  setInfoData: Function;
+  setInfoData: any;
 };
 
 export type StateWaybillCompleted = {
-}
+};

@@ -1,7 +1,7 @@
 export type TypeLastPoint = {
   timestamp: number;
   coords_msk: [number, number],
-}
+};
 
 export type PropsCarAttributeInformation = {
   company_name: string,

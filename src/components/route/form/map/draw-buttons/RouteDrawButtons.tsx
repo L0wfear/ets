@@ -27,7 +27,7 @@ class RouteDrawButtons extends React.PureComponent<PropsRouteDrawButtons, {}> {
           <Button onClick={this.handleClickOnRemove} disabled={this.props.disabledRemove}><Glyphicon glyph="remove" /></Button>
         </RouteDrawButtonsContainer>
       </RouteDrawButtonsContaineWrapr>
-    )
+    );
   }
 }
 

@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 const expression = /(https|http)?:\/\/(((www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b)|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)))([-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-const UrlRegex = new RegExp(expression);
+const urlRegex = new RegExp(expression);
 
 export const makeReactMessange = (messageRaw) => {
-  const message = messageRaw.replace(/\[href\]/g, '').replace(UrlRegex, (url) => `[href]${url}[href]`);
+  const message = messageRaw.replace(/\[href\]/g, '').replace(urlRegex, (url) => `[href]${url}[href]`);
 
   return (
     <div>
@@ -20,8 +20,7 @@ export const makeReactMessange = (messageRaw) => {
               })
             }
           </div>
-          )
-        )
+        ))
       }
     </div>
   );

@@ -18,7 +18,7 @@ export type CurrentMissionsItemsType = {
   subItems: CurrentMissionsItemsSubItemsType[],
   tooltip?: string;
   title: string;
-}
+};
 
 export type CurrentMissionsAnsType = {
   items: CurrentMissionsItemsType[];

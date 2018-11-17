@@ -157,8 +157,9 @@ export function getInfoNotification(message) {
     dismissible: true,
     position: 'tr',
     autoDismiss: 0,
-  }
+  };
 }
+
 export function noItemsInfoNotification(msg = 'По данному запросу нет записей.') {
   global.NOTIFICATION_SYSTEM.notify(msg, 'info');
 }
@@ -167,10 +168,14 @@ export function hasWarningNotification(response) {
   if (response.warnings) {
     if (Array.isArray(response.warnings)) {
       response.warnings.forEach((w) => {
-        !w.hidden && global.NOTIFICATION_SYSTEM.notify(getWarningNotification(w.message || w));
+        if (!w.hidden) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification(w.message || w));
+        }
       });
     } else if ((response.warnings && response.warnings.message) || typeof response.warnings === 'string') {
-      !response.warnings.hidden && global.NOTIFICATION_SYSTEM.notify(getWarningNotification(response.warnings.message || response.warnings));
+      if (!response.warnings.hidden) {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification(response.warnings.message || response.warnings));
+      }
     }
     return true;
   }

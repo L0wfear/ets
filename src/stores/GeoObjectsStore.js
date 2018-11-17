@@ -187,7 +187,7 @@ export default class GeoObjectsStore extends Store {
   getSelectedPolys(nameOfSelected) {
     const selectedPolysTypes = this.state[nameOfSelected];
     const polys = {};
-    selectedPolysTypes.map(type => Object.assign(polys, this.state[`${type}Polys`]));
+    selectedPolysTypes.map((type) => Object.assign(polys, this.state[`${type}Polys`]));
     return polys;
   }
 

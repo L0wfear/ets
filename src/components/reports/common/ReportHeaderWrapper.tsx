@@ -6,7 +6,6 @@ import {
   IStateReportHeaderWrapper,
 } from './@types/ReportHeaderWrapper.h';
 
-
 function ReportHeaderWrapper(SourceHeader: any):
 React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
   type IPropsHeader = IPropsReportHeaderWrapper & IStateReportHeaderWrapper;
@@ -25,8 +24,6 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
       const { queryState } = nextProps;
       const queryStateLength = Object.keys(queryState).length;
 
-      console.log(queryState, prevState.lastQueryState, !isEqual(prevState.lastQueryState, queryState))
-      console.log(queryStateLength > 0 && !isEqual(prevState.lastQueryState, queryState))
       if (queryStateLength > 0 && !isEqual(prevState.lastQueryState, queryState)) {
         return {
           ...queryState,
@@ -42,7 +39,6 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
       });
     }
     render() {
-      console.log(this.state)
       return (
         <SourceHeader
           {...this.props}

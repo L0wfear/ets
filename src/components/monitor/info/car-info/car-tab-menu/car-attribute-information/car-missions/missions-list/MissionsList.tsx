@@ -9,9 +9,8 @@ import { NO_DATA_TEXT } from 'constants/statuses';
 import TimeParking from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/time-parking/TimeParking';
 
 type PropsCarMissions = {
-  showMissionInfoForm: Function;
-  showMissionForm: Function;
-  
+  showMissionInfoForm: any;
+  showMissionForm: any;
   missions: any[],
 };
 
@@ -38,7 +37,7 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
         )
         :
         (
-          missions.map(mission => {
+          missions.map((mission) => {
             return (
               <div key={mission.id} className={'car_info_mission_container'}>
                 <div>
@@ -64,16 +63,16 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
                 </div>
                 <Glyphicon glyph="info-sign" className="pointer fontSize24" data-id={mission.id} onClick={this.showMissionInfoForm} />
               </div>
-            )
+            );
           })
         )
       }
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   missions: state.monitorPage.carInfo.missionsData.missions,
 });
 
@@ -85,5 +84,5 @@ export default hocAll(
   }),
   connect(
     mapStateToProps,
-  )
+  ),
 )(MissionsList);

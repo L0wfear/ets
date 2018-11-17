@@ -91,7 +91,7 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const { car_id = -1 } = props;
 
   const renderers: ISchemaRenderer = {
@@ -101,7 +101,7 @@ const Table: React.SFC<any> = props  => {
 
   let meta = tableMeta(props);
   if (car_id === -1) {
-    meta = { cols: meta.cols.filter(el => el.name !== 'car_id') };
+    meta = { cols: meta.cols.filter((el) => el.name !== 'car_id') };
   }
 
   return (

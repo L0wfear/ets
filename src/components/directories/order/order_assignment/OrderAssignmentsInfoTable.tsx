@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { setSelectedElementAssignment } from 'redux-main/reducers/modules/order/action-order';
-  
+
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
@@ -74,7 +74,7 @@ const renderers: ISchemaRenderer = {
   date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
 };
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const { technical_operations = emptyArr } = props.dataSource;
 
   return (
@@ -99,13 +99,13 @@ const mapStateToProps = (state) => ({
   seleted: state.order.selectedElementAssignment,
   dataSource: state.order.selectedElementOrder,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onRowSelectedAssignment: ({ props: { data: selectedElementAssignment } }) => (
     dispatch(
-      setSelectedElementAssignment(selectedElementAssignment)
+      setSelectedElementAssignment(selectedElementAssignment),
     )
   ),
-})
+});
 
 export default connect(
   mapStateToProps,

@@ -39,7 +39,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   state = {
     ws: null,
     carPointsDataWs: {},
-  }
+  };
 
   componentDidMount() {
     this.props.addLayer({ id: 'CarMarker', zIndex: 10, renderMode: 'image' }).then(() => {
@@ -82,7 +82,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         filters,
         carActualGpsNumberIndex,
       };
-      let hasWhatChage = false
+      let hasWhatChage = false;
 
       if (gps_code !== prev_gps_code) {  // Если произошёл перевыбор или сброс ТС
         if (gps_code) {  // Если ТС выборана
@@ -214,66 +214,68 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     const filtredCarGpsCode = {};
     let hasDiffInFiltredCarGpsCode = false;
 
-    for (let gps_code in carPointsDataWs) {
-      const data = carPointsDataWs[gps_code];
-      const old_data = old_carPointsDataWs[gps_code];
-      const feature = this.props.getFeatureById(gps_code);
+    for (const gps_code in carPointsDataWs) {
+      if (gps_code in carPointsDataWs) {
+        const data = carPointsDataWs[gps_code];
+        const old_data = old_carPointsDataWs[gps_code];
+        const feature = this.props.getFeatureById(gps_code);
 
-      if (feature) {
-        if (data.coords_msk !== old_data.coords_msk) {
-          feature.setGeometry(new Point(data.coords_msk));
-        }
-        const selected = gps_code === state_gps_code;
+        if (feature) {
+          if (data.coords_msk !== old_data.coords_msk) {
+            feature.setGeometry(new Point(data.coords_msk));
+          }
+          const selected = gps_code === state_gps_code;
 
-        const visible = selected
-        || checkOnVisible(
-          {
-            filters,
-            wsData: carPointsDataWs[gps_code],
-            statusShow,
-            car_actualData: carActualGpsNumberIndex[gps_code],
-          },
-          gps_code,
-        );
+          const visible = selected
+          || checkOnVisible(
+            {
+              filters,
+              wsData: carPointsDataWs[gps_code],
+              statusShow,
+              car_actualData: carActualGpsNumberIndex[gps_code],
+            },
+            gps_code,
+          );
 
-        const old_visible = feature.get('visible');
-        const old_status = feature.get('status');
+          const old_visible = feature.get('visible');
+          const old_status = feature.get('status');
 
-        feature.set('visible', visible);
-        feature.set('status', carPointsDataWs[gps_code].front_status);
+          feature.set('visible', visible);
+          feature.set('status', carPointsDataWs[gps_code].front_status);
 
-        if (visible) {
-          if (old_visible) {
-            carsByStatus[old_status] -= 1;
+          if (visible) {
+            if (old_visible) {
+              carsByStatus[old_status] -= 1;
+            } else {
+              filtredCarGpsCode[gps_code] = true;
+              hasDiffInFiltredCarGpsCode = true;
+            }
+            carsByStatus[carPointsDataWs[gps_code].front_status] += 1;
           } else {
-            filtredCarGpsCode[gps_code] = true;
-            hasDiffInFiltredCarGpsCode = true;
+            if (old_visible) {
+              carsByStatus[old_status] -= 1;
+              filtredCarGpsCode[gps_code] = false;
+              hasDiffInFiltredCarGpsCode = true;
+            }
           }
-          carsByStatus[carPointsDataWs[gps_code].front_status] += 1;
-        } else {
-          if (old_visible) {
-            carsByStatus[old_status] -= 1;
-            filtredCarGpsCode[gps_code] = false;
-            hasDiffInFiltredCarGpsCode = true;
-          }
+
+          const style = getStyleForStatusDirectionType({
+            status: carPointsDataWs[gps_code].status,
+            direction: carPointsDataWs[gps_code].direction,
+            selected,
+            zoomMore8,
+            show_gov_number: STATUS_SHOW_GOV_NUMBER,
+            gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
+            visible,
+            minZoom,
+          });
+
+          feature.setStyle(style);
         }
-
-        const style = getStyleForStatusDirectionType({
-          status: carPointsDataWs[gps_code].status,
-          direction: carPointsDataWs[gps_code].direction,
-          selected,
-          zoomMore8,
-          show_gov_number: STATUS_SHOW_GOV_NUMBER,
-          gov_number: carActualGpsNumberIndex[gps_code] ? carActualGpsNumberIndex[gps_code].gov_number : '',
-          visible,
-          minZoom,
-        });
-
-        feature.setStyle(style);
       }
     }
 
-    if (Object.values(carsByStatus).some(val => !!val)) {
+    if (Object.values(carsByStatus).some((val) => !!val)) {
       this.props.monitoPageChangeCarsByStatus(carsByStatus);
     }
     if (hasDiffInFiltredCarGpsCode) {
@@ -335,12 +337,12 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       let hasDiffInFiltredCarGpsCode = false;
       const minZoom = zoom <= MIN_ZOOM_VAL;
 
-      Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
+      Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...dataOther }]) => {
         let point = {
           coords_msk: [...coords_msk].reverse() as ol.Coordinate,
           coords: [...coords].reverse() as ol.Coordinate,
-          ...data,
-          front_status: getFrontStatus(data.status).slug,
+          ...dataOther,
+          front_status: getFrontStatus(dataOther.status).slug,
         };
 
         if (this.props.forToday && gps_code === state_gps_code && lastPoint !== -1 && lastPoint) {
@@ -380,7 +382,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             filtredCarGpsCode[gps_code] = false;
             hasDiffInFiltredCarGpsCode = true;
           }
-    
+
           const style = getStyleForStatusDirectionType({
             status: point.status,
             direction: point.direction,
@@ -413,15 +415,15 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           if (state_gps_code && state_gps_code === gps_code) {
             if (this.props.STATUS_TC_FOLLOW_ON_CAR) {
-              const { coords_msk } = carPointsDataWs[gps_code];
-        
+              const { coords_msk: coordsMsk } = carPointsDataWs[gps_code];
+
               const extent: [number, number, number, number] = [
-                coords_msk[0],
-                coords_msk[1],
-                coords_msk[0],
-                coords_msk[1],
+                coordsMsk[0],
+                coordsMsk[1],
+                coordsMsk[0],
+                coordsMsk[1],
               ];
-        
+
               const noCheckDisabledCenterOn = true;
               this.props.centerOn({ extent }, noCheckDisabledCenterOn);
             }
@@ -429,7 +431,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
 
           const feature = this.props.getFeatureById(gps_code);
           const old_visible = feature.get('visible');
-          const selected = gps_code === state_gps_code
+          const selected = gps_code === state_gps_code;
 
           const visible = selected || checkOnVisible(
             {
@@ -437,7 +439,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
               wsData: carPointsDataWs[gps_code],
               statusShow,
               car_actualData: carActualGpsNumberIndex[gps_code],
-            }, gps_code
+            },
+            gps_code,
           );
 
           if (visible) {
@@ -480,8 +483,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         }
       });
 
-
-      if (Object.values(carsByStatus).some(val => !!val)) {
+      if (Object.values(carsByStatus).some((val) => !!val)) {
         this.props.monitoPageChangeCarsByStatus(carsByStatus);
       }
 
@@ -496,7 +498,6 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   singleclick = (feature) => {
     const gps_code = (feature as any).getId();
     if (gps_code !== this.props.gps_code) {
-      const gps_code = (feature as any).getId();
       this.props.carInfoSetGpsNumber(
         gps_code,
         this.props.carActualGpsNumberIndex[gps_code]
@@ -507,11 +508,11 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   }
 
   render() {
-    return <div></div>
+    return <div></div>;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   token: state.session.token,
   gps_code: state.monitorPage.carInfo.gps_code,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
@@ -525,15 +526,15 @@ const mapStateToProps = state => ({
   filters: state.monitorPage.filters.data,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   carInfoSetGpsNumber(gps_code, gov_number) { dispatch(carInfoSetGpsNumber(gps_code, gov_number)); },
-  carInfoSetStatus(status){ dispatch(carInfoSetStatus(status)); },
-  carInfoPushPointIntoTrack(point, odh_mkad){ dispatch(carInfoPushPointIntoTrack(point, odh_mkad)); },
+  carInfoSetStatus(status) { dispatch(carInfoSetStatus(status)); },
+  carInfoPushPointIntoTrack(point, odh_mkad) { dispatch(carInfoPushPointIntoTrack(point, odh_mkad)); },
   monitoPageChangeCarsByStatus: (carsByStatus) => (
     dispatch(
       monitoPageChangeCarsByStatus(
         carsByStatus,
-      )
+      ),
     )
   ),
   monitorPageResetCarStatus: () => (
@@ -544,11 +545,11 @@ const mapDispatchToProps = dispatch => ({
   monitorPageMergeFiltredCarGpsCode: (filtredCarGpsCode) => {
     dispatch(
       monitorPageMergeFiltredCarGpsCode(
-        filtredCarGpsCode
+        filtredCarGpsCode,
       ),
-    )
+    );
   },
-})
+});
 
 export default hocAll(
   connect(

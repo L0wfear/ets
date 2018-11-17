@@ -6,7 +6,7 @@ import { createValidDate } from '../utils/dates';
 import { AUTOBASE_REPAIR_STATUS } from '../constants/dictionary';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
-const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
+const clearPayload = (state) => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
 
 export default class AutobaseActions extends Actions {
   async getAutobaseListByType(type, data, other) {
@@ -69,7 +69,7 @@ export default class AutobaseActions extends Actions {
   batteryRegistry(method, formState) {
     const payload = {
       ...formState,
-      battery_to_car: get(formState, 'battery_to_car', []).map(item => ({
+      battery_to_car: get(formState, 'battery_to_car', []).map((item) => ({
         car_id: item.car_id,
         installed_at: createValidDate(item.installed_at),
         uninstalled_at: createValidDate(item.uninstalled_at),
@@ -320,7 +320,7 @@ export default class AutobaseActions extends Actions {
 
     const payload = {
       ...cleanFormState,
-      tire_to_car: get(cleanFormState, 'tire_to_car', []).map(item => ({
+      tire_to_car: get(cleanFormState, 'tire_to_car', []).map((item) => ({
         ...clearPayload(item),
         installed_at: createValidDate(item.installed_at),
         uninstalled_at: createValidDate(item.uninstalled_at),

@@ -64,7 +64,7 @@ const renderers: ISchemaRenderer = {
   created_at: ({ data }) => (<DateFormatter date={data} time={true}/>),
 };
 
-const Table: React.SFC<any> = props  =>
+const Table: React.SFC<any> = (props) =>
     <DataTable
       title="Проставление процента выполнения работ"
       noFilter={true}

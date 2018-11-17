@@ -5,8 +5,7 @@ import Fill from 'ol/style/Fill';
 
 import { TRACK_COLORS } from 'constants/track';
 
-
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
@@ -30,7 +29,7 @@ const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK, equipmentCheck
     }),
     zIndex: 9,
   });
-}
+};
 
 export const getStyleForTrackLine = (greenSpeed, SHOW_TRACK, equipmentChecked = false) => {
   const cacheStyleName = !SHOW_TRACK ? '!SHOW_TRACK' : `${greenSpeed}/${equipmentChecked}`;
@@ -46,4 +45,4 @@ export const getStyleForTrackLine = (greenSpeed, SHOW_TRACK, equipmentChecked = 
     );
   }
   return icon;
-}
+};

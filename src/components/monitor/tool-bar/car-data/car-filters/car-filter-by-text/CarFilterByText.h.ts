@@ -4,4 +4,4 @@ export type PropsCarFilterByText = {
 
 export type StateCarFilterByText = {
   hidden: boolean;
-}
+};

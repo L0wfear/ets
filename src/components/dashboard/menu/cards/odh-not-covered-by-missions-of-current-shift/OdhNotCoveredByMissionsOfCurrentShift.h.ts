@@ -2,7 +2,7 @@ import { OdhNotCoveredByMissionsOfCurrentShiftItemsType } from 'components/dashb
 
 export type PropsOdhNotCoveredByMissionsOfCurrentShift = {
   items: OdhNotCoveredByMissionsOfCurrentShiftItemsType[];
-  setInfoData: Function;
+  setInfoData: any;
 };
 
 export type StateOdhNotCoveredByMissionsOfCurrentShift = {

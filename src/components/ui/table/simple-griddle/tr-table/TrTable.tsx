@@ -8,14 +8,14 @@ type PropsTrTable = {
   rowNumberOffset: number;
   rowMetadata: any;
   columnMetadata: any;
-  handleClickTbodyTr: (rowData: any, index: number) => any;
-  onRowDoubleClick: (rowData: any, index: number) => any;
-  handleRowCheck: (id: number | string) => any;
+  handleClickTbodyTr: any;
+  onRowDoubleClick: any;
+  handleRowCheck: any;
   selectField: string;
   currentPage: number;
   resultsPerPage: number;
   columns: string[];
-}
+};
 
 class TrTable extends React.Component<PropsTrTable, any> {
   handleClickTbodyTr: React.MouseEventHandler<HTMLTableRowElement> = () => {
@@ -24,7 +24,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
     this.props.handleClickTbodyTr(
       props.rowData,
       props.index,
-    )
+    );
   }
   handleDoubleClickTbodyTr: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
@@ -63,7 +63,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
       >
       {
         this.props.columns.map((columnNameOuter, colIndex) => {
-          const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
+          const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
 
           const { columnName, customComponent, cssClassName } = field;
 
@@ -109,11 +109,11 @@ class TrTable extends React.Component<PropsTrTable, any> {
                     rowData[columnName]
               }
             </td>
-          )
+          );
         })
       }
     </tr>
-    )
+    );
   }
 }
 

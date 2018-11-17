@@ -11,7 +11,8 @@ class NotificationBadge extends React.Component<any, any> {
 
   state = {
     getNotReadInterval: 0,
-  }
+  };
+
   ws: any;
   componentDidMount() {
     this.openWs();
@@ -32,7 +33,7 @@ class NotificationBadge extends React.Component<any, any> {
       await Promise.all([
         this.context.flux.getActions('userNotifications').getOrderNotRead(),
         this.context.flux.getActions('userNotifications').getAdmNotReadNotifications(),
-      ])
+      ]);
     } catch (e) {
       //
     }
@@ -58,7 +59,7 @@ class NotificationBadge extends React.Component<any, any> {
       this.ws.onopen = (event) => {
         // tslint:disable-next-line
         console.log(`API SERVICE OPEN WS ${config.notification_ws}`);
-      }
+      };
 
       this.ws.onmessage = ({ data }) => {
         this.context.flux.getActions('userNotifications').setNotifyFromWs(JSON.parse(data));
@@ -80,6 +81,7 @@ class NotificationBadge extends React.Component<any, any> {
         // console.error('WEBSOCKET - Ошибка WebSocket');
       };
     } catch (e) {
+      // tslint:disable-next-line
       console.warn(e)
     }
   }

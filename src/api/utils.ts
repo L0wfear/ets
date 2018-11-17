@@ -23,7 +23,7 @@ export function packObjectData(
   const result = {};
   const fullPrefix = `${prefix}_`;
 
-  Object.keys(srcData).forEach(key => {
+  Object.keys(srcData).forEach((key) => {
     if (key.match(fullPrefix)) {
       result[key.split(fullPrefix)[1]] = srcData[key];
     }

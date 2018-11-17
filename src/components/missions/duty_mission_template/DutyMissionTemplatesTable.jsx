@@ -90,7 +90,7 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export const getRenderers = props => ({
+export const getRenderers = (props) => ({
   brigade_employee_id_list: ({ data, rowData }) => (
     <div>
       {
@@ -103,7 +103,7 @@ export const getRenderers = props => ({
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
 });
 
-const DataTable = props => (
+const DataTable = (props) => (
   <Table
     title="Шаблоны наряд-заданий"
     renderers={getRenderers(props)}

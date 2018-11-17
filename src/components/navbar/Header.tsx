@@ -17,7 +17,7 @@ import rWithP from 'constants/routerAndPermission';
 
 const makeNavDropChildren = ([key, data]) => {
   if ((data.path || data.divider) && !data.renderNav) {
-    return <MenuItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
+    return <MenuItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />;
   }
   if (data.children && !data.renderNav) {
     return (
@@ -26,19 +26,19 @@ const makeNavDropChildren = ([key, data]) => {
           Object.entries(data.children).map(makeNavDropChildren)
         }
       </NavDropdown>
-    )
+    );
   }
 
-  if (data.renderNav){
+  if (data.renderNav) {
     return data.renderNav(key, data);
   }
 
   return null;
-}
+};
 
 const makeNavChildren = ([key, data]) => {
   if (data.path && !data.renderNav) {
-    return <NavItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />
+    return <NavItem key={key} id={`link-${key}`} className={data.className} href={`${data.noHash ? '' : '#'}${data.path}`} eventKey={data.path} data={data} />;
   }
   if (data.children && !data.render) {
     return (
@@ -47,21 +47,21 @@ const makeNavChildren = ([key, data]) => {
           Object.entries(data.children).map(makeNavDropChildren)
         }
       </NavDropdown>
-    )
+    );
   }
-  if (data.renderNav){
+  if (data.renderNav) {
     return data.renderNav(key, data);
   }
 
   return null;
-}
+};
 
 const dataGuide = {
   backToCity: {
-    renderNav: () => <NavItemBackToGorod key={'change-role-to-city'}/>
+    renderNav: () => <NavItemBackToGorod key={'change-role-to-city'}/>,
   },
   changeRole: {
-    renderNav: () => <NavItemRole key={'change-role'}/>
+    renderNav: () => <NavItemRole key={'change-role'}/>,
   },
   docs,
   userData: {
@@ -72,7 +72,7 @@ const dataGuide = {
   },
 };
 
-const Header = props => (
+const Header = (props) => (
   <Navbar fluid>
     <Navbar.Header>
       <Navbar.Brand>
@@ -89,6 +89,6 @@ const Header = props => (
       </Nav>
     </Navbar.Collapse>
   </Navbar>
-)
+);
 
 export default withRouter(Header);

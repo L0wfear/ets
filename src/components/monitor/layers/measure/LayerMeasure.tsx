@@ -32,21 +32,20 @@ type PropsLayerParkingPoints = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   map: ol.Map;
 
-  monitorPageToggleMeasureActive: Function;
+  monitorPageToggleMeasureActive: any;
   measureActive: boolean;
 };
 
 type OneLine = {
   length: number;
   points: any[];
-}
+};
 
 type StateLayerParkingPoints = {
   lines: OneLine[];
   interactionDraw: ol.interaction.Draw | void;
   activeDraw: boolean;
 };
-
 
 /**
  * @todo перевести на LayerLayerDraw
@@ -56,7 +55,8 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     lines: [],
     interactionDraw: null,
     activeDraw: false,
-  }
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'MeasureLines', zIndex: 100 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
@@ -82,7 +82,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
 
       this.setOnForDraw(interactionDraw);
     } else {
-      this.props.map.removeInteraction(this.state.interactionDraw)
+      this.props.map.removeInteraction(this.state.interactionDraw);
       this.setState({ interactionDraw: null });
     }
   }
@@ -94,8 +94,8 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
         const feature = event.feature;
         const listener = feature.getGeometry().on(
           'change',
-          (event) => (
-            this.handleChangeLastFeature(event, feature)
+          (eventInside) => (
+            this.handleChangeLastFeature(eventInside, feature)
           ),
         );
 
@@ -116,7 +116,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
           ],
           activeDraw: true,
         });
-      }
+      },
     );
 
     interactionDraw.on(
@@ -124,7 +124,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
       () => {
         const { lines } = this.state;
         const linesLength = lines.length;
-    
+
         this.setState({
           activeDraw: false,
           lines: lines.map((lineData, index) => {
@@ -147,8 +147,8 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
                 ...lineData.overlayData,
                 active: false,
               },
-            }
-          })
+            };
+          }),
         });
       },
     );
@@ -172,10 +172,10 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
           overlayData: {
             active: true,
             coords_msk: feature.getGeometry().getLastCoordinate(),
-            lineStringLength: feature.getGeometry().getLength()
+            lineStringLength: feature.getGeometry().getLength(),
           },
-        }
-      })
+        };
+      }),
     });
   }
 
@@ -202,7 +202,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
                     overlayData: {
                       ...lineData.overlayData,
                       coords_msk: lastCoordinates,
-                      lineStringLength: feature.getGeometry().getLength()
+                      lineStringLength: feature.getGeometry().getLength(),
                     },
                   },
                   ...newLines,
@@ -243,7 +243,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
             };
           }
         }, { newLines: [], alreadyCheckLastVisible: false }).newLines,
-      })
+      });
     } else {
       this.state.interactionDraw.removeLastPoint();
     }
@@ -269,7 +269,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
               EtsOverlayTitle={EtsOverlayMeasureTitleContainer}
               EtsTriangle={EtsTriangleMeasure}
               active={active}
-              title={lineStringLength < 1000 ? `${lineStringLength.toFixed(3)} м.` : `${(lineStringLength/1000).toFixed(3)} км.`}
+              title={lineStringLength < 1000 ? `${lineStringLength.toFixed(3)} м.` : `${(lineStringLength / 1000).toFixed(3)} км.`}
               map={this.props.map}
               coordsMsk={overlayData.coords_msk}
             />
@@ -288,16 +288,16 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   measureActive: state.monitorPage.measureActive,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   monitorPageToggleMeasureActive: () => (
     dispatch(
       monitorPageToggleMeasureActive(),
     )
-  )
+  ),
 });
 
 export default hocAll(
@@ -307,5 +307,5 @@ export default hocAll(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )
+  ),
 )(LayerParkingPoints);

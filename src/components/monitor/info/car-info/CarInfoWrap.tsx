@@ -6,11 +6,10 @@ import { OwnPropsCarInfo } from './CarInfo';
 
 type PropsCarInfoWrap = {
   map: ol.Map,
-  centerOn: Function;
+  centerOn: any;
 };
 type StateCarInfoWrap = {
-}
-
+};
 
 const CarInfo = React.lazy<React.ComponentType<OwnPropsCarInfo>>(() => (
   import(/* webpackChunkName: "car_info" */'components/monitor/info/car-info/CarInfo')
@@ -25,7 +24,7 @@ class CarInfoWrap extends React.Component<PropsCarInfoWrap, StateCarInfoWrap> {
           centerOn={this.props.centerOn}
         />
       </React.Suspense>
-    )
+    );
   }
 }
 

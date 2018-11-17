@@ -22,7 +22,7 @@ import { ReduxState } from 'redux-main/@types/state';
 const makeData = ({ track, front_cars_sensors_equipment, mkad_speed_lim, speed_lim }) => ([
   {
     name: 'Скорость ТС',
-    data: track.map(p => [p.timestamp, parseInt(p.speed_avg, 10)]),
+    data: track.map((p) => [p.timestamp, parseInt(p.speed_avg, 10)]),
     color: 'rgba(90, 242, 18, 1)',
   },
   {
@@ -43,7 +43,7 @@ const makeData = ({ track, front_cars_sensors_equipment, mkad_speed_lim, speed_l
         name: sensor.name,
         values: sensor.data,
       },
-    ]), [])
+    ]), []),
 ]).filter(({ data }) => (
   data.some(([t, value]) => !!value)
 ));
@@ -59,8 +59,8 @@ const addPointToSeries = (data, { lastPoint: { timestamp, speed_avg, checkCoords
     }
 
     return seria;
-  })
-}
+  });
+};
 
 class CarSpeedChart extends React.Component<PropsCarSpeedChart, StateCarSpeedChart> {
   constructor(props) {
@@ -76,7 +76,7 @@ class CarSpeedChart extends React.Component<PropsCarSpeedChart, StateCarSpeedCha
       front_cars_sensors_equipment,
       mkad_speed_lim,
       speed_lim,
-    }
+    };
   }
   static getDerivedStateFromProps(nextProps: PropsCarSpeedChart, prevState: StateCarSpeedChart) {
     if (nextProps.track !== -1) {
@@ -118,7 +118,7 @@ class CarSpeedChart extends React.Component<PropsCarSpeedChart, StateCarSpeedCha
       }
 
       return true;
-    })
+    });
 
     this.props.handleChartClick(selected_point);
   }
@@ -148,7 +148,7 @@ class CarSpeedChart extends React.Component<PropsCarSpeedChart, StateCarSpeedCha
           )
         }
       </div>
-    )
+    );
   }
 }
 
@@ -159,7 +159,7 @@ export default compose<PropsCarSpeedChart, OwnPropsCarSpeedChart>(
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
   connect<StatePropsCarSpeedChart, DispatchPropsCarSpeedChart, OwnPropsCarSpeedChart, ReduxState>(
-    state => ({
+    (state) => ({
       has_cars_sensors: Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level'),
       track: state.monitorPage.carInfo.trackCaching.track,
       front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
@@ -167,5 +167,5 @@ export default compose<PropsCarSpeedChart, OwnPropsCarSpeedChart>(
       speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
       lastPoint: state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) || state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
     }),
-  )
+  ),
 )(CarSpeedChart);

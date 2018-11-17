@@ -20,7 +20,7 @@ class WaybillInProgress extends React.Component<PropsWaybillInProgress, StateWay
     return (
       <div className="waybill_in_progress">
       </div>
-    )
+    );
   }
 }
 

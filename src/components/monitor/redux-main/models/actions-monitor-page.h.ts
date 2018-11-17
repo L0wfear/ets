@@ -1,4 +1,4 @@
-export module ActionsMonitorPage {
+export namespace ActionsMonitorPage {
   export type monitorPageRemoveFromSelectedGeoobjects = (
     serverName: string,
     id?: string,

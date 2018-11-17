@@ -6,6 +6,6 @@ export type PropsLayerPlayPoint = {
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   playTrackStatus: string;
-  centerOn: Function;
+  centerOn: any;
   point: any;
 };

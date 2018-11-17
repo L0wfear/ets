@@ -25,7 +25,9 @@ class Paginator extends React.PureComponent<Paginator, any> {
 
   next = (disabled, e) => {
     e.preventDefault();
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     this.props.setPage(this.props.currentPage + 1);
   }
 
@@ -55,7 +57,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
       options.push(
         <li className="aui-nav-first" key="first">
           <a className="pointer" onClick={this.first}>Первая</a>
-        </li>
+        </li>,
       );
     }
 
@@ -65,7 +67,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
           <a className="pointer pagination-control" onClick={this.previous}>
             <Glyphicon glyph="chevron-left" />
           </a>
-        </li>
+        </li>,
       );
     }
 
@@ -76,25 +78,25 @@ class Paginator extends React.PureComponent<Paginator, any> {
         options.push(
           <li className="active" key={i}>
             <a className="pointer">{i + 1}</a>
-          </li>
+          </li>,
         );
       } else {
         options.push(
           <li key={i}>
             <a className="pointer" data-index={i} onClick={this.setPageFromA}>{i + 1}</a>
-          </li>
+          </li>,
         );
       }
     }
 
     if (currentPage < maxPage - 1) {
-      const nextClasses = cx('pointer pagination-control', { 'disabled': !(currentPage < maxPage - 1) });
+      const nextClasses = cx('pointer pagination-control', { disabled: !(currentPage < maxPage - 1) });
       options.push(
         <li className="aui-nav-previous" key="next">
           <a className={nextClasses} onClick={this.next.bind(this, !(currentPage < maxPage - 1))}>
             <Glyphicon glyph="chevron-right" />
           </a>
-        </li>
+        </li>,
       );
     }
 
@@ -102,7 +104,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
       options.push(
         <li className="aui-nav-last" key="last">
           <a className="pointer" onClick={this.last}>Последняя</a>
-        </li>
+        </li>,
       );
     }
 

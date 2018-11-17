@@ -11,6 +11,8 @@ import { withRouter } from 'react-router-dom';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 
+
+/* tslint:disable */
 const CompanyOptionsWrap = compose(
   withRouter,
   connect<any, any, any, ReduxState>(
@@ -64,5 +66,6 @@ const CompanyOptionsWrap = compose(
     }
   }
 );
+/* tslint:enable */
 
 export default CompanyOptionsWrap;

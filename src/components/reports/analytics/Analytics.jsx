@@ -71,7 +71,7 @@ export default class Analytics extends Component {
     } else if (field === 'companies_ids') {
       let { companies_ids, transcript } = this.state;
       companies_ids = value ? ('' + value).split(',') : [];
-      companies_ids = companies_ids.map(e => parseFloat(e));
+      companies_ids = companies_ids.map((e) => parseFloat(e));
       if (companies_ids.length > 1) transcript = false;
       this.setState({ companies_ids, transcript });
     } else {
@@ -83,7 +83,7 @@ export default class Analytics extends Component {
     let value;
     if (e.target.checked) {
       const { organizations } = this.props;
-      value = organizations.map(e => e.id).join(',');
+      value = organizations.map((e) => e.id).join(',');
     } else {
       value = '';
     }

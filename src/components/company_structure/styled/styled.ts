@@ -19,17 +19,17 @@ export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
         }
       }
 
-      &:nth-child(even){
+      &:nth-child(even) {
         background-color: #f7f7f7 !important;
       }
-    
+
       tr {
         &.expanded > td {
           background-color: ${constantColor.colorGreen} !important;
           color: white !important;
         }
-        
-        &:nth-of-type(n+2){
+
+        &:nth-of-type(n+2) {
           cursor: pointer;
 
           &:nth-child(even) > td {

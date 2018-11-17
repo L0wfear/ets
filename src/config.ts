@@ -77,7 +77,8 @@ try {
   configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
   configs.notification_ws = notification_config[pathToConfig][STAND] || notification_config[pathToConfig].dev;
 } catch (e) {
-  console.log(e); // eslint-disable-line
+  // tslint:disable-next-line
+  console.warn(e);
 }
 
 export default configs;

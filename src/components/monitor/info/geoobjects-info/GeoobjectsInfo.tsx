@@ -10,23 +10,22 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-type PropsGeoobjectsInfo ={
+type PropsGeoobjectsInfo = {
   handleClickOnClose: any;
-  centerOn: Function;
+  centerOn: any;
 };
 
 type StateGeoobjectsInfo = {
-
 };
 
 class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobjectsInfo> {
   state = {
     shortVersion: false,
-  }
+  };
   toggleShortVersion: any = () => {
     this.setState({
       shortVersion: !this.state.shortVersion,
-    })
+    });
   }
   render() {
     const { shortVersion } = this.state;
@@ -67,11 +66,11 @@ class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobject
           <Button title={`${shortVersion ? 'Показать' : 'Скрыть'} выбранные геообъекты`}>{shortVersion ? '<<' : '>>'}</Button>
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   handleClickOnClose: () => dispatch(
     monitorPageRemoveAllFromSelectedGeoobjects(),
   ),

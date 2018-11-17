@@ -1,8 +1,8 @@
 import { groupBy } from 'lodash';
 
 export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
-export const removeRedundantNumbers = rowValue => Math.round(rowValue * 1000) / 1000;
-export const openFields = fields => fields.map(meta => {
+export const removeRedundantNumbers = (rowValue) => Math.round(rowValue * 1000) / 1000;
+export const openFields = (fields) => fields.map((meta) => {
   const [[keyName, metaData]] = Object.entries(meta);
   return {
     keyName,
@@ -10,7 +10,7 @@ export const openFields = fields => fields.map(meta => {
   };
 });
 
-export const getInitialDataForReduce = rowCol =>
+export const getInitialDataForReduce = (rowCol) =>
   rowCol.sections.reduce((newwArr, oneSection) => {
     if (oneSection.visible) {
       newwArr.push({
@@ -44,15 +44,15 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
         }), {}),
       }), {}),
     };
-    aggr_fields.forEach(key => {
-      newItem[key] = removeRedundantNumbers(newItem[key])
-    })
+    aggr_fields.forEach((key) => {
+      newItem[key] = removeRedundantNumbers(newItem[key]);
+    });
 
     filedsRule.forEach(({ key, value: { force_value }}) => {
       if (force_value !== false) {
         newItem[key] = force_value;
       }
-    })
+    });
 
     allCols.filter(({ keyName, abs }) => {
       if (abs) {
@@ -60,11 +60,11 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
       }
     });
 
-    newArr.push(newItem)
+    newArr.push(newItem);
   }
 
   return newArr;
-}
+};
 
 const makeRowsWithNoneStructure = (rows, colMeta) =>
   rows.map(({ ...row }) => ({ ...row, [colMeta.keyName]: '-' }));
@@ -95,16 +95,16 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
     const returnData = rows.reduce((newDataObj, row) => {
       const { [verticalAgregationBy.keyName]: verticalKey } = row;
 
-      newDataObj.forEach(section => {
+      newDataObj.forEach((section) => {
         if (section.values.includes(verticalKey)) {
           section.children.push(row);
         }
-      })
+      });
 
       return newDataObj;
     }, initialDataForReduce)
       .map((row, index) => {
-        const filedsRule = row.fields.map(fieldData => {
+        const filedsRule = row.fields.map((fieldData) => {
           const [[key, value]] = Object.entries(fieldData);
 
           return { key, value };
@@ -123,9 +123,9 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
         } else {
           const col = cols.find(({ keyName, name }) => keyName === 'structure_name' || name === 'Подразделение');
           if (col) {
-            children.push(...makeSummer([], makeRowsWithNoneStructure(row.children, col), diffCols, cols, aggr_fields, filedsRule).map(d => ({ ...d, className: 'bold'})));
+            children.push(...makeSummer([], makeRowsWithNoneStructure(row.children, col), diffCols, cols, aggr_fields, filedsRule).map((d) => ({ ...d, className: 'bold'})));
           }
-        };
+        }
 
         return {
           ...row,
@@ -141,8 +141,8 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
         };
       });
 
-      return returnData;
+    return returnData;
   }
 
   return [];
-}
+};

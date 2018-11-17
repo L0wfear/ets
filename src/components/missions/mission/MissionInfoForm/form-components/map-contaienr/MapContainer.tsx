@@ -17,7 +17,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
     geoobjects: this.props.geoobjects,
     track: this.props.track,
     front_parkings: this.props.front_parkings,
-  }
+  };
 
   static getDerivedStateFromProps(nextProps: PropsMapContainer, state: StateMapContainer) {
     const {
@@ -59,7 +59,6 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
       changeStateObj.SHOW_GEOOBJECTS = SHOW_GEOOBJECTS;
     }
 
-
     this.setState({ ...changeStateObj });
   }
 
@@ -91,8 +90,8 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
           speed_limits={speed_limits}
         />
       </MapContainerDiv>
-    )
+    );
   }
-};
+}
 
 export default MapContainer;

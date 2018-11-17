@@ -15,8 +15,8 @@ const schemaMakers = {};
 const renderers = {};
 
 const tableProps = {
-  rowNumberLabel: "№ п/п",
-  rowNumberClassName: "width60",
+  rowNumberLabel: '№ п/п',
+  rowNumberClassName: 'width60',
 };
 
 const reportProps: IReportProps = {

@@ -59,7 +59,7 @@ export default class BaseTechInspectionForm extends Form {
     ] = [this.props.formState, this.props.formErrors];
 
     const fields = cols.reduce((obj, val) => Object.assign(obj, { [val.name]: val }), {});
-    const CAR_LIST_OPTION = carsList.map(el => ({ value: el.asuods_id, label: el.gov_number }));
+    const CAR_LIST_OPTION = carsList.map((el) => ({ value: el.asuods_id, label: el.gov_number }));
 
     const IS_CREATING = !state.id;
 

@@ -11,23 +11,23 @@ const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
 export const CONFIG_INITIAL = { // дефолтное значение конфигурации
-  enums:{
+  enums: {
     FUEL_TYPE: {},
   },
-  defaults:{
-    FUEL_TYPE: "DT",
+  defaults: {
+    FUEL_TYPE: 'DT',
   },
-  shift:{ 
+  shift: {
     shift_end: null, // todo: сделать вызов тех же методов что и в факсограмме
     shift_start: null, // todo: сделать вызов тех же методов что и в факсограмме
   },
-  summer_start:[
+  summer_start: [
     4,
     6,
   ],
-  summer_end:[
+  summer_end: [
     11,
-    1
+    1,
   ],
   footer_url: '',
   project_name: '',
@@ -73,4 +73,4 @@ export default (state = initialState, { type, payload }) => {
       return state;
     }
   }
-}
+};

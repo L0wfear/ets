@@ -10,7 +10,7 @@ import {
 class CollapseListFutureMission extends  React.PureComponent<PropsCollapseListFutureMission, StateCollapseListFutureMission> {
   renderMap = (item) => (
     <FutureMissionLiData key={item.id} item={item} handleClick={this.props.handleClick}/>
-  );
+  )
 
   render() {
     const { props } = this;
@@ -24,5 +24,5 @@ class CollapseListFutureMission extends  React.PureComponent<PropsCollapseListFu
     );
   }
 }
-               
+
 export default CollapseListFutureMission;

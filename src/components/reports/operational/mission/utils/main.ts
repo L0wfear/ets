@@ -5,4 +5,4 @@ export const delRouteCheckUnitRender = {
   'к': 1,
 };
 
-export const getDelForUnitRender = name => delRouteCheckUnitRender[name] ? delRouteCheckUnitRender[name] : 1;
+export const getDelForUnitRender = (name) => delRouteCheckUnitRender[name] ? delRouteCheckUnitRender[name] : 1;

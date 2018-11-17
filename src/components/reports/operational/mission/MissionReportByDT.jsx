@@ -102,22 +102,22 @@ const MissionReportByDTTable = (props) => {
   const tableMeta = getTableMeta(props);
 
   const renderers = {
-    traveled_percentage: data => (
+    traveled_percentage: (data) => (
       <div>
         {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
         {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
-    left_percentage: data => (
+    left_percentage: (data) => (
       <div>
         {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
         <br />
         {`(${`${VALUE_FOR_FIXED.floatFixed(data.data * 100, 0)}%`})`}
       </div>
     ),
-    check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-    route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)}`}</div>,
+    check_value: (meta) => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
+    route_with_speed: (meta) => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)}`}</div>,
   };
 
   if (!(props.data && props.data.length)) {

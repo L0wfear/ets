@@ -21,7 +21,7 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
       })
       .finally(() => {
         dispatch(decLoadingCount(meta));
-      })
+      });
   }
 
   return next(action);

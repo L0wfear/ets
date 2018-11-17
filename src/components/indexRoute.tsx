@@ -8,7 +8,7 @@ const renderRoutes = (newRoutesArr, data) => {
   if (!data.noRoute) {
     if (data.path) {
       newRoutesArr.push(
-        ...data.components.map(componentData => {
+        ...data.components.map((componentData) => {
           return (
             <PublicRoute
               key={[data.path, componentData.addPath].join('')}

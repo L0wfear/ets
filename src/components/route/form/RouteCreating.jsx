@@ -90,7 +90,7 @@ class RouteCreating extends React.Component {
       onChange,
     } = this.props;
     const { object_list = [] } = route;
-    const objectIndex = object_list.findIndex(d => d.object_id === +id);
+    const objectIndex = object_list.findIndex((d) => d.object_id === +id);
     const type = route.type === 'simple_dt' ? 'dt' : 'odh';
 
     if (state === polyState.SELECTABLE) {
@@ -116,7 +116,7 @@ class RouteCreating extends React.Component {
     let { object_list = [] } = this.props.route;
     const { polys = {} } = this.props.route;
     const { geozonePolys = {} } = this.props;
-    const odhs = v.split(',').map(e => parseInt(e, 10));
+    const odhs = v.split(',').map((e) => parseInt(e, 10));
     object_list.forEach((obj) => {
       const i = odhs.indexOf(obj.object_id);
       if (i + 1) odhs.splice(i, 1);
@@ -207,16 +207,16 @@ class RouteCreating extends React.Component {
     } = route;
     const [draw_list = []] = [route.draw_odh_list];
     const MapPolys = Object.assign({}, bridgesPolys, polys);
-    const list = object_list.filter(o => o.type) || [];
+    const list = object_list.filter((o) => o.type) || [];
 
     const fail_list = _.map(polys, (v, k) => ({
       name: v.name,
       object_id: parseInt(k, 10),
       type: 'odh',
       state: v.state,
-    })).filter(o => (
+    })).filter((o) => (
       !list.concat(draw_list)
-        .find(e => e.object_id === o.object_id)
+        .find((e) => e.object_id === o.object_id)
     ));
 
     const POLYS_OPTIONS = Object.entries(polys).reduce((newArr, [id, { name }]) => [
@@ -247,7 +247,7 @@ class RouteCreating extends React.Component {
                 <div className="form-group">
                   <div className="checkbox">
                     <label className={cx({ 'not-allowed': !POLYS_OPTIONS.length })} disabled={!POLYS_OPTIONS.length}>
-                      <input type="checkbox" label="Выбрать все" disabled={!POLYS_OPTIONS.length} checked={POLYS_OPTIONS.length && !fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', POLYS_OPTIONS.map(o => o.value).join(','))} />
+                      <input type="checkbox" label="Выбрать все" disabled={!POLYS_OPTIONS.length} checked={POLYS_OPTIONS.length && !fail_list.length} onChange={this.handleCheckbox.bind(this, 'odh', POLYS_OPTIONS.map((o) => o.value).join(','))} />
                       <span>Выбрать все</span>
                     </label>
                   </div>
@@ -258,7 +258,7 @@ class RouteCreating extends React.Component {
                   label="Список выбранных ОДХ"
                   multi
                   options={POLYS_OPTIONS}
-                  value={object_list.map(o => o.object_id).join(',')}
+                  value={object_list.map((o) => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'odh')}
                   error={errors.object_list}
                 />
@@ -267,7 +267,7 @@ class RouteCreating extends React.Component {
                 <div className="form-group">
                   <div className="checkbox">
                     <label htmlFor="route-select-all">
-                      <input id="route-select-all" type="checkbox" disabled={!POLYS_OPTIONS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', POLYS_OPTIONS.map(o => o.value).join(','))} />
+                      <input id="route-select-all" type="checkbox" disabled={!POLYS_OPTIONS.length} label="Выбрать все" checked={!fail_list.length} onChange={this.handleCheckbox.bind(this, 'dt', POLYS_OPTIONS.map((o) => o.value).join(','))} />
                       <span>Выбрать все</span>
                     </label>
                   </div>
@@ -278,7 +278,7 @@ class RouteCreating extends React.Component {
                   label="Список выбранных ДТ"
                   multi
                   options={POLYS_OPTIONS}
-                  value={object_list.map(o => o.object_id).join(',')}
+                  value={object_list.map((o) => o.object_id).join(',')}
                   onChange={this.onGeozoneSelectChange.bind(this, 'dt')}
                   error={errors.object_list}
                 />

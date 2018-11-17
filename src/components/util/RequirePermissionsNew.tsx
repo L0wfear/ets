@@ -1,6 +1,7 @@
 import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import { FluxContext } from 'utils/decorators';
+import { DivNone } from 'global-styled/global-styled';
 
 const checkOnTrueHidden = (config, props, context) => {
   let isHidden = true;
@@ -10,47 +11,52 @@ const checkOnTrueHidden = (config, props, context) => {
 
   if (ignorePermission || (!permissions && !permission)) {
     isHidden = false;
-  } else if (Array.isArray(permissions) && props.userPermissions.some(per => permissions.includes(per))) {
+  } else if (Array.isArray(permissions) && props.userPermissions.some((per) => permissions.includes(per))) {
     isHidden = false;
   } else if (props.userPermissions.includes(permission)) {
     isHidden = false;
   }
 
   return isHidden;
-}
+};
 
 const mergeProps = (config, props: any, context) => {
-  let {
+  const {
     ignorePermission,
     permission,
     permissions,
-    ...mergedProps
+    ...lessProps
   } = props;
 
+  let mergedProps = { ...lessProps };
+
   Object.keys(context.flux.getStore('session').state)
-    .forEach(key =>
+    .forEach((key) =>
       delete mergedProps[key],
     );
 
   if (config.mergeProps) {
-    mergedProps = config.mergeProps(mergedProps, context)
+    mergedProps = config.mergeProps(mergedProps, context);
   }
 
   return mergedProps;
-}
+};
 
-const withCheckPermission = checkData => Component =>
+const withCheckPermission = (checkData) => (Component) =>
   connectToStores(
     FluxContext(
-    (props, context) =>
-      checkOnTrueHidden(checkData, props, context) ?
-        <div className="none" />
-      :
-        <Component
-          { ...mergeProps(checkData, props, context) }
-        />
-    ),
+    (props, context) => (
+      checkOnTrueHidden(checkData, props, context)
+        ? (
+          <DivNone />
+        )
+        : (
+          <Component
+            { ...mergeProps(checkData, props, context) }
+          />
+        )
+    )),
     ['session'],
-  )
+  );
 
 export default withCheckPermission;

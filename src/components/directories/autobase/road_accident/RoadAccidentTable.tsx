@@ -75,7 +75,7 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const {
           car_id = -1,
         } = props;

@@ -14,17 +14,17 @@ const reportUrl = 'tech-maintenance-schedule';
 const serviceName = 'TechMaintenanceSchedule';
 
 const schemaMakers: ISchemaMaker = {
-  latest_tech_maintenance_date: schema => ({
+  latest_tech_maintenance_date: (schema) => ({
     ...schema,
     filter: {
       type: 'date',
     },
   }),
-  next_tech_maintenance_odometer_left: schema => ({
+  next_tech_maintenance_odometer_left: (schema) => ({
     ...schema,
     type: 'number',
   }),
-  next_tech_maintenance_motohours_left: schema => ({
+  next_tech_maintenance_motohours_left: (schema) => ({
     ...schema,
     type: 'number',
   }),

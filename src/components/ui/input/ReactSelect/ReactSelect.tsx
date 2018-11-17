@@ -20,7 +20,7 @@ export default class ReactSelect extends React.Component<any, any> {
   static defaultProps = {
     legacy: true,
     clearable: true,
-  }
+  };
 
   static get propTypes() {
     return {
@@ -43,7 +43,7 @@ export default class ReactSelect extends React.Component<any, any> {
         SingleValue: this.singleValueRender,
         MultiValue: this.multiValueRender,
         MultiValueContainer: this.multiValueContainerReander,
-      }
+      },
     };
   }
 
@@ -63,7 +63,7 @@ export default class ReactSelect extends React.Component<any, any> {
   }
   multiValueContainerReander = (props: any) => {
     if (this.props.multiValueContainerReander) {
-      return this.props.multiValueContainerReander(props)
+      return this.props.multiValueContainerReander(props);
     }
 
     return <components.MultiValueContainer {...props} />;
@@ -87,13 +87,13 @@ export default class ReactSelect extends React.Component<any, any> {
     const label = get(option, 'label', '').toString() || '';
 
     return label.toLocaleLowerCase().includes(
-      filterValue.toLocaleLowerCase()
+      filterValue.toLocaleLowerCase(),
     );
   }
 
   singleValueRender = ({ innerProps, ...props }: SingleValueProps<any>) => {
     const { modalKey } = this.props;
-    
+
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
 
     const newInnerProps = {
@@ -109,8 +109,8 @@ export default class ReactSelect extends React.Component<any, any> {
       selectProps: { instanceId },
       data: { value },
     } = props;
-    
-    const id = instanceId? `${instanceId}-value-${value}` : undefined;
+
+    const id = instanceId ? `${instanceId}-value-${value}` : undefined;
 
     const newInnerProps = {
       ...innerProps,

@@ -101,7 +101,7 @@ class ProgramObjectFormodh extends Form {
 
         changesState.selectedObj = changesState.odhPolys[object_id];
 
-        changesFormState.elements = elements.map(d => ({
+        changesFormState.elements = elements.map((d) => ({
           ...d,
           measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
         }));

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import olInteractionDraw from 'ol/interaction/Draw';
-import olInteractionDoubleClickZoom from'ol/interaction/DoubleClickZoom';
+import olInteractionDoubleClickZoom from 'ol/interaction/DoubleClickZoom';
 import Feature from 'ol/Feature';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
@@ -24,14 +24,13 @@ type PropsLayerLayerDraw = {
 type OneLine = {
   length: number;
   points: any[];
-}
+};
 
 type StateLayerLayerDraw = {
   lines: OneLine[];
   interactionDraw: ol.interaction.Draw | void;
   activeDraw: boolean;
 };
-
 
 /**
  * @todo подстроиться по LayerParkingPoints
@@ -41,7 +40,8 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
     lines: [],
     interactionDraw: null,
     activeDraw: false,
-  }
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'MeasureLines', zIndex: 100 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
@@ -81,7 +81,6 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
       }
     });
 
-
     interactionDraw.on('drawend', (event: any) => {
       const feature: Feature = event.feature;
 
@@ -99,7 +98,7 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
          */
         (geometry as any).forEachSegment(([...start], [...end]) => {
           linesArr.push([start, end]);
-        })
+        });
 
         this.props.handleEndDraw(
           (geometry as any).getCoordinates(),
@@ -122,7 +121,7 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
         );
       }
 
-      feature.setGeometry(null)
+      feature.setGeometry(null);
     });
 
     this.props.map.addInteraction(interactionDraw);
@@ -130,7 +129,7 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
   }
 
   endDraw() {
-    this.props.map.removeInteraction(this.state.interactionDraw)
+    this.props.map.removeInteraction(this.state.interactionDraw);
     this.setState({ interactionDraw: null });
   }
 

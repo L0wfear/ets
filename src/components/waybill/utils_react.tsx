@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isEmpty } from 'lodash';
 
-export const confirmDialogChangeDate = missionsNum => {
+export const confirmDialogChangeDate = (missionsNum) => {
   if (missionsNum.length) {
     return global.confirmDialog({
       title: 'Внимание!',
@@ -19,7 +19,7 @@ export const confirmDialogChangeDate = missionsNum => {
 export const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialogList: fax_confirmDialogList }, notFromOrder: { cf_list: not_fax_cf_list } }) => {
   if (!isEmpty(fax_cf_list)) {
     global.NOTIFICATION_SYSTEM.notify(`
-      Время выполнения привязанного к ПЛ закрытого задания: 
+      Время выполнения привязанного к ПЛ закрытого задания:
       № ${fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
     `, 'error', 'tr');
     return Promise.reject(false);
@@ -37,7 +37,7 @@ export const checkErrorDate = ({ fromOrder: { cf_list: fax_cf_list, confirmDialo
   }
   if (!isEmpty(not_fax_cf_list)) {
     global.NOTIFICATION_SYSTEM.notify(`
-      Время выполнения привязанного к ПЛ закрытого задания: 
+      Время выполнения привязанного к ПЛ закрытого задания:
       № ${not_fax_cf_list.join(', ')}, выходит за пределы фактических сроков выполнения ПЛ. Необходимо скорректировать фактические даты ПЛ
     `, 'error', 'tr');
     return Promise.reject(false);

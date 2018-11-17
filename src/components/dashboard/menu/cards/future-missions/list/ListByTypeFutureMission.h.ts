@@ -1,4 +1,4 @@
-import { InitialStateDashboard } from "components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h";
+import { InitialStateDashboard } from 'components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 
 export interface StatePropsFutureMissionsList {
   title: InitialStateDashboard['future_missions']['data']['title_centralized'] | InitialStateDashboard['future_missions']['data']['title_decentralized'];

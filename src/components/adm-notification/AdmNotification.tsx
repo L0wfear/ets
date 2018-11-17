@@ -18,11 +18,15 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
   componentDidUpdate(prevProps) {
     const { props } = this;
 
-    prevProps.admNotReadNotificationsList.filter(({ id }) => !props.admNotReadNotificationsList.find(admN => admN.id === id)).forEach(({ id }) => {
-      global.NOTIFICATION_SYSTEM.removeNotification(id);
-    });
+    prevProps.admNotReadNotificationsList
+      .filter(({ id }) => (
+        !props.admNotReadNotificationsList.find((admN) => admN.id === id)
+      ))
+      .forEach(({ id }) => {
+        global.NOTIFICATION_SYSTEM.removeNotification(id);
+      });
 
-    props.admNotReadNotificationsList.forEach(notify => (
+    props.admNotReadNotificationsList.forEach((notify) => (
       global.NOTIFICATION_SYSTEM.notify({
         title: notify.title,
         message: makeReactMessange(notify.description),
@@ -36,7 +40,10 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
           callback: () => {
             this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id)
               .then(() => this.updateCounterNotify())
-              .catch(({ error_text }) => console.warn(error_text));
+              .catch(({ error_text }) => {
+                // tslint:disable-next-line
+                console.warn(error_text);
+              });
           },
         },
       })

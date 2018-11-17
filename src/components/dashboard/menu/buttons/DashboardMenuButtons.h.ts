@@ -1,5 +1,5 @@
 export interface StatePropsDashboardMenuButtons {
-};
+}
 
 export type DispatchPropsDashboardMenuButtons = {
   loadDataAfterCreateWaybill: any;

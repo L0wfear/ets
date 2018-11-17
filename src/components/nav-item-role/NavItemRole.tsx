@@ -20,7 +20,7 @@ class NavItemRole extends React.Component<any, any> {
       </NavItem>
       :
       <DivNone />
-    )
+    );
   }
 }
 

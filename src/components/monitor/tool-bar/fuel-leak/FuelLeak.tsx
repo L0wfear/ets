@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as cx from 'classnames';
 import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/monitor/redux-main/models/actions-monitor-page';
 import { loadFuelEvents } from 'redux-main/trash-actions/geometry/geometry';
-import { compose } from 'recompose'
+import { compose } from 'recompose';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import {
@@ -24,14 +24,14 @@ const getActiveClassName = (activeMain) => (
     'with_checkbox',
     {
       off: !activeMain,
-    }
+    },
   )
 );
 
 class BarShowGeoobjects extends React.Component<any, any> {
   state = {
     isOpen: false,
-  }
+  };
 
   componentDidUpdate() {
     if (this.props.show) {
@@ -65,7 +65,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
       isOpen,
     });
   }
-  
+
   handleChange = (field, date) => {
     const changedDates = {
       date_to: this.props.date_to,
@@ -86,7 +86,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
       show,
     } = this.props;
     const {
-      isOpen
+      isOpen,
     } = this.state;
 
     return (
@@ -131,11 +131,11 @@ class BarShowGeoobjects extends React.Component<any, any> {
           </div>
         </div>
       </span>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   show: state.monitorPage.fuelEvents.leak.show,
   date_from: state.monitorPage.fuelEvents.leak.date_from,
   date_to: state.monitorPage.fuelEvents.leak.date_to,
@@ -148,7 +148,7 @@ const mapDispatchToProps = (dispatch) => ({
         MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
         'leak',
         dates,
-      )
+      ),
     )
   ),
   changeFuelEventDate: (field, date) => (
@@ -166,7 +166,6 @@ const mapDispatchToProps = (dispatch) => ({
     )
   ),
 });
-
 
 export default compose(
   withRequirePermissionsNew({

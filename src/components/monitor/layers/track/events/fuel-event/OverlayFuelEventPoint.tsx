@@ -15,9 +15,9 @@ const getTitleByType = (event_type) => {
     case 'refill' : return 'Заправка топлива:';
     default: return '';
   }
-}
+};
 
-const OverlayFuelEventPoint: React.SFC<any> = props => {
+const OverlayFuelEventPoint: React.SFC<any> = (props) => {
   const { fuelEventPoint } = props;
 
   if (!fuelEventPoint) {
@@ -59,13 +59,13 @@ const OverlayFuelEventPoint: React.SFC<any> = props => {
       </OverlayLineInfoContainer>
     </Overlay>
   );
-}
+};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   fuelEventPoint: state.monitorPage.carInfo.popups.fuelEventPoint,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   hidePopup: () => (
     dispatch(
       carInfoSetFuelEventPoint(),
@@ -77,6 +77,5 @@ export default hocAll(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )
+  ),
 )(OverlayFuelEventPoint);
-

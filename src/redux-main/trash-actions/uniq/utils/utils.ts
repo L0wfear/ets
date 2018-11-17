@@ -18,14 +18,13 @@ type TypeCarsSensors = {
 
 export const initialMaxSpeed = 60;
 
-export const getMaxSpeeds = missions => missions.reduce((maxSpeeds, mission) => {
-  const { speed_limits } = mission
+export const getMaxSpeeds = (missions) => missions.reduce((maxSpeeds, mission) => {
+  const { speed_limits } = mission;
   maxSpeeds.mkad_speed_lim = Math.max(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
   maxSpeeds.speed_lim = Math.max(speed_limits.speed_lim, maxSpeeds.mkad_speed_lim);
 
   return maxSpeeds;
 }, { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed });
-
 
 export const checkOnMkad = ({ coords_msk }, odh_mkad) => (
   Object.values(odh_mkad).some(({ shape: { coordinates, type } }) => {
@@ -37,7 +36,7 @@ export const checkOnMkad = ({ coords_msk }, odh_mkad) => (
 
     if (type === 'MultiPolygon') {
       return coordinates.some((mpolygon) => (
-        mpolygon.some(polygon => (
+        mpolygon.some((polygon) => (
           insider(coords_msk, polygon)
         ))
       ));
@@ -46,7 +45,6 @@ export const checkOnMkad = ({ coords_msk }, odh_mkad) => (
     return false;
   })
 );
-
 
 export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, parkings }, odh_mkad) => {
   let isCorssingMKAD = false;
@@ -64,7 +62,8 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
         index: indexLevel,
         color: sensorsMapOptions(indexLevel).color,
         show: false,
-      }
+      };
+
       indexLevel += 1;
     }
 
@@ -81,7 +80,8 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
         indexEquipment,
         color: sensorsMapOptions(indexEquipment).color,
         show: false,
-      }
+      };
+
       indexEquipment += 1;
     }
 
@@ -99,7 +99,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
 
     if (point.sensors && point.sensors.level) {
       const { sensors: { level = [] } = {} } = point;
-      level.forEach(sensorData => {
+      level.forEach((sensorData) => {
         front_cars_sensors_level[sensorData.sensor_id].data.push([point.timestamp, sensorData.val]);
         front_cars_sensors_level[sensorData.sensor_id].raw_data.push([point.timestamp, sensorData.raw]);
       });
@@ -119,10 +119,9 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
         value.data.push([
           point.timestamp,
           equipmentObj[key] && equipmentObj[key].val || null,
-          point.checkCoordsMsk.onMkad
-        ])
-      })
-
+          point.checkCoordsMsk.onMkad,
+        ]);
+      });
 
     return point;
   });
@@ -132,7 +131,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
       newArr.push(
         ...eventData.map((event) => {
           const newDate = new Date(event.start_point.timestamp * 1000);
-          
+
           return {
             ...event,
             start_point: {
@@ -150,7 +149,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
             value: `${Math.abs(event.event_val)} л`,
           };
         }),
-      )
+      );
 
       return newArr;
     }, [])
@@ -168,7 +167,8 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
       coords: swapCoords(parking.end_point.coords),
       coords_msk: swapCoords(parking.end_point.coords_msk),
     },
-  }))
+  }));
+
   return {
     track,
     isCorssingMKAD,
@@ -177,7 +177,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
     front_events_list,
     front_parkings,
   };
-}
+};
 
 export const mergeTrackCachingWithFrontCalc = (trackCaching, odh_mkad) => ({
   ...trackCaching,

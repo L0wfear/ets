@@ -45,7 +45,7 @@ class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayer
       serverName,
       id,
       this.props.geoobjects[serverName].data[id],
-    )
+    );
   }
 
   render() {
@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
         data,
       ),
     )
-  )
+  ),
 });
 
 export default hocAll(

@@ -51,7 +51,7 @@ class CompanyStructure extends ElementsList {
     }
 
     const { companyStructureLinearList = [] } = this.props;
-    const selectedElement = companyStructureLinearList.find(el => el.id ? el.id === id : el[this.selectField] === id);
+    const selectedElement = companyStructureLinearList.find((el) => el.id ? el.id === id : el[this.selectField] === id);
     this.setState({ showForm: true, selectedElement });
   }
 

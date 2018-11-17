@@ -18,7 +18,7 @@ const VALID_VEHICLES_TYPES = {
 };
 
 // declarative functional approach
-const vehicleFilter = (structure_id: string, car_id: number | void) => R.filter<IVehicle>(c =>
+const vehicleFilter = (structure_id: string, car_id: number | void) => R.filter<IVehicle>((c) =>
   c.asuods_id === car_id
   || (
     (
@@ -31,10 +31,10 @@ const vehicleFilter = (structure_id: string, car_id: number | void) => R.filter<
 );
 
 // todo вернуть интерфес
-//  R.filter<IVehicle>(c =>
+//  R.filter<IVehicle>((c) =>
 const carFilter = (structure_id, car_id) => R.pipe(
   vehicleFilter(structure_id, car_id),
-  R.filter<any>(c =>
+  R.filter<any>((c) =>
     !c.is_trailer ||
     [
       VALID_VEHICLES_TYPES.COMPRESSOR,
@@ -43,14 +43,14 @@ const carFilter = (structure_id, car_id) => R.pipe(
   ),
 );
 // todo вернуть интерфейс
-//  R.filter<IVehicle>(c => c.is_trailer),
-const trailerFilter = structure_id => R.pipe(
+//  R.filter<IVehicle>((c) => c.is_trailer),
+const trailerFilter = (structure_id) => R.pipe(
   vehicleFilter(structure_id, null),
-  R.filter<any>(c => c.is_trailer),
+  R.filter<any>((c) => c.is_trailer),
 );
 
 // <IVehicle, any>
-const vehicleMapper = R.map<any, any>(c => ({
+const vehicleMapper = R.map<any, any>((c) => ({
   value: c.asuods_id,
   model_id: c.model_id,
   gov_number: c.gov_number,
@@ -62,16 +62,16 @@ export const getCars = (structure_id, car_id) => R.pipe(
   vehicleMapper,
 );
 
-export const getTrailers = structure_id => R.pipe(
+export const getTrailers = (structure_id) => R.pipe(
   trailerFilter(structure_id),
   vehicleMapper,
 );
 
-const isNotEmpty = value => isNotEqualAnd([undefined, null, ''], value);
+const isNotEmpty = (value) => isNotEqualAnd([undefined, null, ''], value);
 export const driverHasLicenseWithActiveDate = ({ drivers_license, drivers_license_date_end }) => isNotEmpty(drivers_license) && !isNotEmpty(drivers_license_date_end) || (isNotEmpty(drivers_license_date_end) && diffDates(new Date(), drivers_license_date_end) < 0);
 export const driverHasSpecialLicenseWithActiveDate = ({ special_license, special_license_date_end }) => isNotEmpty(special_license) && !isNotEmpty(special_license_date_end) || (isNotEmpty(special_license_date_end) && diffDates(new Date(), special_license_date_end) < 0);
 
-const hasOdometr = gov_number => !hasMotohours(gov_number);
+const hasOdometr = (gov_number) => !hasMotohours(gov_number);
 export const getDrivers = (state, employeesIndex, driversList) => {
   const licenceSwitcher = R.cond([
     [hasOdometr, R.always(driverHasLicenseWithActiveDate)],
@@ -89,7 +89,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
       if (!driverData) {
         return false;
       }
-      
+
       let whatCarIWantDrive: boolean | number[] = false;
 
       if (Boolean(driverData.prefer_car)) {
@@ -109,7 +109,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
       }
 
       return (
-        (isArray(whatCarIWantDrive) ? whatCarIWantDrive.some(car => car === state.car_id) : true) &&
+        (isArray(whatCarIWantDrive) ? whatCarIWantDrive.some((car) => car === state.car_id) : true) &&
         (!state.structure_id || ((driverData.is_common) || state.structure_id === driverData.company_structure_id)) &&
         driverFilter(driverData)
       );
@@ -136,8 +136,8 @@ export function validateTaxesControl(taxes: Array<Array<any>>): boolean {
   const nonEmptyTaxes = taxes.filter((tax = []) => tax.length > 0);
 
   return !nonEmptyTaxes.
-    map(taxData =>
-      taxData.map(t =>
+    map((taxData) =>
+      taxData.map((t) =>
         t && t.OPERATION !== undefined,
       ).includes(false),
     ).includes(true);
@@ -188,7 +188,7 @@ export const getEquipmentFuelRatesByCarModel = (action, { car_id, date_create: d
 
 export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mission_source_id, orderAction) =>
   Promise.all<any>(
-    formState.mission_id_list.map(mission_id => {
+    formState.mission_id_list.map((mission_id) => {
       const missionData = missionsIndex[mission_id];
       const mainMissionData = {
         ...missionData,
@@ -210,6 +210,7 @@ export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mi
             };
           })
           .catch(({ error_text }) => {
+            // tslint:disable-next-line
             console.error(`Ошибка получения централизованного задания| id = ${order_id}`, error_text);
             return {
               ...mainMissionData,
@@ -223,7 +224,7 @@ export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mi
         isOrderSource: false,
       });
     }))
-  .then(missions =>
+  .then((missions) =>
     missions.reduce((errors, mission) => {
       const {
         fact_departure_date,

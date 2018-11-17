@@ -7,8 +7,8 @@ export type PropsCurrentMissionInfo = {
   infoData: CurrentDutyMissionsInfoDataType;
   getDutyMissionById: (id) => Promise<any>;
   updateDutyMission: (dutyMission: DutyMissionType) => any;
-  handleClose: Function;
-  loadData: Function;
+  handleClose: any;
+  loadData: any;
 };
 
 export type StateCurrentMissionInfo = {

@@ -37,7 +37,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
           isLoading: state.dashboard[path].isLoading,
           title: state.dashboard[path].data.title,
           dateLoad: state.dashboard[path].dateLoad,
-        })
+        });
       },
       (dispatch) => ({
         loadData: () => (
@@ -65,9 +65,9 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
                   this.loadData();
                 }
               }, (this.props.timeInterval || 2 * 60) * 1000),
-            })
+            });
           }, this.props.timeDelay * 100 || 0),
-        })
+        });
       }
 
       componentDidUpdate(prevProps) {
@@ -89,14 +89,14 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
         clearTimeout(this.state.timerId);
         clearInterval(this.state.timerId);
       }
-    
+
       loadData = () => {
         this.setState({ inLoadByLocalRefresh: true });
         this.props.loadData()
           .then(() => (
             this.setState({ inLoadByLocalRefresh: false })
           ));
-      };
+      }
 
       render() {
         const { isLoading, title, loadData, dateLoad, ...props } = this.props;
@@ -132,9 +132,9 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
               }
             </CardMainContainerWrap>
           </CardMainContainer>
-        )
+        );
       }
-    }
+    },
   )
 );
 

@@ -7,6 +7,6 @@ export type PropsCollapseListByLvl = {
   collapsetItems: CurrentMissionsItemsType[];
   handleClick: (lastSubItem: CurrentMissionsItemsSubItemsSubItemsType) => any;
   classNameContainer?: string;
-}
+};
 
-export interface StateCollapseListByLvl {};
+export interface StateCollapseListByLvl {}

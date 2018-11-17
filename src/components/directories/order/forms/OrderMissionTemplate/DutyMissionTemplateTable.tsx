@@ -42,7 +42,7 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
   return meta;
 }
 
-const getRenders = props => {
+const getRenders = (props) => {
   const renderers: ISchemaRenderer = {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
@@ -60,7 +60,7 @@ const getRenders = props => {
   return renderers;
 };
 
-const Table: React.SFC<any> = props  => (
+const Table: React.SFC<any> = (props) => (
   <DataTable
     multiSelection={true}
     results={props.data}

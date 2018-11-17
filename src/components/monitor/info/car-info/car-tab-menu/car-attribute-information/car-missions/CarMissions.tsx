@@ -11,8 +11,8 @@ import {
 } from 'redux-main/trash-actions/mission';
 
 type PropsCarMissions = {
-  loadMissionById: Function;
-  loadMissionDataById: Function;
+  loadMissionById: any;
+  loadMissionDataById: any;
 };
 
 type StateCarMissions = {
@@ -28,9 +28,10 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
     selectedMissionIdToShowMain: null,
     missionToShow: null,
     missionToShowInfo: null,
-  }
+  };
+
   showMissionInfoForm = (id) => {
-    this.setState({ selectedMissionIdToShowInfo: id, selectedMissionIdToShowMain: null })
+    this.setState({ selectedMissionIdToShowInfo: id, selectedMissionIdToShowMain: null });
     this.props.loadMissionDataById(id).then(({ payload: { mission_data } }) => {
       if (id === this.state.selectedMissionIdToShowInfo) {
         if (mission_data) {
@@ -46,7 +47,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
     });
   }
   showMissionForm = (id) => {
-    this.setState({ selectedMissionIdToShowMain: id, selectedMissionIdToShowInfo: null })
+    this.setState({ selectedMissionIdToShowMain: id, selectedMissionIdToShowInfo: null });
     this.props.loadMissionById(id).then(({ payload: { mission } }) => {
       if (id === this.state.selectedMissionIdToShowMain) {
         if (mission) {
@@ -74,7 +75,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
     })
   )
   render() {
-    const { 
+    const {
       missionToShow,
       missionToShowInfo,
     } = this.state;
@@ -100,15 +101,15 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           fromMonitor
         />
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = null;
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   loadMissionById: (id) => dispatch(loadMissionById('NONE', id)),
   loadMissionDataById: (id) => dispatch(loadMissionDataById('NONE', id)),
-})
+});
 
 export default connect(
   mapStateToProps,

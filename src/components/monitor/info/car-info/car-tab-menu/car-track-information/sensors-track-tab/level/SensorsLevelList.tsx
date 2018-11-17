@@ -22,7 +22,7 @@ type PropsSensorsTrackTab = {
   toggleSensorOnMap: any;
 };
 
-const SensorsLevelList: React.SFC<PropsSensorsTrackTab> = props => {
+const SensorsLevelList: React.SFC<PropsSensorsTrackTab> = (props) => {
   const { track } = props;
   const sensors_level = Object.entries(props.front_cars_sensors_level);
 
@@ -57,10 +57,10 @@ const SensorsLevelList: React.SFC<PropsSensorsTrackTab> = props => {
         )
       }
     </div>
-  )
+  );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   track: state.monitorPage.carInfo.trackCaching.track,
   front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
 });
@@ -77,11 +77,11 @@ const mergedProps = (stateProps, { dispatch }) => ({
         carInfoToggleSensorShow(
           'level',
           key,
-        )
+        ),
       );
     }
-  }
-})
+  },
+});
 
 export default hocAll(
   withShowByProps({

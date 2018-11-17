@@ -10,8 +10,8 @@ export type PropsLayerLayerMissionGeoobject = {
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   geoobjects: any;
-  centerOn: Function;
-}
+  centerOn: any;
+};
 
 interface TypeGeoObjectDataIndex {
   [id: string]: GeozonesDataByIndex;
@@ -21,30 +21,29 @@ export type TypeGeoObjectData = {
   show: boolean;
   data?: TypeGeoObjectDataIndex;
   oldData?: TypeGeoObjectDataIndex;
-  
-}
+};
 
 export type TypeGeoobjects = {
   [serverName: string]: TypeGeoObjectData;
 };
 
-export module InjectetLayerProps {
+export namespace InjectetLayerProps {
 }
 
-export module LayerGeoobjectsUtilsTypes {
+export namespace LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
     companiesIndex?: TypeCompaniesIndex;
-  }
+  };
 
   type checkShowFalseFuncThisProps = {
     removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
-  }
+  };
 
   type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
     getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
     companiesIndex?: TypeCompaniesIndex;
-  }
+  };
 
   export type renderGeoobjectsFunc = (
     geoobjects: TypeGeoobjects,
@@ -72,4 +71,4 @@ export module LayerGeoobjectsUtilsTypes {
     geoobj: GeozonesDataByIndex & { state: number },
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
-};
+}

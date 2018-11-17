@@ -199,7 +199,7 @@ const renderers = {
   equipment_sensors_types_ids: ({ rowData }) => <span>{rowData.equipment_sensors_str}</span>,
 };
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       title="Реестр транспортных средств"

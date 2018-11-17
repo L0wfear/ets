@@ -2,7 +2,7 @@ import { sensorTrackColor } from 'constants/sensors';
 import Style from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
@@ -17,7 +17,7 @@ const makeCacheStyle = (cacheStyleName, { countWork, SHOW_TRACK } ) => {
     }),
     zIndex: 10,
   });
-}
+};
 
 export const getStyleForTrackLineBySensor = (countWork, SHOW_TRACK) => {
   const cacheStyleName = !SHOW_TRACK ? 'SHOW_TRACK' : `${countWork}`;
@@ -32,4 +32,4 @@ export const getStyleForTrackLineBySensor = (countWork, SHOW_TRACK) => {
   }
 
   return icon;
-}
+};

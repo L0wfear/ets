@@ -7,7 +7,7 @@ import Div from 'components/ui/Div';
 
 const PaginatorTsx: any = Paginator;
 
-const OrderPaginator: React.SFC<any> = props =>
+const OrderPaginator: React.SFC<any> = (props) => (
   <Div hidden={!props.haveMax} >
     <PaginatorTsx
       currentPage={props.offset}
@@ -16,15 +16,16 @@ const OrderPaginator: React.SFC<any> = props =>
       firstLastButtons
     />
   </Div>
+);
 
 const mapStateToProps = (state) => ({
   offset: state.order.pageOptions.offset,
   haveMax: state.order.pageOptions.haveMax,
   total_count: state.order.total_count,
 });
-const mapDispatchToProps = dispatch => ({
-  setPageOrderTable: offset => dispatch(getOrders({ offset })),
-})
+const mapDispatchToProps = (dispatch) => ({
+  setPageOrderTable: (offset) => dispatch(getOrders({ offset })),
+});
 
 export default connect(
   mapStateToProps,

@@ -5,7 +5,7 @@ import IconMeasureAndZoom from 'components/monitor/info/icon-measure-and-zoom/Ic
 
 type PropsMapInfo = {
   map: ol.Map,
-  centerOn: Function;
+  centerOn: any;
 };
 
 type StateMapInfo = {
@@ -23,6 +23,5 @@ class MapInfo extends React.Component<PropsMapInfo, StateMapInfo> {
     );
   }
 }
-
 
 export default MapInfo;

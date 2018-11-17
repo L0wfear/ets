@@ -1,6 +1,6 @@
-import { isObject } from "util";
+import { isObject } from 'util';
 
-export const getRowKeys = cols => (
+export const getRowKeys = (cols) => (
   cols.reduce((newCols, col) => {
     if (col.childrenFields && col.childrenFields.length) {
         newCols.push(...(getRowKeys(col.childrenFields)));
@@ -44,7 +44,7 @@ const makeTreeByKey = (cols, key, deep = 1, parentOrder = 0) => {
   };
 };
 
-export const getColsWithRowAndColSpan = cols => {
+export const getColsWithRowAndColSpan = (cols) => {
   const { tree, deep } = makeTreeByKey(cols, 'childrenFields', 1);
 
   return {
@@ -56,7 +56,7 @@ export const getColsWithRowAndColSpan = cols => {
 const getCountChildren = (tree) => (
   Object.values(tree).reduce<number>((count, { tree: childTree }) => {
     if (isObject(childTree)) {
-      return count + getCountChildren(childTree)
+      return count + getCountChildren(childTree);
     }
 
     return count + 1;
@@ -94,7 +94,6 @@ const makeOneDeepLine = (arr, treeFields, currentDeep, deep) => {
 export const makeFieldsInDeepArr = (treeFields, deep) => {
   const arr = Array(deep).fill(1).map(() => Array());
 
-  console.log(treeFields)
   return makeOneDeepLine(arr, treeFields, 0, deep);
 };
 

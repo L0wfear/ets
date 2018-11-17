@@ -12,7 +12,7 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 const CloneButton = enhanceWithPermissions({
   permission: permissions.create,
 })(onClickWithKeys(withMergeProps(
-  props => Object.keys(props).reduce((newProps, key) => {
+  (props) => Object.keys(props).reduce((newProps, key) => {
     if (key !== 'boundKeys') {
       newProps[key] = props[key];
     }
@@ -113,7 +113,7 @@ export const tableMeta = ({
 export default (props) => {
   const renderers = {
     installed_at: ({ data }) => <DateFormatter date={data} />,
-    cloneButton: meta => (
+    cloneButton: (meta) => (
       <CloneButton
         onClick={props.onCloneClick}
         boundKeys={[meta.rowData.id]}

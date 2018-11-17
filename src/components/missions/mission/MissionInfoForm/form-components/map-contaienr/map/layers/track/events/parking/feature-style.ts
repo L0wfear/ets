@@ -20,7 +20,7 @@ const makeCacheStyle = (cacheStyleName ) => {
     }),
     zIndex: 9,
   });
-}
+};
 
 export const getStyleForParking = () => {
   const cacheStyleName = `parking`;
@@ -34,4 +34,4 @@ export const getStyleForParking = () => {
   }
 
   return icon;
-}
+};

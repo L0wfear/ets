@@ -7,11 +7,11 @@ import * as moment from 'moment';
 moment.locale('ru');
 momentLocalizer();
 
-const DTPicker: any= DateTimePicker;
+const DTPicker: any = DateTimePicker;
 
 interface DatePickerProps {
   date: any;
-  onChange: (date: Date | null, dateString: string) => any;
+  onChange: any;
   id?: string;
   className?: string;
   time?: boolean;
@@ -19,7 +19,7 @@ interface DatePickerProps {
   disabled?: boolean;
 }
 
-const DatePicker: React.SFC<DatePickerProps> = props => {
+const DatePicker: React.SFC<DatePickerProps> = (props) => {
   const {
     time = true,
     calendar = true,
@@ -45,6 +45,6 @@ const DatePicker: React.SFC<DatePickerProps> = props => {
       onChange={props.onChange}
     />
   );
-}
+};
 
 export default DatePicker;

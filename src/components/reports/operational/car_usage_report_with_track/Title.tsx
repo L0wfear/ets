@@ -8,7 +8,7 @@ interface IPropsTitle {
   text: string;
 }
 
-const Title: React.StatelessComponent<IPropsTitle> = props => {
+const Title: React.StatelessComponent<IPropsTitle> = (props) => {
   const popover = (
     <Popover id="car-usage-title-popover" className="car-usage-report-title__popover">
       {props.hint}

@@ -28,7 +28,7 @@ export default class MaintenanceRateForm extends Form {
       maintenanceWorkList = [],
       cleanCategoriesList = [],
     } = this.props;
-    const { subcategories = [] } = (cleanCategoriesList.find(c => state.clean_category_id === c.id) || {});
+    const { subcategories = [] } = (cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {});
 
     const TECH_OPERATIONS = technicalOperationsList.map(defaultSelectListMapper);
     const MAINTENANCE_WORK = maintenanceWorkList.map(defaultSelectListMapper);

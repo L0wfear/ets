@@ -43,6 +43,6 @@ class PreloaderComponent extends React.Component<PropsPreloaderComponent, {}> {
         return <div id="preloader-custom" className="custom-preloader" />;
     }
   }
-};
+}
 
 export default PreloaderComponent;

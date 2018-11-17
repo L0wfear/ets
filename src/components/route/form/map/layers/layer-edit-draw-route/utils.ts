@@ -1,4 +1,4 @@
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
 
 import {
@@ -7,10 +7,10 @@ import {
   getCasheStyleForGeoobject,
 } from 'components/route/form/map/layers/layer-edit-draw-route/feature-style';
 
-const renderGeometry= (id, geoobj, thisProps) => {
+const renderGeometry = (id, geoobj, thisProps) => {
   if (geoobj.shape) {
     const feature = new Feature({
-      geometry: GeoJSON.readGeometry(geoobj.shape),
+      geometry: geoJSON.readGeometry(geoobj.shape),
     });
 
     feature.setId(id);
@@ -22,23 +22,24 @@ const renderGeometry= (id, geoobj, thisProps) => {
   }
 
   return null;
-}
+};
 
 export const renderGeoobjects = (geoobjects, thisProps) => {
-  for (let id in geoobjects) {
-    const geoobj = geoobjects[id];
+  for (const id in geoobjects) {
+    if (id in geoobjects) {
+      const geoobj = geoobjects[id];
 
-    const feature = renderGeometry(id, geoobj, thisProps);
+      const feature = renderGeometry(id, geoobj, thisProps);
 
-    if (feature) {
-      feature.setStyle(getCasheStyleForGeoobject(TYPES_STYLE.geoobj, geoobj.state));
+      if (feature) {
+        feature.setStyle(getCasheStyleForGeoobject(TYPES_STYLE.geoobj, geoobj.state));
+      }
     }
   }
 };
 
-
 export const renderInputLines = (geoobjectsArr, thisProps) => {
-  for (let geoobj of geoobjectsArr) {
+  for (const geoobj of geoobjectsArr) {
     const id = geoobj.object_id;
 
     const feature = renderGeometry(id, geoobj, thisProps);

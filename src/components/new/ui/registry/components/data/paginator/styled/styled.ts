@@ -6,7 +6,7 @@ export const EtsPaginatorContainer = styled.div`
   margin: 5px;
 
   >button.btn.btn-default {
-    margin: 1px; 
+    margin: 1px;
     background-color: initial;
     color: #337ab7;
 

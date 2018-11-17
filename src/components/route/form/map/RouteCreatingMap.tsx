@@ -51,7 +51,7 @@ type StatePropsRouteCreatingMap = {
 class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StatePropsRouteCreatingMap> {
   state = {
     inDraw: false,
-  }
+  };
 
   static getDerivedStateFromProps(nextProps: PropsRouteCreatingMap) {
     const {
@@ -88,7 +88,7 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
 
       const drawLines = [];
 
-      lines.forEach(coordinates => {
+      lines.forEach((coordinates) => {
         const routeHasObject = checkRouteHasObjectLineByBegCoor(drawObjectList, coordinates);
 
         if (!routeHasObject) {
@@ -183,7 +183,6 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
                         <DivNone />
                       )
                     }
-                    
                     <LayerEditDrawRoute
                       map={map}
                       drawObjectList={drawObjectList}
@@ -199,7 +198,8 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
                           handleEndDraw={this.handleEndDraw}
                           styled={CACHE_ROUTE_DRAW_STYLES.blue}
                         />
-                      ): (
+                      )
+                      : (
                         <DivNone />
                       )
                     }
@@ -230,4 +230,4 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
   }
 }
 
-export default RouteCreatingMap
+export default RouteCreatingMap;

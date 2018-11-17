@@ -36,7 +36,7 @@ export const meta: IDataTableSchema = {
     {
       name: 'uninstalled_at',
       displayName: 'Дата демонтажа',
-      type: "date",
+      type: 'date',
       cssClassName: 'width150',
     },
     {
@@ -102,7 +102,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
   const vehicleList = [...props.batteryAvailableCarList, ...props.inputList].map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
 
   return {
-    car_id: rowMeta =>
+    car_id: (rowMeta) =>
       <CarIdRenderer
         {...props}
         onChange={onListItemChange}
@@ -110,21 +110,21 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         index={rowMeta.rowData.rowNumber - 1}
         vehicleList={vehicleList}
       />,
-    installed_at: rowMeta =>
+    installed_at: (rowMeta) =>
       <InstalledAtRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
       />,
-    uninstalled_at: rowMeta =>
+    uninstalled_at: (rowMeta) =>
       <UninstalledAtRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
       />,
-    odometr_start: rowMeta =>
+    odometr_start: (rowMeta) =>
       <PropOnDateRenderer
         {...props}
         onChange={onListItemChange}

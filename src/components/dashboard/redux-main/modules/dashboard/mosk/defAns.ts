@@ -7,7 +7,7 @@ import { CarInWorkOverallAnsType } from 'components/dashboard/redux-main/modules
 import { FaxogrammsAnsType } from 'components/dashboard/redux-main/modules/dashboard/@types/faxogramms.h';
 import { CurrentDutyMissionsAnsType } from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 import { WaybillDraftAnsType } from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-draft.h';
-import { WaybillInProgressAnsType}  from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-in-progress.h';
+import { WaybillInProgressAnsType} from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-in-progress.h';
 import { WaybillCompletedAnsType } from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-completed.h';
 import { WaybillClosedAnsType } from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-closed.h';
 
@@ -16,8 +16,8 @@ export const current_missions: CurrentMissionsAnsType = {
   items: [],
   items_centralized: [],
   items_decentralized: [],
-  title_centralized: "Тех.операции по централизованному заданию (0)",
-  title_decentralized: "Тех.операции по децентрализованным заданиям (0)",
+  title_centralized: 'Тех.операции по централизованному заданию (0)',
+  title_decentralized: 'Тех.операции по децентрализованным заданиям (0)',
 };
 
 export const future_missions: FutureMissionsAnsType = {
@@ -25,8 +25,8 @@ export const future_missions: FutureMissionsAnsType = {
   items: [],
   items_centralized: [],
   items_decentralized: [],
-  title_centralized: "Тех.операции по централизованному заданию (0)",
-  title_decentralized: "Тех.операции по децентрализованным заданиям (0)",
+  title_centralized: 'Тех.операции по централизованному заданию (0)',
+  title_decentralized: 'Тех.операции по децентрализованным заданиям (0)',
 };
 
 export const odh_not_covered_by_missions_of_current_shift: OdhNotCoveredByMissionsOfCurrentShiftAnsType = {
@@ -56,7 +56,7 @@ export const faxogramms: FaxogrammsAnsType = {
   meta: {
     date_from: null,
     date_to: null,
-  }
+  },
 };
 
 export const current_duty_missions: CurrentDutyMissionsAnsType = {
@@ -64,8 +64,8 @@ export const current_duty_missions: CurrentDutyMissionsAnsType = {
   items: [],
   items_centralized: [],
   items_decentralized: [],
-  title_centralized: "Тех.операции по централизованному заданию (0)",
-  title_decentralized: "Тех.операции по децентрализованным заданиям (0)",
+  title_centralized: 'Тех.операции по централизованному заданию (0)',
+  title_decentralized: 'Тех.операции по децентрализованным заданиям (0)',
 };
 
 export const waybill_draft: WaybillDraftAnsType = {
@@ -90,4 +90,4 @@ export const waybill_closed: WaybillClosedAnsType = {
 
 export const backEndKeys = {
   current_duty_missions: 'current_duty_missions_new',
-}
+};

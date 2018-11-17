@@ -21,18 +21,18 @@ const makePermissionOnCheck = (config, props) => {
 
   const permissionsOnCheck = config.permissions || props.permissions;
 
-  return Array.isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck]
+  return Array.isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck];
 };
 
 const checkOnisPermitted = (config, props, permissions) => {
-  let permissionsOnCheck = makePermissionOnCheck(config, props);
+  const permissionsOnCheck = makePermissionOnCheck(config, props);
 
   if (config.every) {
-    return permissionsOnCheck.some(permission => !permissions.includes(permission));
+    return permissionsOnCheck.some((permission) => !permissions.includes(permission));
   }
 
-  return permissionsOnCheck.some(permission => permissions.includes(permission));
-}
+  return permissionsOnCheck.some((permission) => permissions.includes(permission));
+};
 
 type StateProps = {
   permissions: string[];
@@ -40,13 +40,13 @@ type StateProps = {
 
 type OwnerProps = {
   [key: string]: any;
-}
+};
 
 type PropsRequirePermissions = StateProps & OwnerProps;
 
-const withRequirePermissionsNew = (config: TypeConfig = {}) => Component => (
+const withRequirePermissionsNew = (config: TypeConfig = {}) => (Component) => (
   connect<StateProps, {}, OwnerProps, ReduxState>(
-    state => ({
+    (state) => ({
       permissions: state.session.userData.permissions,
     }),
   )
@@ -73,10 +73,8 @@ const withRequirePermissionsNew = (config: TypeConfig = {}) => Component => (
             )
         );
       }
-    }
+    },
   )
 );
-  
 
 export default withRequirePermissionsNew;
-

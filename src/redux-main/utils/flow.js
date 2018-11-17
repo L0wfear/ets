@@ -20,7 +20,7 @@ export const onInit = actionTypeDecorator(INIT);
 export const onSuccess = actionTypeDecorator(SUCCESS);
 export const onError = actionTypeDecorator(ERROR);
 
-export const isFetchingReducer = (actionType, path = 'fetchState') => state => ({
+export const isFetchingReducer = (actionType, path = 'fetchState') => (state) => ({
   ...state,
   [path]: Object.assign({}, {
     ...state[path],
@@ -28,7 +28,7 @@ export const isFetchingReducer = (actionType, path = 'fetchState') => state => (
   }),
 });
 
-export const isNotFetchingReducer = (actionType, path = 'fetchState') => state => ({
+export const isNotFetchingReducer = (actionType, path = 'fetchState') => (state) => ({
   ...state,
   [path]: Object.assign({}, {
     ...state[path],
@@ -64,12 +64,12 @@ export const withFetchFlow = (...types) => (reducer) => {
 const filter = el => !!el;
 export const makeGetLoadingState = (module, stateKey = 'core', actionKey = 'core') => (state, ...keys) => {
   const fetchState = get(state, [stateKey, ...module.split('/'), 'fetchState'].filter(filter), {});
-  return some(keys || [], key => !!fetchState[[actionKey, module, key].filter(filter).join('/')]);
+  return some(keys || [], (key) => !!fetchState[[actionKey, module, key].filter(filter).join('/')]);
 };
 // TODO вот реализация с createSelector и мемоизацией, но она требует изменения всех вызовов на getLoadingState(state)(keys)
 // export const makeGetLoadingState = (module, stateKey = 'core', actionKey = 'core') => createSelector(
-//   state => get(state, [stateKey, ...module.split('/'), 'fetchState'].filter(filter)),
-//   fetchState => memoize(
-//     (...keys) => some(keys || [], key => !!get(fetchState, [actionKey, module, key].filter(filter).join('/')))
+//   (state) => get(state, [stateKey, ...module.split('/'), 'fetchState'].filter(filter)),
+//   fetch(state) => memoize(
+//     (...keys) => some(keys || [], (key) => !!get(fetchState, [actionKey, module, key].filter(filter).join('/')))
 //   )
 // );

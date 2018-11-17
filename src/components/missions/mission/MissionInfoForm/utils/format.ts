@@ -9,4 +9,4 @@ export const makeTitle = ({ mission_data, car_data }) => {
   }
 
   return titleArr.join(' ');
-}
+};

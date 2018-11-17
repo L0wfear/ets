@@ -54,7 +54,7 @@ const renderers = {
   productivity: ({ data }) => isNumber(data) ? parseFloat(data.toString()).toFixed(2) : '',
 };
 
-export default props => (
+export default (props) => (
   <Table
     title="Мобильные снегоплавильные пункты"
     results={props.data}

@@ -23,7 +23,6 @@ export const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) ? parseInt(data, 10) : '-';
 };
 
-
 export const makeTitle = ({ mission_data, car_data }) => {
   const titleArr = [
     `Информация о задании №${mission_data.number}.`,
@@ -35,4 +34,4 @@ export const makeTitle = ({ mission_data, car_data }) => {
   }
 
   return titleArr.join(' ');
-}
+};

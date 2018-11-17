@@ -11,9 +11,9 @@ const data = {
   title: 'Выйти',
   alwaysShow: true,
   path: '/logout',
-}
+};
 
-const NavItemLogout: React.SFC<any> = props => (
+const NavItemLogout: React.SFC<any> = (props) => (
   <NavItem
     id={'link-logout'}
     href={`#${data.path}`}
@@ -22,10 +22,9 @@ const NavItemLogout: React.SFC<any> = props => (
   />
 );
 
-const onSelect = props => () =>
+const onSelect = (props) => () =>
   props.flux.getActions('session').logout()
     .then(() => props.history.push(data.path));
-
 
 export default withRouter(
   hocAll(

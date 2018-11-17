@@ -29,14 +29,15 @@ export const withSpecificPermissions = (user) => {
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
   payload: ConfigService.get()
-    .then((appConfig) =>({
+    .then((appConfig) => ({
       appConfig,
     }))
-    .catch((ErrorData) => {
-      console.warn(ErrorData);
+    .catch((errorData) => {
+      // tslint:disable-next-line
+      console.warn(errorData);
     }),
   meta: {
-    loading: true, 
+    loading: true,
   },
 });
 
@@ -50,7 +51,7 @@ export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
 
   userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
-  
+
   dispatch(
     sessionSetAppConfig(),
   );
@@ -58,11 +59,11 @@ export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
   dispatch({
     type: SESSION_SET_DATA,
     payload: {
-      userData,
       token: session,
-    }
+      userData,
+    },
   });
-}
+};
 
 export const sessionResetData = () => ({
   type: SESSION_RESET_DATA,

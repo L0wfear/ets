@@ -43,7 +43,7 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
           </Flex>
         </FlexWrapContainer>
       </RouteInfoContainerDiv>
-    )
+    );
   }
 }
 

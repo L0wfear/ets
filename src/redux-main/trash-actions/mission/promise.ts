@@ -13,6 +13,7 @@ import { createValidDateTime } from 'utils/dates';
 export const getMissionById = (id) => (
   MissionService.get({ id })
     .catch((error) => {
+      // tslint:disable-next-line
       console.warn(error);
 
       return {
@@ -30,6 +31,7 @@ export const getMissionById = (id) => (
 export const getMissionDataById = (id) => (
   MissionDataService.path(id).get()
     .catch((error) => {
+      // tslint:disable-next-line
       console.warn(error);
 
       return {
@@ -60,6 +62,7 @@ export const updateMission = (mission) => {
 export const getDutyMissionById = (id) => (
   DutyMissionService.get({ id })
     .catch((error) => {
+      // tslint:disable-next-line
       console.warn(error);
 
       return {
@@ -94,4 +97,4 @@ export const updateDutyMission = (duty_mission) => {
   payload.fact_date_end = createValidDateTime(payload.fact_date_end);
 
   return DutyMissionService.put(payload, false, 'json');
-}
+};

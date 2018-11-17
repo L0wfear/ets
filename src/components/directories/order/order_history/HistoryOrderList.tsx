@@ -41,7 +41,7 @@ class HistoryOrderList extends React.Component<any, any> {
 
       changedState.data = nextProps.data;
       const [activeData] = changedState.data;
-      
+
       changedState.haveData = !!activeData;
       changedState.activeList = !!activeData ? 1 : null;
       changedState.activeData = activeData || prevState.activeData;
@@ -51,11 +51,10 @@ class HistoryOrderList extends React.Component<any, any> {
       return changedState;
     }
 
-    return null
-
+    return null;
   }
 
-  handleChangeVersion = num => {
+  handleChangeVersion = (num) => {
     const {
       data,
     } = this.props;

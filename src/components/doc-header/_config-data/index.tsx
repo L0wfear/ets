@@ -18,7 +18,7 @@ const children = {
 
 export default {
   title: <Glyphicon glyph="book" />,
-  className: "user-guide",
+  className: 'user-guide',
   children,
   permissions: getChildrenPermissions(children),
 };

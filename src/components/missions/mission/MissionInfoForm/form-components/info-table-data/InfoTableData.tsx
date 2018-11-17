@@ -35,7 +35,7 @@ class InfoTableData extends React.PureComponent<PropsInfoTableData, {}> {
     const allRunWithWorkEquipment = (
       mission_data.sensor_traveled_working !== null ?
       getDataTraveledYet(
-        checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F')
+        checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F'),
       )
       :
       'Нет данных'
@@ -61,7 +61,7 @@ class InfoTableData extends React.PureComponent<PropsInfoTableData, {}> {
           <b>{'Процент выполнения задания, %: '}</b>{mission_data.traveled_percentage || '-'}
         </div>
       </>
-    )
+    );
   }
 }
 

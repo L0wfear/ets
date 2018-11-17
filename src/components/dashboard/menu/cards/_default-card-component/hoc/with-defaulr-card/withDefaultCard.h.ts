@@ -1,4 +1,4 @@
-import { InitialStateDashboard } from "components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h";
+import { InitialStateDashboard } from 'components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 
 export type StatePropsDefaultCard = {
   isLoading: boolean;
@@ -7,7 +7,7 @@ export type StatePropsDefaultCard = {
 };
 
 export type DispatchPropsDefaultCard = {
-  loadData: () => Promise<any>
+  loadData: () => Promise<any>;
 };
 
 export type OwnerPropsDefaultCard = {
@@ -26,6 +26,6 @@ export type StateDefaultCard = {
 
 export type ConfigType = {
   path: keyof InitialStateDashboard;
-  loadData: Function;
+  loadData: any;
   InfoComponent?: React.ComponentClass<{}>;
 };

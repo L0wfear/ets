@@ -14,10 +14,10 @@ const configureStore = (initialState?) => {
     etsLoadingMiddleware,
     promiseMiddleware,
   ];
-  
+
   if (process.env.NODE_ENV === 'development') {
     const { createLogger } = require('redux-logger');
-  
+
     middlewares.push(createLogger({ collapsed: true }));
   }
 
@@ -38,6 +38,6 @@ const configureStore = (initialState?) => {
   }
 
   return store;
-}
+};
 
 export default configureStore;

@@ -13,6 +13,7 @@ export const loadCarActualIndex = (type, data = {}, meta = { loading: true } as 
     type,
     payload: CarService.get(payload)
       .catch((error) => {
+        // tslint:disable-next-line
         console.warn(error);
 
         return {
@@ -31,7 +32,6 @@ export const loadCarActualIndex = (type, data = {}, meta = { loading: true } as 
   };
 };
 
-
 export const getCarMissionsByTimestamp = (type, car_id, point_timestamp, meta = { loading: true } as TypeMeta) => {
   const payload = {
     car_id,
@@ -42,6 +42,7 @@ export const getCarMissionsByTimestamp = (type, car_id, point_timestamp, meta = 
     type,
     payload: CarInfoService.get(payload)
       .catch((error) => {
+        // tslint:disable-next-line
         console.warn(error);
 
         return {

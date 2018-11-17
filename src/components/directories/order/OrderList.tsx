@@ -34,7 +34,7 @@ class OrderList extends React.Component<any, any> {
     order_mission_source_id: null,
   };
 
-  componentDidUpdate(prevProps){  
+  componentDidUpdate(prevProps) {
     if (prevProps.configDateStart !== this.props.configDateStart ) {
       prevProps.getOrders({date_start: this.props.configDateStart, date_end: this.props.configDateEnd});
     }
@@ -108,7 +108,7 @@ const mapStateToProps = (state) => ({
   configDateEnd: state.session.appConfig.shift.shift_end,
   shift: state.session.appConfig.shift,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
     {
       getOrders,
@@ -117,7 +117,7 @@ const mapDispatchToProps = dispatch => ({
     },
     dispatch,
   ),
-})
+});
 
 export default connect(
   mapStateToProps,

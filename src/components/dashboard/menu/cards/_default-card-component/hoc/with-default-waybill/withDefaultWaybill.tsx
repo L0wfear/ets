@@ -38,13 +38,13 @@ const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component)
           config.setInfoDataPropsMake(
             this.props,
             path,
-          )
+          ),
         );
       }
-    
+
       render() {
         const { ListComponent } = config;
-    
+
         return (
           <div>
             <ListComponent
@@ -53,9 +53,9 @@ const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component)
             />
             <Component />
           </div>
-        )
+        );
       }
-    }
+    },
   )
 );
 

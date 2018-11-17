@@ -123,7 +123,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   companiesIndex: state.monitorPage.companiesIndex,
   permissions: state.session.userData.permissions,
   ...Object.values(GEOOBJECTS_OBJ).reduce((newObj, { serverName }) => ({
@@ -141,7 +141,7 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
     );
     const whereClearData = [];
 
-    typeArr.forEach(type => {
+    typeArr.forEach((type) => {
       if (!stateProps[type]) {
         dispatch(
           loadGeozones(

@@ -32,7 +32,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(WAYBILL_STATUSES).map(key => ({ label: WAYBILL_STATUSES[key], value: key })),
+          options: Object.keys(WAYBILL_STATUSES).map((key) => ({ label: WAYBILL_STATUSES[key], value: key })),
         },
       },
       {
@@ -66,7 +66,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: driversList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: driversList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -79,7 +79,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: carsFilterList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsFilterList.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
         },
       },
       {
@@ -155,7 +155,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: employeesList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -167,7 +167,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: employeesList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -179,7 +179,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: employeesList.map(e => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: employeesList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {

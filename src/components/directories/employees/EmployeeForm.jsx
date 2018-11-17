@@ -84,11 +84,11 @@ export default class EmployeeForm extends Form {
     } = this.props;
 
     const CARS = carsList
-      .filter(car => filterCars(car, state))
-      .map(c => ({ value: c.asuods_id, label: `${c.gov_number}/ ${c.garage_number ? c.garage_number : '-'}/ ${c.type_name}/ ${c.full_model_name}/ ${c.special_model_name || c.model_name}` }));
+      .filter((car) => filterCars(car, state))
+      .map((c) => ({ value: c.asuods_id, label: `${c.gov_number}/ ${c.garage_number ? c.garage_number : '-'}/ ${c.type_name}/ ${c.full_model_name}/ ${c.special_model_name || c.model_name}` }));
     const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
     const DRIVER_STATES = [{ value: 1, label: 'Работает' }, { value: 0, label: 'Не работает' }];
-    const POSITION_ELEMENTS = positionsList.map(el => ({ value: el.id, label: el.position, isDriver: el.is_driver }));
+    const POSITION_ELEMENTS = positionsList.map((el) => ({ value: el.id, label: el.position, isDriver: el.is_driver }));
     const positionIsDriver = (POSITION_ELEMENTS.find(({ value }) => value === state.position_id) || {}).isDriver; // флаг, если должность подразумевает управление транспортным средством
     const IS_CREATING = !state.id;
 

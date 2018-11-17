@@ -3,7 +3,7 @@ import Circle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
@@ -28,7 +28,7 @@ const makeCacheStyle = (cacheStyleName) => {
     }),
     zIndex: 9,
   });
-}
+};
 
 export const getCasheStyleForGeoobject = (selected, state) => {
   const cacheStyleName = `${selected}/${state}`;
@@ -42,4 +42,4 @@ export const getCasheStyleForGeoobject = (selected, state) => {
   }
 
   return icon;
-}
+};

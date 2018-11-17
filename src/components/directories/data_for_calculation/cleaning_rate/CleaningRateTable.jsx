@@ -35,7 +35,7 @@ const tableMeta = {
   ],
 };
 
-export default props => (
+export default (props) => (
   <Table
     title="Показатели для расчета эффективности работы бригад"
     results={props.data}

@@ -40,8 +40,8 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
         makeDate(waybill.data.create_date)
       ),
     ),
-  }
-  
+  };
+
   static getDerivedStateFromProps({ infoData }: PropsWaybillInProgressInfo, state: StateWaybillInProgressInfo) {
     if (infoData !== state.infoData) {
       if (infoData) {
@@ -63,14 +63,14 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
     }
 
     return null;
-  };
+  }
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
   }
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    this.props.getWaybillById(Number.parseInt(path))
+    this.props.getWaybillById(Number.parseInt(path, 0))
       .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
@@ -78,6 +78,7 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
             elementWaybillFormWrap: waybill_data,
           });
         } else {
+          // tslint:disable-next-line
           console.warn('not find waybill');
         }
       });
@@ -96,8 +97,7 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
     });
-  };
-
+  }
 
   render() {
     return (
@@ -152,7 +152,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInWaybillInProgress(infoData)
+      dashboardSetInfoDataInWaybillInProgress(infoData),
     )
   ),
   getWaybillById: (id) => (

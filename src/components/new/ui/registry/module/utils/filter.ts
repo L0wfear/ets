@@ -1,4 +1,4 @@
-import { isBoolean } from "util";
+import { isBoolean } from 'util';
 
 export const typeFilter = [
   {
@@ -38,7 +38,7 @@ export const setEmptyRawFilters = ({ rawFilterValues }) => {
       newObjType[type] = {
         ...filterObjByType[type],
         value: defaultValue,
-      }
+      };
 
       return newObjType;
     }, {});
@@ -58,5 +58,5 @@ export const applyFilterFromRaw = ({ rawFilterValues }) => {
     });
 
     return newObj;
-  }, {})
+  }, {});
 };

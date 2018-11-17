@@ -106,14 +106,14 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-  // tech_maintenance_type_id: meta => <div>{meta.rowData.tech_maintenance_type_name}</div>,
-  // car_model_id: meta => <div>{meta.rowData.car_model_name}</div>,
-  // measure_unit_run_id: meta => <div>{meta.rowData.measure_unit_run_name}</div>,
-  interval_time_type: meta => <div>{TIME_MEASURES[meta.data]}</div>,
-  is_periodic: meta => <input type="checkbox" disabled checked={meta.data} />,
+  // tech_maintenance_type_id: (meta) => <div>{meta.rowData.tech_maintenance_type_name}</div>,
+  // car_model_id: (meta) => <div>{meta.rowData.car_model_name}</div>,
+  // measure_unit_run_id: (meta) => <div>{meta.rowData.measure_unit_run_name}</div>,
+  interval_time_type: (meta) => <div>{TIME_MEASURES[meta.data]}</div>,
+  is_periodic: (meta) => <input type="checkbox" disabled checked={meta.data} />,
 };
 
-const Table: React.SFC<any> = props => {
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       title="Реестр регламентов ТО"

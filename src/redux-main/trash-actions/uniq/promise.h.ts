@@ -7,4 +7,4 @@ export type TypeCompaniesIndex = {
     rgb_color: string;
     short_name: string;
   };
-}
+};

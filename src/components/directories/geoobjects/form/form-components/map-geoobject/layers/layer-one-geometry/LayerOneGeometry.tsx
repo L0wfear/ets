@@ -44,7 +44,6 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerOneGeometry, {}> {
   }
 }
 
-
 export default withLayerProps({
   centerOn: true,
 })(LayerOneGeometry);

@@ -11,6 +11,7 @@ export const getCarGpsNumberByDateTime = ({ asuods_id, date_start }) => {
 
   return Car.get(payloadToCar)
     .catch((e) => {
+      // tslint:disable-next-line
       console.warn(e);
 
       return {

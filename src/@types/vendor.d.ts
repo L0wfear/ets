@@ -2,7 +2,7 @@
  * No import/export is allowed because global scope will be turned off.
  */
 
-declare module NodeJS  {
+declare namespace NodeJS  {
   interface Global {
     NODE_ENV: string;
     NOTIFICATION_SYSTEM: {
@@ -16,7 +16,7 @@ declare module NodeJS  {
     NOTIFICATION_READ_ARR: string;
     APP_TIME_FORMAT: string;
     APP_TIME_WITH_SECOND_FORMAT: string;
-    toggleUpdateCarPoints: Function;
+    toggleUpdateCarPoints: any;
     confirmDialog: (props: any) => Promise<any>;
   }
 }
@@ -26,9 +26,9 @@ declare const __SERVER__: boolean;
 declare const __DEVELOPMENT__: boolean;
 
 declare module '*.png';
-declare module '*.mp3'
-declare module '*.ogg'
-declare module "*.svg" {
+declare module '*.mp3';
+declare module '*.ogg';
+declare module '*.svg' {
   const content: any;
   export default content;
 }

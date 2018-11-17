@@ -16,9 +16,9 @@ class ProgramObjectFormWrap extends FormWrap {
     this.preventDefaultNotification = true;
   }
 
-  createAction = formState => this.context.flux.getActions('repair').programObject('post', formState);
+  createAction = (formState) => this.context.flux.getActions('repair').programObject('post', formState);
 
-  updateAction = formState => this.context.flux.getActions('repair').programObject('put', formState);
+  updateAction = (formState) => this.context.flux.getActions('repair').programObject('put', formState);
 
   handleMultiChange = (fields) => {
     let formErrors = { ...this.state.formErrors };
@@ -88,7 +88,7 @@ class ProgramObjectFormWrap extends FormWrap {
       const {
         percent = 1,
         reviewed_at = 2,
-      } = data.find(d => d.id === id);
+      } = data.find((d) => d.id === id);
 
       this.handleMultiChange({
         percent,

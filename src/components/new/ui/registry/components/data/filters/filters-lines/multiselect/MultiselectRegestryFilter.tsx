@@ -51,8 +51,8 @@ const makeOptions = (props: PropsMultiselectRegestryFilter) => {
     }
 
     return newArr;
-  }, [])
-}
+  }, []);
+};
 
 class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestryFilter, StateMultiselectRegestryFilter> {
   state = {
@@ -112,7 +112,6 @@ const mapStateToProps = (state, { registryKey, filterData }) => ({
   array: getListData(state.registry, registryKey).data.array,
   filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
 });
-
 
 export default connect<any, any, any, ReduxState>(
   mapStateToProps,

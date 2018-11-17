@@ -11,7 +11,7 @@ class Tbody extends React.Component<any, any> {
             key={rowData[this.props.uniqName]}
             rowData={rowData}
             handleClick={this.props.toggleChildren}
-          />
+          />,
         );
         if (!rowData.showChildren) {
           summObj.indexRow += rowData.children.length;
@@ -26,7 +26,7 @@ class Tbody extends React.Component<any, any> {
             handleClick={this.props.toggleChildren}
             selected={this.props.selected}
             uniqName={this.props.uniqName}
-          />
+          />,
         );
         summObj.indexRow += 1;
       }
@@ -41,26 +41,26 @@ class Tbody extends React.Component<any, any> {
           handleDoubleClick={this.props.handleDoubleClick}
           selected={this.props.selected}
           uniqName={this.props.uniqName}
-        />
+        />,
       );
       summObj.indexRow += 1;
     }
 
     return summObj;
   }
-      
+
   render() {
     return (
       <tbody>
-        { 
-          this.props.hasData 
-          ?
+      {
+        this.props.hasData
+        ?
           this.props.data.reduce(this.renderTr, { arr: [], indexRow: 0 }).arr
-          :
+        :
           <tr>
             <td colSpan={9999}>{'Нет данных'}</td>
           </tr>
-        }
+      }
       </tbody>
     );
   }

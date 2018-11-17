@@ -42,7 +42,7 @@ const getEstimatedFinishTime = (data) => {
 
 const getDataTraveledYet = (data) => {
   if (Array.isArray(data)) {
-    return data.filter(d => d === 0 || !d).join(' ');
+    return data.filter((d) => d === 0 || !d).join(' ');
   }
 
   return !isNaN(parseInt(data, 10)) && parseInt(data, 10);
@@ -82,7 +82,7 @@ export const listData: ListDataType = [
       : (
         <DivNone />
       )
-    )
+    ),
   },
   {
     path: ['car_data', 'gov_number'],
@@ -169,7 +169,7 @@ export const listData: ListDataType = [
     title: 'Общий пробег с работающим оборудованием',
     RenderComponent: ({ infoData: { mission_data: { sensor_traveled_working } } }) => {
       const sensor_traveled_workingAndCheck_unit = checkFixed([sensor_traveled_working / 1000, 'км'], 'THREE_F');
-  
+
       return (
         <li><b>Общий пробег с работающим оборудованием: </b>
           {`${sensor_traveled_working ?
@@ -178,7 +178,7 @@ export const listData: ListDataType = [
             'Данные будут отображены после выполнения задания'
           }`}
         </li>
-      )
+      );
     },
   },
 ];

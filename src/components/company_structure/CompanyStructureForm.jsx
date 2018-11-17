@@ -38,12 +38,12 @@ class CompanyStructureForm extends Form {
     const { companyStructureLinearList = [] } = this.props;
     const { parent_id = false } = state;
 
-    const COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== DEY.value).map(el => ({ value: el.id, label: el.name }));
+    const COMPANY_ELEMENTS = companyStructureLinearList.filter((d) => d.type !== DEY.value).map((el) => ({ value: el.id, label: el.name }));
     let structureType = 'half';
     let parent_type_is_dek = false;
 
     if (parent_id) {
-      parent_type_is_dek = companyStructureLinearList.find(d => d.id === parent_id).type === DEK.value;
+      parent_type_is_dek = companyStructureLinearList.find((d) => d.id === parent_id).type === DEK.value;
     }
     if (!parent_id || !parent_type_is_dek) {
       structureType = 'all';

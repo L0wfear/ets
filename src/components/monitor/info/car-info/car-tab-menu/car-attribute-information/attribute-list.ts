@@ -9,8 +9,7 @@ type OneAtt<P> = {
   value: (props: P) => string | number | JSX.Element | JSX.Element[],
   loader?: boolean;
   carActualGpsNumberIndex?: boolean;
-}
-
+};
 
 export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
   {

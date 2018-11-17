@@ -35,15 +35,15 @@ export const initialState = {
   },
   trackCaching: {
     error: false,
-    cars_sensors: {}, 
+    cars_sensors: {},
     front_cars_sensors_level: {},
     front_cars_sensors_equipment: {},
-    consumptions: {}, 
-    distance: -1, 
-    duration_moving: -1, 
-    equipment: {}, 
+    consumptions: {},
+    distance: -1,
+    duration_moving: -1,
+    equipment: {},
     front_events_list: [],
-    equipment_distance: -1, 
+    equipment_distance: -1,
     equipment_time: -1,
     events: {},
     parkings: -1,
@@ -73,13 +73,13 @@ export const initialState = {
     trackPoint: null,
     fuelEventPoint: null,
     parkingPoint: null,
-  }
-}
+  },
+};
 
 export default (state: any = initialState, { type, payload }: any) => {
   switch (type) {
     case CAR_INFO_SET_GPS_CODE: {
-      let newState = {
+      const newState = {
         ...initialState,
         gps_code: payload.gps_code,
         gov_number: payload.gov_number,
@@ -93,10 +93,10 @@ export default (state: any = initialState, { type, payload }: any) => {
       return {
         ...state,
         status: payload.status,
-      }
+      };
     }
     case CAR_INFO_SET_TRACK_CACHING: {
-      let newState = state; 
+      let newState = state;
 
       if (state.gps_code === payload.gps_code) {
         newState = {
@@ -109,7 +109,7 @@ export default (state: any = initialState, { type, payload }: any) => {
       return newState;
     }
     case CAR_INFO_SET_MISSIONS_DATA: {
-      let newState = state; 
+      let newState = state;
       if (state.gps_code === payload.gps_code) {
         newState = {
           ...state,
@@ -127,7 +127,7 @@ export default (state: any = initialState, { type, payload }: any) => {
       return {
         ...state,
         missionsData: { ...initialState.missionsData },
-      }
+      };
     }
     case CAR_INFO_PUSH_POINT_INTO_TRACK: {
       if (payload.point.id !== state.gps_code || !state.trackCaching.track || state.trackCaching.track === -1) {
@@ -160,13 +160,13 @@ export default (state: any = initialState, { type, payload }: any) => {
       return {
         ...state,
         trackCaching: { ...initialState.trackCaching },
-      }
+      };
     }
     case CAR_INFO_CHANGE_DATE: {
       return {
         ...state,
         [payload.field]: payload.value,
-      }
+      };
     }
     case CAR_INFO_TOGGLE_PLAY: {
       return {
@@ -218,8 +218,8 @@ export default (state: any = initialState, { type, payload }: any) => {
         statusTC: {
           ...statusTC,
           FOLLOW_ON_CAR,
-        }
-      }
+        },
+      };
     }
     case CAR_INFO_SET_POPUP_TRACK_POINT: {
       return {
@@ -246,10 +246,10 @@ export default (state: any = initialState, { type, payload }: any) => {
           ...state.popups,
           fuelEventPoint: payload.fuelEventPoint,
         },
-      }; 
+      };
     }
     default: {
       return state;
     }
   }
-}
+};

@@ -3,7 +3,7 @@ import * as cx from 'classnames';
 
 import { PropsList } from 'components/dashboard/menu/cards/faxogramms/list/List.h';
 
-const List: React.SFC<PropsList> = props => (
+const List: React.SFC<PropsList> = (props) => (
   <ul>
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (
@@ -12,7 +12,7 @@ const List: React.SFC<PropsList> = props => (
           data-path={index}
           className={cx(
             {
-              pointer: subItems.length,
+              'pointer': subItems.length,
               'no-pointer-events': !subItems.length,
             },
             props.classNameContainer,
@@ -26,5 +26,5 @@ const List: React.SFC<PropsList> = props => (
     }
   </ul>
 );
-               
+
 export default List;

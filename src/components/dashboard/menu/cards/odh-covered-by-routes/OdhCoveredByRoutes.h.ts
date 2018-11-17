@@ -2,7 +2,7 @@ import { OdhCoveredByRoutesItemsType } from 'components/dashboard/redux-main/mod
 
 export type PropsOdhCoveredByRoutes = {
   items: OdhCoveredByRoutesItemsType[];
-  setInfoData: Function;
+  setInfoData: any;
 };
 
 export type StateOdhCoveredByRoutes = {

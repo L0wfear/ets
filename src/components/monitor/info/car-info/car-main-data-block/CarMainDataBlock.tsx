@@ -60,14 +60,14 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
         </div>
       </div>
     );
-  };
+  }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   type_image_name: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { type_image_name: ''}).type_image_name,
   STATUS_TC_FOLLOW_ON_CAR: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR,
   maxSpeed: getMaxSpeedToLegend(state.monitorPage.carInfo),
-  disabledFollow: state.monitorPage.carInfo.playTrack.status !== 'stop', 
+  disabledFollow: state.monitorPage.carInfo.playTrack.status !== 'stop',
   disabledShowTrack: state.monitorPage.carInfo.playTrack.status === 'play' || state.monitorPage.carInfo.trackCaching.track.length <= 1 || state.monitorPage.carInfo.trackCaching.error,
 });
 
@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch, props) => ({
       }
     });
   },
-})
+});
 
 export default connect(
   mapStateToProps,

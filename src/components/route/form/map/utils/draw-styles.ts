@@ -44,10 +44,10 @@ export const CACHE_ROUTE_DRAW_STYLES = {
         color: '#0099ff',
         width: 2,
       }),
-    })
+    }),
   ]),
 };
 
 export const getStyle = () => {
   return CACHE_ROUTE_DRAW_STYLES.blue;
-}
+};

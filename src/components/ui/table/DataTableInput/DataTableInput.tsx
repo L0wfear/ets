@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import * as Button from 'react-bootstrap/lib/Button';
 
-
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import { IDataTableSelectedRow, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTableInput, IStateDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
@@ -15,13 +14,14 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTableInput> {
   state = {
     selected: null,
-  }
+  };
+
   handleRowSelected = (selected: IDataTableSelectedRow, rowNumber) => {
     if (this.state.selected !== null && selected.props.data.rowNumber === this.state.selected.rowNumber) {
       return;
     }
     this.setState({
-      selected: {...selected.props.data, rowNumber: rowNumber}
+      selected: {...selected.props.data, rowNumber },
     });
   }
   handleAddVehicle = () => {

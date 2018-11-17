@@ -25,7 +25,7 @@ type PropsSensorsEquipmentList = {
   toggleSensorOnMap: any;
 };
 
-const getRightRus = count => {
+const getRightRus = (count) => {
   if (count === 1) {
     return 'датчик';
   }
@@ -35,9 +35,9 @@ const getRightRus = count => {
   }
 
   return 'датчиков';
-}
+};
 
-const getText = count => {
+const getText = (count) => {
   switch (count) {
     case 0: return 'zero';
     case 1: return 'one';
@@ -46,15 +46,15 @@ const getText = count => {
     case 4: return 'four';
     default: return 'mani';
   }
-}
+};
 
-const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = props => {
+const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = (props) => {
   const { track } = props;
   const sensors_equipment = Object.entries(props.front_cars_sensors_equipment);
 
   const disabledByKey = sensors_equipment.reduce((newObj, [key, data]) => ({
     ...newObj,
-    [key]: data.data.length === 0 || !data.data.some(([t, value]) => !!value)
+    [key]: data.data.length === 0 || !data.data.some(([t, value]) => !!value),
   }), {});
 
   const hasSomeData = sensors_equipment.some(([, { show }]) => show);
@@ -90,11 +90,11 @@ const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = props => {
                           ( <DivNone /> )
                       }
                     </div>
-                  )
+                  );
                 })
               }
               {
-                hasSomeData ? 
+                hasSomeData ?
                 (
                   <div className="car_info-sensors_legend" >
                   {
@@ -116,10 +116,10 @@ const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = props => {
         )
       }
     </div>
-  )
+  );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   track: state.monitorPage.carInfo.trackCaching.track,
   front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
 });
@@ -136,11 +136,11 @@ const mergedProps = (stateProps, { dispatch }) => ({
         carInfoToggleSensorShow(
           'equipment',
           key,
-        )
+        ),
       );
     }
-  }
-})
+  },
+});
 
 export default hocAll(
   withShowByProps({

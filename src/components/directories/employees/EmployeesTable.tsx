@@ -113,7 +113,7 @@ export function tableMeta({
         type: 'string',
         filter: {
           type: 'multiselect',
-          labelFunction: l => l ? 'Работает' : 'Не работает',
+          labelFunction: (l) => l ? 'Работает' : 'Не работает',
         },
       },
       {
@@ -161,14 +161,13 @@ export function tableMeta({
             { value: 'False', label: 'Да' },
           ],
         },
-      }
+      },
     ],
   };
-
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const renderers: ISchemaRenderer = {
     full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
     birthday: ({ data }) => <DateFormatter date={data} />,

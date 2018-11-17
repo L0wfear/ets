@@ -72,7 +72,7 @@ class MissionTemplateForm extends MissionForm {
     const filteredRoutes = (
       route !== null
       && route.id !== undefined
-      && routes.find(item => item.value === route.id) === undefined
+      && routes.find((item) => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -80,7 +80,7 @@ class MissionTemplateForm extends MissionForm {
       'value',
     );
 
-    const CARS = carsList.map(c => ({
+    const CARS = carsList.map((c) => ({
       value: c.asuods_id,
       label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
       type_id: c.type_id,

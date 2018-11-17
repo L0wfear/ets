@@ -10,27 +10,23 @@ export const CrossIcon = styled(components.CrossIcon)`
 export const DownChevron = styled(components.DownChevron)`
 `;
 
-
 export const DropdownIndicator = styled(components.DropdownIndicator)`
 `;
-
 
 export const Group = styled(components.Group)`
 `;
 
-
 export const GroupHeading = styled(components.GroupHeading)`
 `;
-
 
 export const IndicatorSeparator = styled(components.IndicatorSeparator)`
 `;
 
 export const IndicatorsContainer = styled(components.IndicatorsContainer)`
-  
+
 `;
 export const Input = styled(components.Input)`
-  
+
 `;
 export const LoadingIndicator = styled(components.LoadingIndicator)`
 `;
@@ -45,7 +41,7 @@ export const MultiValue = styled(components.MultiValue)`
 `;
 
 export const MultiValueContainer = styled(components.MultiValueContainer)`
-  
+
 `;
 export const MultiValueLabel = styled(components.MultiValueLabel)`
 `;
@@ -67,10 +63,10 @@ export const Option = styled(components.Option).attrs({ className: 'option-conta
     cursor: pointer;
     color: black;
 
-    background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.8)': 'initial'};
+    background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.8)' : 'initial'};
 
     &:hover {
-      background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.65)': 'rgba(222, 235, 255, 0.5)'};
+      background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.65)' : 'rgba(222, 235, 255, 0.5)'};
     }
   }
 `;

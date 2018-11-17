@@ -117,7 +117,6 @@ export const LoginPageFormContentButton = styled(Button)`
   }
 `;
 
-
 export const TpMessangeContainer = styled.div`
   display: flex;
   flex-direction: column;

@@ -25,7 +25,6 @@ export const EtsOverlayMeasureContainer = styled(EtsOverlayContainer)`
   color: ${({ active }: PropsOverlay) => !active ? 'black' : 'white'};
 `;
 
-
 export const EtsOverlayMeasureTitleContainer = styled(EtsOverlayTitleContainer)`
   border-bottom-color: ${({ active }: PropsOverlay) => active ? 'black' : 'initial'};
 `;

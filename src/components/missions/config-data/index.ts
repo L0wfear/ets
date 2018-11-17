@@ -21,4 +21,4 @@ export default {
   children,
   permissions: getChildrenPermissions(children),
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
-}
+};

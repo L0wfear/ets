@@ -8,7 +8,7 @@ export type StateMapEts = {
   center: [number, number];
   zoom: number,
 
-  centerOn: Function;
+  centerOn: any;
   enableInteractions: boolean;
 };
 
@@ -27,7 +27,7 @@ export type PropsMapEts = {
   rotationAngle?: number;
 };
 
-export module MapUtils {
+export namespace MapUtils {
   export type getViewFunc = (
     props: ol.olx.ViewOptions,
   ) => ol.View;

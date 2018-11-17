@@ -80,7 +80,7 @@ const mapStateToProps = (state, { registryKey }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  registryTriggerOnChangeSelectedField: key => (
+  registryTriggerOnChangeSelectedField: (key) => (
     dispatch(
       registryTriggerOnChangeSelectedField(
         registryKey,

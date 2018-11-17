@@ -68,7 +68,7 @@ const TableMeta: ITableMetaInfo = [
   },
 ];
 
-const Buttons: React.SFC<any> = props => {
+const Buttons: React.SFC<any> = (props) => {
   const {
     objectPropertyList = [],
     state: {
@@ -88,7 +88,7 @@ const Buttons: React.SFC<any> = props => {
   );
 };
 
-const getFieldProps = props => {
+const getFieldProps = (props) => {
   const {
     typeTab,
     state: {
@@ -178,7 +178,7 @@ class PlanTab extends React.Component<any, any> {
     this.props.handleChange('elements', newElement);
     this.setState({ selectedRow: null });
   }
-  handleRowClick = index => {
+  handleRowClick = (index) => {
     this.setState({ selectedRow: index - 1 });
   }
 

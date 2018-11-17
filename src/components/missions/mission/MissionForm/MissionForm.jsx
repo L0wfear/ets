@@ -137,7 +137,7 @@ export class MissionForm extends Form {
               is_cleaning_norm: [...newObj.is_cleaning_norm, normData.is_cleaning_norm],
             }), { norm_id: [], is_cleaning_norm: [] });
 
-            if (changesObjSecond.is_cleaning_norm.some(value => value)) {
+            if (changesObjSecond.is_cleaning_norm.some((value) => value)) {
               const { formState: { date_start, date_end } } = this.props;
 
               if (date_start && date_end) {
@@ -359,7 +359,7 @@ export class MissionForm extends Form {
       };
       const { selectedRoute } = this.state;
 
-      if (date_start && date_end && is_cleaning_norm.some(value => value) && selectedRoute) {
+      if (date_start && date_end && is_cleaning_norm.some((value) => value) && selectedRoute) {
         const { time } = routeTypesByKey[selectedRoute.type];
 
         if (diffDates(date_end, date_start, 'hours') > time) {
@@ -464,8 +464,8 @@ export class MissionForm extends Form {
     }, []);
 
     const CARS = carsList
-      .filter(c => ((!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.available_to_bind) || (state.car_id && state.car_id === c.asuods_id))
-      .map(c => ({
+      .filter((c) => ((!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.available_to_bind) || (state.car_id && state.car_id === c.asuods_id))
+      .map((c) => ({
         value: c.asuods_id,
         available: c.available,
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
@@ -476,7 +476,7 @@ export class MissionForm extends Form {
     const filteredRoutes = (
       route !== null
       && route.id !== undefined
-      && routes.find(item => item.value === route.id) === undefined
+      && routes.find((item) => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -876,7 +876,7 @@ export class MissionForm extends Form {
                   fromMission
                   notTemplate
                   fromOrder={this.props.fromOrder}
-                  available_route_types={state.is_column ? available_route_types.filter(type => type === 'mixed') : available_route_types}
+                  available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
                   structureId={state.structure_id}
                 />
               </Modal>

@@ -8,7 +8,7 @@ export type OdhNotCoveredByMissionsOfCurrentShiftItemsType = {
   tooltip?: string;
   technical_operation_id: number;
   title: string;
-}
+};
 
 export type OdhNotCoveredByMissionsOfCurrentShiftAnsType = {
   items: OdhNotCoveredByMissionsOfCurrentShiftItemsType[];

@@ -18,7 +18,8 @@ const DefaultInput: React.SFC<PropsDefaultInput> = ({ OPTIONS, OPTIONS: { length
     options={OPTIONS}
     disabled={!length}
   />
-)
+);
+
 const mapStateToProps = (state, { keyField }) => ({
   value: state.monitorPage.filters.data[keyField],
 });
@@ -35,7 +36,7 @@ const mapDispatchToProps = (dispatch, { keyField }) => ({
   dispatch,
 });
 
- export default connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
  )(DefaultInput);

@@ -10,7 +10,7 @@ export const getActiveClassName = (props) => (
     'car_legend-active',
     {
       off: !props.in_move && !props.stop && !props.parking,
-    }
+    },
   )
 );
 
@@ -24,6 +24,6 @@ export const getClassNameByType = (props, type) => (
     'legen_option',
     {
       off: !props[type],
-    }
+    },
   )
 );

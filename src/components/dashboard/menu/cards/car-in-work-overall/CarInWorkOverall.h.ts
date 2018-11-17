@@ -9,4 +9,4 @@ export type PropsCarInWorkOverall = {
 };
 
 export type StateCarInWorkOverall = {
-}
+};

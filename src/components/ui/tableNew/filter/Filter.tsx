@@ -74,7 +74,7 @@ class Fiter extends React.Component<any, any> {
   submit = () => this.props.onSubmit(this.state.filterValues);
   reset = () => this.props.onSubmit({});
 
-  renderFilterRow = col => {
+  renderFilterRow = (col) => {
     const {
       name,
       filter,
@@ -84,7 +84,7 @@ class Fiter extends React.Component<any, any> {
         customFilter,
       },
     } = col;
-    
+
     const customName = this.getName(filter.byKey || name, type);
 
     return !notUse && (
@@ -120,7 +120,7 @@ class Fiter extends React.Component<any, any> {
           }
         </Div>
       </Collapse>
-    )
+    );
   }
 }
 

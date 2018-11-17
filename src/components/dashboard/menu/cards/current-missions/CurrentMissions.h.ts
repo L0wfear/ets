@@ -6,18 +6,18 @@ import {
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 export interface InnerPropsCurrentMissions extends OwnerPropsDefaultCard {
-};
+}
 
 export interface StatePropsCurrentMissions {
-};
+}
 
 export interface DispatchPropsCurrentMissions {
   loadMissionDataById: (id: number) => any;
-};
+}
 
 export interface OwnPropsCurrentMissions {
   items: CurrentMissionsItemsType[];
-};
+}
 
 export type PropsCurrentMissions = (
   StatePropsCurrentMissions
@@ -26,4 +26,4 @@ export type PropsCurrentMissions = (
 );
 
 export interface StateCurrentMissions {
-};
+}

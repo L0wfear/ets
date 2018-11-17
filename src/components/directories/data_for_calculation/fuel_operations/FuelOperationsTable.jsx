@@ -24,7 +24,7 @@ const tableMeta = {
       displayName: 'Без учета пробега',
       filter: {
         type: 'multiselect',
-        labelFunction: is_excluding_mileage => is_excluding_mileage ? 'Да' : 'Нет',
+        labelFunction: (is_excluding_mileage) => is_excluding_mileage ? 'Да' : 'Нет',
       },
       cssClassName: 'width150',
     },

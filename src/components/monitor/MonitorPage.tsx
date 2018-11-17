@@ -21,10 +21,10 @@ import {
 
 type PropsMonitorPage = {
   token: string;
-  loadCarActualIndex: Function;
-  loadGeozonesOdhMkad: Function;
-  getCompany: Function;
-  resetMonitorPageState: Function;
+  loadCarActualIndex: any;
+  loadGeozonesOdhMkad: any;
+  getCompany: any;
+  resetMonitorPageState: any;
 };
 
 type StateMonitorPage = {
@@ -57,30 +57,30 @@ class MonitorPage extends React.Component<PropsMonitorPage, StateMonitorPage> {
   }
 }
 
-const mapStateToProps = state => ({
-  token: state.session.token
+const mapStateToProps = (state) => ({
+  token: state.session.token,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   loadCarActualIndex: () => (
     dispatch(
-      loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX)
+      loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX),
     )
   ),
   loadGeozonesOdhMkad: () => (
     dispatch(
-      loadGeozones(MONITOR_PAGE_SET_GEOMETRY, GEOOBJECTS_OBJ.odh_mkad.serverName)
+      loadGeozones(MONITOR_PAGE_SET_GEOMETRY, GEOOBJECTS_OBJ.odh_mkad.serverName),
     )
   ),
   getCompany: () => (
     dispatch(
-      getCompany(MONITOR_PAGE_SET_COMPANY)
+      getCompany(MONITOR_PAGE_SET_COMPANY),
     )
   ),
   resetMonitorPageState: () => (
     dispatch(
       resetMonitorPageState(),
     )
-  )
+  ),
 });
 
 export default hocAll(

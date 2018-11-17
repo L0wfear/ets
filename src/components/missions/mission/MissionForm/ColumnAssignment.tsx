@@ -8,7 +8,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 
 import ModalBody from 'components/ui/Modal';
 
-interface carOption {
+interface CarOption {
   value: number;
   label: string;
 }
@@ -19,7 +19,7 @@ type ColumnAssignmentProps = {
   ASSIGN_OPTIONS: any[],
   handleChange: (key: string, data: any) => void,
   handleSubmit: () => Promise<any>,
-  CARS: carOption[],
+  CARS: CarOption[],
 };
 type ColumnAssignmentState = {
   showBackButton: boolean,
@@ -28,7 +28,8 @@ type ColumnAssignmentState = {
 class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, ColumnAssignmentState> {
   state = {
     showBackButton: false,
-  }
+  };
+
   handleSubmit = async () => {
     try {
       await this.props.handleSubmit();

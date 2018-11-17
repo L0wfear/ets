@@ -19,7 +19,7 @@ const makeGeoobjects = ({ geoobjectData, entity }) => {
     Object.values(geometries).forEach(({ shape, shape_json, ...data }) => {
       try {
         data.shape = JSON.parse(shape || shape_json);
-      } catch(e) {
+      } catch (e) {
         data.shape = shape || shape_json;
       }
     })
@@ -47,7 +47,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
     this.state = {
       geoobjects: makeGeoobjects(props),
       geoobjectData,
-    }
+    };
   }
 
   static getDerivedStateFromProps(nextProps: PropsMapGeoobjectWrap, prevState: StateMapGeoobjectWrap) {
@@ -56,7 +56,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
       return {
         geoobjectData,
         geoobjects: makeGeoobjects(nextProps),
-      }
+      };
     }
 
     return null;
@@ -81,7 +81,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
           )
         }
       </MapEtsConsumer>
-    )
+    );
   }
 }
 

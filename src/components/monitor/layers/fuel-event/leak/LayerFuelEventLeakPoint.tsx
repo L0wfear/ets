@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForFuelEventLeak} from 'components/monitor/layers/fuel-event/leak/feature-style';
 import OverlayFuelEventLeakPoint from 'components/monitor/layers/fuel-event/leak/OverlayFuelEventLeakPoint';
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/redux-main/models/actions-monitor-page';
 
 type PropsLayerFuelEventLeakPoint = {
@@ -20,7 +20,7 @@ type PropsLayerFuelEventLeakPoint = {
   map: ol.Map;
 
   leakData: any;
-  monitorPageSetFuelEventsLeakOverlayData: Function;
+  monitorPageSetFuelEventsLeakOverlayData: any;
 };
 
 type StateLayerFuelEventLeakPoint = {
@@ -63,7 +63,7 @@ class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoi
         const currPoint = leakData[id];
 
         const feature = new Feature({
-          geometry: GeoJSON.readGeometry(currPoint.shape),
+          geometry: geoJSON.readGeometry(currPoint.shape),
         });
 
         feature.setId(id);
@@ -82,11 +82,11 @@ class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoi
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   leakData: state.monitorPage.fuelEvents.leak.data,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   monitorPageSetFuelEventsLeakOverlayData: (overlayData) => (
     dispatch(
       monitorPageSetFuelEventsLeakOverlayData(

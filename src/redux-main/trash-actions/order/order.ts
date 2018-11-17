@@ -6,5 +6,5 @@ export const saveOrderBlob = (type, id, payload = {}, meta = { loading: true } a
   payload: saveOrder(id, payload),
   meta: {
     ...meta,
-  }
+  },
 });

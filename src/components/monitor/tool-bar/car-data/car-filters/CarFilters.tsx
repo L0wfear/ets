@@ -13,4 +13,4 @@ const CarFilters: React.SFC<CarFiltersProps> = () => (
   </span>
 );
 
- export default CarFilters;
+export default CarFilters;

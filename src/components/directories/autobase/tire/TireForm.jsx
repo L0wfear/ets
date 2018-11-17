@@ -73,7 +73,7 @@ export default class TireForm extends Form {
               <ExtField
                 type={'string'}
                 label={'Производитель'}
-                value={get(TIRE_MODEL.find(s => s.value === state.tire_model_id), 'tire_manufacturer_name', '')}
+                value={get(TIRE_MODEL.find((s) => s.value === state.tire_model_id), 'tire_manufacturer_name', '')}
                 disabled
               />
             </Col>

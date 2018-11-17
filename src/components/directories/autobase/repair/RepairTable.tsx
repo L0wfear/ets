@@ -101,7 +101,7 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const { carsList = [],
           car_id = -1,
         } = props;
@@ -111,7 +111,7 @@ const Table: React.SFC<any> = props  => {
     plan_date_end: ({ data }) => (<DateFormatter date={data} />),
     fact_date_start: ({ data }) => (<DateFormatter date={data} />),
     fact_date_end: ({ data }) => (<DateFormatter date={data} />),
-    car_id: ({ data }) => <div>{get(carsList.find(s => s.asuods_id === data), 'gov_number', '---')}</div>,
+    car_id: ({ data }) => <div>{get(carsList.find((s) => s.asuods_id === data), 'gov_number', '---')}</div>,
     status: ({ data }) => <div>{AUTOBASE_REPAIR_STATUS[data] && AUTOBASE_REPAIR_STATUS[data].name || '---' }</div>,
   };
 

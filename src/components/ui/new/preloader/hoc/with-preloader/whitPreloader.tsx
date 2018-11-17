@@ -29,7 +29,7 @@ type PropsPreloaderWrap = StateProps & OwnerProps;
 const withPreloader = (cofing: TypeConfig) => (Component) => (
   connect<StateProps, {}, OwnerProps, ReduxState>(
     (state, { page, path }) => ({
-      isLoading: selectors.getLoadingCount(state.etsLoading, cofing.page || page, cofing.path || path)
+      isLoading: selectors.getLoadingCount(state.etsLoading, cofing.page || page, cofing.path || path),
     }),
   )(
     class PreloaderWrap extends React.Component<PropsPreloaderWrap, {}> {
@@ -51,8 +51,8 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
           </div>
         );
       }
-    }
+    },
   )
-)
+);
 
 export default withPreloader;

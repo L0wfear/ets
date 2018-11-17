@@ -104,5 +104,5 @@ export const formValidationSchema: IValidationSchema = {
         },
       },
     ],
-  }
+  },
 };

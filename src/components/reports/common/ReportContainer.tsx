@@ -139,7 +139,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
         resolve(data);
       } catch (errorData) {
-        !errorData.errorIsShow && global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+        if (!errorData.errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+        }
         reject({ ...errorData, errorIsShow: true });
       }
     });
@@ -149,7 +151,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     try {
       this.props.getTableMetaInfo(this.props.serviceName);
     } catch (errorData) {
-      !errorData.errorIsShow && global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+      if (!errorData.errorIsShow) {
+        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+      }
     }
   }
 
@@ -176,7 +180,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         /**
          * Сделано синхронно, чтобы на момент изменения просов с урлом стейт был уже обновлён.
          */
-        this.setState(prevState => {
+        this.setState(() => {
           this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(query)}`);
 
           return {
@@ -206,7 +210,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
       this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(newQuery)}`);
     } catch (errorData) {
-      !errorData.errorIsShow && global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+        if (!errorData.errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+        }
     }
   }
 
@@ -241,7 +247,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const lowerLevel = this.props.meta.levels.lower.level;
     const lowerLevelFilters = this.props.meta.levels.lower.filter;
     const lowerLevelSelectors = this.props.meta.levels.lower.filter
-      .map(selector => ({[selector]: selectedRow.props.data[selector] }))
+      .map((selector) => ({[selector]: selectedRow.props.data[selector] }))
       .reduce((prev, next) => ({ ...prev, ...next }));
 
     const currentLevelFilters = this.props.meta.levels.current.filter;
@@ -257,7 +263,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const filterDifference = difference(currentLevelFilters, lowerLevelFilters);
     const filteredQuery = omit(query, filterDifference);
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`);
 
       return {
@@ -472,12 +478,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   ...state.reports,
 });
-const mapDispatchToProps = dispatch => bindActionCreators<any, any>(reportActionCreators, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators<any, any>(reportActionCreators, dispatch);
 
-export default compose<IPropsReportContainer,any>(
+export default compose<IPropsReportContainer, any>(
   withRouter,
   connect(
     mapStateToProps,

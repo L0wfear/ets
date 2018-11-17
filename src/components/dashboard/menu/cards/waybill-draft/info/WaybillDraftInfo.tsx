@@ -40,7 +40,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
         makeDate(waybill.data.waybill_date_create)
       ),
     ),
-  }
+  };
 
   static getDerivedStateFromProps({ infoData }: PropsWaybillDraftInfo, state: StateWaybillDraftInfo) {
     if (infoData !== state.infoData) {
@@ -63,14 +63,14 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
     }
 
     return null;
-  };
+  }
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
   }
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    this.props.getWaybillById(Number.parseInt(path))
+    this.props.getWaybillById(Number.parseInt(path, 0))
       .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
@@ -78,6 +78,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
             elementWaybillFormWrap: waybill_data,
           });
         } else {
+          // tslint:disable-next-line
           console.warn('not find waybill');
         }
       });
@@ -96,8 +97,7 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
     });
-  };
-
+  }
 
   render() {
     return (

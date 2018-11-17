@@ -84,13 +84,13 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     let errorMes = '';
     const diffDate = diffDates(date_end, date_start, 'days');
     if (diffDate > 1) {
-      errorMes = 'Период отчёта должен составлять менее суток'
+      errorMes = 'Период отчёта должен составлять менее суток';
     }
     if (diffDate <= 0) {
       errorMes = 'Дата окончания периода должна быть позже даты начала';
     }
 
-    const ORGANIZATIONS_OPTION = organizations.map(({ company_id, short_name }) => ({ value: company_id, label: short_name }));
+    const ORGANIZATIONS_OPTION = organizations.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
 
     return (
       <div>

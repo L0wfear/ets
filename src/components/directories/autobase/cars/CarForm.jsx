@@ -139,7 +139,7 @@ class CarForm extends Form {
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);
     const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
-    const typesOptions = typesList.map(el => ({ value: el.asuods_id, label: el.short_name }));
+    const typesOptions = typesList.map((el) => ({ value: el.asuods_id, label: el.short_name }));
 
     /**
      * TODO Сделать виртуализацию списка, если список ТС будет тормозить из-за большого количества записей.

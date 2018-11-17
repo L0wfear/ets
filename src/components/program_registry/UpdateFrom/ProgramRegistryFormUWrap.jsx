@@ -90,7 +90,7 @@ class ProgramRegistryFormWrap extends FormWrap {
           label: `${version.version_name} (${version.is_active ? 'Действующая' : 'Недействующая'})`,
         }));
 
-      const activeVersionId = versionList.find(d => d.is_active).id;
+      const activeVersionId = versionList.find((d) => d.is_active).id;
 
       this.setState({
         isLoading: true,

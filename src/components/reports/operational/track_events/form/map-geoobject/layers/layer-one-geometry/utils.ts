@@ -1,4 +1,4 @@
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
 
 import { getCasheStyleForGeoobject } from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/feature-style';
@@ -12,10 +12,10 @@ import { LayerGeoobjectsUtilsTypes } from 'components/reports/operational/track_
  */
 const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldFeatureFunc = (geoobj, geoobj_old, oldFeature) => {
   if (geoobj_old.shape !== geoobj.shape && geoobj.shape) {
-    oldFeature.setGeometry(GeoJSON.readGeometry(geoobj.shape))
+    oldFeature.setGeometry(geoJSON.readGeometry(geoobj.shape));
   }
   if (geoobj_old.frontIsSelected !== geoobj.frontIsSelected) {
-    oldFeature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected, geoobj.state))
+    oldFeature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected, geoobj.state));
   }
 };
 
@@ -30,15 +30,15 @@ const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldF
 const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (serverName, id, geoobj, thisProps) => {
   if (geoobj.shape) {
     const feature = new Feature({
-      geometry: GeoJSON.readGeometry(geoobj.shape),
+      geometry: geoJSON.readGeometry(geoobj.shape),
     });
     feature.setId(id);
-    feature.set('serverName', serverName)
+    feature.set('serverName', serverName);
     feature.setStyle(getCasheStyleForGeoobject(geoobj.frontIsSelected, geoobj.state));
 
     thisProps.addFeaturesToSource(feature);
   }
-}
+};
 
 /**
  * действия, если фича должна отображается
@@ -66,11 +66,15 @@ export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serve
  * @param thisProps пропсы для работы с ol
  */
 export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = (geoobjects, thisProps) => {
-  for (let serverName in geoobjects) {
-    for (let id in geoobjects[serverName]) {
-      const oldFeature = thisProps.getFeatureById(id);
+  for (const serverName in geoobjects) {
+    if (serverName in geoobjects) {
+      for (const id in geoobjects[serverName]) {
+        if (id in geoobjects[serverName]) {
+          const oldFeature = thisProps.getFeatureById(id);
 
-      checkShowTrue(serverName, id, geoobjects[serverName][id], geoobjects[serverName][id], oldFeature, thisProps);
+          checkShowTrue(serverName, id, geoobjects[serverName][id], geoobjects[serverName][id], oldFeature, thisProps);
+        }
+      }
     }
   }
-}
+};

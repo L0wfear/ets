@@ -21,5 +21,5 @@ export const routeTypesByKey = Object.entries(routeTypesBySlug)
     [key]: {
       slug,
       ...other,
-    }
+    },
   }), {});

@@ -36,8 +36,8 @@ const mapStateToProps = (state, { registryKey }) => ({
   hasFilters: (
     Boolean(
       Object.values(
-        getListData(state.registry, registryKey).processed.filterValues
-      ).length
+        getListData(state.registry, registryKey).processed.filterValues,
+      ).length,
     )
   ),
 });

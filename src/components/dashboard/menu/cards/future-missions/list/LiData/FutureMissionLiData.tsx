@@ -8,7 +8,7 @@ class FutureMissionLiData extends  React.PureComponent<PropsFutureMissionLiData,
   handleClick: React.MouseEventHandler<HTMLLIElement> = () => {
     this.props.handleClick(
       this.props.item.id,
-    )
+    );
   }
 
   render() {
@@ -26,5 +26,5 @@ class FutureMissionLiData extends  React.PureComponent<PropsFutureMissionLiData,
     );
   }
 }
-               
+
 export default FutureMissionLiData;

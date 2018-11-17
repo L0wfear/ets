@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { MapEtsConsumer } from 'components/map/context/MapetsContext';
 
-const withMapInConsumer = (namesMapArr: string[] = []) => Component => (
+const withMapInConsumer = (namesMapArr: string[] = []) => (Component) => (
   class MapInConsumerWrap extends React.PureComponent<any, any> {
     render() {
       return (
@@ -21,7 +21,7 @@ const withMapInConsumer = (namesMapArr: string[] = []) => Component => (
             )
           }
         </MapEtsConsumer>
-      )
+      );
     }
   }
 );

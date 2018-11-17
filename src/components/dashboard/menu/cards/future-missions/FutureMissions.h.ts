@@ -10,11 +10,13 @@ export type StateFutureMissions = {
   elementMissionFormWrap: FutureMissionsFormDataType;
 };
 
-export interface StatePropsFutureMissions {};
+export interface StatePropsFutureMissions {}
+
 export interface DispatchPropsFutureMissions {
   getMissionById: (id: number) => Promise<MissionType>;
-};
-export interface OwnPropsFutureMissions {};
+}
+
+export interface OwnPropsFutureMissions {}
 
 export type PropsFutureMissions = (
   StateFutureMissions
@@ -22,4 +24,4 @@ export type PropsFutureMissions = (
   & OwnPropsFutureMissions
 );
 
-export type OutterPropsFutureMissions = OwnerPropsDefaultCard; 
+export type OutterPropsFutureMissions = OwnerPropsDefaultCard;

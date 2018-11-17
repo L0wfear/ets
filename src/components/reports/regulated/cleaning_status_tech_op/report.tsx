@@ -13,7 +13,7 @@ const reportUrl = 'cleaning-status-tech-op-report';
 const serviceName = 'CleaningStatusTechOpReportService';
 
 const schemaMakers = {
-  cars_gov_numbers: schema => ({
+  cars_gov_numbers: (schema) => ({
     ...schema,
     filter: false,
   }),
@@ -23,7 +23,7 @@ const renderers = {
   cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,
 };
 
-const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['car_func_types_ids']);
+const headerStateMaker = (queryState) => parseMultiSelectListQueryParams(queryState, ['car_func_types_ids']);
 
 const reportProps: IReportProps = {
   title: 'Статус по выполнению городских заданий',

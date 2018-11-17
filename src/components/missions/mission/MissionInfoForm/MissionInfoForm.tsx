@@ -103,7 +103,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
           case routeTypesBySlug.points.key: return this.makePolysFromPoints(route_data);
           default: return;
         }
-      })
+      });
 
       this.loadGpsCode();
       this.loadTrack();
@@ -142,19 +142,19 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       const type = 'odh_mkad';
       const { serverName } = GEOOBJECTS_OBJ[type];
 
-      const { odh_mkad } = await this.props.loadGeozones(serverName).then(({ payload }) => payload);
+      const { odh_mkad } = await this.props.loadGeozones(serverName).then(({ payload: geozones }) => geozones);
 
       payload.odh_mkad = odh_mkad;
     }
 
-    const calcTrackData = await this.props.loadTrackCaching(payload).then(({ payload }) => payload);
+    const calcTrackData = await this.props.loadTrackCaching(payload).then(({ payload: track }) => track);
 
     this.setState({
       track: calcTrackData.track,
       front_parkings: calcTrackData.front_parkings,
       parkingCount: Number(calcTrackData.time_of_parking),
       cars_sensors: calcTrackData.cars_sensors,
-    })
+    });
   }
 
   /**
@@ -176,7 +176,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
           return newObj;
         }, {}),
       },
-    })
+    });
   }
 
   /**
@@ -309,12 +309,12 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
           </Modal.Footer>
         </form>
       </Modal>
-    )
+    );
   }
-};
+}
 
 export default connect<any, any, any, ReduxState>(
-  state => ({
+  (state) => ({
     company_id: state.session.userData.company_id,
   }),
   mapDispatchToProps,

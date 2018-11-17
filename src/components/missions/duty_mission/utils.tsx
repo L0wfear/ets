@@ -18,21 +18,21 @@ export const FormTitle: React.SFC<{ number?: string | number, status: string }> 
 );
 
 export const makeRoutesForDutyMissionForm = ({ selectedRoute: route }, { formState: state, routesList = [] }) => {
-  const routes = routesList.filter(r => (
+  const routes = routesList.filter((r) => (
     (!state.structure_id || r.structure_id === state.structure_id)
   ));
 
   const filteredRoutes = (
     route !== null &&
     route.id !== undefined &&
-    routes.find(item => item.value === route.id) === undefined
+    routes.find((item) => item.value === route.id) === undefined
   ) ? routes.concat([route]) : routes;
 
   return uniqBy(
     filteredRoutes.map(({ id, name }) => ({ value: id, label: name })),
     'value',
   );
-}
+};
 
 export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_id, brigade_employee_id_list, brigadeEmployeeIdIndex, foreman_full_fio } , employeesList, employeesIndex }) => {
   const EMPLOYEES = getPermittetEmployeeForBrigade(employeesList, structure_id);
@@ -55,7 +55,7 @@ export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_
 
   const BRIGADES = [...EMPLOYEES];
   brigade_employee_id_list.forEach((key) => {
-    if (!BRIGADES.some(({ value }) => value === key)) {//если сотрудника из бригады нет в списке сотрудников
+    if (!BRIGADES.some(({ value }) => value === key)) { // если сотрудника из бригады нет в списке сотрудников
       const employee = employeesIndex[key] || {};
       if (employee || brigadeEmployeeIdIndex[key]) {
         BRIGADES.push({
@@ -69,13 +69,12 @@ export const getEmployeeFormDutyMission = ({ formState: { structure_id, foreman_
     }
   });
 
-
   return {
     FOREMANS,
     BRIGADES,
     hasNotActiveEmployees,
-  }
-}
+  };
+};
 
 export const hasNotActiveEmployeeForDutyMission = (selectedEmployeeList) => (
   selectedEmployeeList.filter(({ active }) => active)

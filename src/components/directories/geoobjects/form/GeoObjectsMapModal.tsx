@@ -58,7 +58,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
           </FlexWrapContainer>
         </ModalBodyPreloader>
       </Modal>
-    )
+    );
   }
 }
 

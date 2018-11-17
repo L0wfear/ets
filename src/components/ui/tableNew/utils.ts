@@ -12,7 +12,7 @@ export const showChildren = (data) => {
   }, []);
 };
 
-export const sortDataFunction = (firstRowData, secondRowData,) => {
+export const sortDataFunction = (firstRowData, secondRowData) => {
   let [
     first,
     second,
@@ -33,7 +33,7 @@ export const sortDataFunction = (firstRowData, secondRowData,) => {
   }
   if (!firstIsNumber || !secondIsNumber) {
     if (!first && first !== 0) {
-      return -1
+      return -1;
     }
     if (!second && second !== 0) {
       return 1;
@@ -71,10 +71,11 @@ const checkFilterByAdvancedNumber = (f_data, rowCol) =>
       case 'lte': return !(Number(filter_value) >= Number(rowCol));
       case 'gt': return !(Number(filter_value) < Number(rowCol));
       case 'gte': return !(Number(filter_value) <= Number(rowCol));
-      default: 
+      default: {
         // tslint:disable-next-line
         console.log(`no define filter for ${filter_type}`);
         return true;
+      }
     }
   });
 
@@ -88,10 +89,11 @@ const checkFilterByAdvancedString = (f_data, rowCol) =>
       case 'lte': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) >= 0);
       case 'gt': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) < 0);
       case 'gte': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) <= 0);
-      default: 
+      default: {
         // tslint:disable-next-line
         console.log(`no define filter for ${filter_type}`);
         return true;
+      }
     }
   });
 
@@ -114,25 +116,27 @@ export const filterFunction = (data, { filterValues }) =>
       } else {
         switch (f_data.type) {
           case 'multiselect': return !f_data.value.includes(rowCol);
-          case 'multiselect-boolean': return !f_data.value.find(value => Boolean(value) === rowCol);
+          case 'multiselect-boolean': return !f_data.value.find((value) => Boolean(value) === rowCol);
           case 'string': return !String(rowCol).toLowerCase().includes(f_data.value.toLowerCase());
           case 'advanced-number': return checkFilterByAdvancedNumber(f_data, rowCol);
           case 'advanced-string': return checkFilterByAdvancedString(f_data, rowCol);
           case 'date': return diffDatesByDays(rowCol, f_data.value);
-          default:
+          default: {
+            // tslint:disable-next-line
             console.warn(`no define filter for ${f_data}`);
             return !(rowCol === f_data);
+          }
         }
       }
     });
-    
+
     if (isValid) {
       newData = [
         ...newData,
         row,
       ];
     }
-    
+
     return newData;
   }, []);
 
@@ -144,12 +148,12 @@ export const filterData = (data, { filterValues }) => {
 
   if (isToggle) {
     if (isAllRow) {
-      filterAnsData = data.map(row => ({
+      filterAnsData = data.map((row) => ({
         ...row,
         children: filterData(row.children, { filterValues }),
-      }))
+      }));
     } else {
-      filterAnsData = filterFunction(data, { filterValues }).map(row => ({
+      filterAnsData = filterFunction(data, { filterValues }).map((row) => ({
         ...row,
         children: filterData(row.children, { filterValues }),
       }));
@@ -159,15 +163,15 @@ export const filterData = (data, { filterValues }) => {
   }
 
   return filterAnsData;
-}
-  
+};
+
 export const sortFunction = (data, { tableMeta, sortField }) => {
-  const fieldName = tableMeta.cols.find(col => col.name === sortField).sortByKey || sortField;
+  const fieldName = tableMeta.cols.find((col) => col.name === sortField).sortByKey || sortField;
   return [...data]
     .map((rowData) => ({ item: rowData[fieldName], rowData }))
     .sort(sortDataFunction)
     .map(({ rowData }) => rowData);
-}
+};
 
 export const sortData = (data, props) => {
   let ansData = [];
@@ -177,7 +181,7 @@ export const sortData = (data, props) => {
 
   if (isToggle) {
     if (isAllRow) {
-      ansData = data.map(row => ({
+      ansData = data.map((row) => ({
         ...row,
         children: sortData(row.children, props),
       }));
@@ -188,10 +192,10 @@ export const sortData = (data, props) => {
         }));
 
       if (props.sortAscending) {
-        ansData.reverse().map(row => ({
+        ansData.reverse().map((row) => ({
           ...row,
           children: [...row.children].reverse(),
-        }))
+        }));
       }
     }
   } else {
@@ -203,7 +207,7 @@ export const sortData = (data, props) => {
   }
 
   return ansData;
-}
+};
 
 export const makeData = (props) => {
   const ans = { data: hideChildren([...props.data], props) };
@@ -235,14 +239,15 @@ export const makeTableMeta = (tableMeta, props) => {
           render: ({ indexRow }) => indexRow + 1,
         },
         ...props.tableMeta.cols,
-      ]
-    }
+      ],
+    };
   }
   return { ...tableMeta };
-}
+};
 
-export const makeDataByPagination = (data, { offset, perPageCount }, uniqName) =>
+export const makeDataByPagination = (data, { offset, perPageCount }, uniqName) => (
   showChildren(
     hideChildren(data, { uniqName })
       .slice(offset * perPageCount, (offset + 1) * perPageCount),
-  );
+  )
+);

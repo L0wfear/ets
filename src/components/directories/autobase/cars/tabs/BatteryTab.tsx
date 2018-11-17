@@ -10,9 +10,9 @@ const schemaMakers = {
   battery__serial_number: hiddeColumns,
   todo_pr_date_install: hiddeColumns,
   car__gov_number: hiddeColumns,
-  battery_manufacturer__name: schema => ({ ...schema, orderNum: 0 }),
-  battery__released_at: schema => ({ ...schema, orderNum: 2 }),
-  battery_on_car__installed_at: schema => ({ ...schema, orderNum: 3 }),
+  battery_manufacturer__name: (schema) => ({ ...schema, orderNum: 0 }),
+  battery__released_at: (schema) => ({ ...schema, orderNum: 2 }),
+  battery_on_car__installed_at: (schema) => ({ ...schema, orderNum: 3 }),
 };
 
 interface IPropsBatteryTab extends IBaseForm {

@@ -137,7 +137,7 @@ export const waybillSchema = {
             return false;
           }
 
-          if(diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
+          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {

@@ -40,15 +40,15 @@ export interface IVehicle {
   parking_address: string;
   car_group_id: number;
   car_group_name: string;
-  primary_drivers: any[],
-  secondary_drivers: any[],
-  register_secondary_drivers: any[],
-  register_primary_drivers: any[],
+  primary_drivers: any[];
+  secondary_drivers: any[];
+  register_secondary_drivers: any[];
+  register_primary_drivers: any[];
 }
 
 export interface ICarDrivers {
-  car_drivers_primary_drivers: number[],
-  car_drivers_secondary_drivers: number[],
+  car_drivers_primary_drivers: number[];
+  car_drivers_secondary_drivers: number[];
 }
 
 export interface IVehicleRegister {
@@ -56,8 +56,8 @@ export interface IVehicleRegister {
   register_given_by: string;
   register_given_at: Date;
   register_note: string;
-  register_secondary_drivers: any[],
-  register_primary_drivers: any[],
+  register_secondary_drivers: any[];
+  register_primary_drivers: any[];
 }
 
 export interface IVehiclePassport  extends IVehiclePassportGibdd, IVehiclePassportGtn {
@@ -140,26 +140,6 @@ export interface IUserNotification extends IResponseRowObject<number> {
   additional_info: string;
   gov_number: string;
 }
-
-  // "defaults": {
-  //   "FUEL_TYPE": "DT"
-  // },
-  // "summer_end": [
-  //   10,
-  //   31
-  // ],
-  // "summer_start": [
-  //   4,
-  //   15
-  // ],
-  // "enums": {
-  //   "FUEL_TYPE": {
-  //     "A80": "А-80",
-  //     "AI95": "АИ-95",
-  //     "DT": "ДТ",
-  //     "AI92": "АИ-92"
-  //   }
-  // }
 
 export interface IAppConfig {
   defaults: ETSCore.Types.IStringKeyHashTable<string>;

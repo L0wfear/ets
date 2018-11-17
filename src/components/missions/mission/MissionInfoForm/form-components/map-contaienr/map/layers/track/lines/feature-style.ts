@@ -5,7 +5,7 @@ import Fill from 'ol/style/Fill';
 
 import { TRACK_COLORS } from 'constants/track';
 
-const DEVICE_PIXEL_RATIO = 1; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 1; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
@@ -26,7 +26,7 @@ const makeCacheStyle = (cacheStyleName, { greenSpeed } ) => {
     }),
     zIndex: 9,
   });
-}
+};
 
 export const getStyleForTrackLine = (greenSpeed) => {
   const cacheStyleName = `${greenSpeed}`;
@@ -41,4 +41,4 @@ export const getStyleForTrackLine = (greenSpeed) => {
   }
 
   return icon;
-}
+};

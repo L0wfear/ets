@@ -5,7 +5,7 @@ export type OdhNotCoveredByRoutesItemsType = {
   tooltip?: string;
   title: string;
   technical_operation_id: number;
-}
+};
 
 export type OdhNotCoveredByRoutesAnsType = {
   items: OdhNotCoveredByRoutesItemsType[];

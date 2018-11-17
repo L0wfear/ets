@@ -34,7 +34,6 @@ type GetMunicipalFacilityFuncAns = {
 
 type GetMunicipalFacilityFunc = (props: GetMunicipalFacilityFuncProps) => Promise<GetMunicipalFacilityFuncAns>;
 
-
 type PropsMunicipalFacilityField = {
   error: string | void;
   disabled?: boolean;
@@ -132,11 +131,9 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
 
           this.loadMunicipalFacility(outerPayload);
         } else {
+          // tslint:disable-next-line
           console.log('старая то без элемента');
         }
-
-      } else {
-        throw 'Не найдена ТО';
       }
     }
   }
@@ -170,14 +167,13 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         }, []);
 
         if (value) {
-          const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOption) => mfOption.value === value);
+          const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOptionData) => mfOptionData.value === value);
           if (mfOption) {
             this.props.getDataByNormatives(
               mfOption.mfData.normatives,
             );
           }
         }
-
 
         this.setState({ MUNICIPAL_FACILITY_OPTIONS });
       });
@@ -218,7 +214,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         onChange={this.handleChange}
         clearable={clearable}
       />
-    )
+    );
   }
 }
 

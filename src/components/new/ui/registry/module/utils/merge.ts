@@ -43,9 +43,8 @@ export const mergeFilter = (filter) => {
 
       return newObj;
     }, {})
-  )
+  );
 };
-
 
 export const mergeHeader = (header) => (
   header
@@ -53,7 +52,7 @@ export const mergeHeader = (header) => (
     Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
       if (key === 'buttons') {
         if (isArray(header[key])) {
-          newObj[key] = header[key].map(buttonData => {
+          newObj[key] = header[key].map((buttonData) => {
             if (!isObject(buttonData) && isString(buttonData)) {
               return {
                 type: buttonData,
@@ -61,7 +60,7 @@ export const mergeHeader = (header) => (
             }
 
             return buttonData;
-          })
+          });
         } else {
           newObj[key] = value;
         }
@@ -130,7 +129,7 @@ export const mergeListPaginator = (paginator) => (
   : (
     registryDefaultObj.list.paginator
   )
-)
+);
 
 export const mergeListProcessed = (processed) => (
   processed
@@ -169,7 +168,7 @@ export const mergeListProcessed = (processed) => (
     }, {})
   )
   : (
-    registryDefaultObj.list.processed 
+    registryDefaultObj.list.processed
   )
 );
 

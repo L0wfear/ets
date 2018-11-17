@@ -91,6 +91,4 @@ export const SeasonsFilterContainer = styled.div`
 export const SpanTitleRouteGroup = styled.div`
   font-weight: 800;
   text-decoration: underline;
-
-
 `;

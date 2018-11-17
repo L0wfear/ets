@@ -9,9 +9,6 @@ import session from 'redux-main/reducers/modules/session/session';
 import monitorPage from 'components/monitor/redux-main/models/monitor-page';
 import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboard';
 
-// sorry
-import paginator from 'components/ui/new/paginator/redux-main/paginator';
-
 import registry from 'components/new/ui/registry/module/registry';
 
 export default combineReducers({
@@ -22,6 +19,5 @@ export default combineReducers({
   order,
   session,
   monitorPage,
-  paginator,
   registry,
 });

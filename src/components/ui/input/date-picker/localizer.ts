@@ -1,11 +1,11 @@
-import * as _moment from 'moment'
-import * as _configure from 'react-widgets/lib/configure'
+import * as _moment from 'moment';
+import * as _configure from 'react-widgets/lib/configure';
 
 /**
  * based on react-widget-moment
  */
 
-function getMoment(culture, value, format = undefined) {
+function getMoment(culture, value, format?) {
   return culture ? _moment(value, format).locale(culture) : _moment(value, format);
 }
 
@@ -18,7 +18,7 @@ function endOfCentury(date) {
 }
 
 function momentLocalizer() {
-  var localizer = {
+  const localizer = {
     formats: {
       date: 'L',
       time: 'LT',
@@ -29,25 +29,29 @@ function momentLocalizer() {
       dayOfMonth: 'DD',
       month: 'MMM',
       year: 'YYYY',
-      decade: function decade(date, culture, localizer) {
-        return localizer.format(date, 'YYYY', culture) + ' - ' + localizer.format(endOfDecade(date), 'YYYY', culture);
+      decade: function decade(date, culture, localizerOwn) {
+        return localizerOwn.format(date, 'YYYY', culture) + ' - ' + localizerOwn.format(endOfDecade(date), 'YYYY', culture);
       },
-      century: function century(date, culture, localizer) {
-        return localizer.format(date, 'YYYY', culture) + ' - ' + localizer.format(endOfCentury(date), 'YYYY', culture);
-      }
+      century: function century(date, culture, localizerOwn) {
+        return localizerOwn.format(date, 'YYYY', culture) + ' - ' + localizerOwn.format(endOfCentury(date), 'YYYY', culture);
+      },
     },
     firstOfWeek: function firstOfWeek(culture) {
       return _moment.localeData(culture).firstDayOfWeek();
     },
     parse: function parse(value, format, culture) {
-      if (!value) return null;
-      var m = getMoment(culture, value, format);
-      if (m.isValid()) return m.toDate();
+      if (!value) {
+        return null;
+      }
+      const m = getMoment(culture, value, format);
+      if (m.isValid()) {
+        return m.toDate();
+      }
       return null;
     },
     format: function format(value, _format, culture) {
       return getMoment(culture, value).format(_format);
-    }
+    },
   };
 
   _configure.setDateLocalizer(localizer);

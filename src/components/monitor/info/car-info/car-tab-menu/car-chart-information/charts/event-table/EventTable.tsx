@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 type PropsEventTable = {
   front_events_list: any[],
   handleEventClick: any;
-}
+};
 
 class EventTable extends React.Component<PropsEventTable, {}> {
   handleEventClick: any = ({ currentTarget: { dataset: { ievent } } }) => {
@@ -36,7 +36,7 @@ class EventTable extends React.Component<PropsEventTable, {}> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   front_events_list: state.monitorPage.carInfo.trackCaching.front_events_list,
 });
 

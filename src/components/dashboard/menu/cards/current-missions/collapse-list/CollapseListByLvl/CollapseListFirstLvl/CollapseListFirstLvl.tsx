@@ -15,7 +15,7 @@ class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl
     return (
       <li key={index} >
         <CollapseText
-          title={item.title} 
+          title={item.title}
           noClickOnTitle={!subItems.length}
         >
           <CollapseListSecondLvl
@@ -29,14 +29,14 @@ class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl
   }
   render() {
     const {
-      props
+      props,
     } = this;
 
     return (
       <ul>
         { props.collapsetItems.map(this.rednerMap) }
       </ul>
-    )
+    );
   }
 }
 

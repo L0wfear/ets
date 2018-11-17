@@ -3,7 +3,7 @@ import * as NavDropdown from 'react-bootstrap/lib/NavDropdown';
 
 import connectToStores from 'flummox/connect';
 
-const checkShow = props => {
+const checkShow = (props) => {
   let isShow = false;
 
   if (props.data.hiddenNav) {
@@ -11,7 +11,7 @@ const checkShow = props => {
   } else if (props.data.alwaysShow) {
     isShow = true;
   } else if (props.data.permissions) {
-    isShow = props.data.permissions.list.some(perm => perm === true || props.userPermissions.includes(perm));
+    isShow = props.data.permissions.list.some((perm) => perm === true || props.userPermissions.includes(perm));
   }
 
   if (props.data.checkHidden) {
@@ -19,7 +19,7 @@ const checkShow = props => {
   }
 
   return isShow;
-}
+};
 
 const propsToNavDropdown: any = [
   'id',
@@ -33,7 +33,7 @@ const propsToNavDropdown: any = [
   'className',
 ];
 
-const NavDropdownCustom: React.SFC<any> = props =>
+const NavDropdownCustom: React.SFC<any> = (props) =>
   checkShow(props)
   ?
     <NavDropdown { ...propsToNavDropdown.reduce((newProps, key) => ({ ...newProps, [key]: props[key] }), {} )} />
@@ -42,4 +42,3 @@ const NavDropdownCustom: React.SFC<any> = props =>
 ;
 
 export default connectToStores(NavDropdownCustom, ['session']);
-  

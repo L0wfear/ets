@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from 'util';
 
 export const sortArray = (firstRowData, secondRowData, field) => {
   let [
@@ -58,10 +58,11 @@ export const filterArray = (array, filterValues) => {
         // описываем проигрышные варианты
         if (valueKeyType.match(/__in$/)) {
           const valueKey = valueKeyType.replace(/__in$/, '');
-          return !value.includes(row[valueKey])
+          return !value.includes(row[valueKey]);
         }
 
-        console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType)
+        // tslint:disable-next-line
+        console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType);
         return false;
       });
     });
@@ -69,7 +70,6 @@ export const filterArray = (array, filterValues) => {
 
   return [...array];
 };
-
 
 export const makeProcessedArray = (array, { sort, filterValues }) => {
   const processedArray = filterArray(array, filterValues);

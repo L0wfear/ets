@@ -8,12 +8,12 @@ type PropsCarTrackInformation = {
   map: ol.Map;
 };
 
-const CarTrackInformation: React.SFC<PropsCarTrackInformation> = props => (
+const CarTrackInformation: React.SFC<PropsCarTrackInformation> = (props) => (
   <div>
     <TitleTrackTab />
     <ActionTrackTab />
     <SensorsTrackTab />
   </div>
-)
+);
 
 export default CarTrackInformation;

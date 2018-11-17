@@ -5,7 +5,7 @@ import {
   setEmptyDutyMissionData,
   setEmptyDutyMissionTemplateData,
 } from 'redux-main/reducers/modules/order/action-order';
-  
+
 import Div from 'components/ui/Div';
 
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
@@ -17,7 +17,7 @@ import OrderMissionTemplate from 'components/directories/order/forms/OrderMissio
 const MissionFormWrapTSX: any = MissionFormWrap;
 const DutyMissionFormWrapTSX: any = DutyMissionFormWrap;
 
-const OrderMissionController: React.SFC<any> = props => {
+const OrderMissionController: React.SFC<any> = (props) => {
   const {
     missionData,
     dutyMissionData,
@@ -52,14 +52,14 @@ const OrderMissionController: React.SFC<any> = props => {
       </Div>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   missionData: state.order.missionData,
   missionTemplateData: state.order.missionTemplateData,
   dutyMissionData: state.order.dutyMissionData,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onHideCM: () => dispatch(setEmptyMissionData()),
   onHideCDM: () => dispatch(setEmptyDutyMissionData()),
   onHideCMTemplate: () => dispatch(setEmptyDutyMissionTemplateData()),

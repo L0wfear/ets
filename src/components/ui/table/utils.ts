@@ -32,7 +32,7 @@ export function toServerFilteringObject<FilterItem = any>(
 }
 
 export function makeSchema({ cols = [] }: IDataTableSchema, makers: ISchemaMaker): IDataTableSchema {
-  const newCols = cols.map(col => {
+  const newCols = cols.map((col) => {
     const maker = makers[col.name] || identity;
     return maker(col);
   });
@@ -49,7 +49,7 @@ export function hiddeColumns(schema: IDataTableColSchema): IDataTableColSchema {
 }
 
 export const getFilterTypeByKey = (key, tableMeta) => {
-  const col = tableMeta.cols.find(c => c.name === key);
+  const col = tableMeta.cols.find((c) => c.name === key);
   const colFilterType = col.filter && col.filter.type ? col.filter.type : '';
   return colFilterType;
 };
@@ -65,13 +65,13 @@ export const isNumberSelectArrayData = (filterValue, fieldValue, fieldKey, table
   getFilterTypeByKey(fieldKey, tableMeta) === 'select';
 
 export const stringArrayDataMatching = (filterValue, fieldValueArray) =>
-  fieldValueArray.filter(v => v.match(filterValue) !== null).length > 0;
+  fieldValueArray.filter((v) => v.match(filterValue) !== null).length > 0;
 
 export const numberArrayDataMatching = (filterValue, fieldValueArray) =>
-  fieldValueArray.filter(v => v === filterValue).length > 0;
+  fieldValueArray.filter((v) => v === filterValue).length > 0;
 
-const floatFormatter = value => parseFloat(value);
-const defaultFormatter = value => value;
+const floatFormatter = (value) => parseFloat(value);
+const defaultFormatter = (value) => value;
 
 export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
   const isIntervalFilter = Object.keys(filterObject).length === 2;
@@ -129,7 +129,6 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
   return false;
 };
 
-
 export const sortFunction = (firstRowData, secondRowData, initialSort, other) => {
   let [
     first,
@@ -147,7 +146,7 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
   // оба числа
 
   if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
-    return diffDates(first, second)
+    return diffDates(first, second);
   }
 
   if (firstIsNumber && secondIsNumber) {
@@ -155,7 +154,7 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
   }
   if (!firstIsNumber || !secondIsNumber) {
     if (!first && first !== 0) {
-      return -1
+      return -1;
     }
     if (!second && second !== 0) {
       return 1;
@@ -187,7 +186,7 @@ export const sortData = (data, { initialSort, initialSortAscending, ...other }) 
   initialSort
   ? (
     data.sort((a, b) => (
-      sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other))
+      sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)),
     )
   )
   : (
@@ -207,4 +206,4 @@ export const makeData = (data, prevProps, nextProps) => {
   }
 
   return returnData;
-}
+};

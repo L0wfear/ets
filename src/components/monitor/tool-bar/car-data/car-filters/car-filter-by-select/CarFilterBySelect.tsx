@@ -123,7 +123,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
           </div>
         </ClickOutHandler>
       </span>
-    )
+    );
   }
 }
 
@@ -131,8 +131,8 @@ export default connect<any, any, any, ReduxState>(
   (state) => ({
     isOkrug: state.session.userData.isOkrug,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
-    
-    active: ['carFilterMultyType', 'carFilterMultyStructure', 'carFilterMultyOwner'].some(key => (
+
+    active: ['carFilterMultyType', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
       state.monitorPage.filters.data[key].length
     )),
   }),

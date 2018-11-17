@@ -71,5 +71,4 @@ class LayerEditDrawRoute extends React.PureComponent<PropsLayerEditDrawRoute, St
   }
 }
 
-
 export default withLayerProps({})(LayerEditDrawRoute);

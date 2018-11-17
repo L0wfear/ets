@@ -21,7 +21,7 @@ type StateFiltersWrap = {
 
 class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
   handleToggle = () => {
-    console.log('handleToggle')
+    // toggle
   }
 
   render() {

@@ -84,9 +84,9 @@ const initialState = {
       data: {},
       date_from: getToday0am(),
       date_to: getDateWithMoscowTz(),
-    }
-  }
-}
+    },
+  },
+};
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
@@ -100,7 +100,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         companiesIndex: payload.companiesIndex,
-      }
+      };
     }
     case MONITOR_PAGE_SET_GEOMETRY: {
       return {
@@ -138,8 +138,8 @@ export default (state = initialState, { type, payload }) => {
             ...newObj,
             [key]: !state.status[key],
           }), {}),
-        }
-      }
+        },
+      };
     }
     case MONITOR_PAGE_TOGGLE_STATUS_GEO: {
       return {
@@ -150,8 +150,8 @@ export default (state = initialState, { type, payload }) => {
             ...newObj,
             [key]: !state.statusGeo[key],
           }), {}),
-        }
-      }
+        },
+      };
     }
     case MONITOR_PAGE_TOGGLE_STATUS_GEOOBECT: {
       return {
@@ -222,12 +222,12 @@ export default (state = initialState, { type, payload }) => {
         serverNameData[payload.id].front_show = false;
         selectedGeoobjects[serverName] = serverNameData;
       } else {
-        selectedGeoobjects[serverName] = Object.entries(selectedGeoobjects[serverName]).reduce((newObj, [id, data]) => ({
+        selectedGeoobjects[serverName] = Object.entries(selectedGeoobjects[serverName]).reduce((newObj, [key, data]) => ({
           ...newObj,
-          [id]: {
+          [key]: {
             ...data,
             front_show: false,
-          }
+          },
         }), {});
       }
 
@@ -271,7 +271,7 @@ export default (state = initialState, { type, payload }) => {
           filtredCarGpsCode: {
             ...state.filters.filtredCarGpsCode,
             ...payload.filtredCarGpsCode,
-          }
+          },
         },
       };
     }
@@ -339,4 +339,4 @@ export default (state = initialState, { type, payload }) => {
       };
     }
   }
-}
+};

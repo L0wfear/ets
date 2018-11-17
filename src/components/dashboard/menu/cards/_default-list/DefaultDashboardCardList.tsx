@@ -10,7 +10,7 @@ import {
 type PropsDefaultDashboardCardList = {
   title: string;
   noClickOnTitle?: boolean;
-}
+};
 
 const components = {
   CollapseTitleContainer,
@@ -23,7 +23,7 @@ class DefaultDashboardCardList extends React.PureComponent<PropsDefaultDashboard
 
     return (
       <CollapseText
-        title={props.title} 
+        title={props.title}
         noClickOnTitle={props.noClickOnTitle}
         components={components}
       >
@@ -31,6 +31,6 @@ class DefaultDashboardCardList extends React.PureComponent<PropsDefaultDashboard
       </CollapseText>
     );
   }
-};
+}
 
 export default DefaultDashboardCardList;

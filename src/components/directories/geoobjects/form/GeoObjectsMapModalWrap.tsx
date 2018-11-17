@@ -9,8 +9,6 @@ import {
   ISchemaRenderer,
 } from 'components/ui/table/@types/schema.h';
 
-
-
 const GeoObjectsMapModal = React.lazy(() => (
   import(/* webpackChunkName: "geo-objects_map_modal" */'components/directories/geoobjects/form/GeoObjectsMapModal')
 ));
@@ -49,7 +47,7 @@ class GeoObjectsMapModalWrap extends React.PureComponent<PropsGeoObjectsMapModal
       )
       :
       ( <DivNone /> )
-    )
+    );
   }
 }
 

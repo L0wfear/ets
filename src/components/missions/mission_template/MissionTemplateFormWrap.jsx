@@ -54,7 +54,7 @@ export const createMissions = async (flux, element, payload) => {
     if (e && e.message.code === 'invalid_period') {
       const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
 
-      const body = self => (
+      const body = (self) => (
         <div>
           <div>{e.message.message}</div>
           <br />

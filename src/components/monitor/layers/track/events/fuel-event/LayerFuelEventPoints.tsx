@@ -22,7 +22,7 @@ type PropsLayerFuelEventPoints = {
 
   front_events_list: any[];
   front_cars_sensors_level: any,
-  carInfoSetFuelEventPoint: Function;
+  carInfoSetFuelEventPoint: any;
   fuelEventPoint: any;
 };
 
@@ -69,11 +69,12 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
 
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
-    const parkingPoint = this.props.front_events_list.find(point => point.start_point.timestamp === timestamp);
+    const parkingPoint = this.props.front_events_list.find((point) => point.start_point.timestamp === timestamp);
 
     if (parkingPoint) {
       this.props.carInfoSetFuelEventPoint(parkingPoint);
     } else {
+      // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
   }
@@ -92,6 +93,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
           this.props.addFeaturesToSource(feature);
         }
       } catch (error) {
+        // tslint:disable-next-line
         console.warn(error);
       }
     }
@@ -106,6 +108,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
           this.props.removeFeaturesFromSource(featureOld);
         }
       } catch (error) {
+        // tslint:disable-next-line
         console.warn(error);
       }
     }
@@ -136,13 +139,13 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
   fuelEventPoint: state.monitorPage.carInfo.popups.fuelEventPoint,
   front_events_list: state.monitorPage.carInfo.trackCaching.front_events_list,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   carInfoSetFuelEventPoint: (parkingPoint) => (
     dispatch(
       carInfoSetFuelEventPoint(parkingPoint),

@@ -11,7 +11,7 @@ const emptyArr = [];
 const mapRows = (rows, selectField, parentId = null) => (
   rows.map(({ children = emptyArr, ...other }) => {
     const rowData = {
-      ...other
+      ...other,
     };
 
     if (children.length) {
@@ -48,7 +48,7 @@ class SimpleGriddle extends React.Component<any, any> {
     const results = props.results;
     const { resultsPerPage } = props;
     const currentPage = props.rowNumberOffset ? props.rowNumberOffset / resultsPerPage : 0;
-    
+
     this.state = {
       results,
       resultsPerPage,
@@ -67,19 +67,19 @@ class SimpleGriddle extends React.Component<any, any> {
           Math.max(
             Math.min(
               nextProps.currentPage,
-              Math.ceil(results.length / resultsPerPage) - 1
+              Math.ceil(results.length / resultsPerPage) - 1,
             ),
             0,
           )
         );
-
 
       const shortResult = makeShortResults(
         results,
         currentPage,
         resultsPerPage,
         nextProps.selectField,
-      ); 
+      );
+
       return {
         results,
         resultsPerPage,
@@ -96,12 +96,12 @@ class SimpleGriddle extends React.Component<any, any> {
     return this.setState({
       currentPage,
       shortResult,
-    })
+    });
   }
 
   globalCheckHandler = (e) => {
     this.setState({
-      GlobalCheckboxState: this.getGlobalCheckboxState(this.state.shortResult)
+      GlobalCheckboxState: this.getGlobalCheckboxState(this.state.shortResult),
     });
     this.props.globalCheckHandler(
       this.state.shortResult,
@@ -109,10 +109,10 @@ class SimpleGriddle extends React.Component<any, any> {
     );
   }
 
-  getGlobalCheckboxState = (shortResult) => !shortResult.some(item => !item.isChecked);
+  getGlobalCheckboxState = (shortResult) => !shortResult.some((item) => !item.isChecked);
 
   mapTheadTrTh = (columnNameOuter) => {
-    const field = this.props.columnMetadata.find(({ columnName }) => columnName === columnNameOuter);
+    const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
     const { columnName } = field;
     const { shortResult } = this.state;
     if (columnName === 'isChecked') {
@@ -120,7 +120,7 @@ class SimpleGriddle extends React.Component<any, any> {
         <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
           <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={this.getGlobalCheckboxState(shortResult)} />
         </th>
-      )
+      );
     }
 
     return (
@@ -133,7 +133,7 @@ class SimpleGriddle extends React.Component<any, any> {
             <span></span>
         }
       </th>
-    )
+    );
   }
 
   mapTbodyTr = (rowData, index) => (
@@ -172,9 +172,8 @@ class SimpleGriddle extends React.Component<any, any> {
   handleClickTbodyTr: any = (rowData, index) => {
     const numberIndex = index;
     const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
-    const { _isParent } = rowData;
 
-    if (!_isParent) {
+    if (!rowData._isParent) {
       if (this.props.onRowClickNew || this.props.onRowClick) {
         const {
           _isParent,
@@ -209,7 +208,7 @@ class SimpleGriddle extends React.Component<any, any> {
             _isShowChildren: true,
           },
           ...rowData.children,
-          ...this.state.shortResult.slice(numberIndex + 1)
+          ...this.state.shortResult.slice(numberIndex + 1),
         ];
       } else {
         shortResult = this.state.shortResult.reduce((newArr, newRowData) => {
@@ -228,7 +227,7 @@ class SimpleGriddle extends React.Component<any, any> {
         shortResult,
       });
     }
-  };
+  }
 
   handleThClick: any = ({ currentTarget: { dataset: { title } } }) => {
     if (this.props.enableSort) {
@@ -243,11 +242,12 @@ class SimpleGriddle extends React.Component<any, any> {
         this.props.externalChangeSort(title, initialSortAscending);
         this.setState({
           initialSort: title,
-          initialSortAscending: initialSortAscending,
-        })
+          initialSortAscending,
+        });
       }
     }
   }
+
   render() {
     const {
       shortResult,
@@ -283,6 +283,6 @@ class SimpleGriddle extends React.Component<any, any> {
       </div>
     );
   }
-};
+}
 
 export default SimpleGriddle;

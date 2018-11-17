@@ -16,7 +16,7 @@ type PropsInfoCard = {
   handleClose: React.MouseEventHandler<HTMLDivElement>;
 };
 
-const InfoCard: React.SFC<PropsInfoCard> = props => (
+const InfoCard: React.SFC<PropsInfoCard> = (props) => (
   <InfoCardWrapContainer>
     <CardInfoContainer>
       <CardTitleContainer>

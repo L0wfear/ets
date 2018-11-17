@@ -39,7 +39,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
     this.state = {
       coords,
       geoobjects: makeGeoobjects(coords),
-    }
+    };
   }
 
   static getDerivedStateFromProps(nextProps: PropsGeoObjectsMapModalNew, prevState: StateGeoObjectsMapModalNew) {
@@ -48,7 +48,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
       return {
         coords,
         geoobjects: makeGeoobjects(coords),
-      }
+      };
     }
 
     return null;
@@ -85,7 +85,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
           </MapEtsContainer>
         </ModalBodyPreloader>
       </Modal>
-    )
+    );
   }
 }
 

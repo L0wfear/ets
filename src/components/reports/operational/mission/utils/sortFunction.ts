@@ -11,4 +11,4 @@ export const sortFunc = (a, b) => {
     return second_a - second_b;
   }
   return change;
-}
+};

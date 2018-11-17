@@ -8,11 +8,15 @@ export default class Flux extends Flummox {
     super();
 
     for (const actionName in actions) {
-      super.createActions(actionName, actions[actionName]);
+      if (actionName in actions) {
+        super.createActions(actionName, actions[actionName]);
+      }
     }
 
     for (const storeName in stores) {
-      super.createStore(storeName, stores[storeName], this);
+      if (storeName in stores) {
+        super.createStore(storeName, stores[storeName], this);
+      }
     }
   }
 }

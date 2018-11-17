@@ -1,8 +1,4 @@
-/**
- * Не использовать данные из сокета для фильтрации!!!
- */
-
- import * as React from 'react';
+import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
@@ -20,6 +16,10 @@ import {
   WsData,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/LayerCarMarker.h';
 
+/**
+ * Не использовать данные из сокета для фильтрации!!!
+ */
+
 let updatePoints = true;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
@@ -28,7 +28,8 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
   state = {
     ws: null,
     carPointsDataWs: {},
-  }
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'CarMarker', zIndex: 10 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
@@ -103,11 +104,11 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
     const { gps_code: outerGpsCode } = this.props;
     const { carPointsDataWs } = this.state;
 
-    Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...data }]) => {
-      let point = {
+    Object.entries(data).forEach(([gps_code, { coords, coords_msk, ...dataPoint }]) => {
+      const point = {
         coords_msk: [...coords_msk].reverse() as ol.Coordinate,
         coords: [...coords].reverse() as ol.Coordinate,
-        ...data,
+        ...dataPoint,
       };
 
       if (!carPointsDataWs[gps_code]) {
@@ -116,7 +117,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
         const feature = new Feature({
           geometry: new Point(point.coords_msk),
         });
-  
+
         const style = getStyleForStatusDirectionType({
           status: point.status,
           direction: point.direction,
@@ -157,16 +158,15 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
       }
     });
 
-
     this.setState({ carPointsDataWs });
   }
 
   render() {
-    return <div></div>
+    return <div></div>;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   token: state.session.token,
 });
 

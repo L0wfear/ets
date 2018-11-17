@@ -1,4 +1,4 @@
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
 
 import {
@@ -7,10 +7,10 @@ import {
   getCasheStyleForGeoobject,
 } from 'components/route/route-info/map/layers/layer-route-info-geometry/feature-style';
 
-const renderGeometry= (id, geoobj, thisProps) => {
+const renderGeometry = (id, geoobj, thisProps) => {
   if (geoobj.shape) {
     const feature = new Feature({
-      geometry: GeoJSON.readGeometry(geoobj.shape),
+      geometry: geoJSON.readGeometry(geoobj.shape),
     });
 
     feature.setId(id);
@@ -23,10 +23,10 @@ const renderGeometry= (id, geoobj, thisProps) => {
   }
 
   return null;
-}
+};
 
 export const renderGeoobjects = (geoobjectsArr, thisProps) => {
-  for (let geoobj of geoobjectsArr) {
+  for (const geoobj of geoobjectsArr) {
     const id = geoobj.object_id;
 
     const feature = renderGeometry(id, geoobj, thisProps);
@@ -37,9 +37,8 @@ export const renderGeoobjects = (geoobjectsArr, thisProps) => {
   }
 };
 
-
 export const renderInputLines = (geoobjectsArr, thisProps) => {
-  for (let geoobj of geoobjectsArr) {
+  for (const geoobj of geoobjectsArr) {
     const id = geoobj.object_id;
 
     const feature = renderGeometry(id, geoobj, thisProps);

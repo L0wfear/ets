@@ -19,7 +19,7 @@ export const ButtenUpdateMission = withRequirePermissionsNew({
 
 export const LinkToOpenMissionInfoForm = withRequirePermissionsNew({
   permissions: 'mission.read',
-})(props => (
+})((props) => (
   <div>
     <a className="pointer" onClick={props.openMissiomInfoForm} >Подробнее...</a>
   </div>

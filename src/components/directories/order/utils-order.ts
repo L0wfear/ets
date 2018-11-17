@@ -10,5 +10,5 @@ export const getBlobOrder = ({ id }, eventName) => {
     payload.format = 'xls';
   }
   OrderService.path(id).getBlob(payload)
-    .then(({ blob, fileName }) => saveData(blob, fileName))
-}
+    .then(({ blob, fileName }) => saveData(blob, fileName));
+};

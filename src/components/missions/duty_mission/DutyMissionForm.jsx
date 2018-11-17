@@ -24,7 +24,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { FormTitle, onlyActiveEmployeeNotification, makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from './utils';
 import { components } from 'react-select';
 
-const makePayloadFromState = formState => ({
+const makePayloadFromState = (formState) => ({
   datetime: formState.plan_date_start,
   technical_operation_id: formState.technical_operation_id,
   municipal_facility_id: formState.municipal_facility_id,

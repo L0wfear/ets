@@ -23,7 +23,7 @@ type PropsLayerTrackPoints = {
   missionNumber: string | number;
   cars_sensors: object;
 
-  carInfoSetTrackPoint: Function;
+  carInfoSetTrackPoint: any;
 };
 
 type StateLayerTrackPoints = {
@@ -34,11 +34,13 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   const { checkCoordsMsk: { onMkad = false } = {}, speed_avg } = trackPoint;
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;
-}
+};
+
 class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayerTrackPoints> {
   state = {
     selectedPoint: null,
-  }
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'TrackPoints', zIndex: 3, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -68,11 +70,12 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
 
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
-    const selectedPoint = this.props.track.find(point => point.timestamp === timestamp);
+    const selectedPoint = this.props.track.find((point) => point.timestamp === timestamp);
 
     if (selectedPoint) {
       this.setState({ selectedPoint });
     } else {
+      // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
   }
@@ -82,7 +85,6 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
       selectedPoint: null,
     });
   }
-
 
   drawTrackPoints(track) {
     for (let index = 0, length = track.length; index < length; index++) {

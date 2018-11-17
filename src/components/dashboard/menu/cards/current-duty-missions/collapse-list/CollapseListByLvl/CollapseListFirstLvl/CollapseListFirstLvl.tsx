@@ -27,7 +27,7 @@ class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl
       <ul>
         { props.collapsetItems.map(this.rednerMap) }
       </ul>
-    )
+    );
   }
 }
 

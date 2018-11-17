@@ -21,7 +21,7 @@ export const getRouteDataById = (id) => (
           });
         } else if (route_data.type === 'mixed') {
           route_data.draw_odh_list = [];
-  
+
           if (route_data.input_lines && route_data.input_lines.length) {
             route_data.input_lines.forEach((object) => {
               const start = [object.begin.x_msk, object.begin.y_msk];
@@ -46,7 +46,7 @@ export const getRouteDataById = (id) => (
             object.type = 'odh';
             return object;
           });
-  
+
           route_data.object_list.forEach((object, i) => {
             if (object.from_vectors) {
               route_data.draw_odh_list.push(object);
@@ -62,10 +62,11 @@ export const getRouteDataById = (id) => (
       };
     })
     .catch((error) => {
+      // tslint:disable-next-line
       console.warn(error);
 
       return {
         route_data: null,
       };
     })
-)
+);

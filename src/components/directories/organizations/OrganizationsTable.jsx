@@ -29,7 +29,7 @@ const renderers = {
   has_remote_checkup: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
 };
 
-export default props => (
+export default (props) => (
   <Table
     title="Реестр организаций"
     results={props.data}

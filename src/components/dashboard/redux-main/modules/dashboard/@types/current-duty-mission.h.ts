@@ -13,7 +13,7 @@ export type CurrentDutyMissionsItemsSubItemDatasType = {
   object_type_name: string;
   technical_operation_id: number;
   technical_operation_name: string;
-}
+};
 
 export type CurrentDutyMissionsItemsSubItemsType = {
   data: CurrentDutyMissionsItemsSubItemDatasType,
@@ -25,7 +25,7 @@ export type CurrentDutyMissionsItemsType = {
   subItems: CurrentDutyMissionsItemsSubItemsType[],
   tooltip?: string;
   title: string;
-}
+};
 
 export type CurrentDutyMissionsAnsType = {
   tooltip?: string;

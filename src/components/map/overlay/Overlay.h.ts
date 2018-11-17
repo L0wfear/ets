@@ -11,14 +11,14 @@ export type PropsOverlay = {
   EtsTriangleWrap?: any;
   EtsTriangle?: any;
   [key: string]: any;
-}
+};
 
 export type StateOverlay = {
   marker: ol.Overlay | null;
   container: HTMLDivElement;
-}
+};
 
-export module OverlayUtils {
+export namespace OverlayUtils {
   export type hideOverlay = (
     marker: ol.Overlay,
     map: ol.Map,

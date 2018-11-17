@@ -102,7 +102,7 @@ class RouteFormWrap extends FormWrap {
     return flux.getActions('routes').validateRoute(route).then((r) => {
       const result = r.result;
 
-      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
+      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map((o) => ({
         name: o.odh_name,
         object_id: o.odh_id,
         state: o.state || 2,
@@ -153,7 +153,7 @@ class RouteFormWrap extends FormWrap {
         ...cloneDeep(this.props.odhPolys),
       };
     }
-    each(oldObjectList.filter(o => !!o.object_id), (o) => {
+    each(oldObjectList.filter((o) => !!o.object_id), (o) => {
       if (new_polys[o.object_id]) {
         new_polys[o.object_id].state = o.state;
       }
@@ -174,7 +174,7 @@ class RouteFormWrap extends FormWrap {
 
           const newObjectList = [];
 
-          each(oldObjectList.filter(o => !!o.object_id), (o) => {
+          each(oldObjectList.filter((o) => !!o.object_id), (o) => {
             if (polys[o.object_id]) {
               polys[o.object_id].state = o.state;
               newObjectList.push(o);
@@ -182,7 +182,7 @@ class RouteFormWrap extends FormWrap {
           });
 
           if (refreshGeoState) {
-            each(oldObjectList.filter(o => !!o.object_id), (o) => {
+            each(oldObjectList.filter((o) => !!o.object_id), (o) => {
               if (new_polys[o.object_id]) {
                 polys[o.object_id] = {
                   ...new_polys[o.object_id],

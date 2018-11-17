@@ -23,7 +23,7 @@ export class MapEtsProvider extends React.PureComponent<{}, StateMapEtsProvider>
       setMapToContext: this.setMapToContext,
       removeMapToContext: this.removeMapToContext,
       getMapImageInBase64ByKey: this.getMapImageInBase64ByKey,
-    }
+    };
   }
 
   setMapToContext = (key: string, map: ol.Map) => {
@@ -35,8 +35,8 @@ export class MapEtsProvider extends React.PureComponent<{}, StateMapEtsProvider>
         mapByKeys: {
           ...this.state.mapByKeys,
           [key]: map,
-        }
-      })
+        },
+      });
     }, 100);
   }
 
@@ -58,13 +58,13 @@ export class MapEtsProvider extends React.PureComponent<{}, StateMapEtsProvider>
       if (map) {
         map.once('postcompose', (event) => {
           resizeBase64((event as any).context.canvas.toDataURL('image/png'))
-            .then(imageObj => res(imageObj))
+            .then((imageObj) => res(imageObj));
         });
         map.render();
       } else {
         rej(new Error(`not gind map by key = ${key}`));
       }
-    })
+    });
   }
 
   render() {

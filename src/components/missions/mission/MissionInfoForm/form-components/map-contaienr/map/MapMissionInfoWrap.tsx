@@ -49,5 +49,5 @@ class MapWrap extends React.PureComponent<PropsMapMissionInfoWrap, {}> {
     );
   }
 }
-  
+
 export default MapWrap;

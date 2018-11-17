@@ -32,7 +32,7 @@ export const tableMeta = ({
   ],
 });
 
-const FuelingWaterStationsTable = props => (
+const FuelingWaterStationsTable = (props) => (
   <Table
     title="Базы гидрантов"
     results={props.data}

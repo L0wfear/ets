@@ -54,7 +54,7 @@ class ButtonsLIne extends React.Component<PropsButtonsLIne, StateButtonsLIne> {
 const mapStateToProps = (state, { registryKey }) => {
   const canApply = (
     Object.values(
-      getFilterData(state.registry, registryKey).rawFilterValues
+      getFilterData(state.registry, registryKey).rawFilterValues,
     ).some((valuesObj) => (
       Object.values(valuesObj).some(({ value }: any) => (
         !value
@@ -71,8 +71,8 @@ const mapStateToProps = (state, { registryKey }) => {
       || (
         Boolean(
           Object.values(
-            getListData(state.registry, registryKey).processed.filterValues
-          ).length
+            getListData(state.registry, registryKey).processed.filterValues,
+          ).length,
         )
       )
     ),

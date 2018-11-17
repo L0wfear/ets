@@ -97,7 +97,7 @@ export default hocAll(
     type: 'none',
   }),
   connect<any, any, any, ReduxState>(
-    state => ({
+    (state) => ({
       companiesIndex: state.monitorPage.companiesIndex,
     }),
   ),

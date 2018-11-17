@@ -131,7 +131,7 @@ export default class MissionsJournal extends CheckableElementsList {
     return (
       super.checkDisabledDelete()
       || this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned'
-      || Object.values(this.state.checkedElements).some(el => el.status !== 'not_assigned')
+      || Object.values(this.state.checkedElements).some((el) => el.status !== 'not_assigned')
     );
   }
 

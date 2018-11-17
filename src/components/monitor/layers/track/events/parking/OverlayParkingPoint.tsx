@@ -9,7 +9,7 @@ import {
   OverlayLineInfoContainer,
 } from 'components/map/overlay/styled/styled';
 
-const OverlayTrackPoint: React.SFC<any> = props => {
+const OverlayTrackPoint: React.SFC<any> = (props) => {
   const { parkingPoint } = props;
 
   if (!parkingPoint) {
@@ -46,13 +46,13 @@ const OverlayTrackPoint: React.SFC<any> = props => {
       </OverlayLineInfoContainer>
     </Overlay>
   );
-}
+};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   parkingPoint: state.monitorPage.carInfo.popups.parkingPoint,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   hidePopup: () => (
     dispatch(
       carInfoSetParkingPoint(),
@@ -64,6 +64,5 @@ export default hocAll(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )
+  ),
 )(OverlayTrackPoint);
-

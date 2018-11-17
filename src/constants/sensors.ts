@@ -21,7 +21,6 @@ const data = {
   },
 };
 
-
 export const sensorsMapOptions = (index, maxSpeed = 0) => ({
   color: data[index].color,
   value: maxSpeed === 10 ? maxSpeed - (15 * (index + 1)) : maxSpeed - (10 * (index + 1)),
@@ -37,7 +36,7 @@ export const sensorTrackColor = [
 
 export const getTrackSensorColor = (selectedSensors, trackSensors) => {
   if (trackSensors) {
-    const sensorCount = trackSensors.filter(s => selectedSensors.includes(`${s.id}`) && s.val !== 0).length;
+    const sensorCount = trackSensors.filter((s) => selectedSensors.includes(`${s.id}`) && s.val !== 0).length;
     return sensorTrackColor[sensorCount];
   }
 

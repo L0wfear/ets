@@ -13,7 +13,7 @@ const reportUrl = 'daily-cleaning-reports-ets';
 const serviceName = 'DailyCleaningReportsServiceETS';
 
 const schemaMakers = {
-    cars_gov_numbers: schema => ({
+    cars_gov_numbers: (schema) => ({
     ...schema,
     filter: {
       type: 'string',
@@ -25,7 +25,7 @@ const renderers = {
   cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,
 };
 
-const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['car_func_types_ids']);
+const headerStateMaker = (queryState) => parseMultiSelectListQueryParams(queryState, ['car_func_types_ids']);
 
 const reportProps: IReportProps = {
   title: 'Статус по уборке',

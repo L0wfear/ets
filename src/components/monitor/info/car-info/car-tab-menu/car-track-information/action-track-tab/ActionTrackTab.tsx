@@ -15,23 +15,23 @@ type PropsActionTrackTab = {
 
   togglePlay: any;
   stopPlay: any;
-  carInfoIncTrackPointIndex: Function;
+  carInfoIncTrackPointIndex: any;
 };
 
 type StateActionTrackTab = {
-  intervalId: any
-}
+  intervalId: any;
+};
 
 class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTrackTab> {
   state = {
     intervalId: null,
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const { gps_code } = this.props;
 
     if (gps_code !== prevProps.gps_code) {
-      clearInterval(prevState.intervalId)
+      clearInterval(prevState.intervalId);
     }
   }
 
@@ -97,11 +97,11 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
           ( <div className="none" />)
         }
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   gps_code: state.monitorPage.carInfo.gps_code,
   track: state.monitorPage.carInfo.trackCaching.track,
   status: state.monitorPage.carInfo.playTrack.status,
@@ -109,12 +109,12 @@ const mapStateToProps = state => ({
   STATUS_TC_FOLLOW_ON_CAR: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   togglePlay: () => dispatch(carInfoTogglePlay()),
   stopPlay: () => dispatch(carInfoStopPlay()),
   carInfoIncTrackPointIndex: () => dispatch(
     carInfoIncTrackPointIndex(),
-  )
+  ),
 });
 
 export default connect(

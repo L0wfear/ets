@@ -19,8 +19,8 @@ export type OneWsDataCardata = {
   model_id: number | void;
   owner_id: number | void;
   provider_ids: number[] | void;
-  type_id: number | void;  
-}
+  type_id: number | void;
+};
 
 export type OneWsData = {
   car: OneWsDataCardata;
@@ -40,7 +40,7 @@ export type OneWsData = {
 
 export type WsData = {
   [gps_code: string]: OneWsData;
-}
+};
 
 export type OneCarPointDataWsType = OneWsData | {
   front_status: string;
@@ -48,13 +48,12 @@ export type OneCarPointDataWsType = OneWsData | {
 
 export type CarPointsDataWsType = {
   [gps_code: string]: OneCarPointDataWsType;
-}
+};
 
 export type StateLayerCarMarker = {
   carPointsDataWs: CarPointsDataWsType;
   ws: any,
 };
 
-
-export module LayerCarMarkerUtils {
+export namespace LayerCarMarkerUtils {
 }

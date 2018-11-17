@@ -2,7 +2,7 @@ import * as React from 'react';
 import connectToStores from 'flummox/connect';
 import Preloader from 'components/ui/new/preloader/Preloader';
 
-const triggerOnChangeCompany = Component =>
+const triggerOnChangeCompany = (Component) =>
   connectToStores(class extends React.Component<any, any> {
     constructor(props) {
       super(props);
@@ -32,18 +32,17 @@ const triggerOnChangeCompany = Component =>
       }
     }
 
-
     render() {
       if (this.state.loading) {
-        return <Preloader typePreloader="mainpage" />;;
+        return <Preloader typePreloader="mainpage" />;
       }
 
       return (
         <Component {...this.props} />
-      )
+      );
     }
   },
-  ['session']
-)
+  ['session'],
+);
 
 export default triggerOnChangeCompany;

@@ -20,11 +20,11 @@ const components = {
 class CollapseListByLvl extends React.PureComponent<PropsCollapseListByLvl, StateCollapseListByLvl> {
   rednerMap = ({ subItems, ...item }: CurrentDutyMissionsItemsType, index) => {
     const { props } = this;
-    
+
     return (
       <li key={index} >
         <CollapseText
-          title={item.title} 
+          title={item.title}
           noClickOnTitle={!subItems.length}
           components={components}
         >
@@ -39,14 +39,14 @@ class CollapseListByLvl extends React.PureComponent<PropsCollapseListByLvl, Stat
   }
   render() {
     const {
-      props
+      props,
     } = this;
 
     return (
       <ul>
         { props.collapsetItems.map(this.rednerMap) }
       </ul>
-    )
+    );
   }
 }
 

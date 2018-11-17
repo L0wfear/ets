@@ -18,7 +18,7 @@ const renderers = {
   cars_gov_numbers: ({ data }) => <span>{data.join(', ')}</span>,
 };
 
-const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['car_func_types_groups']);
+const headerStateMaker = (queryState) => parseMultiSelectListQueryParams(queryState, ['car_func_types_groups']);
 
 const reportProps: IReportProps = {
   title: 'Статус по уборке (ЦАФАП)',

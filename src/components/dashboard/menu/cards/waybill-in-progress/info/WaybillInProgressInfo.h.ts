@@ -8,8 +8,8 @@ export type PropsWaybillInProgressInfo = {
   infoData: WaybillInProgressInfoDataType;
   getWaybillById: (id: number) => Promise<WaybillType>;
 
-  handleClose: Function;
-  loadAllWaybillCard: Function;
+  handleClose: any;
+  loadAllWaybillCard: any;
 };
 
 export type StateWaybillInProgressInfo = {
@@ -19,4 +19,4 @@ export type StateWaybillInProgressInfo = {
     [index: string]: WaybillInProgressItemsSubItemsType[];
   };
   infoData: WaybillInProgressInfoDataType;
-}
+};

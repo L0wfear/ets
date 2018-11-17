@@ -79,8 +79,8 @@ export const checkMissionsOnStructureIdBrigade: ICheckMissionsOnStructureIdBriga
         }
       });
 
-      const { company_structure_id: foreman_structure_id = null, is_common = false } = employeesIndex[foreman_id] || {};
-      if (!is_common && foreman_structure_id !== structure_id) {
+      const { company_structure_id: foreman_structure_id = null, is_common: isCommonForeman = false } = employeesIndex[foreman_id] || {};
+      if (!isCommonForeman && foreman_structure_id !== structure_id) {
         newArr.push(`<${number}>`);
       }
 

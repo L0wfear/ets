@@ -27,7 +27,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(DUTY_MISSION_STATUS_LABELS).map(key => ({ label: DUTY_MISSION_STATUS_LABELS[key], value: key })),
+          options: Object.keys(DUTY_MISSION_STATUS_LABELS).map((key) => ({ label: DUTY_MISSION_STATUS_LABELS[key], value: key })),
         },
         cssClassName: 'width120',
       },

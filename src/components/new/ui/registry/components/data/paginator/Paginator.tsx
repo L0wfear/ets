@@ -137,7 +137,7 @@ const mapStateToProps = (state, { registryKey }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  registryChangeDataPaginatorCurrentPage: index => (
+  registryChangeDataPaginatorCurrentPage: (index) => (
     dispatch(
       registryChangeDataPaginatorCurrentPage(
         registryKey,

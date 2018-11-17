@@ -4,8 +4,6 @@ import { Redirect } from 'react-router-dom';
 import requireAuth from 'utils/auth';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
-
-
 const LoginPage = React.lazy(() => (
   import(/* webpackChunkName: "login_page" */'components/login/LoginPage')
 ));
@@ -37,7 +35,7 @@ class LoginPageWrap extends React.Component<any, any> {
             loadData={this.props.loadData}
           />;
         </React.Suspense>
-      )
+      );
     }
   }
 }

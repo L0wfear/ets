@@ -6,7 +6,7 @@ export type DrawData = {
   distance: number;
   end: {
     x_msk: number;
-    y_msk: number;  
+    y_msk: number;
   };
   object_id: number;
   shape: ol.GlobalObject;

@@ -66,7 +66,7 @@ export const ORDER_STATUS_KEYS = {
 
 export const ORDER_ASSIGNMENTS_STATUS_KEYS = {
   full: 'full',
-  partial: 'partial'
+  partial: 'partial',
 };
 
 export const ORDER_STATUS_LABELS = {
@@ -98,7 +98,7 @@ export const TIME_MEASURES = {
   month: 'Мес.',
 };
 
-export const TIME_MEASURES_SELECT_OPTIONS = Object.keys(TIME_MEASURES).map(key => ({ label: TIME_MEASURES[key], value: key }));
+export const TIME_MEASURES_SELECT_OPTIONS = Object.keys(TIME_MEASURES).map((key) => ({ label: TIME_MEASURES[key], value: key }));
 export const SEQUENCE_1_TO_20_SELECT_OPTIONS = new Array(20).fill(0).map((item, i) => ({ value: i + 1, label: i + 1 }));
 
 export const YES_NO_SELECT_OPTIONS_BOOL = [{ label: 'Да', value: true }, { label: 'Нет', value: false }];

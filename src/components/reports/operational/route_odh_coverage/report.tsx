@@ -17,24 +17,24 @@ const reportUrl = 'route-odh-coverage-report';
 const serviceName = 'RouteODHCoverageReportService';
 
 const deltaHeaderTooltip = `
-  Разница между полем "Длина маршрута" и характеристикой объекта (характеристика зависит от типа проверки тех. операции: 
+  Разница между полем "Длина маршрута" и характеристикой объекта (характеристика зависит от типа проверки тех. операции:
   если Тип проверки = Чекин или Площадь Проезжей части или Протяженность по основной оси, то берется "Протяженность ОДХ";
   если Тип проверки= Площадь тротуара с мехуборкой, то берется "Длина тротуара";
   если Тип проверки = Протяженность по лотку, то берется "Длина лотков")
 `;
 
 const schemaMakers: ISchemaMaker = {
-  routes_names: schema => ({
+  routes_names: (schema) => ({
     ...schema,
     filter: {
       type: 'string',
     },
   }),
-  delta: schema => ({
+  delta: (schema) => ({
     ...schema,
     customHeaderComponent: <DeltaTableHeader name={schema.displayName} tooltip={deltaHeaderTooltip} />,
   }),
-  is_covered_text: schema => {
+  is_covered_text: (schema) => {
     return ({
       ...schema,
       name: 'is_covered',
@@ -51,7 +51,7 @@ const renderers = {
   routes_names: ({ data }) => <span>{data.join(', ')}</span>,
   is_covered: ({ rowData }) => <span>{rowData.is_covered_text}</span>,
 };
-const headerStateMaker = queryState => parseMultiSelectListQueryParams(queryState, ['technical_operations_ids']);
+const headerStateMaker = (queryState) => parseMultiSelectListQueryParams(queryState, ['technical_operations_ids']);
 
 const tableProps = {
   highlightClassMapper: (rowData) => {

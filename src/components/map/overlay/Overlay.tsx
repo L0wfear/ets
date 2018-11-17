@@ -28,11 +28,11 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
   constructor(props) {
     super(props);
     const container = document.createElement('div');
-    
+
     this.state = {
       marker: null,
       container,
-    }
+    };
   }
   componentDidMount() {
     try {
@@ -40,13 +40,14 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
         position: this.props.coordsMsk,
         positioning: 'bottom-center',
         element: this.state.container,
-        stopEvent: false
+        stopEvent: false,
       });
       this.props.map.addOverlay(marker);
       this.props.map.updateSize();
 
       this.setState({ marker });
     } catch (e) {
+      // tslint:disable-next-line
       console.warn('не могу создать попап');
     }
   }
@@ -55,7 +56,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     const { coordsMsk } = this.props;
 
     if (coordsMsk !== prevProps.coordsMsk) {
-      let marker = this.state.marker;
+      const marker = this.state.marker;
 
       this.state.marker.setPosition(coordsMsk);
       this.props.map.addOverlay(marker);
@@ -70,6 +71,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     try {
       hideOverlay(this.state.marker, this.props.map);
     } catch (e) {
+      // tslint:disable-next-line
       console.warn('не могу скрыть попап');
     }
   }
@@ -78,6 +80,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     try {
       hideOverlay(this.state.marker, this.props.map);
     } catch (e) {
+      // tslint:disable-next-line
       console.warn('не могу скрыть попап');
     }
     this.props.hidePopup();

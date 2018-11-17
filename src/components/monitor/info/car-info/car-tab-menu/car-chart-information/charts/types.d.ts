@@ -32,7 +32,6 @@ export type StateCarFuelChart = {
   front_cars_sensors_level: TypeFrontCarsSensorsLevel;
 };
 
-
 export type StatePropsCarSpeedChart = {
   track: any;
   lastPoint: any;
@@ -52,7 +51,6 @@ export type PropsCarSpeedChart = (
   & DispatchPropsCarSpeedChart
   & OwnPropsCarSpeedChart
 );
-
 
 export type TypeFrontCarsSensorsEquipment = {
   [key: string]: {

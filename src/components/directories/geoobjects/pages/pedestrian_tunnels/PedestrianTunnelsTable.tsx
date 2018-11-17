@@ -58,7 +58,7 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const renderers: ISchemaRenderer = {
     location: ({ data }) => <span style={{ whiteSpace: 'pre-wrap' }}>{data}</span>,
   };

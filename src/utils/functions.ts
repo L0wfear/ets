@@ -66,13 +66,19 @@ export function isNotNull(value) {
  * @return {boolean} пyстое ли значение
  */
 export function isEmpty(value) {
-  if (!isNotNull(value)) return true;
-  if (typeof value === 'string' && value.length === 0) return true;
+  if (!isNotNull(value)) {
+    return true;
+  }
+  if (typeof value === 'string' && value.length === 0) {
+    return true;
+  }
   return false;
 }
 
 export function saveData(blob, fileName) {
-  if (blob === null || fileName === null) return;
+  if (blob === null || fileName === null) {
+    return;
+  }
   if (navigator.msSaveOrOpenBlob) {
     navigator.msSaveOrOpenBlob(blob, fileName || 'Отчет.xls');
   } else {
@@ -115,7 +121,9 @@ function get_browser() {
     }
   }
   M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
-  if ((tem = ua.match(/version\/(\d+)/i)) !== null) {
+  tem = ua.match(/version\/(\d+)/i);
+
+  if (tem !== null) {
     M.splice(1, 1, tem[1]);
   }
   return {
@@ -196,7 +204,7 @@ export function resizeBase64(base64) {
       canvas.height = image.height / (window.devicePixelRatio * 2);
       ctx.drawImage(image,
         0, 0, image.width, image.height,
-        0, 0, canvas.width, canvas.height
+        0, 0, canvas.width, canvas.height,
       );
       res(canvas.toDataURL('image/png', 0.7));
     };
@@ -213,7 +221,7 @@ export function flattenObject(inputObject) {
 
   Object.keys(inputObject).forEach((k) => {
     if (isPlainObject(inputObject[k].value)) {
-      Object.keys(inputObject[k].value).forEach(key => {
+      Object.keys(inputObject[k].value).forEach((key) => {
         f[key] = { ...f[key] };
         f[key].value = inputObject[k].value[key];
       });
@@ -238,5 +246,4 @@ export function fromIterableListToArray(itetableList) {
   return array;
 }
 
-
-export const isFourDigitGovNumber = number => isFourDigitGovNumberRegexp.test(number);
+export const isFourDigitGovNumber = (number) => isFourDigitGovNumberRegexp.test(number);

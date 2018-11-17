@@ -1,6 +1,6 @@
 export const maskStatusPoint = {
   fail: 1,
-}
+};
 
 export const VALUE_FOR_FIXED = {
   TWO_F: {

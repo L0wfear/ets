@@ -32,7 +32,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
   state = {
     object_list: [],
     objectList: [],
-  }
+  };
 
   static getDerivedStateFromProps(nextProps: PropsMapGeoobjectWrap, prevState: StateMapGeoobjectWrap) {
     const { object_list } = nextProps;
@@ -64,7 +64,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
       }
     }
   }
-  
+
   loadByGeometryType(type: 'mixed' | 'simple_dt') {
     const { serverName } = GEOOBJECTS_OBJ[routeTypesByKey[type].slug];
 
@@ -72,10 +72,10 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
       this.setState({
         objectList: this.state.objectList.map((data) => ({
           ...data,
-          shape: geoData[`${serverName}/${data.object_id}`].shape, 
+          shape: geoData[`${serverName}/${data.object_id}`].shape,
         })),
       });
-    })
+    });
   }
 
   render() {
@@ -110,7 +110,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
         }
         </MapEtsConsumer>
       </MapEtsContainer>
-    )
+    );
   }
 }
 
@@ -124,7 +124,7 @@ const mapDispatchToProps = (dispatch) => ({
           promise: true,
           page: 'any',
           path: 'routeInfo',
-        }
+        },
       ),
     )
   ),

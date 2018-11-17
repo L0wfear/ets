@@ -8,21 +8,19 @@ import { fetchTrack, fetchCarInfo } from 'components/monitor/info/car-info/redux
 import { DivNone } from 'global-styled/global-styled';
 
 type PropsCarTabMenu = {
-  fetchMissionsData: Function;
-  fetchTrack: Function;
+  fetchMissionsData: any;
+  fetchTrack: any;
   asuods_id: number | void;
   gps_code: number | void;
   odh_mkad: -1 | null | any[];
   map: ol.Map;
 
-  centerOn: Function;
+  centerOn: any;
 };
 
 type StateCarTabMenu = {
   selectedTab: number;
 };
-
-
 
 const CarAttributeInformation = React.lazy(() => (
   import(/* webpackChunkName: "car_attribute_information" */'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation')
@@ -36,11 +34,10 @@ const CarTrackInformation = React.lazy(() => (
   import(/* webpackChunkName: "car_track_information" */'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation')
 ));
 
-
 class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
   state = {
     selectedTab: 1,
-  }
+  };
 
   componentDidMount() {
     if (this.props.asuods_id) {
@@ -77,7 +74,7 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
         gps_code,
       });
     }
-  }  
+  }
 
   handleClick: any = ({ target: { dataset: { number } } }) => {
     const selectedTab = Number(number);
@@ -99,7 +96,7 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
         <div>
           {
             selectedTab === 1
-            ? ( 
+            ? (
               <React.Suspense fallback={<LoadingComponent />}>
                 <CarAttributeInformation map={this.props.map} />
               </React.Suspense>
@@ -132,11 +129,11 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
           }
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,
   gps_code: state.monitorPage.carInfo.gps_code,
   asuods_id: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { asuods_id: null}).asuods_id,
@@ -164,7 +161,7 @@ const mergeProps = ({ asuods_id, odh_mkad, gps_code, ...otherStateProps }, { dis
       odh_mkad,
     ))
   ),
-})
+});
 
 export default connect(
   mapStateToProps,

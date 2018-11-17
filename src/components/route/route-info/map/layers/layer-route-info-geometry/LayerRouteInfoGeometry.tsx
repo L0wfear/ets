@@ -14,7 +14,7 @@ import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLayerPLayPoint> {
   state = {
     selectedGeoobj: null,
-  }
+  };
 
   componentDidMount() {
     this.props.addLayer({ id: 'LayerRouteInfoGeometry', zIndex: 0 }).then(() => {
@@ -76,8 +76,8 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
           type: objData.type,
           name: objData.name,
           coordinate: eventOl.coordinate,
-        }
-      })
+        },
+      });
     }
   }
 
@@ -113,7 +113,6 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
     );
   }
 }
-
 
 export default withLayerProps({
   map: true,

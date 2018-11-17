@@ -26,12 +26,13 @@ type StateLayerTrackLines = {
 };
 
 const countWorkSensor = (trackPoint, front_cars_sensors_equipment) => {
-  const pointSensors = get(trackPoint, ['sensors', 'equipment'], []).filter(s => (
-    front_cars_sensors_equipment[s.sensor_id].show && s.val !== 0)
+  const pointSensors = get(trackPoint, ['sensors', 'equipment'], []).filter((s) => (
+    front_cars_sensors_equipment[s.sensor_id].show && s.val !== 0),
   );
 
   return pointSensors.length;
-}
+};
+
 class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLinesBySensor', zIndex: 2 }).then(() => {
@@ -48,7 +49,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
   componentDidUpdate(prevProps) {
     const { SHOW_TRACK } = this.props;
-    
+
     if (!(prevProps.track.length > 1)) {  // Если трек не было отрисован
       const {
         track,
@@ -65,10 +66,9 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
         front_cars_sensors_equipment,
       } = this.props;
 
-      
       if (prevProps.front_cars_sensors_equipment !== front_cars_sensors_equipment) {  // Если состояние датчиков навесного оборудования изменилось
         this.props.removeFeaturesFromSource(null, true);
-        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK)
+        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK);
 
       } else if (prevProps.lastPoint !== lastPoint) { // если получили новую точку в трек
         this.drawTrackLines(track.slice(-2), front_cars_sensors_equipment, SHOW_TRACK);
@@ -100,7 +100,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
 
           const feature = new Feature({
             geometry: new LineString(
-              linePoints.map(({ coords_msk }) => coords_msk)
+              linePoints.map(({ coords_msk }) => coords_msk),
             ),
           });
 
@@ -119,7 +119,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
       if (linePoints.length > 1) {
         const feature = new Feature({
           geometry: new LineString(
-            linePoints.map(({ coords_msk }) => coords_msk)
+            linePoints.map(({ coords_msk }) => coords_msk),
           ),
         });
 
@@ -132,7 +132,7 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
   }
 
   changeStyleForLines(SHOW_TRACK) {
-    this.props.getAllFeatures().forEach(feature => {
+    this.props.getAllFeatures().forEach((feature) => {
       if (!SHOW_TRACK) {
         feature.setStyle(getStyleForTrackLineBySensor(true, SHOW_TRACK));
       } else {
@@ -142,11 +142,11 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
   }
 
   render() {
-    return <div></div>
+    return <div></div>;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
   front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
   track: state.monitorPage.carInfo.trackCaching.track,

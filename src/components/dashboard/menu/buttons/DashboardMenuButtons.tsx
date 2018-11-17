@@ -45,7 +45,7 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
     return (
       Object.entries(nextProps).some(([key, value]) => this.props[key] !== value)
       || Object.entries(nextState).some(([key, value]) => this.state[key] !== value)
-    )
+    );
   }
 
   showWaybillFormWrap = () => {
@@ -109,7 +109,7 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
       </DashboardMenuButtonsContainer>
     );
   }
-};
+}
 
 export default connect<StatePropsDashboardMenuButtons, DispatchPropsDashboardMenuButtons, OwnerPropsDashboardMenuButtons, ReduxState>(
   null,

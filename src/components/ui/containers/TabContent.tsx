@@ -8,7 +8,7 @@ interface IPropsTabContent {
   children?: any;
 }
 
-const TabContent: React.SFC<IPropsTabContent> = props =>
+const TabContent: React.SFC<IPropsTabContent> = (props) =>
   <ExtDiv hidden={props.eventKey !== props.tabKey}>
     {props.children}
   </ExtDiv>;

@@ -73,7 +73,7 @@ export type TypeConfigData = {
     },
     meta: {
       fields: TypeFields[];
-    }
+    },
   };
   trash?: object;
 };

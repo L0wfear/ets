@@ -17,14 +17,15 @@ import {
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 
+/* tslint:disable */
 const NavItemBackToGorodWrap = compose(
   withRouter,
   connect< any, any, any, ReduxState>(
     null,
-    dispatch => ({
-      sessionSetData: props => dispatch(sessionSetData(props)),
+    (dispatch) => ({
+      sessionSetData: (props) => dispatch(sessionSetData(props)),
     }),
-  )
+  ),
 )(
   @connectToStores(['session'])
   @FluxContext
@@ -56,5 +57,6 @@ const NavItemBackToGorodWrap = compose(
     }
   }
 );
+/* tslint:enable */
 
 export default NavItemBackToGorodWrap;

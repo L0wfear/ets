@@ -6,15 +6,13 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-type PropsGeoobjectsInfo ={
-  centerOn: Function;
+type PropsGeoobjectsInfo = {
+  centerOn: any;
   showSelectedGeoobjects: boolean;
 };
 
 type StateGeoobjectsInfo = {
 };
-
-
 
 const GeoobjectsInfo = React.lazy(() => (
   import(/* webpackChunkName: "geoobjects_info" */'components/monitor/info/geoobjects-info/GeoobjectsInfo')
@@ -23,11 +21,11 @@ const GeoobjectsInfo = React.lazy(() => (
 class GeoobjectsInfoWrap extends React.Component<PropsGeoobjectsInfo, StateGeoobjectsInfo> {
   state = {
     shortVersion: false,
-  }
+  };
   toggleShortVersion: any = () => {
     this.setState({
       shortVersion: !this.state.shortVersion,
-    })
+    });
   }
   render() {
     return (
@@ -42,11 +40,11 @@ class GeoobjectsInfoWrap extends React.Component<PropsGeoobjectsInfo, StateGeoob
           />
         </React.Suspense>
       )
-    )
+    );
   }
-};
+}
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   showSelectedGeoobjects: Object.values(state.monitorPage.selectedGeoobjects).some((dataObj) => (
     Object.values(dataObj).some(({ front_show }) => front_show)
   )),

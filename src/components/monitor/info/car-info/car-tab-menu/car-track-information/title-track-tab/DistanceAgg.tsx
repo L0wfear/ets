@@ -9,7 +9,7 @@ const DistanceAgg: React.SFC<PropsDistanceAgg> = () => (
   <div className="car_info-distance">
     <span>Протяженность, км: </span><DistanceAggValue />
   </div>
-      
-)
+);
+
 export default connect(
 )(DistanceAgg);

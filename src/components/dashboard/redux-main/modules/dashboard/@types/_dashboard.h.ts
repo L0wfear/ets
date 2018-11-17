@@ -58,13 +58,12 @@ import {
   WaybillClosedInfoDataType,
 } from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-closed.h';
 
-
 export type DefaultCardType<T, I> = {
   data: T,
   isLoading: boolean;
   dateLoad: Date | void;
   infoData: I | void;
-}
+};
 
 export type InitialStateDashboard = {
   current_missions: DefaultCardType<CurrentMissionsAnsType, CurrentMissionsInfoDataType>;

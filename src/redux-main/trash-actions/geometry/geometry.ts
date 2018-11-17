@@ -18,7 +18,7 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
         payload: Promise.resolve(CACHE_GEOMETRY[type][cacheTypeGeoobjectName]),
         meta: {
           ...meta,
-        }
+        },
       });
     }
   } else {
@@ -33,6 +33,7 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
     type,
     payload: GeozonesService.path(type_geoobject).get(payload)
       .catch((error) => {
+        // tslint:disable-next-line
         console.warn(error);
 
         return {
@@ -59,10 +60,10 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
             return {
               ...newObj,
               [front_key]: geom,
-            }
+            };
           }, {}),
         }
-      )
+      ),
     ),
     meta: {
       ...meta,
@@ -78,6 +79,7 @@ export const loadFuelEvents = (type, typeEvent, dates) => ({
       date_to: createValidDateTime(dates.date_to),
     })
     .catch((error) => {
+      // tslint:disable-next-line
       console.warn(error);
 
       return {
@@ -100,7 +102,7 @@ export const loadFuelEvents = (type, typeEvent, dates) => ({
         return {
           ...newObj,
           [front_key]: geom,
-        }
+        };
       }, {}),
     })),
   meta: {

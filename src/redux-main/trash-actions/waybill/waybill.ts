@@ -6,5 +6,5 @@ export const loadWaybillById = (type, id, meta = { loading: true } as TypeMeta) 
   payload: getWaybillById(id),
   meta: {
     ...meta,
-  }
+  },
 });

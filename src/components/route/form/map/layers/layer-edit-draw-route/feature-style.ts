@@ -5,7 +5,7 @@ import Fill from 'ol/style/Fill';
 import RegularShape from 'ol/style/RegularShape';
 import Point from 'ol/geom/Point';
 
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
@@ -129,9 +129,8 @@ const stylesByLinesState = {
       }),
       zIndex: 10,
     })
-  )
-
-}
+  ),
+};
 
 const makeCacheStyle = ({ type, state = polyState.SELECTED }) => {
   if (type === TYPES_STYLE.geoobj) {
@@ -167,4 +166,4 @@ export const getCasheStyleForGeoobject = (type, state) => {
   }
 
   return icon;
-}
+};

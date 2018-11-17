@@ -31,7 +31,7 @@ export const getTableMeta = ({
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: govNumberFilter.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: govNumberFilter.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },
@@ -106,7 +106,7 @@ const renderers = {
   car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
 };
 
-export default props => (
+export default (props) => (
   <Table
     title="Шаблоны заданий"
     renderers={renderers}

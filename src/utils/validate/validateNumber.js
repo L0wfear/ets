@@ -75,7 +75,7 @@ export function validate(config, value, data) {
   // console.warn(`VALIDATING ${config.key} with data = ${data}`);
   const error = fixedValidators
     .map(({ validator }) => validator(config, value, data))
-    .filter(d => !!d)[0];
+    .filter((d) => !!d)[0];
 
   return config.validation === false ? undefined : error;
 }

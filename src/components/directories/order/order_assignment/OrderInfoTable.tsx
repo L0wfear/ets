@@ -20,7 +20,7 @@ const meta: IDataTableSchema = {
 };
 export const tableMeta = () => meta;
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   const { dataSource: { order_info = '' } } = props;
 
   return (

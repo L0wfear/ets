@@ -99,7 +99,7 @@ const glyph = {
   alert,
   warning,
   info,
-}
+};
 
 const Icon = ({ type }) =>
   <div style={glyph[type]}>
@@ -108,14 +108,14 @@ const Icon = ({ type }) =>
 
 const renderers: ISchemaRenderer<IUserNotification> = {
   created_at: ({ data }) => <DateFormatter date={data} />,
-  is_read: meta =>
+  is_read: (meta) =>
     <div style={statusStyle}>
       {!meta.rowData.is_read && <Glyphicon glyph="envelope"/>}
       {meta.rowData.priority === 'alert' && <Icon type="alert" />}
       {meta.rowData.priority === 'warning' && <Icon type="warning" />}
       {meta.rowData.priority === 'info' && <Icon type="info" />}
     </div>,
-  additional_info: ({rowData}) => 
+  additional_info: ({rowData}) =>
     <div>
         { rowData.gov_number ? `Рег. номер: ${rowData.gov_number}` : null }
     </div>,
@@ -123,7 +123,7 @@ const renderers: ISchemaRenderer<IUserNotification> = {
 
 // console.log('props.data == ', props.data);
 
-const Table: React.SFC<any> = props  => (
+const Table: React.SFC<any> = (props) => (
   <DataTable
     title="Уведомления пользователей"
     results={props.data}

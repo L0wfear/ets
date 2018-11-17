@@ -4,8 +4,8 @@ export const getLoadingCount = (stateLoading, page?, path?) => {
   }
 
   if (!path) {
-    const { [page]: pageCounters = { allCount: 0 } } = stateLoading.countByPage;
-    return pageCounters.allCount;
+    const { [page]: pageCountersNoPath = { allCount: 0 } } = stateLoading.countByPage;
+    return pageCountersNoPath.allCount;
   }
 
   const { [page]: pageCounters = { allCount: 0 } } = stateLoading.countByPage;

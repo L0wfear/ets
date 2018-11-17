@@ -6,8 +6,8 @@ import { WaybillType } from 'redux-main/trash-actions/waybill/@types/promise.h';
 export type PropsWaybillClosedInfo = {
   infoData: WaybillClosedInfoDataType;
   getWaybillById: (id: number) => Promise<WaybillType>;
-  handleClose: Function;
-  loadAllWaybillCard: Function;
+  handleClose: any;
+  loadAllWaybillCard: any;
 };
 
 export type StateWaybillClosedInfo = {

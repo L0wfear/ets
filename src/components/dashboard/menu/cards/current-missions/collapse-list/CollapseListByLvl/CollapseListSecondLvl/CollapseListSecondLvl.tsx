@@ -15,14 +15,14 @@ class CollapseListSecondLvl extends React.PureComponent<PropsCollapseListSecondL
   }
   render() {
     const {
-      props
+      props,
     } = this;
 
     return (
       <ul>
         { props.collapsetItems.map(this.rednerMap) }
       </ul>
-    )
+    );
   }
 }
 

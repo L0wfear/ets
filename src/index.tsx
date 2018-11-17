@@ -26,4 +26,3 @@ ReactDom.render(
   </Provider>,
   document.getElementById('container'),
 );
-

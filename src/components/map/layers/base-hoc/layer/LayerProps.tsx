@@ -6,7 +6,7 @@ type PropsLayerProps = {
   map: ol.Map;
   center?: [number, number];
   zoom?: number,
-  centerOn?: Function;
+  centerOn?: any;
   [key: string]: any;
 };
 
@@ -21,12 +21,13 @@ type TypeConfig = {
   map?: boolean;
 };
 
-const withLayerProps = (config: TypeConfig = {}) => Component => (
+const withLayerProps = (config: TypeConfig = {}) => (Component) => (
   class LayerProps extends React.PureComponent<PropsLayerProps, StateLayerProps> {
     state: StateLayerProps = {
       vectorSource: null,
       olLayer: null,
-    }
+    };
+
     addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
       return new Promise((res) => {
         const vectorSource = new sourceVector();
@@ -35,14 +36,14 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
           source: vectorSource,
           renderMode,
         });
-    
+
         // Определяет, что это не слой с картой
         olLayer.set('notMap', true);
         olLayer.set('id', id);
         if (zIndex) {
           olLayer.setZIndex(zIndex);
         }
-    
+
         this.props.map.addLayer(olLayer);
         this.setState({ vectorSource, olLayer }, () => res(id));
       });
@@ -63,8 +64,8 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource = (features) => {
       const { vectorSource } = this.state;
       if (vectorSource) {
-        let featureArr = Array.isArray(features) ? features : [features];
-        featureArr.forEach(feature => (
+        const featureArr = Array.isArray(features) ? features : [features];
+        featureArr.forEach((feature) => (
           this.state.vectorSource.addFeature(feature)
         ));
       }
@@ -79,11 +80,12 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
         if (all) {
           vectorSource.clear();
         } else {
-          let featureArr: ol.Feature[] = Array.isArray(features) ? features : [features as ol.Feature];
+          const featureArr: ol.Feature[] = Array.isArray(features) ? features : [features as ol.Feature];
           try {
-            featureArr.forEach(feature => this.state.vectorSource.removeFeature(feature));
+            featureArr.forEach((feature) => this.state.vectorSource.removeFeature(feature));
           } catch (e) {
-            console.error(e)
+          // tslint:disable-next-line
+            console.error(e);
           }
         }
       }
@@ -118,7 +120,7 @@ const withLayerProps = (config: TypeConfig = {}) => Component => (
           centerOn={config.centerOn ? centerOn : undefined}
           { ...props }
           />
-      )
+      );
     }
   }
 );

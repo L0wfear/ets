@@ -13,7 +13,7 @@ const reportUrl = 'inquiry-expiring-date';
 const serviceName = 'InquiryExpiringDate';
 
 const schemaMakers = {
-  inquiry_date_end: schema => ({
+  inquiry_date_end: (schema) => ({
     ...schema,
     filter: {
       type: 'date',

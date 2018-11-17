@@ -115,7 +115,7 @@ export default class WaybillFormWrap extends FormWrap {
         if (!waybill.equipment_tax_data) {
           waybill.equipment_tax_data = [];
         }
-        if (waybill.mission_id_list.filter(v => v).length === 0) {
+        if (waybill.mission_id_list.filter((v) => v).length === 0) {
           waybill.mission_id_list = [];
         }
 

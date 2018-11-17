@@ -33,13 +33,16 @@ const FileListItem: React.SFC<any> = ({
 class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
   fileInputNode: HTMLInputElement;
 
-  handleFileRemove = index => {
+  handleFileRemove = (index) => {
     const newFileList = this.props.value.filter((file, i) => i !== index);
     this.props.onChange(newFileList);
   }
   handleFilePick = () => {
     this.fileInputNode.click();
   }
+
+  setRef = (fileInputNode) => this.fileInputNode = fileInputNode;
+
   render() {
     const {
       buttonName = 'Добавить файл', errorClassName = '', value = [], multiple = false,
@@ -57,7 +60,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     };
 
     const fileList = value
-      .map(file => file === null ? serverErrorFile : file)
+      .map((file) => file === null ? serverErrorFile : file)
       .map(({ name = 'Без названия', url, base64 } = serverErrorFile, i) =>
         <FileListItem
           key={i}
@@ -84,7 +87,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
             value={''}
             style={inputStyle}
             className={inputClass}
-            ref={ fileInputNode => this.fileInputNode = fileInputNode}
+            ref={this.setRef}
             accept={this.props.formats}
             disabled={this.props.disabled}
             onChange={this.props.onChange}

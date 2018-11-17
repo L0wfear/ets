@@ -66,7 +66,7 @@ export function validateField(config, value, formData, schema, componentProps) {
         }
         return validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps);
       })
-      .filter(d => !!d)[0];
+      .filter((d) => !!d)[0];
   }
 
   return error;

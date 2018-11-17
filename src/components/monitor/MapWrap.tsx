@@ -59,7 +59,7 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
   </MapEtsConsumer>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   disabledByType: state.monitorPage.carInfo.statusTC,
   enableInteractions: !(!!state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR || state.monitorPage.carInfo.playTrack.status === 'play'),
   disabledCenterOn: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR && !(state.monitorPage.carInfo.playTrack.status === 'play'),

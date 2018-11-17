@@ -61,7 +61,6 @@ export const PROJECTION = new Projection({
   extent: EXTENT,
 });
 
-
 const RESOLUTIONS = [];
 const SCALES = [];
 for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
@@ -71,7 +70,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
 
 function tileUrl(tileCoord) {
   if (!evergisTokenService) {
-    evergisTokenService = new EverGisTokenService()
+    evergisTokenService = new EverGisTokenService();
   }
   const z = tileCoord[0];
   const x = tileCoord[1];
@@ -92,9 +91,11 @@ const ArcGisSource = new TileImage({
 });
 
 ArcGisSource.on('tileloadstart', () => {
+  // any
 });
 
 function onErrorsLimitCallback() {
+  // tslint:disable-next-line
   console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
 }
 

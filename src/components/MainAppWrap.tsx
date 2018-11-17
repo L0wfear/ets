@@ -31,7 +31,7 @@ class MainAppWrap extends React.Component <any, any> {
       return <Redirect to={permittedPath} />;
     }
     if (url === '/change-company' && !flux.getStore('session').state.isGlavControl) {
-      return <Redirect to={requireAuth(flux, '/monitor')} />
+      return <Redirect to={requireAuth(flux, '/monitor')} />;
     }
 
     return <MainApp {...this.props} />;

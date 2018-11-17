@@ -376,7 +376,7 @@ export default class DataTable extends React.Component {
       if (col.type === 'string') {
         const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
         if (!col.fullString) {
-          metaObject.customComponent = props => this.cutString(callbackF, props);
+          metaObject.customComponent = (props) => this.cutString(callbackF, props);
         }
       } else if (typeof renderers[col.name] === 'function') {
         metaObject.customComponent = renderers[col.name];
@@ -421,7 +421,7 @@ export default class DataTable extends React.Component {
     const newProps = { ...props };
     let { data = '' } = props;
 
-    if (typeof data === 'string' && data.split(' ').some(d => d.length > 30)) {
+    if (typeof data === 'string' && data.split(' ').some((d) => d.length > 30)) {
       data = `${data.slice(0, 20)}...`;
     }
 
@@ -480,7 +480,7 @@ export default class DataTable extends React.Component {
     Object.entries(filterValues).forEach(([key, { value }]) => {
       if (key.includes('additionalFilter')) {
         try {
-          const { filter: { filterFunction } } = cols.find(d => d.name === key);
+          const { filter: { filterFunction } } = cols.find((d) => d.name === key);
           isValid = filterFunction(value, obj);
         } catch (e) {
           console.warn(`Ошибка при поиске кастомной функции фильтрации ${key}`, e);
@@ -512,25 +512,25 @@ export default class DataTable extends React.Component {
             isValid = false;
           }
         } else if (IS_ARRAY) {
-          const a = this.props.tableMeta.cols.find(e => e.name === key);
+          const a = this.props.tableMeta.cols.find((e) => e.name === key);
           if (Array.isArray(obj[key])) {
             if (a.filter.strict) {
-              if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+              if (!(obj[key].every((el) => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
                 isValid = false;
               }
             } else if (a.filter.someInRowValue) {
-              if (!value.some(val => obj[key].some(el => el.toString().includes(val.toString())))) {
+              if (!value.some((val) => obj[key].some((el) => el.toString().includes(val.toString())))) {
                 isValid = false;
               }
-            } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
+            } else if (!(obj[key].find((el) => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
               isValid = false;
             }
           } else if (typeof obj[key] === 'boolean') {
-            if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+            if (value.map((v) => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
               isValid = false;
             }
           } else if (a && a.filter && a.filter.someInRowValue) {
-            if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
+            if (value.findIndex((d) => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
               isValid = false;
             }
           } else if (value.findIndex((d) => {
@@ -554,7 +554,7 @@ export default class DataTable extends React.Component {
         } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
           isValid = isValid && numberArrayDataMatching(value, obj[key]);
         } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
-          const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
+          const metaCol = this.props.tableMeta.cols.find((item) => item.name === key);
           const filterType = _.get(metaCol, 'filter.type', '');
           isValid = isValid && parseAdvancedFilter(value, key, obj[key], filterType);
         } else if (typeof obj[key] === 'string') {
@@ -646,8 +646,8 @@ export default class DataTable extends React.Component {
       direction = -1;
       e.preventDefault();
     }
-    const selected = data.find(el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
-    const newSelected = data.find(el => el.rowNumber === selected.rowNumber + direction);
+    const selected = data.find((el) => el[this.props.selectField] === this.props.selected[this.props.selectField]);
+    const newSelected = data.find((el) => el.rowNumber === selected.rowNumber + direction);
 
     this.props.onRowSelected({
       props: {
@@ -672,7 +672,7 @@ export default class DataTable extends React.Component {
     const { data } = this.state;
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
-    const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
+    const tableCols = columnMetadata.map(m => m.columnName).filter((c) => columnControlValues.indexOf(c) === -1);
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
 
@@ -680,7 +680,7 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
+          <div style={{ display: 'flex', 'justifyContent' : 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>
@@ -692,7 +692,7 @@ export default class DataTable extends React.Component {
                     onChange={this.saveColumnControl}
                     onClick={this.toggleColumnControl}
                     values={this.state.columnControlValues}
-                    options={tableMetaCols.filter(el => el.display !== false)}
+                    options={tableMetaCols.filter((el) => el.display !== false)}
                   />
                 </ClickOutHandler>
               }
@@ -720,7 +720,7 @@ export default class DataTable extends React.Component {
               onSubmit={this.saveFilter}
               onHide={this.closeFilter}
               values={this.state.filterValues}
-              options={tableMetaCols.filter(el => el.filter !== false)}
+              options={tableMetaCols.filter((el) => el.filter !== false)}
               tableData={this.props.results}
               entity={this.props.entity}
             />

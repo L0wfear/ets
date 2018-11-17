@@ -63,7 +63,7 @@ class MissionInfoTableContainer extends React.PureComponent<PropsMissionInfoTabl
           )
         }
       </>
-    )
+    );
   }
 }
 

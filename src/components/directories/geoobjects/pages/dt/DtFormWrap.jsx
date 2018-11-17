@@ -6,7 +6,7 @@ import DtForm from './DtForm';
 export default class DtFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
-    this.updateAction = formState => context.flux.getActions('geoObjects').updateDT(formState).then(() => this.context.flux.getActions('geoObjects').getGeozoneByType('dt'));
+    this.updateAction = (formState) => context.flux.getActions('geoObjects').updateDT(formState).then(() => this.context.flux.getActions('geoObjects').getGeozoneByType('dt'));
   }
 
   render() {

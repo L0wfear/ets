@@ -18,7 +18,7 @@ import {
   mergeList,
 } from 'components/new/ui/registry/module/utils/merge';
 
-export const registryAddInitialData = ({ registryKey, ...config }) => dispatch => {
+export const registryAddInitialData = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
     setTimeout(() => (
       dispatch(
@@ -42,20 +42,20 @@ export const registryAddInitialData = ({ registryKey, ...config }) => dispatch =
   });
 };
 
-export const registryRemoveData = registryKey => ({
+export const registryRemoveData = (registryKey) => ({
   type: REGISTRY_REMOVE_DATA,
   payload: {
     registryKey,
   },
 });
 
-export const registryLoadDataByKey = registryKey => (dispatch, getState) => {
+export const registryLoadDataByKey = (registryKey) => (dispatch, getState) => {
   const { registry: { [registryKey]: { Service } } } = getState();
 
   return dispatch({
     type: '',
     payload: Service.get()
-      .then(ans => {
+      .then((ans) => {
         const {
           result: { rows: array },
         } = ans;
@@ -121,13 +121,13 @@ export const registryChangeFilterData = (registryKey, filter) => ({
   },
 });
 
-export const registryChangeFilterRawValues = (registryKey, valueKey, type,  value) => (dispatch, getState) => {
+export const registryChangeFilterRawValues = (registryKey, valueKey, type, value) => (dispatch, getState) => {
   const {
     registry: {
       [registryKey]: {
         filter,
       },
-    } 
+    },
   } = getState();
 
   return dispatch(
@@ -157,7 +157,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
         filter: {...filter},
         list,
       },
-    } 
+    },
   } = getState();
 
   filter.rawFilterValues = setEmptyRawFilters(filter);
@@ -174,7 +174,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
         ...filter,
         rawFilterValues: setEmptyRawFilters(filter),
       },
-    )
+    ),
   );
 
   dispatch(
@@ -198,7 +198,7 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
         list,
         filter,
       },
-    } 
+    },
   } = getState();
 
   const processed = {
@@ -219,9 +219,8 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
     ),
   );
 };
-      
 
-export const registryToggleIsOpenFilter = registryKey => (dispatch, getState) => {
+export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) => {
   const filterState = getState().registry[registryKey].filter;
 
   return dispatch(
@@ -235,13 +234,13 @@ export const registryToggleIsOpenFilter = registryKey => (dispatch, getState) =>
   );
 };
 
-export const registyLoadPrintForm = registryKey => (dispatch, getState) => {
+export const registyLoadPrintForm = (registryKey) => (dispatch, getState) => {
   const { registry: { [registryKey]: { Service } } } = getState();
 
   return dispatch({
     type: '',
     payload: Service.getBlob({ format: 'xls'})
-      .then(ans => {
+      .then((ans) => {
         saveData(ans.blob, ans.fileName);
 
         return ans;

@@ -15,7 +15,7 @@ export const getVectorObject = (type, points, meta = { loading: true } as TypeMe
       meta: {
         ...meta,
       },
-    }
+    };
   }
 
   const payload = {
@@ -26,6 +26,7 @@ export const getVectorObject = (type, points, meta = { loading: true } as TypeMe
     type,
     payload: VectorObjectService.get(payload)
       .catch((error) => {
+        // tslint:disable-next-line
         console.warn(error);
 
         return {
@@ -39,7 +40,7 @@ export const getVectorObject = (type, points, meta = { loading: true } as TypeMe
       ...meta,
     },
   };
-}
+};
 
 export const getCompany = (type, meta = { loading: true } as TypeMeta) => ({
   type,

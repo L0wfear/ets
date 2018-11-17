@@ -66,8 +66,8 @@ export const CardBodyContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  pointer-events: ${({ isLoading }: PropsCardBodyContainer) => isLoading ? 'none': 'all'};
-  opacity: ${({ isLoading }) => isLoading ? '0.5': '1'};
+  pointer-events: ${({ isLoading }: PropsCardBodyContainer) => isLoading ? 'none' : 'all'};
+  opacity: ${({ isLoading }) => isLoading ? '0.5' : '1'};
 
   .line_data {
     padding: 15px 0;
@@ -105,7 +105,6 @@ export const CardBodyContainer = styled.div`
 type RightButtonBlockContainerType = {
   needMarginBottom?: boolean;
 };
-
 
 export const RightButtonBlockContainer = styled.div`
   display: flex;

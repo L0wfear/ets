@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const withClassMethods = (methodObjects: any = {}) => Component =>
+const withClassMethods = (methodObjects: any = {}) => (Component) =>
   class WithClassMethods extends React.Component<any, any> {
     constructor(props) {
       super(props);
@@ -16,6 +16,6 @@ const withClassMethods = (methodObjects: any = {}) => Component =>
         />
       );
     }
-  }
+  };
 
 export default withClassMethods;

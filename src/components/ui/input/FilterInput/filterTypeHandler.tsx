@@ -7,7 +7,7 @@ import { IPropsExtendedInput } from './Input';
 import { isEqualOr } from 'utils/functions';
 import { FILTER_VALUES } from './constants';
 
-const filterTypeIf = filterMatch => R.propEq('filterType', filterMatch);
+const filterTypeIf = (filterMatch) => R.propEq('filterType', filterMatch);
 
 function singleFilterTypeHandler(SourcerFilterInput) {
   return class FilterInputHOC extends React.Component<IPropsExtendedInput, any> {
@@ -69,7 +69,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
             const intervalValue = filterValueMaker(value, this.props.type);
 
             const isEmpty = intervalValue.length < 2 || intervalValue
-              .map(val => isEqualOr(['', null, undefined], val))
+              .map((val) => isEqualOr(['', null, undefined], val))
               .includes(true);
 
             return isEmpty ? null : {

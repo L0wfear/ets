@@ -4,4 +4,4 @@ export type PropsOdhNotCoveredByMissionsOfCurrentShiftInfo = {
   infoData: OdhNotCoveredByMissionsOfCurrentShiftInfoDataType;
 
   handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
+};

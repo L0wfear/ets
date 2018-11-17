@@ -20,7 +20,7 @@ const tableMeta = {
       type: 'string',
       filter: {
         type: 'multiselect',
-        labelFunction: data => data === 'fail' ? 'Не пройден' : 'Пройден',
+        labelFunction: (data) => data === 'fail' ? 'Не пройден' : 'Пройден',
       },
     },
   ],

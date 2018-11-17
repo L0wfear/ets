@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import DateFormatter from 'components/ui/DateFormatter';
 import { WorkingHours } from 'components/directories/geoobjects/pages/fountains/FountainsTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
 
 const InfoDt: React.SFC<any> = ({ data, ...props }) =>
@@ -42,7 +42,7 @@ const InfoODh: React.SFC<any> = ({ data, ...props }) =>
     {data.distance || '--'}
     <h5>Длина лотка</h5>
     {data.gutters_length || '--'}
-  </div>
+  </div>;
 
 const InfoSsp: React.SFC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
@@ -199,7 +199,7 @@ export let dataByServerName = {
   [GEOOBJECTS_OBJ.fountains.serverName]: FountainsInfo,
 };
 
-const GeoDataTemplate: React.SFC<any> = props => {
+const GeoDataTemplate: React.SFC<any> = (props) => {
   const { [props.serverName]: Component = InfoDefaultData } = dataByServerName;
 
   return <Component data={props.data} serverName={props.serverName} id={props.id} centerOn={props.centerOn} handleClickOnClose={props.handleClickOnClose} />;
@@ -209,7 +209,7 @@ const mergedProps = (stateProps, { dispatch }, ownerProps) => ({
   ...ownerProps,
   centerOn: () => (
     ownerProps.centerOn({
-      extent: GeoJSON.readGeometry(ownerProps.data.shape).getExtent(),
+      extent: geoJSON.readGeometry(ownerProps.data.shape).getExtent(),
       opt_options: {
         padding: [50, 550, 50, 150],
         maxZoom: 9,
@@ -232,5 +232,5 @@ const mergedProps = (stateProps, { dispatch }, ownerProps) => ({
 export default connect(
   null,
   null,
-  mergedProps
+  mergedProps,
 )(GeoDataTemplate);

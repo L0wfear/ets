@@ -1759,7 +1759,7 @@ div.none {
 
 .company-structure .griddle-body {
   tbody {
-    &:nth-child(even){
+    &:nth-child(even) {
       background-color: #f7f7f7 !important;
     }
    
@@ -1769,7 +1769,7 @@ div.none {
         color: white !important;
       }
       
-      &:nth-of-type(n+2){
+      &:nth-of-type(n+2) {
         cursor: pointer;
 
         &:nth-child(even) > td {

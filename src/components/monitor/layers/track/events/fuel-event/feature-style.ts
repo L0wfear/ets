@@ -17,7 +17,7 @@ const makeCacheStyle = (cacheStyleName, { event_type }) => {
     }),
     zIndex: 9,
   });
-}
+};
 
 export const getStyleForFuelEvent = (event_type) => {
   const cacheStyleName = `${event_type}`;
@@ -32,4 +32,4 @@ export const getStyleForFuelEvent = (event_type) => {
   }
 
   return icon;
-}
+};

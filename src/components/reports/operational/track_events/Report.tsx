@@ -23,7 +23,7 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
       coords: [0, 0],
     };
   }
-  handleMapVisibility = data => {
+  handleMapVisibility = (data) => {
     const [y, x] = data.split(', ');
 
     this.setState({
@@ -59,7 +59,6 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
           onFormHide={this.onMapFormHide}
           coords={this.state.coords}
         />
-        
       </div>
     );
   }

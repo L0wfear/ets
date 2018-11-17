@@ -72,8 +72,8 @@ class MissionFormOld extends React.Component {
     const title = `Задание № ${state.number || ''} ${state.status === 'fail' ? '(Не выполнено)' : ''}`;
     const routes = routesList.filter(r => (!state.structure_id || r.structure_id === state.structure_id));
     const CARS = carsList
-      .filter(c => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id))
-      .map(c => ({
+      .filter((c) => (!state.structure_id || c.is_common || c.company_structure_id === state.structure_id))
+      .map((c) => ({
         value: c.asuods_id,
         available: c.available,
         label: `${c.gov_number} [${c.special_model_name || ''}${c.special_model_name ? '/' : ''}${c.model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,

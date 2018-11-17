@@ -65,7 +65,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         // react 16 Portal
         return global.confirmDialog({
           title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
-          body: self => (
+          body: (self) => (
             <ExtField
               type="string"
               label="Причина"
@@ -94,7 +94,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         .catch(() => {
           //
         });
-      }).catch(e => {
+      }).catch((e) => {
         // tslint:disable-next-line
         console.log(e);
       });
@@ -120,7 +120,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
             this.props.handleClose();
           });
         } else {
-          console.warn('not found duty mission')
+          // tslint:disable-next-line
+          console.warn('not found duty mission');
         }
       })
   )
@@ -131,7 +132,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       infoData: {
         duty_mission_data,
         ...route
-      }
+      },
     } = this.props;
 
     return (
@@ -166,9 +167,9 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           mapKey="mapCurrentMissionInfo"
         />
       </InfoCard>
-    )
+    );
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   infoData: state.dashboard.current_duty_missions.infoData,

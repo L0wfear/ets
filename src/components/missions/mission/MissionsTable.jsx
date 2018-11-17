@@ -27,7 +27,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(MISSION_STATUS_LABELS).map(key => ({ label: MISSION_STATUS_LABELS[key], value: key })),
+          options: Object.keys(MISSION_STATUS_LABELS).map((key) => ({ label: MISSION_STATUS_LABELS[key], value: key })),
         },
         cssClassName: 'width120',
       },
@@ -114,7 +114,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: carsFilterList.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsFilterList.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },
@@ -127,7 +127,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: uniqBy(carsFilterList.map(car => ({ label: car.type_name, value: car.type_id })), 'value'),
+          options: uniqBy(carsFilterList.map((car) => ({ label: car.type_name, value: car.type_id })), 'value'),
         },
         cssClassName: 'width120',
       },

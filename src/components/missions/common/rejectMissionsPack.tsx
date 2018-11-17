@@ -14,11 +14,11 @@ type TypeMission = {
 
 export const rejectMissionsPack = ([mission, ...missions]: TypeMission[], methods, type) => (
   mission ?
-  new Promise(async res => {
+  new Promise(async (res) => {
     try {
       const state = await global.confirmDialog({
         title: <b>{`Введите причину для ${typeObj[type]} №${mission.number}`}</b>,
-        body: self => (
+        body: (self) => (
           <ExtField
             type="string"
             label={false}

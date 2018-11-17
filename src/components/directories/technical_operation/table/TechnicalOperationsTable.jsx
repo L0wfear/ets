@@ -113,7 +113,7 @@ const getTableMeta = ({
         type: 'boolean',
         filter: {
           type: 'multiselect',
-          labelFunction: data => data ? 'Да' : 'Нет',
+          labelFunction: (data) => data ? 'Да' : 'Нет',
         },
       },
       {

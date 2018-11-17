@@ -15,7 +15,7 @@ import {
 } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { ReduxState } from 'redux-main/@types/state';
 
-const withRegistry = (configData: TypeConfigData) => Component => (
+const withRegistry = (configData: TypeConfigData) => (Component) => (
   hocAll(
     whitPreloader({
       page: 'registry',
@@ -23,13 +23,13 @@ const withRegistry = (configData: TypeConfigData) => Component => (
     }),
     connect<any, any, any, ReduxState>(
       null,
-      dispatch => ({
+      (dispatch) => ({
         registryAddInitialData: (config: TypeConfigData) => (
           dispatch(
             registryAddInitialData(config),
           )
         ),
-        registryRemoveData: registryKey => (
+        registryRemoveData: (registryKey) => (
           dispatch(
             registryRemoveData(registryKey),
           )

@@ -39,8 +39,8 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
     return (
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
-        { 
-          collapsetItems.length ? 
+        {
+          collapsetItems.length ?
           (
             <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
@@ -52,7 +52,7 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
           )
         }
       </div>
-    )
+    );
   }
 }
 
@@ -63,9 +63,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift(infoData)
+      dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift(infoData),
     )
-  )
+  ),
 });
 
 export default withDefaultCard({
@@ -76,5 +76,5 @@ export default withDefaultCard({
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(OdhNotCoveredByMissionsOfCurrentShift)
+  )(OdhNotCoveredByMissionsOfCurrentShift),
 );

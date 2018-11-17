@@ -23,7 +23,7 @@ function validate(config, value, dependentFieldConfig, dependentFieldValue, form
   // console.warn(`VALIDATING ${config.key} with data = ${data}`);
   const error = fixedValidators
     .map(({ validator }) => validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema))
-    .filter(d => !!d)[0];
+    .filter((d) => !!d)[0];
 
   return error;
 }

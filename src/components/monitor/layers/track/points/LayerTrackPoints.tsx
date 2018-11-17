@@ -26,7 +26,7 @@ type PropsLayerTrackPoints = {
   map: ol.Map;
   SHOW_TRACK: boolean;
 
-  carInfoSetTrackPoint: Function;
+  carInfoSetTrackPoint: any;
 };
 
 type StateLayerTrackPoints = {
@@ -39,15 +39,18 @@ type StateLayerTrackPoints = {
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   const { checkCoordsMsk: { onMkad = false } = {}, speed_avg } = trackPoint;
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
+
   return speed_avg <= topSpeed;
-}
+};
+
 class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayerTrackPoints> {
   state = {
     zoomMore8: this.props.zoom >= 8,
     lastPoint: null,
     trackLineIsDraw: false,
     SHOW_TRACK: this.props.SHOW_TRACK,
-  }
+  };
+
   componentDidMount() {
     this.props.addLayer({ id: 'TrackPoints', zIndex: 3, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -74,7 +77,7 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
         this.drawTrackPoints([lastPoint], SHOW_TRACK);
       } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {
         const { track } = this.props;
-        this.changeStyleForPoint(track, SHOW_TRACK)
+        this.changeStyleForPoint(track, SHOW_TRACK);
       }
     }
   }
@@ -86,11 +89,12 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
 
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
-    const trackPoint = this.props.track.find(point => point.timestamp === timestamp);
+    const trackPoint = this.props.track.find((point) => point.timestamp === timestamp);
 
     if (trackPoint) {
       this.props.carInfoSetTrackPoint(trackPoint);
     } else {
+      // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
   }
@@ -112,7 +116,7 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
   }
 
   changeStyleForPoint(track, SHOW_TRACK) {
-    this.props.getAllFeatures().forEach(feature => {
+    this.props.getAllFeatures().forEach((feature) => {
       if (!SHOW_TRACK) {
         feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK));
       } else {
@@ -130,7 +134,7 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
   track: state.monitorPage.carInfo.trackCaching.track,
   lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
@@ -138,13 +142,13 @@ const mapStateToProps = state => ({
   speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   carInfoSetTrackPoint: (trackPoint) => (
     dispatch(
-      carInfoSetTrackPoint(trackPoint)
+      carInfoSetTrackPoint(trackPoint),
     )
-  )
-})
+  ),
+});
 
 export default hocAll(
   withShowByProps({

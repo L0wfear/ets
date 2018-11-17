@@ -25,7 +25,7 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       metaKey={key}
       registryKey={this.props.registryKey}
     />
-  );
+  )
 
   render() {
     return (

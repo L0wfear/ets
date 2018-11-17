@@ -38,8 +38,8 @@ class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateO
     return (
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
-        { 
-          collapsetItems.length ? 
+        {
+          collapsetItems.length ?
           (
             <CollapseButton >
               <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
@@ -62,9 +62,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInOdhCoveredByRoutes(infoData)
+      dashboardSetInfoDataInOdhCoveredByRoutes(infoData),
     )
-  )
+  ),
 });
 
 export default withDefaultCard({
@@ -75,5 +75,5 @@ export default withDefaultCard({
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(OdhCoveredByRoutes)
+  )(OdhCoveredByRoutes),
 );

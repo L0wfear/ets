@@ -1,50 +1,50 @@
 export const BASE_GEOOBJECTS_LIST = {
-  'dt': {
+  dt: {
     serverName: 'dt',
     label: 'ДТ',
     labelSingl: 'ДТ',
   },
-  'odh': {
+  odh: {
     serverName: 'odh',
     label: 'ОДХ',
     labelSingl: 'ОДХ',
   },
-  'odh_mkad': {
+  odh_mkad: {
     serverName: 'odh_mkad',
     label: 'ОДХ МКАД',
     labelSingl: 'ОДХ МКАД',
   },
-  'ssp': {
+  ssp: {
     serverName: 'ssp',
     label: 'ССП',
     labelSingl: 'Стационарный снегоплавильный пункт',
   },
-  'msp': {
+  msp: {
     serverName: 'msp',
     label: 'МСП',
     labelSingl: 'Мобильный снегоплавильный пункт',
   },
-  'carpool': {
+  carpool: {
     serverName: 'carpool',
     label: 'Автобазы',
     labelSingl: 'Автобаза',
   },
-  'pgm': {
+  pgm: {
     serverName: 'pgm_store',
     label: 'Пункты отпуска ПГМ',
     labelSingl: 'Пункт отпуска ПГМ',
   },
-  'snow_storage': {
+  snow_storage: {
     serverName: 'snow_storage',
     label: 'Пункты временного складирования снега',
     labelSingl: 'Пункт временного складирования снега',
   },
-  'danger_zone': {
+  danger_zone: {
     serverName: 'danger_zone',
     label: 'Особо опасные места',
     labelSingl: 'Особо опасное место',
   },
-  'fueling_water': {
+  fueling_water: {
     serverName: 'fueling_water',
     label: 'Базы гидрантов',
     labelSingl: 'База гидрантов',
@@ -52,22 +52,22 @@ export const BASE_GEOOBJECTS_LIST = {
 };
 
 export const GORMOST_GEOOBJECTS_LIST = {
-  'bridges': {
+  bridges: {
     serverName: 'bridges',
     label: 'Мосты',
     labelSingl: 'Мост',
   },
-  'pedestrian_tunnels': {
+  pedestrian_tunnels: {
     serverName: 'pedestrian_tunnels',
     label: 'Пешеходные тоннели',
     labelSingl: 'Пешеходный тоннель',
   },
-  'pedestrian_tunnel_exits': {
+  pedestrian_tunnel_exits: {
     serverName: 'pedestrian_tunnel_exits',
     label: 'Выходы из пешеходных тоннелей',
     labelSingl: 'Выход из пешеходного тоннеля',
   },
-  'fountains': {
+  fountains: {
     serverName: 'fountains',
     label: 'Фонтаны',
     labelSingl: 'Фонтан',

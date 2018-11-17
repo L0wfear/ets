@@ -35,7 +35,7 @@ const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, { sensorR
 
     return newArr;
   }, [])
-)
+);
 
 class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart> {
   constructor(props) {
@@ -50,7 +50,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
       sensorRawData,
       data,
       front_cars_sensors_level,
-    }
+    };
   }
   static getDerivedStateFromProps(nextProps: PropsCarFuelChart, prevState: StateCarFuelChart) {
     const { front_cars_sensors_level } = nextProps;
@@ -85,13 +85,13 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
       }
 
       return true;
-    })
+    });
 
     this.props.handleChartClick(selected_point);
   }
   render() {
     const { data } = this.state;
-    
+
     return (
       <div>
         {
@@ -132,7 +132,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
                     <div key="checkbox-fuel" className="chart-select_raw" onClick={this.handleClick}>
                       <input readOnly type="checkbox" checked={this.state.sensorRawData} />
                       <span>Исходные данные датчиков</span>
-                    </div>
+                    </div>,
                   ]
                 )
               }
@@ -141,7 +141,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
           )
         }
       </div>
-    )
+    );
   }
 }
 

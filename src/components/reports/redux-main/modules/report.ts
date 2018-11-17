@@ -21,7 +21,6 @@ const GET_REPORT_META_ERROR = 'GET_REPORT_META_ERROR';
 const metaFetchingStatusReducer = FetchingStatusReducerFactory('reportMeta');
 const dataFetchingStatusReducer = FetchingStatusReducerFactory('reportData');
 
-
 const initialState: IStateReport = {
   data: {},
   list: [],
@@ -51,7 +50,7 @@ const initialState: IStateReport = {
   reportDataFetching: false,
 };
 
-export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = serviceName => dispatch =>
+export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = (serviceName) => (dispatch) =>
   new Promise(async (resolve, reject) => {
     try {
       const metaOpts = {
@@ -80,7 +79,7 @@ const getTableMetaInfoReducer = (state: IStateReport, { payload }) => ({
   },
 });
 
-export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: any = {}, reportType = '', props = {}) => dispatch =>
+export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: any = {}, reportType = '', props = {}) => (dispatch) =>
   new Promise(async (resolve, reject) => {
     try {
       dispatch({ type: GET_REPORT_DATA_START });
@@ -177,15 +176,15 @@ const getReportDataWithSummerDataReducer = (state: IStateReport, { payload }) =>
     summaryTableMetaInfo: data.result.meta.summary.fields,
     summaryMeta: data.result.meta,
     summaryList: summerData.map((row, index) => ({ _uniq_field: index, ...row })),
-  }
-}
+  };
+};
 
 export const setAllData: any = (response, props) => ({
     type: GET_REPORT_DATA_WITH_SUMMER_DATA,
     payload: {
       data: response,
       summerData: makeDataForSummerTable(response, props),
-    }
+    },
   }
 );
 
@@ -194,7 +193,7 @@ export const setReportDataWithSummerData: any = ({ data, props }) => ({
   payload: {
     list: data.result.rows,
     summaryList: makeDataForSummerTable(data, props),
-  }
+  },
 });
 
 export const setReportDataWithSummerDataReducer: any = (state, { payload: { list, summaryList } }) => ({
@@ -203,7 +202,7 @@ export const setReportDataWithSummerDataReducer: any = (state, { payload: { list
   summaryList,
 });
 
-export const setSummaryTableData: ReduxTypes.ISetSummaryTableDataState = tableData => ({
+export const setSummaryTableData: ReduxTypes.ISetSummaryTableDataState = (tableData) => ({
   type: SET_SUMMARY_TABLE_DATA,
   payload: {
     ...tableData,

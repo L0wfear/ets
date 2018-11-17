@@ -11,8 +11,7 @@ import Datepicker from 'components/ui/input/date-picker/DatePicker';
 
 const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker) as any;
 
-
-const OrdersDatepicker: React.SFC<any> = props =>
+const OrdersDatepicker: React.SFC<any> = (props) =>
     <Row>
       <Col mdOffset={3} md={6} className="datepicker-range">
         <div>
@@ -39,9 +38,9 @@ const mapStateToProps = (state) => ({
   date_start: state.order.pageOptions.date_start,
   date_end: state.order.pageOptions.date_end,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getOrders: (props) => dispatch(getOrders(props)),
-})
+});
 
 export default connect(
   mapStateToProps,

@@ -74,7 +74,7 @@ export const renderers = {
   ),
 };
 
-export default props => (
+export default (props) => (
   <Table
     title="Особо опасные места"
     results={props.data}

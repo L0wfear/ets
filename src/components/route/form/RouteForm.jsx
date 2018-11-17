@@ -128,7 +128,7 @@ export default class RouteForm extends Form {
           console.log('here', changesState.technicalOperationsList)
           changesState.technicalOperationsList = changesState.technicalOperationsList
             .filter(to => (
-              to.route_types.some(type => (
+              to.route_types.some((type) => (
                 type === formState.type
               ))
             ));

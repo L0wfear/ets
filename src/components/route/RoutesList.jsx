@@ -277,7 +277,7 @@ class RoutesList extends React.Component {
     if (this.state.season_id.some(season_id => (obj.seasons.some(seasonData => seasonData.season_id === season_id)))) {
       return Object.entries(this.state.filterValues).every(([key, { value }]) => {
         if (Array.isArray(obj[key])) {
-          return obj[key].some(data => value.includes(data));
+          return obj[key].some((data) => value.includes(data));
         }
         return value.includes(obj[key]);
       });

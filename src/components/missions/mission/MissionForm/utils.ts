@@ -1,5 +1,5 @@
 import { getKindTaskIds } from 'components/missions/utils/utils';
-import { AvailableRouteTypes } from "components/missions/mission/MissionForm/types";
+import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/types';
 
 interface IFormState {
   id?: number;
@@ -78,7 +78,6 @@ type TGetTechnicalOperationData = (
 }>;
 
 /**
- * 
  * @param formState состояние формы
  * @param fromOrder создание из реестра факсограмм?
  * @param fromWaybill создание из реестра ПЛ?
@@ -172,7 +171,7 @@ export const handleRouteFormHide = (formState, stateData, routeActionGetRoutesBy
   .then(([ routesList ]) => ({
     routesList,
   }));
-}
+};
 
 export const getNormDataByNormatives = (normatives, kind_task_ids, action) =>
   action({ norm_ids: normatives.map(({ id }) => id).join(','), kind_task_ids }).then(({ result: normativesData }) => normativesData)
@@ -194,7 +193,7 @@ export const getDataByNormatives = (normatives, kind_task_ids, formState, fromWa
     const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);
 
     return getRoutesBySomeData(formState, { available_route_types }, routeActionGetRoutesBySomeData)
-      .then(routesList => ({
+      .then((routesList) => ({
         normativesData,
         carsList,
         routesList,

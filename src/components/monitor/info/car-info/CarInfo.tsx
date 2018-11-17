@@ -9,9 +9,8 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 
-
 export type StateCarInfo = {
-}
+};
 
 export type StatePropsCarInfo = {};
 export type DispatchPropsCarInfo = {
@@ -19,8 +18,8 @@ export type DispatchPropsCarInfo = {
 };
 export type OwnPropsCarInfo = {
   map: ol.Map,
-  centerOn: Function;
-}
+  centerOn: any;
+};
 
 export type PropsCarInfo = (
   StatePropsCarInfo
@@ -40,7 +39,7 @@ class CarInfo extends React.Component<PropsCarInfo, StateCarInfo> {
         <CarMainDataBlock map={this.props.map} centerOn={this.props.centerOn} />
         <CarTabMenu map={this.props.map} centerOn={this.props.centerOn} />
       </div>
-    )
+    );
   }
 }
 

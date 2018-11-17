@@ -19,7 +19,6 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 const STATUS_OPTIONS = Object.entries(ORDER_STATUS_LABELS).map(([value, label]) => ({ value, label }));
 
-
 /**
  * подсветка строк таблицы в зависимости от статуса ц. задания
  * @param rowData строка реестра ц. заданий
@@ -97,7 +96,7 @@ const renderers: ISchemaRenderer = {
   order_type_id: ({ rowData }) => <div>{get(rowData, 'order_type_name', '')}</div>,
 };
 
-const Table: React.SFC<any> = props  => (
+const Table: React.SFC<any> = (props) => (
   <DataTable
     title="Реестр централизованных заданий (факсограмм)"
     results={props.data}
@@ -124,14 +123,14 @@ const mapStateToProps = (state) => ({
   filterValues: state.order.pageOptions.filter,
   haveMax: state.order.pageOptions.haveMax,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onRowSelected: ({ props: { data: selectedElementOrder } }) => {
     dispatch(setSelectedElementOrder(selectedElementOrder));
     dispatch(getOrderHistory(selectedElementOrder)(dispatch));
   },
   changeSort: (field, direction) => dispatch(getOrders({ sort_by: `${field}:${direction ? 'asc' : 'desc'}` })),
-  changeFilter: filter => dispatch(getOrders({ filter })),
-})
+  changeFilter: (filter) => dispatch(getOrders({ filter })),
+});
 
 export default connect(
   mapStateToProps,

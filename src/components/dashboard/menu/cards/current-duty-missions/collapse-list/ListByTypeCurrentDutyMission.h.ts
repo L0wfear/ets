@@ -4,12 +4,12 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
 export interface StatePropsListByTypeCurrentDutyMission {
-  title: InitialStateDashboard['current_duty_missions']['data']['title']
-  items: InitialStateDashboard['current_duty_missions']['data']['items']
+  title: InitialStateDashboard['current_duty_missions']['data']['title'];
+  items: InitialStateDashboard['current_duty_missions']['data']['items'];
 }
 
-export interface DispatchPropsListByTypeCurrentDutyMission {
-}
+export type DispatchPropsListByTypeCurrentDutyMission {
+};
 
 export interface OwnPropsListByTypeCurrentDutyMission {
   titleKey: 'title_centralized' | 'title_decentralized';

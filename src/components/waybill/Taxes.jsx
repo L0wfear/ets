@@ -109,7 +109,7 @@ export default class Taxes extends React.Component {
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
-          const usedOperations = taxes.map(t => t.OPERATION);
+          const usedOperations = taxes.map((t) => t.OPERATION);
           if (usedOperations.indexOf(op.value) > -1) {
             op.disabled = true;
           }
@@ -149,7 +149,7 @@ export default class Taxes extends React.Component {
   static getDerivedStateFromProps(nexProps, prevProps) {
     const { fuelRates, taxes = prevProps.tableData } = nexProps;
     let { operations } = nexProps;
-    operations = operations.map(data => ({
+    operations = operations.map((data) => ({
       value: data.id,
       label: data.comment ? `${data.name} (${data.comment})` : data.name,
       measure_unit_name: data.measure_unit_name,

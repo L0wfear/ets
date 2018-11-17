@@ -9,8 +9,6 @@ interface IReportMetaFieldDetails {
   is_row?: boolean;
 }
 
-
-
 export interface IReportMetaField {
   [headerName: string]: IReportMetaFieldDetails;
 }

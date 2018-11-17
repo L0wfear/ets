@@ -33,14 +33,14 @@ export const carInfoSetGpsNumber = (gps_code = null, gov_number = null) => ({
   payload: {
     gps_code,
     gov_number,
-  }
+  },
 });
 
 export const carInfoSetStatus = (status) => ({
   type: CAR_INFO_SET_STATUS,
   payload: {
     status,
-  }
+  },
 });
 
 export const carInfoToggleForToday = () => ({
@@ -53,8 +53,9 @@ export const carInfoChangeDate = (field, value) => ({
   payload: {
     field,
     value,
-  }
-})
+  },
+});
+
 export const carInfoSetTrack = (trackCaching, gps_code, odh_mkad) => ({
   type: CAR_INFO_SET_TRACK_CACHING,
   payload: {
@@ -64,26 +65,26 @@ export const carInfoSetTrack = (trackCaching, gps_code, odh_mkad) => ({
     },
     error: false,
     gps_code,
-  }
+  },
 });
 
 export const carInfoSetMissionsData = ({ missions }, gps_code) => ({
   type: CAR_INFO_SET_MISSIONS_DATA,
   payload: {
-    missions: missions,
+    missions,
     ...getMaxSpeeds(missions),
     gps_code,
-  }
+  },
 });
 
 export const carInfoResetTrackCahing = () => ({
   type: CAR_INFO_RESET_TRACK_CACHING,
-  payload: {},  
+  payload: {},
 });
 
 export const carInfoResetMissionsData = () => ({
   type: CAR_INFO_RESET_MISSIONS_DATA,
-  payload: {},  
+  payload: {},
 });
 
 export const carInfoTogglePlay = () => ({
@@ -99,15 +100,15 @@ export const carInfoStopPlay = () => ({
 export const carInfoIncTrackPointIndex = () => ({
   type: CAR_INFO_INC_TRACK_POINT_INDEX,
   payload: {},
-})
+});
 
 export const carInfoToggleSensorShow = (type, key) => ({
   type: CAR_INFO_TOGGLE_SENSOR_SHOW,
   payload: {
     type,
     key,
-  }
-})
+  },
+});
 
 export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as TypeMeta) => (dispatch, getState) => {
   const {
@@ -132,7 +133,7 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
           sensors: 1,
         };
 
-        return TrackService.get(payloadToTrack).then(ans => ({
+        return TrackService.get(payloadToTrack).then((ans) => ({
           trackCaching: {
             ...ans,
             ...checkAndModifyTrack(ans, odh_mkad),
@@ -140,14 +141,16 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
           gps_code: payloadData.gps_code,
         }));
       }).catch((error) => {
-        console.log(error)
+        // tslint:disable-next-line
+        console.log(error);
+
         return {
           trackCaching: {
             ...initialState.trackCaching,
             error: true,
           },
           gps_code: payloadData.gps_code,
-        }
+        };
       }),
     meta: {
       ...meta,
@@ -184,7 +187,7 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) 
         ...initialState.missionsData,
         error: true,
         gps_code: payloadData.gps_code,
-      }
+      };
     }),
     meta,
   });
@@ -199,14 +202,13 @@ export const carInfoPushPointIntoTrack = (point, odh_mkad) => ({
         onMkad: checkOnMkad(point, odh_mkad),
       },
     },
-  }
+  },
 });
 
 export const carInfoToggleStatusTCFollowOnCar = () => ({
   type: CAR_INFO_TOGGLE_STATUS_TC_FOLLOW_ON_CAR,
   payload: {},
 });
-
 
 export const carInfoSetTrackPoint = (trackPoint = null) => ({
   type: CAR_INFO_SET_POPUP_TRACK_POINT,
@@ -228,4 +230,3 @@ export const carInfoSetFuelEventPoint = (fuelEventPoint = null) => ({
     fuelEventPoint,
   },
 });
-

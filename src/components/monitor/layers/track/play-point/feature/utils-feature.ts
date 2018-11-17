@@ -18,7 +18,7 @@ export const getFill = () => (
   new Fill({
     color: 'rgb(0, 0, 0)',
   })
-)
+);
 
 export const getImageStyle = () => (
   new Circle({
@@ -32,16 +32,15 @@ export const setStyle = (feature) => (
   feature.setStyle(
     new Style({
       image: getImageStyle(),
-    })
+    }),
   )
-)
+);
 
 export const makeFeaute = () => {
   const feature = new Feature();
   setStyle(feature);
-  
 
   feature.setId('point');
 
   return feature;
-}
+};

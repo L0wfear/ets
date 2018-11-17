@@ -108,7 +108,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
             <h4>{this.props.title}</h4>
           </div>
           <div className="buttons">
-            {!noFilter && 
+            {!noFilter &&
               <FilterButton
                 show={filterModalIsOpen}
                 active={activeFilter}

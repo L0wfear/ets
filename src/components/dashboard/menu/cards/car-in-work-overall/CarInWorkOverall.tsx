@@ -9,8 +9,8 @@ import List from 'components/dashboard/menu/cards/car-in-work-overall/list/List'
 import {
   dashboardLoadCarInWorkOverall,
   dashboardSetInfoDataInCarInWorkOverall,
- } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
- 
+} from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
+
 import CarInWorkOverallInfo from 'components/dashboard/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo';
 
 import {
@@ -23,12 +23,13 @@ import {
 
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    const index = Number.parseInt((path as string).split('/').slice(-1)[0]);
+    const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
 
     this.props.setInfoData(this.props.items[index]);
   }
 
   handleClickMissionCollapse: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
+    //
   }
 
   render() {
@@ -44,8 +45,8 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
           handleClick={this.handleClickMission}
           classNameContainer="line_data"
         />
-        { 
-          collapsetItems.length ? 
+        {
+          collapsetItems.length ?
           (
             <CollapseButton >
               <List
@@ -61,7 +62,7 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
           )
         }
       </div>
-    )
+    );
   }
 }
 
@@ -72,9 +73,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setInfoData: (infoData) => (
     dispatch(
-      dashboardSetInfoDataInCarInWorkOverall(infoData)
+      dashboardSetInfoDataInCarInWorkOverall(infoData),
     )
-  )
+  ),
 });
 
 export default withDefaultCard({
@@ -85,5 +86,5 @@ export default withDefaultCard({
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(CarInWorkOverall)
+  )(CarInWorkOverall),
 );

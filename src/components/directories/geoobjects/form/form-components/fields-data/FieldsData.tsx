@@ -31,7 +31,7 @@ class FieldsData extends React.PureComponent<PropsFieldsData, {}> {
             readOnly
           />
         </div>
-      )
+      );
     }
     return (
       <div key={name}>
@@ -42,14 +42,14 @@ class FieldsData extends React.PureComponent<PropsFieldsData, {}> {
           readOnly
         />
       </div>
-    )
+    );
   }
   render() {
     return (
       <>
         {this.props.meta.cols.map(this.mapRow)}
       </>
-    )
+    );
   }
 }
 

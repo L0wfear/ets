@@ -152,7 +152,7 @@ const Row = (props) => {
   return <tr className={cn} onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>{cells}</tr>;
 };
 
-const PageLink = props => (
+const PageLink = (props) => (
   <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
     {props.children}
   </span>

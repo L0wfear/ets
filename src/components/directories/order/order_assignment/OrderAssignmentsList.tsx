@@ -21,7 +21,7 @@ import {
   TitleText,
 } from 'components/directories/order/order_assignment/styled/styled';
 
-const OrderAssignmentsList: React.SFC<any> = props => (
+const OrderAssignmentsList: React.SFC<any> = (props) => (
   <Div className="data-table data-other" hidden={props.hidden} >
     <Row>
       <ColOrderAssignmentHeaderTitleContainer md={8}>
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => ({
   disabledAssignmentButtonDutyMission: state.order.disabledAssignmentButton.dutyMission,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
     {
       setMissionData,
@@ -55,7 +55,7 @@ const mapDispatchToProps = dispatch => ({
     },
     dispatch,
   ),
-})
+});
 
 const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
   ...stateProps,

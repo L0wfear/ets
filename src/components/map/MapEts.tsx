@@ -13,7 +13,6 @@ import {
   centerOn,
 } from 'components/map/utils';
 
-
 /**
  * @todo свои кнопки зума на styled-components чтобы убрать импорт css
  */
@@ -88,6 +87,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
     const center = event.map.getView().getCenter();
 
     this.setState({ zoom, center });
+    // tslint:disable-next-line
     console.info(`Центр карты: [${center}], зум: ${zoom}`);
   }
 
@@ -99,7 +99,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
       noCheckDisabledCenterOn,
     );
   }
-  setContainer = node => this._container = node;
+  setContainer = (node) => this._container = node;
 
   render() {
     return (
@@ -111,7 +111,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   userData: state.session.userData,
   zoom: state.session.userData.map_config.zoom || 6,
   center: state.session.userData.map_config.coordinates || [0, 0],

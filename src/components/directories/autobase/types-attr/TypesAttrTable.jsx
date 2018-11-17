@@ -48,7 +48,7 @@ const tableMeta = {
   ],
 };
 
-export default props => (
+export default (props) => (
   <Table
     title="Таблица нормативных скоростей и ширин"
     results={props.data}

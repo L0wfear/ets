@@ -11,11 +11,11 @@ const reportUrl = 'track-events-reports';
 const serviceName = 'TrackEventsReportService';
 
 const schemaMakers = {
-  coords_msk: schema => ({
+  coords_msk: (schema) => ({
     ...schema,
     cssClassName: 'map-view',
   }),
-  event_value: schema => ({
+  event_value: (schema) => ({
     ...schema,
     filter: {
       type: 'advanced-number',
@@ -23,7 +23,7 @@ const schemaMakers = {
   }),
 };
 
-const ShowMapButtonSFC = props =>
+const ShowMapButtonSFC = (props) =>
   <div>
     <span onClick={props.onClick}>
       <Glyphicon glyph="info-sign" />
@@ -32,10 +32,10 @@ const ShowMapButtonSFC = props =>
 
 const ShowMapButton: any = bindable(ShowMapButtonSFC);
 
-export const renderers = handleMapVisibility => ({
+export const renderers = (handleMapVisibility) => ({
   okrug_name: ({ data }) => <div>{data || '-'}</div>,
   district_name: ({ data }) => <div>{data || '-'}</div>,
-  coords_msk: meta =>
+  coords_msk: (meta) =>
     <ShowMapButton
       onClick={handleMapVisibility}
       bindOnClick={meta.data}

@@ -15,9 +15,10 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
-  focusOn = node => {
+  focusOn = (node) => {
     const element: any = findDOMNode(node);
     if (element) {
       (element.querySelector('.form-control') as HTMLInputElement).focus();
@@ -47,10 +48,10 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
             <DivNone />
         }
       </div>
-    )
+    );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const carsToShow = Object.entries(state.monitorPage.filters.filtredCarGpsCode)
     .filter(([gps_code, show]) => (
       show
@@ -65,7 +66,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   changeCarFilterText: ({ target: { value } }) => (
     dispatch(
       monitorPageChangeFilter('carFilterText', value),
@@ -81,14 +82,15 @@ const mergeProps = ({ carsGpsCodeShowList, carActualGpsNumberIndex, ...stateProp
   handleFocusOnCar: () => {
     const [gps_code] = carsGpsCodeShowList;
 
-    carActualGpsNumberIndex[gps_code] &&
-    dispatchProps.dispatch(
-      carInfoSetGpsNumber(gps_code, carActualGpsNumberIndex[gps_code].gov_number),
-    )
+    if (carActualGpsNumberIndex[gps_code]) {
+      dispatchProps.dispatch(
+        carInfoSetGpsNumber(gps_code, carActualGpsNumberIndex[gps_code].gov_number),
+      );
+    }
   },
 });
 
- export default connect(
+export default connect<any, any, any, ReduxState>(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,

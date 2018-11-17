@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
@@ -83,7 +81,6 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
     );
   }
 }
-
 
 export default withLayerProps({
   centerOn: true,

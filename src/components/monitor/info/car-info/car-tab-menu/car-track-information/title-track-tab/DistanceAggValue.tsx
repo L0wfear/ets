@@ -21,7 +21,7 @@ const DistanceAggValue: React.SFC<PropsDistanceAggValue> = ({ distance }) => (
     </span>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   distance: state.monitorPage.carInfo.trackCaching.distance,
 });
 
@@ -34,5 +34,5 @@ export default hocAll(
   }),
   connect(
     mapStateToProps,
-  )
+  ),
 )(DistanceAggValue);

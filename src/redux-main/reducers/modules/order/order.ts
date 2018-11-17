@@ -48,11 +48,11 @@ const initialState = {
   missionTemplateData: {
     showForm: false,
   },
-}
+};
 
-export default function(state = initialState, { type, payload }) { 
+export default function(state = initialState, { type, payload }) {
   switch (type) {
-    case SET_ORDERS:
+    case SET_ORDERS: {
       return {
         ...state,
         OrdersList: payload.OrdersList,
@@ -60,8 +60,9 @@ export default function(state = initialState, { type, payload }) {
         selectedElementOrder: null,
         total_count: payload.total_count,
         showHistoryComponent: false,
-      }
-    case SET_SELECTED_ELEMENT_ORDER:
+      };
+    }
+    case SET_SELECTED_ELEMENT_ORDER: {
       const {
         selectedElementOrder: selectedElementOrder_sseo,
         selectedElementOrder: { status },
@@ -74,8 +75,20 @@ export default function(state = initialState, { type, payload }) {
           || diffDates(new Date(), selectedElementOrder_sseo.order_date_to, 'minutes') > 0
           || !technical_operations.some(({ num_exec }) => num_exec > 0),
         templateDutyMission: false,
-      }
-      disabledOrderButton.templateDutyMission = disabledOrderButton.templateMission || !(technical_operations.some(({ num_exec, work_type_name }) => (num_exec > 0) && (work_type_name === 'Ручные' || work_type_name === 'Комбинированный')));
+      };
+
+      disabledOrderButton.templateDutyMission = (
+        disabledOrderButton.templateMission
+        || !(
+          technical_operations.some(({ num_exec, work_type_name }) => (
+            (num_exec > 0)
+            && (
+              work_type_name === 'Ручные'
+              || work_type_name === 'Комбинированный'
+            )
+          ))
+        )
+      );
 
       return {
         ...state,
@@ -87,22 +100,23 @@ export default function(state = initialState, { type, payload }) {
           mission: true,
           dutyMission: true,
         },
-      }
-    case SET_SELECTED_ELEMENT_ASSIGNMENT:
+      };
+    }
+    case SET_SELECTED_ELEMENT_ASSIGNMENT: {
       const { selectedElementOrder: { order_date_to, status: order_status } } = state;
-    
+
       const {
         selectedElementAssignment,
         selectedElementAssignment: {
           work_type_name,
           num_exec,
-        }
+        },
       } = payload;
       const dateTo = selectedElementAssignment.date_to || order_date_to;
 
       return {
         ...state,
-        selectedElementAssignment: selectedElementAssignment,
+        selectedElementAssignment,
         disabledAssignmentButton: {
           mission: !num_exec
             || diffDates(new Date(), dateTo) > 0
@@ -119,15 +133,16 @@ export default function(state = initialState, { type, payload }) {
               && num_exec > 0
             )
             || (num_exec <= 0 && order_status === 'partially_cancelled')
-            || diffDates(new Date(), dateTo) > 0, 
+            || diffDates(new Date(), dateTo) > 0,
         },
-      }
+      };
+    }
     case SET_ORDER_HISTORY: {
       return {
         ...state,
         HistoryOrderDataList: payload.HistoryOrderDataList,
         showHistoryComponent: true,
-      }
+      };
     }
     case SET_MISSION_DATA: {
       const mElement = getMElement(state, payload);
@@ -139,8 +154,8 @@ export default function(state = initialState, { type, payload }) {
           order: state.selectedElementOrder,
           mElement,
           initMission: { ...mElement },
-        }
-      }
+        },
+      };
     }
     case SET_DUTY_MISSION_DATA: {
       const dmElement = getDMElement(state, payload);
@@ -152,30 +167,30 @@ export default function(state = initialState, { type, payload }) {
           order: state.selectedElementOrder,
           dmElement,
           initDutyMission: { ...dmElement },
-        }
-      }
+        },
+      };
     }
     case SET_MISSION_TEMPLATE_DATA: {
       return {
         ...state,
         missionTemplateData: getMissionTemplateData(state, payload),
-      }
+      };
     }
     case SET_EMPTY_MISSION_DATA: {
       return {
         ...state,
         missionData: {
           showForm: false,
-        }
-      }
+        },
+      };
     }
     case SET_EMPTY_DUTY_MISSION_DATA: {
       return {
         ...state,
         dutyMissionData: {
           showForm: false,
-        }
-      }
+        },
+      };
     }
     case SET_EMPTY_MISSION_TEMPLATE_DATA: {
       return {
@@ -183,14 +198,14 @@ export default function(state = initialState, { type, payload }) {
         missionTemplateData: {
           showForm: false,
         },
-      }
+      };
     }
     case RESET_ORDER: {
       return {
         ...initialState,
-      }
+      };
     }
     default:
       return state;
   }
-};
+}

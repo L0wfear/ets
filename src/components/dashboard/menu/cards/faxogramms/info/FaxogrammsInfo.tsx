@@ -66,8 +66,9 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
     this.props.saveOrder(this.props.infoData.data.id, payload)
       .then(({ payload: { blob, fileName } }) => saveData(blob, fileName))
       .catch((error) => {
-        console.warn(error)
-      })
+        // tslint:disable-next-line
+        console.warn(error);
+      });
   }
 
   showPDFViewModal = () => {

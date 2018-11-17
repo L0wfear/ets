@@ -12,18 +12,21 @@ export interface TypeMIssionData {
   structure_id: void | number;
   traveled_percentage: number;
 }
+
 export interface TypeCarData {
   driver_fio: string;
   driver_phone: string;
   gov_number: string;
 }
-export interface TypeRouteData{
+
+export interface TypeRouteData {
   id: number;
   check_unit: string;
   name: string;
   type: string;
   has_mkad: boolean;
 }
+
 export interface TypeReportData {
   entries: any[];
   check_unit: string | void;
@@ -57,8 +60,7 @@ export interface MissionDataType {
   report_data: TypeReportData;
   technical_operation_data: TypeTechnicalOperationData;
   waybill_data: TypeWaybillData;
-};
-
+}
 
 export type MissionType = any;
 export type DutyMissionType = any;

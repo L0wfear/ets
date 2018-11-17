@@ -38,5 +38,4 @@ class PDFViewModal extends React.Component<PropsPDFViewModal, StatePDFViewModal>
   }
 }
 
-
 export default PDFViewModal;

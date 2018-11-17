@@ -79,7 +79,7 @@ class DutyMissionFormOld extends Form {
       routesList.map(({ id, name }) => ({ value: id, label: name })),
       'value',
     );
-    const EMPLOYEES = employeesList.map(d => ({
+    const EMPLOYEES = employeesList.map((d) => ({
       value: d.id,
       label: `${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''} ${!d.active ? '(Неактивный сотрудник)' : ''}`,
     }));

@@ -5,7 +5,7 @@ import { makeTime, makeDate } from 'utils/dates';
 
 type PropsLineChart = {
   data: any[],
-  onClick: Function;
+  onClick: any;
   name: string;
   showX: boolean;
 };
@@ -63,7 +63,7 @@ class LineChart extends React.Component<PropsLineChart, StateLineChart> {
             },
           },
           events: {
-            click: e => this.onClick(e),
+            click: (e) => this.onClick(e),
           },
         },
       },
@@ -97,7 +97,7 @@ class LineChart extends React.Component<PropsLineChart, StateLineChart> {
       },
 
       tooltip: {
-        formatter: this.props.showX ? function () {
+        formatter: this.props.showX ? function() {
           let s = `<b>${makeDate(new Date(this.x * 1000))} ${makeTime(new Date(this.x * 1000))}</b>`;
 
           this.points.forEach((point) => {
@@ -120,6 +120,5 @@ class LineChart extends React.Component<PropsLineChart, StateLineChart> {
     return <div id={name || 'lineChart'} />;
   }
 }
-
 
 export default LineChart;

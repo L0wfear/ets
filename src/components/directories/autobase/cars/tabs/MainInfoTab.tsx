@@ -12,7 +12,8 @@ import config from 'config';
 import { CarTab, CarImageWrapper } from '../styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 
-interface IFormState extends IVehicle, ICarDrivers {};
+interface IFormState extends IVehicle, ICarDrivers {
+}
 
 export interface IPropsMainInfoTab extends IBaseForm<IFormState> {
   state: IFormState;
@@ -21,7 +22,7 @@ export interface IPropsMainInfoTab extends IBaseForm<IFormState> {
   DRIVERS: IReactSelectOption;
 }
 
-const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
+const MainInfoTab: React.SFC<IPropsMainInfoTab> = (props) =>
   <CarTab>
     <Row>
       <Col md={6}>

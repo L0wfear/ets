@@ -8,7 +8,7 @@ import {
 import {
   renderGeoobjects,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/utils';
-import { GeoJSON } from 'utils/ol';
+import { geoJSON } from 'utils/ol';
 
 class LayerMissionGeoobject extends React.PureComponent<PropsLayerLayerMissionGeoobject, {}> {
   componentDidMount() {
@@ -26,7 +26,7 @@ class LayerMissionGeoobject extends React.PureComponent<PropsLayerLayerMissionGe
         Object.values(objGeos).some(({ frontIsSelected, shape }) => {
           if (frontIsSelected) {
             this.props.centerOn({
-              extent: GeoJSON.readGeometry(shape).getExtent(),
+              extent: geoJSON.readGeometry(shape).getExtent(),
               opt_options: { padding: [50, 50, 50, 50], maxZoom: 11, duration: 500 },
             });
             return true;
@@ -53,7 +53,6 @@ class LayerMissionGeoobject extends React.PureComponent<PropsLayerLayerMissionGe
     return <div></div>;
   }
 }
-
 
 export default withLayerProps({
   centerOn: true,

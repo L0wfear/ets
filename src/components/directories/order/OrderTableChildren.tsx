@@ -23,7 +23,7 @@ const marginLeft = { marginLeft: 10 };
 const Button = enhanceWithPermissions({})(BootstrapButton);
 const title: any = <Glyphicon glyph="download-alt" />;
 
-const OrderTableChilrend: React.SFC<any> = props => (
+const OrderTableChilrend: React.SFC<any> = (props) => (
   <div>
     <Button
       permission={permissions_mission_template.create}
@@ -54,7 +54,7 @@ const mapStateToProps = (state) => ({
   disabledTemplateMission: state.order.disabledOrderButton.templateMission,
   disabledTemplateDutyMission: state.order.disabledOrderButton.templateDutyMission,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
     {
       setMInMissionTemplateData,
@@ -62,7 +62,7 @@ const mapDispatchToProps = dispatch => ({
     },
     dispatch,
   ),
-})
+});
 
 const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
   disabledButtonsMenu: !stateProps.selectedElementOrder,
@@ -71,7 +71,7 @@ const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: missio
 
   handleClickOnCMTemplate: () => dispatchProps.setMInMissionTemplateData({ mission_source_id }),
   handleClickOnCDMTemplate: () => dispatchProps.setDMInMissionTemplateData({ mission_source_id }),
-  selectDownload: eventName => getBlobOrder(stateProps.selectedElementOrder, eventName)
+  selectDownload: (eventName) => getBlobOrder(stateProps.selectedElementOrder, eventName),
 });
 
 export default connect(

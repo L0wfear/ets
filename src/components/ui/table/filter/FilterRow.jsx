@@ -62,11 +62,11 @@ export default class FilterRow extends React.Component {
       if (type === 'select' || type === 'multiselect' || type === 'advanced-select-like') {
         let options = availableOptions || _(tableData)
                         .uniqBy(name)
-                        .map(d => ({
+                        .map((d) => ({
                           value: typeof d[name] === 'boolean' ? +d[name] : d[name],
                           label: labelFunction(d[byLabel || name]),
                         }))
-                        .filter(d => d.label !== null)
+                        .filter((d) => d.label !== null)
                         .value();
         if (type === 'select' || type === 'advanced-select-like') {
           if (!!value && !_.find(options, o => o.value === value)) {
@@ -77,7 +77,7 @@ export default class FilterRow extends React.Component {
           }
           input = <ReactSelect modalKey={entity} id={name} options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
-          if (value && !!value.length) value = value.filter(v => _.find(options, o => o.value === v));
+          if (value && !!value.length) value = value.filter((v) => _.find(options, o => o.value === v));
 
           input = (
             <Div className="filter-multiselect-container">

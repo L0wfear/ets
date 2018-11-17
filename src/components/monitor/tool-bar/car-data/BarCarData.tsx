@@ -3,7 +3,6 @@ import * as React from 'react';
 import CarFilters from 'components/monitor/tool-bar/car-data/car-filters/CarFilters';
 import CarLegendStatus from 'components/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus';
 
-
 const BarCarData: React.SFC<{}> = () => (
   <span className="car-toolbar">
     <CarLegendStatus />

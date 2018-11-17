@@ -2,8 +2,8 @@ import { OdhNotCoveredByRoutesItemsType } from 'components/dashboard/redux-main/
 
 export type PropsOdhNotCoveredByRoutes = {
   items: OdhNotCoveredByRoutesItemsType[];
-  setInfoData: Function;
+  setInfoData: any;
 };
 
 export type StateOdhNotCoveredByRoutes = {
-}
+};

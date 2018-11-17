@@ -24,7 +24,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   state = {
     showMissionFormWrap: false,
     elementMissionFormWrap: null,
-  }
+  };
 
   handleClick = (id: number) => {
     this.props.getMissionById(id).then(({ payload: { mission } }) => {
@@ -56,7 +56,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
           fromDashboard
         />
       </div>
-    )
+    );
   }
 }
 
@@ -77,7 +77,7 @@ export default compose<PropsFutureMissions, OutterPropsFutureMissions>(
               promise: true,
               page: 'dashboard',
             },
-          )
+          ),
         )
       ),
     }),

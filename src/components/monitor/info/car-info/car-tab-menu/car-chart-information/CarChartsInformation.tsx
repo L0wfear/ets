@@ -14,14 +14,14 @@ import {
 } from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 
 type PropsCarChartsInformation = {
-  centerOn: Function;
-  carInfoSetTrackPoint: Function;
-  carInfoSetFuelEventPoint: Function;
-}
+  centerOn: any;
+  carInfoSetTrackPoint: any;
+  carInfoSetFuelEventPoint: any;
+};
 
 type StateCarChartsInformation = {
   selectedTab: number;
-}
+};
 
 const CarFuelChart = React.lazy<React.ComponentType<OwnPropsCarFuelChart>>(() => (
   import(/* webpackChunkName: "car_fuel_chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart')
@@ -34,7 +34,7 @@ const CarSpeedChart = React.lazy<React.ComponentType<OwnPropsCarSpeedChart>>(() 
 class CarChartsInformation extends React.Component<PropsCarChartsInformation, StateCarChartsInformation> {
   state = {
     selectedTab: 1,
-  }
+  };
 
   handleClick: any = ({ target: { dataset: { number } } }) => {
     const selectedTab = Number(number);
@@ -115,25 +115,24 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
           }
         </div>
       </div>
-    )
+    );
   }
 }
 
-const mapDispatchToProsp = disptach => ({
+const mapDispatchToProsp = (dispatch) => ({
   carInfoSetTrackPoint: (trackPoint) => (
-    disptach(
+    dispatch(
       carInfoSetTrackPoint(trackPoint),
     )
   ),
   carInfoSetFuelEventPoint: (fuelEventPoint) => (
-    disptach(
+    dispatch(
       carInfoSetFuelEventPoint(fuelEventPoint),
     )
   ),
-})
+});
 
 export default connect(
   null,
   mapDispatchToProsp,
 )(CarChartsInformation);
-

@@ -7,7 +7,6 @@ import {
   registryChangeDataPaginatorCurrentPage,
 } from 'components/new/ui/registry/module/actions-registy';
 
-
 type PropsButtonFirst = {
   registryKey: string;
   active: boolean;

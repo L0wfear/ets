@@ -12,13 +12,12 @@ export type PropsLayerSelectedGeooobjects = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   selectedGeoobjects: FrontGeozonesDataByIndex;
   monitorPageRemoveFromSelectedGeoobjects: ActionsMonitorPage.monitorPageRemoveFromSelectedGeoobjects;
-}
+};
 
 export type StateLayerSelectedGeooobjects = {
 };
 
-
-export module LayerSelectedGeooobjects {
+export namespace LayerSelectedGeooobjects {
   export type renderGeoobjectsFunc = (
     geoobjects: FrontGeozonesDataByIndex,
     new_geoobjects: FrontGeozonesDataByIndex,

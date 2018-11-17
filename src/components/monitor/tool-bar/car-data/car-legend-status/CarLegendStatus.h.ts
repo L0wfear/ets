@@ -12,7 +12,7 @@ export type PropsCarLegendStatus = {
   stop: boolean,
   parking: boolean,
   not_in_touch: boolean,
-}
+};
 
 type OneStatus = {
   key: string;
@@ -21,4 +21,4 @@ type OneStatus = {
   storeName: string;
 };
 
-export type ListStatusType = OneStatus[]
+export type ListStatusType = OneStatus[];

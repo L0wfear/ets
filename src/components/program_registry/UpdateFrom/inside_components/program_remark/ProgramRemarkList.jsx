@@ -160,7 +160,7 @@ export default class ProgramRemarkList extends CheckableElementsList {
         body: bodyConfirmDialog(countCheckEl),
       })
       .then(() => {
-        Promise.all(checkElList.map(el => callbackForCheckedElement(el[this.selectField])))
+        Promise.all(checkElList.map((el) => callbackForCheckedElement(el[this.selectField])))
         .then(() => {
           this.updateAction();
           global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));

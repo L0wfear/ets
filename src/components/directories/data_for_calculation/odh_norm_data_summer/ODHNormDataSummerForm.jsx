@@ -166,7 +166,7 @@ export default class ODHNormDataSummerForm extends Form {
                     label='Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")'
                     value={state.uncategorized_highway}
                     error={errors.uncategorized_highway}
-                    wrapStyle={{ display: 'table-cell', 'verticalAlign': 'bottom' }}
+                    wrapStyle={{ display: 'table-cell', 'verticalAlign' : 'bottom' }}
                     onChange={this.handleChange.bind(this, 'uncategorized_highway')}
                   />
                 </Col>
@@ -176,7 +176,7 @@ export default class ODHNormDataSummerForm extends Form {
                     label="ОДХ внутри Садового кольца"
                     value={state.uncategorized_odhs_center}
                     error={errors.uncategorized_odhs_center}
-                    wrapStyle={{ display: 'table-cell', 'verticalAlign': 'bottom' }}
+                    wrapStyle={{ display: 'table-cell', 'verticalAlign' : 'bottom' }}
                     onChange={this.handleChange.bind(this, 'uncategorized_odhs_center')}
                   />
                 </Col>
@@ -186,7 +186,7 @@ export default class ODHNormDataSummerForm extends Form {
                     label="ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы"
                     value={state.uncategorized_odhs_other}
                     error={errors.uncategorized_odhs_other}
-                    wrapStyle={{ display: 'table-cell', 'verticalAlign': 'bottom' }}
+                    wrapStyle={{ display: 'table-cell', 'verticalAlign' : 'bottom' }}
                     onChange={this.handleChange.bind(this, 'uncategorized_odhs_other')}
                   />
                 </Col>

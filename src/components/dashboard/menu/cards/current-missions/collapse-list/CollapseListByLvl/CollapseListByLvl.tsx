@@ -20,7 +20,7 @@ class CollapseListByLvl extends React.PureComponent<PropsCollapseListByLvl, Stat
     return (
       <li key={index} >
         <CollapseText
-          title={item.title} 
+          title={item.title}
           noClickOnTitle={!subItems.length}
           components={components}
         >
@@ -35,14 +35,14 @@ class CollapseListByLvl extends React.PureComponent<PropsCollapseListByLvl, Stat
   }
   render() {
     const {
-      props
+      props,
     } = this;
 
     return (
       <ul>
         { props.collapsetItems.map(this.rednerMap) }
       </ul>
-    )
+    );
   }
 }
 

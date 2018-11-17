@@ -6,7 +6,6 @@ import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
-
 import { isEmpty } from 'utils/functions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import DivForEnhance from 'components/ui/Div';
@@ -96,7 +95,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
           <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
         </Div>
       </Div>
-    )
+    );
   }
 }
 

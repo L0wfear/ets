@@ -29,11 +29,11 @@ try {
 @connectToStores(['session'])
 @FluxContext
 @connect(
-  state => ({
+  (state) => ({
     appConfig: state.session.appConfig,
   }),
-  dispatch => ({
-    sessionSetData: props => dispatch(sessionSetData(props)),
+  (dispatch) => ({
+    sessionSetData: (props) => dispatch(sessionSetData(props)),
     sessionResetData: () => dispatch(sessionResetData()),
   }),
 )

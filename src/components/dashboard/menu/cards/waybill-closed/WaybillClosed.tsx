@@ -21,7 +21,7 @@ class WaybillClosed extends React.Component<PropsWaybillClosed, StateWaybillClos
     return (
       <div className="waybill_closed">
       </div>
-    )
+    );
   }
 }
 

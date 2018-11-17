@@ -167,7 +167,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getAdditionalProps = () => {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
+    const technicalOperationIdsList = this.props.technicalOperationsList.map((item) => item.id);
 
     const missionTemplatesList = this.props.missionTemplatesList
       .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));

@@ -20,7 +20,7 @@ type PropsLayerParkingPoints = {
   map: ol.Map;
 
   front_parkings: any;
-  carInfoSetParkingPoint: Function;
+  carInfoSetParkingPoint: any;
 };
 
 type StateLayerParkingPoints = {
@@ -43,11 +43,12 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
 
-    const parkingPoint = this.props.front_parkings.find(point => point.start_point.timestamp === timestamp);
+    const parkingPoint = this.props.front_parkings.find((point) => point.start_point.timestamp === timestamp);
 
     if (parkingPoint) {
       this.props.carInfoSetParkingPoint(parkingPoint);
     } else {
+      // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
   }
@@ -75,17 +76,17 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   front_parkings: state.monitorPage.carInfo.trackCaching.front_parkings,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   carInfoSetParkingPoint: (parkingPoint) => (
     dispatch(
       carInfoSetParkingPoint(parkingPoint),
     )
-  )
-})
+  ),
+});
 
 export default hocAll(
   withShowByProps({

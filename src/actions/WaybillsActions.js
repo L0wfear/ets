@@ -107,11 +107,11 @@ export default class WaybillsActions extends Actions {
     payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
 
     if (payload.tax_data) {
-      const tax_data = payload.tax_data.filter(t => !isEmpty(t.FACT_VALUE));
+      const tax_data = payload.tax_data.filter((t) => !isEmpty(t.FACT_VALUE));
       payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
-      const equipment_tax_data = payload.equipment_tax_data.filter(t => !isEmpty(t.FACT_VALUE));
+      const equipment_tax_data = payload.equipment_tax_data.filter((t) => !isEmpty(t.FACT_VALUE));
       payload.equipment_tax_data = equipment_tax_data;
     }
 

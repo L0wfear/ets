@@ -67,7 +67,7 @@ export default class EmployeesActions extends Actions {
 
   getLastBrigade(id) {
     return LastBrigadeService.path(id).get().then(({ result: { last_brigade, last_brigade_fios } }) => last_brigade 
-      ? last_brigade.filter(item => !!item).map((empId, index)=>{ return {id: Number(empId), full_name: last_brigade_fios[index]} }) 
+      ? last_brigade.filter((item) => !!item).map((empId, index)=>{ return {id: Number(empId), full_name: last_brigade_fios[index]} }) 
       : []);
   }
 

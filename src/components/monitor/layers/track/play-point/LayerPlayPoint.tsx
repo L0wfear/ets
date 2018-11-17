@@ -43,7 +43,7 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, {}> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   point: state.monitorPage.carInfo.trackCaching.track[state.monitorPage.carInfo.playTrack.trackPointIndex],
   playTrackStatus: state.monitorPage.carInfo.playTrack.status,
 });

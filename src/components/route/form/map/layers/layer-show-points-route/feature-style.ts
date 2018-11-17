@@ -3,7 +3,7 @@ import Circle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 
-const DEVICE_PIXEL_RATIO = 2 / 2; //window.devicePixelRatio / 2;
+const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
 
@@ -21,7 +21,7 @@ const makeCacheStyle = () => {
         width: 2,
       }),
       fill: new Fill({
-        color:'rgba(255, 0, 0, 0.1)',
+        color: 'rgba(255, 0, 0, 0.1)',
       }),
     }),
     stroke: new Stroke({
@@ -44,6 +44,5 @@ export const getCasheStyleForGeoobject = (type) => {
     icon = CACHE_ICON[cacheStyleName] = makeCacheStyle();
   }
 
-
   return icon;
-}
+};

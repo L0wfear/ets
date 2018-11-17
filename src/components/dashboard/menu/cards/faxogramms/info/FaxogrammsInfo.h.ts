@@ -6,10 +6,10 @@ import {
 export type PropsFaxogrammsInfo = {
   infoData: FaxogrammsInfoDataType;
   meta: FaxogrammsAnsMetaType;
-  saveOrder: Function;
+  saveOrder: any;
 
   handleClose: React.MouseEventHandler<HTMLDivElement>;
-}
+};
 
 export type StateFaxogrammsInfo = {
   showFaxogrammMissionsFormWrap: boolean;
@@ -17,4 +17,4 @@ export type StateFaxogrammsInfo = {
 
   blob: any;
   showPDFViewModal: boolean;
-}
+};

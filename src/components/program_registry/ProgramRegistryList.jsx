@@ -47,7 +47,7 @@ export default class ProgramRegistryList extends CheckableElementsList {
     this.clicks += 1;
 
     if (this.clicks === 1) {
-      const selectedElement = this.state.elementsList.find(el => el[this.selectField] === id);
+      const selectedElement = this.state.elementsList.find((el) => el[this.selectField] === id);
       this.setState({ selectedElement });
       setTimeout(() => {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза

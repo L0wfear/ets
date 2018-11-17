@@ -48,11 +48,11 @@ export const FileField = flow(
 )(BaseFileField);
 
 export const Field = onChangeWithKeys(withMergeProps(
-  props => Object.keys(props).reduce((newProps, key) => {
+  (props) => Object.keys(props).reduce((newProps, key) => {
     if (key !== 'boundKeys') {
       newProps[key] = props[key];
     }
 
     return newProps;
-  }, {})
+  }, {}),
 )(BaseField));

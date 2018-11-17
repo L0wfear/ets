@@ -63,7 +63,6 @@ class LayerShowPointsRoute extends React.PureComponent<PropsLayerLayerShowPoints
   }
 }
 
-
 export default withLayerProps({
   centerOn: true,
 })(LayerShowPointsRoute);

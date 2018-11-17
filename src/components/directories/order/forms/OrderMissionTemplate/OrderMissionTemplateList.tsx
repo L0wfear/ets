@@ -55,7 +55,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       const date = (new Date()).getTime();
 
       const timeInterval = setTimeout(this.checkMissionsList, new Date(date - (date % 60000) + 60 * 1000).getTime() - date + 1000);
-      
+
       this.setState({
         missionsList,
         missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.frontId]: mission }), {}),
@@ -100,7 +100,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     }
   }
 
-  handleChangeTypePrint = assign_to_waybill => {
+  handleChangeTypePrint = (assign_to_waybill) => {
     this.setState({ assign_to_waybill });
   }
 
@@ -166,7 +166,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   onRowChecked = (frontId, state) => {
     const {
       checkedElements: { ...checkedElements },
-    } = this.state; 
+    } = this.state;
 
     if (state) {
       checkedElements[frontId] = this.state.missionsIndex[frontId];
@@ -174,13 +174,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       delete checkedElements[frontId];
     }
 
-    console.log()
-
     this.setState({ checkedElements });
   }
 
   onAllChecked = (checkedElements: object, state) => this.setState({ checkedElements: state ? checkedElements : {} });
-  
 
   checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 

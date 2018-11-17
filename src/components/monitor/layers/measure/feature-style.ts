@@ -44,7 +44,7 @@ const makeCacheStyle = (cacheStyleName, { type }) => {
     }),
     }),
   });
-}
+};
 
 export const getStyleForLineMeasure = ({ type }) => {
   const cacheStyleName = `${type}`;
@@ -59,4 +59,4 @@ export const getStyleForLineMeasure = ({ type }) => {
   }
 
   return icon;
-}
+};

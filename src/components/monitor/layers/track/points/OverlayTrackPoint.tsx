@@ -29,10 +29,10 @@ import {
 } from 'global-styled/global-styled';
 
 class OverlayTrackPoint extends React.Component<any, any> {
-  state = { 
+  state = {
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
-  }
+  };
 
   componentDidMount() {
     if (this.state.trackPoint) {
@@ -50,7 +50,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
       return { trackPoint };
     }
 
-    return null
+    return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -117,7 +117,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
           map={this.props.map}
           hidePopup={this.props.hidePopup}
         />
-      )
+      );
     }
 
     const {
@@ -133,7 +133,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
     const moscowDateTime = getDateWithMoscowTzByTimestamp(timestamp * 1000);
 
     const datetime = `${makeDate(moscowDateTime)} ${makeTime(moscowDateTime, true)}`;
-    const pointSensors = get(this.state.trackPoint, ['sensors', 'equipment'], []).filter(s => s.val !== 0);
+    const pointSensors = get(this.state.trackPoint, ['sensors', 'equipment'], []).filter((s) => s.val !== 0);
     const distanceCount = parseInt(distance, 10);
     const nsatCount = parseInt(nsat, 10);
     const [latitude, longitude] = roundCoordinates(coords_msk, 6);
@@ -224,7 +224,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   gps_code: state.monitorPage.carInfo.gps_code,
   gov_number: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].gov_number,
   asuods_id: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].asuods_id,
@@ -233,10 +233,10 @@ const mapStateToProps = state => ({
   cars_sensors: state.monitorPage.carInfo.trackCaching.cars_sensors,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   hidePopup: () => (
     dispatch(
-      carInfoSetTrackPoint()
+      carInfoSetTrackPoint(),
     )
   ),
   getVectorObject: (points) => (
@@ -259,6 +259,5 @@ export default hocAll(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )
+  ),
 )(OverlayTrackPoint);
-

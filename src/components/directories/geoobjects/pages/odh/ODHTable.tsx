@@ -144,7 +144,7 @@ const renderers: ISchemaRenderer = {
   total_area: ({ data }) => <div>{data !== 0 && !data ? '-' : Number.parseFloat(data).toFixed(2)}</div>,
 };
 
-const Table: React.SFC<any> = props  => {
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       title="Реестр ОДХ"

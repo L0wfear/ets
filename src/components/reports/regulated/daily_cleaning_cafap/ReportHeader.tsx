@@ -96,7 +96,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       ({ state, carTypeGroups }) => {
         const carTypeStrings = carTypeGroups
           .split(',')
-          .map(item => `"${item}"`)
+          .map((item) => `"${item}"`)
           .join(',');
 
         return {

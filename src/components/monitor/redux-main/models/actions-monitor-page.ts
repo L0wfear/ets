@@ -33,21 +33,21 @@ export const monitoPageChangeCarsByStatus = (changedCarsByStatus) => ({
   },
 });
 
-export const monitorPageToggleStatusShow = typeArr => ({
+export const monitorPageToggleStatusShow = (typeArr) => ({
   type: MONITOR_PAGE_TOGGLE_STATUS_SHOW,
   payload: {
     typeArr,
   },
 });
 
-export const monitorPageToggleStatusGeo = typeArr => ({
+export const monitorPageToggleStatusGeo = (typeArr) => ({
   type: MONITOR_PAGE_TOGGLE_STATUS_GEO,
   payload: {
     typeArr,
   },
 });
 
-export const monitorPageToggleStatusGeoobject = typeArr => ({
+export const monitorPageToggleStatusGeoobject = (typeArr) => ({
   type: MONITOR_PAGE_TOGGLE_STATUS_GEOOBECT,
   payload: {
     typeArr,
@@ -122,7 +122,7 @@ export const monitorPageChangeFuelEventsDate = (type, field, date) => ({
     type,
     field,
     date,
-  }
+  },
 });
 
 export const monitorPageSetFuelEventsLeakOverlayData = (overlayData = null) => ({

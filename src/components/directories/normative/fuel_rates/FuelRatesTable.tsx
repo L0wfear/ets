@@ -62,7 +62,7 @@ export function tableMeta(props: any = {}): IDataTableSchema {
         type: 'number',
         filter: {
           type: 'advanced-number',
-        }
+        },
       },
       {
         name: 'car_special_model_name',
@@ -93,7 +93,7 @@ export function tableMeta(props: any = {}): IDataTableSchema {
         type: 'boolean',
         filter: {
           type: 'multiselect',
-          labelFunction: d => d ? 'Да' : 'Нет',
+          labelFunction: (d) => d ? 'Да' : 'Нет',
         },
         cssClassName: 'width80',
       },
@@ -110,7 +110,7 @@ export function tableMeta(props: any = {}): IDataTableSchema {
         displayName: 'Без учета пробега',
         filter: {
           type: 'multiselect',
-          labelFunction: is_excluding_mileage => is_excluding_mileage ? 'Да' : 'Нет',
+          labelFunction: (is_excluding_mileage) => is_excluding_mileage ? 'Да' : 'Нет',
         },
         cssClassName: 'width150',
       },
@@ -125,7 +125,7 @@ const renderers: ISchemaRenderer = {
   measure_unit_name: ({ data }) => <div>{data || '-'}</div>,
 };
 
-const Table: React.SFC<any> = props  => (
+const Table: React.SFC<any> = (props) => (
   <DataTable
     title="Нормы расхода топлива"
     results={props.data}

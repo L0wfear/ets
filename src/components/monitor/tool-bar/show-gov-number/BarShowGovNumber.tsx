@@ -9,7 +9,7 @@ const getClassNameByType = (props, type) => (
     'with_checkbox',
     {
       off: !props[type],
-    }
+    },
   )
 );
 
@@ -19,7 +19,7 @@ class BarShowGovNumber extends React.Component<any, any> {
       <span>
         <div className="tool_bar-block">
           <div className="default_cube dark">
-            <div data-type="SHOW_GOV_NUMBER" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, "SHOW_GOV_NUMBER")}>
+            <div data-type="SHOW_GOV_NUMBER" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, 'SHOW_GOV_NUMBER')}>
               <input readOnly type="checkbox" checked={this.props.SHOW_GOV_NUMBER} />
               <div>Рег. номер ТС</div>
             </div>
@@ -30,11 +30,11 @@ class BarShowGovNumber extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   SHOW_GOV_NUMBER: state.monitorPage.SHOW_GOV_NUMBER,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   toggleShowStatus: ({ currentTarget: { dataset: { type } } }) => (
     dispatch(
       monitorPageToggleStatusShowGovNumber(),

@@ -1,10 +1,10 @@
-import { 
+import {
   getMissionById,
   updateMission,
   getDutyMissionById,
   updateDutyMission,
   getMissionDataById,
-}  from 'redux-main/trash-actions/mission/promise';
+} from 'redux-main/trash-actions/mission/promise';
 
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 

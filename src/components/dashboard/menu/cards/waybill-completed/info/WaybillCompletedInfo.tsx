@@ -40,7 +40,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
         makeDate(waybill.data.create_date)
       ),
     ),
-  }
+  };
 
   static getDerivedStateFromProps({ infoData }: PropsWaybillCompletedInfo, state: StateWaybillCompletedInfo) {
     if (infoData !== state.infoData) {
@@ -63,14 +63,14 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
     }
 
     return null;
-  };
+  }
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
   }
 
   openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    this.props.getWaybillById(Number.parseInt(path))
+    this.props.getWaybillById(Number.parseInt(path, 0))
       .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
@@ -78,6 +78,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
             elementWaybillFormWrap: waybill_data,
           });
         } else {
+          // tslint:disable-next-line
           console.warn('not find waybill');
         }
       });

@@ -65,7 +65,7 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
         </Modal>
       :
         <div></div>
-    )
+    );
   }
 }
 

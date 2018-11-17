@@ -3,8 +3,6 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { DivNone } from 'global-styled/global-styled';
 
-
-
 const ReportForm = React.lazy(() => (
   import(/* webpackChunkName: "ReportForm" */'components/reports/operational/track_events/form/ReportForm')
 ));
@@ -34,7 +32,7 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
       )
       :
       ( <DivNone /> )
-    )
+    );
   }
 }
 

@@ -18,7 +18,9 @@ class TdBody extends React.Component<any, any> {
       { 'display-none': !showIt, },
     );
 
-    return <td className={tdClassName}>{this.props.render(this.props)}</td>
+    return (
+      <td className={tdClassName}>{this.props.render(this.props)}</td>
+    );
   }
 }
 

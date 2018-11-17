@@ -22,7 +22,7 @@ class ListByTypeCurerntMission extends React.PureComponent<PropsListByTypeCurern
 
     return (
       <DefaultDashboardCardList
-        title={props.title} 
+        title={props.title}
         noClickOnTitle={!items.length}
       >
         <CollapseListByLvl
@@ -32,7 +32,7 @@ class ListByTypeCurerntMission extends React.PureComponent<PropsListByTypeCurern
       </DefaultDashboardCardList>
     );
   }
-};
+}
 
 export default connect<StatePropsListByTypeCurerntMission, DispatchPropsListByTypeCurerntMission, OwnPropsListByTypeCurerntMission, ReduxState>(
   (state, { titleKey, itemsKey } ) => ({

@@ -7,10 +7,10 @@ import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
 import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle, ICarDrivers } from 'api/@types/services/index.h';
 
-import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import config from 'config';
-const styles = require('components/directories/autobase/cars/cars.module.scss');
+import { CarTab, CarImageWrapper } from '../styled/styled';
+import { DivNone } from 'global-styled/global-styled';
 
 interface IFormState extends IVehicle, ICarDrivers {};
 
@@ -22,7 +22,7 @@ export interface IPropsMainInfoTab extends IBaseForm<IFormState> {
 }
 
 const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
-  <div className={styles.carTab}>
+  <CarTab>
     <Row>
       <Col md={6}>
         <div style={{ textAlign: 'center', marginTop: 20 }}>
@@ -34,9 +34,17 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
         </div>
       </Col>
       <Col md={6}>
-        <Div className={styles.carImageWrapper} hidden={!props.state.type_image_name}>
-          <img role="presentation" src={config.images + props.state.type_image_name} className="car-form-image" />
-        </Div>
+      {
+        props.state.type_image_name
+        ? (
+          <CarImageWrapper>
+            <img role="presentation" src={config.images + props.state.type_image_name} className="car-form-image" />
+          </CarImageWrapper>
+        )
+        : (
+          <DivNone />
+        )
+      }
       </Col>
     </Row>
     <Row>
@@ -133,7 +141,7 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = props =>
         />
       </Col>
     </Row>
-  </div>;
+  </CarTab>;
 
 export default MainInfoTab;
 

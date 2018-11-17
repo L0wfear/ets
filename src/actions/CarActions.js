@@ -1,17 +1,11 @@
 import { Actions } from 'flummox';
-import { isEmpty } from 'utils/functions';
 import {
-  makeUnixTime, createValidDate, createValidDateTime, diffDayOfDate,
+  makeUnixTime, createValidDate,
 } from 'utils/dates';
-import { swapCoords } from 'utils/geo';
 import { packObjectData } from 'api/utils';
 import {
-  Car,
   CarDrivers,
   CarService,
-  CarInfoService,
-  VectorObjectService,
-  TrackService,
   InfoService,
   AutoBase,
 } from 'api/Services';
@@ -127,22 +121,6 @@ export default class CarActions extends Actions {
 
   updateCarDriversInfo({ car_id, ...restData }) {
     return CarDrivers.path(car_id).put({ car_id, ...restData }, false, 'json');
-  }
-
-  getVectorObject(selectedPoint, prevPoint, nextPoint) {
-    if (!prevPoint || !selectedPoint || !nextPoint) return { result: null };
-    const payload = {
-      coordinates: [prevPoint.coords_msk, selectedPoint.coords_msk, nextPoint.coords_msk],
-    };
-    return VectorObjectService.get(payload);
-  }
-
-  getCarsByNormId({ norm_id }) {
-    const payload = {
-      norm_id,
-    };
-
-    return CarService.get(payload);
   }
 
   getCarsByNormIds({ norm_ids }) {

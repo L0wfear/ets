@@ -83,7 +83,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpe?g|gif)$/,
+        test: /\.(png|jpe?g|gif|svg)$/,
         use: [
           {
             loader: 'url-loader',
@@ -92,16 +92,6 @@ module.exports = {
             },
           },
         ],
-      },
-      {
-        test: /\.svg/,
-        use: {
-          loader: 'svg-url-loader',
-          options: {
-            limit: 1000000,
-            encoding: 'base64',
-          },
-        },
       },
       {
         test: /\.(eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?/,
@@ -115,7 +105,7 @@ module.exports = {
         ],
       },
       {
-        test: /^((?!\.module).)*\.s?css$/,
+        test: /\.(sc|c)ss$/,
         use: [
           {
             loader: 'style-loader',

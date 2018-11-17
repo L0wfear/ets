@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.23.326",
+    "version": "2.0.23.327",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -96,7 +96,6 @@
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
         "styled-components": "^4.1.1",
-        "svg-url-loader": "^2.3.2",
         "tslint": "^5.11.0",
         "typescript": "^3.1.6",
         "typescript-styled-plugin": "^0.13.0",

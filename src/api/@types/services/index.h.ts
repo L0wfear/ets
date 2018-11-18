@@ -47,8 +47,8 @@ export interface IVehicle {
 }
 
 export interface ICarDrivers {
-  car_drivers_primary_drivers: number[];
-  car_drivers_secondary_drivers: number[];
+  car_drivers_primary_drivers?: number[];
+  car_drivers_secondary_drivers?: number[];
 }
 
 export interface IVehicleRegister {

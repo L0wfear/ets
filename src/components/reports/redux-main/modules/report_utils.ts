@@ -123,7 +123,7 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
         } else {
           const col = cols.find(({ keyName, name }) => keyName === 'structure_name' || name === 'Подразделение');
           if (col) {
-            children.push(...makeSummer([], makeRowsWithNoneStructure(row.children, col), diffCols, cols, aggr_fields, filedsRule).map((d) => ({ ...d, className: 'bold'})));
+            children.push(...makeSummer([], makeRowsWithNoneStructure(row.children, col), diffCols, cols, aggr_fields, filedsRule).map((d) => ({ ...d, className: 'bold', noIndexRow: true })));
           }
         }
 

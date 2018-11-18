@@ -20,7 +20,7 @@ class Tbody extends React.Component<any, any> {
         summObj.arr.push(
           <TrBody
             key={rowData[this.props.uniqName]}
-            indexRow={summObj.indexRow + this.props.offset}
+            indexRow={rowData.noIndexRow ? '' : (summObj.indexRow + this.props.offset)}
             rowData={rowData}
             tableMeta={this.props.tableMeta}
             handleClick={this.props.toggleChildren}
@@ -28,13 +28,13 @@ class Tbody extends React.Component<any, any> {
             uniqName={this.props.uniqName}
           />,
         );
-        summObj.indexRow += 1;
+        summObj.indexRow += rowData.noIndexRow ? 0 : 1;
       }
     } else {
       summObj.arr.push(
         <TrBody
           key={rowData[this.props.uniqName]}
-          indexRow={summObj.indexRow + this.props.offset}
+          indexRow={rowData.noIndexRow ? '' : (summObj.indexRow + this.props.offset)}
           rowData={rowData}
           tableMeta={this.props.tableMeta}
           handleClick={this.props.handleClick}
@@ -43,7 +43,7 @@ class Tbody extends React.Component<any, any> {
           uniqName={this.props.uniqName}
         />,
       );
-      summObj.indexRow += 1;
+      summObj.indexRow += rowData.noIndexRow ? 0 : 1;
     }
 
     return summObj;
@@ -55,7 +55,7 @@ class Tbody extends React.Component<any, any> {
       {
         this.props.hasData
         ?
-          this.props.data.reduce(this.renderTr, { arr: [], indexRow: 0 }).arr
+          this.props.data.reduce(this.renderTr, { arr: [], indexRow: 1 }).arr
         :
           <tr>
             <td colSpan={9999}>{'Нет данных'}</td>

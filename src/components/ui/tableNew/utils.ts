@@ -236,7 +236,7 @@ export const makeTableMeta = (tableMeta, props) => {
           filter: {
             notUse: true,
           },
-          render: ({ indexRow }) => indexRow + 1,
+          render: ({ indexRow }) => indexRow,
         },
         ...props.tableMeta.cols,
       ],

@@ -1,15 +1,24 @@
 import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
-import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 
-import { connectToStores, staticProps } from 'utils/decorators';
+import { staticProps } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import CheckableElementsList from 'components/CheckableElementsList';
 import UserNotificationFormWrap from 'components/notifications/UserNotificationFormWrap';
 import UserNotificationTable from 'components/notifications/UserNotificationTable';
 import permissions from 'components/notifications/config-data/permissions';
+import { connect } from 'react-redux';
+import {
+  getUserNotificationInfo,
+  getNotifications,
+  getAdmNotifications,
+  markAllAsRead,
+  markAsRead,
+} from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+import whitPreloader from 'components/ui/new/preloader/hoc/with-preloader/whitPreloader';
+import { compose } from 'recompose';
 
-@connectToStores(['userNotifications'])
 @staticProps({
   entity: 'userNotification',
   permissions,
@@ -18,14 +27,12 @@ import permissions from 'components/notifications/config-data/permissions';
   formComponent: UserNotificationFormWrap,
   operations: ['LIST', 'READ', 'CHECK'],
 })
-export default class UserNotificationList extends CheckableElementsList {
+class UserNotificationList extends CheckableElementsList {
   async init() {
-    const { flux } = this.context;
-
     try {
       await Promise.all([
-        flux.getActions('userNotifications').getNotifications(),
-        flux.getActions('userNotifications').getAdmNotifications(),
+        this.props.getNotifications(),
+        this.props.getAdmNotifications(),
       ]);
     } catch (e) {
       //
@@ -35,7 +42,7 @@ export default class UserNotificationList extends CheckableElementsList {
   }
 
   updateCounterNotify() {
-    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
+    this.props.getUserNotificationInfo();
   }
 
   handleMarkAllAsRead = () => {
@@ -43,14 +50,14 @@ export default class UserNotificationList extends CheckableElementsList {
       title: 'Внимание!',
       body: 'Вы уверены, что хотите отметить все уведомления как прочитанные?',
     })
-    .then(() => {
-      this.context.flux.getActions('userNotifications').markAllAsRead();
-    })
-    .then(() => this.updateCounterNotify())
-    .catch(() => {});
+      .then(() => {
+        this.props.markAllAsRead();
+      })
+      .then(() => this.updateCounterNotify())
+      .catch(() => {});
   }
   handleMarkAsRead = (checkedItems) => {
-    this.context.flux.getActions('userNotifications').markAsRead(
+    this.props.markAsRead(
       checkedItems,
     ).then(() => this.updateCounterNotify());
   }
@@ -131,3 +138,40 @@ export default class UserNotificationList extends CheckableElementsList {
     }
   }
 }
+
+export default compose(
+  connect(
+    getUserNotificationsState,
+    dispatch => ({
+      getUserNotificationInfo: () => (
+        dispatch(
+          getUserNotificationInfo(),
+        )
+      ),
+      getNotifications: () => (
+        dispatch(
+          getNotifications(),
+        )
+      ),
+      getAdmNotifications: () => (
+        dispatch(
+          getAdmNotifications(),
+        )
+      ),
+      markAllAsRead: () => (
+        dispatch(
+          markAllAsRead(),
+        )
+      ),
+      markAsRead: id => (
+        dispatch(
+          markAsRead(id),
+        )
+      ),
+    }),
+  ),
+  whitPreloader({
+    page: 'notification-registry',
+    typePreloader: 'mainpage',
+  }),
+)(UserNotificationList);

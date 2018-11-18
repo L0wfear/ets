@@ -110,7 +110,7 @@ export const FuelEvent = ETS_API_FACTORY.createApiServiceAdapter('fuel_event', {
 export const Country = ETS_API_FACTORY.createApiServiceAdapter('country', {});
 
 export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_registry', {});
-export const UserNotificationInfoService = ETS_API_FACTORY.createApiServiceAdapter('notification_info', {});
+export const UserNotificationInfoService = ETS_API_FACTORY.createApiServiceAdapter('notification_info');
 export const UserAdmNotificationService = ETS_API_FACTORY.createApiServiceAdapter('notification_adm_registry', {});
 
 export const ObjectProperty = ETS_API_FACTORY.createApiServiceAdapter('object_property', {});

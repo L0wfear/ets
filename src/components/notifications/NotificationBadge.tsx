@@ -1,11 +1,21 @@
 import * as React from 'react';
 import * as Badge from 'react-bootstrap/lib/Badge';
-import { FluxContext, connectToStores } from 'utils/decorators';
+
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getUserNotificationInfo } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+
+import {
+  StateNotificationBadge,
+  StatePropsNotificationBadge,
+  DispatchPropsNotificationBadge,
+  OwnPropsNotificationBadge,
+  PropsNotificationBadge,
+} from 'components/notifications/@types/NotificationBadge.h';
 
 /* ETS2 */
-@connectToStores(['userNotifications'])
-@FluxContext
-class NotificationBadge extends React.Component<any, any> {
+class NotificationBadge extends React.PureComponent<PropsNotificationBadge, StateNotificationBadge> {
   context!: ETSCore.LegacyContext;
 
   state = {
@@ -22,7 +32,7 @@ class NotificationBadge extends React.Component<any, any> {
     clearInterval(this.state.checkUsNotifInterval);
   }
   checkNotifications = () => {
-    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
+    this.props.getUserNotificationInfo();
   }
 
   render() {
@@ -31,4 +41,13 @@ class NotificationBadge extends React.Component<any, any> {
   }
 }
 
-export default NotificationBadge;
+export default connect<StatePropsNotificationBadge, DispatchPropsNotificationBadge, OwnPropsNotificationBadge, ReduxState>(
+  getUserNotificationsState,
+  (dispatch) => ({
+    getUserNotificationInfo: () => (
+      dispatch(
+        getUserNotificationInfo(),
+      )
+    ),
+  }),
+)(NotificationBadge);

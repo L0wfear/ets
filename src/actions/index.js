@@ -16,7 +16,6 @@ import reports from './ReportsActions';
 import routes from './RoutesActions';
 import session from './SessionActions';
 import technicalOperation from './TechnicalOperationsActions';
-import userNotifications from './UserNotificationActions';
 import waybills from './WaybillsActions';
 
 export {
@@ -34,6 +33,5 @@ export {
   routes,
   session,
   technicalOperation,
-  userNotifications,
   waybills,
 };

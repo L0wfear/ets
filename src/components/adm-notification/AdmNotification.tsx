@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { connectToStores, FluxContext } from 'utils/decorators';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { setMakeReadAdmNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 
-type propsAdmNotification = {
-  admNotReadNotificationsList: any[];
-};
+import {
+  StateAdmNotification,
+  StatePropsAdmNotification,
+  DispatchPropsAdmNotification,
+  OwnPropsAdmNotification,
+  PropsAdmNotification,
+} from 'components/adm-notification/AdmNotification.h';
 
-type stateAdmNotification = {
-  idInterval: any;
-};
-
-@connectToStores(['userNotifications'])
-@FluxContext
-class AdmNotification extends React.Component<propsAdmNotification, stateAdmNotification> {
+class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNotification> {
   context!: ETSCore.LegacyContext;
 
   componentDidUpdate(prevProps) {
@@ -38,8 +39,7 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
         action: {
           label: 'Прочитано',
           callback: () => {
-            this.context.flux.getActions('userNotifications').setMakeReadAdmNotification(notify.id)
-              .then(() => this.updateCounterNotify())
+            this.props.setMakeReadAdmNotification(notify.id)
               .catch(({ error_text }) => {
                 // tslint:disable-next-line
                 console.warn(error_text);
@@ -50,13 +50,20 @@ class AdmNotification extends React.Component<propsAdmNotification, stateAdmNoti
     ));
   }
 
-  updateCounterNotify() {
-    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
-  }
-
   render() {
     return <div></div>;
   }
 }
 
-export default AdmNotification;
+export default connect<StatePropsAdmNotification, DispatchPropsAdmNotification, OwnPropsAdmNotification, ReduxState>(
+  (state) => ({
+    admNotReadNotificationsList: getUserNotificationsState(state).admNotReadNotificationsList,
+  }),
+  (dispatch) => ({
+    setMakeReadAdmNotification: (id) => (
+      dispatch(
+        setMakeReadAdmNotification(id),
+      )
+    ),
+  }),
+)(AdmNotification);

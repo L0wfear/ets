@@ -2,71 +2,77 @@ import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 
-import { connectToStores, FluxContext } from 'utils/decorators';
 import { makeDate } from 'utils/dates';
 import * as orderNotifiyMp3 from 'assets/audio/orderNotifiy.mp3';
 import * as orderNotifiyOgg from 'assets/audio/orderNotifiy.ogg';
+import { setMakeReadOrderNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+import { DivNone } from 'global-styled/global-styled';
 
-type PropsNotifiactionOrders = {
-  orderNotReadList: any[];
-};
+import {
+  StateNotifiactionOrders,
+  StatePropsNotifiactionOrders,
+  DispatchPropsNotifiactionOrders,
+  OwnPropsNotifiactionOrders,
+  PropsNotifiactionOrders,
+} from 'components/modal_notification/NotifiactionOrders.h';
 
-type StateNotifiactionOrders = {
-  timerGetNot: any;
-};
-
-/* ETS2 */
-@connectToStores(['userNotifications'])
-@FluxContext
 class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, StateNotifiactionOrders> {
   refAudio: any;
-  context!: ETSCore.LegacyContext;
 
   onHide = () => {
     const { orderNotReadList: [{ id }] } = this.props;
 
-    this.context.flux.getActions('userNotifications').setMakeReadOrderNotification(id)
-      .then(() => this.updateCounterNotify());
-  }
-
-  updateCounterNotify() {
-    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
+    this.props.setMakeReadOrderNotification(id);
   }
 
   render() {
-    const { orderNotReadList: [firstOrderNotify = { notShow: true }] } = this.props;
+    const { orderNotReadList: [firstOrderNotify] } = this.props;
+
+    if (!firstOrderNotify) {
+      return (<DivNone />);
+    }
 
     const {
       created_at = null,
       description = '',
       title = '',
-      notShow,
     } = firstOrderNotify;
 
     return (
-      !notShow ?
-        <Modal show onHide={this.onHide} backdrop="static">
-          <Modal.Header closeButton>
-            <div className="flex-space-between">
-              <span>{title}</span>
-              <span>{created_at ? makeDate(created_at) : ''}</span>
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <label key="0">{description}</label>
-            <audio autoPlay>
-              <source src={orderNotifiyMp3} type={'audio/mpeg; codecs="mp3"'} />
-              <source src={orderNotifiyOgg} type={'audio/mpeg; codecs="ogg"'} />
-            </audio>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.onHide}>Закрыть</Button>
-          </Modal.Footer>
-        </Modal>
-      :
-        <div></div>
+      <Modal show onHide={this.onHide} backdrop="static">
+        <Modal.Header closeButton>
+          <div className="flex-space-between">
+            <span>{title}</span>
+            <span>{created_at ? makeDate(created_at) : ''}</span>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          <label key="0">{description}</label>
+          <audio autoPlay>
+            <source src={orderNotifiyMp3} type={'audio/mpeg; codecs="mp3"'} />
+            <source src={orderNotifiyOgg} type={'audio/mpeg; codecs="ogg"'} />
+          </audio>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.onHide}>Закрыть</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
 
-export default NotifiactionOrders;
+export default connect<StatePropsNotifiactionOrders, DispatchPropsNotifiactionOrders, OwnPropsNotifiactionOrders, ReduxState>(
+  (state) => ({
+    orderNotReadList: getUserNotificationsState(state).orderNotReadList,
+  }),
+  (dispatch) => ({
+    setMakeReadOrderNotification: (id) => (
+      dispatch(
+        setMakeReadOrderNotification(id),
+      )
+    ),
+  }),
+)(NotifiactionOrders);

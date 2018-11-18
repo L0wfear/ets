@@ -11,6 +11,9 @@ import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboa
 
 import registry from 'components/new/ui/registry/module/registry';
 
+// Easy move to redux
+import userNotifications from 'redux-main/reducers/modules/user_notifications/user_notifications';
+
 export default combineReducers({
   ...rootReducers,
   dashboard,
@@ -20,4 +23,5 @@ export default combineReducers({
   session,
   monitorPage,
   registry,
+  userNotifications,
 });

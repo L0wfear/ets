@@ -11,6 +11,13 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
 
     return action.payload
       .then((result) => {
+        if (action.type && action.type !== 'none') {
+          return dispatch({
+            ...action,
+            payload: result,
+          });
+        }
+
         return {
           ...action,
           payload: result,

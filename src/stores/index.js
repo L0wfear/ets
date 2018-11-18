@@ -16,7 +16,6 @@ import repair from './RepairStore';
 import reports from './ReportsStore';
 import routes from './RoutesStore';
 import session from './SessionStore';
-import userNotifications from './UserNotificationStore';
 import waybills from './WaybillsStore';
 
 export {
@@ -35,5 +34,4 @@ export {
   routes,
   session,
   waybills,
-  userNotifications,
 };

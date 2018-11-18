@@ -1,21 +1,34 @@
 import * as React from 'react';
-import { FluxContext } from 'utils/decorators';
 import config from 'components/../config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
+import { ReduxState } from 'redux-main/@types/state';
+import { connect } from 'react-redux';
+import {
+  getOrderNotRead,
+  getAdmNotReadNotifications,
+  setNotifyFromWs,
+} from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+
+import {
+  StateUserNotificationWs,
+  StatePropsUserNotificationWs,
+  DispatchPropsUserNotificationWs,
+  OwnPropsUserNotificationWs,
+  PropsUserNotificationWs,
+} from 'components/notifications/@types/UserNotificationWs.h';
 
 /* ETS2 */
-@FluxContext
-class NotificationBadge extends React.Component<any, any> {
-  context!: ETSCore.LegacyContext;
-
+class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUserNotificationWs> {
   state = {
     getNotReadInterval: 0,
   };
 
   ws: any;
   componentDidMount() {
-    this.openWs();
+    if (this.props.token) {
+      this.openWs();
+    }
     /*
     this.getNotifications();
     this.setState({
@@ -23,35 +36,28 @@ class NotificationBadge extends React.Component<any, any> {
     })
     */
   }
+  componentDidUpdate() {
+    if (this.props.token && !this.ws) {
+      this.openWs();
+    }
+  }
   componentWillUnmount() {
     this.closeWs();
     // this.closeIntervalNotifications();
   }
 
-  getNotifications = async () => {
-    try {
-      await Promise.all([
-        this.context.flux.getActions('userNotifications').getOrderNotRead(),
-        this.context.flux.getActions('userNotifications').getAdmNotReadNotifications(),
-      ]);
-    } catch (e) {
-      //
-    }
-
-    this.updateCounterNotify();
+  getNotifications = () => {
+    this.props.getOrderNotRead();
+    this.props.getAdmNotReadNotifications();
   }
 
   closeIntervalNotifications() {
     clearInterval(this.state.getNotReadInterval);
   }
-  updateCounterNotify() {
-    this.context.flux.getActions('userNotifications').getUserNotificationInfo();
-  }
 
   openWs() {
     try {
-      const token = this.context.flux.getStore('session').getSession();
-      const wsUrl = `${config.notification_ws}?token=${token}`;
+      const wsUrl = `${config.notification_ws}?token=${this.props.token}`;
       this.ws = new ReconnectingWebSocket(wsUrl, null, {
         reconnectInterval: 30 * 1000,
       });
@@ -62,8 +68,7 @@ class NotificationBadge extends React.Component<any, any> {
       };
 
       this.ws.onmessage = ({ data }) => {
-        this.context.flux.getActions('userNotifications').setNotifyFromWs(JSON.parse(data));
-        this.updateCounterNotify();
+        this.props.setNotifyFromWs(JSON.parse(data));
       };
 
       this.ws.onclose = (event) => {
@@ -98,4 +103,25 @@ class NotificationBadge extends React.Component<any, any> {
   }
 }
 
-export default NotificationBadge;
+export default connect<StatePropsUserNotificationWs, DispatchPropsUserNotificationWs, OwnPropsUserNotificationWs, ReduxState>(
+  (state) => ({
+    token: state.session.token,
+  }),
+  (dispatch) => ({
+    getOrderNotRead: () => (
+      dispatch(
+        getOrderNotRead(),
+      )
+    ),
+    getAdmNotReadNotifications: () => (
+      dispatch(
+        getAdmNotReadNotifications(),
+      )
+    ),
+    setNotifyFromWs: (notify) => (
+      dispatch(
+        setNotifyFromWs(notify),
+      )
+    ),
+  }),
+)(NotificationBadge);

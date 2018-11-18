@@ -1,10 +1,12 @@
 import {
+  GormostService,
   GeozonesService,
   FuelEvent,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 
 import { loadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
+import { GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects-new';
 
 const CACHE_GEOMETRY = {};
 
@@ -29,9 +31,15 @@ export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { lo
     payload.company_id = company_id;
   }
 
+  const service = (
+    Object.values(GORMOST_GEOOBJECTS_LIST).some(({ serverName }) => serverName === type_geoobject)
+    ? GormostService
+    : GeozonesService
+  );
+
   return ({
     type,
-    payload: GeozonesService.path(type_geoobject).get(payload)
+    payload: service.path(type_geoobject).get(payload)
       .catch((error) => {
         // tslint:disable-next-line
         console.warn(error);

@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsEventTable = {
   front_events_list: any[],
@@ -36,10 +39,13 @@ class EventTable extends React.Component<PropsEventTable, {}> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  front_events_list: state.monitorPage.carInfo.trackCaching.front_events_list,
-});
-
-export default connect(
-  mapStateToProps,
+export default compose(
+  withRequirePermissionsNew({
+    permissions: 'map.leak_and_refill',
+  }),
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      front_events_list: state.monitorPage.carInfo.trackCaching.front_events_list,
+    }),
+  ),
 )(EventTable);

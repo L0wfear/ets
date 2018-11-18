@@ -6,6 +6,7 @@ import * as cx from 'classnames';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { carInfoToggleSensorShow } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import {
   DivNone,
@@ -13,6 +14,7 @@ import {
 
 type PropsSensorsTrackTab = {
   track: any;
+  isPermitted: boolean;
   front_cars_sensors_level: {
     [key: string]: {
       data: any[];
@@ -23,7 +25,7 @@ type PropsSensorsTrackTab = {
 };
 
 const SensorsLevelList: React.SFC<PropsSensorsTrackTab> = (props) => {
-  const { track } = props;
+  const { track, isPermitted } = props;
   const sensors_level = Object.entries(props.front_cars_sensors_level);
 
   return (
@@ -43,7 +45,15 @@ const SensorsLevelList: React.SFC<PropsSensorsTrackTab> = (props) => {
           (
             sensors_level.map(([key, data]) => (
               <div className={cx('sensor-option', { disabled: data.data.length === 0 })} data-key={key} key={key} onClick={props.toggleSensorOnMap}>
-                <input readOnly disabled={data.data.length === 0} type="checkbox" checked={data.show} />
+                {
+                  isPermitted
+                  ? (
+                    <input readOnly disabled={data.data.length === 0} type="checkbox" checked={data.show} />
+                  )
+                  : (
+                    <DivNone />
+                  )
+                }
                 <span>{` ДУТ №${key}` }</span>
                 {
                   data.data.length === 0 ?
@@ -64,21 +74,23 @@ const mapStateToProps = (state) => ({
   track: state.monitorPage.carInfo.trackCaching.track,
   front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
 });
-const mergedProps = (stateProps, { dispatch }) => ({
+const mergedProps = (stateProps, { dispatch }, { isPermitted }) => ({
   ...stateProps,
   toggleSensorOnMap: ({ currentTarget: { dataset: { key } } }) => {
-    const { front_cars_sensors_level: { [key]: sensorData } } = stateProps;
-    let canChange = false;
+    if (isPermitted) {
+      const { front_cars_sensors_level: { [key]: sensorData } } = stateProps;
+      let canChange = false;
 
-    canChange = sensorData.data.length > 0;
+      canChange = sensorData.data.length > 0;
 
-    if (canChange) {
-      dispatch(
-        carInfoToggleSensorShow(
-          'level',
-          key,
-        ),
-      );
+      if (canChange) {
+        dispatch(
+          carInfoToggleSensorShow(
+            'level',
+            key,
+          ),
+        );
+      }
     }
   },
 });
@@ -88,6 +100,10 @@ export default hocAll(
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
+  }),
+  withRequirePermissionsNew({
+    permissions: 'map.leak_and_refill',
+    withIsPermittedProps: true,
   }),
   connect(
     mapStateToProps,

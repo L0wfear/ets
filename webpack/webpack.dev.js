@@ -95,14 +95,13 @@ module.exports = {
       },
       {
         test: /\.(eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 100000,
-            },
+        use: {
+          loader: 'file-loader',
+          options: {
+            limit: 100000,
+            name: 'fonts/[name].[ext]',
           },
-        ],
+        },
       },
       {
         test: /\.(sc|c)ss$/,

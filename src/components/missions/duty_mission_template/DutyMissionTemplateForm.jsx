@@ -5,9 +5,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 
-import { find, uniqBy } from 'lodash';
-
-import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
+import { find } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';

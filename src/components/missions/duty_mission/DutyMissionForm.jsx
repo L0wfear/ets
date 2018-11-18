@@ -15,7 +15,7 @@ import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
-import { getKindTaskIds, getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
+import { getKindTaskIds } from 'components/missions/utils/utils';
 import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
 import RouteInfo from 'components/route/route-info/RouteInfo';

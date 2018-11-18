@@ -136,6 +136,7 @@ class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
 const mapStateToProps = (state) => ({
   odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,
   gps_code: state.monitorPage.carInfo.gps_code,
+  date_start: state.monitorPage.carInfo.date_start,
   asuods_id: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { asuods_id: null}).asuods_id,
 });
 
@@ -147,19 +148,24 @@ const mergeProps = ({ asuods_id, odh_mkad, gps_code, ...otherStateProps }, { dis
   map,
   ...other,
   fetchMissionsData: (props) => (
-    dispatch(fetchCarInfo({
-      asuods_id: props.asuods_id,
-      gps_code: props.gps_code,
-    }))
-  ),
-  fetchTrack: (props) => (
-    dispatch(fetchTrack(
-      {
+    dispatch(
+      fetchCarInfo({
         asuods_id: props.asuods_id,
         gps_code: props.gps_code,
-      },
-      odh_mkad,
-    ))
+      }),
+    )
+  ),
+  fetchTrack: (props) => (
+    dispatch(
+      fetchTrack(
+        {
+          asuods_id: props.asuods_id,
+          gps_code: props.gps_code,
+          date_start: otherStateProps.date_start,
+        },
+        odh_mkad,
+      ),
+    )
   ),
 });
 

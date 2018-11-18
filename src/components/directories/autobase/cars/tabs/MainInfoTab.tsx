@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
@@ -122,7 +123,7 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = (props) =>
           type="select"
           multi
           label="Основной водитель/машинист"
-          options={props.DRIVERS.filter(({ value }) => !props.state.car_drivers_secondary_drivers.includes(value))}
+          options={props.DRIVERS.filter(({ value }) => !get(props.state, 'car_drivers_secondary_drivers', []).includes(value))}
           value={props.state.car_drivers_primary_drivers}
           onChange={props.onChange}
           boundKeys={['car_drivers_primary_drivers']}
@@ -134,7 +135,7 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = (props) =>
           type="select"
           multi
           label="Вторичный водитель/машинист"
-          options={props.DRIVERS.filter(({ value }) => !props.state.car_drivers_primary_drivers.includes(value))}
+          options={props.DRIVERS.filter(({ value }) => !get(props.state, 'car_drivers_primary_drivers', []).includes(value))}
           value={props.state.car_drivers_secondary_drivers}
           onChange={props.onChange}
           boundKeys={['car_drivers_secondary_drivers']}

@@ -24,7 +24,7 @@ export const getSpecificPermissions = (user) => {
   }
   /* DITETS-2080 */
   permissions.push(...getFullAccess('leak'));
-  permissions.push(...getFullAccess('cleaning_volume'));
+
   if (user.permissions.includes('pgm.list')) {
     permissions.push('pgm_store.list');
   }

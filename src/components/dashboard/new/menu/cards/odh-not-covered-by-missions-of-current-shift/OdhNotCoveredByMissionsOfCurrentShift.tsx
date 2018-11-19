@@ -32,18 +32,19 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
 
   render() {
     const { items } = this.props;
+    const counttoFirstShow = 2;
 
-    const firstTwoItem = items.slice(0, 2);
-    const collapsetItems = items.slice(2);
+    const firstTwoItem = items.slice(0, counttoFirstShow);
+    const collapsetItems = items.slice(counttoFirstShow);
 
     return (
       <div>
-        <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
+        <List items={firstTwoItem} handleClick={this.handleClickMission} addIndex={0} classNameContainer="line_data" />
         { 
           collapsetItems.length ? 
           (
             <CollapseButton dependentData={collapsetItems}>
-              <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
+              <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow} classNameContainer="line_data" />
             </CollapseButton>
           )
           :

@@ -8,7 +8,7 @@ const List: React.SFC<PropsList> = props => (
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (
         <li
-          key={index}
+          key={index + props.addIndex}
           data-path={index}
           className={cx(
             {

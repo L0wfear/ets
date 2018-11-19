@@ -30,12 +30,14 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
 
   render() {
     const { items } = this.props;
-    const firstTwoItem = items.slice(0, 2);
-    const collapsetItems = items.slice(2);
+    const counttoFirstShow = 2;
+
+    const firstTwoItem = items.slice(0, counttoFirstShow);
+    const collapsetItems = items.slice(counttoFirstShow);
 
     return (
       <div>
-        <List items={firstTwoItem} handleClick={this.handleClick} classNameContainer="line_data" />
+        <List items={firstTwoItem} handleClick={this.handleClick} addIndex={0} classNameContainer="line_data" />
         { 
           collapsetItems.length ?
           (

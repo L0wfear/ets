@@ -4,7 +4,6 @@ import connectToStores from 'flummox/connect';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
 import {
   isEqual,
   find,
@@ -45,10 +44,8 @@ import {
   getWaybillDrivers,
   validateTaxesControl,
 } from 'components/waybill/utils';
-import permissionsMission from 'components/missions/mission/config-data/permissions';
 
 import { confirmDialogChangeDate } from 'components/waybill/utils_react';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 import {
   defaultSortingFunction,
@@ -59,13 +56,9 @@ import Taxes from './Taxes';
 
 import WaybillFooter from './form/WaybillFooter';
 import BsnoStatus from './form/BsnoStatus';
-import MissionFormWrap from '../missions/mission/MissionFormWrap';
-import { getDefaultMission } from '../../stores/MissionsStore';
 import { Item } from 'react-bootstrap/lib/Carousel';
 
-const ButtonCreateMission = enhanceWithPermissions({
-  permission: permissionsMission.create,
-})(Button);
+import MissionFiled from 'components/waybill/form/MissionFiled';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -85,8 +78,6 @@ class WaybillForm extends Form {
       fuelRates: [],
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
-      showMissionForm: false,
-      selectedMission: null,
       canEditIfClose: null,
       loadingFields: {},
       fuelRateAllList: [],
@@ -492,53 +483,6 @@ class WaybillForm extends Form {
     return fieldsToChange;
   }
 
-  onMissionFormHide = (result) => {
-    const id = result && result.result ? result.result.id : null;
-    if (id) {
-      const { mission_id_list: [...mission_id_list] } = this.props.formState;
-      mission_id_list.push(id);
-      this.handleChange('mission_id_list', mission_id_list);
-      this.getMissionsByCarAndDates({ ...this.props.formState, mission_id_list }, false);
-    }
-
-    this.setState({ showMissionForm: false, selectedMission: null });
-  }
-
-  createMission = () => {
-    const {
-      carsList = [],
-      formState,
-      formState: {
-        car_id,
-        plan_departure_date,
-        fact_departure_date,
-        status,
-      },
-    } = this.props;
-
-    const { type_id } = carsList.find(({ asuods_id }) => asuods_id === car_id) || { type_id: null };
-
-    const IS_ACTIVE = status === 'active';
-    const IS_DRAFT = status === 'draft';
-    let date_start;
-
-    if (IS_DRAFT && diffDates(plan_departure_date, new Date()) > 0) {
-      date_start = plan_departure_date;
-    } else if (IS_ACTIVE && diffDates(fact_departure_date, new Date()) > 0) {
-      date_start = fact_departure_date;
-    }
-
-    this.setState({
-      showMissionForm: true,
-      selectedMission: {
-        ...getDefaultMission(date_start, formState.plan_arrival_date),
-        car_id,
-        type_id,
-        structure_id: formState.structure_id,
-      },
-    });
-  }
-
   /**
    * Обновляет данные формы на основе закрытого ПЛ
    */
@@ -550,10 +494,6 @@ class WaybillForm extends Form {
     const plan_departure_date = (diffDates(new Date(), state.plan_departure_date) > 0) ? new Date() : state.plan_departure_date;
     const fieldsToChange = { ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill), plan_departure_date };
     this.props.handleMultipleChange(fieldsToChange);
-  }
-
-  handleMissionsChange = (newFormData) => {
-    this.handleChange('mission_id_list', newFormData);
   }
 
   handleStructureIdChange = (structure_id) => {
@@ -1164,38 +1104,16 @@ class WaybillForm extends Form {
                 />
               </Div>
               <Div className="task-container">
-                <h4>Задание</h4>
-                <Field
-                  id="mission-id-list"
-                  type="select"
-                  error={errors.mission_id_list}
-                  multi
-                  className="task-container"
-                  options={MISSIONS.concat(OUTSIDEMISSIONS)}
-                  value={state.mission_id_list}
-                  disabled={isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update}
-                  clearable={false}
-                  onChange={this.handleMissionsChange}
-                />
-                {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
-                  <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(m => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
-                )}
-                <ButtonCreateMission
-                  id="create-mission"
-                  style={{ marginTop: 10 }}
-                  onClick={this.createMission}
-                  disabled={isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update}
-                >
-                  Создать задание
-                </ButtonCreateMission>
-                <MissionFormWrap
-                  onFormHide={this.onMissionFormHide}
-                  showForm={this.state.showMissionForm}
-                  element={this.state.selectedMission}
-                  fromWaybill
-                  waybillStartDate={state.plan_departure_date}
-                  waybillEndDate={state.plan_arrival_date}
-                  {...this.props}
+                <MissionFiled
+                  state={state}
+                  errors={errors}
+                  missionsList={missionsList}
+                  notAvailableMissions={notAvailableMissions}
+                  IS_CLOSED={IS_CLOSED}
+                  isPermittedByKey={isPermittedByKey}
+                  origFormState={origFormState}
+                  handleChange={this.handleChange}
+                  getMissionsByCarAndDates={this.getMissionsByCarAndDates}
                 />
               </Div>
             </Col>

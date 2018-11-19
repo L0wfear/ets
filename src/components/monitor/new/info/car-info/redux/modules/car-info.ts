@@ -38,8 +38,6 @@ export const initialState = {
     front_cars_sensors_equipment: {},
     consumptions: {}, 
     distance: -1, 
-    distance_agg2: -1, 
-    duration: -1, 
     duration_moving: -1, 
     equipment: {}, 
     front_events_list: [],

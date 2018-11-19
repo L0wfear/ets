@@ -302,8 +302,8 @@ class WaybillForm extends Form {
 
     this.context.flux.getActions('missions').getMissionsByCarAndDates(
       car_id,
-      formState.fact_departure_date || formState.plan_departure_date,
-      formState.fact_arrival_date || formState.plan_arrival_date,
+      status === 'active' ? formState.fact_departure_date : formState.plan_departure_date,
+      status === 'active' ? formState.fact_arrival_date : formState.plan_arrival_date,
       status
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
@@ -359,10 +359,10 @@ class WaybillForm extends Form {
       this.setState({ loadingFields });
 
       this.context.flux.getActions('cars').getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
-        .then(({ distance_agg2, consumption }) => {
+        .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance: distance_agg2,
+            distance: distance,
             consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
           });
 

@@ -4,7 +4,6 @@
  * @module ets
  */
 /* Полифиллы для поддержки старых браузеров */
-import 'babel-polyfill';
 import 'whatwg-fetch';
 // require('babel-core/register');
 /* 3rd party js */

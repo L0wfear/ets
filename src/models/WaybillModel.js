@@ -137,11 +137,12 @@ export const waybillSchema = {
             return false;
           }
 
-          if(diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
+          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
-            return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
+            // return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
+            return '';
           }
 
           return false;
@@ -223,11 +224,13 @@ const closingProperties = [
     key: 'fact_departure_date',
     title: 'Выезд факт.',
     type: 'datetime',
+    required: true,
   },
   {
     key: 'fact_arrival_date',
     title: 'Возвращение факт.',
     type: 'datetime',
+    required: true,
   },
   {
     key: 'fuel_given',
@@ -324,18 +327,8 @@ const closingDependencies = {
   ],
   'fact_departure_date': [
     {
-      validator(value, { status }) {
-        const IS_ACTIVE = status && status === 'active';
-
-        if ((IS_ACTIVE || IS_CLOSED) && !value) {
-          return 'Поле "Выезд факт." должно быть заполнено';
-        }
-        return false;
-      },
-    },
-    {
       validator(value, { plan_departure_date }) {
-        if (value && moment(value).diff(moment(plan_departure_date), 'minutes') < 0) {
+        if (moment(value).diff(moment(plan_departure_date), 'minutes') < 0) {
           return '"Выезд факт." должно быть не раньше "Выезда план."';
         }
         return false;
@@ -344,27 +337,9 @@ const closingDependencies = {
   ],
   'fact_arrival_date': [
     {
-      validator(value, { status }) {
-        const IS_ACTIVE = status && status === 'active';
-
-        if ((IS_ACTIVE || IS_CLOSED) && !value) {
-          return 'Поле "Возвращение факт." должно быть заполнено';
-        }
-        return false;
-      },
-    },
-    {
       validator(value, { fact_departure_date }) {
-        if (value && fact_departure_date && moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {
+        if (moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {
           return '"Возвращение факт." должно быть позже "Выезд факт."';
-        }
-        return false;
-      },
-    },
-    {
-      validator(value, { plan_arrival_date }) {
-        if (value && plan_arrival_date && moment(value).diff(moment(plan_arrival_date), 'minutes') > 180) {
-          return 'Время, указанное в поле "Возвращение факт" не может превышать время в поле "Возвращение план"';
         }
         return false;
       },

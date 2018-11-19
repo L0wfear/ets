@@ -55,7 +55,6 @@ class SimpleGriddle extends React.Component<any, any> {
       shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
-      GlobalCheckboxState: false,
     };
   }
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -79,7 +78,6 @@ class SimpleGriddle extends React.Component<any, any> {
         resultsPerPage,
         nextProps.selectField,
       );
-
       return {
         results,
         resultsPerPage,
@@ -92,7 +90,6 @@ class SimpleGriddle extends React.Component<any, any> {
 
   setPage = (currentPage) => {
     const shortResult = makeShortResults(this.state.results, currentPage, this.state.resultsPerPage, this.props.selectField);
-
     return this.setState({
       currentPage,
       shortResult,
@@ -100,9 +97,6 @@ class SimpleGriddle extends React.Component<any, any> {
   }
 
   globalCheckHandler = (e) => {
-    this.setState({
-      GlobalCheckboxState: this.getGlobalCheckboxState(this.state.shortResult),
-    });
     this.props.globalCheckHandler(
       this.state.shortResult,
       e,
@@ -112,13 +106,15 @@ class SimpleGriddle extends React.Component<any, any> {
   getGlobalCheckboxState = (shortResult) => !shortResult.some((item) => !item.isChecked);
 
   mapTheadTrTh = (columnNameOuter) => {
+    // При переключении страницы, чекбокс не ставится
     const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
     const { columnName } = field;
     const { shortResult } = this.state;
     if (columnName === 'isChecked') {
+      const isCheckedAll = this.getGlobalCheckboxState(shortResult);
       return (
         <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
-          <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={this.getGlobalCheckboxState(shortResult)} />
+          <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={isCheckedAll} />
         </th>
       );
     }

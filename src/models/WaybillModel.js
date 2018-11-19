@@ -141,8 +141,7 @@ export const waybillSchema = {
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
-            // return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
-            return '';
+            return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
           }
 
           return false;

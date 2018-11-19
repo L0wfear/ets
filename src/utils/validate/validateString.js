@@ -14,8 +14,8 @@ const fixedValidators = [
       if (typeof data !== 'string') {
         return `Поле ${config.title || config.key} должно быть строкой`;
       }
-      if (data.length !== data.trimLeft().length) {
-        return `Поле ${config.title || config.key} не должно начинаться c пробела`;
+      if (data.length !== data.trim().length) {
+        return `Поле ${config.title || config.key} не должно начинаться и заканчиваться пробелом`;
       }
       return undefined;
     },

@@ -80,8 +80,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
   ]);
 
   const driverFilter = licenceSwitcher(state.gov_number);
-
-  return driversList
+  const driverAfterCheckOnCarEmpl = driversList
     .filter(({id, employee_id}) => {
       const key = id || employee_id;
       const driverData = employeesIndex[key];
@@ -109,7 +108,21 @@ export const getDrivers = (state, employeesIndex, driversList) => {
       }
 
       return (
-        (isArray(whatCarIWantDrive) ? whatCarIWantDrive.some((car) => car === state.car_id) : true) &&
+        (isArray(whatCarIWantDrive) ? whatCarIWantDrive.some((car) => car === state.car_id) : true)
+      );
+    });
+  const driverListTrue = driverAfterCheckOnCarEmpl.length ? driverAfterCheckOnCarEmpl : driversList;
+
+  return driverListTrue
+    .filter(({id, employee_id}) => {
+      const key = id || employee_id;
+      const driverData = employeesIndex[key];
+
+      if (!driverData) {
+        return false;
+      }
+
+      return (
         (!state.structure_id || ((driverData.is_common) || state.structure_id === driverData.company_structure_id)) &&
         driverFilter(driverData)
       );
@@ -122,6 +135,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
       return {
         value: key,
         label: `${personnel_number}${driverData.last_name || ''} ${driverData.first_name || ''} ${driverData.middle_name || ''}`,
+        isPrefer: driverData.prefer_car === state.car_id,
       };
     });
 };

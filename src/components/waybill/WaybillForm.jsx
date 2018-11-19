@@ -50,8 +50,13 @@ import permissionsMission from 'components/missions/mission/config-data/permissi
 import { confirmDialogChangeDate } from 'components/waybill/utils_react';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
+import {
+  defaultSortingFunction,
+} from 'components/ui/input/ReactSelect/utils';
+
 import Form from '../compositions/Form';
 import Taxes from './Taxes';
+
 import WaybillFooter from './form/WaybillFooter';
 import BsnoStatus from './form/BsnoStatus';
 import MissionFormWrap from '../missions/mission/MissionFormWrap';
@@ -587,6 +592,13 @@ class WaybillForm extends Form {
     .then(() => this.props.handleClose(taxesControl))
     .catch(() => {});
 
+  sortingDrivers = (a, b) => {
+    if (a.isPrefer === b.isPrefer) {
+      return defaultSortingFunction(a, b);
+    }
+
+    return b.isPrefer - a.isPrefer;
+  }
   handleSubmit = () => {
     delete this.props.formState.is_bnso_broken;
     this.props.onSubmit();
@@ -904,6 +916,7 @@ class WaybillForm extends Form {
                 modalKey={modalKey}
                 label="Водитель (возможен поиск по табельному номеру)"
                 error={driversEnability ? errors.driver_id : undefined}
+                sortingFunction={this.sortingDrivers}
                 hidden={!(IS_CREATING || IS_DRAFT)}
                 readOnly={!driversEnability}
                 options={DRIVERS}

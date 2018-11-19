@@ -11,7 +11,6 @@ import { saveData, printData } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
-import MissionFormOld from 'components/missions/mission/MissionForm/MissionFormOld';
 import withMapInConsumer from 'components/map/context/withMapInConsumer';
 import { DivNone } from 'global-styled/global-styled';
 
@@ -283,7 +282,7 @@ class MissionFormWrap extends FormWrap {
     return (
       <>
         {
-          this.props.showForm && this.state.formState.is_new
+          this.props.showForm
             ? (
               <MissionForm
                 formState={this.state.formState}
@@ -295,19 +294,6 @@ class MissionFormWrap extends FormWrap {
                 {...props}
                 {...this.state}
                 show
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
-        {
-          this.props.showForm && !this.state.formState.is_new
-            ? (
-              <MissionFormOld
-                formState={this.state.formState}
-                {...props}
-                {...this.state}
               />
             )
             : (

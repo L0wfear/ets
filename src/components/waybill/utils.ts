@@ -10,7 +10,7 @@ import {
   isNotEqualAnd,
   hasMotohours,
 } from 'utils/functions';
-import { isArray } from 'util';
+import { isArray, isNumber } from 'util';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
@@ -185,7 +185,7 @@ export const getFuelCorrectionRate = (carsList, { car_id }) => Promise.resolve(
 export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }, currentSeason) =>
   action({ car_id, datetime })
     .then(({ result: fuelRatesList}) => (
-      fuelRatesList.filter(({ season }) => season === currentSeason)
+      fuelRatesList.filter(({ winter_rate, summer_rate }) => currentSeason === 'winter' ? isNumber(winter_rate) : isNumber(summer_rate))
     ))
     .then((fuelRatesList) => ({
       fuelRates: fuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
@@ -194,7 +194,7 @@ export const getFuelRatesByCarModel = (action, { car_id, date_create: datetime }
 export const getEquipmentFuelRatesByCarModel = (action, { car_id, date_create: datetime }, currentSeason) =>
   action({ car_id, datetime })
     .then(({ result: equipmentFuelRatesList }) => (
-      equipmentFuelRatesList.filter(({ season }) => season === currentSeason)
+      equipmentFuelRatesList.filter(({ winter_rate, summer_rate }) => currentSeason === 'winter' ? isNumber(winter_rate) : isNumber(summer_rate))
     )).then((equipmentFuelRatesList) => ({
       equipmentFuelRates: equipmentFuelRatesList.map(({ operation_id, rate_on_date }) => ({ operation_id, rate_on_date })),
       equipmentFuelRatesIndex: equipmentFuelRatesList.reduce((newObj, { operation_id, ...other }) => ({ ...newObj, [operation_id]: { operation_id, ...other }}), {}),

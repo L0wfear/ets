@@ -10,6 +10,11 @@ import DistanceAgg from 'components/monitor/info/car-info/car-tab-menu/car-track
 import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
 import { diffDates } from 'utils/dates';
 import { ReduxState } from 'redux-main/@types/state';
+import { isArray } from 'util';
+// выпилить
+import {
+  CAR_INFO_SET_TRACK_CACHING,
+} from 'components/monitor/info/car-info/redux-main/modules/car-info';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -26,6 +31,7 @@ type PropsTitleTrackTab = {
 
   track: any;
   status: string;
+  loadingTrack: boolean;
 };
 
 type StateTitleTrackTab = {
@@ -97,7 +103,7 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
       <div className="car_info_block column tab-data">
         <div className="car_info-track_date_title">
           <div>Трекинг</div>
-          <div className={cx('car_info-toggle_for_today', { disabled: this.props.disabledForToday || disbledByTrackPlayStatys || !!errorDates })} onClick={this.carInfoToggleForToday}>
+          <div className={cx('car_info-toggle_for_today', { disabled: (!this.props.loadingTrack && this.props.disabledForToday) || disbledByTrackPlayStatys || !!errorDates })} onClick={this.carInfoToggleForToday}>
             <input type="checkbox" checked={forToday} readOnly disabled={this.props.disabledForToday || disbledByTrackPlayStatys} />
             <span>За сегодня</span>
           </div>
@@ -150,6 +156,7 @@ const mapStateToProps = (state) => ({
   track: state.monitorPage.carInfo.trackCaching.track,
   error: state.monitorPage.carInfo.trackCaching.error,
   status: state.monitorPage.carInfo.playTrack.status,
+  loadingTrack: isArray(state.loading.loadingType) ? state.loading.loadingType.includes(CAR_INFO_SET_TRACK_CACHING) : false,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { ReduxState } from 'redux-main/@types/state';
+import { compose } from 'recompose';
 
 type PropsDistanceAggValue = {
   distance: any;
@@ -21,18 +22,16 @@ const DistanceAggValue: React.SFC<PropsDistanceAggValue> = ({ distance }) => (
     </span>
 );
 
-const mapStateToProps = (state) => ({
-  distance: state.monitorPage.carInfo.trackCaching.distance,
-});
-
-export default hocAll(
+export default compose<PropsDistanceAggValue, {}>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'small-loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
     canNull: true,
   }),
-  connect(
-    mapStateToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      distance: state.monitorPage.carInfo.trackCaching.distance,
+    }),
   ),
 )(DistanceAggValue);

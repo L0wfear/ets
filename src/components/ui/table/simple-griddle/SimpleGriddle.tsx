@@ -88,14 +88,6 @@ class SimpleGriddle extends React.Component<any, any> {
     return null;
   }
 
-  setPage = (currentPage) => {
-    const shortResult = makeShortResults(this.state.results, currentPage, this.state.resultsPerPage, this.props.selectField);
-    return this.setState({
-      currentPage,
-      shortResult,
-    });
-  }
-
   globalCheckHandler = (e) => {
     this.props.globalCheckHandler(
       this.state.shortResult,

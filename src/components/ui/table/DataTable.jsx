@@ -274,18 +274,6 @@ export default class DataTable extends React.Component {
     return changesFields;
   }
 
-  componentDidUpdate() {
-    const { props } = this;
-
-    if (props.checked) {
-      // хак, т.к. гридл не умеет в обновление хедера
-      // TODO переделать
-      const checked = Object.keys(props.checked).length === _(props.results).filter(r => this.shouldBeRendered(r)).value().length;
-      const el = document.getElementById('checkedColumn');
-      if (el) el.checked = checked;
-    }
-  }
-
   getFilterTypeByKey(key) {
     return getFilterTypeByKey(key, this.props.tableMeta);
   }

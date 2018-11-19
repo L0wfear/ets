@@ -32,7 +32,7 @@ const NavItemBackToGorodWrap = compose(
   class extends React.Component<any, any> {
     context!: ETSCore.LegacyContext;
 
-    handleSelect = () =>
+    handleSelect = () => {
       this.context.flux.getActions('session').cahngeCompanyOnAnother(null)
         .then(({ payload, token }) => {
           this.props.sessionSetData({
@@ -41,13 +41,14 @@ const NavItemBackToGorodWrap = compose(
           });
 
           this.props.history.push('/change-company')
-        });
+        })
+    }
 
     render() {
       return (
         this.props.isGlavControl && this.props.currentUser.company_id !== null
         ?
-        <NavItem id="button-back-to-city" className={'company-switcher-back-to-city'} onSelect={this.handleSelect}>
+        <NavItem id="button-back-to-city" className={'company-switcher-back-to-city'} onClick={this.handleSelect}>
           <div className="switcher-tooltiptext">Возврат на уровень города</div>
           <Glyphicon glyph="arrow-left"/>
         </NavItem>

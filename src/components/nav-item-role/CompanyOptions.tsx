@@ -33,31 +33,49 @@ const CompanyOptionsWrap = compose(
 
       this.state = {
         companies: currentUser.companies,
-        COMPANY_OPTIONS: currentUser.companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
+        COMPANY_OPTIONS: [
+          ...currentUser.companies.map(({ asuods_id: value, name: label }) => ({ value, label })),
+          { value: -1, label: 'Все организации' },
+        ],
       };
     }
 
     handleChange = (company_id) => {
-      const { currentUser: { company_id_old } } = this.props;
+      const { currentUser: { company_id: company_id_old } } = this.props;
+      const value = company_id === -1 ? null : company_id;
 
-      if (company_id !== company_id_old) {
-        this.context.flux.getActions('session').cahngeCompanyOnAnother(company_id)
+      if (value !== company_id_old) {
+        this.context.flux.getActions('session').cahngeCompanyOnAnother(value)
           .then(({ payload, token }) => {
             this.props.sessionSetData({
               currentUser: payload,
               session: token,
             });
 
-            this.props.history.push(`/${payload.default_path}`);
+            if (!value) {
+              if (this.props.location.pathname !== '/change-company') {
+                console.log({ ...this.props.currentUser });
+                this.props.history.push(this.props.currentUser.stableRedirect);
+              }
+            } else {
+              this.props.history.push(`/${payload.default_path}`);
+            }
           });
       }
     }
 
     render() {
+      const {
+        currentUser: {
+          company_id,
+        },
+      } = this.props;
+      const value = company_id === null ? -1 : company_id;
+
       return (
         <ReactSelect
           options={this.state.COMPANY_OPTIONS}
-          value={this.props.currentUser.company_id}
+          value={value}
           onChange={this.handleChange}
           clearable={false}
           placeholder="Выберите организацию..."

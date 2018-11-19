@@ -48,6 +48,7 @@ const getRenders = props => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+    car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
   };
 
   return renderers;

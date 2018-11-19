@@ -19,6 +19,7 @@ export default class PolyMap extends React.Component {
       zoom: PropTypes.number,
       onFeatureClick: PropTypes.func,
       polys: PropTypes.object,
+      setLastZoomAndExtends: PropTypes.func,
     };
   }
 
@@ -72,7 +73,7 @@ export default class PolyMap extends React.Component {
     if (!this.props.disabled) {
       this.enableInteractions();
     }
-    this.renderPolygons(this.props.polys, true);
+    this.renderPolygons(this.props.polys);
 
     if (this.props.objectsType === 'mixed') {
       this.renderRoute(this.props.draw_object_list);
@@ -84,15 +85,36 @@ export default class PolyMap extends React.Component {
       if (this.popup) {
         this.popup.hide();
       }
-      this.renderPolygons(nextProps.polys);
+      const nextPolysMapId = Object.keys(nextProps.polys).map((key) => key);
+      const prevPolysMapId = Object.keys(this.props.polys || {}).map((key) => key);
+
+      this.renderPolygons(
+        nextProps.polys,
+        nextPolysMapId.length !== prevPolysMapId.length
+        || nextPolysMapId.some((id) => !prevPolysMapId.includes(id))
+      );
     }
     if (nextProps.draw_object_list !== undefined) {
       this.renderRoute(nextProps.draw_object_list);
+    }
+
+    if (nextProps.zoom !== this.props.zoom || nextProps.center !== this.props.center) {
+      this.map.getView().setCenter(nextProps.center);
+      this.map.getView().setZoom(nextProps.zoom);
     }
   }
 
   shouldComponentUpdate() {
     return false;
+  }
+
+  componentWillUnmount() {
+    if (this.props.setLastZoomAndExtends) {
+      this.props.setLastZoomAndExtends(
+        this.map.getView().getZoom(),
+        this.map.getView().getCenter(),
+      );
+    }
   }
 
   onMouseMove(ev) {

@@ -11,7 +11,7 @@ type PropsTitleBlock = {
 const TitleBlock: React.SFC<PropsTitleBlock> = ({ gov_number, ...props }) => (
   <div className="map_info-title_container">
     <div></div>
-    <div className=" car_info-gov_number">
+    <div className="car_info-gov_number">
       <div className="car_info_block">
         <span>{gov_number}</span>
       </div>

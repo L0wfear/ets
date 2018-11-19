@@ -93,7 +93,7 @@ export default class Track {
     this.parkings = [];
     this.events = {};
 
-    this.distance_agg2 = 0;
+    this.distance = 0;
 
     this.parkingIcon = new Image();
     this.parkingIcon.src = ParkingIconSVG;
@@ -187,7 +187,7 @@ export default class Track {
   }
 
   getDistance() {
-    return this.distance_agg2;
+    return this.distance;
   }
 
 
@@ -210,7 +210,7 @@ export default class Track {
                   this.points = makePointTrack(obj.track, this.owner.storeGeoobjects.state.odh_mkad);
                   this.hasPointTrakOnMkad = this.points.some(({ checkOnSpeed: { onMkad } }) => onMkad);
                   this.sensors = obj.sensors;
-                  this.distance_agg2 = obj.distance_agg2;
+                  this.distance = obj.distance;
                   this.continuousUpdating = updating;
                   this.render();
                   this.onUpdateCallback();

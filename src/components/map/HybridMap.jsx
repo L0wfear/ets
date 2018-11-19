@@ -34,7 +34,7 @@ export default class HybridMap extends Map {
       }
 
       if (!point.car) continue;
-      if (point.car.gov_number !== this.props.car_gov_number) continue;
+      if (point.id !== this.props.gps_code) continue;
 
       const oldPoint = this.markers[key];
       if (oldPoint) {

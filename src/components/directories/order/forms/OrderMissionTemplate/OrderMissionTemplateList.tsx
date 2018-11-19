@@ -96,7 +96,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       case typeTemplate.missionDutyTemplate: return flux.getActions('missions').getDutyMissionTemplates(payload).then(({ result }) => ({
         result: result.map(r => ({
           ...r,
-          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)).join(', '),
+          brigade_employee_names: (r.brigade_employee_id_list || []).map(({ employee_id }) => employeeFIOLabelFunction(flux)(employee_id)),
         })),
       }));
       default: Promise.reject({ error: 'no typeClick' });
@@ -167,7 +167,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   onRowChecked = (customId, state) => {
     const {
       checkedElements: { ...checkedElements },
-    } = this.state;
+    } = this.state; 
 
     if (state) {
       checkedElements[customId] = this.state.missionsIndex[customId];

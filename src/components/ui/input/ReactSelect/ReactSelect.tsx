@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Select, { components } from 'react-select';
 import * as cx from 'classnames';
+import { get } from 'lodash';
 
 import {
   onChangeSelectLegacy,
@@ -60,7 +61,13 @@ export default class ReactSelect extends React.Component<any, any> {
   }
 
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
+  filterOption = (option, filterValue: string) => {
+    const label = get(option, 'label', '').toString() || '';
 
+    return label.toLocaleLowerCase().includes(
+      filterValue.toLocaleLowerCase()
+    );
+  }
   singleValueRender = ({ innerProps, ...props }) => {
     const {
       modalKey,
@@ -110,6 +117,7 @@ export default class ReactSelect extends React.Component<any, any> {
       <Select
         {...props}
         id={id}
+        filterOption={this.filterOption}
         instanceId={instanceId}
         isClearable={clearable}
         isMulti={multi}

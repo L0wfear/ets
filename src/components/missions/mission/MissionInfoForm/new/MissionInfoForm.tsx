@@ -25,7 +25,6 @@ import MissionReportByPoints from 'components/reports/operational/mission/Missio
 
 const HybridMapTSX: any = HybridMap;
 
-
 const MissionInfoForm: React.SFC<any> = props => {
   const {
     route: {
@@ -57,7 +56,6 @@ const MissionInfoForm: React.SFC<any> = props => {
     titleArr.push('.');
     titleArr.push(`Колонна № ${props.column_id}`);
   }
-
 
   return (
     <Div hidden={!props.gov_number}>
@@ -95,7 +93,7 @@ const MissionInfoForm: React.SFC<any> = props => {
                   has_mkad={props.has_mkad}
                   selectedObjects={props.selectedObjects}
                   selectedPoly={props.selectedPoly}
-                  car_gov_number={props.gov_number}
+                  gps_code={props.gps_code}
                   object_type_name={props.object_type_name}
                 />
               </FluxComponent>

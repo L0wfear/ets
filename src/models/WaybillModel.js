@@ -137,11 +137,12 @@ export const waybillSchema = {
             return false;
           }
 
-          if(diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
+          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
-            return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
+            // return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
+            return '';
           }
 
           return false;

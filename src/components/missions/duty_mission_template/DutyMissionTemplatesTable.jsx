@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/DataTable.jsx';
-import { get } from 'lodash';
+import { get, uniqBy } from 'lodash';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
@@ -54,24 +54,17 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_id_list_array',
-        displayName: 'Бригада',
-        type: 'string',
-        display: false,
-        filter: {
-          type: 'multiselect',
-          some: true,
-          options: employeesList.map(({ id: value }) => ({
-            value,
-            label: flux && employeeFIOLabelFunction(flux)(value),
-          })),
-        },
-      },
-      {
         name: 'brigade_employee_names',
         displayName: 'Бригада',
         type: 'string',
-        filter: false,
+        filter: {
+          type: 'multiselect',
+          someInRowValue: true,
+          options: uniqBy(employeesList.map(({ id }) => ({
+            value: flux && employeeFIOLabelFunction(flux)(id),
+            label: flux && employeeFIOLabelFunction(flux)(id),
+          })), 'value'),
+        },
       },
       {
         name: 'structure_id',
@@ -99,6 +92,7 @@ export const getTableMeta = ({
 
 export const getRenderers = props => ({
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  brigade_employee_names: ({ data }) => <div>{data.join(',')}</div>,
 });
 
 const DataTable = props => (

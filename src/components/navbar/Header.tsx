@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import * as Navbar from 'react-bootstrap/lib/Navbar';
 import * as Nav from 'react-bootstrap/lib/Nav';
 
@@ -14,6 +14,7 @@ import NavItemBackToGorod from 'components/nav-item-role/NavItemBackToGorod';
 import docs from 'components/doc-header/_config-data/index';
 
 import rWithP from 'constants/routerAndPermission';
+import { ETSLogo } from 'components/navbar/styled';
 
 const makeNavDropChildren = ([key, data]) => {
   if ((data.path || data.divider) && !data.renderNav) {
@@ -76,7 +77,7 @@ const Header = (props) => (
   <Navbar fluid>
     <Navbar.Header>
       <Navbar.Brand>
-        <Link id="link-main-page" to="/">ЕТС</Link>
+        <ETSLogo>ЕТС</ETSLogo>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>

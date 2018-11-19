@@ -4,4 +4,5 @@ export type PropsList = {
   items: OdhNotCoveredByMissionsOfCurrentShiftItemsType[];
   handleClick: React.MouseEventHandler<HTMLLIElement>;
   classNameContainer?: string;
+  addIndex: number;
 };

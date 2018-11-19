@@ -31,18 +31,19 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
 
   render() {
     const { items } = this.props;
+    const counttoFirstShow = 2;
 
-    const firstTwoItem = items.slice(0, 2);
-    const collapsetItems = items.slice(2);
+    const firstTwoItem = items.slice(0, counttoFirstShow);
+    const collapsetItems = items.slice(counttoFirstShow);
 
     return (
       <div>
-        <List items={firstTwoItem} handleClick={this.handleClickMission} classNameContainer="line_data" />
+        <List items={firstTwoItem} handleClick={this.handleClickMission} addIndex={0} classNameContainer="line_data" />
         {
           collapsetItems.length ?
           (
             <CollapseButton >
-              <List items={collapsetItems} handleClick={this.handleClickMission} classNameContainer="line_data" />
+              <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow} classNameContainer="line_data" />
             </CollapseButton>
           )
           :

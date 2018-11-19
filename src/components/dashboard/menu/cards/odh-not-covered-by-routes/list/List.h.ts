@@ -4,4 +4,5 @@ export type PropsList = {
   items: OdhNotCoveredByRoutesItemsType[];
   handleClick: any;
   classNameContainer?: string;
+  addIndex: number;
 };

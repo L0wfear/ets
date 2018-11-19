@@ -17,7 +17,7 @@ export const FormTitle: React.SFC<{ number?: string | number, status: string }> 
   </div>
 );
 
-export const makeRoutesForDutyMissionForm = ({ selectedRoute: route }, { formState: state, routesList = [] }) => {
+export const makeRoutesForDutyMissionForm = ({ selectedRoute: route, routesList = [] }, { formState: state }) => {
   const routes = routesList.filter(r => (
     (!state.structure_id || r.structure_id === state.structure_id)
   ));

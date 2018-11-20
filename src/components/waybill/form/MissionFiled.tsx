@@ -129,5 +129,5 @@ class MissionField extends React.PureComponent<any, any> {
 }
 
 export default enhanceWithPermissions({
-  permission: permissionsMission.list,
+  permission: permissionsMission.read,
 })(MissionField);

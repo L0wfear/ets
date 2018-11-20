@@ -164,12 +164,15 @@ export default class FormWrap extends React.Component {
             canSave: false,
           });
           result = await this.createAction(formState);
+          console.log(result)
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,
             canSave: true,
           });
         } catch (errorData) {
+          console.log(errorData)
+
           this.setState({
             saveButtonLabel: SAVE_BUTTON_LABEL_DEFAULT,
             saveButtonEnability: true,

@@ -17,6 +17,7 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
             payload: result,
           });
         }
+        dispatch(decLoadingCount(meta));
 
         return {
           ...action,
@@ -24,10 +25,8 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
         };
       })
       .catch((error) => {
-        throw error;
-      })
-      .finally(() => {
         dispatch(decLoadingCount(meta));
+        throw error;
       });
   }
 

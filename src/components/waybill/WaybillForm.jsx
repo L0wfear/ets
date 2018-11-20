@@ -401,7 +401,7 @@ class WaybillForm extends Form {
          * Сбрасываем водителя, так как в новом, отфильтрованнои по ТС
          * списке, водителей может уже не быть.
          */
-        this.props.handleFormChange('driver_id', '');
+        this.props.handleFormChange('driver_id', null);
       }
     });
   }
@@ -430,7 +430,7 @@ class WaybillForm extends Form {
        */
     return Promise.resolve(res({
       ...fieldsToChange,
-      driver_id: '',
+      driver_id: null,
     }));
   })
     .then(fieldsToChange => this.props.handleMultipleChange(fieldsToChange));

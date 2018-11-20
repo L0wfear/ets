@@ -44,18 +44,20 @@ export default class APIService {
     if (r.warnings && r.warnings.length) {
       // Show warnings
       if (Array.isArray(r.warnings)) {
+        let errorThrow = {};
+
         r.warnings.forEach((w) => {
           const errorIsShow = !w.hidden;
 
           !w.hidden && this.warningNotificationFunction(w.message || w);
 
-          const errorThrow = {
+          errorThrow = {
             error: r,
             error_text: new RequestWarningError(w),
             errorIsShow,
           };
-          throw errorThrow;
         });
+        throw errorThrow;
       } else if ((r.warnings && r.warnings.message) || typeof r.warnings === 'string') {
         const errorIsShow = !r.warnings.hidden;
 
@@ -82,17 +84,18 @@ export default class APIService {
     if (r.errors && r.errors.length) {
       // Show errors
       if (Array.isArray(r.errors)) {
+        let errorThrow = {};
         r.errors.forEach((w) => {
           const errorIsShow = !w.hidden;
           !w.hidden && this.errrorNotificationFunction(w.message || w);
 
-          const errorThrow = {
+          errorThrow = {
             error: r,
             error_text: new RequestWarningError(w),
             errorIsShow,
           };
-          throw errorThrow;
         });
+        throw errorThrow;
       } else if ((r.errors && r.errors.message) || typeof r.errors === 'string') {
         const errorIsShow = !r.errors.hidden;
 

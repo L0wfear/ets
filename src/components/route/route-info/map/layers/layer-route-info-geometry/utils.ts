@@ -27,7 +27,7 @@ const renderGeometry = (id, geoobj, thisProps) => {
 
 export const renderGeoobjects = (geoobjectsArr, thisProps) => {
   for (const geoobj of geoobjectsArr) {
-    const id = geoobj.object_id;
+    const id = geoobj.object_id || geoobj.customId;
 
     const feature = renderGeometry(id, geoobj, thisProps);
 

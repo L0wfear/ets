@@ -25,6 +25,7 @@ import PasportInfoTab from './tabs/PasportInfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
 import TechMaintTab from './tabs/TechMaintTab.tsx';
+import { isArray } from 'util';
 
 export const CAR_TAB_INDEX = {
   info: '1',
@@ -134,14 +135,28 @@ class CarForm extends Form {
      * Может с помощью этой штуки https://github.com/bvaughn/react-virtualized
      */
     const isFourInGovNumver = isFourDigitGovNumber(state.gov_number);
+
+    const selectedDriverArr = [];
+    if (isArray(state.car_drivers_primary_drivers)) {
+      selectedDriverArr.push(...state.car_drivers_primary_drivers);
+    }
+    if (isArray(state.car_drivers_secondary_drivers)) {
+      selectedDriverArr.push(...state.car_drivers_secondary_drivers);
+    }
+
     const DRIVERS = driversList.filter((driver) => {
       const driverData = employeesIndex[driver.id];
       if (driverData) {
-        if (isFourInGovNumver) {
-          return driverData.special_license && driverData.special_license_date_end && diffDates(driverData.special_license_date_end, new Date()) > 0;
+        if (selectedDriverArr.includes(driver.id)) {
+          return true;
         }
+        if (driver.active) {
+          if (isFourInGovNumver) {
+            return driverData.special_license && driverData.special_license_date_end && diffDates(driverData.special_license_date_end, new Date()) > 0;
+          }
 
-        return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
+          return driverData.drivers_license && driverData.drivers_license_date_end && diffDates(driverData.drivers_license_date_end, new Date()) > 0;
+        }
       }
       return false;
     }).map(driver => ({ value: driver.id, label: createFio(driver) }));

@@ -34,8 +34,14 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
         ),
       );
   } else {
+    const firstItem = data[0] || {};
+
     const newItem = {
-      ...data[0],
+      ...allCols.reduce((newObj, { keyName }) => {
+        newObj[keyName] = firstItem[keyName];
+
+        return newObj;
+      }, {}),
       ...data.reduce((summObj, row) => ({
         ...summObj,
         ...aggr_fields.reduce((summ, key) => ({
@@ -123,7 +129,23 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
         } else {
           const col = cols.find(({ keyName, name }) => keyName === 'structure_name' || name === 'Подразделение');
           if (col) {
-            children.push(...makeSummer([], makeRowsWithNoneStructure(row.children, col), diffCols, cols, aggr_fields, filedsRule).map((d) => ({ ...d, className: 'bold', noIndexRow: true })));
+            children.push(
+              ...makeSummer(
+                [],
+                makeRowsWithNoneStructure(
+                  row.children,
+                  col,
+                ),
+                diffCols,
+                cols,
+                aggr_fields,
+                filedsRule,
+              ).map((d) => ({
+                ...d,
+                className: 'bold',
+                noIndexRow: true,
+              })),
+            );
           }
         }
 

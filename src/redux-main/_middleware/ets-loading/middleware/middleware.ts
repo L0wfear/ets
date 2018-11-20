@@ -11,13 +11,13 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
 
     return action.payload
       .then((result) => {
+        dispatch(decLoadingCount(meta));
         if (action.type && action.type !== 'none') {
           return dispatch({
             ...action,
             payload: result,
           });
         }
-        dispatch(decLoadingCount(meta));
 
         return {
           ...action,

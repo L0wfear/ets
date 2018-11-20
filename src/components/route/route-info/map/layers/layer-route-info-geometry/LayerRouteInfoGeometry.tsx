@@ -68,7 +68,7 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
 
   singleclick = (feature, eventOl) => {
     const id = feature.getId();
-    const objData = this.props.geoobjectsArr.find(({ object_id }) => object_id === id);
+    const objData = this.props.geoobjectsArr.find(({ object_id, customId }) => object_id ?  object_id === id : customId === id);
 
     if (objData && objData.type && objData.name && objData.type !== 'points') {
       this.setState({

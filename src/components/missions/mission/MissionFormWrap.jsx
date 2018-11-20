@@ -32,8 +32,6 @@ class MissionFormWrap extends FormWrap {
       }
     }
     return r;
-  }).catch((error) => {
-    console.log(error);
   });
 
   componentWillReceiveProps(props) {

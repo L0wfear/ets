@@ -76,6 +76,7 @@ const mapStateToProps = (state) => ({
 });
 const mergedProps = (stateProps, { dispatch }, { isPermitted }) => ({
   ...stateProps,
+  isPermitted,
   toggleSensorOnMap: ({ currentTarget: { dataset: { key } } }) => {
     if (isPermitted) {
       const { front_cars_sensors_level: { [key]: sensorData } } = stateProps;

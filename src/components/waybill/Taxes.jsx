@@ -151,7 +151,7 @@ export default class Taxes extends React.Component {
     let { operations } = nexProps;
     operations = operations.map((data) => ({
       value: data.id,
-      label: data.comment ? `${data.name} (${data.comment})` : data.name,
+      label: data.name,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
     }));

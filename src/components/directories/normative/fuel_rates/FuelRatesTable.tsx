@@ -43,12 +43,6 @@ export function tableMeta(props: any = {}): IDataTableSchema {
         },
       },
       {
-        name: 'comment',
-        displayName: 'Примечание',
-        type: 'string',
-        filter: false,
-      },
-      {
         name: 'summer_rate',
         displayName: 'Норма для летнего периода',
         type: 'number',

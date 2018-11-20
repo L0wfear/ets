@@ -56,7 +56,8 @@ import Taxes from './Taxes';
 
 import WaybillFooter from './form/WaybillFooter';
 import BsnoStatus from './form/BsnoStatus';
-import { Item } from 'react-bootstrap/lib/Carousel';
+import MissionFormWrap from '../missions/mission/MissionFormWrap';
+import { getDefaultMission } from '../../stores/MissionsStore';
 
 import MissionFiled from 'components/waybill/form/MissionFiled';
 
@@ -168,10 +169,10 @@ class WaybillForm extends Form {
           .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
             this.setState({
               fuelRates,
-              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]).map((item)=> { return {...item, comment: fuelRatesIndex[item.id].comment}; }),
+              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]),
               fuel_correction_rate,
               equipmentFuelRates,
-              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]).map((item)=> { return {...item, comment: fuelRatesIndex[item.id].comment}; }),
+              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]),
             });
           })
           .catch((e) => {
@@ -633,6 +634,7 @@ class WaybillForm extends Form {
     const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3)
       : isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3)
         : 'Нет данных';
+
     return (
       <Modal id="modal-waybill" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
 

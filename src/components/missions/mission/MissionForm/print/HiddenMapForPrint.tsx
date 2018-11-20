@@ -24,8 +24,8 @@ class HiddenMapForPrint extends React.PureComponent<IPropsHiddenMapForPrint, {}>
               input_lines={route.input_lines}
               object_list={route.object_list}
               type={route.type}
-              width="1204px"
-              height="1824px"
+              width="602px"
+              height="912px"
               mapKey={this.props.printMapKeySmall}
               rotationAngle={Math.PI / 2}
             />

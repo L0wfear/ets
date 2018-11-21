@@ -325,6 +325,7 @@ const closingDependencies = {
     {
       validator(value, { status }) {
         const IS_ACTIVE = status && status === 'active';
+        const IS_CLOSED = status && status === 'closed';
 
         if ((IS_ACTIVE || IS_CLOSED) && !value) {
           return 'Поле "Выезд факт." должно быть заполнено';
@@ -345,6 +346,7 @@ const closingDependencies = {
     {
       validator(value, { status }) {
         const IS_ACTIVE = status && status === 'active';
+        const IS_CLOSED = status && status === 'closed';
 
         if ((IS_ACTIVE || IS_CLOSED) && !value) {
           return 'Поле "Возвращение факт." должно быть заполнено';

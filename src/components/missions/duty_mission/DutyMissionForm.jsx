@@ -24,6 +24,13 @@ import { DivNone } from 'global-styled/global-styled';
 import { FormTitle, onlyActiveEmployeeNotification, makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from './utils';
 import { components } from 'react-select';
 
+import dutyMissionPermission from 'components/missions/duty_mission/config-data/permissions';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+
+const ButtonSaveDutyMission = withRequirePermissionsNew({
+  permissions: dutyMissionPermission.update,
+})(Button);
+
 const makePayloadFromState = (formState) => ({
   datetime: formState.plan_date_start,
   technical_operation_id: formState.technical_operation_id,
@@ -669,7 +676,7 @@ export class DutyMissionForm extends Form {
               {' '}
               {state.status !== 'not_assigned' ? 'Просмотр' : 'Выдать'}
             </Button>
-            <Button id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly || hasNotActiveEmployees}>{'Сохранить'}</Button>
+            <ButtonSaveDutyMission id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly || hasNotActiveEmployees}>{'Сохранить'}</ButtonSaveDutyMission>
           </Div>
         </Modal.Footer>
 

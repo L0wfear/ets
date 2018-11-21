@@ -5,7 +5,8 @@ import { prop, indexBy } from 'ramda';
 import { mapKeys, get, isEmpty, identity, sortBy } from 'lodash';
 
 import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema, ISchemaMaker } from 'components/ui/table/@types/schema.h';
-
+import { isString } from 'util';
+import { diffDates } from 'utils/dates';
 export function extractTableMeta(columnMeta: IDataTableSchema): IExtractedDataTableSchema {
   return indexBy<IDataTableColSchema>(prop('name'), columnMeta.cols);
 }
@@ -128,7 +129,7 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
 };
 
 
-export const sortFunction = (firstRowData, secondRowData, initialSort) => {
+export const sortFunction = (firstRowData, secondRowData, initialSort, other) => {
   let [
     first,
     second,
@@ -142,14 +143,18 @@ export const sortFunction = (firstRowData, secondRowData, initialSort) => {
 
   const firstIsNumber = !isNaN(Number(first));
   const secondIsNumber = !isNaN(Number(second));
-
   // оба числа
+
+  if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
+    return diffDates(first, second);
+  }
+
   if (firstIsNumber && secondIsNumber) {
     return first - second;
   }
   if (!firstIsNumber || !secondIsNumber) {
     if (!first && first !== 0) {
-      return -1
+      return -1;
     }
     if (!second && second !== 0) {
       return 1;
@@ -177,8 +182,21 @@ export const sortFunction = (firstRowData, secondRowData, initialSort) => {
   return first.localeCompare(second);
 };
 
-export const sortData = (data, { initialSort, initialSortAscending }) => data.sort((a, b) => (
-  sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort))
+export const sortData = (data, { initialSort, initialSortAscending, ...other }) => (
+  initialSort
+  ? (
+    data.sort((a, b) => (
+      sortFunction(
+        initialSortAscending ? a : b,
+        initialSortAscending ? b : a,
+        initialSort,
+        other,
+      )),
+    )
+  )
+  : (
+    data
+  )
 );
 
 export const makeData = (data, prevProps, nextProps) => {

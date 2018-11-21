@@ -79,15 +79,13 @@ module.exports = {
       },
       {
         test: /\.(eot|woff|woff2|ttf)(\?v=\d+\.\d+\.\d+)?/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 100000,
-              mimetype: 'fonts/[name].[ext]',
-            },
+        use: {
+          loader: 'file-loader',
+          options: {
+            limit: 100000,
+            name: 'fonts/[name].[ext]',
           },
-        ],
+        },
       },
       { 
         test: /^((?!\.module).)*\.s?css$/,

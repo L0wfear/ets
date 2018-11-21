@@ -7,6 +7,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import {
   uniqBy,
@@ -42,6 +43,11 @@ import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/typ
 import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssignment';
 
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
+import missionPermission from 'components/missions/mission/config-data/permissions';
+
+const ButtonSaveMission = withRequirePermissionsNew({
+  permissions: missionPermission.update,
+})(Button);
 
 const modalKey = 'mission';
 
@@ -446,6 +452,7 @@ export class MissionForm extends Form {
       missionSourcesList = [],
       fromOrder = false,
     } = this.props;
+
     const {
       TECH_OPERATIONS = [],
       routesList = [],
@@ -870,7 +877,7 @@ export class MissionForm extends Form {
                         </Dropdown.Menu>
                       </Dropdown>
                     )}
-                    <Button id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
+                    <ButtonSaveMission id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMission>
                   </Div>
                 </Modal.Footer>
                 <HiddenMapForPrint
@@ -895,4 +902,10 @@ export class MissionForm extends Form {
   }
 }
 
-export default connectToStores(MissionForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects']);
+export default connectToStores(
+  withRequirePermissionsNew({
+    permissions: missionPermission.update,
+    withIsPermittedProps: true,
+  })(MissionForm),
+  ['objects', 'employees', 'missions', 'routes', 'geoObjects'],
+);

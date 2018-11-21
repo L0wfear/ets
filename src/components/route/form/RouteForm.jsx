@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   find,
+  get,
   union,
 } from 'lodash';
 import * as Modal from 'react-bootstrap/lib/Modal';
@@ -268,8 +269,7 @@ export default class RouteForm extends Form {
                   options={STRUCTURES}
                   emptyValue={null}
                   value={state.structure_id}
-                  onChange={this.handleChange}
-                  boundKeys={boundKeys.structure_id}
+                  onChange={this.handleChangeStructureId}
                 />
               </Col>
             </Div>

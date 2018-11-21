@@ -14,7 +14,7 @@ const ButtonCreateMission = enhanceWithPermissions({
   permission: permissionsMission.create,
 })(Button);
 
-class MissionField extends React.PureComponent<any, any> {
+class MissionField extends React.Component<any, any> {
   state = {
     showMissionForm: false,
     selectedMission: null,

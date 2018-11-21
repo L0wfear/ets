@@ -1102,6 +1102,7 @@ class WaybillForm extends Form {
               </Div>
               <Div className="task-container">
                 <MissionFiled
+                  carsList={this.props.carsList}
                   state={state}
                   errors={errors}
                   missionsList={missionsList}

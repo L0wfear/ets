@@ -278,7 +278,7 @@ class MissionFormWrap extends FormWrap {
     };
 
     return (
-      <>
+      <React.Fragment>
         {
           this.props.showForm
             ? (
@@ -298,7 +298,7 @@ class MissionFormWrap extends FormWrap {
               <DivNone />
             )
         }
-      </>
+      </React.Fragment>
     );
   }
 }

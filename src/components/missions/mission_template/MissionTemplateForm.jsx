@@ -25,6 +25,13 @@ import InsideField from 'components/missions/mission_template/inside_fields/inde
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
 import HiddenMapForPrint from 'components/missions/mission_template/print/HiddenMapForPrint';
 
+import missionTemplatePermission from 'components/missions/mission_template/config-data/permissions';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+
+const ButtonSaveMissionTemplate = withRequirePermissionsNew({
+  permissions: missionTemplatePermission.update,
+})(Button);
+
 
 const modalKey = 'mission_template';
 
@@ -242,7 +249,7 @@ class MissionTemplateForm extends MissionForm {
               )
             }
             <Div hidden={state.status === 'closed'}>
-              <Button onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</Button>
+              <ButtonSaveMissionTemplate onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMissionTemplate>
             </Div>
           </Div>
 

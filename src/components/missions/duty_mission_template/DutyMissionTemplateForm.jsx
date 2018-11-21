@@ -15,8 +15,15 @@ import RouteInfo from 'components/route/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
 import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import { DutyMissionForm } from '../duty_mission/DutyMissionForm';
-import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from '../duty_mission/utils';
+import { DutyMissionForm } from 'components/missions/duty_mission/DutyMissionForm';
+import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from 'components/missions/duty_mission/utils';
+
+import dutyMissionTemplatePermission from 'components/missions/duty_mission_template/config-data/permissions';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+
+const ButtonSaveDutyMissionTemplate = withRequirePermissionsNew({
+  permissions: dutyMissionTemplatePermission.update,
+})(Button);
 
 const modalKey = 'duty_mission_template';
 
@@ -200,7 +207,7 @@ class MissionTemplateForm extends DutyMissionForm {
 
         <Modal.Footer>
           <Div hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</Button>
+            <ButtonSaveDutyMissionTemplate onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</ButtonSaveDutyMissionTemplate>
           </Div>
         </Modal.Footer>
 

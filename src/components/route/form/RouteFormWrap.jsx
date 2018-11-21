@@ -119,9 +119,6 @@ class RouteFormWrap extends FormWrap {
   updateFromStatePolys = async (formState, refreshGeoState) => {
     const {
       municipal_facility_id,
-      object_list,
-      input_lines,
-      draw_odh_list,
       type: object_type,
     } = formState;
 
@@ -163,12 +160,13 @@ class RouteFormWrap extends FormWrap {
       const object_type_id = this.props.technicalOperationsObjectsList.find(({ type }) => object_type === type).id;
       this.context.flux.getActions('geoObjects').getGeozoneMunicipalFacility(municipal_facility_id, object_type_id)
         .then((rows) => {
-          const polys = rows.reduce((newObj, { id, name, shape }) => ({
+          const polys = rows.reduce((newObj, { id, name, shape, company_structure_id }) => ({
             ...newObj,
             [id]: {
               name,
               shape: JSON.parse(shape),
               state: polyState.SELECTABLE,
+              company_structure_id,
             },
           }), {});
 

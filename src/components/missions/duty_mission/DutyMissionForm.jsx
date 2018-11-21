@@ -99,8 +99,8 @@ export class DutyMissionForm extends Form {
               !this.props.employeesIndex[foreman_id].company_structure_id
               || this.props.employeesIndex[foreman_id].company_structure_id === v
             )
-              ? foreman_id
-              : null
+            ? foreman_id
+            : null
         );
 
         this.handleChange('brigade_employee_id_list', newBrigadeEmployeeIdList);

@@ -30,7 +30,7 @@ class DutyMissionFormWrap extends FormWrap {
       const mission = props.element === null ? getDefaultDutyMission() : clone(props.element);
 
       const ordersActions = this.context.flux.getActions('objects');
-      if (!mission.structure_idl) {
+      if (!mission.structure_id) {
         mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
       }
 

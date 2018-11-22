@@ -200,13 +200,13 @@ export function resizeBase64(base64) {
 
     const image = new Image();
     image.onload = () => {
-      canvas.width = image.width / (window.devicePixelRatio * 2);
-      canvas.height = image.height / (window.devicePixelRatio * 2);
+      canvas.width = image.width;
+      canvas.height = image.height;
       ctx.drawImage(image,
         0, 0, image.width, image.height,
         0, 0, canvas.width, canvas.height,
       );
-      res(canvas.toDataURL('image/png', 0.7));
+      res(canvas.toDataURL('image/png'));
     };
     image.src = base64;
   });

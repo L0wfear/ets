@@ -125,6 +125,7 @@ const Table: React.SFC<any> = (props) => (
     results={props.data}
     tableMeta={tableMeta(props)}
     renderers={renderers}
+    initialSort={'id'}
     {...props}
   />
 );

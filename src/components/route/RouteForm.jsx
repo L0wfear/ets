@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   find,
-  get,
   union,
 } from 'lodash';
 import { autobind } from 'core-decorators';
@@ -14,7 +13,6 @@ import RouteCreating from './RouteCreating.jsx';
 import Form from '../compositions/Form.jsx';
 
 import MunicipalFacility from './inside_fields/MunicipalFacility';
-import { polyState } from 'constants/polygons.js';
 
 const OBJECTS_BY_TYPE = {
   points: 3,
@@ -118,38 +116,6 @@ export default class RouteForm extends Form {
       this.handleChange('technical_operation_id', v);
 
       this.setState({ vector: false });
-    }
-  }
-
-  handleChangeStructureId = (structure_id) => {
-    const { formState } = this.props;
-    if (structure_id !== formState.structure_id) {
-      if (structure_id) {
-        if (formState.type !== 'points') {
-          const newPolys = { ...formState.polys };
-
-          const newObjectList = formState.object_list.filter(({ object_id }) => {
-            const company_structure_id = get(formState.polys, [object_id, 'company_structure_id'], null);
-
-            const isValid = company_structure_id === structure_id;
-
-            if (!isValid) {
-              newPolys[object_id].state = polyState.SELECTABLE;
-            }
-            return isValid;
-          });
-
-          this.handleChange(
-            'object_list',
-            newObjectList,
-          );
-          this.handleChange(
-            'polys',
-            newPolys,
-          );
-        }
-      }
-      this.handleChange('structure_id', structure_id);
     }
   }
 
@@ -300,7 +266,8 @@ export default class RouteForm extends Form {
                   options={STRUCTURES}
                   emptyValue={null}
                   value={state.structure_id}
-                  onChange={this.handleChangeStructureId}
+                  onChange={this.handleChange}
+                  boundKeys={boundKeys.structure_id}
                 />
               </Col>
             </Div>

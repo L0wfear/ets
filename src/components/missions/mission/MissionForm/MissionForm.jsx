@@ -91,7 +91,10 @@ export class MissionForm extends Form {
     const technicalOperationsActions = flux.getActions('technicalOperation').getTechnicalOperations;
     const routesActions = flux.getActions('routes');
     const missionsActions = flux.getActions('missions').getMissionSources;
-    flux.getActions('geoObjects').getGeozones();
+    const {
+      currentUser: { company_id },
+    } = this.props;
+    flux.getActions('geoObjects').getGeozones(company_id);
 
     const { formState } = this.props;
 
@@ -907,5 +910,5 @@ export default connectToStores(
     permissions: missionPermission.update,
     withIsPermittedProps: true,
   })(MissionForm),
-  ['objects', 'employees', 'missions', 'routes', 'geoObjects'],
+  ['objects', 'employees', 'missions', 'routes', 'geoObjects', 'session'],
 );

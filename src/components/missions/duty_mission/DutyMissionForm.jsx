@@ -174,8 +174,11 @@ export class DutyMissionForm extends Form {
     let kind_task_ids = null;
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
+    const {
+      currentUser: { company_id },
+    } = this.props;
 
-    flux.getActions('geoObjects').getGeozones();
+    flux.getActions('geoObjects').getGeozones(company_id);
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
@@ -694,4 +697,4 @@ export class DutyMissionForm extends Form {
   }
 }
 
-export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects']);
+export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects', 'session']);

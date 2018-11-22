@@ -186,12 +186,7 @@ export const sortData = (data, { initialSort, initialSortAscending, ...other }) 
   initialSort
   ? (
     data.sort((a, b) => (
-      sortFunction(
-        initialSortAscending ? a : b,
-        initialSortAscending ? b : a,
-        initialSort,
-        other,
-      )),
+      sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)),
     )
   )
   : (

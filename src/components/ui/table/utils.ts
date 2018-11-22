@@ -182,17 +182,9 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
   return first.localeCompare(second);
 };
 
-export const sortData = (data, { initialSort, initialSortAscending, ...other }) => (
-  initialSort
-  ? (
-    data.sort((a, b) => (
-      sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)),
-    )
-  )
-  : (
-    data
-  )
-);
+export const sortData = (data, { initialSort, initialSortAscending, ...other }) => data.sort((a, b) => (
+  sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)
+));
 
 export const makeData = (data, prevProps, nextProps) => {
   let returnData = data;

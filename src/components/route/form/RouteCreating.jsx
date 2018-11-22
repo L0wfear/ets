@@ -216,7 +216,6 @@ class RouteCreating extends React.Component {
         : outerPolys
     );
 
-    console.log(polys)
     const [draw_list = []] = [route.draw_odh_list];
     const MapPolys = Object.assign({}, bridgesPolys, polys);
     const list = object_list.filter((o) => o.type) || [];

@@ -209,9 +209,7 @@ class RouteCreating extends React.Component {
     const polys = (
       structure_id
         ? Object.entries(outerPolys).reduce((newPolys, [key, polyData]) => {
-          if (polyData.company_structure_id === structure_id) {
-            newPolys[key] = polyData;
-          }
+          newPolys[key] = polyData;
 
           return newPolys;
         }, {})

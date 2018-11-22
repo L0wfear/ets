@@ -19,16 +19,6 @@ function FluxContext(target) {
 }
 
 /**
- * Добавляет history в static contextTypes класса
- * @param {Component} target - декорируемый класс
- */
-function HistoryContext(target) {
-  target.contextTypes = Object.assign({}, target.contextTypes, {
-    history: PropTypes.object,
-  });
-}
-
-/**
  * Добавляет параметры в статические свойства класса
  * @param {object} options - свойства (поля переданного объекта)
  */
@@ -57,6 +47,5 @@ export {
   wrappedRef,
   connectToStores,
   FluxContext,
-  HistoryContext,
   staticProps,
 };

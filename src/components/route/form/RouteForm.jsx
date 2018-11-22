@@ -41,6 +41,13 @@ export default class RouteForm extends Form {
     this.handleClickSelectFromODH = this.handleClickSelectFromODH.bind(this);
   }
 
+  handleChangeStructureId = (structure_id) => {
+    const { formState } = this.props;
+    if (structure_id !== formState.structure_id) {
+      this.handleChange('structure_id', structure_id);
+    }
+  }
+
   handleTypeChange = (type) => {
     if (type && type !== this.props.formState.type) {
       this.setState({ vector: false });

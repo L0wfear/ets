@@ -1,10 +1,21 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as BootstrapMenuItem from 'react-bootstrap/lib/MenuItem';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
 
-import { connectToStores, FluxContext, bindable } from 'utils/decorators';
+import {
+  oldReportGetDtCoverageReport,
+  oldReportExportDtCoverageReport,
+} from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+
+import { bindable } from 'utils/decorators';
 import { getToday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
 
@@ -12,43 +23,28 @@ import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 
-import DtCoverageReportTable from './DtCoverageReportTable';
-import DtCoverageReportPrintForm from './DtCoverageReportPrintForm';
-
-// const TWO_MINUTES = 1000 * 60 * 2;
+import DtCoverageReportTable from 'components/coverage_reports/dt_coverage/DtCoverageReportTable';
+import DtCoverageReportPrintForm from 'components/coverage_reports/dt_coverage/DtCoverageReportPrintForm';
 
 const MenuItem = bindable(BootstrapMenuItem);
 
-// @connectToStores(['reports'])
-// @staticProps({
-//   listName: 'odhCoverageReport',
-//   tableComponent: DtCoverageReportTable,
-//   formComponent: DtCoverageReportPrintForm,
-//   operations: ['LIST'],
-// })
+const page = 'dt_coverage_report';
 
-@connectToStores(['reports'])
-@FluxContext
-export default class DtCoverageReport extends Component {
-
-  constructor(props) {
-    super(props);
-
-    const [date_start, date_end] = [getToday9am(), new Date()];
-
-    this.state = {
-      date_start,
-      date_end,
-      isLoading: false,
-      isExporting: false,
-    };
+class DtCoverageReport extends React.Component {
+  static propTypes = {
+    dtCoverageReport: PropTypes.array.isRequired,
+    oldReportGetDtCoverageReport: PropTypes.func.isRequired,
+    oldReportExportDtCoverageReport: PropTypes.func.isRequired,
   }
+
+  state = {
+    date_start: getToday9am(),
+    date_end: new Date(),
+    isExporting: false,
+  };
 
   componentDidMount() {
     this.getReport();
-    // this.refreshInterval = setInterval(() => {
-    //   flux.getActions('reports').getDtCoverageReport();
-    // }, TWO_MINUTES);
   }
 
   componentWillUnmount() {
@@ -56,36 +52,34 @@ export default class DtCoverageReport extends Component {
   }
 
   getReport = async () => {
-    const { flux } = this.context;
-    const { location: { query } } = this.props;
 
-    const res = await flux.getActions('reports').getDtCoverageReport(this.state.date_start, this.state.date_end, query);
+    const res = await this.props.oldReportGetDtCoverageReport(this.state.date_start, this.state.date_end);
     const dates = res.result.meta;
 
-    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: dates.date_end });
+    if (dates.date_start) {
+      this.setState({ date_start: dates.date_start, date_end: dates.date_end });
+    }
   }
 
-  // handleDateStartChange(date) {
-  //   const date_start = getDate0am(date);
-  //   const date_end = new Date();
-  //
-  //   this.setState({ date_start, date_end });
-  // }
+  handleChangeDateStart = date_start => (
+    this.setState({ date_start })
+  )
 
-  handleChangeDateStart = date_start => this.setState({ date_start });
-  handleChangeDateEnd = date_end => this.setState({ date_end });
+  handleChangeDateEnd = date_end => (
+    this.setState({ date_end })
+  )
 
   showForm = (exportType) => {
     this.setState({ showForm: true, exportType });
   }
 
   export = (date_start, date_end) => {
-    const { flux } = this.context;
-
     this.setState({ isExporting: true });
-    flux.getActions('reports').exportDtCoverageReport(date_start, date_end, 'xls')
+    this.props.oldReportExportDtCoverageReport(date_start, date_end)
       .then(({ blob }) => {
-        saveData(blob, `Отчет по посещению ДТ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`);
+        if (blob) {
+          saveData(blob, `Отчет по посещению ДТ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`);
+        }
         this.setState({ isExporting: false });
       });
   }
@@ -114,7 +108,7 @@ export default class DtCoverageReport extends Component {
               <Glyphicon disabled={isExporting} className={iconClassname} glyph={exportGlyph} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {/* <MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem>*/}
+              {/* <MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem> */}
               <MenuItem bindOnClick={2} onClick={this.showForm}>Отчет за заданный период</MenuItem>
             </Dropdown.Menu>
           </Dropdown>
@@ -129,3 +123,23 @@ export default class DtCoverageReport extends Component {
     );
   }
 }
+
+export default compose(
+  withPreloader({
+    page,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      dtCoverageReport: state.old_report.dtCoverageReport,
+    }),
+    dispatch => ({
+      oldReportGetDtCoverageReport: (date_start, date_end) => (
+        dispatch(oldReportGetDtCoverageReport(date_start, date_end, { page }))
+      ),
+      oldReportExportDtCoverageReport: (date_start, date_end) => (
+        dispatch(oldReportExportDtCoverageReport(date_start, date_end, { page }))
+      ),
+    }),
+  ),
+)(DtCoverageReport);

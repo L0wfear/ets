@@ -6,7 +6,7 @@ import {
 } from 'components/new/ui/registry/module/actions-registy';
 
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
-import whitPreloader from 'components/ui/new/preloader/hoc/with-preloader/whitPreloader';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import {
   TypeConfigData,
@@ -17,7 +17,7 @@ import { ReduxState } from 'redux-main/@types/state';
 
 const withRegistry = (configData: TypeConfigData) => (Component) => (
   hocAll(
-    whitPreloader({
+    withPreloader({
       page: 'registry',
       typePreloader: 'mainpage',
     }),

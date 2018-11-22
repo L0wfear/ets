@@ -16,7 +16,7 @@ import {
   markAsRead,
 } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
-import whitPreloader from 'components/ui/new/preloader/hoc/with-preloader/whitPreloader';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { compose } from 'recompose';
 
 @staticProps({
@@ -170,7 +170,7 @@ export default compose(
       ),
     }),
   ),
-  whitPreloader({
+  withPreloader({
     page: 'notification-registry',
     typePreloader: 'mainpage',
   }),

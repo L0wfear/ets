@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
-import whitPreloader from 'components/ui/new/preloader/hoc/with-preloader/whitPreloader';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 type PropsModalBodyPreloader = {
   typePreloader?: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
@@ -18,4 +18,4 @@ class ModalBodyPreloader extends React.Component<PropsModalBodyPreloader, {}> {
   }
 }
 
-export default whitPreloader({})(ModalBodyPreloader);
+export default withPreloader({})(ModalBodyPreloader);

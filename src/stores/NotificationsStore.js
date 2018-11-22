@@ -113,8 +113,6 @@ export default class NotificationsStore extends Store {
 
     this.register(missionsActions.createMission, this.handleMissionCreate);
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
-    this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
-    this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
 
 
     this.state = {
@@ -142,10 +140,6 @@ export default class NotificationsStore extends Store {
     if (this.checkResponse(response)) {
       global.NOTIFICATION_SYSTEM.notify(notifications.missionsCreationSuccessNotification);
     }
-  }
-
-  handleGetCoverageReport() {
-    global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
   }
 
   handleSave(text) {

@@ -11,6 +11,5 @@ const children = {
 export default {
   title: 'Оперативная обстановка',
   children,
-  hiddenNav: true,
   permissions: getChildrenPermissions(children),
 };

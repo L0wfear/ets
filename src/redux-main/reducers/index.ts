@@ -13,6 +13,7 @@ import registry from 'components/new/ui/registry/module/registry';
 
 // Easy move to redux
 import userNotifications from 'redux-main/reducers/modules/user_notifications/user_notifications';
+import old_report from 'components/coverage_reports/redux-main/modules/old-report/old_report';
 
 export default combineReducers({
   ...rootReducers,
@@ -24,4 +25,5 @@ export default combineReducers({
   monitorPage,
   registry,
   userNotifications,
+  old_report,
 });

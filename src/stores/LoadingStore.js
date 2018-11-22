@@ -18,7 +18,6 @@ export default class LoadingStore extends Store {
     const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
     const companyStructureActions = flux.getActions('companyStructure');
-    const reportsActions = flux.getActions('reports');
 
     this.reg(false,
       sessionActions.cahngeCompanyOnAnother,
@@ -150,11 +149,6 @@ export default class LoadingStore extends Store {
       companyStructureActions.updateCompanyElement,
       companyStructureActions.createCompanyElement,
       companyStructureActions.deleteCompanyElement,
-
-      reportsActions.getAnalytics,
-      reportsActions.getCoverageReport,
-      reportsActions.getOdhCoverageReport,
-      reportsActions.getDtCoverageReport,
 
       carActions.updateCarAdditionalInfo,
       carActions.getDataByNormNormatives,

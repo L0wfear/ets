@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import Div from 'components/ui/Div';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 import * as Button from 'react-bootstrap/lib/Button';
+
+import {
+  oldReportGetAnalytics,
+} from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import Field from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
@@ -14,14 +24,18 @@ import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 
-@connectToStores(['reports', 'objects'])
+const page = 'analytics';
+
+@connectToStores(['objects'])
 @FluxContext
-export default class Analytics extends Component {
+class Analytics extends React.Component {
+  static propTypes = {
+    organizations: PropTypes.array.isRequired,
+    oldReportGetAnalytics: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props);
-
-    const [date_from, date_to] = [getToday9am(), getTomorrow9am()];
 
     this.reports = [
       'Маршруты',
@@ -37,8 +51,8 @@ export default class Analytics extends Component {
       report_ids: [],
       companies_ids: [],
       transcript: false,
-      date_from,
-      date_to,
+      date_from: getToday9am(),
+      date_to: getTomorrow9am(),
     };
   }
 
@@ -48,15 +62,16 @@ export default class Analytics extends Component {
   }
 
   handleSubmit() {
-    const { flux } = this.context;
     const state = {
       ...this.state,
       companies_ids: this.state.companies_ids.length === 0 ? null : this.state.companies_ids,
     };
 
-    flux.getActions('reports').getAnalytics(state)
+    this.props.oldReportGetAnalytics(state)
       .then(({ blob, fileName }) => {
-        saveData(blob, fileName);
+        if (blob && fileName) {
+          saveData(blob, fileName);
+        }
       });
   }
 
@@ -65,13 +80,17 @@ export default class Analytics extends Component {
       const { report_ids } = this.state;
       const id = parseFloat(value);
       const index = report_ids.indexOf(id);
-      index === -1 ? report_ids.push(id) : report_ids.splice(index, 1);
+      if (index === -1) {
+        report_ids.push(id);
+      } else {
+        report_ids.splice(index, 1);
+      }
 
       this.setState({ report_ids });
     } else if (field === 'companies_ids') {
       let { companies_ids, transcript } = this.state;
-      companies_ids = value ? ('' + value).split(',') : [];
-      companies_ids = companies_ids.map((e) => parseFloat(e));
+      companies_ids = value ? (`${value}`).split(',') : [];
+      companies_ids = companies_ids.map(e => parseFloat(e));
       if (companies_ids.length > 1) transcript = false;
       this.setState({ companies_ids, transcript });
     } else {
@@ -83,7 +102,7 @@ export default class Analytics extends Component {
     let value;
     if (e.target.checked) {
       const { organizations } = this.props;
-      value = organizations.map((e) => e.id).join(',');
+      value = organizations.map(el => el.id).join(',');
     } else {
       value = '';
     }
@@ -93,14 +112,18 @@ export default class Analytics extends Component {
   render() {
     const { organizations } = this.props;
 
-    const reportsList = this.reports.map((e, i) => {
-      return (<div key={e + i}><input
-        style={{ marginRight: '10px' }}
-        type="checkbox"
-        checked={this.state.report_ids.indexOf(i) + 1}
-        onChange={this.handleChange.bind(this, 'report_ids', i)}
-      />{e}<br /></div>);
-    });
+    const reportsList = this.reports.map((e, i) => (
+      <div key={e + i}>
+        <input
+          style={{ marginRight: '10px' }}
+          type="checkbox"
+          checked={this.state.report_ids.indexOf(i) + 1}
+          onChange={this.handleChange.bind(this, 'report_ids', i)}
+        />
+        {e}
+        <br />
+      </div>
+    ));
 
     const COMPANY = organizations && organizations.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
@@ -137,7 +160,9 @@ export default class Analytics extends Component {
           </Col>
           <Col md={5}>
             <Div>
-              <Field type="select" label="Учреждение"
+              <Field
+                type="select"
+                label="Учреждение"
                 multi
                 options={COMPANY}
                 value={this.state.companies_ids.join(',')}
@@ -151,3 +176,19 @@ export default class Analytics extends Component {
     );
   }
 }
+
+
+export default compose(
+  withPreloader({
+    page,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    null,
+    dispatch => ({
+      oldReportGetAnalytics: data => (
+        dispatch(oldReportGetAnalytics(data, { page }))
+      ),
+    }),
+  ),
+)(Analytics);

@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Col from 'react-bootstrap/lib/Col';
 
-import _, { get } from 'lodash';
+import _ from 'lodash';
 import cx from 'classnames';
 
 import connectToStores from 'flummox/connect';
@@ -138,14 +138,7 @@ class RoutesList extends React.Component {
   onFormHide = (isSubmited, result) => {
     if (isSubmited === true) {
       this.refreshRoutes({ showForm: false })
-        .then(() => {
-          const routeData = get(result, ['createdRoute', 'result'], [])[0];
-          if (routeData && routeData.id) {
-            this.selectRoute(routeData.id);
-          } else {
-            global.NOTIFICATION_SYSTEM.notify('Не найден маршрут', 'warning', 'tr');
-          }
-        });
+        .then(() => this.selectRoute(result.createdRoute.result[0].id));
     } else {
       const { selectedRoute_old } = this.state;
 

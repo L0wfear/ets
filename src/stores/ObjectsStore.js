@@ -22,13 +22,10 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
-    this.register(objectsActions.getCustomers, this.handleGetCustomers);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
     this.register(objectsActions.updateOrganizations, this.handleUpdateOrganizations);
-    this.register(objectsActions.getOrders, this.handlegetOrders);
-    this.register(objectsActions.resetOrder, this.handlegetOrders);
     this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
@@ -69,7 +66,6 @@ export default class ObjectsStore extends Store {
 
     this.state = {
       carsList: [],
-      customersList: [],
       typesList: [],
       sensorTypesList: [],
       modelsList: [],
@@ -195,10 +191,6 @@ export default class ObjectsStore extends Store {
     this.setState({ sensorTypesList: result });
   }
 
-  handleGetCustomers(customersList) {
-    this.setState({ customersList });
-  }
-
   handleGetFuelTypes(fuelTypes) {
     this.setState({ fuelTypes: fuelTypes.result });
   }
@@ -230,10 +222,6 @@ export default class ObjectsStore extends Store {
       organizations: organizationsNew,
       organizationsIndex: _.keyBy(organizationsNew, 'company_id'),
     });
-  }
-
-  handlegetOrders({ result: OrdersList = [], total_count: ordersTotalCount = 0 }) {
-    this.setState({ OrdersList, ordersTotalCount });
   }
 
   handleGetPositions({ result: { rows: positionsList } }) {

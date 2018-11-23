@@ -66,7 +66,6 @@ export default class ObjectsActions extends Actions {
         return CarService.get(payload).then(r => ({ result: r.result.rows }));
     }
   }
-  
 
   getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;
@@ -75,10 +74,6 @@ export default class ObjectsActions extends Actions {
 
   getSpecialModels() {
     return SpecialModelService.get();
-  }
-
-  getCustomers() {
-    return CustomersService.get();
   }
 
   getTypes(payload = {}) {
@@ -108,38 +103,6 @@ export default class ObjectsActions extends Actions {
 
   getOrderById(id) {
     return OrderService.get({ id });
-  }
-
-  getOrderHistoryById(id) {
-    return OrderService.path(`${id}/history/`).get();
-  }
-
-  getOrders(limit, offset, sort_by, filter, date_start, date_end) {
-    const filterValues = parseFilterObject(cloneDeep(filter));
-
-    const payload = {
-      date_start: createValidDateTime(date_start),
-      date_end: createValidDateTime(date_end),
-      limit,
-      offset,
-      sort_by,
-      filter: JSON.stringify(filterValues),
-    };
-    return OrderService.get(payload);
-  }
-
-  resetOrder() {
-    return {};
-  }
-
-  saveOrder(id, data) {
-    const payload = { ...data };
-    return OrderService.path(id).getBlob(payload);
-  }
-
-  getOrderPDFUrl(id) {
-    const URL = `${OrderService.getUrl()}/${id}`;
-    return URL;
   }
 
   getPositions() {

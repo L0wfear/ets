@@ -76,11 +76,8 @@ export default class LoadingStore extends Store {
       objectsActions.getCars,
       objectsActions.getSomeCars,
       objectsActions.getSpecialModels,
-      objectsActions.getCustomers,
       objectsActions.getWorkKinds,
-      objectsActions.getOrders,
 
-      objectsActions.saveOrder,
       objectsActions.getMaintenanceWork,
       objectsActions.getCleaningRate,
       objectsActions.getUserActionLog,
@@ -92,7 +89,6 @@ export default class LoadingStore extends Store {
       employeesActions.getEmployees,
       employeesActions.updateEmployee,
       employeesActions.createEmployee,
-      employeesActions.deleteEmployee,
       employeesActions.getDrivers,
       employeesActions.getWaybillDrivers,
       employeesActions.getForemans,
@@ -141,7 +137,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsWithBrigades,
       technicalOperationsActions.getTechnicalOperationsObjects,
       technicalOperationsActions.updateTechnicalOperation,
-      technicalOperationsActions.getTechnicalOperationsByCarId,
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 
@@ -157,7 +152,6 @@ export default class LoadingStore extends Store {
       geoObjectsActions.getOdhMkad);
 
     this.reg(true,
-      geoObjectsActions.getODHs,
       geoObjectsActions.updateODH,
       geoObjectsActions.updateDT,
       geoObjectsActions.getGeozoneByTypeWithGeometry,

@@ -14,7 +14,6 @@ export default class EmployeeStore extends Store {
     this.register(employeesActions.getForemans, this.handleGetForemans);
     this.register(employeesActions.updateEmployee, this.handleGetEmployees);
     this.register(employeesActions.createEmployee, this.handleGetEmployees);
-    this.register(employeesActions.deleteEmployee, this.handleGetEmployees);
 
     this.state = {
       employeesList: [],

@@ -120,9 +120,4 @@ export default class EmployeesActions extends Actions {
     mapKeys(payload, (v, k) => isEmpty(v) ? (payload[k] = null) : undefined);
     return EmployeeService.post(payload, getEmployees, 'json');
   }
-
-  deleteEmployee(id) {
-    const payload = { id };
-    return EmployeeService.path(`${id}`).delete(payload, getEmployees, 'json');
-  }
 }

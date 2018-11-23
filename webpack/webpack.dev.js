@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -159,7 +158,6 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new ManifestPlugin(),
-    new CleanWebpackPlugin([path.resolve(__dirname, '..', 'dist')]),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
@@ -181,6 +179,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'ЕТС',
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
+      MANIFEST_FILENAME: 'manifest.json'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({

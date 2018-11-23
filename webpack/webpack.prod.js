@@ -153,7 +153,12 @@ module.exports = {
       // both options are optional
       filename: "[name].css",
     }),
-    new CleanWebpackPlugin([path.resolve(__dirname, '..', 'dist')]),
+    new CleanWebpackPlugin(
+      path.join(__dirname, '..', 'dist'),
+      {
+        root: path.join(__dirname, '..'),
+      },
+    ),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
@@ -175,6 +180,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'ЕТС',
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
+      MANIFEST_FILENAME: 'manifest.json'
     }),
     new webpack.DefinePlugin({
       __CLIENT__: true,

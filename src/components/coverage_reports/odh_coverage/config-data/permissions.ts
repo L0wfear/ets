@@ -1,5 +1,5 @@
 export default {
-  list: 'route.list',
+  list: 'odh_coverage_report.list',
   create: 'odh_coverage_report.create',
   read: 'odh_coverage_report.read',
   update: 'odh_coverage_report.update',

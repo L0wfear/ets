@@ -2,16 +2,11 @@ import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
+import { polyState } from 'constants/polygons';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
 const CACHE_ICON = {};
-
-export const polyState = {
-  SELECTABLE: 1,
-  ENABLED: 2,
-  IDLE: 3,
-};
 
 const maskStatusPoint = {
   fail: 1,
@@ -38,7 +33,7 @@ export const PointStyles = {
 };
 
 export const polyStyles = {
-  [polyState.SELECTABLE]: {
+  [polyState.SELECTED]: {
     fill: new Fill({
       color: 'rgba(0,0,0,0.2)',
     }),
@@ -47,7 +42,7 @@ export const polyStyles = {
       width: 1,
     }),
   },
-  [polyState.ENABLED]: {
+  [polyState.ENABLE]: {
     fill: new Fill({
       color: 'rgba(255,255,255,0.5)',
     }),
@@ -56,7 +51,7 @@ export const polyStyles = {
       width: 1,
     }),
   },
-  [polyState.IDLE]: {
+  [polyState.SELECTED_IDLING]: {
     fill: new Fill({
       color: 'rgba(255,255,255,0.5)',
     }),

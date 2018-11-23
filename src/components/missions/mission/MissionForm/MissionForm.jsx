@@ -12,12 +12,15 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import {
   uniqBy,
   isEmpty as lodashIsEmpty,
+  get,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+
 import Field from 'components/ui/Field';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
@@ -73,6 +76,7 @@ export class MissionForm extends Form {
     this.state = {
       available_route_types: [],
       selectedRoute: null,
+      selectedRouteNew: null,
       showRouteForm: false,
       carsList: [],
       routesList: [],
@@ -106,6 +110,7 @@ export class MissionForm extends Form {
       .then(([technicalOperationsData, selectedRoute, routesList]) => this.setState({
         ...technicalOperationsData,
         selectedRoute,
+        selectedRouteNew: selectedRoute,
         routesList,
         carsList: this.props.carsList,
       }));
@@ -166,10 +171,10 @@ export class MissionForm extends Form {
             this.props.handleMultiFormChange(changesObjSecond);
           });
 
-          this.setState({ selectedRoute: route });
+          this.setState({ selectedRoute: route, selectedRouteNew: route });
         });
     } else {
-      this.setState({ selectedRoute: null });
+      this.setState({ selectedRoute: null, selectedRouteNew: null });
     }
 
     this.props.handleMultiFormChange(changesObj);
@@ -334,6 +339,26 @@ export class MissionForm extends Form {
     });
   }
 
+  createNewRouteNew = () => {
+    this.setState({
+      showRouteFormNew: true,
+      selectedRouteNew: {
+        is_main: true,
+        name: '',
+        municipal_facility_id: this.props.formState.municipal_facility_id,
+        municipal_facility_name: '',
+        technical_operation_id: this.props.formState.technical_operation_id,
+        technical_operation_name: '',
+        structure_id: this.props.formState.structure_id,
+        structure_name: '',
+        type: null,
+        object_list: [],
+        input_lines: [],
+        draw_object_list: [],
+      },
+    });
+  }
+
   onFormHide = (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
@@ -352,6 +377,28 @@ export class MissionForm extends Form {
     }
 
     this.setState({ showRouteForm: false });
+  }
+
+  onFormHideNew = (isSubmitted, payloadData) => {
+    const route = get(payloadData, ['payload', 'route'], null);
+
+    const { flux } = this.context;
+    const routesActions = flux.getActions('routes');
+    const { formState } = this.props;
+
+    if (isSubmitted === true) {
+      handleRouteFormHide(
+        formState,
+        this.state,
+        routesActions.getRoutesBySomeData,
+      ).then((ans) => {
+        this.setState({ ...ans });
+      });
+
+      this.handleRouteIdChange(route.id);
+    }
+
+    this.setState({ showRouteFormNew: false });
   }
 
   handleChangeDateStart = (date_start) => {
@@ -462,9 +509,12 @@ export class MissionForm extends Form {
       carsList = [],
       technicalOperationsList = [],
       selectedRoute: route = null,
+      selectedRouteNew: routeNew = null,
       available_route_types = [],
       kind_task_ids,
     } = this.state;
+
+    console.log(routeNew)
 
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
       if (!auto || state.mission_source_id === id) {
@@ -779,6 +829,7 @@ export class MissionForm extends Form {
                     />
                     <Div hidden={state.route_id}>
                       <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
+                      <Button id="create-route-new" onClick={this.createNewRouteNew} disabled={routeIdDisabled}>Создать новый (new)</Button>
                     </Div>
                   </Col>
                 </Row>
@@ -867,38 +918,45 @@ export class MissionForm extends Form {
                         onChange={this.handleChange.bind(this, 'assign_to_waybill')}
                       />
                     </Div>
+                  )}
+                  {
+                    !state.is_column && (
+                    <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
+                      <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
+                        <Glyphicon id="m-print" glyph="print" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+                        <MenuItem eventKey={2}>Печать</MenuItem>
+                      </Dropdown.Menu>
+                    </Dropdown>
                     )}
-                    {
-                      !state.is_column && (
-                      <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-                        <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
-                          <Glyphicon id="m-print" glyph="print" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                          <MenuItem eventKey={2}>Печать</MenuItem>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                    <ButtonSaveMission id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMission>
-                  </Div>
-                </Modal.Footer>
-                <HiddenMapForPrint
-                  route={route}
-                  printMapKeySmall={this.props.printMapKeySmall}
-                />
-                <RouteFormWrap
-                  element={route}
-                  onFormHide={this.onFormHide}
-                  showForm={this.state.showRouteForm}
-                  fromMission
-                  notTemplate
-                  fromOrder={this.props.fromOrder}
-                  available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
-                  structureId={state.structure_id}
-                />
-              </Modal>
-            )
+                  <ButtonSaveMission id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMission>
+                </Div>
+              </Modal.Footer>
+              <HiddenMapForPrint
+                route={route}
+                printMapKeySmall={this.props.printMapKeySmall}
+              />
+              <RouteFormWrap
+                element={route}
+                onFormHide={this.onFormHide}
+                showForm={this.state.showRouteForm}
+                fromMission
+                notTemplate
+                available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
+                structureId={state.structure_id}
+              />
+              <RouteFormWrapNew
+                element={routeNew}
+                showForm={this.state.showRouteFormNew}
+                handleHide={this.onFormHideNew}
+                hasMissionStructureId={!!state.structure_id}
+                missionAvailableRouteTypes={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
+                fromMission
+              />
+            </Modal>
+          )
         }
       </div>
     );

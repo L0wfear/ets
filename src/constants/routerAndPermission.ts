@@ -7,6 +7,7 @@ import nsi from 'components/directories/config-data';
 // import nsiNew from 'components/new/pages/nsi/_config-data';
 import reports from 'components/reports/config-data';
 import routeList from 'components/route/config-data';
+import routeListNew from 'components/route_new/config-data';
 import companyStructure from 'components/company_structure/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
@@ -26,6 +27,7 @@ const routerAndPermission = {
   // nsiNew,
   reports,
   routeList,
+  routeListNew,
   companyStructure,
   notificationRegistry,
   programRegistry,

@@ -61,14 +61,14 @@ class RouteCreating extends React.Component {
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);
       object_list.push({
-        object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED,
+        object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.SELECTED,
       });
-      polys[object_id].state = polyState.ENABLED;
+      polys[object_id].state = polyState.SELECTED;
     } else {
       object_list = object_list.filter((o) => {
         const hasInOdh = odhs.includes(o.object_id.toString());
         if (!hasInOdh) {
-          polys[o.object_id].state = polyState.SELECTABLE;
+          polys[o.object_id].state = polyState.ENABLE;
         }
         return hasInOdh;
       });
@@ -93,7 +93,7 @@ class RouteCreating extends React.Component {
     const objectIndex = object_list.findIndex((d) => d.object_id === +id);
     const type = route.type === 'simple_dt' ? 'dt' : 'odh';
 
-    if (state === polyState.SELECTABLE) {
+    if (state === polyState.ENABLE) {
       object_list.splice(objectIndex, 1);
     } else if (objectIndex > -1) {
       object_list[objectIndex] = {
@@ -124,13 +124,13 @@ class RouteCreating extends React.Component {
     if (e.target.checked) {
       odhs.forEach((e) => {
         object_list.push({
-          object_id: e, type, name: geozonePolys[e].name, state: polyState.ENABLED,
+          object_id: e, type, name: geozonePolys[e].name, state: polyState.SELECTED,
         });
-        polys[e].state = polyState.ENABLED;
+        polys[e].state = polyState.SELECTED;
       });
     } else {
       object_list = [];
-      _.forEach(polys, e => (e.state = polyState.SELECTABLE));
+      _.forEach(polys, e => (e.state = polyState.ENABLE));
     }
 
     this.props.onChange('polys', polys);

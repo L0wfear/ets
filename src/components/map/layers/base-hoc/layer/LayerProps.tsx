@@ -28,7 +28,7 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
       olLayer: null,
     };
 
-    addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
+    addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'image' }) => {
       return new Promise((res) => {
         const vectorSource = new sourceVector();
 

@@ -41,6 +41,7 @@ function StringField(props) {
   if (value === undefined || value === null) {
     value = '';
   }
+  const showError = typeof error === 'boolean' ? error : true;
 
   return !readOnly ?
     <Div hidden={hidden} style={wrapStyle || {}}>
@@ -48,7 +49,7 @@ function StringField(props) {
         {label && <label className="control-label"><span>{label}</span></label>}
         <FormControl type="text" disabled={disabled} className={inputClassName} {...mainProps} value={value} />
       </div>
-      <Div hidden={!error} className="error">{error}</Div>
+      {showError && <Div hidden={!error} className="error">{error}</Div>}
     </Div> :
     <Div hidden={hidden} className={className}>
       <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>

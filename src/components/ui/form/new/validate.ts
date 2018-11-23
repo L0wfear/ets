@@ -1,0 +1,44 @@
+import {
+  SchemaType,
+  DependencieFieldValidatorArrType,
+} from 'components/ui/form/new/@types/validate.h';
+
+import { validateString } from 'components/ui/form/new/string/stringValidate';
+import { validateNumber } from 'components/ui/form/new/number/numberValidate';
+
+export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P): any => {
+  const {
+    properties,
+    dependencies,
+  } = shema;
+
+  const formError = properties.reduce((newObj, fieldData) => {
+    switch (fieldData.type) {
+      case 'string':
+        newObj[fieldData.key] = validateString<F, P>(fieldData, formState, props);
+        break;
+      case 'number':
+        newObj[fieldData.key] = validateNumber<F, P>(fieldData, formState, props);
+        break;
+      default:
+        throw new Error('Нужно определить функцию для валидации');
+    }
+
+    return newObj;
+  }, {});
+
+  Object.entries<DependencieFieldValidatorArrType<F, P>>(dependencies).forEach(([name, arrayValidate]) => {
+    if (!formError[name]) {
+      arrayValidate.some((dependencieValidator) => {
+        if (!formError[name]) {
+          formError[name] = dependencieValidator(formState[name], formState, props);
+
+          return Boolean(formError[name]);
+        }
+        return Boolean(formError[name]);
+      });
+    }
+   });
+
+  return formError;
+};

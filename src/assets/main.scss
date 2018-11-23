@@ -1920,7 +1920,6 @@ div.none {
   .btn {
     width: 120px;
   }
-
 }
 
 .dropdown-menu > .open.dropdown > .dropdown-menu {
@@ -2098,3 +2097,10 @@ div.car-movement-time-report {
   }
 }
 /*---------*/
+.checkbox-input {
+  margin: 0 -5px;
+  >label {
+    margin: 5px;
+  }
+}
+

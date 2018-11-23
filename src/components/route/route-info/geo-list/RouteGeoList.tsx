@@ -11,7 +11,7 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 import { routeTypesByKey } from 'constants/route';
 
-import { polyState } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/feature-style';
+import { polyState } from 'constants/polygons';
 
 const makeNameByProps = (type: PropsRouteGeoList['type']) => {
   const title = routeTypesByKey[type] ? routeTypesByKey[type].title : '';
@@ -75,7 +75,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
                     let key = data.object_id;
 
                     if (type === 'dt' || type === 'odh') {
-                      title = `${title} (${data.state === polyState.IDLE ? 'холостой' : 'рабочий'} ход)`;
+                      title = `${title} (${data.state === polyState.SELECTED_IDLING ? 'холостой' : 'рабочий'} ход)`;
                     }
 
                     if (type === 'points') {
@@ -113,7 +113,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
                     let title = data.name;
 
                     if (type === 'dt' || type === 'odh') {
-                      title = `${title} (${data.state === polyState.IDLE ? 'холостой' : 'рабочий'} ход)`;
+                      title = `${title} (${data.state === polyState.SELECTED_IDLING ? 'холостой' : 'рабочий'} ход)`;
                     }
 
                     if (type === 'points') {

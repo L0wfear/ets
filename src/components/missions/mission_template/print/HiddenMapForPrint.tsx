@@ -1,5 +1,5 @@
 import * as React from 'react';
-import RouteInfoMap from 'components/route/route-info/map/RouteInfoMap';
+import RouteInfoMap from 'components/route_new/route-info/map/RouteInfoMap';
 import { DivNone } from 'global-styled/global-styled';
 import { AbsoluteHiddenOverflow } from 'components/missions/mission_template/print/styled/styled';
 import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';

@@ -3,7 +3,7 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import {
-  FlexWrapContainer,
+  FlexContainer,
   Flex,
 } from 'global-styled/global-styled';
 
@@ -41,7 +41,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
           <Modal.Title>Просмотр объекта</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={entity} path={`${entity}/${element[selectField]}`} typePreloader="lazy">
-          <FlexWrapContainer>
+          <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
               <FieldsData
                 element={element}
@@ -55,7 +55,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
                 entity={this.props.entity}
               />
             </Flex>
-          </FlexWrapContainer>
+          </FlexContainer>
         </ModalBodyPreloader>
       </Modal>
     );

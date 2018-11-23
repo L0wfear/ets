@@ -11,10 +11,12 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import InsideField from 'components/missions/duty_mission_template/inside_fields/index';
-import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
 import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+
 import { DutyMissionForm } from 'components/missions/duty_mission/DutyMissionForm';
 import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from 'components/missions/duty_mission/utils';
 
@@ -36,6 +38,7 @@ class MissionTemplateForm extends DutyMissionForm {
       technicalOperationsList = [],
       TECH_OPERATIONS = [],
       selectedRoute: route = null,
+      selectedRouteNew: routeNew = null,
     } = this.state;
 
     const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
@@ -166,6 +169,13 @@ class MissionTemplateForm extends DutyMissionForm {
               />
               <Div hidden={state.route_id}>
                 <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
+                <Button
+                  id="dmt-create-route-new"
+                  onClick={this.createNewRouteNew}
+                  disabled={!state.municipal_facility_id}
+                >
+                  Создать новый (new)
+                </Button>
               </Div>
             </Col>
             {STRUCTURE_FIELD_VIEW && (
@@ -218,6 +228,14 @@ class MissionTemplateForm extends DutyMissionForm {
           structureId={state.structure_id}
           fromMission
           available_route_types={available_route_types}
+        />
+        <RouteFormWrapNew
+          element={routeNew}
+          showForm={this.state.showRouteFormNew}
+          handleHide={this.onFormHideNew}
+          hasMissionStructureId={!!state.structure_id}
+          missionAvailableRouteTypes={available_route_types}
+          fromMission
         />
 
       </Modal>

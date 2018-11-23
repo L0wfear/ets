@@ -21,6 +21,7 @@ module.exports = {
     contentBase: './dist',
     port: 3000,
     hot: true,
+    noInfo: true,
     quiet: false,
     inline: true,
     noInfo: true,

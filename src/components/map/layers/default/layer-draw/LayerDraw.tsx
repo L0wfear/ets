@@ -4,6 +4,7 @@ import olInteractionDoubleClickZoom from 'ol/interaction/DoubleClickZoom';
 import Feature from 'ol/Feature';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import { isFunction } from 'util';
 
 type PropsLayerLayerDraw = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -13,6 +14,7 @@ type PropsLayerLayerDraw = {
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   map: ol.Map;
+  initCallback?: any;
 
   inDraw: boolean;
   type: 'LineString' | 'Point',
@@ -45,6 +47,12 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
   componentDidMount() {
     this.props.addLayer({ id: 'MeasureLines', zIndex: 100 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
+
+      const { initCallback } = this.props;
+
+      if (isFunction(initCallback)) {
+        initCallback();
+      }
 
       if (this.props.inDraw) {
         this.letsDraw();

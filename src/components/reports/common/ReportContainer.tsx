@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
@@ -32,7 +33,6 @@ import DataTableNew from 'components/ui/tableNew/DataTable';
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
-import { compose } from 'recompose';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;

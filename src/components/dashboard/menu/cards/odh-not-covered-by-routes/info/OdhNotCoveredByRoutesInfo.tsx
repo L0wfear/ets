@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { LinkToRouteListPermitted } from 'components/route/buttons/buttons';
+import { LinkToRouteListPermitted } from 'components/route_new/buttons/buttons';
 import InfoCard from 'components/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 
 import {

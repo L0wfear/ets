@@ -86,9 +86,7 @@ class MainApp extends React.Component {
 
     return (
       <div className="app">
-        <div className="app-navigation">
-          <Header />
-        </div>
+        <Header />
 
         <div className="app-content">
           <ModalTP

@@ -5,7 +5,7 @@ import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { get } from 'lodash';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import RouteInfoFormWrap from 'components/route/route-info/RouteInfoFormWrap';
+import RouteInfoFormWrap from 'components/route_new/route-info/RouteInfoFormWrap';
 
 import InfoCard from 'components/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -20,7 +20,7 @@ import {
   updateDutyMissionByPayload,
 } from 'redux-main/trash-actions/mission';
 import { ButtonUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
-import { LinkToOpenRouteInfoForm } from 'components/route/buttons/buttons';
+import { LinkToOpenRouteInfoForm } from 'components/route_new/buttons/buttons';
 
 import {
   PropsCurrentMissionInfo,

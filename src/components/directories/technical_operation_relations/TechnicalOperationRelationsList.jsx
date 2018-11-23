@@ -14,7 +14,7 @@ import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsRoutes } from 'components/directories/technical_operation_relations/helpData';
 import {
   ButtonUpdateRoute,
-} from 'components/route/buttons/buttons';
+} from 'components/route_new/buttons/buttons';
 
 const ButtonChangeCarData = enhanceWithPermissions({
   permission: permissionsCar.update,
@@ -26,6 +26,7 @@ const ButtonChangeCarData = enhanceWithPermissions({
   entity: 'technical_operation_relations',
   permissions,
   listName: 'technicalOperationRelationsList',
+  selectField: 'car_id',
   tableComponent: TechnicalOperationRelationsTable,
   operations: ['LIST'],
 })

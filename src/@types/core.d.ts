@@ -1,4 +1,15 @@
 declare namespace ETSCore {
+  namespace Respoce {
+    type Payload<A> = {
+      payload: A;
+    };
+    type Rows<A> = {
+      rows: A[];
+    };
+    type ResultRows<A> = {
+      result: Rows<A>;
+    };
+  }
   namespace Types {
     interface IStringKeyHashTable<ValueType = any> {
       [key: string]: ValueType;

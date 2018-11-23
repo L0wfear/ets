@@ -101,6 +101,7 @@ class ElementsList extends React.Component {
   }
 
   onRowClick = ({ props: { data } }) => {
+    console.log(data)
     if (data[this.selectField]) {
       this.setState({
         selectedElement: data,

@@ -17,9 +17,10 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
-import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
@@ -54,7 +55,7 @@ class MissionTemplateForm extends MissionForm {
       routesList = [],
       carsList = [],
       selectedRoute: route = null,
-      available_route_types = [],
+      selectedRouteNew: routeNew = null,
     } = this.state;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -207,7 +208,8 @@ class MissionTemplateForm extends MissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={!state.technical_operation_id}>Создать новый</Button>
+                <Button onClick={this.createNewRoute} disabled={!state.municipal_facility_id}>Создать новый</Button>
+                <Button id="mt-create-route-new" onClick={this.createNewRouteNew} disabled={!state.municipal_facility_id}>Создать новый (new)</Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -266,7 +268,13 @@ class MissionTemplateForm extends MissionForm {
           showForm={this.state.showRouteForm}
           structureId={state.structure_id}
           fromMission
-          available_route_types={available_route_types}
+        />
+        <RouteFormWrapNew
+          element={routeNew}
+          showForm={this.state.showRouteFormNew}
+          handleHide={this.onFormHideNew}
+          hasMissionStructureId={!!state.structure_id}
+          fromMission
         />
 
       </Modal>

@@ -20,7 +20,7 @@ import { mapDispatchToProps } from 'components/missions/mission/MissionInfoForm/
 import {
   FormContainer,
   SideContainerDiv,
-} from 'components/missions/mission/MissionInfoform/styled/styled';
+} from 'components/missions/mission/MissionInfoForm/styled';
 import { DivNone } from 'global-styled/global-styled';
 
 import MapContainer from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/MapContainer';

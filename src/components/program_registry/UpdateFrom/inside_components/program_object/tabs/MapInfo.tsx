@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Col from 'react-bootstrap/lib/Col';
 
 import { IPropsMapInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.h';
-import RouteCreatingMap from 'components/route/form/map/RouteCreatingMap';
+import RouteCreatingMap from 'components/route_new/form/inside_fields/creating-map/map/RouteCreatingMap';
 
 class MapInfo extends React.Component<IPropsMapInfo, any> {
   handleFeatureClick = ({ id }) => {
@@ -73,9 +73,9 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
           <Col md={12}>
             <div style={{ minHeight: 500 }}>
               <RouteCreatingMap
-                disabled={!isPermittedMap}
                 objectsType={objectsType}
                 manual={manual}
+                canDraw={manual}
                 polys={polys}
                 objectList={objectList}
                 drawObjectList={drawObjectList}
@@ -84,6 +84,8 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 handleAddDrawLines={this.handleAddDrawLines}
                 handleDrawFeatureClick={this.handleDrawFeatureClick}
                 handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+                handleClickOnStartDraw={this.setManualOnTrue}
+                disabled={!isPermittedMap}
               />
             </div>
           </Col>

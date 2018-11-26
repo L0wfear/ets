@@ -62,6 +62,7 @@ export const makeTechnicalOperationOptionDefault: TMakeTechnicalOperationOptionD
 interface ITechnicalOperationActionsProps {
   kind_task_ids?: string;
   for?: string;
+  func_type_id?: number;
 }
 
 type TGetTechnicalOperationData = (
@@ -95,7 +96,7 @@ export const getTechnicalOperationData: TGetTechnicalOperationData = (formState,
           null
         ;
       return Promise.all([
-        technicalOperationsActions({ kind_task_ids, for: 'mission' }),
+        technicalOperationsActions({ kind_task_ids, for: 'mission', func_type_id: formState.type_id }),
         Promise.resolve(kind_task_ids),
       ]);
     })

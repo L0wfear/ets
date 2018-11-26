@@ -5,6 +5,7 @@ import {
 
 import { validateString } from 'components/ui/form/new/string/stringValidate';
 import { validateNumber } from 'components/ui/form/new/number/numberValidate';
+import { validateValueOfArray } from 'components/ui/form/new/valueOfArray/valueOfArrayValidate';
 
 export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P): any => {
   const {
@@ -19,6 +20,9 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
         break;
       case 'number':
         newObj[fieldData.key] = validateNumber<F, P>(fieldData, formState, props);
+        break;
+      case 'valueOfArray':
+        newObj[fieldData.key] = validateValueOfArray<F, P>(fieldData, formState, props);
         break;
       default:
         throw new Error('Нужно определить функцию для валидации');

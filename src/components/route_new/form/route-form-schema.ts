@@ -18,20 +18,19 @@ export const routeFormSchema: SchemaType<FormStateRouteForm, PropsRouteWithForm>
     {
       key: 'technical_operation_id',
       title: 'Технологическая операция',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'municipal_facility_id',
       title: 'Элемент',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
-      key: 'municipal_facility_id',
-      title: 'Элемент',
-      type: 'number',
-      required: true,
+      key: 'structure_id',
+      title: 'Подразделение',
+      type: 'valueOfArray',
     },
     {
       key: 'type',

@@ -2,7 +2,8 @@ export type PropertieType = {
   key: string;
   title: string;
   type: 'string'
-  | 'number';
+  | 'number'
+  | 'valueOfArray';
   required?: boolean;
 };
 

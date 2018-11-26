@@ -145,10 +145,12 @@ export class DutyMissionForm extends Form {
   }
 
   handleForemanIdChange = async (foreman_id) => {
-    if (foreman_id && foreman_id !== this.props.formState.foreman_id) {
-      const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
+    if (foreman_id !== this.props.formState.foreman_id) {
+      if (foreman_id) {
+        const lastBrigade = await this.context.flux.getActions('employees').getLastBrigade(foreman_id);
 
-      this.handleBrigadeIdListChange(lastBrigade.map(({ id }) => id));
+        this.handleBrigadeIdListChange(lastBrigade.map(({ id }) => id));
+      }
       this.props.handleFormChange('foreman_id', foreman_id);
     }
   }

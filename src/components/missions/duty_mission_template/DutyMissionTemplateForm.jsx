@@ -92,7 +92,8 @@ class MissionTemplateForm extends DutyMissionForm {
                 options={TECH_OPERATIONS}
                 disabled={!!state.route_id}
                 value={state.technical_operation_id}
-                onChange={this.handleTechnicalOperationChange.bind(this)}
+                onChange={this.handleTechnicalOperationChange}
+                clearable={false}
               />
             </Col>
 

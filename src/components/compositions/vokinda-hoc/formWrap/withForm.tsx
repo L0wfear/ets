@@ -2,6 +2,8 @@ import * as React from 'react';
 import { isFunction } from 'util';
 import { clone } from 'lodash';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { validate } from 'components/ui/form/new/validate';
 
 type FormErrorType<F> = {
   [K in keyof F]?: string | null;
@@ -12,6 +14,7 @@ type ConfigWithForm<P, F, S> = {
   mergeElement?: (props: P) => F;
   canSave?: (state: S, props: P) => boolean;
   validate?: (formState: F, props: P) => FormErrorType<F>;
+  schema: SchemaType<F, P>,
   permissions: {
     update: string;
     [k: string]: any;
@@ -41,7 +44,7 @@ type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => P
 export type OutputProps<P, F, T extends any[], A> = (
   WithFormProps<P>
   & WithFormState<F>
-  & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'canSave' | 'validate'>
+  & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'canSave' | 'validate' | 'schema'>
   & {
     handleChange: FormWithHandleChange<F>;
     submitAction: FormWithSubmitAction<T, A>;
@@ -80,7 +83,11 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
         };
       }
       validate = (formState: F) => {
-        return config.validate(formState, this.props);
+        if (isFunction(config.validate)) {
+          return config.validate(formState, this.props);
+        }
+
+        return validate(config.schema, formState, this.props);
       }
       canSave = (state: WithFormState<F>) => {
         if (isFunction(config.canSave)) {
@@ -92,11 +99,45 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
       handleChange: FormWithHandleChange<F> = (objChange) => {
         setImmediate(() => {
           const formState = clone<F>(this.state.formState);
+          const { properties } = config.schema;
+          const propertiesByKey = properties.reduce((newObj, { key, ...other }) => {
+            newObj[key] = other;
+
+            return newObj;
+          }, {});
 
           Object.entries(objChange).forEach(([key, value]) => {
+            if (key in propertiesByKey) {
+              switch (propertiesByKey[key].type) {
+                case 'number':
+                  const valueNumberString: number | string = (value as number | string);
+
+                  if (valueNumberString || valueNumberString === 0) {
+                    const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
+                    if (!isNaN(Number(valueReplaced))) {
+                      if (valueReplaced.match(/^.\d*$/)) {
+                        formState[key] = `0${valueReplaced}`;
+                      }
+                      formState[key] = Number(valueReplaced);
+                    } else {
+                      formState[key] = null;
+                    }
+                  } else {
+                    formState[key] = null;
+                  }
+                  break;
+                case 'string':
+                case 'date':
+                case 'datetime':
+                default:
+                  formState[key] = Boolean(value) ? value : null;
+              }
+            } else {
+              formState[key] = value;
+            }
+
             // tslint:disable-next-line
-            console.log('FORM CHANGE STATE', key, value);
-            formState[key] = value;
+            console.log('FORM CHANGE STATE', key, formState[key]);
           });
 
           const formErrors = this.validate(formState);

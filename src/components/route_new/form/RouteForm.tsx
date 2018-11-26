@@ -15,7 +15,6 @@ import CreatingMap from 'components/route_new/form/inside_fields/creating-map/Cr
 
 import { FlewWrapFormRow } from 'components/ui/form/new/styled/styled';
 
-import { validate } from 'components/ui/form/new/validate';
 import { routeFormSchema } from 'components/route_new/form/route-form-schema';
 
 import {
@@ -236,9 +235,7 @@ export default compose<PropsRouteForm, OwnRouteFormProps>(
         available_route_types: [],
       };
     },
-    validate: (formState, props) => (
-      validate(routeFormSchema, formState, props)
-    ),
+    schema: routeFormSchema,
     permissions: routePermisions,
   }),
 )(RouteForm);

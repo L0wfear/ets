@@ -99,8 +99,9 @@ const PropOnDateRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, on
   />;
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const vehicleList = [...props.batteryAvailableCarList, ...props.inputList].map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
-
+  const inputList = props.inputList.filter((filterItem) => Boolean(filterItem.gov_number));
+  const vehicleList = [...props.batteryAvailableCarList, ...inputList].map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
+  
   return {
     car_id: (rowMeta) =>
       <CarIdRenderer

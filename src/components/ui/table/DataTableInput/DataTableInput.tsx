@@ -21,7 +21,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     this.setState({
       selected: {...selected.props.data, rowNumber: rowNumber}
     });
-    this.props.onRowSelected(selected);
+    this.props.onRowSelected(selected); // DataTableInputWrapper.tsx handleRowSelected()
   }
   handleAddVehicle = () => {
     this.props.onItemAdd();

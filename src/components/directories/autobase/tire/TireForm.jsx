@@ -118,6 +118,7 @@ export default class TireForm extends Form {
                   onValidation={this.handleTireToCarValidity}
                   disabled={!isPermitted}
                   tireId={state.id}
+                  selectField={'customId'}
                 />
               </Col>
             </ExtDiv>

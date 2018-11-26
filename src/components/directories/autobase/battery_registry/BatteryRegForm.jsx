@@ -45,7 +45,7 @@ export default class BaseBatteryForm extends Form {
 
     let title = 'Изменение существующего аккумулятора';
     if (IS_CREATING) title = 'Добавление нового аккумулятора';
-
+    
     return (
       <Modal id="modal-battery-reg" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
@@ -115,6 +115,7 @@ export default class BaseBatteryForm extends Form {
                     inputList={state.battery_to_car || []}
                     onValidation={this.handleBatteryToCarValidity}
                     batteryId={state.id}
+                    selectField={'customId'}
                   />
                 </Col>
               }

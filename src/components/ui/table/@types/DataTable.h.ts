@@ -35,4 +35,5 @@ export interface IPropsDataTable<TResultObject> {
   checked?: any;
   normInitialData?: boolean;
   highlightClassMapper?: (rowData: any) => void | string;
+  customId?: number;
 }

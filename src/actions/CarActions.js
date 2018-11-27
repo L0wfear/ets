@@ -58,7 +58,7 @@ export default class CarActions extends Actions {
         car_id,
         ...packObjectData('car_drivers', restPayload),
       }),
-      () => {
+      (() => {
         if (passport_type) {
           return this.updateCarPassportInfo({
             car_id,
@@ -68,7 +68,7 @@ export default class CarActions extends Actions {
           });
         }
         return Promise.resolve(true);
-      },
+      })(),
     ]).then(([carData]) => carData);
   }
 

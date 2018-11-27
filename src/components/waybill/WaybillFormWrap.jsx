@@ -264,7 +264,6 @@ export default class WaybillFormWrap extends FormWrap {
         if (field === 'odometr_end' && formState.odometr_diff >= 0) {
           if (lastTax.is_excluding_mileage) {
             lastTax.iem_FACT_VALUE = formState.odometr_diff;
-            lastTax.iem_RESULT = Taxes.getResult(lastTax);
           } else {
             lastTax.FACT_VALUE = formState.odometr_diff;
             lastTax.RESULT = Taxes.getResult(lastTax);
@@ -273,7 +272,6 @@ export default class WaybillFormWrap extends FormWrap {
         if (field === 'motohours_end' && formState.motohours_diff >= 0) {
           if (lastTax.is_excluding_mileage) {
             lastTax.iem_FACT_VALUE = formState.odometr_diff;
-            lastTax.iem_RESULT = Taxes.getResult(lastTax);
           } else {
             lastTax.FACT_VALUE = formState.motohours_diff;
             lastTax.RESULT = Taxes.getResult(lastTax);
@@ -282,7 +280,6 @@ export default class WaybillFormWrap extends FormWrap {
         if (formState.odometr_diff < 0 || formState.motohours_diff < 0) {
           if (lastTax.is_excluding_mileage) {
             lastTax.iem_FACT_VALUE = formState.odometr_diff;
-            lastTax.iem_RESULT = Taxes.getResult(lastTax);
           } else {
             lastTax.FACT_VALUE = null;
             lastTax.RESULT = Taxes.getResult(lastTax);

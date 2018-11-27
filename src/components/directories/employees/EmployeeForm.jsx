@@ -4,6 +4,8 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 
+import { get } from 'lodash';
+
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { connectToStores } from 'utils/decorators';
 
@@ -14,11 +16,17 @@ import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import { diffDates } from 'utils/dates';
 
-import Form from '../../compositions/Form';
+import Form from 'components/compositions/Form';
+import { isArray } from 'util';
 
 function filterCars(car, formState) {
   let norm = false;
-  if (car.available_to_bind) {
+  const secondary_car = get(formState, 'secondary_car', []);
+  const prefer_car = get(formState, 'prefer_car', null);
+
+  if (prefer_car && prefer_car === car.asuods_id || isArray(secondary_car) && secondary_car.includes(car.asuods_id)) {
+    norm = true;
+  } else if (car.available_to_bind) {
     if (
       formState &&
       formState.drivers_license_date_end &&

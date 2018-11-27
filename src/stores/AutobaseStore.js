@@ -32,9 +32,52 @@ export default class AutobaseStore extends Store {
     switch (type) {
       case 'roadAccidentRegistry':
         return this.roadAccident(data);
+      case 'batteryRegistry':
+        return this.bateryCustomId(data);
+      case 'tire':
+        return this.tireCustomId(data);
       default:
         return this.defaultData(data);
     }
+  }
+
+  bateryCustomId = ({ result = [] }) => {
+    const {
+      rows = [],
+      extra = {},
+    } = result;
+
+    const newRows = [...rows.map((row) => {
+      const { battery_to_car } = row;
+      const newBattery_to_car = battery_to_car.map((item, index) => ({
+          ...item,
+          customId: index + 1,
+        }));
+      return {
+        ...row,
+        battery_to_car: newBattery_to_car,
+      };
+    })];
+    return { rows: newRows, extra };
+  }
+  tireCustomId = ({ result = [] }) => {
+    const {
+      rows = [],
+      extra = {},
+    } = result;
+
+    const newRows = [...rows.map((row) => {
+      const { tire_to_car } = row;
+      const newtire_to_car = tire_to_car.map((item, index) => ({
+          ...item,
+          customId: index + 1,
+        }));
+      return {
+        ...row,
+        tire_to_car: newtire_to_car,
+      };
+    })];
+    return { rows: newRows, extra };
   }
 
   roadAccident = ({ result = [] }) => {

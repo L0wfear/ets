@@ -18,7 +18,6 @@ export const missionTemplateSchema = {
       type: 'number',
       required: true,
       integer: true,
-      min: 1,
       max: 10,
     },
     {
@@ -34,4 +33,14 @@ export const missionTemplateSchema = {
       required: true,
     },
   ],
+  dependencies: {
+    passes_count: [
+      {
+        validator(value) {
+          if (value < 1)
+            return '"Количество циклов" должно быть больше 0';
+        }
+      }
+    ],
+  },
 };

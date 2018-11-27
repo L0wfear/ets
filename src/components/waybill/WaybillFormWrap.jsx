@@ -21,6 +21,7 @@ import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from './Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
+import { isNullOrUndefined } from 'util';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ

@@ -7,6 +7,7 @@ import { mapKeys, get, isEmpty, identity, sortBy } from 'lodash';
 import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema, ISchemaMaker } from 'components/ui/table/@types/schema.h';
 import { isString } from 'util';
 import { diffDates } from 'utils/dates';
+
 export function extractTableMeta(columnMeta: IDataTableSchema): IExtractedDataTableSchema {
   return indexBy<IDataTableColSchema>(prop('name'), columnMeta.cols);
 }
@@ -185,12 +186,7 @@ export const sortData = (data, { initialSort, initialSortAscending, ...other }) 
   initialSort
   ? (
     data.sort((a, b) => (
-      sortFunction(
-        initialSortAscending ? a : b,
-        initialSortAscending ? b : a,
-        initialSort,
-        other,
-      )),
+      sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)),
     )
   )
   : (

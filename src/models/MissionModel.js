@@ -19,7 +19,6 @@ export const missionSchema = {
       required: true,
       integer: true,
       max: 10,
-      min: 1,
     },
     {
       key: 'car_id',
@@ -70,6 +69,14 @@ export const missionSchema = {
     },
   ],
   dependencies: {
+    passes_count: [
+      {
+        validator(value) {
+          if (value < 1)
+            return '"Количество циклов" должно быть больше 0';
+        }
+      }
+    ],
     'date_end': [
       {
         type: 'gt',

@@ -54,6 +54,9 @@ export default class TechnicalOperationsActions extends Actions {
     if (!payload.kind_task_ids) {
       delete payload.kind_task_ids;
     }
+    if (!payload.func_type_id) {
+      delete payload.func_type_id;
+    }
 
     return getTechnicalOperations(payload);
   }

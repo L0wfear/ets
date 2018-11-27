@@ -118,10 +118,10 @@ export default class Taxes extends React.Component {
         return <ReactSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
       },
       measure_unit_name: measure_unit_name => measure_unit_name || '-',
-      RESULT: RESULT => `${RESULT ? `${RESULT} л` : ''}`,
-      fuel_correction_rate: fuel_correction_rate => (
-        fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1
-      ),
+      RESULT: RESULT => `${RESULT ? RESULT + ' л' : ''}`,
+      fuel_correction_rate: (fuel_correction_rate, row) => {
+        return fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1;
+      },
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
@@ -170,9 +170,6 @@ export default class Taxes extends React.Component {
     if (current.measure_unit_name === 'л/час') {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE * 1000) / 1000;
     }
-    if (current.is_excluding_mileage) {
-      current.iem_FACT_VALUE = current.FACT_VALUE;
-    }
     current.RESULT = Taxes.getResult(current);
 
     this.setState({ tableData });
@@ -186,17 +183,17 @@ export default class Taxes extends React.Component {
     tableData[index].OPERATION = value;
     const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
     tableData[index].FUEL_RATE = fuelRateByOperation.rate_on_date || 0;
-    tableData[index].is_excluding_mileage = (this.state.operations
-      .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
-    if (tableData[index].is_excluding_mileage) {
-      tableData[index].FACT_VALUE = 0;
-    } else if (last_is_excluding_mileage) {
-      tableData[index].FACT_VALUE = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
-    }
     tableData[index].RESULT = Taxes.getResult(tableData[index]);
     tableData[index].measure_unit_name = (this.state.operations
       .find(({ value: op_value }) => op_value === Number(value)) || {}).measure_unit_name;
+    tableData[index].is_excluding_mileage = (this.state.operations
+      .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
 
+    if (tableData[index].is_excluding_mileage) {
+      tableData[index].FACT_VALUE = 0;
+    } else if (last_is_excluding_mileage) {
+      tableData[index].FACT_VALUE = tableData[index].iem_FACT_VALUE;
+    }
     this.setState({ tableData });
     this.props.onChange(tableData);
   }
@@ -268,7 +265,7 @@ export default class Taxes extends React.Component {
           <div className="taxes-result-label">Итого</div>
           <div className="taxes-result-label">
             <span className={finalFactValueClassName}>{finalFactValue}</span>
-            <span> (км | м/ч)</span>
+            <span> км</span>
           </div>
           <div className="taxes-result-value">{finalResult} л.</div>
         </Div>

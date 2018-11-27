@@ -105,7 +105,7 @@ class DutyMissionFormWrap extends FormWrap {
   createAction = async (formState) => {
     try {
       await this.context.flux.getActions('missions').createDutyMission(formState);
-      if (!this.props.fromOrder && !this.props.fromDashboard) {
+      if (!this.props.fromOrder && !this.props.fromDashboard && this.props.refreshTableList) {
         await this.props.refreshTableList();
       }
     } catch (error) {

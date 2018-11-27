@@ -423,6 +423,7 @@ export default class DataTable extends React.Component {
 
   initializeRowMetadata() {
     const defaultClass = 'standard-row';
+
     return {
       'bodyCssClassName': (rowData) => {
         if (rowData.isSelected) {

@@ -59,7 +59,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
   seclectDownload = (event, eventKey) => {
     const payload: any = {};
 
-    if (event === TypeDownload.new) {
+    if (eventKey === TypeDownload.new) {
       payload.format = 'xls';
     }
 

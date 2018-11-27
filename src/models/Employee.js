@@ -41,6 +41,11 @@ export const schema = {
       title: 'Срок действия водительского удостоверения',
       type: 'date',
     },
+    {
+      key: 'special_license_date_end',
+      title: 'Срок действия специального удостоверения',
+      type: 'date',
+    },
   ],
   dependencies: {
     drivers_license: [
@@ -49,7 +54,7 @@ export const schema = {
           if (formData.position_id === 15 || formData.position_id === 24 || formData.position_id === 46) {
             if (isEmpty(formData.special_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
-            } 
+            }
           }
           return undefined;
         },
@@ -72,6 +77,16 @@ export const schema = {
         validator: (value, formData) => {
           if (!isEmpty(formData.drivers_license) && isEmpty(value)) {
             return 'Поле "Срок действия водительского удостоверения" должно быть заполнено';
+          }
+          return undefined;
+        },
+      },
+    ],
+    special_license_date_end: [
+      {
+        validator: (value, formData) => {
+          if (!isEmpty(formData.special_license) && isEmpty(value)) {
+            return 'Поле "Срок действия специального удостоверения" должно быть заполнено';
           }
           return undefined;
         },

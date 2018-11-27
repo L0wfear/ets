@@ -200,7 +200,7 @@ export default class EmployeeForm extends Form {
                 label="Водительское удостоверение"
                 value={state.drivers_license}
                 error={errors.drivers_license}
-                disabled={!isPermitted}
+                disabled={!isPermitted }
                 onChange={this.handleChangeWithValidate}
                 boundKeys={['drivers_license']}
               />

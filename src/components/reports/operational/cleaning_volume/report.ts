@@ -15,7 +15,7 @@ const schemaMakers = {};
 const renderers = {};
 
 const reportProps: IReportProps = {
-  title: 'Удельный объём уборки для ТС в разрезе технологических операций',
+  title: 'Удельный объем уборки для ТС',
   serviceName,
   reportUrl,
   serviceUrl,

@@ -62,9 +62,16 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.validate(newItems);
     }
     handleItemAdd = () => {
+      const { inputList } = this.props;
+      let maxCustomId = 0;
+
+      inputList.map((item) => {
+        maxCustomId = item.customId > maxCustomId ? item.customId : maxCustomId;
+        return item;
+      });
       const newItems = this.props.tableSchema.cols
         .map((columnMeta) => ({ [columnMeta.name]: undefined }))
-        .reduce((acc, curr) => ({ ...acc, ...curr }));
+        .reduce((acc, curr) => ({ ...acc, ...curr, customId: maxCustomId + 1}));
       const finalValue = this.props.stackOrder
         ? [newItems, ...this.props.inputList]
         : [...this.props.inputList, newItems];

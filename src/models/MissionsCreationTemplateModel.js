@@ -5,7 +5,6 @@ export const missionsCreationTemplateSchema = {
       title: 'Количество циклов',
       type: 'number',
       required: false,
-      min: 0,
       max: 10,
     },
     {
@@ -15,4 +14,14 @@ export const missionsCreationTemplateSchema = {
       required: false,
     },
   ],
+  dependencies: {
+    passes_count: [
+      {
+        validator(value) {
+          if (value < 1)
+            return '"Количество циклов" должно быть больше 0';
+        }
+      }
+    ],
+  },
 };

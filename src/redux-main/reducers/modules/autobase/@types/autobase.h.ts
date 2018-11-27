@@ -22,8 +22,21 @@ export type SparePartGroup = {
   name: string;
 };
 
+export type BatteryBrand = {
+  id?: number | null;
+  name: string | null;
+  manufacturer_id: number | null;
+  manufacturer_name: string | null;
+};
+export type BatteryManufacturer = {
+  id?: number | null;
+  name: string | null;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
   sparePartGroupList: SparePartGroup[];
+  batteryBrandList: BatteryBrand[];
+  batteryManufacturerList: BatteryManufacturer[];
 };

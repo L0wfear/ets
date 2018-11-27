@@ -9,6 +9,8 @@ const initialState: IStateAutobase = {
   sparePartList: [],
   measureUnitList: [],
   sparePartGroupList: [],
+  batteryBrandList: [],
+  batteryManufacturerList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

@@ -1,6 +1,8 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsSparePart } from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
+import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const sparePartFormSchema: SchemaType<any, any> = {
+export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
   properties: [
     {
       key: 'number',

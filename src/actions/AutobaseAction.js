@@ -24,48 +24,6 @@ export default class AutobaseActions extends Actions {
     };
   }
 
-  batteryBrand(method, formState) {
-    const payload = cloneDeep(formState);
-    const { batteryBrand } = AUTOBASE;
-
-    const path = parsePutPath(batteryBrand, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryBrand'),
-      'json',
-    );
-  }
-
-  removeBatteryBrand(id) {
-    const { batteryBrand } = AUTOBASE;
-    return AutoBase.path(`${batteryBrand}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryBrand'),
-      'json',
-    );
-  }
-
-  batteryManufacturer(method, formState) {
-    const payload = cloneDeep(formState);
-    const { batteryManufacturer } = AUTOBASE;
-
-    const path = parsePutPath(batteryManufacturer, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
-      'json',
-    );
-  }
-
-  removeBatteryManufacturer(id) {
-    const { batteryManufacturer } = AUTOBASE;
-    return AutoBase.path(`${batteryManufacturer}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
-      'json',
-    );
-  }
-
   batteryRegistry(method, formState) {
     const payload = {
       ...formState,

@@ -15,8 +15,6 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'batteryBrand',
-          'batteryManufacturer',
           'batteryRegistry',
           'insurancePolicy',
           'repair',
@@ -28,9 +26,6 @@ export default class NotificationsStore extends Store {
           'tire',
           'cloneTire',
         ],
-        actionNotifications: {
-          'batteryManufacturer': 'Новая запись успешно добавлена',
-        },
       },
       {
         actions: repairActions,
@@ -77,8 +72,6 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'removeBatteryBrand',
-          'removeBatteryManufacturer',
           'removeBatteryRegistry',
           'removeInsurancePolicy',
           'removeRepair',

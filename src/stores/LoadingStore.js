@@ -23,8 +23,6 @@ export default class LoadingStore extends Store {
       sessionActions.cahngeCompanyOnAnother,
 
       autoBaseActions.getAutobaseListByType,
-      autoBaseActions.batteryBrand,
-      autoBaseActions.batteryManufacturer,
       autoBaseActions.batteryRegistry,
       autoBaseActions.insurancePolicy,
       autoBaseActions.repair,

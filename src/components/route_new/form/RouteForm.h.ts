@@ -1,5 +1,5 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { OutputProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CreateRouteActionAns, RouteFormStateType } from 'redux-main/trash-actions/route/route';
 
 export type PropsRouteFormWrap = OwnRouteFormProps & {
@@ -40,7 +40,7 @@ export type FormStateRouteForm = RouteFormStateType & {
   draw_object_list: any[];
 };
 
-export type PropsRouteForm = OutputProps<
+export type PropsRouteForm = OutputWithFormProps<
   PropsRouteWithForm,
   FormStateRouteForm,
   [

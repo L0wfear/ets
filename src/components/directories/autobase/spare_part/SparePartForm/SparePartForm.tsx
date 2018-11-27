@@ -1,118 +1,213 @@
 import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
-import ModalBody from 'components/ui/Modal';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Div from 'components/ui/Div';
-import connectToStores from 'flummox/connect';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import sparePartPermissions from 'components/directories/autobase/spare_part/config-data/permissions';
+import { compose } from 'recompose';
+import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { sparePartFormSchema } from 'components/directories/autobase/spare_part/SparePartForm/spare-part-from-schema';
+import { get } from 'lodash';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import WithFormMethods from 'components/compositions/vokinda-hoc/form/WithFormMethods';
-import WithLifeCycle from 'components/compositions/vokinda-hoc/with-life-cycle/WithLifeCycle';
-
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { getDefaultSparePartElement } from './utils';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { ReduxState } from 'redux-main/@types/state';
+import { connect } from 'react-redux';
 import {
-  componentDidMount,
-} from 'components/directories/autobase/spare_part/SparePartForm/utils';
+  OwnSparePartProps,
+  PropsSparePart,
+  StateSparePart,
+  StatePropsSparePart,
+  DispatchPropsSparePart,
+  PropsSparePartWithForm,
+} from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
+import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { DivNone } from 'global-styled/global-styled';
 
-const SparePartForm = (props) => {
-  const {
-    formState: state,
-    formErrors: errors,
-    AutobaseOptions: {
-      measureUnitOptions = [],
-      sparePartGroupOptions = [],
-    },
-    isPermitted = false,
-  } = props;
-
-  const IS_CREATING = !state.id;
-
-  let title = 'Изменение записи';
-  if (IS_CREATING) {
-    title = 'Создание записи';
-  }
-
-  return (
-    <Modal id="modal-spare-part" show={props.show} onHide={props.onHide} backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
-      <Div style={{ padding: 15 }}>
-        <Row>
-          <Col md={12}>
-            <ExtField
-              type="select"
-              label="Группа"
-              error={errors.spare_part_group_id}
-              options={sparePartGroupOptions}
-              value={state.spare_part_group_id}
-              onChange={props.handleChange}
-              boundKeys={['spare_part_group_id']}
-              disabled={!isPermitted}
-            />
-            <ExtField
-              type="string"
-              label="Подгруппа"
-              value={state.name}
-              error={errors.name}
-              onChange={props.handleChange}
-              boundKeys={['name']}
-              disabled={!isPermitted}
-            />
-            <ExtField
-              type="string"
-              label="Номер поставки"
-              value={state.number}
-              error={errors.number}
-              onChange={props.handleChange}
-              boundKeys={['number']}
-              disabled={!isPermitted}
-            />
-            <ExtField
-              type="select"
-              label="Единица измерения"
-              error={errors.measure_unit_id}
-              options={measureUnitOptions}
-              value={state.measure_unit_id}
-              onChange={props.handleChange}
-              boundKeys={['measure_unit_id']}
-              disabled={!isPermitted}
-            />
-            <ExtField
-              type="number"
-              label="Количество"
-              value={state.quantity}
-              error={errors.quantity}
-              onChange={props.handleChange}
-              boundKeys={['quantity']}
-              disabled={!isPermitted}
-            />
-            <ExtField
-              type="date"
-              label="Дата поставки"
-              date={state.supplied_at}
-              time={false}
-              error={errors.supplied_at}
-              onChange={props.handleChange}
-              boundKeys={['supplied_at']}
-              disabled={!isPermitted}
-            />
-          </Col>
-        </Row>
-      </Div>
-      <ModalBody />
-      <Modal.Footer>
-        <Button disabled={!props.canSave} onClick={props.handleSubmit}>Сохранить</Button>
-      </Modal.Footer>
-    </Modal>
-  );
+const boundKeys = {
+  spare_part_group_id: 'spare_part_group_id',
+  name: 'name',
+  number: 'number',
+  measure_unit_id: 'measure_unit_id',
+  quantity: 'quantity',
+  supplied_at: 'supplied_at',
 };
 
-export default hocAll(
-  WithFormMethods(),
-  WithLifeCycle({
-    componentDidMount,
+class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> {
+  state = {
+    measureUnitOptions: [],
+    sparePartGroupOptions: [],
+  };
+
+  componentDidMount() {
+    this.loadMeasureUnit();
+    this.loadSparePartGroup();
+  }
+  async loadMeasureUnit() {
+    const { payload: { data } } = await this.props.autobaseGetSetMeasureUnit();
+
+    this.setState({ measureUnitOptions: data.map(defaultSelectListMapper) });
+  }
+  async loadSparePartGroup() {
+    const { payload: { data } } = await this.props.autobaseGetSetSparePartGroup();
+
+    this.setState({ sparePartGroupOptions: data.map(defaultSelectListMapper) });
+  }
+  handleChange = (name, value) => {
+    this.props.handleChange({
+      [name]: get(value, ['target', 'value'], value),
+    });
+  }
+  handleHide = () => {
+    this.props.handleHide(false);
+  }
+  render() {
+    const {
+      formState: state,
+      formErrors: errors,
+      isPermitted = false,
+      page,
+      path,
+    } = this.props;
+    const {
+      measureUnitOptions,
+      sparePartGroupOptions,
+    } = this.state;
+
+    const IS_CREATING = !state.id;
+
+    const title = IS_CREATING ? 'Изменение записи' : 'Создание записи';
+
+    return (
+      <Modal id="modal-spare-part" show onHide={this.handleHide} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>{ title }</Modal.Title>
+        </Modal.Header>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <Row>
+            <Col md={12}>
+              <ExtField
+                type="select"
+                label="Группа"
+                error={errors.spare_part_group_id}
+                options={sparePartGroupOptions}
+                value={state.spare_part_group_id}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.spare_part_group_id}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="string"
+                label="Подгруппа"
+                value={state.name}
+                error={errors.name}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.name}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="string"
+                label="Номер поставки"
+                value={state.number}
+                error={errors.number}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.number}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="select"
+                label="Единица измерения"
+                error={errors.measure_unit_id}
+                options={measureUnitOptions}
+                value={state.measure_unit_id}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.measure_unit_id}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="string"
+                label="Количество"
+                value={state.quantity}
+                error={errors.quantity}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.quantity}
+                disabled={!isPermitted}
+              />
+              <ExtField
+                type="date"
+                label="Дата поставки"
+                date={state.supplied_at}
+                time={false}
+                error={errors.supplied_at}
+                onChange={this.handleChange}
+                boundKeys={boundKeys.supplied_at}
+                disabled={!isPermitted}
+              />
+            </Col>
+          </Row>
+        </ModalBodyPreloader>
+        <Modal.Footer>
+        {
+          isPermitted || state.id // либо обновление, либо создание
+          ? (
+            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}
+
+export default compose<PropsSparePart, OwnSparePartProps>(
+  connect<StatePropsSparePart, DispatchPropsSparePart, OwnSparePartProps, ReduxState>(
+    null,
+    (dispatch, { page, path }) => ({
+      createAction: (formState) => (
+        dispatch(
+          autobaseActions.autobaseCreateSparePart(
+            formState,
+            { page, path },
+          ),
+        )
+      ),
+      updateAction: (formState) => (
+        dispatch(
+          autobaseActions.autobaseUpdateSparePart(
+            formState,
+            { page, path },
+          ),
+        )
+      ),
+      autobaseGetSetMeasureUnit: () => (
+        dispatch(
+          autobaseActions.autobaseGetMeasureUnit(
+            {},
+            { page, path },
+          ),
+        )
+      ),
+      autobaseGetSetSparePartGroup: () => (
+        dispatch(
+          autobaseActions.autobaseGetSparePartGroup(
+            {},
+            { page, path },
+          ),
+        )
+      ),
+    }),
+  ),
+  withForm<PropsSparePartWithForm, SparePart>({
+    mergeElement: (props) => {
+      return getDefaultSparePartElement(props.element);
+    },
+    schema: sparePartFormSchema,
+    permissions: sparePartPermissions,
   }),
-)(connectToStores(SparePartForm, ['autobase']));
+)(SparePartForm);

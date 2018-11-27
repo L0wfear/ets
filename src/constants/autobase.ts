@@ -1,11 +1,12 @@
+export const sparePart = 'sparePart';
+export const sparePartGroup = 'sparePartGroup';
+export const measureUnit = 'measureUnit';
+
 export default {
   batteryRegistry: 'battery_registry',
   batteryBrand: 'battery_brand',
   batteryManufacturer: 'battery_manufacturer',
   tire: 'tire_registry',
-  sparePart: 'spare_part_registry',
-  sparePartGroup: 'spare_part_group',
-  measureUnit: 'measure_unit',
   tireSize: 'tire_size',
   tireModel: 'tire_model',
   tireManufacturer: 'tire_manufacturer',
@@ -28,4 +29,7 @@ export default {
   carCategory: 'car_category',
   engineType: 'engine_type',
   propulsionType: 'propulsion_type',
+  [sparePart]: 'spare_part_registry',
+  [sparePartGroup]: 'spare_part_group',
+  [measureUnit]: 'measure_unit',
 };

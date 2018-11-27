@@ -40,14 +40,16 @@ type WithFormProps<P> = P & {
 
 type FormWithHandleChange<F> = (objChange: { [K in keyof F]?: F[K] }) => void;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
+type FormWithDefaultSubmit = () => void;
 
-export type OutputProps<P, F, T extends any[], A> = (
+export type OutputWithFormProps<P, F, T extends any[], A> = (
   WithFormProps<P>
   & WithFormState<F>
   & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'canSave' | 'validate' | 'schema'>
   & {
     handleChange: FormWithHandleChange<F>;
     submitAction: FormWithSubmitAction<T, A>;
+    defaultSubmit: FormWithDefaultSubmit;
   }
 );
 
@@ -118,9 +120,9 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
                       if (valueReplaced.match(/^.\d*$/)) {
                         formState[key] = `0${valueReplaced}`;
                       }
-                      formState[key] = Number(valueReplaced);
+                      formState[key] = valueReplaced;
                     } else {
-                      formState[key] = null;
+                      formState[key] = valueReplaced;
                     }
                   } else {
                     formState[key] = null;
@@ -166,6 +168,7 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
           if (isFunction(this.props.createAction)) {
             try {
               result = await this.props.createAction<T, A>(...payload);
+              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
               // tslint:disable-next-line
               console.warn(error);
@@ -178,6 +181,7 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
           if (isFunction(this.props.updateAction)) {
             try {
               result = await this.props.updateAction<T, A>(...payload);
+              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
               // tslint:disable-next-line
               console.warn(error);
@@ -188,10 +192,26 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
           }
         }
         const { handleHide } = this.props;
+
         if (isFunction(handleHide)) {
           handleHide(true, result);
         }
         return result;
+      }
+
+      defaultSubmit = () => {
+        const formatedFormState = clone(this.state.formState);
+        config.schema.properties.forEach(({ key, type }) => {
+          let value = formatedFormState[key];
+
+          if (type === 'number' && value) {
+            value = Number(value);
+          }
+
+          formatedFormState[key] = value;
+        });
+
+        this.submitAction(formatedFormState);
       }
 
       render() {
@@ -203,6 +223,7 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
             canSave={this.state.canSave}
             handleChange={this.handleChange}
             submitAction={this.submitAction}
+            defaultSubmit={this.defaultSubmit}
           />
         );
       }

@@ -1,13 +1,13 @@
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 
-export const formValidationSchema: IValidationSchema = {
+export const sparePartFormSchema: SchemaType<any, any> = {
   properties: [
     {
       key: 'number',
       title: 'Номер поставки',
       type: 'string',
-      required: true,
       maxLength: 128,
+      required: true,
     },
     {
       key: 'name',
@@ -28,13 +28,13 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'spare_part_group_id',
       title: 'Группа',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'measure_unit_id',
       title: 'Единица измерения',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {

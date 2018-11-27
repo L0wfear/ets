@@ -30,7 +30,6 @@ export default class LoadingStore extends Store {
       autoBaseActions.repair,
       autoBaseActions.repairCompany,
       autoBaseActions.roadAccident,
-      autoBaseActions.sparePart,
       autoBaseActions.techInspection,
       autoBaseActions.techMaintOrder,
       autoBaseActions.techMaint,

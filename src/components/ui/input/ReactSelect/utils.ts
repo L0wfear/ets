@@ -1,5 +1,12 @@
 import { isString, isNumber } from 'lodash';
 
+export type DefaultSelectOption<V, L> = {
+  value: V,
+  label: L,
+};
+
+export type DefaultSelectListMapper<V, L> = DefaultSelectOption<V, L>[];
+
 export const defaultSelectListMapper = ({ id, name }) => ({ value: id, label: name });
 
 export const onChangeSelectLegacy = (sValue, multi) => {

@@ -3,8 +3,14 @@ export type PropertieType = {
   title: string;
   type: 'string'
   | 'number'
-  | 'valueOfArray';
+  | 'valueOfArray'
+  | 'date';
   required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  integer?: boolean;
 };
 
 export type DependencieValidatorType<F, P, K = any> = (
@@ -21,7 +27,7 @@ export type DependencieType<F, P> = {
 
 export type SchemaType<F, P> = {
   properties: PropertieType[],
-  dependencies: DependencieType<F, P>;
+  dependencies?: DependencieType<F, P>;
 };
 
 export type ValidateFuncType<F, P> = (

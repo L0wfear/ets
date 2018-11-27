@@ -212,30 +212,6 @@ export default class AutobaseActions extends Actions {
     );
   }
 
-  sparePart(method, formState) {
-    const payload = {
-      ...formState,
-      supplied_at: createValidDate(formState.supplied_at),
-    };
-    const { sparePart } = AUTOBASE;
-
-    const path = parsePutPath(sparePart, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'sparePart'),
-      'json',
-    );
-  }
-
-  removeSparePart(id) {
-    const { sparePart } = AUTOBASE;
-    return AutoBase.path(`${sparePart}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'sparePart'),
-      'json',
-    );
-  }
-
   techInspection(method, boundPayload, formState) {
     const payload = {
       ...formState,

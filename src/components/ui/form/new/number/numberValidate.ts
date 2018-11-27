@@ -1,5 +1,5 @@
 import { PropertieType } from 'components/ui/form/new/@types/validate.h';
-import { isNumber } from 'util';
+import { isNumber, isNullOrUndefined } from 'util';
 
 export const validateNumber = <F, P>(fieldData: PropertieType, formState: F, props: P) => {
   const {
@@ -10,13 +10,41 @@ export const validateNumber = <F, P>(fieldData: PropertieType, formState: F, pro
     title,
   } = fieldData;
 
-  if (fieldData.required && (!value && value !== 0)) {
+  if (fieldData.required && !value && value !== 0) {
     return `Поле "${title}" должно быть заполнено`;
   }
 
-  if (isNumber(value)) {
-    return '';
+  if (value && !Number(value.toString().replace(/,/g, '.'))) {
+    return `Поле "${title}" должно быть числом`;
   }
 
-  return `Поле "${title}" должно быть числом`;
+  if (!isNullOrUndefined(value)) {
+    const numberValue = Number(value);
+
+    if (fieldData.minLength && Number.parseInt(numberValue.toString(), 0).toString().length < fieldData.minLength) {
+      return `Длина поля должна быть больше минимального количества символов (${fieldData.minLength})`;
+    }
+
+    if (fieldData.maxLength && Number.parseInt(numberValue.toString(), 0).toString().length > fieldData.maxLength) {
+      return `Длина поля не должна превышать максимальное количество символов (${fieldData.maxLength})`;
+    }
+
+    if (fieldData.min && numberValue > fieldData.min) {
+      return `Поле "${fieldData.title}" должно быть больше ${fieldData.max}`;
+    }
+
+    if (fieldData.max && numberValue > fieldData.max) {
+      return `Поле "${fieldData.title}" должно быть не больше ${fieldData.max}`;
+    }
+
+    if (fieldData.integer && Math.ceil(numberValue) !== numberValue) {
+      return `Поле "${fieldData.title}" целым должно быть числом`;
+    }
+
+    if (isNumber(numberValue)) {
+      return '';
+    }
+
+    return `Поле "${title}" должно быть числом`;
+  }
 };

@@ -390,10 +390,12 @@ class ElementsList extends React.Component {
    * @return {object} tableProps - свойства
    */
   getTableProps() {
-    return Object.assign({},
+    return Object.assign(
+      {},
       this.getBasicProps(),
       this.getSelectedProps(),
-      this.getAdditionalProps());
+      this.getAdditionalProps(),
+    );
   }
 
   /**

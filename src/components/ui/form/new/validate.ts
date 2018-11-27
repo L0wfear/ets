@@ -6,6 +6,9 @@ import {
 import { validateString } from 'components/ui/form/new/string/stringValidate';
 import { validateNumber } from 'components/ui/form/new/number/numberValidate';
 import { validateValueOfArray } from 'components/ui/form/new/valueOfArray/valueOfArrayValidate';
+import { validateDate } from 'components/ui/form/new/date/dateValidate';
+
+import { isObject } from 'util';
 
 export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P): any => {
   const {
@@ -23,6 +26,8 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
         break;
       case 'valueOfArray':
         newObj[fieldData.key] = validateValueOfArray<F, P>(fieldData, formState, props);
+      case 'date':
+        newObj[fieldData.key] = validateDate<F, P>(fieldData, formState, props);
         break;
       default:
         throw new Error('Нужно определить функцию для валидации');
@@ -31,18 +36,20 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
     return newObj;
   }, {});
 
-  Object.entries<DependencieFieldValidatorArrType<F, P>>(dependencies).forEach(([name, arrayValidate]) => {
-    if (!formError[name]) {
-      arrayValidate.some((dependencieValidator) => {
-        if (!formError[name]) {
-          formError[name] = dependencieValidator(formState[name], formState, props);
+  if (isObject(dependencies)) {
+    Object.entries<DependencieFieldValidatorArrType<F, P>>(dependencies).forEach(([name, arrayValidate]) => {
+      if (!formError[name]) {
+        arrayValidate.some((dependencieValidator) => {
+          if (!formError[name]) {
+            formError[name] = dependencieValidator(formState[name], formState, props);
 
+            return Boolean(formError[name]);
+          }
           return Boolean(formError[name]);
-        }
-        return Boolean(formError[name]);
-      });
-    }
-   });
+        });
+      }
+    });
+  }
 
   return formError;
 };

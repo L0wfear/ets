@@ -1,6 +1,25 @@
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { isObject } from 'util';
+import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const componentDidMount = (props) => {
-  props.flux.getActions('autobase').getAutobaseListByType('measureUnit', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
-  props.flux.getActions('autobase').getAutobaseListByType('sparePartGroup', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+export type GetDefaultSparePartElement = (sparePart: SparePart | null) => SparePart;
+
+const defaultSparePart: SparePart = {
+  id: null,
+  spare_part_group_id: null,
+  name: null,
+  number: null,
+  measure_unit_id: null,
+  quantity: null,
+  supplied_at: null,
+};
+
+export const getDefaultSparePartElement: GetDefaultSparePartElement = (element) => {
+  const newElement = { ...defaultSparePart };
+  if (isObject(element)) {
+    Object.entries(element).forEach(([key, value]) => {
+      newElement[key] = element[key] || value;
+    });
+  }
+
+  return newElement;
 };

@@ -10,7 +10,6 @@ export default class NotificationsStore extends Store {
     const repairActions = flux.getActions('repair');
     const missionsActions = flux.getActions('missions');
     const objectsActions = flux.getActions('objects');
-    const reportsActions = flux.getActions('reports');
 
     const saveNotificationQueue = [
       {
@@ -23,7 +22,6 @@ export default class NotificationsStore extends Store {
           'repair',
           'repairCompany',
           'roadAccident',
-          'sparePart',
           'techInspection',
           'techMaintOrder',
           'techMaint',
@@ -86,7 +84,6 @@ export default class NotificationsStore extends Store {
           'removeRepair',
           'removeRepairCompany',
           'removeRoadAccident',
-          'removeSparePart',
           'removeTechInspection',
           'removeTechMaintOrder',
           'removeTechMaint',

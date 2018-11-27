@@ -1,5 +1,6 @@
 import { withHandlers, compose, withState, shouldUpdate } from 'recompose';
 import { createValidDate, createValidDateTime } from 'utils/dates';
+import { isArray } from 'util';
 
 type TypePropsOnChangeWithKeys = {
   boundKeys?: any[];
@@ -9,16 +10,25 @@ type TypePropsOnChangeWithKeys = {
 export const onChangeWithKeys = compose(
   shouldUpdate((props: TypePropsOnChangeWithKeys, nextProps: TypePropsOnChangeWithKeys) => Object.entries(nextProps).some(([key, value]) => {
     if (key === 'boundKeys') {
-      const { boundKeys: new_boundKeys = [] } = nextProps;
-      const { boundKeys: old_boundKeys = [] } = props;
+      const { boundKeys: new_boundKeys } = nextProps;
+      const { boundKeys: old_boundKeys } = props;
+      if (isArray(new_boundKeys)) {
+        return new_boundKeys.some((b_value, i) => old_boundKeys[i] !== b_value);
+      }
 
-      return new_boundKeys.some((b_value, i) => old_boundKeys[i] !== b_value);
+      return new_boundKeys !== old_boundKeys;
     }
 
     return value !== props[key];
   })),
   withHandlers({
-    onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...otherOther) =>  onChange(...boundKeys, e, ...otherOther),
+    onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...otherOther) => {
+      if (isArray(boundKeys)) {
+        return onChange(...boundKeys, e, ...otherOther);
+      } else {
+        return onChange(boundKeys, e, ...otherOther);
+      }
+    },
   }),
 );
 
@@ -27,7 +37,13 @@ export const onChangeWithKeyOfObject = withHandlers({
 });
 
 export const onClickWithKeys = withHandlers({
-  onClick: ({ onClick, boundKeys = []}) => (e) => onClick(...boundKeys, e),
+  onClick: ({ onClick, boundKeys = []}) => (e) => {
+    if (isArray(boundKeys)) {
+      return onClick(...boundKeys, e);
+    } else {
+      return onClick(boundKeys, e);
+    }
+  },
 });
 
 export const tabable = compose(

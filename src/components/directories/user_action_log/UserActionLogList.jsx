@@ -16,7 +16,6 @@ import permissions from 'components/directories/user_action_log/config-data/perm
   operations: ['LIST'],
 })
 export default class UserActionLogList extends ElementsList {
-
   init() {
     const state = {
       date_start: getToday0am(),
@@ -31,7 +30,7 @@ export default class UserActionLogList extends ElementsList {
         date_start: createValidDateTime(this.state.date_start),
         date_end: createValidDateTime(this.state.date_end),
       };
-      this.context.flux.getActions('objects').getMedicalStats(this.state);
+      this.getUserActionLog(this.state);
     }
   }
 

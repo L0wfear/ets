@@ -164,7 +164,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted || state.id // либо обновление, либо создание
+          isPermitted || IS_CREATING // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

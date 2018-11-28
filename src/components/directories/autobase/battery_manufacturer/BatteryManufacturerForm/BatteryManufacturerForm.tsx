@@ -70,7 +70,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted || state.id // либо обновление, либо создание
+          isPermitted || IS_CREATING // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

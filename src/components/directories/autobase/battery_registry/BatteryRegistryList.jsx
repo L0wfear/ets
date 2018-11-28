@@ -1,30 +1,31 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
+
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList';
-import BatteryManufacturerFormWrap from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerForm/BatteryManufacturerFormWrap';
-import BatteryManufacturerTable from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerTable';
-import permissions from 'components/directories/autobase/battery_manufacturer/config-data/permissions';
+import BatteryRegistryFormWrap from 'components/directories/autobase/battery_registry/BatteryRegistryForm/BatteryRegistryFormWrap';
+import BatteryRegistryTable from 'components/directories/autobase/battery_registry/BatteryRegistryTable';
+import permissions from 'components/directories/autobase/battery_registry/config-data/permissions';
 import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-const loadingPageName = 'battery-manufacturer';
+const loadingPageName = 'battery-registry';
 
-@connectToStores(['autobase', 'session'])
-@exportable({ entity: `autobase/${AUTOBASE.batteryManufacturer}` })
+@connectToStores(['session'])
+@exportable({ entity: `autobase/${AUTOBASE.batteryRegistry}` })
 @staticProps({
-  entity: 'autobase_battery_manufacturer',
+  entity: 'autobase_battery',
   permissions,
-  listName: 'batteryManufacturerList',
-  tableComponent: BatteryManufacturerTable,
-  formComponent: BatteryManufacturerFormWrap,
+  listName: 'batteryRegistryList',
+  tableComponent: BatteryRegistryTable,
+  formComponent: BatteryRegistryFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-class BatteryManufacturerList extends ElementsList {
+class BatteryRegList extends ElementsList {
   removeElementAction = async (id) => {
     try {
-      await this.props.autobaseRemoveBatteryBrand(id);
+      await this.props.autobaseRemoveBatteryRegistry(id);
       this.init();
     } catch (e) {
       //
@@ -32,11 +33,11 @@ class BatteryManufacturerList extends ElementsList {
   }
 
   init() {
-    this.props.batteryBrandGetAndSetInStore();
+    this.props.batteryRegistryGetAndSetInStore();
   }
 
   componentWillUnmount() {
-    this.props.autobaseResetSetBatteryBrand();
+    this.props.autobaseResetSetBatteryRegistry();
   }
 
   onFormHide = (isSubmited) => {
@@ -66,12 +67,12 @@ export default compose(
   }),
   connect(
     state => ({
-      batteryManufacturerList: state.autobase.batteryManufacturerList,
+      batteryRegistryList: state.autobase.batteryRegistryList,
     }),
     dispatch => ({
-      batteryBrandGetAndSetInStore: () => (
+      batteryRegistryGetAndSetInStore: () => (
         dispatch(
-          autobaseActions.batteryManufacturerGetAndSetInStore(
+          autobaseActions.batteryRegistryGetAndSetInStore(
             {},
             {
               page: loadingPageName,
@@ -79,14 +80,14 @@ export default compose(
           ),
         )
       ),
-      autobaseResetSetBatteryBrand: () => (
+      autobaseResetSetBatteryRegistry: () => (
         dispatch(
-          autobaseActions.autobaseResetSetBatteryManufacturer(),
+          autobaseActions.autobaseResetSetBatteryRegistry(),
         )
       ),
-      autobaseRemoveBatteryBrand: id => (
+      autobaseRemoveBatteryRegistry: id => (
         dispatch(
-          autobaseActions.autobaseRemoveBatteryManufacturer(
+          autobaseActions.autobaseRemoveBatteryRegistry(
             id,
             {
               page: loadingPageName,
@@ -96,4 +97,4 @@ export default compose(
       ),
     }),
   ),
-)(BatteryManufacturerList);
+)(BatteryRegList);

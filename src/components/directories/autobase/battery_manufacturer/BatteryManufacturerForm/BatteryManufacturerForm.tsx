@@ -63,7 +63,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
                 error={errors.name}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
               />
             </Col>
           </Row>

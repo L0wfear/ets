@@ -32,6 +32,34 @@ export type BatteryManufacturer = {
   id?: number | null;
   name: string | null;
 };
+export type BatteryOnCar = {
+  car_id: number | null;
+  gov_number: string | null;
+  id: number | null;
+  installed_at: string | null;
+  uninstalled_at: string | null;
+};
+
+export type BatteryRegistry = {
+  battery_to_car: BatteryOnCar[];
+  battery_to_car_id: number | null;
+  brand_id: number | null;
+  brand_name: string | null;
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  gov_number: string | null;
+  id: number | null;
+  installed_at: string | null;
+  lifetime_months: number | null;
+  manufacturer_id: number | null;
+  manufacturer_name: string | null;
+  odometr_start: string | null;
+  released_at: string | null;
+  serial_number: string | null;
+  uninstalled_at: string | null;
+  worked_months: number | null;
+};
 
 export type IStateAutobase = {
   sparePartList: SparePart[];
@@ -39,4 +67,5 @@ export type IStateAutobase = {
   sparePartGroupList: SparePartGroup[];
   batteryBrandList: BatteryBrand[];
   batteryManufacturerList: BatteryManufacturer[];
+  batteryRegistryList: BatteryRegistry[];
 };

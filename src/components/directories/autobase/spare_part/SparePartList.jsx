@@ -40,14 +40,16 @@ class SparePartList extends ElementsList {
   }
 
   onFormHide = (isSubmited) => {
+    const changeState = {
+      showForm: false,
+    };
+
     if (isSubmited) {
       this.init();
+      changeState.selectedElement = null;
     }
 
-    this.setState({
-      showForm: false,
-      selectedElement: null,
-    });
+    this.setState(changeState);
   }
 
   getAdditionalProps() {

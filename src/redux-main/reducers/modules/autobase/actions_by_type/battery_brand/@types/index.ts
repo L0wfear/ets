@@ -7,3 +7,5 @@ export type AutobaseCreateBatteryBrand = (batteryBrandOld: BatteryBrand & { id?:
 export type AutobaseUpdateBatteryBrand = (batteryBrandOld: BatteryBrand, { page, path }: { page: string; path?: string }) => (
   Promise<any>
 );
+
+export type GetBatteryBrand = () => Promise<any>;

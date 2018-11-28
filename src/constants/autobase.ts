@@ -3,9 +3,9 @@ export const sparePartGroup = 'sparePartGroup';
 export const measureUnit = 'measureUnit';
 export const batteryBrand = 'batteryBrand';
 export const batteryManufacturer = 'batteryManufacturer';
+export const batteryRegistry = 'batteryRegistry';
 
 export default {
-  batteryRegistry: 'battery_registry',
   tire: 'tire_registry',
   tireSize: 'tire_size',
   tireModel: 'tire_model',
@@ -34,4 +34,5 @@ export default {
   [measureUnit]: 'measure_unit',
   [batteryBrand]: 'battery_brand',
   [batteryManufacturer]: 'battery_manufacturer',
+  [batteryRegistry]: 'battery_registry',
 };

@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList';
-import BatteryBrandFormWrap from 'components/directories/autobase/battery_brand/BatteryBrandForm/BatteryBrandForm.Wrap';
+import BatteryBrandFormWrap from 'components/directories/autobase/battery_brand/BatteryBrandForm/BatteryBrandFormWrap';
 import BatteryBrandTable from 'components/directories/autobase/battery_brand/BatteryBrandTable';
 import permissions from 'components/directories/autobase/battery_brand/config-data/permissions';
 import { connect } from 'react-redux';
@@ -40,14 +40,16 @@ class BatteryBrandList extends ElementsList {
   }
 
   onFormHide = (isSubmited) => {
+    const changeState = {
+      showForm: false,
+    };
+
     if (isSubmited) {
       this.init();
+      changeState.selectedElement = null;
     }
 
-    this.setState({
-      showForm: false,
-      selectedElement: null,
-    });
+    this.setState(changeState);
   }
 
   getAdditionalProps() {

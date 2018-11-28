@@ -20,7 +20,7 @@ export const autobaseResetSetBatteryBrand = () => (dispatch) => (
     autobaseSetBatteryBrand([]),
   )
 );
-export const autobaseGetSetBatteryBrand = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
+export const autobaseGetSetBatteryBrand: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({
     type: 'none',
     payload: getBatteryBrand(payload),

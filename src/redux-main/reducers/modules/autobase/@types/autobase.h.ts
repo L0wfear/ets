@@ -61,6 +61,37 @@ export type BatteryRegistry = {
   worked_months: number | null;
 };
 
+export type InsurancePolicy = {
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_short_name: string | null;
+  created_at: string | null;
+  date_end: string | null;
+  date_start: string | null;
+  gov_number: string | null;
+  id: number | null;
+  insurance_type_id: number | null;
+  insurance_type_name: string | null;
+  insurer: string | null;
+  note: string | null;
+  number: string | null;
+  price: number | null;
+  seria: string | null;
+  updated_at: string | null;
+  files: any[];
+};
+
+export type InsuranceType = {
+  id: number | null;
+  name: string | null;
+};
+
+export type Car = {
+  asuods_id: number;
+  gov_number: string;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
@@ -68,4 +99,7 @@ export type IStateAutobase = {
   batteryBrandList: BatteryBrand[];
   batteryManufacturerList: BatteryManufacturer[];
   batteryRegistryList: BatteryRegistry[];
+  insuranceTypeList: InsuranceType[];
+  insurancePolicyList: InsurancePolicy[];
+  carList: Car[];
 };

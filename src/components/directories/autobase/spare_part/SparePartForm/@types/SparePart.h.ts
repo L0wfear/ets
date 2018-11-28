@@ -47,6 +47,6 @@ export type PropsSparePart = OutputWithFormProps<
   any
 >;
 export type StateSparePart = {
-  measureUnitOptions: DefaultSelectListMapper<MeasureUnit['id'], MeasureUnit['name']>;
-  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup['id'], SparePartGroup['name']>;
+  measureUnitOptions: DefaultSelectListMapper<MeasureUnit['id'], MeasureUnit['name'], MeasureUnit>;
+  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup['id'], SparePartGroup['name'], SparePartGroup>;
 };

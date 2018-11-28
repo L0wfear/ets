@@ -3,7 +3,7 @@ import { BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types
 
 export type GetDefaultBatteryManufacturerElement = (batteryManufacturer: BatteryManufacturer | null) => BatteryManufacturer;
 
-const defaultBatteryManufacturer: BatteryManufacturer = {
+export const defaultBatteryManufacturer: BatteryManufacturer = {
   id: null,
   name: null,
 };

@@ -16,7 +16,7 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
     dependencies,
   } = shema;
 
-  const formError = properties.reduce((newObj, fieldData) => {
+  const formError = properties.reduce<{ [K in keyof F]?: string | null }>((newObj, fieldData) => {
     switch (fieldData.type) {
       case 'string':
         newObj[fieldData.key] = validateString<F, P>(fieldData, formState, props);

@@ -18,12 +18,14 @@ import ModalBody from 'components/ui/Modal';
 import TabContent from 'components/ui/containers/TabContent';
 import Form from 'components/compositions/Form';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { isArray } from 'util';
+import { DivNone } from 'global-styled/global-styled';
 
-import InsurancePolicyList from 'components/directories/autobase/insurance_policy/InsurancePolicyList';
-import TechInspectionList from 'components/directories/autobase/tech_inspection/TechInspectionList';
-import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/TechMaintList';
-import RepairList from 'components/directories/autobase/repair/RepairList';
-import RoadAccidentList from 'components/directories/autobase/road_accident/RoadAccidentList';
+import insurancePolicyComponents from 'components/directories/autobase/insurance_policy/config-data/components';
+import techInspectionComponents from 'components/directories/autobase/tech_inspection/config-data/components';
+import techMaintComponents from 'components/directories/autobase/tech_maintenance_registry/config-data/components';
+import repairComponents from 'components/directories/autobase/repair/config-data/components';
+import roadAccidenComponents from 'components/directories/autobase/road_accident/config-data/components';
 
 import MainInfoTab from './tabs/MainInfoTab';
 import RegisterInfoTab from './tabs/RegisterInfoTab';
@@ -31,7 +33,12 @@ import PasportInfoTab from './tabs/PasportInfoTab';
 import BatteryTab from './tabs/BatteryTab';
 import TireTab from './tabs/TireTab';
 import TechMaintTab from './tabs/TechMaintTab';
-import { isArray } from 'util';
+
+const InsurancePolicyList = insurancePolicyComponents[0].component;
+const TechInspectionList = techInspectionComponents[0].component;
+const TechMaintList = techMaintComponents[0].component;
+const RepairList = repairComponents[0].component;
+const RoadAccidentList = roadAccidenComponents[0].component;
 
 export const CAR_TAB_INDEX = {
   info: '1',
@@ -269,39 +276,79 @@ class CarForm extends Form {
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>
-            <InsurancePolicyList
-              car_id={state.asuods_id}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.insurance_policy
+                ? (
+                  <InsurancePolicyList
+                    car_id={state.asuods_id}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.road_accident} tabKey={tabKey}>
-            <RoadAccidentList
-              car_id={state.asuods_id}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.road_accident
+                ? (
+                  <RoadAccidentList
+                    car_id={state.asuods_id}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.tech_maintenance} tabKey={tabKey}>
-            <TechMaintTab
-              type={state.gov_number && !!(state.gov_number).toString().match(/\d{4}/)}
-              techMaintListExtra={techMaintListExtra}
-            >
-              <TechMaintList
-                car_id={state.asuods_id}
-                car_model_id={state.special_model_id}
-                gov_number={state.gov_number}
-              />
-            </TechMaintTab>
+            {
+              tabKey === CAR_TAB_INDEX.tech_maintenance
+                ? (
+                  <TechMaintTab
+                    type={state.gov_number && !!(state.gov_number).toString().match(/\d{4}/)}
+                    techMaintListExtra={techMaintListExtra}
+                  >
+                    <TechMaintList
+                      car_id={state.asuods_id}
+                      car_model_id={state.special_model_id}
+                      gov_number={state.gov_number}
+                    />
+                  </TechMaintTab>
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
           <TabContent eventKey={CAR_TAB_INDEX.repair} tabKey={tabKey}>
-            <RepairList
-              car_id={state.asuods_id}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.repair
+                ? (
+                  <RepairList
+                    car_id={state.asuods_id}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
-            <TechInspectionList
-              car_id={state.asuods_id}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.tech_inspection
+                ? (
+                  <TechInspectionList
+                    car_id={state.asuods_id}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
         </ModalBody>
 

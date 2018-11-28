@@ -1,7 +1,7 @@
 import { PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { isString } from 'util';
 
-export const validateString = <F, P>(fieldData: PropertieType, formState: F, props: P) => {
+export const validateString = <F, P>(fieldData: PropertieType<F>, formState: F, props: P) => {
   const {
     [fieldData.key]: value,
   } = formState;

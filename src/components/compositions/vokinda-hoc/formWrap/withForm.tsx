@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isFunction } from 'util';
 import { clone } from 'lodash';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
 
 type FormErrorType<F> = {
@@ -102,8 +102,11 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
         setImmediate(() => {
           const formState = clone<F>(this.state.formState);
           const { properties } = config.schema;
-          const propertiesByKey = properties.reduce((newObj, { key, ...other }) => {
-            newObj[key] = other;
+          const propertiesByKey = properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
+            newObj[key] = {
+              key,
+              ...other,
+            };
 
             return newObj;
           }, {});
@@ -202,7 +205,7 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
       defaultSubmit = () => {
         const formatedFormState = clone(this.state.formState);
         config.schema.properties.forEach(({ key, type }) => {
-          let value = formatedFormState[key];
+          let value: any = formatedFormState[key];
 
           if (type === 'number' && value) {
             value = Number(value);

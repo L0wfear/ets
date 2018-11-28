@@ -1,5 +1,5 @@
-export type PropertieType = {
-  key: string;
+export type PropertieType<F> = {
+  key: keyof F;
   title: string;
   type: 'string'
   | 'number'
@@ -11,6 +11,7 @@ export type PropertieType = {
   min?: number;
   max?: number;
   integer?: boolean;
+  float?: number;
 };
 
 export type DependencieValidatorType<F, P, K = any> = (
@@ -26,7 +27,7 @@ export type DependencieType<F, P> = {
 };
 
 export type SchemaType<F, P> = {
-  properties: PropertieType[],
+  properties: PropertieType<F>[],
   dependencies?: DependencieType<F, P>;
 };
 

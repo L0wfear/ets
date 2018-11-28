@@ -3,7 +3,7 @@ import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/aut
 
 export type GetDefaultBatteryRegistryElement = (batteryRegistry: BatteryRegistry | null) => BatteryRegistry;
 
-const defaultBatteryRegistry: BatteryRegistry = {
+export const defaultBatteryRegistry: BatteryRegistry = {
   battery_to_car: [],
   battery_to_car_id: null,
   brand_id: null,

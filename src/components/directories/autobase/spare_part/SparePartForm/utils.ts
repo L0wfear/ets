@@ -3,7 +3,7 @@ import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.
 
 export type GetDefaultSparePartElement = (sparePart: SparePart | null) => SparePart;
 
-const defaultSparePart: SparePart = {
+export const defaultSparePart: SparePart = {
   id: null,
   spare_part_group_id: null,
   name: null,

@@ -45,5 +45,5 @@ export type PropsBatteryBrand = OutputWithFormProps<
   any
 >;
 export type StateBatteryBrand = {
-  batteryManufacturerOptions: DefaultSelectListMapper<BatteryManufacturer['id'], BatteryManufacturer['name']>;
+  batteryManufacturerOptions: DefaultSelectListMapper<BatteryManufacturer['id'], BatteryManufacturer['name'], BatteryManufacturer>;
 };

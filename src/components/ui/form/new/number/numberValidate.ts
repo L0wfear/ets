@@ -1,7 +1,7 @@
 import { PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { isNumber, isNullOrUndefined } from 'util';
 
-export const validateNumber = <F, P>(fieldData: PropertieType, formState: F, props: P) => {
+export const validateNumber = <F, P>(fieldData: PropertieType<F>, formState: F, props: P) => {
   const {
     [fieldData.key]: value,
   } = formState;
@@ -29,16 +29,23 @@ export const validateNumber = <F, P>(fieldData: PropertieType, formState: F, pro
       return `Длина поля не должна превышать максимальное количество символов (${fieldData.maxLength})`;
     }
 
-    if (fieldData.min && numberValue > fieldData.min) {
-      return `Поле "${fieldData.title}" должно быть больше ${fieldData.max}`;
+    if (isNumber(fieldData.min) && numberValue < fieldData.min) {
+      return `Поле "${fieldData.title}" должно быть больше ${fieldData.min}`;
     }
 
-    if (fieldData.max && numberValue > fieldData.max) {
+    if (isNumber(fieldData.max) && numberValue > fieldData.max) {
       return `Поле "${fieldData.title}" должно быть не больше ${fieldData.max}`;
     }
 
     if (fieldData.integer && Math.ceil(numberValue) !== numberValue) {
       return `Поле "${fieldData.title}" целым должно быть числом`;
+    }
+
+    if (!fieldData.integer && fieldData.float) {
+      const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${fieldData.float + 1},}$`);
+      if (numberValue.toString().match(regexp)) {
+        return `Поле ${fieldData.title} должно быть неотрицательным числом с ${fieldData.float} знаками после запятой`;
+      }
     }
 
     if (isNumber(numberValue)) {

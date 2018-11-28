@@ -1,0 +1,54 @@
+import { InsurancePolicy, InsuranceType, Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import {
+  AutobaseCreateInsurancePolicy,
+  AutobaseUpdateInsurancePolicy,
+} from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/@types';
+import { GetInsurancePolicyType } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/@types';
+import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
+
+export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+
+export type PropsInsurancePolicyFormWrap = {
+  showForm: boolean;
+  element: InsurancePolicy | null;
+  car_id: number;
+  onFormHide: OnFormHideType
+
+  loadingPageName?: string;
+  page?: string;
+  path?: string;
+};
+
+export type StatePropsInsurancePolicy = {};
+export type DispatchPropsInsurancePolicy = {
+  createAction: AutobaseCreateInsurancePolicy;
+  updateAction: AutobaseUpdateInsurancePolicy;
+  autobaseGetInsuranceType: GetInsurancePolicyType;
+  autobaseGetSetCar: GetCar;
+};
+export type OwnInsurancePolicyProps = {
+  element: InsurancePolicy | null;
+  handleHide: OnFormHideType
+  car_id: number;
+  page?: string;
+  path?: string;
+};
+
+export type PropsInsurancePolicyWithForm = (
+  StatePropsInsurancePolicy
+  & DispatchPropsInsurancePolicy
+  & OwnInsurancePolicyProps
+);
+
+export type PropsInsurancePolicy = OutputWithFormProps<
+  PropsInsurancePolicyWithForm,
+  InsurancePolicy,
+  [ InsurancePolicy ],
+  any
+>;
+export type StateInsurancePolicy = {
+  insuranceTypeOptions: DefaultSelectListMapper<InsuranceType['id'], InsuranceType['name'], InsuranceType>;
+  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+};

@@ -24,36 +24,6 @@ export default class AutobaseActions extends Actions {
     };
   }
 
-  insurancePolicy(method, boundPayload, formState) {
-    const payload = {
-      ...formState,
-    };
-
-    ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
-      if (formState[key]) {
-        payload[key] = createValidDate(formState[key]);
-      }
-    });
-    const { insurancePolicy } = AUTOBASE;
-
-    const path = parsePutPath(insurancePolicy, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'insurancePolicy', boundPayload),
-      'json',
-    );
-  }
-
-  removeInsurancePolicy(boundPayload, id) {
-    const { insurancePolicy } = AUTOBASE;
-
-    return AutoBase.path(`${insurancePolicy}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'insurancePolicy', boundPayload),
-      'json',
-    );
-  }
-
   repair(method, boundPayload, formState) {
     const { repair } = AUTOBASE;
     const path = parsePutPath(repair, method, formState);
@@ -225,7 +195,7 @@ export default class AutobaseActions extends Actions {
 
     const payload = {
       ...cleanFormState,
-      tire_to_car: get(cleanFormState, 'tire_to_car', []).map((item) => ({
+      tire_to_car: get(cleanFormState, 'tire_to_car', []).map(item => ({
         ...clearPayload(item),
         installed_at: createValidDate(item.installed_at),
         uninstalled_at: createValidDate(item.uninstalled_at),

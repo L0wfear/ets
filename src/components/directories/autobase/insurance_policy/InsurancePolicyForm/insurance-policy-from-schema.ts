@@ -1,14 +1,14 @@
-import * as moment from 'moment';
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsInsurancePolicy } from 'components/directories/autobase/insurance_policy/InsurancePolicyForm/@types/InsurancePolicy.h';
+import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { diffDates } from 'utils/dates';
 
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
-import { getRequiredFieldMessage } from 'utils/validate';
-
-export const formValidationSchema: IValidationSchema = {
+export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsurancePolicy> = {
   properties: [
     {
       key: 'car_id',
       title: 'Номер транспортного средства',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
@@ -21,7 +21,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'insurance_type_id',
       title: 'Тип страхования',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
@@ -63,31 +63,19 @@ export const formValidationSchema: IValidationSchema = {
       title: 'Примечание',
       type: 'string',
       maxLength: 2048,
-      min: 0,
     },
   ],
   dependencies: {
     date_end: [
-      {
-        validator(value = null, { date_start = null }) {
-          if (!value) {
-            return getRequiredFieldMessage('Дата окончания действия');
+      (value, { date_start }) => {
+        if (value && date_start) {
+          if (diffDates(date_start, value) >= 0) {
+            return '"Дата окончания действия" должна быть позже "Даты начала действия"';
           }
+        }
 
-          if (date_start) {
-            const start = moment(date_start).unix();
-            const end = moment(value).unix();
-
-            return end >= start
-              ? ''
-              : '"Дата окончания действия" должна быть позже "Даты начала действия"';
-          }
-
-          return '';
-        },
+        return '';
       },
     ],
   },
 };
-
-export default formValidationSchema;

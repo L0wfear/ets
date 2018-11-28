@@ -141,6 +141,10 @@ html, body {
   }
 }
 
+.animationNone {
+  animation: none!important;
+}
+
 .car_info_block {
   border: medium none;
   box-shadow: 0 1px 3px rgba(0,0,0,.1);

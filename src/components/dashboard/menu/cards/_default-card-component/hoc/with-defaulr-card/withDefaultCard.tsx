@@ -110,7 +110,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
                   <div className="button_refresh">
                     <Button onClick={this.loadData} disabled={isLoading}>
                       <Glyphicon
-                        className={cx({ 'glyphicon-spin': isLoading })}
+                        className={ isLoading ? 'glyphicon-spin' : 'animationNone'}
                         glyph="refresh"
                       />
                     </Button>

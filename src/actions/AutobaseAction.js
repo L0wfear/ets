@@ -24,35 +24,6 @@ export default class AutobaseActions extends Actions {
     };
   }
 
-  batteryRegistry(method, formState) {
-    const payload = {
-      ...formState,
-      battery_to_car: get(formState, 'battery_to_car', []).map((item) => ({
-        car_id: item.car_id,
-        installed_at: createValidDate(item.installed_at),
-        uninstalled_at: createValidDate(item.uninstalled_at),
-      })),
-    };
-    payload.released_at = createValidDate(payload.released_at);
-
-    const { batteryRegistry } = AUTOBASE;
-    const path = parsePutPath(batteryRegistry, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
-      'json',
-    );
-  }
-
-  removeBatteryRegistry(id) {
-    const { batteryRegistry } = AUTOBASE;
-    return AutoBase.path(`${batteryRegistry}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
-      'json',
-    );
-  }
-
   insurancePolicy(method, boundPayload, formState) {
     const payload = {
       ...formState,

@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.24.58",
+    "version": "2.0.24.59",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -36,8 +36,7 @@
         "redux-promise": "^0.6.0",
         "redux-promise-loading": "^0.1.2",
         "redux-thunk": "^2.3.0",
-        "url-join": "^4.0.0",
-        "utf8": "^3.0.0"
+        "url-join": "^4.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.1.5",

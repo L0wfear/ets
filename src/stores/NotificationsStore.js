@@ -72,7 +72,6 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'removeBatteryRegistry',
           'removeInsurancePolicy',
           'removeRepair',
           'removeRepairCompany',

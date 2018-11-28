@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "fuel_rates" */ 'components/directories/normative/fuel_rates/FuelRatesDirectory')
+  import(/* webpackChunkName: "fuel_rates" */'components/directories/normative/fuel_rates/FuelRatesList')
 ));
 
 export default (props) => (

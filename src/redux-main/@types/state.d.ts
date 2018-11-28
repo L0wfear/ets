@@ -11,6 +11,7 @@ import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_stru
 import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateGeoobject } from 'redux-main/reducers/modules/geoobject/@types/geoobject.h';
+import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -29,4 +30,6 @@ export interface ReduxState {
   monitorPage: any;
   loading: any;
   etsLoading: any;
+  fuelRates: IStateFuelRates;
+  [key: string]: any;
 }

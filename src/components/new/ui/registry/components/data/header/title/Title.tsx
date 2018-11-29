@@ -2,9 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 type PropsHeader = {
-  title: React.ReactDOM;
+  title: OneRegistryData['header']['title'];
   registryKey: string;
 };
 

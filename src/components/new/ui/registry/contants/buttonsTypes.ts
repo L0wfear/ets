@@ -1,8 +1,9 @@
-export type ButtonTypes = 'export' | 'filter';
+export type ButtonTypes = 'export' | 'filter' | 'read';
 
-const buttonTypes: { [key: string]: ButtonTypes } =  {
+const buttonsTypes: { [key: string]: ButtonTypes } =  {
   export: 'export',
   filter: 'filter',
+  read: 'read',
 };
 
-export default buttonTypes;
+export default buttonsTypes;

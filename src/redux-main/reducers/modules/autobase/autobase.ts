@@ -15,6 +15,7 @@ const initialState: IStateAutobase = {
   insuranceTypeList: [],
   insurancePolicyList: [],
   carList: [],
+  carFuncTypesList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

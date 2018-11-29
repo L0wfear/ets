@@ -5,6 +5,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
+import { isArray } from 'util';
 
 type TypeConfig = {
   withIsPermittedProps?: boolean;
@@ -21,21 +22,21 @@ const makePermissionOnCheck = (config, props) => {
 
   const permissionsOnCheck = config.permissions || props.permissions;
 
-  return Array.isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck];
+  return isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck];
 };
 
-const checkOnisPermitted = (config, props, permissions) => {
+const checkOnisPermitted = (config, props, permissionsSet) => {
   const permissionsOnCheck = makePermissionOnCheck(config, props);
 
   if (config.every) {
-    return permissionsOnCheck.some((permission) => !permissions.includes(permission));
+    return permissionsOnCheck.some((permission) => !permissionsSet.has(permission));
   }
 
-  return permissionsOnCheck.some((permission) => permissions.includes(permission));
+  return permissionsOnCheck.some((permission) => permissionsSet.has(permission));
 };
 
 type StateProps = {
-  permissions: string[];
+  permissionsSet: ReduxState['session']['userData']['permissionsSet'];
 };
 
 type OwnerProps = {
@@ -47,15 +48,15 @@ type PropsRequirePermissions = StateProps & OwnerProps;
 const withRequirePermissionsNew = (config: TypeConfig = {}) => (Component) => (
   connect<StateProps, {}, OwnerProps, ReduxState>(
     (state) => ({
-      permissions: state.session.userData.permissions,
+      permissionsSet: state.session.userData.permissionsSet,
     }),
   )
   (
     class RequirePermissions extends React.Component<PropsRequirePermissions, {}> {
       render() {
-        const { permissions, dispatch, ...props } = this.props;
+        const { permissionsSet, dispatch, ...props } = this.props;
 
-        const isPermitted = checkOnisPermitted(config, props, permissions);
+        const isPermitted = checkOnisPermitted(config, props, permissionsSet);
         const newProps = { ...props };
 
         if (config.withIsPermittedProps) {

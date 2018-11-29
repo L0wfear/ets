@@ -2,8 +2,9 @@ import registryDefaultObj from 'components/new/ui/registry/module/contant/defaul
 import { isArray, isBoolean, isObject, isString, isNumber } from 'util';
 import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/filter';
 import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
-export const mergeFilter = (filter) => {
+export const mergeFilter = (filter: OneRegistryData['filter']) => {
   const rawFilterValues = makeRawFilterValues(filter);
 
   if (!filter) {
@@ -20,6 +21,15 @@ export const mergeFilter = (filter) => {
       }
       if (key === 'isOpen') {
         newObj[key] = isBoolean(filter[key]) ? filter[key] : value;
+      }
+      if (key === 'displayIf') {
+        if (isString(filter[key])) {
+          newObj[key] = [filter[key]];
+        } else if (isArray(filter[key])) {
+          newObj[key] = filter[key];
+        } else {
+          newObj[key] = value;
+        }
       }
       if (key === 'rawFilterValues') {
         const { rawFilterValues: outRawFilterValues } = filter;
@@ -46,7 +56,7 @@ export const mergeFilter = (filter) => {
   );
 };
 
-export const mergeHeader = (header) => (
+export const mergeHeader = (header: OneRegistryData['header']) => (
   header
   ? (
     Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
@@ -78,7 +88,7 @@ export const mergeHeader = (header) => (
   )
 );
 
-export const mergeListData = (data) => (
+export const mergeListData = (data: OneRegistryData['list']['data']) => (
   data
   ? (
     Object.entries(registryDefaultObj.list.data).reduce((newObj, [key, value]) => {
@@ -96,6 +106,17 @@ export const mergeListData = (data) => (
         newObj[key] = isString(data[key]) ? data[key] : value;
       }
 
+      if (key === 'selectedRow') {
+        newObj[key] = isObject(data[key]) ? data[key] : value;
+      }
+      if (key === 'selectedUniqKey') {
+        newObj[key] = isObject(data[key]) ? data[key] : value;
+      }
+
+      if (key === 'checkedRows') {
+        newObj[key] = isObject(data[key]) ? data[key] : value;
+      }
+
       return newObj;
     }, {})
   )
@@ -104,7 +125,11 @@ export const mergeListData = (data) => (
   )
 );
 
-export const mergeListMeta = (meta) => {
+export const mergeListPermissions = (permissions: OneRegistryData['list']['permissions']) => {
+  return permissions;
+};
+
+export const mergeListMeta = (meta: OneRegistryData['list']['meta']) => {
   const {
     fields = registryDefaultObj.list.meta.fields,
   } = meta || {};
@@ -112,7 +137,7 @@ export const mergeListMeta = (meta) => {
   return makerDataMetaField({ fields });
 };
 
-export const mergeListPaginator = (paginator) => (
+export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator']) => (
   paginator
   ? (
     Object.entries(registryDefaultObj.list.paginator).reduce((newObj, [key, value]) => {
@@ -131,7 +156,7 @@ export const mergeListPaginator = (paginator) => (
   )
 );
 
-export const mergeListProcessed = (processed) => (
+export const mergeListProcessed = (processed: OneRegistryData['list']['processed']) => (
   processed
   ? (
     Object.entries(registryDefaultObj.list.processed).reduce((newObj, [key, value]: any) => {
@@ -172,9 +197,10 @@ export const mergeListProcessed = (processed) => (
   )
 );
 
-export const mergeList = (list) => ({
-    data: mergeListData(list.data),
-    meta: mergeListMeta(list.meta),
-    paginator: mergeListPaginator(list.paginator),
-    processed: mergeListProcessed(list.processed),
+export const mergeList = (list: OneRegistryData['list']) => ({
+  data: mergeListData(list.data),
+  permissions: mergeListPermissions(list.permissions),
+  meta: mergeListMeta(list.meta),
+  paginator: mergeListPaginator(list.paginator),
+  processed: mergeListProcessed(list.processed),
 });

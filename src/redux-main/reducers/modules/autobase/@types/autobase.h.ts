@@ -92,6 +92,15 @@ export type Car = {
   gov_number: string;
 };
 
+export type CarFuncTypes = {
+  asuods_id: number | null;
+  avg_work_hours: number | null;
+  full_name: string | null;
+  group_id: number | null;
+  group_name: string | null;
+  short_name: string | null;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
@@ -102,4 +111,5 @@ export type IStateAutobase = {
   insuranceTypeList: InsuranceType[];
   insurancePolicyList: InsurancePolicy[];
   carList: Car[];
+  carFuncTypesList: CarFuncTypes[];
 };

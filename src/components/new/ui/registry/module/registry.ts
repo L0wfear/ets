@@ -1,4 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
+import { TypeOneDisplayIf } from 'components/new/ui/registry/hoc/withRegistry.h';
 
 const REGISTRY = createPath('REGISTRY');
 
@@ -7,35 +8,60 @@ export const REGISTRY_REMOVE_DATA = REGISTRY`REMOVE_DATA`;
 export const REGISTRY_CHANGE_FILTER = REGISTRY`CHANGE_FILTER_DATA`;
 export const REGISTRY_CHANGE_LIST = REGISTRY`CHANGE_LIST`;
 
-export type InitialStateTypeRegistry = {
-  [key: string]: {
-    Service: any;
-    header: {
-      title: string;
-    };
-    list: {
-      data: {
-        array: any[];
-      },
-      sort: {
-        field: string;
-        reverse: boolean;
-      },
-      meta: {
-        fields: any[],
-      },
-    };
-    filter: {
-      isOpen: boolean;
-      meta: {
-        fields: any[],
-        treeFields: any;
-        rowFields: any[];
-        fieldsInDeepArr: any[];
-      },
-      rawFilterValues: {},
-    };
+export interface OneRegistryData {
+  Service: any;
+  header?: {
+    title?: any;
+    buttons?: [];
   };
+  list: {
+    data: {
+      array: any[];
+      total_count?: number;
+      uniqKey?: string;
+      selectedRow?: object | null;
+      selectedRowToShow?: object | null;
+      checkedRows?: object | null;
+    },
+    permissions: {
+      list: string | boolean;
+      create: string | boolean;
+      read: string | boolean;
+      update: string | boolean;
+      delete: string | boolean;
+      [otherKey: string]: string | boolean;
+    };
+    meta: {
+      fields: any[],
+      fieldsInDeepArr: any[],
+      rowFields: any[],
+      treeFields: object,
+      noEnumerated?: boolean;
+    },
+    paginator?: {
+      currentPage?: number;
+      perPage?: number;
+    },
+    processed?: {
+      filterValues?: object,
+      processedArray?: any[],
+      sort?: {
+        field?: string,
+        reverse?: boolean,
+      },
+      total_count?: 0,
+    },
+  };
+  filter: {
+    isOpen?: boolean;
+    fields: any[],
+    rawFilterValues?: {},
+    displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  };
+}
+
+export type InitialStateTypeRegistry = {
+  [key: string]: OneRegistryData;
 };
 
 const initialState: InitialStateTypeRegistry = {

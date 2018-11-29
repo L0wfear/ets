@@ -11,7 +11,7 @@ import {
   getFilterData,
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { isBoolean } from 'util';
+import { isBoolean, isString, isNumber } from 'util';
 import {
   EtsFiltersButtonsLine, EtsFiltersCloseContainer, EtsFilterActionButton, EtsFilterActionButtonConteiner,
 } from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
@@ -57,9 +57,18 @@ const mapStateToProps = (state, { registryKey }) => {
       getFilterData(state.registry, registryKey).rawFilterValues,
     ).some((valuesObj) => (
       Object.values(valuesObj).some(({ value }: any) => (
-        !value
+        isNumber(value)
         || isBoolean(value)
-        || Array.isArray(value) && value.length > 0
+        || isString(value) && !!value.length
+        || (
+          value
+          && (
+            !Array.isArray(value)
+            || (
+              Array.isArray(value) && !!value.length
+            )
+          )
+        )
       ))
     ))
   );

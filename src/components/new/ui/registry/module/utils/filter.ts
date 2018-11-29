@@ -1,9 +1,29 @@
-import { isBoolean } from 'util';
+import { isBoolean, isArray, isString, isNumber } from 'util';
 
 export const typeFilter = [
   {
     type: 'in',
     defaultValue: [],
+  },
+  {
+    type: 'like',
+    defaultValue: '',
+  },
+  {
+    type: 'eq',
+    defaultValue: '',
+  },
+  {
+    type: 'gt',
+    defaultValue: '',
+  },
+  {
+    type: 'lt',
+    defaultValue: '',
+  },
+  {
+    type: 'neq',
+    defaultValue: '',
   },
 ];
 
@@ -52,7 +72,22 @@ export const applyFilterFromRaw = ({ rawFilterValues }) => {
     Object.entries(typeObjData).forEach(([ type, valueData ]) => {
       const { value } = valueData;
 
-      if (!value || isBoolean(value) || Array.isArray(value) && value.length > 0) {
+      const triggerSave = (
+        isNumber(value)
+        || isBoolean(value)
+        || isString(value) && !!value.length
+        || (
+          value
+          && (
+            !isArray(value)
+            || (
+              isArray(value) && !!value.length
+            )
+          )
+        )
+      );
+
+      if (triggerSave) {
         newObj[`${valueKey}__${type}`] = value;
       }
     });

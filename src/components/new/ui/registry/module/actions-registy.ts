@@ -295,3 +295,92 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     ),
   );
 };
+
+export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          selectedRow,
+        },
+      },
+    ),
+  );
+};
+
+export const registrySetSelectedRowToShowInForm: any = (registryKey, selectedRow?) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          selectedRowToShow: selectedRow || list.data.selectedRow,
+        },
+      },
+    ),
+  );
+};
+
+export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmited) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  if (isSubmited) {
+    dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            selectedRow: null,
+            checkedRows: {},
+            selectedRowToShow: null,
+          },
+        },
+      ),
+    );
+  } else {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            selectedRowToShow: null,
+          },
+        },
+      ),
+    );
+  }
+};

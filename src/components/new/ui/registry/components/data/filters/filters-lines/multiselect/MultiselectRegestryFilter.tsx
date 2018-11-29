@@ -22,10 +22,6 @@ type PropsMultiselectRegestryFilter = {
     valueKey: string;
     labelKey?: string;
   };
-  valueData: {
-    value: any[] | void,
-    type: string,
-  };
   filterValuesObj: any;
   array: any[];
   onChange: (valueKey: string, type: string, value: any[], option: object) => any;

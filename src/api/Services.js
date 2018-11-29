@@ -80,6 +80,10 @@ export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fuel
 export const CarPoolService = ETS_API_FACTORY.createApiServiceAdapter('carpool', {});
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
+
+export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
+export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
+
 export const GeozoneMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('geozone_municipal_facility', {});
 
 export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});

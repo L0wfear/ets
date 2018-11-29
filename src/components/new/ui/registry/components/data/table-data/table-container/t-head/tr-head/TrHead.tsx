@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import TrTh from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/TrTh';
 
@@ -12,7 +11,7 @@ type StateTrHead = {
 
 };
 
-class TrHead extends React.Component<PropsTrHead, StateTrHead> {
+class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
   render() {
     return (
       <tr className="ets_thead_tr">
@@ -26,5 +25,4 @@ class TrHead extends React.Component<PropsTrHead, StateTrHead> {
   }
 }
 
-export default connect(
-)(TrHead);
+export default TrHead;

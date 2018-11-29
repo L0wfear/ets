@@ -22,7 +22,7 @@ export const missionsCreationSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 0,
+  autoDismiss: 5,
 };
 
 export function getErrorNotification(error) {
@@ -72,7 +72,7 @@ const missionCreateSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 0,
+  autoDismiss: 5,
 };
 
 const missionsByCarAndDateUpdateNotification = {
@@ -99,7 +99,7 @@ export const saveDataSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 0,
+  autoDismiss: 5,
 };
 
 export const reassignMissionSuccessNotification = {
@@ -108,7 +108,7 @@ export const reassignMissionSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 0,
+  autoDismiss: 5,
 };
 
 export const changeCompanyStructureIdNotyfication = {

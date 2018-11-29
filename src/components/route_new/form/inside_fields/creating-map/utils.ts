@@ -45,7 +45,7 @@ export const changeStateInObjectList = (geo: OneGeozoneMunicipalFacility, object
   let newObjectList = [];
 
   if (geo.state === polyState.ENABLE) {
-    newObjectList = objectList.filter(({ object_id }) => object_id !== geo.id);
+    newObjectList = objectList.filter(({ object_id }) => Number(object_id) !== Number(geo.id));
   } else if (geo.state === polyState.SELECTED) {
     newObjectList = [...objectList];
     const newObjectData = makeObjByGeo(type, geo.id, geo);
@@ -54,7 +54,7 @@ export const changeStateInObjectList = (geo: OneGeozoneMunicipalFacility, object
     }
   } else {
     newObjectList = objectList.reduce((newArr, objData) => {
-      if (objData.object_id === geo.id) {
+      if (Number(objData.object_id) === Number(geo.id)) {
         newArr.push({
           ...objData,
           state: geo.state,
@@ -78,14 +78,14 @@ export const makeObjectListOptions = (geozone_municipal_facility_by_id: StateCre
 };
 
 export const makeObjectListIdArr = (object_list: PropsCreatingMap['object_list']) => {
-  return object_list.map(({ object_id }) => object_id);
+  return object_list.map(({ object_id }) => Number(object_id));
 };
 
 export const makeObjByGeo = (type: PropsCreatingMap['type'], object_id: number, geo: OneGeozoneMunicipalFacility) => {
   if (geo) {
     return {
       name: geo.name,
-      object_id: geo.id,
+      object_id: Number(geo.id),
       state: geo.state,
       type: routeTypesByKey[type].slug,
     };

@@ -20,7 +20,8 @@ export const createSetCarFuncTypes = (oldCarFuncTypes) => {
 
 export const updateSetCarFuncTypes = (oldCarFuncTypes) => {
   const payload = {
-    ...oldCarFuncTypes,
+    asuods_id: oldCarFuncTypes.asuods_id,
+    avg_work_hours: oldCarFuncTypes.avg_work_hours,
   };
 
   return autobaseUpdateCarFuncTypes(

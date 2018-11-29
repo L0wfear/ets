@@ -151,7 +151,7 @@ export default class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !clone(formErrors, (v, k) => ['fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
+              canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !clone(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
               canClose: this.state.isPermittedByKey.update && !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
             });
           } else {
@@ -214,7 +214,7 @@ export default class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = !filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = !filter(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formState = formState;
@@ -237,7 +237,7 @@ export default class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = !filter(formErrors, (v, k) => ['fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = !filter(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formErrors = formErrors;

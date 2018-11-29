@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   find,
-  get,
   union,
 } from 'lodash';
 import * as Modal from 'react-bootstrap/lib/Modal';

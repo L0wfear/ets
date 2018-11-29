@@ -49,6 +49,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
   componentDidMount() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    if (this.props.typeClick === typeTemplate.missionTemplate) {
+      this.context.flux.getActions('missions').getMissionTemplatesCars();
+    }
 
     this.getMissionsList().then(({ result = [] }) => {
       const missionsList = getMissionListByFilter(result);
@@ -219,6 +222,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           <Div hidden={typeClick !== typeTemplate.missionTemplate} >
             <MissionTemplateTable
               data={missionsList}
+              govNumberFilter={this.props.govNumberFilter}
               selected={selectedElement}
               checked={checkedElements}
               onRowSelected={this.onRowSelected}

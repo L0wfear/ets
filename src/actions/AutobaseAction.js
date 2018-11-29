@@ -24,46 +24,6 @@ export default class AutobaseActions extends Actions {
     };
   }
 
-  repair(method, boundPayload, formState) {
-    const { repair } = AUTOBASE;
-    const path = parsePutPath(repair, method, formState);
-
-    const payload = Object.entries(formState).reduce((obj, [key, value]) => {
-      if (key.includes('date')) {
-        obj[key] = createValidDate(value);
-      } else {
-        obj[key] = value;
-      }
-      return obj;
-    }, {});
-
-    if (!AUTOBASE_REPAIR_STATUS.passed.has.reduce((bool, key) => bool && !!payload[key], true)) {
-      if (AUTOBASE_REPAIR_STATUS.in_progress.has.reduce((bool, key) => bool && payload[key], true)) {
-        payload.status = 'in_progress';
-      } else if (AUTOBASE_REPAIR_STATUS.planned.has.reduce((bool, key) => bool && payload[key], true)) {
-        payload.status = 'planned';
-      } else {
-        delete payload.status;
-      }
-    }
-
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'repair', boundPayload),
-      'json',
-    );
-  }
-
-  removeRepair(boundPayload, id) {
-    const { repair } = AUTOBASE;
-
-    return AutoBase.path(`${repair}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'repair', boundPayload),
-      'json',
-    );
-  }
-
   repairCompany(method, formState) {
     const payload = { ...formState };
     const { repairCompany } = AUTOBASE;

@@ -79,7 +79,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
 
     const IS_CREATING = !state.id;
 
-    const title = IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
       <Modal id="modal-spare-part" show onHide={this.handleHide} backdrop="static">

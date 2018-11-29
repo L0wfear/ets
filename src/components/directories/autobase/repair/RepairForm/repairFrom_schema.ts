@@ -1,27 +1,27 @@
-import * as moment from 'moment';
-
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsRepair } from 'components/directories/autobase/repair/RepairForm/@types/Repair.h';
+import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'utils/validate';
+import { diffDates } from 'utils/dates';
 
-export const formValidationSchema: IValidationSchema = {
+export const repairFormSchema: SchemaType<Repair, PropsRepair> = {
   properties: [
     {
       key: 'car_id',
       title: 'Регистрационный номер',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
-      integer: true,
     },
     {
       key: 'repair_company_id',
       title: 'Исполнитель ремонта',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'repair_type_id',
       title: 'Вид ремонта',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
@@ -68,55 +68,41 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'status',
       title: 'Итог проведенного ремонта',
-      type: 'array',
+      type: 'valueOfArray',
     },
   ],
   dependencies: {
     plan_date_end: [
-      {
-        validator(value = null, { plan_date_start = null }) {
-          if (!value) {
-            return getRequiredFieldMessage('Плановая дата окончания');
+      (value, { plan_date_start }) => {
+        if (plan_date_start && value) {
+
+          if (diffDates(value, plan_date_start) < 0) {
+            return '"Плановая дата окончания" должна быть позже "Плановой даты начала ремонта"';
           }
+        }
 
-          if (plan_date_start) {
-            const start = moment(plan_date_start).unix();
-            const end = moment(value).unix();
-
-            return end >= start
-              ? ''
-              : '"Плановая дата окончания" должна быть >= "Плановая дата начала ремонта"';
-          }
-
-          return '';
-        },
+        return '';
       },
     ],
     fact_date_end: [
-      {
-        validator(value = null, { fact_date_start = null }) {
-          if (fact_date_start && value) {
-            const start = moment(fact_date_start).unix();
-            const end = moment(value).unix();
+      (value, { fact_date_start }) => {
+        if (fact_date_start && value) {
 
-            return end >= start
-              ? ''
-              : '"Фактическая дата окончания" должна быть >= "Фактическая дата начала ремонта"';
+          if (diffDates(value, fact_date_start) < 0) {
+            return '"Фактическая дата окончания" должна быть позже "Фактической даты начала ремонта"';
           }
+        }
 
-          return '';
-        },
+        return '';
       },
     ],
     status: [
-      {
-        validator(value = null, { fact_date_start = null, fact_date_end = null }) {
-          if (fact_date_start && fact_date_end && !value) {
-            return getRequiredFieldMessage('Итог проведенного ремонта');
-          }
+      (value, { fact_date_start, fact_date_end }) => {
+        if (fact_date_start && fact_date_end && !value) {
+          return getRequiredFieldMessage('Итог проведенного ремонта');
+        }
 
-          return '';
-        },
+        return '';
       },
     ],
   },

@@ -4,7 +4,7 @@ const cssload = keyframes`
   0%{width: 0px;}
   70%{width: 100%; opacity: 1;}
   90%{opacity: 0; width: 100%;}
-  100%{opacity: 0;width: 0px;}
+  100%{opacity: 0; width: 0px;}
 `;
 
 export const MainPageLoader = styled.div`

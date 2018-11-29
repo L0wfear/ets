@@ -9,6 +9,9 @@ import * as insuranceType from 'redux-main/reducers/modules/autobase/actions_by_
 import * as insurancePolicy from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/actions';
 import * as car from 'redux-main/reducers/modules/autobase/car/actions';
 import * as carFuncTypes from 'redux-main/reducers/modules/autobase/car_func_types/actions';
+import * as repair from 'redux-main/reducers/modules/autobase/actions_by_type/repair/actions';
+import * as repairCompany from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/actions';
+import * as repairType from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/actions';
 
 export default {
   autobaseSetNewData,
@@ -22,4 +25,7 @@ export default {
   ...insurancePolicy,
   ...car,
   ...carFuncTypes,
+  ...repair,
+  ...repairCompany,
+  ...repairType,
 };

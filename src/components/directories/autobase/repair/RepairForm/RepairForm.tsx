@@ -4,38 +4,48 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import insurancePolicyPermissions from 'components/directories/autobase/insurance_policy/config-data/permissions';
+import repairPermissions from 'components/directories/autobase/repair/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { insurancePolicyFormSchema } from 'components/directories/autobase/insurance_policy/InsurancePolicyForm/insurance-policy-from-schema';
+import { repairFormSchema } from 'components/directories/autobase/repair/RepairForm/repairFrom_schema';
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultInsurancePolicyElement } from './utils';
+import { getDefaultRepairElement } from './utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
-  OwnInsurancePolicyProps,
-  PropsInsurancePolicy,
-  StateInsurancePolicy,
-  StatePropsInsurancePolicy,
-  DispatchPropsInsurancePolicy,
-  PropsInsurancePolicyWithForm,
-} from 'components/directories/autobase/insurance_policy/InsurancePolicyForm/@types/InsurancePolicy.h';
-import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+  OwnRepairProps,
+  PropsRepair,
+  StateRepair,
+  StatePropsRepair,
+  DispatchPropsRepair,
+  PropsRepairWithForm,
+} from 'components/directories/autobase/repair/RepairForm/@types/Repair.h';
+import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
+import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/ui/input/fields';
+import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
 
-class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, StateInsurancePolicy> {
+class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
-    insuranceTypeOptions: [],
     carListOptions: [],
+    repairCompanyOptions: [],
+    repairTypeOptions: [],
+    statusOptions: Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, value]) => !value.disabled).map(([key, value]) => ({
+      value: key,
+      label: value.name,
+      rowData: null,
+    })),
   };
 
   componentDidMount() {
-    this.loadInsuranceType();
+    this.loadRepairCompany();
+    this.loadRepairType();
+    // this.loadInsuranceType();
 
     const IS_CREATING = !this.props.formState.id;
 
@@ -43,10 +53,15 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
       this.loadCars();
     }
   }
-  async loadInsuranceType() {
-    const { payload: { data } } = await this.props.autobaseGetInsuranceType();
+  async loadRepairCompany() {
+    const { payload: { data } } = await this.props.autobaseGetRepairCompany();
 
-    this.setState({ insuranceTypeOptions: data.map(defaultSelectListMapper) });
+    this.setState({ repairCompanyOptions: data.map(defaultSelectListMapper) });
+  }
+  async loadRepairType() {
+    const { payload: { data } } = await this.props.autobaseGetRepairType();
+
+    this.setState({ repairTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
     const { payload: { data } } = await this.props.autobaseGetSetCar();
@@ -75,22 +90,30 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
     const {
       formState: state,
       formErrors: errors,
-      isPermitted = false,
+      isPermitted: ownIsPermitted = false,
       car_id,
       page,
       path,
     } = this.props;
     const {
-      insuranceTypeOptions,
       carListOptions,
     } = this.state;
+
+    const isPermitted = (
+      ownIsPermitted
+      && (
+        isNullOrUndefined(state.company_id)
+        || state.can_edit
+        || state.company_id === this.props.userCompanyId
+      )
+    );
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
-      <Modal id="modal-insurance-policy" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-repair" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -114,45 +137,36 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 />
               }
               <ExtField
-                id="insurer"
-                type="string"
-                label="Страховая организация"
-                value={state.insurer}
-                error={errors.insurer}
-                onChange={this.handleChange}
-                boundKeys="insurer"
-                disabled={!isPermitted}
-                modalKey={path}
-              />
-              <ExtField
-                id="insurance_type_id"
+                id="repair_company_id"
                 type="select"
-                label="Тип страхования"
-                value={state.insurance_type_id}
-                error={errors.insurance_type_id}
-                options={insuranceTypeOptions}
+                label="Исполнитель ремонта"
+                value={state.repair_company_id}
+                error={errors.repair_company_id}
+                options={this.state.repairCompanyOptions}
                 emptyValue={null}
                 onChange={this.handleChange}
-                boundKeys="insurance_type_id"
+                boundKeys="repair_company_id"
                 clearable={false}
                 disabled={!isPermitted}
                 modalKey={path}
               />
               <ExtField
-                id="seria"
-                type="string"
-                label="Серия"
-                value={state.seria}
-                error={errors.seria}
+                id="repair_type_id"
+                type="select"
+                label="Вид ремонта"
+                value={state.repair_type_id}
+                error={errors.repair_type_id}
+                options={this.state.repairTypeOptions}
+                emptyValue={null}
                 onChange={this.handleChange}
-                boundKeys="seria"
+                boundKeys="repair_type_id"
                 disabled={!isPermitted}
                 modalKey={path}
               />
               <ExtField
                 id="number"
                 type="string"
-                label="Номер"
+                label="Номер документа"
                 value={state.number}
                 error={errors.number}
                 onChange={this.handleChange}
@@ -161,43 +175,67 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 modalKey={path}
               />
               <ExtField
-                id="date_start"
+                id="plan_date_start"
                 type="date"
-                label="Дата начала действия"
-                date={state.date_start}
+                label="Плановая дата начала ремонта"
+                date={state.plan_date_start}
                 time={false}
-                error={errors.date_start}
+                error={errors.plan_date_start}
                 onChange={this.handleChange}
-                boundKeys="date_start"
+                boundKeys="plan_date_start"
                 disabled={!isPermitted}
                 modalKey={path}
               />
               <ExtField
-                id="date_end"
+                id="plan_date_end"
                 type="date"
-                label="Дата окончания действия"
-                date={state.date_end}
+                label="Плановая дата окончания ремонта"
+                date={state.plan_date_end}
                 time={false}
-                error={errors.date_end}
+                error={errors.plan_date_end}
                 onChange={this.handleChange}
-                boundKeys="date_end"
+                boundKeys="plan_date_end"
                 disabled={!isPermitted}
                 modalKey={path}
               />
               <ExtField
-                id="price"
+                id="fact_date_start"
+                type="date"
+                label="Фактическая дата начала ремонта"
+                date={state.fact_date_start}
+                time={false}
+                error={errors.fact_date_start}
+                onChange={this.handleChange}
+                boundKeys="fact_date_start"
+                disabled={!isPermitted}
+                modalKey={path}
+              />
+              <ExtField
+                id="fact_date_end"
+                type="date"
+                label="Фактическая дата окончания ремонта"
+                date={state.fact_date_end}
+                time={false}
+                error={errors.fact_date_end}
+                onChange={this.handleChange}
+                boundKeys="fact_date_end"
+                disabled={!isPermitted}
+                modalKey={path}
+              />
+              <ExtField
+                id="description"
                 type="string"
-                label="Стоимость, руб."
-                value={state.price}
-                error={errors.price}
+                label="Описание неисправности"
+                value={state.description}
+                error={errors.description}
                 onChange={this.handleChange}
-                boundKeys="price"
+                boundKeys="description"
                 disabled={!isPermitted}
                 modalKey={path}
               />
               <ExtField
                 id="note"
-                type="text"
+                type="string"
                 label="Примечание"
                 value={state.note}
                 error={errors.note}
@@ -207,8 +245,8 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 modalKey={path}
               />
               <FileField
+                id="file"
                 label="Файл"
-                id="files"
                 value={state.files}
                 error={errors.files}
                 onChange={this.handleChange}
@@ -216,6 +254,22 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 disabled={!isPermitted}
                 modalKey={path}
               />
+              {
+                state.fact_date_start && state.fact_date_end &&
+                  <ExtField
+                    id="status"
+                    type="select"
+                    label="Итог проведенного ремонта"
+                    value={state.status}
+                    error={errors.status}
+                    options={this.state.statusOptions}
+                    emptyValue={null}
+                    onChange={this.handleChange}
+                    boundKeys="status"
+                    disabled={!isPermitted}
+                    modalKey={path}
+                  />
+              }
             </Col>
           </Row>
         </ModalBodyPreloader>
@@ -235,13 +289,15 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
   }
 }
 
-export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
-  connect<StatePropsInsurancePolicy, DispatchPropsInsurancePolicy, OwnInsurancePolicyProps, ReduxState>(
-    null,
+export default compose<PropsRepair, OwnRepairProps>(
+  connect<StatePropsRepair, DispatchPropsRepair, OwnRepairProps, ReduxState>(
+    (state) => ({
+      userCompanyId: state.session.userData.company_id,
+    }),
     (dispatch, { page, path }) => ({
       createAction: (formState) => (
         dispatch(
-          autobaseActions.autobaseCreateInsurancePolicy(
+          autobaseActions.autobaseCreateRepair(
             formState,
             { page, path },
           ),
@@ -249,16 +305,8 @@ export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
       ),
       updateAction: (formState) => (
         dispatch(
-          autobaseActions.autobaseUpdateInsurancePolicy(
+          autobaseActions.autobaseUpdateRepair(
             formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetInsuranceType: () => (
-        dispatch(
-          autobaseActions.autobaseGetInsuranceType(
-            {},
             { page, path },
           ),
         )
@@ -271,13 +319,29 @@ export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
           ),
         )
       ),
+      autobaseGetRepairCompany: () => (
+        dispatch(
+          autobaseActions.autobaseGetSetRepairCompany(
+            {},
+            { page, path },
+          ),
+        )
+      ),
+      autobaseGetRepairType: () => (
+        dispatch(
+          autobaseActions.autobaseGetSetRepairType(
+            {},
+            { page, path },
+          ),
+        )
+      ),
     }),
   ),
-  withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({
+  withForm<PropsRepairWithForm, Repair>({
     mergeElement: (props) => {
-      return getDefaultInsurancePolicyElement(props.element);
+      return getDefaultRepairElement(props.element);
     },
-    schema: insurancePolicyFormSchema,
-    permissions: insurancePolicyPermissions,
+    schema: repairFormSchema,
+    permissions: repairPermissions,
   }),
-)(InsurancePolicyForm);
+)(RepairForm);

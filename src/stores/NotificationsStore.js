@@ -15,7 +15,6 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'repair',
           'repairCompany',
           'roadAccident',
           'techInspection',
@@ -70,7 +69,6 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'removeRepair',
           'removeRepairCompany',
           'removeRoadAccident',
           'removeTechInspection',

@@ -1,9 +1,15 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList';
-import RepairFormWrap from 'components/directories/autobase/repair/RepairFormWrap';
+import RepairFormWrap from 'components/directories/autobase/repair/RepairForm/RepairFormWrap';
 import RepairTable, { tableMeta } from 'components/directories/autobase/repair/RepairTable';
 import permissions from 'components/directories/autobase/repair/config-data/permissions';
+import { connect } from 'react-redux';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { compose } from 'recompose';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+const loadingPageName = 'repair';
 
 @connectToStores(['autobase', 'objects', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.repair}` })
@@ -16,23 +22,111 @@ import permissions from 'components/directories/autobase/repair/config-data/perm
   formMeta: tableMeta(),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class RepareList extends ElementsList {
-  constructor(props, context) {
-    super(props);
-    const { car_id = -1 } = props;
-    this.removeElementAction = context.flux.getActions('autobase').removeRepair.bind(null, car_id === -1 ? {} : { car_id });
+class RepareList extends ElementsList {
+  removeElementAction = async (id) => {
+    try {
+      await this.props.autobaseRemoveRepair(id);
+      this.loadMainData();
+    } catch (e) {
+      //
+    }
   }
 
   init() {
-    const { flux } = this.context;
-    const { car_id = -1 } = this.props;
+    const { car_id } = this.props;
 
-    if (car_id === -1) {
-      flux.getActions('autobase').getAutobaseListByType('repair');
-      flux.getActions('objects').getCars();
-    } else {
-      flux.getActions('autobase').getAutobaseListByType('repair', { car_id });
+    this.loadMainData();
+
+    if (car_id) {
       this.exportPayload = { car_id };
     }
   }
+
+  loadMainData() {
+    const { car_id } = this.props;
+
+    if (!car_id) {
+      this.props.repairGetAndSetInStore();
+    } else {
+      this.props.repairGetAndSetInStore({ car_id });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.autobaseResetSetRepair();
+  }
+
+  createElement = () => {
+    const { car_id = null } = this.props;
+
+    this.setState({
+      showForm: true,
+      selectedElement: {
+        car_id,
+      },
+    });
+  }
+
+  onFormHide = (isSubmited) => {
+    const changeState = {
+      showForm: false,
+    };
+
+    if (isSubmited) {
+      this.loadMainData();
+      changeState.selectedElement = null;
+    }
+
+    this.setState(changeState);
+  }
+
+  getAdditionalProps() {
+    return {
+      loadingPageName,
+    };
+  }
 }
+
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      repairList: state.autobase.repairList,
+    }),
+    dispatch => ({
+      carGetAndSetInStore: () => (
+        dispatch(
+          autobaseActions.carGetAndSetInStore(),
+        )
+      ),
+      repairGetAndSetInStore: (payload = {}) => (
+        dispatch(
+          autobaseActions.repairGetAndSetInStore(
+            payload,
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+      autobaseResetSetRepair: () => (
+        dispatch(
+          autobaseActions.autobaseResetSetRepair(),
+        )
+      ),
+      autobaseRemoveRepair: id => (
+        dispatch(
+          autobaseActions.autobaseRemoveRepair(
+            id,
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+    }),
+  ),
+)(RepareList);

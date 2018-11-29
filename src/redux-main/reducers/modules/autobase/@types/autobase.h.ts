@@ -101,6 +101,42 @@ export type CarFuncTypes = {
   short_name: string | null;
 };
 
+export type Repair = {
+  can_edit: boolean;
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_short_name: string | null;
+  description: string | null;
+  fact_date_end: string | null;
+  fact_date_start: string | null;
+  files: any[];
+  gov_number: string | null;
+  id: number | null;
+  note: string | null;
+  number: string | null;
+  plan_date_end: string | null;
+  plan_date_start: string | null;
+  repair_company_id: number | null;
+  repair_company_name: string | null;
+  repair_type_id: string | null;
+  repair_type_name: string | null;
+  status: string | null;
+};
+
+export type RepairCompany = {
+  comment: string | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_short_name: string | null;
+  id: number | null;
+  name: string | null;
+};
+export type RepairType = {
+  id: number | null;
+  name: string | null;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
@@ -112,4 +148,7 @@ export type IStateAutobase = {
   insurancePolicyList: InsurancePolicy[];
   carList: Car[];
   carFuncTypesList: CarFuncTypes[];
+  repairList: Repair[];
+  repairCompanyList: RepairCompany[];
+  repairTypeList: RepairType[];
 };

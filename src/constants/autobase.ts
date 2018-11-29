@@ -6,6 +6,9 @@ export const batteryManufacturer = 'batteryManufacturer';
 export const batteryRegistry = 'batteryRegistry';
 export const insurancePolicy = 'insurancePolicy';
 export const insuranceType = 'insuranceType';
+export const repair = 'repair';
+export const repairCompany = 'repairCompany';
+export const repairType = 'repairType';
 
 export default {
   tire: 'tire_registry',
@@ -21,9 +24,6 @@ export default {
   techMaintType: 'tech_maintenance_type',
   measureUnitRun: 'measure_unit_run',
   techInspection: 'tech_inspection_registry',
-  repair: 'repair_registry',
-  repairCompany: 'repair_company',
-  repairType: 'repair_type',
   roadAccidentRegistry: 'road_accident_registry',
   roadAccidentCause: 'road_accident_cause',
   carCategory: 'car_category',
@@ -37,4 +37,7 @@ export default {
   [batteryRegistry]: 'battery_registry',
   [insurancePolicy]: 'insurance_policy_registry',
   [insuranceType]: 'insurance_type',
+  [repair]: 'repair_registry',
+  [repairCompany]: 'repair_company',
+  [repairType]: 'repair_type',
 };

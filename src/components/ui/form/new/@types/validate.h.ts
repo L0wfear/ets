@@ -1,11 +1,17 @@
-export type PropertieType<F> = {
+export type CommonPropertie<F> = {
   key: keyof F;
   title: string;
-  type: 'string'
-  | 'number'
-  | 'valueOfArray'
-  | 'date';
   required?: boolean;
+};
+
+export type StringPropertie<F> = CommonPropertie<F> & {
+  type: 'string';
+  minLength?: number;
+  maxLength?: number;
+};
+
+export type NumberPropertie<F> = CommonPropertie<F> & {
+  type: 'number';
   minLength?: number;
   maxLength?: number;
   min?: number;
@@ -13,6 +19,21 @@ export type PropertieType<F> = {
   integer?: boolean;
   float?: number;
 };
+
+export type ValueOfArrayPropertie<F> = CommonPropertie<F> & {
+  type: 'valueOfArray';
+};
+
+export type DatePropertie<F> = CommonPropertie<F> & {
+  type: 'date';
+};
+
+export type PropertieType<F> = (
+  StringPropertie<F>
+  | NumberPropertie<F>
+  | ValueOfArrayPropertie<F>
+  | DatePropertie<F>
+);
 
 export type DependencieValidatorType<F, P, K = any> = (
   value: K,

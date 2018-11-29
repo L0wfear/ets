@@ -26,6 +26,7 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
         break;
       case 'valueOfArray':
         newObj[fieldData.key] = validateValueOfArray<F, P>(fieldData, formState, props);
+        break;
       case 'date':
         newObj[fieldData.key] = validateDate<F, P>(fieldData, formState, props);
         break;

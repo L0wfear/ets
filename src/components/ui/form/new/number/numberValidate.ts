@@ -1,7 +1,7 @@
-import { PropertieType } from 'components/ui/form/new/@types/validate.h';
+import { NumberPropertie } from 'components/ui/form/new/@types/validate.h';
 import { isNumber, isNullOrUndefined } from 'util';
 
-export const validateNumber = <F, P>(fieldData: PropertieType<F>, formState: F, props: P) => {
+export const validateNumber = <F, P>(fieldData: NumberPropertie<F>, formState: F, props: P) => {
   const {
     [fieldData.key]: value,
   } = formState;

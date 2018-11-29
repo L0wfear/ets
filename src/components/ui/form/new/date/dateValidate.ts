@@ -1,6 +1,6 @@
-import { PropertieType } from 'components/ui/form/new/@types/validate.h';
+import { DatePropertie } from 'components/ui/form/new/@types/validate.h';
 
-export const validateDate = <F, P>(fieldData: PropertieType<F>, formState: F, props: P) => {
+export const validateDate = <F, P>(fieldData: DatePropertie<F>, formState: F, props: P) => {
   const {
     [fieldData.key]: value,
   } = formState;

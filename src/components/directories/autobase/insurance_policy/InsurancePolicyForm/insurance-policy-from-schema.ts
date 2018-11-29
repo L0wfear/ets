@@ -35,7 +35,6 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
       type: 'string',
       maxLength: 128,
       required: true,
-      min: 0,
     },
     {
       key: 'date_start',

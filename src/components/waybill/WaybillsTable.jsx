@@ -86,7 +86,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: getOptions('driversList', driversList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: driversList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {

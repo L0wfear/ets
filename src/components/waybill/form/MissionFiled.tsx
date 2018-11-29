@@ -84,9 +84,20 @@ class MissionField extends React.Component<any, any> {
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
     const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));
-    const OUTSIDEMISSIONS = notAvailableMissions.map(({ id, number, technical_operation_name }) => ({
-      value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne, number, className: 'yellow',
-    }));
+    const OUTSIDEMISSIONS = notAvailableMissions
+      .map(({ id, number, technical_operation_name }) => ({
+        value: id,
+        label: `№${number} (${technical_operation_name})`,
+        clearableValue: countMissionMoreOne,
+        number,
+        className: 'yellow',
+      }));
+    const missionOptions = [ ...MISSIONS, ...OUTSIDEMISSIONS ].reduce( (newArr, item) => {
+      if (!newArr.some( (innerItem) => innerItem.value === item.value )) {
+        newArr.push(item);
+      }
+      return newArr;
+    }, []);
 
     return (
       <>
@@ -97,7 +108,7 @@ class MissionField extends React.Component<any, any> {
           error={errors.mission_id_list}
           multi
           className="task-container"
-          options={MISSIONS.concat(OUTSIDEMISSIONS)}
+          options={missionOptions}
           value={state.mission_id_list}
           disabled={isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update}
           clearable={false}

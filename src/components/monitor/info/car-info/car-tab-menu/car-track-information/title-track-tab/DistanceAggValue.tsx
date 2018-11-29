@@ -16,7 +16,7 @@ const DistanceAggValue: React.FunctionComponent<PropsDistanceAggValue> = ({ dist
         <span>{'---'}</span>
       )
       : (
-        <span>{distance / 1000}</span>
+        <span>{(distance / 1000).toFixed(2)}</span>
       )
     }
     </span>

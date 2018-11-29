@@ -13,6 +13,7 @@ type PropsFiltersWrap = {
   registryKey: string;
   isOpen: boolean;
   rowFields: any[];
+  components?: any;
 };
 
 type StateFiltersWrap = {

@@ -2,6 +2,7 @@ import { TypesService } from 'api/Services';
 
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import permissions from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data/permissions';
 
 export const registryKey = 'CarFuncTypes';
 
@@ -12,6 +13,7 @@ export const config: TypeConfigData = {
     title: 'Типы техники',
     buttons: [
       buttonsTypes.filter,
+      buttonsTypes.read,
       buttonsTypes.export,
     ],
   },
@@ -32,9 +34,15 @@ export const config: TypeConfigData = {
         type: 'multiselect',
         title: 'Краткое наименование',
       },
+      {
+        valueKey: 'avg_work_hours',
+        type: 'advanced-number',
+        title: 'Среднее количество часов работы',
+      },
     ],
   },
   list: {
+    permissions,
     data: {
       uniqKey: 'asuods_id',
     },
@@ -51,12 +59,16 @@ export const config: TypeConfigData = {
         {
           key: 'group_name',
           title: 'Группа',
-          className: 'width300',
+          width: 300,
         },
         {
           key: 'short_name',
           title: 'Краткое наименование',
-          className: 'width300',
+          width: 300,
+        },
+        {
+          key: 'avg_work_hours',
+          title: 'Среднее количество часов работы',
         },
       ],
     },

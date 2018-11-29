@@ -1,62 +1,39 @@
-const defaultHeader = {
-  header: {
-    title: '',
-    buttons: [],
-  },
-};
+import { ReduxState } from 'redux-main/@types/state';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
 
-const defaultFilter = {
-  filter: {
-    isOpen: false,
-    rawFilterValues: {},
-    fields: [],
-  },
-};
+type getHeaderDataFunc = (
+  registryState: ReduxState['registry'],
+  registryKey: string,
+) => OneRegistryData['header'];
 
-const defaultList = {
-  list: {
-    data: {
-      uniqKey: 'id',
-      array: [],
-      total_count: 0,
-    },
-    paginator: {
-      currentPage: 0,
-      perPage: 15,
-    },
-    processed: {
-      processedArray: [],
-      total_count: 0,
-      sort: {
-        field: '',
-        reverse: false,
-      },
-      filterValues: {},
-    },
-    meta: {
-      fields: [],
-      treeFields: {},
-      rowFields: [],
-      fieldsInDeepArr: [],
-      noEnumerated: false,
-    },
-  },
-};
+type getListDataFunc = (
+  registryState: ReduxState['registry'],
+  registryKey: string,
+) => OneRegistryData['list'];
 
-const defaultRootRegistry = {};
+type getFilterDataFunc = (
+  registryState: ReduxState['registry'],
+  registryKey: string,
+) => OneRegistryData['filter'];
 
-export const getHeaderData = (registryState, registryKey) => (
-  (registryState[registryKey] || defaultHeader).header
+type getRootRegistryFunc = (
+  registryState: ReduxState['registry'],
+  registryKey: string,
+) => OneRegistryData;
+
+export const getHeaderData: getHeaderDataFunc = (registryState, registryKey) => (
+  (registryState[registryKey] || registryDefaultObj).header
 );
 
-export const getListData = (registryState, registryKey) => (
-  (registryState[registryKey] || defaultList).list
+export const getListData: getListDataFunc = (registryState, registryKey) => (
+  (registryState[registryKey] || registryDefaultObj).list
 );
 
-export const getFilterData = (registryState, registryKey) => (
-  (registryState[registryKey] || defaultFilter).filter
+export const getFilterData: getFilterDataFunc = (registryState, registryKey) => (
+  (registryState[registryKey] || registryDefaultObj).filter
 );
 
-export const getRootRegistry = (registryState, registryKey) => (
-  (registryState[registryKey] || defaultRootRegistry)
+export const getRootRegistry: getRootRegistryFunc = (registryState, registryKey) => (
+  (registryState[registryKey] || registryDefaultObj)
 );

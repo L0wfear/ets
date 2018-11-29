@@ -11,6 +11,7 @@ export type InitialStateSession = {
       coordinates: [number, number];
     },
     permissions: string[];
+    permissionsSet: Set<string>;
     company_id: number | null;
     isOkrug: boolean;
     isKgh: boolean;

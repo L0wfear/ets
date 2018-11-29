@@ -48,9 +48,10 @@ export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
     ...currentUser.permissions,
     ...withSpecificPermissions(currentUser),
   ];
+  userData.permissionsSet = new Set(userData.permissions);
 
   userData.isOkrug = userData.okrug_id !== null;
-  userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
+  userData.isKgh = userData.permissionsSet.has('common.nsi_company_column_show');
 
   dispatch(
     sessionSetAppConfig(),

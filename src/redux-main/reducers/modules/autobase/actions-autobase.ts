@@ -8,6 +8,7 @@ import * as batteryRegistry from 'redux-main/reducers/modules/autobase/actions_b
 import * as insuranceType from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_type/actions';
 import * as insurancePolicy from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/actions';
 import * as car from 'redux-main/reducers/modules/autobase/car/actions';
+import * as carFuncTypes from 'redux-main/reducers/modules/autobase/car_func_types/actions';
 
 export default {
   autobaseSetNewData,
@@ -20,4 +21,5 @@ export default {
   ...insuranceType,
   ...insurancePolicy,
   ...car,
+  ...carFuncTypes,
 };

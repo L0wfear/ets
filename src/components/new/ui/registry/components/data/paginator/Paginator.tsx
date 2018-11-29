@@ -22,6 +22,7 @@ type PropsPaginator = {
   total_count: number;
 
   registryChangeDataPaginatorCurrentPage: any;
+  components?: any;
 };
 
 type StatePaginator = {

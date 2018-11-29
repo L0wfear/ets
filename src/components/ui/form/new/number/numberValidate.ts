@@ -14,7 +14,7 @@ export const validateNumber = <F, P>(fieldData: NumberPropertie<F>, formState: F
     return `Поле "${title}" должно быть заполнено`;
   }
 
-  if (value && !Number(value.toString().replace(/,/g, '.'))) {
+  if (!isNullOrUndefined(value) && !isNumber(Number(value.toString().replace(/,/g, '.')))) {
     return `Поле "${title}" должно быть числом`;
   }
 
@@ -48,7 +48,7 @@ export const validateNumber = <F, P>(fieldData: NumberPropertie<F>, formState: F
       }
     }
 
-    if (isNumber(numberValue)) {
+    if (isNumber(Number(value))) {
       return '';
     }
 

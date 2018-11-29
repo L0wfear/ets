@@ -20,8 +20,8 @@ class Filters extends React.Component<PropsFilters, StateFilters> {
 
     return (
       <EtsFilterCntainer>
-          <ButtonsLine registryKey={registryKey} />
-          <FiltersLines registryKey={registryKey} />
+        <ButtonsLine registryKey={registryKey} />
+        <FiltersLines registryKey={registryKey} />
       </EtsFilterCntainer>
     );
   }

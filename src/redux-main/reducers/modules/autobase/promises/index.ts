@@ -1,4 +1,4 @@
-import { AutoBase, CarService } from 'api/Services';
+import { AutoBase, CarService, TypesService } from 'api/Services';
 import { get } from 'lodash';
 import AUTOBASE from 'constants/autobase';
 
@@ -68,6 +68,30 @@ export const autobaseLoadCars = (payload = {}) => (
       data: get(ans, ['result', 'rows'], []),
     }))
 );
-export const autobaseUpdateCar = (keyType) => (ownPayload) => {
+export const autobaseUpdateCar = (ownPayload) => {
   return Promise.reject();
+};
+
+/* ------------- CAR_FUNC_TYPES ------------- */
+export const autobaseLoadCarFuncTypess = (payload = {}) => (
+  TypesService.get({ ...payload })
+    .catch((error) => {
+      // tslint:disable-next-line
+      console.log(error);
+
+      return {
+        result: {
+          rows: [],
+        },
+      };
+    })
+    .then((ans) => ({
+      data: get(ans, ['result', 'rows'], []),
+    }))
+);
+export const autobaseCreateCarFuncTypes = (ownPayload) => {
+  return TypesService.post(ownPayload);
+};
+export const autobaseUpdateCarFuncTypes = (ownPayload) => {
+  return TypesService.put(ownPayload);
 };

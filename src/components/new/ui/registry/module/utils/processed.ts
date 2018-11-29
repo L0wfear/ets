@@ -51,7 +51,6 @@ export const sortArray = (firstRowData, secondRowData, field) => {
 
 export const filterArray = (array, filterValues) => {
   const filterValauesEntries = Object.entries<any>(filterValues);
-
   if (filterValauesEntries.length > 0) {
     return array.filter((row) => {
       return !filterValauesEntries.some(([valueKeyType, value]) => {    //  если заваливается хотя бы на 1 фильтре
@@ -59,6 +58,26 @@ export const filterArray = (array, filterValues) => {
         if (valueKeyType.match(/__in$/)) {
           const valueKey = valueKeyType.replace(/__in$/, '');
           return !value.includes(row[valueKey]);
+        }
+        if (valueKeyType.match(/__like$/)) {
+          const valueKey = valueKeyType.replace(/__like$/, '');
+          return !row[valueKey].includes(value);
+        }
+        if (valueKeyType.match(/__eq$/)) {
+          const valueKey = valueKeyType.replace(/__eq$/, '');
+          return value !== row[valueKey];
+        }
+        if (valueKeyType.match(/__neq$/)) {
+          const valueKey = valueKeyType.replace(/__neq$/, '');
+          return !(value !== row[valueKey]);
+        }
+        if (valueKeyType.match(/__gt$/)) {
+          const valueKey = valueKeyType.replace(/__gt$/, '');
+          return value > row[valueKey];
+        }
+        if (valueKeyType.match(/__lt$/)) {
+          const valueKey = valueKeyType.replace(/__lt$/, '');
+          return value < row[valueKey];
         }
 
         // tslint:disable-next-line

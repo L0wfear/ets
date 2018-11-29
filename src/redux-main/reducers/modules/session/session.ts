@@ -47,6 +47,7 @@ const initialState: InitialStateSession = {
     company_id: null,
     isOkrug: false,
     isKgh: false,
+    permissionsSet: new Set(),
   },
   token: null,
   appConfig: CONFIG_INITIAL,

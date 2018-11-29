@@ -1,6 +1,6 @@
 import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
 
-import carFuncTypes from 'components/new/pages/nsi/cars/car-func-types/_config-data';
+import carFuncTypes from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data';
 import typesAttr from 'components/directories/autobase/types-attr/config-data';
 import carsList from 'components/directories/autobase/cars/config-data';
 import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';

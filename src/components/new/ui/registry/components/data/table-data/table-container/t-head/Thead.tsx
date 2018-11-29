@@ -4,36 +4,37 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 
 import TrHead from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead';
 
-type PropsThead = {
-  registryKey: string;
-  fieldsInDeepArr: any;
-};
-
-type StateThead = {
-
-};
+import {
+  StatePropsThead,
+  DispatchPropsThead,
+  OwnPropsThead,
+  PropsThead,
+  StateThead,
+} from 'components/new/ui/registry/components/data/table-data/table-container/t-head/Thead.h';
+import { ReduxState } from 'redux-main/@types/state';
+import {
+  EtsThead,
+} from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
 
 class Thead extends React.Component<PropsThead, StateThead> {
-  render() {
-    const { registryKey } = this.props;
+  mapRender = (thDataRow, index) => (
+    <TrHead key={index} thDataRow={thDataRow} registryKey={this.props.registryKey} />
+  )
 
+  render() {
     return (
-      <thead className="ets_table_thead">
+      <EtsThead>
         {
-          this.props.fieldsInDeepArr.map((thDataRow, index) => (
-            <TrHead key={index} thDataRow={thDataRow} registryKey={registryKey} />
-          ))
+          this.props.fieldsInDeepArr.map(this.mapRender)
         }
-      </thead>
+      </EtsThead>
     );
   }
 }
 
-const mapStateToProps = (state, { registryKey }) => ({
-  noEnumerated: getListData(state.registry, registryKey).meta.noEnumerated,
-  fieldsInDeepArr: getListData(state.registry, registryKey).meta.fieldsInDeepArr,
-});
-
-export default connect(
-  mapStateToProps,
+export default connect<StatePropsThead, DispatchPropsThead, OwnPropsThead, ReduxState>(
+  (state, { registryKey }) => ({
+    noEnumerated: getListData(state.registry, registryKey).meta.noEnumerated,
+    fieldsInDeepArr: getListData(state.registry, registryKey).meta.fieldsInDeepArr,
+  }),
 )(Thead);

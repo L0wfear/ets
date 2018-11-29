@@ -10,6 +10,7 @@ import {
 } from 'components/ui/input/ReactSelect/utils';
 import { SingleValueProps } from 'react-select/lib/components/SingleValue';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
+import { isArray, isNullOrUndefined } from 'util';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -87,10 +88,29 @@ export default class ReactSelect extends React.Component<any, any> {
     if (this.props.filterOption) {
       return this.props.filterOption(option, filterValue, this.props);
     }
-    const label = (get(option, 'label', '') || '').toString();
+    const label = (get(option, 'label', '') || '').toString() || '';
+    const valueOpt = get(option, 'value', null) || null;
+    const { value } = this.props;
 
-    return label.toLocaleLowerCase().includes(
-      filterValue.toLocaleLowerCase(),
+    return (
+      label.toLocaleLowerCase().includes(
+        filterValue.toLocaleLowerCase(),
+      )
+      && (
+        isArray(value)
+        ? (
+          !value.includes(valueOpt)
+        )
+        : (
+          !isNullOrUndefined(value)
+            ? (
+              value !== valueOpt
+            )
+            : (
+              true
+            )
+        )
+      )
     );
   }
 

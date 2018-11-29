@@ -90,8 +90,8 @@ export const autobaseLoadCarFuncTypess = (payload = {}) => (
     }))
 );
 export const autobaseCreateCarFuncTypes = (ownPayload) => {
-  return TypesService.post(ownPayload);
+  return TypesService.post(ownPayload, false, 'json');
 };
 export const autobaseUpdateCarFuncTypes = (ownPayload) => {
-  return TypesService.put(ownPayload);
+  return TypesService.put(ownPayload, false, 'json');
 };

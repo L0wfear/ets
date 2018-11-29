@@ -8,6 +8,26 @@ import { missionsStatusBySlag } from 'components/waybill/constant/table';
 
 const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
 
+const cache = {
+  example: {
+    array: [],
+    options: [],
+  },
+};
+
+const getOptions = (name, array, map) => {
+  const oldArray = get(cache, [name, 'array'], []);
+  if (array !== oldArray) {
+    cache[name] = {
+      array,
+      options: array.map(map),
+    };
+    return cache[name].options;
+  }
+
+  return cache[name].options;
+};
+
 export const getTableMeta = ({
   employeeFIOLabelFunction = () => {},
   driversList = [],
@@ -66,7 +86,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: driversList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('driversList', driversList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -155,7 +175,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: employeesList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -167,7 +187,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: employeesList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {
@@ -179,7 +199,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: employeesList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
         },
       },
       {

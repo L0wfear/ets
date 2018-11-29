@@ -21,6 +21,7 @@ import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from './Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
+import { isNullOrUndefined } from 'util';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -199,7 +200,7 @@ export default class WaybillFormWrap extends FormWrap {
       formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
     }
 
-    if (formState.fuel_end !== this.state.formState.fuel_end) {
+    if (formState.fuel_end !== this.state.formState.fuel_end || isNullOrUndefined(formState.fact_fuel_end)) {
       formState.fact_fuel_end = formState.fuel_end;
     }
 

@@ -23,12 +23,10 @@ import {
   isEmpty,
   hasMotohours,
 } from 'utils/functions';
-import { diffDates } from 'utils/dates';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { notifications } from 'utils/notifications';
-import { isNumeric } from 'utils/validate/dataTypes';
-import { getCurrentSeason } from 'utils/dates';
+import { diffDates, getCurrentSeason } from 'utils/dates';
 
 import {
   checkDateMission,
@@ -51,15 +49,14 @@ import {
   defaultSortingFunction,
 } from 'components/ui/input/ReactSelect/utils';
 
-import Form from '../compositions/Form';
-import Taxes from './Taxes';
+import Form from 'components/compositions/Form';
+import Taxes from 'components/waybill/Taxes';
 
-import WaybillFooter from './form/WaybillFooter';
-import BsnoStatus from './form/BsnoStatus';
-import MissionFormWrap from '../missions/mission/MissionFormWrap';
-import { getDefaultMission } from '../../stores/MissionsStore';
+import WaybillFooter from 'components/waybill/form/WaybillFooter';
+import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionFiled from 'components/waybill/form/MissionFiled';
+import { isNullOrUndefined, isNull, isNumber } from 'util';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -351,8 +348,8 @@ class WaybillForm extends Form {
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance: distance,
-            consumption: consumption !== null ? parseFloat(consumption).toFixed(3) : null,
+            distance: isNullOrUndefined(distance) ? null : parseFloat(consumption).toFixed(3),
+            consumption: isNullOrUndefined(consumption) ? null : parseFloat(consumption).toFixed(3),
           });
 
           this.setState({
@@ -630,10 +627,13 @@ class WaybillForm extends Form {
       DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
     }
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
+    let distanceOrTrackOrNodata = state.distance;
 
-    const distanceOrTrackOrNodata = isNumeric(parseInt(state.distance, 10)) ? parseFloat(state.distance / 1000).toFixed(3)
-      : isNumeric(parseInt(state.track_length, 10)) ? parseFloat(state.track_length / 1000).toFixed(3)
+    if (isNull(distanceOrTrackOrNodata)) {
+      distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
+        ? parseFloat(state.track_length / 1000).toFixed(3)
         : 'Нет данных';
+    }
 
     return (
       <Modal id="modal-waybill" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">

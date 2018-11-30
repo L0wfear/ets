@@ -9,6 +9,8 @@ export const insuranceType = 'insuranceType';
 export const repair = 'repair';
 export const repairCompany = 'repairCompany';
 export const repairType = 'repairType';
+export const roadAccident = 'roadAccident';
+export const roadAccidentCause = 'roadAccidentCause';
 
 export default {
   tire: 'tire_registry',
@@ -25,7 +27,6 @@ export default {
   measureUnitRun: 'measure_unit_run',
   techInspection: 'tech_inspection_registry',
   roadAccidentRegistry: 'road_accident_registry',
-  roadAccidentCause: 'road_accident_cause',
   carCategory: 'car_category',
   engineType: 'engine_type',
   propulsionType: 'propulsion_type',
@@ -40,4 +41,6 @@ export default {
   [repair]: 'repair_registry',
   [repairCompany]: 'repair_company',
   [repairType]: 'repair_type',
+  [roadAccident]: 'road_accident_registry',
+  [roadAccidentCause]: 'road_accident_cause',
 };

@@ -12,6 +12,8 @@ import * as carFuncTypes from 'redux-main/reducers/modules/autobase/car_func_typ
 import * as repair from 'redux-main/reducers/modules/autobase/actions_by_type/repair/actions';
 import * as repairCompany from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/actions';
 import * as repairType from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/actions';
+import * as roadAccident from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident/actions';
+import * as roadAccidentCause from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/actions';
 
 export default {
   autobaseSetNewData,
@@ -28,4 +30,6 @@ export default {
   ...repair,
   ...repairCompany,
   ...repairType,
+  ...roadAccident,
+  ...roadAccidentCause,
 };

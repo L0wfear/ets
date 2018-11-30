@@ -7,7 +7,6 @@ import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
 import { repairType } from 'constants/autobase';
-import { get } from 'lodash';
 
 export const getRepairType = autobaseLoadByType(repairType);
 export const createRepairType = autobaseCreateByType(repairType);
@@ -18,11 +17,7 @@ export const getSetRepairType = async (payload) => {
   const { data } = await getRepairType(payload);
 
   return {
-    data: data.map((rowData) => {
-      rowData.files = get(rowData, 'files', []);
-
-      return rowData;
-    }),
+    data,
   };
 };
 

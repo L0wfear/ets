@@ -136,6 +136,33 @@ export type RepairType = {
   id: number | null;
   name: string | null;
 };
+export type RoadAccident = {
+  accident_date: string | null;
+  accident_place: string | null;
+  car_gov_number: string | null;
+  car_id: number | null;
+  cause_id: number | null;
+  cause_name: string | null;
+  comment: string | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_short_name: string | null;
+  created_at: string | null;
+  damage_price: number | null;
+  driver_fio: string | null;
+  driver_id: number | null;
+  drivers_license: null
+  employee_position_name: string | null;
+  files: any[],
+  id: number | null;
+  is_guilty: boolean;
+  special_license: string | null;
+  updated_at: string | null;
+};
+export type RoadAccidentCause = {
+  id: number | null;
+  name: string | null;
+};
 
 export type IStateAutobase = {
   sparePartList: SparePart[];
@@ -151,4 +178,6 @@ export type IStateAutobase = {
   repairList: Repair[];
   repairCompanyList: RepairCompany[];
   repairTypeList: RepairType[];
+  roadAccidentList: RoadAccident[]
+  roadAccidentCauseList: RoadAccidentCause[],
 };

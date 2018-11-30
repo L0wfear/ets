@@ -28,11 +28,16 @@ export type DatePropertie<F> = CommonPropertie<F> & {
   type: 'date';
 };
 
+export type BooleanPropertie<F> = CommonPropertie<F> & {
+  type: 'boolean';
+};
+
 export type PropertieType<F> = (
   StringPropertie<F>
   | NumberPropertie<F>
   | ValueOfArrayPropertie<F>
   | DatePropertie<F>
+  | BooleanPropertie<F>
 );
 
 export type DependencieValidatorType<F, P, K = any> = (

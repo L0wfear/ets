@@ -24,7 +24,7 @@ const loadingPageName = 'battery-manufacturer';
 class BatteryManufacturerList extends ElementsList {
   removeElementAction = async (id) => {
     try {
-      await this.props.autobaseRemoveBatteryBrand(id);
+      await this.props.autobaseRemoveBatteryManufacturer(id);
       this.init();
     } catch (e) {
       //
@@ -32,11 +32,11 @@ class BatteryManufacturerList extends ElementsList {
   }
 
   init() {
-    this.props.batteryBrandGetAndSetInStore();
+    this.props.batteryManufacturerGetAndSetInStore();
   }
 
   componentWillUnmount() {
-    this.props.autobaseResetSetBatteryBrand();
+    this.props.autobaseResetSetBatteryManufacturer();
   }
 
   onFormHide = (isSubmited) => {
@@ -69,7 +69,7 @@ export default compose(
       batteryManufacturerList: state.autobase.batteryManufacturerList,
     }),
     dispatch => ({
-      batteryBrandGetAndSetInStore: () => (
+      batteryManufacturerGetAndSetInStore: () => (
         dispatch(
           autobaseActions.batteryManufacturerGetAndSetInStore(
             {},
@@ -79,12 +79,12 @@ export default compose(
           ),
         )
       ),
-      autobaseResetSetBatteryBrand: () => (
+      autobaseResetSetBatteryManufacturer: () => (
         dispatch(
           autobaseActions.autobaseResetSetBatteryManufacturer(),
         )
       ),
-      autobaseRemoveBatteryBrand: id => (
+      autobaseRemoveBatteryManufacturer: id => (
         dispatch(
           autobaseActions.autobaseRemoveBatteryManufacturer(
             id,

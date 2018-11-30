@@ -3,10 +3,9 @@ import { cloneDeep, get, omit } from 'lodash';
 import { AutoBase } from 'api/Services';
 import AUTOBASE from '../constants/autobase';
 import { createValidDate } from '../utils/dates';
-import { AUTOBASE_REPAIR_STATUS } from '../constants/dictionary';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
-const clearPayload = (state) => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
+const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
 
 export default class AutobaseActions extends Actions {
   async getAutobaseListByType(type, data, other) {
@@ -22,53 +21,6 @@ export default class AutobaseActions extends Actions {
       data: response,
       ...other,
     };
-  }
-
-  repairCompany(method, formState) {
-    const payload = { ...formState };
-    const { repairCompany } = AUTOBASE;
-
-    const path = parsePutPath(repairCompany, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'repairCompany'),
-      'json',
-    );
-  }
-
-  removeRepairCompany(id) {
-    const { repairCompany } = AUTOBASE;
-    return AutoBase.path(`${repairCompany}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'repairCompany'),
-      'json',
-    );
-  }
-
-  roadAccident(method, boundPayload, formState) {
-    const payload = {
-      ...formState,
-      accident_date: createValidDate(formState.accident_date),
-      is_guilty: !!formState.is_guilty,
-    };
-    const { roadAccidentRegistry } = AUTOBASE;
-
-    const path = parsePutPath(roadAccidentRegistry, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'roadAccidentRegistry', boundPayload),
-      'json',
-    );
-  }
-
-  removeRoadAccident(boundPayload, id) {
-    const { roadAccidentRegistry } = AUTOBASE;
-
-    return AutoBase.path(`${roadAccidentRegistry}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'roadAccidentRegistry', boundPayload),
-      'json',
-    );
   }
 
   techInspection(method, boundPayload, formState) {

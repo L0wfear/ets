@@ -49,7 +49,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
-      <Modal id="modal-spare-part" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-car-func-types" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

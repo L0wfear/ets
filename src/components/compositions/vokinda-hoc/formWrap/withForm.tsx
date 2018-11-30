@@ -131,11 +131,14 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
                     formState[key] = null;
                   }
                   break;
+                case 'boolean':
+                  formState[key] = value;
+                  break;
                 case 'string':
                 case 'date':
                 case 'datetime':
                 default:
-                  formState[key] = Boolean(value) ? value : null;
+                  formState[key] = Boolean(value) || value === 0 ? value : null;
               }
             } else {
               formState[key] = value;

@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { get } from 'lodash';
+
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
@@ -22,7 +24,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'drivers_emplds',
+        name: 'driver_fio',
         displayName: 'Водитель',
         type: 'string',
         filter: {
@@ -75,23 +77,32 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = (props) => {
+const makeDriverFio = (rowData) => {
   const {
-          car_id = -1,
-        } = props;
+    driver_fio,
+    employee_position_name,
+  } = rowData;
 
-  const renderers: ISchemaRenderer = {
-    accident_date: ({ data }) => (<DateFormatter date={data} />),
-    is_guilty: ({ data }) => <input type="checkbox" disabled checked={data} />,
-  };
+  const drivers_license = get(rowData, 'drivers_license', '') || '';
+  const special_license = get(rowData, 'special_license', '') || '';
 
+  return `${driver_fio} | ${employee_position_name} ${drivers_license ? `${drivers_license} ` : ''}${special_license}`;
+};
+
+const renderers: ISchemaRenderer = {
+  accident_date: ({ data }) => (<DateFormatter date={data} />),
+  is_guilty: ({ data }) => <input type="checkbox" disabled checked={data} />,
+  driver_fio: ({ rowData }) => makeDriverFio(rowData),
+};
+
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       title="Реестр ДТП"
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
-      noFilter={car_id !== -1}
+      noFilter
       {...props}
     />
   );

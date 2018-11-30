@@ -15,6 +15,7 @@ import registry from 'components/new/ui/registry/module/registry';
 import userNotifications from 'redux-main/reducers/modules/user_notifications/user_notifications';
 import old_report from 'components/coverage_reports/redux-main/modules/old-report/old_report';
 import autobase from 'redux-main/reducers/modules/autobase/autobase';
+import employee from 'redux-main/reducers/modules/employee/employee';
 
 export default combineReducers({
   ...rootReducers,
@@ -28,4 +29,5 @@ export default combineReducers({
   userNotifications,
   old_report,
   autobase,
+  employee,
 });

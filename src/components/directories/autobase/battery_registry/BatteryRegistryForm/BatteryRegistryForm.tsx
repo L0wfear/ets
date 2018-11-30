@@ -88,7 +88,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
-      <Modal id="modal-spare-part" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-battery-registry" show onHide={this.handleHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -96,6 +96,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
           <Row>
             <Col md={12}>
               <ExtField
+                id="brand_id"
                 type="select"
                 label="Марка аккумулятора"
                 value={state.brand_id}
@@ -105,23 +106,29 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 onChange={this.handleChangeBrandId}
                 boundKeys="brand_id"
                 disabled={!isPermitted}
+                modalKey={page}
               />
               <ExtField
+                id="brand_name"
                 type={'string'}
                 label={'Изготовитель'}
                 value={state.brand_name}
                 disabled
+                modalKey={page}
               />
               <ExtField
-                type={'string'}
+                id="serial_number"
+                type="string"
                 label={'Серийный номер'}
                 value={state.serial_number}
                 error={errors.serial_number}
                 onChange={this.handleChange}
                 boundKeys="serial_number"
                 disabled={!isPermitted}
+                modalKey={page}
               />
               <ExtField
+                id="lifetime_months"
                 type="string"
                 label="Срок службы, мес."
                 value={state.lifetime_months}
@@ -129,8 +136,10 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 onChange={this.handleChange}
                 boundKeys="lifetime_months"
                 disabled={!isPermitted}
+                modalKey={page}
               />
               <ExtField
+                id="released_at"
                 type="date"
                 label="Дата выпуска"
                 date={state.released_at}
@@ -139,23 +148,28 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 onChange={this.handleChange}
                 boundKeys="released_at"
                 disabled={!isPermitted}
+                modalKey={page}
               />
               <ExtField
+                id="worked_months"
                 type="string"
                 label="Количество месяцев наработки"
                 value={state.worked_months}
                 disabled
+                modalKey={page}
               />
               {!IS_CREATING &&
                 <Col md={12}>
                   <h4>Транспортное средство, на котором установлен аккумулятор</h4>
                   <BatteryVehicleBlock
+                    id="files"
                     onChange={this.handleChange}
                     boundKeys="battery_to_car"
                     inputList={state.battery_to_car || []}
                     onValidation={this.handleBatteryToCarValidity}
                     batteryId={state.id}
                     selectField="customId"
+                    modalKey={page}
                   />
                 </Col>
               }

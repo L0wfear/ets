@@ -11,7 +11,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 
 const loadingPageName = 'repair';
 
-@connectToStores(['autobase', 'objects', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.repair}` })
 @staticProps({
   entity: 'autobase_repair',

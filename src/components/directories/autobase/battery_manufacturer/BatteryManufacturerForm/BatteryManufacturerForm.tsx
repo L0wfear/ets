@@ -49,7 +49,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
-      <Modal id="modal-spare-part" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-battery-manufacturer" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -57,6 +57,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
           <Row>
             <Col md={12}>
               <ExtField
+                id={name}
                 type="string"
                 label="Производитель аккумулятора"
                 value={state.name}
@@ -64,6 +65,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
                 disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys="name"
+                modalKey={page}
               />
             </Col>
           </Row>

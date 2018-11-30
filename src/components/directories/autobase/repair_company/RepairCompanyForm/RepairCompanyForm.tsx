@@ -4,42 +4,29 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import batteryBrandPermissions from 'components/directories/autobase/battery_brand/config-data/permissions';
+import repairCompanyPermissions from 'components/directories/autobase/repair_company/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { batteryBrandFormSchema } from 'components/directories/autobase/battery_brand/BatteryBrandForm/battery-brand-from-schema';
+import { repairCompanyFormSchema } from 'components/directories/autobase/repair_company/RepairCompanyForm/repairCompany-schema';
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultBatteryBrandElement } from './utils';
+import { getDefaultRepairCompanyElement } from './utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
-  OwnBatteryBrandProps,
-  PropsBatteryBrand,
-  StateBatteryBrand,
-  StatePropsBatteryBrand,
-  DispatchPropsBatteryBrand,
-  PropsBatteryBrandWithForm,
-} from 'components/directories/autobase/battery_brand/BatteryBrandForm/@types/BatteryBrand.h';
-import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+  OwnRepairCompanyProps,
+  PropsRepairCompany,
+  StateRepairCompany,
+  StatePropsRepairCompany,
+  DispatchPropsRepairCompany,
+  PropsRepairCompanyWithForm,
+} from 'components/directories/autobase/repair_company/RepairCompanyForm/@types/RepairCompany.h';
+import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 
-class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatteryBrand> {
-  state = {
-    batteryManufacturerOptions: [],
-  };
-
-  componentDidMount() {
-    this.loadBatteryManufacturer();
-  }
-  async loadBatteryManufacturer() {
-    const { payload: { data } } = await this.props.autobaseGetSetBatteryManufacturer();
-
-    this.setState({ batteryManufacturerOptions: data.map(defaultSelectListMapper) });
-  }
+class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRepairCompany> {
   handleChange = (name, value) => {
     this.props.handleChange({
       [name]: get(value, ['target', 'value'], value),
@@ -56,47 +43,38 @@ class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatte
       page,
       path,
     } = this.props;
-    const {
-      batteryManufacturerOptions,
-    } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
-      <Modal id="modal-battery-brand" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-repair-company" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
-            <Col md={6}>
+            <Col md={12}>
               <ExtField
                 id="name"
                 type="string"
-                label="Марка аккумулятора"
+                label="Наименование ремонтной организации"
                 value={state.name}
                 error={errors.name}
-                disabled={!isPermitted}
                 onChange={this.handleChange}
                 boundKeys="name"
-                modalKey={page}
+                modalKey={path}
               />
-            </Col>
-            <Col md={6}>
               <ExtField
-                id="manufacturer_id"
-                type="select"
-                label="Производитель аккумулятора"
-                options={batteryManufacturerOptions}
-                value={state.manufacturer_id}
-                error={errors.manufacturer_id}
-                disabled={!isPermitted}
+                id="comment"
+                type="string"
+                label="Примечание"
+                value={state.comment}
+                error={errors.comment}
                 onChange={this.handleChange}
-                boundKeys="manufacturer_id"
-                clearable={false}
-                modalKey={page}
+                boundKeys="comment"
+                modalKey={path}
               />
             </Col>
           </Row>
@@ -117,13 +95,13 @@ class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatte
   }
 }
 
-export default compose<PropsBatteryBrand, OwnBatteryBrandProps>(
-  connect<StatePropsBatteryBrand, DispatchPropsBatteryBrand, OwnBatteryBrandProps, ReduxState>(
+export default compose<PropsRepairCompany, OwnRepairCompanyProps>(
+  connect<StatePropsRepairCompany, DispatchPropsRepairCompany, OwnRepairCompanyProps, ReduxState>(
     null,
     (dispatch, { page, path }) => ({
       createAction: (formState) => (
         dispatch(
-          autobaseActions.autobaseCreateBatteryBrand(
+          autobaseActions.autobaseCreateRepairCompany(
             formState,
             { page, path },
           ),
@@ -131,27 +109,19 @@ export default compose<PropsBatteryBrand, OwnBatteryBrandProps>(
       ),
       updateAction: (formState) => (
         dispatch(
-          autobaseActions.autobaseUpdateBatteryBrand(
+          autobaseActions.autobaseUpdateRepairCompany(
             formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetBatteryManufacturer: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetBatteryManufacturer(
-            {},
             { page, path },
           ),
         )
       ),
     }),
   ),
-  withForm<PropsBatteryBrandWithForm, BatteryBrand>({
+  withForm<PropsRepairCompanyWithForm, RepairCompany>({
     mergeElement: (props) => {
-      return getDefaultBatteryBrandElement(props.element);
+      return getDefaultRepairCompanyElement(props.element);
     },
-    schema: batteryBrandFormSchema,
-    permissions: batteryBrandPermissions,
+    schema: repairCompanyFormSchema,
+    permissions: repairCompanyPermissions,
   }),
-)(BatteryBrandForm);
+)(RepairCompanyForm);

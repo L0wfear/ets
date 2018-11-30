@@ -6,6 +6,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { IStateUserNotifications } from 'redux-main/reducers/modules/user_notifications/@types/user_notifications.h';
 import { IStateOldReport } from 'components/coverage_reports/redux-main/modules/old-report/@types/old_report';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -15,5 +16,9 @@ export interface ReduxState {
   old_report: IStateOldReport;
   session: InitialStateSession;
   autobase: IStateAutobase;
-  [key: string]: any;
+  employee: IStateEmployee;
+
+  monitorPage: any;
+  loading: any;
+  etsLoading: any;
 }

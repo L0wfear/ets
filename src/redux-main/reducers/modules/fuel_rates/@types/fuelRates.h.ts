@@ -1,5 +1,46 @@
-export type IStateFuelRates = {
+export type rate = {
+  body_capacity: number | null;
+  car_model_id: number | null;
+  car_model_name: string | null;
+  car_special_model_id: number | null;
+  car_special_model_name: string | null;
+  comment: string | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_structure_id: number | null;
+  company_structure_name: string | null;
+  full_model_name: string | null;
+  id: number | null;
+  isChecked: undefined | null;
+  isHighlighted: boolean | null;
+  isSelected: boolean | null;
+  is_excluding_mileage: boolean | null;
+  load_capacity: number | null;
+  max_speed: number | null;
+  measure_unit_id: number | null;
+  measure_unit_name: string | null;
+  model_name: string | null;
+  operation_equipment: boolean | null;
+  operation_id: number | null;
+  operation_name: string | null;
+  order_date: string | null;
+  rowNumber: number | null;
+  summer_rate: number | null;
+  winter_rate: number | null;
+};
 
+export type operation = {
+  equipment: boolean | null;
+  id: number | null;
+  is_excluding_mileage: boolean | null;
+  measure_unit_id: number | null;
+  measure_unit_name: string | null;
+  name: string | null;
+};
+
+export type IStateFuelRates = {
+  rates: rate[],
+  operations: operation[],
 };
 
 export type IFuelOperations = {

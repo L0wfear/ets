@@ -21,7 +21,6 @@ class FuelRatesDirectory extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;
   }
-
   init() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations();

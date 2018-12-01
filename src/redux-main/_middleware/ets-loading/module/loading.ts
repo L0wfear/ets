@@ -6,7 +6,7 @@ export const ETS_LOADING_RESET = ETS_LOADING`RESET`;
 export const ETS_LOADING_INC = ETS_LOADING`LOADING_INC`;
 export const ETS_LOADING_DEC = ETS_LOADING`LOADING_DEC`;
 
-const initialState = {
+const initialState: any = {
   allCount: 0,
   countByPage: {},
 };

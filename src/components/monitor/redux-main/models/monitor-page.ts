@@ -216,7 +216,7 @@ export default (state = initialState, { type, payload }) => {
       const { serverName, id } = payload;
 
       const { selectedGeoobjects: { ...selectedGeoobjects } } = state;
-      const { [serverName]: { ...serverNameData } } = selectedGeoobjects;
+      const { [serverName]: { ...serverNameData } } = selectedGeoobjects as any;
 
       if (id) {
         serverNameData[payload.id].front_show = false;

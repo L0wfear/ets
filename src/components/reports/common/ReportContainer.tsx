@@ -342,7 +342,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           },
         };
         if (forWhat === 'mainList' && this.props.data.result) {
-          (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }) => ({ value, label: value })), 'value');
+          (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }: any) => ({ value, label: value })), 'value');
         }
 
         const renderer = schemaMakers[fieldName] || identity;

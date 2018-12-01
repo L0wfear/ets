@@ -188,7 +188,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
     const objectListIndex = keyBy(route_data.object_list, 'object_id');
     const { serverName } = GEOOBJECTS_OBJ[type];
 
-    this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }) => {
+    this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }: any) => {
       const { missionReport } = this.state;
       const missionReportObjectIdIndex = new Set();
       missionReport.forEach(({ object_id }) => {

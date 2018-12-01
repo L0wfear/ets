@@ -17,7 +17,6 @@ import MapInfo from 'components/monitor/info/MapInfo';
 import { MapEtsConsumer } from 'components/map/context/MapetsContext';
 
 type PropsMapWrap = {
-  disabledByType: any;
   enableInteractions: boolean;
   disabledCenterOn: boolean;
   disabledMouseSingleClick: boolean;
@@ -28,7 +27,6 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
   {
     ({ setMapToContext, removeMapToContext }) => (
       <MapEts
-        disabledByType={props.disabledByType}
         enableInteractions={props.enableInteractions}
         disabledCenterOn={props.disabledCenterOn}
         disabledMouseSingleClick={props.disabledMouseSingleClick}
@@ -60,7 +58,6 @@ const MapWrap: React.SFC<PropsMapWrap> = (props) => (
 );
 
 const mapStateToProps = (state) => ({
-  disabledByType: state.monitorPage.carInfo.statusTC,
   enableInteractions: !(!!state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR || state.monitorPage.carInfo.playTrack.status === 'play'),
   disabledCenterOn: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR && !(state.monitorPage.carInfo.playTrack.status === 'play'),
   disabledMouseSingleClick: state.monitorPage.measureActive,

@@ -7,7 +7,7 @@ import { TRACK_COLORS } from 'constants/track';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
-const CACHE_ICON = {};
+const CACHE_ICON: any = {};
 
 const makeCacheStyle = (cacheStyleName, { greenSpeed, SHOW_TRACK, equipmentChecked } ) => {
   if (!SHOW_TRACK) {

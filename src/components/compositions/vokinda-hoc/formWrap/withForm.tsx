@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { isFunction } from 'util';
-import { clone } from 'lodash';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -100,7 +99,8 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
       }
       handleChange: FormWithHandleChange<F> = (objChange) => {
         setImmediate(() => {
-          const formState = clone<F>(this.state.formState);
+          const formState = { ...this.state.formState };
+
           const { properties } = config.schema;
           const propertiesByKey = properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
             newObj[key] = {
@@ -206,7 +206,7 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
       }
 
       defaultSubmit = () => {
-        const formatedFormState = clone(this.state.formState);
+        const formatedFormState = { ...this.state.formState };
         config.schema.properties.forEach(({ key, type }) => {
           let value: any = formatedFormState[key];
 

@@ -68,7 +68,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
   loadByGeometryType(type: 'mixed' | 'simple_dt') {
     const { serverName } = GEOOBJECTS_OBJ[routeTypesByKey[type].slug];
 
-    this.props.loadGeozones(serverName).then(({ payload: { [serverName]: geoData} }) => {
+    this.props.loadGeozones(serverName).then(({ payload: { [serverName]: geoData} }: any) => {
       this.setState({
         objectList: this.state.objectList.map((data) => ({
           ...data,

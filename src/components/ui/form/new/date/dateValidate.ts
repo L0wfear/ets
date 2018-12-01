@@ -9,7 +9,7 @@ export const validateDate = <F, P>(fieldData: DatePropertie<F>, formState: F, pr
     title,
   } = fieldData;
 
-  if (fieldData.required && (!value && value !== 0)) {
+  if (fieldData.required && !value) {
     return `Поле "${title}" должно быть заполнено`;
   }
 

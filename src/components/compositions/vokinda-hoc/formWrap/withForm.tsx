@@ -166,7 +166,7 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
           formState: {
             [config.uniqField || 'id']: uniqValue,
           },
-        } = this.state;
+        } = this.state as any;
 
         let result = null;
 

@@ -15,6 +15,7 @@ export type DispatchPropsFieldStructure = {
 
 export type OwnPropsFieldStructure = {
   value: number | void;
+  name: string | null;
   disabled: boolean;
   error: string | void;
   page: string;

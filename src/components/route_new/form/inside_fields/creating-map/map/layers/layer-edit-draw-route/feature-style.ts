@@ -147,7 +147,7 @@ export const inputLineStyleFunc: ol.StyleFunction  = (feature) => {
 
 export const getCasheStyleForGeoobject = (type, state) => {
   const cacheStyleName = `${type}/${state}`;
-  const { [cacheStyleName] : cache_style } = CACHE_ICON;
+  const { [cacheStyleName] : cache_style } = CACHE_ICON as any;
   let icon = cache_style;
 
   if (!cache_style) {

@@ -113,7 +113,7 @@ const makeCacheStyle = ({ type, state = polyState.SELECTED }) => {
 
 export const getCasheStyleForGeoobject = (type, state) => {
   const cacheStyleName = `${type}/${state}`;
-  const { [cacheStyleName] : cache_style } = CACHE_ICON;
+  const { [cacheStyleName] : cache_style } = CACHE_ICON as any;
   let icon = cache_style;
 
   if (!cache_style) {

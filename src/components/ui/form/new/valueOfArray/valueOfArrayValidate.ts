@@ -9,7 +9,7 @@ export const validateValueOfArray = <F, P>(fieldData: ValueOfArrayPropertie<F>, 
     title,
   } = fieldData;
 
-  if (fieldData.required && (!value && value !== 0)) {
+  if (fieldData.required && !value) {
     return `Поле "${title}" должно быть заполнено`;
   }
 

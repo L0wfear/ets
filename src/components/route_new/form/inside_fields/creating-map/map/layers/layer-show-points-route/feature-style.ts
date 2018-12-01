@@ -37,7 +37,7 @@ const makeCacheStyle = () => {
 
 export const getCasheStyleForGeoobject = (type) => {
   const cacheStyleName = `${type}`;
-  const { [cacheStyleName] : cache_style } = CACHE_ICON;
+  const { [cacheStyleName] : cache_style } = CACHE_ICON as any;
   let icon = cache_style;
 
   if (!cache_style) {

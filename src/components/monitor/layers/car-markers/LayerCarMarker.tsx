@@ -90,7 +90,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
             carPointsDataWs: {
               [gps_code]: carPointData,
             },
-          } = this.state;
+          } = this.state as any;
 
           if (carPointData) {
             hasWhatChage = true;
@@ -101,7 +101,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
                 carPointsDataWs: {
                   [prev_gps_code]: prevGpsCodeCarPointData,
                 },
-              } = this.state;
+              } = this.state as any;
               if (prevGpsCodeCarPointData) {
                 propsObjToChangeStyle.carPointsDataWs[prev_gps_code] = prevGpsCodeCarPointData;
               }
@@ -150,7 +150,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           carPointsDataWs: {
             [gps_code]: carPointData,
           },
-        } = this.state;
+        } = this.state as any;
 
         if (lastPoint) {
           if (lastPoint.timestamp > this.state.carPointsDataWs[gps_code].timestamp) {
@@ -176,7 +176,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           carPointsDataWs: {
             [gps_code]: carPointData, //  текущеее состояние ТС
           },
-        } = this.state;
+        } = this.state as any;
 
         if (carPointData) {
           const { coords_msk } = carPointData;
@@ -406,7 +406,7 @@ class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarM
           this.props.addFeaturesToSource(feature);
 
         } else if (carPointsDataWs[gps_code].timestamp < point.timestamp) {
-          const { [gps_code]: { front_status: old_status } } = carPointsDataWs;
+          const { [gps_code]: { front_status: old_status } } = carPointsDataWs as any;
 
           carPointsDataWs[gps_code] = {
             ...carPointsDataWs[gps_code],

@@ -6,7 +6,7 @@ const FuelIconLeak = require('assets/icons/track/oil-02.png');
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 
-const CACHE_ICON = {};
+const CACHE_ICON: any = {};
 
 const makeCacheStyle = (cacheStyleName, { event_type }) => {
   return CACHE_ICON[cacheStyleName] = new Style({

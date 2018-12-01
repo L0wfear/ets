@@ -75,7 +75,7 @@ export const makeProcessedArray = (array, { sort, filterValues }) => {
   const processedArray = filterArray(array, filterValues);
 
   if (sort.field) {
-    if (processedArray.some(({ [sort.field]: fieldValue }) => !isNullOrUndefined(fieldValue))) {
+    if (processedArray.some(({ [sort.field]: fieldValue }: any) => !isNullOrUndefined(fieldValue))) {
       processedArray.sort((a, b) => sortArray(a, b, sort.field));
 
       if (sort.reverse) {

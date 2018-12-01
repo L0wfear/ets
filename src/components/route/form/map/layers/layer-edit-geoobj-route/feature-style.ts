@@ -5,7 +5,7 @@ import Fill from 'ol/style/Fill';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
-const CACHE_ICON = {};
+const CACHE_ICON: any = {};
 
 export const TYPES_STYLE = {
   geoobj: 'geoobj',

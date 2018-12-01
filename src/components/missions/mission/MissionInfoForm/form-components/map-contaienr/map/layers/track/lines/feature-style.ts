@@ -7,7 +7,7 @@ import { TRACK_COLORS } from 'constants/track';
 
 const DEVICE_PIXEL_RATIO = 1; // window.devicePixelRatio / 2;
 
-const CACHE_ICON = {};
+const CACHE_ICON: any = {};
 
 const makeCacheStyle = (cacheStyleName, { greenSpeed } ) => {
   return CACHE_ICON[cacheStyleName] = new Style({

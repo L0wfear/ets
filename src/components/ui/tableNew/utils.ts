@@ -1,6 +1,6 @@
 import { diffDatesByDays } from 'utils/dates';
 
-export const hideChildren = (data, { uniqName }) => data.filter(({ [`${uniqName}_father`]: fatherId }) => !fatherId);
+export const hideChildren = (data: any, { uniqName }) => data.filter(({ [`${uniqName}_father`]: fatherId }: any) => !fatherId);
 export const showChildren = (data) => {
   return data.reduce((newData, row) => {
     newData.push(row);

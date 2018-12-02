@@ -204,6 +204,7 @@ export default compose<PropsSparePart, OwnSparePartProps>(
     }),
   ),
   withForm<PropsSparePartWithForm, SparePart>({
+    uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultSparePartElement(props.element);
     },

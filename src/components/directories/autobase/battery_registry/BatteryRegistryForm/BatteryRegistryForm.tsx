@@ -223,6 +223,7 @@ export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
     }),
   ),
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
+    uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultBatteryRegistryElement(props.element);
     },

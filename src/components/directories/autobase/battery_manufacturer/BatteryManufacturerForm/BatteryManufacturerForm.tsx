@@ -109,6 +109,7 @@ export default compose<PropsBatteryManufacturer, OwnBatteryManufacturerProps>(
     }),
   ),
   withForm<PropsBatteryManufacturerWithForm, BatteryManufacturer>({
+    uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultBatteryManufacturerElement(props.element);
     },

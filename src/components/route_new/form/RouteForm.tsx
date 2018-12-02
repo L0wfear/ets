@@ -221,6 +221,7 @@ export default compose<PropsRouteForm, OwnRouteFormProps>(
     }),
   ),
   withForm<PropsRouteWithForm, FormStateRouteForm>({
+    uniqField: 'id',
     mergeElement: (props) => {
       const {
         element,

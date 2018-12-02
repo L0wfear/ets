@@ -338,6 +338,7 @@ export default compose<PropsRepair, OwnRepairProps>(
     }),
   ),
   withForm<PropsRepairWithForm, Repair>({
+    uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultRepairElement(props.element);
     },

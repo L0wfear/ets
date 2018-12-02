@@ -274,6 +274,7 @@ export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
     }),
   ),
   withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({
+    uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultInsurancePolicyElement(props.element);
     },

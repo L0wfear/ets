@@ -9,7 +9,7 @@ type FormErrorType<F> = {
 };
 
 type ConfigWithForm<P, F, S> = {
-  uniqField?: string;
+  uniqField?: keyof F;
   mergeElement?: (props: P) => F;
   canSave?: (state: S, props: P) => boolean;
   validate?: (formState: F, props: P) => FormErrorType<F>;
@@ -164,9 +164,9 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
       submitAction = async <T extends any[], A extends any>(...payload: T) => {
         const {
           formState: {
-            [config.uniqField || 'id']: uniqValue,
+            [config.uniqField]: uniqValue,
           },
-        } = this.state as any;
+        } = this.state;
 
         let result = null;
 

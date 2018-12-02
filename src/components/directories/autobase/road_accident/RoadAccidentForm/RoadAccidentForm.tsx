@@ -255,6 +255,7 @@ export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
     }),
   ),
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
+    uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultRoadAccidentElement(props.element);
     },

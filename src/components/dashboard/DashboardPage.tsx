@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
@@ -22,7 +22,7 @@ class DashboardPage extends React.PureComponent<{}, {}> {
   }
 }
 
-export default hocAll(
+export default compose(
   triggerOnChangeCompany,
   withPreloader({
     page: 'dashboard',

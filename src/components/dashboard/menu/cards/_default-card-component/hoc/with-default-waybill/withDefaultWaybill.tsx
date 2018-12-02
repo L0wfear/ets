@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
@@ -13,7 +13,7 @@ import {
 } from './withDefaultWaybill.h';
 
 const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component) => (
-  hocAll(
+  compose(
     withDefaultCard({
       path: config.path,
       loadData: config.loadData,

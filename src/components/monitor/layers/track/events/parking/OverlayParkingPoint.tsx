@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Overlay from 'components/map/overlay/Overlay';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { carInfoSetParkingPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   connect(
     mapStateToProps,
     mapDispatchToProps,

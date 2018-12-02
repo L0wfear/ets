@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import { connect } from 'react-redux';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { LinkToRouteListPermitted } from 'components/route_new/buttons/buttons';
@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose(
   withShowByProps({
     path: ['dashboard', 'odh_not_covered_by_routes', 'infoData'],
     type: 'none',

@@ -20,6 +20,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -77,13 +78,14 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default withDefaultCard({
-  path: 'car_in_work_overall',
-  loadData: dashboardLoadCarInWorkOverall,
-  InfoComponent: CarInWorkOverallInfo,
-})(
+export default compose<any, any>(
+  withDefaultCard({
+    path: 'car_in_work_overall',
+    loadData: dashboardLoadCarInWorkOverall,
+    InfoComponent: CarInWorkOverallInfo,
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(CarInWorkOverall),
-);
+  ),
+)(CarInWorkOverall);

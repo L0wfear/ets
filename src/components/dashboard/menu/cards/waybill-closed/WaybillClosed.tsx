@@ -15,6 +15,7 @@ import {
   PropsWaybillClosed,
   StateWaybillClosed,
 } from 'components/dashboard/menu/cards/waybill-closed/WaybillClosed.h';
+import { compose } from 'recompose';
 
 class WaybillClosed extends React.Component<PropsWaybillClosed, StateWaybillClosed> {
   render() {
@@ -25,15 +26,17 @@ class WaybillClosed extends React.Component<PropsWaybillClosed, StateWaybillClos
   }
 }
 
-export default withDefaultWaybill({
-  path: 'waybill_closed',
-  loadData: dashboardLoadWaybillClosed,
-  InfoComponent: WaybillClosedInfo,
-  setInfoData: dashboardSetInfoDataInWaybillClosed,
-  ListComponent: ListNumber,
-  setInfoDataPropsMake: ({ items }, path: string) => (
-    items[
-      path.split('/').slice(-1)[0]
-    ]
-  ),
-})(WaybillClosed);
+export default compose<any, any>(
+  withDefaultWaybill({
+    path: 'waybill_closed',
+    loadData: dashboardLoadWaybillClosed,
+    InfoComponent: WaybillClosedInfo,
+    setInfoData: dashboardSetInfoDataInWaybillClosed,
+    ListComponent: ListNumber,
+    setInfoDataPropsMake: ({ items }, path: string) => (
+      items[
+        path.split('/').slice(-1)[0]
+      ]
+    ),
+  }),
+)(WaybillClosed);

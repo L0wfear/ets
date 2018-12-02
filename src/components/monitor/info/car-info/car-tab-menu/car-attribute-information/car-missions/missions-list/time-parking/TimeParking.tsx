@@ -2,7 +2,7 @@ import * as React from 'react';
 import { makeUnixTime, secondsToTime } from 'utils/dates';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 
 type PropsTimeParking = {
   date_start: number;
@@ -37,7 +37,7 @@ const mapStateToProps = (state) => ({
   parkings: state.monitorPage.carInfo.trackCaching.parkings,
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'parkings'],
     type: 'small-loader-field',

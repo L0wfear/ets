@@ -146,5 +146,3 @@ const MainInfoTab: React.SFC<IPropsMainInfoTab> = (props) =>
   </CarTab>;
 
 export default MainInfoTab;
-
-// <ExtField type="string" label="Владелец" readOnly value={props.state.owner_name || 'Не указано'} />

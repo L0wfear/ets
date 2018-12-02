@@ -14,6 +14,7 @@ import {
   PropsWaybillInProgress,
   StateWaybillInProgress,
 } from 'components/dashboard/menu/cards/waybill-in-progress/WaybillInProgress.h';
+import { compose } from 'recompose';
 
 class WaybillInProgress extends React.Component<PropsWaybillInProgress, StateWaybillInProgress> {
   render() {
@@ -24,15 +25,17 @@ class WaybillInProgress extends React.Component<PropsWaybillInProgress, StateWay
   }
 }
 
-export default withDefaultWaybill({
-  path: 'waybill_in_progress',
-  loadData: dashboardLoadWaybillInProgress,
-  InfoComponent: WaybillInProgressInfo,
-  setInfoData: dashboardSetInfoDataInWaybillInProgress,
-  ListComponent: ListNumber,
-  setInfoDataPropsMake: ({ items }, path: string) => (
-    items[
-      path.split('/').slice(-1)[0]
-    ]
-  ),
-})(WaybillInProgress);
+export default compose<any, any>(
+  withDefaultWaybill({
+    path: 'waybill_in_progress',
+    loadData: dashboardLoadWaybillInProgress,
+    InfoComponent: WaybillInProgressInfo,
+    setInfoData: dashboardSetInfoDataInWaybillInProgress,
+    ListComponent: ListNumber,
+    setInfoDataPropsMake: ({ items }, path: string) => (
+      items[
+        path.split('/').slice(-1)[0]
+      ]
+    ),
+  }),
+)(WaybillInProgress);

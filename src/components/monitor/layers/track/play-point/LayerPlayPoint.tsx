@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
@@ -48,7 +48,7 @@ const mapStateToProps = (state) => ({
   playTrackStatus: state.monitorPage.carInfo.playTrack.status,
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',

@@ -19,6 +19,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateOdhCoveredByRoutes> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -68,13 +69,14 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default withDefaultCard({
-  path: 'odh_covered_by_routes',
-  loadData: dashboardLoadOdhCoveredByRoutes,
-  InfoComponent: OdhCoveredByRoutesInfo,
-})(
+export default compose<any, any>(
+  withDefaultCard({
+    path: 'odh_covered_by_routes',
+    loadData: dashboardLoadOdhCoveredByRoutes,
+    InfoComponent: OdhCoveredByRoutesInfo,
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(OdhCoveredByRoutes),
-);
+  ),
+)(OdhCoveredByRoutes);

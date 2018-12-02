@@ -11,7 +11,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Overlay from 'components/map/overlay/Overlay';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { monitorPageToggleMeasureActive } from 'components/monitor/redux-main/models/actions-monitor-page';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { getStyleForLineMeasure } from 'components/monitor/layers/measure/feature-style';
 
 import {
@@ -300,7 +300,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   withLayerProps({
     map: true,
   }),

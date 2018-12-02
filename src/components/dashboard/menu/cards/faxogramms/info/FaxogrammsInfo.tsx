@@ -5,7 +5,7 @@ import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import { connect } from 'react-redux';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
@@ -177,7 +177,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose(
   withShowByProps({
     path: ['dashboard', 'faxogramms', 'infoData'],
     type: 'none',

@@ -3,8 +3,6 @@ import * as PropTypes from 'prop-types';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
 import cx from 'classnames';
 
-import { onChangeWithKeys } from 'components/compositions/hoc';
-import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';

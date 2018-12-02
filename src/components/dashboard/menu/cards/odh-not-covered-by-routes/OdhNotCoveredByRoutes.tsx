@@ -19,6 +19,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, StateOdhNotCoveredByRoutes> {
   handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
@@ -71,13 +72,14 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default withDefaultCard({
-  path: 'odh_not_covered_by_routes',
-  loadData: dashboardLoadOdhNotCoveredByRoutes,
-  InfoComponent: OdhNotCoveredByRoutesInfo,
-})(
+export default compose<any, any>(
+  withDefaultCard({
+    path: 'odh_not_covered_by_routes',
+    loadData: dashboardLoadOdhNotCoveredByRoutes,
+    InfoComponent: OdhNotCoveredByRoutesInfo,
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(OdhNotCoveredByRoutes),
-);
+  ),
+)(OdhNotCoveredByRoutes);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
@@ -26,7 +26,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 
 const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Component) => (
-  hocAll(
+  compose(
     withRequirePermissionsNew({
       permissions: `dashboard.${path}`,
     }),

@@ -20,6 +20,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotCoveredByMissionsOfCurrentShift, StateOdhNotCoveredByMissionsOfCurrentShift> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -69,13 +70,14 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default withDefaultCard({
-  path: 'odh_not_covered_by_missions_of_current_shift',
-  loadData: dashboardLoadOdhNotCoveredByMissionsOfCurrentShift,
-  InfoComponent: OdhNotCoveredByMissionsOfCurrentShiftInfo,
-})(
+export default compose<any, any>(
+  withDefaultCard({
+    path: 'odh_not_covered_by_missions_of_current_shift',
+    loadData: dashboardLoadOdhNotCoveredByMissionsOfCurrentShift,
+    InfoComponent: OdhNotCoveredByMissionsOfCurrentShiftInfo,
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(OdhNotCoveredByMissionsOfCurrentShift),
-);
+  ),
+)(OdhNotCoveredByMissionsOfCurrentShift);

@@ -19,6 +19,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -68,13 +69,14 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default withDefaultCard({
-  path: 'faxogramms',
-  loadData: dashboardLoadOrders,
-  InfoComponent: FaxogrammsInfo,
-})(
+export default compose<any, any>(
+  withDefaultCard({
+    path: 'faxogramms',
+    loadData: dashboardLoadOrders,
+    InfoComponent: FaxogrammsInfo,
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(Faxogramms),
-);
+  ),
+)(Faxogramms);

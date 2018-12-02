@@ -18,6 +18,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 
 class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
   handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
@@ -67,13 +68,14 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default withDefaultCard({
-  path: 'waybill_completed',
-  loadData: dashboardLoadWaybillCompleted,
-  InfoComponent: WaybillCompletedInfo,
-})(
+export default compose<any, any>(
+  withDefaultCard({
+    path: 'waybill_completed',
+    loadData: dashboardLoadWaybillCompleted,
+    InfoComponent: WaybillCompletedInfo,
+  }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(WaybillCompleted),
-);
+  ),
+)(WaybillCompleted);

@@ -16,6 +16,8 @@ import {
   PropsWaybillClosedInfo,
   StateWaybillClosedInfo,
 } from 'components/dashboard/menu/cards/waybill-closed/info/WaybillClosedInfo.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWaybillClosedInfo> {
   state = {
@@ -82,43 +84,39 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
   }
 }
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.waybill_closed.infoData,
-  infoDataRaw: state.dashboard.waybill_closed.data.items[0],
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInWaybillClosed(null),
-    )
-  ),
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInWaybillClosed(infoData),
-    )
-  ),
-  getWaybillById: (id) => (
-    dispatch(
-      loadWaybillById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'waybill_closed', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).waybill_closed.infoData,
+      infoDataRaw: getDashboardState(state).waybill_closed.data.items[0],
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInWaybillClosed(null),
+        )
+      ),
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInWaybillClosed(infoData),
+        )
+      ),
+      getWaybillById: (id) => (
+        dispatch(
+          loadWaybillById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(WaybillClosedInfo);

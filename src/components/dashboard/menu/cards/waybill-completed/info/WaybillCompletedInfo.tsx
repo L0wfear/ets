@@ -28,6 +28,8 @@ import {
 import {
   TitleWaybillInfoContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, StateWaybillCompletedInfo> {
   state = {
@@ -134,43 +136,38 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
   }
 }
 
-const mapStateToProps = (state) => ({
-  activeIndex: state.dashboard.waybill_completed.activeIndex,
-  infoData: state.dashboard.waybill_completed.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInWaybillCompleted(null),
-    )
-  ),
-  loadAllWaybillCard: () => (
-    dispatch(
-      dashboardLoadDependentDataByWaybillCompleted(),
-    )
-  ),
-  getWaybillById: (id) => (
-    dispatch(
-      loadWaybillById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'waybill_completed', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).waybill_completed.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInWaybillCompleted(null),
+        )
+      ),
+      loadAllWaybillCard: () => (
+        dispatch(
+          dashboardLoadDependentDataByWaybillCompleted(),
+        )
+      ),
+      getWaybillById: (id: number) => (
+        dispatch(
+          loadWaybillById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(WaybillCompletedInfo);

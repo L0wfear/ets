@@ -16,16 +16,21 @@ import CarInWorkOverallInfo from 'components/dashboard/menu/cards/car-in-work-ov
 import {
   PropsCarInWorkOverall,
   StateCarInWorkOverall,
+  StatePropsCarInOveral,
+  DispatchPropsCarInOveral,
+  OwnPropsCarInOveral,
 } from 'components/dashboard/menu/cards/car-in-work-overall/CarInWorkOverall.h';
 import {
   DivNone,
 } from 'global-styled/global-styled';
 import { compose } from 'recompose';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
-
     this.props.setInfoData(this.props.items[index]);
   }
 
@@ -66,26 +71,22 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
   }
 }
 
-const mapStateToProps = (state) => ({
-  items: state.dashboard.car_in_work_overall.data.items,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInCarInWorkOverall(infoData),
-    )
-  ),
-});
-
-export default compose<any, any>(
+export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
   withDefaultCard({
     path: 'car_in_work_overall',
     loadData: dashboardLoadCarInWorkOverall,
     InfoComponent: CarInWorkOverallInfo,
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<StatePropsCarInOveral, DispatchPropsCarInOveral, OwnPropsCarInOveral, ReduxState>(
+    (state) => ({
+      items: getDashboardState(state).car_in_work_overall.data.items,
+    }),
+    (dispatch) => ({
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInCarInWorkOverall(infoData),
+        )
+      ),
+    }),
   ),
 )(CarInWorkOverall);

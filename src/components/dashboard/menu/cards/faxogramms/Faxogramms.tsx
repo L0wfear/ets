@@ -20,6 +20,9 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { compose } from 'recompose';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -57,26 +60,22 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  items: state.dashboard.faxogramms.data.items,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInFaxogramms(infoData),
-    )
-  ),
-});
-
-export default compose<any, any>(
+export default compose<PropsFaxogramms, PropsToDefaultCard>(
   withDefaultCard({
     path: 'faxogramms',
     loadData: dashboardLoadOrders,
     InfoComponent: FaxogrammsInfo,
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      items: getDashboardState(state).faxogramms.data.items,
+    }),
+    (dispatch) => ({
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInFaxogramms(infoData),
+        )
+      ),
+    }),
   ),
 )(Faxogramms);

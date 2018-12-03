@@ -1,9 +1,20 @@
 import { OdhCoveredByRoutesItemsType } from 'components/dashboard/redux-main/modules/dashboard/@types/odh-covered-by-routes.h';
 
-export type PropsOdhCoveredByRoutes = {
+export type StatePropsOdhCoveredByRoutes = {
   items: OdhCoveredByRoutesItemsType[];
-  setInfoData: any;
 };
+
+export type DispatchPropsOdhCoveredByRoutes = {
+  setInfoData: (infoData: OdhCoveredByRoutesItemsType) => any;
+};
+
+export type OwnPropsOdhCoveredByRoutes = {};
+
+export type PropsOdhCoveredByRoutes = (
+  StatePropsOdhCoveredByRoutes
+  & DispatchPropsOdhCoveredByRoutes
+  & OwnPropsOdhCoveredByRoutes
+);
 
 export type StateOdhCoveredByRoutes = {
 };

@@ -22,7 +22,7 @@ class DashboardPage extends React.PureComponent<{}, {}> {
   }
 }
 
-export default compose(
+export default compose<any, any>(
   triggerOnChangeCompany,
   withPreloader({
     page: 'dashboard',

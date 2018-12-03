@@ -9,6 +9,8 @@ import InfoCard from 'components/dashboard/menu/cards/_default-card-component/in
 import { dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import { PropsOdhNotCoveredByMissionsOfCurrentShiftInfo } from 'components/dashboard/menu/cards/odh-not-covered-by-missions-of-current-shift/info/OdhNotCoveredByMissionsOfCurrentShiftInfo.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.SFC<PropsOdhNotCoveredByMissionsOfCurrentShiftInfo> = ({ infoData, ...props }) => (
   <InfoCard title="Список объектов / количество недостающих циклов" handleClose={props.handleClose}>
@@ -24,25 +26,21 @@ const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.SFC<PropsOdhNotCoveredByM
   </InfoCard>
 );
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.odh_not_covered_by_missions_of_current_shift.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift(null),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'odh_not_covered_by_missions_of_current_shift', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).odh_not_covered_by_missions_of_current_shift.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift(null),
+        )
+      ),
+    }),
   ),
 )(OdhNotCoveredByMissionsOfCurrentShiftInfo);

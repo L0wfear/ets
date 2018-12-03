@@ -29,6 +29,8 @@ import {
 import {
   RightButtonBlockContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -171,54 +173,50 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 }
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.current_duty_missions.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardLoadMissionDataForCurrentMission(null),
-    )
-  ),
-  loadData: () => (
-    dispatch(
-      dashboardLoadCurrentDutyMissions(),
-    )
-  ),
-  getDutyMissionById: (id) => (
-    dispatch(
-      loadDutyMissionById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-  updateDutyMission: (payload) => (
-    dispatch(
-      updateDutyMissionByPayload(
-        'none',
-        payload,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'current_duty_missions', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).current_duty_missions.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardLoadMissionDataForCurrentMission(null),
+        )
+      ),
+      loadData: () => (
+        dispatch(
+          dashboardLoadCurrentDutyMissions(),
+        )
+      ),
+      getDutyMissionById: (id) => (
+        dispatch(
+          loadDutyMissionById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+      updateDutyMission: (payload) => (
+        dispatch(
+          updateDutyMissionByPayload(
+            'none',
+            payload,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(CurrentMissionInfo);

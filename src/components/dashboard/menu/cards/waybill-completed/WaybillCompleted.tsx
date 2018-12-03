@@ -19,6 +19,9 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { compose } from 'recompose';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
   handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
@@ -56,26 +59,22 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
   }
 }
 
-const mapStateToProps = (state) => ({
-  items: state.dashboard.waybill_completed.data.items,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInWaybillCompleted(infoData),
-    )
-  ),
-});
-
-export default compose<any, any>(
+export default compose<PropsWaybillCompleted, PropsToDefaultCard>(
   withDefaultCard({
     path: 'waybill_completed',
     loadData: dashboardLoadWaybillCompleted,
     InfoComponent: WaybillCompletedInfo,
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      items: getDashboardState(state).waybill_completed.data.items,
+    }),
+    (dispatch) => ({
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInWaybillCompleted(infoData),
+        )
+      ),
+    }),
   ),
 )(WaybillCompleted);

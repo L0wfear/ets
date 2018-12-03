@@ -3,7 +3,7 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/@types/future-mission.h';
 
 import { MissionType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
-import { OwnerPropsDefaultCard } from '../_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+import { OwnerPropsDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 export type StateFutureMissions = {
   showMissionFormWrap: boolean;
@@ -24,4 +24,4 @@ export type PropsFutureMissions = (
   & OwnPropsFutureMissions
 );
 
-export type OutterPropsFutureMissions = OwnerPropsDefaultCard;
+export type OutterPropsFutureMissions<P> = OwnerPropsDefaultCard<P>;

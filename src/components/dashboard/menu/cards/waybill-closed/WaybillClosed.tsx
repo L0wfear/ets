@@ -16,6 +16,7 @@ import {
   StateWaybillClosed,
 } from 'components/dashboard/menu/cards/waybill-closed/WaybillClosed.h';
 import { compose } from 'recompose';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillClosed extends React.Component<PropsWaybillClosed, StateWaybillClosed> {
   render() {
@@ -26,7 +27,7 @@ class WaybillClosed extends React.Component<PropsWaybillClosed, StateWaybillClos
   }
 }
 
-export default compose<any, any>(
+export default compose<PropsWaybillClosed, PropsToDefaultCard>(
   withDefaultWaybill({
     path: 'waybill_closed',
     loadData: dashboardLoadWaybillClosed,

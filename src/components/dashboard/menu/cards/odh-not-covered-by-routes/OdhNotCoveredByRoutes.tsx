@@ -20,6 +20,9 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { compose } from 'recompose';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, StateOdhNotCoveredByRoutes> {
   handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
@@ -55,31 +58,27 @@ class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, 
   }
 }
 
-const mapStateToProps = (state) => ({
-  items: state.dashboard.odh_not_covered_by_routes.data.items,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  loadData: () => (
-    dispatch(
-      dashboardLoadOdhNotCoveredByRoutes(),
-    )
-  ),
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInOdhNotCoveredByRoutes(infoData),
-    )
-  ),
-});
-
-export default compose<any, any>(
+export default compose<PropsOdhNotCoveredByRoutes, PropsToDefaultCard>(
   withDefaultCard({
     path: 'odh_not_covered_by_routes',
     loadData: dashboardLoadOdhNotCoveredByRoutes,
     InfoComponent: OdhNotCoveredByRoutesInfo,
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      items: getDashboardState(state).odh_not_covered_by_routes.data.items,
+    }),
+    (dispatch) => ({
+      loadData: () => (
+        dispatch(
+          dashboardLoadOdhNotCoveredByRoutes(),
+        )
+      ),
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInOdhNotCoveredByRoutes(infoData),
+        )
+      ),
+    }),
   ),
 )(OdhNotCoveredByRoutes);

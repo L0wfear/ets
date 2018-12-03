@@ -15,6 +15,7 @@ import {
   StateWaybillInProgress,
 } from 'components/dashboard/menu/cards/waybill-in-progress/WaybillInProgress.h';
 import { compose } from 'recompose';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillInProgress extends React.Component<PropsWaybillInProgress, StateWaybillInProgress> {
   render() {
@@ -25,7 +26,7 @@ class WaybillInProgress extends React.Component<PropsWaybillInProgress, StateWay
   }
 }
 
-export default compose<any, any>(
+export default compose<PropsWaybillInProgress, PropsToDefaultCard>(
   withDefaultWaybill({
     path: 'waybill_in_progress',
     loadData: dashboardLoadWaybillInProgress,

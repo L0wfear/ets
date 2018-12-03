@@ -12,6 +12,7 @@ import {
   PropsListByTypeCurerntMission,
   StateListByTypeCurerntMission,
 } from 'components/dashboard/menu/cards/current-missions/collapse-list/ListByTypeCurerntMission.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
 
 class ListByTypeCurerntMission extends React.PureComponent<PropsListByTypeCurerntMission, StateListByTypeCurerntMission> {
   render() {
@@ -36,7 +37,7 @@ class ListByTypeCurerntMission extends React.PureComponent<PropsListByTypeCurern
 
 export default connect<StatePropsListByTypeCurerntMission, DispatchPropsListByTypeCurerntMission, OwnPropsListByTypeCurerntMission, ReduxState>(
   (state, { titleKey, itemsKey } ) => ({
-    title: state.dashboard.current_missions.data[titleKey],
-    items: state.dashboard.current_missions.data[itemsKey],
+    title: getDashboardState(state).current_missions.data[titleKey],
+    items: getDashboardState(state).current_missions.data[itemsKey],
   }),
 )(ListByTypeCurerntMission);

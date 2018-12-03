@@ -36,7 +36,7 @@ export const dashBoardResetData: any = () => ({
   payload: {},
 });
 
-export const dashboardLoadMissionDataForCurrentMission: (id?: number) => any = (id) => (dispatch) => {
+export const dashboardLoadMissionDataForCurrentMission: any = (id: number) => (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {

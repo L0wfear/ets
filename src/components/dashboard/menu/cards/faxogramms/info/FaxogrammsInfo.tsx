@@ -33,6 +33,8 @@ import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_defa
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 const DropdownButtonTSX: any = DropdownButton;
 
@@ -151,39 +153,35 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
   }
 }
 
-const mapStateToProps = (state) => ({
-  meta: state.dashboard.faxogramms.data.meta,
-  infoData: state.dashboard.faxogramms.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInFaxogramms(null),
-    )
-  ),
-  saveOrder: (id, payload) => (
-    dispatch(
-      saveOrderBlob(
-        'none',
-        id,
-        payload,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'faxogramms', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      meta: getDashboardState(state).faxogramms.data.meta,
+      infoData: getDashboardState(state).faxogramms.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInFaxogramms(null),
+        )
+      ),
+      saveOrder: (id, payload) => (
+        dispatch(
+          saveOrderBlob(
+            'none',
+            id,
+            payload,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(FaxogrammsInfo);

@@ -28,6 +28,8 @@ import {
 import {
   TitleWaybillInfoContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
   state = {
@@ -130,43 +132,39 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
   }
 }
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.waybill_draft.infoData,
-  infoDataRaw: state.dashboard.waybill_draft.data.items[0],
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInWaybillDraft(null),
-    )
-  ),
-  loadAllWaybillCard: () => (
-    dispatch(
-      dashboardLoadDependentDataByWaybillDraft(),
-    )
-  ),
-  getWaybillById: (id) => (
-    dispatch(
-      loadWaybillById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'waybill_draft', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).waybill_draft.infoData,
+      infoDataRaw: getDashboardState(state).waybill_draft.data.items[0],
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInWaybillDraft(null),
+        )
+      ),
+      loadAllWaybillCard: () => (
+        dispatch(
+          dashboardLoadDependentDataByWaybillDraft(),
+        )
+      ),
+      getWaybillById: (id) => (
+        dispatch(
+          loadWaybillById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(WaybillDraftInfo);

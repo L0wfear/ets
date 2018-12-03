@@ -39,20 +39,23 @@ type StateProps = {
   permissionsSet: ReduxState['session']['userData']['permissionsSet'];
 };
 
-type OwnerProps = {
+type OwnerProps<P> = P & {
   [key: string]: any;
 };
 
-type PropsRequirePermissions = StateProps & OwnerProps;
+type PropsRequirePermissions<P> = (
+  StateProps &
+  OwnerProps<P>
+);
 
-const withRequirePermissionsNew = (config: TypeConfig = {}) => (Component) => (
-  connect<StateProps, {}, OwnerProps, ReduxState>(
+const withRequirePermissionsNew = <P extends {}, O = {}>(config: TypeConfig = {}) => (Component: React.ClassType<P & O, any, any>) => (
+  connect<StateProps, {}, OwnerProps<P>, ReduxState>(
     (state) => ({
       permissionsSet: state.session.userData.permissionsSet,
     }),
   )
   (
-    class RequirePermissions extends React.Component<PropsRequirePermissions, {}> {
+    class RequirePermissions extends React.Component<PropsRequirePermissions<P>, {}> {
       render() {
         const { permissionsSet, dispatch, ...props } = this.props;
 

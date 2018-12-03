@@ -14,12 +14,18 @@ import OdhCoveredByRoutesInfo from 'components/dashboard/menu/cards/odh-covered-
 import {
   PropsOdhCoveredByRoutes,
   StateOdhCoveredByRoutes,
+  StatePropsOdhCoveredByRoutes,
+  DispatchPropsOdhCoveredByRoutes,
+  OwnPropsOdhCoveredByRoutes,
 } from 'components/dashboard/menu/cards/odh-covered-by-routes/OdhCoveredByRoutes.h';
 
 import {
   DivNone,
 } from 'global-styled/global-styled';
 import { compose } from 'recompose';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateOdhCoveredByRoutes> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -57,26 +63,22 @@ class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateO
   }
 }
 
-const mapStateToProps = (state) => ({
-  items: state.dashboard.odh_covered_by_routes.data.items,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInOdhCoveredByRoutes(infoData),
-    )
-  ),
-});
-
-export default compose<any, any>(
+export default compose<PropsOdhCoveredByRoutes, PropsToDefaultCard>(
   withDefaultCard({
     path: 'odh_covered_by_routes',
     loadData: dashboardLoadOdhCoveredByRoutes,
     InfoComponent: OdhCoveredByRoutesInfo,
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<StatePropsOdhCoveredByRoutes, DispatchPropsOdhCoveredByRoutes, OwnPropsOdhCoveredByRoutes, ReduxState>(
+    (state) => ({
+      items: getDashboardState(state).odh_covered_by_routes.data.items,
+    }),
+    (dispatch) => ({
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInOdhCoveredByRoutes(infoData),
+        )
+      ),
+    }),
   ),
 )(OdhCoveredByRoutes);

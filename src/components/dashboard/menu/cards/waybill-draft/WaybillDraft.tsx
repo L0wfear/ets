@@ -15,6 +15,7 @@ import {
   StateWaybillDraft,
 } from 'components/dashboard/menu/cards/waybill-draft/WaybillDraft.h';
 import { compose } from 'recompose';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillDraft extends React.Component<PropsWaybillDraft, StateWaybillDraft> {
   render() {
@@ -24,7 +25,7 @@ class WaybillDraft extends React.Component<PropsWaybillDraft, StateWaybillDraft>
   }
 }
 
-export default compose<any, any>(
+export default compose<PropsWaybillDraft, PropsToDefaultCard>(
   withDefaultWaybill({
     path: 'waybill_draft',
     loadData: dashboardLoadWaybillDraft,

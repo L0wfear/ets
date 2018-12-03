@@ -14,48 +14,55 @@ import {
 
 import { PropsOdhNotCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo.h';
 import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
-const OdhNotCoveredByRoutesInfo: React.SFC<PropsOdhNotCoveredByRoutesInfo> = ({ infoData, ...props }) => (
-  <InfoCard title="Список объектов" handleClose={props.handleClose}>
-    <ul>
-      {
-        infoData.subItems.map((title, index) => (
-          <li key={index}>
-            <span>{title}</span>
-          </li>
-        ))
-      }
-    </ul>
-    <RightButtonBlockContainer>
-      <LinkToRouteListPermitted to={`/routes-list/?technical_operation_id=${infoData.technical_operation_id}`}>
-        <Button>Перейти к маршрутам</Button>
-      </LinkToRouteListPermitted>
-    </RightButtonBlockContainer>
-  </InfoCard>
-);
+class OdhNotCoveredByRoutesInfo extends React.PureComponent<PropsOdhNotCoveredByRoutesInfo, {}> {
+  gotoRoute = () => {
+    this.props.history.pushState(
+      null,
+      `/routes-list/?technical_operation_id=${this.props.infoData.technical_operation_id}`,
+    );
+  }
+  render() {
+    const { infoData, ...props } = this.props;
 
-const mapStateToProps = (state, { history }) => ({
-  infoData: state.dashboard.odh_not_covered_by_routes.infoData,
-  gotoRoute: () => (
-    history.pushState(null, `/routes-list/?technical_operation_id=${state.dashboard.odh_not_covered_by_missions_of_current_shift.infoData.technical_operation_id}`)
-  ),
-});
+    return (
+      <InfoCard title="Список объектов" handleClose={props.handleClose}>
+        <ul>
+          {
+            infoData.subItems.map((title, index) => (
+              <li key={index}>
+                <span>{title}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <RightButtonBlockContainer>
+          <LinkToRouteListPermitted to={`/routes-list/?technical_operation_id=${infoData.technical_operation_id}`}>
+            <Button onClick={this.gotoRoute}>Перейти к маршрутам</Button>
+          </LinkToRouteListPermitted>
+        </RightButtonBlockContainer>
+      </InfoCard>
+    );
+  }
+}
 
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInOdhNotCoveredByRoutes(null),
-    )
-  ),
-});
-
-export default compose(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'odh_not_covered_by_routes', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).odh_not_covered_by_routes.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInOdhNotCoveredByRoutes(null),
+        )
+      ),
+    }),
   ),
 )(OdhNotCoveredByRoutesInfo);

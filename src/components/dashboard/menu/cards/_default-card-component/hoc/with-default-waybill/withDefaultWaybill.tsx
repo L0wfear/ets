@@ -11,9 +11,10 @@ import {
   DispatchPropsDefaultWaybill,
   PropsDefaultWaybill,
 } from './withDefaultWaybill.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
 
 const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component) => (
-  compose(
+  compose<any, any>(
     withDefaultCard({
       path: config.path,
       loadData: config.loadData,
@@ -21,7 +22,7 @@ const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component)
     }),
     connect<StatePropsDefaultWaybill, DispatchPropsDefaultWaybill, {}, ReduxState>(
       (state) => ({
-        items: state.dashboard[config.path].data.items,
+        items: getDashboardState(state)[config.path].data.items,
       }),
       (dispatch) => ({
         setInfoData: (infoData) => (

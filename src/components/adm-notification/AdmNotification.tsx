@@ -16,7 +16,7 @@ import {
 class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNotification> {
   context!: ETSCore.LegacyContext;
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PropsAdmNotification) {
     const { props } = this;
 
     prevProps.admNotReadNotificationsList

@@ -1409,12 +1409,9 @@ body.application {
     table-layout: auto !important;
   
     box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
-    //border: 1px solid #d9dada;
 
     td, th {
       padding: 8px;
-      //background-color: transparent !important;
-      //transition: all .1s linear;
       word-break: normal !important;
     }
 
@@ -1451,7 +1448,7 @@ body.application {
         cursor: pointer;
 
         &:nth-child(even) > td {
-          background-color: #f7f7f7 !important;
+          background-color: #f7f7f7;
         }
 
         &.highlighted-row > td {
@@ -1471,7 +1468,7 @@ body.application {
 
       td {
         vertical-align: top;
-        background-color: transparent !important;
+        background-color: transparent;
         word-break: break-all;
       }
     }
@@ -1764,7 +1761,7 @@ div.none {
 .company-structure .griddle-body {
   tbody {
     &:nth-child(even) {
-      background-color: #f7f7f7 !important;
+      background-color: #f7f7f7;
     }
    
     tr {
@@ -1777,7 +1774,7 @@ div.none {
         cursor: pointer;
 
         &:nth-child(even) > td {
-          background-color: #f7f7f7 !important;
+          background-color: #f7f7f7;
         }
 
         &:hover > td, &.selected-row > td {
@@ -1793,7 +1790,7 @@ div.none {
 
     td {
       vertical-align: top;
-      background-color: transparent !important;
+      background-color: transparent;
       word-break: break-all;
     }
   }

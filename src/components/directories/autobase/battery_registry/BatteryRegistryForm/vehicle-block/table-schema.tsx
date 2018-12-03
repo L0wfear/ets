@@ -93,8 +93,9 @@ const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value,
 
 const PropOnDateRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
   <ExtField
-    type="input"
-    label=""
+    type="string"
+    label={false}
+    error={false}
     value={value || '-'}
     onChange={onChange}
     boundKeys={[index, 'prob_on_date']}

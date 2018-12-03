@@ -20,7 +20,7 @@ export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
       }
 
       &:nth-child(even) {
-        background-color: #f7f7f7 !important;
+        background-color: #f7f7f7;
       }
 
       tr {
@@ -33,7 +33,7 @@ export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
           cursor: pointer;
 
           &:nth-child(even) > td {
-            background-color: #f7f7f7 !important;
+            background-color: #f7f7f7;
           }
 
           &:hover > td, &.selected-row > td {
@@ -49,7 +49,7 @@ export const EtsPageWrapCompanyStructure = styled(EtsPageWrap)`
 
       td {
         vertical-align: top;
-        background-color: transparent !important;
+        background-color: transparent;
         word-break: break-all;
       }
     }

@@ -8,24 +8,7 @@ import {
   LastBrigadeService,
   WaybillDriverService,
 } from 'api/Services';
-import { createValidDate, createValidDateTime } from 'utils/dates';
-import { isEmpty } from 'utils/functions';
-import { mapKeys, cloneDeep } from 'lodash';
-
-const makeFilesToBackendOne = (formState) => {
-  const payload = cloneDeep(formState);
-  const { driver_license_files = [], medical_certificate_files = [] } = payload;
-
-  payload.files = [
-    ...driver_license_files.map(obj => ({ ...obj, kind: 'driver_license' })),
-    ...medical_certificate_files.map(obj => ({ ...obj, kind: 'medical_certificate' })),
-  ];
-
-  delete payload.driver_license_files;
-  delete payload.medical_certificate_files;
-
-  return payload;
-};
+import { createValidDateTime } from 'utils/dates';
 
 const makeFilesToFrontendAll = rows => rows.map(({ files = [], ...other }) => ({
   ...other,
@@ -66,9 +49,11 @@ export default class EmployeesActions extends Actions {
   }
 
   getLastBrigade(id) {
-    return LastBrigadeService.path(id).get().then(({ result: { last_brigade, last_brigade_fios } }) => last_brigade 
-      ? last_brigade.filter((item) => !!item).map((empId, index)=>{ return {id: Number(empId), full_name: last_brigade_fios[index]} }) 
-      : []);
+    return LastBrigadeService.path(id).get().then(({ result: { last_brigade, last_brigade_fios } }) => (
+      last_brigade
+        ? last_brigade.filter(item => !!item).map((empId, index) => ({ id: Number(empId), full_name: last_brigade_fios[index] }))
+        : []
+    ));
   }
 
   getWaybillDrivers({
@@ -82,42 +67,5 @@ export default class EmployeesActions extends Actions {
     };
 
     return WaybillDriverService.get(opts);
-  }
-
-  updateEmployee(formState) {
-    const payload = makeFilesToBackendOne(formState);
-    payload.birthday = createValidDate(payload.birthday);
-    payload.drivers_license_date_end = createValidDate(payload.drivers_license_date_end);
-    payload.special_license_date_end = createValidDate(payload.special_license_date_end);
-    payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
-    delete payload.position_name;
-    delete payload.company_structure_name;
-    delete payload.position_key;
-    delete payload.full_name;
-    payload.active = !!payload.active;
-
-    mapKeys(payload, (v, k) => {
-      if (isEmpty(v)) {
-        payload[k] = null;
-      }
-    });
-    return EmployeeService.path(`${payload.id}`).put(payload, getEmployees, 'json');
-  }
-
-  createEmployee(formState) {
-    const payload = makeFilesToBackendOne(formState);
-    payload.birthday = createValidDate(payload.birthday);
-    if (payload.drivers_license_date_end) {
-      payload.drivers_license_date_end = createValidDate(payload.drivers_license_date_end);
-    }
-    if (payload.special_license_date_end) {
-      payload.special_license_date_end = createValidDate(payload.special_license_date_end);
-    }
-    payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
-    delete payload.position_name;
-    delete payload.position_key;
-    payload.active = !!payload.active;
-    mapKeys(payload, (v, k) => isEmpty(v) ? (payload[k] = null) : undefined);
-    return EmployeeService.post(payload, getEmployees, 'json');
   }
 }

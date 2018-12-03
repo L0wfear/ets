@@ -10,8 +10,6 @@ import ReportContainer from 'components/reports/common/ReportContainer';
 import ReportHeader from 'components/reports/operational/route_odh_coverage/ReportHeader';
 import DeltaTableHeader from 'components/reports/operational/route_odh_coverage/DeltaTableHeader';
 
-require('components/reports/operational/route_odh_coverage/report.scss');
-
 const serviceUrl = 'route_odh_coverage_report';
 const reportUrl = 'route-odh-coverage-report';
 const serviceName = 'RouteODHCoverageReportService';

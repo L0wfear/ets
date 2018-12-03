@@ -3,6 +3,7 @@ import { isFunction } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
+import { compose } from 'recompose';
 
 type FormErrorType<F> = {
   [K in keyof F]?: string | null;
@@ -54,17 +55,18 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
 );
 
 const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithForm<Readonly<{ children?: React.ReactNode; }> & Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
-  withRequirePermissionsNew({
-    permissions: config.permissions.update,
-    withIsPermittedProps: true,
-    permissionName: 'isPermittedToUpdate',
-  }),
-  withRequirePermissionsNew({
-    permissions: config.permissions.create,
-    withIsPermittedProps: true,
-    permissionName: 'isPermittedToCreate',
-  })
-  (
+  compose<any, any>(
+    withRequirePermissionsNew({
+      permissions: config.permissions.update,
+      withIsPermittedProps: true,
+      permissionName: 'isPermittedToUpdate',
+    }),
+    withRequirePermissionsNew({
+      permissions: config.permissions.create,
+      withIsPermittedProps: true,
+      permissionName: 'isPermittedToCreate',
+    }),
+  )(
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F>> {
       constructor(props) {
         super(props);

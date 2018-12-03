@@ -18,7 +18,7 @@ const GeoobjectsInfo = React.lazy(() => (
   import(/* webpackChunkName: "geoobjects_info" */'components/monitor/info/geoobjects-info/GeoobjectsInfo')
 ));
 
-class GeoobjectsInfoWrap extends React.Component<PropsGeoobjectsInfo, StateGeoobjectsInfo> {
+class GeoobjectsInfoWrap extends React.PureComponent<PropsGeoobjectsInfo, StateGeoobjectsInfo> {
   state = {
     shortVersion: false,
   };

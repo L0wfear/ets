@@ -29,7 +29,7 @@ type PropsLayerFuelEventPoints = {
 type StateLayerFuelEventPoints = {
 };
 
-class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
+class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);

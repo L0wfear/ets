@@ -103,7 +103,6 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
 
     render() {
       const { map, zoom, center, centerOn, ...props } = this.props;
-
       return (
         <Component
           addLayer={this.addLayer}

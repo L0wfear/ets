@@ -26,7 +26,7 @@ type PropsLayerFuelEventLeakPoint = {
 type StateLayerFuelEventLeakPoint = {
 };
 
-class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoint, StateLayerFuelEventLeakPoint> {
+class LayerFuelEventLeakPoint extends React.PureComponent<PropsLayerFuelEventLeakPoint, StateLayerFuelEventLeakPoint> {
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventsLeak', zIndex: 11 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);

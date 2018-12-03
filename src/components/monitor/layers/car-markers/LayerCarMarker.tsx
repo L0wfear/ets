@@ -35,7 +35,7 @@ const MIN_ZOOM_VAL = 3;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
 
-class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarMarker> {
+class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayerCarMarker> {
   state = {
     ws: null,
     carPointsDataWs: {},

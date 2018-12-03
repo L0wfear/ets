@@ -18,6 +18,7 @@ import {
   MONITOR_PAGE_SET_GEOMETRY,
   MONITOR_PAGE_SET_COMPANY,
 } from 'components/monitor/redux-main/models/monitor-page';
+import { MonitorPageContainer } from 'components/monitor/styled';
 
 type PropsMonitorPage = {
   token: string;
@@ -47,10 +48,10 @@ class MonitorPage extends React.Component<PropsMonitorPage, StateMonitorPage> {
 
     return (
       props.token ?
-        <div className="monitor-page">
+        <MonitorPageContainer>
           <MapWrap />
           <ToolBar />
-        </div>
+        </MonitorPageContainer>
       :
         <div>загрузка...</div>
     );

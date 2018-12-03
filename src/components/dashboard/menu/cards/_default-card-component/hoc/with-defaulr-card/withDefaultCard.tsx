@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -21,6 +20,7 @@ import {
   CardTitleContainer,
   CardTitleContainerWrap,
   CardBodyContainer,
+  GlyphiconWithNonAnimation,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
@@ -108,8 +108,8 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
                   <div>{title}</div>
                   <div className="button_refresh">
                     <Button onClick={this.loadData} disabled={isLoading}>
-                      <Glyphicon
-                        className={ isLoading ? 'glyphicon-spin' : 'animationNone'}
+                      <GlyphiconWithNonAnimation
+                        isLoading={isLoading}
                         glyph="refresh"
                       />
                     </Button>

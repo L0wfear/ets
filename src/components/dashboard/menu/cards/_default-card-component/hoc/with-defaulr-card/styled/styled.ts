@@ -1,8 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+import { Glyphicon } from 'react-bootstrap';
 
 type PropsCardBodyContainer = {
   isLoading?: boolean;
 };
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+`;
+
+const AnimationSpin = css`
+  animation: ${spin} 1000ms infinite linear;
+`;
+
+const AnimationNone = css`
+  animation: none !important;
+`;
 
 export const CardContainer = styled.div`
   position: relative;
@@ -52,6 +70,12 @@ export const CardTitleContainerWrap = styled.div`
 
   &>*:nth-of-type(n + 2) {
     margin-left: 10px;
+  }
+`;
+
+export const GlyphiconWithNonAnimation = styled(Glyphicon)<{ isLoading: boolean }>`
+  &&& {
+    ${({ isLoading }) => isLoading ? AnimationSpin : AnimationNone};
   }
 `;
 

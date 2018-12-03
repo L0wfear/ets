@@ -90,7 +90,6 @@ class OdhCoverageReport extends React.Component {
     const { odhCoverageReport } = this.props;
     const { isExporting, date_start, date_end } = this.state;
     const exportGlyph = isExporting ? 'refresh' : 'download-alt';
-    const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
       <EtsPageWrap>
@@ -107,7 +106,7 @@ class OdhCoverageReport extends React.Component {
           </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">
-              <Glyphicon disabled={isExporting} className={iconClassname} glyph={exportGlyph} />
+              <Glyphicon disabled={isExporting} glyph={exportGlyph} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <MenuItem bindOnClick={1} onClick={() => this.export()}>Ежедневный отчет</MenuItem>

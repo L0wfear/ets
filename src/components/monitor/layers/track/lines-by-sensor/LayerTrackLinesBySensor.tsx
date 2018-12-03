@@ -33,7 +33,7 @@ const countWorkSensor = (trackPoint, front_cars_sensors_equipment) => {
   return pointSensors.length;
 };
 
-class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
+class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLinesBySensor', zIndex: 2 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);

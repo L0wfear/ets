@@ -13,7 +13,7 @@ import {
   renderGeoobjects,
 } from 'components/monitor/layers/geoobjects/utils';
 
-class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayerGeooobjects> {
+class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateLayerGeooobjects> {
   componentDidMount() {
     this.props.addLayer({ id: 'GeoObject', zIndex: 0, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -23,13 +23,15 @@ class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayer
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      hasDiff,
-      diffGeoobjects,
-    } = diffInputProps(this.props, prevProps);
+    if (this.props.geoobjects !== prevProps.geoobjects || this.props.SHOW_GEOOBJECTS !== prevProps.SHOW_GEOOBJECTS) {
+      const {
+        hasDiff,
+        diffGeoobjects,
+      } = diffInputProps(this.props, prevProps);
 
-    if (hasDiff) {
-      renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props);
+      if (hasDiff) {
+        renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props);
+      }
     }
   }
 

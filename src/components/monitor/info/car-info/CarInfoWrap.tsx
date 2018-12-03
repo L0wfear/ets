@@ -15,7 +15,7 @@ const CarInfo = React.lazy<React.ComponentType<OwnPropsCarInfo>>(() => (
   import(/* webpackChunkName: "car_info" */'components/monitor/info/car-info/CarInfo')
 ));
 
-class CarInfoWrap extends React.Component<PropsCarInfoWrap, StateCarInfoWrap> {
+class CarInfoWrap extends React.PureComponent<PropsCarInfoWrap, StateCarInfoWrap> {
   render() {
     return (
       <React.Suspense fallback={<LoadingComponent />}>

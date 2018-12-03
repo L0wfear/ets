@@ -34,7 +34,7 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   return speed_avg <= topSpeed;
 };
 
-class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
+class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLines', zIndex: 1 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);

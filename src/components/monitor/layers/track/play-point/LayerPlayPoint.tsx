@@ -10,7 +10,7 @@ import { actionOnPlay, actionOnStop } from 'components/monitor/layers/track/play
 
 import { PropsLayerPlayPoint } from 'components/monitor/layers/track/play-point/LayerPlayPoint.h';
 
-class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, {}> {
+class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
     this.props.addLayer({ id: 'PlayPoint', zIndex: 11 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
@@ -22,15 +22,16 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, {}> {
   }
 
   componentDidUpdate(prevProps) {
-    const { props } = this;
-    const { playTrackStatus } = props;
+    const { playTrackStatus } = this.props;
 
-    if (playTrackStatus === 'play') {
-      actionOnPlay(props);
-    }
+    if (playTrackStatus !== prevProps.playTrackStatus) {
+      if (playTrackStatus === 'play') {
+        actionOnPlay(this.props);
+      }
 
-    if (playTrackStatus === 'stop') {
-      actionOnStop(props);
+      if (playTrackStatus === 'stop') {
+        actionOnStop(this.props);
+      }
     }
   }
 

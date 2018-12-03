@@ -13,7 +13,7 @@ import {
   renderGeoobjects,
 } from 'components/monitor/layers/geoobjects/selected/utils';
 
-class LayerSelectedGeooobjects extends React.Component<PropsLayerSelectedGeooobjects, StateLayerSelectedGeooobjects> {
+class LayerSelectedGeooobjects extends React.PureComponent<PropsLayerSelectedGeooobjects, StateLayerSelectedGeooobjects> {
   componentDidMount() {
     this.props.addLayer({ id: 'SelectedGeoObject', zIndex: 1 }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -23,7 +23,9 @@ class LayerSelectedGeooobjects extends React.Component<PropsLayerSelectedGeooobj
   }
 
   componentDidUpdate(prevProps) {
-    renderGeoobjects(prevProps.selectedGeoobjects, this.props.selectedGeoobjects, this.props);
+    if (this.props.selectedGeoobjects !== prevProps.selectedGeoobjects) {
+      renderGeoobjects(prevProps.selectedGeoobjects, this.props.selectedGeoobjects, this.props);
+    }
   }
 
   componentWillUnmount() {

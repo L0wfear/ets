@@ -50,7 +50,7 @@ type StateLayerParkingPoints = {
 /**
  * @todo перевести на LayerLayerDraw
  */
-class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateLayerParkingPoints> {
+class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, StateLayerParkingPoints> {
   state = {
     lines: [],
     interactionDraw: null,

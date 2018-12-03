@@ -43,7 +43,7 @@ const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
   return speed_avg <= topSpeed;
 };
 
-class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayerTrackPoints> {
+class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateLayerTrackPoints> {
   state = {
     zoomMore8: this.props.zoom >= 8,
     lastPoint: null,

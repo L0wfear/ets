@@ -9,8 +9,8 @@ import permissions from 'components/missions/mission_template/config-data/permis
 import permissions_mission from 'components/missions/mission/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import MissionTemplateFormWrap from './MissionTemplateFormWrap';
-import MissionTemplatesTable from './MissionTemplatesTable';
+import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
+import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {

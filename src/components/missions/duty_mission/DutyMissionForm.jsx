@@ -22,7 +22,11 @@ import InsideField from 'components/missions/duty_mission/inside_fields/index';
 import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
-import { FormTitle, onlyActiveEmployeeNotification, makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from './utils';
+import {
+  FormTitle,
+  makeRoutesForDutyMissionForm,
+  getEmployeeFormDutyMission,
+} from 'components/missions/duty_mission/utils';
 import { components } from 'react-select';
 
 import dutyMissionPermission from 'components/missions/duty_mission/config-data/permissions';

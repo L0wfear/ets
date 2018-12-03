@@ -13,7 +13,7 @@ import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autoba
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultRoadAccidentElement } from './utils';
+import { getDefaultRoadAccidentElement } from 'components/directories/autobase/road_accident/RoadAccidentForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

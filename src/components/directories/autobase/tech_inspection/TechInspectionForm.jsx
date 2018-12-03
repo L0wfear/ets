@@ -15,7 +15,7 @@ import { connectToStores } from 'utils/decorators';
 
 @loadingOverlay
 @connectToStores(['autobase', 'objects'])
-export default class BaseTechInspectionForm extends Form {
+class BaseTechInspectionForm extends Form {
   componentDidMount() {
     const { formState, car_id = -1 } = this.props;
     const { is_allowed = false } = formState;
@@ -158,3 +158,5 @@ export default class BaseTechInspectionForm extends Form {
     );
   }
 }
+
+export default BaseTechInspectionForm;

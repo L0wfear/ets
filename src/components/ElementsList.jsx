@@ -15,7 +15,7 @@ import {
 import {
   ButtonCreateNew, ButtonReadNew, ButtonDeleteNew,
   ButtonCreate, ButtonRead, ButtonDelete,
-} from './ui/buttons/CRUD';
+} from 'components/ui/buttons/CRUD';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)

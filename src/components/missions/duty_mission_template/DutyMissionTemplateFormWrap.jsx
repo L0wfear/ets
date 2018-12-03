@@ -9,8 +9,8 @@ import dutyMissionTemplateSchema from 'models/DutyMissionTemplateModel';
 import dutyMissionsCreationTemplateSchema from 'models/DutyMissionsCreationTemplateModel';
 import FormWrap from 'components/compositions/FormWrap';
 import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/customValidate';
-import DutyMissionTemplateForm from './DutyMissionTemplateForm';
-import DutyMissionsCreationForm from './DutyMissionsCreationForm';
+import DutyMissionTemplateForm from 'components/missions/duty_mission_template/DutyMissionTemplateForm';
+import DutyMissionsCreationForm from 'components/missions/duty_mission_template/DutyMissionsCreationForm';
 
 export const createDutyMissions = async (flux, element, payload) => flux.getActions('missions').createDutyMissions(element, payload);
 

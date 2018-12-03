@@ -5,7 +5,7 @@ import {
   TPropsDataTableInputWrapper,
   TInjectedPropsDataTableInputWrapper,
   IStateDataTableInputWrapper,
-} from './DataTableInputWrapper.h';
+} from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 
 import { validateField } from 'utils/validate/validateField';
 

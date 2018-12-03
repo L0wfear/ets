@@ -8,8 +8,8 @@ import {
   each,
   find,
 } from 'lodash';
-import ElementsList from './ElementsList';
-import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CRUD';
+import ElementsList from 'components/ElementsList';
+import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов

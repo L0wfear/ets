@@ -1,7 +1,7 @@
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
-import OrganizationsTable from './OrganizationsTable';
-import OrganizationsFormWrap from './OrganizationsFormWrap';
+import OrganizationsTable from 'components/directories/organizations/OrganizationsTable';
+import OrganizationsFormWrap from 'components/directories/organizations/OrganizationsFormWrap';
 @connectToStores(['objects'])
 @staticProps({
   entity: 'company',

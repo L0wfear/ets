@@ -9,8 +9,8 @@ import ElementsList from 'components/ElementsList';
 import ModalBody from 'components/ui/Modal';
 import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
 
-import PercentModalTable from './PercentModalTable';
-import PercentModalFormWrap from './PercentModalFormWrap';
+import PercentModalTable from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
+import PercentModalFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/config-data/permissions';
 
 @connectToStores(['repair', 'session'])

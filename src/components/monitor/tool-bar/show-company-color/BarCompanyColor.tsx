@@ -11,7 +11,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
-import { LegenCompanyLegendOption, CubeColor } from './styled';
+import { LegenCompanyLegendOption, CubeColor } from 'components/monitor/tool-bar/show-company-color/styled';
 
 type PropsBarCompanyColor = {
   companiesIndex: TypeCompaniesIndex,

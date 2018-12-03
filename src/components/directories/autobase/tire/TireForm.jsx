@@ -11,7 +11,7 @@ import { connectToStores } from 'utils/decorators';
 import { ExtDiv } from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form';
-import TireToVehicleBlockComponent from './vehicle-block/TireToVehicleBlock';
+import TireToVehicleBlockComponent from 'components/directories/autobase/tire/vehicle-block/TireToVehicleBlock';
 
 const TireToVehicleBlock = onChangeWithKeys(TireToVehicleBlockComponent);
 

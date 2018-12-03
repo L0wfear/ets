@@ -3,9 +3,8 @@ import * as queryString from 'query-string';
 
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { schema as employeeSchema, defaultElement } from 'models/Employee';
-import BaseEmployeeForm from './EmployeeForm';
-import FormWrap from '../../compositions/FormWrap';
-
+import BaseEmployeeForm from 'components/directories/employees/EmployeeForm';
+import FormWrap from 'components/compositions/FormWrap';
 
 const EmployeeForm = enhanceWithPermissions(BaseEmployeeForm);
 

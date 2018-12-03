@@ -15,9 +15,9 @@ import Paginator from 'components/ui/new/paginator/Paginator';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import { waybillClosingSchema } from 'models/WaybillModel';
-import WaybillFormWrap from './WaybillFormWrap';
-import WaybillPrintForm from './WaybillPrintForm';
-import WaybillsTable, { getTableMeta } from './WaybillsTable';
+import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
+import WaybillPrintForm from 'components/waybill/WaybillPrintForm';
+import WaybillsTable, { getTableMeta } from 'components/waybill/WaybillsTable';
 import permissions from 'components/waybill/config-data/permissions';
 
 @connectToStores(['waybills', 'objects', 'employees'])

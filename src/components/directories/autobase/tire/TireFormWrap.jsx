@@ -2,7 +2,7 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import TireForm from './TireForm';
+import TireForm from 'components/directories/autobase/tire/TireForm';
 
 export const tireSchema = {
   properties: [

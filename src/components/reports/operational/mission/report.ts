@@ -4,7 +4,7 @@ import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from './ReportHeader';
+import ReportHeader from 'components/reports/operational/mission/ReportHeader';
 
 const serviceUrl = 'car_travel_report';
 const reportUrl = 'mission-reports';

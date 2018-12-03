@@ -19,22 +19,12 @@ import {
   parseAdvancedFilter,
   getFilterTypeByKey,
   makeData,
-} from './utils';
-import ColumnControl from './ColumnControl';
-import Filter from './filter/Filter';
-import FilterButton from './filter/FilterButton';
-import Div from '../Div';
+} from 'components/ui/table/utils';
+import ColumnControl from 'components/ui/table/ColumnControl';
+import Filter from 'components/ui/table/filter/Filter';
+import FilterButton from 'components/ui/table/filter/FilterButton';
+import Div from 'components/ui/Div';
 import Paginator from 'components/ui/new/paginator/Paginator';
-
-const style = {
-  headRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  title: {
-    flex: '1 0 auto',
-  },
-};
 
 export default class DataTable extends React.Component {
 

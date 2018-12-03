@@ -18,7 +18,7 @@ import { FluxContext } from 'utils/decorators';
 import permissions from 'components/waybill/config-data/permissions';
 import WaybillForm from 'components/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
-import Taxes from './Taxes';
+import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';

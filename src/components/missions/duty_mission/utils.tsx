@@ -6,10 +6,6 @@ import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils'
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import createFio from 'utils/create-fio';
 
-export const onlyActiveEmployeeNotification = () => {
-  global.NOTIFICATION_SYSTEM.notify('В наряд-задание можно добавить только активного на данный момент времени сотрудника', 'info');
-};
-
 export const FormTitle: React.SFC<{ number?: string | number, status: string }> = (props) => (
   <div>
     {`Наряд-задание № ${props.number || ''}`}

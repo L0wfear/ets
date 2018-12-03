@@ -8,8 +8,8 @@ import permissions from 'components/missions/duty_mission_template/config-data/p
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionTemplateFormWrap from './DutyMissionTemplateFormWrap';
-import DutyMissionTemplatesTable from './DutyMissionTemplatesTable';
+import DutyMissionTemplateFormWrap from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
+import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 
 const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
   permission: permissions_duty_mission.create,

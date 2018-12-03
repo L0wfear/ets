@@ -7,8 +7,8 @@ import { ISchemaMaker } from 'components/ui/table/@types/schema.h';
 import { parseMultiSelectListQueryParams } from 'components/reports/common/utils';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from './ReportHeader';
-import DeltaTableHeader from './DeltaTableHeader';
+import ReportHeader from 'components/reports/operational/route_odh_coverage/ReportHeader';
+import DeltaTableHeader from 'components/reports/operational/route_odh_coverage/DeltaTableHeader';
 
 require('components/reports/operational/route_odh_coverage/report.scss');
 

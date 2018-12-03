@@ -7,7 +7,7 @@ import { ISchemaMaker, IDataTableColSchema } from 'components/ui/table/@types/sc
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from './ReportHeader';
+import ReportHeader from 'components/reports/operational/long_repair/ReportHeader';
 import DateFormatter from 'components/ui/DateFormatter';
 
 const serviceUrl = 'autobase/reports/long_repair';

@@ -12,7 +12,7 @@ import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultBatteryBrandElement } from './utils';
+import { getDefaultBatteryBrandElement } from 'components/directories/autobase/battery_brand/BatteryBrandForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

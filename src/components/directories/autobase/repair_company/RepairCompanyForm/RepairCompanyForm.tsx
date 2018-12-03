@@ -11,7 +11,7 @@ import { repairCompanyFormSchema } from 'components/directories/autobase/repair_
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { getDefaultRepairCompanyElement } from './utils';
+import { getDefaultRepairCompanyElement } from 'components/directories/autobase/repair_company/RepairCompanyForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

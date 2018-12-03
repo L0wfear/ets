@@ -1,7 +1,7 @@
 import React from 'react';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import FormWrap from 'components/compositions/FormWrap';
-import BaseOrganizationsForm from './OrganizationsForm';
+import BaseOrganizationsForm from 'components/directories/organizations/OrganizationsForm';
 
 const OrganizationsForm = enhanceWithPermissions(BaseOrganizationsForm);
 

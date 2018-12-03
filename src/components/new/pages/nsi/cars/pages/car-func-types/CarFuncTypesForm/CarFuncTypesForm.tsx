@@ -11,7 +11,7 @@ import { carFuncTypesFormSchema } from 'components/new/pages/nsi/cars/pages/car-
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { getDefaultCarFuncTypesElement } from './utils';
+import { getDefaultCarFuncTypesElement } from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

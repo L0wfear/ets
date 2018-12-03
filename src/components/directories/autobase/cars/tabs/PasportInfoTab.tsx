@@ -8,9 +8,9 @@ import { IBaseForm } from 'components/ui/@types/Form.h';
 import { IVehicle, IVehiclePassport } from 'api/@types/services/index.h';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
-import GntTab from './passportTabs/GtnTab';
-import GibddTab from './passportTabs/GibddTab';
-import { CarTab } from '../styled/styled';
+import GntTab from 'components/directories/autobase/cars/tabs/passportTabs/GtnTab';
+import GibddTab from 'components/directories/autobase/cars/tabs/passportTabs/GibddTab';
+import { CarTab } from 'components/directories/autobase/cars/styled/styled';
 
 export type TFormState = IVehicle & IVehiclePassport;
 

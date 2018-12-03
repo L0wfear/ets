@@ -10,7 +10,7 @@ import {
   StatePropsDefaultWaybill,
   DispatchPropsDefaultWaybill,
   PropsDefaultWaybill,
-} from './withDefaultWaybill.h';
+} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/withDefaultWaybill.h';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 
 const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component) => (

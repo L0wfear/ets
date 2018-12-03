@@ -4,7 +4,7 @@ import { IReportProps } from 'components/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from './ReportHeader';
+import ReportHeader from 'components/reports/regulated/fuel_consumption/ReportHeader';
 
 const serviceUrl = 'fuel_consumption_new_report';
 const reportUrl = 'fuel-consumption-report';

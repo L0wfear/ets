@@ -12,7 +12,7 @@ import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultSparePartElement } from './utils';
+import { getDefaultSparePartElement } from 'components/directories/autobase/spare_part/SparePartForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -26,15 +26,6 @@ import {
 } from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
-
-const boundKeys = {
-  spare_part_group_id: 'spare_part_group_id',
-  name: 'name',
-  number: 'number',
-  measure_unit_id: 'measure_unit_id',
-  quantity: 'quantity',
-  supplied_at: 'supplied_at',
-};
 
 class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> {
   state = {
@@ -96,7 +87,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 options={sparePartGroupOptions}
                 value={state.spare_part_group_id}
                 onChange={this.handleChange}
-                boundKeys={boundKeys.spare_part_group_id}
+                boundKeys="spare_part_group_id"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -105,7 +96,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 value={state.name}
                 error={errors.name}
                 onChange={this.handleChange}
-                boundKeys={boundKeys.name}
+                boundKeys="name"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -114,7 +105,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 value={state.number}
                 error={errors.number}
                 onChange={this.handleChange}
-                boundKeys={boundKeys.number}
+                boundKeys="number"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -124,7 +115,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 options={measureUnitOptions}
                 value={state.measure_unit_id}
                 onChange={this.handleChange}
-                boundKeys={boundKeys.measure_unit_id}
+                boundKeys="measure_unit_id"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -133,7 +124,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 value={state.quantity}
                 error={errors.quantity}
                 onChange={this.handleChange}
-                boundKeys={boundKeys.quantity}
+                boundKeys="quantity"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -143,7 +134,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 time={false}
                 error={errors.supplied_at}
                 onChange={this.handleChange}
-                boundKeys={boundKeys.supplied_at}
+                boundKeys="supplied_at"
                 disabled={!isPermitted}
               />
             </Col>

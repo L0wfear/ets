@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 
 import config from 'config';
-import ModalForm from './Modal';
+import ModalForm from 'components/modalTP/Modal';
 
 interface IPropsModalTP {
   onHide: any;

@@ -8,10 +8,10 @@ import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
 import Preloader from 'components/ui/new/preloader/Preloader';
 
-import Div from './Div';
+import Div from 'components/ui/Div';
 
 function StringField(props) {
-  const { error, ...mainProps } = props; 
+  const { error, ...mainProps } = props;
   const {
     label = '',
     readOnly = false,

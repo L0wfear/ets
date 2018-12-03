@@ -27,12 +27,12 @@ import techMaintComponents from 'components/directories/autobase/tech_maintenanc
 import repairComponents from 'components/directories/autobase/repair/config-data/components';
 import roadAccidenComponents from 'components/directories/autobase/road_accident/config-data/components';
 
-import MainInfoTab from './tabs/MainInfoTab';
-import RegisterInfoTab from './tabs/RegisterInfoTab';
-import PasportInfoTab from './tabs/PasportInfoTab';
-import BatteryTab from './tabs/BatteryTab';
-import TireTab from './tabs/TireTab';
-import TechMaintTab from './tabs/TechMaintTab';
+import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
+import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
+import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
+import BatteryTab from 'components/directories/autobase/cars/tabs/BatteryTab';
+import TireTab from 'components/directories/autobase/cars/tabs/TireTab';
+import TechMaintTab from 'components/directories/autobase/cars/tabs/TechMaintTab';
 
 const InsurancePolicyList = insurancePolicyComponents[0].component;
 const TechInspectionList = techInspectionComponents[0].component;

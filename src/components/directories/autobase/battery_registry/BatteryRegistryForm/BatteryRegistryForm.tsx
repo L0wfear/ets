@@ -11,7 +11,7 @@ import { batteryRegistryFormSchema } from 'components/directories/autobase/batte
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { getDefaultBatteryRegistryElement } from './utils';
+import { getDefaultBatteryRegistryElement } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
-import UserNotificationForm from './UserNotificationForm';
+import UserNotificationForm from 'components/notifications/UserNotificationForm';
 
 export default class UserNotificationFormWrap extends FormWrap {
   handleFormHide = () => {

@@ -5,7 +5,7 @@ import { IExternalPropsDataTableInputWrapper } from 'components/ui/table/DataTab
 
 import { connectToStores, FluxContext } from 'utils/decorators';
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
-import { meta, renderers, validationSchema } from './table-schema';
+import { meta, renderers, validationSchema } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/vehicle-block/table-schema';
 
 interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
   batteryId: number;

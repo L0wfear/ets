@@ -18,8 +18,8 @@ import {
 import { printData } from 'utils/functions';
 import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
-import MissionTemplateForm from './MissionTemplateForm';
-import MissionsCreationForm from './MissionsCreationForm';
+import MissionTemplateForm from 'components/missions/mission_template/MissionTemplateForm';
+import MissionsCreationForm from 'components/missions/mission_template/MissionsCreationForm';
 
 const printMapKeyBig = 'mapMissionTemplateFormA3';
 const printMapKeySmall = 'mapMissionTemplateFormA4';

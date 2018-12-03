@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseFuelOperationForm from './FuelOperationForm';
+import BaseFuelOperationForm from 'components/directories/data_for_calculation/fuel_operations/FuelOperationForm';
 
 const FuelOperationForm = enhanceWithPermissions(BaseFuelOperationForm);
 

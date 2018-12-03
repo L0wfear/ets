@@ -6,7 +6,7 @@ import { IReportProps } from 'components/reports/@types/common.h';
 import { exportable } from 'utils/decorators';
 import { parseMultiSelectListQueryParams } from 'components/reports/common/utils';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from './ReportHeader';
+import ReportHeader from 'components/reports/regulated/daily_cleaning_ets/ReportHeader';
 
 const serviceUrl = 'cleaning_status_report';
 const reportUrl = 'daily-cleaning-reports-ets';

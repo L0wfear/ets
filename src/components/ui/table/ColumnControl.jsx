@@ -5,7 +5,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import ModalBody from 'components/ui/Modal';
 import cx from 'classnames';
 
-import Div from '../Div';
+import Div from 'components/ui/Div';
 
 export default class ColumnControl extends React.Component {
   static get propTypes() {

@@ -6,7 +6,7 @@ import * as Collapse from 'react-bootstrap/lib/Collapse';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import { isEmpty } from 'utils/functions';
-import FilterRow from './FilterRow';
+import FilterRow from 'components/ui/table/filter/FilterRow';
 const FilterRowTSX: any = FilterRow;
 
 class Fiter extends React.Component<any, any> {

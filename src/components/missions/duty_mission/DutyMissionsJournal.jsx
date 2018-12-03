@@ -16,8 +16,8 @@ import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable';
-import DutyMissionFormWrap from './DutyMissionFormWrap';
+import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
+import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 
 const is_archive = false;
 

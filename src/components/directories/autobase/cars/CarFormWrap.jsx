@@ -5,8 +5,8 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import FormWrap from 'components/compositions/FormWrap';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
-import CarForm from './CarForm';
-import schema from './schema';
+import CarForm from 'components/directories/autobase/cars/CarForm';
+import schema from 'components/directories/autobase/cars/schema';
 
 
 const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';

@@ -10,7 +10,7 @@ import { IVehicle, ICarDrivers } from 'api/@types/services/index.h';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 import config from 'config';
-import { CarTab, CarImageWrapper } from '../styled/styled';
+import { CarTab, CarImageWrapper } from 'components/directories/autobase/cars/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 
 interface IFormState extends IVehicle, ICarDrivers {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import { efficiencySchema } from 'models/Efficiency';
-import EfficiencyForm from './EfficiencyForm';
+import EfficiencyForm from 'components/directories/data_for_calculation/efficiency/EfficiencyForm';
 
 export default class EfficiencyFormWrap extends FormWrap {
   constructor(props, context) {

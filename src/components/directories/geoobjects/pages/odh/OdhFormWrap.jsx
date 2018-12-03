@@ -1,7 +1,7 @@
 import React from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import Div from 'components/ui/Div';
-import OdhForm from './OdhForm';
+import OdhForm from 'components/directories/geoobjects/pages/odh/OdhForm';
 
 export default class OdhFormWrap extends FormWrap {
   constructor(props, context) {

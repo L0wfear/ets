@@ -1,7 +1,7 @@
 import React from 'react';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import FormWrap from 'components/compositions/FormWrap';
-import BaseCleaningRateForm from './CleaningRateForm';
+import BaseCleaningRateForm from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateForm';
 
 const CleaningRateForm = enhanceWithPermissions(BaseCleaningRateForm);
 

@@ -8,7 +8,7 @@ import {
 } from 'components/route_new/route-info/map/layers/layer-route-info-geometry/LayerRouteInfoGeometry.h';
 import { renderGeoobjects, renderInputLines } from 'components/route_new/route-info/map/layers/layer-route-info-geometry/utils';
 import { DivNone } from 'global-styled/global-styled';
-import OverlayLayerRouteInfoGeometry from './OverlayLayerRouteInfoGeometry';
+import OverlayLayerRouteInfoGeometry from 'components/route_new/route-info/new/map/layers/layer-route-info-geometry/OverlayLayerRouteInfoGeometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
 class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLayerPLayPoint> {

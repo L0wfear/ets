@@ -4,7 +4,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { bindable } from 'utils/decorators';
-import ReportHeader from './ReportHeader';
+import ReportHeader from 'components/reports/operational/track_events/ReportHeader';
 
 export const serviceUrl = 'track_events';
 const reportUrl = 'track-events-reports';

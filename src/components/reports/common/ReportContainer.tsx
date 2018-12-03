@@ -16,12 +16,12 @@ import {
   uniqBy,
 } from 'lodash';
 
-import Title from './Title';
+import Title from 'components/reports/common/Title';
 import { filterFunction } from 'components/ui/tableNew/utils';
 import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 'components/ui/table/@types/schema.h';
 import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
-import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
-import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
+import { IPropsReportContainer, IStateReportContainer } from 'components/reports/common/@types/ReportContainer.h';
+import { IPropsReportHeaderCommon } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux-main/modules/@types/report.h';
 
 import Preloader from 'components/ui/new/preloader/Preloader';

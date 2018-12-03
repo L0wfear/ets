@@ -5,7 +5,7 @@ import * as Col from 'react-bootstrap/lib/Col';
 
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 
-import { IPropsPassportInfoTab } from '../PasportInfoTab';
+import { IPropsPassportInfoTab } from 'components/directories/autobase/cars/tabs/PasportInfoTab';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';

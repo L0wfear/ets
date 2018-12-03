@@ -13,8 +13,8 @@ import { saveData } from 'utils/functions';
 import { diffDates } from 'utils/dates';
 import dutyMissionSchema from 'models/DutyMissionModel';
 
-import DutyMissionForm from './DutyMissionForm';
-import DutyMissionFormOld from './DutyMissionFormOld';
+import DutyMissionForm from 'components/missions/duty_mission/DutyMissionForm';
+import DutyMissionFormOld from 'components/missions/duty_mission/DutyMissionFormOld';
 
 class DutyMissionFormWrap extends FormWrap {
   constructor(props, context) {

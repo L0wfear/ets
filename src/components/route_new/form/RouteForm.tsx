@@ -87,13 +87,13 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
       canSave,
       page,
       fromMission,
-      isPermitted,
       hasMissionStructureId,
     } = this.props;
 
     const IS_CREATING = !formState.id;
 
     const title = !IS_CREATING ? 'Изменение маршрута' : 'Создание нового маршрута';
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
       <Modal id="modal-route" show onHide={this.handleHide} bsSize="large" backdrop="static">
@@ -179,16 +179,26 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         </ModalBodyPreloader>
 
         <Modal.Footer>
-          <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSaveAsTemplate}>Сохранить как шаблон</Button>
-          {
-            this.props.fromMission
-              ? (
-                <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmitForMission}>Создать</Button>
-              )
-              : (
-                <DivNone />
-              )
-            }
+        {
+          isPermitted
+          ? (
+            <>
+              <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSaveAsTemplate}>Сохранить как шаблон</Button>
+              {
+                this.props.fromMission
+                  ? (
+                    <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmitForMission}>Создать</Button>
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
+            </>
+          )
+          : (
+            <DivNone />
+          )
+        }
         </Modal.Footer>
 
       </Modal>

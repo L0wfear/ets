@@ -39,7 +39,6 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
     const {
       formState: state,
       formErrors: errors,
-      isPermitted = false,
       page,
       path,
     } = this.props;
@@ -47,6 +46,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
       <Modal id="modal-battery-manufacturer" show onHide={this.handleHide} backdrop="static">
@@ -72,7 +72,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted || IS_CREATING // либо обновление, либо создание
+          isPermitted // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

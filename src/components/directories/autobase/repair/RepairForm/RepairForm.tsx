@@ -90,7 +90,6 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     const {
       formState: state,
       formErrors: errors,
-      isPermitted: ownIsPermitted = false,
       car_id,
       page,
       path,
@@ -98,6 +97,11 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     const {
       carListOptions,
     } = this.state;
+
+    const IS_CREATING = !state.id;
+
+    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     const isPermitted = (
       ownIsPermitted
@@ -107,10 +111,6 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
         || state.company_id === this.props.userCompanyId
       )
     );
-
-    const IS_CREATING = !state.id;
-
-    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     return (
       <Modal id="modal-repair" show onHide={this.handleHide} backdrop="static">
@@ -275,7 +275,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted || IS_CREATING // либо обновление, либо создание
+          isPermitted // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

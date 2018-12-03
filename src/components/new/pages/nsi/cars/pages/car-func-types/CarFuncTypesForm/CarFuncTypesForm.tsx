@@ -39,7 +39,6 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
     const {
       formState: state,
       formErrors: errors,
-      isPermitted = false,
       page,
       path,
     } = this.props;
@@ -47,6 +46,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
     const IS_CREATING = !state.asuods_id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
       <Modal id="modal-car-func-types" show onHide={this.handleHide} backdrop="static">
@@ -81,7 +81,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          !isPermitted || IS_CREATING // либо обновление, либо создание
+          !isPermitted // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

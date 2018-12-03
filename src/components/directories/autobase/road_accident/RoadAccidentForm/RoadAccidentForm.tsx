@@ -73,12 +73,16 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
     const {
       formState: state,
       formErrors: errors,
-      isPermitted: ownIsPermitted = false,
       page,
       path,
     } = this.props;
     const {
     } = this.state;
+
+    const IS_CREATING = !state.id;
+
+    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     const isPermitted = (
       ownIsPermitted
@@ -87,12 +91,8 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
         || state.company_id === this.props.userCompanyId
       )
     );
-
-    const IS_CREATING = !state.id;
-
-    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-
     return (
+
       <Modal id="modal-insurance-policy" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
@@ -200,7 +200,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted || IS_CREATING // либо обновление, либо создание
+          isPermitted // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

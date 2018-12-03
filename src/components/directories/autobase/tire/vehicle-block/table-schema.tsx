@@ -52,7 +52,7 @@ interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
   vehicleList: ITireAvailableCar[];
 }
 
-const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index}) =>
+const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index, isPermitted }) =>
   <ExtField
     type="select"
     label=""
@@ -61,9 +61,10 @@ const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors
     error={get(outputListErrors[index], 'car_id', '')}
     onChange={onChange}
     boundKeys={[index, 'car_id']}
+    disabled={!isPermitted}
   />;
 
-const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors }) =>
+const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted }) =>
   <ExtField
     type="date"
     label=""
@@ -72,9 +73,10 @@ const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, o
     error={get(outputListErrors[index], 'installed_at', '')}
     onChange={onChange}
     boundKeys={[index, 'installed_at']}
+    disabled={!isPermitted}
   />;
 
-const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
+const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index, isPermitted }) =>
   <ExtField
     type="date"
     label=""
@@ -82,6 +84,7 @@ const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value,
     time={false}
     onChange={onChange}
     boundKeys={[index, 'uninstalled_at']}
+    disabled={!isPermitted}
   />;
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {

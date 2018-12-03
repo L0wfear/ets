@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import {
   DivNone,
@@ -13,6 +14,7 @@ type TypeConfig = {
   every?: boolean;
   byEntity?: boolean;
   type?: string;
+  permissionName?: string;
 };
 
 const makePermissionOnCheck = (config, props) => {
@@ -63,7 +65,8 @@ const withRequirePermissionsNew = <P extends {}, O = {}>(config: TypeConfig = {}
         const newProps = { ...props };
 
         if (config.withIsPermittedProps) {
-          newProps.isPermitted = isPermitted;
+          const name = get(config, 'permissionName', 'isPermitted');
+          newProps[name] = isPermitted;
         }
 
         return (

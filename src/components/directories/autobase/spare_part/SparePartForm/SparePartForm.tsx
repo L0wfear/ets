@@ -59,7 +59,6 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
     const {
       formState: state,
       formErrors: errors,
-      isPermitted = false,
       page,
       path,
     } = this.props;
@@ -71,6 +70,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
       <Modal id="modal-spare-part" show onHide={this.handleHide} backdrop="static">
@@ -142,7 +142,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted || IS_CREATING // либо обновление, либо создание
+          isPermitted // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

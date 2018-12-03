@@ -9,7 +9,7 @@ type FormErrorType<F> = {
 };
 
 type ConfigWithForm<P, F, S> = {
-  uniqField?: keyof F;
+  uniqField: keyof F;
   mergeElement?: (props: P) => F;
   canSave?: (state: S, props: P) => boolean;
   validate?: (formState: F, props: P) => FormErrorType<F>;
@@ -34,7 +34,8 @@ type WithFormState<F> = {
 };
 
 type WithFormProps<P> = P & {
-  isPermitted: boolean;
+  isPermittedToUpdate: boolean;
+  isPermittedToCreate: boolean;
 };
 
 type FormWithHandleChange<F> = (objChange: { [K in keyof F]?: F[K] }) => void;
@@ -56,6 +57,12 @@ const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithF
   withRequirePermissionsNew({
     permissions: config.permissions.update,
     withIsPermittedProps: true,
+    permissionName: 'isPermittedToUpdate',
+  }),
+  withRequirePermissionsNew({
+    permissions: config.permissions.create,
+    withIsPermittedProps: true,
+    permissionName: 'isPermittedToCreate',
   })
   (
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F>> {

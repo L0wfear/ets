@@ -54,7 +54,7 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
   }
 );
 
-const withForm = <P extends WithFormConfigProps & object, F>(config: ConfigWithForm<Readonly<{ children?: React.ReactNode; }> & Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
+const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<{ children?: React.ReactNode; }> & Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
   compose<any, any>(
     withRequirePermissionsNew({
       permissions: config.permissions.update,

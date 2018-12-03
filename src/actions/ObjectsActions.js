@@ -105,10 +105,6 @@ export default class ObjectsActions extends Actions {
     return OrderService.get({ id });
   }
 
-  getPositions() {
-    return PositionService.get();
-  }
-
   getConfig() {
     return ConfigService.get();
   }

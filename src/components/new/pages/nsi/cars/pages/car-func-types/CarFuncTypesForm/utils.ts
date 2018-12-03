@@ -1,4 +1,4 @@
-import { isObject } from 'util';
+import { isObject, isNullOrUndefined } from 'util';
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export type GetDefaultCarFuncTypesElement = (carFuncTypes: CarFuncTypes | null) => CarFuncTypes;
@@ -16,7 +16,7 @@ export const getDefaultCarFuncTypesElement: GetDefaultCarFuncTypesElement = (ele
   const newElement = { ...defaultCarFuncTypes };
   if (isObject(element)) {
     Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = element[key] || value;
+      newElement[key] = !isNullOrUndefined(value) ? value : defaultCarFuncTypes[key];
     });
   }
 

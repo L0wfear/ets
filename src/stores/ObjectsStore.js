@@ -26,7 +26,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
     this.register(objectsActions.updateOrganizations, this.handleUpdateOrganizations);
-    this.register(objectsActions.getPositions, this.handleGetPositions);
     this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
     this.register(objectsActions.createMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
@@ -81,7 +80,6 @@ export default class ObjectsStore extends Store {
       companyStructureList: [],
       companyStructureLinearList: [],
       companyStructureLinearForUserList: [],
-      positionsList: [],
       organizations: [],
       materialConsumptionRateList: [],
       cleanCategoriesList: [],
@@ -222,10 +220,6 @@ export default class ObjectsStore extends Store {
       organizations: organizationsNew,
       organizationsIndex: _.keyBy(organizationsNew, 'company_id'),
     });
-  }
-
-  handleGetPositions({ result: { rows: positionsList } }) {
-    this.setState({ positionsList });
   }
 
   handleGetConfig(appConfig) {

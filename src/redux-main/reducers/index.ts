@@ -16,6 +16,7 @@ import userNotifications from 'redux-main/reducers/modules/user_notifications/us
 import old_report from 'components/coverage_reports/redux-main/modules/old-report/old_report';
 import autobase from 'redux-main/reducers/modules/autobase/autobase';
 import employee from 'redux-main/reducers/modules/employee/employee';
+import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
 
 export default combineReducers({
   ...rootReducers,
@@ -30,4 +31,5 @@ export default combineReducers({
   old_report,
   autobase,
   employee,
+  company_structure,
 });

@@ -38,3 +38,6 @@ export const getLoadingState: GetStateType<'loading'> = (state) => (
 export const getEtsLoadingState: GetStateType<'etsLoading'> = (state) => (
   getStateDataByKey(state)('etsLoading')
 );
+export const getCompanyStructureState: GetStateType<'company_structure'> = (state) => (
+  getStateDataByKey(state)('company_structure')
+);

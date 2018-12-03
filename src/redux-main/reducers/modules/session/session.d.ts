@@ -18,6 +18,10 @@ export type InitialStateSession = {
   };
   token: string | null;
   appConfig: {
+    category_license: {
+      category_drivers_license: [];
+      category_special_license: [];
+    };
     enums: {
       FUEL_TYPE: any,
     },

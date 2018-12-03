@@ -7,9 +7,9 @@ export type Employee = {
   }[];
   birthday: string | null;
   can_duty_mission: boolean
-  category_drivers_license: string | null;
+  category_drivers_license: string[] | null;
   category_drivers_license_text: string | null;
-  category_special_license: string | null;
+  category_special_license: string[] | null;
   category_special_license_text: string | null;
   company_id: number | null;
   company_name: string | null;
@@ -19,10 +19,14 @@ export type Employee = {
   drivers_license_date_end: string | null;
   first_name: string | null;
   full_name: string | null;
+  files: any[];
+  driver_license_files?: any[];
+  medical_certificate_files?: any[];
   has_car: null
   id: number | null;
   is_brigade: boolean
   is_common: boolean
+  is_driver?: boolean;
   last_name: string | null;
   medical_certificate: string | null;
   medical_certificate_date: string | null;
@@ -58,6 +62,13 @@ export type Driver = {
   fio_license: string;
 };
 
+export type Position = {
+  id: number;
+  is_driver: boolean;
+  position: string;
+  responsible: boolean;
+};
+
 export type IStateEmployee = {
   employeeList: Employee[];
   employeeIndex: {
@@ -66,5 +77,9 @@ export type IStateEmployee = {
   driverList: Driver[];
   driverIndex: {
     [id: string]: Driver;
-  }
+  };
+  positionList: Position[];
+  positionIndex: {
+    [id: string]: Position;
+  };
 };

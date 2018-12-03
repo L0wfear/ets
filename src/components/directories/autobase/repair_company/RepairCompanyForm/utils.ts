@@ -1,4 +1,4 @@
-import { isObject } from 'util';
+import { isObject, isNullOrUndefined } from 'util';
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export type GetDefaultRepairCompanyElement = (repairCompany: RepairCompany | null) => RepairCompany;
@@ -16,7 +16,7 @@ export const getDefaultRepairCompanyElement: GetDefaultRepairCompanyElement = (e
   const newElement = { ...defaultRepairCompany };
   if (isObject(element)) {
     Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = element[key] || value;
+      newElement[key] = !isNullOrUndefined(value) ? value : defaultRepairCompany[key];
     });
   }
 

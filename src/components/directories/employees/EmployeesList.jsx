@@ -2,55 +2,119 @@ import * as queryString from 'query-string';
 
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
-import EmployeeFormWrap from 'components/directories/employees/EmployeeFormWrap';
+import EmployeeFormWrap from 'components/directories/employees/EmployeeForm/EmployeeFormWrap';
 import EmployeesTable from 'components/directories/employees/EmployeesTable';
 
 import permissions from 'components/directories/employees/config-data/permissions';
+import { connect } from 'react-redux';
+import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
+import { compose } from 'recompose';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { getEmployeeState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['employees', 'objects', 'session'])
+const loadingPageName = 'employees';
+
+@connectToStores(['session'])
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
   permissions,
-  listName: 'employeesList',
+  listName: 'employeeList',
   tableComponent: EmployeesTable,
   formComponent: EmployeeFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
 })
-export default class EmployeesList extends ElementsList {
-  constructor() {
-    super();
-    this.preventUrlFilters = true;
+class EmployeesList extends ElementsList {
+  preventUrlFilters = true;
+
+  removeElementAction = async (id) => {
+    try {
+      await this.props.autobaseRemoveBatteryBrand(id);
+      this.init();
+    } catch (e) {
+      //
+    }
   }
+
   async init() {
-    const linear = true;
-    const descendants_by_user = true;
-
-    const { flux } = this.context;
-    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
-
-    const [employees] = await Promise.all([
-      flux.getActions('employees').getEmployees(),
-      flux.getActions('objects').getCars(),
-      flux.getActions('objects').getPositions(),
-    ]);
+    const { employeeIndex } = await this.props.employeeGetAndSetInStore();
 
     const { location: { search } } = this.props;
     const searchObject = queryString.parse(search);
 
     if (searchObject.employee_id) {
       const employee_id = parseInt(searchObject.employee_id, 10);
-      const selectedElement = employees.result.find(employee => employee.id === employee_id);
+      const selectedElement = employeeIndex[employee_id];
+
       if (selectedElement) {
-        // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
         this.setState({
-          ...this.state,
           selectedElement,
           showForm: true,
         });
-      } else {
-        this.props.history.replace(this.props.location.pathname, {});
       }
+      this.props.history.replace(this.props.match.url);
     }
   }
+
+  componentWillUnmount() {
+    this.props.employeeEmployeeResetSetEmployee();
+  }
+
+  onFormHide = (isSubmited) => {
+    const changeState = {
+      showForm: false,
+    };
+
+    if (isSubmited) {
+      this.init();
+      changeState.selectedElement = null;
+    }
+
+    this.setState(changeState);
+  }
+
+  getAdditionalProps() {
+    return {
+      loadingPageName,
+    };
+  }
 }
+
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      employeeList: getEmployeeState(state).employeeList,
+    }),
+    dispatch => ({
+      employeeGetAndSetInStore: () => (
+        dispatch(
+          employeeActions.employeeGetAndSetInStore(
+            {},
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+      employeeEmployeeResetSetEmployee: () => (
+        dispatch(
+          employeeActions.employeeEmployeeResetSetEmployee(),
+        )
+      ),
+      employeeRemoveEmployee: id => (
+        dispatch(
+          employeeActions.employeeRemoveEmployee(
+            id,
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+    }),
+  ),
+)(EmployeesList);

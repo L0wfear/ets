@@ -1,4 +1,4 @@
-import { DriverService, EmployeeService } from 'api/Services';
+import { DriverService, EmployeeService, PositionService } from 'api/Services';
 import { get } from 'lodash';
 
 /* ------------- EMPLOYEE ------------- */
@@ -18,10 +18,37 @@ export const employeeLoadEmployee = (payload = {}) => (
       data: get(ans, ['result', 'rows'], []),
     }))
 );
-export const employeeUpdateCar = (ownPayload) => {
-  return Promise.reject();
-};
+export const employeeCreateEmployee = (ownPayload) => {
+  const payload = {
+    ...ownPayload,
+  };
 
+  return EmployeeService.post(
+    payload,
+    false,
+    'json',
+  );
+};
+export const employeeUpdateEmployee = (ownPayload) => {
+  const payload = {
+    ...ownPayload,
+  };
+
+  return EmployeeService.put(
+    payload,
+    false,
+    'json',
+  );
+};
+export const employeeDeleteEmployee = (id) => {
+  return EmployeeService.path(id).delete(
+    {},
+    false,
+    'json',
+  ).then(() => {
+    global.NOTIFICATION_SYSTEM.notify('Запись успешно удалена', 'success');
+  });
+};
 /* ------------- DRIVERS ------------- */
 export const employeeLoadDriver = (payload = {}) => (
   DriverService.get({ ...payload })
@@ -36,6 +63,23 @@ export const employeeLoadDriver = (payload = {}) => (
     .then((ans) => {
       return ({
         data: get(ans, ['result'], []),
+      });
+    })
+);
+/* ------------- POSITIONS ------------- */
+export const employeeLoadPosition = (payload = {}) => (
+  PositionService.get({ ...payload })
+    .catch((error) => {
+      // tslint:disable-next-line
+      console.log(error);
+
+      return {
+        result: [],
+      };
+    })
+    .then((ans) => {
+      return ({
+        data: get(ans, ['result', 'rows'], []),
       });
     })
 );

@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { get } from 'lodash';
+
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
@@ -76,6 +78,12 @@ export function tableMeta({
         },
       },
       {
+        name: 'category_driver_license_text',
+        displayName: 'Категория водительского удостоверения',
+        type: 'string',
+        filter: false,
+      },
+      {
         name: 'drivers_license_date_end',
         displayName: 'Срок действия водительского удостоверения',
         type: 'date',
@@ -90,6 +98,12 @@ export function tableMeta({
         filter: {
           type: 'multiselect',
         },
+      },
+      {
+        name: 'category_special_license_text',
+        displayName: 'Категория специального удостоверения',
+        type: 'string',
+        filter: false,
       },
       {
         name: 'special_license_date_end',
@@ -167,19 +181,19 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = (props) => {
-  const renderers: ISchemaRenderer = {
-    full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
-    birthday: ({ data }) => <DateFormatter date={data} />,
-    active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
-    medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
-    is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
-    drivers_license_date_end: ({ data }) => <DateFormatter date={data} />,
-    special_license_date_end: ({ data }) => <DateFormatter date={data} />,
-    prefer_car: ({ data }) => <span>{props.carsIndex[data] ? props.carsIndex[data].gov_number : ''}</span>,
-    secondary_car: ({ data, rowData }) => <span>{(data || []).reduce((newStr, id) => `${newStr}${props.carsIndex[id] ? `${!newStr ? '' : ', '}${props.carsIndex[id].gov_number}` : ''}`, '')}</span>,
-  };
+const renderers: ISchemaRenderer = {
+  full_name: ({ rowData }) => <span>{`${rowData.last_name || ''} ${rowData.first_name || ''} ${rowData.middle_name || ''}`}</span>,
+  birthday: ({ data }) => <DateFormatter date={data} />,
+  active: ({ data }) => <div>{data === true ? 'Работает' : 'Не работает'}</div>,
+  medical_certificate_date: ({ data }) => <DateFormatter date={data} />,
+  is_common: ({ data }) => <input type="checkbox" disabled checked={!!data} />,
+  drivers_license_date_end: ({ data }) => <DateFormatter date={data} />,
+  special_license_date_end: ({ data }) => <DateFormatter date={data} />,
+  prefer_car: ({ rowData }) => <span>{get(rowData, 'prefer_car_text', '') || ''}</span>,
+  secondary_car: ({ rowData }) => <span>{get(rowData, 'secondary_car_text', '') || ''}</span>,
+};
 
+const Table: React.SFC<any> = (props) => {
   return (
     <DataTable
       title="Реестр сотрудников"

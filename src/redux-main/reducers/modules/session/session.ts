@@ -12,6 +12,10 @@ const MAP_INITIAL_CENTER: InitialStateSession['userData']['map_config']['coordin
 const MAP_INITIAL_ZOOM = 3;
 
 export const CONFIG_INITIAL: InitialStateSession['appConfig'] = { // дефолтное значение конфигурации
+  category_license: {
+    category_drivers_license: [],
+    category_special_license: [],
+  },
   enums: {
     FUEL_TYPE: {},
   },

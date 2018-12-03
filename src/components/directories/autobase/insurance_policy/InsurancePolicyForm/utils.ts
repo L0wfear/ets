@@ -1,4 +1,4 @@
-import { isObject } from 'util';
+import { isObject, isNullOrUndefined } from 'util';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export type GetDefaultInsurancePolicyElement = (insurancePolicy: InsurancePolicy | null) => InsurancePolicy;
@@ -28,7 +28,7 @@ export const getDefaultInsurancePolicyElement: GetDefaultInsurancePolicyElement 
   const newElement = { ...defaultInsurancePolicy };
   if (isObject(element)) {
     Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = element[key] || value;
+      newElement[key] = !isNullOrUndefined(value) ? value : defaultInsurancePolicy[key];
     });
   }
 

@@ -1,4 +1,4 @@
-import { isObject } from 'util';
+import { isObject, isNullOrUndefined } from 'util';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export type GetDefaultBatteryRegistryElement = (batteryRegistry: BatteryRegistry | null) => BatteryRegistry;
@@ -28,7 +28,7 @@ export const getDefaultBatteryRegistryElement: GetDefaultBatteryRegistryElement 
   const newElement = { ...defaultBatteryRegistry };
   if (isObject(element)) {
     Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = element[key] || value;
+      newElement[key] = !isNullOrUndefined(value) ? value : defaultBatteryRegistry[key];
     });
   }
 

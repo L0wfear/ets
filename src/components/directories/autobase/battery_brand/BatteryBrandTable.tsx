@@ -39,6 +39,7 @@ const Table: React.SFC<any> = (props) => (
     title="Марки аккумуляторов"
     results={props.data}
     tableMeta={tableMeta(props)}
+    initialSort="id"
     {...props}
   />
 );

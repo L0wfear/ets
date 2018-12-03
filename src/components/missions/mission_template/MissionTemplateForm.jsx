@@ -114,6 +114,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
               <Field
                 type="select"
+                id="technical_operation_id"
                 modalKey={modalKey}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
@@ -127,6 +128,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={3}>
               <Field
                 type="select"
+                id="structure_id"
                 modalKey={modalKey}
                 label="Подразделение"
                 error={errors.structure_id}
@@ -144,6 +146,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={12}>
               <InsideField.MunicipalFacility
                 modalKey={modalKey}
+                id="municipal_facility_id"
                 error={errors.municipal_facility_id}
                 name={state.municipal_facility_name}
                 value={state.municipal_facility_id}
@@ -164,6 +167,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <ExtField
                 type="select"
+                id="car_id"
                 modalKey={modalKey}
                 label="Транспортное средство"
                 error={errors.car_id}
@@ -175,10 +179,12 @@ class MissionTemplateForm extends MissionForm {
               />
               <Field
                 type="number"
+                id="passes_count"
+                modalKey={modalKey}
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
-                onChange={this.handleChange.bind(this, 'passes_count')}
+                onChange={ this.handleChange.bind(this, 'passes_count') }
                 min="0"
               />
             </Col>
@@ -186,6 +192,8 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <Field
                 type="string"
+                id="comment"
+                modalKey={modalKey}
                 label="Комментарий"
                 value={state.comment}
                 onChange={this.handleChange.bind(this, 'comment')}
@@ -198,6 +206,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                id="route_id"
                 modalKey={modalKey}
                 label="Маршрут"
                 error={errors.route_id}

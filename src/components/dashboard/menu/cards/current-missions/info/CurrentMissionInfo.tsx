@@ -16,6 +16,7 @@ import InfoCard from 'components/dashboard/menu/cards/_default-card-component/in
 import {
   dashboardLoadCurrentMissions,
   dashboardLoadMissionDataForCurrentMission,
+  dashboardLoadDependentDataByCloseMission,
 } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import {
@@ -76,6 +77,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       .then(() => {
         this.props.handleClose();
         this.refreshCard();
+        this.props.loadDataAfterCloseMission();
       });
   }
 
@@ -176,6 +178,11 @@ export default compose<any, any>(
               page: 'dashboard',
             },
           ),
+        )
+      ),
+      loadDataAfterCloseMission: () => (
+        dispatch(
+          dashboardLoadDependentDataByCloseMission(),
         )
       ),
       updateMission: (payload) => (

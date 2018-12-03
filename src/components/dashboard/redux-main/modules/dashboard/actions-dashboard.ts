@@ -277,6 +277,7 @@ export const dashboardLoadDependentDataByWaybillInProgress = () => (dispatch) =>
 };
 
 export const dashboardLoadDependentDataByWaybillCompleted = () => (dispatch) => {
+  dispatch(dashboardLoadWaybillCompleted());
   dispatch(dashboardLoadWaybillClosed());
   dispatch(dashboardLoadFutureMissions());
   dispatch(dashboardLoadCurrentMissions());
@@ -302,4 +303,8 @@ export const dashboardLoadDependentDataByNewDutyMission: any = () => (dispatch) 
   dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
   dispatch(dashboardLoadOdhNotCoveredByRoutes());
   dispatch(dashboardLoadOdhCoveredByRoutes());
+};
+
+export const dashboardLoadDependentDataByCloseMission: any = () => (dispatch) => {
+  dispatch(dashboardLoadWaybillCompleted());
 };

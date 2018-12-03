@@ -95,6 +95,7 @@ class WaybillCompletedInfo extends React.Component<PropsWaybillCompletedInfo, St
 
   handleWaybillFormWrapHideAfterSubmit = () => {
     this.props.loadAllWaybillCard();
+    this.props.handleClose();
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,

@@ -1045,7 +1045,7 @@ class WaybillForm extends Form {
                   />
                   <ExtField
                     multi
-                    id="fuel-end"
+                    id="fact-fuel-end"
                     type="number"
                     modalKey={modalKey}
                     label="Возврат фактический, л"

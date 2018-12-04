@@ -50,9 +50,9 @@ export default class AutobaseStore extends Store {
     const newRows = [...rows.map((row) => {
       const { battery_to_car } = row;
       const newBattery_to_car = battery_to_car.map((item, index) => ({
-          ...item,
-          customId: index + 1,
-        }));
+        ...item,
+        customId: index + 1,
+      }));
       return {
         ...row,
         battery_to_car: newBattery_to_car,
@@ -60,6 +60,7 @@ export default class AutobaseStore extends Store {
     })];
     return { rows: newRows, extra };
   }
+
   tireCustomId = ({ result = [] }) => {
     const {
       rows = [],
@@ -69,9 +70,9 @@ export default class AutobaseStore extends Store {
     const newRows = [...rows.map((row) => {
       const { tire_to_car } = row;
       const newtire_to_car = tire_to_car.map((item, index) => ({
-          ...item,
-          customId: index + 1,
-        }));
+        ...item,
+        customId: index + 1,
+      }));
       return {
         ...row,
         tire_to_car: newtire_to_car,

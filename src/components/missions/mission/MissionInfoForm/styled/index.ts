@@ -11,4 +11,8 @@ export const FormContainer = styled.div`
 export const SideContainerDiv = styled.div`
   flex: 1 1 400px;
   margin: 5px;
+
+  .data-table {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
 `;

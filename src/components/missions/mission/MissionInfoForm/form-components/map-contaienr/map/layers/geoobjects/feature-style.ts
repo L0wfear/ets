@@ -33,7 +33,7 @@ export const PointStyles = {
 };
 
 export const polyStyles = {
-  [polyState.SELECTED]: {
+  [polyState.ENABLE]: {
     fill: new Fill({
       color: 'rgba(0,0,0,0.2)',
     }),
@@ -42,7 +42,7 @@ export const polyStyles = {
       width: 1,
     }),
   },
-  [polyState.ENABLE]: {
+  [polyState.SELECTED]: {
     fill: new Fill({
       color: 'rgba(255,255,255,0.5)',
     }),

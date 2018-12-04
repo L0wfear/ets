@@ -31,7 +31,7 @@ type StateLayerFuelEventPoints = {
 
 class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
   componentDidMount() {
-    this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4 }).then(() => {
+    this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       this.drawTrackPoints(

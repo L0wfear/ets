@@ -14,14 +14,6 @@ type PropsLayerZoom = {
 };
 
 class LayerZoom extends React.PureComponent<PropsLayerZoom, {}> {
-  componentDidMount() {
-    this.props.addLayer({ id: 'Zoom', zIndex: 100 });
-  }
-
-  componentWillUnmount() {
-    this.props.removeLayer();
-  }
-
   handleClickInc = () => {
     const { map } = this.props;
 

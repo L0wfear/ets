@@ -594,7 +594,7 @@ export class DutyMissionForm extends Form {
                 technical_operation_id={state.technical_operation_id}
                 norm_id={state.norm_id}
                 clearable={false}
-                disabled={false}
+                disabled={municipalFacilityIdDisabled}
                 alreadyDefineNormId={alreadyDefineNormId}
                 handleChange={this.handleChange}
                 getDataByNormatives={this.getDataByNormatives}

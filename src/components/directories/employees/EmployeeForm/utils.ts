@@ -49,8 +49,8 @@ export const defaultEmployee: Employee = {
 export const getDefaultEmployeeElement: GetDefaultEmployeeElement = (element) => {
   const newElement = { ...defaultEmployee };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultEmployee[key];
+    Object.keys(defaultEmployee).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultEmployee[key];
     });
   }
 

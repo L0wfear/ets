@@ -30,8 +30,8 @@ export const defaultRoadAccident: RoadAccident = {
 export const getDefaultRoadAccidentElement: GetDefaultRoadAccidentElement = (element) => {
   const newElement = { ...defaultRoadAccident };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultRoadAccident[key];
+    Object.keys(defaultRoadAccident).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultRoadAccident[key];
     });
   }
 

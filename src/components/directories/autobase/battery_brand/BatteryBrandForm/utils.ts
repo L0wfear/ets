@@ -13,8 +13,8 @@ export const defaultBatteryBrand: BatteryBrand = {
 export const getDefaultBatteryBrandElement: GetDefaultBatteryBrandElement = (element) => {
   const newElement = { ...defaultBatteryBrand };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultBatteryBrand[key];
+    Object.keys(defaultBatteryBrand).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultBatteryBrand[key];
     });
   }
 

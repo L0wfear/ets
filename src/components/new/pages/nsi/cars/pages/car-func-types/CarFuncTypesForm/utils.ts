@@ -15,8 +15,8 @@ export const defaultCarFuncTypes: CarFuncTypes = {
 export const getDefaultCarFuncTypesElement: GetDefaultCarFuncTypesElement = (element) => {
   const newElement = { ...defaultCarFuncTypes };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultCarFuncTypes[key];
+    Object.keys(defaultCarFuncTypes).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultCarFuncTypes[key];
     });
   }
 

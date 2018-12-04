@@ -16,7 +16,7 @@ import permissions from 'components/program_registry/config-data/permissions';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
   selectField: 'version_id',
 })
-export default class ProgramRegistryList extends CheckableElementsList {
+class ProgramRegistryList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('repair').removeProgramRegistry;
@@ -60,9 +60,12 @@ export default class ProgramRegistryList extends CheckableElementsList {
       }, DOUBLECLICK_TIMEOUT);
     }
   }
+
   init() {
     const { flux } = this.context;
 
     flux.getActions('repair').getRepairListByType('programRegistry');
   }
 }
+
+export default ProgramRegistryList;

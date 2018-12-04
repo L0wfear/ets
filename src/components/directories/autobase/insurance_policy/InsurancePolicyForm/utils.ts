@@ -27,8 +27,8 @@ export const defaultInsurancePolicy: InsurancePolicy = {
 export const getDefaultInsurancePolicyElement: GetDefaultInsurancePolicyElement = (element) => {
   const newElement = { ...defaultInsurancePolicy };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultInsurancePolicy[key];
+    Object.keys(defaultInsurancePolicy).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultInsurancePolicy[key];
     });
   }
 

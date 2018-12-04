@@ -27,8 +27,8 @@ export const defaultBatteryRegistry: BatteryRegistry = {
 export const getDefaultBatteryRegistryElement: GetDefaultBatteryRegistryElement = (element) => {
   const newElement = { ...defaultBatteryRegistry };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultBatteryRegistry[key];
+    Object.keys(defaultBatteryRegistry).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultBatteryRegistry[key];
     });
   }
 

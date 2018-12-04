@@ -31,8 +31,8 @@ export const defaultRepair: Repair = {
 export const getDefaultRepairElement: GetDefaultRepairElement = (element) => {
   const newElement = { ...defaultRepair };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultRepair[key];
+    Object.keys(defaultRepair).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultRepair[key];
     });
   }
 

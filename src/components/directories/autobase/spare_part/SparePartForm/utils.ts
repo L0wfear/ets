@@ -16,8 +16,8 @@ export const defaultSparePart: SparePart = {
 export const getDefaultSparePartElement: GetDefaultSparePartElement = (element) => {
   const newElement = { ...defaultSparePart };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultSparePart[key];
+    Object.keys(defaultSparePart).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultSparePart[key];
     });
   }
 

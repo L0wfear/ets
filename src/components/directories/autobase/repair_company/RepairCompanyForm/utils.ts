@@ -15,8 +15,8 @@ export const defaultRepairCompany: RepairCompany = {
 export const getDefaultRepairCompanyElement: GetDefaultRepairCompanyElement = (element) => {
   const newElement = { ...defaultRepairCompany };
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = !isNullOrUndefined(value) ? value : defaultRepairCompany[key];
+    Object.keys(defaultRepairCompany).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultRepairCompany[key];
     });
   }
 

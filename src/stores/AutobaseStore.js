@@ -46,9 +46,9 @@ export default class AutobaseStore extends Store {
     const newRows = [...rows.map((row) => {
       const { tire_to_car } = row;
       const newtire_to_car = tire_to_car.map((item, index) => ({
-          ...item,
-          customId: index + 1,
-        }));
+        ...item,
+        customId: index + 1,
+      }));
       return {
         ...row,
         tire_to_car: newtire_to_car,

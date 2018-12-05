@@ -44,7 +44,7 @@ const makePayloadFromState = (formState) => ({
   needs_brigade: true,
   hasNotActiveEmployees: false,
 });
-const modalKey = 'duty_mission';
+const modalKey = 'duty_mission-form';
 
 export class DutyMissionForm extends Form {
   constructor(props) {
@@ -499,7 +499,7 @@ export class DutyMissionForm extends Form {
 
             <Col md={6}>
               <Field
-                id="dm-technical-operation-id"
+                id="technical-operation-id"
                 type="select"
                 modalKey={modalKey}
                 clearable={false}
@@ -637,7 +637,7 @@ export class DutyMissionForm extends Form {
             {STRUCTURE_FIELD_VIEW && (
             <Col md={3}>
               <Field
-                id="dm-structure-id"
+                id="structure-id"
                 type="select"
                 modalKey={modalKey}
                 label="Подразделение"
@@ -671,7 +671,8 @@ export class DutyMissionForm extends Form {
             </Col>
             <Col md={6}>
               <Field
-                id="dm-comment"
+                id="comment"
+                modalKey={modalKey}
                 type="string"
                 label="Комментарий"
                 value={state.comment}
@@ -714,7 +715,8 @@ export class DutyMissionForm extends Form {
           <Row>
             <Col md={6}>
               <Field
-                id="dm-route-id"
+                id="route-id"
+                modalKey={modalKey}
                 type="select"
                 modalKey={modalKey}
                 label="Маршрут"

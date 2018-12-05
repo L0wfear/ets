@@ -21,11 +21,12 @@ function StringField(props) {
     hidden,
     isLoading,
     inline = false,
-    id,
+    modalKey,
   } = props;
   let { value } = props;
 
   const inputClassName = cx({ 'has-error': error });
+  const id = props.id ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label` : undefined;
 
   if (isLoading) {
     return (
@@ -45,7 +46,7 @@ function StringField(props) {
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
         {label && <label className="control-label"><span>{label}</span></label>}
-        <FormControl type="text" disabled={disabled} className={inputClassName} {...mainProps} value={value} />
+        <FormControl type="text" disabled={disabled} className={inputClassName} {...mainProps} id={id} value={value} />
       </div>
       {showError && <Div hidden={!error} className="error">{error}</Div>}
     </Div> :
@@ -57,11 +58,13 @@ function StringField(props) {
 }
 
 function TextAreaField(props) {
-  const { error, label = '', readOnly = false, disabled = false, hidden, rows = 5, textAreaStyle = {}, id } = props;
+  const { error, label = '', readOnly = false, disabled = false, hidden, rows = 5, textAreaStyle = {}, modalKey } = props;
   let { value } = props;
   if (value === undefined || value === null) {
     value = '';
   }
+
+  const id = props.id ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label` : undefined;
 
   const wrapperClassName = cx({
     'textarea-field': true,
@@ -109,12 +112,16 @@ export default class Field extends React.Component {
     const {
       label = '',
       className = 'default-boolean-input',
+      modalKey,
     } = this.props;
+
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+
     return (
       <Div hidden={this.props.hidden} className={className}>
         <label>{label}</label>
         <input
-          id={this.props.id}
+          id={id}
           type="checkbox"
           style={{ fontSize: '20px', margin: '5px' }}
           checked={this.props.value}
@@ -126,7 +133,7 @@ export default class Field extends React.Component {
   }
 
   renderNumber() {
-    const { error, ...mainProps } = this.props;
+    const { error, modalKey, ...mainProps } = this.props;
     const { showRedBorder } = mainProps;
 
     const inputClassName = cx({ 'has-error': error || showRedBorder });
@@ -136,11 +143,13 @@ export default class Field extends React.Component {
       value = '';
     }
 
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+
     return (
       <Div hidden={this.props.hidden}>
         <div className="form-group">
           <label className="control-label"><span>{this.props.label}</span></label>
-          <FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} />
+          <FormControl lang="en" type="number" className={inputClassName} {...mainProps} id={id} value={value} />
         </div>
         <Div hidden={!error} className="error">{error}</Div>
       </Div>
@@ -148,14 +157,16 @@ export default class Field extends React.Component {
   }
 
   renderDate() {
-    const { label, ...props } = this.props;
+    const { label, error, modalKey, ...props } = this.props;
     const { error, readOnly = false, date, value, className = '' } = this.props;
+
+    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
 
     const dateClassName = cx({ 'has-error': error });
     return (
       <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
         { typeof label === 'string' && <label style={{ minHeight: 15 }}>{label}</label> }
-        <DatePicker {...props} date={date || value} className={dateClassName} />
+        <DatePicker {...props} id={id} date={date || value} className={dateClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
       </Div>
     );

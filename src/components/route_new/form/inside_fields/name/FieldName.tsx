@@ -23,7 +23,7 @@ class FieldIsMain extends React.PureComponent<PropsFieldIsMain, {}> {
         <ExtField
           id="name"
           type="string"
-          label="Название маршрутат"
+          label="Название маршрута"
           value={props.value}
           error={props.error}
           onChange={this.handleChange}

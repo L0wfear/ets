@@ -4,14 +4,26 @@ export const missionsCreationTemplateSchema = {
       key: 'passes_count',
       title: 'Количество циклов',
       type: 'number',
-      required: false,
+      required: true,
       max: 10,
+    },
+    {
+      key: 'date_start',
+      title: 'Время выполнения, с',
+      type: 'datetime',
+      required: true,
+    },
+    {
+      key: 'date_end',
+      title: 'Время выполнения, по',
+      type: 'datetime',
+      required: true,
     },
     {
       key: 'mission_source_id',
       title: 'Источник получения задания',
       type: 'number',
-      required: false,
+      required: true,
     },
   ],
   dependencies: {
@@ -22,6 +34,12 @@ export const missionsCreationTemplateSchema = {
             return '"Количество циклов" должно быть больше 0';
         }
       }
+    ],
+    'date_end': [
+      {
+        type: 'gt',
+        field: 'date_start',
+      },
     ],
   },
 };

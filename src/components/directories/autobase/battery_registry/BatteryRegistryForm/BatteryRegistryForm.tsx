@@ -187,7 +187,6 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
             <DivNone />
           )
         }
-          <Button onClick={this.handleHide}>Отменить</Button>
         </Modal.Footer>
       </Modal>
     );

@@ -150,6 +150,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
             <DivNone />
           )
         }
+        <Button onClick={this.handleHide}>Отменить</Button>
         </Modal.Footer>
       </Modal>
     );

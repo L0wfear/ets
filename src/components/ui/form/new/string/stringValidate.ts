@@ -22,6 +22,10 @@ export const validateString = <F, P>(fieldData: StringPropertie<F>, formState: F
     return `Длина поля не должна превышать максимальное количество символов (${fieldData.maxLength})`;
   }
 
+  if (value && isString(value) && value.length !== value.trim().length) {
+    return `Поле ${fieldData.title} не должно начинаться и заканчиваться пробелом`;
+  }
+
   if (isString(value) || value === null) {
     return '';
   }

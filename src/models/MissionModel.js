@@ -59,7 +59,6 @@ export const missionSchema = {
       key: 'municipal_facility_id',
       title: 'Элемент',
       type: 'number',
-
     },
     {
       key: 'route_id',

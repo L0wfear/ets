@@ -7,9 +7,8 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
-import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import Form from 'components/compositions/Form';
@@ -60,46 +59,54 @@ class MissionsCreationForm extends Form {
         </Modal.Header>
 
         <ModalBody>
-          <Div style={{ marginBottom: 20 }}>
-            <Row>
-              <Col md={6}>
-                <label>Время выполнения</label>
-                <Div>
-                  c
-                  <Datepicker date={state.date_start} onChange={this.handleChangeDateStart} />
-                </Div>
-              </Col>
-              <Col md={6}>
-                <label style={{ minHeight: 15 }} />
-                <Div>
-                  по
-                  <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} />
-                </Div>
-              </Col>
-            </Row>
-          </Div>
           <Row>
             <Col md={12}>
-              <Field
+              <label>Время выполнения</label>
+            </Col>
+            <Col md={6}>
+              <ExtField
+                type="date"
+                label="c"
+                error={errors.date_start}
+                value={state.date_start}
+                onChange={this.handleChangeDateStart}
+              />
+            </Col>
+            <Col md={6}>
+              <ExtField
+                type="date"
+                label="по"
+                error={errors.date_end}
+                value={state.date_end}
+                onChange={this.handleChange}
+                boundKeys={['date_end']}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <ExtField
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
                 options={MISSION_SOURCES}
                 value={state.mission_source_id}
-                onChange={this.handleChange.bind(this, 'mission_source_id')}
+                onChange={this.handleChange}
+                boundKeys={['mission_source_id']}
+                clearable={false}
               />
               <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span>
             </Col>
           </Row>
           <Row>
             <Col md={12}>
-              <Field
+              <ExtField
                 type="number"
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
-                onChange={this.handleChange.bind(this, 'passes_count')}
-                min={0}
+                onChange={this.handleChange}
+                boundKeys={['passes_count']}
               />
             </Col>
           </Row>
@@ -108,12 +115,7 @@ class MissionsCreationForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Div
-              className="inline-block assignToWaybillCheck"
-              style={{
-                width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px',
-              }}
-            >
+            <Div className="inline-block assignToWaybillCheck"  >
               <ReactSelect
                 type="select"
                 options={ASSIGN_OPTIONS}

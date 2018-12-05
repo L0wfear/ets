@@ -78,7 +78,7 @@ export function tableMeta({
         },
       },
       {
-        name: 'category_driver_license_text',
+        name: 'category_drivers_license_text',
         displayName: 'Категория водительского удостоверения',
         type: 'string',
         filter: false,

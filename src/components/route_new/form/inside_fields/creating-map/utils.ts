@@ -142,3 +142,31 @@ export const setNameForPointByIndex = (objectList: PropsCreatingMap['object_list
     return d;
   });
 };
+
+export let cachedDataForRoute = Object.keys(routeTypesByKey).reduce((newObj, key) => {
+  newObj[key] = {
+    object_list: [],
+    input_lines: [],
+  };
+
+  return newObj;
+}, {});
+
+export const setCacheDataForRoute = (type, objValue) => {
+  cachedDataForRoute[type] = objValue;
+};
+
+export const getCacheDataForRoute = (type) => {
+  return cachedDataForRoute[type];
+};
+
+export const resetCachedDataForRoute = () => {
+  cachedDataForRoute = Object.keys(routeTypesByKey).reduce((newObj, key) => {
+    newObj[key] = {
+      object_list: [],
+      input_lines: [],
+    };
+
+    return newObj;
+  }, {});
+};

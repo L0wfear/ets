@@ -35,12 +35,14 @@ import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 import routePermisions from 'components/route_new/config-data/permissions';
+import { resetCachedDataForRoute } from 'components/route_new/form/inside_fields/creating-map/utils';
 
 const path = 'routeForm';
 
 class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
   handleHide = () => {
     this.props.handleHide(false);
+    resetCachedDataForRoute();
   }
 
   checkRoute = async () => {
@@ -69,10 +71,20 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
   }
 
   handleSaveAsTemplate = () => {
-    this.props.submitAction(this.props.formState, true);
+    try {
+      this.props.submitAction(this.props.formState, true);
+      resetCachedDataForRoute();
+    } catch (e) {
+      //
+    }
   }
   handleSubmitForMission = () => {
-    this.props.submitAction(this.props.formState, false);
+    try {
+      this.props.submitAction(this.props.formState, false);
+      resetCachedDataForRoute();
+    } catch (e) {
+      //
+    }
   }
 
   render() {

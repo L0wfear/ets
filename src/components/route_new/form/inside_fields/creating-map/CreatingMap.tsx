@@ -31,24 +31,9 @@ import {
   routesToLoadByKeySet,
   changeStateInObjectList,
   setNameForPointByIndex,
+  setCacheDataForRoute,
+  getCacheDataForRoute,
 } from 'components/route_new/form/inside_fields/creating-map/utils';
-
-const cachedData = Object.keys(routeTypesByKey).reduce((newObj, key) => {
-  newObj[key] = {
-    object_list: [],
-    input_lines: [],
-  };
-
-  return newObj;
-}, {});
-
-const setCacheData = (type, objValue) => {
-  cachedData[type] = objValue;
-};
-
-const getCacheData = (type) => {
-  return cachedData[type];
-};
 
 class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap> {
   state = {
@@ -115,14 +100,14 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
     if (trigger) {
       if (type && municipal_facility_id) {
         if (prevType && prevMunicipalFacilityId) {
-          setCacheData(prevType, {
+          setCacheDataForRoute(prevType, {
             object_list: prevProps.object_list,
             input_lines: prevProps.input_lines,
           });
         }
 
         this.props.onChange({
-          ...getCacheData(type),
+          ...getCacheDataForRoute(type),
           draw_object_list: [],
         });
 
@@ -130,7 +115,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
 
         this.loadGeometry(this.props, this.state, needUpdateObjectData);
       } else if (prevType && prevMunicipalFacilityId) {
-        setCacheData(prevType, {
+        setCacheDataForRoute(prevType, {
           object_list: prevProps.object_list,
           input_lines: prevProps.input_lines,
         });

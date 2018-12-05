@@ -40,10 +40,6 @@ export interface IVehicle {
   parking_address: string;
   car_group_id: number;
   car_group_name: string;
-  primary_drivers: any[];
-  secondary_drivers: any[];
-  register_secondary_drivers: any[];
-  register_primary_drivers: any[];
 }
 
 export interface ICarDrivers {
@@ -52,12 +48,12 @@ export interface ICarDrivers {
 }
 
 export interface IVehicleRegister {
+  car_id: number;
+  id: number;
   register_certificate_number: string;
   register_given_by: string;
   register_given_at: Date;
   register_note: string;
-  register_secondary_drivers: any[];
-  register_primary_drivers: any[];
 }
 
 export interface IVehiclePassport  extends IVehiclePassportGibdd, IVehiclePassportGtn {

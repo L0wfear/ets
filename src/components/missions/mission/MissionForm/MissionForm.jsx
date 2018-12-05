@@ -47,6 +47,7 @@ import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssi
 
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 import missionPermission from 'components/missions/mission/config-data/permissions';
+import { isArray } from 'util';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -409,13 +410,18 @@ export class MissionForm extends Form {
       if (!this.props.formState.is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       }
+
       const changesObj = {
         date_start,
         date_end,
       };
       const { selectedRoute } = this.state;
 
-      if (date_start && date_end && is_cleaning_norm.some((value) => value) && selectedRoute) {
+      const triggerOnIsCleaningNorm = isArray(is_cleaning_norm)
+        ? is_cleaning_norm.some(value => value)
+        : is_cleaning_norm;
+
+      if (date_start && date_end && triggerOnIsCleaningNorm && selectedRoute) {
         const { time } = routeTypesByKey[selectedRoute.type];
 
         if (diffDates(date_end, date_start, 'hours') > time) {

@@ -267,7 +267,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 multi
                 label="Категория специального удостоверения"
                 value={state.category_special_license}
-                options={this.state.categoryDriversLicenseOptions}
+                options={this.state.categorySpecialLicenseOptions}
                 error={errors.category_special_license}
                 disabled={!isPermitted || !state.special_license}
                 onChange={this.handleChange}

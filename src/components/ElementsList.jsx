@@ -89,7 +89,7 @@ class ElementsList extends React.Component {
    * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
    * элементом
    */
-  selectElement = ({ props: { data: selectedElement } }) => {
+  selectElement = ({ props: { data: selectedElement }, props }) => {
     if (props.fromKey) {
       this.setState({ selectedElement });
       return;

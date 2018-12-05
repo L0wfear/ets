@@ -371,6 +371,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
                       disabled={!isPermitted || !countPolys}
                     />
                     <ExtField
+                      id="object_list_id"
                       type="select"
                       multi
                       label={`Список выбранных ${routeTypesByKey[type].title}`}

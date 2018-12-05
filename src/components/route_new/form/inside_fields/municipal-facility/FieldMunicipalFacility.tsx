@@ -100,6 +100,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         municipal_facility_id: value,
         municipal_facility_name: value ? option.label : null,
         available_route_types: option.mfData.route_types,
+        type: null,
       });
     }
   }

@@ -245,7 +245,9 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
         }, { newLines: [], alreadyCheckLastVisible: false }).newLines,
       });
     } else {
-      this.state.interactionDraw.removeLastPoint();
+      if (this.state.interactionDraw) {
+        this.state.interactionDraw.removeLastPoint();
+      }
     }
   }
 

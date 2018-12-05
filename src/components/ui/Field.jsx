@@ -158,7 +158,7 @@ export default class Field extends React.Component {
 
   renderDate() {
     const { label, error, modalKey, ...props } = this.props;
-    const { error, readOnly = false, date, value, className = '' } = this.props;
+    const { readOnly = false, date, value, className = '' } = this.props;
 
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
 

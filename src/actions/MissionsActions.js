@@ -1,5 +1,7 @@
 import { Actions } from 'flummox';
-import { keyBy, clone, cloneDeep, keys } from 'lodash';
+import {
+ keyBy, clone, cloneDeep, keys 
+} from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
@@ -202,12 +204,13 @@ export default class MissionsActions extends Actions {
 
 
   getMissionTemplates(payload = {}) {
-    if (payload.faxogramm_id) {
+    if (payload.faxogramm_id) { // 11
       return MissionTemplatesForFaxogramm.get(payload);
     }
 
     return MissionTemplateService.get(payload);
   }
+
   getMissionTemplatesCars(payload = {}) {
     if (payload.faxogramm_id) {
       return MissionTemplatesForFaxogramm.get(payload);
@@ -230,7 +233,7 @@ export default class MissionsActions extends Actions {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
-    const queries = keys(missionTemplates).map((key) => missionTemplates[key]).map((query) => {
+    const queries = keys(missionTemplates).map(key => missionTemplates[key]).map((query) => {
       const payload = clone(query);
       payload.date_start = date_start;
       payload.date_end = date_end;
@@ -357,7 +360,7 @@ export default class MissionsActions extends Actions {
 
   getDutyMissionTemplates(data = {}) {
     const payload = {};
-    if (data && data.order_id) {
+    if (data && data.order_id) { // 11
       payload.order_id = data.order_id;
     }
 
@@ -399,7 +402,7 @@ export default class MissionsActions extends Actions {
     const dutyMissionsCreationTemplateCopy = clone(dutyMissionsCreationTemplate);
     const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
-    const queries = Object.keys(dutyMissionTemplates).map((key) => dutyMissionTemplates[key]).map(({ brigadeEmployeeIdIndex, ...query }) => {
+    const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map(({ brigadeEmployeeIdIndex, ...query }) => {
       const payload = cloneDeep(query);
 
       payload.status = 'not_assigned';

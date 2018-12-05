@@ -34,7 +34,7 @@ export const employeeUpdateEmployee = (ownPayload) => {
     ...ownPayload,
   };
 
-  return EmployeeService.put(
+  return EmployeeService.path(ownPayload.id).put(
     payload,
     false,
     'json',

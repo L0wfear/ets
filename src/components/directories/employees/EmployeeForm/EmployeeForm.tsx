@@ -269,7 +269,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 value={state.category_special_license}
                 options={this.state.categoryDriversLicenseOptions}
                 error={errors.category_special_license}
-                disabled={!isPermitted || !state.is_driver || !state.special_license}
+                disabled={!isPermitted || !state.special_license}
                 onChange={this.handleChange}
                 boundKeys="category_special_license"
               />
@@ -349,7 +349,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 value={state.category_drivers_license}
                 options={this.state.categoryDriversLicenseOptions}
                 error={errors.category_drivers_license}
-                disabled={!isPermitted || !state.is_driver || !state.drivers_license}
+                disabled={!isPermitted || !state.drivers_license}
                 onChange={this.handleChange}
                 boundKeys="category_drivers_license"
               />

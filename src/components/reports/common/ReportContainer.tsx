@@ -14,6 +14,7 @@ import {
   omit,
   pick,
   uniqBy,
+  get,
 } from 'lodash';
 
 import Title from 'components/reports/common/Title';
@@ -111,10 +112,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
         if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
+          const prevFields = get(this.props.prevTableMetaInfo, 'fields', []) || [];
+
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
             summaryMeta: {...this.props.prevMeta},
-            summaryTableMetaInfo: [...this.props.prevTableMetaInfo.fields],
+            summaryTableMetaInfo: [...prevFields],
           });
           this.setState({
             fetchedByMoveDownButton: false,
@@ -327,7 +330,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
-    const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
+    const fields = get(tableMetaInfo, 'fields', []) || [];
+    const cols = fields.reduce((tableMeta, field) => {
       const [[fieldName, { name: displayName, is_row }]] = Object.entries(field);
 
       if (!is_row) {

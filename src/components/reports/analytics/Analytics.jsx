@@ -44,7 +44,7 @@ export default class Analytics extends Component {
 
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('objects').getOrganizations();
+    flux.getActions('objects').getCompanies();
   }
 
   handleSubmit() {
@@ -82,8 +82,8 @@ export default class Analytics extends Component {
   handleCheckbox(e) {
     let value;
     if (e.target.checked) {
-      const { organizations } = this.props;
-      value = organizations.map((e) => e.id).join(',');
+      const { companies } = this.props;
+      value = companies.map((e) => e.id).join(',');
     } else {
       value = '';
     }
@@ -91,7 +91,7 @@ export default class Analytics extends Component {
   }
 
   render() {
-    const { organizations } = this.props;
+    const { companies } = this.props;
 
     const reportsList = this.reports.map((e, i) => {
       return (<div key={e + i}><input
@@ -102,7 +102,7 @@ export default class Analytics extends Component {
       />{e}<br /></div>);
     });
 
-    const COMPANY = organizations && organizations.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
+    const COMPANY = companies && companies.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
     return (
       <EtsPageWrap>

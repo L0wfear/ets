@@ -89,13 +89,13 @@ export default class ObjectsActions extends Actions {
     return SensorTypeService.get().then(r => ({ result: r.result.rows }));
   }
 
-  getOrganizations() {
+  getCompanies() {
     return CompanyService.get();
   }
 
-  updateOrganizations(formState) {
+  updateCompanies(formState) {
     const payload = clone(formState);
-    return CompanyService.path(formState.id).put(payload, this.getOrganizations, 'json');
+    return CompanyService.path(formState.id).put(payload, this.getCompanies, 'json');
   }
 
   getWorkKinds() {

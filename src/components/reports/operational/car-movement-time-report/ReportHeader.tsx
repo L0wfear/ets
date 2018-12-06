@@ -21,7 +21,7 @@ interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IP
   date_start: string;
   date_end: any;
   company_id: null | number;
-  organizations: any;
+  companies: any;
 }
 
 @connectToStores(['objects'])
@@ -30,7 +30,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
   context!: ETSCore.LegacyContext;
 
   componentDidMount() {
-    this.context.flux.getActions('objects').getOrganizations().then(({ result: [company] }) => {
+    this.context.flux.getActions('objects').getCompanies().then(({ result: [company] }) => {
       if (company) {
         const { company_id } = this.getState();
         if (!company_id) {
@@ -73,7 +73,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     });
   }
   render() {
-    const { readOnly, organizations } = this.props;
+    const { readOnly, companies } = this.props;
 
     const {
       date_start,
@@ -90,7 +90,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
       errorMes = 'Дата окончания периода должна быть позже даты начала';
     }
 
-    const ORGANIZATIONS_OPTION = organizations.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
+    const ORGANIZATIONS_OPTION = companies.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
 
     return (
       <div>

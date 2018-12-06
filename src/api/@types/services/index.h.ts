@@ -48,12 +48,13 @@ export interface ICarDrivers {
 }
 
 export interface IVehicleRegister {
-  car_id: number;
-  id: number;
+  register_car_id: number;
+  register_id: number;
   register_certificate_number: string;
   register_given_by: string;
   register_given_at: Date;
   register_note: string;
+  register_disabled?: boolean;
 }
 
 export interface IVehiclePassport  extends IVehiclePassportGibdd, IVehiclePassportGtn {
@@ -85,6 +86,7 @@ export interface IVehiclePassportGibdd {
   passport_gibdd_company_address: string;
   passport_gibdd_given_at: string;
   passport_gibdd_files: any;
+  pasport_gibdd_disabled?: boolean;
 }
 
 export interface IVehiclePassportGtn {
@@ -106,6 +108,7 @@ export interface IVehiclePassportGtn {
   passport_gtn_axle_number: string;
   passport_gtn_max_speed: number;
   passport_gtn_files: any;
+  pasport_gtn_disabled?: boolean;
 }
 
 export interface ITechnicalOperationType extends IResponseRowObject<number> {

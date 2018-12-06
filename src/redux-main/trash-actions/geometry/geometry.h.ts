@@ -4,6 +4,7 @@ export interface GeozonesDataByIndex {
   company_id: number;
   shape: (Document | Node | ol.GlobalObject | string);
   frontIsSelected?: boolean;
+  [key: string]: any;
 }
 
 export interface LoadGeozonesPromise {

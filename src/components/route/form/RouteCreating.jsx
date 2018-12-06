@@ -42,7 +42,7 @@ class RouteCreating extends React.Component {
       await flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('bridges', 'GormostService', {});
       flux.getActions('geoObjects').setSelectedPolysType('bridges');
 
-      const bridgesPolys = flux.getStore('geoObjects').getSelectedPolys();
+      const bridgesPolys = flux.getStore('geoObjects').getSelectedPolys(['bridges']);
 
       this.setState({ bridgesPolys });
     }

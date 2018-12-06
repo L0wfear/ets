@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import FieldIsMain from 'components/route_new/form/inside_fields/is-main/FieldIsMain';
 
@@ -25,6 +26,8 @@ import {
   OwnRouteFormProps,
   PropsRouteForm,
   StateRouteForm,
+  ModifyBridgesForRoute,
+  InputRouteFormProps,
 } from 'components/route_new/form/RouteForm.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { validateRoute, createRoute, updateRoute } from 'redux-main/trash-actions/route/route';
@@ -35,11 +38,35 @@ import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 import routePermisions from 'components/route_new/config-data/permissions';
+import bridgesPermission from 'components/directories/geoobjects/pages/bridges/config-data/permissions';
 import { resetCachedDataForRoute } from 'components/route_new/form/inside_fields/creating-map/utils';
+import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
+import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
+import { polyState } from 'constants/polygons';
 
 const path = 'routeForm';
 
 class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
+  state = {
+    bridges: {},
+  };
+
+  async componentDidMount() {
+    if (this.props.isPermittedToShowBridge) {
+      const { serverName } = GEOOBJECTS_OBJ.bridges;
+      const { payload: { [serverName]: data } } = await this.props.loadGeozones(serverName);
+
+      this.setState({
+        bridges: Object.entries(data).reduce((newBridges: ModifyBridgesForRoute, [key, value]) => ({
+          ...newBridges,
+          [key]: {
+            ...value,
+            state: polyState.ENABLE,
+          },
+        }), {}),
+      });
+    }
+  }
   handleHide = () => {
     this.props.handleHide(false);
     resetCachedDataForRoute();
@@ -182,6 +209,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               type={type}
               onChange={this.props.handleChange}
               checkRoute={this.checkRoute}
+              bridges={this.state.bridges}
 
               isPermitted={isPermitted}
               page={page}
@@ -218,7 +246,12 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
   }
 }
 
-export default compose<PropsRouteForm, OwnRouteFormProps>(
+export default compose<PropsRouteForm, InputRouteFormProps>(
+  withRequirePermissionsNew({
+    permissions: bridgesPermission.list,
+    withIsPermittedProps: true,
+    permissionName: 'isPermittedToShowBridge',
+  }),
   connect<StateRouteFormProps, DispatchRouteFormProps, OwnRouteFormProps, ReduxState>(
     (state) => ({
       userStructureId: state.session.userData.structure_id,
@@ -238,6 +271,19 @@ export default compose<PropsRouteForm, OwnRouteFormProps>(
       updateAction: (formState) => (
         dispatch(
           updateRoute('none', formState, { page, path }),
+        )
+      ),
+      loadGeozones: (serverName) => (
+        dispatch(
+          loadGeozones(
+            'none',
+            serverName,
+            {
+              promise: true,
+              page,
+              path,
+            },
+          ),
         )
       ),
     }),

@@ -6,7 +6,7 @@ import { nameOfFeature } from 'utils/geo';
 const initialState = {
   odhsList: [],
   sspsList: [],
-  bridgessList: [],
+  bridgesList: [],
   pedestrian_tunnelssList: [],
   pedestrian_tunnel_exitssList: [],
   fountainssList: [],
@@ -18,7 +18,7 @@ const initialState = {
   carpoolsList: [],
   dangerZonesList: [],
 
-  bridgessIndex: {},
+  bridgesIndex: {},
   fountainssIndex: {},
   pedestrian_tunnelssIndex: {},
   pedestrian_tunnel_exitssIndex: {},
@@ -184,10 +184,10 @@ export default class GeoObjectsStore extends Store {
   }
 
   getSelectedPolys(nameOfSelected) {
-    const selectedPolysTypes = this.state[nameOfSelected];
-    const polys = {};
-    selectedPolysTypes.map((type) => Object.assign(polys, this.state[`${type}Polys`]));
-    return polys;
+    return nameOfSelected.reduce((polys, type) => ({
+      ...polys,
+      ...this.state[`${type}Polys`],
+    }), {});
   }
 
 

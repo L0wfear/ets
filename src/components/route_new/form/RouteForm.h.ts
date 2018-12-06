@@ -1,6 +1,7 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CreateRouteActionAns, RouteFormStateType } from 'redux-main/trash-actions/route/route';
+import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 
 export type PropsRouteFormWrap = OwnRouteFormProps & {
   showForm: boolean;
@@ -15,9 +16,10 @@ export type DispatchRouteFormProps = {
   validateRoute: (formState: FormStateRouteForm) => Promise<any>;
   createAction: (formState: FormStateRouteForm, isTemplate: boolean) => Promise<any>;
   updateAction: (formState: FormStateRouteForm) => Promise<any>;
+  loadGeozones: (serverName: string, company_id?: number | null) => any,
 };
 
-export type OwnRouteFormProps = {
+export type InputRouteFormProps = {
   handleHide: (hasSubmtit: boolean, route?: any) => any;
   page: string;
   element: RouteFormStateType;
@@ -26,6 +28,10 @@ export type OwnRouteFormProps = {
   fromOrder?: boolean;
   missionAvailableRouteTypes?: string[];
   hasMissionStructureId?: boolean;
+};
+
+export type OwnRouteFormProps = InputRouteFormProps & {
+  isPermittedToShowBridge: boolean;
 };
 
 export type PropsRouteWithForm = (
@@ -50,5 +56,12 @@ export type PropsRouteForm = OutputWithFormProps<
   CreateRouteActionAns
 >;
 
+export type ModifyBridgesForRoute = {
+  [key: string]: GeozonesDataByIndex & {
+    state: number;
+  };
+};
+
 export type StateRouteForm = {
+  bridges: ModifyBridgesForRoute;
 };

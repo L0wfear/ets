@@ -319,6 +319,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
                 manual={manual}
                 canDraw={hand}
                 polys={state.geozone_municipal_facility_by_id}
+                bridges={this.props.bridges}
                 objectList={props.object_list}
                 drawObjectList={props.input_lines}
                 handleFeatureClick={this.handleFeatureClick}

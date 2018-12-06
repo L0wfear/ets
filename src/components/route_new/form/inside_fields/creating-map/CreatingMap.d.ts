@@ -1,5 +1,6 @@
 import { TechnicalOperationObjectsList } from 'redux-main/trash-actions/technical-operation/promise/promise.d';
-import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
+import { GeozoneMunicipalFacilityById, GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
+import { StateRouteForm, ModifyBridgesForRoute } from '../../RouteForm.h';
 
 export type StateCreatingMap = {
   technical_operations_object_list: TechnicalOperationObjectsList;
@@ -22,6 +23,7 @@ export type DispatchPropsCreatingMap = {
 
 export type OwnPropsCreatingMap = {
   municipal_facility_id: number | null;
+  bridges?: ModifyBridgesForRoute;
   input_lines: any[];
   object_list: any[];
   error: string;

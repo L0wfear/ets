@@ -7,6 +7,7 @@ import LayerMeasure from 'components/map/layers/measure/LayerMeasure';
 import LayerEditGeoobjRoute from 'components/route_new/form/inside_fields/creating-map/map/layers/layer-edit-geoobj-route/LayerEditGeoobjRoute';
 import LayerShowPointsRoute from 'components/route_new/form/inside_fields/creating-map/map/layers/layer-show-points-route/LayerShowPointsRoute';
 import LayerEditDrawRoute from 'components/route_new/form/inside_fields/creating-map/map/layers/layer-edit-draw-route/LayerEditDrawRoute';
+import LayerBridgesRoute from 'components/route_new/form/inside_fields/creating-map/map/layers/layer-bridges-route/LayerBridgesRoute';
 
 import { MapEtsContainer } from 'components/route_new/form/inside_fields/creating-map/map/styled/styled';
 
@@ -18,12 +19,14 @@ import { checkRouteHasObjectLineByBegCoor } from 'components/route_new/form/insi
 import { CACHE_ROUTE_DRAW_STYLES } from 'components/route_new/form/inside_fields/creating-map/map/utils/draw-styles';
 
 import RouteDrawButtons from 'components/route_new/form/inside_fields/creating-map/map/draw-buttons/RouteDrawButtons';
+import { ModifyBridgesForRoute } from 'components/route_new/form/RouteForm.h';
 
 /**
  * @todo описать polys
  * @todo нормально описать пропсы
  */
 type PropsRouteCreatingMap = {
+  bridges?: ModifyBridgesForRoute;
   disabled?: boolean;
   handleFeatureClick: any;
   handleDrawFeatureClick: any;
@@ -189,6 +192,10 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
                         <DivNone />
                       )
                     }
+                    <LayerBridgesRoute
+                      map={map}
+                      bridges={props.bridges}
+                    />
                   </>
                 )
               }

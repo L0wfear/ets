@@ -147,7 +147,7 @@ class RoutesList extends React.Component {
 
     if (isSubmited === true && route) {
       this.refreshRoutes({ showForm: false })
-        .then(() => this.selectRoute(route.id));
+        .then(() => this.selectRoute(route.id, true));
     } else {
       const { selectedRoute_old } = this.state;
 
@@ -204,11 +204,11 @@ class RoutesList extends React.Component {
       })
   );
 
-  selectRoute = async (routeOrId) => {
+  selectRoute = async (routeOrId, force = false) => {
     let routeData = routeOrId;
     const { selectedRoute } = this.state;
 
-    if (selectedRoute && routeOrId === selectedRoute.id) {
+    if (selectedRoute && routeOrId === selectedRoute.id && !force) {
       return selectedRoute;
     }
 

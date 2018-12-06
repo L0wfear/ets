@@ -35,7 +35,7 @@ export const getTableMeta = (props) => {
   };
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       data={props.data}

@@ -21,7 +21,7 @@ import {
   TitleText,
 } from 'components/directories/order/order_assignment/styled/styled';
 
-const OrderAssignmentsList: React.SFC<any> = (props) => (
+const OrderAssignmentsList: React.FunctionComponent<any> = (props) => (
   <Div className="data-table data-other" hidden={props.hidden} >
     <Row>
       <ColOrderAssignmentHeaderTitleContainer md={8}>

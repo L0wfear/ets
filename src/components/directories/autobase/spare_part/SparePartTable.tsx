@@ -78,7 +78,7 @@ const renderers: ISchemaRenderer = {
   supplied_at: ({ data }) => (<DateFormatter date={data} />),
 };
 
-const Table: React.SFC<any> = (props) => (
+const Table: React.FunctionComponent<any> = (props) => (
   <DataTable
     title="Реестр запчастей"
     results={props.data}

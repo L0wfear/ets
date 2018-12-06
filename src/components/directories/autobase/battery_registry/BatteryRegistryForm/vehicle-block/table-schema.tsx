@@ -56,7 +56,7 @@ interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
   vehicleList: IBatteryAvailableCar[];
 }
 
-const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index, isPermitted }) =>
+const CarIdRenderer: React.FunctionComponent<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index, isPermitted }) =>
   <ExtField
     type="select"
     label=""
@@ -68,7 +68,7 @@ const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors
     disabled={!isPermitted}
   />;
 
-const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, outputListErrors, onChange, index, isPermitted}) =>
+const InstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, outputListErrors, onChange, index, isPermitted}) =>
   <ExtField
     type="date"
     label=""
@@ -80,7 +80,7 @@ const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, o
     disabled={!isPermitted}
   />;
 
-const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index, isPermitted }) =>
+const UninstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, onChange, index, isPermitted }) =>
   <ExtField
     type="date"
     label=""
@@ -91,7 +91,7 @@ const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value,
     disabled={!isPermitted}
   />;
 
-const PropOnDateRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
+const PropOnDateRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, onChange, index}) =>
   <ExtField
     type="string"
     label={false}

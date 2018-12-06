@@ -9,7 +9,7 @@ import {
   OverlayLineInfoContainer,
 } from 'components/map/overlay/styled/styled';
 
-const OverlayFuelEventLeakPoint: React.SFC<any> = (props) => {
+const OverlayFuelEventLeakPoint: React.FunctionComponent<any> = (props) => {
   const { overlayData } = props;
 
   if (!overlayData) {

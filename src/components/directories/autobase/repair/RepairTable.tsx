@@ -110,7 +110,7 @@ const renderers: ISchemaRenderer = {
   status: ({ data }) => <div>{get(AUTOBASE_REPAIR_STATUS, [data, 'name'], '---') || '---' }</div>,
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       title="Ремонты ТС"

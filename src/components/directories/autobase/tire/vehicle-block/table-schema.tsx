@@ -52,7 +52,7 @@ interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
   vehicleList: ITireAvailableCar[];
 }
 
-const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index, isPermitted }) =>
+const CarIdRenderer: React.FunctionComponent<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index, isPermitted }) =>
   <ExtField
     type="select"
     label=""
@@ -64,7 +64,7 @@ const CarIdRenderer: React.SFC<IPropsCarIdRenderer> = ({ value, outputListErrors
     disabled={!isPermitted}
   />;
 
-const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted }) =>
+const InstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted }) =>
   <ExtField
     type="date"
     label=""
@@ -76,7 +76,7 @@ const InstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, o
     disabled={!isPermitted}
   />;
 
-const UninstalledAtRenderer: React.SFC<IPropsDataTableInputRenderer> = ({ value, onChange, index, isPermitted }) =>
+const UninstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, onChange, index, isPermitted }) =>
   <ExtField
     type="date"
     label=""

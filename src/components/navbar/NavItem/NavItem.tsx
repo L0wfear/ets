@@ -41,7 +41,7 @@ const checkPermission = (props) => {
   return show;
 };
 
-const NavItemCustom: React.SFC<any> = (props) => (
+const NavItemCustom: React.FunctionComponent<any> = (props) => (
   checkPermission(props)
   ?
   <NavItem { ...propsToNaItem.reduce((newProps, key) => ({ ...newProps, [key]: props[key] }), {}) }>

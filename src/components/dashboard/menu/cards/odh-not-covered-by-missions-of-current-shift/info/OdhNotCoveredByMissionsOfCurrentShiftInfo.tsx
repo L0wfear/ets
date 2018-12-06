@@ -12,7 +12,7 @@ import { PropsOdhNotCoveredByMissionsOfCurrentShiftInfo } from 'components/dashb
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.SFC<PropsOdhNotCoveredByMissionsOfCurrentShiftInfo> = ({ infoData, ...props }) => (
+const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.FunctionComponent<PropsOdhNotCoveredByMissionsOfCurrentShiftInfo> = ({ infoData, ...props }) => (
   <InfoCard title="Список объектов / количество недостающих циклов" handleClose={props.handleClose}>
     <ul>
       {

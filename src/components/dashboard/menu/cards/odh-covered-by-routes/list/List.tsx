@@ -3,7 +3,7 @@ import * as cx from 'classnames';
 
 import { PropsList } from 'components/dashboard/menu/cards/odh-covered-by-routes/list/List.h';
 
-const List: React.SFC<PropsList> = (props) => (
+const List: React.FunctionComponent<PropsList> = (props) => (
   <ul>
     {
       props.items.map(({ title, subItems = [], ...item }, index) => (

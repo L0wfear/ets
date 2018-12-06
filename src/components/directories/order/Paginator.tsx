@@ -7,7 +7,7 @@ import Div from 'components/ui/Div';
 
 const PaginatorTsx: any = Paginator;
 
-const OrderPaginator: React.SFC<any> = (props) => (
+const OrderPaginator: React.FunctionComponent<any> = (props) => (
   <Div hidden={!props.haveMax} >
     <PaginatorTsx
       currentPage={props.offset}

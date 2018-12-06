@@ -20,7 +20,7 @@ export interface IPropsRegisterInfoTab extends IBaseForm<IVehicle> {
   companyElements: IReactSelectOption;
 }
 
-const RegisterInfoTab: React.SFC<IPropsRegisterInfoTab> = (props) =>
+const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) =>
   <CarTab>
     <Row>
       <Col md={6}>

@@ -193,7 +193,7 @@ const renderers: ISchemaRenderer = {
   secondary_car: ({ rowData }) => <span>{get(rowData, 'secondary_car_text', '') || ''}</span>,
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       title="Реестр сотрудников"

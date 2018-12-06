@@ -15,7 +15,7 @@ import { PropsOdhCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-const OdhCoveredByRoutesInfo: React.SFC<PropsOdhCoveredByRoutesInfo> = ({ infoData, ...props }) => (
+const OdhCoveredByRoutesInfo: React.FunctionComponent<PropsOdhCoveredByRoutesInfo> = ({ infoData, ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
     <ul>
       {

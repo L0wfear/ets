@@ -48,7 +48,7 @@ const getText = (count) => {
   }
 };
 
-const SensorsEquipmentList: React.SFC<PropsSensorsEquipmentList> = (props) => {
+const SensorsEquipmentList: React.FunctionComponent<PropsSensorsEquipmentList> = (props) => {
   const { track } = props;
   const sensors_equipment = Object.entries(props.front_cars_sensors_equipment);
 

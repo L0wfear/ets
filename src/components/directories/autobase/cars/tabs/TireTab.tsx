@@ -20,7 +20,7 @@ interface IPropsTireTab extends IBaseForm {
   data: any[];
 }
 
-const TireTab: React.SFC<IPropsTireTab> = ({ data = [] }) =>
+const TireTab: React.FunctionComponent<IPropsTireTab> = ({ data = [] }) =>
   <TireTable
     title={'Реестр шин'}
     results={data}

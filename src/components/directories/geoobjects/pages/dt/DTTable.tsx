@@ -73,7 +73,7 @@ const renderers: ISchemaRenderer = {
   total_area: ({ data }) => isNumber(data) ? parseFloat(data.toString()).toFixed(2) : '',
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       title="Реестр ДТ"

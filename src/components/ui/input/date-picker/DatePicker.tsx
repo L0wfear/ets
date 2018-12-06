@@ -19,7 +19,7 @@ interface DatePickerProps {
   disabled?: boolean;
 }
 
-const DatePicker: React.SFC<DatePickerProps> = (props) => {
+const DatePicker: React.FunctionComponent<DatePickerProps> = (props) => {
   const {
     time = true,
     calendar = true,

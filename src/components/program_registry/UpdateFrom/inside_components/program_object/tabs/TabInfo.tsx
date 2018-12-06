@@ -68,7 +68,7 @@ const TableMeta: ITableMetaInfo = [
   },
 ];
 
-const Buttons: React.SFC<any> = (props) => {
+const Buttons: React.FunctionComponent<any> = (props) => {
   const {
     objectPropertyList = [],
     state: {

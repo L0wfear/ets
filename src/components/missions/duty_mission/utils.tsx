@@ -6,7 +6,7 @@ import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils'
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import createFio from 'utils/create-fio';
 
-export const FormTitle: React.SFC<{ number?: string | number, status: string }> = (props) => (
+export const FormTitle: React.FunctionComponent<{ number?: string | number, status: string }> = (props) => (
   <div>
     {`Наряд-задание № ${props.number || ''}`}
     <Label bsStyle="default" style={{ marginLeft: 10 }}>{DUTY_MISSION_STATUS_LABELS[props.status]}</Label>

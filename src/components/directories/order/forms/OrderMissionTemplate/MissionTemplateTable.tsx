@@ -54,7 +54,7 @@ const getRenders = (props) => {
   return renderers;
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       multiSelection={true}

@@ -113,7 +113,7 @@ const renderers: ISchemaRenderer = {
   is_periodic: (meta) => <input type="checkbox" disabled checked={meta.data} />,
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       title="Реестр регламентов ТО"

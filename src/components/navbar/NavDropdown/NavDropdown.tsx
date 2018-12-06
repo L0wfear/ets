@@ -33,7 +33,7 @@ const propsToNavDropdown: any = [
   'className',
 ];
 
-const NavDropdownCustom: React.SFC<any> = (props) =>
+const NavDropdownCustom: React.FunctionComponent<any> = (props) =>
   checkShow(props)
   ?
     <NavDropdown { ...propsToNavDropdown.reduce((newProps, key) => ({ ...newProps, [key]: props[key] }), {} )} />

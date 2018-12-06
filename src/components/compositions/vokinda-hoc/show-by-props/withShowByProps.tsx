@@ -17,7 +17,7 @@ type TypeConfigToShow = {
   isObj?: boolean;
 };
 
-const HiddenComponent: React.SFC<any> = ({ type }) => {
+const HiddenComponent: React.FunctionComponent<any> = ({ type }) => {
   if (type === 'loader-field') {
     return (
       <div className="center-preloader">

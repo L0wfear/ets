@@ -96,7 +96,7 @@ const renderers: ISchemaRenderer = {
   date_end: ({ data }) => <DateFormatter date={data} time={false} />,
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   const { car_id = -1 } = props;
 
   return (

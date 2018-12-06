@@ -19,7 +19,7 @@ interface IPropsBatteryTab extends IBaseForm {
   data: any[];
 }
 
-const BatteryTab: React.SFC<IPropsBatteryTab> = ({ data = [] }) =>
+const BatteryTab: React.FunctionComponent<IPropsBatteryTab> = ({ data = [] }) =>
   <BatteryRegTable
     title={'Реестр аккумуляторов'}
     results={data}

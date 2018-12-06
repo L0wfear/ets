@@ -5,7 +5,7 @@ import {
   PropsList,
 } from 'components/dashboard/menu/cards/car-in-work-overall/list/List.h';
 
-const List: React.SFC<PropsList> = (props) => (
+const List: React.FunctionComponent<PropsList> = (props) => (
   <ul>
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (

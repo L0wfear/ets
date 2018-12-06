@@ -40,7 +40,7 @@ const propsToMenuItem = [
   'className',
 ];
 
-const MenuItemCustom: React.SFC<any> = (props, context) =>
+const MenuItemCustom: React.FunctionComponent<any> = (props, context) =>
   checkShow(props)
   ?
   (

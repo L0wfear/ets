@@ -15,7 +15,7 @@ const data = {
   alwaysShow: true,
 };
 
-const NavItemUser: React.SFC<any> = ({ currentUser }) => {
+const NavItemUser: React.FunctionComponent<any> = ({ currentUser }) => {
   const role = ROLES[currentUser.role || ''] || '';
   return (
     <NavItem id={'info-user-data'} className="navbar-user" data={data}>

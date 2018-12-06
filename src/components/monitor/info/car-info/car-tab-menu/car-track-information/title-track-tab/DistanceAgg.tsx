@@ -5,7 +5,7 @@ import DistanceAggValue from 'components/monitor/info/car-info/car-tab-menu/car-
 type PropsDistanceAgg = {
 };
 
-const DistanceAgg: React.SFC<PropsDistanceAgg> = () => (
+const DistanceAgg: React.FunctionComponent<PropsDistanceAgg> = () => (
   <div className="car_info-distance">
     <span>Протяженность, км: </span><DistanceAggValue />
   </div>

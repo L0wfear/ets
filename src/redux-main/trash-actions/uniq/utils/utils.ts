@@ -1,4 +1,5 @@
 import { swapCoords } from 'utils/geo';
+import { get } from 'lodash';
 import * as insider from 'point-in-polygon';
 import { sensorsMapOptions } from 'constants/sensors';
 import { makeDate, makeTime } from 'utils/dates';
@@ -128,28 +129,32 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
 
   const front_events_list = Object.values(events)
     .reduce<any[]>((newArr, eventData: any[]) => {
-      newArr.push(
-        ...eventData.map((event) => {
-          const newDate = new Date(event.start_point.timestamp * 1000);
+      const timestampStart = get(event, ['start_point', 'timestamp'], null);
 
-          return {
-            ...event,
-            start_point: {
-              ...event.start_point,
-              coords: swapCoords(event.start_point.coords),
-              coords_msk: swapCoords(event.start_point.coords_msk),
-            },
-            end_point: {
-              ...event.end_point,
-              coords: swapCoords(event.end_point.coords),
-              coords_msk: swapCoords(event.end_point.coords_msk),
-            },
-            date: `${makeDate(newDate)} ${makeTime(newDate, true)}`,
-            type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
-            value: `${Math.abs(event.event_val)} л`,
-          };
-        }),
-      );
+      if (timestampStart) {
+        newArr.push(
+          ...eventData.map((event) => {
+            const newDate = new Date(event.start_point.timestamp * 1000);
+
+            return {
+              ...event,
+              start_point: {
+                ...event.start_point,
+                coords: swapCoords(event.start_point.coords),
+                coords_msk: swapCoords(event.start_point.coords_msk),
+              },
+              end_point: {
+                ...event.end_point,
+                coords: swapCoords(event.end_point.coords),
+                coords_msk: swapCoords(event.end_point.coords_msk),
+              },
+              date: `${makeDate(newDate)} ${makeTime(newDate, true)}`,
+              type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
+              value: `${Math.abs(event.event_val)} л`,
+            };
+          }),
+        );
+      }
 
       return newArr;
     }, [])

@@ -67,7 +67,7 @@ export default class FuelRateActions extends Actions {
     payload.order_date = createValidDate(payload.order_date);
 
     return FuelConsumptionRateService.put(payload, getFuelRates, 'json');
-  }
+  } 
 
   deleteFuelRate(id) {
     const payload = {
@@ -84,6 +84,7 @@ export default class FuelRateActions extends Actions {
     const payload = {};
     if (typeof formState.name === 'string' && formState.name !== '') {
       payload.name = formState.name;
+      payload.comment = formState.comment || '';
       payload.equipment = !!formState.equipment;
       payload.measure_unit_id = formState.measure_unit_id;
       payload.is_excluding_mileage = !!formState.is_excluding_mileage;

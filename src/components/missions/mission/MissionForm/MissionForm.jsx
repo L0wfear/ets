@@ -12,6 +12,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import {
   uniqBy,
   isEmpty as lodashIsEmpty,
+  get,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -44,6 +45,7 @@ import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssi
 
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 import missionPermission from 'components/missions/mission/config-data/permissions';
+import { isArray } from 'util';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -114,9 +116,15 @@ export class MissionForm extends Form {
   handleRouteIdChange = (route_id) => {
     const changesObj = {
       route_id,
-      is_cleaning_norm: false,
-      norm_id: null,
     };
+
+    if (this.props.formState.is_column) {
+      changesObj.is_cleaning_norm = this.props.formState.car_id.map(() => false);
+      changesObj.norm_id = this.props.formState.car_id.map(() => null);
+    } else {
+      changesObj.is_cleaning_norm = false;
+      changesObj.norm_id = null;
+    }
 
     const { flux } = this.context;
     if (route_id) {
@@ -204,20 +212,21 @@ export class MissionForm extends Form {
         });
       }
 
-
       this.props.handleMultiFormChange({
         car_id,
         type_id,
         assign_to_waybill,
-        is_cleaning_norm: false,
-        norm_id: null,
+        is_cleaning_norm: isArray(car_id) ? car_id.map(() => false) : false,
+        norm_id: isArray(car_id) ? car_id.map(() => null) : null,
       });
 
       this.handleRouteIdChange(undefined);
     }
   }
 
-  handleColumnFlag = (name, is_column) => {
+  handleColumnFlag = (e) => {
+    const is_column = get(e, ['target', 'checked']);
+
     let {
       formState: {
         car_id,
@@ -227,6 +236,7 @@ export class MissionForm extends Form {
         assign_to_waybill,
       },
     } = this.props;
+
     if (car_id) {
       if (is_column) {
         car_id = [car_id];
@@ -252,7 +262,7 @@ export class MissionForm extends Form {
       if (is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       } else {
-        is_cleaning_norm = null;
+        is_cleaning_norm = false;
       }
     }
     if (assign_to_waybill) {
@@ -284,6 +294,7 @@ export class MissionForm extends Form {
       technical_operation_id,
       municipal_facility_id: null,
       is_cleaning_norm: false,
+      is_column: false,
       norm_id: null,
       ...changedObj,
     });
@@ -368,7 +379,7 @@ export class MissionForm extends Form {
       };
       const { selectedRoute } = this.state;
 
-      if (date_start && date_end && is_cleaning_norm.some((value) => value) && selectedRoute) {
+      if (date_start && date_end && is_cleaning_norm.some(value => value) && selectedRoute) {
         const { time } = routeTypesByKey[selectedRoute.type];
 
         if (diffDates(date_end, date_start, 'hours') > time) {
@@ -758,7 +769,6 @@ export class MissionForm extends Form {
                         label="Создать задания на колонну"
                         disabled={columnFlagDisability}
                         value={state.is_column}
-                        boundKeys={['is_column', !state.is_column]}
                         onChange={this.handleColumnFlag}
                       />
                     </Col>

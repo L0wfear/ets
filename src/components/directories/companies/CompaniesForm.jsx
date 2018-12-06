@@ -10,14 +10,14 @@ const boundKeysObj = {
   short_name: ['short_name'],
 };
 
-export default class OrganizationsForm extends Form {
+export default class CompaniesForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { isPermitted } = this.props;
 
     return (
-      <Modal {...this.props} id="modal-organizations" backdrop="static" bgSize="small">
+      <Modal {...this.props} id="modal-companies" backdrop="static" bgSize="small">
         <Modal.Header closeButton>
           <Modal.Title>Карточка организации</Modal.Title>
         </Modal.Header>

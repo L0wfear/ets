@@ -24,8 +24,8 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
-    this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
-    this.register(objectsActions.updateOrganizations, this.handleUpdateOrganizations);
+    this.register(objectsActions.getCompanies, this.handleGetCompanies);
+    this.register(objectsActions.updateCompanies, this.handleUpdateCompanies);
     this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
     this.register(objectsActions.createMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
@@ -80,7 +80,8 @@ export default class ObjectsStore extends Store {
       companyStructureList: [],
       companyStructureLinearList: [],
       companyStructureLinearForUserList: [],
-      organizations: [],
+      positionsList: [],
+      companies: [],
       materialConsumptionRateList: [],
       cleanCategoriesList: [],
       maintenanceWorkList: [],
@@ -210,15 +211,15 @@ export default class ObjectsStore extends Store {
     this.setState({ workKindsList: workKinds.result.rows || workKinds.result });
   }
 
-  handleGetOrganizations(organizations) {
-    const organizationsNew = organizations.result.map(company => ({
+  handleGetCompanies(companies) {
+    const companiesNew = companies.result.map(company => ({
       ...company,
       rgb_color: company.rgb_color || colors[Math.ceil(Math.random() * 4096)],
     }));
 
     this.setState({
-      organizations: organizationsNew,
-      organizationsIndex: _.keyBy(organizationsNew, 'company_id'),
+      companies: companiesNew,
+      companiesIndex: _.keyBy(companiesNew, 'company_id'),
     });
   }
 
@@ -235,9 +236,9 @@ export default class ObjectsStore extends Store {
     this.setState({ maintenanceWorkList });
   }
 
-  handleUpdateOrganizations(r) {
-    const organizations = r.result.rows || r.result;
-    this.setState({ organizations });
+  handleUpdateCompanies(r) {
+    const companies = r.result.rows || r.result;
+    this.setState({ companies });
   }
 
   handleGetCleaningRate(r) {

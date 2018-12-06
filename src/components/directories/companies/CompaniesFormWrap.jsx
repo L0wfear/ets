@@ -1,11 +1,11 @@
 import React from 'react';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import FormWrap from 'components/compositions/FormWrap';
-import BaseOrganizationsForm from 'components/directories/organizations/OrganizationsForm';
+import BaseCompaniesForm from 'components/directories/companies/CompaniesForm';
 
-const OrganizationsForm = enhanceWithPermissions(BaseOrganizationsForm);
+const CompaniesForm = enhanceWithPermissions(BaseCompaniesForm);
 
-export const organizationsSchema = {
+export const companiesSchema = {
   properties: [
     {
       key: 'short_name',
@@ -22,13 +22,13 @@ export const organizationsSchema = {
   ],
 };
 
-export default class MaintenanceWorkFormWrap extends FormWrap {
+export default class CompaniesFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
     this.uniqueField = 'company_id';
-    this.updateAction = context.flux.getActions('objects').updateOrganizations;
-    this.schema = organizationsSchema;
+    this.updateAction = context.flux.getActions('objects').updateCompanies;
+    this.schema = companiesSchema;
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -38,7 +38,7 @@ export default class MaintenanceWorkFormWrap extends FormWrap {
 
     return props.showForm
       ? (
-        <OrganizationsForm
+        <CompaniesForm
           formState={this.state.formState}
           permissions={['company.update']}
           addPermissionProp

@@ -1,6 +1,6 @@
 import Mock from './Mock';
 
-export default class OrganizationsMock extends Mock {
+export default class CompaniesMock extends Mock {
   constructor() {
     super();
     this.data = [

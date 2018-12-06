@@ -30,7 +30,7 @@ const page = 'analytics';
 @FluxContext
 class Analytics extends React.Component {
   static propTypes = {
-    organizations: PropTypes.array.isRequired,
+    companies: PropTypes.array.isRequired,
     oldReportGetAnalytics: PropTypes.func.isRequired,
   }
 
@@ -58,7 +58,7 @@ class Analytics extends React.Component {
 
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('objects').getOrganizations();
+    flux.getActions('objects').getCompanies();
   }
 
   handleSubmit() {
@@ -101,8 +101,8 @@ class Analytics extends React.Component {
   handleCheckbox(e) {
     let value;
     if (e.target.checked) {
-      const { organizations } = this.props;
-      value = organizations.map(el => el.id).join(',');
+      const { companies } = this.props;
+      value = companies.map(el => el.id).join(',');
     } else {
       value = '';
     }
@@ -110,7 +110,7 @@ class Analytics extends React.Component {
   }
 
   render() {
-    const { organizations } = this.props;
+    const { companies } = this.props;
 
     const reportsList = this.reports.map((e, i) => (
       <div key={e + i}>
@@ -125,7 +125,7 @@ class Analytics extends React.Component {
       </div>
     ));
 
-    const COMPANY = organizations && organizations.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
+    const COMPANY = companies && companies.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
     return (
       <EtsPageWrap>

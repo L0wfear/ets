@@ -25,7 +25,6 @@ export default class TireForm extends Form {
 
     flux.getActions('autobase').getAutobaseListByType('tireSize');
     flux.getActions('autobase').getAutobaseListByType('tireModel');
-    flux.getActions('objects').getOrganizations();
   }
   handleTireToCarValidity = ({ isValidInput }) => {
     this.setState({

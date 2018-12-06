@@ -18,7 +18,7 @@ const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
 };
 
-const CarAttributeInformation: React.SFC<PropsCarAttributeInformation> = (props) => {
+const CarAttributeInformation: React.FunctionComponent<PropsCarAttributeInformation> = (props) => {
   const { lastPoint, errorInLoadTrack } = props;
 
   return (

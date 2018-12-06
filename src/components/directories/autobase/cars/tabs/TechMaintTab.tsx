@@ -22,7 +22,7 @@ interface IPropsInfoTab extends IBaseForm<IVehicle> {
   children: any;
 }
 
-const InfoTab: React.SFC<IPropsInfoTab> = (props) => {
+const InfoTab: React.FunctionComponent<IPropsInfoTab> = (props) => {
   const { type = false, techMaintListExtra } = props;
   return   <div style={{ marginTop: 10 }}>
     <Row>

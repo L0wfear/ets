@@ -123,7 +123,7 @@ const renderers: ISchemaRenderer<IUserNotification> = {
 
 // console.log('props.data == ', props.data);
 
-const Table: React.SFC<any> = (props) => (
+const Table: React.FunctionComponent<any> = (props) => (
   <DataTable
     title="Уведомления пользователей"
     results={props.data}

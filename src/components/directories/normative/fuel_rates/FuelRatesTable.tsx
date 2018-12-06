@@ -119,7 +119,7 @@ const renderers: ISchemaRenderer = {
   measure_unit_name: ({ data }) => <div>{data || '-'}</div>,
 };
 
-const Table: React.SFC<any> = (props) => (
+const Table: React.FunctionComponent<any> = (props) => (
   <DataTable
     title="Нормы расхода топлива"
     results={props.data}

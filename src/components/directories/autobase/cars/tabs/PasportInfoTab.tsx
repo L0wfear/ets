@@ -26,7 +26,7 @@ export interface IPropsPassportInfoTab extends IBaseForm<IVehicle> {
   onOverlayLoading(): void;
 }
 
-const RegisterPassportInfoTab: React.SFC<IPropsPassportInfoTab> = (props) => {
+const RegisterPassportInfoTab: React.FunctionComponent<IPropsPassportInfoTab> = (props) => {
   return (
     <CarTab>
       <Row>

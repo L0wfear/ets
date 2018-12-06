@@ -11,7 +11,7 @@ import Datepicker from 'components/ui/input/date-picker/DatePicker';
 
 const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker) as any;
 
-const OrdersDatepicker: React.SFC<any> = (props) =>
+const OrdersDatepicker: React.FunctionComponent<any> = (props) =>
     <Row>
       <Col mdOffset={3} md={6} className="datepicker-range">
         <div>

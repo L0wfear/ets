@@ -23,7 +23,7 @@ const marginLeft = { marginLeft: 10 };
 const Button = enhanceWithPermissions({})(BootstrapButton);
 const title: any = <Glyphicon glyph="download-alt" />;
 
-const OrderTableChilrend: React.SFC<any> = (props) => (
+const OrderTableChilrend: React.FunctionComponent<any> = (props) => (
   <div>
     <Button
       permission={permissions_mission_template.create}

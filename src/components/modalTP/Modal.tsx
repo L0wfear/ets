@@ -10,7 +10,7 @@ export interface IPropsModal {
   Footer?: any;
 }
 
-const Modal: React.SFC<IPropsModal> = (props) => {
+const Modal: React.FunctionComponent<IPropsModal> = (props) => {
   const {
     dialogClassName = '',
     show,

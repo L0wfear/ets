@@ -13,7 +13,7 @@ const data = {
   path: '/logout',
 };
 
-const NavItemLogout: React.SFC<any> = (props) => (
+const NavItemLogout: React.FunctionComponent<any> = (props) => (
   <NavItem
     id={'link-logout'}
     href={`#${data.path}`}

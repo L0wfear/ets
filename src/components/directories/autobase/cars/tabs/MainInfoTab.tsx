@@ -23,7 +23,7 @@ export interface IPropsMainInfoTab extends IBaseForm<IFormState> {
   DRIVERS: IReactSelectOption;
 }
 
-const MainInfoTab: React.SFC<IPropsMainInfoTab> = (props) =>
+const MainInfoTab: React.FunctionComponent<IPropsMainInfoTab> = (props) =>
   <CarTab>
     <Row>
       <Col md={6}>

@@ -25,7 +25,7 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.SFC<any> = (props) => (
+const Table: React.FunctionComponent<any> = (props) => (
   <DataTable
     title="Производители аккумуляторов"
     results={props.data}

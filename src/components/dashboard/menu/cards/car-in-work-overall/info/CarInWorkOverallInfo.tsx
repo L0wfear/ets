@@ -14,7 +14,7 @@ import {
   PropsCarInWorkOverallInfo,
 } from 'components/dashboard/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo.h';
 
-const CarInWorkOverallInfo: React.SFC<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
+const CarInWorkOverallInfo: React.FunctionComponent<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
     <ul>
       {

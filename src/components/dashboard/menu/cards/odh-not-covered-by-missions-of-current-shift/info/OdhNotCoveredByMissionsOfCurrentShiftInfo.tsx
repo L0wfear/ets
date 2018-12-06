@@ -10,7 +10,7 @@ import { dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift } from 'com
 
 import { PropsOdhNotCoveredByMissionsOfCurrentShiftInfo } from 'components/dashboard/menu/cards/odh-not-covered-by-missions-of-current-shift/info/OdhNotCoveredByMissionsOfCurrentShiftInfo.h';
 
-const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.SFC<PropsOdhNotCoveredByMissionsOfCurrentShiftInfo> = ({ infoData, ...props }) => (
+const OdhNotCoveredByMissionsOfCurrentShiftInfo: React.FunctionComponent<PropsOdhNotCoveredByMissionsOfCurrentShiftInfo> = ({ infoData, ...props }) => (
   <InfoCard title="Список объектов / количество недостающих циклов" handleClose={props.handleClose}>
     <ul>
       {

@@ -11,7 +11,7 @@ import { onClickWithKeys } from 'components/compositions/hoc';
 
 const Button: any = onClickWithKeys(BootstrapButton as any);
 
-const FileListItem: React.SFC<any> = ({
+const FileListItem: React.FunctionComponent<any> = ({
   onFileRemove,
   disabled,
   index,

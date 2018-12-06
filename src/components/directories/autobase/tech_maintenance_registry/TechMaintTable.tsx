@@ -106,7 +106,7 @@ const renderers: ISchemaRenderer = {
   fact_date_end: ({ data }) => <DateFormatter date={data} time={false} />,
 };
 
-const Table: React.SFC<any> = (props) => {
+const Table: React.FunctionComponent<any> = (props) => {
   return (
     <DataTable
       title="Тех. обслуживание"

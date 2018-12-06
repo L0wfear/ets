@@ -8,12 +8,12 @@ interface IPropsModalTP {
   onHide: any;
   show: boolean;
 }
-const Header: React.SFC<any> = (props) =>
+const Header: React.FunctionComponent<any> = (props) =>
   <Modal.Header closeButton>
     <Modal.Title>Техническая поддержка</Modal.Title>
   </Modal.Header>;
 
-const Body: React.SFC<any> = (props) =>
+const Body: React.FunctionComponent<any> = (props) =>
   <Modal.Body>
     <div>
       <div>
@@ -29,7 +29,7 @@ const Body: React.SFC<any> = (props) =>
     </div>
   </Modal.Body>;
 
-const ModalTP: React.SFC<IPropsModalTP> = (props) => {
+const ModalTP: React.FunctionComponent<IPropsModalTP> = (props) => {
   const HeaderWithProps = (
     <Header
     />

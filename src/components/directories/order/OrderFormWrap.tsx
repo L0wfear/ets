@@ -17,7 +17,7 @@ import OrderMissionTemplate from 'components/directories/order/forms/OrderMissio
 const MissionFormWrapTSX: any = MissionFormWrap;
 const DutyMissionFormWrapTSX: any = DutyMissionFormWrap;
 
-const OrderMissionController: React.SFC<any> = (props) => {
+const OrderMissionController: React.FunctionComponent<any> = (props) => {
   const {
     missionData,
     dutyMissionData,

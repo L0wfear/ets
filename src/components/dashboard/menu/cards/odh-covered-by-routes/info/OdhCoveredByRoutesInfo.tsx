@@ -13,7 +13,7 @@ import {
 
 import { PropsOdhCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh-covered-by-routes/info/OdhCoveredByRoutesInfo.h';
 
-const OdhCoveredByRoutesInfo: React.SFC<PropsOdhCoveredByRoutesInfo> = ({ infoData, ...props }) => (
+const OdhCoveredByRoutesInfo: React.FunctionComponent<PropsOdhCoveredByRoutesInfo> = ({ infoData, ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
     <ul>
       {

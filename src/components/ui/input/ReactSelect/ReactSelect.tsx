@@ -85,7 +85,10 @@ export default class ReactSelect extends React.Component<any, any> {
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
 
   filterOption = (option, filterValue: string) => {
-    const label = get(option, 'label', '').toString() || '';
+    if (this.props.filterOption) {
+      return this.props.filterOption(option, filterValue, this.props);
+    }
+    const label = (get(option, 'label', '') || '').toString();
     const valueOpt = get(option, 'value', null) || null;
     const { value } = this.props;
 

@@ -2,6 +2,8 @@ import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
+import { get } from 'lodash';
+
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import hocAll from 'components/compositions/vokinda-hoc/recompose';
 import { connect } from 'react-redux';
@@ -120,10 +122,13 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
     for (let index = 0, length = front_events_list.length; index < length; index++) {
       const currPoint = front_events_list[index];
 
-      if (front_cars_sensors_level[currPoint.sensor_id].show) {
-        this.addOneFuelEventPoint(currPoint);
-      } else {
-        this.removeOneFuelEventPoint(currPoint);
+      const sensor = get(front_cars_sensors_level, [currPoint.sensor_id], null);
+      if (sensor) {
+        if (sensor.show) {
+          this.addOneFuelEventPoint(currPoint);
+        } else {
+          this.removeOneFuelEventPoint(currPoint);
+        }
       }
     }
 

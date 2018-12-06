@@ -22,6 +22,14 @@ export function tableMeta({
         filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
       },
       {
+        name: 'yard_id',
+        displayName: 'Идентификатор (ID)',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
         name: 'object_address',
         displayName: 'Название ДТ',
         type: 'string',

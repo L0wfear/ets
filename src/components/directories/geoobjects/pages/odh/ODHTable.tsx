@@ -22,6 +22,14 @@ export function tableMeta({
         filter: (isOkrug || isKgh) ? { type: 'multiselect' } : false,
       },
       {
+        name: 'id',
+        displayName: 'Идентификатор (ID)',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
         name: 'name',
         displayName: 'Название',
         type: 'string',

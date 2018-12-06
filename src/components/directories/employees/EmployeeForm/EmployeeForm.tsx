@@ -199,188 +199,216 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
-            <Col md={6}>
-              <ExtField
-                id="last_name"
-                type="string"
-                label="Фамилия"
-                value={state.last_name}
-                error={errors.last_name}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="last_name"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="last_name"
+                    type="string"
+                    label="Фамилия"
+                    value={state.last_name}
+                    error={errors.last_name}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="last_name"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="personnel_number"
+                    type="string"
+                    label="Табельный номер"
+                    value={state.personnel_number}
+                    error={errors.personnel_number}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="personnel_number"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="personnel_number"
-                type="string"
-                label="Табельный номер"
-                value={state.personnel_number}
-                error={errors.personnel_number}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="personnel_number"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="first_name"
+                    type="string"
+                    label="Имя"
+                    value={state.first_name}
+                    error={errors.first_name}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="first_name"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="special_license"
+                    type="string"
+                    label="Специальное удостоверение"
+                    value={state.special_license}
+                    error={errors.special_license}
+                    disabled={!isPermitted}
+                    onChange={this.handleChangeWithValidate}
+                    boundKeys="special_license"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="first_name"
-                type="string"
-                label="Имя"
-                value={state.first_name}
-                error={errors.first_name}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="first_name"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="middle_name"
+                    type="string"
+                    label="Отчество"
+                    value={state.middle_name}
+                    error={errors.middle_name}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="middle_name"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="category_special_license"
+                    type="select"
+                    modalKey={path}
+                    multi
+                    label="Категория специального удостоверения"
+                    value={state.category_special_license}
+                    options={this.state.categorySpecialLicenseOptions}
+                    error={errors.category_special_license}
+                    disabled={!isPermitted || !state.special_license}
+                    onChange={this.handleChange}
+                    boundKeys="category_special_license"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="special_license"
-                type="string"
-                label="Специальное удостоверение"
-                value={state.special_license}
-                error={errors.special_license}
-                disabled={!isPermitted}
-                onChange={this.handleChangeWithValidate}
-                boundKeys="special_license"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="birthday"
+                    type="date"
+                    label="Дата рождения"
+                    date={state.birthday}
+                    time={false}
+                    error={errors.birthday}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="birthday"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="special_license_date_end"
+                    type="date"
+                    label="Срок действия специального удостоверения"
+                    date={state.special_license_date_end}
+                    time={false}
+                    error={errors.special_license_date_end}
+                    disabled={!isPermitted || !state.special_license}
+                    onChange={this.handleChange}
+                    boundKeys="special_license_date_end"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="middle_name"
-                type="string"
-                label="Отчество"
-                value={state.middle_name}
-                error={errors.middle_name}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="middle_name"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="phone"
+                    type="string"
+                    label="Телефон"
+                    value={state.phone}
+                    error={errors.phone}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="phone"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="drivers_license"
+                    type="string"
+                    label="Водительское удостоверение"
+                    value={state.drivers_license}
+                    error={errors.drivers_license}
+                    disabled={!isPermitted }
+                    onChange={this.handleChangeWithValidate}
+                    boundKeys="drivers_license"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="category_special_license"
-                type="select"
-                modalKey={path}
-                multi
-                label="Категория специального удостоверения"
-                value={state.category_special_license}
-                options={this.state.categorySpecialLicenseOptions}
-                error={errors.category_special_license}
-                disabled={!isPermitted || !state.special_license}
-                onChange={this.handleChange}
-                boundKeys="category_special_license"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="position_id"
+                    type="select"
+                    modalKey={path}
+                    label="Должность"
+                    options={this.state.positionOptions}
+                    value={state.position_id}
+                    error={errors.position_id}
+                    disabled={!isPermitted}
+                    onChange={this.handleChangePositionId}
+                    boundKeys="position_id"
+                    clearable={false}
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="category_drivers_license"
+                    type="select"
+                    modalKey={path}
+                    multi
+                    label="Категория водительского удостоверения"
+                    value={state.category_drivers_license}
+                    options={this.state.categoryDriversLicenseOptions}
+                    error={errors.category_drivers_license}
+                    disabled={!isPermitted || !state.drivers_license}
+                    onChange={this.handleChange}
+                    boundKeys="category_drivers_license"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="birthday"
-                type="date"
-                label="Дата рождения"
-                date={state.birthday}
-                time={false}
-                error={errors.birthday}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="birthday"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="special_license_date_end"
-                type="date"
-                label="Срок действия специального удостоверения"
-                date={state.special_license_date_end}
-                time={false}
-                error={errors.special_license_date_end}
-                disabled={!isPermitted || !state.special_license}
-                onChange={this.handleChange}
-                boundKeys="special_license_date_end"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="phone"
-                type="string"
-                label="Телефон"
-                value={state.phone}
-                error={errors.phone}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="phone"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="drivers_license"
-                type="string"
-                label="Водительское удостоверение"
-                value={state.drivers_license}
-                error={errors.drivers_license}
-                disabled={!isPermitted }
-                onChange={this.handleChangeWithValidate}
-                boundKeys="drivers_license"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="position_id"
-                type="select"
-                modalKey={path}
-                label="Должность"
-                options={this.state.positionOptions}
-                value={state.position_id}
-                error={errors.position_id}
-                disabled={!isPermitted}
-                onChange={this.handleChangePositionId}
-                boundKeys="position_id"
-                clearable={false}
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="category_drivers_license"
-                type="select"
-                modalKey={path}
-                multi
-                label="Категория водительского удостоверения"
-                value={state.category_drivers_license}
-                options={this.state.categoryDriversLicenseOptions}
-                error={errors.category_drivers_license}
-                disabled={!isPermitted || !state.drivers_license}
-                onChange={this.handleChange}
-                boundKeys="category_drivers_license"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="active"
-                type="select"
-                modalKey={path}
-                label="Состояние"
-                value={state.active ? 1 : 0}
-                options={this.state.driverStateOptions}
-                error={errors.active}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                clearable={false}
-                boundKeys="active"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="drivers_license_date_end"
-                type="date"
-                label="Срок действия водительского удостоверения"
-                date={state.drivers_license_date_end}
-                time={false}
-                error={errors.drivers_license_date_end}
-                disabled={!isPermitted || !state.drivers_license}
-                onChange={this.handleChange}
-                boundKeys="drivers_license_date_end"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="active"
+                    type="select"
+                    modalKey={path}
+                    label="Состояние"
+                    value={state.active ? 1 : 0}
+                    options={this.state.driverStateOptions}
+                    error={errors.active}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    clearable={false}
+                    boundKeys="active"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="drivers_license_date_end"
+                    type="date"
+                    label="Срок действия водительского удостоверения"
+                    date={state.drivers_license_date_end}
+                    time={false}
+                    error={errors.drivers_license_date_end}
+                    disabled={!isPermitted || !state.drivers_license}
+                    onChange={this.handleChange}
+                    boundKeys="drivers_license_date_end"
+                  />
+                </Col>
+              </Row>
             </Col>
             <Col md={12}>
               <Row>
@@ -399,113 +427,129 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </Col>
               </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="prefer_car"
-                type="select"
-                modalKey={path}
-                label="Основное ТС"
-                value={state.prefer_car}
-                options={this.state.carOptions}
-                error={errors.prefer_car}
-                disabled={!isPermitted || !state.is_driver}
-                onChange={this.handleChangeCar}
-                boundKeys="prefer_car"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="prefer_car"
+                    type="select"
+                    modalKey={path}
+                    label="Основное ТС"
+                    value={state.prefer_car}
+                    options={this.state.carOptions}
+                    error={errors.prefer_car}
+                    disabled={!isPermitted || !state.is_driver}
+                    onChange={this.handleChangeCar}
+                    boundKeys="prefer_car"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="secondary_car"
+                    type="select"
+                    modalKey={path}
+                    multi
+                    label="Вторичное ТС"
+                    value={state.secondary_car}
+                    options={this.state.carOptions}
+                    error={errors.secondary_car}
+                    disabled={!isPermitted || !state.is_driver}
+                    onChange={this.handleChange}
+                    boundKeys="secondary_car"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="secondary_car"
-                type="select"
-                modalKey={path}
-                multi
-                label="Вторичное ТС"
-                value={state.secondary_car}
-                options={this.state.carOptions}
-                error={errors.secondary_car}
-                disabled={!isPermitted || !state.is_driver}
-                onChange={this.handleChange}
-                boundKeys="secondary_car"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="company_structure_id"
+                    type="select"
+                    modalKey={path}
+                    label="Подразделение"
+                    options={this.state.companyStructureOptions}
+                    value={state.company_structure_id}
+                    disabled={!isPermitted}
+                    emptyValue={null}
+                    onChange={this.handleChange}
+                    boundKeys="company_structure_id"
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="medical_certificate"
+                    type="string"
+                    label="Медицинская справка №"
+                    value={state.medical_certificate}
+                    error={errors.medical_certificate}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="medical_certificate"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="company_structure_id"
-                type="select"
-                modalKey={path}
-                label="Подразделение"
-                options={this.state.companyStructureOptions}
-                value={state.company_structure_id}
-                disabled={!isPermitted}
-                emptyValue={null}
-                onChange={this.handleChange}
-                boundKeys="company_structure_id"
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <ExtField
+                    id="is_common"
+                    type="select"
+                    modalKey={path}
+                    label="Общее"
+                    options={this.state.isCommonOptions}
+                    value={state.is_common ? 1 : 0}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="is_common"
+                    clearable={false}
+                  />
+                </Col>
+                <Col md={6}>
+                  <ExtField
+                    id="medical_certificate_date"
+                    type="date"
+                    label="Срок действия медицинской справки"
+                    date={state.medical_certificate_date}
+                    time={false}
+                    error={errors.medical_certificate_date}
+                    disabled={!isPermitted}
+                    onChange={this.handleChange}
+                    boundKeys="medical_certificate_date"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <ExtField
-                id="medical_certificate"
-                type="string"
-                label="Медицинская справка №"
-                value={state.medical_certificate}
-                error={errors.medical_certificate}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="medical_certificate"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="is_common"
-                type="select"
-                modalKey={path}
-                label="Общее"
-                options={this.state.isCommonOptions}
-                value={state.is_common ? 1 : 0}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="is_common"
-                clearable={false}
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="medical_certificate_date"
-                type="date"
-                label="Срок действия медицинской справки"
-                date={state.medical_certificate_date}
-                time={false}
-                error={errors.medical_certificate_date}
-                disabled={!isPermitted}
-                onChange={this.handleChange}
-                boundKeys="medical_certificate_date"
-              />
-            </Col>
-            <Col md={6}>
-              <FileField
-                button_id="button-medical_certificate_files"
-                id="medical_certificate_files"
-                label="Медицинские справки"
-                modalKey={path}
-                multiple
-                value={state.medical_certificate_files}
-                onChange={this.handleChange}
-                boundKeys="medical_certificate_files"
-                disabled={!isPermitted}
-              />
-            </Col>
-            <Col md={6}>
-              <FileField
-                button_id="button-driver_license_files"
-                id="driver_license_files"
-                modalKey={path}
-                label="Водительские удостоверения"
-                multiple
-                value={state.driver_license_files}
-                onChange={this.handleChange}
-                boundKeys="driver_license_files"
-                disabled={!isPermitted}
-              />
+            <Col md={12}>
+              <Row>
+                <Col md={6}>
+                  <FileField
+                    button_id="button-medical_certificate_files"
+                    id="medical_certificate_files"
+                    label="Медицинские справки"
+                    modalKey={path}
+                    multiple
+                    value={state.medical_certificate_files}
+                    onChange={this.handleChange}
+                    boundKeys="medical_certificate_files"
+                    disabled={!isPermitted}
+                  />
+                </Col>
+                <Col md={6}>
+                  <FileField
+                    button_id="button-driver_license_files"
+                    id="driver_license_files"
+                    modalKey={path}
+                    label="Водительские удостоверения"
+                    multiple
+                    value={state.driver_license_files}
+                    onChange={this.handleChange}
+                    boundKeys="driver_license_files"
+                    disabled={!isPermitted}
+                  />
+                </Col>
+              </Row>
             </Col>
           </Row>
         </ModalBodyPreloader>

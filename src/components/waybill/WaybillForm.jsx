@@ -348,7 +348,7 @@ class WaybillForm extends Form {
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance: isNullOrUndefined(distance) ? null : parseFloat(consumption).toFixed(3),
+            distance: isNullOrUndefined(distance) ? null : parseFloat(distance).toFixed(3),
             consumption: isNullOrUndefined(consumption) ? null : parseFloat(consumption).toFixed(3),
           });
 

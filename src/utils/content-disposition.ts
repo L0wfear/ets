@@ -5,7 +5,7 @@ function parseFilename(contentDisposition) {
     const result = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
 
     if (result && result[1]) {
-      filename = decodeURIComponent(result[1]);
+      filename = decodeURIComponent(result[1]).replace(/['"]/g, '');
     }
   } catch (e) {
     filename = null;

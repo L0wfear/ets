@@ -19,7 +19,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
 import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
@@ -217,8 +217,10 @@ class MissionTemplateForm extends MissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={!state.municipal_facility_id}>Создать новый</Button>
-                <Button id="mt-create-route-new" onClick={this.createNewRouteNew} disabled={!state.municipal_facility_id}>Создать новый (new)</Button>
+                {
+                  // <Button onClick={this.createNewRoute} disabled={!state.municipal_facility_id}>Создать новый</Button>
+                }
+                <Button id="mt-create-route" onClick={this.createNewRouteNew} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -271,13 +273,17 @@ class MissionTemplateForm extends MissionForm {
           printMapKeyBig={this.props.printMapKeyBig}
           printMapKeySmall={this.props.printMapKeySmall}
         />
-        <RouteFormWrap
-          element={route}
-          onFormHide={this.onFormHide}
-          showForm={this.state.showRouteForm}
-          structureId={state.structure_id}
-          fromMission
-        />
+        {
+          /*
+          <RouteFormWrap
+            element={route}
+            onFormHide={this.onFormHide}
+            showForm={this.state.showRouteForm}
+            structureId={state.structure_id}
+            fromMission
+          />
+          */
+        }
         <RouteFormWrapNew
           element={routeNew}
           showForm={this.state.showRouteFormNew}

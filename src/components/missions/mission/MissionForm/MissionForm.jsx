@@ -18,7 +18,7 @@ import {
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
 
 import Field from 'components/ui/Field';
@@ -838,8 +838,10 @@ export class MissionForm extends Form {
                       onChange={this.handleRouteIdChange}
                     />
                     <Div hidden={state.route_id}>
-                      <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
-                      <Button id="create-route-new" onClick={this.createNewRouteNew} disabled={routeIdDisabled}>Создать новый (new)</Button>
+                      {
+                        // <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
+                      }
+                      <Button id="create-route" onClick={this.createNewRouteNew} disabled={routeIdDisabled}>Создать новый</Button>
                     </Div>
                   </Col>
                 </Row>
@@ -948,15 +950,19 @@ export class MissionForm extends Form {
                 route={route}
                 printMapKeySmall={this.props.printMapKeySmall}
               />
-              <RouteFormWrap
-                element={route}
-                onFormHide={this.onFormHide}
-                showForm={this.state.showRouteForm}
-                fromMission
-                notTemplate
-                available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
-                structureId={state.structure_id}
-              />
+              {
+                /*
+                <RouteFormWrap
+                  element={route}
+                  onFormHide={this.onFormHide}
+                  showForm={this.state.showRouteForm}
+                  fromMission
+                  notTemplate
+                  available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
+                  structureId={state.structure_id}
+                />
+                */
+              }
               <RouteFormWrapNew
                 element={routeNew}
                 showForm={this.state.showRouteFormNew}

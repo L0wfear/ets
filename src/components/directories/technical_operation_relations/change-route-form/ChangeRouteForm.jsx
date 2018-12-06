@@ -7,7 +7,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 
 import ModalBody from 'components/ui/Modal';
 import ChangeRouteTable from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteTable';
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
 import { FluxContext } from 'utils/decorators';
 
@@ -139,23 +139,31 @@ export default class ChangeRouteForm extends React.Component {
                 onRowClick={this.onRowClick}
                 selected={routeSelected}
               >
-                <ButtonCreateRoute onClick={this.handleCreateNewRoute}>Создать новый маршрут</ButtonCreateRoute>
+                {
+                  // <ButtonCreateRoute onClick={this.handleCreateNewRoute}>Создать новый маршрут</ButtonCreateRoute>
+                }
+                <ButtonCreateRoute onClick={this.handleCreateNewRouteNew}>Создать новый маршрут</ButtonCreateRoute>
                 <ButtonDeleteRoute disabled={!routeSelected} onClick={this.removeRoute}>Удалить маршрут</ButtonDeleteRoute>
-                <ButtonCreateRoute onClick={this.handleCreateNewRouteNew}>Создать новый маршрут (new)</ButtonCreateRoute>
               </ChangeRouteTable>
               <Row>
                 <Col md={3} mdOffset={9}>
-                  <ButtonUpdateRoute bsClass={'btn all-width'} disabled={!routeSelected} onClick={this.handleChangeRoute}>Изменить</ButtonUpdateRoute>
-                  <ButtonUpdateRoute bsClass={'btn all-width'} disabled={!routeSelected} onClick={this.handleChangeRouteNew}>Изменить (new)</ButtonUpdateRoute>
+                  {
+                    // <ButtonUpdateRoute bsClass={'btn all-width'} disabled={!routeSelected} onClick={this.handleChangeRoute}>Изменить</ButtonUpdateRoute>
+                  }
+                  <ButtonUpdateRoute id="change-route" bsClass={'btn all-width'} disabled={!routeSelected} onClick={this.handleChangeRouteNew}>Изменить</ButtonUpdateRoute>
                 </Col>
               </Row>
             </ModalBody>
           </Modal>
-          <RouteFormWrap
-            element={this.state.routeElement}
-            onFormHide={this.onFormHide}
-            showForm={this.state.showRouteForm}
-          />
+          {
+            /*
+            <RouteFormWrap
+              element={this.state.routeElement}
+              onFormHide={this.onFormHide}
+              showForm={this.state.showRouteForm}
+            />
+            */
+          }
           <RouteFormWrapNew
             element={this.state.routeElementNew}
             handleHide={this.onFormHide}

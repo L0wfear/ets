@@ -5,8 +5,8 @@ import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
 import reports from 'components/reports/config-data';
-import routeList from 'components/route/config-data';
-import routeListNew from 'components/route_new/config-data';
+// import routeListOld from 'components/route/config-data';
+import routeList from 'components/route_new/config-data';
 import companyStructure from 'components/company_structure/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
@@ -24,8 +24,8 @@ const routerAndPermission = {
   missions,
   nsi,
   reports,
+  // routeListOld,
   routeList,
-  routeListNew,
   companyStructure,
   notificationRegistry,
   programRegistry,

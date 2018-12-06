@@ -11,7 +11,7 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 import lodashIsEmpty from 'lodash/isEmpty';
 import ModalBody from 'components/ui/Modal';
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
 import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
@@ -727,19 +727,23 @@ export class DutyMissionForm extends Form {
                 onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
+                {
+                  /*
+                  <Button
+                    id="dm-create-route"
+                    onClick={this.createNewRoute.bind(this)}
+                    disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
+                  >
+                    Создать новый
+                  </Button>
+                  */
+                }
                 <Button
                   id="dm-create-route"
-                  onClick={this.createNewRoute.bind(this)}
-                  disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
-                >
-                  Создать новый
-                </Button>
-                <Button
-                  id="dm-create-route-new"
                   onClick={this.createNewRouteNew}
                   disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
                 >
-                  Создать новый (new)
+                  Создать новый
                 </Button>
               </Div>
             </Col>
@@ -773,14 +777,18 @@ export class DutyMissionForm extends Form {
           </Div>
         </Modal.Footer>
 
-        <RouteFormWrap
-          element={route}
-          onFormHide={this.onFormHide}
-          showForm={this.state.showRouteForm}
-          structureId={state.structure_id}
-          available_route_types={available_route_types}
-          fromMission
-        />
+        {
+          /*
+            <RouteFormWrap
+              element={route}
+              onFormHide={this.onFormHide}
+              showForm={this.state.showRouteForm}
+              structureId={state.structure_id}
+              available_route_types={available_route_types}
+              fromMission
+            />
+          */
+        }
         <RouteFormWrapNew
           element={routeNew}
           showForm={this.state.showRouteFormNew}

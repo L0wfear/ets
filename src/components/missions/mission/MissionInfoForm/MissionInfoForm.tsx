@@ -163,20 +163,23 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    */
   async makePolysFromPoints(route_data: RouteType) {
     const { missionReport } = this.state;
-
-    this.setState({
-      polys: {
-        points: missionReport.reduce((newObj, data, index) => {
-          newObj[`points/${index}`] = {
-            ...data,
-            ...route_data.object_list[index],
-            frontIsSelected: false,
-          };
-
-          return newObj;
-        }, {}),
-      },
-    });
+    try {
+      this.setState({
+        polys: {
+          points: missionReport.reduce((newObj, data, index) => {
+            newObj[`points/${index}`] = {
+              ...data,
+              ...route_data.object_list[index],
+              frontIsSelected: false,
+            };
+            return newObj;
+          }, {}),
+        },
+      });
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.log(e);
+    }
   }
 
   /**
@@ -185,7 +188,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    * @param type тип маршрута (dt/ odh)
    */
   loadPolys(route_data: RouteType, type: string) {
-    const objectListIndex = keyBy(route_data.object_list, 'object_id');
+    const objectListIndex = route_data ? keyBy(route_data.object_list, 'object_id') : {};
     const { serverName } = GEOOBJECTS_OBJ[type];
 
     this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }: any) => {

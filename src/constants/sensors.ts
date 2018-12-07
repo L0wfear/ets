@@ -33,12 +33,3 @@ export const sensorTrackColor = [
   '#673AB7',
   '#FF9800',
 ];
-
-export const getTrackSensorColor = (selectedSensors, trackSensors) => {
-  if (trackSensors) {
-    const sensorCount = trackSensors.filter((s) => selectedSensors.includes(`${s.id}`) && s.val !== 0).length;
-    return sensorTrackColor[sensorCount];
-  }
-
-  return sensorTrackColor[0];
-};

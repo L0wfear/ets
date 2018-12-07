@@ -161,9 +161,9 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    * Создание геометрий точек
    * @param route_data данные по контрекному маршруту от route?id=
    */
-  async makePolysFromPoints(route_data: RouteType) {
-    const { missionReport } = this.state;
-    try {
+  async makePolysFromPoints(route_data: RouteType | null) {
+    if (route_data) {
+      const { missionReport } = this.state;
       this.setState({
         polys: {
           points: missionReport.reduce((newObj, data, index) => {
@@ -176,9 +176,6 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
           }, {}),
         },
       });
-    } catch (e) {
-      // tslint:disable-next-line:no-console
-      console.log(e);
     }
   }
 

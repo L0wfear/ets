@@ -579,10 +579,10 @@ export default class DataTable extends React.Component {
 
   processTableData(data, tableCols, selected, selectField, onRowSelected, highlight = []) {
     return data
-          .map(this.processEmptyCols.bind(this, tableCols))
-          .map(this.processHighlighted.bind(this, highlight))
-          .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
-          .filter(this.shouldBeRendered);
+      .map(this.processEmptyCols.bind(this, tableCols))
+      .map(this.processHighlighted.bind(this, highlight))
+      .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+      .filter(this.shouldBeRendered);
   }
 
   handleChangeSort = (sortingColumnName, ascendingSort) => {

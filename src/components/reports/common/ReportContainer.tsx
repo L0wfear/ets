@@ -224,20 +224,23 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
     if (this.props.notUseServerSummerTable) {
       const { data: old_data } = this.props;
-      const list = filterFunction(old_data.result.rows, { filterValues });
+      const rows = get(old_data, ['result', 'rows'], null);
+      if (rows) {
+        const list = filterFunction(rows, { filterValues });
 
-      const data = {
-        ...old_data,
-        result: {
-          ...old_data.result,
-          rows: [...list],
-        },
-      };
+        const data = {
+          ...old_data,
+          result: {
+            ...old_data.result,
+            rows: [...list],
+          },
+        };
 
-      this.props.setReportDataWithSummerData({
-        data,
-        props: { ...this.state },
-      });
+        this.props.setReportDataWithSummerData({
+          data,
+          props: { ...this.state },
+        });
+      }
     }
   }
 

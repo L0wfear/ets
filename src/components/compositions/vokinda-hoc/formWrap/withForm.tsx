@@ -32,6 +32,9 @@ type WithFormState<F> = {
   formState: F;
   formErrors: FormErrorType<F>;
   canSave: boolean;
+  propertiesByKey: {
+    [K in keyof F]?: PropertieType<F>
+  };
 };
 
 type WithFormProps<P> = P & {
@@ -82,6 +85,13 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         const newState = {
           formState,
           formErrors,
+          propertiesByKey: config.schema.properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
+            newObj[key] = {
+              key,
+              ...other,
+            };
+            return newObj;
+          }, {}),
           canSave: false,
         };
 
@@ -108,19 +118,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       }
       handleChange: FormWithHandleChange<F> = (objChange) => {
         setImmediate(() => {
+          const { propertiesByKey } = this.state;
           const formState = { ...this.state.formState };
 
-          const { properties } = config.schema;
-          const propertiesByKey = properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
-            newObj[key] = {
-              key,
-              ...other,
-            };
-
-            return newObj;
-          }, {});
-
           Object.entries(objChange).forEach(([key, value]) => {
+            let newValue = value;
             if (key in propertiesByKey) {
               switch (propertiesByKey[key].type) {
                 case 'number':
@@ -130,28 +132,27 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
                     const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
                     if (!isNaN(Number(valueReplaced))) {
                       if (valueReplaced.match(/^.\d*$/)) {
-                        formState[key] = `0${valueReplaced}`;
+                        newValue = `0${valueReplaced}`;
                       }
-                      formState[key] = valueReplaced;
+                      newValue = valueReplaced;
                     } else {
-                      formState[key] = valueReplaced;
+                      newValue = valueReplaced;
                     }
                   } else {
-                    formState[key] = null;
+                    newValue = null;
                   }
                   break;
                 case 'boolean':
-                  formState[key] = value;
+                  newValue = value;
                   break;
                 case 'string':
                 case 'date':
                 case 'datetime':
                 default:
-                  formState[key] = Boolean(value) || value === 0 ? value : null;
+                newValue = Boolean(value) || value === 0 ? value : null;
               }
-            } else {
-              formState[key] = value;
             }
+            formState[key] = newValue;
 
             // tslint:disable-next-line
             console.log('FORM CHANGE STATE', key, formState[key]);
@@ -166,7 +167,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
           this.setState({
             ...newState,
-            canSave: this.canSave(newState),
+            canSave: this.canSave({
+              ...this.state,
+              ...newState,
+            }),
           });
         });
       }

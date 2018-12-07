@@ -18,11 +18,12 @@ import CarsTable from 'components/directories/autobase/cars/CarsTable';
   formComponent: CarFormWrap,
   operations: ['LIST', 'READ', 'UPDATE'],
 })
-export default class CarsList extends ElementsList {
+class CarsList extends ElementsList {
   constructor() {
     super();
     this.preventUrlFilters = true;
   }
+
   async init() {
     const { flux } = this.context;
 
@@ -41,14 +42,19 @@ export default class CarsList extends ElementsList {
 
     if (searchObject.asuods_id) {
       const asuods_id = parseInt(searchObject.asuods_id, 10);
-      const selectedElement = cars.result.find((car) => car.asuods_id === asuods_id);
+      const selectedElement = cars.result.find(car => car.asuods_id === asuods_id);
 
-      // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
-      this.setState({
-        ...this.state,
-        selectedElement,
-        showForm: true,
-      });
+      if (selectedElement) {
+        this.setState({
+          selectedElement,
+          showForm: true,
+        });
+      }
+    }
+    if (searchObject) {
+      this.props.history.replace(this.props.location.pathname, {});
     }
   }
 }
+
+export default CarsList;

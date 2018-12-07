@@ -22,8 +22,7 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  * @render дефолтный, обязательно переопределяется
  */
 @FluxContext
-export default class FormWrap extends React.Component {
-
+class FormWrap extends React.Component {
   static get propTypes() {
     return {
       showForm: PropTypes.bool.isRequired,
@@ -217,7 +216,12 @@ export default class FormWrap extends React.Component {
   }
 
   render() {
-    throw new TypeError('FormWrap: do not call abstract method FormWrap#render from child.');
+    return (
+      <div>
+        FormWrap: do not call abstract method FormWrap#render from child.
+      </div>
+    );
   }
-
 }
+
+export default FormWrap;

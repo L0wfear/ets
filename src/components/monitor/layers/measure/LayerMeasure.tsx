@@ -87,6 +87,37 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     }
   }
 
+  drawEnd = () => {
+    const { lines } = this.state;
+    const linesLength = lines.length;
+
+    this.setState({
+      activeDraw: false,
+      lines: lines.map((lineData, index) => {
+        if (index !== linesLength - 1) {
+          return lineData;
+        }
+
+        const style = getStyleForLineMeasure({ type: 'diffColor' });
+        lineData.feature.setStyle(style);
+        const endPoint = new Feature({
+          geometry: new Point(lineData.feature.getGeometry().getLastCoordinate()),
+        });
+        endPoint.setStyle(style);
+        this.props.addFeaturesToSource(endPoint);
+
+        return {
+          ...lineData,
+          endPoint,
+          overlayData: {
+            ...lineData.overlayData,
+            active: false,
+          },
+        };
+      }),
+    });
+  }
+
   setOnForDraw = (interactionDraw) => {
     interactionDraw.on(
       'drawstart',
@@ -121,36 +152,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
 
     interactionDraw.on(
       'drawend',
-      () => {
-        const { lines } = this.state;
-        const linesLength = lines.length;
-
-        this.setState({
-          activeDraw: false,
-          lines: lines.map((lineData, index) => {
-            if (index !== linesLength - 1) {
-              return lineData;
-            }
-
-            const style = getStyleForLineMeasure({ type: 'diffColor' });
-            lineData.feature.setStyle(style);
-            const endPoint = new Feature({
-              geometry: new Point(lineData.feature.getGeometry().getLastCoordinate()),
-            });
-            endPoint.setStyle(style);
-            this.props.addFeaturesToSource(endPoint);
-
-            return {
-              ...lineData,
-              endPoint,
-              overlayData: {
-                ...lineData.overlayData,
-                active: false,
-              },
-            };
-          }),
-        });
-      },
+      this.drawEnd,
     );
 
     this.props.map.addInteraction(interactionDraw);
@@ -183,7 +185,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     if (!this.state.activeDraw) {
       this.setState({
         lines: this.state.lines.reduceRight(({ newLines, alreadyCheckLastVisible }, lineData) => {
-          if (!lineData.hidden && !alreadyCheckLastVisible) {
+          if (!lineData.hidden && !alreadyCheckLastVisible && lineData.feature && lineData.endPoint) {
             const { feature, endPoint } = lineData;
             const coordinates = feature.getGeometry().getCoordinates();
 
@@ -233,15 +235,14 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
                 alreadyCheckLastVisible: true,
               };
             }
-          } else {
-            return {
-              newLines: [
-                lineData,
-                ...newLines,
-              ],
-              alreadyCheckLastVisible,
-            };
           }
+          return {
+            newLines: [
+              lineData,
+              ...newLines,
+            ],
+            alreadyCheckLastVisible,
+          };
         }, { newLines: [], alreadyCheckLastVisible: false }).newLines,
       });
     } else {
@@ -277,7 +278,7 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
         }
         <ButtonContainer>
           <ButtonGroup vertical>
-            <ButtonDraw onClick={this.toggleMeasureActive} />
+            <ButtonDraw disabled={this.state.activeDraw} onClick={this.toggleMeasureActive} />
             <Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
               <Glyphicon glyph="remove" />
             </Button>

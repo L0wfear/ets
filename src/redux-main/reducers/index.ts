@@ -20,6 +20,7 @@ import company_structure from 'redux-main/reducers/modules/company_structure/com
 import routes from 'redux-main/reducers/modules/routes/routes';
 import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import geoobject from 'redux-main/reducers/modules/geoobject/geoobject';
+import fuelRates from 'redux-main/reducers/modules/fuel_rates/fuelRates'
 
 export default combineReducers({
   reports,
@@ -38,4 +39,5 @@ export default combineReducers({
   routes,
   some_uniq,
   geoobject,
+  fuelRates,
 });

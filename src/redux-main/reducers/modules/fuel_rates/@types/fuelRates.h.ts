@@ -39,8 +39,8 @@ export type operation = {
 };
 
 export type IStateFuelRates = {
-  rates: rate[],
-  operations: operation[],
+  fuelRatesList: rate[],
+  fuelRateOperations: operation[],
 };
 
 export type IFuelOperations = {

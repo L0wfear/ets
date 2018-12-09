@@ -1,7 +1,7 @@
 // import { get } from 'lodash';
 // import { Actions } from 'flummox';
-import { createValidDate } from 'utils/dates';
-import { clone, mapKeys } from 'lodash';
+// import { createValidDate } from 'utils/dates';
+// import { clone, mapKeys } from 'lodash';
 import {
   FuelConsumptionRateService,
   FuelOperationsService,
@@ -11,7 +11,7 @@ import {
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-import { isEmpty } from 'utils/functions';
+// import { isEmpty } from 'utils/functions';
 
 export const getFuelOperations = (payload: IFuelOperations = {}) => {
   return FuelOperationsService
@@ -25,7 +25,7 @@ export const getFuelOperations = (payload: IFuelOperations = {}) => {
           rows: [],
         },
       };
-    }).then((r) => ({ result: r.result.rows }));
+    }).then((r) => ({ fuelRateOperations: r.result.rows }));
 };
 
 export const getFuelRates = (payload = {}) => {
@@ -40,7 +40,7 @@ export const getFuelRates = (payload = {}) => {
         rows: [],
       },
     };
-  }).then((r) => ({ result: r.result.rows }));
+  }).then((r) => ({ fuelRatesList: r.result.rows }));
 };
 
 export const getFuelRatesByCarModel = (payload: IFuelRatesByCarModel = {} ) => {

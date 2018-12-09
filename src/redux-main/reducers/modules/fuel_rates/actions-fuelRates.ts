@@ -10,7 +10,9 @@ import {
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-
+//  import {
+//   FUEL_RATES_SET_DATA
+// } from 'redux-main/reducers/modules/fuel_rates/fuelRates'
 export const FuelRatesGet = (type: string | null) => ({
   type, // for stores switch case
   payload: getFuelRates(),

@@ -5,12 +5,28 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema';
 import permissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
-@connectToStores(['odh', 'fuelRates', 'objects', 'session'])
+import { connect } from 'react-redux'
+import {
+  FuelRatesGet,
+  FuelOperationsGet,
+  // FuelRatesByCarModelGet,
+  // EquipmentFuelRatesByCarModelGet,
+} from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates'
+import {
+  FUEL_RATES_SET_DATA
+} from 'redux-main/reducers/modules/fuel_rates/fuelRates'
+import { getFuelRatesState } from 'redux-main/reducers/selectors';
+import { compose } from 'recompose';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+const loadingPageName = 'fuel-rates';
+
+@connectToStores(['odh', 'fuelRates', 'objects', 'session', 'companyStructure'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
   permissions,
-  listName: 'rates',
+  listName: 'fuelRatesList',
   schema: fuelRateSchema,
   tableComponent: FuelRatesTable,
   formComponent: FuelRateFormWrap,
@@ -22,11 +38,41 @@ class FuelRatesDirectory extends ElementsList {
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;
   }
   init() {
-    const { flux } = this.context;
-    flux.getActions('fuelRates').getFuelOperations();
-    flux.getActions('fuelRates').getFuelRates();
+    const { flux } = this.context; // del
+    try{
+      this.props.FuelOperationsGet();
+      this.props.FuelRatesGet();
+
+    } catch (e){
+      console.error(e);
+    }
+
+    flux.getActions('companyStructure').getCompanyStructure();
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }
 
-export default FuelRatesDirectory;
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      fuelRatesList: state.fuelRates.fuelRatesList,
+      fuelRateOperations: state.fuelRates.fuelRateOperations,
+    }),
+    dispatch => ({
+      FuelOperationsGet: () => (
+        dispatch(
+          FuelOperationsGet(FUEL_RATES_SET_DATA),
+        )
+      ),
+      FuelRatesGet: () => (
+        dispatch(
+          FuelRatesGet(FUEL_RATES_SET_DATA),
+        )
+      ),
+    })
+  )
+)(FuelRatesDirectory);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
-import RouteInfoMap from 'components/route_new/route-info/map/RouteInfoMap';
+import RouteInfoMap from 'components/route_new/route-info/new/map/RouteInfoMap';
 
 import { PropsRouteInfoForm } from 'components/route_new/route-info/new/RouteInfoForm.h';
 

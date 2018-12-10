@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 
@@ -72,7 +73,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
       this.setState({
         objectList: this.state.objectList.map((data) => ({
           ...data,
-          shape: geoData[`${serverName}/${data.object_id}`].shape,
+          shape: get(geoData, [`${serverName}/${data.object_id}`, 'shape'], null) || null,
         })),
       });
     });

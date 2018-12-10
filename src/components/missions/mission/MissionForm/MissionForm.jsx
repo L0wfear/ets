@@ -381,7 +381,11 @@ export class MissionForm extends Form {
     this.handleChange('date_start', date_start);
   }
 
-  handleChangeHoursDateEnd = countHours => this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
+  handleChangeHoursDateEnd = (countHours) => {
+    if (this.props.formState.date_start) {
+      this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
+    }
+  }
 
   handleChangeDateEnd = newDate => this.handleChange('date_end', newDate);
 
@@ -699,7 +703,7 @@ export class MissionForm extends Form {
                         />
                       </Col>
                       <Col md={1}>
-                        <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
+                        <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY || !state.date_start} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
                           <Dropdown.Toggle disabled={IS_DISPLAY}>
                             <Glyphicon id="select-date_end" glyph="time" />
                           </Dropdown.Toggle>

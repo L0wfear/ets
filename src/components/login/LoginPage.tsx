@@ -36,6 +36,9 @@ class LoginPage extends React.PureComponent<any, any> {
       } else {
         this.props.history.push(`/${payload.default_path}`);
       }
+    })
+    .catch(() => {
+      //
     });
   }
 

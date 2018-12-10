@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from 'redux-main/reducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
@@ -15,17 +16,13 @@ const configureStore = (initialState?) => {
     promiseMiddleware,
   ];
 
-  if (process.env.NODE_ENV === 'development') {
-    const { createLogger } = require('redux-logger');
-
-    middlewares.push(createLogger({ collapsed: true }));
-  }
-
   const store = createStore(
     rootReducer,
     initialState,
-    applyMiddleware(
-      ...middlewares,
+    composeWithDevTools(
+      applyMiddleware(
+        ...middlewares,
+      ),
     ),
   );
 

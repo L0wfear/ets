@@ -3,18 +3,29 @@ import {
   getFuelRates,
   getFuelRatesByCarModel,
   getEquipmentFuelRatesByCarModel,
+  createFuelRate,
+  updateFuelRate,
+  deleteFuelRate,
+  createFuelOperation,
+  updateFuelOperation,
+  deleteFuelOperation,
 } from 'redux-main/reducers/modules/fuel_rates/promises/index';
 
 import {
   IFuelOperations,
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
+  ICreateFuel,
+  FuelRateU,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 //  import {
 //   FUEL_RATES_SET_DATA
 // } from 'redux-main/reducers/modules/fuel_rates/fuelRates'
+
+import { FUEL_RATES_SET_DATA } from 'redux-main/reducers/modules/fuel_rates/fuelRates';
+
 export const FuelRatesGet = (type: string | null) => ({
-  type, // for stores switch case
+  type: type || FUEL_RATES_SET_DATA, // for stores switch case
   payload: getFuelRates(),
   meta: {
     promise: true,
@@ -40,6 +51,54 @@ export const FuelRatesByCarModelGet = (type: string | null, payload: IFuelRatesB
 export const EquipmentFuelRatesByCarModelGet = (type: string | null, payload: IEquipmentFuelRatesByCarModel) => ({
   type,
   payload: getEquipmentFuelRatesByCarModel(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelRateCreate = (type: string | null, payload: ICreateFuel) => ({
+  type,
+  payload: createFuelRate(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelRateUpdate = (type: string | null, payload: FuelRateU) => ({
+  type,
+  payload: updateFuelRate(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelRateDelete = (type: string | null, payload: number) => ({
+  type,
+  payload: deleteFuelRate(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelOperationCreate = (type: string | null, payload) => ({
+  type,
+  payload: createFuelOperation(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelOperationUpdate = (type: string | null, payload) => ({
+  type,
+  payload: updateFuelOperation(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelOperationDelete = (type: string | null, payload) => ({
+  type,
+  payload: deleteFuelOperation(payload),
   meta: {
     promise: true,
   },

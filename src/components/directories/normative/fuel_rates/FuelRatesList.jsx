@@ -4,18 +4,17 @@ import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema';
 import permissions from 'components/directories/normative/fuel_rates/config-data/permissions';
+import { connect } from 'react-redux';
 
-import { connect } from 'react-redux'
 import {
   FuelRatesGet,
   FuelOperationsGet,
   // FuelRatesByCarModelGet,
   // EquipmentFuelRatesByCarModelGet,
-} from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates'
+} from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import {
-  FUEL_RATES_SET_DATA
-} from 'redux-main/reducers/modules/fuel_rates/fuelRates'
-import { getFuelRatesState } from 'redux-main/reducers/selectors';
+  FUEL_RATES_SET_DATA,
+} from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
@@ -37,13 +36,14 @@ class FuelRatesDirectory extends ElementsList {
     super(props);
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;
   }
+
   init() {
     const { flux } = this.context; // del
-    try{
+    try {
       this.props.FuelOperationsGet();
       this.props.FuelRatesGet();
-
-    } catch (e){
+    } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
 
@@ -73,6 +73,6 @@ export default compose(
           FuelRatesGet(FUEL_RATES_SET_DATA),
         )
       ),
-    })
-  )
+    }),
+  ),
 )(FuelRatesDirectory);

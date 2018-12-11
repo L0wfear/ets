@@ -27,7 +27,6 @@ try {
 }
 
 @connectToStores(['session'])
-@FluxContext
 @connect(
   (state) => ({
     appConfig: state.session.appConfig,
@@ -37,6 +36,7 @@ try {
     sessionResetData: () => dispatch(sessionResetData()),
   }),
 )
+@FluxContext
 class MainApp extends React.Component {
   static get propTypes() {
     return {

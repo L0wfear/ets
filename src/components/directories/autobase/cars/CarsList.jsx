@@ -6,6 +6,7 @@ import permissions from 'components/directories/autobase/cars/config-data/permis
 
 import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import CarsTable from 'components/directories/autobase/cars/CarsTable';
+import { getWarningNotification } from 'utils/notifications';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })
@@ -49,6 +50,8 @@ class CarsList extends ElementsList {
           selectedElement,
           showForm: true,
         });
+      } else {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification(`Не найдено ТС c (asuods_id = ${searchObject.asuods_id})`));
       }
     }
     if (searchObject) {

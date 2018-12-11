@@ -25,7 +25,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
     {
       key: 'position_id',
       title: 'Должность',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {

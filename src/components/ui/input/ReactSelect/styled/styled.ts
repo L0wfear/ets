@@ -93,7 +93,7 @@ export const Menu = styled(components.Menu).attrs({ className: 'menu-container' 
 export const SelectContainer = styled(components.SelectContainer)`
 `;
 
-export const SingleValue = styled(components.SingleValue)`
+export const SingleValue: any = styled(components.SingleValue)`
 `;
 
 export const ValueContainer = styled(components.ValueContainer)`

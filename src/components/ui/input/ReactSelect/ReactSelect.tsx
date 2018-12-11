@@ -10,7 +10,8 @@ import {
 } from 'components/ui/input/ReactSelect/utils';
 import { SingleValueProps } from 'react-select/lib/components/SingleValue';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
-import { isArray, isNullOrUndefined } from 'util';
+import { isArray, isNullOrUndefined, isString } from 'util';
+import { SingleValue } from './styled/styled';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -124,7 +125,11 @@ export default class ReactSelect extends React.Component<any, any> {
       id,
     };
 
-    return <components.SingleValue innerProps={newInnerProps} {...props} />;
+    if (isString(props.data.label)) {
+      newInnerProps.title = props.data.label;
+    }
+
+    return <SingleValue innerProps={newInnerProps} {...props}  />;
   }
 
   multiValueRender = ({ innerProps, ...props }: MultiValueProps<any>) => {

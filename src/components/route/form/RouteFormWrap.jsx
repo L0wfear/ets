@@ -172,7 +172,7 @@ class RouteFormWrap extends FormWrap {
 
           const newObjectList = [];
 
-          each(oldObjectList.filter((o) => !!o.object_id), (o) => {
+          each(oldObjectList.filter(o => !!o.object_id), (o) => {
             if (polys[o.object_id]) {
               polys[o.object_id].state = o.state;
               newObjectList.push(o);
@@ -180,7 +180,7 @@ class RouteFormWrap extends FormWrap {
           });
 
           if (refreshGeoState) {
-            each(oldObjectList.filter((o) => !!o.object_id), (o) => {
+            each(newObjectList.filter((o) => !!o.object_id), (o) => {
               if (new_polys[o.object_id]) {
                 polys[o.object_id] = {
                   ...new_polys[o.object_id],
@@ -189,12 +189,12 @@ class RouteFormWrap extends FormWrap {
               }
             });
           } else {
-            this.handleFormStateChange('object_list', newObjectList);
             this.handleFormStateChange('input_lines', oldInputLines);
             this.handleFormStateChange('draw_list', oldInputLines);
             this.handleFormStateChange('draw_odh_list', oldDrawOdhLines);
           }
 
+          this.handleFormStateChange('object_list', newObjectList);
           this.handleFormStateChange('polys', polys);
         });
     }

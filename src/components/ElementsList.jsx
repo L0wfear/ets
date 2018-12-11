@@ -185,30 +185,22 @@ class ElementsList extends React.Component {
   }
 
   onKeyPress(e) {
-    const activeTabIndex = document.activeElement.getAttribute('tabIndex');
-    const appropriateTabIndex = activeTabIndex === '1' || activeTabIndex === '2';
-    if (!appropriateTabIndex) {
-      return;
-    }
+    const { activeElement } = document;
 
-    if (e.code === 'Enter' && this.state.selectedElement !== null && this.state.readPermission) {
-      this.showForm();
-    }
-
-    if (e.code === 'Backspace' && this.state.selectedElement !== null) {
-      e.preventDefault();
-      /**
-       * @todo посмотреть
-       */
-      /*
-      if (typeof this.removeDisabled === 'function') {
-        if (!this.removeDisabled()) {
-          this.removeElement();
-        }
-      } else {
-        this.removeElement();
+    if (activeElement) {
+      const activeTabIndex = activeElement.getAttribute('tabIndex');
+      const appropriateTabIndex = activeTabIndex === '1' || activeTabIndex === '2';
+      if (!appropriateTabIndex) {
+        return;
       }
-      */
+
+      if (e.code === 'Enter' && this.state.selectedElement !== null && this.state.readPermission) {
+        this.showForm();
+      }
+
+      if (e.code === 'Backspace' && this.state.selectedElement !== null) {
+        e.preventDefault();
+      }
     }
   }
 

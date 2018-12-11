@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { get } from 'lodash';
+
 import Table from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
 
@@ -70,11 +72,21 @@ export const tableMeta = ({
         type: 'multiselect',
       },
     },
+    {
+      displayName: 'Подразделение',
+      name: 'structure_id',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
+        keyBy: 'structure_name',
+      },
+    },
   ],
 });
 
 const renderers = {
   timestamp: ({ data }) => <DateFormatter date={data} time />,
+  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name', '-') || '-'}</div>
 };
 
 const UserActionLogTable = (props) => (

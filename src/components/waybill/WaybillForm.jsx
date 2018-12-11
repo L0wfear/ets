@@ -166,10 +166,10 @@ class WaybillForm extends Form {
           .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
             this.setState({
               fuelRates,
-              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]),
+              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]).map((item)=> { return {...item, comment: fuelRatesIndex[item.id].comment}; }),
               fuel_correction_rate,
               equipmentFuelRates,
-              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]),
+              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]).map((item)=> { return {...item, comment: fuelRatesIndex[item.id].comment}; }),
             });
           })
           .catch((e) => {

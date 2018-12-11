@@ -171,8 +171,8 @@ export class MissionForm extends Form {
             }
 
             if (!formState.is_column) {
-              [changesObjSecond.norm_id] = changesObjSecond.norm_id[0];
-              changesObjSecond.is_cleaning_norm = changesObjSecond.is_cleaning_norm[0];
+              [changesObjSecond.norm_id] = changesObjSecond.norm_id;
+              [changesObjSecond.is_cleaning_norm] = changesObjSecond.is_cleaning_norm;
             }
 
             this.props.handleMultiFormChange(changesObjSecond);
@@ -585,7 +585,7 @@ export class MissionForm extends Form {
     const IS_DISABLED_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
     const IS_NOT_IN_WAYBILL = state.can_edit_car_and_route;
 
-    if (!CARS.some((({ value }) => value === state.car_id))) {
+    if (IS_COMPLETE && !CARS.some((({ value }) => value === state.car_id))) {
       CARS.push({
         value: state.car_id,
         label: state.car_gov_number,

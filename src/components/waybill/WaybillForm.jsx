@@ -56,7 +56,7 @@ import WaybillFooter from 'components/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionFiled from 'components/waybill/form/MissionFiled';
-import { isNullOrUndefined, isNull, isNumber } from 'util';
+import { isNullOrUndefined, isNumber } from 'util';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -349,7 +349,7 @@ class WaybillForm extends Form {
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance: isNullOrUndefined(distance) ? null : parseFloat(distance).toFixed(3),
+            distance: isNullOrUndefined(distance) ? null : parseFloat(distance / 1000).toFixed(3),
             consumption: isNullOrUndefined(consumption) ? null : parseFloat(consumption).toFixed(3),
           });
 
@@ -622,7 +622,7 @@ class WaybillForm extends Form {
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
     let distanceOrTrackOrNodata = state.distance;
 
-    if (isNull(distanceOrTrackOrNodata)) {
+    if (isNullOrUndefined(distanceOrTrackOrNodata)) {
       distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
         ? parseFloat(state.track_length / 1000).toFixed(3)
         : 'Нет данных';

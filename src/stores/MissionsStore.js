@@ -12,7 +12,6 @@ class MissionsStore extends Store {
     this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
     this.register(missionsActons.getMissionTemplatesCars, this.handleGetMissionTemplatesCars);
     this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
-    this.register(missionsActons.removeMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);

@@ -256,7 +256,7 @@ export default class MissionsActions extends Actions {
 
   removeMissionTemplate(id) {
     const payload = { id };
-    return MissionTemplateService.delete(payload, null, 'json');
+    return MissionTemplateService.delete(payload, false, 'json');
   }
 
   updateMissionTemplate(missionTemplate) {

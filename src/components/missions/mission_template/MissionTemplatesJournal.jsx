@@ -45,8 +45,7 @@ const ButtonCopyTemplateMission = enhanceWithPermissions({
   tableComponent: MissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
-export default class MissionTemplatesJournal extends CheckableElementsList {
-
+class MissionTemplatesJournal extends CheckableElementsList {
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,
@@ -61,7 +60,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     };
   }
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.state = Object.assign(this.state, {
@@ -69,13 +68,61 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-  removeElementAction = (...arg) => this.context.flux.getActions('missions').removeMissionTemplate(...arg);
+    /**
+   * Дополнительная проверка на наличие выбранных элементов
+   * @override
+   */
+  checkDisabledDelete() {
+    return super.checkDisabledDelete() && !this.hasCheckedElements();
+  }
+
+  /**
+   * Удаляет выбранные элементы
+   * метод вызывает {@link ElementsList#removeElement} в случае отсутствия выбранных элементов
+   */
+  removeCheckedElements = async () => {
+    const checkedMissions = Object.values(this.state.checkedElements);
+
+    if (!checkedMissions.length) {
+      checkedMissions.push(this.state.selectedElement);
+    }
+
+    if (checkedMissions.length) {
+      try {
+        await confirmDialog({
+          title: 'Внимание!',
+          body: 'Вы уверены, что хотите удалить выбранные элементы?',
+        });
+      } catch (er) {
+        return;
+      }
+
+      try {
+        await Promise.all(
+          checkedMissions.map(mission => (
+            this.context.flux.getActions('missions').removeMissionTemplate(mission.id)
+          )),
+        );
+      } catch (e) {
+        //
+      }
+
+      this.loadMissionTemplate();
+      this.setState({
+        checkedElements: {},
+        selectedElement: null,
+      });
+    }
+  }
+
+  loadMissionTemplate(payload) {
+    this.context.flux.getActions('missions').getMissionTemplates(payload);
+  }
 
   init() {
     const { flux } = this.context;
     const { payload = {} } = this.props;
-    flux.getActions('missions').getMissionTemplates(payload);
-    // flux.getActions('objects').getWorkKinds();
+    this.loadMissionTemplate(payload);
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
@@ -121,7 +168,7 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
     return [
       <MissionTemplateFormWrap
-        key={'form'}
+        key="form"
         onFormHide={this.onFormHide}
         showForm={this.state.showForm}
         element={this.state.selectedElement}
@@ -141,10 +188,11 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getButtons = () => {
     const buttons = super.getButtons();
-    // TODO отображение Сформировать задание в зависимости от прав 
+    // TODO отображение Сформировать задание в зависимости от прав
     const additionalButtons = [
       <ButtonCreateMissionsByTemplates
-        key={'create-missions-by-template'}
+        key="create-missions-by-template"
+        id="create-missions-by-template"
         bsSize="small"
         onClick={this.createMissions}
         disabled={!this.canCreateMission()}
@@ -152,7 +200,8 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
         Сформировать децентрализованное задание
       </ButtonCreateMissionsByTemplates>,
       <ButtonCopyTemplateMission
-        key={'copy-template'}
+        key="copy-template"
+        id="copy-template"
         bsSize="small"
         onClick={this.copyElement}
         disabled={this.state.selectedElement === null}
@@ -167,11 +216,10 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
 
   getAdditionalProps = () => {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const technicalOperationIdsList = this.props.technicalOperationsList.map((item) => item.id);
+    const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
 
     const missionTemplatesList = this.props.missionTemplatesList
       .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
-
 
     return {
       structures,
@@ -181,3 +229,5 @@ export default class MissionTemplatesJournal extends CheckableElementsList {
     };
   }
 }
+
+export default MissionTemplatesJournal;

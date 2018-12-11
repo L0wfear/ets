@@ -194,7 +194,10 @@ export default class CheckableElementsList extends ElementsList {
   checkElement = (id, state) => {
     const elements = cloneDeep(this.state.checkedElements);
     if (state) {
-      elements[parseInt(id, 10)] = find(this.state.elementsList, e => e[this.selectField] === parseInt(id, 10));
+      const checkedElement = find(this.state.elementsList, e => e[this.selectField] === parseInt(id, 10));
+      if (checkedElement) {
+        elements[parseInt(id, 10)] = checkedElement;
+      }
     } else {
       delete elements[id];
     }

@@ -306,5 +306,6 @@ export const dashboardLoadDependentDataByNewDutyMission: any = () => (dispatch) 
 };
 
 export const dashboardLoadDependentDataByCloseMission: any = () => (dispatch) => {
+  dispatch(dashboardLoadWaybillInProgress());
   dispatch(dashboardLoadWaybillCompleted());
 };

@@ -1,10 +1,8 @@
 import * as React from 'react';
 import clone from 'lodash/clone';
-import keys from 'lodash/keys';
 import filter from 'lodash/filter';
 import Div from 'components/ui/Div';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
-import { isEmpty } from 'utils/functions';
 import { getToday9am, getTomorrow9am, addTime } from 'utils/dates';
 import { missionTemplateSchema } from 'models/MissionTemplateModel';
 import { missionsCreationTemplateSchema } from 'models/MissionsCreationTemplateModel';
@@ -15,7 +13,7 @@ import {
   checkMissionsByRouteType,
   checkMissionsOnStructureIdCar,
 } from 'components/missions/utils/customValidate';
-import { printData } from 'utils/functions';
+import { isEmpty, printData } from 'utils/functions';
 import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
 import MissionTemplateForm from 'components/missions/mission_template/MissionTemplateForm';
@@ -189,13 +187,21 @@ class MissionTemplateFormWrap extends FormWrap {
           };
 
           let closeForm = true;
-          for (const mission of missionsArr) {
-            const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
-            if (e) closeForm = false;
+          try {
+            await Promise.all(missionsArr.map(async (mission) => {
+              const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
+
+              if (e) {
+                closeForm = false;
+              }
+            }));
+          } catch (e) {
+            closeForm = false;
           }
 
-          closeForm && this.props.onFormHide(true);
-          return;
+          if (closeForm) {
+            this.props.onFormHide(true);
+          }
         }
       }
     }
@@ -207,7 +213,7 @@ class MissionTemplateFormWrap extends FormWrap {
 
     Object.entries(changesObj).forEach(([field, e]) => {
       const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-      console.info('Form changed', field, value);
+      console.info('Form changed', field, value); // eslint-disable-line
       formState[field] = value;
     });
 

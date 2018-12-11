@@ -86,7 +86,7 @@ export class MissionForm extends Form {
       showColumnAssignment: false,
       showBackButton: false,
       firstFormState: {
-        ...this.props.formState
+        ...this.props.formState,
       },
     };
   }
@@ -158,7 +158,7 @@ export class MissionForm extends Form {
               is_cleaning_norm: [...newObj.is_cleaning_norm, normData.is_cleaning_norm],
             }), { norm_id: [], is_cleaning_norm: [] });
 
-            if (changesObjSecond.is_cleaning_norm.some((value) => value)) {
+            if (changesObjSecond.is_cleaning_norm.some(value => value)) {
               const { formState: { date_start, date_end } } = this.props;
 
               if (date_start && date_end) {
@@ -171,7 +171,7 @@ export class MissionForm extends Form {
             }
 
             if (!formState.is_column) {
-              changesObjSecond.norm_id = changesObjSecond.norm_id[0];
+              [changesObjSecond.norm_id] = changesObjSecond.norm_id[0];
               changesObjSecond.is_cleaning_norm = changesObjSecond.is_cleaning_norm[0];
             }
 
@@ -529,8 +529,6 @@ export class MissionForm extends Form {
       kind_task_ids,
     } = this.state;
 
-    console.log(routeNew)
-
     const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
       if (!auto || state.mission_source_id === id) {
         newArr.push({ value: id, label: name });
@@ -539,8 +537,8 @@ export class MissionForm extends Form {
     }, []);
 
     const CARS = carsList
-      .filter((c) => ((!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.available_to_bind) || (state.car_id && state.car_id === c.asuods_id))
-      .map((c) => ({
+      .filter(c => ((!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.available_to_bind) || (state.car_id && state.car_id === c.asuods_id))
+      .map(c => ({
         value: c.asuods_id,
         available: c.available,
         label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
@@ -552,7 +550,7 @@ export class MissionForm extends Form {
     const filteredRoutes = (
       route !== null
       && route.id !== undefined
-      && routes.find((item) => item.value === route.id) === undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -873,7 +871,7 @@ export class MissionForm extends Form {
                       type="number"
                       label="Количество циклов"
                       error={errors.passes_count}
-                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)} 
+                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)}
                       value={state.passes_count}
                       onChange={this.handleChange.bind(this, 'passes_count')}
                       min={0}

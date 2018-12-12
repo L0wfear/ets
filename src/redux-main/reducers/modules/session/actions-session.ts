@@ -6,6 +6,7 @@ import {
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService } from 'api/Services';
+import { CONFIG_INITIAL } from 'redux-main/reducers/modules/session/session';
 
 export const withSpecificPermissions = (user) => {
   const permissions = [];
@@ -29,13 +30,15 @@ export const withSpecificPermissions = (user) => {
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
   payload: ConfigService.get()
-    .then((appConfig) => ({
-      appConfig,
-    }))
     .catch((errorData) => {
       // tslint:disable-next-line
       console.warn(errorData);
-    }),
+
+      return CONFIG_INITIAL;
+    })
+    .then((appConfig) => ({
+      appConfig,
+    })),
   meta: {
     loading: true,
   },

@@ -10,7 +10,7 @@ import { carInfoToggleSensorShow } from 'components/monitor/info/car-info/redux-
 import {
   DivNone,
 } from 'global-styled/global-styled';
-import { dataColorRation } from 'constants/sensors';
+import { sensorTrackColor } from 'constants/sensors';
 import { ColorSensorDiv } from './styled';
 
 type PropsSensorsEquipmentList = {
@@ -91,7 +91,7 @@ const SensorsEquipmentList: React.FunctionComponent<PropsSensorsEquipmentList> =
                   {
                     [['zero'], ...sensors_equipment].map(([key], index) => (
                       <div key={`sensor_option_${key}`} className="sensors_legeng_option">
-                        <ColorSensorDiv color={dataColorRation[index].color}></ColorSensorDiv>
+                        <ColorSensorDiv color={sensorTrackColor[index]}></ColorSensorDiv>
                         <div>{`${index} ${getRightRus(index)} в работе`}</div>
                       </div>
                     ))

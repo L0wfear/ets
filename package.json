@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.24.177",
+    "version": "2.0.24.178",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -47,7 +47,6 @@
         "@babel/preset-react": "^7.0.0",
         "@babel/preset-typescript": "^7.1.0",
         "@types/classnames": "=2.2.6",
-        "@types/highcharts": "=5.0.34",
         "@types/lodash": "=4.14.119",
         "@types/node": "=10.12.12",
         "@types/ol": "=4.6.2",

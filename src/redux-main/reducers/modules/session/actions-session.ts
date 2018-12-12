@@ -44,7 +44,7 @@ export const sessionSetAppConfig = () => ({
   },
 });
 
-export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
+export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
   const userData = { ...currentUser };
 
   userData.permissions = [

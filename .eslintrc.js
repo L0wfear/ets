@@ -9,7 +9,8 @@ module.exports = {
       "globals": {
         window: true,
         document: true,
-        confirmDialog: true
+        confirmDialog: true,
+        __DEVELOPMENT__: true,
       },
       "parser": "babel-eslint",
       "rules": {

@@ -283,7 +283,19 @@ export default class DataTable extends React.Component {
   }
 
   saveFilter = (filterValues) => {
-    console.log('SAVE FILTER', filterValues); // eslint-disable-line
+    if (__DEVELOPMENT__) {
+      console.log('SAVE FILTER', filterValues); // eslint-disable-line
+    } else {
+      let filterAsString = '';
+
+      try {
+        filterAsString = JSON.stringify(filterValues);
+      } catch (e) {
+        filterAsString = filterValues;
+      }
+
+      console.log('SAVE FILTER', filterAsString); // eslint-disable-line
+    }
 
     if (this.props.externalFilter) {
       this.props.externalFilter(filterValues);

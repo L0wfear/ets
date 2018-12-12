@@ -18,7 +18,7 @@ import {
   mergeList,
 } from 'components/new/ui/registry/module/utils/merge';
 
-export const registryAddInitialData = ({ registryKey, ...config }) => (dispatch) => {
+export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
     setTimeout(() => (
       dispatch(

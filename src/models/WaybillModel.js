@@ -248,6 +248,7 @@ const closingProperties = [
     title: 'Топливо.Возврат по таксировке',
     type: 'number',
     float: 3,
+    min: 0,
     required: true,
   },
   {
@@ -255,7 +256,6 @@ const closingProperties = [
     title: 'Топливо.Возврат фактический',
     type: 'number',
     float: 3,
-    min: 0,
   },
   {
     key: 'equipment_fuel_end',

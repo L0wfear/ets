@@ -2,7 +2,7 @@ import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "cars_count_deviation" */'components/reports/operational/cars_count_deviation/report')
+  import(/* webpackChunkName: "deviation_from_norm_of_cars" */'components/reports/operational/deviation_from_norm_of_cars/report')
 ));
 
 export default [

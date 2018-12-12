@@ -1,6 +1,12 @@
 import { isEmpty } from 'utils/functions';
-
-export const fuelRateSchema = {
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import {
+  ICreateFuel
+} from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import {
+  PropsFuelRate,
+} from 'components/directories/normative/fuel_rates/FuelRateForm/@types/FuelRate.h';
+export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = {
   properties: [
     {
       key: 'order_date',
@@ -43,32 +49,22 @@ export const fuelRateSchema = {
     },
   ],
   dependencies: {
-    'summer_rate': [
-      {
-        validator: (value, formData) => {
-          if (isEmpty(formData.winter_rate) && isEmpty(value)) {
-            return 'Одна из норм должна быть заполнена';
-          }
-          return undefined;
-        },
+    summer_rate: [
+      (value, formState) => {
+        if (isEmpty(formState.winter_rate) && isEmpty(value)) {
+          return 'Одна из норм должна быть заполнена';
+        }
+        return undefined;
       },
     ],
-    'winter_rate': [
-      {
-        validator: (value, formData) => {
-          if (isEmpty(formData.summer_rate) && isEmpty(value)) {
-            return 'Одна из норм должна быть заполнена';
-          }
-          return undefined;
-        },
+    winter_rate: [
+      (value, formState) => {
+        if (isEmpty(formState.summer_rate) && isEmpty(value)) {
+          return 'Одна из норм должна быть заполнена';
+        }
+        return undefined;
       },
     ],
+    // Поле "Подразделение", скорее всего в новой ветке в dev
   },
-};
-
-export const defaultElement = {
-  order_date: new Date(),
-  operation_id: null,
-  car_model_id: null,
-  car_special_model_id: null,
 };

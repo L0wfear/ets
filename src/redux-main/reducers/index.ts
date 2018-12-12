@@ -15,12 +15,12 @@ import registry from 'components/new/ui/registry/module/registry';
 import userNotifications from 'redux-main/reducers/modules/user_notifications/user_notifications';
 import old_report from 'components/coverage_reports/redux-main/modules/old-report/old_report';
 import autobase from 'redux-main/reducers/modules/autobase/autobase';
+import fuelRates from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 import employee from 'redux-main/reducers/modules/employee/employee';
 import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
 import routes from 'redux-main/reducers/modules/routes/routes';
 import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import geoobject from 'redux-main/reducers/modules/geoobject/geoobject';
-import fuelRates from 'redux-main/reducers/modules/fuel_rates/fuelRates'
 
 export default combineReducers({
   reports,
@@ -34,10 +34,10 @@ export default combineReducers({
   userNotifications,
   old_report,
   autobase,
+  fuelRates,
   employee,
   company_structure,
   routes,
   some_uniq,
   geoobject,
-  fuelRates,
 });

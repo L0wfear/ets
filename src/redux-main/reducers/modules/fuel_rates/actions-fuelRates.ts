@@ -16,7 +16,7 @@ import {
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
   ICreateFuel,
-  FuelRateU,
+  FuelRateUpd,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 //  import {
 //   FUEL_RATES_SET_DATA
@@ -64,7 +64,7 @@ export const FuelRateCreate = (type: string | null, payload: ICreateFuel) => ({
   },
 });
 
-export const FuelRateUpdate = (type: string | null, payload: FuelRateU) => ({
+export const FuelRateUpdate = (type: string | null, payload: FuelRateUpd) => ({
   type,
   payload: updateFuelRate(payload),
   meta: {

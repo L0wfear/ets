@@ -29,13 +29,14 @@ export type fuelRate = {
   winter_rate: number | null;
 };
 
-export interface FuelRateU extends fuelRate {
-  // todo: !!! Проверить тип у season, rate_on_date
+export type FuelRateUpd = fuelRate & {
   rate_on_date: number | null; // Для updateFuelRate
-  season: string | null; // Для updateFuelRate
-}
+  season?: string; // Для updateFuelRate
+  page?: string;
+  path?: string;
+};
 
-export type fuelOperation = {
+export type fuelOperation = { // перенести в реестр fuelOperation, после его рефакторинга
   equipment?: boolean | null;
   id?: number | null;
   is_excluding_mileage?: boolean | null;
@@ -46,7 +47,8 @@ export type fuelOperation = {
 
 export type IStateFuelRates = {
   fuelRatesList: fuelRate[],
-  fuelRateOperations: fuelOperation[],
+  fuelRateOperationsList: fuelOperation[],
+  fuelRateOperationsIsActiveList: fuelOperation[],
 };
 
 export type IFuelOperations = {
@@ -65,13 +67,16 @@ export type IEquipmentFuelRatesByCarModel = {
 };
 
 export type ICreateFuel = {
+  id: number | null;
   car_model_id: number | null;
   car_special_model_id: number | null;
   company_structure_id: number | null;
   operation_id: number | null;
-  order_date: string | null;
+  order_date: Date | string | null;
   summer_rate: number | null;
   winter_rate: number | null;
   car_model_name: string | null;
   car_special_model_name: string | null;
+  page?: string;
+  path?: string;
 };

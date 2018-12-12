@@ -1,16 +1,14 @@
-import FuelRateFormWrap from 'components/directories/normative/fuel_rates/FuelRateFormWrap';
+import FuelRateFormWrap from 'components/directories/normative/fuel_rates/FuelRateForm/FuelRateFormWrap.tsx';
 import FuelRatesTable from 'components/directories/normative/fuel_rates/FuelRatesTable';
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema';
+import { fuelRateSchema } from 'components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema';
 import permissions from 'components/directories/normative/fuel_rates/config-data/permissions';
-import { connect } from 'react-redux';
 
+import { connect } from 'react-redux';
 import {
   FuelRatesGet,
-  FuelOperationsGet,
-  // FuelRatesByCarModelGet,
-  // EquipmentFuelRatesByCarModelGet,
+  FuelRateDelete,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import {
   FUEL_RATES_SET_DATA,
@@ -32,9 +30,9 @@ const loadingPageName = 'fuel-rates';
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class FuelRatesDirectory extends ElementsList {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
-    this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;
+    this.removeElementAction = this.props.FuelRateDelete;
   }
 
   init() {
@@ -47,8 +45,8 @@ class FuelRatesDirectory extends ElementsList {
       console.error(e);
     }
 
-    flux.getActions('companyStructure').getCompanyStructure();
-    flux.getActions('odh').getMeasureUnits({ type: 'operation' });
+    flux.getActions('companyStructure').getCompanyStructure(); // уже есть на dev отрефакторенный, смерджить с dev
+    flux.getActions('odh').getMeasureUnits({ type: 'operation' }); // Тоже отрефакторить
   }
 }
 
@@ -71,6 +69,11 @@ export default compose(
       FuelRatesGet: () => (
         dispatch(
           FuelRatesGet(FUEL_RATES_SET_DATA),
+        )
+      ),
+      FuelRateDelete: id => (
+        dispatch(
+          FuelRateDelete(FUEL_RATES_SET_DATA, id),
         )
       ),
     }),

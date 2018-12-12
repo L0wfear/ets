@@ -11,7 +11,7 @@ import {
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
   ICreateFuel,
-  FuelRateU,
+  FuelRateUpd,
   fuelOperation,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
@@ -76,7 +76,7 @@ export const createFuelRate = (rate: ICreateFuel) => {
   );
 };
 
-export const updateFuelRate = (newFuelRate: FuelRateU) => {
+export const updateFuelRate = (newFuelRate: FuelRateUpd) => {
   const {
     rate_on_date,
     season,
@@ -102,6 +102,7 @@ export const deleteFuelRate = ( id: number ) => {
 
 export const createFuelOperation = ( formState ) => {
   const payload: fuelOperation = {};
+  // formState is undefined
   if (typeof formState.name === 'string' && formState.name !== '') {
     payload.name = formState.name;
     payload.equipment = !!formState.equipment;

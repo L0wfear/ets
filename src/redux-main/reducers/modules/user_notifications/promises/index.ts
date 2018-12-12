@@ -14,10 +14,6 @@ export const makeReadAdmNotification = (read_ids) => (
     false,
     'json',
   )
-  .catch((error) => {
-    // tslint:disable-next-line
-    console.warn(error);
-  })
 );
 
 export const makeReadAllAdmNotification = () => (
@@ -28,10 +24,6 @@ export const makeReadAllAdmNotification = () => (
     false,
     'json',
   )
-  .catch((error) => {
-    // tslint:disable-next-line
-    console.warn(error);
-  })
 );
 
 export const makeUserNotificationRead = (read_ids) => (
@@ -42,10 +34,6 @@ export const makeUserNotificationRead = (read_ids) => (
     false,
     'json',
   )
-  .catch((error) => {
-    // tslint:disable-next-line
-    console.warn(error);
-  })
 );
 
 export const makeUserNotificationReadAll = () => (
@@ -56,10 +44,6 @@ export const makeUserNotificationReadAll = () => (
     false,
     'json',
   )
-  .catch((error) => {
-    // tslint:disable-next-line
-    console.warn(error);
-  })
 );
 
 export const getCountNotRead = () => (

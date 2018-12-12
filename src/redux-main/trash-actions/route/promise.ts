@@ -108,16 +108,6 @@ export const postCreateRoute = (formState, isTemplate) => {
   };
 
   return RouteService.post(payload, false, 'json', params)
-    .catch((e) => {
-      // tslint:disable-next-line
-      console.warn(e);
-
-      return {
-        result: [{
-          id: null,
-        }],
-      };
-    })
     .then(({ result: [{ id }]}) => ({
       route: {
         ...formState,
@@ -132,16 +122,6 @@ export const putUpdateRoute = (formState) => {
   };
 
   return RouteService.put(payload, false, 'json')
-    .catch((e) => {
-      // tslint:disable-next-line
-      console.warn(e);
-
-      return {
-        result: [{
-          id: null,
-        }],
-      };
-    })
     .then(({ result: [{ id }]}) => ({
       route: {
         ...formState,

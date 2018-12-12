@@ -1,28 +1,25 @@
-const data = {
-  0: {
-    color: 'rgba(43, 18, 242, 1)',
-    ratio: 0.9,
-  },
-  1: {
-    color: 'rgba(130, 18, 242, 1)',
-    ratio: 0.8,
-  },
-  2: {
-    color: 'rgba(242, 18, 173, 1)',
-    ratio: 0.7,
-  },
-  3: {
-    color: 'rgba(18, 242, 229, 1)',
-    ratio: 0.6,
-  },
-  4: {
-    color: 'rgba(242, 240, 18, 1)',
-    ratio: 0.5,
-  },
-};
+const chartColor = [
+  'rgba(43, 18, 242, 1)',
+  'rgba(130, 18, 242, 1)',
+  'rgba(242, 18, 173, 1)',
+  'rgba(18, 242, 229, 1)',
+  'rgba(242, 240, 18, 1)',
+  '#0B61A4',
+  '#E2FA01',
+  '#FF2D01',
+  '#85004C',
+  '#01CC01',
+];
+
+const chartColorLength = chartColor.length;
+
+export const dataColorRation = chartColor.map((color, index) => ({
+  color,
+  ratio: 0.5 + index * (0.4 / (chartColorLength - 1)),
+}));
 
 export const sensorsMapOptions = (index, maxSpeed = 0) => ({
-  color: data[index].color,
+  color: dataColorRation[index].color,
   value: maxSpeed === 10 ? maxSpeed - (15 * (index + 1)) : maxSpeed - (10 * (index + 1)),
 });
 
@@ -32,6 +29,11 @@ export const sensorTrackColor = [
   '#2196F3',
   '#673AB7',
   '#FF9800',
+  '#A64800',
+  '#AE66D5',
+  '#090974',
+  '#207C65',
+  '#BF9031',
 ];
 
 export const getTrackSensorColor = (selectedSensors, trackSensors) => {

@@ -14,7 +14,7 @@ import carCondition from 'components/reports/operational/car-condition/config-da
 import carDowntimeAndOvermileage from 'components/reports/operational/car_downtime_and_overmileage/config-data';
 import carMovementTimeReport from 'components/reports/operational/car-movement-time-report/config-data';
 import cleaningVolume from 'components/reports/operational/cleaning_volume/config-data';
-import deviationFromNormOfCars from 'components/reports/operational/deviation_from_norm_of_cars/config-data';
+import deviationFromNormOfCars from 'components/reports/operational/cars_count_deviation/config-data';
 
 const children = {
   routeOdhCoverage,

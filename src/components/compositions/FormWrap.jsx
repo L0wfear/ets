@@ -179,7 +179,7 @@ export default class FormWrap extends React.Component {
             canSave: true,
           });
           console.warn(errorData.error_text);
-          throw errorData;
+          return;
         }
       } else {
         throw new Error('Create action called but not specified');

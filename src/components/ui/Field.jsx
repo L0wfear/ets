@@ -11,9 +11,8 @@ import Preloader from 'components/ui/new/preloader/Preloader';
 import Div from 'components/ui/Div';
 
 function StringField(props) {
-  const { error, ...mainProps } = props;
+  const { error, label = '', ...mainProps } = props;
   const {
-    label = '',
     readOnly = false,
     disabled = false,
     className = '',

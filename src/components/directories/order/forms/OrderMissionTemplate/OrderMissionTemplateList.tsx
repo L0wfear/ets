@@ -50,7 +50,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   componentDidMount() {
     const { structures } = this.context.flux.getStore('session').getCurrentUser();
     if (this.props.typeClick === typeTemplate.missionTemplate) {
-      this.context.flux.getActions('missions').getMissionTemplatesCars();
+      const payload = {
+        order_id: this.props.orderDates.faxogramm_id || null,
+      };
+      this.context.flux.getActions('missions').getMissionTemplatesCars(payload);
     }
 
     this.getMissionsList().then(({ result = [] }) => {

@@ -31,7 +31,7 @@ export const getTableMeta = ({
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: govNumberFilter.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
+          options: govNumberFilter.map(car => ({ label: car.gov_number, value: car.asuods_id })),
         },
         cssClassName: 'width120',
       },

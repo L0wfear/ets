@@ -27,7 +27,6 @@ import Div from 'components/ui/Div';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
 export default class DataTable extends React.Component {
-
   /**
    * Свойства компонента
    * @type {Object}
@@ -342,8 +341,7 @@ export default class DataTable extends React.Component {
         cur[val[this.props.selectField]] = val;
         return cur;
       },
-      {},
-    );
+      {} );
 
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
     this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
@@ -366,7 +364,7 @@ export default class DataTable extends React.Component {
       if (col.type === 'string') {
         const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
         if (!col.fullString) {
-          metaObject.customComponent = (props) => this.cutString(callbackF, props);
+          metaObject.customComponent = props => this.cutString(callbackF, props);
         }
       } else if (typeof renderers[col.name] === 'function') {
         metaObject.customComponent = renderers[col.name];
@@ -380,8 +378,11 @@ export default class DataTable extends React.Component {
       return cur;
     }, []);
   }
+
   initializeMetadata(tableMetaCols = [], renderers = {}) {
-    const { multiSelection, enumerated, rowNumberLabel = '№', rowNumberClassName = 'width30' } = this.props;
+    const {
+      multiSelection, enumerated, rowNumberLabel = '№', rowNumberClassName = 'width30',
+    } = this.props;
     const initialArray = [];
 
     if (multiSelection) {
@@ -407,12 +408,13 @@ export default class DataTable extends React.Component {
 
     return initialArray;
   }
+
   cutString(callback, props) {
     const newProps = { ...props };
     let { data = '' } = props;
 
-    if (typeof data === 'string' && data.split(' ').some((d) => d.length > 30)) {
-      data = `${data.slice(0, 20)}...`;
+    if (typeof data === 'string' && data.split(' ').some(d => d.length > 30)) {
+      data = `${data.slice(0, 50)}...`;
     }
 
     newProps.data = data;
@@ -469,7 +471,7 @@ export default class DataTable extends React.Component {
     Object.entries(filterValues).forEach(([key, { value }]) => {
       if (key.includes('additionalFilter')) {
         try {
-          const { filter: { filterFunction } } = cols.find((d) => d.name === key);
+          const { filter: { filterFunction } } = cols.find(d => d.name === key);
           isValid = filterFunction(value, obj);
         } catch (e) {
           console.warn(`Ошибка при поиске кастомной функции фильтрации ${key}`, e);
@@ -481,7 +483,7 @@ export default class DataTable extends React.Component {
         }
 
         const IS_ARRAY = Array.isArray(value);
-    
+
         if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
           const { filter } = cols.find(({ name }) => name === key);
           if (filter && filter.type === 'datetime' && diffDates(obj[key], value) !== 0) {
@@ -501,25 +503,25 @@ export default class DataTable extends React.Component {
             isValid = false;
           }
         } else if (IS_ARRAY) {
-          const a = this.props.tableMeta.cols.find((e) => e.name === key);
+          const a = this.props.tableMeta.cols.find(e => e.name === key);
           if (Array.isArray(obj[key])) {
             if (a.filter.strict) {
-              if (!(obj[key].every((el) => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+              if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
                 isValid = false;
               }
             } else if (a.filter.someInRowValue) {
-              if (!value.some((val) => obj[key].some((el) => el.toString().includes(val.toString())))) {
+              if (!value.some(val => obj[key].some(el => el.toString().includes(val.toString())))) {
                 isValid = false;
               }
-            } else if (!(obj[key].find((el) => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
+            } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
               isValid = false;
             }
           } else if (typeof obj[key] === 'boolean') {
-            if (value.map((v) => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+            if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
               isValid = false;
             }
           } else if (a && a.filter && a.filter.someInRowValue) {
-            if (value.findIndex((d) => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
+            if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
               isValid = false;
             }
           } else if (value.findIndex((d) => {
@@ -543,7 +545,7 @@ export default class DataTable extends React.Component {
         } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
           isValid = isValid && numberArrayDataMatching(value, obj[key]);
         } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
-          const metaCol = this.props.tableMeta.cols.find((item) => item.name === key);
+          const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
           const filterType = _.get(metaCol, 'filter.type', '');
           isValid = isValid && parseAdvancedFilter(value, key, obj[key], filterType);
         } else if (typeof obj[key] === 'string') {
@@ -635,8 +637,8 @@ export default class DataTable extends React.Component {
       direction = -1;
       e.preventDefault();
     }
-    const selected = data.find((el) => el[this.props.selectField] === this.props.selected[this.props.selectField]);
-    const newSelected = data.find((el) => el.rowNumber === selected.rowNumber + direction);
+    const selected = data.find(el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
+    const newSelected = data.find(el => el.rowNumber === selected.rowNumber + direction);
 
     this.props.onRowSelected({
       props: {
@@ -647,7 +649,8 @@ export default class DataTable extends React.Component {
   }
 
   render() {
-    const { tableMeta, renderers, onRowSelected, selected,
+    const {
+      tableMeta, renderers, onRowSelected, selected,
       selectField, title, noTitle, noFilter,
       enableSort, noDataMessage, className, noHeader,
       noCustomButton = false,
@@ -655,13 +658,15 @@ export default class DataTable extends React.Component {
       griddleHidden = false,
       haveMax = true,
     } = this.props;
-    const { initialSort, initialSortAscending, columnControlValues, isHierarchical } = this.state;
+    const {
+      initialSort, initialSortAscending, columnControlValues, isHierarchical,
+    } = this.state;
 
     const tableMetaCols = (tableMeta.cols);
     const { data } = this.state;
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
-    const tableCols = columnMetadata.map(m => m.columnName).filter((c) => columnControlValues.indexOf(c) === -1);
+    const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
 
@@ -669,50 +674,58 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justifyContent' : 'space-between' }}>
+          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
             <div>
               {noTitle ? '' : title}
             </div>
             <div className="waybills-buttons">
-              {columnControl &&
-                <ClickOutHandler onClickOut={this.closeColumnControl}>
+              {columnControl
+                && (
+<ClickOutHandler onClickOut={this.closeColumnControl}>
                   <ColumnControl
                     show={this.state.columnControlModalIsOpen}
                     onChange={this.saveColumnControl}
                     onClick={this.toggleColumnControl}
                     values={this.state.columnControlValues}
-                    options={tableMetaCols.filter((el) => el.display !== false)}
+                    options={tableMetaCols.filter(el => el.display !== false)}
                   />
                 </ClickOutHandler>
+)
               }
-              {!noFilter &&
-                <FilterButton
+              {!noFilter
+                && (
+<FilterButton
                   show={this.state.filterModalIsOpen}
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />
+)
               }
-              {refreshable &&
-                <Button
+              {refreshable
+                && (
+<Button
                   bsSize="small"
                   onClick={this.props.onRefresh}
                 >
                   <Glyphicon glyph="refresh" />
                 </Button>
+)
               }
               {!noCustomButton && this.props.children}
             </div>
           </div>
-          {!noFilter &&
-            <Filter
+          {!noFilter
+            && (
+<Filter
               show={this.state.filterModalIsOpen}
               onSubmit={this.saveFilter}
               onHide={this.closeFilter}
               values={this.state.filterValues}
-              options={tableMetaCols.filter((el) => el.filter !== false)}
+              options={tableMetaCols.filter(el => el.filter !== false)}
               tableData={this.props.results}
               entity={this.props.entity}
             />
+)
           }
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
@@ -740,18 +753,17 @@ export default class DataTable extends React.Component {
           globalCheckHandler={this.globalCheckHandler}
         />
         {
-          serverPagination ?
-          (
-            <div></div>
-          )
-          :
-          (
+          serverPagination
+            ? (
+            <div />
+            )
+            : (
             <Paginator
               currentPage={this.state.currentPage}
               maxPage={Math.ceil(results.length / 15)}
               setPage={this.setPage}
             />
-          )
+            )
         }
       </Div>
     );

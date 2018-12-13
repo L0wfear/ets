@@ -321,29 +321,6 @@ button {
     display: flex;
     align-items: center;
     cursor: default;
-
-    .sensor_color {
-      width: 30px;
-      height: 10px;
-      border: 1px solid black;
-      margin-right: 10px;
-
-      &.color_zero {
-        background-color: rgba(96, 125, 139, 0.278);
-      }
-      &.color_one {
-        background-color: rgba(255, 235, 61, 0.278);
-      }
-      &.color_two {
-        background-color: rgba(33, 150, 243, 0.278);
-      }
-      &.color_three {
-        background-color: rgba(103, 58, 183, 0.278);
-      }
-      &.color_four {
-        background-color: rgba(255, 152, 0, 0.278);
-      }
-    }
   }
 }
 

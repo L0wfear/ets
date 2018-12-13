@@ -89,7 +89,7 @@ export default class ReactSelect extends React.Component<any, any> {
     if (this.props.filterOption) {
       return this.props.filterOption(option, filterValue, this.props);
     }
-    const label = (get(option, 'label', '') || '').toString();
+    const label = (get(option, 'label', '') || '').toString() || '';
     const valueOpt = get(option, 'value', null) || null;
     const { value } = this.props;
 

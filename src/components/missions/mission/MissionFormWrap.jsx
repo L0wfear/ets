@@ -54,7 +54,7 @@ class MissionFormWrap extends FormWrap {
 
       if (IS_ASSIGNED || IS_IN_PROGRESS || IS_EXPIRED) {
         waybillsActions.getWaybill(mission.waybill_id).then(({ result: inWaybill }) => {
-          const formErrors = this.validate(mission, {}, { inWaybill });
+          const formErrors = this.validateWrap(mission, {}, { inWaybill });
 
           this.setState({
             canSave: !filter(formErrors).length,
@@ -65,7 +65,7 @@ class MissionFormWrap extends FormWrap {
       }
       if (order_id) {
         ordersActions.getOrderById(order_id).then(({ result: [order] }) => {
-          const formErrors = this.validate(mission, {}, { order });
+          const formErrors = this.validateWrap(mission, {}, { order });
 
           this.setState({
             canSave: !filter(formErrors).length,
@@ -77,7 +77,7 @@ class MissionFormWrap extends FormWrap {
       if (props.fromOrder) {
         const { order } = props;
 
-        const formErrors = this.validate(mission, {}, { order });
+        const formErrors = this.validateWrap(mission, {}, { order });
         this.setState({
           formState: mission,
           canSave: !filter(formErrors).length,
@@ -85,7 +85,7 @@ class MissionFormWrap extends FormWrap {
           order,
         });
       } else {
-        const formErrors = this.validate(mission, {});
+        const formErrors = this.validateWrap(mission, {});
 
         this.setState({
           formState: mission,
@@ -115,8 +115,29 @@ class MissionFormWrap extends FormWrap {
     }
   }
 
-  validate(formState, errors, otherData = {}) {
-    let formErrors = super.validate(formState, errors);
+  handleFormStateChange = (field, e) => {
+    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+    const newState = {};
+
+    console.info('Form changed', field, value);
+    formState[field] = value;
+
+    formErrors = this.validateWrap(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+
+    return newState;
+  }
+
+  validateWrap = (formState, errors, otherData = {}) => {
+    let formErrors = this.validate(formState, errors);
 
     const {
       inWaybill: othInWaybill = {},
@@ -256,7 +277,7 @@ class MissionFormWrap extends FormWrap {
     });
 
     const newState = {};
-    formErrors = this.validate(formState, formErrors);
+    formErrors = this.validateWrap(formState, formErrors);
 
     newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
 

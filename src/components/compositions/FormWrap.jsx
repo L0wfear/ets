@@ -175,6 +175,7 @@ class FormWrap extends React.Component {
             canSave: true,
           });
           console.warn(errorData.error_text);
+          return;
         }
       } else {
         throw new Error('Create action called but not specified');

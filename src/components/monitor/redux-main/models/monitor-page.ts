@@ -24,6 +24,7 @@ export const MONITOR_PAGE_RESER_CAR_STATUS = MONITOR_PAGE`RESER_CAR_STATUS`;
 export const MONITOR_PAGE_CHANGE_FILTERS = MONITOR_PAGE`CHANGE_FILTERS`;
 export const MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST = MONITOR_PAGE`MERGE_FILTERS_GPS_CODE_LIST`;
 export const MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE = MONITOR_PAGE`TOGGLE_MEASURE_ACTIVE`;
+export const MONITOR_PAGE_FALSE_MEASURE_ACTIVE = MONITOR_PAGE`FALSE_MEASURE_ACTIVE`;
 
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE = MONITOR_PAGE`CHANGE_FUEL_EVENTS_DATE`;
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_DATA`;
@@ -279,6 +280,12 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         measureActive: !state.measureActive,
+      };
+    }
+    case MONITOR_PAGE_FALSE_MEASURE_ACTIVE: {
+      return {
+        ...state,
+        measureActive: false,
       };
     }
     case MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE: {

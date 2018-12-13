@@ -10,7 +10,10 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import Overlay from 'components/map/overlay/Overlay';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import { monitorPageToggleMeasureActive } from 'components/monitor/redux-main/models/actions-monitor-page';
+import {
+  monitorPageToggleMeasureActive,
+  monitorPageFalseMeasureActive,
+} from 'components/monitor/redux-main/models/actions-monitor-page';
 import { compose } from 'recompose';
 import { getStyleForLineMeasure } from 'components/monitor/layers/measure/feature-style';
 
@@ -33,6 +36,7 @@ type PropsLayerParkingPoints = {
   map: ol.Map;
 
   monitorPageToggleMeasureActive: any;
+  monitorPageFalseMeasureActive: any;
   measureActive: boolean;
 };
 
@@ -66,7 +70,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
   componentWillUnmount() {
     this.props.removeLayer();
     if (this.props.measureActive) {
-      this.props.monitorPageToggleMeasureActive();
+      this.props.monitorPageFalseMeasureActive();
     }
   }
 
@@ -299,6 +303,11 @@ const mapDispatchToProps = (dispatch) => ({
   monitorPageToggleMeasureActive: () => (
     dispatch(
       monitorPageToggleMeasureActive(),
+    )
+  ),
+  monitorPageFalseMeasureActive: () => (
+    dispatch(
+      monitorPageFalseMeasureActive(),
     )
   ),
 });

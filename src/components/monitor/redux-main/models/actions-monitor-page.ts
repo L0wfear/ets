@@ -14,6 +14,7 @@ import {
   MONITOR_PAGE_CHANGE_FILTERS,
   MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST,
   MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
+  MONITOR_PAGE_FALSE_MEASURE_ACTIVE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
@@ -113,6 +114,11 @@ export const monitorPageMergeFiltredCarGpsCode = (filtredCarGpsCode) => ({
 
 export const monitorPageToggleMeasureActive = () => ({
   type: MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
+  payload: {},
+});
+
+export const monitorPageFalseMeasureActive = () => ({
+  type: MONITOR_PAGE_FALSE_MEASURE_ACTIVE,
   payload: {},
 });
 

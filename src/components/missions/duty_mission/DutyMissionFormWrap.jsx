@@ -42,7 +42,7 @@ class DutyMissionFormWrap extends FormWrap {
       const id = faxogramm_id || order_id;
       if (id) {
         ordersActions.getOrderById(id).then(({ result: [order] }) => {
-          const formErrors = this.validate(mission, {}, { order });
+          const formErrors = this.validateWrap(mission, {}, { order });
 
           this.setState({
             canSave: !filter(formErrors).length,
@@ -55,7 +55,7 @@ class DutyMissionFormWrap extends FormWrap {
       if (props.fromOrder) {
         const { order } = props;
 
-        const formErrors = this.validate(mission, {}, { order });
+        const formErrors = this.validateWrap(mission, {}, { order });
         this.setState({
           formState: mission,
           canSave: !filter(formErrors).length,
@@ -63,7 +63,7 @@ class DutyMissionFormWrap extends FormWrap {
           order,
         });
       } else {
-        const formErrors = this.validate(mission, {});
+        const formErrors = this.validateWrap(mission, {});
 
         this.setState({
           formState: mission,
@@ -114,13 +114,34 @@ class DutyMissionFormWrap extends FormWrap {
     }
   }
 
+  handleFormStateChange = (field, e) => {
+    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+    const newState = {};
+
+    console.info('Form changed', field, value);
+    formState[field] = value;
+
+    formErrors = this.validateWrap(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+
+    return newState;
+  }
+
   /**
    * Валидация формы
    * Если миссия создаётся из реестра централизованных заданий, то идёт проверка на даты на графницы поручения(централизованных заданий)
    * @override
    */
-  validate(formState, errors, otherData = {}) {
-    let formErrors = super.validate(formState, errors);
+  validateWrap = (formState, errors, otherData = {}) => {
+    let formErrors = this.validate(formState, errors);
 
     const {
       order: othOrder = {},

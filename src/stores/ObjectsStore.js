@@ -25,8 +25,8 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCustomers, this.handleGetCustomers);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
-    this.register(objectsActions.getOrganizations, this.handleGetOrganizations);
-    this.register(objectsActions.updateOrganizations, this.handleUpdateOrganizations);
+    this.register(objectsActions.getCompanies, this.handleGetCompanies);
+    this.register(objectsActions.updateCompanies, this.handleUpdateCompanies);
     this.register(objectsActions.getOrders, this.handlegetOrders);
     this.register(objectsActions.resetOrder, this.handlegetOrders);
     this.register(objectsActions.getPositions, this.handleGetPositions);
@@ -86,7 +86,7 @@ export default class ObjectsStore extends Store {
       companyStructureLinearList: [],
       companyStructureLinearForUserList: [],
       positionsList: [],
-      organizations: [],
+      companies: [],
       materialConsumptionRateList: [],
       cleanCategoriesList: [],
       maintenanceWorkList: [],
@@ -220,15 +220,15 @@ export default class ObjectsStore extends Store {
     this.setState({ workKindsList: workKinds.result.rows || workKinds.result });
   }
 
-  handleGetOrganizations(organizations) {
-    const organizationsNew = organizations.result.map(company => ({
+  handleGetCompanies(companies) {
+    const companiesNew = companies.result.map(company => ({
       ...company,
       rgb_color: company.rgb_color || colors[Math.ceil(Math.random() * 4096)],
     }));
 
     this.setState({
-      organizations: organizationsNew,
-      organizationsIndex: _.keyBy(organizationsNew, 'company_id'),
+      companies: companiesNew,
+      companiesIndex: _.keyBy(companiesNew, 'company_id'),
     });
   }
 
@@ -253,9 +253,9 @@ export default class ObjectsStore extends Store {
     this.setState({ maintenanceWorkList });
   }
 
-  handleUpdateOrganizations(r) {
-    const organizations = r.result.rows || r.result;
-    this.setState({ organizations });
+  handleUpdateCompanies(r) {
+    const companies = r.result.rows || r.result;
+    this.setState({ companies });
   }
 
   handleGetCleaningRate(r) {

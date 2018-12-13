@@ -26,10 +26,10 @@ export default class CompanyStructureFormWrap extends FormWrap {
     this.schema = companyStructureSchema;
   }
 
-  createAction = (formState) => this.context.flux.getActions('companyStructure').createCompanyElement(formState)
+  createAction = formState => this.context.flux.getActions('companyStructure').createCompanyElement(formState)
     .then(() => this.props.refreshState());
 
-  updateAction = (formState) => this.context.flux.getActions('companyStructure').updateCompanyElement(formState)
+  updateAction = formState => this.context.flux.getActions('companyStructure').updateCompanyElement(formState)
     .then(() => this.props.refreshState());
 
   render() {

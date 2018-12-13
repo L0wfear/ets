@@ -76,8 +76,7 @@ class FormWrap extends React.Component {
       formErrors[key] = validateField(prop, formState[key], formState, this.schema, this.props);
       return formErrors;
     },
-      { ...errors },
-    );
+    { ...errors },);
   }
 
   handleFormStateChange = (field, e) => {
@@ -100,6 +99,7 @@ class FormWrap extends React.Component {
 
     return newState;
   }
+
   nullValueForField = (field, value) => {
     const { schema = {} } = this;
     const { properties = [] } = schema;
@@ -175,6 +175,7 @@ class FormWrap extends React.Component {
             canSave: true,
           });
           console.warn(errorData.error_text);
+          return;
         }
       } else {
         throw new Error('Create action called but not specified');
@@ -208,7 +209,6 @@ class FormWrap extends React.Component {
       // в случае успешного обновления выдаем всплывающее окно
       if (!this.preventDefaultNotification) global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
     }
-
     // закрываем форму только в случае отсутствия исключительных ситуаций
     if (typeof this.props.onFormHide === 'function' && result !== 'isError') {
       this.props.onFormHide(result);

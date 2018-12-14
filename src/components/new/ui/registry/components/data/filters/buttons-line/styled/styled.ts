@@ -11,6 +11,12 @@ export const EtsFiltersButtonsLine = styled.div`
 export const EtsFiltersCloseContainer = styled.div`
   font-size: 20px;
   cursor: pointer;
+  color: #444;
+  transition: color 0.2s;
+
+  :hover {
+    color: red;
+  }
 `;
 
 export const EtsFilterActionButtonConteiner = styled.div``;

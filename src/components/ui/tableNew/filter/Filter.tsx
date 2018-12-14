@@ -7,6 +7,8 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import { isEmpty } from 'utils/functions';
 import FilterRow from 'components/ui/table/filter/FilterRow';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
 const FilterRowTSX: any = FilterRow;
 
 class Fiter extends React.Component<any, any> {
@@ -115,9 +117,11 @@ class Fiter extends React.Component<any, any> {
             <Button onClick={this.reset} disabled={!this.props.haveActiveFilter}>Сброс</Button>
             <span className="filter-close" onClick={this.props.toggleFilter}><Glyphicon glyph="remove" /></span>
           </Div>
-          {
-            this.props.tableMeta.cols.map(this.renderFilterRow)
-          }
+          <Row>
+            <Col md={12}>
+             { this.props.tableMeta.cols.map(this.renderFilterRow) }
+            </Col>
+          </Row>
         </Div>
       </Collapse>
     );

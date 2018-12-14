@@ -681,7 +681,7 @@ export default class DataTable extends React.Component {
             <div className="waybills-buttons">
               {columnControl
                 && (
-<ClickOutHandler onClickOut={this.closeColumnControl}>
+                <ClickOutHandler onClickOut={this.closeColumnControl}>
                   <ColumnControl
                     show={this.state.columnControlModalIsOpen}
                     onChange={this.saveColumnControl}
@@ -690,33 +690,33 @@ export default class DataTable extends React.Component {
                     options={tableMetaCols.filter(el => el.display !== false)}
                   />
                 </ClickOutHandler>
-)
+                )
               }
               {!noFilter
                 && (
-<FilterButton
+                <FilterButton
                   show={this.state.filterModalIsOpen}
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />
-)
+                  )
               }
               {refreshable
                 && (
-<Button
+                <Button
                   bsSize="small"
                   onClick={this.props.onRefresh}
                 >
                   <Glyphicon glyph="refresh" />
                 </Button>
-)
+                )
               }
               {!noCustomButton && this.props.children}
             </div>
           </div>
           {!noFilter
             && (
-<Filter
+            <Filter
               show={this.state.filterModalIsOpen}
               onSubmit={this.saveFilter}
               onHide={this.closeFilter}
@@ -725,7 +725,7 @@ export default class DataTable extends React.Component {
               tableData={this.props.results}
               entity={this.props.entity}
             />
-)
+            )
           }
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
@@ -755,14 +755,14 @@ export default class DataTable extends React.Component {
         {
           serverPagination
             ? (
-            <div />
+              <div />
             )
             : (
-            <Paginator
-              currentPage={this.state.currentPage}
-              maxPage={Math.ceil(results.length / 15)}
-              setPage={this.setPage}
-            />
+              <Paginator
+                currentPage={this.state.currentPage}
+                maxPage={Math.ceil(results.length / 15)}
+                setPage={this.setPage}
+              />
             )
         }
       </Div>

@@ -7,9 +7,9 @@ import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import Div from 'components/ui/Div';
+import { ColFilter } from 'components/ui/tableNew/filter/styled';
 
-export default class FilterRow extends React.Component {
-
+class FilterRow extends React.Component {
   static get propTypes() {
     return {
       value: PropTypes.any,
@@ -113,10 +113,12 @@ export default class FilterRow extends React.Component {
     }
 
     return (
-      <Div className="filter-row">
+      <ColFilter md={3} sm={6}>
         <label id={idLabel} htmlFor="input">{displayName}</label>
         {input}
-      </Div>
+      </ColFilter>
     );
   }
 }
+
+export default FilterRow;

@@ -30,7 +30,6 @@ import {
   InputRouteFormProps,
 } from 'components/route_new/form/RouteForm.h';
 import { ReduxState } from 'redux-main/@types/state';
-import { validateRoute, createRoute, updateRoute } from 'redux-main/trash-actions/route/route';
 import { Button } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 import { isArray } from 'util';
@@ -43,6 +42,11 @@ import { resetCachedDataForRoute } from 'components/route_new/form/inside_fields
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
+import {
+  routesCreateRoute,
+  routesUpdateRoute,
+  routesValidateRoute,
+} from 'redux-main/reducers/modules/routes/routes/actions';
 
 const path = 'routeForm';
 
@@ -260,17 +264,17 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
     (dispatch, { page }) => ({
       validateRoute: (formState) => (
         dispatch(
-          validateRoute('none', formState, { page, path }),
+          routesValidateRoute(formState, { page, path }),
         )
       ),
-      createAction: (formState, isTemplate) => (
+      createAction: (formState, isTemplate = false) => (
         dispatch(
-          createRoute('none', formState, isTemplate, { page, path }),
+          routesCreateRoute(formState, isTemplate, { page, path }),
         )
       ),
       updateAction: (formState) => (
         dispatch(
-          updateRoute('none', formState, { page, path }),
+          routesUpdateRoute(formState, { page, path }),
         )
       ),
       loadGeozones: (serverName) => (

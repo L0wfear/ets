@@ -22,7 +22,7 @@ import { WaybillCompletedInfoDataType } from 'components/dashboard/redux-main/mo
 import { WaybillClosedInfoDataType } from 'components/dashboard/redux-main/modules/dashboard/@types/waibill-closed.h';
 
 import { loadMissionDataById } from 'redux-main/trash-actions/mission';
-import { loadRouteDataById } from 'redux-main/trash-actions/route/route';
+import { routesLoadRouteById } from 'redux-main/reducers/modules/routes/routes/actions';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -78,11 +78,9 @@ export const dashboardLoadRouteDataForCurrentDutyMissions: any = (duty_mission_d
 
   if (id) {
     dispatch(
-      loadRouteDataById(
-        'none',
+      routesLoadRouteById(
         id,
         {
-          promise: true,
           page: 'dashboard',
         },
       ),

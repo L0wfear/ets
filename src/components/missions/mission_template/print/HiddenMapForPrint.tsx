@@ -2,10 +2,10 @@ import * as React from 'react';
 import RouteInfoMap from 'components/route_new/route-info/map/RouteInfoMap';
 import { DivNone } from 'global-styled/global-styled';
 import { AbsoluteHiddenOverflow } from 'components/missions/mission_template/print/styled/styled';
-import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 
 interface IPropsHiddenMapForPrint {
-  route: RouteType;
+  route: Route;
   printMapKeyBig: string;
   printMapKeySmall: string;
 }

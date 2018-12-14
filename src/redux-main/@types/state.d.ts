@@ -8,6 +8,7 @@ import { IStateOldReport } from 'components/coverage_reports/redux-main/modules/
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
+import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -19,6 +20,7 @@ export interface ReduxState {
   autobase: IStateAutobase;
   employee: IStateEmployee;
   company_structure: IStateCompanyStructure;
+  routes: IStateRoutes;
 
   monitorPage: any;
   loading: any;

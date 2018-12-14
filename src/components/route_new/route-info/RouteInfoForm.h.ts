@@ -1,7 +1,7 @@
-import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 
 export type PropsRouteInfoForm = {
-  route: RouteType;
+  route: Route;
   title: string;
   onHide: () => any;
   mapKey: string;

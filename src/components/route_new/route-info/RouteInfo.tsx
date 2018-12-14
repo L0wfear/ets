@@ -31,6 +31,7 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
               input_lines={route.input_lines}
               object_list={route.object_list}
               type={route.type}
+              height={props.height}
               mapKey={this.props.mapKey}
             />
           </Flex>

@@ -1,9 +1,9 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { CreateRouteActionAns, RouteFormStateType } from 'redux-main/trash-actions/route/route';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 
-export type PropsRouteFormWrap = OwnRouteFormProps & {
+export type PropsRouteFormWrap = InputRouteFormProps & {
   showForm: boolean;
 };
 
@@ -22,7 +22,7 @@ export type DispatchRouteFormProps = {
 export type InputRouteFormProps = {
   handleHide: (hasSubmtit: boolean, route?: any) => any;
   page: string;
-  element: RouteFormStateType;
+  element: Route;
   routesMapNameId?: Map<string, number>;
   fromMission?: boolean;
   fromOrder?: boolean;
@@ -40,7 +40,7 @@ export type PropsRouteWithForm = (
   & OwnRouteFormProps
 );
 
-export type FormStateRouteForm = RouteFormStateType & {
+export type FormStateRouteForm = Route & {
   normatives: any[];
   available_route_types: string[];
   draw_object_list: any[];
@@ -53,7 +53,7 @@ export type PropsRouteForm = OutputWithFormProps<
     FormStateRouteForm,
     boolean?
   ],
-  CreateRouteActionAns
+  any
 >;
 
 export type ModifyBridgesForRoute = {

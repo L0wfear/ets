@@ -1,6 +1,6 @@
 import { withHandlers, compose, withState, shouldUpdate } from 'recompose';
 import { createValidDate, createValidDateTime } from 'utils/dates';
-import { isArray } from 'util';
+import { isArray, isFunction } from 'util';
 
 type TypePropsOnChangeWithKeys = {
   boundKeys?: any[];
@@ -23,10 +23,21 @@ export const onChangeWithKeys = compose(
   })),
   withHandlers({
     onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...otherOther) => {
-      if (isArray(boundKeys)) {
-        return onChange(...boundKeys, e, ...otherOther);
-      } else {
-        return onChange(boundKeys, e, ...otherOther);
+      if (isFunction(onChange)) {
+        if (isArray(boundKeys)) {
+          return onChange(...boundKeys, e, ...otherOther);
+        } else {
+          return onChange(boundKeys, e, ...otherOther);
+        }
+      }
+    },
+    onClick: ({ onClick, boundKeys = [], ...other}) => (e, ...otherOther) => {
+      if (isFunction(onClick)) {
+        if (isArray(boundKeys)) {
+          return onClick(...boundKeys, e, ...otherOther);
+        } else {
+          return onClick(boundKeys, e, ...otherOther);
+        }
       }
     },
   }),

@@ -1,8 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import * as Col from 'react-bootstrap/lib/Col';
 
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
+import { constantColor } from 'global-styled/global-constants';
 
 export const EtsPageWrapRoute = styled(EtsPageWrap)`
   padding: 0px;
@@ -52,17 +54,43 @@ export const EtsPageWrapRoute = styled(EtsPageWrap)`
   }
 `;
 
+export const RoutesTreeColWrap = styled(Col)`
+  background-color: #eee;
+  height: 100%;
+`;
+
+const cssActiveRoute = css`
+  background-color: ${constantColor.colorGreen};
+  color: #fff;
+`;
+
+export const LiRouteName = styled.li<{ active: boolean }>`
+  display: block;
+  margin: 0 0 8px 0;
+  padding: 5px 5px;
+  font-size: 16px;
+  color: ${constantColor.colorLink};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${constantColor.colorGreen};
+    color: #fff;
+  }
+
+  ${({ active }) => active ? cssActiveRoute : ''}
+
+
+`;
+
+export const RouteTreeH4 = styled.h4`
+  font-size: 20px;
+  padding: 5px 15px 5px 15px;
+`;
+
 export const SidebarListContainer = styled.div`
-  margin: auto;
-  position: absolute;
-  left: 0;
-  top: 70px;
-  bottom: 0;
-  right: 0;
-  padding-right: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  margin-left: 20px;
+
   h5 {
     font-weight: normal;
   }
@@ -85,4 +113,18 @@ export const SeasonsFilterContainer = styled.div`
 export const SpanTitleRouteGroup = styled.div`
   font-weight: 800;
   text-decoration: underline;
+`;
+
+export const RouteTreeMenuArrow = styled.span`
+  font-size: 9px;
+  position: relative;
+  top: -1px;
+`;
+
+export const TreeDivChildren = styled.div`
+  padding-left: 10px;
+`;
+
+export const RouteTreeMenu = styled.span`
+  cursor: pointer;
 `;

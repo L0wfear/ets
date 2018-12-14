@@ -27,7 +27,7 @@ import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-car
 
 class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, StateCurrentDutyMissions> {
   handleClick = (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => {
-    this.props.loadRouteDataById(
+    this.props.routesLoadRouteById(
       lastSubItem.data,
       lastSubItem.data.duty_mission_route_id,
     );
@@ -52,7 +52,7 @@ export default compose<PropsCurrentDutyMissions, PropsToDefaultCard>(
   connect<StatePropsCurrentDutyMissions, DispatchPropsCurrentDutyMissions, OwnPropsCurrentDutyMissions, ReduxState>(
     null,
     (dispatch) => ({
-      loadRouteDataById: (duty_mission_data, id) => (
+      routesLoadRouteById: (duty_mission_data, id) => (
         dispatch(
           dashboardLoadRouteDataForCurrentDutyMissions(
             duty_mission_data,

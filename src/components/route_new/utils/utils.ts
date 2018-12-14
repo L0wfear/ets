@@ -1,3 +1,4 @@
+export const EMPTY_STUCTURE = 'Без подразделения';
 export const getTypeRoute = (type) => {
   switch (type) {
     case 'mixed':

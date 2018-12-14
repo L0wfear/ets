@@ -9,9 +9,7 @@ export const companyStructureLoadCompanyStructure = (payload = {}) => (
       console.log(error);
 
       return {
-        result: {
-          rows: [],
-        },
+        result: [],
       };
     })
     .then((ans) => ({

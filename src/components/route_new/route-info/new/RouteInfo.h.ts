@@ -1,8 +1,8 @@
-import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 
 export type PropsRouteInfo = {
   noRouteName?: boolean;
-  route: RouteType;
+  route: Route;
   mapKey: string;
 };
 

@@ -17,6 +17,7 @@ import old_report from 'components/coverage_reports/redux-main/modules/old-repor
 import autobase from 'redux-main/reducers/modules/autobase/autobase';
 import employee from 'redux-main/reducers/modules/employee/employee';
 import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
+import routes from 'redux-main/reducers/modules/routes/routes';
 
 export default combineReducers({
   ...rootReducers,
@@ -32,4 +33,5 @@ export default combineReducers({
   autobase,
   employee,
   company_structure,
+  routes,
 });

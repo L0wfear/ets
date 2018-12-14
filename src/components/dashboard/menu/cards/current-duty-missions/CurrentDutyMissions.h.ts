@@ -11,7 +11,7 @@ export type InnerPropsCurrentDutyMissions<P> = OwnerPropsDefaultCard<P> & {
 
 export interface StatePropsCurrentDutyMissions {}
 export interface DispatchPropsCurrentDutyMissions {
-  loadRouteDataById: (
+  routesLoadRouteById: (
     duty_mission_data: CurrentDutyMissionsItemsSubItemDatasType,
     duty_mission_route_id: number,
   ) => any;

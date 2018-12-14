@@ -31,7 +31,7 @@ import {
   PropsMissionInfoForm,
   StateMissionInfoForm,
 } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
-import { RouteType } from 'redux-main/trash-actions/route/@types/promise.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 import { ReduxState } from 'redux-main/@types/state';
 
 /**
@@ -96,7 +96,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
         element,
       } = this.props;
 
-      this.props.loadRouteDataById(element.route_data.id).then(({ payload: { route_data } }) => {
+      this.props.routesLoadRouteById(element.route_data.id).then(({ payload: { route_data } }) => {
         switch (element.route_data.type) {
           case routeTypesBySlug.dt.key: return this.loadPolys(route_data, 'dt');
           case routeTypesBySlug.odh.key: return this.loadPolys(route_data, 'odh');
@@ -161,7 +161,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    * Создание геометрий точек
    * @param route_data данные по контрекному маршруту от route?id=
    */
-  async makePolysFromPoints(route_data: RouteType | null) {
+  async makePolysFromPoints(route_data: Route | null) {
     if (route_data) {
       const { missionReport } = this.state;
       this.setState({
@@ -184,8 +184,8 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    * @param route_data данные по контрекному маршруту от route?id=
    * @param type тип маршрута (dt/ odh)
    */
-  loadPolys(route_data: RouteType, type: string) {
-    const objectListIndex = route_data ? keyBy(route_data.object_list, 'object_id') : {};
+  loadPolys(route_data: Route, type: string) {
+    const objectListIndex: any = route_data ? keyBy(route_data.object_list, 'object_id') : {};
     const { serverName } = GEOOBJECTS_OBJ[type];
 
     this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }: any) => {

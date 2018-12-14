@@ -1,6 +1,4 @@
-import {
-  RouteType,
-} from 'redux-main/trash-actions/route/@types/promise.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 
 export type CurrentDutyMissionsItemsSubItemDatasType = {
   duty_mission_date_end: string;
@@ -37,6 +35,6 @@ export type CurrentDutyMissionsAnsType = {
   title_decentralized: string;
 };
 
-export type CurrentDutyMissionsInfoDataType = RouteType & {
+export type CurrentDutyMissionsInfoDataType = Route & {
   duty_mission_data: CurrentDutyMissionsItemsSubItemDatasType,
 };

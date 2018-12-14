@@ -43,29 +43,33 @@ export type WorkTypeData = {
   work_type_name: string;
 };
 
-export type RouteType = {
+export type Route = {
   name: string;
   draw_object_list: DrawData[];
   input_lines: DrawData[];
-  object_list: (ObjectDtOdhData & ObjectPointData)[];
-  comment: null | void;
-  company_id: number | void;
+  object_list: ObjectDtOdhData[] | ObjectPointData[];
+  comment: null | null;
+  company_id: number | null;
   created_at: string;
   id: number;
   is_main: boolean;
   is_new: boolean;
   is_template: boolean;
-  municipal_facility_id: number;
+  municipal_facility_id: number | null;
+  municipal_facility_name: string | null;
   norm_id: null;
   seasons: SeasonData[];
-  structure_id: number | void;
-  structure_name: string | void;
+  structure_id: number | null;
+  structure_name: string | null;
   technical_operation_id: number;
   technical_operation_name: string;
   type: 'mixed' | 'simple_dt' | 'points';
   work_types: WorkTypeData[]
 };
 
-export type AnsGetRouteDataById = {
-  route_data: RouteType;
+export type IStateRoutes = {
+  routesList: Route[];
+  routesIndex: {
+    [id: string]: Route;
+  };
 };

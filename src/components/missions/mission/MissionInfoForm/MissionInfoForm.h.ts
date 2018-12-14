@@ -1,5 +1,4 @@
 import { AnsLoadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
-import { AnsLoadRouteDataByIdFunc } from 'redux-main/trash-actions/route/@types/route.h';
 import { IMissionInfoFormState } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
 
 export interface IMIssionData {
@@ -84,7 +83,7 @@ export type PropsMissionInfoForm = {
   element: IMissionInfoFormState;
   onFormHide: any;
   loadGeozones: (serverName: string, company_id?: number | null) => Promise<AnsLoadGeozonesFunc>,
-  loadRouteDataById: (id: number) => Promise<AnsLoadRouteDataByIdFunc>,
+  routesLoadRouteById: (id: number) => any,
   loadCarGpsCode: ({ asuods_id, date_start }) => Promise<any>,
   loadTrackCaching: any;
   company_id: number | null;

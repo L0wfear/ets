@@ -2,13 +2,28 @@ import {
   RouteService,
   RouteValidateService,
 } from 'api/Services';
+import { get } from 'lodash';
+import { Route } from '../@types/routes.h';
 
-export const getRouteDataById = (id) => (
+/* ------------- ROUTES ------------- */
+export const routesLoadRoutes = (payload = {}) => (
+  RouteService.get({ ...payload })
+    .catch((error) => {
+      // tslint:disable-next-line
+      console.log(error);
+
+      return {
+        result: [],
+      };
+    })
+    .then((ans) => ({
+      data: get(ans, ['result'], []),
+    }))
+);
+export const routesLoadRouteById = (id) => (
   RouteService.get({ id })
     .then(({ result: [route_data = null] }) => {
       if (route_data) {
-        // Что здесь происходит???
-        // Надо ли это ?!
         if (route_data.type === 'points') {
           route_data.object_list.forEach((el) => {
             if (!el.shape && el.coordinates) {
@@ -63,43 +78,14 @@ export const getRouteDataById = (id) => (
       };
     })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.warn(error);
+      console.warn(error); // tslint:disable-line
 
       return {
         route_data: null,
       };
     })
 );
-
-export const getRouteValidate = (formState) => {
-  const payload = {
-    technical_operation_id: formState.technical_operation_id,
-    object_list: formState.input_lines,
-    municipal_facility_id: formState.municipal_facility_id,
-  };
-
-  return RouteValidateService.post(payload, false, 'json')
-    .catch((e) => {
-      // tslint:disable-next-line
-      console.warn(e);
-
-      return {
-        result: {
-          odh_fail_count: 0,
-          odh_success_count: 0,
-          odh_total_count: 0,
-          odh_validate_result: [],
-          odh_visited_count: 0,
-        },
-      };
-    })
-    .then(({ result }) => ({
-      route_validate: result,
-    }));
-};
-
-export const postCreateRoute = (formState, isTemplate) => {
+export const routesCreateRoute = (formState: Route, isTemplate?: boolean) => {
   const payload = {
     ...formState,
   };
@@ -115,8 +101,7 @@ export const postCreateRoute = (formState, isTemplate) => {
       },
     }));
 };
-
-export const putUpdateRoute = (formState) => {
+export const routesUpdateRoutes = (formState: Route) => {
   const payload = {
     ...formState,
   };
@@ -127,5 +112,50 @@ export const putUpdateRoute = (formState) => {
         ...formState,
         id,
       },
+    }));
+};
+export const routesDeleteRoutes = async (id) => {
+  const payload = { id: Number(id) };
+  try {
+    /*
+    return RouteService.path(id).delete(
+      {},
+      false,
+      'json',
+    )
+    */
+    await RouteService.delete(
+      payload,
+      false,
+      'json',
+    );
+    global.NOTIFICATION_SYSTEM.notify('Запись успешно удалена', 'success');
+  } catch (e) {
+    console.warn(e); // tslint:disable-line
+  }
+};
+export const routesValidateRoute = (formState: Route) => {
+  const payload = {
+    technical_operation_id: formState.technical_operation_id,
+    object_list: formState.input_lines,
+    municipal_facility_id: formState.municipal_facility_id,
+  };
+
+  return RouteValidateService.post(payload, false, 'json')
+    .catch((e) => {
+      console.warn(e); // tslint:disable-line
+
+      return {
+        result: {
+          odh_fail_count: 0,
+          odh_success_count: 0,
+          odh_total_count: 0,
+          odh_validate_result: [],
+          odh_visited_count: 0,
+        },
+      };
+    })
+    .then(({ result }) => ({
+      route_validate: result,
     }));
 };

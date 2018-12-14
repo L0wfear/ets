@@ -1224,8 +1224,8 @@ class WaybillForm extends Form {
               <h4>Простои на линии, ч.</h4>
             </Col>
             <Row>
-              <Div style={{ paddingLeft: 15 }}>
-                <Col md={4}>
+              <Col md={8}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-work"
                     type="string"
@@ -1236,7 +1236,7 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_work}
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-duty"
                     type="string"
@@ -1247,11 +1247,11 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_duty}
                   />
                 </Col>
-              </Div>
+              </Col>
             </Row>
             <Row>
-              <Div style={{ paddingLeft: 15 }}>
-                <Col md={4}>
+              <Col md={8}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-dinner"
                     type="string"
@@ -1262,7 +1262,7 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_dinner}
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-repair"
                     type="string"
@@ -1273,7 +1273,7 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_repair}
                   />
                 </Col>
-              </Div>
+              </Col>
             </Row>
           </Row>
           <Row>

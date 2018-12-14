@@ -33,7 +33,7 @@ const children: any = {
   cleaningVolume,
 };
 
-if (process.env.STAND === 'develop' || __DEVELOPMENT__) {
+if (process.env.STAND === 'dev' || __DEVELOPMENT__) {
   children.deviationFromNormOfCars = deviationFromNormOfCars;
 }
 

@@ -67,7 +67,6 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 
     this.register(geoObjectsActions.getGeozoneByTypeWithGeometry, this.handleGetGeozonesByTypeWithGeometry);
-    this.register(geoObjectsActions.getGeozoneByTypeWithGeometryLeak, this.handleGetGeozonesByTypeWithGeometry);
     this.register(geoObjectsActions.getGeozoneByType, this.handleGetGeozonesByType);
     this.register(geoObjectsActions.setInitialState, this.handleClearStore);
     this.register(geoObjectsActions.getOdhMkad, this.handleGetOdhMkad);

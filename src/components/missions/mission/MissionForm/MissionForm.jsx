@@ -48,6 +48,7 @@ import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssi
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 import missionPermission from 'components/missions/mission/config-data/permissions';
 import { isArray } from 'util';
+import { DropdownDateEnd, TimeDevider } from './styled';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -748,47 +749,59 @@ export class MissionForm extends Form {
                     <Row>
                       <Col className="date-label" md={12}><label>Время выполнения:</label></Col>
                     </Row>
-                    <Row className="datepicker-range mission">
-                      <Col md={5}>
-                        <Field
-                          id="date-start"
-                          type="date"
-                          error={errors.date_start}
-                          date={state.date_start}
-                          disabled={IS_DISABLED_ASSIGNED}
-                          min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
-                          max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-                          onChange={this.handleChangeDateStart}
-                        />
+                    <Row>
+                      <Col md={6}>
+                        <Row>
+                          <Col md={10} xm={10} sm={10} xs={10}>
+                            <Field
+                              id="date-start"
+                              type="date"
+                              error={errors.date_start}
+                              date={state.date_start}
+                              disabled={IS_DISABLED_ASSIGNED}
+                              min={this.props.fromWaybill && this.props.waybillStartDate ? this.props.waybillStartDate : null}
+                              max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+                              onChange={this.handleChangeDateStart}
+                            />
+                          </Col>
+                          <Col md={2} xm={2} sm={2} xs={2}>
+                            <DropdownDateEnd id="date-end-dropdown" disabled={IS_DISPLAY || !state.date_start} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
+                              <Dropdown.Toggle disabled={IS_DISPLAY}>
+                                <Glyphicon id="select-date_end" glyph="time" />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu className="select-date-end-custom">
+                                <MenuItem eventKey={1}>1</MenuItem>
+                                <MenuItem eventKey={2}>2</MenuItem>
+                                <MenuItem eventKey={3}>3</MenuItem>
+                                <MenuItem eventKey={4}>4</MenuItem>
+                                <MenuItem eventKey={5}>5</MenuItem>
+                              </Dropdown.Menu>
+                            </DropdownDateEnd>
+                          </Col>
+                        </Row>
                       </Col>
                       <Col md={1}>
-                        <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY || !state.date_start} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
-                          <Dropdown.Toggle disabled={IS_DISPLAY}>
-                            <Glyphicon id="select-date_end" glyph="time" />
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu className="select-date-end-custom">
-                            <MenuItem eventKey={1}>1</MenuItem>
-                            <MenuItem eventKey={2}>2</MenuItem>
-                            <MenuItem eventKey={3}>3</MenuItem>
-                            <MenuItem eventKey={4}>4</MenuItem>
-                            <MenuItem eventKey={5}>5</MenuItem>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </Col>
-                      <Col md={2}>
-                        <Col mdOffset={2} md={5}>—</Col>
+                        <Col md={12}>
+                          <TimeDevider>
+                            —
+                          </TimeDevider>
+                        </Col>
                       </Col>
                       <Col md={5}>
-                        <Field
-                          id="date_end"
-                          type="date"
-                          error={errors.date_end}
-                          date={state.date_end}
-                          disabled={IS_DISABLED_ASSIGNED}
-                          min={state.date_start}
-                          max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
-                          onChange={this.handleChangeDateEnd}
-                        />
+                        <Row>
+                          <Col md={12}>
+                            <Field
+                              id="date_end"
+                              type="date"
+                              error={errors.date_end}
+                              date={state.date_end}
+                              disabled={IS_DISABLED_ASSIGNED}
+                              min={state.date_start}
+                              max={this.props.fromWaybill && this.props.waybillEndDate ? this.props.waybillEndDate : null}
+                              onChange={this.handleChangeDateEnd}
+                            />
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
                   </Col>

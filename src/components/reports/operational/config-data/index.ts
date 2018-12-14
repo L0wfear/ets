@@ -16,7 +16,7 @@ import carMovementTimeReport from 'components/reports/operational/car-movement-t
 import cleaningVolume from 'components/reports/operational/cleaning_volume/config-data';
 import deviationFromNormOfCars from 'components/reports/operational/cars_count_deviation/config-data';
 
-const children = {
+const children: any = {
   routeOdhCoverage,
   mission,
   carUsageReportWithTrack,
@@ -31,8 +31,11 @@ const children = {
   carDowntimeAndOvermileage,
   carMovementTimeReport,
   cleaningVolume,
-  deviationFromNormOfCars,
 };
+
+if (process.env.STAND === 'develop' || __DEVELOPMENT__) {
+  children.deviationFromNormOfCars = deviationFromNormOfCars;
+}
 
 export default {
   title: 'Оперативные отчеты',

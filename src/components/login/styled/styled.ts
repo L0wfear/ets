@@ -61,6 +61,7 @@ export const LoginPageFormHeader = styled.div`
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
   letter-spacing: 1px;
+  text-shadow: rgba(255, 255, 255, 0.5) 0 0 1px;
 `;
 
 export const LoginPageFormContent = styled.div`

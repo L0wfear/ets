@@ -59,7 +59,7 @@ class LoginPage extends React.PureComponent<any, any> {
     const disabled = login.length === 0 || password.length === 0;
 
     return (
-      <LoginPageContainer className="loginpage">
+      <LoginPageContainer>
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
             <LoginPageFormContainer>

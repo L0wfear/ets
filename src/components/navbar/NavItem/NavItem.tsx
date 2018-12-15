@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as  NavItem from 'react-bootstrap/lib/NavItem';
-import { showHeaderMenu } from '../../app_header/utils/index';
+import { showHeaderMenu } from 'components/app_header/utils';
 
 const propsToNaItem = [
   'id',

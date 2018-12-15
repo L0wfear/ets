@@ -46,7 +46,7 @@ import {
 
 import RoutesLeftTree from 'components/route_new/RoutesLeftTree';
 import { EMPTY_STUCTURE } from 'components/route_new/utils/utils';
-import { RoutesTreeColWrap, RouteListContainer } from './styled/styled';
+import { RoutesTreeColWrap, RouteListContainer } from 'components/route_new/styled/styled';
 
 const SEASONS_OPTIONS = [
   {

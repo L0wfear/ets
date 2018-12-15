@@ -56,6 +56,7 @@ export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right
 
 export const SecondMenuItemContainer = styled(DefaultFirstDt)<{ noneEffect?: boolean  }>`
   pointer-events: all;
+  min-width: 250px;
   cursor: ${({ noneEffect }) => noneEffect ? 'default' : 'pointer'};
   background-color: ${({ active }) => active ? 'rgba(110, 158, 88, 0.4)' : 'inherit'};
   margin: 0;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as NavDropdown from 'react-bootstrap/lib/NavDropdown';
 
-import { showHeaderMenu } from '../../app_header/utils/index';
+import { showHeaderMenu } from 'components/app_header/utils';
 
 const propsToNavDropdown: any = [
   'id',

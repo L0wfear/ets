@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
-import { showHeaderMenu } from '../../app_header/utils/index';
+import { showHeaderMenu } from 'components/app_header/utils';
 
 const propsToMenuItem = [
   'id',

@@ -1,6 +1,6 @@
 import { TechnicalOperationObjectsList } from 'redux-main/trash-actions/technical-operation/promise/promise.d';
 import { GeozoneMunicipalFacilityById, GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
-import { StateRouteForm, ModifyBridgesForRoute } from '../../RouteForm.h';
+import { StateRouteForm, ModifyBridgesForRoute } from 'components/route_new/form/RouteForm.h';
 
 export type StateCreatingMap = {
   technical_operations_object_list: TechnicalOperationObjectsList;

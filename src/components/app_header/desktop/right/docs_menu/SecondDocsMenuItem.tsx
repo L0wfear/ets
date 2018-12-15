@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { SecondMenuItemContainer, SecondMenuContainer } from 'components/app_header/desktop/right/docs_menu/styled';
+import { SecondMenuContainer } from 'components/app_header/desktop/right/docs_menu/styled';
 import { DefaultSecondLvlMenu, LinkSecontLvl } from 'components/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
+import { showHeaderMenu } from 'components/app_header/utils';
+import { SecondMenuItemContainer } from 'components/app_header/desktop/left/page_menu/styled/index';
 
 class SecondDocsMenuItem extends React.Component<any, any> {
   state = {
@@ -48,7 +50,7 @@ class SecondDocsMenuItem extends React.Component<any, any> {
 
   renderChildrenItem = ([keyName, data]) => {
     return (
-      <SecondDocsMenuItem
+      <SecondDocsMenuItemWrap
         key={keyName}
         keyName={keyName}
         data={data}
@@ -90,4 +92,6 @@ class SecondDocsMenuItem extends React.Component<any, any> {
   }
 }
 
-export default SecondDocsMenuItem;
+const SecondDocsMenuItemWrap = showHeaderMenu(SecondDocsMenuItem);
+
+export default SecondDocsMenuItemWrap;

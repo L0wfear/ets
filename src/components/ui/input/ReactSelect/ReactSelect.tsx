@@ -11,7 +11,7 @@ import {
 import { SingleValueProps } from 'react-select/lib/components/SingleValue';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
 import { isArray, isNullOrUndefined, isString } from 'util';
-import { SingleValue } from './styled/styled';
+import { SingleValue } from 'components/ui/input/ReactSelect/styled/styled';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 

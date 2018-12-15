@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { get } from 'lodash';
-import { DefaultFirstDt } from 'components/app_header/styled/index';
 
 export const PageMenuMainDl = styled.dl`
   display: flex;
@@ -52,20 +51,4 @@ export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
 
   padding: 8px 0px;
-`;
-
-export const SecondMenuItemContainer = styled(DefaultFirstDt)<{ noneEffect?: boolean  }>`
-  pointer-events: all;
-  cursor: ${({ noneEffect }) => noneEffect ? 'default' : 'pointer'};
-  margin: 0;
-  color: #000;
-  :hover {
-    background-color: ${({ noneEffect, active }) => (
-      noneEffect
-        ? 'initial'
-        : active
-        ? 'rgba(110, 158, 88, 0.4)'
-        : '#f5f5f5'
-    )};
-  }
 `;

@@ -48,7 +48,7 @@ import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssi
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 import missionPermission from 'components/missions/mission/config-data/permissions';
 import { isArray } from 'util';
-import { DropdownDateEnd, TimeDevider } from './styled';
+import { DropdownDateEnd, TimeDevider } from 'components/missions/mission/MissionForm/styled';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,

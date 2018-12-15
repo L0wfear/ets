@@ -11,7 +11,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { sensorTrackColor } from 'constants/sensors';
-import { ColorSensorDiv } from './styled';
+import { ColorSensorDiv } from 'components/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/styled';
 
 type PropsSensorsEquipmentList = {
   track: any;

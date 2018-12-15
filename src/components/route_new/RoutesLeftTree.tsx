@@ -12,7 +12,7 @@ import {
 } from 'components/route_new/styled/styled';
 
 import { EMPTY_STUCTURE } from 'components/route_new/utils/utils';
-import { RouteTreeH4, RouteTreeMenu, RouteTreeMenuArrow, TreeDivChildren, LiRouteName } from './styled/styled';
+import { RouteTreeH4, RouteTreeMenu, RouteTreeMenuArrow, TreeDivChildren, LiRouteName } from 'components/route_new/styled/styled';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 import { DivNone } from 'global-styled/global-styled';

@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import contractor from 'components/directories/repair/contractor/config-data';
 import stateProgram from 'components/directories/repair/state_program/config-data';
@@ -13,5 +13,5 @@ const children = {
 export default {
   title: 'Планирование работ по техническому содержанию объектов',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

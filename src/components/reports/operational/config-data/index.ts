@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import routeOdhCoverage from 'components/reports/operational/route_odh_coverage/config-data';
 import mission from 'components/reports/operational/mission/config-data';
@@ -40,5 +40,5 @@ if (process.env.STAND === 'dev' || __DEVELOPMENT__) {
 export default {
   title: 'Оперативные отчеты',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

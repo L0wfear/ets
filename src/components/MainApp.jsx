@@ -12,6 +12,7 @@ import AdmNotification from 'components/adm-notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
 import Header from 'components/navbar/Header';
+import AppHeader from 'components/app_header/AppHeader';
 
 import {
   sessionResetData,
@@ -86,18 +87,21 @@ class MainApp extends React.Component {
 
     return (
       <div className="app">
+        <AppHeader />
         <Header />
-
         <div className="app-content">
-          <ModalTP
-            show={this.state.showFormTp}
-            onHide={this.hideFormTp}
-          />
-          <Routes />
-          <LoadingOverlay main />
-          <NotifiactionOrders />
-          <AdmNotification />
-          <UserNotificationWs />
+          <div className="app-content-absolute">
+            <ModalTP
+              show={this.state.showFormTp}
+              onHide={this.hideFormTp}
+            />
+            <Routes />
+            <LoadingOverlay main />
+            <NotifiactionOrders />
+            <AdmNotification />
+            <UserNotificationWs />
+
+          </div>
         </div>
 
         <div className="app-footer">

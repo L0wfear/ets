@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import employees from 'components/directories/employees/config-data';
 import employeeOnCar from 'components/directories/employee_on_car/config-data';
@@ -35,5 +35,5 @@ const children = {
 export default {
   title: 'НСИ',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

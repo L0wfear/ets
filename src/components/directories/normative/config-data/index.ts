@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import materialConsumptionRate from 'components/directories/normative/material_consumption_rate/config-data';
 import fuelRates from 'components/directories/normative/fuel_rates/config-data';
@@ -13,5 +13,5 @@ const children = {
 export default {
   title: 'Нормативные показатели',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

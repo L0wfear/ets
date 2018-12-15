@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import cars from 'components/new/pages/nsi/cars/_config-data';
 
@@ -9,5 +9,5 @@ const children = {
 export default {
   title: 'НСИ new',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

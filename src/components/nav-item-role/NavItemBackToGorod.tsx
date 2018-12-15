@@ -46,7 +46,7 @@ const NavItemBackToGorodWrap = compose(
 
     render() {
       return (
-        this.props.isGlavControl && this.props.currentUser.company_id !== null
+        (this.props.isGlavControl && this.props.currentUser.company_id !== null)
         ?
         <NavItem id="button-back-to-city" className={'company-switcher-back-to-city'} onClick={this.handleSelect}>
           <div className="switcher-tooltiptext">Возврат на уровень города</div>

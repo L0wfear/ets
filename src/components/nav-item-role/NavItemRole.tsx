@@ -12,7 +12,7 @@ import {
 class NavItemRole extends React.Component<any, any> {
   render() {
     return (
-      this.props.isGlavControl && this.props.location.pathname !== '/change-company'
+      (this.props.isGlavControl && this.props.location.pathname !== '/change-company')
       ?
       <NavItem id="change-company" className={'company-switcher'}>
         <span className={'company-switcher-label'}>Текущая организация:</span>

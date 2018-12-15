@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import odhCoverage from 'components/coverage_reports/odh_coverage/config-data';
 import dtCoverage from 'components/coverage_reports/dt_coverage/config-data';
@@ -12,5 +12,5 @@ export default {
   title: 'Оперативная обстановка',
   children,
   hiddenNav: true,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

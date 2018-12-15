@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import master from 'components/doc-header/master/_config-data/index';
@@ -20,5 +20,5 @@ export default {
   title: <Glyphicon glyph="book" />,
   className: 'user-guide',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

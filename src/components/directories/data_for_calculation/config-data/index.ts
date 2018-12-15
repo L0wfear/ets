@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import cleaningRate from 'components/directories/data_for_calculation/cleaning_rate/config-data';
 import odhNorm from 'components/directories/data_for_calculation/odh_norm/config-data';
@@ -19,5 +19,5 @@ const children = {
 export default {
   title: 'Показатели для расчета',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

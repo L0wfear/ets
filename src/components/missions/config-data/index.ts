@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import missionJournal from 'components/missions/mission/config-data';
 import missionTemplateJournal from 'components/missions/mission_template/config-data';
@@ -19,6 +19,6 @@ const children = {
 export default {
   title: 'Задания',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
 };

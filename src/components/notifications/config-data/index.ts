@@ -1,6 +1,7 @@
 import permissions from 'components/notifications/config-data/permissions';
 import components from 'components/notifications/config-data/components';
 import renderNav from 'components/notifications/config-data/renderNav';
+import renderNavNew from 'components/notifications/config-data/renderNavNew';
 
 export default {
   path: '/notification-registry',
@@ -10,4 +11,5 @@ export default {
   components,
   permissions,
   renderNav,
+  renderNavNew,
 };

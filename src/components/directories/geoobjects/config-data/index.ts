@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import odh from 'components/directories/geoobjects/pages/odh/config-data';
 import dt from 'components/directories/geoobjects/pages/dt/config-data';
@@ -33,5 +33,5 @@ const children = {
 export default {
   title: 'Геообъекты',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

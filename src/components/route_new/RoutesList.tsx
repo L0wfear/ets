@@ -91,6 +91,7 @@ const filterOptions: any = [
     displayName: 'Тех. операция',
     filter: {
       type: 'multiselect',
+      byLabel: 'technical_operation_name',
     },
   },
   {
@@ -189,6 +190,7 @@ class RoutesList extends React.PureComponent<any, any> {
     console.info('SETTING FILTER VALUES', filterValues); // tslint:disable-line
 
     let ROUTES: any = cloneDeep(this.state.routesList).filter((r) => this.shouldBeRendered(r, filterValues));
+
     ROUTES = sortBy(ROUTES, (o) => o.name.toLowerCase());
     ROUTES = ROUTES.filter((r) => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
 
@@ -197,7 +199,7 @@ class RoutesList extends React.PureComponent<any, any> {
 
       return newObj;
     }, {});
-    this.setState({ filterValues });
+    this.setState({ filterValues, ROUTES });
   }
 
   refreshRoutes = async (withState = null) => {
@@ -411,7 +413,7 @@ class RoutesList extends React.PureComponent<any, any> {
               active={activeFilter}
               values={this.state.filterValues}
               options={filterOptions}
-              data={routesList}
+              tableData={routesList}
             />
             <div className="clearfix">
               {

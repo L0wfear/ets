@@ -9,49 +9,12 @@ import { constantColor } from 'global-styled/global-constants';
 export const EtsPageWrapRoute = styled(EtsPageWrap)`
   padding: 0px;
   height: 100%;
-  flex-direction: row;
-  &-menu {
-    float:left;
-    margin-top: 50px;
-    .list-group-item {
-      cursor: pointer;
-    }
-  }
+  width: 100%;
+  position: absolute;
+`;
 
-  &-info {
-    float:left;
-    margin-left:30px;
-    .route-name {
-      font-size:20px;
-      margin-bottom:20px;
-    }
-    .route-image {
-      margin-top:20px;
-    }
-    .route-odhs-list {
-      position: absolute;;
-      left:620px;
-      width:380px;
-      margin-top:-15px;
-      ul {
-        margin-left:-20px;
-        li {
-          display: block;
-          max-width: 240px;
-        }
-        li:before{
-          content: "";
-          display: list-item;
-          position: absolute;
-        }
-      }
-    }
-  }
-  .list-group-item {
-
-    display: block;
-    max-width: 300px;
-  }
+export const RouteListContainer = styled.div`
+  display: flex;
 `;
 
 export const RoutesTreeColWrap = styled(Col)`

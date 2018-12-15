@@ -46,7 +46,7 @@ import {
 
 import RoutesLeftTree from 'components/route_new/RoutesLeftTree';
 import { EMPTY_STUCTURE } from 'components/route_new/utils/utils';
-import { RoutesTreeColWrap } from './styled/styled';
+import { RoutesTreeColWrap, RouteListContainer } from './styled/styled';
 
 const SEASONS_OPTIONS = [
   {
@@ -351,91 +351,92 @@ class RoutesList extends React.PureComponent<any, any> {
     const activeFilter = !!Object.values(this.state.filterValues).length;
 
     return (
-      <EtsPageWrapRoute inheritDisplay>
-        <RoutesTreeColWrap xs={5} md={3}>
-          <RoutesLeftTree
-            ROUTES={ROUTES}
-            showId={this.state.showId}
-            changeShowId={this.changeShowId}
-            selectRoute={this.selectRoute}
-            selectedRoute={this.state.selectedRoute}
-          />
-        </RoutesTreeColWrap>
-        <Col xs={7} md={9}>
-          <RouteHeaderContainer className="some-header">
-            <div className="waybills-buttons">
-              <span>{'Сезон: '}</span>
-              <SeasonsFilterContainer>
-                <ExtField
-                  id="season_id"
-                  type="select"
-                  multi
-                  label={false}
-                  options={SEASONS_OPTIONS}
-                  value={this.state.season_id}
-                  onChange={this.handleChangeSeasonId}
-                />
-              </SeasonsFilterContainer>
-              <FilterButton
-                active={activeFilter}
-                onClick={this.toggleFilter}
-              />
-              <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
-                <Glyphicon glyph="plus" />
-                {' '}
-                Создать маршрут
-              </ButtonCreateRoute>
-              <ButtonUpdateRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.updateRoute}>
-                <Glyphicon glyph="pencil" />
-                {' '}
-                Изменить маршрут
-              </ButtonUpdateRoute>
-              <ButtonUpdateRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.copyRoute}>
-                <Glyphicon glyph="copy" />
-                {' '}
-                Копировать маршрут
-              </ButtonUpdateRoute>
-              <ButtonDeleteRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.deleteRoute}>
-                <Glyphicon glyph="remove" />
-                {' '}
-                Удалить
-              </ButtonDeleteRoute>
-            </div>
-          </RouteHeaderContainer>
-          <Filter
-            show={this.state.filterModalIsOpen}
-            onSubmit={this.saveFilter}
-            onClick={this.toggleFilter}
-            onHide={this.closeFilter}
-            active={activeFilter}
-            values={this.state.filterValues}
-            options={filterOptions}
-            data={routesList}
-          />
-          <div className="clearfix">
-            {
-              selectedRoute !== null && selectedRoute.id
-                ? (
-                  <RouteInfo
-                    route={selectedRoute}
-                    mapKey="mapRouteList"
-                    height="700px"
-                  />
-                )
-                : (
-                  <DivNone />
-                )
-            }
-            <RouteFormWrap
-              page={page}
-              showForm={showForm}
-              handleHide={this.onFormHide}
-              element={selectedRoute}
-              routesMapNameId={this.state.routesMapNameId}
+      <EtsPageWrapRoute>
+        <RouteListContainer>
+          <RoutesTreeColWrap xs={5} md={3}>
+            <RoutesLeftTree
+              ROUTES={ROUTES}
+              showId={this.state.showId}
+              changeShowId={this.changeShowId}
+              selectRoute={this.selectRoute}
+              selectedRoute={this.state.selectedRoute}
             />
-          </div>
-        </Col>
-
+          </RoutesTreeColWrap>
+          <Col xs={7} md={9}>
+            <RouteHeaderContainer className="some-header">
+              <div className="waybills-buttons">
+                <span>{'Сезон: '}</span>
+                <SeasonsFilterContainer>
+                  <ExtField
+                    id="season_id"
+                    type="select"
+                    multi
+                    label={false}
+                    options={SEASONS_OPTIONS}
+                    value={this.state.season_id}
+                    onChange={this.handleChangeSeasonId}
+                  />
+                </SeasonsFilterContainer>
+                <FilterButton
+                  active={activeFilter}
+                  onClick={this.toggleFilter}
+                />
+                <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
+                  <Glyphicon glyph="plus" />
+                  {' '}
+                  Создать маршрут
+                </ButtonCreateRoute>
+                <ButtonUpdateRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.updateRoute}>
+                  <Glyphicon glyph="pencil" />
+                  {' '}
+                  Изменить маршрут
+                </ButtonUpdateRoute>
+                <ButtonUpdateRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.copyRoute}>
+                  <Glyphicon glyph="copy" />
+                  {' '}
+                  Копировать маршрут
+                </ButtonUpdateRoute>
+                <ButtonDeleteRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.deleteRoute}>
+                  <Glyphicon glyph="remove" />
+                  {' '}
+                  Удалить
+                </ButtonDeleteRoute>
+              </div>
+            </RouteHeaderContainer>
+            <Filter
+              show={this.state.filterModalIsOpen}
+              onSubmit={this.saveFilter}
+              onClick={this.toggleFilter}
+              onHide={this.closeFilter}
+              active={activeFilter}
+              values={this.state.filterValues}
+              options={filterOptions}
+              data={routesList}
+            />
+            <div className="clearfix">
+              {
+                selectedRoute !== null && selectedRoute.id
+                  ? (
+                    <RouteInfo
+                      route={selectedRoute}
+                      mapKey="mapRouteList"
+                      height="700px"
+                    />
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
+              <RouteFormWrap
+                page={page}
+                showForm={showForm}
+                handleHide={this.onFormHide}
+                element={selectedRoute}
+                routesMapNameId={this.state.routesMapNameId}
+              />
+            </div>
+          </Col>
+        </RouteListContainer>
       </EtsPageWrapRoute>
     );
   }

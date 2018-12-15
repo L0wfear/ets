@@ -43,6 +43,8 @@ class AppHeader extends React.Component<any, any> {
   render() {
     const { showChildren } = this.state;
 
+    console.log(showChildren) // tslint:disable-line
+
     return (
       <ClickOutHandler onClickOut={this.handleClickOut}>
         <MobiContainer>
@@ -60,7 +62,7 @@ class AppHeader extends React.Component<any, any> {
                 <ChangeRole />
               </ChangeRoleContainerWithButton>
               {
-                this.mapRWithP((['doc', docs]))
+                this.mapRWithP(['doc', docs])
               }
               <UserDocRow>
                 <UserInfo />

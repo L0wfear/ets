@@ -317,7 +317,7 @@ export class DutyMissionForm extends Form {
     this.setState(stateChangeObject);
   }
 
-  onFormHideNew = async (isSubmitted, payloadData) => {
+  onFormHideNew = async (isSubmitted, route) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
     const {
@@ -330,8 +330,6 @@ export class DutyMissionForm extends Form {
 
     const stateChangeObject = {};
     if (isSubmitted === true) {
-      const route = get(payloadData, ['payload', 'route'], null);
-
       const createdRouteId = route.id;
       this.handleChange('route_id', createdRouteId);
       const [selectedRouteNew, routesList] = await Promise.all([

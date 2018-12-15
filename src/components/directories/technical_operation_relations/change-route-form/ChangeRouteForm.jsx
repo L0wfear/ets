@@ -114,7 +114,7 @@ export default class ChangeRouteForm extends React.Component {
     })
     .then(() => (
       this.context.flux.getActions('routes').removeRoute(this.state.routeSelected)
-        .then(() => this.onFormHide())
+        .then(() => this.onFormHide(true))
         .catch((error) => console.log(error)) // eslint-disable-line
     ))
     .catch(() => 0);

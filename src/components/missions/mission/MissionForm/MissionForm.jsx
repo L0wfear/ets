@@ -390,9 +390,7 @@ export class MissionForm extends Form {
     this.setState({ showRouteForm: false });
   }
 
-  onFormHideNew = (isSubmitted, payloadData) => {
-    const route = get(payloadData, ['payload', 'route'], null);
-
+  onFormHideNew = (isSubmitted, route) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
     const { formState } = this.props;

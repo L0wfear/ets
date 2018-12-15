@@ -84,9 +84,11 @@ class OneMenu extends React.Component<any, any> {
             isObject(data.children)
             ? (
               <Collapse in={showChildren}>
-                <SecondMenuContainerMobi>
-                  { Object.entries(data.children).map(this.mapRWithP) }
-                </SecondMenuContainerMobi>
+                <div>
+                  <SecondMenuContainerMobi>
+                    { Object.entries(data.children).map(this.mapRWithP) }
+                  </SecondMenuContainerMobi>
+                </div>
               </Collapse>
             )
             : (

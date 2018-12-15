@@ -14,9 +14,9 @@ export const PartHeaderContainer = styled.div`
 
 export const DefaultFirstDt = styled.div<{ active?: boolean }>`
   font-weight: 400;
+  white-space: normal;
   cursor: pointer;
   color: ${({ active }) => active ? 'back' : 'white'};
-  white-space: nowrap;
   position: relative;
   background-color: ${({ active }) => active ? '#e7e7e7' : 'initial'};
   text-decoration: none;

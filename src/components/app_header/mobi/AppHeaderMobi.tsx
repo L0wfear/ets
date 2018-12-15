@@ -53,22 +53,24 @@ class AppHeader extends React.Component<any, any> {
             <Button active={showChildren} onClick={this.toggleShowMenu}>Меню</Button>
           </FirstLvlMobi>
           <Collapse in={showChildren}>
-            <SecondMenuContainerMobiFirst>
-              {
-                Object.entries(rWithP).map(this.mapRWithP)
-              }
-              <ChangeRoleContainerWithButton>
-                <BackToGorod />
-                <ChangeRole />
-              </ChangeRoleContainerWithButton>
-              {
-                this.mapRWithP(['doc', docs])
-              }
-              <UserDocRow>
-                <UserInfo />
-                <EtsLogout />
-              </UserDocRow>
-            </SecondMenuContainerMobiFirst>
+            <div>
+              <SecondMenuContainerMobiFirst>
+                {
+                  Object.entries(rWithP).map(this.mapRWithP)
+                }
+                <ChangeRoleContainerWithButton>
+                  <BackToGorod />
+                  <ChangeRole />
+                </ChangeRoleContainerWithButton>
+                {
+                  this.mapRWithP(['doc', docs])
+                }
+                <UserDocRow>
+                  <UserInfo />
+                  <EtsLogout />
+                </UserDocRow>
+              </SecondMenuContainerMobiFirst>
+            </div>
           </Collapse>
         </MobiContainer>
       </ClickOutHandler>

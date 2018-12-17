@@ -55,7 +55,8 @@ export type PropsEmployee = OutputWithFormProps<
   any
 >;
 export type StateEmployee = {
-  carOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+  carList: Car[];
+  carOptions: DefaultSelectListMapper<Car['asuods_id'], string, Car>;
   positionOptions: DefaultSelectListMapper<Position['id'], Position['position'], Position>;
   companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear['id'], CompanyStructureLinear['name'], CompanyStructureLinear>;
   isCommonOptions: { value: number; label: string }[];

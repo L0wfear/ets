@@ -55,7 +55,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
         value: asuods_id,
         label: gov_number,
-        allData: {
+        rowData: {
           asuods_id,
           gov_number,
           ...other,

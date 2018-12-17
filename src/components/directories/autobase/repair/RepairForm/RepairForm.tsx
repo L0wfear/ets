@@ -70,7 +70,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
         value: asuods_id,
         label: gov_number,
-        allData: {
+        rowData: {
           asuods_id,
           gov_number,
           ...other,

@@ -29,9 +29,11 @@ import {
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DivNone } from 'global-styled/global-styled';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   state = {
+    carList: [],
     carOptions: [],
     positionOptions: [],
     companyStructureOptions: [],
@@ -59,25 +61,26 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     this.loadCompanyStructurePosition();
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { payload: { data } }: { payload: { data: Car[] } } = await this.props.autobaseGetSetCar();
 
     this.setState({
+      carList: data,
       carOptions: data
         .filter((car) => filterCars(car, this.props.formState))
-        .map((allData) => ({
-          value: allData.asuods_id,
-          label: `${allData.gov_number} / ${get(allData, 'garage_number', '-') || '-'} / ${allData.type_name}/ ${allData.full_model_name}/ ${allData.special_model_name || allData.model_name}`,
-          allData,
+        .map((rowData) => ({
+          value: rowData.asuods_id,
+          label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+          rowData,
         })),
     });
   }
   async loadEmployeePosition() {
     const { payload: { data, dataIndex } } = await this.props.employeePositionGetSetPosition();
     const positionOptions = data
-      .map((allData) => ({
-        value: allData.id,
-        label: allData.position,
-        allData,
+      .map((rowData) => ({
+        value: rowData.id,
+        label: rowData.position,
+        rowData,
       }));
 
     this.setState({
@@ -103,6 +106,18 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       [name]: get(value, ['target', 'value'], value),
     });
   }
+  handleChangeDateEnd = (type: 'special_license_date_end', value) => {
+    this.props.handleChange({
+      [type]: value,
+    });
+
+    this.updateCarOptions({
+      ...{
+        ...this.props.formState,
+        [type]: value,
+      },
+    });
+  }
   handleChangeWithValidate = (field, e) => {
     const value = get(e, ['target', 'value'], e);
     if (this.props.formState[field] !== value) {
@@ -111,13 +126,13 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       };
 
       if (field === 'special_license') {
-        if (!value) {
+        if (!changeObject[field]) {
           changeObject.special_license_date_end = null;
           changeObject.category_special_license = [];
         }
       }
       if (field === 'drivers_license') {
-        if (!value) {
+        if (!changeObject[field]) {
           changeObject.drivers_license_date_end = null;
           changeObject.category_drivers_license = [];
         }
@@ -126,6 +141,13 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       if (!changeObject[field]) {
         changeObject.prefer_car = null;
         changeObject.secondary_car = [];
+
+        this.updateCarOptions({
+          ...{
+            ...this.props.formState,
+            ...changeObject,
+          },
+        });
       }
 
       this.props.handleChange(changeObject);
@@ -142,8 +164,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       if (value) {
         changeObject.is_driver = this.state.positionOptions
-          .some(({ allData }) => (
-            allData.id === value && allData.is_driver
+          .some(({ rowData }) => (
+            rowData.id === value && rowData.is_driver
           ));
       }
 
@@ -159,20 +181,21 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       };
 
       this.props.handleChange(changeObject);
-      this.updateCarOptions({
-        ...formState,
-        ...changeObject,
-      });
     }
   }
-  updateCarOptions(formState) {
+  updateCarOptions(formState: PropsEmployee['formState']) {
     this.setState({
-      carOptions: this.state.carOptions.filter(({ allData }) => (
-        filterCars(
-          allData,
-          formState,
-        )
-      )),
+      carOptions: this.state.carList
+        .filter((car) => (
+          filterCars(
+            car,
+            formState,
+          )
+        )).map((rowData) => ({
+          value: rowData.asuods_id,
+          label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+          rowData,
+        })),
     });
   }
   handleHide = () => {
@@ -310,7 +333,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     time={false}
                     error={errors.special_license_date_end}
                     disabled={!isPermitted || !state.special_license}
-                    onChange={this.handleChange}
+                    onChange={this.handleChangeDateEnd}
                     boundKeys="special_license_date_end"
                   />
                 </Col>
@@ -404,7 +427,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     time={false}
                     error={errors.drivers_license_date_end}
                     disabled={!isPermitted || !state.drivers_license}
-                    onChange={this.handleChange}
+                    onChange={this.handleChangeDateEnd}
                     boundKeys="drivers_license_date_end"
                   />
                 </Col>

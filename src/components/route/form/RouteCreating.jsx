@@ -26,7 +26,6 @@ class RouteCreating extends React.Component {
       route: PropTypes.object.isRequired,
       formErrors: PropTypes.object.isRequired,
       onChange: PropTypes.func.isRequired,
-      geozonePolys: PropTypes.object.isRequired,
     };
   }
 
@@ -52,7 +51,6 @@ class RouteCreating extends React.Component {
     const { props } = this;
     const {
       route,
-      geozonePolys = {},
     } = props;
 
     let { object_list = [] } = route;
@@ -61,7 +59,7 @@ class RouteCreating extends React.Component {
     if (odhs.length > object_list.length) {
       const object_id = _.last(odhs);
       object_list.push({
-        object_id: parseInt(object_id, 10), type, name: geozonePolys[object_id].name, state: polyState.ENABLED,
+        object_id: parseInt(object_id, 10), type, name: polys[object_id].name, state: polyState.ENABLED,
       });
       polys[object_id].state = polyState.ENABLED;
     } else {
@@ -115,7 +113,6 @@ class RouteCreating extends React.Component {
   handleCheckbox = (type, v, e) => {
     let { object_list = [] } = this.props.route;
     const { polys = {} } = this.props.route;
-    const { geozonePolys = {} } = this.props;
     const odhs = v.split(',').map((e) => parseInt(e, 10));
     object_list.forEach((obj) => {
       const i = odhs.indexOf(obj.object_id);
@@ -124,7 +121,7 @@ class RouteCreating extends React.Component {
     if (e.target.checked) {
       odhs.forEach((e) => {
         object_list.push({
-          object_id: e, type, name: geozonePolys[e].name, state: polyState.ENABLED,
+          object_id: e, type, name: polys[e].name, state: polyState.ENABLED,
         });
         polys[e].state = polyState.ENABLED;
       });

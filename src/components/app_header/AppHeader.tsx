@@ -12,12 +12,21 @@ class AppHeader extends React.Component<{}, any> {
   };
 
   componentDidMount() {
-    window.onresize = () => {
-      this.setState((state) => ({
-        width: document.body.offsetWidth,
-        mobi: document.body.offsetWidth < 768,
-      }));
-    };
+    window.addEventListener(
+      'resize',
+      this.resizeWindow,
+    );
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
+  }
+
+  resizeWindow = () => {
+    this.setState(() => ({
+      width: document.body.offsetWidth,
+      mobi: document.body.offsetWidth < 768,
+    }));
   }
 
   render() {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import NotificationBage from 'components/notifications/NotificationBadge';
 
-const renderNav = (props) => {
+const TitleComponent = (props) => {
   return (
     <div>
       {props.data.title}<NotificationBage />
@@ -9,4 +9,4 @@ const renderNav = (props) => {
   );
 };
 
-export default React.memo(renderNav);
+export default React.memo(TitleComponent);

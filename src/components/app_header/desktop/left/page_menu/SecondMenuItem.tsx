@@ -37,7 +37,7 @@ class SecondMenuItem extends React.Component<any, any> {
       return (
         <LinkSecontLvl id={`show-${key}`} to="" onClick={this.handleClickToOpenMenu}>
           <DefaultSecondLvlMenu>
-            <span>{data.renderNavNew ? <data.renderNavNew data={data} /> : data.title}</span>
+            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
           </DefaultSecondLvlMenu>
         </LinkSecontLvl>
@@ -47,7 +47,7 @@ class SecondMenuItem extends React.Component<any, any> {
     return (
       <LinkSecontLvl id={`link-${key}`} to={`${data.path || ''}`} onClick={this.handleMiddlewareClick}>
         <DefaultSecondLvlMenu>
-          <span>{data.renderNavNew ? <data.renderNavNew data={data} /> : data.title}</span>
+          <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
         </DefaultSecondLvlMenu>
       </LinkSecontLvl>
     );

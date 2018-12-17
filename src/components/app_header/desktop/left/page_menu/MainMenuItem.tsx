@@ -44,7 +44,7 @@ class MainMenuItem extends React.Component<any, any> {
       return (
         <LinkFirstLvl id={`show-${key}`} to="" onClick={this.handleClickToOpenMenu}>
           <DefaultFirstLvlMenu>
-            <span>{data.renderNavNew ? <data.renderNavNew data={data} /> : data.title}</span>
+            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
           </DefaultFirstLvlMenu>
         </LinkFirstLvl>
@@ -54,7 +54,7 @@ class MainMenuItem extends React.Component<any, any> {
     return (
       <LinkFirstLvl id={`link-${key}`} to={`${data.path || ''}`}>
         <DefaultFirstLvlMenu>
-          <span>{data.renderNavNew ? <data.renderNavNew data={data} /> : data.title}</span>
+          <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
         </DefaultFirstLvlMenu>
       </LinkFirstLvl>
     );

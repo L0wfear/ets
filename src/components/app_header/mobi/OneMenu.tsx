@@ -48,7 +48,7 @@ class OneMenu extends React.Component<any, any> {
       return (
         <LinkSecontLvl id={`show-${key}`} to="" onClick={this.toggleShowMenu}>
           <DefaultSecondLvlMenuMobi>
-            <span>{data.renderNavNew ? <data.renderNavNew data={data} /> : data.title}</span>
+            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
           </DefaultSecondLvlMenuMobi>
         </LinkSecontLvl>
@@ -58,7 +58,7 @@ class OneMenu extends React.Component<any, any> {
     return (
       <LinkSecontLvl id={`link-${key}`} to={`${data.path || ''}`} onClick={this.handleMiddlewareClick}>
         <DefaultSecondLvlMenuMobi>
-          <span>{data.renderNavNew ? <data.renderNavNew data={data} /> : data.title}</span>
+          <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
         </DefaultSecondLvlMenuMobi>
       </LinkSecontLvl>
     );

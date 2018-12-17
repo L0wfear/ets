@@ -90,6 +90,10 @@ export type InsuranceType = {
 export type Car = {
   asuods_id: number;
   gov_number: string;
+  type_name: string;
+  full_model_name: string;
+  special_model_name: string | null;
+  model_name: string | null;
 };
 
 export type CarFuncTypes = {

@@ -52,7 +52,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
       driversOptions: data.map((driver) => ({
         value: driver.id,
         label: driver.fio_license,
-        allData: driver,
+        rowData: driver,
       })),
     });
   }

@@ -67,15 +67,6 @@ export function filterCars(car, formState) {
   } else if (car.available_to_bind) {
     if (
       formState &&
-      (
-        !formState.drivers_license_date_end
-        || !formState.special_license_date_end
-      )
-    ) {
-      norm = true;
-    }
-    if (
-      formState &&
       formState.drivers_license_date_end &&
       diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
       car.for_driver_license

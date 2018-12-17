@@ -376,6 +376,7 @@ button {
   &.disabled {
     color: rgba(0, 0, 0, 0.5);
     cursor: not-allowed;
+    pointer-events: none;
   }
 }
 .car_info-track_date_control {

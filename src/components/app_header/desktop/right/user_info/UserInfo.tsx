@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors/index';
 import { UserDataMenu, UserDataContainer, UserHeaderData, UserFio } from 'components/app_header/desktop/right/user_info/styled';
-
-const defaultUser = require('assets/images/avatar-default.png');
+import { UserImg } from './styled/index';
 
 const ROLES = {
   master: 'Мастер',
@@ -41,9 +40,9 @@ class UserInfo extends React.Component<any, {}> {
     const { current } = this.node;
 
     if (current && this.props.changeStaticWidth) {
-      setTimeout(() => {
+      setImmediate(() => {
         this.props.changeStaticWidth(current.offsetWidth);
-      }, 0);
+      });
     }
   }
 
@@ -55,8 +54,8 @@ class UserInfo extends React.Component<any, {}> {
     const role = get(ROLES, userRole, '');
     return (
       <DefaultFirstDt ref={this.node}>
-        <UserDataMenu id="user-data">
-          <img role="presentation" src={defaultUser} />
+        <UserDataMenu id="info-user-data">
+          <UserImg />
           <UserDataContainer>
             <UserHeaderData>{role}</UserHeaderData>
             <UserFio short={!role}>{userFio}</UserFio>

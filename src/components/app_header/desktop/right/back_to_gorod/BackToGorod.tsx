@@ -83,7 +83,7 @@ const BackToGorod = compose<any, any>(
 
       return show
         ? (
-          <BackToGorodContainer ref={this.node} onClick={this.handleSelect} title="Возврат на уровень города">
+          <BackToGorodContainer ref={this.node} id="button-back-to-city" onClick={this.handleSelect} title="Возврат на уровень города">
             <Glyphicon glyph="arrow-left"/>
           </BackToGorodContainer>
         )

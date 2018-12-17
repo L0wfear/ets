@@ -36,9 +36,7 @@ class PageMenu extends React.Component<any, any> {
     const { current } = this.node;
 
     if (current && this.props.changeStaticWidth) {
-      setTimeout(() => {
-        this.props.changeStaticWidth(current.offsetWidth);
-      }, 0);
+      this.props.changeStaticWidth(current.offsetWidth);
     }
   }
 

@@ -11,7 +11,6 @@ import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
-import Header from 'components/navbar/Header';
 import AppHeader from 'components/app_header/AppHeader';
 
 import {
@@ -88,7 +87,6 @@ class MainApp extends React.Component {
     return (
       <div className="app">
         <AppHeader />
-        <Header />
         <div className="app-content">
           <div className="app-content-absolute">
             <ModalTP

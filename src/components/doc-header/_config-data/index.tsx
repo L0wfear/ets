@@ -18,7 +18,6 @@ const children = {
 
 export default {
   title: <Glyphicon glyph="book" />,
-  className: 'user-guide',
   children,
   ...getChildrenData(children),
 };

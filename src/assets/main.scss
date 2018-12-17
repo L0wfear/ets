@@ -403,102 +403,6 @@ body.application {
   font-size: 14px;
 }
 
-.navbar-default {
-  min-height: $navbarHeight;
-
-  border: none;
-  border-radius: 0;
-  margin-bottom: 5px;
-
-  background-color: #292929;
-  color: #fff;
-  z-index: 1001;
-
-  .container-fluid {
-    padding: 0 !important;
-    padding-left: 15px !important;
-  }
-
-  .navbar-nav > li {
-    @media (min-width: 768px) {
-      & > a {
-        padding-top: $navbarPaddingA;
-        padding-bottom: $navbarPaddingA;
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-    }
-
-    & > a,
-    &.open > a  {
-      text-decoration: underline;
-    }
-
-    &.active > a,
-    &:hover > a {
-      background-color: #4c4c4c;
-    }
-
-    & > a,
-    & > a:focus,
-    & > a:active,
-    &.active > a,
-    &:hover > a {
-      color: inherit;
-    }
-  }
-
-  .user-guide>a {
-    text-decoration: none !important;
-  }
-
-  .navbar-brand {
-    color: $colorGray;
-    text-decoration: none;
-
-    &:hover {
-      color: #fff;
-    }
-
-    @media (min-width: 768px) {
-      height: $navbarHeight;
-
-      padding-top: $navbarPaddingA;
-      padding-bottom: $navbarPaddingA;
-    }
-  }
-}
-
-.company-switcher-back-to-city>a {
-  height: 80px;
-  &>span {
-    height: 80px;
-  }
-}
-
-.company-switcher-back-to-city {
-  position: relative;
-  display: inline-block;
-  
-  .switcher-tooltiptext {
-    visibility: hidden;
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    padding: 5px 0;
-    text-align: center;
-
-    /* Position the tooltip */
-    position: absolute;
-    left: -80px;
-    top: 40px;
-    z-index: 1;
-  }
-  &:hover .switcher-tooltiptext {
-    visibility: visible;
-  }
-}
-
 .company-switcher {
   width: 250px;
 
@@ -524,49 +428,6 @@ body.application {
     } 
   }
 
-}
-.navbar-user {
-  text-decoration: none;
-
-  & > a {
-    display: block !important;
-    height: $navbarHeight !important;
-    padding: 10px 15px 0 15px !important;
-    text-decoration: none !important;
-  }
-
-  &__avatar {
-    float: left;
-    width: 43px;
-    height: 43px;
-    overflow: hidden;
-
-    &-img {
-      display: block;
-      width: 43px;
-      height: auto;
-      margin: 0;
-      border: none;
-      outline: none;
-    }
-  }
-
-  &__data {
-    margin-left: 53px;
-    padding-top: 2px;
-
-    &-type {
-      color: $colorGray;
-    }
-
-    &-name-short {
-      max-width: 140px !important;
-    }
-  }
-}
-.navbar-inverse {
-  background-color: #3d4a57;
-  border-color: #333;
 }
 
 /* route-list */
@@ -970,14 +831,6 @@ body.application {
 
   button {
     background-color: transparent;
-  }
-}
-
-/** APP NAVIGATION */
-.app-navigation {
-  z-index: 998;
-  & >nav {
-    margin: 0px;
   }
 }
 

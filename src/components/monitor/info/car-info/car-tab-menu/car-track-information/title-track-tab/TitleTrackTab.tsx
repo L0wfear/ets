@@ -44,7 +44,10 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
   };
 
   carInfoToggleForToday: any = (e) => {
-    if (!this.props.disabledForToday) {
+    const disbledByTrackPlayStatys = this.props.status !== 'stop';
+    const { errorDates } = this.state;
+
+    if (!((this.props.loadingTrack && this.props.disabledForToday) || disbledByTrackPlayStatys || !!errorDates)) {
       this.props.carInfoToggleForToday();
       if (!this.props.forToday) {
         const payload = {

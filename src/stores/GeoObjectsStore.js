@@ -32,7 +32,6 @@ const initialState = {
   dangerZonesIndex: {},
 
   /* Геометрии */
-  geozonePolys: {},
   odhPolys: {},
   dtPolys: {},
   sspPolys: {},
@@ -106,7 +105,6 @@ export default class GeoObjectsStore extends Store {
 
   handleGetGeozones({ result }) {
     const geozones = result;
-    const geozonePolys = {};
     const odhPolys = {};
     const dtPolys = {};
     geozones.forEach((g) => {
@@ -124,13 +122,8 @@ export default class GeoObjectsStore extends Store {
           state: 1,
         };
       }
-      geozonePolys[g.id] = {
-        shape: JSON.parse(g.shape),
-        name: g.name,
-        state: 1,
-      };
     });
-    this.setState({ geozonePolys, dtPolys, odhPolys });
+    this.setState({ dtPolys, odhPolys });
   }
 
   handleGetGeozonesByTypeWithGeometry(response) { // данные гео объектов, полученные с сервера, записываются в отдельные свойства this.state

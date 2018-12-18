@@ -8,7 +8,6 @@ export const InfoCardWrapContainer = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 1;
   pointer-events: none;
   min-width: 220px;
   max-width: 73%;

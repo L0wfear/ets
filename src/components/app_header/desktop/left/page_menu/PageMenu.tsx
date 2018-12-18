@@ -45,7 +45,7 @@ class PageMenu extends React.Component<any, any> {
     }, {}),
     widthAndShowByKeyHidden: {
       hidden: {
-        title: '...',
+        title: 'Ещё',
         children: {},
         permissions: {
           list: true,

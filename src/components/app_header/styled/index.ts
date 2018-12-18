@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const AppHeaderNav = styled.nav`
   display: flex;
   justify-content: space-between;
-  z-index: 999;
+  z-index: 1;
   background-color: #292929;
 `;
 

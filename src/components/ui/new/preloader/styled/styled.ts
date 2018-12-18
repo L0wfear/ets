@@ -18,7 +18,7 @@ export const MainPageLoader = styled.div`
   font-size: 20px;
   color: #777;
   padding-top: 150px;
-  z-index: 99999;
+  z-index: 4;
 `;
 
 export const CssloadLoader = styled.div`
@@ -27,14 +27,14 @@ export const CssloadLoader = styled.div`
   height: 19px;
   left: 25%;
   left: calc(50% - 73px);
-  top:50%;
-  z-index:1000;
+  top: 50%;
+  z-index: 3;
 
   &:after {
     content: "Загрузка ...";
-    text-transform:uppercase;
+    text-transform: uppercase;
     color: white;
-    font-family:	Lato,"Helvetica Neue" ;
+    font-family: Lato,"Helvetica Neue" ;
     font-weight: 200;
     font-size: 10px;
     position: absolute;
@@ -45,7 +45,7 @@ export const CssloadLoader = styled.div`
     top: 0;
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 1;
-    text-align:center;
+    text-align: center;
   }
 
   :before{
@@ -74,5 +74,5 @@ export const GostWeakLoadingOverlay = styled.div`
   text-align: center;
   padding: 10px;
   color: #777;
-  z-index: 99999;
+  z-index: 4;
 `;

@@ -43,10 +43,6 @@ export const LoginPageFormContainer = styled.div`
     box-sizing: border-box;
     padding: 10px;
     font-size: 16px;
-
-    &:focus {
-      z-index: 2;
-    }
   }
 `;
 

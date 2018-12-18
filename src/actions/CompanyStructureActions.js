@@ -31,6 +31,7 @@ export default class CompanyStructureActions extends Actions {
     if (descendants_by_user) payload.descendants_by_user = 'wft_back??';
 
     const data = await CompanyStructureService.get(payload);
+    data.result = data.result.map(item => ({ ...item, carpool_id_list: item.carpool_ids }));
 
     return {
       data,

@@ -17,6 +17,12 @@ export const companyStructureSchema = {
       type: 'string',
       required: true,
     },
+    {
+      key: 'carpool_id_list',
+      title: 'Автобаза',
+      type: 'array',
+      required: true,
+    },
   ],
 };
 

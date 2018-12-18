@@ -29,11 +29,19 @@ export const tableMeta = ({
         type: 'multiselect',
       },
     },
+    {
+      name: 'is_main',
+      displayName: 'Основная автобаза',
+      type: 'boolean',
+      filter: false,
+    },
   ],
 });
 
 export default (props) => {
-  const renderers = {};
+  const renderers = {
+    is_main: ({ data }) => <input title="Изменяется в карточке автобазы" type="checkbox" disabled checked={!!data} />,
+  };
 
   return (
     <Table

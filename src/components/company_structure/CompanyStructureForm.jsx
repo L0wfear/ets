@@ -7,8 +7,12 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
 import Form from 'components/compositions/Form';
+import { 
+  FluxContext,
+} from 'utils/decorators';
 
 const DEY = { value: 3, label: 'ДЭУ' };
 const DEK = { value: 2, label: 'ДЭК' };
@@ -22,11 +26,25 @@ const STRUCTURE_TYPES = {
     DEK,
   ],
 };
-
+@FluxContext
 class CompanyStructureForm extends Form {
+
+  state = {
+    carpoolList: [],
+  }
+
   handleChangeParentID = (parent_id) => {
     this.handleChange('type', null);
     this.handleChange('parent_id', parent_id);
+  }
+
+  componentDidMount() {
+    const { flux } = this.context;
+    flux.getActions('geoObjects').getGeozoneByType('carpool')
+      .then(({ data }) => {
+        this.setState({ carpoolList: data.result.rows });
+      })
+      .catch(e => console.error(e));
   }
 
   render() {
@@ -39,6 +57,10 @@ class CompanyStructureForm extends Form {
     const { parent_id = false } = state;
 
     const COMPANY_ELEMENTS = companyStructureLinearList.filter(d => d.type !== DEY.value).map(el => ({ value: el.id, label: el.name }));
+
+    const { carpoolList } = this.state;
+    const CARPOOL_ELEMENTS = carpoolList.map(el => ({ value: el.id, label: `${el.name} (${el.address})` }));
+
     let structureType = 'half';
     let parent_type_is_dek = false;
 
@@ -52,7 +74,6 @@ class CompanyStructureForm extends Form {
 
     let title = 'Изменение подразделения';
     if (IS_CREATING) title = 'Создание подразделения';
-
     return (
       <Modal show={this.props.show} id="modal-company-structure" onHide={this.props.onHide} backdrop="static">
 
@@ -89,6 +110,16 @@ class CompanyStructureForm extends Form {
                 error={errors.name}
                 value={state.name}
                 onChange={this.handleChange.bind(this, 'name')}
+              />
+              <ExtField
+                id="carpool_id_list"
+                type="select"
+                multi
+                label="Автобаза"
+                error={errors.carpool_id_list}
+                options={CARPOOL_ELEMENTS}
+                value={state.carpool_id_list}
+                onChange={this.handleChange.bind(this, 'carpool_id_list')}
               />
               <Field
                 type="string"

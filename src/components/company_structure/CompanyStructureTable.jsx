@@ -30,6 +30,14 @@ const tableMeta = {
       },
     },
     {
+      name: 'carpool_id_list',
+      displayName: 'Автобаза',
+      type: 'array',
+      filter: {
+        type: 'text',
+      },
+    },
+    {
       name: 'note',
       displayName: 'Примечание',
       type: 'string',
@@ -54,6 +62,11 @@ export default (props) => {
       <div>
         <ButtonEditStructure className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</ButtonEditStructure>
         <ButtonDeletetructure className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</ButtonDeletetructure>
+      </div>
+    ),
+    carpool_id_list: ({ rowData }) => (
+      <div>
+        {rowData.carpool_names.join(', ')}
       </div>
     ),
   };

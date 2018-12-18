@@ -96,7 +96,6 @@ export class DutyMissionForm extends Form {
         const {
           formState: {
             foreman_id,
-            foreman_full_fio,
             brigade_employee_id_list,
           },
         } = this.props;

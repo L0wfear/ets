@@ -182,8 +182,11 @@ export const centerOn: MapUtils.centerOnFunc = (map: ol.Map, disabledCenterOn, f
       extent,
       opt_options = { padding: [50, 550, 50, 150], maxZoom: 11, duration: 500 },
     } = fitProps;
-
-    map.getView().fit(extent, opt_options);
+    try {
+      map.getView().fit(extent, opt_options);
+    } catch (e) {
+      console.log('no fit'); // tslint:disable-line
+    }
     return true;
   }
 

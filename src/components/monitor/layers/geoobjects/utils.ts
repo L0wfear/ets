@@ -1,5 +1,6 @@
 import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
+import { get } from 'lodash';
 
 import { getCasheStyleForGeoobject } from 'components/monitor/layers/geoobjects/feature-style';
 import {
@@ -133,7 +134,8 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (thi
  * @param oldFeature текущая фича геообъекта
  */
 const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldFeatureFunc = (geoobj, geoobj_old, oldFeature) => {
-  if (geoobj_old.shape !== geoobj.shape && geoobj.shape) {
+  const oldShape = get(geoobj_old, ['shape'], null);
+  if (oldShape !== geoobj.shape && geoobj.shape) {
     oldFeature.setGeometry(geoJSON.readGeometry(geoobj.shape));
   }
 };

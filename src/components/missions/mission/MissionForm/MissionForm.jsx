@@ -293,6 +293,7 @@ export class MissionForm extends Form {
 
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);
+    this.handleChange('car_id', null);
     this.handleRouteIdChange(undefined);
   }
 
@@ -428,12 +429,6 @@ export class MissionForm extends Form {
         const changesObj = {
           normatives,
         };
-
-        if (!formState.status && !fromWaybill) {
-          if (!this.props.template) {
-            changesObj.car_id = undefined;
-          }
-        }
 
         this.props.handleMultiFormChange(changesObj);
 

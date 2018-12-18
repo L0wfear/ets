@@ -11,6 +11,7 @@ import {
 } from 'lodash';
 
 import * as queryString from 'query-string';
+import * as Raven from 'raven-js';
 
 import {
   EtsPageWrapRoute,
@@ -47,6 +48,7 @@ import {
 import RoutesLeftTree from 'components/route_new/RoutesLeftTree';
 import { EMPTY_STUCTURE } from 'components/route_new/utils/utils';
 import { RoutesTreeColWrap, RouteListContainer } from 'components/route_new/styled/styled';
+import { getWarningNotification } from 'utils/notifications';
 
 const SEASONS_OPTIONS = [
   {
@@ -239,7 +241,15 @@ class RoutesList extends React.PureComponent<any, any> {
     }
 
     this.setState({ selectedRoute: null });
-    routeData = await this.getRouteById(routeOrId);
+    try {
+      routeData = await this.getRouteById(routeOrId);
+    } catch (e) {
+      console.warn(e); // tslint:disable-line
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Не найден маршрут'));
+
+      Raven.captureException(new Error(`Выбор несуществующего маршрута (${routeOrId})`));
+      return;
+    }
     const { showId: showIdOld } = this.state;
     const showId = cloneDeep(showIdOld);
 

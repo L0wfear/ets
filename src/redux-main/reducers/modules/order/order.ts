@@ -58,6 +58,12 @@ export default function(state = initialState, { type, payload }) {
         OrdersList: payload.OrdersList,
         pageOptions: payload.pageOptions,
         selectedElementOrder: null,
+        disabledOrderButton: {
+          ...initialState.disabledOrderButton,
+        },
+        disabledAssignmentButton: {
+          ...initialState.disabledAssignmentButton,
+        },
         total_count: payload.total_count,
         showHistoryComponent: false,
       };

@@ -10,6 +10,7 @@ import { polyState } from 'constants/polygons';
 import RouteForm from 'components/route/form/RouteForm';
 import FormWrap from 'components/compositions/FormWrap';
 import { DivNone } from 'global-styled/global-styled';
+import { getErrorNotificationFromBack } from 'utils/notifications';
 
 let lastObjectList = {
   mixed: {
@@ -91,7 +92,7 @@ class RouteFormWrap extends FormWrap {
     }
   }
 
-  checkRoute = (route, notChangeState = false) => {
+  checkRoute = async (route, notChangeState = false) => {
     const { flux } = this.context;
     if (!route.input_lines.length) {
       if (!notChangeState) {
@@ -99,21 +100,28 @@ class RouteFormWrap extends FormWrap {
       }
       return Promise.resolve([]);
     }
-    return flux.getActions('routes').validateRoute(route).then((r) => {
-      const result = r.result;
+    try {
+      const ans = await flux.getActions('routes').validateRoute(route).then((r) => {
+        const { result } = r;
 
-      const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map((o) => ({
-        name: o.odh_name,
-        object_id: o.odh_id,
-        state: o.state || 2,
-        type: 'odh',
-      }));
-      if (!notChangeState) {
-        this.handleFormStateChange('draw_odh_list', draw_odh_list);
-      }
+        const draw_odh_list = result.odh_validate_result.filter(res => res.status !== 'fail').map(o => ({
+          name: o.odh_name,
+          object_id: o.odh_id,
+          state: o.state || 2,
+          type: 'odh',
+        }));
+        if (!notChangeState) {
+          this.handleFormStateChange('draw_odh_list', draw_odh_list);
+        }
 
-      return draw_odh_list;
-    });
+        return draw_odh_list;
+      });
+      return ans;
+    } catch (e) {
+      console.warn(e); // eslint-disable-line
+      global.NOTIFICATION_SYSTEM.notify(getErrorNotificationFromBack('Произошла ошибка проверки маршрута'));
+      return Promise.resolve([]);
+    }
   }
 
   updateFromStatePolys = async (formState, refreshGeoState) => {

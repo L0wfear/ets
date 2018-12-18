@@ -4,6 +4,7 @@ import {
 } from 'api/Services';
 import { get } from 'lodash';
 import { Route } from '../@types/routes.h';
+import { getErrorNotificationFromBack } from '../../../../../utils/notifications';
 
 /* ------------- ROUTES ------------- */
 export const routesLoadRoutes = (payload = {}) => (
@@ -144,6 +145,7 @@ export const routesValidateRoute = (formState: Route) => {
   return RouteValidateService.post(payload, false, 'json')
     .catch((e) => {
       console.warn(e); // tslint:disable-line
+      global.NOTIFICATION_SYSTEM.notify(getErrorNotificationFromBack('Произошла ошибка проверки маршрута'));
 
       return {
         result: {

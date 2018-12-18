@@ -1,5 +1,6 @@
 import * as React from 'react';
 import clone from 'lodash/clone';
+import get from 'lodash/get';
 import filter from 'lodash/filter';
 import Div from 'components/ui/Div';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
@@ -28,7 +29,9 @@ export const createMissions = async (flux, element, payload) => {
     await flux.getActions('missions').createMissions(element, payload);
   } catch ({ error_text: e }) {
     error = true;
-    if (e && e.message.code === 'no_active_waybill') {
+    const code = get(e, ['message', 'code'], null);
+
+    if (code === 'no_active_waybill') {
       let cancel = false;
       try {
         await confirmDialog({
@@ -49,7 +52,7 @@ export const createMissions = async (flux, element, payload) => {
         await createMissions(element, newPayload);
       }
     }
-    if (e && e.message.code === 'invalid_period') {
+    if (code === 'invalid_period') {
       const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
 
       const body = self => (

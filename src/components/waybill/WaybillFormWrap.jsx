@@ -81,8 +81,8 @@ class WaybillFormWrap extends FormWrap {
       canPrint: false,
       name: 'waybillFormWrap',
       isPermittedByKey: {
-        update: this.props.currentUser.permissions.includes(permissions.update),
-        departure_and_arrival_values: this.props.currentUser.permissions.includes(permissions.departure_and_arrival_values),
+        update: false,
+        departure_and_arrival_values: false,
       },
     };
   }
@@ -92,6 +92,13 @@ class WaybillFormWrap extends FormWrap {
       const currentDate = new Date();
 
       timeId = setTimeout(() => this.checkError(), (60 - currentDate.getSeconds()) * 1000);
+
+      this.setState({
+        isPermittedByKey: {
+          update: this.props.currentUser.permissions.includes(permissions.update),
+          departure_and_arrival_values: this.props.currentUser.permissions.includes(permissions.departure_and_arrival_values),
+        },
+      });
 
       if (props.element === null) {
         const defaultBill = getDefaultBill({

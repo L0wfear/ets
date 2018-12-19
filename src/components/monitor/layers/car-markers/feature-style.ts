@@ -1,6 +1,7 @@
 import { listObj } from 'constants/statuses';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
+import Circle from 'ol/style/Circle';
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
@@ -196,7 +197,11 @@ export const getStyleForStatusDirectionType = ({ status, direction, selected, zo
   } else {
     const not_visible = 'not_visible';
     if (!CACHE_ICON[not_visible]) {
-      return CACHE_ICON[not_visible] = new Style({});
+      return CACHE_ICON[not_visible] = new Style({
+        image: new Circle({
+          radius: 0,
+        }),
+      });
     } else {
       return CACHE_ICON[not_visible];
     }

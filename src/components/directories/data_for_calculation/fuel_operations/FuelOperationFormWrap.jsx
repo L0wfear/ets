@@ -19,6 +19,7 @@ export const fuelOperationSchema = {
       title: 'Единица измерения',
       type: 'number',
       required: true,
+      integer: true,
     },
   ],
 };

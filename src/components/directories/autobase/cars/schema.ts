@@ -20,6 +20,7 @@ const carFormPassportGibdd: IValidationSchema = {
       key: 'passport_gibdd_manufactured_at',
       title: 'Год выпуска',
       type: 'number',
+      integer: true,
     },
     {
       key: 'passport_gibdd_engine_number',
@@ -37,6 +38,7 @@ const carFormPassportGibdd: IValidationSchema = {
       key: 'passport_gibdd_category_id',
       title: 'Категория транспортного средства',
       type: 'number',
+      integer: true,
       maxLength: 17,
     },
     {

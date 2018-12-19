@@ -20,6 +20,7 @@ export const formValidationSchema: IValidationSchema = {
       key: 'repair_company_id',
       title: 'Исполнитель ремонта',
       type: 'number',
+      integer: true,
     },
     {
       key: 'gov_number',

@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsBatteryBrand } from 'components/directories/autobase/battery_brand/BatteryBrandForm/@types/BatteryBrand.h';
 import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-
+// qqq
 export const batteryBrandFormSchema: SchemaType<BatteryBrand, PropsBatteryBrand> = {
   properties: [
     {

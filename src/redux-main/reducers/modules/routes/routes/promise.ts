@@ -26,6 +26,25 @@ export const getSetRoutes = async (...payload) => {
 export const getSetRouteById = async (id) => {
   const { route_data } = await getRouteById(id);
 
+  if (route_data) {
+    if (route_data.type === 'points') {
+      route_data.object_list.forEach((el, i) => {
+        // todo
+        // заставить бэк выдавать id
+        el.customId = i + 1;
+
+        if (!el.shape && el.coordinates) {
+          el.shape = {
+            type: 'Point',
+            coordinates: el.coordinates,
+          };
+        }
+        el.type = 'points';
+        return el;
+      });
+    }
+  }
+
   return {
     route_data,
   };

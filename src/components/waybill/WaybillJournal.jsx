@@ -20,7 +20,7 @@ import WaybillPrintForm from 'components/waybill/WaybillPrintForm';
 import WaybillsTable, { getTableMeta } from 'components/waybill/WaybillsTable';
 import permissions from 'components/waybill/config-data/permissions';
 
-@connectToStores(['waybills', 'objects', 'employees'])
+@connectToStores(['waybills', 'objects', 'employees', 'session'])
 @staticProps({
   entity: 'waybill',
   permissions,

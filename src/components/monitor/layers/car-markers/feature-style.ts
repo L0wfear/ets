@@ -157,7 +157,7 @@ const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
 
 const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom }) => {
   const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : minZoom ? 'minZoom' : 'zoomNotMore8'];
-  console.log(cacheStyleName, width); // tslint:disable-line
+
   const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) % 360) );
 
   const canvas = document.createElement('canvas');

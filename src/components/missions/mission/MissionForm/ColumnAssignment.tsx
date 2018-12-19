@@ -7,11 +7,8 @@ import * as Row from 'react-bootstrap/lib/Row';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import ModalBody from 'components/ui/Modal';
-
-interface CarOption {
-  value: number;
-  label: string;
-}
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { makeCarOptionLabel } from './utils';
 
 type ColumnAssignmentProps = {
   formState: any,
@@ -19,7 +16,7 @@ type ColumnAssignmentProps = {
   ASSIGN_OPTIONS: any[],
   handleChange: (key: string, data: any) => void,
   handleSubmit: () => Promise<any>,
-  CARS: CarOption[],
+  carsList: Car[],
 };
 type ColumnAssignmentState = {
   showBackButton: boolean,
@@ -63,7 +60,7 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
                   <ExtField
                     id={`car-number-${index}`}
                     type="string"
-                    value={this.props.CARS.find(({ value }) => value === car_id).label}
+                    value={makeCarOptionLabel(this.props.carsList.find(({ asuods_id }) => asuods_id === car_id))}
                     readOnly
                   />
                 </Col>

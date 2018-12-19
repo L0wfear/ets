@@ -8,7 +8,7 @@ import { createValidDateTime } from 'utils/dates';
 
 import { GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
-import { keyBy } from 'lodash';
+import { keyBy, get } from 'lodash';
 
 const CACHE_GEOMETRY = {};
 
@@ -49,11 +49,19 @@ export const loadGeozones: any = (type, type_geoobject, meta = { loading: true }
         return {
           result: {
             rows: [],
+            error: true,
           },
         };
       })
-      .then(({ result: { rows } }) => (
-        CACHE_GEOMETRY[type][cacheTypeGeoobjectName] = {
+      .then((response) => {
+        const error = get(response, ['result', 'error'], false);
+        const rows = get(response, ['result', 'rows'], []);
+
+        if (error) {
+          return [];
+        }
+
+        return CACHE_GEOMETRY[type][cacheTypeGeoobjectName] = {
           [type_geoobject]: rows.reduce((newObj, data) => {
             const geom = data;
             const front_id = data.odh_id || data.dt_id || data.global_id || data.id;
@@ -72,9 +80,8 @@ export const loadGeozones: any = (type, type_geoobject, meta = { loading: true }
               [front_key]: geom,
             };
           }, {}),
-        }
-      ),
-    ),
+        };
+      }),
     meta: {
       ...meta,
     },

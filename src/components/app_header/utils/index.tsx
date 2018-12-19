@@ -17,7 +17,7 @@ export const withRouterMatchUrl: any = (Component) => (
   )
 );
 
-export const isActivemenu = (url, path, childrenPath) => {
+export const isActivemenu = (url: string, path: string | null | undefined, childrenPath: string[] | null | undefined) => {
   const pathArr = ['--'];
 
   if (path) {
@@ -27,7 +27,7 @@ export const isActivemenu = (url, path, childrenPath) => {
     pathArr.push(...childrenPath);
   }
 
-  return url.match(`^${pathArr.join('|')}`);
+  return pathArr.some((pathData) => !pathData.localeCompare(`/${url.split('/')[1]}`));
 };
 
 export const checkShow = (props) => {

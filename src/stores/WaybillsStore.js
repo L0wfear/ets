@@ -19,7 +19,7 @@ export default class WaybillsStore extends Store {
   }
 }
 
-export function getDefaultBill() {
+export function getDefaultBill({ company_id = null }) {
   // TODO change fuel type to default from app config
   return {
     status: null,
@@ -34,6 +34,6 @@ export function getDefaultBill() {
     odometr_start: null,
     motohours_start: null,
     mission_id_list: [],
-    company_id: JSON.parse(localStorage.getItem(global.CURRENT_USER2)).company_id,
+    company_id,
   };
 }

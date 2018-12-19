@@ -107,7 +107,7 @@ class WaybillForm extends Form {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       formState,
       formState: { status },
@@ -120,14 +120,18 @@ class WaybillForm extends Form {
     const IS_CLOSED = status === 'closed';
 
     this.getMissionsByCarAndDates(formState, false);
-    flux.getActions('objects').getCars();
-    flux.getActions('employees').getEmployees();
-    flux.getActions('objects').getWorkMode();
-    flux.getActions('missions').getMissionSources();
-    getWaybillDrivers(
-      this.context.flux.getActions('employees').getWaybillDrivers,
-      this.props.formState,
-    );
+
+    await Promise.all([
+      flux.getActions('objects').getCars(),
+      flux.getActions('employees').getEmployees(),
+      flux.getActions('objects').getWorkMode(),
+      flux.getActions('missions').getMissionSources(),
+      getWaybillDrivers(
+        this.context.flux.getActions('employees').getWaybillDrivers,
+        this.props.formState,
+      ),
+    ]);
+
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
         .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))

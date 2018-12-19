@@ -1,6 +1,7 @@
 import { listObj } from 'constants/statuses';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
+import Circle from 'ol/style/Circle';
 
 const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
 const widthIcon = {
@@ -156,7 +157,7 @@ const drawCarIcon = (canvas, ctx, width, zoomMore8, selected) => {
 
 const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8, gov_number, show_gov_number, minZoom }) => {
   const width = widthIcon[selected || zoomMore8 ? 'zoomMore8' : minZoom ? 'minZoom' : 'zoomNotMore8'];
-
+  console.log(cacheStyleName, width); // tslint:disable-line
   const directionInRad = (2 * Math.PI) / 360 * ( Math.abs((360 + (Number(direction) - 90) % 360) % 360) );
 
   const canvas = document.createElement('canvas');
@@ -196,7 +197,11 @@ export const getStyleForStatusDirectionType = ({ status, direction, selected, zo
   } else {
     const not_visible = 'not_visible';
     if (!CACHE_ICON[not_visible]) {
-      return CACHE_ICON[not_visible] = new Style({});
+      return CACHE_ICON[not_visible] = new Style({
+        image: new Circle({
+          radius: 0,
+        }),
+      });
     } else {
       return CACHE_ICON[not_visible];
     }

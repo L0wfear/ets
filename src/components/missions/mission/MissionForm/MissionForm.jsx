@@ -40,6 +40,7 @@ import {
   getTechnicalOperationData,
   handleRouteFormHide,
   isOdhRouteTypePermitted,
+  makeCarOptionLabel,
 } from 'components/missions/mission/MissionForm/utils';
 import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/types';
 
@@ -535,7 +536,7 @@ export class MissionForm extends Form {
       .map(c => ({
         value: c.asuods_id,
         available: c.available,
-        label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
+        label: makeCarOptionLabel(c),
         type_id: c.type_id,
       }));
 
@@ -579,7 +580,8 @@ export class MissionForm extends Form {
     const IS_DISABLED_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
     const IS_NOT_IN_WAYBILL = state.can_edit_car_and_route;
     const IS_VALID_PUSH = state.car_id && state.car_gov_number && !CARS.some((({ value }) => value === state.car_id));
-    if ( IS_VALID_PUSH) {
+
+    if (IS_VALID_PUSH) {
       CARS.push({
         value: state.car_id,
         label: state.car_gov_number,
@@ -669,7 +671,7 @@ export class MissionForm extends Form {
                 showBackButton={this.state.showBackButton}
                 hideColumnAssignment={this.hideColumnAssignment}
                 handleChange={this.handleChange}
-                CARS={CARS}
+                carsList={carsList}
                 handleSubmit={this.handleSubmitFromAssignmentModal}
               />
             )

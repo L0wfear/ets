@@ -9,6 +9,7 @@ export const formValidationSchema: IValidationSchema = {
       key: 'car_id',
       title: 'Регистрационный номер',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

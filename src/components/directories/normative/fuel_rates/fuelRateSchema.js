@@ -12,6 +12,7 @@ export const fuelRateSchema = {
       key: 'operation_id',
       title: 'Операция',
       type: 'number',
+      integer: true,
       required: true,
     },
     {
@@ -30,6 +31,7 @@ export const fuelRateSchema = {
       key: 'car_special_model_id',
       title: 'Модель ТС',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

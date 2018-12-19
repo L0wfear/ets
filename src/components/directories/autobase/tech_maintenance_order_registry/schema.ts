@@ -7,12 +7,14 @@ export const formValidationSchema: IValidationSchema = {
       key: 'tech_maintenance_type_id',
       title: 'Тип ТО',
       type: 'number',
+      integer: true,
       required: true,
     },
     {
       key: 'sequence',
       title: 'Последовательность ТО',
       type: 'number',
+      integer: true,
       isSubmitted: ({ is_periodic = false }) => !is_periodic,
     },
     {
@@ -25,6 +27,7 @@ export const formValidationSchema: IValidationSchema = {
       key: 'car_model_id',
       title: 'Модель ТС',
       type: 'number',
+      integer: true,
       required: true,
     },
     {
@@ -45,6 +48,7 @@ export const formValidationSchema: IValidationSchema = {
       key: 'measure_unit_run_id',
       title: 'Пробег измеряется',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

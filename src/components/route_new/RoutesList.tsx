@@ -432,7 +432,6 @@ class RoutesList extends React.PureComponent<any, any> {
                     <RouteInfo
                       route={selectedRoute}
                       mapKey="mapRouteList"
-                      height="700px"
                     />
                   )
                   : (

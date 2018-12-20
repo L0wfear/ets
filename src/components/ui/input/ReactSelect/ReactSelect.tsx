@@ -147,7 +147,7 @@ export default class ReactSelect extends React.Component<any, any> {
       id,
     };
 
-    if (isObject(components) && components.MultiValue) {
+    if (isObject(propsComponents) && propsComponents.MultiValue) {
       return <propsComponents.MultiValue innerProps={newInnerProps} {...props} />;
     }
 

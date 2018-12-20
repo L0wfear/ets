@@ -19,6 +19,7 @@ import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 import WaybillPrintForm from 'components/waybill/WaybillPrintForm';
 import WaybillsTable, { getTableMeta } from 'components/waybill/WaybillsTable';
 import permissions from 'components/waybill/config-data/permissions';
+import { compose } from 'recompose';
 
 @connectToStores(['waybills', 'objects', 'employees', 'session'])
 @staticProps({
@@ -223,4 +224,4 @@ class WaybillJournal extends CheckableElementsList {
   }
 }
 
-export default WaybillJournal;
+export default compose()(WaybillJournal);

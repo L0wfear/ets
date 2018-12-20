@@ -5,6 +5,7 @@ import CheckableElementsList from 'components/CheckableElementsList';
 import StateProgramTable from 'components/directories/repair/state_program/StateProgramTable';
 import StateProgramFormWrap from 'components/directories/repair/state_program/StateProgramFormWrap';
 import permissions from 'components/directories/repair/state_program/config-data/permissions';
+import { compose } from 'recompose';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.stateProgram}` })
@@ -30,4 +31,4 @@ class StateProgramList extends CheckableElementsList {
   }
 }
 
-export default StateProgramList;
+export default compose()(StateProgramList);

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -17,15 +18,17 @@ class SparePartFormWrap extends React.Component<PropsSparePartFormWrap, {}> {
 
     return showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <SparePartFrom
-            element={props.element}
-            handleHide={props.onFormHide}
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <SparePartFrom
+              element={props.element}
+              handleHide={props.onFormHide}
 
-            page={page}
-            path={path}
-          />
-        </React.Suspense>
+              page={page}
+              path={path}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       (

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -21,11 +22,13 @@ class MissionFormLazy extends React.PureComponent<PropsPDFViewModal & { show: bo
     return (
       this.props.show ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <PDFViewModal
-            {...props}
-          />
-        </React.Suspense>
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <PDFViewModal
+              {...props}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       ( <DivNone /> )

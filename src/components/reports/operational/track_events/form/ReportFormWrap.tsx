@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -23,12 +24,14 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
     return (
       showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <ReportForm
-            onFormHide={props.onFormHide}
-            coords={props.coords}
-          />
-        </React.Suspense>
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <ReportForm
+              onFormHide={props.onFormHide}
+              coords={props.coords}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       ( <DivNone /> )

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -21,15 +22,17 @@ class CarFuncTypesFormWrap extends React.Component<PropsCarFuncTypesFormWrap, {}
 
     return element ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <CarFuncTypesFrom
-            element={element}
-            handleHide={props.onFormHide}
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <CarFuncTypesFrom
+              element={element}
+              handleHide={props.onFormHide}
 
-            page={page}
-            path={path}
-          />
-        </React.Suspense>
+              page={page}
+              path={path}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       (

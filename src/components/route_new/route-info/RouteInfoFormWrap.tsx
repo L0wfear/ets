@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 import { PropsRouteInfoFormWrap } from 'components/route_new/route-info/RouteInfoForm.h';
@@ -18,14 +19,16 @@ class RouteInfoFormWrap extends React.PureComponent<PropsRouteInfoFormWrap, {}> 
     return (
       showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <RouteInfoForm
-            route={props.route}
-            title={props.title}
-            onHide={props.onHide}
-            mapKey={props.mapKey}
-          />
-        </React.Suspense>
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <RouteInfoForm
+              route={props.route}
+              title={props.title}
+              onHide={props.onHide}
+              mapKey={props.mapKey}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       ( <DivNone /> )

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -13,9 +14,11 @@ class MissionInfoFormWrap extends React.Component<any, {}> {
 
     return showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <MissionInfoForm {...props} />
-        </React.Suspense>
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <MissionInfoForm {...props} />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       (

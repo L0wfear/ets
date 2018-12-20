@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
@@ -36,16 +37,18 @@ class GeoObjectsMapModalWrap extends React.PureComponent<PropsGeoObjectsMapModal
     return (
       showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <GeoObjectsMapModal
-            onFormHide={props.onFormHide}
-            meta={props.meta}
-            renderers={props.renderers}
-            entity={props.entity}
-            element={props.element}
-            selectField={props.selectField}
-          />
-        </React.Suspense>
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <GeoObjectsMapModal
+              onFormHide={props.onFormHide}
+              meta={props.meta}
+              renderers={props.renderers}
+              entity={props.entity}
+              element={props.element}
+              selectField={props.selectField}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       ( <DivNone /> )

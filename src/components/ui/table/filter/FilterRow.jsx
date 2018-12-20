@@ -33,8 +33,6 @@ export default class FilterRow extends React.Component {
     };
   }
 
-  onMultiChange = (...arg) => this.props.onMultiChange(this.props, ...arg);
-
   // TODO добавить в FilterInput type и поддержку select
   render() {
     const {
@@ -45,6 +43,7 @@ export default class FilterRow extends React.Component {
       name,
       tableData,
       onChange,
+      onMultiChange,
       type,
       entity,
     } = this.props;
@@ -82,7 +81,7 @@ export default class FilterRow extends React.Component {
 
           input = (
             <Div className="filter-multiselect-container">
-              <ReactSelect modalKey={entity} id={name} options={options} multi delimiter={'$'} value={value} onChange={this.onMultiChange} />
+              <ReactSelect modalKey={entity} id={name} options={options} multi delimiter={'$'} value={value} onChange={onMultiChange} />
             </Div>
           );
         }

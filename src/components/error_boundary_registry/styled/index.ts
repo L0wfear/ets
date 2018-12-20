@@ -6,7 +6,6 @@ export const ErrorBoundaryRegistryContainer = styled(EtsPageWrap)`
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: rgba(255,0,0,0.2);
 `;
 
 export const ErrorCenter = styled.div`

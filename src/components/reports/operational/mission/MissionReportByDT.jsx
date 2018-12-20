@@ -158,7 +158,7 @@ class MissionReportByDT extends ElementsList {
   }
 
   selectElement = (el) => {
-    super.selectElement(el);
+    this.onRowClick(el);
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }

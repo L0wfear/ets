@@ -71,7 +71,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
             if (check_unit) {
               report.route_check_unit = check_unit;
             }
-            report.frontIndex = index;
+            report.frontIndex = index + 1;
 
             if (props.element.route_data.type === 'points') {
               report.state = maskStatusPoint[report.status];

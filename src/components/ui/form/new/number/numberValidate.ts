@@ -14,11 +14,11 @@ export const validateNumber = <F, P>(fieldData: NumberPropertie<F>, formState: F
     return `Поле "${title}" должно быть заполнено`;
   }
 
-  if (!isNullOrUndefined(value) && !isNumber(Number(value.toString().replace(/,/g, '.')))) {
-    return `Поле "${title}" должно быть числом`;
-  }
-
   if (!isNullOrUndefined(value)) {
+    if (isNaN(Number(value.toString().replace(/,/g, '.')))) {
+      return `Поле "${title}" должно быть числом`;
+    }
+
     const numberValue = Number(value);
 
     if (fieldData.minLength && Number.parseInt(numberValue.toString(), 0).toString().length < fieldData.minLength) {

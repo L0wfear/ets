@@ -349,7 +349,7 @@ class WaybillForm extends Form {
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
-            distance: isNullOrUndefined(distance) ? null : parseFloat(distance / 1000).toFixed(3),
+            distance: isNullOrUndefined(distance) ? null : parseFloat(distance).toFixed(3),
             consumption: isNullOrUndefined(consumption) ? null : parseFloat(consumption).toFixed(3),
           });
 
@@ -626,6 +626,8 @@ class WaybillForm extends Form {
       distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
         ? parseFloat(state.track_length / 1000).toFixed(3)
         : 'Нет данных';
+    } else {
+      distanceOrTrackOrNodata /= 1000;
     }
 
     return (

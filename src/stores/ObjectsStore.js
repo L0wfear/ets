@@ -256,7 +256,7 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetUserActionLog(userActionLogList) {
-    this.setState({ userActionLogList: userActionLogList.result.rows });
+    this.setState({ userActionLogList });
   }
 
   handleGetMedicalStats(medicalStatsList) {

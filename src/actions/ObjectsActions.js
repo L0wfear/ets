@@ -4,6 +4,7 @@ import { createValidDateTime } from 'utils/dates';
 import {
   clone,
   cloneDeep,
+  get,
 } from 'lodash';
 import { parseFilterObject } from 'actions/MissionsActions';
 import {
@@ -204,7 +205,14 @@ export default class ObjectsActions extends Actions {
       date_start: createValidDateTime(p.date_start),
       date_end: createValidDateTime(p.date_end),
     };
-    return UserActionLogService.get(payload);
+    return UserActionLogService.get(payload).then(response => (
+      get(response, ['result', 'rows'], []).map((d) => {
+        const action = get(d, 'action', '') || '';
+        d.front_entity_number = action.match(/^mission./) ? d.entity_id : d.entity_number;
+
+        return d;
+      })
+    ));
   }
 
   getMedicalStats(p = {}) {

@@ -49,7 +49,7 @@ export const tableMeta = ({
     //   },
     // },
     {
-      name: 'entity_number',
+      name: 'front_entity_number',
       displayName: 'Номер документа',
       type: 'number',
       filter: {

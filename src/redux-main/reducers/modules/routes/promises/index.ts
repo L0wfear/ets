@@ -26,7 +26,9 @@ export const routesLoadRouteById = (id) => (
     .then(({ result: [route_data = null] }) => {
       if (route_data) {
         if (route_data.type === 'points') {
-          route_data.object_list.forEach((el) => {
+          route_data.object_list.forEach((el, i) => {
+            el.customId = i + 1;
+
             if (!el.shape && el.coordinates) {
               el.shape = {
                 type: 'Point',

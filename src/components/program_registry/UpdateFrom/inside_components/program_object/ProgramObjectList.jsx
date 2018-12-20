@@ -7,6 +7,7 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CR
 import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
 import ProgramObjectFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
+import { compose } from 'recompose';
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -29,7 +30,7 @@ const notifyTexts = {
   formComponent: ProgramObjectFormWrap,
   operations: [],
 })
-export default class ProgramRemarkList extends CheckableElementsList {
+class ProgramRemarkList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
     const {
@@ -264,3 +265,5 @@ export default class ProgramRemarkList extends CheckableElementsList {
     return forms;
   }
 }
+
+export default compose()(ProgramRemarkList);

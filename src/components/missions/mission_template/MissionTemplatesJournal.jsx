@@ -11,6 +11,7 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
+import { compose } from 'recompose';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -230,4 +231,4 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 }
 
-export default MissionTemplatesJournal;
+export default compose()(MissionTemplatesJournal);

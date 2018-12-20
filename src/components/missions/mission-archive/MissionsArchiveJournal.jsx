@@ -14,6 +14,7 @@ import Paginator from 'components/ui/new/paginator/Paginator';
 
 import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+import { compose } from 'recompose';
 
 const is_archive = true;
 
@@ -30,7 +31,7 @@ const ButtonUpdateMission = enhanceWithPermissions({
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
 })
-export default class MissionsArchiveJournal extends CheckableElementsList {
+class MissionsArchiveJournal extends CheckableElementsList {
 
   constructor(props) {
     super(props);
@@ -209,3 +210,5 @@ export default class MissionsArchiveJournal extends CheckableElementsList {
     );
   }
 }
+
+export default compose()(MissionsArchiveJournal);

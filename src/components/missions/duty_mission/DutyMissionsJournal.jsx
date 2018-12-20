@@ -18,6 +18,7 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
+import { compose } from 'recompose';
 
 const is_archive = false;
 
@@ -36,7 +37,7 @@ const ButtonUpdateDutyMission = enhanceWithPermissions({
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
   exportable: true,
 })
-export default class DutyMissionsJournal extends CheckableElementsList {
+class DutyMissionsJournal extends CheckableElementsList {
 
   constructor(props, context) {
     super(props);
@@ -348,7 +349,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   additionalRender = () => {
     return [
       <Paginator
-        key={'paginator'}
+        key="paginator"
         currentPage={this.state.page}
         maxPage={Math.ceil(this.props.dutyMissionsTotalCount / MAX_ITEMS_PER_PAGE)}
         setPage={page => this.setState({ page })}
@@ -357,3 +358,5 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     ];
   }
 }
+
+export default compose()(DutyMissionsJournal);

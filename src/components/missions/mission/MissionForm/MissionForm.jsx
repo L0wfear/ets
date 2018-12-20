@@ -310,7 +310,9 @@ export class MissionForm extends Form {
 
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);
-    this.handleChange('car_id', null);
+    if (!this.props.fromWaybill) {
+      this.handleChange('car_id', null);
+    }
     this.handleRouteIdChange(undefined);
   }
 

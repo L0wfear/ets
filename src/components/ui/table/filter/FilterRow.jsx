@@ -33,8 +33,6 @@ class FilterRow extends React.Component {
     };
   }
 
-  onChange = (...arg) => this.props.onChange(this.props, ...arg);
-
   onMultiChange = (...arg) => this.props.onMultiChange(this.props, ...arg);
 
   // TODO добавить в FilterInput type и поддержку select
@@ -46,6 +44,7 @@ class FilterRow extends React.Component {
       labelFunction,
       name,
       tableData,
+      onChange,
       type,
       entity,
     } = this.props;
@@ -56,7 +55,7 @@ class FilterRow extends React.Component {
 
     let input = (
       <div className="form-group">
-        <FormControl id={idValue} type="text" value={value || ''} onChange={this.onChange} />
+        <FormControl id={idValue} type="text" value={value || ''} onChange={onChange} />
       </div>
     );
 
@@ -77,7 +76,7 @@ class FilterRow extends React.Component {
           if (name === 'operation_id') {
             options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
           }
-          input = <ReactSelect modalKey={entity} id={name} options={options} value={value} onChange={this.onChange} />;
+          input = <ReactSelect modalKey={entity} id={name} options={options} value={value} onChange={onChange} />;
         } else if (type === 'multiselect') {
           if (value && !!value.length) value = value.filter((v) => _.find(options, o => o.value === v));
 
@@ -89,28 +88,28 @@ class FilterRow extends React.Component {
         }
       }
       if (type === 'advanced-number') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="number" onChange={this.onChange} lang="en" />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="number" onChange={onChange} lang="en" />;
       }
       if (type === 'advanced-string') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="string" onChange={this.onChange} />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="string" onChange={onChange} />;
       }
       if (type === 'advanced-string-like') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="string" onChange={this.onChange} single filterType="like" />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="string" onChange={onChange} single filterType="like" />;
       }
       if (type === 'advanced-date') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="date" onChange={this.onChange} />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="date" onChange={onChange} />;
       }
       if (type === 'advanced-datetime') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="datetime" onChange={this.onChange} />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} />;
       }
       if (type === 'date') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="date" onChange={this.onChange} single />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="date" onChange={onChange} single />;
       }
       if (type === 'datetime') {
-        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="datetime" onChange={this.onChange} single />;
+        input = <FilterInput entity={entity} filterValue={value} fieldName={name} inputType="datetime" onChange={onChange} single />;
       }
       if (type === 'date_interval') {
-        input = <IntervalPicker entity={entity} interval={value} onChange={this.onChange} />;
+        input = <IntervalPicker entity={entity} interval={value} onChange={onChange} />;
       }
     }
 

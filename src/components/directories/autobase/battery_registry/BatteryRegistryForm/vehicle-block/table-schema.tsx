@@ -14,6 +14,7 @@ export const validationSchema: IValidationSchema = {
       key: 'car_id',
       title: 'Рег. номер ТС',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

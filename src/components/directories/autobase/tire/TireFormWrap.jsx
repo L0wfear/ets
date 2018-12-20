@@ -10,12 +10,14 @@ export const tireSchema = {
       key: 'tire_model_id',
       title: 'Модель шины',
       type: 'number',
+      integer: true,
       required: true,
     },
     {
       key: 'tire_size_id',
       title: 'Размер',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

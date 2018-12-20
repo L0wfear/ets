@@ -12,6 +12,7 @@ export const cleaningRateSchema = {
       key: 'technical_operation_id',
       title: 'Технологическая операция',
       type: 'number',
+      integer: true,
       required: true,
     },
     {
@@ -31,6 +32,7 @@ export const cleaningRateSchema = {
       key: 'measure_unit_id',
       title: 'Единица измерения',
       type: 'number',
+      integer: true,
       required: true,
     },
   ],

@@ -9,6 +9,7 @@ export const companyStructureSchema = {
       key: 'type',
       title: 'Тип подразделения',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

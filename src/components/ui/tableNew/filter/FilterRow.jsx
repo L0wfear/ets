@@ -32,8 +32,11 @@ export default class FilterRow extends React.Component {
     };
   }
 
-  onChange = (...arg) => this.props.onChange(this.props, ...arg)
-  onMultiChange = (...arg) => this.props.onMultiChange(this.props, ...arg)
+  onChange = (...arg) => this.props.onChange(this.props, ...arg);
+
+  onMultiChange = (...arg) => {
+    this.props.onMultiChange(this.props, ...arg);
+  }
 
   // TODO добавить в FilterInput type и поддержку select
   render() {

@@ -46,10 +46,11 @@ export default connect<any, any, any, ReduxState>(
     element: getListData(state.registry, registryKey).data.selectedRowToShow,
   }),
   (dispatch, { registryKey }) => ({
-    onFormHide: () => (
+    onFormHide: (...arg) => (
       dispatch(
         registryResetSelectedRowToShowInForm(
           registryKey,
+          ...arg,
         ),
       )
     ),

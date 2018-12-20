@@ -37,7 +37,6 @@ class MissionTemplateForm extends DutyMissionForm {
       available_route_types = [],
       technicalOperationsList = [],
       TECH_OPERATIONS = [],
-      selectedRoute: route = null,
       selectedRouteNew: routeNew = null,
     } = this.state;
 
@@ -201,10 +200,10 @@ class MissionTemplateForm extends DutyMissionForm {
           <Row>
             <Col md={12}>
               {
-                route && route.id !== null
+                !this.state.showRouteFormNew && routeNew && routeNew.id !== null
                   ? (
                     <RouteInfo
-                      route={route}
+                      route={routeNew}
                       noRouteName
                       mapKey="mapDutyMissionTemplateFrom"
                     />

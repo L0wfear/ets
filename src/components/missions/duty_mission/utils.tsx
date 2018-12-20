@@ -13,7 +13,7 @@ export const FormTitle: React.FunctionComponent<{ number?: string | number, stat
   </div>
 );
 
-export const makeRoutesForDutyMissionForm = ({ selectedRoute: route, routesList = [] }, { formState: state }) => {
+export const makeRoutesForDutyMissionForm = ({ selectedRouteNew: route, routesList = [] }, { formState: state }) => {
   const routes = routesList.filter((r) => (
     (!state.structure_id || r.structure_id === state.structure_id)
   ));

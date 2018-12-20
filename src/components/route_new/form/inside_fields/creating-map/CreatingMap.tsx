@@ -157,6 +157,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
 
         this.setState({
           geozone_municipal_facility_by_id,
+          OBJECT_LIST_OPTIONS: makeObjectListOptions(geozone_municipal_facility_by_id),
         });
 
         if (needUpdateObjectData) {

@@ -379,7 +379,7 @@ export class MissionForm extends Form {
     const routesActions = flux.getActions('routes');
     const { formState } = this.props;
 
-    if (isSubmitted === true) {
+    if (isSubmitted) {
       handleRouteFormHide(
         formState,
         this.state,
@@ -399,7 +399,7 @@ export class MissionForm extends Form {
     const routesActions = flux.getActions('routes');
     const { formState } = this.props;
 
-    if (isSubmitted === true) {
+    if (isSubmitted) {
       handleRouteFormHide(
         formState,
         this.state,

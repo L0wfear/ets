@@ -12,7 +12,7 @@ type StateCarInfoWrap = {
 };
 
 const CarInfo = React.lazy<React.ComponentType<OwnPropsCarInfo>>(() => (
-  import(/* webpackChunkName: "car_info" */'components/monitor/info/car-info/CarInfo')
+  import(/* webpackChunkName: "car_info" */ 'components/monitor/info/car-info/CarInfo')
 ));
 
 class CarInfoWrap extends React.PureComponent<PropsCarInfoWrap, StateCarInfoWrap> {

@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "object_property" */'components/directories/repair/object_property/ObjectPropertyList')
+  import(/* webpackChunkName: "object_property" */ 'components/directories/repair/object_property/ObjectPropertyList')
 ));
 
 export default [

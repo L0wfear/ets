@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "fountains" */'components/directories/geoobjects/pages/fountains/FountainsDirectory')
+  import(/* webpackChunkName: "fountains" */ 'components/directories/geoobjects/pages/fountains/FountainsDirectory')
 ));
 
 export default [

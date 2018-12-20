@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "daily_cleaning_cafap" */'components/reports/regulated/daily_cleaning_cafap/report')
+  import(/* webpackChunkName: "daily_cleaning_cafap" */ 'components/reports/regulated/daily_cleaning_cafap/report')
 ));
 
 export default [

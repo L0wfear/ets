@@ -5,7 +5,7 @@ import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryF
 import { DivNone } from 'global-styled/global-styled';
 
 const MissionInfoForm = React.lazy(() => (
-  import(/* webpackChunkName: "mission_info_form" */'components/missions/mission/MissionInfoForm/MissionInfoForm')
+  import(/* webpackChunkName: "mission_info_form" */ 'components/missions/mission/MissionInfoForm/MissionInfoForm')
 ));
 
 class MissionInfoFormWrap extends React.Component<any, {}> {

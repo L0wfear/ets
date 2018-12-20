@@ -14,7 +14,7 @@ import {
 } from 'components/directories/geoobjects/pages/carpool/@types/carpool.h';
 
 const GeoObjectsMapModal = React.lazy(() => (
-  import(/* webpackChunkName: "geo-objects_map_modal" */'components/directories/geoobjects/pages/carpool/form/GeoObjectsMapModal')
+  import(/* webpackChunkName: "geo-objects_map_modal" */ 'components/directories/geoobjects/pages/carpool/form/GeoObjectsMapModal')
 ));
 
 type PropsGeoObjectsMapModalWrap = {

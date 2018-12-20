@@ -9,7 +9,7 @@ import {
 } from 'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal.h';
 
 const PDFViewModal = React.lazy(() => (
-  import(/* webpackChunkName: "pdf_view_modal" */'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal')
+  import(/* webpackChunkName: "pdf_view_modal" */ 'components/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal')
 ));
 
 class MissionFormLazy extends React.PureComponent<PropsPDFViewModal & { show: boolean }, {}> {

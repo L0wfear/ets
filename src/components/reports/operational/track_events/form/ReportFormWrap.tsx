@@ -5,7 +5,7 @@ import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryF
 import { DivNone } from 'global-styled/global-styled';
 
 const ReportForm = React.lazy(() => (
-  import(/* webpackChunkName: "ReportForm" */'components/reports/operational/track_events/form/ReportForm')
+  import(/* webpackChunkName: "ReportForm" */ 'components/reports/operational/track_events/form/ReportForm')
 ));
 
 type PropsReportFormWrap = {

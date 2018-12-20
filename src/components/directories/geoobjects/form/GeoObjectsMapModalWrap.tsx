@@ -11,7 +11,7 @@ import {
 } from 'components/ui/table/@types/schema.h';
 
 const GeoObjectsMapModal = React.lazy(() => (
-  import(/* webpackChunkName: "geo-objects_map_modal" */'components/directories/geoobjects/form/GeoObjectsMapModal')
+  import(/* webpackChunkName: "geo-objects_map_modal" */ 'components/directories/geoobjects/form/GeoObjectsMapModal')
 ));
 
 type PropsGeoObjectsMapModalWrap = {

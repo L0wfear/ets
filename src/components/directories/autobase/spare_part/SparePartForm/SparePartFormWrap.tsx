@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsSparePartFormWrap } from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
 
 const SparePartFrom = React.lazy(() => (
-  import(/* webpackChunkName: "spare_part_form" */'components/directories/autobase/spare_part/SparePartForm/SparePartForm')
+  import(/* webpackChunkName: "spare_part_form" */ 'components/directories/autobase/spare_part/SparePartForm/SparePartForm')
 ));
 
 class SparePartFormWrap extends React.Component<PropsSparePartFormWrap, {}> {

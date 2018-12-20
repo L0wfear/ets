@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "carpool" */'components/directories/geoobjects/pages/carpool/CarpoolDirectory')
+  import(/* webpackChunkName: "carpool" */ 'components/directories/geoobjects/pages/carpool/CarpoolDirectory')
 ));
 
 export default [

@@ -11,7 +11,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 
 const CarFuncTypesFrom = React.lazy(() => (
-  import(/* webpackChunkName: "car_func_types_form" */'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/CarFuncTypesForm')
+  import(/* webpackChunkName: "car_func_types_form" */ 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/CarFuncTypesForm')
 ));
 
 class CarFuncTypesFormWrap extends React.Component<PropsCarFuncTypesFormWrap, {}> {

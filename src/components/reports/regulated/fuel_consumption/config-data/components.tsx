@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "fuel_consumption" */'components/reports/regulated/fuel_consumption/report')
+  import(/* webpackChunkName: "fuel_consumption" */ 'components/reports/regulated/fuel_consumption/report')
 ));
 
 export default [

@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "pedestrian_tunnels" */'components/directories/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsDirectory')
+  import(/* webpackChunkName: "pedestrian_tunnels" */ 'components/directories/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsDirectory')
 ));
 
 export default [

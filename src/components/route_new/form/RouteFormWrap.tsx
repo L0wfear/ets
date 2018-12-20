@@ -5,7 +5,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsRouteFormWrap } from 'components/route_new/form/RouteForm.h';
 
 const RouteForm = React.lazy(() => (
-  import(/* webpackChunkName: "route_form" */'components/route_new/form/RouteForm')
+  import(/* webpackChunkName: "route_form" */ 'components/route_new/form/RouteForm')
 ));
 
 class RouteFormWrap extends React.Component<PropsRouteFormWrap, {}> {

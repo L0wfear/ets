@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsRepairCompanyFormWrap } from 'components/directories/autobase/repair_company/RepairCompanyForm/@types/RepairCompany.h';
 
 const RepairCompanyFrom = React.lazy(() => (
-  import(/* webpackChunkName: "repair_company_form" */'components/directories/autobase/repair_company/RepairCompanyForm/RepairCompanyForm')
+  import(/* webpackChunkName: "repair_company_form" */ 'components/directories/autobase/repair_company/RepairCompanyForm/RepairCompanyForm')
 ));
 
 class RepairCompanyFormWrap extends React.Component<PropsRepairCompanyFormWrap, {}> {

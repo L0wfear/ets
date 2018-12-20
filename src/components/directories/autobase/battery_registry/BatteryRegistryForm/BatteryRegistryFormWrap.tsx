@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsBatteryRegistryFormWrap } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/@types/BatteryRegistry.h';
 
 const BatteryRegistryFrom = React.lazy(() => (
-  import(/* webpackChunkName: "battery_registry_form" */'components/directories/autobase/battery_registry/BatteryRegistryForm/BatteryRegistryForm')
+  import(/* webpackChunkName: "battery_registry_form" */ 'components/directories/autobase/battery_registry/BatteryRegistryForm/BatteryRegistryForm')
 ));
 
 class BatteryRegistryFormWrap extends React.Component<PropsBatteryRegistryFormWrap, {}> {

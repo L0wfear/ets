@@ -14,6 +14,7 @@ import {
   HrLine,
   TpMessangeContainer,
 } from 'components/login/styled/styled';
+import SnowStorm from 'react-snowstorm';
 
 class LoginPage extends React.PureComponent<any, any> {
   state = {
@@ -60,6 +61,7 @@ class LoginPage extends React.PureComponent<any, any> {
 
     return (
       <LoginPageContainer>
+        <SnowStorm />
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
             <LoginPageFormContainer>

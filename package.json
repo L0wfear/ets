@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.25.94",
+    "version": "2.0.25.95",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -90,6 +90,7 @@
         "node-sass": "^4.11.0",
         "openurl": "^1.1.1",
         "react-hot-loader": "^4.6.0",
+        "react-snowstorm": "0.0.3",
         "redux-devtools-extension": "^2.13.7",
         "resolve-url-loader": "^3.0.0",
         "sass-loader": "^7.1.0",

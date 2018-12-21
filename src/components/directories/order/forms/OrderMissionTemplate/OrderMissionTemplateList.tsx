@@ -13,8 +13,6 @@ import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import MissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
 import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
 
-import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap';
-import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
 import { diffDates } from 'utils/dates';
 
 import { checkStructureByTypeClick } from 'components/directories/order/forms/utils/customValidate';
@@ -30,6 +28,7 @@ import {
 import {
   IStateOrderMissionTemplate,
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
+import { createMissionByOrder, createDutyMissionByOrder } from '../utils/createMissionsByOrder';
 
 @connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
@@ -110,7 +109,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     this.setState({ assign_to_waybill });
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const {
       assign_to_waybill,
       checkedElements,
@@ -122,46 +121,30 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
-    if (!checkStructureByTypeClick(typeClick, this.props as any, Object.values(checkedElements))) {
+    const missionArr = Object.values(checkedElements);
+
+    if (!checkStructureByTypeClick(typeClick, this.props as any, missionArr)) {
       this.setState({ canSubmit: false });
+      let goodResponse = true;
 
-      const queryList = Object.entries(checkedElements).map(([id, value]) => {
-        const {
-          date_from: date_start,
-          date_to: date_end,
-          num_exec: passes_count,
-        } = value as any;
+      if (typeClick === typeTemplate.missionTemplate) {
+        goodResponse = await createMissionByOrder(this.context.flux, missionArr, mission_source_id, assign_to_waybill, faxogramm_id);
+      }
+      if (typeClick === typeTemplate.missionDutyTemplate) {
+        goodResponse = await createDutyMissionByOrder(this.context.flux, missionArr, mission_source_id, faxogramm_id);
+      }
 
-        const externalPayload = {
-          mission_source_id,
-          passes_count,
-          date_start,
-          date_end,
-          assign_to_waybill,
-        };
-        const newElement = {
-          ...value,
-          faxogramm_id,
-        };
-
-        if (typeClick === typeTemplate.missionDutyTemplate) {
-          delete externalPayload.assign_to_waybill;
-        }
-
-        switch (typeClick) {
-          case typeTemplate.missionTemplate: return createMissions(this.context.flux, { [id]: newElement }, externalPayload);
-          case typeTemplate.missionDutyTemplate: return createDutyMissions(this.context.flux, { [id]: newElement }, externalPayload);
-          default: return Promise.reject({ error: 'no typeClick' });
-        }
-      });
-
-      Promise.all(queryList).then(() => {
+      if (goodResponse) {
         this.setState({
           selectedElement: undefined,
           checkedElements: {},
           canSubmit: true,
         });
-      });
+      } else {
+        this.setState({
+          canSubmit: true,
+        });
+      }
     }
   }
 

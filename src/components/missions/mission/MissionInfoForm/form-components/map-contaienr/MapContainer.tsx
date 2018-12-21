@@ -15,6 +15,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
     SHOW_GEOOBJECTS: true,
     SHOW_TRACK: true,
     geoobjects: this.props.geoobjects,
+    inputLines: this.props.inputLines,
     track: this.props.track,
     front_parkings: this.props.front_parkings,
   };
@@ -34,6 +35,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
 
     if (SHOW_GEOOBJECTS) {
       changeStateObj.geoobjects = nextProps.geoobjects;
+      changeStateObj.inputLines = nextProps.inputLines;
     }
 
     return changeStateObj;
@@ -56,6 +58,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
       const SHOW_GEOOBJECTS = !changeStateObj.SHOW_GEOOBJECTS;
 
       changeStateObj.geoobjects = SHOW_GEOOBJECTS ? this.props.geoobjects : {};
+      changeStateObj.inputLines = SHOW_GEOOBJECTS ? this.props.inputLines : [];
       changeStateObj.SHOW_GEOOBJECTS = SHOW_GEOOBJECTS;
     }
 
@@ -74,6 +77,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
           gov_number={props.gov_number}
           gps_code={props.gps_code}
           geoobjects={state.geoobjects}
+          inputLines={state.inputLines}
           track={state.track}
           parkings={state.front_parkings}
           speed_lim={speed_limits.speed_lim}

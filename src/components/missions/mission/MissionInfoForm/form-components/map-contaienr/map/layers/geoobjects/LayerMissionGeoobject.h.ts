@@ -10,6 +10,7 @@ export type PropsLayerLayerMissionGeoobject = {
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   geoobjects: any;
+  inputLines: any;
   centerOn: any;
 };
 

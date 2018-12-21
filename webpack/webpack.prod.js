@@ -9,6 +9,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const stand = process.env.STAND || 'dev';
 
+const getNameFavicon = (stand) => {
+  switch (stand) {
+    case 'dev': return 'faviconDev.png';
+    case 'stage': return 'faviconStage.png';
+    default: return 'favicon.png';
+  }
+};
+
 module.exports = {
   entry: [
     'whatwg-fetch',
@@ -180,7 +188,7 @@ module.exports = {
     ]),
     new HtmlWebpackPlugin({
       title: 'ЕТС',
-      favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', 'favicon.png'),
+      favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', getNameFavicon(stand)),
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
       MANIFEST_FILENAME: 'manifest.json'
     }),

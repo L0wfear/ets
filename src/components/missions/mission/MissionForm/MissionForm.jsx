@@ -574,14 +574,17 @@ export class MissionForm extends Form {
         || !state.municipal_facility_id
       ) && !IS_NOT_IN_WAYBILL
     );
+    console.log(sourceIsOrder);
 
     const municipalFacilityIdDisabled = (
       (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
       || sourceIsOrder
+      || fromOrder
     );
 
     const alreadyDefineNormId = (
       sourceIsOrder
+      || fromOrder
       || (
         !IS_CREATING
         && (

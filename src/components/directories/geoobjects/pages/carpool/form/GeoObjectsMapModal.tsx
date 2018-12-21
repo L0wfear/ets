@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { ButtonUpdateMainCarpool } from 'components/directories/geoobjects/pages/carpool/form/buttons/buttons';
 
 import {
   FlexContainer,
@@ -88,9 +88,9 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-            <Button disabled={ element.is_main } onClick={ () => this.carpoolIsMain(element.id) }>
+            <ButtonUpdateMainCarpool disabled={ element.is_main } onClick={ () => this.carpoolIsMain(element.id) }>
               Сделать основной
-            </Button>
+            </ButtonUpdateMainCarpool>
           </Modal.Footer>
       </Modal>
     );

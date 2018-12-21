@@ -179,7 +179,7 @@ module.exports = {
       },
     ]),
     new HtmlWebpackPlugin({
-      title: '__DEVELOPMENT__',
+      title: `__ETS::${stand.toUpperCase()}__`,
       favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', 'dev.png'),
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
       MANIFEST_FILENAME: 'manifest.json'

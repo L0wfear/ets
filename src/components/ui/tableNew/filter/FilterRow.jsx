@@ -45,12 +45,13 @@ export default class FilterRow extends React.Component {
       byLabel = '',
       displayName,
       labelFunction,
-      onChange,
       name,
       data,
       type,
+      entity,
     } = this.props;
     let { value } = this.props;
+    const idLabel = name ? `${entity ? `${entity}-` : ''}${name}-label` : undefined;
 
     let input = (
       <div className="form-group">

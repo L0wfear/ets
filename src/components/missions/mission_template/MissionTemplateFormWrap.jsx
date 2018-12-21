@@ -19,6 +19,8 @@ import withMapInConsumer from 'components/map/context/withMapInConsumer';
 
 import MissionTemplateForm from 'components/missions/mission_template/MissionTemplateForm';
 import MissionsCreationForm from 'components/missions/mission_template/MissionsCreationForm';
+import { ASSING_BY_KEY } from 'components/directories/order/forms/utils/constant';
+import { groupBy } from 'lodash';
 
 const printMapKeyBig = 'mapMissionTemplateFormA3';
 const printMapKeySmall = 'mapMissionTemplateFormA4';
@@ -27,6 +29,7 @@ export const createMissions = async (flux, element, payload) => {
   let error = false;
   try {
     await flux.getActions('missions').createMissions(element, payload);
+    return false;
   } catch ({ error_text: e }) {
     error = true;
     const code = get(e, ['message', 'code'], null);
@@ -95,6 +98,7 @@ export const createMissions = async (flux, element, payload) => {
           date_end: interval[1],
           assign_to_waybill: payload.assign_to_waybill,
         };
+
         await createMissions(element, newPayload);
       }
     }
@@ -189,25 +193,56 @@ class MissionTemplateFormWrap extends FormWrap {
             assign_to_waybill: formState.assign_to_waybill,
           };
 
-          let closeForm = true;
-          try {
-            await Promise.all(missionsArr.map(async (mission) => {
-              const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
+          if (externalPayload.assign_to_waybill === ASSING_BY_KEY.assign_to_new_draft) {
+            const missionByCar = groupBy(missionsArr, 'car_id');
 
-              if (e) {
-                closeForm = false;
-              }
-            }));
-          } catch (e) {
-            closeForm = false;
-          }
+            const ansArr = await Promise.all(
+              Object.values(missionByCar).map(async ([firstMission, ...other]) => {
+                const successFM = await this.createMissionWrap([firstMission], externalPayload);
+                if (successFM) {
+                  const successEvery = await this.createMissionWrap(other, {
+                    ...externalPayload,
+                    assign_to_waybill: ASSING_BY_KEY.assign_to_available_draft,
+                  });
+                  if (!successEvery) {
+                    return false;
+                  }
+                  return true;
+                }
+                return false;
+              }),
+            );
 
-          if (closeForm) {
-            this.props.onFormHide(true);
+            if (!ansArr.some(ans => !ans)) {
+              this.props.onFormHide(true);
+            }
+          } else {
+            const success = await this.createMissionWrap(missionsArr, externalPayload);
+            if (success) {
+              this.props.onFormHide(true);
+            }
           }
         }
       }
     }
+  }
+
+  async createMissionWrap(missionsArr, externalPayload) {
+    const { flux } = this.context;
+    let success = true;
+    try {
+      await Promise.all(missionsArr.map(async (mission) => {
+        const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
+
+        if (e) {
+          success = false;
+        }
+      }));
+    } catch (e) {
+      success = false;
+    }
+
+    return success;
   }
 
   handlMultiFormStateChange = (changesObj) => {

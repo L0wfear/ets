@@ -69,6 +69,7 @@ export const config: TypeConfigData = {
         {
           key: 'avg_work_hours',
           title: 'Среднее количество часов работы',
+          width: 300,
         },
       ],
     },

@@ -180,6 +180,7 @@ module.exports = {
     ]),
     new HtmlWebpackPlugin({
       title: 'ЕТС',
+      favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', 'favicon.png'),
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
       MANIFEST_FILENAME: 'manifest.json'
     }),

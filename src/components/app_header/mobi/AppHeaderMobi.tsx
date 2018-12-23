@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { MobiContainer, FirstLvlMobi, SecondMenuContainerMobiFirst, ChangeRoleContainerWithButton, UserDocRow} from 'components/app_header/mobi/styled';
+import { MobiContainer, FirstLvlMobi, SecondMenuContainerMobiFirst, ChangeRoleContainerWithButton, SecondMenuItemContainerMobi} from 'components/app_header/mobi/styled';
 import EtsLogo from 'components/app_header/desktop/left/ets_logo/EtsLogo';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Collapse from 'react-bootstrap/lib/Collapse';
@@ -65,10 +65,13 @@ class AppHeader extends React.Component<any, any> {
                 {
                   this.mapRWithP(['doc', docs])
                 }
-                <UserDocRow>
+                <SecondMenuItemContainerMobi>
                   <UserInfo />
+                </SecondMenuItemContainerMobi>
+                <SecondMenuItemContainerMobi>
                   <EtsLogout />
-                </UserDocRow>
+                </SecondMenuItemContainerMobi>
+
               </SecondMenuContainerMobiFirst>
             </div>
           </Collapse>

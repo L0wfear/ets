@@ -476,6 +476,7 @@ export class DutyMissionForm extends Form {
       IS_DISPLAY
       || !!state.route_id
       || readOnly
+      || fromOrder
       || sourceIsOrder
     );
 

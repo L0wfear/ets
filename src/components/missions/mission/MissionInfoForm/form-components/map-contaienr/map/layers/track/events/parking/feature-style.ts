@@ -1,9 +1,7 @@
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 
-const ParkingIcon = require('assets/icons/track/parking.svg');
-
-const DEVICE_PIXEL_RATIO = 2; // window.devicePixelRatio;
+const ParkingIcon = require('assets/icons/track/parkingPng.png');
 
 type TYPE_CACHE_ICON = {
   [key: string]: any;
@@ -16,7 +14,7 @@ const makeCacheStyle = (cacheStyleName ) => {
     image: new Icon({
       anchor: [0.5, 0.5],
       src: ParkingIcon,
-      scale: 0.06 * (2 / DEVICE_PIXEL_RATIO),
+      scale: 0.06,
     }),
     zIndex: 9,
   });

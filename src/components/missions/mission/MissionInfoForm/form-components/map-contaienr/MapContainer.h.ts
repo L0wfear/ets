@@ -4,6 +4,7 @@ export type PropsMapContainer = {
   gov_number: string;
   gps_code: string | null;
   geoobjects: object;
+  inputLines: any;
   front_parkings: any[];
   track: any[];
   cars_sensors: object;

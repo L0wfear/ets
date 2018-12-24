@@ -5,6 +5,9 @@ import { getCasheStyleForGeoobject } from 'components/missions/mission/MissionIn
 import {
   LayerGeoobjectsUtilsTypes,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerMissionGeoobject.h';
+import {
+  inputLineStyleFunc,
+} from 'components/route/route-info/map/layers/layer-route-info-geometry/feature-style';
 
 /**
  * изменение геометрии фичи, если shape разный
@@ -77,6 +80,36 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
           checkShowTrue(serverName, id, geoobjects[serverName][id], geoobjects[serverName][id], oldFeature, thisProps);
         }
       }
+    }
+  }
+};
+
+const renderLine = (id, geoobj, thisProps) => {
+  if (geoobj.shape) {
+    const feature = new Feature({
+      geometry: geoJSON.readGeometry(geoobj.shape),
+    });
+
+    feature.setId(id);
+    feature.set('state', geoobj.state);
+    feature.set('notSelected', true);
+
+    thisProps.addFeaturesToSource(feature);
+
+    return feature;
+  }
+
+  return null;
+};
+
+export const renderInputLines = (geoobjectsArr, thisProps) => {
+  for (const geoobj of geoobjectsArr) {
+    const id = geoobj.object_id;
+
+    const feature = renderLine(id, geoobj, thisProps);
+
+    if (feature) {
+      feature.setStyle(inputLineStyleFunc(feature, id));
     }
   }
 };

@@ -641,10 +641,12 @@ export class MissionForm extends Form {
     const municipalFacilityIdDisabled = (
       (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
       || sourceIsOrder
+      || fromOrder
     );
 
     const alreadyDefineNormId = (
       sourceIsOrder
+      || fromOrder
       || (
         !IS_CREATING
         && (

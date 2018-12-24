@@ -4,7 +4,7 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { keyBy } from 'lodash';
+import { keyBy, get } from 'lodash';
 
 import { maskStatusPoint } from 'components/missions/mission/MissionInfoForm/utils/constants';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
@@ -56,6 +56,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       front_parkings: [],
       cars_sensors: {},
       polys: {},
+      inputLines: [],
       parkingCount: null,
       gps_code: null,
       tooLongDates: (
@@ -186,6 +187,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    */
   loadPolys(route_data: RouteType, type: string) {
     const objectListIndex = route_data ? keyBy(route_data.object_list, 'object_id') : {};
+    const inputLines = get(route_data, 'input_lines', []) || [];
     const { serverName } = GEOOBJECTS_OBJ[type];
 
     this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }: any) => {
@@ -196,6 +198,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       });
 
       this.setState({
+        inputLines,
         polys: {
           [serverName]: Object.entries(polysObj).reduce((newObj, [geoId, geoData]: any) => {
             const { front_id } = geoData;
@@ -264,6 +267,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
                   gps_code={this.state.gps_code}
                   track={this.state.track}
                   geoobjects={this.state.polys}
+                  inputLines={this.state.inputLines}
                   front_parkings={this.state.front_parkings}
                   speed_limits={speed_limits}
                   cars_sensors={this.state.cars_sensors}

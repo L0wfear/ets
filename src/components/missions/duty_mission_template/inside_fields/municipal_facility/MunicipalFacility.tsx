@@ -46,8 +46,6 @@ type PropsMunicipalFacilityField = {
   technicalOperationsList: TechnicalOperationsType[];
   norm_id: number | void;
 
-  typeIdWraomWaybill: number | void;
-
   getCleaningMunicipalFacilityList: GetMunicipalFacilityFunc,
   handleChange: (name: string, value: number | null) => any;
   getDataByNormatives: (normatives: MunicipalFacilityNormative[]) => any;

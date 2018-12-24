@@ -10,7 +10,7 @@ const PaginatorTsx: any = Paginator;
 const OrderPaginator: React.FunctionComponent<any> = (props) => (
   <Div hidden={!props.haveMax} >
     <PaginatorTsx
-      currentPage={props.offset}
+      currentPage={props.offset / 15}
       maxPage={Math.ceil(props.total_count / 15)}
       setPage={props.setPageOrderTable}
       firstLastButtons
@@ -24,7 +24,7 @@ const mapStateToProps = (state) => ({
   total_count: state.order.total_count,
 });
 const mapDispatchToProps = (dispatch) => ({
-  setPageOrderTable: (offset) => dispatch(getOrders({ offset })),
+  setPageOrderTable: (offset) => dispatch(getOrders({ offset: offset * 15 })),
 });
 
 export default connect(

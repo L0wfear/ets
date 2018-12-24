@@ -571,6 +571,7 @@ export class MissionForm extends Form {
     const structureValue = state.structure_id;
 
     const IS_COMPLETE = state.status === 'complete';
+    const IS_CANCELED = state.status === 'canceled';
     const IS_FAIL = state.status === 'fail';
     const IS_CREATING = !state.status;
     const IS_POST_CREATING_NOT_ASSIGNED = state.status === 'not_assigned' || this.props.fromWaybill;
@@ -590,7 +591,7 @@ export class MissionForm extends Form {
       });
     }
 
-    let title = `Задание № ${state.number}${state.status === 'fail' ? ' (Не выполнено)' : ''}`;
+    let title = `Задание № ${state.number}${state.status === 'fail' || state.status === 'canceled' ? ' (Не выполнено)' : ''}`;
     if (state.column_id) {
       title = `${title} . Колонна № ${state.column_id}`;
     }
@@ -884,7 +885,7 @@ export class MissionForm extends Form {
                       type="number"
                       label="Количество циклов"
                       error={errors.passes_count}
-                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)}
+                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_CANCELED || IS_COMPLETE)}
                       value={state.passes_count}
                       onChange={this.handleChange.bind(this, 'passes_count')}
                       min={0}
@@ -923,7 +924,7 @@ export class MissionForm extends Form {
                       type="string"
                       label="Комментарий"
                       value={state.comment}
-                      disabled={IS_FAIL || IS_COMPLETE}
+                      disabled={IS_FAIL || IS_CANCELED || IS_COMPLETE}
                       onChange={this.handleChange.bind(this, 'comment')}
                       error={errors.comment}
                     />

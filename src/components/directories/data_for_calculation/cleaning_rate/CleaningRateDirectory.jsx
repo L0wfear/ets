@@ -3,13 +3,13 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 import ElementsList from 'components/ElementsList';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { connectToStores, exportable, staticProps } from 'utils/decorators';
 import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap';
 import CleaningRateTable from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateTable';
 import permissions from 'components/directories/data_for_calculation/cleaning_rate/config-data/permissions';
 
 @connectToStores(['objects'])
-// @exportable({ entity: 'cleaning_rate' })
+@exportable({ entity: 'cleaning_rate' })
 @staticProps({
   entity: 'cleaning_rate',
   permissions,

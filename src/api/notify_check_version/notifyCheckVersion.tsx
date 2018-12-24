@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
@@ -7,7 +7,7 @@ interface IPropsNotifiVersionPopup {
   nextV: string;
 }
 
-const getNotifyCheckVersion: React.SFC<IPropsNotifiVersionPopup> = (props) => (
+const getNotifyCheckVersion: React.FunctionComponent<IPropsNotifiVersionPopup> = (props) => (
     <div className="check-version-notification">
       <div className="text-version-container">
         <div className="one-text-version">

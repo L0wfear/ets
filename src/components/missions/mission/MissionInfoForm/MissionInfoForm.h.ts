@@ -93,6 +93,7 @@ export type PropsMissionInfoForm = {
 export type StateMissionInfoForm = {
   tooLongDates: boolean;
   polys: object;
+  inputLines: any[];
   missionReport: any[];
   parkingCount: number | void;
   track: any[];

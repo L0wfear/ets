@@ -21,6 +21,7 @@ import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
+import { connect } from 'react-redux';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -522,4 +523,8 @@ class WaybillFormWrap extends FormWrap {
   }
 }
 
-export default WaybillFormWrap;
+export default connect(
+  state => ({
+    currentUser: state.session.userData,
+  }),
+)(WaybillFormWrap);

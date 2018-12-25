@@ -23,8 +23,8 @@ export const MONITOR_PAGE_RESER = MONITOR_PAGE`RESER`;
 export const MONITOR_PAGE_RESER_CAR_STATUS = MONITOR_PAGE`RESER_CAR_STATUS`;
 export const MONITOR_PAGE_CHANGE_FILTERS = MONITOR_PAGE`CHANGE_FILTERS`;
 export const MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST = MONITOR_PAGE`MERGE_FILTERS_GPS_CODE_LIST`;
-export const MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE = MONITOR_PAGE`TOGGLE_MEASURE_ACTIVE`;
-export const MONITOR_PAGE_FALSE_MEASURE_ACTIVE = MONITOR_PAGE`FALSE_MEASURE_ACTIVE`;
+export const MONITOR_PAGE_TOGGLE_DRAW_ACTIVE = MONITOR_PAGE`TOGGLE_DRAW_ACTIVE`;
+export const MONITOR_PAGE_FALSE_DRAW_ACTIVE = MONITOR_PAGE`FALSE_DRAW_ACTIVE`;
 
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE = MONITOR_PAGE`CHANGE_FUEL_EVENTS_DATE`;
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_DATA`;
@@ -73,11 +73,16 @@ const initialState = {
       carFilterMultyType: [],
       carFilterMultyStructure: [],
       carFilterMultyOwner: [],
+      featureBufferPolygon: null, // DITETSSUP-2007
     },
     filtredCarGpsCode: [],
   },
   companiesIndex: -1,
-  measureActive: false,
+  drawActive: {
+    all: false,
+    measureActive: false,
+    polygonBuffer: false,
+  },
   fuelEvents: {
     leak: {
       show: false,
@@ -276,16 +281,42 @@ export default (state = initialState, { type, payload }) => {
         },
       };
     }
-    case MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE: {
+    case MONITOR_PAGE_TOGGLE_DRAW_ACTIVE: {
+      const { drawKey } = payload;
+      const {
+        drawActive: {
+          all,
+          ...drawActive
+        },
+      } = state;
+
+      drawActive[drawKey] = !state.drawActive[drawKey];
+
       return {
         ...state,
-        measureActive: !state.measureActive,
+        drawActive: {
+          ...drawActive,
+          all: Object.values(drawActive).some((flag) => Boolean(flag)),
+        },
       };
     }
-    case MONITOR_PAGE_FALSE_MEASURE_ACTIVE: {
+    case MONITOR_PAGE_FALSE_DRAW_ACTIVE: {
+      const { drawKey } = payload;
+      const {
+        drawActive: {
+          all,
+          ...drawActive
+        },
+      } = state;
+
+      drawActive[drawKey] = false;
+
       return {
         ...state,
-        measureActive: false,
+        drawActive: {
+          ...drawActive,
+          all: Object.values(drawActive).some((flag) => Boolean(flag)),
+        },
       };
     }
     case MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE: {

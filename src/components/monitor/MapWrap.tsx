@@ -60,7 +60,7 @@ const MapWrap: React.FunctionComponent<PropsMapWrap> = (props) => (
 const mapStateToProps = (state) => ({
   enableInteractions: !(!!state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR || state.monitorPage.carInfo.playTrack.status === 'play'),
   disabledCenterOn: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR && !(state.monitorPage.carInfo.playTrack.status === 'play'),
-  disabledMouseSingleClick: state.monitorPage.measureActive,
+  disabledMouseSingleClick: state.monitorPage.drawActive.all,
 });
 
 export default connect(

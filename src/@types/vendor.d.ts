@@ -10,6 +10,7 @@ declare namespace NodeJS  {
       removeNotification(uid: string | number),
     };
     SESSION_KEY2: string;
+    API__KEY2: string;
     window: any;
     APP_DATE_FORMAT: string;
     CURRENT_USER2: string;

@@ -16,6 +16,8 @@ global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
 global.APP_TIME_WITH_SECOND_FORMAT = 'HH:mm:ss';
 global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
+global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${process.env.STAND}2`;
+
 global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 
 import LoginPageWrap from 'components/login/LoginPageWrap';

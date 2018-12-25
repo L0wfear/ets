@@ -8,7 +8,7 @@ export type DefaultSelectOption<V, L, R> = {
 
 export type DefaultSelectListMapper<V, L, R> = DefaultSelectOption<V, L, R>[];
 
-export const defaultSelectListMapper = ({ id, name, ...other }) => ({ value: id, label: name, allData: { id, name, ...other } });
+export const defaultSelectListMapper = ({ id, name, ...other }) => ({ value: id, label: name, rowData: { id, name, ...other } });
 
 export const onChangeSelectLegacy = (sValue, multi) => {
   let newValue = null;

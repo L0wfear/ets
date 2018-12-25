@@ -64,11 +64,12 @@ class CompanyStructure extends ElementsList {
       });
     } catch (err) {
       // отмена
+      return;
     }
     this.context.flux.getActions('companyStructure').deleteCompanyElement(id)
       .then(() => this.refreshState())
       .catch(({ error_text }) => {
-        console.warn(error_text);
+        console.warn(error_text); // eslint-disable-line
       });
   }
 

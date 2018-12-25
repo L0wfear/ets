@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 

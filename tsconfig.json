@@ -6,7 +6,6 @@
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": false,
-    "allowSyntheticDefaultImports": true,
     "isolatedModules": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",

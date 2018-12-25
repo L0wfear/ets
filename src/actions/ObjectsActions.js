@@ -91,7 +91,7 @@ export default class ObjectsActions extends Actions {
 
   updateCompanies(formState) {
     const payload = clone(formState);
-    return CompanyService.path(formState.id).put(payload, this.getCompanies, 'json');
+    return CompanyService.path(formState.company_id).put(payload, this.getCompanies, 'json');
   }
 
   getWorkKinds() {

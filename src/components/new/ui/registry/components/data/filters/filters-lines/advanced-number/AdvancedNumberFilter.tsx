@@ -91,7 +91,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
     const valueAsNumber = Number(value);
     const { activeTypeArr } = this.state;
 
-    this.props.onChange(filterData.valueKey, activeTypeArr[0], value !== '' ? valueAsNumber : '');
+    this.props.onChange(filterData.valueKey, activeTypeArr[1], value !== '' ? valueAsNumber : '');
   }
 
   render() {

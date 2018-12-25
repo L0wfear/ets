@@ -212,7 +212,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     const IS_CREATING = !state.id;
 
-    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (

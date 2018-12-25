@@ -78,7 +78,7 @@ export const tableMeta = ({
       type: 'string',
       filter: {
         type: 'multiselect',
-        keyBy: 'structure_name',
+        byLabel: 'structure_name',
       },
     },
   ],

@@ -8,7 +8,7 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import Button from 'react-bootstrap/lib/Button';
+import * as Button from 'react-bootstrap/lib/Button';
 
 const modalKey = 'ModalSwitchApiVersion';
 

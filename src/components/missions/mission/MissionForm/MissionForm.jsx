@@ -49,7 +49,7 @@ import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssi
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 import missionPermission from 'components/missions/mission/config-data/permissions';
 import { isArray } from 'util';
-import { DropdownDateEnd, TimeDevider } from 'components/missions/mission/MissionForm/styled';
+import { DropdownDateEnd, TimeDevider, DropdownDateEndCol } from 'components/missions/mission/MissionForm/styled';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -764,7 +764,7 @@ export class MissionForm extends Form {
                               onChange={this.handleChangeDateStart}
                             />
                           </Col>
-                          <Col md={2} xm={2} sm={2} xs={2}>
+                          <DropdownDateEndCol md={2} xm={2} sm={2} xs={2}>
                             <DropdownDateEnd id="date-end-dropdown" disabled={IS_DISPLAY || !state.date_start} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
                               <Dropdown.Toggle disabled={IS_DISPLAY}>
                                 <Glyphicon id="select-date_end" glyph="time" />
@@ -777,7 +777,7 @@ export class MissionForm extends Form {
                                 <MenuItem eventKey={5}>5</MenuItem>
                               </Dropdown.Menu>
                             </DropdownDateEnd>
-                          </Col>
+                          </DropdownDateEndCol>
                         </Row>
                       </Col>
                       <Col md={1}>

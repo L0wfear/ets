@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import MapEts from 'components/map/MapEts';
 
 import { MapEtsContainer } from 'components/directories/geoobjects/form/form-components/map-geoobject/styled/styled';
@@ -6,7 +7,7 @@ import LayerOneGeometry from 'components/directories/geoobjects/form/form-compon
 
 import { MapEtsConsumer } from 'components/map/context/MapetsContext';
 
-const makeGeoobjects = ({ geoobjectData, entity }) => {
+const makeGeoobjects = (geoobjectData, entity) => {
   const geoobjects: any = {
     [entity]: {
       [`${entity}/${geoobjectData.id}`]: {
@@ -34,35 +35,15 @@ type PropsMapGeoobjectWrap = {
 };
 
 type StateMapGeoobjectWrap = {
-  geoobjectData: any;
-  geoobjects: any;
 };
 
 class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateMapGeoobjectWrap> {
-  constructor(props) {
-    super(props);
-
-    const { geoobjectData } = props;
-
-    this.state = {
-      geoobjects: makeGeoobjects(props),
-      geoobjectData,
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps: PropsMapGeoobjectWrap, prevState: StateMapGeoobjectWrap) {
-    const { geoobjectData } = nextProps;
-    if (geoobjectData !== prevState.geoobjectData) {
-      return {
-        geoobjectData,
-        geoobjects: makeGeoobjects(nextProps),
-      };
-    }
-
-    return null;
-  }
-
   render() {
+    const geoobjects = makeGeoobjects(
+      this.props.geoobjectData,
+      this.props.entity,
+    );
+
     return (
       <MapEtsConsumer>
         {
@@ -72,7 +53,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
                 {
                   ({ map, centerOn }) => (
                     <>
-                      <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
+                      <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={geoobjects} />
                     </>
                   )
                 }

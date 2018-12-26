@@ -1,4 +1,5 @@
 import * as React from 'react';
+import memoize from 'memoize-one';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -31,41 +32,26 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
+class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
-    infoData: this.props.infoData,
-    infoDataGroupByDate: groupBy<WaybillDraftItemsSubItemsType>(
-      this.props.infoData.subItems,
-      (waybill) => (
-        makeDate(waybill.data.waybill_date_create)
-      ),
-    ),
   };
 
-  static getDerivedStateFromProps({ infoData }: PropsWaybillDraftInfo, state: StateWaybillDraftInfo) {
-    if (infoData !== state.infoData) {
+  filterInfoData = memoize(
+    (infoData) => {
       if (infoData) {
-        return {
-          infoData,
-          infoDataGroupByDate: groupBy<WaybillDraftItemsSubItemsType>(
-            infoData.subItems,
-            (waybill) => (
-              makeDate(waybill.data.waybill_date_create)
-            ),
+        return groupBy<WaybillDraftItemsSubItemsType>(
+          infoData.subItems,
+          (waybill) => (
+            makeDate(waybill.data.waybill_date_create)
           ),
-        };
-      } else {
-        return {
-          infoData,
-          infoDataGroupByDate: {},
-        };
+        );
       }
-    }
 
-    return null;
-  }
+      return {};
+    },
+  );
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
@@ -101,25 +87,38 @@ class WaybillDraftInfo extends React.Component<PropsWaybillDraftInfo, StateWaybi
     });
   }
 
+  mapArrData = ({ data: { waybill_id }, title }) => (
+    <li
+      key={waybill_id}
+      className="pointer"
+      data-path={waybill_id}
+      onClick={this.openWaybillFormWrap}
+    >
+      {title}
+    </li>
+  )
+
+  mapInfoDataGroupByDate = ([key, arrData]) => (
+    <div key={key}>
+      <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
+      <div>
+        <ul>
+          { arrData.map(this.mapArrData) }
+        </ul>
+      </div>
+    </div>
+  )
+
   render() {
+    const {
+      infoData,
+    } = this.props;
+
+    const infoDataGroupByDate = this.filterInfoData(infoData);
+
     return (
       <InfoCard title="Рег. номер ТС" handleClose={this.handleClose}>
-        {
-          Object.entries(this.state.infoDataGroupByDate).sort().map(([key, arrData]) => (
-            <div key={key}>
-              <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
-              <div>
-                <ul>
-                  {
-                    arrData.map(({ data: { waybill_id }, title }, index) => (
-                      <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>{title}</li>
-                    ))
-                  }
-                </ul>
-              </div>
-            </div>
-          ))
-        }
+        { Object.entries(infoDataGroupByDate).sort().map(this.mapInfoDataGroupByDate) }
         <WaybillFormWrap
           onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
           onCallback={this.handleWaybillFormWrapHideAfterSubmit}

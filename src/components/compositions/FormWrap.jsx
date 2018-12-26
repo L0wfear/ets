@@ -100,6 +100,7 @@ class FormWrap extends React.Component {
 
     return newState;
   }
+
   nullValueForField = (field, value) => {
     const { schema = {} } = this;
     const { properties = [] } = schema;

@@ -39,7 +39,7 @@ export type CommonNotification = {
   front_type: 'common';
   gov_number: null
   group: Group;
-  id: 6
+  id: number;
   isChecked: undefined
   isHighlighted: false
   isSelected: false

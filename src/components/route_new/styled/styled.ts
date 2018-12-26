@@ -7,6 +7,9 @@ import {
 export const EtsPageWrapRoute = styled(EtsPageWrap)`
   padding: 0px;
   height: 100%;
+  width: 100%;
+  position: absolute;
+
   flex-direction: row;
   &-menu {
     float:left;

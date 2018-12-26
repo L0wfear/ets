@@ -5,11 +5,11 @@ import { ISchemaMaker, IDataTableColSchema } from 'components/ui/table/@types/sc
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from 'components/reports/operational/deviation_from_norm_of_cars/ReportHeader';
+import ReportHeader from 'components/reports/operational/cars_count_deviation/ReportHeader';
 
-const serviceUrl = 'deviation_from_norm_of_cars';
-const reportUrl = 'deviation-from-norm-of-cars';
-const serviceName = 'DeviationFromNormOfCars';
+const serviceUrl = 'cars_count_deviation';
+const reportUrl = 'cars-count-deviation';
+const serviceName = 'CarsCountDeviation';
 
 const schemaMakers: ISchemaMaker = {
   a: (schema) => ({

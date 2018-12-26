@@ -8,4 +8,5 @@ export type PropsRouteGeoList = {
   draw_object_list?: any[],
   makeFailList?: boolean,
   polys?: any;
+  height?: string;
 };

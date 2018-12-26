@@ -40,6 +40,7 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
               type={route.type}
               object_list={route.object_list}
               draw_object_list={route.draw_object_list}
+              height={props.height}
             />
           </Flex>
         </FlexContainer>

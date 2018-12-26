@@ -22,6 +22,9 @@ export const RouteListContainer = styled.div`
 export const RoutesTreeColWrap = styled(Col)`
   background-color: #eee;
   height: 100%;
+  &&& {
+    padding: 0;
+  }
 `;
 
 const cssActiveRoute = css`
@@ -43,7 +46,12 @@ export const LiRouteName = styled.li<{ active: boolean }>`
   }
 
   ${({ active }) => active ? cssActiveRoute : ''}
+`;
 
+export const RouteTreeContainer = styled.div`
+  height: 100%;
+  overflow: scroll;
+  padding: 0 15px;
 
 `;
 

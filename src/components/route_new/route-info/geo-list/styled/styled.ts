@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-export const RouteGeoListContainer = styled.div`
+export const RouteGeoListContainer = styled.div<{ height?: string }>`
+  height: ${({ height }) => height ? height : '500px'};
+  overflow: scroll;
 `;
 
 export const NameListLineContainer = styled.ul`

@@ -56,7 +56,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
     }
 
     return (
-      <RouteGeoListContainer>
+      <RouteGeoListContainer height={this.props.height}>
         {
           object_list && object_list.length
           ? (

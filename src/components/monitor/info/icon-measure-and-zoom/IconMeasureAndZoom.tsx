@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import LayerPolygonBuffer from 'components/monitor/layers/polygon_buffer_new/LayerPolygonBuffer';
+import LayerPolygonBuffer from 'components/monitor/layers/polygon_buffer/LayerPolygonBuffer';
 import LayerMeasure from 'components/monitor/layers/measure/LayerMeasure';
 import LayerZoom from 'components/map/layers/zoom/Zoom';
 

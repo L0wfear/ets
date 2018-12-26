@@ -1,3 +1,5 @@
+import * as insider from 'point-in-polygon';
+
 export const getFrontStatus = (statusId) => {
   switch (statusId) {
     case 1: return {
@@ -21,12 +23,20 @@ export const checkOnIncludesCar = (filterData, gps_code, { garage_number = '', g
   || garage_number && garage_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
 );
 
+export const checkOnBuffer = (bufferFeature, { coords_msk }) => {
+  const polygonCoordinates = bufferFeature.getGeometry().getCoordinates();
+  // console.log('bufferFeature.values_ == ', bufferFeature.getGeometry().getCoordinates());
+  // console.log('coords_msk == ', coords_msk);
+  return insider(coords_msk.reverse(), polygonCoordinates) || insider(coords_msk, polygonCoordinates);
+};
+
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {
   switch (key) {
     case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
     case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
+    case 'featureBufferPolygon': return !value || checkOnBuffer(value, wsData); // скорее всего, сюда добавить функцию, которая определяет входит ли тачка в буфер
     default: return false;
   }
 };

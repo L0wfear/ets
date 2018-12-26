@@ -97,7 +97,7 @@ export const monitorPageRemoveAllFromSelectedGeoobjects = () => ({
   payload: {},
 });
 
-export const monitorPageChangeFilter = (type, value) => ({
+export const monitorPageChangeFilter = (type, value) => ({ // добавление нового фильтра с буфером
   type: MONITOR_PAGE_CHANGE_FILTERS,
   payload: {
     type,

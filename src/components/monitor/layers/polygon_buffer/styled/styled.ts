@@ -12,7 +12,7 @@ import {
 } from 'components/map/overlay/styled/styled';
 import * as Button from 'react-bootstrap/lib/Button';
 
-const ruler = require('components/monitor/layers/polygon_buffer/styled/image/u_image.png');
+const ruler = require('components/monitor/layers/polygon_buffer/styled/image/polygon.png');
 
 export const OverlayInsideMeasureContainer = styled(OverlayInsideContainer)`
   font-size: 12px;
@@ -35,7 +35,7 @@ export const EtsTriangleMeasure = styled(EtsTriangleContainer)`
 
 export const ButtonContainer = styled.div`
   pointer-events: all;
-  background-color: red;
+  background-color: rgba(0,0,0,0.75);
   box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   padding: 2px;
@@ -45,6 +45,9 @@ export const ButtonContainer = styled.div`
       height: 25px;
       width: 25px;
       margin:0;
+      background-size: 19px;
+      background-position: center;
+      background-repeat: no-repeat;
     }
   }
 

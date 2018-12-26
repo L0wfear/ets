@@ -10,6 +10,7 @@ import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import {
   monitorPageTogglePolygonBufferActive,
   monitorPageFalsePolygonBufferActive,
+  monitorPageChangeFilter,
 } from 'components/monitor/redux-main/models/actions-monitor-page';
 import { compose } from 'recompose';
 import { getStyleForPolygonBuffer } from 'components/monitor/layers/polygon_buffer/feature-style';
@@ -48,6 +49,7 @@ type PropsLayerPolygonBuffer = {
 
   monitorPageTogglePolygonBufferActive: any;
   monitorPageFalsePolygonBufferActive: any;
+  monitorPageChangeFilter: any;
   drawActivePolygonBuffer: boolean;
   drawActiveAll: boolean;
 
@@ -77,7 +79,7 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
   componentDidUpdate(prevProps) {
     if (prevProps.featureBufferPolygon !== this.props.featureBufferPolygon) {
       if (prevProps.featureBufferPolygon) {
-        this.props.removeFeaturesFromSource(null, true);
+        this.props.removeFeaturesFromSource(null, true); // удаляет буфер
       }
       if (this.props.featureBufferPolygon) {
         this.props.addFeaturesToSource(this.props.featureBufferPolygon);
@@ -101,13 +103,14 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
 
   handleClickRemove = () => {
     this.props.removeFeaturesFromSource(null, true);
+    this.props.monitorPageChangeFilter('featureBufferPolygon', null);
   }
 
   handleStartDraw = () => {
     this.setState({ activeDraw: true });
   }
 
-  handleEndDraw = (feature: ol.Feature) => {
+  handleEndDraw = (feature: ol.Feature) => { // конец рисования буфера
     const qwe = createBuffer(feature, 1000);
 
     const newFeature = new Feature({
@@ -118,8 +121,9 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     newFeature.setStyle(getStyleForPolygonBuffer());
 
     // this.props.addFeaturesToSource(newFeature); // Если нужно посмотреть прям сейчас
-    this.props.monitorPageTogglePolygonBufferActive();
+    this.props.monitorPageTogglePolygonBufferActive(); // отображение буфера на карте, перенести в componentDidUpdate
     // наверное тут экшен на добавление фичи в стор
+    this.props.monitorPageChangeFilter('featureBufferPolygon', newFeature);
     // например featureBufferPolygon (глобальный поиск, я чуть добавил)
     this.setState({ activeDraw: false });
   }
@@ -163,6 +167,11 @@ const mapDispatchToProps = (dispatch) => ({
   monitorPageFalsePolygonBufferActive: () => (
     dispatch(
       monitorPageFalsePolygonBufferActive(),
+    )
+  ),
+  monitorPageChangeFilter: (type, value) => (
+    dispatch(
+      monitorPageChangeFilter(type, value),
     )
   ),
 });

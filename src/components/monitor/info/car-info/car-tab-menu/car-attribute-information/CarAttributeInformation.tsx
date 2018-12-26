@@ -11,6 +11,7 @@ import { makeDate, makeTime } from 'utils/dates';
 
 import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
+import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
@@ -61,6 +62,10 @@ const CarAttributeInformation: React.FunctionComponent<PropsCarAttributeInformat
         </div>
       </div>
       <CarMissions />
+      <div className="car_info_block tab-data">
+        <ButtonCreateMission >Создать децентрализованное задание</ButtonCreateMission>
+        {/* <ButtonCreateMission onClick={this.showMissionFormWrap} >Создать децентрализованное задание</ButtonCreateMission> */}
+      </div>
     </div>
   );
 };

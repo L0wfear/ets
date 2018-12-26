@@ -33,7 +33,7 @@ html, body {
 
 .app-content {
   justify-self: flex-start;
-  flex: 1 1 100%;
+  flex: 1 1 auto;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -781,6 +781,9 @@ body.application {
             padding: 0 10px;
             cursor: pointer;
             font-size: 20px;
+            >.glyphicon{
+              line-height: 48px;
+            }
           }
         }
 

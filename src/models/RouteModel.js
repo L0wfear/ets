@@ -39,11 +39,9 @@ export const routeSchema = {
   dependencies: {
     'municipal_facility_id': [
       {
-        validator: (value, { is_new }) => {
-          if (is_new) {
-            if (!value) {
-              return 'Поле "Элемент" должно быть заполнено';
-            }
+        validator: (value) => {
+          if (!value) {
+            return 'Поле "Элемент" должно быть заполнено';
           }
           return false;
         },

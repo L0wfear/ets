@@ -250,14 +250,14 @@ export const checkMissionSelectBeforeClose = (formState, missionsIndex, order_mi
 
       if (!(diffDates(fact_departure_date || plan_departure_date, mission.date_start_mission) <= 0 && diffDates(mission.date_end_mission, fact_arrival_date || plan_arrival_date) <= 0)) {
         if (mission.isOrderSource) {
-          if (status === 'complete' || status === 'fail') {
+          if (status === 'complete' || status === 'fail' || status === 'canceled') {
             errors.fromOrder.cf_list.push(number);
           } else if (status === 'assigned' || status === 'expired' || status === 'in_progress') {
             if (diffDates(mission.date_to, fact_departure_date || plan_departure_date) <= 0 || diffDates(fact_arrival_date || plan_arrival_date, mission.date_from) <= 0) {
               errors.fromOrder.confirmDialogList.push(number);
             }
           }
-        } else if (status === 'complete' || status === 'fail') {
+        } else if (status === 'complete' || status === 'fail' || status === 'canceled') {
           errors.notFromOrder.cf_list.push(number);
         }
       }

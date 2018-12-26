@@ -7,6 +7,7 @@ import {
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerMissionGeoobject.h';
 import {
   renderGeoobjects,
+  renderInputLines,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/utils';
 import { geoJSON } from 'utils/ol';
 
@@ -18,11 +19,17 @@ class LayerMissionGeoobject extends React.PureComponent<PropsLayerLayerMissionGe
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.geoobjects !== this.props.geoobjects) {
-      this.props.removeFeaturesFromSource(null, true);
-      renderGeoobjects(this.props.geoobjects, this.props);
+    const {
+      geoobjects,
+      inputLines,
+    } = this.props;
 
-      if (!Object.values(this.props.geoobjects).some((objGeos) => (
+    if (prevProps.geoobjects !== geoobjects || prevProps.inputLines !== inputLines) {
+      this.props.removeFeaturesFromSource(null, true);
+      renderGeoobjects(geoobjects, this.props);
+      renderInputLines(inputLines, this.props);
+
+      if (!Object.values(geoobjects).some((objGeos) => (
         Object.values(objGeos).some(({ frontIsSelected, shape }) => {
           if (frontIsSelected) {
             this.props.centerOn({
@@ -35,7 +42,7 @@ class LayerMissionGeoobject extends React.PureComponent<PropsLayerLayerMissionGe
           return false;
         })
       ))) {
-        if (Object.values(this.props.geoobjects).length) {
+        if (Object.values(geoobjects).length) {
           this.props.centerOn({
             extent: this.props.getOlLayer().getSource().getExtent(),
             opt_options: { padding: [50, 50, 50, 50], maxZoom: 9, duration: 500 },

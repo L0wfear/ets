@@ -37,6 +37,7 @@ export const CardInfoContainer = styled(CardContainer)`
   margin-bottom: 30px;
   pointer-events: all;
   box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
+  z-index: 1;
 
   border: 1px solid black;
   transform: translate(100%) translate(20px);

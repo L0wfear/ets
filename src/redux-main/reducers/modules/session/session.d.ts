@@ -18,6 +18,7 @@ export type InitialStateSession = {
   };
   token: string | null;
   appConfig: {
+    api_versions: string[];
     category_license: {
       category_drivers_license: [];
       category_special_license: [];

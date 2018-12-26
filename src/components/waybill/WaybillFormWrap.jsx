@@ -21,6 +21,7 @@ import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
+import { connect } from 'react-redux';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -159,7 +160,32 @@ class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !clone(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
+              canSave: (
+                (
+                  this.state.isPermittedByKey.update
+                  || this.state.isPermittedByKey.departure_and_arrival_values
+                )
+                && !clone(
+                  formErrors,
+                  (v, k) => (
+                    [
+                      'fact_arrival_date',
+                      'fact_departure_date',
+                      'fuel_end',
+                      'distance',
+                      'motohours_equip_end',
+                      'motohours_end',
+                      'odometr_end',
+                    ].includes(k)
+                      ? false
+                      : v
+                  ),
+                ).length
+                && !(
+                  (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+                  || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+                )
+              ),
               canClose: this.state.isPermittedByKey.update && !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
             });
           } else {
@@ -223,7 +249,17 @@ class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = !filter(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = (
+      !filter(
+        formErrors,
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+      ).length
+      && !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      )
+    );
+
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formState = formState;
@@ -246,7 +282,17 @@ class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = !filter(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = (
+      !filter(
+        formErrors,
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+      ).length
+      && !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      )
+    );
+
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formErrors = formErrors;
@@ -522,4 +568,8 @@ class WaybillFormWrap extends FormWrap {
   }
 }
 
-export default WaybillFormWrap;
+export default connect(
+  state => ({
+    currentUser: state.session.userData,
+  }),
+)(WaybillFormWrap);

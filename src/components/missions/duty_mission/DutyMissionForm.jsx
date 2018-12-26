@@ -438,7 +438,7 @@ export class DutyMissionForm extends Form {
     const IS_CREATING = !state.number;
     const IS_CLOSING = state.status && state.status === 'assigned';
     const IS_COMPLETED = state.status && state.status === 'complete';
-    const IS_CLOSED = state.status === 'complete' || state.status === 'fail';
+    const IS_CLOSED = state.status === 'complete' || state.status === 'fail' || state.status === 'canceled';
 
     const title = IS_CREATING
     ? (
@@ -476,6 +476,7 @@ export class DutyMissionForm extends Form {
       IS_DISPLAY
       || !!state.route_id
       || readOnly
+      || fromOrder
       || sourceIsOrder
     );
 

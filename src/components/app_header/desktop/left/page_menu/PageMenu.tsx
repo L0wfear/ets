@@ -23,7 +23,7 @@ const checkVisibleByWidth = (widthAndShowByKey, width) => {
     }
 
     return lastWidth + data.width;
-  }, 40);
+  }, 60);
 
   return {
     widthAndShowByKey: widthAndShowByKeyNew,

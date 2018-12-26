@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { DefaultSecondLvlMenu } from 'components/app_header/styled/index';
+import { DefaultSecondLvlMenu, DefaultFirstDt, DefaultFirstLvlMenu } from 'components/app_header/styled/index';
+import { SecondMenuItemContainer } from 'components/app_header/desktop/left/page_menu/styled/index';
 
 export const MobiContainer = styled.div`
   display: flex;
@@ -60,16 +61,21 @@ export const ChangeRoleContainerWithButton = styled(DefaultSecondLvlMenuMobi)`
   }
 `;
 
-export const UserDocRow = styled(DefaultSecondLvlMenuMobi)`
-  display: flex;
-  width: 100%;
-  &&& {
+export const SecondMenuItemContainerMobi = styled(SecondMenuItemContainer)`
+  ${DefaultFirstDt} {
     color: black;
-    > div {
-      color: black;
+    padding: 3px 10px;
 
+    :hover {
+      background-color: #f5f5f5;
+    }
+
+    ${DefaultFirstLvlMenu} {
+      height: initial;
+      font-size: 17px;
+      text-decoration: none;
       :hover {
-        background-color: #f5f5f5;
+        text-decoration: none;
       }
     }
   }

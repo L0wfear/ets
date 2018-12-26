@@ -176,6 +176,54 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
     }),
     zIndex: selected ? Infinity : 10,
   });
+
+  /*
+  @todo try it
+  const canvas = document.createElement('canvas');
+  const widthIcon = 100;
+  const heightIcon = 20;
+
+  const render = toContext(
+    canvas.getContext('2d'),
+    {size: [widthIcon, heightIcon]},
+  );
+  render.setFillStrokeStyle(
+      new Fill({ color: listObj[status].color }),
+      new Stroke({ color: !selected ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)' }),
+  );
+  if (show_gov_number) {
+    render.setTextStyle(
+      new Text({
+        font: '6px Verdana',
+        text: gov_number,
+        fill: new Fill({ color: 'black' }),
+        backgroundFill: new Fill({ color: 'red' }),
+        backgroundStroke: new Stroke({ color: 'blue', width: 2 }),
+      }),
+    );
+  }
+
+  const widthCircle = widthIcon[selected || zoomMore8 ? 'zoomMore8' : minZoom ? 'minZoom' : 'zoomNotMore8'] / 2 + 1;
+  render.drawCircle(
+    new CircleGeom(
+      [widthIcon / 2, heightIcon / 2],
+      (widthCircle - 1) / 2,
+    ),
+  );
+
+  // render.drawPolygon(new Polygon(
+  //     [[[0, 0], [0, width], [width, width], [width, width / 2]]],
+  // ));
+
+  CACHE_ICON[cacheStyleName] = new Style({
+    image: new Icon({
+      img: canvas,
+      imgSize: [canvas.width, canvas.height],
+    }),
+  });
+
+  return CACHE_ICON[cacheStyleName]
+  */
 };
 
 export const getStyleForStatusDirectionType = ({ status, direction, selected, zoomMore8, gov_number, show_gov_number, visible, minZoom }) => {

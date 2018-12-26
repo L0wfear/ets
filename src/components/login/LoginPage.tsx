@@ -61,7 +61,7 @@ class LoginPage extends React.PureComponent<any, any> {
 
     return (
       <LoginPageContainer>
-        <SnowStorm />
+        <SnowStorm followMouse={false} />
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
             <LoginPageFormContainer>

@@ -121,7 +121,6 @@ class MissionTemplateForm extends DutyMissionForm {
                 handleChange={this.handleChange}
                 technicalOperationsList={technicalOperationsList}
                 getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
-                typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
                 getDataByNormatives={this.getDataByNormatives}
               />
             </Col>

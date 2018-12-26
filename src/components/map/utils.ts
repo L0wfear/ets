@@ -183,7 +183,9 @@ export const centerOn: MapUtils.centerOnFunc = (map: ol.Map, disabledCenterOn, f
       opt_options = { padding: [50, 550, 50, 150], maxZoom: 11, duration: 500 },
     } = fitProps;
 
-    map.getView().fit(extent, opt_options);
+    setTimeout(() => {
+      map.getView().fit(extent, opt_options);
+    }, 100);
     return true;
   }
 

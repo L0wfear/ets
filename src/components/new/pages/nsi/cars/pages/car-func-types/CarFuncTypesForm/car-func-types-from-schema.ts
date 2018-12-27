@@ -11,7 +11,7 @@ export const carFuncTypesFormSchema: SchemaType<CarFuncTypes, PropsCarFuncTypes>
       integer: true,
       required: true,
       min: 1,
-      max: 25,
+      max: 24,
     },
   ],
 };

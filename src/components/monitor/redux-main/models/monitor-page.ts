@@ -73,7 +73,7 @@ const initialState = {
       carFilterMultyType: [],
       carFilterMultyStructure: [],
       carFilterMultyOwner: [],
-      featureBufferPolygon: null, // DITETSSUP-2007 - записать сюда фильтр
+      featureBufferPolygon: null, // DITETSSUP-2007
     },
     filtredCarGpsCode: [],
   },

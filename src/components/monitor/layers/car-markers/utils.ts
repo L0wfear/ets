@@ -25,9 +25,9 @@ export const checkOnIncludesCar = (filterData, gps_code, { garage_number = '', g
 
 export const checkOnBuffer = (bufferFeature, { coords_msk }) => {
   const polygonCoordinates = bufferFeature.getGeometry().getCoordinates();
-  // console.log('bufferFeature.values_ == ', bufferFeature.getGeometry().getCoordinates());
-  // console.log('coords_msk == ', coords_msk);
-  return insider(coords_msk.reverse(), polygonCoordinates) || insider(coords_msk, polygonCoordinates);
+  return polygonCoordinates.some((polygon) => {
+    return insider(coords_msk, polygonCoordinates.length > 1 ? polygon[0] : polygon);
+  });
 };
 
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {

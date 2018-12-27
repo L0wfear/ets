@@ -8,11 +8,11 @@ const CACHE_ICON: any = {};
 const makeCacheStyle = (cacheStyleName) => {
   return CACHE_ICON[cacheStyleName] = new Style({
     stroke: new Stroke({
-      color: 'red',
+      color: 'rgba(255, 0, 0, 0.3)',
       width: 2,
     }),
     fill: new Fill({
-      color: 'rgba(255, 0, 0, 0.5)',
+      color: 'rgba(255, 0, 0, 0.1)',
     }),
     image: new Circle({
       radius: 5,

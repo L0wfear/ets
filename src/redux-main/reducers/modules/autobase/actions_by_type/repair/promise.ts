@@ -8,7 +8,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/promises';
 import { repair } from 'constants/autobase';
 import { get } from 'lodash';
-import { Repair } from '../../@types/autobase.h';
+import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'utils/dates';
 import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
 

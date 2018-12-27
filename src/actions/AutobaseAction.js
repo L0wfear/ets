@@ -23,35 +23,6 @@ export default class AutobaseActions extends Actions {
     };
   }
 
-  techInspection(method, boundPayload, formState) {
-    const payload = {
-      ...formState,
-      date_start: createValidDate(formState.date_start),
-      date_end: createValidDate(formState.date_end),
-      is_allowed: !!formState.is_allowed,
-    };
-
-    const { techInspection } = AUTOBASE;
-
-    const path = parsePutPath(techInspection, method, formState);
-
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'techInspection', boundPayload),
-      'json',
-    );
-  }
-
-  removeTechInspection(boundPayload, id) {
-    const { techInspection } = AUTOBASE;
-
-    return AutoBase.path(`${techInspection}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'techInspection', boundPayload),
-      'json',
-    );
-  }
-
   techMaintOrder(method, formState) {
     const payload = cloneDeep(formState);
     const { techMaintOrder } = AUTOBASE;

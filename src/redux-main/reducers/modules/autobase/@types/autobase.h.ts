@@ -172,6 +172,23 @@ export type RoadAccidentCause = {
   id: number | null;
   name: string | null;
 };
+export type TechInspection = {
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_short_name: string | null;
+  created_at: string | null;
+  date_end: string | null;
+  date_start: string | null;
+  gov_number: string | null;
+  id?: number;
+  is_allowed: boolean;
+  note: string | null;
+  reg_number: string | null;
+  tech_operator: string | null;
+  updated_at: string | null;
+  files?: any[];
+};
 
 export type IStateAutobase = {
   sparePartList: SparePart[];
@@ -188,6 +205,7 @@ export type IStateAutobase = {
   repairList: Repair[];
   repairCompanyList: RepairCompany[];
   repairTypeList: RepairType[];
-  roadAccidentList: RoadAccident[]
-  roadAccidentCauseList: RoadAccidentCause[],
+  roadAccidentList: RoadAccident[];
+  roadAccidentCauseList: RoadAccidentCause[];
+  techInspectionList: TechInspection[];
 };

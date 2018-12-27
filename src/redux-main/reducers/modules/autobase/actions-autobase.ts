@@ -15,6 +15,7 @@ import * as repairCompany from 'redux-main/reducers/modules/autobase/actions_by_
 import * as repairType from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/actions';
 import * as roadAccident from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident/actions';
 import * as roadAccidentCause from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/actions';
+import * as techInspection from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
 
 export default {
   autobaseSetNewData,
@@ -34,4 +35,5 @@ export default {
   ...repairType,
   ...roadAccident,
   ...roadAccidentCause,
+  ...techInspection,
 };

@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import AUTOBASE_CONSTANT from '../constants/autobase';
+import AUTOBASE_CONSTANT from 'constants/autobase';
 
 export default class AutobaseStore extends Store {
   constructor(flux) {
@@ -21,8 +21,7 @@ export default class AutobaseStore extends Store {
 
     const setStateObject = {
       [name]: data.rows,
-      ...this.makeExtra(data.extra, name),
-      ...this.makeOption(res, data.rows),
+      ...this.makeExtra(data.extra, name), // реестр ТО
     };
 
     this.setState({ ...setStateObject });
@@ -66,15 +65,5 @@ export default class AutobaseStore extends Store {
     if (!Object.values(extra)[0]) return undefined;
 
     return { [`${name}Extra`]: extra };
-  }
-
-  makeOption({ makeOptions = false, selectListMapper, type }, rows) {
-    if (!makeOptions) return undefined;
-
-    const AutobaseOptions = { ...this.state.AutobaseOptions };
-
-    AutobaseOptions[`${type}Options`] = rows.map(selectListMapper);
-
-    return { AutobaseOptions };
   }
 }

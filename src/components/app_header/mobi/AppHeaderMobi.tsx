@@ -43,8 +43,6 @@ class AppHeader extends React.Component<any, any> {
   render() {
     const { showChildren } = this.state;
 
-    console.log(showChildren) // tslint:disable-line
-
     return (
       <ClickOutHandler onClickOut={this.handleClickOut}>
         <MobiContainer>

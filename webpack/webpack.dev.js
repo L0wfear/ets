@@ -26,6 +26,7 @@ module.exports = {
     inline: true,
     noInfo: true,
     lazy: false,
+    host: '0.0.0.0',
   },
   output: {
     filename: '[name].bundle.js',

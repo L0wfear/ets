@@ -12,6 +12,7 @@ const initialState: IStateAutobase = {
   batteryBrandList: [],
   batteryManufacturerList: [],
   batteryRegistryList: [],
+  batteryAvailableCarList: [],
   insuranceTypeList: [],
   insurancePolicyList: [],
   carList: [],

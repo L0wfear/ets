@@ -61,6 +61,11 @@ export type BatteryRegistry = {
   worked_months: number | null;
 };
 
+export type BatteryAvailableCar = {
+  id: number;
+  name: string;
+};
+
 export type InsurancePolicy = {
   car_id: number | null;
   company_id: number | null;
@@ -175,6 +180,7 @@ export type IStateAutobase = {
   batteryBrandList: BatteryBrand[];
   batteryManufacturerList: BatteryManufacturer[];
   batteryRegistryList: BatteryRegistry[];
+  batteryAvailableCarList: BatteryAvailableCar[];
   insuranceTypeList: InsuranceType[];
   insurancePolicyList: InsurancePolicy[];
   carList: Car[];

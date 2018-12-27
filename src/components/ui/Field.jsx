@@ -11,7 +11,12 @@ import Preloader from 'components/ui/new/preloader/Preloader';
 import Div from 'components/ui/Div';
 
 function StringField(props) {
-  const { error, label = '', ...mainProps } = props;
+  const {
+    error,
+    label = '',
+    modalKey,
+    ...mainProps
+  } = props;
   const {
     readOnly = false,
     disabled = false,
@@ -20,7 +25,6 @@ function StringField(props) {
     hidden,
     isLoading,
     inline = false,
-    modalKey,
   } = props;
   let { value } = props;
 

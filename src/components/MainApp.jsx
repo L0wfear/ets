@@ -18,8 +18,8 @@ import {
   sessionResetData,
   sessionSetData,
 } from 'redux-main/reducers/modules/session/actions-session';
-import ModalSwitchApiVersion from './modal_switch_api_version/ModalSwitchApiVersion';
 import { DivNone } from 'global-styled/global-styled';
+import ModalSwitchApiVersion from 'components/modal_switch_api_version/ModalSwitchApiVersion';
 
 let VERSION_DESCRIPTION;
 try {

@@ -170,6 +170,8 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                     batteryId={state.id}
                     selectField="customId"
                     modalKey={page}
+                    page={page}
+                    path={path}
                     isPermitted={isPermitted}
                   />
                 </Col>

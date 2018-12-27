@@ -4,6 +4,7 @@ export const measureUnit = 'measureUnit';
 export const batteryBrand = 'batteryBrand';
 export const batteryManufacturer = 'batteryManufacturer';
 export const batteryRegistry = 'batteryRegistry';
+export const batteryAvailableCar = 'batteryAvailableCar';
 export const insurancePolicy = 'insurancePolicy';
 export const insuranceType = 'insuranceType';
 export const repair = 'repair';
@@ -20,7 +21,6 @@ export default {
   tireAvailibleCar: 'tire_available_car',
   actualBatteriesOnCar: 'actual_batteries_on_car',
   actualTiresOnCar: 'actual_tires_on_car',
-  batteryAvailableCar: 'battery_available_car',
   techMaintOrder: 'tech_maintenance_order_registry',
   techMaint: 'tech_maintenance_registry',
   techMaintType: 'tech_maintenance_type',
@@ -36,6 +36,7 @@ export default {
   [batteryBrand]: 'battery_brand',
   [batteryManufacturer]: 'battery_manufacturer',
   [batteryRegistry]: 'battery_registry',
+  [batteryAvailableCar]: 'battery_available_car',
   [insurancePolicy]: 'insurance_policy_registry',
   [insuranceType]: 'insurance_type',
   [repair]: 'repair_registry',

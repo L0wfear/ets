@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { connect } from 'react-redux';
@@ -34,6 +33,7 @@ import {
   setCacheDataForRoute,
   getCacheDataForRoute,
 } from 'components/route_new/form/inside_fields/creating-map/utils';
+import { ExtButton } from 'components/ui/new/button/ExtButton';
 
 class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap> {
   state = {
@@ -285,7 +285,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
       this.props.onChange({
         object_list: setNameForPointByIndex(
           this.props.object_list,
-          index,
+          Number(index),
           value,
         ),
       });
@@ -294,6 +294,15 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
   handleClickOnStartDraw = () => {
     if (this.props.isPermitted) {
       this.setState({ manual: !this.state.manual });
+    }
+  }
+
+  handleRemovePoint = (index) => {
+    if (this.props.isPermitted) {
+      const object_list = [...this.props.object_list];
+      this.props.onChange({
+        object_list: object_list.filter((_, i) => i !== Number(index)),
+      });
     }
   }
 
@@ -414,10 +423,10 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
                               error={false}
                               value={d.name}
                               onChange={this.handleChangePointName}
-                              boundKeys={[index]}
+                              boundKeys={index}
                               disabled={!isPermitted}
                             />
-                          <Button disabled={!isPermitted}><Glyphicon glyph="remove" /></Button>
+                          <ExtButton disabled={!isPermitted} boundKeys={index} onClick={this.handleRemovePoint}><Glyphicon glyph="remove" /></ExtButton>
                           </FlexContainer>
                         </PointInputContainer>
                       ))

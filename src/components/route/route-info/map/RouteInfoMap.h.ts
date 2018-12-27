@@ -1,4 +1,3 @@
-import { AnsLoadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
 import {
   DrawData,
   ObjectDtOdhData,
@@ -11,12 +10,9 @@ export type PropsMapGeoobjectWrap = {
   input_lines: DrawData[];
   object_list: (ObjectDtOdhData & ObjectPointData)[];
   type: 'mixed' | 'simple_dt' | 'points';
-  loadGeozones: (serverName: string) => Promise<AnsLoadGeozonesFunc>,
   mapKey: string;
   rotationAngle?: number;
 };
 
 export type StateMapGeoobjectWrap = {
-  object_list: (ObjectDtOdhData & ObjectPointData)[];
-  objectList: (ObjectDtOdhData & ObjectPointData)[];
 };

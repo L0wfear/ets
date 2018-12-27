@@ -83,7 +83,7 @@ export default class TechMaintOrderForm extends Form {
                 error={errors.tech_maintenance_type_id}
                 disabled={!isPermitted}
                 onChange={this.handleTechMaintTypeChange}
-                boundKeys={['tech_maintenance_type_id']}
+                boundKeys="tech_maintenance_type_id"
                 clearable={false}
               />
             </Col>
@@ -97,7 +97,7 @@ export default class TechMaintOrderForm extends Form {
                 disabled={!isPermitted || tech_maintenance_type_id === ''}
                 onChange={this.handleChange}
                 clearable={false}
-                boundKeys={['measure_unit_run_id']}
+                boundKeys="measure_unit_run_id"
               />
             </Col>
             <Col md={12}>
@@ -111,7 +111,7 @@ export default class TechMaintOrderForm extends Form {
                   disabled={!isPermitted}
                   onChange={this.handleChange}
                   clearable={false}
-                  boundKeys={['sequence']}
+                  boundKeys="sequence"
                 />
               </ExtDiv>
             </Col>
@@ -123,7 +123,7 @@ export default class TechMaintOrderForm extends Form {
                 error={errors.description}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['description']}
+                boundKeys="description"
               />
             </Col>
             <Col md={12}>
@@ -136,7 +136,7 @@ export default class TechMaintOrderForm extends Form {
                 disabled={!isPermitted}
                 clearable={false}
                 onChange={this.handleChange}
-                boundKeys={['car_model_id']}
+                boundKeys="car_model_id"
               />
             </Col>
             <Col md={12}>
@@ -157,7 +157,7 @@ export default class TechMaintOrderForm extends Form {
                 disabled={!isPermitted}
                 value={state.interval_probeg}
                 onChange={this.handleChange}
-                boundKeys={['interval_probeg']}
+                boundKeys="interval_probeg"
               />
             </Col>
             <Col md={12}>
@@ -168,7 +168,7 @@ export default class TechMaintOrderForm extends Form {
                 disabled={!isPermitted}
                 value={state.interval_time}
                 onChange={this.handleChange}
-                boundKeys={['interval_time']}
+                boundKeys="interval_time"
               />
             </Col>
             <Col md={12}>
@@ -180,7 +180,7 @@ export default class TechMaintOrderForm extends Form {
                 error={errors.interval_time_type}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['interval_time_type']}
+                boundKeys="interval_time_type"
               />
             </Col>
             <Col md={12}>
@@ -189,7 +189,7 @@ export default class TechMaintOrderForm extends Form {
                 value={state.files}
                 error={errors.files}
                 onChange={this.handleChange}
-                boundKeys={['files']}
+                boundKeys="files"
                 isLoading={this.props.onOverlayLoading}
                 disabled={!isPermitted}
               />

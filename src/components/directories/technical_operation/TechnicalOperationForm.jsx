@@ -85,7 +85,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Наименование"
                 value={state.name}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
                 disabled={!isPermitted}
                 error={errors.name}
               />
@@ -97,7 +97,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Элемент"
                 value={state.elements_text}
                 onChange={this.handleChange}
-                boundKeys={['elements_text']}
+                boundKeys="elements_text"
                 error={errors.elements_text}
                 disabled={!isPermitted}
               />
@@ -110,7 +110,7 @@ export default class TechnicalOperationForm extends Form {
                 value={state.season_id}
                 options={SEASONS}
                 onChange={this.handleChange}
-                boundKeys={['season_id']}
+                boundKeys="season_id"
                 error={errors.season_id}
                 disabled={!isPermitted}
               />
@@ -121,7 +121,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Способ выполнения"
                 value={state.kind_task_names}
                 onChange={this.handleChange}
-                boundKeys={['kind_task_names']}
+                boundKeys="kind_task_names"
                 error={errors.kind_task_names}
                 disabled={!isPermitted}
               />
@@ -133,7 +133,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Способ уборки"
                 value={state.work_type_name}
                 onChange={this.handleChange}
-                boundKeys={['work_type_name']}
+                boundKeys="work_type_name"
                 error={errors.work_type_name}
                 disabled={!isPermitted}
               />
@@ -145,7 +145,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Условия"
                 value={state.conditions}
                 onChange={this.handleChange}
-                boundKeys={['conditions']}
+                boundKeys="conditions"
                 error={errors.conditions}
                 disabled={!isPermitted}
               />
@@ -157,7 +157,7 @@ export default class TechnicalOperationForm extends Form {
                 label="Число операций в сутки (норматив)"
                 value={CONDITIONS}
                 onChange={this.handleChange}
-                boundKeys={['norm_period']}
+                boundKeys="norm_period"
                 disabled={!isPermitted}
               />
             </Col>

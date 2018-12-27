@@ -64,7 +64,7 @@ export default class TireForm extends Form {
                 error={errors.tire_model_id}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['tire_model_id']}
+                boundKeys="tire_model_id"
                 clearable={false}
               />
             </Col>
@@ -85,7 +85,7 @@ export default class TireForm extends Form {
                 error={errors.tire_size_id}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['tire_size_id']}
+                boundKeys="tire_size_id"
                 clearable={false}
               />
             </Col>
@@ -107,7 +107,7 @@ export default class TireForm extends Form {
                 error={errors.comment}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['comment']}
+                boundKeys="comment"
               />
             </Col>
             <ExtDiv nonExist={IS_CREATING}>
@@ -115,7 +115,7 @@ export default class TireForm extends Form {
                 <h4>Транспортное средство, на котором установлена шина</h4>
                 <TireToVehicleBlock
                   onChange={this.handleChange}
-                  boundKeys={['tire_to_car']}
+                  boundKeys="tire_to_car"
                   inputList={state.tire_to_car || []}
                   onValidation={this.handleTireToCarValidity}
                   disabled={!isPermitted}

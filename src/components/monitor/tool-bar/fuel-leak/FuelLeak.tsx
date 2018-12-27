@@ -111,7 +111,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
                       type="date"
                       label={false}
                       date={this.props.date_from}
-                      boundKeys={['date_from']}
+                      boundKeys="date_from"
                       onChange={this.handleChange}
                     />
                   </div>
@@ -121,7 +121,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
                       type="date"
                       label={false}
                       date={this.props.date_to}
-                      boundKeys={['date_to']}
+                      boundKeys="date_to"
                       onChange={this.handleChange}
                     />
                   </div>

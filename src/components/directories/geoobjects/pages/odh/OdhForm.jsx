@@ -123,7 +123,7 @@ export default class OdhForm extends Form {
                 options={COMPANY_ELEMENTS}
                 emptyValue={null}
                 onChange={this.handleChangeWrap}
-                boundKeys={['company_structure_id']}
+                boundKeys="company_structure_id"
               />
 
             </Col>

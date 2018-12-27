@@ -369,7 +369,7 @@ class ProgramObjectFormodh extends Form {
                 options={OBJECT_OPTIONS}
                 value={state.asuods_id}
                 onChange={this.handleChangeInfoObject}
-                boundKeys={['asuods_id']}
+                boundKeys="asuods_id"
                 disabled={!IS_CREATING || !isPermitted}
                 clearable={false}
               />
@@ -418,7 +418,7 @@ class ProgramObjectFormodh extends Form {
                   value={state.contract_number}
                   error={errors.name}
                   onChange={this.handleChange}
-                  boundKeys={['contract_number']}
+                  boundKeys="contract_number"
                   disabled={!isPermitted}
                 />
               </Col>
@@ -430,7 +430,7 @@ class ProgramObjectFormodh extends Form {
                   options={CONTRACTOR_OPTIONS}
                   value={state.contractor_id}
                   onChange={this.handleChange}
-                  boundKeys={['contractor_id']}
+                  boundKeys="contractor_id"
                   disabled={!isPermitted}
                 />
               </Col>

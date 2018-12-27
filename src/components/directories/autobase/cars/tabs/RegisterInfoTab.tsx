@@ -29,7 +29,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           label="Номер свидетельства о регистрации"
           value={props.state.register_certificate_number}
           onChange={props.onChange}
-          boundKeys={['register_certificate_number']}
+          boundKeys="register_certificate_number"
           disabled={!props.isPermitted || props.state.register_disabled}
         />
         <ExtField
@@ -37,7 +37,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           label="Кем выдано свидетельство о регистрации"
           value={props.state.register_given_by}
           onChange={props.onChange}
-          boundKeys={['register_given_by']}
+          boundKeys="register_given_by"
           disabled={!props.isPermitted || props.state.register_disabled}
           error={props.errors.register_given_by}
         />
@@ -47,7 +47,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           label="Дата регистрации"
           date={props.state.register_given_at}
           onChange={props.onChange}
-          boundKeys={['register_given_at']}
+          boundKeys="register_given_at"
           disabled={!props.isPermitted || props.state.register_disabled}
         />
         <ExtField
@@ -55,7 +55,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           label="Особые отметки"
           value={props.state.register_note}
           onChange={props.onChange}
-          boundKeys={['register_note']}
+          boundKeys="register_note"
           textAreaStyle={{ resize: 'none' }}
           rows={7}
           disabled={!props.isPermitted || props.state.register_disabled}

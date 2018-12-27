@@ -39,7 +39,7 @@ export default class TireModelForm extends Form {
                 error={errors.name}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
               />
             </Col>
             <Col md={6}>
@@ -51,7 +51,7 @@ export default class TireModelForm extends Form {
                 error={errors.tire_manufacturer_id}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['tire_manufacturer_id']}
+                boundKeys="tire_manufacturer_id"
                 clearable={false}
               />
             </Col>

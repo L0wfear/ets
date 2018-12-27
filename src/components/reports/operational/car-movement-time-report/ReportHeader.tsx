@@ -129,7 +129,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
                 options={companyOptions}
                 disabled={readOnly}
                 onChange={this.props.handleChange}
-                boundKeys={['company_id']}
+                boundKeys="company_id"
               />
             </Col>
             <Col md={6}>

@@ -37,7 +37,7 @@ export default class StateProgramForm extends Form {
                 error={errors.name}
                 value={state.name}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
               />
             </Col>
             <Col md={6}>
@@ -49,7 +49,7 @@ export default class StateProgramForm extends Form {
                 options={STATE_PROGRAM_STATUS_OPTIONS}
                 onChange={this.handleChange}
                 clearable={false}
-                boundKeys={['status_id']}
+                boundKeys="status_id"
               />
             </Col>
           </Row>

@@ -70,7 +70,7 @@ export default class TechMaintForm extends Form {
                 error={errors.repair_company_id}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['repair_company_id']}
+                boundKeys="repair_company_id"
               />
             </Col>
             <Col md={12}>
@@ -82,7 +82,7 @@ export default class TechMaintForm extends Form {
                 error={errors.tech_maintenance_order_ids}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['tech_maintenance_order_ids']}
+                boundKeys="tech_maintenance_order_ids"
               />
             </Col>
             <Col md={12}>
@@ -93,7 +93,7 @@ export default class TechMaintForm extends Form {
                 error={errors.number}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['number']}
+                boundKeys="number"
               />
             </Col>
             <Col md={6}>
@@ -104,7 +104,7 @@ export default class TechMaintForm extends Form {
                 error={errors.plan_date_start}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['plan_date_start']}
+                boundKeys="plan_date_start"
               />
             </Col>
             <Col md={6}>
@@ -115,7 +115,7 @@ export default class TechMaintForm extends Form {
                 error={errors.plan_date_end}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['plan_date_end']}
+                boundKeys="plan_date_end"
               />
             </Col>
             <Col md={6}>
@@ -126,7 +126,7 @@ export default class TechMaintForm extends Form {
                 error={errors.fact_date_start}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['fact_date_start']}
+                boundKeys="fact_date_start"
               />
             </Col>
             <Col md={6}>
@@ -137,7 +137,7 @@ export default class TechMaintForm extends Form {
                 error={errors.fact_date_end}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['fact_date_end']}
+                boundKeys="fact_date_end"
               />
             </Col>
             <Col md={12}>
@@ -149,7 +149,7 @@ export default class TechMaintForm extends Form {
                   disabled={!isPermitted}
                   value={state.odometr_fact}
                   onChange={this.handleChange}
-                  boundKeys={['odometr_fact']}
+                  boundKeys="odometr_fact"
                 />
               </ExtDiv>
             </Col>
@@ -162,7 +162,7 @@ export default class TechMaintForm extends Form {
                   disabled={!isPermitted}
                   value={state.motohours_fact}
                   onChange={this.handleChange}
-                  boundKeys={['motohours_fact']}
+                  boundKeys="motohours_fact"
                 />
               </ExtDiv>
             </Col>
@@ -174,7 +174,7 @@ export default class TechMaintForm extends Form {
                 error={errors.note}
                 disabled={!isPermitted}
                 onChange={this.handleChange}
-                boundKeys={['note']}
+                boundKeys="note"
               />
             </Col>
             <Col md={12}>
@@ -184,7 +184,7 @@ export default class TechMaintForm extends Form {
                 value={state.files}
                 error={errors.files}
                 onChange={this.handleChange}
-                boundKeys={['files']}
+                boundKeys="files"
                 isLoading={this.props.onOverlayLoading}
                 disabled={!isPermitted}
               />

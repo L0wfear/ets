@@ -73,11 +73,11 @@ export const filterArray = (array, filterValues) => {
         }
         if (valueKeyType.match(/__gt$/)) {
           const valueKey = valueKeyType.replace(/__gt$/, '');
-          return value > row[valueKey];
+          return value >= row[valueKey];
         }
         if (valueKeyType.match(/__lt$/)) {
           const valueKey = valueKeyType.replace(/__lt$/, '');
-          return value < row[valueKey];
+          return value <= row[valueKey];
         }
 
         // tslint:disable-next-line

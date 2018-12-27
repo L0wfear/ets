@@ -101,7 +101,7 @@ class WaybillInProgressInfo extends React.PureComponent<PropsWaybillInProgressIn
       <div>
         <ul>
           {
-            arrData.map()
+            arrData.map(this.mapArrData)
           }
         </ul>
       </div>

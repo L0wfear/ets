@@ -31,6 +31,7 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
       if (geoobjectsArr) {
         renderGeoobjects(geoobjectsArr, this.props);
       }
+      this.centerMapOnFeature();
     });
   }
 

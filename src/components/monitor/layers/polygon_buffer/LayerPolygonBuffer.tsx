@@ -74,6 +74,9 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     this.props.addLayer({ id: 'PolygonBufferLines', zIndex: 99, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
     });
+    const featureBufferPolygon = localStorage.getItem('featureBufferPolygon');
+    const qwe = featureBufferPolygon ? JSON.parse(featureBufferPolygon) : null;
+    this.drawBufferToMap(qwe);
   }
 
   componentDidUpdate(prevProps) {
@@ -82,8 +85,13 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
         this.props.removeFeaturesFromSource(null, true); // удаляет буфер
       }
       if (this.props.featureBufferPolygon) {
-        this.props.addFeaturesToSource(this.props.featureBufferPolygon);
-        this.props.monitorPageTogglePolygonBufferActive(); // отображение буфера на карте
+        const newFeature: any = new Feature({
+          geometry: geoJSON.readGeometry(this.props.featureBufferPolygon),
+        });
+        newFeature.set('notSelected', true);
+        newFeature.setStyle(getStyleForPolygonBuffer());
+        this.props.addFeaturesToSource(newFeature);
+        this.props.monitorPageFalsePolygonBufferActive(); // отображение буфера на карте
       }
     }
   }
@@ -93,6 +101,18 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     if (this.props.drawActivePolygonBuffer) {
       this.props.monitorPageFalsePolygonBufferActive();
     }
+  }
+
+  drawBufferToMap(qwe: any) {
+    const newFeature: any = new Feature({
+      geometry: geoJSON.readGeometry(qwe),
+    });
+
+    newFeature.set('notSelected', true);
+    newFeature.setStyle(getStyleForPolygonBuffer());
+
+    this.props.addFeaturesToSource(newFeature); // Если нужно посмотреть прям сейчас
+    this.props.monitorPageChangeFilter('featureBufferPolygon', qwe);
   }
 
   toggleMeasureActive = () => {
@@ -105,27 +125,20 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
   handleClickRemove = () => {
     this.props.removeFeaturesFromSource(null, true);
     this.props.monitorPageChangeFilter('featureBufferPolygon', null);
+    localStorage.setItem('featureBufferPolygon', '');
   }
 
   handleStartDraw = () => {
     this.setState({ activeDraw: true });
+    this.handleClickRemove();
   }
 
   handleEndDraw = (feature: ol.Feature) => { // конец рисования буфера
     const qwe = createBuffer(feature, 1000);
-
-    const newFeature = new Feature({
-      geometry: geoJSON.readGeometry(qwe),
-    });
-
-    newFeature.set('notSelected', true);
-    newFeature.setStyle(getStyleForPolygonBuffer());
-
-    // this.props.addFeaturesToSource(newFeature); // Если нужно посмотреть прям сейчас
-    // this.props.monitorPageTogglePolygonBufferActive();
-    this.props.monitorPageChangeFilter('featureBufferPolygon', newFeature);
-    // например featureBufferPolygon (глобальный поиск, я чуть добавил)
+    this.drawBufferToMap(qwe);
     this.setState({ activeDraw: false });
+    this.props.monitorPageFalsePolygonBufferActive();
+    localStorage.setItem('featureBufferPolygon', JSON.stringify(qwe));
   }
 
   render() {
@@ -133,7 +146,7 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
       <>
         <ButtonContainer>
           <ButtonGroup vertical>
-            <ButtonDraw disabled={this.state.activeDraw || this.props.drawActiveAll} onClick={this.toggleMeasureActive} />
+            <ButtonDraw disabled={this.state.activeDraw } onClick={this.toggleMeasureActive} />
             <Button disabled={this.state.activeDraw || !this.props.featureBufferPolygon} onClick={this.handleClickRemove}>
               <Glyphicon glyph="remove" />
             </Button>
@@ -159,17 +172,17 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  monitorPageTogglePolygonBufferActive: () => (
+  monitorPageTogglePolygonBufferActive: () => ( // включить режим рисования полигона (буфера)
     dispatch(
       monitorPageTogglePolygonBufferActive(),
     )
   ),
-  monitorPageFalsePolygonBufferActive: () => (
+  monitorPageFalsePolygonBufferActive: () => ( // отключить режим рисования полигона (буфера)
     dispatch(
       monitorPageFalsePolygonBufferActive(),
     )
   ),
-  monitorPageChangeFilter: (type, value) => (
+  monitorPageChangeFilter: (type, value) => ( // изменение фильтра в сторе
     dispatch(
       monitorPageChangeFilter(type, value),
     )

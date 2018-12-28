@@ -2,6 +2,7 @@ import { Actions } from 'flummox';
 import {
   cloneDeep,
   each,
+  get,
 } from 'lodash';
 import {
   RouteService,
@@ -77,11 +78,26 @@ export default class RoutesActions extends Actions {
           el.type = 'points';
           return el;
         });
-      } else if (route.type === 'mixed') {
-        route.draw_odh_list = [];
+      } else {
+        if (route.type === 'mixed') {
+          route.draw_odh_list = [];
 
-        if (route.input_lines && route.input_lines.length) {
-          route.input_lines.forEach((object) => {
+          if (route.input_lines && route.input_lines.length) {
+            route.input_lines.forEach((object) => {
+              const start = [object.begin.x_msk, object.begin.y_msk];
+              const end = [object.end.x_msk, object.end.y_msk];
+              object.shape = {
+                type: 'LineString',
+                coordinates: [start, end],
+              };
+
+              object.type = 'odh';
+              return object;
+            });
+          } else {
+            route.input_lines = [];
+          }
+          route.draw_object_list.forEach((object) => {
             const start = [object.begin.x_msk, object.begin.y_msk];
             const end = [object.end.x_msk, object.end.y_msk];
             object.shape = {
@@ -92,27 +108,27 @@ export default class RoutesActions extends Actions {
             object.type = 'odh';
             return object;
           });
-        } else {
-          route.input_lines = [];
+
+          route.object_list.forEach((object, i) => {
+            if (object.from_vectors) {
+              route.draw_odh_list.push(object);
+              route.input_lines.push(object);
+              route.object_list.splice(i, 1);
+            }
+          });
         }
-        route.draw_object_list.forEach((object) => {
-          const start = [object.begin.x_msk, object.begin.y_msk];
-          const end = [object.end.x_msk, object.end.y_msk];
-          object.shape = {
-            type: 'LineString',
-            coordinates: [start, end],
-          };
+        const shapes = get(route, 'shapes', {});
 
-          object.type = 'odh';
-          return object;
-        });
+        route.object_list.map((objData) => {
+          const myShape = get(shapes, objData.object_id, null);
 
-        route.object_list.forEach((object, i) => {
-          if (object.from_vectors) {
-            route.draw_odh_list.push(object);
-            route.input_lines.push(object);
-            route.object_list.splice(i, 1);
+          try {
+            objData.shape = JSON.parse(myShape);
+          } catch (e) {
+            objData.shape = myShape;
           }
+
+          return objData;
         });
       }
     }

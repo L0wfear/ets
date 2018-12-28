@@ -13,8 +13,8 @@ import {
   MONITOR_PAGE_REMOVE_ALL_FROM_SELECTED_GEOMETRY,
   MONITOR_PAGE_CHANGE_FILTERS,
   MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST,
-  MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
-  MONITOR_PAGE_FALSE_MEASURE_ACTIVE,
+  MONITOR_PAGE_TOGGLE_DRAW_ACTIVE,
+  MONITOR_PAGE_FALSE_DRAW_ACTIVE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
@@ -97,7 +97,7 @@ export const monitorPageRemoveAllFromSelectedGeoobjects = () => ({
   payload: {},
 });
 
-export const monitorPageChangeFilter = (type, value) => ({
+export const monitorPageChangeFilter = (type, value) => ({ // добавление нового фильтра с буфером
   type: MONITOR_PAGE_CHANGE_FILTERS,
   payload: {
     type,
@@ -112,16 +112,6 @@ export const monitorPageMergeFiltredCarGpsCode = (filtredCarGpsCode) => ({
   },
 });
 
-export const monitorPageToggleMeasureActive = () => ({
-  type: MONITOR_PAGE_TOGGLE_MEASURE_ACTIVE,
-  payload: {},
-});
-
-export const monitorPageFalseMeasureActive = () => ({
-  type: MONITOR_PAGE_FALSE_MEASURE_ACTIVE,
-  payload: {},
-});
-
 export const monitorPageChangeFuelEventsDate = (type, field, date) => ({
   type: MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,
   payload: {
@@ -130,15 +120,49 @@ export const monitorPageChangeFuelEventsDate = (type, field, date) => ({
     date,
   },
 });
-
 export const monitorPageSetFuelEventsLeakOverlayData = (overlayData = null) => ({
   type: MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   payload: {
     overlayData,
   },
 });
-
 export const monitorPageToggleFuelEvetnsLeakShow = () => ({
   type: MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
   payload: {},
 });
+
+/*  ________________ TOGGLE DRAW_ACTIVE_STATUS ________________ */
+export const monitorPageToggleDrawActiveByKey = (drawKey) => ({
+  type: MONITOR_PAGE_TOGGLE_DRAW_ACTIVE,
+  payload: {
+    drawKey,
+  },
+});
+export const monitorPageToggleMeasureActive = () => (dispatch) => (
+  dispatch(
+    monitorPageToggleDrawActiveByKey('measureActive'),
+  )
+);
+export const monitorPageTogglePolygonBufferActive = () => (dispatch) => (
+  dispatch(
+    monitorPageToggleDrawActiveByKey('polygonBuffer'),
+  )
+);
+
+/*  ________________ FALSE DRAW_ACTIVE_STATUS ________________ */
+export const monitorPageFalseDrawActiveByKey = (drawKey) => ({
+  type: MONITOR_PAGE_FALSE_DRAW_ACTIVE,
+  payload: {
+    drawKey,
+  },
+});
+export const monitorPageFalseMeasureActive = () => (dispatch) => (
+  dispatch(
+    monitorPageFalseDrawActiveByKey('measureActive'),
+  )
+);
+export const monitorPageFalsePolygonBufferActive = () => (dispatch) => (
+  dispatch(
+    monitorPageFalseDrawActiveByKey('polygonBuffer'),
+  )
+);

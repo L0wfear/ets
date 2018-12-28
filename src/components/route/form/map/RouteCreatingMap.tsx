@@ -1,8 +1,5 @@
 import * as React from 'react';
 import MapEts from 'components/map/MapEts';
-/*
-import LayerMeasure from 'components/map/layers/measure/LayerMeasure';
-*/
 
 import LayerEditGeoobjRoute from 'components/route/form/map/layers/layer-edit-geoobj-route/LayerEditGeoobjRoute';
 import LayerShowPointsRoute from 'components/route/form/map/layers/layer-show-points-route/LayerShowPointsRoute';

@@ -103,7 +103,7 @@ class MissionsStore extends Store {
 export default MissionsStore;
 
 export function getDefaultMission(date_start = getDateWithMoscowTz(), date_end = getTomorrow9am()) {
-  return {
+  return {  // Если будете исправлять, проверте типизацию
     description: '',
     date_start,
     date_end,

@@ -208,9 +208,24 @@ export type TechMaintOrder = {
 };
 
 export type TechMaintType = {
+  id: number;
+  name: string;
 };
-
 export type MeasureUnitRun = {
+  id: number;
+  name: string;
+  tech_maintenance_type_id: number;
+  tech_maintenance_type_name: string;
+};
+export type TireModel = {
+  id?: number | null;
+  name: string | null;
+  tire_manufacturer_id: number | null;
+  tire_manufacturer_name: string | null;
+};
+export type TireManufacturer = {
+  id: number;
+  name: string;
 };
 
 export type IStateAutobase = {
@@ -234,4 +249,6 @@ export type IStateAutobase = {
   techMaintOrderList: TechMaintOrder[];
   techMaintTypeList: TechMaintType[];
   measureUnitRunList: MeasureUnitRun[];
+  tireModelList: TireModel[];
+  tireManufacturerList: TireManufacturer[];
 };

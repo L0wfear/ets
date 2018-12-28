@@ -7,30 +7,29 @@ import DataTableComponent from 'components/ui/table/DataTable';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-export function tableMeta({
-} = {}): IDataTableSchema {
-  const meta: IDataTableSchema = {
-    cols: [
-      {
-        name: 'name',
-        displayName: 'Марка шины',
-        type: 'string',
-        filter: {
-          type: 'multiselect',
-        },
+const meta: IDataTableSchema = {
+  cols: [
+    {
+      name: 'name',
+      displayName: 'Марка шины',
+      type: 'string',
+      filter: {
+        type: 'multiselect',
       },
-      {
-        name: 'tire_manufacturer_name',
-        displayName: 'Производитель шины',
-        type: 'string',
-        cssClassName: 'width300',
-        filter: {
-          type: 'multiselect',
-        },
+    },
+    {
+      name: 'tire_manufacturer_name',
+      displayName: 'Производитель шины',
+      type: 'string',
+      cssClassName: 'width300',
+      filter: {
+        type: 'multiselect',
       },
-    ],
-  };
+    },
+  ],
+};
 
+export function tableMeta(props): IDataTableSchema {
   return meta;
 }
 

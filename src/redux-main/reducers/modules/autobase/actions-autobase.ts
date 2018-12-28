@@ -19,6 +19,8 @@ import * as techInspection from 'redux-main/reducers/modules/autobase/actions_by
 import * as techMaintOrder from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_order/actions';
 import * as techMaintType from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_type/actions';
 import * as measureUnitRun from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit_run/actions';
+import * as tireModel from 'redux-main/reducers/modules/autobase/actions_by_type/tire_model/actions';
+import * as tireManufacturer from 'redux-main/reducers/modules/autobase/actions_by_type/tire_manufacturer/actions';
 
 export default {
   autobaseSetNewData,
@@ -42,4 +44,6 @@ export default {
   ...techMaintOrder,
   ...techMaintType,
   ...measureUnitRun,
+  ...tireModel,
+  ...tireManufacturer,
 };

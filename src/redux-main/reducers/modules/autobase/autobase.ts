@@ -26,6 +26,8 @@ const initialState: IStateAutobase = {
   techMaintOrderList: [],
   techMaintTypeList: [],
   measureUnitRunList: [],
+  tireModelList: [],
+  tireManufacturerList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

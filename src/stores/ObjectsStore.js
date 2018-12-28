@@ -19,7 +19,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
     this.register(objectsActions.getModels, this.handleGetModels);
-    this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
@@ -68,7 +67,6 @@ export default class ObjectsStore extends Store {
       typesList: [],
       sensorTypesList: [],
       modelsList: [],
-      specialModelsList: [],
       fuelTypes: [],
       technicalOperationsList: [],
       technicalOperationsRegistryList: [],
@@ -174,10 +172,6 @@ export default class ObjectsStore extends Store {
   handleGetModels({ result: { rows = [] } }) {
     const modelsIndex = _.keyBy(rows, 'id');
     this.setState({ modelsList: rows, modelsIndex });
-  }
-
-  handleGetSpecialModels({ result: { rows: specialModelsList } }) {
-    this.setState({ specialModelsList });
   }
 
   handleGetTypes({ result: { rows = [] } }) {

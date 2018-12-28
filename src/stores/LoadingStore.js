@@ -23,7 +23,6 @@ export default class LoadingStore extends Store {
       sessionActions.cahngeCompanyOnAnother,
 
       autoBaseActions.getAutobaseListByType,
-      autoBaseActions.techMaintOrder,
       autoBaseActions.techMaint,
       autoBaseActions.tire,
 
@@ -66,7 +65,6 @@ export default class LoadingStore extends Store {
       objectsActions.getTypes,
       objectsActions.getCars,
       objectsActions.getSomeCars,
-      objectsActions.getSpecialModels,
       objectsActions.getWorkKinds,
 
       objectsActions.getMaintenanceWork,

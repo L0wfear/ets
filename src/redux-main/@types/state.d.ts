@@ -9,6 +9,7 @@ import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/auto
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -21,6 +22,7 @@ export interface ReduxState {
   employee: IStateEmployee;
   company_structure: IStateCompanyStructure;
   routes: IStateRoutes;
+  some_uniq: IStateSomeUniq;
 
   monitorPage: any;
   loading: any;

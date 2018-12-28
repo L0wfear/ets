@@ -1,21 +1,21 @@
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsTechMaintOrder } from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/@types/TechMaintOrderForm.h';
+
+import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'utils/validate';
 
-export const formValidationSchema: IValidationSchema = {
+export const techMaintOrderFormSchema: SchemaType<TechMaintOrder, PropsTechMaintOrder> = {
   properties: [
     {
       key: 'tech_maintenance_type_id',
       title: 'Тип ТО',
-      type: 'number',
-      integer: true,
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'sequence',
       title: 'Последовательность ТО',
-      type: 'number',
-      integer: true,
-      isSubmitted: ({ is_periodic = false }) => !is_periodic,
+      type: 'valueOfArray',
     },
     {
       key: 'description',
@@ -26,8 +26,7 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'car_model_id',
       title: 'Модель ТС',
-      type: 'number',
-      integer: true,
+      type: 'valueOfArray',
       required: true,
     },
     {
@@ -61,31 +60,26 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'interval_time_type',
       title: 'Время измеряется',
-      type: 'string',
-      isSubmitted: ({ interval_time_type = '' }) => !(interval_time_type === ''),
+      type: 'valueOfArray',
     },
   ],
   dependencies: {
     sequence: [
-      {
-        validator(value = '', { is_periodic = false }) {
-          if (!is_periodic && !value) {
-            return getRequiredFieldMessage('Последовательность ТО');
-          }
+      (value, { is_periodic }) => {
+        if (!is_periodic && !value) {
+          return getRequiredFieldMessage('Последовательность ТО');
+        }
 
-          return '';
-        },
+        return '';
       },
     ],
     measure_unit_run_id: [
-      {
-        validator(value, { tech_maintenance_type_id = '' }) {
-          if (tech_maintenance_type_id === '') {
-            return getRequiredFieldMessage('Тип ТО');
-          }
+      (_, { tech_maintenance_type_id }) => {
+        if (!tech_maintenance_type_id) {
+          return getRequiredFieldMessage('Тип ТО');
+        }
 
-          return '';
-        },
+        return '';
       },
     ],
   },

@@ -3,22 +3,17 @@ import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import {
   clone,
-  cloneDeep,
   get,
 } from 'lodash';
-import { parseFilterObject } from 'actions/MissionsActions';
 import {
   OrderService,
   WorkKindsService,
   CarService,
   WaybillCarService,
   MissionCarService,
-  CustomersService,
   TypesService,
   TypesAttr,
-  PositionService,
   ModelsService,
-  SpecialModelService,
   CompanyService,
   ConfigService,
   MaterialConsumptionRateService,
@@ -35,7 +30,6 @@ import {
   MedicalStatsService,
   SensorTypeService,
 } from 'api/nsi';
-
 
 function getMaterialConsumptionRates(payload = {}) {
   return MaterialConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
@@ -71,10 +65,6 @@ export default class ObjectsActions extends Actions {
   getModels(special_model_id) {
     const payload = special_model_id ? { special_model_id } : null;
     return ModelsService.get(payload);
-  }
-
-  getSpecialModels() {
-    return SpecialModelService.get();
   }
 
   getTypes(payload = {}) {

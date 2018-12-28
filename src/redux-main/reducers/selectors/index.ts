@@ -44,3 +44,6 @@ export const getCompanyStructureState: GetStateType<'company_structure'> = (stat
 export const getRoutesState: GetStateType<'routes'> = (state) => (
   getStateDataByKey(state)('routes')
 );
+export const getSomeUniqState: GetStateType<'some_uniq'> = (state) => (
+  getStateDataByKey(state)('some_uniq')
+);

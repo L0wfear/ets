@@ -23,27 +23,6 @@ export default class AutobaseActions extends Actions {
     };
   }
 
-  techMaintOrder(method, formState) {
-    const payload = cloneDeep(formState);
-    const { techMaintOrder } = AUTOBASE;
-
-    const path = parsePutPath(techMaintOrder, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'techMaintOrder'),
-      'json',
-    );
-  }
-
-  removeTechMaintOrder(id) {
-    const { techMaintOrder } = AUTOBASE;
-    return AutoBase.path(`${techMaintOrder}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'techMaintOrder'),
-      'json',
-    );
-  }
-
   techMaint(method, boundPayload, formState) {
     const payload = cloneDeep(formState);
     const { techMaint } = AUTOBASE;

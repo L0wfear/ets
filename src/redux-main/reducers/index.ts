@@ -18,6 +18,7 @@ import autobase from 'redux-main/reducers/modules/autobase/autobase';
 import employee from 'redux-main/reducers/modules/employee/employee';
 import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
 import routes from 'redux-main/reducers/modules/routes/routes';
+import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 
 export default combineReducers({
   ...rootReducers,
@@ -34,4 +35,5 @@ export default combineReducers({
   employee,
   company_structure,
   routes,
+  some_uniq,
 });

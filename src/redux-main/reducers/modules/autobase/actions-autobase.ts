@@ -16,6 +16,9 @@ import * as repairType from 'redux-main/reducers/modules/autobase/actions_by_typ
 import * as roadAccident from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident/actions';
 import * as roadAccidentCause from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/actions';
 import * as techInspection from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
+import * as techMaintOrder from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_order/actions';
+import * as techMaintType from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_type/actions';
+import * as measureUnitRun from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit_run/actions';
 
 export default {
   autobaseSetNewData,
@@ -36,4 +39,7 @@ export default {
   ...roadAccident,
   ...roadAccidentCause,
   ...techInspection,
+  ...techMaintOrder,
+  ...techMaintType,
+  ...measureUnitRun,
 };

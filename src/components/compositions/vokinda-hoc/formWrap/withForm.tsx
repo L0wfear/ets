@@ -154,8 +154,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             }
             formState[key] = newValue;
 
-            // tslint:disable-next-line
-            console.log('FORM CHANGE STATE', key, formState[key]);
+            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line
           });
 
           const formErrors = this.validate(formState);
@@ -189,8 +188,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
               result = await this.props.createAction<T, A>(...payload);
               global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
-              // tslint:disable-next-line
-              console.warn(error);
+              console.warn(error); // tslint:disable-line
               return null;
             }
           } else {
@@ -202,8 +200,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
               result = await this.props.updateAction<T, A>(...payload);
               global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
-              // tslint:disable-next-line
-              console.warn(error);
+              console.warn(error); // tslint:disable-line
               return null;
             }
           } else {

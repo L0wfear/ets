@@ -17,7 +17,6 @@ export default class EmployeeStore extends Store {
       employeesList: [],
       employeesIndex: {},
       employeesBindedoOCarList: [],
-      employeesBindedoOCarIndex: {},
       employeeOnCarList: [],
       driversList: [],
       foremanList: [],
@@ -40,17 +39,15 @@ export default class EmployeeStore extends Store {
   handleGetEmployeeBindedToCar(result) {
     this.setState({
       employeesBindedoOCarList: result,
-      employeesBindedoOCarIndex: keyBy(result, 'employee_id'),
     });
   }
 
   handleGetEmployeeOnCarList({ result }) {
-    this.setState({ employeeOnCarList: result.map((row, index) => ({ ...row, _uniq_field: index })) });
+    this.setState({ employeeOnCarList: result.map((row, index) => ({ ...row, _uniq_field: index + 1 })) });
   }
 
   handleGetDrivers({ result }) {
-    const newResult = this.setDopPropsInDrivers(result);
-    this.setState({ driversList: newResult });
+    this.setState({ driversList: result });
   }
 
   handleGetForemans({ result }) {
@@ -59,24 +56,5 @@ export default class EmployeeStore extends Store {
 
   handleGetWaybillDrivers({ result }) {
     this.setState({ waybillDriversList: result.rows });
-  }
-
-  setDopPropsInDrivers(result = []) {
-    return result.map((row) => {
-      let {
-        position_name = '',
-        drivers_license = '',
-        special_license = '',
-      } = row;
-
-      position_name = (!!position_name && position_name) || '';
-      drivers_license = (!!drivers_license && drivers_license) || '';
-      special_license = (!!special_license && special_license) || '';
-
-      return {
-        ...row,
-        drivers_emplds: `${position_name} ${drivers_license}${(drivers_license !== '' && ' ') || ''}${special_license}`,
-      };
-    });
   }
 }

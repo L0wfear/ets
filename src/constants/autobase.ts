@@ -13,6 +13,9 @@ export const repairType = 'repairType';
 export const roadAccident = 'roadAccident';
 export const roadAccidentCause = 'roadAccidentCause';
 export const techInspection = 'techInspection';
+export const techMaintOrder = 'techMaintOrder';
+export const techMaintType = 'techMaintType';
+export const measureUnitRun = 'measureUnitRun';
 
 export default {
   tire: 'tire_registry',
@@ -22,10 +25,7 @@ export default {
   tireAvailibleCar: 'tire_available_car',
   actualBatteriesOnCar: 'actual_batteries_on_car',
   actualTiresOnCar: 'actual_tires_on_car',
-  techMaintOrder: 'tech_maintenance_order_registry',
   techMaint: 'tech_maintenance_registry',
-  techMaintType: 'tech_maintenance_type',
-  measureUnitRun: 'measure_unit_run',
   roadAccidentRegistry: 'road_accident_registry',
   carCategory: 'car_category',
   engineType: 'engine_type',
@@ -45,4 +45,7 @@ export default {
   [roadAccident]: 'road_accident_registry',
   [roadAccidentCause]: 'road_accident_cause',
   [techInspection]: 'tech_inspection_registry',
+  [techMaintOrder]: 'tech_maintenance_order_registry',
+  [techMaintType]: 'tech_maintenance_type',
+  [measureUnitRun]: 'measure_unit_run',
 };

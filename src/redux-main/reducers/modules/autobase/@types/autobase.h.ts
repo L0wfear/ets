@@ -189,6 +189,29 @@ export type TechInspection = {
   updated_at: string | null;
   files?: any[];
 };
+export type TechMaintOrder = {
+  car_model_id: number | null;
+  car_model_name: string;
+  description: string;
+  entity_name: string;
+  id?: number;
+  interval_probeg: number | null;
+  interval_time: number | null;
+  interval_time_type: number | null;
+  is_periodic: boolean;
+  measure_unit_run_id: number | null;
+  measure_unit_run_name: string;
+  sequence: number | null;
+  tech_maintenance_type_id: number | null;
+  tech_maintenance_type_name: string;
+  files?: any[];
+};
+
+export type TechMaintType = {
+};
+
+export type MeasureUnitRun = {
+};
 
 export type IStateAutobase = {
   sparePartList: SparePart[];
@@ -208,4 +231,7 @@ export type IStateAutobase = {
   roadAccidentList: RoadAccident[];
   roadAccidentCauseList: RoadAccidentCause[];
   techInspectionList: TechInspection[];
+  techMaintOrderList: TechMaintOrder[];
+  techMaintTypeList: TechMaintType[];
+  measureUnitRunList: MeasureUnitRun[];
 };

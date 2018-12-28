@@ -80,7 +80,6 @@ class CarForm extends Form {
 
       flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
       flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
-      flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
     }
   }
 
@@ -105,9 +104,9 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('engineType');
     flux.getActions('autobase').getAutobaseListByType('propulsionType');
     flux.getActions('autobase').getAutobaseListByType('carCategory');
+
     flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
     flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
-    flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
   }
 
   handleChangeMainInfoTab = (key, value) => {

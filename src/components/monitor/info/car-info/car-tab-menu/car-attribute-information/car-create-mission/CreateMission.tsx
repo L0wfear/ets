@@ -53,7 +53,6 @@ class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> 
   }
 
   handleFormHideMissionFormWrap = () => {
-    // this.props.loadDataAfterCreateMission(); ???
     this.setState({ showMissionFormWrap: false });
   }
 

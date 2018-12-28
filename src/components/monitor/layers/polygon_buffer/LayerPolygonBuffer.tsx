@@ -73,7 +73,6 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
   componentDidMount() {
     this.props.addLayer({ id: 'PolygonBufferLines', zIndex: 99, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
-      this.props.monitorPageTogglePolygonBufferActive();
     });
   }
 
@@ -123,6 +122,7 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     newFeature.setStyle(getStyleForPolygonBuffer());
 
     // this.props.addFeaturesToSource(newFeature); // Если нужно посмотреть прям сейчас
+    // this.props.monitorPageTogglePolygonBufferActive();
     this.props.monitorPageChangeFilter('featureBufferPolygon', newFeature);
     // например featureBufferPolygon (глобальный поиск, я чуть добавил)
     this.setState({ activeDraw: false });

@@ -5,7 +5,7 @@ import TechMaintFormWrap from 'components/directories/autobase/tech_maintenance_
 import TechMaintTable from 'components/directories/autobase/tech_maintenance_registry/TechMaintTable';
 import permissions from 'components/directories/autobase/tech_maintenance_registry/config-data/permissions';
 
-@connectToStores(['autobase', 'session', 'objects'])
+@connectToStores(['autobase', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.techMaint}` })
 @staticProps({
   entity: 'autobase_tech_maintenance',

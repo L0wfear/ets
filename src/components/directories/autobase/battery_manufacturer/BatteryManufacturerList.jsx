@@ -12,7 +12,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'battery-manufacturer';
 
-@connectToStores(['autobase', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryManufacturer}` })
 @staticProps({
   entity: 'autobase_battery_manufacturer',

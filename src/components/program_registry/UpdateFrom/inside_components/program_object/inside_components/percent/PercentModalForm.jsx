@@ -5,13 +5,11 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import ModalBody from 'components/ui/Modal';
-import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form';
 
-@connectToStores(['autobase'])
-export default class SparePartForm extends Form {
+export default class PercentModalForm extends Form {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {

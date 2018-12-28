@@ -12,7 +12,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'road-accident';
 
-@connectToStores(['autobase', 'employees', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
 @staticProps({
   entity: 'autobase_road_accident',

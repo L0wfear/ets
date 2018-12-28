@@ -12,7 +12,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'insurance-policy';
 
-@connectToStores(['autobase', 'objects', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })
 @staticProps({
   entity: 'autobase_insurance_policy',

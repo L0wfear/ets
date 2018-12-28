@@ -1,5 +1,5 @@
-import permissions from 'components/directories/autobase/types-attr/config-data/permissions';
-import components from 'components/directories/autobase/types-attr/config-data/components';
+import permissions from 'components/directories/autobase/types_attr/config-data/permissions';
+import components from 'components/directories/autobase/types_attr/config-data/components';
 
 export default {
   path: '/types-attr',

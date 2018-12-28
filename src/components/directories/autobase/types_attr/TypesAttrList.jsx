@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import CarTypesTable from 'components/directories/autobase/types-attr/TypesAttrTable';
+import CarTypesTable from 'components/directories/autobase/types_attr/TypesAttrTable';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'types_attr' })
@@ -10,11 +10,11 @@ import CarTypesTable from 'components/directories/autobase/types-attr/TypesAttrT
   listName: 'typesAttrList',
   tableComponent: CarTypesTable,
 })
-export default class TypesAttrList extends ElementsList {
-
+class TypesAttrList extends ElementsList {
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('objects').getTypesAttr();
   }
-
 }
+
+export default TypesAttrList;

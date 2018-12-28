@@ -12,7 +12,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tech_inspection';
 
-@connectToStores(['autobase', 'objects', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
   entity: 'autobase_tech_inspection',

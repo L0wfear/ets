@@ -19,17 +19,12 @@ type PropsLayerLayerDraw = {
   inDraw: boolean;
   type: 'LineString' | 'Point',
   handleEndDraw: any;
+  handleStartDraw?: any;
 
   styles: ol.style.Style | ol.style.Style[];
 };
 
-type OneLine = {
-  length: number;
-  points: any[];
-};
-
 type StateLayerLayerDraw = {
-  lines: OneLine[];
   interactionDraw: ol.interaction.Draw | void;
   activeDraw: boolean;
 };
@@ -39,7 +34,6 @@ type StateLayerLayerDraw = {
  */
 class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLayerDraw> {
   state = {
-    lines: [],
     interactionDraw: null,
     activeDraw: false,
   };
@@ -88,6 +82,11 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
         this.props.map.removeInteraction(interaction);
       }
     });
+    interactionDraw.on('drawstart', () => {
+      if (isFunction(this.props.handleStartDraw)) {
+        this.props.handleStartDraw();
+      }
+    });
 
     interactionDraw.on('drawend', (event: any) => {
       const feature: Feature = event.feature;
@@ -124,6 +123,18 @@ class LayerLayerDraw extends React.Component<PropsLayerLayerDraw, StateLayerLaye
         this.props.handleEndDraw(
           coordinates,
           0,
+          geometry.getType(),
+          coordinates,
+        );
+      }
+      if (type === 'Polygon') {
+        const coordinates = (geometry as any).getCoordinates();
+
+        /**
+         * ol 4.6.5 мутирует аргументы
+         */
+        this.props.handleEndDraw(
+          feature.clone(),
           geometry.getType(),
           coordinates,
         );

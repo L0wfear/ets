@@ -14,4 +14,5 @@ export type PropsCarAttributeInformation = {
   lastPoint: TypeLastPoint,
   errorInLoadTrack: boolean;
   map: ol.Map;
+  carActualGpsNumberIndex: any;
 };

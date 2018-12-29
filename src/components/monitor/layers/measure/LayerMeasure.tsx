@@ -2,6 +2,7 @@ import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import Draw from 'ol/interaction/Draw';
+import { omit } from 'lodash';
 
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
@@ -38,6 +39,7 @@ type PropsLayerParkingPoints = {
   monitorPageToggleMeasureActive: any;
   monitorPageFalseMeasureActive: any;
   measureActive: boolean;
+  drawActiveAll: boolean;
 };
 
 type OneLine = {
@@ -284,7 +286,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
         }
         <ButtonContainer>
           <ButtonGroup vertical>
-            <ButtonDraw disabled={this.state.activeDraw} onClick={this.toggleMeasureActive} />
+            <ButtonDraw disabled={this.state.activeDraw || this.props.drawActiveAll} onClick={this.toggleMeasureActive} />
             <Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
               <Glyphicon glyph="remove" />
             </Button>
@@ -296,7 +298,8 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
 }
 
 const mapStateToProps = (state) => ({
-  measureActive: state.monitorPage.measureActive,
+  drawActiveAll: Object.values(omit({...state.monitorPage.drawActive}, ['all', 'measureActive'])).some((value: boolean) => value),
+  measureActive: state.monitorPage.drawActive.measureActive,
 });
 
 const mapDispatchToProps = (dispatch) => ({

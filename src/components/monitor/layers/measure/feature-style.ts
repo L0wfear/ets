@@ -41,7 +41,7 @@ const makeCacheStyle = (cacheStyleName, { type }) => {
       }),
       fill: new Fill({
         color,
-    }),
+      }),
     }),
   });
 };

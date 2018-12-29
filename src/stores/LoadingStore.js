@@ -136,7 +136,6 @@ export default class LoadingStore extends Store {
       carActions.getDataByNormNormatives,
 
       geoObjectsActions.getGeozones,
-      geoObjectsActions.getOdhMkad);
 
     this.reg(true,
       geoObjectsActions.updateODH,

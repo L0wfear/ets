@@ -88,7 +88,7 @@ const UninstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRendere
   />;
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const vehicleList = props.tireAvailibleCarList.map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
+  const vehicleList = props.tireAvailableCarList.map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
 
   return {
     car_id: (rowMeta) =>

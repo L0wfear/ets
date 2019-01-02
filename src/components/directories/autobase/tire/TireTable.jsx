@@ -113,12 +113,12 @@ export const tableMeta = ({
 export default (props) => {
   const renderers = {
     installed_at: ({ data }) => <DateFormatter date={data} />,
-    cloneButton: (meta) => (
+    cloneButton: ({ rowData }) => (
       <CloneButton
         onClick={props.onCloneClick}
-        boundKeys={[meta.rowData.id]}
+        boundKeys={rowData.id}
       >
-Создать копированием
+        Создать копированием
       </CloneButton>
     ),
   };

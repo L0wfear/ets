@@ -16,8 +16,6 @@ export default class NotificationsStore extends Store {
         actions: autoBaseActions,
         actionNames: [
           'techMaint',
-          'tire',
-          'cloneTire',
         ],
       },
       {
@@ -66,7 +64,6 @@ export default class NotificationsStore extends Store {
         actions: autoBaseActions,
         actionNames: [
           'removeTechMaint',
-          'removeTire',
         ],
       },
       {

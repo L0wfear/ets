@@ -31,7 +31,7 @@ export const autobaseGetSetTireModel: any = (payload = {}, { page, path }: { pag
     },
   })
 );
-export const tireModelGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const tireModelGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     autobaseGetSetTireModel(payload, { page, path }),
   );

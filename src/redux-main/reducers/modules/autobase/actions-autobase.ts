@@ -21,6 +21,9 @@ import * as techMaintType from 'redux-main/reducers/modules/autobase/actions_by_
 import * as measureUnitRun from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit_run/actions';
 import * as tireModel from 'redux-main/reducers/modules/autobase/actions_by_type/tire_model/actions';
 import * as tireManufacturer from 'redux-main/reducers/modules/autobase/actions_by_type/tire_manufacturer/actions';
+import * as tire from 'redux-main/reducers/modules/autobase/actions_by_type/tire/actions';
+import * as tireAvailableCar from 'redux-main/reducers/modules/autobase/actions_by_type/tire_available_car/actions';
+import * as tireSize from 'redux-main/reducers/modules/autobase/actions_by_type/tire_size/actions';
 
 export default {
   autobaseSetNewData,
@@ -46,4 +49,7 @@ export default {
   ...measureUnitRun,
   ...tireModel,
   ...tireManufacturer,
+  ...tire,
+  ...tireAvailableCar,
+  ...tireSize,
 };

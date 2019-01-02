@@ -28,32 +28,7 @@ export default class AutobaseStore extends Store {
   }
 
   getDataForStore = ({ type, data = [] }) => {
-    switch (type) {
-      case 'tire':
-        return this.tireCustomId(data);
-      default:
-        return this.defaultData(data);
-    }
-  }
-
-  tireCustomId = ({ result = [] }) => {
-    const {
-      rows = [],
-      extra = {},
-    } = result;
-
-    const newRows = [...rows.map((row) => {
-      const { tire_to_car } = row;
-      const newtire_to_car = tire_to_car.map((item, index) => ({
-        ...item,
-        customId: index + 1,
-      }));
-      return {
-        ...row,
-        tire_to_car: newtire_to_car,
-      };
-    })];
-    return { rows: newRows, extra };
+    this.defaultData(data);
   }
 
   defaultData = ({ result = [] }) => {

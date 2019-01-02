@@ -18,11 +18,11 @@ export const techMaintType = 'techMaintType';
 export const measureUnitRun = 'measureUnitRun';
 export const tireModel = 'tireModel';
 export const tireManufacturer = 'tireManufacturer';
+export const tire = 'tire';
+export const tireSize = 'tireSize';
+export const tireAvailableCar = 'tireAvailableCar';
 
 export default {
-  tire: 'tire_registry',
-  tireSize: 'tire_size',
-  tireAvailibleCar: 'tire_available_car',
   actualBatteriesOnCar: 'actual_batteries_on_car',
   actualTiresOnCar: 'actual_tires_on_car',
   techMaint: 'tech_maintenance_registry',
@@ -49,4 +49,7 @@ export default {
   [measureUnitRun]: 'measure_unit_run',
   [tireModel]: 'tire_model',
   [tireManufacturer]: 'tire_manufacturer',
+  [tire]: 'tire_registry',
+  [tireSize]: 'tire_size',
+  [tireAvailableCar]: 'tire_available_car',
 };

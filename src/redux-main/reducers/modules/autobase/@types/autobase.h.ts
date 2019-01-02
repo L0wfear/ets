@@ -218,7 +218,7 @@ export type MeasureUnitRun = {
   tech_maintenance_type_name: string;
 };
 export type TireModel = {
-  id?: number | null;
+  id: number | null;
   name: string | null;
   tire_manufacturer_id: number | null;
   tire_manufacturer_name: string | null;
@@ -226,6 +226,42 @@ export type TireModel = {
 export type TireManufacturer = {
   id: number;
   name: string;
+};
+export type Tire = {
+  car_id: number | null;
+  comment: string;
+  company_id: number | null;
+  company_name: string;
+  gov_number: string;
+  id?: number;
+  installed_at: string | null;
+  motohours_diff: number | null;
+  odometr_diff: number | null;
+  tire_manufacturer_id: number | null;
+  tire_manufacturer_name: string;
+  tire_model_id: number | null;
+  tire_model_name: string;
+  tire_size_id: number | null;
+  tire_size_name: string;
+  tire_to_car: {
+    car_id: number | null;
+    gov_number: string | null;
+    id?: number;
+    installed_at: string;
+    motohours_diff: number | null;
+    odometr_diff: number | null;
+    uninstalled_at: string;
+  }[];
+  tire_to_car_id: number | null;
+  uninstalled_at: string | null;
+};
+export type TireSize = {
+  id: number;
+  name: string;
+};
+export type TireAvailableCar = {
+  car_id: number;
+  gov_number: string;
 };
 
 export type IStateAutobase = {
@@ -251,4 +287,7 @@ export type IStateAutobase = {
   measureUnitRunList: MeasureUnitRun[];
   tireModelList: TireModel[];
   tireManufacturerList: TireManufacturer[];
+  tireList: Tire[];
+  tireSizeList: TireSize[];
+  tireAvailableCarList: TireAvailableCar[];
 };

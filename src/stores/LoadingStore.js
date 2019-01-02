@@ -24,7 +24,6 @@ export default class LoadingStore extends Store {
 
       autoBaseActions.getAutobaseListByType,
       autoBaseActions.techMaint,
-      autoBaseActions.tire,
 
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,

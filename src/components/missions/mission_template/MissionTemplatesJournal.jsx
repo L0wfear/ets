@@ -125,7 +125,6 @@ class MissionTemplatesJournal extends CheckableElementsList {
     const { payload = {} } = this.props;
     this.loadMissionTemplate(payload);
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionTemplatesCars();
   }

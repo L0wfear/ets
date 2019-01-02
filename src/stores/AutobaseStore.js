@@ -27,11 +27,11 @@ export default class AutobaseStore extends Store {
     this.setState({ ...setStateObject });
   }
 
-  getDataForStore = ({ type, data = [] }) => {
-    this.defaultData(data);
+  getDataForStore = ({ type, data = {} }) => {
+    return this.defaultData(data);
   }
 
-  defaultData = ({ result = [] }) => {
+  defaultData = ({ result = {} }) => {
     const { rows = [], extra = false } = result;
     return { rows, extra };
   }

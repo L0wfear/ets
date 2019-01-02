@@ -21,10 +21,10 @@ export const tireManufacturer = 'tireManufacturer';
 export const tire = 'tire';
 export const tireSize = 'tireSize';
 export const tireAvailableCar = 'tireAvailableCar';
+export const actualBatteriesOnCar = 'actualBatteriesOnCar';
+export const actualTiresOnCar = 'actualTiresOnCar';
 
 export default {
-  actualBatteriesOnCar: 'actual_batteries_on_car',
-  actualTiresOnCar: 'actual_tires_on_car',
   techMaint: 'tech_maintenance_registry',
   carCategory: 'car_category',
   engineType: 'engine_type',
@@ -52,4 +52,6 @@ export default {
   [tire]: 'tire_registry',
   [tireSize]: 'tire_size',
   [tireAvailableCar]: 'tire_available_car',
+  [actualBatteriesOnCar]: 'actual_batteries_on_car',
+  [actualTiresOnCar]: 'actual_tires_on_car',
 };

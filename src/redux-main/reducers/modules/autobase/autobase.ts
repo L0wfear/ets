@@ -31,6 +31,8 @@ const initialState: IStateAutobase = {
   tireList: [],
   tireSizeList: [],
   tireAvailableCarList: [],
+  actualBatteriesOnCarList: [],
+  actualTiresOnCarList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

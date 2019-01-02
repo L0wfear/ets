@@ -264,6 +264,45 @@ export type TireAvailableCar = {
   gov_number: string;
 };
 
+export type ActualBatteriesOnCar = {
+  battery_to_car_id: number | null;
+  brand_id: number | null;
+  brand_name: string | null;
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  gov_number: string | null;
+  id: number;
+  installed_at: string;
+  lifetime_months: number | null;
+  manufacturer_id: number | null;
+  manufacturer_name: string | null;
+  odometr_start: string | null;
+  released_at: string;
+  serial_number: string | null;
+  uninstalled_at: string;
+  worked_months: number | null;
+};
+export type ActualTiresOnCar = {
+  car_id: number | null;
+  comment: string | null;
+  company_id: number | null;
+  company_name: string | null;
+  gov_number: string | null;
+  id: number;
+  installed_at: string;
+  motohours_diff: number | null;
+  odometr_diff: number | null;
+  tire_manufacturer_id: number | null;
+  tire_manufacturer_name: string | null;
+  tire_model_id: number | null;
+  tire_model_name: string | null;
+  tire_size_id: number | null;
+  tire_size_name: string | null;
+  tire_to_car_id: number | null;
+  uninstalled_at: string;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
@@ -290,4 +329,6 @@ export type IStateAutobase = {
   tireList: Tire[];
   tireSizeList: TireSize[];
   tireAvailableCarList: TireAvailableCar[];
+  actualBatteriesOnCarList: ActualBatteriesOnCar[];
+  actualTiresOnCarList: ActualTiresOnCar[];
 };

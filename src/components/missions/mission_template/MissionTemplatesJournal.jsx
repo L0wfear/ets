@@ -69,7 +69,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-    /**
+  /**
    * Дополнительная проверка на наличие выбранных элементов
    * @override
    */
@@ -206,7 +206,8 @@ class MissionTemplatesJournal extends CheckableElementsList {
         onClick={this.copyElement}
         disabled={this.state.selectedElement === null}
       >
-        <Glyphicon glyph="copy" /> Копировать
+        <Glyphicon glyph="copy" />
+        Копировать
       </ButtonCopyTemplateMission>,
     ];
     buttons.push(...additionalButtons);

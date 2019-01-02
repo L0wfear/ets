@@ -30,9 +30,10 @@ import roadAccidenComponents from 'components/directories/autobase/road_accident
 import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
 import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
 import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
-import BatteryTab from 'components/directories/autobase/cars/tabs/BatteryTab';
-import TireTab from 'components/directories/autobase/cars/tabs/TireTab';
 import TechMaintTab from 'components/directories/autobase/cars/tabs/TechMaintTab';
+
+import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/battery_tab/lazy';
+import { TireTabLazyWrap } from 'components/directories/autobase/cars/tabs/tire_tab/lazy';
 
 const InsurancePolicyList = insurancePolicyComponents[0].component;
 const TechInspectionList = techInspectionComponents[0].component;
@@ -73,13 +74,6 @@ class CarForm extends Form {
 
     if (currentFormState.asuods_id !== lastFormState.asuods_id && currentFormState.asuods_id) {
       this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
-      const payload = {
-        car_id: currentFormState.asuods_id,
-      };
-      const { flux } = this.context;
-
-      flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
-      flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
     }
   }
 
@@ -88,13 +82,8 @@ class CarForm extends Form {
     if (search) {
       this.props.handleTabSelect(queryString.parse(search).active_tab);
     }
-    const nextState = this.props.formState;
     const linear = true;
     const descendants_by_user = true;
-
-    const payload = {
-      car_id: nextState.asuods_id,
-    };
 
     const { flux } = this.context;
     flux.getActions('employees').getEmployees();
@@ -104,9 +93,6 @@ class CarForm extends Form {
     flux.getActions('autobase').getAutobaseListByType('engineType');
     flux.getActions('autobase').getAutobaseListByType('propulsionType');
     flux.getActions('autobase').getAutobaseListByType('carCategory');
-
-    flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
-    flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
   }
 
   handleChangeMainInfoTab = (key, value) => {
@@ -263,15 +249,35 @@ class CarForm extends Form {
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
-            <BatteryTab
-              data={this.props.actualBatteriesOnCarList}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.battery
+                ? (
+                  <BatteryTabLazyWrap
+                    car_id={state.asuods_id}
+                    page={this.props.page}
+                    path={this.props.path}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.tire} tabKey={tabKey}>
-            <TireTab
-              data={this.props.actualTiresOnCarList}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.tire
+                ? (
+                  <TireTabLazyWrap
+                    car_id={state.asuods_id}
+                    page={this.props.page}
+                    path={this.props.path}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>

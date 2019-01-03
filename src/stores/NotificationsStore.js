@@ -6,18 +6,11 @@ export default class NotificationsStore extends Store {
   constructor(flux) {
     super();
 
-    const autoBaseActions = flux.getActions('autobase');
     const repairActions = flux.getActions('repair');
     const missionsActions = flux.getActions('missions');
     const objectsActions = flux.getActions('objects');
 
     const saveNotificationQueue = [
-      {
-        actions: autoBaseActions,
-        actionNames: [
-          'techMaint',
-        ],
-      },
       {
         actions: repairActions,
         actionNames: [
@@ -60,12 +53,6 @@ export default class NotificationsStore extends Store {
     ];
 
     const removeNotificationQueue = [
-      {
-        actions: autoBaseActions,
-        actionNames: [
-          'removeTechMaint',
-        ],
-      },
       {
         actions: repairActions,
         actionNames: [

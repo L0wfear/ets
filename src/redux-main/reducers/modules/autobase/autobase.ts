@@ -5,7 +5,7 @@ const AUTOBASE = createPath('AUTOBASE');
 
 export const AUTOBASE_SET_DATA = AUTOBASE`SET_DATA`;
 
-const initialState: IStateAutobase = {
+export const autobaseInitialState: IStateAutobase = {
   sparePartList: [],
   measureUnitList: [],
   sparePartGroupList: [],
@@ -33,9 +33,14 @@ const initialState: IStateAutobase = {
   tireAvailableCarList: [],
   actualBatteriesOnCarList: [],
   actualTiresOnCarList: [],
+  techMaintList: [],
+  techMaintExtra: {
+    car_interval_time: null,
+    car_interval_probeg: null,
+  },
 };
 
-export default (state = initialState, { type, payload }) => {
+export default (state = autobaseInitialState, { type, payload }) => {
   switch (type) {
     case AUTOBASE_SET_DATA: {
       return {

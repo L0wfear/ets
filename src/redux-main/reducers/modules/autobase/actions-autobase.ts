@@ -26,6 +26,7 @@ import * as tireAvailableCar from 'redux-main/reducers/modules/autobase/actions_
 import * as tireSize from 'redux-main/reducers/modules/autobase/actions_by_type/tire_size/actions';
 import * as actualBatteriesOnCar from 'redux-main/reducers/modules/autobase/actions_by_type/actual_batteries_on_car/actions';
 import * as actualTiresOnCar from 'redux-main/reducers/modules/autobase/actions_by_type/actual_tires_on_car/actions';
+import * as techMaint from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint/actions';
 
 export default {
   autobaseSetNewData,
@@ -56,4 +57,5 @@ export default {
   ...tireSize,
   ...actualBatteriesOnCar,
   ...actualTiresOnCar,
+  ...techMaint,
 };

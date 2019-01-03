@@ -31,7 +31,7 @@ export const autobaseGetSetTechMaintOrder = (payload = {}, { page, path }: { pag
     },
   })
 );
-export const techMaintOrderGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const techMaintOrderGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     autobaseGetSetTechMaintOrder(payload, { page, path }),
   );

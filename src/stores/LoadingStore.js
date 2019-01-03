@@ -23,7 +23,6 @@ export default class LoadingStore extends Store {
       sessionActions.cahngeCompanyOnAnother,
 
       autoBaseActions.getAutobaseListByType,
-      autoBaseActions.techMaint,
 
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,

@@ -23,9 +23,9 @@ export const tireSize = 'tireSize';
 export const tireAvailableCar = 'tireAvailableCar';
 export const actualBatteriesOnCar = 'actualBatteriesOnCar';
 export const actualTiresOnCar = 'actualTiresOnCar';
+export const techMaint = 'techMaint';
 
 export default {
-  techMaint: 'tech_maintenance_registry',
   carCategory: 'car_category',
   engineType: 'engine_type',
   propulsionType: 'propulsion_type',
@@ -54,4 +54,5 @@ export default {
   [tireAvailableCar]: 'tire_available_car',
   [actualBatteriesOnCar]: 'actual_batteries_on_car',
   [actualTiresOnCar]: 'actual_tires_on_car',
+  [techMaint]: 'tech_maintenance_registry',
 };

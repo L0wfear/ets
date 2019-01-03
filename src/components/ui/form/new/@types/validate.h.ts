@@ -24,6 +24,10 @@ export type ValueOfArrayPropertie<F> = CommonPropertie<F> & {
   type: 'valueOfArray';
 };
 
+export type MultiValueOfArrayPropertie<F> = CommonPropertie<F> & {
+  type: 'multiValueOfArray';
+};
+
 export type DatePropertie<F> = CommonPropertie<F> & {
   type: 'date';
 };
@@ -36,6 +40,7 @@ export type PropertieType<F> = (
   StringPropertie<F>
   | NumberPropertie<F>
   | ValueOfArrayPropertie<F>
+  | MultiValueOfArrayPropertie<F>
   | DatePropertie<F>
   | BooleanPropertie<F>
 );

@@ -6,6 +6,7 @@ import {
 import { validateString } from 'components/ui/form/new/string/stringValidate';
 import { validateNumber } from 'components/ui/form/new/number/numberValidate';
 import { validateValueOfArray } from 'components/ui/form/new/valueOfArray/valueOfArrayValidate';
+import { validateMultiValueOfArray } from 'components/ui/form/new/multiValueOfArray/multiValueOfArrayValidate';
 import { validateDate } from 'components/ui/form/new/date/dateValidate';
 import { validateBoolean } from 'components/ui/form/new/boolean/booleanValidate';
 
@@ -27,6 +28,9 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
         break;
       case 'valueOfArray':
         newObj[fieldData.key] = validateValueOfArray<F, P>(fieldData, formState, props);
+        break;
+      case 'multiValueOfArray':
+        newObj[fieldData.key] = validateMultiValueOfArray<F, P>(fieldData, formState, props);
         break;
       case 'date':
         newObj[fieldData.key] = validateDate<F, P>(fieldData, formState, props);

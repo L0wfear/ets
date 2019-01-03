@@ -6,17 +6,11 @@ import AUTOBASE from 'constants/autobase';
 export const autobaseLoadByType = (keyType) => (payload = {}) => (
   AutoBase.path(AUTOBASE[keyType]).get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
-
-      return {
-        result: {
-          rows: [],
-        },
-      };
+      console.log(error); // tslint:disable-line
     })
     .then((ans) => ({
       data: get(ans, ['result', 'rows'], []),
+      extraData: get(ans, ['result', 'extra'], {}),
     }))
 );
 export const autobaseCreateByType = (keyType) => (ownPayload) => {

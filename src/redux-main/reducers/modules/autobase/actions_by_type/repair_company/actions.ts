@@ -31,7 +31,7 @@ export const autobaseGetSetRepairCompany: any = (payload = {}, { page, path }: {
     },
   })
 );
-export const repairCompanyGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const repairCompanyGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     autobaseGetSetRepairCompany(payload, { page, path }),
   );

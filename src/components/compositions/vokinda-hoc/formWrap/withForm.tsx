@@ -186,7 +186,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           if (isFunction(this.props.createAction)) {
             try {
               result = await this.props.createAction<T, A>(...payload);
-              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+              global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line
               return null;

@@ -6,7 +6,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
-import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import {
   monitorPageTogglePolygonBufferActive,
   monitorPageFalsePolygonBufferActive,
@@ -18,7 +18,7 @@ import * as jsts from 'jsts';
 
 import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
-import LayerDraw from 'components/map/layers/default/layer-draw/LayerDraw';
+import LayerDraw from 'components/new/ui/map/layers/default/layer-draw/LayerDraw';
 import { ReduxState } from 'redux-main/@types/state';
 import { getMonitorPageState } from '../../../../redux-main/reducers/selectors/index';
 

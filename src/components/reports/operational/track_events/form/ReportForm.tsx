@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import MapEts from 'components/map/MapEts';
+import MapEts from 'components/new/ui/map/MapEts';
 
 import { MapEtsContainer } from 'components/reports/operational/track_events/form/map-geoobject/styled/styled';
 import LayerOneGeometry from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
 
-import { MapEtsConsumer } from 'components/map/context/MapetsContext';
+import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 
 type PropsGeoObjectsMapModalNew = {
   onFormHide: () => any;

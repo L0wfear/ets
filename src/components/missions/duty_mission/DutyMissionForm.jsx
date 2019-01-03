@@ -12,14 +12,14 @@ import get from 'lodash/get';
 import lodashIsEmpty from 'lodash/isEmpty';
 import ModalBody from 'components/ui/Modal';
 // import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
 import { getKindTaskIds } from 'components/missions/utils/utils';
 import Form from 'components/compositions/Form';
 import InsideField from 'components/missions/duty_mission/inside_fields/index';
-import RouteInfo from 'components/route_new/route-info/RouteInfo';
+import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
 import {

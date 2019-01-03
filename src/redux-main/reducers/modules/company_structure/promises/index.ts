@@ -1,23 +1,26 @@
 import { CompanyStructureService } from 'api/Services';
-import { get } from 'lodash';
+import {
+  keyBy,
+  get,
+} from 'lodash';
 
 /* ------------- COMPANY_STRUCTURE ------------- */
-export const companyStructureLoadCompanyStructure = (payload = {}) => (
+export const getCompanyStructure = (payload = {}) => (
   CompanyStructureService.get({ ...payload })
     .catch((error) => {
       // tslint:disable-next-line
       console.log(error);
-
+    })
+    .then((ans) => {
+      const data = get(ans, ['result'], []);
       return {
-        result: [],
+        data,
+        dataIndex: keyBy(data, 'id'),
       };
     })
-    .then((ans) => ({
-      data: get(ans, ['result'], []),
-    }))
 );
-export const companyStructureLoadCompanyStructureLineat = (payload = {}) => (
-  companyStructureLoadCompanyStructure({ linear: true, ...payload })
+export const getCompanyStructureLinear = (payload = {}) => (
+  getCompanyStructure({ linear: true, ...payload })
 );
 export const companyStructureCreateCompanyStructure = (ownPayload) => {
   const payload = {

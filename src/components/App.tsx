@@ -6,7 +6,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
-import { MapEtsProvider } from 'components/map/context/MapetsContext';
+import { MapEtsProvider } from 'components/new/ui/map/context/MapetsContext';
 
 import LoadingPage from 'components/LoadingPage';
 

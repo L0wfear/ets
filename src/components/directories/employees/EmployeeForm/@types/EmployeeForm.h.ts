@@ -9,7 +9,6 @@ import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { GetPosition } from 'redux-main/reducers/modules/employee/position/@types';
-import { GetCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/company_structure/@types';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
 
@@ -33,7 +32,7 @@ export type DispatchPropsEmployee = {
   updateAction: EmployeeUpdateEmployee;
   autobaseGetSetCar: GetCar;
   employeePositionGetSetPosition: GetPosition;
-  companyStructureActions: GetCompanyStructureLinear;
+  companyStructureActions: any;
 };
 export type OwnEmployeeProps = {
   element: Employee | null;

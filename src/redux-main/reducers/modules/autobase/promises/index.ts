@@ -1,6 +1,6 @@
 import { AutoBase, CarService, TypesService } from 'api/Services';
 import { get } from 'lodash';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 
 /* ------------- AUTOBASE ------------- */
 export const autobaseLoadByType = (keyType) => (payload = {}) => (

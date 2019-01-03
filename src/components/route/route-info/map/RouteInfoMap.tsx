@@ -1,7 +1,7 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 
-import MapEts from 'components/map/MapEts';
+import MapEts from 'components/new/ui/map/MapEts';
 
 import { MapEtsContainer } from 'components/route/route-info/map/styled/styled';
 
@@ -13,7 +13,7 @@ import {
 import LayerRouteInfoGeometry from 'components/route/route-info/map/layers/layer-route-info-geometry/LayerRouteInfoGeometry';
 import { isNumber } from 'util';
 
-import { MapEtsConsumer } from 'components/map/context/MapetsContext';
+import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 
 const makeObjectListWithShape = (object_list) => (
   object_list.map((data) => ({

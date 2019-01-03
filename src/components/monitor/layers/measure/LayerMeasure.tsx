@@ -9,8 +9,8 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
-import Overlay from 'components/map/overlay/Overlay';
-import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import {
   monitorPageToggleMeasureActive,
   monitorPageFalseMeasureActive,

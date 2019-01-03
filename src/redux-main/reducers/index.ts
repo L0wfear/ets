@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 import { loadingReducer } from 'redux-promise-loading';
 import { etsLoading } from 'redux-main/_middleware/etsLoading';
 
-import rootReducers from 'components/redux-main/reducer';
+import reports from 'components/reports/redux-main/reducer';
 
 import order from 'redux-main/reducers/modules/order/order';
 import session from 'redux-main/reducers/modules/session/session';
 import monitorPage from 'components/monitor/redux-main/models/monitor-page';
-import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboard';
+import dashboard from 'components/new/pages/dashboard/redux-main/modules/dashboard/dashboard';
 
 import registry from 'components/new/ui/registry/module/registry';
 
@@ -21,7 +21,7 @@ import routes from 'redux-main/reducers/modules/routes/routes';
 import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 
 export default combineReducers({
-  ...rootReducers,
+  reports,
   dashboard,
   loading: loadingReducer,
   etsLoading,

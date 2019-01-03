@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { tireModel } from 'constants/autobase';
+import { tireModel } from 'redux-main/reducers/modules/autobase/constants';
 import { TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const getTireModel = autobaseLoadByType(tireModel);

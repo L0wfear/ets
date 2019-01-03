@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import MapEts from 'components/map/MapEts';
+import MapEts from 'components/new/ui/map/MapEts';
 
 import LayerMissionGeoobject from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerMissionGeoobject';
 import LayerCarMarker from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/LayerCarMarker';
@@ -11,7 +11,7 @@ import LayerParkingPoints from 'components/missions/mission/MissionInfoForm/form
 
 import { PropsMapMissionInfoWrap } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/MapMissionInfoWrap.h';
 
-import { MapEtsConsumer } from 'components/map/context/MapetsContext';
+import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 
 class MapWrap extends React.PureComponent<PropsMapMissionInfoWrap, {}> {
   render() {

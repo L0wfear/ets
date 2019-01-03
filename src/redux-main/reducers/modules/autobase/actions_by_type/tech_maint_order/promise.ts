@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { techMaintOrder } from 'constants/autobase';
+import { techMaintOrder } from 'redux-main/reducers/modules/autobase/constants';
 import {
   clone,
   get,

@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { carCategory } from 'constants/autobase';
+import { carCategory } from 'redux-main/reducers/modules/autobase/constants';
 
 export const getCarCategory = autobaseLoadByType(carCategory);
 export const createCarCategory = autobaseCreateByType(carCategory);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
-import ErrorBoundaryRegistry from 'components/error_boundary_registry/ErrorBoundaryRegistry';
+import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 import { OwnPropsBatteryTab } from './index.h';
 
 export const BatteryTabLazy = React.lazy(() => (

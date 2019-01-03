@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import BatteryRegistryFormWrap from 'components/directories/autobase/battery_registry/BatteryRegistryForm/BatteryRegistryFormWrap';
 import BatteryRegistryTable from 'components/directories/autobase/battery_registry/BatteryRegistryTable';

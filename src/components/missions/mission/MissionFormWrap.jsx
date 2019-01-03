@@ -11,7 +11,7 @@ import { saveData, printData } from 'utils/functions';
 import { diffDates, setZeroSecondsToDate } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
-import withMapInConsumer from 'components/map/context/withMapInConsumer';
+import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { DivNone } from 'global-styled/global-styled';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';

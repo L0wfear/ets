@@ -2,7 +2,7 @@ import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
-import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Overlay from 'components/map/overlay/Overlay';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
@@ -22,7 +22,7 @@ import {
 
 import {
   OverlayLineInfoContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 import {
   DivNone,

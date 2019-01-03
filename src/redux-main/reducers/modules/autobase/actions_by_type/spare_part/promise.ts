@@ -7,7 +7,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { sparePart } from 'constants/autobase';
+import { sparePart } from 'redux-main/reducers/modules/autobase/constants';
 
 export const getSparePart = autobaseLoadByType(sparePart);
 export const createSparePart = autobaseCreateByType(sparePart);

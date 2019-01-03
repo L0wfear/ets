@@ -10,7 +10,7 @@ import {
 import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route_new/route-info/RouteInfo';
+import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';

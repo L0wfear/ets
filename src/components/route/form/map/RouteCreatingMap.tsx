@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MapEts from 'components/map/MapEts';
+import MapEts from 'components/new/ui/map/MapEts';
 
 import LayerEditGeoobjRoute from 'components/route/form/map/layers/layer-edit-geoobj-route/LayerEditGeoobjRoute';
 import LayerShowPointsRoute from 'components/route/form/map/layers/layer-show-points-route/LayerShowPointsRoute';
@@ -7,10 +7,10 @@ import LayerEditDrawRoute from 'components/route/form/map/layers/layer-edit-draw
 
 import { MapEtsContainer } from 'components/route/form/map/styled/styled';
 
-import { MapEtsConsumer } from 'components/map/context/MapetsContext';
+import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 import { DivNone } from 'global-styled/global-styled';
 
-import LayerDraw from 'components/map/layers/default/layer-draw/LayerDraw';
+import LayerDraw from 'components/new/ui/map/layers/default/layer-draw/LayerDraw';
 import { checkRouteHasObjectLineByBegCoor } from 'components/route/form/map/utils/utils';
 import { CACHE_ROUTE_DRAW_STYLES } from 'components/route/form/map/utils/draw-styles';
 

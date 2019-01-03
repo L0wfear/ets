@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
 import {
   PropsLayerLayerMissionGeoobject,

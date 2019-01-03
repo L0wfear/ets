@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import LayerPolygonBuffer from 'components/monitor/layers/polygon_buffer/LayerPolygonBuffer';
 import LayerMeasure from 'components/monitor/layers/measure/LayerMeasure';
-import LayerZoom from 'components/map/layers/zoom/Zoom';
+import LayerZoom from 'components/new/ui/map/layers/zoom/Zoom';
 
 type PropsIconMeasureAndZoom = {
   map: ol.Map;

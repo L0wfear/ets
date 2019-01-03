@@ -1,5 +1,5 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TireModelFormWrap from 'components/directories/autobase/tire_model/TireModelForm/TireModelFormWrap';
 import TireModelTable from 'components/directories/autobase/tire_model/TireModelTable';

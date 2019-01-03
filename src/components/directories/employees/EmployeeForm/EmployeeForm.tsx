@@ -632,7 +632,7 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
       ),
       companyStructureActions: () => (
         dispatch(
-          companyStructureActions.companyStructureDriverGetSetCompanyStructureLinear(
+          companyStructureActions.getSetCompanyStructureLinear(
             { descendants_by_user: true },
             { page, path },
           ),

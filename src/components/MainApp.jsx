@@ -4,22 +4,22 @@ import { connect } from 'react-redux';
 import { get } from 'lodash';
 
 import LoadingOverlay from 'components/ui/LoadingOverlay';
-import ModalTP from 'components/modalTP/ModalTP';
+import ModalTP from 'components/new/ui/modal_tp/ModalTP';
 import Routes from 'components/indexRoute';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
-import NotifiactionOrders from 'components/modal_notification/NotifiactionOrders';
+import NotifiactionOrders from 'components/new/ui/modal_notification/NotifiactionOrders';
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
-import AppHeader from 'components/app_header/AppHeader';
+import AppHeader from 'components/new/app_header/AppHeader';
 
 import {
   sessionResetData,
   sessionSetData,
 } from 'redux-main/reducers/modules/session/actions-session';
 import { DivNone } from 'global-styled/global-styled';
-import ModalSwitchApiVersion from 'components/modal_switch_api_version/ModalSwitchApiVersion';
+import ModalSwitchApiVersion from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion';
 
 let VERSION_DESCRIPTION;
 try {

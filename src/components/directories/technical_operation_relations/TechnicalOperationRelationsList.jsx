@@ -14,7 +14,7 @@ import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsRoutes } from 'components/directories/technical_operation_relations/helpData';
 import {
   ButtonUpdateRoute,
-} from 'components/route_new/buttons/buttons';
+} from 'components/new/pages/routes_list/buttons/buttons';
 
 const ButtonChangeCarData = enhanceWithPermissions({
   permission: permissionsCar.update,

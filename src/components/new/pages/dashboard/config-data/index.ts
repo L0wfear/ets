@@ -1,0 +1,12 @@
+import permissions from 'components/new/pages/dashboard/config-data/permissions';
+import components from 'components/new/pages/dashboard/config-data/components';
+
+export default {
+  path: '/dashboard',
+  title: 'Рабочий стол',
+  entyity: 'dashboard',
+  noDotList: true,
+  checkHidden: (isShow, props) => isShow && !props.isOkrug,
+  components,
+  permissions,
+};

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Overlay from 'components/map/overlay/Overlay';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 
 import {
   OverlayLineInfoContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 const OverlayTrackPoint: React.FunctionComponent<any> = (props) => {
   const {

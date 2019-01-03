@@ -2,14 +2,14 @@ import styled from 'styled-components';
 
 import {
   PropsOverlay,
-} from 'components/map/overlay/Overlay.h';
+} from 'components/new/ui/map/overlay/Overlay.h';
 
 import {
   OverlayInsideContainer,
   EtsOverlayContainer,
   EtsOverlayTitleContainer,
   EtsTriangleContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 import * as Button from 'react-bootstrap/lib/Button';
 
 const ruler = require('components/monitor/layers/measure/styled/image/ruler.png');

@@ -1,5 +1,5 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TechMaintFormWrap from 'components/directories/autobase/tech_maintenance_registry/TechMaintForm/TechMaintFormWrap';
 import TechMaintTable from 'components/directories/autobase/tech_maintenance_registry/TechMaintTable';

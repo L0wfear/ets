@@ -1,6 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/error_boundary_registry/ErrorBoundaryForm';
+import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 import { PropsRouteInfoFormWrap } from 'components/route/route-info/RouteInfoForm.h';

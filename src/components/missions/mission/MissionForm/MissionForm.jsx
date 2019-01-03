@@ -16,10 +16,10 @@ import {
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route_new/route-info/RouteInfo';
+import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 // import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
 
 import Field from 'components/ui/Field';
 

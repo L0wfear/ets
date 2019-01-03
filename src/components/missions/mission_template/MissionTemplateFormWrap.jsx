@@ -15,7 +15,7 @@ import {
   checkMissionsOnStructureIdCar,
 } from 'components/missions/utils/customValidate';
 import { isEmpty, printData } from 'utils/functions';
-import withMapInConsumer from 'components/map/context/withMapInConsumer';
+import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 
 import MissionTemplateForm from 'components/missions/mission_template/MissionTemplateForm';
 import MissionsCreationForm from 'components/missions/mission_template/MissionsCreationForm';

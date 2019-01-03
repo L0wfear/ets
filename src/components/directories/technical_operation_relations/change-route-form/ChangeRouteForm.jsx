@@ -8,14 +8,14 @@ import * as Row from 'react-bootstrap/lib/Row';
 import ModalBody from 'components/ui/Modal';
 import ChangeRouteTable from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteTable';
 // import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
 import { FluxContext } from 'utils/decorators';
 
 import {
   ButtonCreateRoute,
   ButtonUpdateRoute,
   ButtonDeleteRoute,
-} from 'components/route_new/buttons/buttons';
+} from 'components/new/pages/routes_list/buttons/buttons';
 
 @FluxContext
 export default class ChangeRouteForm extends React.Component {

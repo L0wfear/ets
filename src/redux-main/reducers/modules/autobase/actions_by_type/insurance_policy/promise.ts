@@ -7,7 +7,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { insurancePolicy } from 'constants/autobase';
+import { insurancePolicy } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
 
 export const getInsurancePolicy = autobaseLoadByType(insurancePolicy);

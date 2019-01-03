@@ -1,4 +1,4 @@
-import { InitialStateDashboard } from 'components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
+import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 import { InitialStateTypeRegistry } from 'components/new/ui/registry/module/registry';
 import { IStateReport } from 'components/reports/redux-main/modules/report';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';

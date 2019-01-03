@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
 import { PropsLayerOneGeometry } from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
 import { renderGeoobjects } from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/utils';

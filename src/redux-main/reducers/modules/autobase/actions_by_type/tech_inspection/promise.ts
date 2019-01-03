@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { techInspection } from 'constants/autobase';
+import { techInspection } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'utils/dates';

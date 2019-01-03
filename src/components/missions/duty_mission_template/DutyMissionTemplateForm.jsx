@@ -11,11 +11,11 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import InsideField from 'components/missions/duty_mission_template/inside_fields/index';
-import RouteInfo from 'components/route_new/route-info/RouteInfo';
+import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
 // import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
 
 import { DutyMissionForm } from 'components/missions/duty_mission/DutyMissionForm';
 import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from 'components/missions/duty_mission/utils';

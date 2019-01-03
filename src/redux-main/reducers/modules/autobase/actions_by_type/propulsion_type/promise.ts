@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { propulsionType } from 'constants/autobase';
+import { propulsionType } from 'redux-main/reducers/modules/autobase/constants';
 
 export const getPropulsionType = autobaseLoadByType(propulsionType);
 export const createPropulsionType = autobaseCreateByType(propulsionType);

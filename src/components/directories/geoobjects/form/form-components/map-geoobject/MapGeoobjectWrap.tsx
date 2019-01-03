@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import MapEts from 'components/map/MapEts';
+import MapEts from 'components/new/ui/map/MapEts';
 
 import { MapEtsContainer } from 'components/directories/geoobjects/form/form-components/map-geoobject/styled/styled';
 import LayerOneGeometry from 'components/directories/geoobjects/form/form-components/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
 
-import { MapEtsConsumer } from 'components/map/context/MapetsContext';
+import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 
 const makeGeoobjects = (geoobjectData, entity) => {
   const geoobjects: any = {

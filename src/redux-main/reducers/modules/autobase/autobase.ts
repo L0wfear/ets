@@ -38,6 +38,9 @@ export const autobaseInitialState: IStateAutobase = {
     car_interval_time: null,
     car_interval_probeg: null,
   },
+  carCategoryList: [],
+  engineTypeList: [],
+  propulsionTypeList: [],
 };
 
 export default (state = autobaseInitialState, { type, payload }) => {

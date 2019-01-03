@@ -24,11 +24,11 @@ export const tireAvailableCar = 'tireAvailableCar';
 export const actualBatteriesOnCar = 'actualBatteriesOnCar';
 export const actualTiresOnCar = 'actualTiresOnCar';
 export const techMaint = 'techMaint';
+export const carCategory = 'carCategory';
+export const engineType = 'engineType';
+export const propulsionType = 'propulsionType';
 
 export default {
-  carCategory: 'car_category',
-  engineType: 'engine_type',
-  propulsionType: 'propulsion_type',
   [sparePart]: 'spare_part_registry',
   [sparePartGroup]: 'spare_part_group',
   [measureUnit]: 'measure_unit',
@@ -55,4 +55,7 @@ export default {
   [actualBatteriesOnCar]: 'actual_batteries_on_car',
   [actualTiresOnCar]: 'actual_tires_on_car',
   [techMaint]: 'tech_maintenance_registry',
+  [carCategory]: 'car_category',
+  [engineType]: 'engine_type',
+  [propulsionType]: 'propulsion_type',
 };

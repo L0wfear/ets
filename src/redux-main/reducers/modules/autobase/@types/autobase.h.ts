@@ -345,6 +345,19 @@ export type TechMaintExtra = {
   car_interval_time: number | null;
 };
 
+export type CarCategory = {
+  id: number;
+  name: string;
+};
+export type EngineType = {
+  id: number;
+  name: string;
+};
+export type PropulsionType = {
+  id: number;
+  name: string;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
@@ -375,4 +388,7 @@ export type IStateAutobase = {
   actualTiresOnCarList: ActualTiresOnCar[];
   techMaintList: TechMaint[];
   techMaintExtra: TechMaintExtra;
+  carCategoryList: CarCategory[];
+  engineTypeList: EngineType[];
+  propulsionTypeList: PropulsionType[];
 };

@@ -2,7 +2,6 @@
  * @module actions
  * Flummox actions
  */
-import autobase from './AutobaseAction';
 import cars from './CarActions';
 import companyStructure from './CompanyStructureActions';
 import employees from './EmployeesActions';
@@ -18,7 +17,6 @@ import technicalOperation from './TechnicalOperationsActions';
 import waybills from './WaybillsActions';
 
 export {
-  autobase,
   cars,
   companyStructure,
   employees,

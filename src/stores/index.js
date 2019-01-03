@@ -2,7 +2,6 @@
  * @module stores
  * Flummox stores
  */
-import autobase from './AutobaseStore';
 import companyStructure from './CompanyStructureStore';
 import employees from './EmployeesStore';
 import fuelRates from './FuelRatesStore';
@@ -18,7 +17,6 @@ import session from './SessionStore';
 import waybills from './WaybillsStore';
 
 export {
-  autobase,
   companyStructure,
   employees,
   fuelRates,

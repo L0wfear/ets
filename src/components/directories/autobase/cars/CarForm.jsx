@@ -33,6 +33,9 @@ import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInf
 import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/battery_tab/lazy';
 import { TireTabLazyWrap } from 'components/directories/autobase/cars/tabs/tire_tab/lazy';
 import TechMaintTab from 'components/directories/autobase/cars/tabs/tech_main_tab';
+import { connect } from 'react-redux';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 const InsurancePolicyList = insurancePolicyComponents[0].component;
 const TechInspectionList = techInspectionComponents[0].component;
@@ -88,9 +91,10 @@ class CarForm extends Form {
     flux.getActions('employees').getDrivers();
     flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
     flux.getActions('objects').getCountry();
-    flux.getActions('autobase').getAutobaseListByType('engineType');
-    flux.getActions('autobase').getAutobaseListByType('propulsionType');
-    flux.getActions('autobase').getAutobaseListByType('carCategory');
+
+    this.props.carCategoryGetAndSetInStore();
+    this.props.engineTypeGetAndSetInStore();
+    this.props.propulsionTypeGetAndSetInStore();
   }
 
   handleChangeMainInfoTab = (key, value) => {
@@ -359,4 +363,43 @@ class CarForm extends Form {
   }
 }
 
-export default tabable(connectToStores(CarForm, ['objects', 'employees', 'autobase']));
+export default connect(
+  state => ({
+    engineTypeList: getAutobaseState(state).engineTypeList,
+    propulsionTypeList: getAutobaseState(state).propulsionTypeList,
+    carCategoryList: getAutobaseState(state).carCategoryList,
+  }),
+  (dispatch, { page, path }) => ({
+    carCategoryGetAndSetInStore: () => (
+      dispatch(
+        autobaseActions.carCategoryGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    engineTypeGetAndSetInStore: () => (
+      dispatch(
+        autobaseActions.engineTypeGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    propulsionTypeGetAndSetInStore: () => (
+      dispatch(
+        autobaseActions.propulsionTypeGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+  }),
+)(
+  tabable(
+    connectToStores(
+      CarForm,
+      ['objects', 'employees'],
+    ),
+  ),
+);

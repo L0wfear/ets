@@ -30,21 +30,13 @@ const Body: React.FunctionComponent<any> = (props) =>
   </Modal.Body>;
 
 const ModalTP: React.FunctionComponent<IPropsModalTP> = (props) => {
-  const HeaderWithProps = (
-    <Header
-    />
-  );
-  const BodyWithProps = (
-    <Body
-    />
-  );
   return (
     <ModalForm
       dialogClassName="custom-modalTP"
       onHide={props.onHide}
       show={props.show}
-      Header={HeaderWithProps}
-      Body={BodyWithProps}
+      Header={<Header/>}
+      Body={<Body/>}
     />
   );
 };

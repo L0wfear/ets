@@ -6,14 +6,10 @@ const Component = React.lazy(() => (
   import(/* webpackChunkName: "hidden_road_accident" */ 'components/directories/autobase/road_accident/RoadAccidentList')
 ));
 
-export default [
-  {
-    component: (props) => (
+export default (props) => (
       <ErrorBoundaryRegistry>
         <React.Suspense fallback={<LoadingComponent />}>
           <Component {...props}/>
         </React.Suspense>
       </ErrorBoundaryRegistry>
-    ),
-  },
-];
+);

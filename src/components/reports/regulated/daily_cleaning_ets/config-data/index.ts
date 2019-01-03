@@ -1,5 +1,5 @@
 import permissions from 'components/reports/regulated/daily_cleaning_ets/config-data/permissions';
-import components from 'components/reports/regulated/daily_cleaning_ets/config-data/components';
+import component from 'components/reports/regulated/daily_cleaning_ets/config-data/components';
 
 export default {
   path: '/daily-cleaning-reports-ets',
@@ -7,6 +7,6 @@ export default {
   entyity: 'cleaning_status_report',
   noDotList: false,
   hiddenNav: true,
-  components,
+  component,
   permissions,
 };

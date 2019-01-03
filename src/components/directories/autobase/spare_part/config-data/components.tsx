@@ -6,14 +6,10 @@ const Component = React.lazy(() => (
   import(/* webpackChunkName: "spare_part" */ 'components/directories/autobase/spare_part/SparePartList')
 ));
 
-export default [
-  {
-    component: (props) => (
+export default (props) => (
       <ErrorBoundaryRegistry>
         <React.Suspense fallback={<LoadingComponent />}>
           <Component {...props}/>
         </React.Suspense>
       </ErrorBoundaryRegistry>
-    ),
-  },
-];
+);

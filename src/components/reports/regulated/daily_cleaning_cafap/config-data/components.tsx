@@ -6,14 +6,10 @@ const Component = React.lazy(() => (
   import(/* webpackChunkName: "daily_cleaning_cafap" */ 'components/reports/regulated/daily_cleaning_cafap/report')
 ));
 
-export default [
-  {
-    component: (props) => (
+export default (props) => (
       <ErrorBoundaryRegistry>
         <React.Suspense fallback={<LoadingComponent />}>
           <Component {...props}/>
         </React.Suspense>
       </ErrorBoundaryRegistry>
-    ),
-  },
-];
+);

@@ -1,5 +1,5 @@
 import permissions from 'components/notifications/config-data/permissions';
-import components from 'components/notifications/config-data/components';
+import component from 'components/notifications/config-data/components';
 import TitleComponent from 'components/notifications/config-data/TitleComponent';
 
 export default {
@@ -7,7 +7,7 @@ export default {
   title: 'Уведомления ',
   entyity: '',
   noDotList: false,
-  components,
+  component,
   permissions,
   TitleComponent,
 };

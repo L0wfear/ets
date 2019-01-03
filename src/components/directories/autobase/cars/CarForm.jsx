@@ -21,10 +21,10 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { isArray } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
-import insurancePolicyComponents from 'components/directories/autobase/insurance_policy/config-data/components';
-import techInspectionComponents from 'components/directories/autobase/tech_inspection/config-data/components';
-import repairComponents from 'components/directories/autobase/repair/config-data/components';
-import roadAccidenComponents from 'components/directories/autobase/road_accident/config-data/components';
+import InsurancePolicyList from 'components/directories/autobase/insurance_policy/config-data/components';
+import TechInspectionList from 'components/directories/autobase/tech_inspection/config-data/components';
+import RepairList from 'components/directories/autobase/repair/config-data/components';
+import RoadAccidentList from 'components/directories/autobase/road_accident/config-data/components';
 
 import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
 import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
@@ -36,11 +36,6 @@ import TechMaintTab from 'components/directories/autobase/cars/tabs/tech_main_ta
 import { connect } from 'react-redux';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-
-const InsurancePolicyList = insurancePolicyComponents[0].component;
-const TechInspectionList = techInspectionComponents[0].component;
-const RepairList = repairComponents[0].component;
-const RoadAccidentList = roadAccidenComponents[0].component;
 
 export const CAR_TAB_INDEX = {
   info: '1',

@@ -2,7 +2,7 @@ import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import carFuncTypes from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data';
 import typesAttr from 'components/new/pages/nsi/cars/pages/types-attr/_config-data';
-import carsList from 'components/directories/autobase/cars/config-data';
+
 import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';
 import batteryBrand from 'components/directories/autobase/battery_brand/config-data';
 import batteryManufacturer from 'components/directories/autobase/battery_manufacturer/config-data';
@@ -15,6 +15,8 @@ import insurancePolicy from 'components/directories/autobase/insurance_policy/co
 import repair from 'components/directories/autobase/repair/config-data';
 import repairCompany from 'components/directories/autobase/repair_company/config-data';
 import roadAccident from 'components/directories/autobase/road_accident/config-data';
+
+import carsList from 'components/directories/autobase/cars/config-data';
 
 const children = {
   carFuncTypes,

@@ -261,7 +261,7 @@ export const registyLoadPrintForm = (registryKey) => (dispatch, getState) => {
       }),
     meta: {
       promise: true,
-      page: 'registry',
+      page: registryKey,
     },
   });
 };

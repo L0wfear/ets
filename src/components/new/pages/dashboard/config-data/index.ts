@@ -1,5 +1,5 @@
 import permissions from 'components/new/pages/dashboard/config-data/permissions';
-import components from 'components/new/pages/dashboard/config-data/components';
+import component from 'components/new/pages/dashboard/config-data/components';
 
 export default {
   path: '/dashboard',
@@ -7,6 +7,6 @@ export default {
   entyity: 'dashboard',
   noDotList: true,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
-  components,
+  component,
   permissions,
 };

@@ -1,5 +1,5 @@
 import permissions from 'components/waybill/config-data/permissions';
-import components from 'components/waybill/config-data/components';
+import component from 'components/waybill/config-data/components';
 
 export default {
   path: '/waybill-journal',
@@ -7,6 +7,6 @@ export default {
   entyity: 'waybill',
   noDotList: false,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
-  components,
+  component,
   permissions,
 };

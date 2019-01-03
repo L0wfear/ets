@@ -1,5 +1,5 @@
 import permissions from 'components/new/pages/routes_list/config-data/permissions';
-import components from 'components/new/pages/routes_list/config-data/components';
+import component from 'components/new/pages/routes_list/config-data/components';
 
 export default {
   path: '/routes-list',
@@ -7,6 +7,6 @@ export default {
   entyity: 'route',
   noDotList: false,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
-  components,
+  component,
   permissions,
 };

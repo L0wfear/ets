@@ -1,5 +1,5 @@
 import permissions from 'components/nav-item-role/config-data/permissions';
-import components from 'components/nav-item-role/config-data/components';
+import component from 'components/nav-item-role/config-data/components';
 
 export default {
   path: '/change-company',
@@ -7,6 +7,6 @@ export default {
   entyity: 'role',
   noDotList: false,
   hiddenNav: true,
-  components,
+  component,
   permissions,
 };

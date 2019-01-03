@@ -1,5 +1,5 @@
 import permissions from 'components/route/config-data/permissions';
-import components from 'components/route/config-data/components';
+import component from 'components/route/config-data/components';
 
 export default {
   path: '/routes-list_old',
@@ -8,6 +8,6 @@ export default {
   noDotList: false,
   hiddenNav: true,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
-  components,
+  component,
   permissions,
 };

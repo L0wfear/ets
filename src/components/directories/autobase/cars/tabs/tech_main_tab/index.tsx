@@ -3,7 +3,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 
 import { get } from 'lodash';
-import techMaintComponents from 'components/directories/autobase/tech_maintenance_registry/config-data/components';
+import TechMaintList from 'components/directories/autobase/tech_maintenance_registry/config-data/components';
 
 import BaseField from 'components/ui/Field';
 import { onChangeWithKeys } from 'components/compositions/hoc';
@@ -19,7 +19,6 @@ import {
 } from 'components/directories/autobase/cars/tabs/tech_main_tab/index.h';
 import { TechMaintTabWrap } from './styled';
 
-const TechMaintList = techMaintComponents[0].component;
 const Field: any = onChangeWithKeys(BaseField);
 
 const TechMaintTab: React.FunctionComponent<PropsTechMaintTab> = (props) => {

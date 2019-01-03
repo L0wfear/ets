@@ -12,7 +12,7 @@ import NotifiactionOrders from 'components/new/ui/modal_notification/Notifiactio
 import AdmNotification from 'components/adm-notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
-import AppHeader from 'components/new/app_header/AppHeader';
+import AppHeader from 'components/new/ui/app_header/AppHeader';
 
 import {
   sessionResetData,

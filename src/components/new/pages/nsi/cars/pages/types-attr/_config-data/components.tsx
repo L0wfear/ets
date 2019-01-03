@@ -3,7 +3,7 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "types_attr" */ 'components/directories/autobase/types_attr/TypesAttrList')
+  import(/* webpackChunkName: "types_attr" */ 'components/new/pages/nsi/cars/pages/types-attr/TypesAttrList')
 ));
 
 export default [

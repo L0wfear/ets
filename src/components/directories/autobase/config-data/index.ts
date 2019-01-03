@@ -1,7 +1,7 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import carFuncTypes from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data';
-import typesAttr from 'components/directories/autobase/types_attr/config-data';
+import typesAttr from 'components/new/pages/nsi/cars/pages/types-attr/_config-data';
 import carsList from 'components/directories/autobase/cars/config-data';
 import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';
 import batteryBrand from 'components/directories/autobase/battery_brand/config-data';

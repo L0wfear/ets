@@ -134,21 +134,25 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
       if (timestampStart) {
         newArr.push(
           ...eventData.map((event) => {
-            const newDate = new Date(event.start_point.timestamp * 1000);
-
             return {
               ...event,
-              start_point: {
-                ...event.start_point,
-                coords: swapCoords(event.start_point.coords),
-                coords_msk: swapCoords(event.start_point.coords_msk),
-              },
-              end_point: {
-                ...event.end_point,
-                coords: swapCoords(event.end_point.coords),
-                coords_msk: swapCoords(event.end_point.coords_msk),
-              },
-              date: `${makeDate(newDate)} ${makeTime(newDate, true)}`,
+              start_coords: [
+                event.start_lon,
+                event.start_lat,
+              ],
+              start_coords_msk: [
+                event.start_y_msk,
+                event.start_x_msk,
+              ],
+              end_coords: [
+                event.finish_lon,
+                event.finish_lat,
+              ],
+              end_coords_msk: [
+                event.finish_y_msk,
+                event.finish_x_msk,
+              ],
+              date: `${makeDate(event.started_at)} ${makeTime(event.started_at, true)}`,
               type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
               value: `${Math.abs(event.event_val)} л`,
             };

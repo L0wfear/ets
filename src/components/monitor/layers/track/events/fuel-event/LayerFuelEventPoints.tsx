@@ -58,7 +58,7 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
       );
     } else {
       if (fuelEventPoint !== prevProps.fuelEventPoint) {
-        this.removeOneFuelEventPoint(fuelEventPoint);
+        this.removeOneFuelEventPoint(prevProps.fuelEventPoint);
         this.addOneFuelEventPoint(fuelEventPoint);
       }
     }
@@ -84,13 +84,13 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
   addOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
       try {
-        const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
+        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at);
         if (!featureOld) {
           const feature = new Feature({
-            geometry: new Point(fuelEventPoint.start_point.coords_msk),
+            geometry: new Point(fuelEventPoint.start_coords_msk),
           });
 
-          feature.setId(fuelEventPoint.start_point.timestamp);
+          feature.setId(fuelEventPoint.started_at);
           feature.setStyle(getStyleForFuelEvent(fuelEventPoint.event_type));
           this.props.addFeaturesToSource(feature);
         }
@@ -104,7 +104,7 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
   removeOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
       try {
-        const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
+        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at);
 
         if (featureOld) {
           this.props.removeFeaturesFromSource(featureOld);

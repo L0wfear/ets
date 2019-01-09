@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
+import * as moment from 'moment';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -30,13 +31,12 @@ const OverlayFuelEventPoint: React.FunctionComponent<any> = (props) => {
     event_type,
     sensor_id,
     event_val,
-
-    start_point: {
-      coords_msk,
-      timestamp: sp_timestamp,
-    },
-    end_point: { timestamp: ep_timestamp },
+    start_coords_msk,
+    started_at,
+    finished_at,
   } = fuelEventPoint;
+  const sp_timestamp = moment(started_at).unix();
+  const ep_timestamp = moment(finished_at).unix();
 
   const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
 
@@ -44,7 +44,7 @@ const OverlayFuelEventPoint: React.FunctionComponent<any> = (props) => {
   const diff = secondsToTime(ep_timestamp - sp_timestamp);
 
   return (
-    <Overlay title={getTitleByType(event_type)} map={props.map} coordsMsk={coords_msk} hidePopup={props.hidePopup} >
+    <Overlay title={getTitleByType(event_type)} map={props.map} coordsMsk={start_coords_msk} hidePopup={props.hidePopup} >
       <OverlayLineInfoContainer>
         <span className="font-bold">Датчик: </span><span>{sensor_id}</span>
       </OverlayLineInfoContainer>

@@ -59,9 +59,15 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
     }
   }
 
-  handleEventClick = (fuelEvent) => {
+  handleEventClick = (fuelEvent, fuel = false) => {
     if (fuelEvent) {
-      const { start_point: { coords_msk } } = fuelEvent;
+      let coords_msk = [];
+
+      if (fuel) {
+        coords_msk = fuelEvent.start_coords_msk;
+      } else {
+        coords_msk = fuelEvent.start_point.coords_msk;
+      }
 
       const extent: [number, number, number, number] = [
         coords_msk[0],

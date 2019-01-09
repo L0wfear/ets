@@ -38,11 +38,11 @@ export const tableMeta = ({
   ],
 });
 
-export default (props) => {
-  const renderers = {
-    is_main: ({ data }) => <input title="Изменяется в карточке автобазы" type="checkbox" disabled checked={!!data} />,
-  };
+const renderers = {
+  is_main: ({ data }) => <input title="Изменяется в карточке автобазы" type="checkbox" disabled checked={!!data} />,
+};
 
+export default (props) => {
   return (
     <Table
       title="Автобазы"

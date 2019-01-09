@@ -3,13 +3,13 @@ export type Carpool = {
   company_name: string;
   contractor_id: number | null;
   id: number | null;
-  is_main: false
+  is_main: boolean;
   name: string;
   shape: object;
 };
 
-export type createCarpool = any;
+export type CreateCarpool = any;
 
-export type updateCarpool = any;
+export type UpdateCarpool = any;
 
-export type getCarpool = () => Promise<any>;
+export type GetCarpool = () => Promise<any>;

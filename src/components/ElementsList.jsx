@@ -412,6 +412,10 @@ class ElementsList extends React.Component {
     );
   }
 
+  getAdditionalFormProps() {
+    return {};
+  }
+
   /**
    * Возвращает компонент формы с переданными туда props
    * возвращает null, если класс-наследник не испольует formComponent
@@ -439,6 +443,7 @@ class ElementsList extends React.Component {
         renderers={this.constructor.formRenderers}
         permissions={[`${this.entity}.read`]}
         flux={this.context.flux}
+        {...this.getAdditionalFormProps()}
         {...this.props}
       />,
     );

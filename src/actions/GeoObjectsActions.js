@@ -60,11 +60,6 @@ export default class GeoObjectsActions extends Actions {
     };
   }
 
-  async updateCarpool(payload) {
-    const { id, ...payloadUpdate } = payload;
-    return services.GeozonesCarpoolService.path(`${id}`).put({ ...payloadUpdate }, false, 'json');
-  }
-
   setSelectedPolysType(type) {
     return type;
   }

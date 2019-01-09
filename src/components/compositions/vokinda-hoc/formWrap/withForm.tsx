@@ -42,7 +42,7 @@ type WithFormProps<P> = P & {
   isPermittedToCreate: boolean;
 };
 
-type FormWithHandleChange<F> = (objChange: { [K in keyof F]?: F[K] }) => void;
+type FormWithHandleChange<F> = (objChange: { [K in keyof F]?: F[K] }) => any;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
 type FormWithDefaultSubmit = () => void;
 

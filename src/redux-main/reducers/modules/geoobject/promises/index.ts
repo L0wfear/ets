@@ -15,6 +15,8 @@ export const geoobjectLoadByType = (keyType: keyof typeof GEOOBJECT) => (payload
         } catch (e) {
           geom.shape = geom.shape || null;
         }
+
+        return geom;
       });
 
       return {

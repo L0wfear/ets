@@ -30,7 +30,7 @@ export const actionGetGetCarpool: any = (payload = {}, { page, path }: { page: s
     },
   })
 );
-export const getAndSetInStoreCarpool = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionGetAndSetInStoreCarpool = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetGetCarpool(payload, { page, path }),
   );
@@ -44,7 +44,7 @@ export const getAndSetInStoreCarpool = (payload = {}, { page, path }: { page: st
   };
 };
 export const actionCreateCarpool: any = (carpoolOld: Carpool, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carpool } } = await dispatch({
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateCarpool(carpoolOld),
     meta: {
@@ -54,10 +54,10 @@ export const actionCreateCarpool: any = (carpoolOld: Carpool, { page, path }: { 
     },
   });
 
-  return carpool;
+  return payload;
 };
 export const actionUpdateCarpool: any = (carpoolOld: Carpool, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carpool } } = await dispatch({
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateCarpool(carpoolOld),
     meta: {
@@ -67,7 +67,7 @@ export const actionUpdateCarpool: any = (carpoolOld: Carpool, { page, path }: { 
     },
   });
 
-  return carpool;
+  return payload;
 };
 export const actionRemoveCarpool = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({
@@ -85,6 +85,7 @@ export default {
   actionSetCarpool,
   geoobjectResetSetCarpool,
   actionGetGetCarpool,
+  actionGetAndSetInStoreCarpool,
   actionCreateCarpool,
   actionUpdateCarpool,
   actionRemoveCarpool,

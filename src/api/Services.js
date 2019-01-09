@@ -77,10 +77,8 @@ export const UserActionLogService = ETS_API_FACTORY.createApiServiceAdapter('use
 export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});
 export const DTService = ETS_API_FACTORY.createApiServiceAdapter('dt', {});
 export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fueling_water', {});
-export const CarPoolService = ETS_API_FACTORY.createApiServiceAdapter('carpool', {});
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
-export const GeozonesCarpoolService = ETS_API_FACTORY.createApiServiceAdapter('geozones/carpool', {});
 
 export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});

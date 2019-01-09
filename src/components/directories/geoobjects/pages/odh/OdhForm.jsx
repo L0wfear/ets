@@ -8,12 +8,19 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import ModalBody from 'components/ui/Modal';
 import Form from 'components/compositions/Form';
-import { connectToStores } from 'utils/decorators';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
+import { connect } from 'react-redux';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import { getAndSetInStoreCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
+import memoize from 'memoize-one';
 
-@connectToStores(['objects'])
-export default class OdhForm extends Form {
+class OdhForm extends Form {
+  componentDidMount() {
+    this.props.getAndSetInStoreCompanyStructureDescendantsByUser();
+  }
+
   myHandleSubmit = () => this.handleSubmit();
+
   handleChangeWrap = (key, value) => {
     if (key === 'company_structure_id') {
       global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
@@ -21,11 +28,28 @@ export default class OdhForm extends Form {
 
     this.handleChange(key, value);
   }
-  render() {
-    const [state, errors] = [this.props.formState, this.props.formErrors];
 
-    const { companyStructureLinearForUserList = [] } = this.props;
-    const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
+  makeOptionFromCarpoolList = (
+    memoize(
+      companyStructureDescendantsByUserList => (
+        companyStructureDescendantsByUserList
+          .map(
+            defaultSelectListMapper,
+          )
+      ),
+    )
+  );
+
+  render() {
+    const {
+      formState: state,
+      formErrors: errors,
+      companyStructureDescendantsByUserList,
+    } = this.props;
+
+    const COMPANY_ELEMENTS = this.makeOptionFromCarpoolList(
+      companyStructureDescendantsByUserList,
+    );
 
     return (
       <Modal id="modal-odh" show={this.props.show} onHide={this.props.onHide} backdrop="static">
@@ -138,3 +162,19 @@ export default class OdhForm extends Form {
     );
   }
 }
+
+export default connect(
+  state => ({
+    companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
+  }),
+  (dispatch, { page, path }) => ({
+    getAndSetInStoreCompanyStructureDescendantsByUser: () => (
+      dispatch(
+        getAndSetInStoreCompanyStructureDescendantsByUser(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+  }),
+)(OdhForm);

@@ -7,6 +7,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
@@ -14,15 +15,18 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 import { connect } from 'react-redux';
-import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getCompanyStructureState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
-@connectToStores(['fuelRates', 'objects', 'companyStructure'])
+@connectToStores(['fuelRates', 'objects'])
 class FuelRateForm extends Form {
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+
     this.props.actionGetAndSetInStoreSpecialModel();
+    this.props.getAndSetInStoreCompanyStructureLinear();
+
     this.context.flux.getActions('objects').getModels(this.props.formState.car_special_model_id);
   }
 
@@ -40,26 +44,31 @@ class FuelRateForm extends Form {
     )
   );
 
-  render() {
-    const [
-      state = {},
-      errors = {},
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
+  makeOptionFromCompanyStructureLinearList = (
+    memoize(
+      companyStructureLinearList => companyStructureLinearList.map(defaultSelectListMapper),
+    )
+  );
 
+  render() {
     const {
-      companyStructureList = [],
+      formState: state,
+      formErrors: errors,
       modelsList = [],
       operations = [],
       specialModelList,
+      companyStructureLinearList,
       isPermitted = false,
     } = this.props;
 
-    const COMPANY_ELEMENTS = companyStructureList.map((el) => ({ value: el.id, label: el.name }));
+    const COMPANY_ELEMENTS = this.makeOptionFromCompanyStructureLinearList(
+      companyStructureLinearList,
+    );
+    const SPECIALMODELS = this.makeOptionFromSpecialModelsList(
+      specialModelList,
+    );
+
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.full_name }));
-    const SPECIALMODELS = this.makeOptionFromSpecialModelsList(specialModelList);
     const OPERATIONS = operations
       .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}`, measure_unit_name: op.measure_unit_name }))
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
@@ -180,11 +189,20 @@ class FuelRateForm extends Form {
 export default connect(
   state => ({
     specialModelList: getSomeUniqState(state).specialModelList,
+    companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
   }),
   (dispatch, { page, path }) => ({
     actionGetAndSetInStoreSpecialModel: () => (
       dispatch(
         someUniqActions.actionGetAndSetInStoreSpecialModel(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    getAndSetInStoreCompanyStructureLinear: () => (
+      dispatch(
+        companyStructureActions.getAndSetInStoreCompanyStructureLinear(
           {},
           { page, path },
         ),

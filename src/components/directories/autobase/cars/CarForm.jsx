@@ -34,8 +34,12 @@ import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/ba
 import { TireTabLazyWrap } from 'components/directories/autobase/cars/tabs/tire_tab/lazy';
 import TechMaintTab from 'components/directories/autobase/cars/tabs/tech_main_tab';
 import { connect } from 'react-redux';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getCompanyStructureState,
+} from 'redux-main/reducers/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 export const CAR_TAB_INDEX = {
   info: '1',
@@ -78,18 +82,16 @@ class CarForm extends Form {
     if (search) {
       this.props.handleTabSelect(queryString.parse(search).active_tab);
     }
-    const linear = true;
-    const descendants_by_user = true;
 
     const { flux } = this.context;
     flux.getActions('employees').getEmployees();
     flux.getActions('employees').getDrivers();
-    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
     flux.getActions('objects').getCountry();
 
     this.props.carCategoryGetAndSetInStore();
     this.props.engineTypeGetAndSetInStore();
     this.props.propulsionTypeGetAndSetInStore();
+    this.props.getAndSetInStoreCompanyStructureDescendantsByUser();
   }
 
   handleChangeMainInfoTab = (key, value) => {
@@ -114,7 +116,7 @@ class CarForm extends Form {
     const {
       isPermitted = false,
       tabKey,
-      companyStructureLinearForUserList = [],
+      companyStructureDescendantsByUserList = [],
       countryOptions = [],
       engineTypeList = [],
       propulsionTypeList = [],
@@ -124,7 +126,7 @@ class CarForm extends Form {
       driversList = [],
     } = this.props;
 
-    const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
+    const COMPANY_ELEMENTS = companyStructureDescendantsByUserList.map(defaultSelectListMapper);
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);
     const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
@@ -363,6 +365,7 @@ export default connect(
     engineTypeList: getAutobaseState(state).engineTypeList,
     propulsionTypeList: getAutobaseState(state).propulsionTypeList,
     carCategoryList: getAutobaseState(state).carCategoryList,
+    companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
   }),
   (dispatch, { page, path }) => ({
     carCategoryGetAndSetInStore: () => (
@@ -384,6 +387,14 @@ export default connect(
     propulsionTypeGetAndSetInStore: () => (
       dispatch(
         autobaseActions.propulsionTypeGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    getAndSetInStoreCompanyStructureDescendantsByUser: () => (
+      dispatch(
+        companyStructureActions.getAndSetInStoreCompanyStructureDescendantsByUser(
           {},
           { page, path },
         ),

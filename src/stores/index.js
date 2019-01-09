@@ -2,7 +2,6 @@
  * @module stores
  * Flummox stores
  */
-import companyStructure from './CompanyStructureStore';
 import employees from './EmployeesStore';
 import fuelRates from './FuelRatesStore';
 import geoObjects from './GeoObjectsStore';
@@ -17,7 +16,6 @@ import session from './SessionStore';
 import waybills from './WaybillsStore';
 
 export {
-  companyStructure,
   employees,
   fuelRates,
   geoObjects,

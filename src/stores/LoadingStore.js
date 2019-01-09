@@ -16,7 +16,6 @@ export default class LoadingStore extends Store {
     const missionsActons = flux.getActions('missions');
     const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
-    const companyStructureActions = flux.getActions('companyStructure');
 
     this.reg(false,
       sessionActions.cahngeCompanyOnAnother,
@@ -122,11 +121,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 
-      companyStructureActions.getCompanyStructure,
-      companyStructureActions.updateCompanyElement,
-      companyStructureActions.createCompanyElement,
-      companyStructureActions.deleteCompanyElement,
-
       carActions.updateCarAdditionalInfo,
       carActions.getDataByNormNormatives,
 
@@ -180,11 +174,11 @@ export default class LoadingStore extends Store {
   isLoading() {
     if (__DEVELOPMENT__) {
       if (this.state.operationsCount > 0 && notTime) {
-        console.time('----> timeLoad');
+        console.time('----> timeLoad'); // eslint-disable-line
         notTime = false;
       }
       if (this.state.operationsCount === 0 && !notTime) {
-        console.timeEnd('----> timeLoad');
+        console.timeEnd('----> timeLoad'); // eslint-disable-line
         notTime = true;
       }
     }

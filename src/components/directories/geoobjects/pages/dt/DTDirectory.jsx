@@ -17,13 +17,12 @@ import permissions from 'components/directories/geoobjects/pages/dt/config-data/
   formMeta: tableMeta(),
   operations: ['READ'],
 })
-export default class DTDirectory extends ElementsList {
+class DTDirectory extends ElementsList {
   init() {
     const { flux } = this.context;
-    const linear = true;
-    const descendants_by_user = true;
 
     flux.getActions('geoObjects').getGeozoneByType('dt');
-    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
   }
 }
+
+export default DTDirectory;

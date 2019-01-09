@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { Flex, DivNone } from 'global-styled/global-styled';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { getCompanyStructure } from 'redux-main/trash-actions/structure/structure';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldStructure,
@@ -12,6 +11,7 @@ import {
   DispatchPropsFieldStructure,
   OwnPropsFieldStructure,
 } from 'components/new/pages/routes_list/form/inside_fields/structure/FieldStructure.d';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 class FieldStructure extends React.PureComponent<PropsFieldStructure, StateFieldStructure> {
   constructor(props) {
@@ -51,16 +51,15 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
     this.getCompanyStructure();
   }
 
-  getCompanyStructure() {
-    this.props.getCompanyStructure()
-      .then(({ payload: { company_structure_list } }) => {
-        const STRUCTURE_OPTIONS = company_structure_list.map((structure) => ({
-          value: structure.id,
-          label: structure.name,
-        }));
+  async getCompanyStructure() {
+    const { companyStructureLinearList } = await this.props.getAndSetInStoreCompanyStructureLinear();
 
-        this.setState({ STRUCTURE_OPTIONS });
-      });
+    const STRUCTURE_OPTIONS = companyStructureLinearList.map((structure) => ({
+      value: structure.id,
+      label: structure.name,
+    }));
+
+    this.setState({ STRUCTURE_OPTIONS });
   }
 
   handleChange = (value, options) => {
@@ -131,17 +130,11 @@ export default connect<StatePropsFieldStructure, DispatchPropsFieldStructure, Ow
     userStructureId: state.session.userData.structure_id,
   }),
   (dispatch, { page, path }) => ({
-    getCompanyStructure: () => (
+    getAndSetInStoreCompanyStructureLinear: () => (
       dispatch(
-        getCompanyStructure(
-          'none',
-          {
-            linear: true,
-          },
-          {
-            page,
-            path,
-          },
+        companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+          {},
+          { page, path },
         ),
       )
     ),

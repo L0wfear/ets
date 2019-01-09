@@ -16,13 +16,12 @@ import permissions from 'components/directories/geoobjects/pages/odh/config-data
   formMeta: tableMeta(),
   operations: ['READ'],
 })
-export default class ODHDirectory extends ElementsList {
+class ODHDirectory extends ElementsList {
   init() {
     const { flux } = this.context;
-    const linear = true;
-    const descendants_by_user = true;
 
     flux.getActions('geoObjects').getGeozoneByType('odh');
-    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
   }
 }
+
+export default ODHDirectory;

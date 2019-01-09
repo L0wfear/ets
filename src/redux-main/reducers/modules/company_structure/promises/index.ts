@@ -22,7 +22,11 @@ export const getCompanyStructure = (payload = {}) => (
 export const getCompanyStructureLinear = (payload = {}) => (
   getCompanyStructure({ linear: true, ...payload })
 );
-export const companyStructureCreateCompanyStructure = (ownPayload) => {
+export const getCompanyStructureDescendantsByUser = (payload = {}) => (
+  getCompanyStructure({ descendants_by_user: true, linear: true, ...payload })
+);
+
+export const promiseCreateCompanyStructure = (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
@@ -33,7 +37,7 @@ export const companyStructureCreateCompanyStructure = (ownPayload) => {
     'json',
   );
 };
-export const companyStructureUpdateCompanyStructure = (ownPayload) => {
+export const promiseUpdateCompanyStructure = (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
@@ -44,9 +48,9 @@ export const companyStructureUpdateCompanyStructure = (ownPayload) => {
     'json',
   );
 };
-export const companyStructureDeleteCompanyStructure = (id) => {
-  return CompanyStructureService.path(id).delete(
-    {},
+export const promiseDeleteCompanyStructure = (id) => {
+  return CompanyStructureService.delete(
+    { id },
     false,
     'json',
   ).then(() => {

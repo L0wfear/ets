@@ -15,8 +15,13 @@ import Paginator from 'components/ui/new/paginator/Paginator';
 import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const is_archive = true;
+const loadingPageName = 'mission-archive';
 
 const ButtonUpdateMission = enhanceWithPermissions({
   permission: permissions.update,
@@ -49,18 +54,17 @@ class MissionsArchiveJournal extends CheckableElementsList {
 
   init = async () => {
     const { flux } = this.context;
-    const linear = true;
     const outerPayload = {
       start_date: new Date(),
       end_date: new Date(),
     };
 
-    flux.getActions('companyStructure').getCompanyStructure(linear);
+    this.props.getAndSetInStoreCompanyStructureLinear();
+
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
     flux.getActions('objects').getCars();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
-    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
@@ -196,6 +200,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
       useServerFilter: true,
       useServerSort: true,
       is_archive,
+      loadingPageName,
     };
   }
 
@@ -211,4 +216,24 @@ class MissionsArchiveJournal extends CheckableElementsList {
   }
 }
 
-export default compose()(MissionsArchiveJournal);
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+    }),
+    dispatch => ({
+      getAndSetInStoreCompanyStructureLinear: () => (
+        dispatch(
+          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+    }),
+  ),
+)(MissionsArchiveJournal);

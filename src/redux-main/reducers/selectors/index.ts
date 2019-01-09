@@ -47,3 +47,6 @@ export const getRoutesState: GetStateType<'routes'> = (state) => (
 export const getSomeUniqState: GetStateType<'some_uniq'> = (state) => (
   getStateDataByKey(state)('some_uniq')
 );
+export const getGeoobjectState: GetStateType<'geoobject'> = (state) => (
+  getStateDataByKey(state)('geoobject')
+);

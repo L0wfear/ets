@@ -19,6 +19,7 @@ import employee from 'redux-main/reducers/modules/employee/employee';
 import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
 import routes from 'redux-main/reducers/modules/routes/routes';
 import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
+import geoobject from 'redux-main/reducers/modules/geoobject/geoobject';
 
 export default combineReducers({
   reports,
@@ -36,4 +37,5 @@ export default combineReducers({
   company_structure,
   routes,
   some_uniq,
+  geoobject,
 });

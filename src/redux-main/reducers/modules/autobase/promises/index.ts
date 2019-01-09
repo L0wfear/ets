@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 
 /* ------------- AUTOBASE ------------- */
-export const autobaseLoadByType = (keyType) => (payload = {}) => (
+export const autobaseLoadByType = (keyType: keyof typeof AUTOBASE) => (payload = {}) => (
   AutoBase.path(AUTOBASE[keyType]).get({ ...payload })
     .catch((error) => {
       console.log(error); // tslint:disable-line
@@ -13,7 +13,7 @@ export const autobaseLoadByType = (keyType) => (payload = {}) => (
       extraData: get(ans, ['result', 'extra'], {}),
     }))
 );
-export const autobaseCreateByType = (keyType) => (ownPayload) => {
+export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
@@ -24,7 +24,7 @@ export const autobaseCreateByType = (keyType) => (ownPayload) => {
     'json',
   );
 };
-export const autobaseUpdateByType = (keyType) => (ownPayload) => {
+export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
@@ -35,7 +35,7 @@ export const autobaseUpdateByType = (keyType) => (ownPayload) => {
     'json',
   );
 };
-export const autobaseRemoveByType = (keyType) => (id) => {
+export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => {
   return AutoBase.path(`${AUTOBASE[keyType]}/${id}`).delete(
     {},
     false,

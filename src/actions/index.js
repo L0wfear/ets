@@ -3,7 +3,6 @@
  * Flummox actions
  */
 import cars from './CarActions';
-import companyStructure from './CompanyStructureActions';
 import employees from './EmployeesActions';
 import fuelRates from './FuelRateActions';
 import geoObjects from './GeoObjectsActions';
@@ -18,7 +17,6 @@ import waybills from './WaybillsActions';
 
 export {
   cars,
-  companyStructure,
   employees,
   fuelRates,
   geoObjects,

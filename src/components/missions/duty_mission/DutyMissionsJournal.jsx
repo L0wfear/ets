@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList';
@@ -19,8 +18,13 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const is_archive = false;
+const loadingPageName = 'duty-mission';
 
 const ButtonUpdateDutyMission = enhanceWithPermissions({
   permission: permissions.update,
@@ -66,20 +70,19 @@ class DutyMissionsJournal extends CheckableElementsList {
 
   init() {
     const { flux } = this.context;
-    const linear = true;
     const outerPayload = {
       start_date: new Date(),
       end_date: new Date(),
     };
 
-    flux.getActions('companyStructure').getCompanyStructure(linear);
+    this.props.getAndSetInStoreCompanyStructureLinear();
+
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
     flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
-    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
@@ -359,4 +362,24 @@ class DutyMissionsJournal extends CheckableElementsList {
   }
 }
 
-export default compose()(DutyMissionsJournal);
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+    }),
+    dispatch => ({
+      getAndSetInStoreCompanyStructureLinear: () => (
+        dispatch(
+          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+    }),
+  ),
+)(DutyMissionsJournal);

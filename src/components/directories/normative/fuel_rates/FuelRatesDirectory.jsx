@@ -5,7 +5,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema';
 import permissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
-@connectToStores(['odh', 'fuelRates', 'objects', 'session', 'companyStructure'])
+@connectToStores(['odh', 'fuelRates', 'objects', 'session'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
@@ -16,7 +16,7 @@ import permissions from 'components/directories/normative/fuel_rates/config-data
   formComponent: FuelRateFormWrap,
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class FuelRatesDirectory extends ElementsList {
+class FuelRatesDirectory extends ElementsList {
 
   constructor(props, context) {
     super(props);
@@ -27,7 +27,8 @@ export default class FuelRatesDirectory extends ElementsList {
     const { flux } = this.context;
     flux.getActions('fuelRates').getFuelOperations();
     flux.getActions('fuelRates').getFuelRates();
-    flux.getActions('companyStructure').getCompanyStructure();
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }
+
+export default FuelRatesDirectory;

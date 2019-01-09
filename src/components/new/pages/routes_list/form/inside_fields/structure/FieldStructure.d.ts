@@ -10,7 +10,7 @@ export type StatePropsFieldStructure = {
 };
 
 export type DispatchPropsFieldStructure = {
-  getCompanyStructure: () => Promise<any>;
+  getAndSetInStoreCompanyStructureLinear: () => Promise<any>;
 };
 
 export type OwnPropsFieldStructure = {

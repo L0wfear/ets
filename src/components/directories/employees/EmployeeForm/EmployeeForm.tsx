@@ -632,8 +632,8 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
       ),
       companyStructureActions: () => (
         dispatch(
-          companyStructureActions.getSetCompanyStructureLinear(
-            { descendants_by_user: true },
+          companyStructureActions.getSetCompanyStructureDescendantsByUser(
+            {},
             { page, path },
           ),
         )

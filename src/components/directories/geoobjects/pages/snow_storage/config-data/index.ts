@@ -3,7 +3,7 @@ import component from 'components/directories/geoobjects/pages/snow_storage/conf
 
 export default {
   path: '/snow-storage',
-  title: 'Справочник пунктов временного складирования',
+  title: 'Справочник пунктов временного складирования снега',
   entyity: 'snow_storage',
   noDotList: false,
   component,

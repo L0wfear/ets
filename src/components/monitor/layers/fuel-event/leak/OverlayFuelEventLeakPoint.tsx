@@ -22,11 +22,11 @@ const OverlayFuelEventLeakPoint: React.FunctionComponent<any> = (props) => {
     gov_number,
     sensor_id,
     value,
-    started_at,
+    started_at_msk,
     duration,
     shape: { coordinates },
   } = overlayData;
-  const started_at_format = getFormattedDateTime(started_at);
+  const started_at_msk_format = getFormattedDateTime(started_at_msk);
 
   return (
     <Overlay title="Слив топлива:" map={props.map} coordsMsk={coordinates} hidePopup={props.hidePopup} >
@@ -40,7 +40,7 @@ const OverlayFuelEventLeakPoint: React.FunctionComponent<any> = (props) => {
         <span className="font-bold">Кол-во: </span><span>{`${value} л.`}</span>
       </OverlayLineInfoContainer>
       <OverlayLineInfoContainer>
-        <span className="font-bold">Дата и время: </span><span>{started_at_format}</span>
+        <span className="font-bold">Дата и время: </span><span>{started_at_msk_format}</span>
       </OverlayLineInfoContainer>
       <OverlayLineInfoContainer>
         <span className="font-bold">Потраченное время: </span><span>{duration}</span>

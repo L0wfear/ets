@@ -84,13 +84,13 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
   addOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
       try {
-        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at);
+        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at_msk);
         if (!featureOld) {
           const feature = new Feature({
             geometry: new Point(fuelEventPoint.start_coords_msk),
           });
 
-          feature.setId(fuelEventPoint.started_at);
+          feature.setId(fuelEventPoint.started_at_msk);
           feature.setStyle(getStyleForFuelEvent(fuelEventPoint.event_type));
           this.props.addFeaturesToSource(feature);
         }
@@ -104,7 +104,7 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
   removeOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
       try {
-        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at);
+        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at_msk);
 
         if (featureOld) {
           this.props.removeFeaturesFromSource(featureOld);

@@ -9,7 +9,7 @@ import Routes from 'components/indexRoute';
 import { connectToStores, FluxContext } from 'utils/decorators';
 
 import NotifiactionOrders from 'components/new/ui/modal_notification/NotifiactionOrders';
-import AdmNotification from 'components/adm-notification/AdmNotification';
+import AdmNotification from 'components/new/ui/adm_notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
 import AppHeader from 'components/new/ui/app_header/AppHeader';

@@ -11,11 +11,9 @@ import {
   DispatchPropsAdmNotification,
   OwnPropsAdmNotification,
   PropsAdmNotification,
-} from 'components/adm-notification/AdmNotification.h';
+} from 'components/new/ui/adm_notification/AdmNotification.h';
 
 class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNotification> {
-  context!: ETSCore.LegacyContext;
-
   componentDidUpdate(prevProps: PropsAdmNotification) {
     const { props } = this;
 

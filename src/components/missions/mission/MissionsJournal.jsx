@@ -413,6 +413,12 @@ class MissionsJournal extends CheckableElementsList {
     };
   }
 
+  getAdditionalFormProps() {
+    return {
+      loadingPageName,
+    };
+  }
+
   export = () => {
     this.setState({ showPrintForm: true });
   }

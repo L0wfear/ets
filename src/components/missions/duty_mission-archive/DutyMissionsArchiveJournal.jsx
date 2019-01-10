@@ -189,6 +189,12 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
+  getAdditionalFormProps() {
+    return {
+      loadingPageName,
+    };
+  }
+
   additionalRender = () => {
     return [
       <Paginator

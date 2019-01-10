@@ -80,7 +80,7 @@ class TechMaintOrderList extends ElementsList {
     this.setState(changeState);
   }
 
-  getAdditionalProps() {
+  getAdditionalFormProps() {
     return {
       loadingPageName,
     };

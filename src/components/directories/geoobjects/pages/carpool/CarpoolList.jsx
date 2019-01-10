@@ -27,12 +27,6 @@ class CarpoolList extends ElementsList {
     return this.props.getCarpool();
   }
 
-  getAdditionalProps() {
-    return {
-      loadingPageName,
-    };
-  }
-
   onFormHide = async (isSubmited) => {
     if (isSubmited) {
       this.init();

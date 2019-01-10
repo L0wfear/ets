@@ -200,6 +200,11 @@ class MissionsArchiveJournal extends CheckableElementsList {
       useServerFilter: true,
       useServerSort: true,
       is_archive,
+    };
+  }
+
+  getAdditionalFormProps() {
+    return {
       loadingPageName,
     };
   }

@@ -108,6 +108,12 @@ class CompanyStructureList extends ElementsList {
     };
   }
 
+  getAdditionalFormProps() {
+    return {
+      loadingPageName,
+    };
+  }
+
   getButtons() {
     return [
       <ButtonAddStructure id="create" key="create" bsSize="small" onClick={this.createElement}>

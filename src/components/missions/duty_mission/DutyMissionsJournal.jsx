@@ -345,6 +345,12 @@ class DutyMissionsJournal extends CheckableElementsList {
     };
   }
 
+  getAdditionalFormProps() {
+    return {
+      loadingPageName,
+    };
+  }
+
   export = () => {
     this.setState({ showPrintForm: true });
   }

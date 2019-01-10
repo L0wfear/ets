@@ -29,7 +29,7 @@ export const EtsFilter = styled.div`
 
 export const EtsFilterTitle = styled.div`
   text-align: center;
-  font-weight: 500;
+  font-weight: 700;
   margin: 5px 0;
 `;
 

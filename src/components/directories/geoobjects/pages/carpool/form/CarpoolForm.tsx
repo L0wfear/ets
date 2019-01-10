@@ -9,7 +9,7 @@ import {
 import FieldsData from 'components/directories/geoobjects/form/form-components/fields-data/FieldsData';
 import MapGeoobjectWrap from 'components/directories/geoobjects/form/form-components/map-geoobject/MapGeoobjectWrap';
 
-import batteryBrandPermissions from 'components/directories/autobase/battery_brand/config-data/permissions';
+import carpoolPermissions from 'components/directories/geoobjects/pages/carpool/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { carpoolSchema } from 'components/directories/geoobjects/pages/carpool/form/schema';
@@ -131,6 +131,6 @@ export default compose<PropsCarpool, OwnCarpoolProps>(
       return getDefaultCarpoolElement(props.element);
     },
     schema: carpoolSchema,
-    permissions: batteryBrandPermissions,
+    permissions: carpoolPermissions,
   }),
 )(CarpoolForm);

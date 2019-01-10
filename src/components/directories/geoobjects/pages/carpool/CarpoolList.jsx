@@ -7,6 +7,8 @@ import permissions from 'components/directories/geoobjects/pages/carpool/config-
 import { connect } from 'react-redux';
 import { getGeoobjectState } from 'redux-main/reducers/selectors';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { compose } from 'recompose';
 
 const loadingPageName = 'company-structure';
 
@@ -46,18 +48,24 @@ class CarpoolList extends ElementsList {
   }
 }
 
-export default connect(
-  state => ({
-    carpoolList: getGeoobjectState(state).carpoolList,
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
   }),
-  dispatch => ({
-    getCarpool: () => (
-      dispatch(
-        geoobjectActions.actionGetAndSetInStoreCarpool(
-          {},
-          { page: loadingPageName },
-        ),
-      )
-    ),
-  }),
+  connect(
+    state => ({
+      carpoolList: getGeoobjectState(state).carpoolList,
+    }),
+    dispatch => ({
+      getCarpool: () => (
+        dispatch(
+          geoobjectActions.actionGetAndSetInStoreCarpool(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+    }),
+  ),
 )(CarpoolList);

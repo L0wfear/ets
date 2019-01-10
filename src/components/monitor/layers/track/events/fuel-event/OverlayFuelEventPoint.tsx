@@ -32,11 +32,11 @@ const OverlayFuelEventPoint: React.FunctionComponent<any> = (props) => {
     sensor_id,
     event_val,
     start_coords_msk,
-    started_at,
-    finished_at,
+    started_at_msk,
+    finished_at_msk,
   } = fuelEventPoint;
-  const sp_timestamp = moment(started_at).unix();
-  const ep_timestamp = moment(finished_at).unix();
+  const sp_timestamp = moment(started_at_msk).unix();
+  const ep_timestamp = moment(finished_at_msk).unix();
 
   const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
 

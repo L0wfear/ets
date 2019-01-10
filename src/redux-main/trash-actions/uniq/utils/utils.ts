@@ -152,7 +152,7 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
                 event.finish_y_msk,
                 event.finish_x_msk,
               ],
-              date: `${makeDate(event.started_at)} ${makeTime(event.started_at, true)}`,
+              date: `${makeDate(event.started_at_msk)} ${makeTime(event.started_at_msk, true)}`,
               type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
               value: `${Math.abs(event.event_val)} л`,
             };

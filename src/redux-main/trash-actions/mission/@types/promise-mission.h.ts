@@ -52,6 +52,7 @@ export interface TypeTechnicalOperationData {
 export interface TypeWaybillData {
   fact_arrival_date: string | Date;
   fact_departure_date: string | Date;
+  number: number;
 }
 export interface MissionDataType {
   mission_data: TypeMIssionData;

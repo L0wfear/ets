@@ -39,10 +39,15 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
+import { getWarningNotification } from 'utils/notifications';
+
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
     showMissionInfoForm: false,
     showMissionRejectForm: false,
+    action_at: null,
   };
 
   refreshCard = () => (
@@ -60,30 +65,48 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   completeMission = () => {
-    this.props.getMissionById(this.props.infoData.mission_data.id)
+
+    let action_at = null;
+
+    loadMoscowTime()
+    .then(({ time }) => {
+      action_at = time.date;
+      this.props.getMissionById(this.props.infoData.mission_data.id)
       .then((res) => {
         const { mission } = res.payload;
         if (mission) {
-          mission.status = 'complete';
-          return this.props.updateMission(mission);
+          return this.props.updateMission({...mission, status: 'complete', action_at});
         }
-
         return Promise.resolve();
       })
       .catch((error) => {
         // tslint:disable-next-line
         console.log(error);
       })
-      .then(() => {
-        this.props.handleClose();
-        this.refreshCard();
-        this.props.loadDataAfterCloseMission();
-      });
+        .then(() => {
+          this.props.handleClose();
+          this.refreshCard();
+          this.props.loadDataAfterCloseMission();
+        });
+    })
+    .catch(({ errorIsShow }) => {
+      !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+    });
   }
 
   rejectMission = () => {
-    this.setState({ showMissionRejectForm: true });
-  }
+    loadMoscowTime()
+      .then(({ time }) => {
+        const action_at = time.date;
+        this.setState({
+          showMissionRejectForm: true,
+          action_at,
+        });
+      })
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+      });
+  };
 
   onReject = (refresh) => {
     this.setState({ showMissionRejectForm: false });
@@ -129,8 +152,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
               mission={{
                 ...infoData.mission_data,
                 car_gov_number: infoData.car_data.gov_number,
+                waybill_number: infoData.waybill_data.number,
               }}
               fromDashboard
+              action_at={this.state.action_at}
             />
           )
           :

@@ -14,6 +14,7 @@ export type PropsCurrentMissionInfo = {
 };
 
 export type StateCurrentMissionInfo = {
-  showMissionInfoForm: boolean,
-  showMissionRejectForm: boolean,
+  showMissionInfoForm: boolean;
+  showMissionRejectForm: boolean;
+  action_at: string | Date;
 };

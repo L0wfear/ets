@@ -139,7 +139,7 @@ export const getSetCompanyStructureDescendantsByUser: any = (payload = {}, { pag
     },
   })
 );
-export const getAndSetInStoreCompanyStructureDescendantsByUser = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const getAndSetInStoreCompanyStructureDescendantsByUser: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     getSetCompanyStructureDescendantsByUser(payload, { page, path }),
   );

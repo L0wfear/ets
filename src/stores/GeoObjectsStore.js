@@ -59,7 +59,6 @@ export default class GeoObjectsStore extends Store {
     const geoObjectsActions = flux.getActions('geoObjects');
 
     this.register(geoObjectsActions.updateODH, this.handleGetList.bind(this, 'odhs'));
-    this.register(geoObjectsActions.updateDT, this.handleGetList.bind(this, 'dts'));
     this.register(geoObjectsActions.getGeozones, this.handleGetGeozones);
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 

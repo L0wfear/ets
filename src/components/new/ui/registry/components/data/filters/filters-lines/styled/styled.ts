@@ -1,30 +1,13 @@
 import styled from 'styled-components';
+import * as Row from 'react-bootstrap/lib/Row';
 
-export const EtsFiltersLines = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+export const EtsFiltersLines = styled(Row)`
 `;
 
 export const EtsFilter = styled.div`
-  flex: 1 1 225px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
-  min-width: 225px;
-  max-width: 20%;
-
-  @media screen and (max-width: 1211px) {
-    max-width: 25%;
-  }
-  @media screen and (max-width: 986px) {
-    max-width: 33%;
-  }
-  @media screen and (max-width: 761px) {
-    max-width: 50%;
-  }
-  @media screen and (max-width: 536px) {
-    max-width: 100%;
-  }
+  width: 100%;
 `;
 
 export const EtsFilterTitle = styled.div`

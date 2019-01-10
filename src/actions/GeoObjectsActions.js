@@ -12,15 +12,6 @@ export default class GeoObjectsActions extends Actions {
     return services.ODHService.put(payload, null, 'json');
   }
 
-  updateDT(formState) {
-    const payload = {
-      id: formState.id,
-      dt_id: formState.dt_id,
-      company_structure_id: formState.company_structure_id || null,
-    };
-    return services.DTService.put(payload, false, 'json');
-  }
-
   async getGeozones(company_id) {
     let cacheName = 'GeozoneService.get()';
     const payload = {};

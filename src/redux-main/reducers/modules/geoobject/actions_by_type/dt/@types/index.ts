@@ -1,0 +1,48 @@
+export type Dt = {
+  ab_area: number | null;
+  auto_area: number | null;
+  biulding_area: number | null;
+  bound_stone_len: number | null;
+  bti_okrug_id: number | null;
+  clean_area: number | null;
+  company_name: string;
+  company_structure_id: number | null;
+  company_structure_name: string | null;
+  developer: string;
+  district_id: number | null;
+  dt_id: number | null;
+  end_date: string;
+  flat_building_area: number | null;
+  footway_area: number | null;
+  green_area: number | null;
+  green_index: number | null;
+  id: number | null;
+  manual_area: number | null;
+  mechanical_clean_area: number | null;
+  move_snow_heap_area: number | null;
+  name: string;
+  object_address: string;
+  passport_author: string;
+  passport_num: string;
+  passport_requester: string;
+  planting_density: number | null;
+  pond_area: number | null;
+  rotor_area: number | null;
+  shape: object;
+  snow_area: number | null;
+  start_date: number | null;
+  summer_total_clean_area: number | null;
+  title_area: number | null;
+  total_area: number | null;
+  total_area_calc: number | null;
+  winter_total_clean_area: number | null;
+  yard_id: number | null;
+  yard_info: string;
+  yard_owner_id: number | null;
+};
+
+export type CreateDt = any;
+
+export type UpdateDt = any;
+
+export type GetDt = () => Promise<any>;

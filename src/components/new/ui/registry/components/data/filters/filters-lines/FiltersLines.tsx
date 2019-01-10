@@ -5,10 +5,16 @@ import MultiselectRegestryFilter from 'components/new/ui/registry/components/dat
 import { EtsFiltersLines } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { registryChangeFilterRawValues } from 'components/new/ui/registry/module/actions-registy';
 import AdvancedNumberFilter from 'components/new/ui/registry/components/data/filters/filters-lines/advanced-number/AdvancedNumberFilter';
+import * as Col from 'react-bootstrap/lib/Col';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DivNone } from 'global-styled/global-styled';
 
 type PropsFiltersLines = {
   registryKey: string;
   fileds: any[];
+  userData: InitialStateSession['userData'];
   onChangeFilterRawValue: (valueKey: string, type: string, value: any) => any;
 };
 
@@ -20,32 +26,47 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
     this.props.onChangeFilterRawValue(valueKey, type, value);
   }
 
-  fieldMap = ({ type, ...otherFilterData }) => {
+  fieldMap = ({ type, displayIf, ...otherFilterData }) => {
     const { registryKey } = this.props;
+
+    if (displayIf) {
+      if (displayIf === displayIfContant.isKgh && !this.props.userData.isKgh) {
+        return (
+          <DivNone />
+        );
+      }
+      if (displayIf === displayIfContant.isOkrug && !this.props.userData.isOkrug) {
+        return (
+          <DivNone />
+        );
+      }
+    }
 
     switch (type) {
       case 'multiselect': return (
-        <MultiselectRegestryFilter
-          key={otherFilterData.valueKey}
-          filterData={otherFilterData}
-          registryKey={registryKey}
-          onChange={this.handleChange}
-        />
+        <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
+          <MultiselectRegestryFilter
+            filterData={otherFilterData}
+            registryKey={registryKey}
+            onChange={this.handleChange}
+          />
+        </Col>
       );
       case 'advanced-number': return (
-        <AdvancedNumberFilter
-          key={otherFilterData.valueKey}
-          filterData={otherFilterData}
-          registryKey={registryKey}
-          onChange={this.handleChange}
-        />
+        <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
+          <AdvancedNumberFilter
+            filterData={otherFilterData}
+            registryKey={registryKey}
+            onChange={this.handleChange}
+          />
+        </Col>
+
       );
       default: return (
-        <div
-          key={otherFilterData.valueKey}
-        >
+        <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
           {`not found filter with type ${type}`}
-        </div>
+        </Col>
+
       );
     }
   }
@@ -59,6 +80,7 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
 }
 
 const mapStateToProps = (state, { registryKey }) => ({
+  userData: getSessionState(state).userData,
   fileds: getFilterData(state.registry, registryKey).fields,
 });
 

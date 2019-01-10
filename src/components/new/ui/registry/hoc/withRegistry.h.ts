@@ -29,6 +29,8 @@ export type TypeFields = {
   key: string;
   title: any;
   width?: number;
+  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  toFixed?: number;
   childrenFields?: TypeFields[];
 };
 

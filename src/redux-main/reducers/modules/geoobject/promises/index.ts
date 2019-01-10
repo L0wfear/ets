@@ -36,6 +36,18 @@ export const geoobjectCreateByType = (keyType: keyof typeof GEOOBJECT) => (ownPa
     'json',
   );
 };
+
+export const geoobjectUpdateByTypeOld = (keyType: keyof typeof GEOOBJECT) => (ownPayload) => {
+  const payload = {
+    ...ownPayload,
+  };
+
+  return GeozonesService.path(GEOOBJECT[keyType]).put(
+    payload,
+    false,
+    'json',
+  );
+};
 export const geoobjectUpdateByType = (keyType: keyof typeof GEOOBJECT) => (ownPayload) => {
   const payload = {
     ...ownPayload,

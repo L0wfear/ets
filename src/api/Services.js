@@ -80,6 +80,7 @@ export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fuel
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
 
+export const GeozoneDtService = ETS_API_FACTORY.createApiServiceAdapter('geozones/dt', {});
 export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
 

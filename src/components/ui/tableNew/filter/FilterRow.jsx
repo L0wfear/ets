@@ -112,7 +112,7 @@ export default class FilterRow extends React.Component {
     }
 
     return (
-      <ColFilter md={3} sm={6}>
+      <ColFilter lg={3} md={4} sm={6}>
         <label id={idLabel} htmlFor="input">{displayName}</label>
         {input}
       </ColFilter>

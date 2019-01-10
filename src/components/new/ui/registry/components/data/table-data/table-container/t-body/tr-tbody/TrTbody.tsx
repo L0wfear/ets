@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
+import { isNumber } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdEnumerated from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdEnumerated';
@@ -19,9 +20,12 @@ import {
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { registrySetSelectedRowToShowInForm, registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { DivNone } from 'global-styled/global-styled';
+import { getSessionState } from 'redux-main/reducers/selectors/index';
 
 class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key }) => {
+  renderRow = ({ key, displayIf, toFixed }) => {
     const { props } = this;
 
     const {
@@ -45,11 +49,30 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       );
     }
 
+    if (displayIf) {
+      if (displayIf === displayIfContant.isKgh && !this.props.userData.isKgh) {
+        return (
+          <DivNone />
+        );
+      }
+      if (displayIf === displayIfContant.isOkrug && !this.props.userData.isOkrug) {
+        return (
+          <DivNone />
+        );
+      }
+    }
+
+    let value = rowData[key];
+
+    if (toFixed) {
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+    }
+
     return (
       <StandartTrTd
         key={key}
         metaKey={key}
-        value={rowData[key]}
+        value={value}
         rowData={rowData}
         registryKey={registryKey}
       />
@@ -106,7 +129,7 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       rowFields: getListData(state.registry, registryKey).meta.rowFields,
       permissions: getListData(state.registry, registryKey).permissions.read,
-
+      userData: getSessionState(state).userData,
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
     }),
     (dispatch, { registryKey }) => ({

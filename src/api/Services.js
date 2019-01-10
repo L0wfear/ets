@@ -74,13 +74,12 @@ export const CleaningRateService = ETS_API_FACTORY.createApiServiceAdapter('clea
 export const UserActionLogService = ETS_API_FACTORY.createApiServiceAdapter('user_action_log', {});
 
 /* Geoobjects - Геообъекты */
-export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});
-export const DTService = ETS_API_FACTORY.createApiServiceAdapter('dt', {});
-export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fueling_water', {});
-export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
 
 export const GeozoneDtService = ETS_API_FACTORY.createApiServiceAdapter('geozones/dt', {});
+export const DTService = ETS_API_FACTORY.createApiServiceAdapter('dt', {});
+export const GeozoneOdhService = ETS_API_FACTORY.createApiServiceAdapter('geozones/odh', {});
+export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});
 export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
 

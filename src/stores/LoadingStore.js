@@ -127,7 +127,6 @@ export default class LoadingStore extends Store {
       geoObjectsActions.getGeozones);
 
     this.reg(true,
-      geoObjectsActions.updateODH,
       geoObjectsActions.getGeozoneByTypeWithGeometry,
       geoObjectsActions.getGeozoneByType,
 

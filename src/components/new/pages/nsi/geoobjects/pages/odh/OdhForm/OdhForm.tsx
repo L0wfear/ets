@@ -1,37 +1,55 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import ModalBody from 'components/ui/Modal';
-import Form from 'components/compositions/Form';
-import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
-import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
-import { getAndSetInStoreCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
 import memoize from 'memoize-one';
 
-class OdhForm extends Form {
+import * as Modal from 'react-bootstrap/lib/Modal';
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Button from 'react-bootstrap/lib/Button';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import odhPermissions from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/permissions';
+import { compose } from 'recompose';
+import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { odhFormSchema } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/schema';
+import { get } from 'lodash';
+
+import { getDefaultOdhFormElement } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/utils';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { ReduxState } from 'redux-main/@types/state';
+import { connect } from 'react-redux';
+import {
+  OwnPropsOdhForm,
+  PropsOdhForm,
+  StateOdhForm,
+  StatePropsOdhForm,
+  DispatchPropsOdhForm,
+  PropsOdhFormWithForm,
+} from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/@types/OdhForm.h';
+
+import { DivNone } from 'global-styled/global-styled';
+import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import { getAndSetInStoreCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
+import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import { companyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
+
+class OdhForm extends React.PureComponent<PropsOdhForm, StateOdhForm> {
   componentDidMount() {
     this.props.getAndSetInStoreCompanyStructureDescendantsByUser();
   }
 
-  myHandleSubmit = () => this.handleSubmit();
+  handleChangeCompanyStructure = (key, value) => {
+    global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
 
-  handleChangeWrap = (key, value) => {
-    if (key === 'company_structure_id') {
-      global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
-    }
-
-    this.handleChange(key, value);
+    this.props.handleChange({
+      [key]: value,
+    });
   }
 
   makeOptionFromCarpoolList = (
     memoize(
-      companyStructureDescendantsByUserList => (
+      (companyStructureDescendantsByUserList: companyStructureDescendantsByUser[]) => (
         companyStructureDescendantsByUserList
           .map(
             defaultSelectListMapper,
@@ -40,25 +58,38 @@ class OdhForm extends Form {
     )
   );
 
+  handleChange = (name, value) => {
+    this.props.handleChange({
+      [name]: get(value, ['target', 'value'], value),
+    });
+  }
+  handleHide = () => {
+    this.props.handleHide(false);
+  }
   render() {
     const {
       formState: state,
       formErrors: errors,
+      page,
+      path,
       companyStructureDescendantsByUserList,
     } = this.props;
 
-    const COMPANY_ELEMENTS = this.makeOptionFromCarpoolList(
+    const IS_CREATING = !state.id;
+
+    const title = !IS_CREATING ? 'Объект дорожного хозяйства' : 'Объект дорожного хозяйства';
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+
+    const companyStructureOptions = this.makeOptionFromCarpoolList(
       companyStructureDescendantsByUserList,
     );
 
     return (
-      <Modal id="modal-odh" show={this.props.show} onHide={this.props.onHide} backdrop="static">
-
+      <Modal id="modal-odh" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>Объект дорожного хозяйства</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
-
-        <ModalBody>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
               <ExtField
@@ -144,37 +175,68 @@ class OdhForm extends Form {
                 label="Подразделение"
                 value={state.company_structure_id}
                 error={errors.company_structure_id}
-                options={COMPANY_ELEMENTS}
+                options={companyStructureOptions}
                 emptyValue={null}
-                onChange={this.handleChangeWrap}
+                onChange={this.handleChangeCompanyStructure}
                 boundKeys="company_structure_id"
               />
-
             </Col>
           </Row>
-        </ModalBody>
-
+        </ModalBodyPreloader>
         <Modal.Footer>
-          <Button onClick={this.myHandleSubmit}>Сохранить</Button>
+        {
+          !isPermitted // либо обновление, либо создание
+          ? (
+            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+          )
+          : (
+            <DivNone />
+          )
+        }
         </Modal.Footer>
-
       </Modal>
     );
   }
 }
 
-export default connect(
-  state => ({
-    companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
-  }),
-  (dispatch, { page, path }) => ({
-    getAndSetInStoreCompanyStructureDescendantsByUser: () => (
-      dispatch(
-        getAndSetInStoreCompanyStructureDescendantsByUser(
-          {},
-          { page, path },
-        ),
-      )
-    ),
+export default compose<PropsOdhForm, OwnPropsOdhForm>(
+  connect<StatePropsOdhForm, DispatchPropsOdhForm, OwnPropsOdhForm, ReduxState>(
+    (state) => ({
+      companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
+    }),
+    (dispatch, { page, path }) => ({
+      createAction: (formState) => (
+        dispatch(
+          geoobjectActions.actionCreateOdh(
+            formState,
+            { page, path },
+          ),
+        )
+      ),
+      updateAction: (formState) => (
+        dispatch(
+          geoobjectActions.actionUpdateOdh(
+            formState,
+            { page, path },
+          ),
+        )
+      ),
+      getAndSetInStoreCompanyStructureDescendantsByUser: () => (
+        dispatch(
+          getAndSetInStoreCompanyStructureDescendantsByUser(
+            {},
+            { page, path },
+          ),
+        )
+      ),
+    }),
+  ),
+  withForm<PropsOdhFormWithForm, Odh>({
+    uniqField: 'id',
+    mergeElement: (props) => {
+      return getDefaultOdhFormElement(props.element);
+    },
+    schema: odhFormSchema,
+    permissions: odhPermissions,
   }),
 )(OdhForm);

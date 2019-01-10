@@ -58,7 +58,6 @@ export default class GeoObjectsStore extends Store {
 
     const geoObjectsActions = flux.getActions('geoObjects');
 
-    this.register(geoObjectsActions.updateODH, this.handleGetList.bind(this, 'odhs'));
     this.register(geoObjectsActions.getGeozones, this.handleGetGeozones);
     this.register(geoObjectsActions.setSelectedPolysType, this.handleSetSelectedPolysType);
 
@@ -67,13 +66,6 @@ export default class GeoObjectsStore extends Store {
     this.register(geoObjectsActions.setInitialState, this.handleClearStore);
 
     this.state = cloneDeep(initialState);
-  }
-
-  handleGetList(name, { result }) {
-    const statePropertyName = `${name}List`;
-    this.setState({
-      [statePropertyName]: result,
-    });
   }
 
   handleSetSelectedPolysType(type) {

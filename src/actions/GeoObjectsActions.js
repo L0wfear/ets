@@ -4,14 +4,6 @@ import * as services from 'api/Services';
 import { getValueFromCache, put } from 'utils/cache';
 
 export default class GeoObjectsActions extends Actions {
-  updateODH(formState) {
-    const payload = {
-      id: formState.id,
-      company_structure_id: formState.company_structure_id || null,
-    };
-    return services.ODHService.put(payload, null, 'json');
-  }
-
   async getGeozones(company_id) {
     let cacheName = 'GeozoneService.get()';
     const payload = {};

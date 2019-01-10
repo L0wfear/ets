@@ -70,7 +70,7 @@ class FuelRateForm extends Form {
 
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.full_name }));
     const OPERATIONS = operations
-      .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}`, measure_unit_name: op.measure_unit_name }))
+      .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}, ${op.measure_unit_name}`, measure_unit_name: op.measure_unit_name }))
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
     const measure_unit_name = (OPERATIONS.find(({ value }) => value === state.operation_id) || { measure_unit_name: '-' }).measure_unit_name || '-';

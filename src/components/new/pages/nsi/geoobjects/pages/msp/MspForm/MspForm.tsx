@@ -53,7 +53,7 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
 
     const IS_CREATING = !state.id;
 
-    const title = !IS_CREATING ? 'Объект дорожного хозяйства' : 'Объект дорожного хозяйства';
+    const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (

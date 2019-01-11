@@ -12,17 +12,25 @@ export type PropsFuelRateFormWrap = {
   element: FuelRateUpd | null;
   onFormHide: OnFormHideType;
 
-  modelsList: any[];
   loadingPageName?: string;
   page?: string;
   path?: string;
-  measureUnitList: any[];
+  // measureUnitList: any[];
+  // modelsList: any[];
 };
 
-export type StatePropsFuelRate = {};
+export type StatePropsFuelRate = {
+  modelsList: any;
+  operations: any;
+  specialModelList: any;
+  companyStructureLinearList: any;
+  isPermitted: any;
+};
 export type DispatchPropsFuelRate = {
-  createAction: any;
-  updateAction: any;
+  createAction: any; // поменять any
+  updateAction: any; // поменять any !!
+  actionGetAndSetInStoreSpecialModel: any;
+  getAndSetInStoreCompanyStructureLinear: any;
 };
 export type OwnFuelRateProps = { // fuelRateForm props
   element: FuelRateUpd | null;
@@ -44,8 +52,8 @@ export type PropsFuelRate = OutputWithFormProps<
   any
 >;
 export type StateFuelRate = {
-  companyStructureList: any[];
-  modelsList: any[];
-  specialModelsList: any[];
-  isPermitted: boolean;
+  // companyStructureList: any[];
+  // modelsList: any[];
+  // specialModelsList: any[];
+  // isPermitted: boolean;
 };

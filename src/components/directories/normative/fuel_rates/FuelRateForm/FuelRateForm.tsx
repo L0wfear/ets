@@ -41,7 +41,7 @@ import {
 
 import { getDefaultFuelRateElement } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema';
-import { ICreateFuel } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { FuelRateUpd } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import FuelRatePermissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
 import { getModelsListState } from 'redux-main/reducers/modules/some_uniq/modelList/selectors';

@@ -21,7 +21,9 @@ type PropsMultiselectRegestryFilter = {
     title: string;
     valueKey: string;
     labelKey?: string;
+    options?: any;
   };
+  formatedTitle: string;
   filterValuesObj: any;
   array: any[];
   onChange: (valueKey: string, type: string, value: any[], option: object) => any;
@@ -33,22 +35,26 @@ type StateMultiselectRegestryFilter = {
     title: string;
     valueKey: string;
     labelKey?: string;
+    options?: any;
   };
   options: any[];
 };
 
-const makeOptions = (props: PropsMultiselectRegestryFilter) => {
-  return uniqBy(
-    props.array,
-    props.filterData.valueKey,
-  ).reduce((newArr, { [props.filterData.valueKey]: value, [props.filterData.labelKey || props.filterData.valueKey]: label }) => {
-    if (value && label) {
-      newArr.push({ value, label });
-    }
+const makeOptions = (props: PropsMultiselectRegestryFilter) => (
+  props.filterData.options
+  || (
+    uniqBy(
+      props.array,
+      props.filterData.valueKey,
+    ).reduce((newArr, { [props.filterData.valueKey]: value, [props.filterData.labelKey || props.filterData.valueKey]: label }) => {
+      if (value && label) {
+        newArr.push({ value, label });
+      }
 
-    return newArr;
-  }, []);
-};
+      return newArr;
+    }, [])
+  )
+);
 
 class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestryFilter, StateMultiselectRegestryFilter> {
   state = {
@@ -90,7 +96,7 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
 
     return (
       <EtsFilter>
-        <EtsFilterTitle>{this.props.filterData.title}</EtsFilterTitle>
+        <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
           <ReactSelect
             value={value}

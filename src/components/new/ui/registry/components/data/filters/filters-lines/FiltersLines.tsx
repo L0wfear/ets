@@ -10,6 +10,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { DivNone } from 'global-styled/global-styled';
+import { isArray } from 'util';
 
 type PropsFiltersLines = {
   registryKey: string;
@@ -26,26 +27,35 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
     this.props.onChangeFilterRawValue(valueKey, type, value);
   }
 
-  fieldMap = ({ type, displayIf, ...otherFilterData }) => {
+  fieldMap = ({ type, ...otherFilterData }, index) => {
     const { registryKey } = this.props;
 
-    if (displayIf) {
-      if (displayIf === displayIfContant.isKgh && !this.props.userData.isKgh) {
-        return (
-          <DivNone />
-        );
-      }
-      if (displayIf === displayIfContant.isOkrug && !this.props.userData.isOkrug) {
-        return (
-          <DivNone />
-        );
-      }
+    let formatedTitle = otherFilterData.title;
+
+    if (isArray(otherFilterData.title)) {
+      formatedTitle = otherFilterData.title.reduce((filtredTitle, titleSomeValue) => {
+        const { displayIf } = titleSomeValue;
+
+        if (displayIf === displayIfContant.isKgh && this.props.userData.isKgh) {
+          return titleSomeValue.title;
+        }
+        if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
+          return titleSomeValue.title;
+        }
+
+        return filtredTitle;
+      }, null);
+    }
+
+    if (!formatedTitle) {
+      return <DivNone key={otherFilterData.valueKey} />;
     }
 
     switch (type) {
       case 'multiselect': return (
         <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
           <MultiselectRegestryFilter
+            formatedTitle={formatedTitle}
             filterData={otherFilterData}
             registryKey={registryKey}
             onChange={this.handleChange}
@@ -55,6 +65,7 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
       case 'advanced-number': return (
         <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
           <AdvancedNumberFilter
+            formatedTitle={formatedTitle}
             filterData={otherFilterData}
             registryKey={registryKey}
             onChange={this.handleChange}

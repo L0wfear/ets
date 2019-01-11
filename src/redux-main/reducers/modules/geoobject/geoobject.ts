@@ -9,6 +9,8 @@ export const geoobjectInitialState: IStateGeoobject = {
   carpoolList: [],
   dtList: [],
   odhList: [],
+  sspList: [],
+  mspList: [],
 };
 
 export default (state = geoobjectInitialState, { type, payload }) => {

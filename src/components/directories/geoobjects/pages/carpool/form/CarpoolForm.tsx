@@ -6,8 +6,8 @@ import {
   FlexContainer,
   Flex,
 } from 'global-styled/global-styled';
-import FieldsData from 'components/directories/geoobjects/form/form-components/fields-data/FieldsData';
-import MapGeoobjectWrap from 'components/directories/geoobjects/form/form-components/map-geoobject/MapGeoobjectWrap';
+import FieldsData from 'components/new/pages/nsi/geoobjects/ui/form/form-components/fields-data/FieldsData';
+import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 
 import carpoolPermissions from 'components/directories/geoobjects/pages/carpool/config-data/permissions';
 import { compose } from 'recompose';

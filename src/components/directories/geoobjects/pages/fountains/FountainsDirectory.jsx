@@ -1,7 +1,7 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import FountainsTable, { tableMeta, renderers } from 'components/directories/geoobjects/pages/fountains/FountainsTable';
-import GeoObjectsMapModalWrap from 'components/directories/geoobjects/form/GeoObjectsMapModalWrap';
+import GeoObjectsMapModalWrap from 'components/new/pages/nsi/geoobjects/ui/form/GeoObjectsMapModalWrap';
 import permissions from 'components/directories/geoobjects/pages/fountains/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

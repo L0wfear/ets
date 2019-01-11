@@ -69,44 +69,50 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     let action_at = null;
 
     loadMoscowTime()
-    .then(({ time }) => {
-      action_at = time.date;
-      this.props.getMissionById(this.props.infoData.mission_data.id)
-      .then((res) => {
-        const { mission } = res.payload;
-        if (mission) {
-          return this.props.updateMission({...mission, status: 'complete', action_at});
+      .then(({ time }) => {
+        action_at = time.date;
+
+        this.props.getMissionById(this.props.infoData.mission_data.id)
+          .then((res) => {
+            const { mission } = res.payload;
+            if (mission) {
+              return this.props.updateMission({...mission, status: 'complete', action_at});
+            }
+            return Promise.resolve();
+          })
+          .catch((error) => {
+            // tslint:disable-next-line
+            console.log(error);
+          })
+          .then(() => {
+            this.props.handleClose();
+            this.refreshCard();
+            this.props.loadDataAfterCloseMission();
+          });
+      })
+      .catch(({ errorIsShow }) => {
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         }
-        return Promise.resolve();
-      })
-      .catch((error) => {
-        // tslint:disable-next-line
-        console.log(error);
-      })
-        .then(() => {
-          this.props.handleClose();
-          this.refreshCard();
-          this.props.loadDataAfterCloseMission();
-        });
-    })
-    .catch(({ errorIsShow }) => {
-      !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
-    });
+      });
   }
 
   rejectMission = () => {
     loadMoscowTime()
       .then(({ time }) => {
         const action_at = time.date;
+
         this.setState({
           showMissionRejectForm: true,
           action_at,
         });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        }
       });
-  };
+  }
 
   onReject = (refresh) => {
     this.setState({ showMissionRejectForm: false });

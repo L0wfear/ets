@@ -1,7 +1,7 @@
 import DangerZonesTable, { tableMeta, renderers } from 'components/directories/geoobjects/pages/danger_zones/DangerZonesTable';
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import GeoObjectsMapModalWrap from 'components/directories/geoobjects/form/GeoObjectsMapModalWrap';
+import GeoObjectsMapModalWrap from 'components/new/pages/nsi/geoobjects/ui/form/GeoObjectsMapModalWrap';
 import permissions from 'components/directories/geoobjects/pages/danger_zones/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

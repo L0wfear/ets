@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
-import { isNumber } from 'util';
+import { isNumber, isArray } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdEnumerated from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdEnumerated';
@@ -21,11 +21,10 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import { compose } from 'recompose';
 import { registrySetSelectedRowToShowInForm, registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors/index';
 
 class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, displayIf, toFixed }) => {
+  renderRow = ({ key, title, boolean, toFixed }, index) => {
     const { props } = this;
 
     const {
@@ -49,23 +48,34 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       );
     }
 
-    if (displayIf) {
-      if (displayIf === displayIfContant.isKgh && !this.props.userData.isKgh) {
-        return (
-          <DivNone />
-        );
-      }
-      if (displayIf === displayIfContant.isOkrug && !this.props.userData.isOkrug) {
-        return (
-          <DivNone />
-        );
-      }
+    let formatedTitle = title;
+
+    if (isArray(title)) {
+      formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
+        const { displayIf } = titleSomeValue;
+
+        if (displayIf === displayIfContant.isKgh && this.props.userData.isKgh) {
+          return true;
+        }
+        if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
+          return true;
+        }
+
+        return filtredTitle;
+      }, null);
+    }
+
+    if (!formatedTitle) {
+      return null;
     }
 
     let value = rowData[key];
 
     if (toFixed) {
       value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+    }
+    if (boolean) {
+      value = <input type="checkbox" disabled checked={!!value} />;
     }
 
     return (

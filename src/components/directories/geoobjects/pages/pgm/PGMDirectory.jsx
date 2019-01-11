@@ -1,7 +1,7 @@
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import PGMTable, { tableMeta } from 'components/directories/geoobjects/pages/pgm/PGMTable';
-import GeoObjectsMapModalWrap from 'components/directories/geoobjects/form/GeoObjectsMapModalWrap';
+import GeoObjectsMapModalWrap from 'components/new/pages/nsi/geoobjects/ui/form/GeoObjectsMapModalWrap';
 import permissions from 'components/directories/geoobjects/pages/pgm/config-data/permissions';
 
 @connectToStores(['geoObjects', 'session'])

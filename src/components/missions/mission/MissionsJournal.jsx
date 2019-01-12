@@ -180,7 +180,7 @@ class MissionsJournal extends CheckableElementsList {
     const { selectedElement } = this.state;
     const missionsObj = this.state.checkedElements || {};
     let action_at = null;
-    if (selectedElement) {
+    if (selectedElement && Object.values(missionsObj).length === 0) {
       missionsObj[selectedElement.id] = selectedElement;
     }
     loadMoscowTime()
@@ -353,7 +353,7 @@ class MissionsJournal extends CheckableElementsList {
   }
 
   getForms = () => [
-      <div key="forms">
+    <div key="forms">
         <MissionFormWrap
           onFormHide={this.onFormHide}
           showForm={this.state.showForm}

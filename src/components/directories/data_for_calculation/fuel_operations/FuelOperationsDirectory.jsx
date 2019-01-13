@@ -5,7 +5,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import permissions from 'components/directories/data_for_calculation/fuel_operations/config-data/permissions';
 
 @connectToStores(['fuelRates', 'objects', 'odh'])
-@exportable({ entity: 'fuel_operations', })
+@exportable({ entity: 'fuel_operations' })
 @staticProps({
   entity: 'fuel_operation',
   permissions,

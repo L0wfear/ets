@@ -7,6 +7,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 import {
   isEqual,
   find,
+  keyBy,
   map,
   uniqBy,
   groupBy,
@@ -163,13 +164,33 @@ class WaybillForm extends Form {
           getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState, currentSeason),
           getFuelCorrectionRate(this.props.carsList, formState),
         ])
-          .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
+          .then(([fuelRates, fuelOperationsList, equipmentFuelRates, fuel_correction_rate]) => {
+            const fuelOperationsListById = keyBy(fuelOperationsList, 'id');
+
             this.setState({
               fuelRates,
-              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]).map(item => ({ ...item, comment: fuelRatesIndex[item.id].comment })),
+              operations: fuelRates.reduce((newArr, { operation_id, comment }) => {
+                if (fuelOperationsListById[operation_id]) {
+                  newArr.push({
+                    ...fuelOperationsListById[operation_id],
+                    comment,
+                  });
+                }
+
+                return newArr;
+              }, []),
               fuel_correction_rate,
               equipmentFuelRates,
-              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]).map(item => ({ ...item, comment: equipmentFuelRatesIndex[item.id].comment })),
+              equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, comment }) => {
+                if (fuelOperationsListById[operation_id]) {
+                  newArr.push({
+                    ...fuelOperationsListById[operation_id],
+                    comment,
+                  });
+                }
+
+                return newArr;
+              }, []),
             });
           })
           .catch((e) => {

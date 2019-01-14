@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import withDefaultCard from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
@@ -10,10 +10,11 @@ import {
   StatePropsDefaultWaybill,
   DispatchPropsDefaultWaybill,
   PropsDefaultWaybill,
-} from './withDefaultWaybill.h';
+} from 'components/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/withDefaultWaybill.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
 
 const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component) => (
-  hocAll(
+  compose<any, any>(
     withDefaultCard({
       path: config.path,
       loadData: config.loadData,
@@ -21,7 +22,7 @@ const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component)
     }),
     connect<StatePropsDefaultWaybill, DispatchPropsDefaultWaybill, {}, ReduxState>(
       (state) => ({
-        items: state.dashboard[config.path].data.items,
+        items: getDashboardState(state)[config.path].data.items,
       }),
       (dispatch) => ({
         setInfoData: (infoData) => (

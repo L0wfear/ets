@@ -6,6 +6,7 @@ import {
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService } from 'api/Services';
+import { CONFIG_INITIAL } from 'redux-main/reducers/modules/session/session';
 
 export const withSpecificPermissions = (user) => {
   const permissions = [];
@@ -29,28 +30,31 @@ export const withSpecificPermissions = (user) => {
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
   payload: ConfigService.get()
-    .then((appConfig) => ({
-      appConfig,
-    }))
     .catch((errorData) => {
       // tslint:disable-next-line
       console.warn(errorData);
-    }),
+
+      return CONFIG_INITIAL;
+    })
+    .then((appConfig) => ({
+      appConfig,
+    })),
   meta: {
     loading: true,
   },
 });
 
-export const sessionSetData = ({ currentUser, session }) => (dispatch) => {
+export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
   const userData = { ...currentUser };
 
   userData.permissions = [
     ...currentUser.permissions,
     ...withSpecificPermissions(currentUser),
   ];
+  userData.permissionsSet = new Set(userData.permissions);
 
   userData.isOkrug = userData.okrug_id !== null;
-  userData.isKgh = userData.permissions.includes('common.nsi_company_column_show');
+  userData.isKgh = userData.permissionsSet.has('common.nsi_company_column_show');
 
   dispatch(
     sessionSetAppConfig(),

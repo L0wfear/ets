@@ -3,10 +3,9 @@ import { cloneDeep, get, omit } from 'lodash';
 import { AutoBase } from 'api/Services';
 import AUTOBASE from '../constants/autobase';
 import { createValidDate } from '../utils/dates';
-import { AUTOBASE_REPAIR_STATUS } from '../constants/dictionary';
 
 const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
-const clearPayload = (state) => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
+const clearPayload = state => omit(state, ['rowNumber', 'isHighlighted', 'isSelected']);
 
 export default class AutobaseActions extends Actions {
   async getAutobaseListByType(type, data, other) {
@@ -22,218 +21,6 @@ export default class AutobaseActions extends Actions {
       data: response,
       ...other,
     };
-  }
-
-  batteryBrand(method, formState) {
-    const payload = cloneDeep(formState);
-    const { batteryBrand } = AUTOBASE;
-
-    const path = parsePutPath(batteryBrand, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryBrand'),
-      'json',
-    );
-  }
-
-  removeBatteryBrand(id) {
-    const { batteryBrand } = AUTOBASE;
-    return AutoBase.path(`${batteryBrand}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryBrand'),
-      'json',
-    );
-  }
-
-  batteryManufacturer(method, formState) {
-    const payload = cloneDeep(formState);
-    const { batteryManufacturer } = AUTOBASE;
-
-    const path = parsePutPath(batteryManufacturer, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
-      'json',
-    );
-  }
-
-  removeBatteryManufacturer(id) {
-    const { batteryManufacturer } = AUTOBASE;
-    return AutoBase.path(`${batteryManufacturer}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryManufacturer'),
-      'json',
-    );
-  }
-
-  batteryRegistry(method, formState) {
-    const payload = {
-      ...formState,
-      battery_to_car: get(formState, 'battery_to_car', []).map((item) => ({
-        car_id: item.car_id,
-        installed_at: createValidDate(item.installed_at),
-        uninstalled_at: createValidDate(item.uninstalled_at),
-      })),
-    };
-    payload.released_at = createValidDate(payload.released_at);
-
-    const { batteryRegistry } = AUTOBASE;
-    const path = parsePutPath(batteryRegistry, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
-      'json',
-    );
-  }
-
-  removeBatteryRegistry(id) {
-    const { batteryRegistry } = AUTOBASE;
-    return AutoBase.path(`${batteryRegistry}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'batteryRegistry'),
-      'json',
-    );
-  }
-
-  insurancePolicy(method, boundPayload, formState) {
-    const payload = {
-      ...formState,
-    };
-
-    ['created_at', 'updated_at', 'date_start', 'date_end'].forEach((key) => {
-      if (formState[key]) {
-        payload[key] = createValidDate(formState[key]);
-      }
-    });
-    const { insurancePolicy } = AUTOBASE;
-
-    const path = parsePutPath(insurancePolicy, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'insurancePolicy', boundPayload),
-      'json',
-    );
-  }
-
-  removeInsurancePolicy(boundPayload, id) {
-    const { insurancePolicy } = AUTOBASE;
-
-    return AutoBase.path(`${insurancePolicy}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'insurancePolicy', boundPayload),
-      'json',
-    );
-  }
-
-  repair(method, boundPayload, formState) {
-    const { repair } = AUTOBASE;
-    const path = parsePutPath(repair, method, formState);
-
-    const payload = Object.entries(formState).reduce((obj, [key, value]) => {
-      if (key.includes('date')) {
-        obj[key] = createValidDate(value);
-      } else {
-        obj[key] = value;
-      }
-      return obj;
-    }, {});
-
-    if (!AUTOBASE_REPAIR_STATUS.passed.has.reduce((bool, key) => bool && !!payload[key], true)) {
-      if (AUTOBASE_REPAIR_STATUS.in_progress.has.reduce((bool, key) => bool && payload[key], true)) {
-        payload.status = 'in_progress';
-      } else if (AUTOBASE_REPAIR_STATUS.planned.has.reduce((bool, key) => bool && payload[key], true)) {
-        payload.status = 'planned';
-      } else {
-        delete payload.status;
-      }
-    }
-
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'repair', boundPayload),
-      'json',
-    );
-  }
-
-  removeRepair(boundPayload, id) {
-    const { repair } = AUTOBASE;
-
-    return AutoBase.path(`${repair}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'repair', boundPayload),
-      'json',
-    );
-  }
-
-  repairCompany(method, formState) {
-    const payload = { ...formState };
-    const { repairCompany } = AUTOBASE;
-
-    const path = parsePutPath(repairCompany, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'repairCompany'),
-      'json',
-    );
-  }
-
-  removeRepairCompany(id) {
-    const { repairCompany } = AUTOBASE;
-    return AutoBase.path(`${repairCompany}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'repairCompany'),
-      'json',
-    );
-  }
-
-  roadAccident(method, boundPayload, formState) {
-    const payload = {
-      ...formState,
-      accident_date: createValidDate(formState.accident_date),
-      is_guilty: !!formState.is_guilty,
-    };
-    const { roadAccidentRegistry } = AUTOBASE;
-
-    const path = parsePutPath(roadAccidentRegistry, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'roadAccidentRegistry', boundPayload),
-      'json',
-    );
-  }
-
-  removeRoadAccident(boundPayload, id) {
-    const { roadAccidentRegistry } = AUTOBASE;
-
-    return AutoBase.path(`${roadAccidentRegistry}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'roadAccidentRegistry', boundPayload),
-      'json',
-    );
-  }
-
-  sparePart(method, formState) {
-    const payload = {
-      ...formState,
-      supplied_at: createValidDate(formState.supplied_at),
-    };
-    const { sparePart } = AUTOBASE;
-
-    const path = parsePutPath(sparePart, method, formState);
-    return AutoBase.path(path)[method](
-      payload,
-      this.getAutobaseListByType.bind(null, 'sparePart'),
-      'json',
-    );
-  }
-
-  removeSparePart(id) {
-    const { sparePart } = AUTOBASE;
-    return AutoBase.path(`${sparePart}/${id}`).delete(
-      {},
-      this.getAutobaseListByType.bind(null, 'sparePart'),
-      'json',
-    );
   }
 
   techInspection(method, boundPayload, formState) {
@@ -320,7 +107,7 @@ export default class AutobaseActions extends Actions {
 
     const payload = {
       ...cleanFormState,
-      tire_to_car: get(cleanFormState, 'tire_to_car', []).map((item) => ({
+      tire_to_car: get(cleanFormState, 'tire_to_car', []).map(item => ({
         ...clearPayload(item),
         installed_at: createValidDate(item.installed_at),
         uninstalled_at: createValidDate(item.uninstalled_at),

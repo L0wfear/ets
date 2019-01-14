@@ -7,6 +7,7 @@ export type PropsCurrentMissionInfo = {
   infoData: CurrentMissionsInfoDataType;
   getMissionById: (id: number) => Promise<MissionType>;
   updateMission: (payload: MissionType) => any;
+  loadDataAfterCloseMission: () => Promise<any>;
 
   handleClose: any;
   loadData: any;

@@ -10,8 +10,6 @@ import {
   Cleaning,
 } from 'api/missions';
 
-import { isEmpty } from 'utils/functions';
-
 function getTechnicalOperations(payload = {}) {
   return TechnicalOperationRegistryService.get(payload).then(r => ({ result: r.result.rows }));
 }
@@ -66,15 +64,6 @@ export default class TechnicalOperationsActions extends Actions {
     return getTechnicalOperationsRegistry(payload);
   }
 
-  async getTechnicalOperationsByCarId(car_id) {
-    const payload = { car_id };
-    if (isEmpty(car_id)) {
-      delete payload.car_id;
-    }
-    const response = await TechnicalOperationRegistryService.get(payload);
-    return response.result.rows || [];
-  }
-
   async getTechnicalOperationsWithBrigades(data) {
     const payload = {
       needs_brigade: true,
@@ -85,35 +74,6 @@ export default class TechnicalOperationsActions extends Actions {
       delete payload.kind_task_ids;
     }
 
-    const response = await TechnicalOperationRegistryService.get(payload);
-    return response.result.rows || [];
-  }
-
-  async getTechnicalOperationsByObjectsType(type) {
-    const objects = [];
-    const getObjectByTypeName = (objectsType) => {
-      switch (objectsType) {
-        case 'mixed':
-          objects.push({ name: 'ОДХ', id: 1 });
-          break;
-        case 'simple_dt':
-          objects.push({ name: 'ДТ', id: 2 });
-          break;
-        case 'points':
-          objects.push({ name: 'ПН', id: 3 });
-          break;
-        default:
-          break;
-      }
-    };
-
-    getObjectByTypeName(type);
-
-    const payload = {};
-
-    if (objects.length) {
-      payload.objects = objects;
-    }
     const response = await TechnicalOperationRegistryService.get(payload);
     return response.result.rows || [];
   }

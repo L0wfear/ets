@@ -93,7 +93,7 @@ class MissionsCreationForm extends Form {
                 value={state.mission_source_id}
                 onChange={this.handleChange}
                 boundKeys={['mission_source_id']}
-                clearable={false}
+                clearable={true}
               />
               <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span>
             </Col>

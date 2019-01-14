@@ -29,9 +29,9 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   }
 `;
 
-export const FlexWrapContainer = styled.div`
+export const FlexContainer = styled.div<{ isWrap?: boolean }>`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: ${({ isWrap }) => isWrap ? 'wrap' : 'initial'};
 `;
 
 export const Flex = styled.div<{ grow?: number; shrink?: number; basis?: number, none?: boolean }>`

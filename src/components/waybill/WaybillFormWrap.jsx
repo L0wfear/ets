@@ -5,7 +5,6 @@ import {
   filter,
   get,
   last,
-  max,
 } from 'lodash';
 import FormWrap from 'components/compositions/FormWrap';
 import { getWarningNotification } from 'utils/notifications';
@@ -18,7 +17,7 @@ import { FluxContext } from 'utils/decorators';
 import permissions from 'components/waybill/config-data/permissions';
 import WaybillForm from 'components/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
-import Taxes from './Taxes';
+import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
@@ -67,7 +66,7 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) => (
 let timeId = 0;
 
 @FluxContext
-export default class WaybillFormWrap extends FormWrap {
+class WaybillFormWrap extends FormWrap {
   static defaultProps = {
     onCallback: () => {},
   }
@@ -116,7 +115,7 @@ export default class WaybillFormWrap extends FormWrap {
         if (!waybill.equipment_tax_data) {
           waybill.equipment_tax_data = [];
         }
-        if (waybill.mission_id_list.filter((v) => v).length === 0) {
+        if (waybill.mission_id_list.filter(v => v).length === 0) {
           waybill.mission_id_list = [];
         }
 
@@ -151,7 +150,32 @@ export default class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !clone(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length,
+              canSave: (
+                (
+                  this.state.isPermittedByKey.update
+                  || this.state.isPermittedByKey.departure_and_arrival_values
+                )
+                && !clone(
+                  formErrors,
+                  (v, k) => (
+                    [
+                      'fact_arrival_date',
+                      'fact_departure_date',
+                      'fuel_end',
+                      'distance',
+                      'motohours_equip_end',
+                      'motohours_end',
+                      'odometr_end',
+                    ].includes(k)
+                      ? false
+                      : v
+                  ),
+                ).length
+                && !(
+                  (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+                  || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+                )
+              ),
               canClose: this.state.isPermittedByKey.update && !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
             });
           } else {
@@ -178,6 +202,7 @@ export default class WaybillFormWrap extends FormWrap {
       }
     }
   }
+
   componentWillUnmount() {
     clearTimeout(timeId);
   }
@@ -214,7 +239,17 @@ export default class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = !filter(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = (
+      !filter(
+        formErrors,
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+      ).length
+      && !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      )
+    );
+
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formState = formState;
@@ -237,7 +272,17 @@ export default class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = !filter(formErrors, (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v).length;
+    newState.canSave = (
+      !filter(
+        formErrors,
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+      ).length
+      && !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      )
+    );
+
     newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
 
     newState.formErrors = formErrors;
@@ -344,15 +389,15 @@ export default class WaybillFormWrap extends FormWrap {
       uid: 'waybilPrintCurrForm',
       children: makeReactMessange('Формирование печатной формы'),
     });
-    const callback = (waybill_id = currentWaybillId) => {
-      return flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then((respoce) => (
+    const callback = (waybill_id = currentWaybillId) => (
+      flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
+        .then(respoce => (
           saveData(respoce.blob, respoce.fileName)
         ))
         .catch((error) => {
-          console.warn('waybillFormWrap saveData', error);
-        });
-    };
+          console.warn('waybillFormWrap saveData', error); // eslint-disable-line
+        })
+    );
 
     try {
       if (printonly) {
@@ -385,7 +430,8 @@ export default class WaybillFormWrap extends FormWrap {
         const r = await flux.getActions('waybills').createWaybill(formState);
 
         // TODO сейчас возвращается один ПЛ
-        const id = max(r.result, res => res.id).id;
+        const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
+
         try {
           formState.status = 'active';
           formState.id = id;
@@ -451,8 +497,6 @@ export default class WaybillFormWrap extends FormWrap {
       }
       this.props.onCallback();
     }
-
-    return;
   }
 
   handleClose = async (taxesControl) => {
@@ -467,18 +511,16 @@ export default class WaybillFormWrap extends FormWrap {
       title: 'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
       body: 'Вы уверены, что хотите закрыть окно?',
     })
-    .then(async () => {
-      try {
-        formState.status = 'closed';
-        await this.context.flux.getActions('waybills').updateWaybill(formState);
-        this.props.onCallback();
-      } catch (e) {
-        formState.status = prevStatus;
-        // await this.context.flux.getActions('waybills').updateWaybill(formState);
-        return;
-      }
-    })
-    .catch(() => {});
+      .then(async () => {
+        try {
+          formState.status = 'closed';
+          await this.context.flux.getActions('waybills').updateWaybill(formState);
+          this.props.onCallback();
+        } catch (e) {
+          formState.status = prevStatus;
+        }
+      })
+      .catch(() => {});
   }
 
   handlePrintFromMiniButton = (print_form_type = 'plate_special') => {
@@ -512,7 +554,8 @@ export default class WaybillFormWrap extends FormWrap {
       )
       : (
         <DivNone />
-      )
+      );
   }
-
 }
+
+export default WaybillFormWrap;

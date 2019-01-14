@@ -8,8 +8,8 @@ import {
   each,
   find,
 } from 'lodash';
-import ElementsList from './ElementsList';
-import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from './ui/buttons/CRUD';
+import ElementsList from 'components/ElementsList';
+import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
@@ -194,7 +194,10 @@ export default class CheckableElementsList extends ElementsList {
   checkElement = (id, state) => {
     const elements = cloneDeep(this.state.checkedElements);
     if (state) {
-      elements[parseInt(id, 10)] = find(this.state.elementsList, e => e[this.selectField] === parseInt(id, 10));
+      const checkedElement = find(this.state.elementsList, e => e[this.selectField] === parseInt(id, 10));
+      if (checkedElement) {
+        elements[parseInt(id, 10)] = checkedElement;
+      }
     } else {
       delete elements[id];
     }

@@ -10,14 +10,16 @@ export type DispatchPropsDefaultCard = {
   loadData: () => Promise<any>;
 };
 
-export type OwnerPropsDefaultCard = {
+export type PropsToDefaultCard = {
   timeInterval?: number;
   timeDelay: number;
 };
 
-export type PropsDefaultCard = StatePropsDefaultCard
+export type OwnerPropsDefaultCard<P> = P & PropsToDefaultCard;
+
+export type PropsDefaultCard<P> = StatePropsDefaultCard
   & DispatchPropsDefaultCard
-  & OwnerPropsDefaultCard;
+  & OwnerPropsDefaultCard<P>;
 
 export type StateDefaultCard = {
   inLoadByLocalRefresh: boolean;

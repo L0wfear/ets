@@ -20,7 +20,7 @@ import { mapDispatchToProps } from 'components/missions/mission/MissionInfoForm/
 import {
   FormContainer,
   SideContainerDiv,
-} from 'components/missions/mission/MissionInfoForm/styled/styled';
+} from 'components/missions/mission/MissionInfoForm/styled';
 import { DivNone } from 'global-styled/global-styled';
 
 import MapContainer from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/MapContainer';
@@ -162,22 +162,22 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    * Создание геометрий точек
    * @param route_data данные по контрекному маршруту от route?id=
    */
-  async makePolysFromPoints(route_data: RouteType) {
-    const { missionReport } = this.state;
-
-    this.setState({
-      polys: {
-        points: missionReport.reduce((newObj, data, index) => {
-          newObj[`points/${index}`] = {
-            ...data,
-            ...route_data.object_list[index],
-            frontIsSelected: false,
-          };
-
-          return newObj;
-        }, {}),
-      },
-    });
+  async makePolysFromPoints(route_data: RouteType | null) {
+    if (route_data) {
+      const { missionReport } = this.state;
+      this.setState({
+        polys: {
+          points: missionReport.reduce((newObj, data, index) => {
+            newObj[`points/${index}`] = {
+              ...data,
+              ...route_data.object_list[index],
+              frontIsSelected: false,
+            };
+            return newObj;
+          }, {}),
+        },
+      });
+    }
   }
 
   /**
@@ -186,7 +186,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
    * @param type тип маршрута (dt/ odh)
    */
   loadPolys(route_data: RouteType, type: string) {
-    const objectListIndex = keyBy(route_data.object_list, 'object_id');
+    const objectListIndex = route_data ? keyBy(route_data.object_list, 'object_id') : {};
     const inputLines = get(route_data, 'input_lines', []) || [];
     const { serverName } = GEOOBJECTS_OBJ[type];
 

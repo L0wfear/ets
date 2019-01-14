@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { connect } from 'react-redux';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { groupBy } from 'lodash';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
@@ -28,6 +28,8 @@ import {
 import {
   TitleWaybillInfoContainer,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, StateWaybillInProgressInfo> {
   state = {
@@ -134,48 +136,44 @@ class WaybillInProgressInfo extends React.Component<PropsWaybillInProgressInfo, 
   }
 }
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.waybill_in_progress.infoData,
-  infoDataRaw: state.dashboard.waybill_in_progress.data.items[0],
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInWaybillInProgress(null),
-    )
-  ),
-  loadAllWaybillCard: () => (
-    dispatch(
-      dashboardLoadDependentDataByWaybillInProgress(),
-    )
-  ),
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInWaybillInProgress(infoData),
-    )
-  ),
-  getWaybillById: (id) => (
-    dispatch(
-      loadWaybillById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'waybill_in_progress', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).waybill_in_progress.infoData,
+      infoDataRaw: getDashboardState(state).waybill_in_progress.data.items[0],
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInWaybillInProgress(null),
+        )
+      ),
+      loadAllWaybillCard: () => (
+        dispatch(
+          dashboardLoadDependentDataByWaybillInProgress(),
+        )
+      ),
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInWaybillInProgress(infoData),
+        )
+      ),
+      getWaybillById: (id) => (
+        dispatch(
+          loadWaybillById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(WaybillInProgressInfo);

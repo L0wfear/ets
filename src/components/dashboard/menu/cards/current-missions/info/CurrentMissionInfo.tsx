@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { connect } from 'react-redux';
 import { get } from 'lodash';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
@@ -16,6 +16,7 @@ import InfoCard from 'components/dashboard/menu/cards/_default-card-component/in
 import {
   dashboardLoadCurrentMissions,
   dashboardLoadMissionDataForCurrentMission,
+  dashboardLoadDependentDataByCloseMission,
 } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import {
@@ -35,6 +36,8 @@ import { RightButtonBlockContainer } from 'components/dashboard/menu/cards/_defa
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -74,6 +77,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       .then(() => {
         this.props.handleClose();
         this.refreshCard();
+        this.props.loadDataAfterCloseMission();
       });
   }
 
@@ -144,54 +148,55 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 }
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.current_missions.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardLoadMissionDataForCurrentMission(null),
-    )
-  ),
-  loadData: () => (
-    dispatch(
-      dashboardLoadCurrentMissions(),
-    )
-  ),
-  getMissionById: (id) => (
-    dispatch(
-      loadMissionById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-  updateMission: (payload) => (
-    dispatch(
-      updateMissionByPayload(
-        'none',
-        payload,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    )
-  ),
-});
-
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'current_missions', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).current_missions.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardLoadMissionDataForCurrentMission(null),
+        )
+      ),
+      loadData: () => (
+        dispatch(
+          dashboardLoadCurrentMissions(),
+        )
+      ),
+      getMissionById: (id) => (
+        dispatch(
+          loadMissionById(
+            'none',
+            id,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+      loadDataAfterCloseMission: () => (
+        dispatch(
+          dashboardLoadDependentDataByCloseMission(),
+        )
+      ),
+      updateMission: (payload) => (
+        dispatch(
+          updateMissionByPayload(
+            'none',
+            payload,
+            {
+              promise: true,
+              page: 'dashboard',
+            },
+          ),
+        )
+      ),
+    }),
   ),
 )(CurrentMissionInfo);

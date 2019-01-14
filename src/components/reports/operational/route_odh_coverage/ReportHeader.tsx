@@ -4,6 +4,8 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Button from 'react-bootstrap/lib/Button';
 import { omit } from 'lodash';
 
+import { ColorForTable } from 'components/reports/operational/route_odh_coverage/styled';
+
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
@@ -70,6 +72,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row>
+        <ColorForTable />
         <Col lg={10} md={9}>
           <Field
             type="select"

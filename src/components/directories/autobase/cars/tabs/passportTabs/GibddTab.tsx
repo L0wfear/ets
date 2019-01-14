@@ -5,7 +5,7 @@ import * as Col from 'react-bootstrap/lib/Col';
 
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 
-import { IPropsPassportInfoTab } from '../PasportInfoTab';
+import { IPropsPassportInfoTab } from 'components/directories/autobase/cars/tabs/PasportInfoTab';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
@@ -15,6 +15,9 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
   render() {
     const {
       state,
+      state: {
+        pasport_gibdd_disabled,
+      },
       errors,
       onChange,
       onOverlayLoading,
@@ -35,7 +38,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_seria_number}
             onChange={onChange}
             boundKeys={['passport_gibdd_seria_number']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -44,7 +47,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_vin}
             onChange={onChange}
             boundKeys={['passport_gibdd_vin']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="select"
@@ -54,7 +57,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={carCategoryOptions}
             onChange={onChange}
             boundKeys={['passport_gibdd_category_id']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -63,7 +66,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_body_color}
             onChange={onChange}
             boundKeys={['passport_gibdd_body_color']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -72,7 +75,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_engine_model}
             onChange={onChange}
             boundKeys={['passport_gibdd_engine_model']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="number"
@@ -81,7 +84,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_engine_power}
             onChange={onChange}
             boundKeys={['passport_gibdd_engine_power']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="select"
@@ -91,7 +94,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={engineTypeOptions}
             onChange={onChange}
             boundKeys={['passport_gibdd_engine_type_id']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="number"
@@ -100,7 +103,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_max_weight}
             onChange={onChange}
             boundKeys={['passport_gibdd_max_weight']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="select"
@@ -110,7 +113,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={Array(6).fill(1).map((d, i) => ({ value: `euro${i + 1}`, label: `Евро-${i + 1}` }))}
             onChange={onChange}
             boundKeys={['passport_gibdd_environmental_class']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="select"
@@ -120,7 +123,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={countryOptions}
             onChange={onChange}
             boundKeys={['passport_gibdd_exporter_country_id']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -129,7 +132,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_customs_declaration}
             onChange={onChange}
             boundKeys={['passport_gibdd_customs_declaration']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -138,7 +141,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_company_address}
             onChange={onChange}
             boundKeys={['passport_gibdd_company_address']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
         </Col>
         <Col md={6}>
@@ -150,7 +153,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={typesOptions}
             onChange={onChange}
             boundKeys={['passport_gibdd_func_type_id']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -159,7 +162,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_body_number}
             onChange={onChange}
             boundKeys={['passport_gibdd_body_number']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="select"
@@ -169,7 +172,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={Array((new Date()).getFullYear() - 1990 + 1).fill(0).map((_, i) => ({ value: i + 1990, label: i + 1990 }))}
             onChange={onChange}
             boundKeys={['passport_gibdd_manufactured_at']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -178,7 +181,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_engine_number}
             onChange={onChange}
             boundKeys={['passport_gibdd_engine_number']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="number"
@@ -187,7 +190,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_engine_volumne}
             onChange={onChange}
             boundKeys={['passport_gibdd_engine_volumne']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -196,7 +199,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_chassis}
             onChange={onChange}
             boundKeys={['passport_gibdd_chassis']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="number"
@@ -205,7 +208,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_empty_weight}
             onChange={onChange}
             boundKeys={['passport_gibdd_empty_weight']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="select"
@@ -215,7 +218,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             options={countryOptions}
             onChange={onChange}
             boundKeys={['passport_gibdd_origin_country_id']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -224,7 +227,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_customs_restrictions}
             onChange={onChange}
             boundKeys={['passport_gibdd_customs_restrictions']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="string"
@@ -233,7 +236,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             error={errors.passport_gibdd_address}
             onChange={onChange}
             boundKeys={['passport_gibdd_address']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
           <ExtField
             type="date"
@@ -243,7 +246,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             time={false}
             onChange={onChange}
             boundKeys={['passport_gibdd_given_at']}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
         </Col>
         <Col md={12}>
@@ -254,7 +257,7 @@ class GntTab extends React.Component<IPropsPassportInfoTab, {}> {
             onChange={onChange}
             boundKeys={['passport_gibdd_files']}
             isLoading={onOverlayLoading}
-            disabled={!isPermitted}
+            disabled={!isPermitted || pasport_gibdd_disabled}
           />
         </Col>
       </Row>

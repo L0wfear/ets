@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { connect } from 'react-redux';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
@@ -12,6 +12,8 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import { PropsOdhCoveredByRoutesInfo } from 'components/dashboard/menu/cards/odh-covered-by-routes/info/OdhCoveredByRoutesInfo.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 const OdhCoveredByRoutesInfo: React.FunctionComponent<PropsOdhCoveredByRoutesInfo> = ({ infoData, ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
@@ -27,25 +29,21 @@ const OdhCoveredByRoutesInfo: React.FunctionComponent<PropsOdhCoveredByRoutesInf
   </InfoCard>
 );
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.odh_covered_by_routes.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInOdhCoveredByRoutes(null),
-    )
-  ),
-});
-
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'odh_covered_by_routes', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).odh_covered_by_routes.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInOdhCoveredByRoutes(null),
+        )
+      ),
+    }),
   ),
 )(OdhCoveredByRoutesInfo);

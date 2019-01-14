@@ -20,6 +20,10 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotCoveredByMissionsOfCurrentShift, StateOdhNotCoveredByMissionsOfCurrentShift> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
@@ -57,25 +61,22 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
   }
 }
 
-const mapStateToProps = (state) => ({
-  items: state.dashboard.odh_not_covered_by_missions_of_current_shift.data.items,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setInfoData: (infoData) => (
-    dispatch(
-      dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift(infoData),
-    )
+export default compose<PropsOdhNotCoveredByMissionsOfCurrentShift, PropsToDefaultCard>(
+  withDefaultCard({
+    path: 'odh_not_covered_by_missions_of_current_shift',
+    loadData: dashboardLoadOdhNotCoveredByMissionsOfCurrentShift,
+    InfoComponent: OdhNotCoveredByMissionsOfCurrentShiftInfo,
+  }),
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      items: getDashboardState(state).odh_not_covered_by_missions_of_current_shift.data.items,
+    }),
+    (dispatch) => ({
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift(infoData),
+        )
+      ),
+    }),
   ),
-});
-
-export default withDefaultCard({
-  path: 'odh_not_covered_by_missions_of_current_shift',
-  loadData: dashboardLoadOdhNotCoveredByMissionsOfCurrentShift,
-  InfoComponent: OdhNotCoveredByMissionsOfCurrentShiftInfo,
-})(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(OdhNotCoveredByMissionsOfCurrentShift),
-);
+)(OdhNotCoveredByMissionsOfCurrentShift);

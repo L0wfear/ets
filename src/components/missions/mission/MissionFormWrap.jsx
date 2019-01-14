@@ -23,16 +23,14 @@ class MissionFormWrap extends FormWrap {
     this.schema = missionSchema;
   }
 
-  createAction = (formState) => this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder).then((r) => {
-    if (!this.props.fromWaybill && !this.props.fromOrder && !this.props.fromDashboard) {
-      try {
-        this.props.refreshTableList();
-      } catch (e) {
-        // function refreshTableList not in father modules
-      }
+  async createAction(formState) {
+    const r = await this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder);
+    if (this.props.refreshTableList) {
+      this.props.refreshTableList();
     }
+
     return r;
-  });
+  }
 
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
@@ -107,11 +105,9 @@ class MissionFormWrap extends FormWrap {
    * @param {*} formState
    */
   async updateAction(formState) {
-    try {
-      await this.context.flux.getActions('missions').updateMission(formState);
+    await this.context.flux.getActions('missions').updateMission(formState);
+    if (this.props.refreshTableList) {
       await this.props.refreshTableList();
-    } catch (error) {
-      console.log(error);
     }
   }
 

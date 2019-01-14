@@ -43,3 +43,8 @@ export const InquiryExpiringDate = ETS_API_FACTORY.createApiServiceAdapter(
 export const CarMovementTimeReportService = ETS_API_FACTORY.createApiServiceAdapter(
   'car_movement_time_report',
 );
+
+export const CarsCountDeviation = ETS_API_FACTORY.createApiServiceAdapter(
+  'cars_count_deviation',
+   {},
+);

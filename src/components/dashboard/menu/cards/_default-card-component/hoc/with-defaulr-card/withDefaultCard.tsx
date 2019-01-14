@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as cx from 'classnames';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
@@ -22,21 +20,23 @@ import {
   CardTitleContainer,
   CardTitleContainerWrap,
   CardBodyContainer,
+  GlyphiconWithNonAnimation,
 } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
+import { getDashboardState } from 'redux-main/reducers/selectors';
 
-const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Component) => (
-  hocAll(
-    withRequirePermissionsNew({
+const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: ConfigType) => (Component: React.ClassType<P, any, any>) => (
+  compose<P, P>(
+    withRequirePermissionsNew<P>({
       permissions: `dashboard.${path}`,
     }),
-    connect<StatePropsDefaultCard, DispatchPropsDefaultCard, OwnerPropsDefaultCard, ReduxState>(
+    connect<StatePropsDefaultCard, DispatchPropsDefaultCard, OwnerPropsDefaultCard<P>, ReduxState>(
       (state) => {
         return ({
-          isLoading: state.dashboard[path].isLoading,
-          title: state.dashboard[path].data.title,
-          dateLoad: state.dashboard[path].dateLoad,
+          isLoading: getDashboardState(state)[path].isLoading,
+          title: getDashboardState(state)[path].data.title,
+          dateLoad: getDashboardState(state)[path].dateLoad,
         });
       },
       (dispatch) => ({
@@ -48,7 +48,7 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
       }),
     ),
   )(
-    class DefaultCard extends React.Component<PropsDefaultCard, StateDefaultCard> {
+    class DefaultCard extends React.Component<PropsDefaultCard<P>, StateDefaultCard> {
       state = {
         timerId: 0,
         inLoadByLocalRefresh: false,
@@ -100,7 +100,6 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
 
       render() {
         const { isLoading, title, loadData, dateLoad, ...props } = this.props;
-
         return (
           <CardMainContainer>
             <CardMainContainerWrap>
@@ -109,8 +108,8 @@ const withDefaultCard = ({ path, InfoComponent, ...config }: ConfigType) => (Com
                   <div>{title}</div>
                   <div className="button_refresh">
                     <Button onClick={this.loadData} disabled={isLoading}>
-                      <Glyphicon
-                        className={cx({ 'glyphicon-spin': isLoading })}
+                      <GlyphiconWithNonAnimation
+                        isLoading={isLoading}
                         glyph="refresh"
                       />
                     </Button>

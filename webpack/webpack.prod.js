@@ -9,6 +9,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const stand = process.env.STAND || 'dev';
 
+const getNameFavicon = (stand) => {
+  switch (stand) {
+    case 'dev': return 'faviconDev.png';
+    case 'stage': return 'faviconStage.png';
+    default: return 'favicon.png';
+  }
+};
+
 module.exports = {
   entry: [
     'whatwg-fetch',
@@ -102,6 +110,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               sourceMap: true,
+              modules: 'global',
             },
           },
           {
@@ -153,7 +162,12 @@ module.exports = {
       // both options are optional
       filename: "[name].css",
     }),
-    new CleanWebpackPlugin([path.resolve(__dirname, '..', 'dist')]),
+    new CleanWebpackPlugin(
+      path.join(__dirname, '..', 'dist'),
+      {
+        root: path.join(__dirname, '..'),
+      },
+    ),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
@@ -174,7 +188,9 @@ module.exports = {
     ]),
     new HtmlWebpackPlugin({
       title: 'ЕТС',
+      favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', getNameFavicon(stand)),
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
+      MANIFEST_FILENAME: 'manifest.json'
     }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
@@ -182,12 +198,10 @@ module.exports = {
       __DEVELOPMENT__: false,
       __DEVTOOLS__: false,
       'process.env': {
-        // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         STAND: JSON.stringify(stand),
         VERSION: JSON.stringify(require(path.join(__dirname, '..', 'package.json')).version)
       },
-      
     }),
   ],
   optimization: {

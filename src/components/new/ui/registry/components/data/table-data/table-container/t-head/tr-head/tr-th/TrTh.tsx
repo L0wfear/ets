@@ -1,13 +1,12 @@
 import * as React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { connect } from 'react-redux';
-import * as cx from 'classnames';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 import {
   registryTriggerOnChangeSelectedField,
 } from 'components/new/ui/registry/module/actions-registy';
-import { EtsTheadTh } from './styled/styled';
+import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 
 type PropsTrTh = {
   registryKey: string;
@@ -20,12 +19,10 @@ type PropsTrTh = {
 };
 
 type StateTrTh = {
-
 };
 
 const getGlyphName = ({ colData: { key }, sort }) => {
-  if (key !== 'enumerated' && key === sort.field) {
-    // 'sort-by-attributes-alt'
+  if (key === sort.field) {
     return `sort-by-attributes${sort.reverse ? '-alt' : ''}`;
   }
 
@@ -54,19 +51,14 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
 
   render() {
     const { colData } = this.props;
-    const className = cx(
-      colData.className,
-      'ets-th',
-    );
 
     return (
       <EtsTheadTh
         canClick={colData.key !== 'enumerated'}
-        className={className}
         rowSpan={colData.rowSpan}
         colSpan={colData.colSpan}
         onClick={this.handleClick}
-        width={colData.key === 'enumerated' ? 30 : null}
+        width={colData.key === 'enumerated' ? 30 : colData.width}
       >
         {colData.title}
         <Glyphicon glyph={getGlyphName(this.props)} />

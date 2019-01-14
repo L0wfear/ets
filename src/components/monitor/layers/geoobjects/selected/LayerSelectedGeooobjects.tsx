@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
@@ -13,9 +13,9 @@ import {
   renderGeoobjects,
 } from 'components/monitor/layers/geoobjects/selected/utils';
 
-class LayerSelectedGeooobjects extends React.Component<PropsLayerSelectedGeooobjects, StateLayerSelectedGeooobjects> {
+class LayerSelectedGeooobjects extends React.PureComponent<PropsLayerSelectedGeooobjects, StateLayerSelectedGeooobjects> {
   componentDidMount() {
-    this.props.addLayer({ id: 'SelectedGeoObject', zIndex: 1 }).then(() => {
+    this.props.addLayer({ id: 'SelectedGeoObject', zIndex: 1, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       renderGeoobjects(this.props.selectedGeoobjects, this.props.selectedGeoobjects, this.props);
@@ -23,7 +23,9 @@ class LayerSelectedGeooobjects extends React.Component<PropsLayerSelectedGeooobj
   }
 
   componentDidUpdate(prevProps) {
-    renderGeoobjects(prevProps.selectedGeoobjects, this.props.selectedGeoobjects, this.props);
+    if (this.props.selectedGeoobjects !== prevProps.selectedGeoobjects) {
+      renderGeoobjects(prevProps.selectedGeoobjects, this.props.selectedGeoobjects, this.props);
+    }
   }
 
   componentWillUnmount() {
@@ -57,7 +59,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   connect(
     mapStateToProps,
     mapDispatchToProps,

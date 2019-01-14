@@ -6,7 +6,7 @@ type PropsIconMeasureAndZoom = {
   map: ol.Map;
 };
 
-class IconMeasureAndZoom extends React.Component<PropsIconMeasureAndZoom, {}> {
+class IconMeasureAndZoom extends React.PureComponent<PropsIconMeasureAndZoom, {}> {
   render() {
     return (
       <div className="icon-map-help">

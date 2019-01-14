@@ -48,7 +48,7 @@ export default class FuelRateForm extends Form {
     const MODELS = modelsList.map(m => ({ value: m.id, label: m.full_name }));
     const SPECIALMODELS = specialModelsList.map(m => ({ value: m.id, label: m.name }));
     const OPERATIONS = operations
-      .map(op => ({ value: op.id, label: `${op.name}${op.equipment ? ' [спецоборудование]' : ''}`, measure_unit_name: op.measure_unit_name }))
+      .map(op => ({ value: op.id, label: `${op.name}, ${op.measure_unit_name}${op.equipment ? ' [спецоборудование]' : ''}`, measure_unit_name: op.measure_unit_name }))
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
 
     const measure_unit_name = (OPERATIONS.find(({ value }) => value === state.operation_id) || { measure_unit_name: '-' }).measure_unit_name || '-';
@@ -91,6 +91,13 @@ export default class FuelRateForm extends Form {
                 label="Единица измерения"
                 value={measure_unit_name}
                 disabled
+              />
+
+              <Field
+                label="Примечание"
+                type="string"
+                value={state.comment}
+                onChange={this.handleChange.bind(this, 'comment')}
               />
 
               <Field

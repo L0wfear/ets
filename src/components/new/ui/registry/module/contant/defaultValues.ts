@@ -1,4 +1,6 @@
-const registryDefaultObj = {
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+
+const registryDefaultObj: OneRegistryData = {
   Service: null,
   filter: {
     fields: [],
@@ -14,12 +16,22 @@ const registryDefaultObj = {
       array: [],
       total_count: 0,
       uniqKey: 'id',
+      selectedRow: null,
+      checkedRows: {},
+    },
+    permissions: {
+      list: false,
+      create: false,
+      read: false,
+      update: false,
+      delete: false,
     },
     meta: {
       fields: [],
       fieldsInDeepArr: [],
       rowFields: [],
       treeFields: {},
+      noEnumerated: false,
     },
     paginator: {
       currentPage: 0,

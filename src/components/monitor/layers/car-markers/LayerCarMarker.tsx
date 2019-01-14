@@ -7,7 +7,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { getStyleForStatusDirectionType} from 'components/monitor/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
@@ -35,7 +35,7 @@ const MIN_ZOOM_VAL = 3;
 
 global.toggleUpdateCarPoints = () => updatePoints = !updatePoints;
 
-class LayerCarMarker extends React.Component<PropsLayerCarMarker, StateLayerCarMarker> {
+class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayerCarMarker> {
   state = {
     ws: null,
     carPointsDataWs: {},
@@ -551,7 +551,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default hocAll(
+export default compose<any, any>(
   connect(
     mapStateToProps,
     mapDispatchToProps,

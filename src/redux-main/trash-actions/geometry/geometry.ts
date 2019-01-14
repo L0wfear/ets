@@ -2,15 +2,17 @@ import {
   GormostService,
   GeozonesService,
   FuelEvent,
+  GeozoneMunicipalFacilityService,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 
-import { loadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
 import { GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects-new';
+import { polyState } from 'constants/polygons';
+import { keyBy } from 'lodash';
 
 const CACHE_GEOMETRY = {};
 
-export const loadGeozones: loadGeozonesFunc = (type, type_geoobject, meta = { loading: true }, company_id = null) => {
+export const loadGeozones: any = (type, type_geoobject, meta = { loading: true }, company_id = null) => {
   const cacheTypeGeoobjectName = `${type_geoobject}${company_id}`;
 
   if (CACHE_GEOMETRY[type]) {
@@ -117,3 +119,45 @@ export const loadFuelEvents = (type, typeEvent, dates) => ({
     loading: true,
   },
 });
+
+export const loadGeozoneMunicipalFacility: any = (type, ownPayload, metaProps) => {
+  const payload = {
+    municipal_facility_id: ownPayload.municipal_facility_id,
+    object_type_id: ownPayload.object_type_id,
+  };
+
+  return {
+    type,
+    payload: GeozoneMunicipalFacilityService.get(payload)
+      .catch((error) => {
+        // tslint:disable-next-line
+        console.warn(error);
+
+        return {
+          result: [],
+        };
+      })
+      .then(({ result }) => {
+      const geozone_municipal_facility = result.map((geo) => {
+        try {
+          geo.shape = JSON.parse(geo.shape);
+        } catch {
+          geo.shape = {};
+        }
+        geo.state = polyState.ENABLE;
+
+        return geo;
+      });
+
+      return {
+        geozone_municipal_facility,
+        geozone_municipal_facility_by_id: keyBy(geozone_municipal_facility, 'id'),
+      };
+    }),
+    meta: {
+      promise: true,
+      page: metaProps.page,
+      path: metaProps.path,
+    },
+  };
+};

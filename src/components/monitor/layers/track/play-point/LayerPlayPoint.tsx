@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
@@ -10,9 +10,9 @@ import { actionOnPlay, actionOnStop } from 'components/monitor/layers/track/play
 
 import { PropsLayerPlayPoint } from 'components/monitor/layers/track/play-point/LayerPlayPoint.h';
 
-class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, {}> {
+class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
-    this.props.addLayer({ id: 'PlayPoint', zIndex: 11 }).then(() => {
+    this.props.addLayer({ id: 'PlayPoint', zIndex: 11, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
 
       this.props.addFeaturesToSource(
@@ -22,15 +22,16 @@ class LayerPlayPoint extends React.Component<PropsLayerPlayPoint, {}> {
   }
 
   componentDidUpdate(prevProps) {
-    const { props } = this;
-    const { playTrackStatus } = props;
+    const { playTrackStatus } = this.props;
 
-    if (playTrackStatus === 'play') {
-      actionOnPlay(props);
-    }
+    if (playTrackStatus !== prevProps.playTrackStatus) {
+      if (playTrackStatus === 'play') {
+        actionOnPlay(this.props);
+      }
 
-    if (playTrackStatus === 'stop') {
-      actionOnStop(props);
+      if (playTrackStatus === 'stop') {
+        actionOnStop(this.props);
+      }
     }
   }
 
@@ -48,7 +49,7 @@ const mapStateToProps = (state) => ({
   playTrackStatus: state.monitorPage.carInfo.playTrack.status,
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',

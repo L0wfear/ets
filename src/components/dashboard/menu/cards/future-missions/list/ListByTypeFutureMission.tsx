@@ -13,6 +13,7 @@ import {
   PropsListByTypeMission,
   StateListByTypeMission,
 } from 'components/dashboard/menu/cards/future-missions/list/ListByTypeFutureMission.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
 
 class ListByTypeMission extends React.Component<PropsListByTypeMission, StateListByTypeMission> {
   render() {
@@ -34,7 +35,7 @@ class ListByTypeMission extends React.Component<PropsListByTypeMission, StateLis
 
 export default connect<StatePropsFutureMissionsList, DispatchPropsFutureMissionsList, OwnPropsFutureMissionsList, ReduxState>(
   (state, { titleKey, itemsKey } ) => ({
-    title: state.dashboard.future_missions.data[titleKey],
-    items: state.dashboard.future_missions.data[itemsKey],
+    title: getDashboardState(state).future_missions.data[titleKey],
+    items: getDashboardState(state).future_missions.data[itemsKey],
   }),
 )(ListByTypeMission);

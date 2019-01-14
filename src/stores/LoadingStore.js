@@ -18,20 +18,11 @@ export default class LoadingStore extends Store {
     const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
     const companyStructureActions = flux.getActions('companyStructure');
-    const reportsActions = flux.getActions('reports');
 
     this.reg(false,
       sessionActions.cahngeCompanyOnAnother,
 
       autoBaseActions.getAutobaseListByType,
-      autoBaseActions.batteryBrand,
-      autoBaseActions.batteryManufacturer,
-      autoBaseActions.batteryRegistry,
-      autoBaseActions.insurancePolicy,
-      autoBaseActions.repair,
-      autoBaseActions.repairCompany,
-      autoBaseActions.roadAccident,
-      autoBaseActions.sparePart,
       autoBaseActions.techInspection,
       autoBaseActions.techMaintOrder,
       autoBaseActions.techMaint,
@@ -77,11 +68,8 @@ export default class LoadingStore extends Store {
       objectsActions.getCars,
       objectsActions.getSomeCars,
       objectsActions.getSpecialModels,
-      objectsActions.getCustomers,
       objectsActions.getWorkKinds,
-      objectsActions.getOrders,
 
-      objectsActions.saveOrder,
       objectsActions.getMaintenanceWork,
       objectsActions.getCleaningRate,
       objectsActions.getUserActionLog,
@@ -91,9 +79,6 @@ export default class LoadingStore extends Store {
       objectsActions.updateMaintenanceWork,
 
       employeesActions.getEmployees,
-      employeesActions.updateEmployee,
-      employeesActions.createEmployee,
-      employeesActions.deleteEmployee,
       employeesActions.getDrivers,
       employeesActions.getWaybillDrivers,
       employeesActions.getForemans,
@@ -142,7 +127,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsWithBrigades,
       technicalOperationsActions.getTechnicalOperationsObjects,
       technicalOperationsActions.updateTechnicalOperation,
-      technicalOperationsActions.getTechnicalOperationsByCarId,
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 
@@ -151,11 +135,6 @@ export default class LoadingStore extends Store {
       companyStructureActions.createCompanyElement,
       companyStructureActions.deleteCompanyElement,
 
-      reportsActions.getAnalytics,
-      reportsActions.getCoverageReport,
-      reportsActions.getOdhCoverageReport,
-      reportsActions.getDtCoverageReport,
-
       carActions.updateCarAdditionalInfo,
       carActions.getDataByNormNormatives,
 
@@ -163,7 +142,6 @@ export default class LoadingStore extends Store {
       geoObjectsActions.getOdhMkad);
 
     this.reg(true,
-      geoObjectsActions.getODHs,
       geoObjectsActions.updateODH,
       geoObjectsActions.updateDT,
       geoObjectsActions.getGeozoneByTypeWithGeometry,

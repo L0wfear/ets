@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Overlay from 'components/map/overlay/Overlay';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { makeDate, makeTime } from 'utils/dates';
 import Preloader from 'components/ui/new/preloader/Preloader';
@@ -163,7 +163,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   connect(
     null,
     mapDispatchToProps,

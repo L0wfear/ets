@@ -11,10 +11,12 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import InsideField from 'components/missions/duty_mission_template/inside_fields/index';
-import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
 
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+
 import { DutyMissionForm } from 'components/missions/duty_mission/DutyMissionForm';
 import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from 'components/missions/duty_mission/utils';
 
@@ -35,7 +37,7 @@ class MissionTemplateForm extends DutyMissionForm {
       available_route_types = [],
       technicalOperationsList = [],
       TECH_OPERATIONS = [],
-      selectedRoute: route = null,
+      selectedRouteNew: routeNew = null,
     } = this.state;
 
     const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
@@ -166,7 +168,16 @@ class MissionTemplateForm extends DutyMissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
+                {
+                  // <Button onClick={this.createNewRoute.bind(this)} disabled={!state.municipal_facility_id}>Создать новый</Button>
+                }
+                <Button
+                  id="dmt-create-route"
+                  onClick={this.createNewRouteNew}
+                  disabled={!state.municipal_facility_id}
+                >
+                  Создать новый
+                </Button>
               </Div>
             </Col>
             {STRUCTURE_FIELD_VIEW && (
@@ -189,10 +200,10 @@ class MissionTemplateForm extends DutyMissionForm {
           <Row>
             <Col md={12}>
               {
-                route && route.id !== null
+                !this.state.showRouteFormNew && routeNew && routeNew.id !== null
                   ? (
                     <RouteInfo
-                      route={route}
+                      route={routeNew}
                       noRouteName
                       mapKey="mapDutyMissionTemplateFrom"
                     />
@@ -211,14 +222,25 @@ class MissionTemplateForm extends DutyMissionForm {
             <ButtonSaveDutyMissionTemplate onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || hasNotActiveEmployees}>{'Сохранить'}</ButtonSaveDutyMissionTemplate>
           </Div>
         </Modal.Footer>
-
-        <RouteFormWrap
-          element={route}
-          onFormHide={this.onFormHide.bind(this)}
-          showForm={this.state.showRouteForm}
-          structureId={state.structure_id}
+        {
+          /*
+          <RouteFormWrap
+            element={route}
+            onFormHide={this.onFormHide.bind(this)}
+            showForm={this.state.showRouteForm}
+            structureId={state.structure_id}
+            fromMission
+            available_route_types={available_route_types}
+          />
+          */
+        }
+        <RouteFormWrapNew
+          element={routeNew}
+          showForm={this.state.showRouteFormNew}
+          handleHide={this.onFormHideNew}
+          hasMissionStructureId={!!state.structure_id}
+          missionAvailableRouteTypes={available_route_types}
           fromMission
-          available_route_types={available_route_types}
         />
 
       </Modal>

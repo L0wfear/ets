@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
+import { getMonitorPageState } from 'redux-main/reducers/selectors';
 
 type PropsEventTable = {
   front_events_list: any[],
@@ -11,7 +12,7 @@ type PropsEventTable = {
 
 class EventTable extends React.Component<PropsEventTable, {}> {
   handleEventClick: any = ({ currentTarget: { dataset: { ievent } } }) => {
-    this.props.handleEventClick(this.props.front_events_list[ievent]);
+    this.props.handleEventClick(this.props.front_events_list[ievent], true);
   }
   render() {
     return (
@@ -45,7 +46,7 @@ export default compose(
   }),
   connect<any, any, any, ReduxState>(
     (state) => ({
-      front_events_list: state.monitorPage.carInfo.trackCaching.front_events_list,
+      front_events_list: getMonitorPageState(state).carInfo.trackCaching.front_events_list,
     }),
   ),
 )(EventTable);

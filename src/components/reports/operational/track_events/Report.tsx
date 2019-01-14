@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import reportProps, { serviceUrl, renderers } from './reportProps';
+import reportProps, { serviceUrl, renderers } from 'components/reports/operational/track_events/reportProps';
 
 import ReportFormWrap from 'components/reports/operational/track_events/form/ReportFormWrap';
 

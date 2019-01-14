@@ -130,9 +130,9 @@ class WaybillForm extends Form {
     );
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
-        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map((d) => d.car_model_id) }))
+        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))
         .catch((e) => {
-          console.error(e);
+          console.error(e); // eslint-disable-line
           this.setState({ fuelRateAllList: [] });
         });
     }
@@ -144,7 +144,7 @@ class WaybillForm extends Form {
           origFormState: formState,
         }))
         .catch((e) => {
-          console.error(e);
+          console.error(e); // eslint-disable-line
           this.setState({
             canEditIfClose: false,
             origFormState: formState,
@@ -166,14 +166,15 @@ class WaybillForm extends Form {
           .then(([{ fuelRates, fuelRatesIndex }, fuelOperationsList, { equipmentFuelRates, equipmentFuelRatesIndex }, fuel_correction_rate]) => {
             this.setState({
               fuelRates,
-              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]),
+              operations: fuelOperationsList.filter(({ id }) => fuelRatesIndex[id]).map(item => ({ ...item, comment: fuelRatesIndex[item.id].comment })),
               fuel_correction_rate,
               equipmentFuelRates,
-              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]),
+              equipmentOperations: fuelOperationsList.filter(({ id }) => equipmentFuelRatesIndex[id]).map(item => ({ ...item, comment: equipmentFuelRatesIndex[item.id].comment })),
             });
           })
           .catch((e) => {
-            console.error(e);
+            console.error(e); // eslint-disable-line
+
             this.setState({
               fuelRates: [],
               operations: [],
@@ -193,7 +194,8 @@ class WaybillForm extends Form {
             operations: fuelOperations,
             equipmentOperations: fuelOperations,
           })).catch((e) => {
-            console.error(e);
+            console.error(e); // eslint-disable-line
+
             this.setState({
               operations: [],
               equipmentOperations: [],
@@ -253,7 +255,6 @@ class WaybillForm extends Form {
           if (Object.keys(missionsWithSourceOrder).length) {
             this.handleChange('mission_id_list', mission_id_list.filter(id => !missionsWithSourceOrder[id]));
             this.setState({
-              ...this.state,
               missionsList: oldMissionsList.filter(({ id }) => !missionsWithSourceOrder[id]),
             });
           }
@@ -294,18 +295,18 @@ class WaybillForm extends Form {
       formState.id,
     ).then(({ result: { rows: newMissionsList = [] } = {} }) => {
       const missionsList = uniqBy(newMissionsList, 'id');
-      const availableMissions = missionsList.map((el) => el.id);
+      const availableMissions = missionsList.map(el => el.id);
       let { notAvailableMissions = [] } = this.state;
 
       let newMissionIdList = formState.mission_id_list;
 
       if (formState.car_id !== oldFormState.car_id) {
-        newMissionIdList = currentMissions.filter((el) => availableMissions.includes(el));
+        newMissionIdList = currentMissions.filter(el => availableMissions.includes(el));
       } else {
         notAvailableMissions = notAvailableMissions
           .concat(currentMissions
-            .filter((el) => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
-            .map(id => oldMissionsList.find((el) => el.id === id)))
+            .filter(el => !availableMissions.includes(el) && !notAvailableMissions.find(m => m.id === el))
+            .map(id => oldMissionsList.find(el => el.id === id)))
           .filter(m => m);
       }
 
@@ -354,7 +355,6 @@ class WaybillForm extends Form {
 
           this.setState({
             loadingFields: {
-              ...this.state.loadingFields,
               distance: false,
               consumption: false,
             },
@@ -364,7 +364,6 @@ class WaybillForm extends Form {
           // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
           this.setState({
             loadingFields: {
-              ...this.state.loadingFields,
               distance: false,
               consumption: false,
             },
@@ -537,6 +536,7 @@ class WaybillForm extends Form {
 
     return b.isPrefer - a.isPrefer;
   }
+
   handleSubmit = () => {
     delete this.props.formState.is_bnso_broken;
     this.props.onSubmit();
@@ -574,14 +574,7 @@ class WaybillForm extends Form {
     const TRAILERS = getTrailersByStructId(carsList);
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
 
-    // const DRIVERS = waybillDriversList.map((d) => {
-    //   const personnel_number = d.personnel_number ? `[${d.personnel_number}] ` : '';
-    //   return { value: d.id, label: `${personnel_number}${d.last_name || ''} ${d.first_name || ''} ${d.middle_name || ''}` };
-    // });
-
-
     const driversEnability = state.car_id !== null && state.car_id !== '';
-    const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
     const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
@@ -907,7 +900,7 @@ class WaybillForm extends Form {
                     error={errors.odometr_end}
                     value={state.odometr_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !this.state.canEditIfClose || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
+                    disabled={(IS_CLOSED && !this.state.canEditIfClose) || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                     onChange={this.handleChange.bind(this, 'odometr_end')}
                   />
 
@@ -941,7 +934,7 @@ class WaybillForm extends Form {
                     error={errors.motohours_end}
                     value={state.motohours_end}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !this.state.canEditIfClose || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
+                    disabled={(IS_CLOSED && !this.state.canEditIfClose) || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                     onChange={this.handleChange.bind(this, 'motohours_end')}
                   />
 
@@ -1032,7 +1025,7 @@ class WaybillForm extends Form {
                     error={errors.fuel_given}
                     value={state.fuel_given}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !this.state.canEditIfClose || !isPermittedByKey.update}
+                    disabled={(IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'fuel_given')}
                   />
 
@@ -1047,7 +1040,7 @@ class WaybillForm extends Form {
                   />
                   <ExtField
                     multi
-                    id="fuel-end"
+                    id="fact-fuel-end"
                     type="number"
                     modalKey={modalKey}
                     label="Возврат фактический, л"
@@ -1166,7 +1159,7 @@ class WaybillForm extends Form {
                     error={errors.equipment_fuel_given}
                     value={state.equipment_fuel_given}
                     hidden={!(IS_ACTIVE || IS_CLOSED)}
-                    disabled={IS_CLOSED && !(this.state.canEditIfClose && !!state.equipment_fuel) || !isPermittedByKey.update}
+                    disabled={(IS_CLOSED && !(this.state.canEditIfClose && !!state.equipment_fuel)) || !isPermittedByKey.update}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_given')}
                   />
                   <Field

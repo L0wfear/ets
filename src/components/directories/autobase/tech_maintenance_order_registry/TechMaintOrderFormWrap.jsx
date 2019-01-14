@@ -2,8 +2,8 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import TechMaintOrderForm from './TechMaintOrderForm';
-import { formValidationSchema } from './schema';
+import TechMaintOrderForm from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm';
+import { formValidationSchema } from 'components/directories/autobase/tech_maintenance_order_registry/schema';
 
 class TechMaintOrderFormWrap extends FormWrap {
   constructor(props, context) {

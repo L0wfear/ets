@@ -15,10 +15,10 @@ import {
   StatePropsFutureMissions,
   DispatchPropsFutureMissions,
   OwnPropsFutureMissions,
-  OutterPropsFutureMissions,
 } from 'components/dashboard/menu/cards/future-missions/FutureMissions.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMissions> {
   state = {
@@ -60,7 +60,7 @@ class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMis
   }
 }
 
-export default compose<PropsFutureMissions, OutterPropsFutureMissions>(
+export default compose<PropsFutureMissions, PropsToDefaultCard>(
   withDefaultCard({
     path: 'future_missions',
     loadData: dashboardLoadFutureMissions,

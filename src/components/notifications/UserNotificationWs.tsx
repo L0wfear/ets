@@ -1,5 +1,5 @@
 import * as React from 'react';
-import config from 'components/../config';
+import config from 'config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
 import { ReduxState } from 'redux-main/@types/state';

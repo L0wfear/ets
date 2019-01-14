@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { get } from 'lodash';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
@@ -101,27 +102,22 @@ export function tableMeta({
   return meta;
 }
 
+const renderers: ISchemaRenderer = {
+  plan_date_start: ({ data }) => (<DateFormatter date={data} />),
+  plan_date_end: ({ data }) => (<DateFormatter date={data} />),
+  fact_date_start: ({ data }) => (<DateFormatter date={data} />),
+  fact_date_end: ({ data }) => (<DateFormatter date={data} />),
+  status: ({ data }) => <div>{get(AUTOBASE_REPAIR_STATUS, [data, 'name'], '---') || '---' }</div>,
+};
+
 const Table: React.FunctionComponent<any> = (props) => {
-  const { carsList = [],
-          car_id = -1,
-        } = props;
-
-  const renderers: ISchemaRenderer = {
-    plan_date_start: ({ data }) => (<DateFormatter date={data} />),
-    plan_date_end: ({ data }) => (<DateFormatter date={data} />),
-    fact_date_start: ({ data }) => (<DateFormatter date={data} />),
-    fact_date_end: ({ data }) => (<DateFormatter date={data} />),
-    car_id: ({ data }) => <div>{get(carsList.find((s) => s.asuods_id === data), 'gov_number', '---')}</div>,
-    status: ({ data }) => <div>{AUTOBASE_REPAIR_STATUS[data] && AUTOBASE_REPAIR_STATUS[data].name || '---' }</div>,
-  };
-
   return (
     <DataTable
       title="Ремонты ТС"
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
-      noFilter={car_id !== -1}
+      noFilter
       {...props}
     />
   );

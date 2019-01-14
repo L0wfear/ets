@@ -1,7 +1,7 @@
 import { FetchingStatusReducerFactory } from 'utils/redux-utils';
 import { reports } from 'api/Services';
 import { hasWarningNotification } from 'utils/notifications';
-import * as ReduxTypes from './@types/report.h';
+import * as ReduxTypes from 'components/reports/redux-main/modules/@types/report.h';
 import { makeDataForSummerTable } from 'components/reports/redux-main/modules/report_utils';
 
 export type IStateReport = ReduxTypes.IReportStateProps;

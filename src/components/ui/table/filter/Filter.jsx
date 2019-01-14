@@ -6,8 +6,8 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import { isEmpty } from 'utils/functions';
 import _ from 'lodash';
-import Div from '../../Div';
-import FilterRow from './FilterRow';
+import Div from 'components/ui/Div';
+import FilterRow from 'components/ui/table/filter/FilterRow';
 
 export default class Filter extends React.Component {
   static get propTypes() {

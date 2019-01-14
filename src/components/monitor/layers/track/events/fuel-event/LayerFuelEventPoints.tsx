@@ -2,8 +2,10 @@ import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
+import { get } from 'lodash';
+
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForFuelEvent } from 'components/monitor/layers/track/events/fuel-event/feature-style';
@@ -29,9 +31,9 @@ type PropsLayerFuelEventPoints = {
 type StateLayerFuelEventPoints = {
 };
 
-class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
+class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
   componentDidMount() {
-    this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4 }).then(() => {
+    this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       this.drawTrackPoints(
@@ -56,7 +58,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
       );
     } else {
       if (fuelEventPoint !== prevProps.fuelEventPoint) {
-        this.removeOneFuelEventPoint(fuelEventPoint);
+        this.removeOneFuelEventPoint(prevProps.fuelEventPoint);
         this.addOneFuelEventPoint(fuelEventPoint);
       }
     }
@@ -82,13 +84,13 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   addOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
       try {
-        const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
+        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at_msk);
         if (!featureOld) {
           const feature = new Feature({
-            geometry: new Point(fuelEventPoint.start_point.coords_msk),
+            geometry: new Point(fuelEventPoint.start_coords_msk),
           });
 
-          feature.setId(fuelEventPoint.start_point.timestamp);
+          feature.setId(fuelEventPoint.started_at_msk);
           feature.setStyle(getStyleForFuelEvent(fuelEventPoint.event_type));
           this.props.addFeaturesToSource(feature);
         }
@@ -102,7 +104,7 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
   removeOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {
       try {
-        const featureOld = this.props.getFeatureById(fuelEventPoint.start_point.timestamp);
+        const featureOld = this.props.getFeatureById(fuelEventPoint.started_at_msk);
 
         if (featureOld) {
           this.props.removeFeaturesFromSource(featureOld);
@@ -120,10 +122,13 @@ class LayerFuelEventPoints extends React.Component<PropsLayerFuelEventPoints, St
     for (let index = 0, length = front_events_list.length; index < length; index++) {
       const currPoint = front_events_list[index];
 
-      if (front_cars_sensors_level[currPoint.sensor_id].show) {
-        this.addOneFuelEventPoint(currPoint);
-      } else {
-        this.removeOneFuelEventPoint(currPoint);
+      const sensor = get(front_cars_sensors_level, [currPoint.sensor_id], null);
+      if (sensor) {
+        if (sensor.show) {
+          this.addOneFuelEventPoint(currPoint);
+        } else {
+          this.removeOneFuelEventPoint(currPoint);
+        }
       }
     }
 
@@ -153,7 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'front_events_list'],
     type: 'none',

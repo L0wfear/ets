@@ -14,6 +14,8 @@ import {
   PropsWaybillDraft,
   StateWaybillDraft,
 } from 'components/dashboard/menu/cards/waybill-draft/WaybillDraft.h';
+import { compose } from 'recompose';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillDraft extends React.Component<PropsWaybillDraft, StateWaybillDraft> {
   render() {
@@ -23,15 +25,17 @@ class WaybillDraft extends React.Component<PropsWaybillDraft, StateWaybillDraft>
   }
 }
 
-export default withDefaultWaybill({
-  path: 'waybill_draft',
-  loadData: dashboardLoadWaybillDraft,
-  InfoComponent: WaybillDraftInfo,
-  setInfoData: dashboardSetInfoDataInWaybillDraft,
-  ListComponent: ListNumber,
-  setInfoDataPropsMake: ({ items }, path: string) => (
-    items[
-      path.split('/').slice(-1)[0]
-    ]
-  ),
-})(WaybillDraft);
+export default compose<PropsWaybillDraft, PropsToDefaultCard>(
+  withDefaultWaybill({
+    path: 'waybill_draft',
+    loadData: dashboardLoadWaybillDraft,
+    InfoComponent: WaybillDraftInfo,
+    setInfoData: dashboardSetInfoDataInWaybillDraft,
+    ListComponent: ListNumber,
+    setInfoDataPropsMake: ({ items }, path: string) => (
+      items[
+        path.split('/').slice(-1)[0]
+      ]
+    ),
+  }),
+)(WaybillDraft);

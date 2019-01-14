@@ -4,6 +4,7 @@ export interface GeozonesDataByIndex {
   company_id: number;
   shape: (Document | Node | ol.GlobalObject | string);
   frontIsSelected?: boolean;
+  [key: string]: any;
 }
 
 export interface LoadGeozonesPromise {
@@ -24,3 +25,19 @@ export type loadGeozonesFunc = (
   meta?: any,
   company_id?: number | null,
 ) => AnsLoadGeozonesFunc;
+
+export type OneGeozoneMunicipalFacility = {
+  contractor_id: number;
+  customer_id: number;
+  geozone_type: string;
+  id: number;
+  name: string;
+  shape: ol.GlobalObject;
+  state: number;
+};
+
+export type GeozoneMunicipalFacility = OneGeozoneMunicipalFacility[];
+
+export type GeozoneMunicipalFacilityById = {
+  [id: string]: OneGeozoneMunicipalFacility;
+};

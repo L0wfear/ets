@@ -3,7 +3,7 @@ import components from 'components/reports/operational/cleaning_volume/config-da
 
 export default {
   path: '/cleaning_volume',
-  title: 'Удельный объём уборки для ТС в разрезе технологических операций',
+  title: 'Удельный объем уборки для ТС',
   entyity: 'cleaning_volume',
   noDotList: false,
   components,

@@ -6,10 +6,6 @@ import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils'
 import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
 import createFio from 'utils/create-fio';
 
-export const onlyActiveEmployeeNotification = () => {
-  global.NOTIFICATION_SYSTEM.notify('В наряд-задание можно добавить только активного на данный момент времени сотрудника', 'info');
-};
-
 export const FormTitle: React.FunctionComponent<{ number?: string | number, status: string }> = (props) => (
   <div>
     {`Наряд-задание № ${props.number || ''}`}
@@ -17,7 +13,7 @@ export const FormTitle: React.FunctionComponent<{ number?: string | number, stat
   </div>
 );
 
-export const makeRoutesForDutyMissionForm = ({ selectedRoute: route, routesList = [] }, { formState: state }) => {
+export const makeRoutesForDutyMissionForm = ({ selectedRouteNew: route, routesList = [] }, { formState: state }) => {
   const routes = routesList.filter((r) => (
     (!state.structure_id || r.structure_id === state.structure_id)
   ));

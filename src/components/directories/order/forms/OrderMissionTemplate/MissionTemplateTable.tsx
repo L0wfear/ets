@@ -43,15 +43,11 @@ export function getTableMeta(props = {}): IDataTableSchema {
   return meta;
 }
 
-const getRenders = (props) => {
-  const renderers: ISchemaRenderer = {
-    date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
-    date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
-    structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
-  };
-
-  return renderers;
+const renderers: ISchemaRenderer = {
+  date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
+  date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
+  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
 };
 
 const Table: React.FunctionComponent<any> = (props) => {
@@ -59,7 +55,7 @@ const Table: React.FunctionComponent<any> = (props) => {
     <DataTable
       multiSelection={true}
       results={props.data}
-      renderers={getRenders(props)}
+      renderers={renderers}
       tableMeta={getTableMeta(props)}
       onRowSelected={props.onRowSelected}
       onRowChecked={props.onRowChecked}

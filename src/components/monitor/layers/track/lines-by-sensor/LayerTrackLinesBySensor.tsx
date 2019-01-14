@@ -3,7 +3,7 @@ import Feature from 'ol/Feature';
 import LineString from 'ol/geom/LineString';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForTrackLineBySensor } from 'components/monitor/layers/track/lines-by-sensor/feature-style';
@@ -33,7 +33,7 @@ const countWorkSensor = (trackPoint, front_cars_sensors_equipment) => {
   return pointSensors.length;
 };
 
-class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTrackLines> {
+class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLayerTrackLines> {
   componentDidMount() {
     this.props.addLayer({ id: 'TrackLinesBySensor', zIndex: 2 }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
@@ -153,7 +153,7 @@ const mapStateToProps = (state) => ({
   lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',

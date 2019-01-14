@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import * as cx from 'classnames';
@@ -168,7 +168,7 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
   dispatch,
 });
 
-export default hocAll(
+export default compose(
   connect(
     mapStateToProps,
     null,

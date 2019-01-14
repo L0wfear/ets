@@ -17,9 +17,10 @@ import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
-import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
@@ -54,7 +55,7 @@ class MissionTemplateForm extends MissionForm {
       routesList = [],
       carsList = [],
       selectedRoute: route = null,
-      available_route_types = [],
+      selectedRouteNew: routeNew = null,
     } = this.state;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -113,6 +114,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
               <Field
                 type="select"
+                id="technical_operation_id"
                 modalKey={modalKey}
                 label="Технологическая операция"
                 error={errors.technical_operation_id}
@@ -126,6 +128,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={3}>
               <Field
                 type="select"
+                id="structure_id"
                 modalKey={modalKey}
                 label="Подразделение"
                 error={errors.structure_id}
@@ -143,6 +146,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={12}>
               <InsideField.MunicipalFacility
                 modalKey={modalKey}
+                id="municipal_facility_id"
                 error={errors.municipal_facility_id}
                 name={state.municipal_facility_name}
                 value={state.municipal_facility_id}
@@ -163,6 +167,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <ExtField
                 type="select"
+                id="car_id"
                 modalKey={modalKey}
                 label="Транспортное средство"
                 error={errors.car_id}
@@ -174,10 +179,12 @@ class MissionTemplateForm extends MissionForm {
               />
               <Field
                 type="number"
+                id="passes_count"
+                modalKey={modalKey}
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
-                onChange={this.handleChange.bind(this, 'passes_count')}
+                onChange={ this.handleChange.bind(this, 'passes_count') }
                 min="0"
               />
             </Col>
@@ -185,6 +192,8 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <Field
                 type="string"
+                id="comment"
+                modalKey={modalKey}
                 label="Комментарий"
                 value={state.comment}
                 onChange={this.handleChange.bind(this, 'comment')}
@@ -197,6 +206,7 @@ class MissionTemplateForm extends MissionForm {
             <Col md={6}>
               <Field
                 type="select"
+                id="route_id"
                 modalKey={modalKey}
                 label="Маршрут"
                 error={errors.route_id}
@@ -207,7 +217,10 @@ class MissionTemplateForm extends MissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                <Button onClick={this.createNewRoute} disabled={!state.technical_operation_id}>Создать новый</Button>
+                {
+                  // <Button onClick={this.createNewRoute} disabled={!state.municipal_facility_id}>Создать новый</Button>
+                }
+                <Button id="mt-create-route" onClick={this.createNewRouteNew} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
             <Col md={6}>
@@ -260,13 +273,23 @@ class MissionTemplateForm extends MissionForm {
           printMapKeyBig={this.props.printMapKeyBig}
           printMapKeySmall={this.props.printMapKeySmall}
         />
-        <RouteFormWrap
-          element={route}
-          onFormHide={this.onFormHide}
-          showForm={this.state.showRouteForm}
-          structureId={state.structure_id}
+        {
+          /*
+          <RouteFormWrap
+            element={route}
+            onFormHide={this.onFormHide}
+            showForm={this.state.showRouteForm}
+            structureId={state.structure_id}
+            fromMission
+          />
+          */
+        }
+        <RouteFormWrapNew
+          element={routeNew}
+          showForm={this.state.showRouteFormNew}
+          handleHide={this.onFormHideNew}
+          hasMissionStructureId={!!state.structure_id}
           fromMission
-          available_route_types={available_route_types}
         />
 
       </Modal>

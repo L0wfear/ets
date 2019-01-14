@@ -7,7 +7,7 @@ import { ISchemaRenderer, ISchemaMaker } from 'components/ui/table/@types/schema
 import DateFormatter from 'components/ui/DateFormatter';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from './ReportHeader';
+import ReportHeader from 'components/reports/operational/tech_maintenance_schedule/ReportHeader';
 
 const serviceUrl = 'autobase/reports/tech_maintenance_schedule';
 const reportUrl = 'tech-maintenance-schedule';

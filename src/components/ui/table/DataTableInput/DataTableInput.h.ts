@@ -7,6 +7,7 @@ import { ISchemaRenderer, IDataTableSchema } from 'components/ui/table/@types/sc
 export interface ISharedPropsDataTableInput {
   inputList: any[];
   tableSchema: IDataTableSchema;
+  isPermitted: boolean;
   renderers: any;
   disabled?: boolean;
   addButtonLabel?: string;
@@ -23,6 +24,7 @@ export type IPropsDataTableInput = ISharedPropsDataTableInput & TInjectedPropsDa
 export interface IPropsDataTableInputRenderer {
   index: number;
   value: string;
+  isPermitted: boolean;
   outputListErrors: ETSCore.Types.IStringKeyHashTable<string>[];
   onChange(index: number, key: string, value: any): void;
 }

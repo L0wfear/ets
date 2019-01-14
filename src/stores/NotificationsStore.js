@@ -10,29 +10,17 @@ export default class NotificationsStore extends Store {
     const repairActions = flux.getActions('repair');
     const missionsActions = flux.getActions('missions');
     const objectsActions = flux.getActions('objects');
-    const reportsActions = flux.getActions('reports');
 
     const saveNotificationQueue = [
       {
         actions: autoBaseActions,
         actionNames: [
-          'batteryBrand',
-          'batteryManufacturer',
-          'batteryRegistry',
-          'insurancePolicy',
-          'repair',
-          'repairCompany',
-          'roadAccident',
-          'sparePart',
           'techInspection',
           'techMaintOrder',
           'techMaint',
           'tire',
           'cloneTire',
         ],
-        actionNotifications: {
-          'batteryManufacturer': 'Новая запись успешно добавлена',
-        },
       },
       {
         actions: repairActions,
@@ -79,14 +67,6 @@ export default class NotificationsStore extends Store {
       {
         actions: autoBaseActions,
         actionNames: [
-          'removeBatteryBrand',
-          'removeBatteryManufacturer',
-          'removeBatteryRegistry',
-          'removeInsurancePolicy',
-          'removeRepair',
-          'removeRepairCompany',
-          'removeRoadAccident',
-          'removeSparePart',
           'removeTechInspection',
           'removeTechMaintOrder',
           'removeTechMaint',
@@ -113,8 +93,6 @@ export default class NotificationsStore extends Store {
 
     this.register(missionsActions.createMission, this.handleMissionCreate);
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
-    this.register(reportsActions.getOdhCoverageReport, this.handleGetCoverageReport);
-    this.register(reportsActions.getDtCoverageReport, this.handleGetCoverageReport);
 
 
     this.state = {
@@ -142,10 +120,6 @@ export default class NotificationsStore extends Store {
     if (this.checkResponse(response)) {
       global.NOTIFICATION_SYSTEM.notify(notifications.missionsCreationSuccessNotification);
     }
-  }
-
-  handleGetCoverageReport() {
-    global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
   }
 
   handleSave(text) {

@@ -33,8 +33,9 @@ const getInitialState = () => ({
 class WaybillPrintForm extends React.Component {
   static get propTypes() {
     return {
-      show: PropTypes.any,
-      onHide: PropTypes.func,
+      show: PropTypes.any.isRequired,
+      onHide: PropTypes.func.isRequired,
+      printData: PropTypes.func.isRequired,
     };
   }
 
@@ -88,7 +89,11 @@ class WaybillPrintForm extends React.Component {
   }
 
   toggleWithFilter = (e) => {
-    this.setState({ with_filter: !this.state.with_filter });
+    this.setState(
+      state => ({
+        with_filter: !state.with_filter,
+      }),
+    );
     e.stopPropagation();
   }
 
@@ -100,11 +105,6 @@ class WaybillPrintForm extends React.Component {
   handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
 
   handleChangeDate = date => this.setState({ date });
-
-  hide = () => {
-    this.setState(getInitialState());
-    this.props.hide();
-  }
 
   render() {
     const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
@@ -199,7 +199,7 @@ class WaybillPrintForm extends React.Component {
             </Row>
             <Row className="checkbox-print-with-filter">
               <Col md={12} onClick={this.toggleWithFilter}>
-                <input type="checkbox" onChange={this.toggleWithFilter} checked={this.state.with_filter} />
+                <input type="checkbox" readOnly checked={this.state.with_filter} />
                 <span>С применением фильтрации</span>
               </Col>
             </Row>
@@ -208,7 +208,7 @@ class WaybillPrintForm extends React.Component {
                 color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10,
               }}
               >
-Даты должны быть указаны
+                Даты должны быть указаны
               </label>
             </Div>
           </Div>

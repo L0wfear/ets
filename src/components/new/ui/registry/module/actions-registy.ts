@@ -18,7 +18,7 @@ import {
   mergeList,
 } from 'components/new/ui/registry/module/utils/merge';
 
-export const registryAddInitialData = ({ registryKey, ...config }) => (dispatch) => {
+export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
     setTimeout(() => (
       dispatch(
@@ -206,6 +206,20 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
     filterValues: applyFilterFromRaw(filter),
   };
 
+  if (__DEVELOPMENT__) {
+    console.log('SAVE FILTER', processed.filterValues); // tslint:disable-line
+  } else {
+    let filterAsString = '';
+
+    try {
+      filterAsString = JSON.stringify(processed.filterValues);
+    } catch (e) {
+      filterAsString = processed.filterValues;
+    }
+
+    console.log('SAVE FILTER', filterAsString); // tslint:disable-line
+  }
+
   dispatch(
     registryChangeListData(
       registryKey,
@@ -294,4 +308,93 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
       },
     ),
   );
+};
+
+export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          selectedRow,
+        },
+      },
+    ),
+  );
+};
+
+export const registrySetSelectedRowToShowInForm: any = (registryKey, selectedRow?) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          selectedRowToShow: selectedRow || list.data.selectedRow,
+        },
+      },
+    ),
+  );
+};
+
+export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmited) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  if (isSubmited) {
+    dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            selectedRow: null,
+            checkedRows: {},
+            selectedRowToShow: null,
+          },
+        },
+      ),
+    );
+  } else {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            selectedRowToShow: null,
+          },
+        },
+      ),
+    );
+  }
 };

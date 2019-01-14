@@ -154,7 +154,7 @@ export default class MissionsJournal extends CheckableElementsList {
   completeCheckedElements = () => {
     const { selectedElement } = this.state;
     const missionsObj = this.state.checkedElements || {};
-    if (selectedElement) {
+    if (selectedElement && Object.values(missionsObj).length === 0) {
       missionsObj[selectedElement.id] = selectedElement;
     }
     Promise.all(

@@ -41,9 +41,9 @@ export default class FilterRow extends React.Component {
       displayName,
       labelFunction,
       name,
+      tableData,
       onChange,
       onMultiChange,
-      tableData,
       type,
       entity,
     } = this.props;

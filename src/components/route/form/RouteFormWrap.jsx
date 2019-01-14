@@ -165,7 +165,7 @@ class RouteFormWrap extends FormWrap {
             [id]: {
               name,
               shape: JSON.parse(shape),
-              state: polyState.SELECTABLE,
+              state: polyState.ENABLE,
               company_structure_id,
             },
           }), {});

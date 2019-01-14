@@ -4,6 +4,7 @@ import { userNotification, getFullAccess } from 'api/mocks/permissions';
 import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import { routToPer } from 'constants/routerAndPermission';
+import { getWarningNotification } from 'utils/notifications';
 import createFio from '../utils/create-fio';
 import { User } from '../models';
 
@@ -85,47 +86,51 @@ export default class SessionStore extends Store {
 
   // TODO
   handleLogin(data) {
-    clear();
-    data.payload.fio = createFio(data.payload);
-    const session = data.token;
-    let currentUser = data.payload;
+    if (data && data.payload) {
+      clear();
+      data.payload.fio = createFio(data.payload);
+      const session = data.token;
+      let currentUser = data.payload;
 
-    // Здесь можно вставлять моковые пермишины
-    currentUser.permissions = [
-      ...currentUser.permissions,
-      ...userNotification,
-      ...getSpecificPermissions(currentUser),
-    ];
+      // Здесь можно вставлять моковые пермишины
+      currentUser.permissions = [
+        ...currentUser.permissions,
+        ...userNotification,
+        ...getSpecificPermissions(currentUser),
+      ];
 
-    const routeVal = Object.entries(routToPer).reduce((obj, [key, rTp]) => {
-      if (!obj.lvl || obj.lvl > rTp.lvl) {
-        if (getPermission({ permissions: currentUser.permissions, permissionName: rTp.p, some: true })) {
-          obj = {
-            lvl: rTp.lvl,
-            path: key,
-          };
+      const routeVal = Object.entries(routToPer).reduce((obj, [key, rTp]) => {
+        if (!obj.lvl || obj.lvl > rTp.lvl) {
+          if (getPermission({ permissions: currentUser.permissions, permissionName: rTp.p, some: true })) {
+            obj = {
+              lvl: rTp.lvl,
+              path: key,
+            };
+          }
         }
-      }
-      return obj;
-    }, {});
-    currentUser.stableRedirect = routeVal.path;
+        return obj;
+      }, {});
+      currentUser.stableRedirect = routeVal.path;
 
-    localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
-    localStorage.setItem(global.CURRENT_USER2, JSON.stringify(currentUser));
-    this.flux.getStore('reports').resetState();
-    setUserContext(currentUser);
-    currentUser = new User(currentUser);
+      localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
+      localStorage.setItem(global.CURRENT_USER2, JSON.stringify(currentUser));
 
-    const newState = {
-      currentUser,
-      session,
-      isOkrug: data.payload.okrug_id !== null,
-      isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
-      userPermissions: currentUser.permissions,
-      isGlavControl: currentUser.permissions.includes('role.change'),
-    };
+      setUserContext(currentUser);
+      currentUser = new User(currentUser);
 
-    this.setState(newState);
+      const newState = {
+        currentUser,
+        session,
+        isOkrug: data.payload.okrug_id !== null,
+        isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
+        userPermissions: currentUser.permissions,
+        isGlavControl: currentUser.permissions.includes('role.change'),
+      };
+
+      this.setState(newState);
+    } else {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка'));
+    }
   }
 
   isLoggedIn() {

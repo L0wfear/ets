@@ -30,10 +30,6 @@ export default class AutobaseStore extends Store {
 
   getDataForStore = ({ type, data = [] }) => {
     switch (type) {
-      case 'roadAccidentRegistry':
-        return this.roadAccident(data);
-      case 'batteryRegistry':
-        return this.bateryCustomId(data);
       case 'tire':
         return this.tireCustomId(data);
       default:
@@ -41,25 +37,6 @@ export default class AutobaseStore extends Store {
     }
   }
 
-  bateryCustomId = ({ result = [] }) => {
-    const {
-      rows = [],
-      extra = {},
-    } = result;
-
-    const newRows = [...rows.map((row) => {
-      const { battery_to_car } = row;
-      const newBattery_to_car = battery_to_car.map((item, index) => ({
-          ...item,
-          customId: index + 1,
-        }));
-      return {
-        ...row,
-        battery_to_car: newBattery_to_car,
-      };
-    })];
-    return { rows: newRows, extra };
-  }
   tireCustomId = ({ result = [] }) => {
     const {
       rows = [],
@@ -69,37 +46,12 @@ export default class AutobaseStore extends Store {
     const newRows = [...rows.map((row) => {
       const { tire_to_car } = row;
       const newtire_to_car = tire_to_car.map((item, index) => ({
-          ...item,
-          customId: index + 1,
-        }));
+        ...item,
+        customId: index + 1,
+      }));
       return {
         ...row,
         tire_to_car: newtire_to_car,
-      };
-    })];
-    return { rows: newRows, extra };
-  }
-
-  roadAccident = ({ result = [] }) => {
-    const {
-      rows = [],
-      extra = {},
-    } = result;
-    const newRows = [...rows.map((row) => {
-      let {
-        driver_fio = '',
-        employee_position_name = '',
-        drivers_license = '',
-        special_license = '',
-      } = row;
-      driver_fio = (!!driver_fio && driver_fio) || '';
-      employee_position_name = (!!employee_position_name && employee_position_name) || '';
-      drivers_license = (!!drivers_license && drivers_license) || '';
-      special_license = (!!special_license && special_license) || '';
-
-      return {
-        ...row,
-        drivers_emplds: `${driver_fio} | ${employee_position_name} ${drivers_license}${(drivers_license !== '' && ' ') || ''}${special_license}`,
       };
     })];
     return { rows: newRows, extra };

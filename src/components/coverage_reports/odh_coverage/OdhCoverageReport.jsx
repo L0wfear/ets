@@ -1,96 +1,95 @@
-import React, { Component } from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as BootstrapMenuItem from 'react-bootstrap/lib/MenuItem';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
 
+import {
+  oldReportGetOdhCoverageReport,
+  oldReportExportOdhCoverageReport,
+} from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-import { connectToStores, FluxContext, bindable } from 'utils/decorators';
-import { getToday859am, getYesterday9am, getDate9am, getNextDay859am, getFormattedDateTime } from 'utils/dates';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+
+import { bindable } from 'utils/decorators';
+import { getYesterday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import DataPicker from 'components/ui/input/date-picker/DatePicker';
 
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 
-import OdhCoverageReportTable from './OdhCoverageReportTable';
-import OdhCoverageReportPrintForm from './OdhCoverageReportPrintForm';
-
-const TWO_MINUTES = 1000 * 60 * 2;
+import OdhCoverageReportTable from 'components/coverage_reports/odh_coverage/OdhCoverageReportTable';
+import OdhCoverageReportPrintForm from 'components/coverage_reports/odh_coverage/OdhCoverageReportPrintForm';
 
 const MenuItem = bindable(BootstrapMenuItem);
 
-// @connectToStores(['reports'])
-// @staticProps({
-//   listName: 'odhCoverageReport',
-//   tableComponent: OdhCoverageReportTable,
-//   formComponent: OdhCoverageReportPrintForm,
-//   operations: ['LIST'],
-// })
+const page = 'odh_coverage_report';
 
-@connectToStores(['reports'])
-@FluxContext
-export default class OdhCoverageReport extends Component {
+class OdhCoverageReport extends React.Component {
+  static propTypes = {
+    odhCoverageReport: PropTypes.array.isRequired,
+    oldReportGetOdhCoverageReport: PropTypes.func.isRequired,
+    oldReportExportOdhCoverageReport: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props);
 
-    const [date_start, date_end] = [getYesterday9am(), new Date()];
-
     this.state = {
-      date_start,
-      date_end,
-      isLoading: false,
+      date_start: getYesterday9am(),
+      date_end: new Date(),
       isExporting: false,
     };
   }
 
   componentDidMount() {
     this.getReport();
-    // this.refreshInterval = setInterval(() => {
-    //   flux.getActions('reports').getOdhCoverageReport();
-    // }, TWO_MINUTES);
   }
 
   componentWillUnmount() {
-    // clearInterval(this.refreshInterval);
   }
 
   getReport = async () => {
-    const { flux } = this.context;
-    const { location: { query } } = this.props;
+    const res = await this.props.oldReportGetOdhCoverageReport(this.state.date_start, this.state.date_end);
+    const dates = res.meta;
 
-    const res = await flux.getActions('reports').getOdhCoverageReport(this.state.date_start, this.state.date_end, query);
-    const dates = res.result.meta;
-
-    if (dates.date_start) this.setState({ date_start: dates.date_start, date_end: dates.date_end });
+    if (dates.date_start) {
+      this.setState({ date_start: dates.date_start, date_end: dates.date_end });
+    }
   }
 
-  handleChangeDateStart = date_start => this.setState({ date_start });
-  handleChangeDateEnd = date_end => this.setState({ date_end });
+  handleChangeDateStart = date_start => (
+    this.setState({ date_start })
+  )
+
+  handleChangeDateEnd = date_end => (
+    this.setState({ date_end })
+  )
 
   showForm = (exportType) => {
     this.setState({ showForm: true, exportType });
   }
 
   export = (date_start = this.state.date_start, date_end = this.state.date_end) => {
-    const { flux } = this.context;
-
     this.setState({ isExporting: true });
-    flux.getActions('reports').exportOdhCoverageReport(date_start, date_end, 'xls')
+    this.props.oldReportExportOdhCoverageReport(date_start, date_end)
       .then(({ blob }) => {
-        saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`);
+        if (blob) {
+          saveData(blob, `Отчет по посещению ОДХ в период с ${getFormattedDateTime(date_start)} по ${getFormattedDateTime(date_end)}.xls`);
+        }
         this.setState({ isExporting: false });
       });
   }
 
   render() {
-    const { odhCoverageReport = [] } = this.props;
+    const { odhCoverageReport } = this.props;
     const { isExporting, date_start, date_end } = this.state;
     const exportGlyph = isExporting ? 'refresh' : 'download-alt';
-    const iconClassname = isExporting ? 'glyphicon-spin' : '';
 
     return (
       <EtsPageWrap>
@@ -107,7 +106,7 @@ export default class OdhCoverageReport extends Component {
           </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">
-              <Glyphicon disabled={isExporting} className={iconClassname} glyph={exportGlyph} />
+              <Glyphicon disabled={isExporting} glyph={exportGlyph} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <MenuItem bindOnClick={1} onClick={() => this.export()}>Ежедневный отчет</MenuItem>
@@ -125,3 +124,23 @@ export default class OdhCoverageReport extends Component {
     );
   }
 }
+
+export default compose(
+  withPreloader({
+    page,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      odhCoverageReport: state.old_report.odhCoverageReport,
+    }),
+    dispatch => ({
+      oldReportGetOdhCoverageReport: (date_start, date_end) => (
+        dispatch(oldReportGetOdhCoverageReport(date_start, date_end, { page }))
+      ),
+      oldReportExportOdhCoverageReport: (date_start, date_end) => (
+        dispatch(oldReportExportOdhCoverageReport(date_start, date_end, { page }))
+      ),
+    }),
+  ),
+)(OdhCoverageReport);

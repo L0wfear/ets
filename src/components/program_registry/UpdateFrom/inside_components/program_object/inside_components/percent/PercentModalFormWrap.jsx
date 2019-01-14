@@ -5,9 +5,9 @@ import { validateField } from 'utils/validate/validateField';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import PercentModalForm from './PercentModalForm';
+import PercentModalForm from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalForm';
 
-import { formValidationSchema } from './schema';
+import { formValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/schema';
 
 class PercentModalFormWrap extends FormWrap {
   constructor(props) {

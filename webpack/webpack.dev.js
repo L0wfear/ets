@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -22,10 +21,13 @@ module.exports = {
     contentBase: './dist',
     port: 3000,
     hot: true,
+    noInfo: true,
     quiet: false,
     inline: true,
     noInfo: true,
     lazy: false,
+    public: '',
+    host: '0.0.0.0',
   },
   output: {
     filename: '[name].bundle.js',
@@ -113,6 +115,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               sourceMap: true,
+              modules: 'global',
             },
           },
           {
@@ -159,7 +162,6 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new ManifestPlugin(),
-    new CleanWebpackPlugin([path.resolve(__dirname, '..', 'dist')]),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),
@@ -179,8 +181,10 @@ module.exports = {
       },
     ]),
     new HtmlWebpackPlugin({
-      title: 'ЕТС',
+      title: `__ETS::${stand.toUpperCase()}__`,
+      favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', 'dev.png'),
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
+      MANIFEST_FILENAME: 'manifest.json'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
@@ -188,7 +192,6 @@ module.exports = {
       __SERVER__: false,
       __DEVELOPMENT__: NODE_ENV !== 'production',
       'process.env': {
-        // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         STAND: JSON.stringify(stand),
         VERSION: JSON.stringify(require(path.join(__dirname, '..', 'package.json')).version)

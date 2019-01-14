@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
 
@@ -13,6 +13,8 @@ import {
 import {
   PropsCarInWorkOverallInfo,
 } from 'components/dashboard/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo.h';
+import { getDashboardState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 const CarInWorkOverallInfo: React.FunctionComponent<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
@@ -28,25 +30,21 @@ const CarInWorkOverallInfo: React.FunctionComponent<PropsCarInWorkOverallInfo> =
   </InfoCard>
 );
 
-const mapStateToProps = (state) => ({
-  infoData: state.dashboard.car_in_work_overall.infoData,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  handleClose: () => (
-    dispatch(
-      dashboardSetInfoDataInCarInWorkOverall(null),
-    )
-  ),
-});
-
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['dashboard', 'car_in_work_overall', 'infoData'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      infoData: getDashboardState(state).car_in_work_overall.infoData,
+    }),
+    (dispatch) => ({
+      handleClose: () => (
+        dispatch(
+          dashboardSetInfoDataInCarInWorkOverall(null),
+        )
+      ),
+    }),
   ),
 )(CarInWorkOverallInfo);

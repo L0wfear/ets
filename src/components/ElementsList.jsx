@@ -15,7 +15,7 @@ import {
 import {
   ButtonCreateNew, ButtonReadNew, ButtonDeleteNew,
   ButtonCreate, ButtonRead, ButtonDelete,
-} from './ui/buttons/CRUD';
+} from 'components/ui/buttons/CRUD';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
@@ -89,7 +89,7 @@ class ElementsList extends React.Component {
    * в случае вызова метода чаще, чем раз в 300мсек, открывает форму с выбранным
    * элементом
    */
-  selectElement = ({ props: { data: selectedElement } }) => {
+  selectElement = ({ props: { data: selectedElement }, props }) => {
     if (props.fromKey) {
       this.setState({ selectedElement });
       return;
@@ -185,30 +185,22 @@ class ElementsList extends React.Component {
   }
 
   onKeyPress(e) {
-    const activeTabIndex = document.activeElement.getAttribute('tabIndex');
-    const appropriateTabIndex = activeTabIndex === '1' || activeTabIndex === '2';
-    if (!appropriateTabIndex) {
-      return;
-    }
+    const { activeElement } = document;
 
-    if (e.code === 'Enter' && this.state.selectedElement !== null && this.state.readPermission) {
-      this.showForm();
-    }
-
-    if (e.code === 'Backspace' && this.state.selectedElement !== null) {
-      e.preventDefault();
-      /**
-       * @todo посмотреть
-       */
-      /*
-      if (typeof this.removeDisabled === 'function') {
-        if (!this.removeDisabled()) {
-          this.removeElement();
-        }
-      } else {
-        this.removeElement();
+    if (activeElement) {
+      const activeTabIndex = activeElement.getAttribute('tabIndex');
+      const appropriateTabIndex = activeTabIndex === '1' || activeTabIndex === '2';
+      if (!appropriateTabIndex) {
+        return;
       }
-      */
+
+      if (e.code === 'Enter' && this.state.selectedElement !== null && this.state.readPermission) {
+        this.showForm();
+      }
+
+      if (e.code === 'Backspace' && this.state.selectedElement !== null) {
+        e.preventDefault();
+      }
     }
   }
 
@@ -389,10 +381,12 @@ class ElementsList extends React.Component {
    * @return {object} tableProps - свойства
    */
   getTableProps() {
-    return Object.assign({},
+    return Object.assign(
+      {},
       this.getBasicProps(),
       this.getSelectedProps(),
-      this.getAdditionalProps());
+      this.getAdditionalProps(),
+    );
   }
 
   /**

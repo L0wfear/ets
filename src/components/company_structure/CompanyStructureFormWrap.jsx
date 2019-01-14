@@ -1,7 +1,7 @@
 import React from 'react';
 import Div from 'components/ui/Div';
-import CompanyStructureForm from './CompanyStructureForm';
-import FormWrap from '../compositions/FormWrap';
+import CompanyStructureForm from 'components/company_structure/CompanyStructureForm';
+import FormWrap from 'components/compositions/FormWrap';
 
 export const companyStructureSchema = {
   properties: [

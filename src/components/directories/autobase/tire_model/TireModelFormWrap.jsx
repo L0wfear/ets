@@ -2,8 +2,8 @@ import React from 'react';
 
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import TireModelForm from './TireModelForm';
-import { formValidationSchema } from './schema';
+import TireModelForm from 'components/directories/autobase/tire_model/TireModelForm';
+import { formValidationSchema } from 'components/directories/autobase/tire_model/schema';
 
 class TireModelFormWrap extends FormWrap {
   constructor(props, context) {

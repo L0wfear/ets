@@ -8,14 +8,19 @@ import { FluxContext } from 'utils/decorators';
  * @abstract
  */
 @FluxContext
-export default class Form extends React.Component {
-
+class Form extends React.Component {
   static get propTypes() {
     return {
       handleFormChange: PropTypes.func.isRequired,
       handleMultipleChange: PropTypes.func,
       onSubmit: PropTypes.func.isRequired,
       formState: PropTypes.object.isRequired,
+    };
+  }
+
+  static defaultProps() {
+    return {
+      handleMultipleChange: v => v,
     };
   }
 
@@ -27,18 +32,19 @@ export default class Form extends React.Component {
     };
   }
 
-  handleChange = (field, e) => {
-    return this.props.handleFormChange(field, e);
-  }
+  handleChange = (field, e) => (
+    this.props.handleFormChange(field, e)
+  )
 
-  handleMultipleChange = (fields) => {
-    this.props.handleMultipleChange(fields);
-  }
+  handleMultipleChange = fields => (
+    this.props.handleMultipleChange(fields)
+  )
 
   handleSubmit = (...props) => this.props.onSubmit(...props);
 
   render() {
     return <div>Form Component</div>;
   }
-
 }
+
+export default Form;

@@ -16,7 +16,6 @@ import {
 
 import {
   PropsCurrentMissions,
-  InnerPropsCurrentMissions,
   StatePropsCurrentMissions,
   DispatchPropsCurrentMissions,
   OwnPropsCurrentMissions,
@@ -27,6 +26,7 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
 import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class CurrentMissions extends React.Component<PropsCurrentMissions, StateCurrentMissions> {
   handleClick = (lastSubItem: CurrentMissionsItemsSubItemsSubItemsType) => {
@@ -43,7 +43,7 @@ class CurrentMissions extends React.Component<PropsCurrentMissions, StateCurrent
   }
 }
 
-export default compose<PropsCurrentMissions, InnerPropsCurrentMissions>(
+export default compose<PropsCurrentMissions, PropsToDefaultCard>(
   withDefaultCard({
     path: 'current_missions',
     loadData: dashboardLoadCurrentMissions,

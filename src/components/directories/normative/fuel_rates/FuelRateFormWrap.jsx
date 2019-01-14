@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseFuelRateForm from './FuelRateForm';
-import { fuelRateSchema, defaultElement } from './fuelRateSchema';
+import BaseFuelRateForm from 'components/directories/normative/fuel_rates/FuelRateForm';
+import { fuelRateSchema, defaultElement } from 'components/directories/normative/fuel_rates/fuelRateSchema';
 
 const FuelRateForm = enhanceWithPermissions(BaseFuelRateForm);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import Div from 'components/ui/Div';
-import DtForm from './DtForm';
+import DtForm from 'components/directories/geoobjects/pages/dt/DtForm';
 
 export default class DtFormWrap extends FormWrap {
   constructor(props, context) {

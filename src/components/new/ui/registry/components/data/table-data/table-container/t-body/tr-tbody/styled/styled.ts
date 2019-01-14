@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { constantColor } from 'global-styled/global-constants';
 
-export const EtsTrTbody = styled.tr<{ enable: boolean; selected: boolean }>`
-  &.ets-tr {
-    cursor: ${({ enable }) => enable ? 'pointer' : 'default'}
+export const EtsTrTbody = styled.tr<{ enable: boolean, selected: boolean, rowData: object }>`
+  &&& {
+    cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
+    pointer-events: ${({ enable }) => enable ? 'all' : 'none'};
 
     &:nth-of-type(odd) {
       background-color: white;
@@ -14,13 +14,13 @@ export const EtsTrTbody = styled.tr<{ enable: boolean; selected: boolean }>`
     }
 
     &:hover {
-      ${EtsTbodyTrTd} {
+      td {
         color: white;
         background-color: ${constantColor.colorLightGreen};
       }
     }
 
-    ${EtsTbodyTrTd} {
+    td {
       color: ${({ selected }) => selected ? 'white' : 'initial'};
       background-color: ${({ selected }) => selected ? constantColor.colorGreen : 'initial'};
     }

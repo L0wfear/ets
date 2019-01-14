@@ -90,7 +90,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
       errorMes = 'Дата окончания периода должна быть позже даты начала';
     }
 
-    const ORGANIZATIONS_OPTION = companies.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
+    const companyOptions = companies.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
 
     return (
       <div>
@@ -126,7 +126,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
                 clearable={false}
                 label={false}
                 value={company_id}
-                options={ORGANIZATIONS_OPTION}
+                options={companyOptions}
                 disabled={readOnly}
                 onChange={this.props.handleChange}
                 boundKeys={['company_id']}

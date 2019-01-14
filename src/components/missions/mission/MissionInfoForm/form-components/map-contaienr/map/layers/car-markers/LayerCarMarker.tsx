@@ -3,7 +3,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { getStyleForStatusDirectionType} from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
@@ -170,7 +170,7 @@ const mapStateToProps = (state) => ({
   token: state.session.token,
 });
 
-export default hocAll(
+export default compose<any, any>(
   connect(
     mapStateToProps,
   ),

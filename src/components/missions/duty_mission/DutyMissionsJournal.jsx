@@ -16,8 +16,8 @@ import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
-import DutyMissionsTable, { getTableMeta } from './DutyMissionsTable';
-import DutyMissionFormWrap from './DutyMissionFormWrap';
+import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
+import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 
 const is_archive = false;
 
@@ -153,7 +153,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
   completeCheckedElements = async () => {
     const checkedElements = Object.values(this.state.checkedElements);
     if (checkedElements.some(({ status }) => status !== 'assigned')) {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполненые" можно только назначенные наряд-задания!'));
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Выполнено" можно только назначенные наряд-задания!'));
       return;
     }
     if (checkedElements.length) {
@@ -179,7 +179,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
     const missions = Object.values(this.state.checkedElements);
 
     if (missions.some(({ status }) => status !== 'assigned')) {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Не выполненые" можно только назначенные наряд-задания!'));
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Не выполнено" можно только назначенные наряд-задания!'));
       return;
     }
 
@@ -198,7 +198,7 @@ export default class DutyMissionsJournal extends CheckableElementsList {
           checkedElements: {},
         });
       } else {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "Невыполненые" можно только назначенные наряд-задания!'));
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Отметить как "выполнено" можно только назначенные наряд-задания!'));
       }
     }
   }

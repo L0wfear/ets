@@ -1,4 +1,5 @@
 import { ButtonTypes } from 'components/new/ui/registry/contants/buttonsTypes';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 export type PropsRegistryWrap = {
   registryAddInitialData: any;
@@ -13,17 +14,21 @@ export type ButtonDefineType = {
   type: ButtonTypes;
 } | string;
 
+export type TypeOneDisplayIf = 'isKgh' | 'isOkrug' | 'lenghtOptionMoreOne' | false;
+
 export type OneFilterType = {
   valueKey: string;
   labelKey?: string;
   title: string;
-  type: 'multiselect';
+  type: 'multiselect'
+    | 'advanced-number';
+  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 };
 
 export type TypeFields = {
   key: string;
   title: any;
-  className?: any;
+  width?: number;
   childrenFields?: TypeFields[];
 };
 
@@ -58,6 +63,7 @@ export type TypeConfigData = {
       array?: any[];
       total_count?: number;
     },
+    permissions: OneRegistryData['list']['permissions'];
     processed?: {
       processedArray?: any[];
       sort?: {

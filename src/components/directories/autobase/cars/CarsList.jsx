@@ -6,6 +6,7 @@ import permissions from 'components/directories/autobase/cars/config-data/permis
 
 import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import CarsTable from 'components/directories/autobase/cars/CarsTable';
+import { getWarningNotification } from 'utils/notifications';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })
@@ -18,11 +19,12 @@ import CarsTable from 'components/directories/autobase/cars/CarsTable';
   formComponent: CarFormWrap,
   operations: ['LIST', 'READ', 'UPDATE'],
 })
-export default class CarsList extends ElementsList {
+class CarsList extends ElementsList {
   constructor() {
     super();
     this.preventUrlFilters = true;
   }
+
   async init() {
     const { flux } = this.context;
 
@@ -41,14 +43,21 @@ export default class CarsList extends ElementsList {
 
     if (searchObject.asuods_id) {
       const asuods_id = parseInt(searchObject.asuods_id, 10);
-      const selectedElement = cars.result.find((car) => car.asuods_id === asuods_id);
+      const selectedElement = cars.result.find(car => car.asuods_id === asuods_id);
 
-      // NOTE Так надо, потому что открыть форму можно только через стейт родительского класса
-      this.setState({
-        ...this.state,
-        selectedElement,
-        showForm: true,
-      });
+      if (selectedElement) {
+        this.setState({
+          selectedElement,
+          showForm: true,
+        });
+      } else {
+        global.NOTIFICATION_SYSTEM.notify(getWarningNotification(`Не найдено ТС c (asuods_id = ${searchObject.asuods_id})`));
+      }
+    }
+    if (searchObject) {
+      this.props.history.replace(this.props.location.pathname, {});
     }
   }
 }
+
+export default CarsList;

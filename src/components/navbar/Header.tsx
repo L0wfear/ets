@@ -74,22 +74,24 @@ const dataGuide = {
 };
 
 const Header = (props) => (
-  <Navbar fluid>
-    <Navbar.Header>
-      <Navbar.Brand>
-        <ETSLogo>ЕТС</ETSLogo>
-      </Navbar.Brand>
-      <Navbar.Toggle />
-    </Navbar.Header>
-    <Navbar.Collapse>
-      <Nav activeKey={props.match.url}>
-        { Object.entries(rWithP).map(makeNavChildren) }
-      </Nav>
-      <Nav pullRight>
-        { Object.entries(dataGuide).map(makeNavChildren) }
-      </Nav>
-    </Navbar.Collapse>
-  </Navbar>
+  <div className="app-navigation">
+    <Navbar fluid>
+      <Navbar.Header>
+        <Navbar.Brand>
+          <ETSLogo>ЕТС</ETSLogo>
+        </Navbar.Brand>
+        <Navbar.Toggle />
+      </Navbar.Header>
+      <Navbar.Collapse>
+        <Nav activeKey={props.match.url}>
+          { Object.entries(rWithP).map(makeNavChildren) }
+        </Nav>
+        <Nav pullRight>
+          { Object.entries(dataGuide).map(makeNavChildren) }
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  </div>
 );
 
 export default withRouter(Header);

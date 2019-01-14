@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
 import { monitorPageAddToSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
@@ -13,7 +13,7 @@ import {
   renderGeoobjects,
 } from 'components/monitor/layers/geoobjects/utils';
 
-class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayerGeooobjects> {
+class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateLayerGeooobjects> {
   componentDidMount() {
     this.props.addLayer({ id: 'GeoObject', zIndex: 0, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -23,13 +23,15 @@ class LayerGeooobjects extends React.Component<PropsLayerGeooobjects, StateLayer
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      hasDiff,
-      diffGeoobjects,
-    } = diffInputProps(this.props, prevProps);
+    if (this.props.geoobjects !== prevProps.geoobjects || this.props.SHOW_GEOOBJECTS !== prevProps.SHOW_GEOOBJECTS) {
+      const {
+        hasDiff,
+        diffGeoobjects,
+      } = diffInputProps(this.props, prevProps);
 
-    if (hasDiff) {
-      renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props);
+      if (hasDiff) {
+        renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props);
+      }
     }
   }
 
@@ -70,7 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   connect(
     mapStateToProps,
     mapDispatchToProps,

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
-import whitPreloader from 'components/ui/new/preloader/hoc/with-preloader/whitPreloader';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import DashboardTime from 'components/dashboard/time/DashboardTime';
 import DashboardMenu from 'components/dashboard/menu/DashboardMenu';
@@ -22,9 +22,9 @@ class DashboardPage extends React.PureComponent<{}, {}> {
   }
 }
 
-export default hocAll(
+export default compose<any, any>(
   triggerOnChangeCompany,
-  whitPreloader({
+  withPreloader({
     page: 'dashboard',
     typePreloader: 'mainpage',
   }),

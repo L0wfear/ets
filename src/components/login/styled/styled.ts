@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
 const background = require('components/login/styled/bg.jpg');
 const jkh = require('components/login/styled/jkh.png');

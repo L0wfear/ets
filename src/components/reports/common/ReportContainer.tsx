@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
@@ -13,14 +14,15 @@ import {
   omit,
   pick,
   uniqBy,
+  get,
 } from 'lodash';
 
-import Title from './Title';
+import Title from 'components/reports/common/Title';
 import { filterFunction } from 'components/ui/tableNew/utils';
 import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 'components/ui/table/@types/schema.h';
 import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
-import { IPropsReportContainer, IStateReportContainer } from './@types/ReportContainer.h';
-import { IPropsReportHeaderCommon } from './@types/ReportHeaderWrapper.h';
+import { IPropsReportContainer, IStateReportContainer } from 'components/reports/common/@types/ReportContainer.h';
+import { IPropsReportHeaderCommon } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux-main/modules/@types/report.h';
 
 import Preloader from 'components/ui/new/preloader/Preloader';
@@ -32,7 +34,6 @@ import DataTableNew from 'components/ui/tableNew/DataTable';
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
-import { compose } from 'recompose';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -111,10 +112,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
         if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
+          const prevFields = get(this.props.prevTableMetaInfo, 'fields', []) || [];
+
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
             summaryMeta: {...this.props.prevMeta},
-            summaryTableMetaInfo: [...this.props.prevTableMetaInfo.fields],
+            summaryTableMetaInfo: [...prevFields],
           });
           this.setState({
             fetchedByMoveDownButton: false,
@@ -221,20 +224,23 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
     if (this.props.notUseServerSummerTable) {
       const { data: old_data } = this.props;
-      const list = filterFunction(old_data.result.rows, { filterValues });
+      const rows = get(old_data, ['result', 'rows'], null);
+      if (rows) {
+        const list = filterFunction(rows, { filterValues });
 
-      const data = {
-        ...old_data,
-        result: {
-          ...old_data.result,
-          rows: [...list],
-        },
-      };
+        const data = {
+          ...old_data,
+          result: {
+            ...old_data.result,
+            rows: [...list],
+          },
+        };
 
-      this.props.setReportDataWithSummerData({
-        data,
-        props: { ...this.state },
-      });
+        this.props.setReportDataWithSummerData({
+          data,
+          props: { ...this.state },
+        });
+      }
     }
   }
 
@@ -327,7 +333,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
-    const cols = tableMetaInfo.fields.reduce((tableMeta, field) => {
+    const fields = get(tableMetaInfo, 'fields', []) || [];
+    const cols = fields.reduce((tableMeta, field) => {
       const [[fieldName, { name: displayName, is_row }]] = Object.entries(field);
 
       if (!is_row) {

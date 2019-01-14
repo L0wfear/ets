@@ -1,36 +1,132 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'constants/autobase';
 import ElementsList from 'components/ElementsList';
-import RoadAccidentFormWrap from 'components/directories/autobase/road_accident/RoadAccidentFormWrap';
+import RoadAccidentFormWrap from 'components/directories/autobase/road_accident/RoadAccidentForm/RoadAccidentFormWrap';
 import RoadAccidentTable from 'components/directories/autobase/road_accident/RoadAccidentTable';
 import permissions from 'components/directories/autobase/road_accident/config-data/permissions';
+import { connect } from 'react-redux';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { compose } from 'recompose';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
+
+const loadingPageName = 'road-accident';
 
 @connectToStores(['autobase', 'employees', 'session'])
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
 @staticProps({
   entity: 'autobase_road_accident',
   permissions,
-  listName: 'roadAccidentRegistryList',
+  listName: 'roadAccidentList',
   tableComponent: RoadAccidentTable,
   formComponent: RoadAccidentFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class RoadAccidentList extends ElementsList {
-  constructor(props, context) {
-    super(props);
-    const { car_id = -1 } = props;
-    this.removeElementAction = context.flux.getActions('autobase').removeRoadAccident.bind(null, car_id === -1 ? {} : { car_id });
+class RoadAccidentList extends ElementsList {
+  removeElementAction = async (id) => {
+    try {
+      await this.props.autobaseRemoveRoadAccident(id);
+      this.loadMainData();
+    } catch (e) {
+      //
+    }
   }
 
   init() {
-    const { flux } = this.context;
-    const { car_id = -1 } = this.props;
+    const { car_id } = this.props;
 
-    if (car_id === -1) {
-      flux.getActions('autobase').getAutobaseListByType('roadAccidentRegistry');
-    } else {
-      flux.getActions('autobase').getAutobaseListByType('roadAccidentRegistry', { car_id });
+    this.loadMainData();
+
+    if (car_id) {
       this.exportPayload = { car_id };
     }
   }
+
+  loadMainData() {
+    const { car_id } = this.props;
+
+    if (!car_id) {
+      this.props.roadAccidentGetAndSetInStore();
+    } else {
+      this.props.roadAccidentGetAndSetInStore({ car_id });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.autobaseResetSetRoadAccident();
+  }
+
+  createElement = () => {
+    const { car_id = null } = this.props;
+
+    this.setState({
+      showForm: true,
+      selectedElement: {
+        car_id,
+      },
+    });
+  }
+
+  onFormHide = (isSubmited) => {
+    const changeState = {
+      showForm: false,
+    };
+
+    if (isSubmited) {
+      this.loadMainData();
+      changeState.selectedElement = null;
+    }
+
+    this.setState(changeState);
+  }
+
+  getAdditionalProps() {
+    return {
+      loadingPageName,
+    };
+  }
 }
+
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      roadAccidentList: getAutobaseState(state).roadAccidentList,
+    }),
+    dispatch => ({
+      carGetAndSetInStore: () => (
+        dispatch(
+          autobaseActions.carGetAndSetInStore(),
+        )
+      ),
+      roadAccidentGetAndSetInStore: (payload = {}) => (
+        dispatch(
+          autobaseActions.roadAccidentGetAndSetInStore(
+            payload,
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+      autobaseResetSetRoadAccident: () => (
+        dispatch(
+          autobaseActions.autobaseResetSetRoadAccident(),
+        )
+      ),
+      autobaseRemoveRoadAccident: id => (
+        dispatch(
+          autobaseActions.autobaseRemoveRoadAccident(
+            id,
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+    }),
+  ),
+)(RoadAccidentList);

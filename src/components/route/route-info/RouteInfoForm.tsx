@@ -4,7 +4,7 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 
 import RouteInfoMap from 'components/route/route-info/map/RouteInfoMap';
 
-import { PropsRouteInfoForm } from './RouteInfoForm.h';
+import { PropsRouteInfoForm } from 'components/route/route-info/RouteInfoForm.h';
 
 class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
   render() {

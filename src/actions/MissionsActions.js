@@ -1,6 +1,10 @@
 import { Actions } from 'flummox';
 import {
- keyBy, clone, cloneDeep, keys 
+  get,
+  keyBy,
+  clone,
+  cloneDeep,
+  keys, 
 } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
@@ -259,7 +263,7 @@ export default class MissionsActions extends Actions {
 
   removeMissionTemplate(id) {
     const payload = { id };
-    return MissionTemplateService.delete(payload, null, 'json');
+    return MissionTemplateService.delete(payload, false, 'json');
   }
 
   updateMissionTemplate(missionTemplate) {
@@ -295,7 +299,8 @@ export default class MissionsActions extends Actions {
     return DutyMissionService.get(payload).then(({ result }) => ({
       result: {
         ...result,
-        rows: result.rows.map(({ brigade_employee_id_list = [], ...empl }) => {
+        rows: result.rows.map((empl) => {
+          const brigade_employee_id_list = get(empl, 'brigade_employee_id_list', []) || [];
           empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
           empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
 
@@ -365,7 +370,8 @@ export default class MissionsActions extends Actions {
     }
 
     return DutyMissionTemplateService.get(payload).then(({ result }) => ({
-      result: result.map(({ brigade_employee_id_list = [], ...empl }) => {
+      result: result.map((empl) => {
+        const brigade_employee_id_list = get(empl, 'brigade_employee_id_list', []) || [];
         empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
         empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
 

@@ -1,4 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 const SESSION = createPath('SESSION');
 
@@ -7,10 +8,14 @@ export const SESSION_RESET_DATA = SESSION`RESET_DATA`;
 
 export const SESSION_SET_CONFIG = SESSION`SET_CONFIG`;
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
+const MAP_INITIAL_CENTER: InitialStateSession['userData']['map_config']['coordinates'] = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
 
-export const CONFIG_INITIAL = { // дефолтное значение конфигурации
+export const CONFIG_INITIAL: InitialStateSession['appConfig'] = { // дефолтное значение конфигурации
+  category_license: {
+    category_drivers_license: [],
+    category_special_license: [],
+  },
   enums: {
     FUEL_TYPE: {},
   },
@@ -33,13 +38,20 @@ export const CONFIG_INITIAL = { // дефолтное значение конф�
   project_name: '',
 };
 
-const initialState = {
+const initialState: InitialStateSession = {
   userData: {
     map_config: {
       zoom: MAP_INITIAL_ZOOM,
       coordinates: MAP_INITIAL_CENTER,
     },
     permissions: [],
+    structure_id: null,
+    structure_name: null,
+    structures: [],
+    company_id: null,
+    isOkrug: false,
+    isKgh: false,
+    permissionsSet: new Set(),
   },
   token: null,
   appConfig: CONFIG_INITIAL,

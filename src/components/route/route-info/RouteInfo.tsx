@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {
-  FlexWrapContainer,
+  FlexContainer,
   Flex,
 } from 'global-styled/global-styled';
 import {
@@ -25,7 +25,7 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
     return (
       <RouteInfoContainerDiv>
         <RouteNameDiv none={props.noRouteName}><b>{route.name}</b></RouteNameDiv>
-        <FlexWrapContainer>
+        <FlexContainer isWrap>
           <Flex grow={2} shrink={2} basis={400}>
             <RouteInfoMap
               input_lines={route.input_lines}
@@ -41,7 +41,7 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
               draw_object_list={route.draw_object_list}
             />
           </Flex>
-        </FlexWrapContainer>
+        </FlexContainer>
       </RouteInfoContainerDiv>
     );
   }

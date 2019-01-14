@@ -36,7 +36,7 @@ export const dashBoardResetData: any = () => ({
   payload: {},
 });
 
-export const dashboardLoadMissionDataForCurrentMission: (id?: number) => any = (id) => (dispatch) => {
+export const dashboardLoadMissionDataForCurrentMission: any = (id: number) => (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {
@@ -198,7 +198,7 @@ export const dashboardLoadCardDataByPath = (path, payload?) => (dispatch) => {
   return dispatch(dashboardLoadCardData(path, payload));
 };
 
-export const dashboardLoadCurrentMissions = () => (
+export const dashboardLoadCurrentMissions: any = () => (
   dashboardLoadCardDataByPath('current_missions')
 );
 
@@ -210,7 +210,7 @@ export const dashboardLoadOdhNotCoveredByMissionsOfCurrentShift = () => (
   dashboardLoadCardDataByPath('odh_not_covered_by_missions_of_current_shift')
 );
 
-export const dashboardLoadOdhNotCoveredByRoutes = () => (
+export const dashboardLoadOdhNotCoveredByRoutes: any = () => (
   dashboardLoadCardDataByPath('odh_not_covered_by_routes')
 );
 
@@ -231,7 +231,7 @@ export const dashboardLoadOrders = () => (
   )
 );
 
-export const dashboardLoadCurrentDutyMissions = () => (
+export const dashboardLoadCurrentDutyMissions: any = () => (
   dashboardLoadCardDataByPath('current_duty_missions')
 );
 
@@ -266,7 +266,7 @@ export const dashboardLoadDependentDataByWaybillDraft: any = () => (dispatch) =>
   dispatch(dashboardLoadCarInWorkOverall());
 };
 
-export const dashboardLoadDependentDataByWaybillInProgress = () => (dispatch) => {
+export const dashboardLoadDependentDataByWaybillInProgress: any = () => (dispatch) => {
   dispatch(dashboardLoadWaybillClosed());
   dispatch(dashboardLoadFutureMissions());
   dispatch(dashboardLoadCurrentMissions());
@@ -276,7 +276,8 @@ export const dashboardLoadDependentDataByWaybillInProgress = () => (dispatch) =>
   dispatch(dashboardLoadCarInWorkOverall());
 };
 
-export const dashboardLoadDependentDataByWaybillCompleted = () => (dispatch) => {
+export const dashboardLoadDependentDataByWaybillCompleted: any = () => (dispatch) => {
+  dispatch(dashboardLoadWaybillCompleted());
   dispatch(dashboardLoadWaybillClosed());
   dispatch(dashboardLoadFutureMissions());
   dispatch(dashboardLoadCurrentMissions());
@@ -302,4 +303,9 @@ export const dashboardLoadDependentDataByNewDutyMission: any = () => (dispatch) 
   dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
   dispatch(dashboardLoadOdhNotCoveredByRoutes());
   dispatch(dashboardLoadOdhCoveredByRoutes());
+};
+
+export const dashboardLoadDependentDataByCloseMission: any = () => (dispatch) => {
+  dispatch(dashboardLoadWaybillInProgress());
+  dispatch(dashboardLoadWaybillCompleted());
 };

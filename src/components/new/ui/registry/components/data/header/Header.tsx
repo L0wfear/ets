@@ -6,6 +6,7 @@ import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/h
 
 type PropsHeader = {
   registryKey: string;
+  components?: any;
 };
 
 type StateHeader = {

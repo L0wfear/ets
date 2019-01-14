@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { IStateBrigadeEfficiency } from './@types/report.h';
+import { IStateBrigadeEfficiency } from 'components/reports/operational/brigade_efficiency/@types/report.h';
 
 import { DutyMissionService } from 'api/missions';
 import { exportable } from 'utils/decorators';
 import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
 import DutyMissionFormSCC from 'components/missions/duty_mission/DutyMissionFormWrap';
 import ReportContainer from 'components/reports/common/ReportContainer';
-import reportProps, { serviceUrl, renderers } from './reportProps';
+import reportProps, { serviceUrl, renderers } from 'components/reports/operational/brigade_efficiency/reportProps';
 
 const DutyMissionForm: any = DutyMissionFormSCC;
 const exportableTSX: any = exportable;

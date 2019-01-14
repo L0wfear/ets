@@ -13,15 +13,7 @@ type PropsLayerZoom = {
   map: ol.Map;
 };
 
-class LayerZoom extends React.Component<PropsLayerZoom, {}> {
-  componentDidMount() {
-    this.props.addLayer({ id: 'Zoom', zIndex: 100 });
-  }
-
-  componentWillUnmount() {
-    this.props.removeLayer();
-  }
-
+class LayerZoom extends React.PureComponent<PropsLayerZoom, {}> {
   handleClickInc = () => {
     const { map } = this.props;
 

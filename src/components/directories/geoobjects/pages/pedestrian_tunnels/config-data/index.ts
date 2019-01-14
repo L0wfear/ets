@@ -3,7 +3,7 @@ import components from 'components/directories/geoobjects/pages/pedestrian_tunne
 
 export default {
   path: '/pedestrian-tunnels',
-  title: 'Пешеходные тоннули',
+  title: 'Пешеходные тоннели',
   entyity: 'pedestrian_tunnels',
   noDotList: false,
   components,

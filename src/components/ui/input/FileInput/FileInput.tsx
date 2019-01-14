@@ -5,7 +5,7 @@ import * as BootstrapButton from 'react-bootstrap/lib/Button';
 
 import * as cx from 'classnames';
 
-import { IPropsFileInput, IStateFileInput, IFileWrapper } from './FileInput.h';
+import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
 

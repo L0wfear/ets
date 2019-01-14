@@ -3,8 +3,8 @@ import React from 'react';
 import { connectToStores } from 'utils/decorators';
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import TechInspectionForm from './TechInspectionForm';
-import { formValidationSchema } from './schema';
+import TechInspectionForm from 'components/directories/autobase/tech_inspection/TechInspectionForm';
+import { formValidationSchema } from 'components/directories/autobase/tech_inspection/schema';
 
 @connectToStores(['session'])
 class TechInspectionFormWrap extends FormWrap {

@@ -22,6 +22,15 @@ export const getTableMeta = ({
   const tableMeta = {
     cols: [
       {
+        name: 'id',
+        displayName: 'ID',
+        type: 'number',
+        filter: {
+          type: 'advanced-number',
+        },
+        cssClassName: 'width60',
+      },
+      {
         name: 'status',
         displayName: 'Статус',
         type: 'string',

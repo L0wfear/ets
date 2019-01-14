@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 import { connect } from 'react-redux';
 
@@ -18,6 +18,7 @@ import {
   MONITOR_PAGE_SET_GEOMETRY,
   MONITOR_PAGE_SET_COMPANY,
 } from 'components/monitor/redux-main/models/monitor-page';
+import { MonitorPageContainer } from 'components/monitor/styled';
 
 type PropsMonitorPage = {
   token: string;
@@ -47,10 +48,10 @@ class MonitorPage extends React.Component<PropsMonitorPage, StateMonitorPage> {
 
     return (
       props.token ?
-        <div className="monitor-page">
+        <MonitorPageContainer>
           <MapWrap />
           <ToolBar />
-        </div>
+        </MonitorPageContainer>
       :
         <div>загрузка...</div>
     );
@@ -83,7 +84,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose(
   triggerOnChangeCompany,
   connect(
     mapStateToProps,

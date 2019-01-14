@@ -12,12 +12,15 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import {
   uniqBy,
   isEmpty as lodashIsEmpty,
+  get,
 } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
-import RouteInfo from 'components/route/route-info/RouteInfo';
+import RouteInfo from 'components/route_new/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-import RouteFormWrap from 'components/route/form/RouteFormWrap';
+// import RouteFormWrap from 'components/route/form/RouteFormWrap';
+import RouteFormWrapNew from 'components/route_new/form/RouteFormWrap';
+
 import Field from 'components/ui/Field';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
@@ -44,6 +47,7 @@ import ColumnAssignment from 'components/missions/mission/MissionForm/ColumnAssi
 
 import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/HiddenMapForPrint';
 import missionPermission from 'components/missions/mission/config-data/permissions';
+import { isArray } from 'util';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -73,6 +77,7 @@ export class MissionForm extends Form {
     this.state = {
       available_route_types: [],
       selectedRoute: null,
+      selectedRouteNew: null,
       showRouteForm: false,
       carsList: [],
       routesList: [],
@@ -81,7 +86,7 @@ export class MissionForm extends Form {
       showColumnAssignment: false,
       showBackButton: false,
       firstFormState: {
-        ...this.props.formState
+        ...this.props.formState,
       },
     };
   }
@@ -106,6 +111,7 @@ export class MissionForm extends Form {
       .then(([technicalOperationsData, selectedRoute, routesList]) => this.setState({
         ...technicalOperationsData,
         selectedRoute,
+        selectedRouteNew: selectedRoute,
         routesList,
         carsList: this.props.carsList,
       }));
@@ -114,9 +120,15 @@ export class MissionForm extends Form {
   handleRouteIdChange = (route_id) => {
     const changesObj = {
       route_id,
-      is_cleaning_norm: false,
-      norm_id: null,
     };
+
+    if (this.props.formState.is_column) {
+      changesObj.is_cleaning_norm = this.props.formState.car_id.map(() => false);
+      changesObj.norm_id = this.props.formState.car_id.map(() => null);
+    } else {
+      changesObj.is_cleaning_norm = false;
+      changesObj.norm_id = null;
+    }
 
     const { flux } = this.context;
     if (route_id) {
@@ -146,7 +158,7 @@ export class MissionForm extends Form {
               is_cleaning_norm: [...newObj.is_cleaning_norm, normData.is_cleaning_norm],
             }), { norm_id: [], is_cleaning_norm: [] });
 
-            if (changesObjSecond.is_cleaning_norm.some((value) => value)) {
+            if (changesObjSecond.is_cleaning_norm.some(value => value)) {
               const { formState: { date_start, date_end } } = this.props;
 
               if (date_start && date_end) {
@@ -159,17 +171,17 @@ export class MissionForm extends Form {
             }
 
             if (!formState.is_column) {
-              changesObjSecond.norm_id = changesObjSecond.norm_id[0];
-              changesObjSecond.is_cleaning_norm = changesObjSecond.is_cleaning_norm[0];
+              [changesObjSecond.norm_id] = changesObjSecond.norm_id;
+              [changesObjSecond.is_cleaning_norm] = changesObjSecond.is_cleaning_norm;
             }
 
             this.props.handleMultiFormChange(changesObjSecond);
           });
 
-          this.setState({ selectedRoute: route });
+          this.setState({ selectedRoute: route, selectedRouteNew: route });
         });
     } else {
-      this.setState({ selectedRoute: null });
+      this.setState({ selectedRoute: null, selectedRouteNew: null });
     }
 
     this.props.handleMultiFormChange(changesObj);
@@ -204,20 +216,21 @@ export class MissionForm extends Form {
         });
       }
 
-
       this.props.handleMultiFormChange({
         car_id,
         type_id,
         assign_to_waybill,
-        is_cleaning_norm: false,
-        norm_id: null,
+        is_cleaning_norm: isArray(car_id) ? car_id.map(() => false) : false,
+        norm_id: isArray(car_id) ? car_id.map(() => null) : null,
       });
 
       this.handleRouteIdChange(undefined);
     }
   }
 
-  handleColumnFlag = (name, is_column) => {
+  handleColumnFlag = (e) => {
+    const is_column = get(e, ['target', 'checked']);
+
     let {
       formState: {
         car_id,
@@ -227,6 +240,7 @@ export class MissionForm extends Form {
         assign_to_waybill,
       },
     } = this.props;
+
     if (car_id) {
       if (is_column) {
         car_id = [car_id];
@@ -252,7 +266,7 @@ export class MissionForm extends Form {
       if (is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       } else {
-        is_cleaning_norm = null;
+        is_cleaning_norm = false;
       }
     }
     if (assign_to_waybill) {
@@ -284,6 +298,7 @@ export class MissionForm extends Form {
       technical_operation_id,
       municipal_facility_id: null,
       is_cleaning_norm: false,
+      is_column: false,
       norm_id: null,
       ...changedObj,
     });
@@ -334,12 +349,32 @@ export class MissionForm extends Form {
     });
   }
 
+  createNewRouteNew = () => {
+    this.setState({
+      showRouteFormNew: true,
+      selectedRouteNew: {
+        is_main: true,
+        name: '',
+        municipal_facility_id: this.props.formState.municipal_facility_id,
+        municipal_facility_name: '',
+        technical_operation_id: this.props.formState.technical_operation_id,
+        technical_operation_name: '',
+        structure_id: this.props.formState.structure_id,
+        structure_name: '',
+        type: null,
+        object_list: [],
+        input_lines: [],
+        draw_object_list: [],
+      },
+    });
+  }
+
   onFormHide = (isSubmitted, result) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
     const { formState } = this.props;
 
-    if (isSubmitted === true) {
+    if (isSubmitted) {
       handleRouteFormHide(
         formState,
         this.state,
@@ -354,6 +389,28 @@ export class MissionForm extends Form {
     this.setState({ showRouteForm: false });
   }
 
+  onFormHideNew = (isSubmitted, payloadData) => {
+    const route = get(payloadData, ['payload', 'route'], null);
+
+    const { flux } = this.context;
+    const routesActions = flux.getActions('routes');
+    const { formState } = this.props;
+
+    if (isSubmitted) {
+      handleRouteFormHide(
+        formState,
+        this.state,
+        routesActions.getRoutesBySomeData,
+      ).then((ans) => {
+        this.setState({ ...ans });
+      });
+
+      this.handleRouteIdChange(route.id);
+    }
+
+    this.setState({ showRouteFormNew: false });
+  }
+
   handleChangeDateStart = (date_start) => {
     if (date_start) {
       const { date_end } = this.props.formState;
@@ -362,13 +419,14 @@ export class MissionForm extends Form {
       if (!this.props.formState.is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       }
+
       const changesObj = {
         date_start,
         date_end,
       };
       const { selectedRoute } = this.state;
 
-      if (date_start && date_end && is_cleaning_norm.some((value) => value) && selectedRoute) {
+      if (date_start && date_end && is_cleaning_norm.some(value => value) && selectedRoute) {
         const { time } = routeTypesByKey[selectedRoute.type];
 
         if (diffDates(date_end, date_start, 'hours') > time) {
@@ -381,7 +439,11 @@ export class MissionForm extends Form {
     this.handleChange('date_start', date_start);
   }
 
-  handleChangeHoursDateEnd = countHours => this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
+  handleChangeHoursDateEnd = (countHours) => {
+    if (this.props.formState.date_start) {
+      this.handleChangeDateEnd(addTime(this.props.formState.date_start, countHours, 'hours'));
+    }
+  }
 
   handleChangeDateEnd = newDate => this.handleChange('date_end', newDate);
 
@@ -462,6 +524,7 @@ export class MissionForm extends Form {
       carsList = [],
       technicalOperationsList = [],
       selectedRoute: route = null,
+      selectedRouteNew: routeNew = null,
       available_route_types = [],
       kind_task_ids,
     } = this.state;
@@ -474,8 +537,8 @@ export class MissionForm extends Form {
     }, []);
 
     const CARS = carsList
-      .filter((c) => ((!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.available_to_bind) || (state.car_id && state.car_id === c.asuods_id))
-      .map((c) => ({
+      .filter(c => ((!state.structure_id || c.is_common || c.company_structure_id === state.structure_id) && c.available_to_bind) || (state.car_id && state.car_id === c.asuods_id))
+      .map(c => ({
         value: c.asuods_id,
         available: c.available,
         label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
@@ -487,7 +550,7 @@ export class MissionForm extends Form {
     const filteredRoutes = (
       route !== null
       && route.id !== undefined
-      && routes.find((item) => item.value === route.id) === undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -574,7 +637,6 @@ export class MissionForm extends Form {
         || !state.municipal_facility_id
       ) && !IS_NOT_IN_WAYBILL
     );
-    console.log(sourceIsOrder);
 
     const municipalFacilityIdDisabled = (
       (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
@@ -702,7 +764,7 @@ export class MissionForm extends Form {
                         />
                       </Col>
                       <Col md={1}>
-                        <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
+                        <Dropdown id="date-end-dropdown" disabled={IS_DISPLAY || !state.date_start} onSelect={this.handleChangeHoursDateEnd} title="Продолжительность задания, ч">
                           <Dropdown.Toggle disabled={IS_DISPLAY}>
                             <Glyphicon id="select-date_end" glyph="time" />
                           </Dropdown.Toggle>
@@ -761,7 +823,6 @@ export class MissionForm extends Form {
                         label="Создать задания на колонну"
                         disabled={columnFlagDisability}
                         value={state.is_column}
-                        boundKeys={['is_column', !state.is_column]}
                         onChange={this.handleColumnFlag}
                       />
                     </Col>
@@ -781,7 +842,10 @@ export class MissionForm extends Form {
                       onChange={this.handleRouteIdChange}
                     />
                     <Div hidden={state.route_id}>
-                      <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
+                      {
+                        // <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
+                      }
+                      <Button id="create-route" onClick={this.createNewRouteNew} disabled={routeIdDisabled}>Создать новый</Button>
                     </Div>
                   </Col>
                 </Row>
@@ -809,7 +873,7 @@ export class MissionForm extends Form {
                       type="number"
                       label="Количество циклов"
                       error={errors.passes_count}
-                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)} 
+                      disabled={(IS_POST_CREATING_ASSIGNED || IS_DISPLAY) && (IS_FAIL || IS_COMPLETE)}
                       value={state.passes_count}
                       onChange={this.handleChange.bind(this, 'passes_count')}
                       min={0}
@@ -870,38 +934,49 @@ export class MissionForm extends Form {
                         onChange={this.handleChange.bind(this, 'assign_to_waybill')}
                       />
                     </Div>
+                  )}
+                  {
+                    !state.is_column && (
+                    <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
+                      <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
+                        <Glyphicon id="m-print" glyph="print" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+                        <MenuItem eventKey={2}>Печать</MenuItem>
+                      </Dropdown.Menu>
+                    </Dropdown>
                     )}
-                    {
-                      !state.is_column && (
-                      <Dropdown id="waybill-print-dropdown" dropup disabled={!state.status || !this.props.canSave || !state.route_id} onSelect={this.props.handlePrint}>
-                        <Dropdown.Toggle disabled={!state.status || !this.props.canSave || !state.route_id}>
-                          <Glyphicon id="m-print" glyph="print" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                          <MenuItem eventKey={2}>Печать</MenuItem>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                    <ButtonSaveMission id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMission>
-                  </Div>
-                </Modal.Footer>
-                <HiddenMapForPrint
-                  route={route}
-                  printMapKeySmall={this.props.printMapKeySmall}
-                />
+                  <ButtonSaveMission id="m-submit" onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMission>
+                </Div>
+              </Modal.Footer>
+              <HiddenMapForPrint
+                route={route}
+                printMapKeySmall={this.props.printMapKeySmall}
+              />
+              {
+                /*
                 <RouteFormWrap
                   element={route}
                   onFormHide={this.onFormHide}
                   showForm={this.state.showRouteForm}
                   fromMission
                   notTemplate
-                  fromOrder={this.props.fromOrder}
                   available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
                   structureId={state.structure_id}
                 />
-              </Modal>
-            )
+                */
+              }
+              <RouteFormWrapNew
+                element={routeNew}
+                showForm={this.state.showRouteFormNew}
+                handleHide={this.onFormHideNew}
+                hasMissionStructureId={!!state.structure_id}
+                missionAvailableRouteTypes={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
+                fromMission
+              />
+            </Modal>
+          )
         }
       </div>
     );

@@ -5,7 +5,7 @@ import {
   TPropsDataTableInputWrapper,
   TInjectedPropsDataTableInputWrapper,
   IStateDataTableInputWrapper,
-} from './DataTableInputWrapper.h';
+} from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 
 import { validateField } from 'utils/validate/validateField';
 
@@ -48,7 +48,6 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.props.onValidation(validityOptions);
     }
     handleItemChange = (index, key, value) => {
-      /// Не передаётся индекс!!! index is NaN
       index = index || this.state.selectedIndex || 0;
       const newItems = this.props.inputList.map(
         (item: any, i) => i === index
@@ -64,7 +63,6 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
     handleItemAdd = () => {
       const { inputList } = this.props;
       let maxCustomId = 0;
-
       inputList.map((item) => {
         maxCustomId = item.customId > maxCustomId ? item.customId : maxCustomId;
         return item;
@@ -90,7 +88,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
     handleRowSelected = (selectedRow) => {
       let selectedIndex = 0;
       this.props.inputList.forEach((item, index) => {
-        selectedIndex = item.id === selectedRow.props.data.id ? index : selectedIndex;
+        selectedIndex = item.customId === selectedRow.props.data.customId ? index : selectedIndex;
       });
       this.setState({ selectedIndex });
     }

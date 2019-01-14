@@ -12,7 +12,6 @@ import {
 import CurrentDutyMissionInfo from 'components/dashboard/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
 
 import {
-  InnerPropsCurrentDutyMissions,
   StatePropsCurrentDutyMissions,
   DispatchPropsCurrentDutyMissions,
   OwnPropsCurrentDutyMissions,
@@ -24,6 +23,7 @@ import {
 } from 'components/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
+import { PropsToDefaultCard } from 'components/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, StateCurrentDutyMissions> {
   handleClick = (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => {
@@ -43,7 +43,7 @@ class CurrentDutyMissions extends React.Component<PropsCurrentDutyMissions, Stat
   }
 }
 
-export default compose<PropsCurrentDutyMissions, InnerPropsCurrentDutyMissions>(
+export default compose<PropsCurrentDutyMissions, PropsToDefaultCard>(
   withDefaultCard({
     path: 'current_duty_missions',
     loadData: dashboardLoadCurrentDutyMissions,

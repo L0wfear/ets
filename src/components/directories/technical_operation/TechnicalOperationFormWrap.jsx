@@ -3,7 +3,7 @@ import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { technicalOperationSchema } from 'models/TechOperationModel';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
-import BaseTechnicalOperationForm from './TechnicalOperationForm';
+import BaseTechnicalOperationForm from 'components/directories/technical_operation/TechnicalOperationForm';
 
 const TechnicalOperationForm = enhanceWithPermissions(BaseTechnicalOperationForm);
 

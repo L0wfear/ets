@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Overlay from 'components/map/overlay/Overlay';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { carInfoSetTrackPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -251,7 +251,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carActualGpsNumberIndex'],
     type: 'none',

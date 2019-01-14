@@ -3,8 +3,8 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import { makeDate } from 'utils/dates';
-import * as orderNotifiyMp3 from 'assets/audio/orderNotifiy.mp3';
-import * as orderNotifiyOgg from 'assets/audio/orderNotifiy.ogg';
+import * as orderNotifiyMp3 from 'components/modal_notification/audio/orderNotifiy.mp3';
+import * as orderNotifiyOgg from 'components/modal_notification/audio/orderNotifiy.ogg';
 import { setMakeReadOrderNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';

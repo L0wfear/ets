@@ -8,7 +8,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
-import Form from '../compositions/Form';
+import Form from 'components/compositions/Form';
 
 const DEY = { value: 3, label: 'ДЭУ' };
 const DEK = { value: 2, label: 'ДЭК' };

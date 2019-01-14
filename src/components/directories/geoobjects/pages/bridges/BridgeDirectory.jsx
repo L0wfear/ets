@@ -10,7 +10,7 @@ import permissions from 'components/directories/geoobjects/pages/bridges/config-
   path: 'gormost',
   entity: 'bridges',
   permissions,
-  listName: 'bridgessList',
+  listName: 'bridgesList',
   tableComponent: BridgeTable,
   formComponent: GeoObjectsMapModalWrap,
   formRenderers: renderers,

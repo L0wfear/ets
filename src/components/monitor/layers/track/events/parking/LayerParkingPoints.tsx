@@ -3,7 +3,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForParking } from 'components/monitor/layers/track/events/parking/feature-style';
@@ -26,9 +26,9 @@ type PropsLayerParkingPoints = {
 type StateLayerParkingPoints = {
 };
 
-class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateLayerParkingPoints> {
+class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, StateLayerParkingPoints> {
   componentDidMount() {
-    this.props.addLayer({ id: 'ParkingPoints', zIndex: 4 }).then(() => {
+    this.props.addLayer({ id: 'ParkingPoints', zIndex: 4, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       this.drawTrackPoints(this.props.front_parkings);
@@ -88,7 +88,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'front_parkings'],
     type: 'none',

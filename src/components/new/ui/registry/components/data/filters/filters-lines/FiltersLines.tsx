@@ -4,6 +4,7 @@ import { getFilterData } from 'components/new/ui/registry/module/selectors-regis
 import MultiselectRegestryFilter from 'components/new/ui/registry/components/data/filters/filters-lines/multiselect/MultiselectRegestryFilter';
 import { EtsFiltersLines } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { registryChangeFilterRawValues } from 'components/new/ui/registry/module/actions-registy';
+import AdvancedNumberFilter from 'components/new/ui/registry/components/data/filters/filters-lines/advanced-number/AdvancedNumberFilter';
 
 type PropsFiltersLines = {
   registryKey: string;
@@ -31,7 +32,21 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
           onChange={this.handleChange}
         />
       );
-      default: return <div>{`not found filter with type ${type}`}</div>;
+      case 'advanced-number': return (
+        <AdvancedNumberFilter
+          key={otherFilterData.valueKey}
+          filterData={otherFilterData}
+          registryKey={registryKey}
+          onChange={this.handleChange}
+        />
+      );
+      default: return (
+        <div
+          key={otherFilterData.valueKey}
+        >
+          {`not found filter with type ${type}`}
+        </div>
+      );
     }
   }
   render() {

@@ -80,6 +80,10 @@ export const FuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('fuel
 export const CarPoolService = ETS_API_FACTORY.createApiServiceAdapter('carpool', {});
 export const DangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('danger_zone', {});
 export const GeozonesService = ETS_API_FACTORY.createApiServiceAdapter('geozones', {});
+
+export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
+export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
+
 export const GeozoneMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('geozone_municipal_facility', {});
 
 export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
@@ -91,7 +95,6 @@ export const WaybillsReportService = ETS_API_FACTORY.createApiServiceAdapter('wa
 export const AnalyticsService = ETS_API_FACTORY.createApiServiceAdapter('analytical_reports', {});
 export const CarFuncTypeUsageReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_company', {});
 export const CarFuncTypeUsageDetailReportService = ETS_API_FACTORY.createApiServiceAdapter('car_usage_by_func_type', {});
-export const CoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('current_coverage_report', {});
 export const OdhCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('odh_coverage_report', {});
 export const DtCoverageReportService = ETS_API_FACTORY.createApiServiceAdapter('dt_coverage_report', {});
 

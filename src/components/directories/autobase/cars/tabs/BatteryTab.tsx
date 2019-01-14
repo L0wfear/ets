@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IBaseForm } from 'components/ui/@types/Form.h';
 
 import { hiddeColumns } from 'components/ui/table/utils';
-import BatteryRegTable from 'components/directories/autobase/battery_registry/BatteryRegTable';
+import BatteryRegTable from 'components/directories/autobase/battery_registry/BatteryRegistryTable';
 
 const schemaMakers = {
   name_org: hiddeColumns,

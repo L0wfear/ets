@@ -34,7 +34,7 @@ export default class RepairStore extends Store {
   }
 
   handleChangeListActive({ listName, listNameTrue }) {
-    const list = this.state[listNameTrue];
+    const { [listNameTrue]: list } = this.state;
     this.setState({ [listName]: list });
   }
 

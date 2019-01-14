@@ -9,7 +9,7 @@ import { IVehicle, IVehicleRegister } from 'api/@types/services/index.h';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 import config from 'config';
-import { CarTab, CarImageWrapper } from '../styled/styled';
+import { CarTab, CarImageWrapper } from 'components/directories/autobase/cars/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 
 export type TFormState = IVehicle & IVehicleRegister;
@@ -30,7 +30,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           value={props.state.register_certificate_number}
           onChange={props.onChange}
           boundKeys={['register_certificate_number']}
-          disabled={!props.isPermitted}
+          disabled={!props.isPermitted || props.state.register_disabled}
         />
         <ExtField
           type="string"
@@ -38,7 +38,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           value={props.state.register_given_by}
           onChange={props.onChange}
           boundKeys={['register_given_by']}
-          disabled={!props.isPermitted}
+          disabled={!props.isPermitted || props.state.register_disabled}
           error={props.errors.register_given_by}
         />
         <ExtField
@@ -48,7 +48,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           date={props.state.register_given_at}
           onChange={props.onChange}
           boundKeys={['register_given_at']}
-          disabled={!props.isPermitted}
+          disabled={!props.isPermitted || props.state.register_disabled}
         />
         <ExtField
           type="text"
@@ -58,7 +58,7 @@ const RegisterInfoTab: React.FunctionComponent<IPropsRegisterInfoTab> = (props) 
           boundKeys={['register_note']}
           textAreaStyle={{ resize: 'none' }}
           rows={7}
-          disabled={!props.isPermitted}
+          disabled={!props.isPermitted || props.state.register_disabled}
           error={props.errors.register_note}
         />
       </Col>

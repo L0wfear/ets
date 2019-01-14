@@ -2,8 +2,16 @@ import * as React from 'react';
 
 import Data from 'components/new/ui/registry/components/data/Data';
 
+import {
+  EtsRegistry,
+} from 'components/new/ui/registry/components/styled/styled';
+
 type PropsRegistry = {
   registryKey: string;
+  components?: any;
+  handleClickOnRow?: any;
+  handleDoubleClickOnRow?: any;
+  formSetFormState?: (object) => void;
 };
 
 type StateRegistry = {
@@ -11,12 +19,22 @@ type StateRegistry = {
 
 class Registry extends React.Component<PropsRegistry, StateRegistry> {
   render() {
-    const { registryKey } = this.props;
+    const { props } = this;
+
+    const {
+      registryKey,
+      components,
+    } = props;
 
     return (
-      <div className="ets_registry">
-        <Data registryKey={registryKey} />
-      </div>
+      <EtsRegistry>
+        <Data
+          registryKey={registryKey}
+          components={components}
+          handleClickOnRow={props.handleClickOnRow}
+          handleDoubleClickOnRow={props.handleDoubleClickOnRow}
+        />
+      </EtsRegistry>
     );
   }
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Feature from 'ol/Feature';
 
 import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForFuelEventLeak} from 'components/monitor/layers/fuel-event/leak/feature-style';
@@ -26,9 +26,9 @@ type PropsLayerFuelEventLeakPoint = {
 type StateLayerFuelEventLeakPoint = {
 };
 
-class LayerFuelEventLeakPoint extends React.Component<PropsLayerFuelEventLeakPoint, StateLayerFuelEventLeakPoint> {
+class LayerFuelEventLeakPoint extends React.PureComponent<PropsLayerFuelEventLeakPoint, StateLayerFuelEventLeakPoint> {
   componentDidMount() {
-    this.props.addLayer({ id: 'FuelEventsLeak', zIndex: 11 }).then(() => {
+    this.props.addLayer({ id: 'FuelEventsLeak', zIndex: 11, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       this.drawFuelEventsLeakPoints(this.props.leakData);
@@ -96,7 +96,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'fuelEvents', 'leak', 'data'],
     type: 'none',

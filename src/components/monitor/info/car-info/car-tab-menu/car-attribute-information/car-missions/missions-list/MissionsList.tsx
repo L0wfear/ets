@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import hocAll from 'components/compositions/vokinda-hoc/recompose';
+import { compose } from 'recompose';
 import { getFormattedDateTime } from 'utils/dates';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { NO_DATA_TEXT } from 'constants/statuses';
@@ -76,7 +76,7 @@ const mapStateToProps = (state) => ({
   missions: state.monitorPage.carInfo.missionsData.missions,
 });
 
-export default hocAll(
+export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'missionsData', 'missions'],
     type: 'loader-field',

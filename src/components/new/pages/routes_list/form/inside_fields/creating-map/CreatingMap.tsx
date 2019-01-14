@@ -85,21 +85,24 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
     const {
       type: prevType,
       municipal_facility_id: prevMunicipalFacilityId,
+      technical_operation_id: prevTechnicalOperationId,
     } = prevProps;
 
     const {
       type,
       municipal_facility_id,
+      technical_operation_id,
     } = this.props;
 
     const trigger = (
       prevType !== type
       || prevMunicipalFacilityId !== municipal_facility_id
+      || technical_operation_id !== prevTechnicalOperationId
     );
 
     if (trigger) {
-      if (type && municipal_facility_id) {
-        if (prevType && prevMunicipalFacilityId) {
+      if (type && municipal_facility_id && technical_operation_id) {
+        if (prevType && prevMunicipalFacilityId && prevTechnicalOperationId) {
           setCacheDataForRoute(prevType, {
             object_list: prevProps.object_list,
             input_lines: prevProps.input_lines,
@@ -114,7 +117,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
         const needUpdateObjectData = true;
 
         this.loadGeometry(this.props, this.state, needUpdateObjectData);
-      } else if (prevType && prevMunicipalFacilityId) {
+      } else if (prevType && prevMunicipalFacilityId && prevTechnicalOperationId) {
         setCacheDataForRoute(prevType, {
           object_list: prevProps.object_list,
           input_lines: prevProps.input_lines,
@@ -145,7 +148,11 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
       const typeData = state.technical_operations_object_list.find(({ slug }) => slug === routeTypesByKey[type].slug);
 
       if (typeData) {
-        const { payload: { geozone_municipal_facility_by_id: geozone_municipal_facility_by_id_raw } } = await this.props.loadGeozoneMunicipalFacility(props.municipal_facility_id, typeData.id);
+        const {
+          payload: {
+            geozone_municipal_facility_by_id: geozone_municipal_facility_by_id_raw,
+          },
+        } = await this.props.loadGeozoneMunicipalFacility(props.municipal_facility_id, props.technical_operation_id, typeData.id);
 
         const {
           geozone_municipal_facility_by_id,
@@ -448,12 +455,13 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
 export default connect<StatePropsCreatingMap, DispatchPropsCreatingMap, OwnPropsCreatingMap, ReduxState>(
   null,
   (dispatch, { page, path }) => ({
-    loadGeozoneMunicipalFacility: (municipal_facility_id, object_type_id) => (
+    loadGeozoneMunicipalFacility: (municipal_facility_id, technical_operation_id, object_type_id) => (
       dispatch(
         loadGeozoneMunicipalFacility(
           'none',
           {
             municipal_facility_id,
+            technical_operation_id,
             object_type_id,
           },
           {

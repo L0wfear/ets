@@ -209,8 +209,9 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               object_list={formState.object_list}
               error={formErrors.object_list}
               draw_object_list={formState.draw_object_list}
-              municipal_facility_id={municipal_facility_id}
               type={type}
+              municipal_facility_id={municipal_facility_id}
+              technical_operation_id={technical_operation_id}
               onChange={this.props.handleChange}
               checkRoute={this.checkRoute}
               bridges={this.state.bridges}

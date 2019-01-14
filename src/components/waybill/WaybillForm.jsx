@@ -1299,6 +1299,7 @@ class WaybillForm extends Form {
                   />
                 </Col>
               </Div>
+            </Row>
           </Row>
           <Row>
             <Col md={8} />

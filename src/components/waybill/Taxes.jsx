@@ -150,10 +150,11 @@ export default class Taxes extends React.Component {
   static getDerivedStateFromProps(nexProps, prevProps) {
     const { fuelRates, taxes = prevProps.tableData } = nexProps;
     let { operations } = nexProps;
-    console.log(operations)
+
     operations = operations.map((data) => ({
       value: `${data.id}${data.comment ? data.comment : ''}`,
       operation_id: data.id,
+      rate_on_date: data.rate_on_date,
       comment: data.comment,
       label: data.comment ? `${data.name} (${data.comment})` : data.name,
       measure_unit_name: data.measure_unit_name,
@@ -186,13 +187,14 @@ export default class Taxes extends React.Component {
   handleOperationChange = (index, rawValue, allOption) => {
     const value = get(allOption, 'operation_id', null);
     const comment = get(allOption, 'comment', '');
-    const { tableData, fuelRates } = this.state;
+    const rate_on_date = get(allOption, 'rate_on_date', 0);
+
+    const { tableData } = this.state;
     const last_is_excluding_mileage = tableData[index].is_excluding_mileage;
 
     tableData[index].OPERATION = value;
     tableData[index].comment = comment;
-    const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
-    tableData[index].FUEL_RATE = fuelRateByOperation.rate_on_date || 0;
+    tableData[index].FUEL_RATE = rate_on_date;
     tableData[index].is_excluding_mileage = (this.state.operations
       .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
     if (tableData[index].is_excluding_mileage) {

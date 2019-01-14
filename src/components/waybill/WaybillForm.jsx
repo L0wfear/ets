@@ -169,10 +169,11 @@ class WaybillForm extends Form {
 
             this.setState({
               fuelRates,
-              operations: fuelRates.reduce((newArr, { operation_id, comment }) => {
+              operations: fuelRates.reduce((newArr, { operation_id, rate_on_date, comment }) => {
                 if (fuelOperationsListById[operation_id]) {
                   newArr.push({
                     ...fuelOperationsListById[operation_id],
+                    rate_on_date,
                     comment,
                   });
                 }
@@ -181,10 +182,11 @@ class WaybillForm extends Form {
               }, []),
               fuel_correction_rate,
               equipmentFuelRates,
-              equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, comment }) => {
+              equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, rate_on_date, comment }) => {
                 if (fuelOperationsListById[operation_id]) {
                   newArr.push({
                     ...fuelOperationsListById[operation_id],
+                    rate_on_date,
                     comment,
                   });
                 }
@@ -1297,7 +1299,7 @@ class WaybillForm extends Form {
                   />
                 </Col>
               </Div>
-            </Row>
+              http://ci.gost-group.com/browse/ETSC-ETSFRD2-JOB1-320/log            </Row>
           </Row>
           <Row>
             <Col md={8} />

@@ -169,12 +169,14 @@ class WaybillForm extends Form {
 
             this.setState({
               fuelRates,
-              operations: fuelRates.reduce((newArr, { operation_id, rate_on_date, comment }) => {
+              operations: fuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
                 if (fuelOperationsListById[operation_id]) {
                   newArr.push({
                     ...fuelOperationsListById[operation_id],
                     rate_on_date,
                     comment,
+                    measure_unit_name,
+                    is_excluding_mileage
                   });
                 }
 
@@ -182,11 +184,13 @@ class WaybillForm extends Form {
               }, []),
               fuel_correction_rate,
               equipmentFuelRates,
-              equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, rate_on_date, comment }) => {
+              equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
                 if (fuelOperationsListById[operation_id]) {
                   newArr.push({
                     ...fuelOperationsListById[operation_id],
                     rate_on_date,
+                    measure_unit_name,
+                    is_excluding_mileage,
                     comment,
                   });
                 }

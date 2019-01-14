@@ -10,7 +10,7 @@ export const validateNumber = <F, P>(fieldData: NumberPropertie<F>, formState: F
     title,
   } = fieldData;
 
-  if (fieldData.required && !value && isNumber(value) ? value !== 0 : false) {
+  if (fieldData.required && isNullOrUndefined(value)) {
     return `Поле "${title}" должно быть заполнено`;
   }
 

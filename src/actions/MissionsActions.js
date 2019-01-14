@@ -4,7 +4,7 @@ import {
   keyBy,
   clone,
   cloneDeep,
-  keys, 
+  keys,
 } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
@@ -16,7 +16,6 @@ import {
   MissionSourceService,
   MissionTemplateService,
   MissionTemplateCarService,
-  MissionTemplatesForFaxogramm,
   DutyMissionService,
   DutyMissionArchiveService,
   DutyMissionTemplateService,
@@ -208,10 +207,6 @@ export default class MissionsActions extends Actions {
 
 
   getMissionTemplates(payload = {}) {
-    if (payload.faxogramm_id) { // 11
-      return MissionTemplatesForFaxogramm.get(payload);
-    }
-
     return MissionTemplateService.get(payload);
   }
 

@@ -413,17 +413,17 @@ class MissionsJournal extends CheckableElementsList {
     ];
 
     buttons.push(
-      <ButtonUpdateMission key="button-complete-mission" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled() || this.state.completeMarkerBtnDisable}>
+      <ButtonUpdateMission key="button-complete-mission" id="mission-complete" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled() || this.state.completeMarkerBtnDisable}>
         <Glyphicon glyph="ok" />
         {' '}
         Отметка о выполнении
       </ButtonUpdateMission>,
-      <ButtonUpdateMission key="butto-reject-mission" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}>
+      <ButtonUpdateMission key="butto-reject-mission" id="mission-reject" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}>
         <Glyphicon glyph="ban-circle" />
         {' '}
         Отметка о невыполнении
       </ButtonUpdateMission>,
-      <ButtonUpdateMission key="butto-archive-mission" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateMission>,
+      <ButtonUpdateMission key="butto-archive-mission" id="mission-archive" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateMission>,
     );
     return buttons;
   }

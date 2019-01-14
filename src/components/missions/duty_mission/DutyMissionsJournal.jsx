@@ -291,9 +291,9 @@ class DutyMissionsJournal extends CheckableElementsList {
     const buttons = super.getButtons();
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
-      <ButtonUpdateDutyMission key="button-complete-mission" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateDutyMission>,
-      <ButtonUpdateDutyMission key="button-reject-mission" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateDutyMission>,
-      <ButtonUpdateDutyMission key="button-archive-mission" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-complete-mission" id="mission-complete" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-reject-mission" id="mission-reject" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-archive-mission" id="mission-archive" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateDutyMission>,
     );
 
     return buttons;

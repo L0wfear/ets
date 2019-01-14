@@ -1299,7 +1299,6 @@ class WaybillForm extends Form {
                   />
                 </Col>
               </Div>
-              http://ci.gost-group.com/browse/ETSC-ETSFRD2-JOB1-320/log            </Row>
           </Row>
           <Row>
             <Col md={8} />

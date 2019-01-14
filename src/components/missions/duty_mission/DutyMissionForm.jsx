@@ -8,11 +8,9 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 
 import find from 'lodash/find';
-import get from 'lodash/get';
 import lodashIsEmpty from 'lodash/isEmpty';
 import ModalBody from 'components/ui/Modal';
-// import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
+import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
@@ -52,9 +50,7 @@ export class DutyMissionForm extends Form {
 
     this.state = {
       selectedRoute: null,
-      selectedRouteNew: null,
       showRouteForm: false,
-      showRouteFormNew: false,
       routesList: [],
       available_route_types: [],
     };
@@ -84,10 +80,10 @@ export class DutyMissionForm extends Form {
         flux.getActions('missions').getCleaningOneNorm(payload)
           .then(normData => this.handleChange('norm_id', normData.norm_id));
 
-        this.setState({ selectedRoute: route, selectedRouteNew: route });
+        this.setState({ selectedRoute: route });
       });
     } else {
-      this.setState({ selectedRoute: null, selectedRouteNew: null });
+      this.setState({ selectedRoute: null });
     }
   }
 
@@ -122,7 +118,7 @@ export class DutyMissionForm extends Form {
           this.handleChange('foreman_full_fio', null);
         }
 
-        if (this.state.selectedRouteNew && v !== this.state.selectedRouteNew.structure_id) {
+        if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
           this.handleRouteIdChange(undefined);
         }
       }
@@ -180,7 +176,7 @@ export class DutyMissionForm extends Form {
     const isTemplate = this.props.template || false;
 
     let kind_task_ids = null;
-    let { selectedRouteNew } = this.state;
+    let { selectedRoute } = this.state;
     let { routesList } = this.props;
     const {
       currentUser: { company_id },
@@ -189,7 +185,7 @@ export class DutyMissionForm extends Form {
     flux.getActions('geoObjects').getGeozones(company_id);
 
     if (!isEmpty(mission.route_id)) {
-      selectedRouteNew = await routesActions.getRouteById(mission.route_id);
+      selectedRoute = await routesActions.getRouteById(mission.route_id);
     }
 
     if (!isEmpty(mission.id)) {
@@ -220,30 +216,10 @@ export class DutyMissionForm extends Form {
 
     this.setState({
       kind_task_ids,
-      selectedRouteNew,
+      selectedRoute,
       technicalOperationsList,
       TECH_OPERATIONS,
       routesList,
-    });
-  }
-
-  createNewRoute() {
-    const { formState } = this.props;
-    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
-      const newR = {
-        normatives: formState.normatives,
-        name: '',
-        technical_operation_id: formState.technical_operation_id,
-        municipal_facility_id: formState.municipal_facility_id,
-        structure_id: formState.structure_id,
-        object_list: [],
-        input_lines: [],
-        is_main: true,
-      };
-      this.setState({
-        showRouteForm: true,
-        selectedRoute: newR,
-      });
     });
   }
 
@@ -251,8 +227,8 @@ export class DutyMissionForm extends Form {
     const { formState } = this.props;
     this.context.flux.getActions('geoObjects').getGeozones().then(() => {
       this.setState({
-        showRouteFormNew: true,
-        selectedRouteNew: {
+        showRouteForm: true,
+        selectedRoute: {
           is_main: true,
           name: '',
           municipal_facility_id: formState.municipal_facility_id,
@@ -282,7 +258,7 @@ export class DutyMissionForm extends Form {
     const { available_route_types = [] } = this.state;
 
     this.handleChange('route_id', createdRouteId);
-    const [selectedRouteNew, routesList] = await Promise.all([
+    const [selectedRoute, routesList] = await Promise.all([
       routesActions.getRouteById(createdRouteId),
       routesActions.getRoutesBySomeData({
         municipal_facility_id,
@@ -293,75 +269,27 @@ export class DutyMissionForm extends Form {
 
     const payload = {
       ...makePayloadFromState(this.props.formState),
-      route_type: selectedRouteNew.type,
+      route_type: selectedRoute.type,
       kind_task_ids: this.state.kind_task_ids,
     };
     flux.getActions('missions').getCleaningOneNorm(payload)
       .then(normData => this.handleChange('norm_id', normData.norm_id));
 
     this.setState({
-      showRouteFormNew: false,
-      selectedRouteNew,
+      showRouteForm: false,
+      selectedRoute,
       routesList,
     });
   }
 
-  onFormHide = async (isSubmitted, result) => {
-    const { flux } = this.context;
-    const routesActions = flux.getActions('routes');
-    const {
-      formState: {
-        technical_operation_id,
-        municipal_facility_id,
-      },
-    } = this.props;
-    const { available_route_types = [] } = this.state;
-
-    const stateChangeObject = {};
-    if (isSubmitted === true) {
-      const createdRouteId = result.createdRoute.result[0].id;
-      this.handleChange('route_id', createdRouteId);
-      const [selectedRoute, routesList] = await Promise.all([
-        routesActions.getRouteById(createdRouteId),
-        routesActions.getRoutesBySomeData({
-          municipal_facility_id,
-          technical_operation_id,
-          type: available_route_types.join(','),
-        }),
-      ]);
-
-      const payload = {
-        ...makePayloadFromState(this.props.formState),
-        route_type: selectedRoute.type,
-        kind_task_ids: this.state.kind_task_ids,
-      };
-      flux.getActions('missions').getCleaningOneNorm(payload)
-        .then(normData => this.handleChange('norm_id', normData.norm_id));
-
-      Object.assign(stateChangeObject, {
-        showRouteForm: false,
-        selectedRoute,
-        routesList,
-      });
-    } else {
-      Object.assign(stateChangeObject, {
-        showRouteForm: false,
-        selectedRoute: null,
-      });
-    }
-
-    this.setState(stateChangeObject);
-  }
-
-
-  onFormHideNew = async (isSubmitted, route) => {
+  onFormHide = async (isSubmitted, route) => {
     if (isSubmitted && route) {
       const createdRouteId = route.id;
       return this.changeRouteAfterSubmit(createdRouteId)
     }
     this.setState({
-      showRouteFormNew: false,
-      selectedRouteNew: null,
+      showRouteForm: false,
+      selectedRoute: null,
     });
 
     return Promise.resolve(true);
@@ -404,10 +332,9 @@ export class DutyMissionForm extends Form {
     } = this.props;
     const {
       TECH_OPERATIONS: [...TECH_OPERATIONS] = [],
-      routesList = [],
       available_route_types = [],
       technicalOperationsList = [],
-      selectedRouteNew: routeNew = null,
+      selectedRoute: route = null,
       kind_task_ids,
     } = this.state;
 
@@ -441,15 +368,15 @@ export class DutyMissionForm extends Form {
     const IS_CLOSED = state.status === 'complete' || state.status === 'fail' || state.status === 'canceled';
 
     const title = IS_CREATING
-    ? (
-      'Создание наряд-задания'
-    )
-    : (
-      <FormTitle
-        number={state.number || ''}
-        status={state.status}
-      />
-    );
+      ? (
+        'Создание наряд-задания'
+      )
+      : (
+        <FormTitle
+          number={state.number || ''}
+          status={state.status}
+        />
+      );
 
     const IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
@@ -728,17 +655,6 @@ export class DutyMissionForm extends Form {
                 onChange={this.handleRouteIdChange}
               />
               <Div hidden={state.route_id}>
-                {
-                  /*
-                  <Button
-                    id="dm-create-route"
-                    onClick={this.createNewRoute.bind(this)}
-                    disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
-                  >
-                    Создать новый
-                  </Button>
-                  */
-                }
                 <Button
                   id="dm-create-route"
                   onClick={this.createNewRouteNew}
@@ -750,10 +666,10 @@ export class DutyMissionForm extends Form {
             </Col>
             <Col md={6}>
               {
-                !this.state.showRouteFormNew && routeNew && routeNew.id !== null
+                !this.state.showRouteForm && route && route.id !== null
                   ? (
                     <RouteInfo
-                      route={routeNew}
+                      route={route}
                       noRouteName
                       mapKey="mapDutyMissionFrom"
                     />
@@ -777,23 +693,10 @@ export class DutyMissionForm extends Form {
             <ButtonSaveDutyMission id="dm-submit" onClick={this.handleSubmit.bind(this)} disabled={!this.props.canSave || readOnly || hasNotActiveEmployees}>{'Сохранить'}</ButtonSaveDutyMission>
           </Div>
         </Modal.Footer>
-
-        {
-          /*
-            <RouteFormWrap
-              element={route}
-              onFormHide={this.onFormHide}
-              showForm={this.state.showRouteForm}
-              structureId={state.structure_id}
-              available_route_types={available_route_types}
-              fromMission
-            />
-          */
-        }
-        <RouteFormWrapNew
-          element={routeNew}
-          showForm={this.state.showRouteFormNew}
-          handleHide={this.onFormHideNew}
+        <RouteFormWrap
+          element={route}
+          showForm={this.state.showRouteForm}
+          handleHide={this.onFormHide}
           hasMissionStructureId={!!state.structure_id}
           missionAvailableRouteTypes={available_route_types}
           fromMission

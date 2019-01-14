@@ -19,8 +19,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-// import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
+import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import { isEmpty } from 'utils/functions';
 import InsideField from 'components/missions/mission_template/inside_fields/index';
 import { MissionForm } from 'components/missions//mission/MissionForm/MissionForm';
@@ -55,7 +54,6 @@ class MissionTemplateForm extends MissionForm {
       routesList = [],
       carsList = [],
       selectedRoute: route = null,
-      selectedRouteNew: routeNew = null,
     } = this.state;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
@@ -80,7 +78,7 @@ class MissionTemplateForm extends MissionForm {
     const filteredRoutes = (
       route !== null
       && route.id !== undefined
-      && routes.find((item) => item.value === route.id) === undefined
+      && routes.find(item => item.value === route.id) === undefined
     ) ? routes.concat([route]) : routes;
 
     const ROUTES = uniqBy(
@@ -88,7 +86,7 @@ class MissionTemplateForm extends MissionForm {
       'value',
     );
 
-    const CARS = carsList.map((c) => ({
+    const CARS = carsList.map(c => ({
       value: c.asuods_id,
       label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
       type_id: c.type_id,
@@ -177,27 +175,29 @@ class MissionTemplateForm extends MissionForm {
                 value={state.car_id}
                 onChange={this.handleCarIdChange}
               />
-              <Field
+              <ExtField
                 type="number"
-                id="passes_count"
                 modalKey={modalKey}
+                id="passes_count"
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
-                onChange={ this.handleChange.bind(this, 'passes_count') }
+                onChange={this.handleChange}
+                boundKeys="passes_count"
                 min="0"
               />
             </Col>
 
             <Col md={6}>
               <Field
-                type="string"
                 id="comment"
+                type="string"
                 modalKey={modalKey}
                 label="Комментарий"
                 value={state.comment}
-                onChange={this.handleChange.bind(this, 'comment')}
+                onChange={this.handleChange}
                 error={errors.comment}
+                boundKeys="comment"
               />
             </Col>
           </Row>
@@ -217,9 +217,6 @@ class MissionTemplateForm extends MissionForm {
                 clearable
               />
               <Div hidden={state.route_id}>
-                {
-                  // <Button onClick={this.createNewRoute} disabled={!state.municipal_facility_id}>Создать новый</Button>
-                }
                 <Button id="mt-create-route" onClick={this.createNewRouteNew} disabled={!state.municipal_facility_id}>Создать новый</Button>
               </Div>
             </Col>
@@ -246,20 +243,20 @@ class MissionTemplateForm extends MissionForm {
           <Div className="text-right-flex">
             {
               state.id
-              ? (
-                <Dropdown id="waybill-print-dropdown" dropup onSelect={this.props.handlePrint}>
-                  <Dropdown.Toggle>
-                    <Glyphicon id="m-print" glyph="print" />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <MenuItem eventKey={this.props.printMapKeyBig}>Формате А3</MenuItem>
-                    <MenuItem eventKey={this.props.printMapKeySmall}>Формате А4</MenuItem>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )
-              : (
-                <DivNone />
-              )
+                ? (
+                  <Dropdown id="waybill-print-dropdown" dropup onSelect={this.props.handlePrint}>
+                    <Dropdown.Toggle>
+                      <Glyphicon id="m-print" glyph="print" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <MenuItem eventKey={this.props.printMapKeyBig}>Формате А3</MenuItem>
+                      <MenuItem eventKey={this.props.printMapKeySmall}>Формате А4</MenuItem>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )
+                : (
+                  <DivNone />
+                )
             }
             <Div hidden={state.status === 'closed'}>
               <ButtonSaveMissionTemplate onClick={this.handleSubmit} disabled={!this.props.canSave}>Сохранить</ButtonSaveMissionTemplate>
@@ -273,21 +270,10 @@ class MissionTemplateForm extends MissionForm {
           printMapKeyBig={this.props.printMapKeyBig}
           printMapKeySmall={this.props.printMapKeySmall}
         />
-        {
-          /*
-          <RouteFormWrap
-            element={route}
-            onFormHide={this.onFormHide}
-            showForm={this.state.showRouteForm}
-            structureId={state.structure_id}
-            fromMission
-          />
-          */
-        }
-        <RouteFormWrapNew
-          element={routeNew}
-          showForm={this.state.showRouteFormNew}
-          handleHide={this.onFormHideNew}
+        <RouteFormWrap
+          element={route}
+          showForm={this.state.showRouteForm}
+          handleHide={this.onFormHide}
           hasMissionStructureId={!!state.structure_id}
           fromMission
         />

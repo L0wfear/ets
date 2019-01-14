@@ -8,7 +8,7 @@ import {
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerMissionGeoobject.h';
 import {
   inputLineStyleFunc,
-} from 'components/route/route-info/map/layers/layer-route-info-geometry/feature-style';
+} from 'components/new/pages/routes_list/route-info/map/layers/layer-route-info-geometry/feature-style';
 
 /**
  * изменение геометрии фичи, если shape разный

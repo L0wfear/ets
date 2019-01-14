@@ -7,8 +7,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 
 import ModalBody from 'components/ui/Modal';
 import ChangeRouteTable from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteTable';
-// import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
+import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import { FluxContext } from 'utils/decorators';
 
 import {
@@ -35,8 +34,6 @@ export default class ChangeRouteForm extends React.Component {
     routeSelected: null,
     showRouteForm: false,
     routeElement: null,
-    showRouteFormNew: false,
-    routeElementNew: null,
   }
 
   componentDidMount() {
@@ -51,37 +48,13 @@ export default class ChangeRouteForm extends React.Component {
     this.props.refreshList();
     this.setState({
       showRouteForm: false,
-      showRouteFormNew: false,
     });
   }
 
-  handleCreateNewRoute = () => {
+  handleCreateNewRouteNew = () => {
     this.setState({
       showRouteForm: true,
       routeElement: {
-        name: '',
-        technical_operation_id: this.props.technical_operation_id,
-        municipal_facility_id: this.props.municipal_facility_id,
-        structure_id: null,
-        object_list: [],
-        input_lines: [],
-        is_main: true,
-      },
-    });
-  }
-  handleChangeRoute = () => {
-    this.context.flux.getActions('routes').getRouteById(this.state.routeSelected.id, false)
-      .then(routeElement =>
-        this.setState({
-          showRouteForm: true,
-          routeElement,
-        })
-      );
-  }
-  handleCreateNewRouteNew = () => {
-    this.setState({
-      showRouteFormNew: true,
-      routeElementNew: {
         is_main: true,
         name: '',
         municipal_facility_id: this.props.municipal_facility_id,
@@ -99,10 +72,10 @@ export default class ChangeRouteForm extends React.Component {
   }
   handleChangeRouteNew = () => {
     this.context.flux.getActions('routes').getRouteById(this.state.routeSelected.id, false)
-      .then(routeElementNew =>
+      .then(routeElement =>
         this.setState({
-          showRouteFormNew: true,
-          routeElementNew,
+          showRouteForm: true,
+          routeElement,
         })
       );
   }
@@ -139,35 +112,20 @@ export default class ChangeRouteForm extends React.Component {
                 onRowClick={this.onRowClick}
                 selected={routeSelected}
               >
-                {
-                  // <ButtonCreateRoute onClick={this.handleCreateNewRoute}>Создать новый маршрут</ButtonCreateRoute>
-                }
                 <ButtonCreateRoute onClick={this.handleCreateNewRouteNew}>Создать новый маршрут</ButtonCreateRoute>
                 <ButtonDeleteRoute disabled={!routeSelected} onClick={this.removeRoute}>Удалить маршрут</ButtonDeleteRoute>
               </ChangeRouteTable>
               <Row>
                 <Col md={3} mdOffset={9}>
-                  {
-                    // <ButtonUpdateRoute bsClass={'btn all-width'} disabled={!routeSelected} onClick={this.handleChangeRoute}>Изменить</ButtonUpdateRoute>
-                  }
                   <ButtonUpdateRoute id="change-route" bsClass={'btn all-width'} disabled={!routeSelected} onClick={this.handleChangeRouteNew}>Изменить</ButtonUpdateRoute>
                 </Col>
               </Row>
             </ModalBody>
           </Modal>
-          {
-            /*
-            <RouteFormWrap
-              element={this.state.routeElement}
-              onFormHide={this.onFormHide}
-              showForm={this.state.showRouteForm}
-            />
-            */
-          }
-          <RouteFormWrapNew
-            element={this.state.routeElementNew}
+          <RouteFormWrap
+            element={this.state.routeElement}
             handleHide={this.onFormHide}
-            showForm={this.state.showRouteFormNew}
+            showForm={this.state.showRouteForm}
           />
         </div>
       :

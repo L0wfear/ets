@@ -431,22 +431,6 @@ body.application {
 
 }
 
-/* route-list */
-.sidebar {
-  background-color: #eee;
-  height: 100%;
-}
-
-.sidebar__header {
-  padding-top: 30px;
-
-  &-title {
-    //height: 120px;
-    font-size: 20px;
-    color: #000;
-  }
-}
-
 .small-table {
   th, td {
     font-size: 12px !important;
@@ -879,27 +863,6 @@ body.application {
   margin-left: 5px;
   position: relative;
   bottom: -11px;
-}
-
-.routes-form-map-wrapper {
-  .route-odhs-list {
-    position:relative;
-    left:620px;
-    width:380px;
-    margin-top:-15px;
-    ul {
-      margin-left:-20px;
-      li {
-        display: block;
-        max-width: 240px;
-      }
-      li:before{
-        content: "";
-        display: list-item;
-        position: absolute;
-      }
-    }
-  }
 }
 
 .mission-reject-info-modal {
@@ -1392,37 +1355,11 @@ div.none {
   }
 }
 
-.destination-points {
-  margin-top: 20px;
-  .destination-point {
-
-    .form-group {
-      display: inline-block;
-    }
-    .btn {
-      margin-left: 5px;
-      margin-bottom: 2px;
-    }
-  }
-}
-
-.text-right {
-  text-align: right;
-}
-
 .text-right-flex {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.monitor-dashboard {
-  height: 90vh;
-  .openlayers-container {
-    border: 1px solid #ccc;
-    position: relative !important;
-  }
 }
 
 .company-structure .griddle-body table tbody {
@@ -1476,7 +1413,6 @@ div.none {
     }
   }
 }
-
 
 .action-button {
   &:not(.disabled):not([disabled]):hover, &:focus, &.active {
@@ -1591,16 +1527,6 @@ div.none {
   left: 520px;
   button {
     width: 54px;
-  }
-}
-
-.vector-toggle {
-  position: absolute;
-  z-index: 1;
-  top: 10px;
-  left: 25px;
-  .btn {
-    width: 120px;
   }
 }
 
@@ -1743,42 +1669,6 @@ div.car-movement-time-report {
   font-weight: 800;
 }
 
-/* RouteList */
-.sidebar__list-container {
-  margin: auto;
-  position: absolute;
-  left: 0;
-  top: 120px;
-  bottom: 0;
-  right: 0;
-  padding-right: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  h5 {
-    font-weight: normal;
-  }
-}
-
-.sidebar__list {
-  margin: 0 0 20px 0;
-  padding: 0;
-
-  &-item {
-    display: block;
-    margin: 0 0 8px 0;
-    padding: 5px 5px;
-    //height: 32px;
-    font-size: 16px;
-    color: $colorLink;
-    cursor: pointer;
-
-    &:hover, &.active {
-      background-color: $colorGreen;
-      color: #fff;
-    }
-  }
-}
-/*---------*/
 .checkbox-input {
   margin: 0 -5px;
   >label {

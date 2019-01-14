@@ -18,8 +18,7 @@ import {
 import ModalBody from 'components/ui/Modal';
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import { DivNone } from 'global-styled/global-styled';
-// import RouteFormWrap from 'components/route/form/RouteFormWrap';
-import RouteFormWrapNew from 'components/new/pages/routes_list/form/RouteFormWrap';
+import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
 import Field from 'components/ui/Field';
 
@@ -79,7 +78,6 @@ export class MissionForm extends Form {
     this.state = {
       available_route_types: [],
       selectedRoute: null,
-      selectedRouteNew: null,
       showRouteForm: false,
       carsList: [],
       routesList: [],
@@ -113,7 +111,6 @@ export class MissionForm extends Form {
       .then(([technicalOperationsData, selectedRoute, routesList]) => this.setState({
         ...technicalOperationsData,
         selectedRoute,
-        selectedRouteNew: selectedRoute,
         routesList,
         carsList: this.props.carsList,
       }));
@@ -180,10 +177,10 @@ export class MissionForm extends Form {
             this.props.handleMultiFormChange(changesObjSecond);
           });
 
-          this.setState({ selectedRoute: route, selectedRouteNew: route });
+          this.setState({ selectedRoute: route });
         });
     } else {
-      this.setState({ selectedRoute: null, selectedRouteNew: null });
+      this.setState({ selectedRoute: null });
     }
 
     this.props.handleMultiFormChange(changesObj);
@@ -342,22 +339,6 @@ export class MissionForm extends Form {
     this.setState({
       showRouteForm: true,
       selectedRoute: {
-        normatives: this.props.formState.normatives,
-        name: '',
-        technical_operation_id: this.props.formState.technical_operation_id,
-        municipal_facility_id: this.props.formState.municipal_facility_id,
-        structure_id: this.props.formState.structure_id,
-        object_list: [],
-        input_lines: [],
-        is_main: true,
-      },
-    });
-  }
-
-  createNewRouteNew = () => {
-    this.setState({
-      showRouteFormNew: true,
-      selectedRouteNew: {
         is_main: true,
         name: '',
         municipal_facility_id: this.props.formState.municipal_facility_id,
@@ -374,27 +355,7 @@ export class MissionForm extends Form {
     });
   }
 
-  onFormHide = (isSubmitted, result) => {
-    const { flux } = this.context;
-    const routesActions = flux.getActions('routes');
-    const { formState } = this.props;
-
-    if (isSubmitted) {
-      handleRouteFormHide(
-        formState,
-        this.state,
-        routesActions.getRoutesBySomeData,
-      ).then((ans) => {
-        this.setState({ ...ans });
-      });
-
-      this.handleRouteIdChange(result.createdRoute.result[0].id);
-    }
-
-    this.setState({ showRouteForm: false });
-  }
-
-  onFormHideNew = (isSubmitted, route) => {
+  onFormHide = (isSubmitted, route) => {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
     const { formState } = this.props;
@@ -411,7 +372,7 @@ export class MissionForm extends Form {
       this.handleRouteIdChange(route.id);
     }
 
-    this.setState({ showRouteFormNew: false });
+    this.setState({ showRouteForm: false });
   }
 
   handleChangeDateStart = (date_start) => {
@@ -521,7 +482,6 @@ export class MissionForm extends Form {
       carsList = [],
       technicalOperationsList = [],
       selectedRoute: route = null,
-      selectedRouteNew: routeNew = null,
       available_route_types = [],
       kind_task_ids,
     } = this.state;
@@ -853,10 +813,7 @@ export class MissionForm extends Form {
                       onChange={this.handleRouteIdChange}
                     />
                     <Div hidden={state.route_id}>
-                      {
-                        // <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
-                      }
-                      <Button id="create-route" onClick={this.createNewRouteNew} disabled={routeIdDisabled}>Создать новый</Button>
+                      <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
                     </Div>
                   </Col>
                 </Row>
@@ -965,25 +922,12 @@ export class MissionForm extends Form {
                 route={route}
                 printMapKeySmall={this.props.printMapKeySmall}
               />
-              {
-                /*
-                <RouteFormWrap
-                  element={route}
-                  onFormHide={this.onFormHide}
-                  showForm={this.state.showRouteForm}
-                  fromMission
-                  notTemplate
-                  available_route_types={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
-                  structureId={state.structure_id}
-                />
-                */
-              }
-              <RouteFormWrapNew
-                element={routeNew}
-                showForm={this.state.showRouteFormNew}
-                handleHide={this.onFormHideNew}
+              <RouteFormWrap
+                element={route}
+                showForm={this.state.showRouteForm}
+                handleHide={this.onFormHide}
                 hasMissionStructureId={!!state.structure_id}
-                missionAvailableRouteTypes={state.is_column ? available_route_types.filter((type) => type === 'mixed') : available_route_types}
+                missionAvailableRouteTypes={state.is_column ? available_route_types.filter(type => type === 'mixed') : available_route_types}
                 fromMission
               />
             </Modal>

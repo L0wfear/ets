@@ -17,7 +17,6 @@ import permissions from 'components/directories/normative/fuel_rates/config-data
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class FuelRatesDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelRate;

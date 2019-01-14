@@ -155,80 +155,60 @@ class WaybillForm extends Form {
 
     if (IS_ACTIVE || IS_CLOSED) {
       this.getCarDistance(formState);
-      if (IS_ACTIVE) {
-        const currentSeason = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+      const currentSeason = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
 
-        Promise.all([
-          getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState, currentSeason),
-          flux.getActions('fuelRates').getFuelOperations({ is_active: true }).then(({ result: fuelOperationsList }) => fuelOperationsList),
-          getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState, currentSeason),
-          getFuelCorrectionRate(this.props.carsList, formState),
-        ])
-          .then(([fuelRates, fuelOperationsList, equipmentFuelRates, fuel_correction_rate]) => {
-            const fuelOperationsListById = keyBy(fuelOperationsList, 'id');
+      Promise.all([
+        getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState, currentSeason),
+        flux.getActions('fuelRates').getFuelOperations({ is_active: true }).then(({ result: fuelOperationsList }) => fuelOperationsList),
+        getEquipmentFuelRatesByCarModel(flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel, formState, currentSeason),
+        getFuelCorrectionRate(this.props.carsList, formState),
+      ])
+        .then(([fuelRates, fuelOperationsList, equipmentFuelRates, fuel_correction_rate]) => {
+          const fuelOperationsListById = keyBy(fuelOperationsList, 'id');
 
-            this.setState({
-              fuelRates,
-              operations: fuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
-                if (fuelOperationsListById[operation_id]) {
-                  newArr.push({
-                    ...fuelOperationsListById[operation_id],
-                    rate_on_date,
-                    comment,
-                    measure_unit_name,
-                    is_excluding_mileage
-                  });
-                }
+          this.setState({
+            fuelRates,
+            operations: fuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+              if (fuelOperationsListById[operation_id]) {
+                newArr.push({
+                  ...fuelOperationsListById[operation_id],
+                  rate_on_date,
+                  comment,
+                  measure_unit_name,
+                  is_excluding_mileage,
+                });
+              }
 
-                return newArr;
-              }, []),
-              fuel_correction_rate,
-              equipmentFuelRates,
-              equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
-                if (fuelOperationsListById[operation_id]) {
-                  newArr.push({
-                    ...fuelOperationsListById[operation_id],
-                    rate_on_date,
-                    measure_unit_name,
-                    is_excluding_mileage,
-                    comment,
-                  });
-                }
+              return newArr;
+            }, []),
+            fuel_correction_rate,
+            equipmentFuelRates,
+            equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+              if (fuelOperationsListById[operation_id]) {
+                newArr.push({
+                  ...fuelOperationsListById[operation_id],
+                  rate_on_date,
+                  measure_unit_name,
+                  is_excluding_mileage,
+                  comment,
+                });
+              }
 
-                return newArr;
-              }, []),
-            });
-          })
-          .catch((e) => {
-            console.error(e); // eslint-disable-line
-
-            this.setState({
-              fuelRates: [],
-              operations: [],
-              fuel_correction_rate: 1,
-              equipmentFuelRates: [],
-              equipmentOperations: [],
-            });
+              return newArr;
+            }, []),
           });
+        })
+        .catch((e) => {
+          console.error(e); // eslint-disable-line
 
-        this.getCarDistance(formState);
-      } else {
-        /* В случае, если ПЛ закрыт, мы получаем список всех операций, чтобы
-          отобразить их в таксировке как ТС, так и оборудования, так как
-          выбор операций в любом случае недоступен */
-        flux.getActions('fuelRates').getFuelOperations()
-          .then(({ result: fuelOperations }) => this.setState({
-            operations: fuelOperations,
-            equipmentOperations: fuelOperations,
-          })).catch((e) => {
-            console.error(e); // eslint-disable-line
-
-            this.setState({
-              operations: [],
-              equipmentOperations: [],
-            });
+          this.setState({
+            fuelRates: [],
+            operations: [],
+            fuel_correction_rate: 1,
+            equipmentFuelRates: [],
+            equipmentOperations: [],
           });
-      }
+        });
     }
   }
 

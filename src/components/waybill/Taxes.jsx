@@ -104,19 +104,20 @@ export default class Taxes extends React.Component {
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
         if (props.readOnly) {
-          const operation = _.find(this.state.operations, op => `${OPERATION}${row.comment}` === `${op.value}${op.comment}`);
+          const operation = _.find(this.state.operations, op => `${OPERATION}${row.comment ? row.comment : ''}` === `${op.value}`);
+
           return operation ? operation.label || '' : '';
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
-          const usedOperations = taxes.map(t => `${t.OPERATION}${t.comment}`);
+          const usedOperations = taxes.map(t => `${t.OPERATION}${t.comment ? t.comment : ''}`);
           if (usedOperations.indexOf(op.value) > -1) {
             op.disabled = true;
           }
           return op;
         });
 
-        return <ReactSelect clearable={false} disabled={props.readOnly} options={options} value={`${OPERATION}${row.comment}`} onChange={this.handleOperationChange.bind(this, index)} />;
+        return <ReactSelect clearable={false} disabled={props.readOnly} options={options} value={`${OPERATION}${row.comment ? row.comment : ''}`} onChange={this.handleOperationChange.bind(this, index)} />;
       },
       measure_unit_name: measure_unit_name => measure_unit_name || '-',
       RESULT: RESULT => `${RESULT ? `${RESULT} л` : ''}`,
@@ -151,11 +152,11 @@ export default class Taxes extends React.Component {
     const { fuelRates, taxes = prevProps.tableData } = nexProps;
     let { operations } = nexProps;
 
-    operations = operations.map((data) => ({
+    operations = operations.map(data => ({
       value: `${data.id}${data.comment ? data.comment : ''}`,
       operation_id: data.id,
       rate_on_date: data.rate_on_date,
-      comment: data.comment,
+      comment: data.comment || '',
       label: data.comment ? `${data.name} (${data.comment})` : data.name,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,

@@ -104,7 +104,7 @@ export default class Taxes extends React.Component {
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
         if (props.readOnly) {
-          const operation = _.find(this.state.operations, op => `${OPERATION}${row.comment ? row.comment : ''}` === `${op.value}`);
+          const operation = _.find(this.state.operations, op => `${OPERATION}` === `${op.operation_id}`);
 
           return operation ? `${operation.name} ${row.comment ? `(${row.comment})` : ''}` || '' : '';
         }

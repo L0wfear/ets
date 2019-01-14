@@ -1070,7 +1070,7 @@ class WaybillForm extends Form {
             <Col md={8}>
               <Taxes
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
-                readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
+                readOnly={IS_CLOSED || !IS_ACTIVE && !this.state.canEditIfClose}
                 title="Расчет топлива по норме"
                 taxes={state.tax_data}
                 operations={this.state.operations}
@@ -1082,7 +1082,7 @@ class WaybillForm extends Form {
               />
               <Taxes
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !state.equipment_tax_data)}
-                readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
+                readOnly={IS_CLOSED || !IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}
                 operations={this.state.equipmentOperations}
                 fuelRates={this.state.equipmentFuelRates}

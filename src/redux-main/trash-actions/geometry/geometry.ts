@@ -123,6 +123,7 @@ export const loadFuelEvents = (type, typeEvent, dates) => ({
 export const loadGeozoneMunicipalFacility: any = (type, ownPayload, metaProps) => {
   const payload = {
     municipal_facility_id: ownPayload.municipal_facility_id,
+    technical_operation_id: ownPayload.technical_operation_id,
     object_type_id: ownPayload.object_type_id,
   };
 

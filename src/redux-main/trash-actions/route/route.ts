@@ -20,7 +20,7 @@ export type RouteFormStateType = {
   name: string | null;
   municipal_facility_id: number | null;
   municipal_facility_name?: string;
-  technical_operation_id: number | void;
+  technical_operation_id: number | null;
   technical_operation_name?: string;
   structure_id: number | null;
   structure_name?: string;

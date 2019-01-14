@@ -115,7 +115,7 @@ export default class Taxes extends React.Component {
           }
           return op;
         });
-        return <ReactSelect clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
+        return <ReactSelect id={`operation_${index + 1}`} modalKey={this.props.modalKey} clearable={false} disabled={props.readOnly} options={options} value={OPERATION} onChange={this.handleOperationChange.bind(this, index)} />;
       },
       measure_unit_name: measure_unit_name => measure_unit_name || '-',
       RESULT: RESULT => `${RESULT ? `${RESULT} л` : ''}`,

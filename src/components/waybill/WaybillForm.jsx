@@ -1066,6 +1066,7 @@ class WaybillForm extends Form {
           <Row>
             <Col md={8}>
               <Taxes
+                modalKey={modalKey}
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
                 readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 title="Расчет топлива по норме"
@@ -1078,6 +1079,7 @@ class WaybillForm extends Form {
                 type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               />
               <Taxes
+                modalKey={modalKey}
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !state.equipment_tax_data)}
                 readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}

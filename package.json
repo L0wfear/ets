@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.25.200",
+    "version": "2.0.25.203",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -129,7 +129,7 @@
     },
     "config": {
         "ghooks": {
-            "pre-commit": "npm run lint:ts && npm run bump && git add package.json"
+            "pre-commit": "npm run lint:ts && npm run bump && git add package.json && git add package-lock.json"
         }
     },
     "engines": {

@@ -30,7 +30,7 @@ export const actionGetGetCarpool: any = (payload = {}, { page, path }: { page: s
     },
   })
 );
-export const actionGetAndSetInStoreCarpool = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionGetAndSetInStoreCarpool: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetGetCarpool(payload, { page, path }),
   );

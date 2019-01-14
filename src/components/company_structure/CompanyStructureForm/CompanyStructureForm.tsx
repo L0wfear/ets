@@ -99,6 +99,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
     const companyStructureOptions = this.makeOptionFromTechMaintTypeList(
       companyStructureLinearList,
     );
+
     const carpoolOptions = this.makeOptionFromCarpoolList(
       carpoolList,
     );
@@ -221,7 +222,7 @@ export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
       ),
       getCarpool: () => (
         dispatch(
-          geoobjectActions.actionGetGetCarpool(
+          geoobjectActions.actionGetAndSetInStoreCarpool(
             {},
             { page, path },
           ),

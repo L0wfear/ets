@@ -348,7 +348,7 @@ export default (props) => {
       initialSort="number"
       enumerated
       initialSortAscending={false}
-      tableMeta={getTableMeta(extProps)}
+      tableMeta={getTableMeta(props)}
       columnControl
       serverPagination
       externalFilter={props.changeFilter}

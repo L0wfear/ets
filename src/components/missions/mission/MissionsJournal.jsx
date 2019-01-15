@@ -196,7 +196,14 @@ class MissionsJournal extends CheckableElementsList {
               Object.values(missionsObj).map(mission => this.context.flux.getActions('missions')
                 .updateMission({ ...cloneDeep(mission), status: 'complete', action_at })),
             ).then(() => {
-              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+              global.NOTIFICATION_SYSTEM.notify({
+                title: '',
+                message: 'Данные успешно сохранены',
+                level: 'success',
+                dismissible: true,
+                position: 'tc',
+                autoDismiss: 0,
+              });
               this.refreshList(this.state);
               this.setState({ checkedElements: {} });
             })

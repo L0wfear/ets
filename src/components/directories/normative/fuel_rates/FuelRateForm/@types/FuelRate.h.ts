@@ -1,9 +1,7 @@
-import { FuelRateUpd } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-// import {
-//   AutobaseCreateBatteryManufacturer,
-//   AutobaseUpdateBatteryManufacturer,
-// } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_manufacturer/@types';
+import { FuelRateUpd, fuelOperation } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
@@ -15,22 +13,21 @@ export type PropsFuelRateFormWrap = {
   loadingPageName?: string;
   page?: string;
   path?: string;
-  // measureUnitList: any[];
-  // modelsList: any[];
 };
 
 export type StatePropsFuelRate = {
-  modelsList: any;
-  operations: any;
-  specialModelList: any;
-  companyStructureLinearList: any;
-  isPermitted: any;
+  modelsList: IStateSomeUniq['modelsList'];
+  fuelRateOperationsIsActiveList?: fuelOperation[];
+  specialModelList: IStateSomeUniq['specialModelList'];
+  companyStructureLinearList: IStateCompanyStructure['companyStructureLinearList'];
 };
 export type DispatchPropsFuelRate = {
-  createAction: any; // поменять any
+  createAction: any; // поменять any !!
   updateAction: any; // поменять any !!
   actionGetAndSetInStoreSpecialModel: any;
   getAndSetInStoreCompanyStructureLinear: any;
+  actionGetAndSetInStoreModelList: any;
+  FuelOperationsIsActiveGet: any;
 };
 export type OwnFuelRateProps = { // fuelRateForm props
   element: FuelRateUpd | null;
@@ -52,8 +49,4 @@ export type PropsFuelRate = OutputWithFormProps<
   any
 >;
 export type StateFuelRate = {
-  // companyStructureList: any[];
-  // modelsList: any[];
-  // specialModelsList: any[];
-  // isPermitted: boolean;
 };

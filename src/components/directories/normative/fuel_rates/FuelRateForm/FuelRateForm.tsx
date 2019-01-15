@@ -41,7 +41,7 @@ import {
 
 import { getDefaultFuelRateElement } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema';
-import { FuelRateUpd } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { ICreateFuel } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import FuelRatePermissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
 import { getModelsListState } from 'redux-main/reducers/modules/some_uniq/modelList/selectors';
@@ -246,6 +246,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
+          {/* в запросе вместо POST -> PUT */}
           <Button disabled={!this.props.canSave || !isPermitted} onClick={this.props.defaultSubmit}>Сохранить</Button>
         </Modal.Footer>
       </Modal>

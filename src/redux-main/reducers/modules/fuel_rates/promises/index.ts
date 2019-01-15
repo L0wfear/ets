@@ -86,14 +86,22 @@ export const updateFuelRate = (newFuelRate: FuelRateUpd) => {
   } = newFuelRate;
   payload.order_date = createValidDate(payload.order_date);
 
-  return FuelConsumptionRateService.put(payload, getFuelRates, 'json');
+  return FuelConsumptionRateService.put(
+    payload,
+    getFuelRates,
+    'json',
+  );
 };
 
 export const deleteFuelRate = ( id: number ) => {
   const payload = {
     id,
   };
-  return FuelConsumptionRateService.delete(payload, getFuelRates, 'json');
+  return FuelConsumptionRateService.delete(
+    payload,
+    getFuelRates,
+    'json',
+  );
 };
 
 // export const getFuelOperations(payload) {
@@ -102,7 +110,7 @@ export const deleteFuelRate = ( id: number ) => {
 
 export const createFuelOperation = ( formState ) => {
   const payload: fuelOperation = {};
-  // formState is undefined
+
   if (typeof formState.name === 'string' && formState.name !== '') {
     payload.name = formState.name;
     payload.equipment = !!formState.equipment;

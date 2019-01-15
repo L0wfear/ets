@@ -18,7 +18,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 
 const loadingPageName = 'fuel-rates';
 
-@connectToStores(['odh', 'fuelRates', 'objects', 'session', 'companyStructure'])
+@connectToStores(['odh', 'fuelRates', 'objects', 'session'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
@@ -45,7 +45,7 @@ class FuelRatesDirectory extends ElementsList {
       console.error(e);
     }
 
-    flux.getActions('companyStructure').getCompanyStructure(); // уже есть на dev отрефакторенный, смерджить с dev
+    // flux.getActions('companyStructure').getCompanyStructure(); // уже есть на dev отрефакторенный, смерджить с dev
     flux.getActions('odh').getMeasureUnits({ type: 'operation' }); // Тоже отрефакторить
   }
 }

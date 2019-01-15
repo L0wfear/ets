@@ -27,7 +27,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx", "src/components/directories/normative/fuel_rates/FuelRatesList.jsx", "src/components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema.js", "src/components/directories/normative/fuel_rates/FuelRateForm/FuelRateFormWrap.tsx"
+    "src/**/*.tsx",
   ],
   "exclude": [
     "node_modules",

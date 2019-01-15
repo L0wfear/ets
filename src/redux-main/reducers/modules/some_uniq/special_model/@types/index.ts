@@ -1,1 +1,1 @@
-export type GetCompanyStructureLinear = () => Promise<any>;
+export type GetCompanyStructureLinear22 = () => Promise<any>;

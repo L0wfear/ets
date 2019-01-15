@@ -14,5 +14,6 @@ stats.json
 *.sublime-project
 *.sublime-workspace
 yarn.lock
+package-lock.json
 .vscode
 coverage

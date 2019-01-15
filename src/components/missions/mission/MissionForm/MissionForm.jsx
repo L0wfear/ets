@@ -96,10 +96,6 @@ export class MissionForm extends Form {
     const technicalOperationsActions = flux.getActions('technicalOperation').getTechnicalOperations;
     const routesActions = flux.getActions('routes');
     const missionsActions = flux.getActions('missions').getMissionSources;
-    const {
-      currentUser: { company_id },
-    } = this.props;
-    flux.getActions('geoObjects').getGeozones(company_id);
 
     const { formState } = this.props;
 

@@ -23,14 +23,16 @@ export const config: TypeConfigData = {
     fields: [
       {
         valueKey: 'company_name',
-        title: 'Наименование ГБУ',
-        displayIf: displayIfContant.isKgh,
-        type: 'multiselect',
-      },
-      {
-        valueKey: 'company_name',
-        title: 'Учреждение',
-        displayIf: displayIfContant.isOkrug,
+        title: [
+          {
+            displayIf: displayIfContant.isKgh,
+            title: 'Наименование ГБУ',
+          },
+          {
+            title: 'Учреждение',
+            displayIf: displayIfContant.isOkrug,
+          },
+        ],
         type: 'multiselect',
       },
       {
@@ -118,15 +120,17 @@ export const config: TypeConfigData = {
         },
         {
           key: 'company_name',
-          title: 'Наименование ГБУ',
-          displayIf: displayIfContant.isKgh,
-          width: 200,
-        },
-        {
-          key: 'company_name',
-          title: 'Учреждение',
-          displayIf: displayIfContant.isOkrug,
-          width: 200,
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Наименование ГБУ',
+            },
+            {
+              title: 'Учреждение',
+              displayIf: displayIfContant.isOkrug,
+            },
+          ],
+          width: 300,
         },
         {
           key: 'id',

@@ -28,8 +28,8 @@ export const config: TypeConfigData = {
             title: 'Наименование ГБУ',
           },
           {
-            title: 'Наименование ГБУ',
             displayIf: displayIfContant.isOkrug,
+            title: 'Учреждение',
           },
         ],
         type: 'multiselect',
@@ -75,8 +75,8 @@ export const config: TypeConfigData = {
               title: 'Наименование ГБУ',
             },
             {
-              title: 'Учреждение',
               displayIf: displayIfContant.isOkrug,
+              title: 'Учреждение',
             },
           ],
           width: 200,

@@ -1,7 +1,6 @@
 // TODO обращений к сторам быть не должно, нужно получать данные из бека
-export const employeeFIOLabelFunction = (flux) => (employeeId, fullFlag = false) => {
-  const employees = flux.getStore('employees').state.employeesIndex;
-  const employee = employees[employeeId];
+export const employeeFIOLabelFunction = (employeesIndex, employeeId, fullFlag = false) => {
+  const employee = employeesIndex[employeeId];
   if (!employee) {
     return '';
   }

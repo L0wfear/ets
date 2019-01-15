@@ -230,8 +230,6 @@ class WaybillForm extends Form {
     }
   }
 
-  employeeFIOLabelFunction = (...arg) => employeeFIOLabelFunction(this.context.flux)(...arg);
-
   handlePlanDepartureDates = (field, value) => {
     if (value === null) {
       return;
@@ -642,7 +640,7 @@ class WaybillForm extends Form {
     const taxeTotalHidden = allTaxes.length === 0;
 
     if (state.driver_id && !DRIVERS.some(d => d.value === state.driver_id)) {
-      DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
+      DRIVERS.push({ label: employeeFIOLabelFunction(this.props.employeesIndex, state.driver_id), value: state.driver_id });
     }
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
     let distanceOrTrackOrNodata = state.distance;
@@ -888,7 +886,7 @@ class WaybillForm extends Form {
                 label="Водитель"
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
-                value={this.employeeFIOLabelFunction(state.driver_id, true)}
+                value={employeeFIOLabelFunction(employeesIndex, state.driver_id, true)}
               />
             </Col>
             <Col md={6}>

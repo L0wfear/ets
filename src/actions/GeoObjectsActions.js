@@ -1,27 +1,8 @@
 import { Actions } from 'flummox';
 import { GEOOBJECTS_TYPES } from 'constants/geoobjects';
 import * as services from 'api/Services';
-import { getValueFromCache, put } from 'utils/cache';
 
 export default class GeoObjectsActions extends Actions {
-  async getGeozones(company_id) {
-    let cacheName = 'GeozoneService.get()';
-    const payload = {};
-
-    if (company_id) {
-      cacheName = `GeozoneService.get(${company_id})`;
-      payload.company_id = company_id;
-    }
-
-    const cachedValue = getValueFromCache(cacheName);
-    if (cachedValue) {
-      return cachedValue;
-    }
-    const geozones = await services.GeozoneService.get(payload);
-    put(cacheName, geozones);
-    return geozones;
-  }
-
   async getGeozoneByTypeWithGeometry(
     type,
     serviceName = 'GeozonesService',
@@ -41,19 +22,6 @@ export default class GeoObjectsActions extends Actions {
       type: GEOOBJECTS_TYPES[type],
       data: response,
     };
-  }
-
-  setSelectedPolysType(type) {
-    return type;
-  }
-
-  getGeozoneMunicipalFacility(municipal_facility_id, object_type_id) {
-    const payload = {
-      municipal_facility_id,
-      object_type_id,
-    };
-
-    return services.GeozoneMunicipalFacilityService.get(payload).then(({ result }) => result);
   }
 
   setInitialState() {

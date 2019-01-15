@@ -122,9 +122,7 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationRelations,
 
       carActions.updateCarAdditionalInfo,
-      carActions.getDataByNormNormatives,
-
-      geoObjectsActions.getGeozones);
+      carActions.getDataByNormNormatives);
 
     this.reg(true,
       geoObjectsActions.getGeozoneByTypeWithGeometry,

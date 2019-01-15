@@ -36,10 +36,6 @@ export default class ChangeRouteForm extends React.Component {
     routeElement: null,
   }
 
-  componentDidMount() {
-    this.context.flux.getActions('geoObjects').getGeozones();
-  }
-
   onRowClick = ({ props: { data } }) => {
     this.setState({ routeSelected: data });
   }

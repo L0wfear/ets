@@ -1,7 +1,6 @@
 import { Store } from 'flummox';
 
 import { userNotification, getFullAccess } from 'api/mocks/permissions';
-import { clear } from 'utils/cache';
 import { setUserContext } from 'config/raven';
 import { routToPer } from 'constants/routerAndPermission';
 import { getWarningNotification } from 'utils/notifications';
@@ -87,7 +86,6 @@ export default class SessionStore extends Store {
   // TODO
   handleLogin(data) {
     if (data && data.payload) {
-      clear();
       data.payload.fio = createFio(data.payload);
       const session = data.token;
       let currentUser = data.payload;

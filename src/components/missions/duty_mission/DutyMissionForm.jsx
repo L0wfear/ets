@@ -182,8 +182,6 @@ export class DutyMissionForm extends Form {
       currentUser: { company_id },
     } = this.props;
 
-    flux.getActions('geoObjects').getGeozones(company_id);
-
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
     }
@@ -225,24 +223,23 @@ export class DutyMissionForm extends Form {
 
   createNewRouteNew = () => {
     const { formState } = this.props;
-    this.context.flux.getActions('geoObjects').getGeozones().then(() => {
-      this.setState({
-        showRouteForm: true,
-        selectedRoute: {
-          is_main: true,
-          name: '',
-          municipal_facility_id: formState.municipal_facility_id,
-          municipal_facility_name: '',
-          technical_operation_id: formState.technical_operation_id,
-          technical_operation_name: '',
-          structure_id: formState.structure_id,
-          structure_name: '',
-          type: null,
-          object_list: [],
-          input_lines: [],
-          draw_object_list: [],
-        },
-      });
+
+    this.setState({
+      showRouteForm: true,
+      selectedRoute: {
+        is_main: true,
+        name: '',
+        municipal_facility_id: formState.municipal_facility_id,
+        municipal_facility_name: '',
+        technical_operation_id: formState.technical_operation_id,
+        technical_operation_name: '',
+        structure_id: formState.structure_id,
+        structure_name: '',
+        type: null,
+        object_list: [],
+        input_lines: [],
+        draw_object_list: [],
+      },
     });
   }
 

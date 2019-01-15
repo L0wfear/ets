@@ -13,7 +13,7 @@ node-server.js
 stats.json
 *.sublime-project
 *.sublime-workspace
-yarn.lock
 package-lock.json
+yarn.lock
 .vscode
 coverage

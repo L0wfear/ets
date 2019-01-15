@@ -104,18 +104,20 @@ export default class Taxes extends React.Component {
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
         if (props.readOnly) {
-          const operation = _.find(this.state.operations, op => `${OPERATION}${row.comment}` === `${op.value}${op.comment}`);
-          return operation ? operation.label || '' : '';
+          const operation = _.find(this.state.operations, op => `${OPERATION}` === `${op.operation_id}`);
+
+          return operation ? `${operation.name} ${row.comment ? `(${row.comment})` : ''}` || '' : '';
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
-          const usedOperations = taxes.map(t => `${t.OPERATION}${t.comment}`);
+          const usedOperations = taxes.map(t => `${t.OPERATION}${t.comment ? t.comment : ''}`);
           if (usedOperations.indexOf(op.value) > -1) {
             op.disabled = true;
           }
           return op;
         });
-        return <ReactSelect id={`operation_${index + 1}`} modalKey={this.props.modalKey}  clearable={false} disabled={props.readOnly} options={options} value={`${OPERATION}${row.comment}`} onChange={this.handleOperationChange.bind(this, index)} />;
+
+        return <ReactSelect id={`operation_${index + 1}`} modalKey={this.props.modalKey} clearable={false} disabled={props.readOnly} options={options} value={`${OPERATION}${row.comment ? row.comment : ''}`} onChange={this.handleOperationChange.bind(this, index)} />;
       },
       measure_unit_name: measure_unit_name => measure_unit_name || '-',
       RESULT: RESULT => `${RESULT ? `${RESULT} л` : ''}`,
@@ -149,11 +151,13 @@ export default class Taxes extends React.Component {
   static getDerivedStateFromProps(nexProps, prevProps) {
     const { fuelRates, taxes = prevProps.tableData } = nexProps;
     let { operations } = nexProps;
-    console.log(operations)
-    operations = operations.map((data) => ({
+
+    operations = operations.map(data => ({
       value: `${data.id}${data.comment ? data.comment : ''}`,
       operation_id: data.id,
-      comment: data.comment,
+      rate_on_date: data.rate_on_date,
+      comment: data.comment || '',
+      name: data.name,
       label: data.comment ? `${data.name} (${data.comment})` : data.name,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
@@ -185,15 +189,17 @@ export default class Taxes extends React.Component {
   handleOperationChange = (index, rawValue, allOption) => {
     const value = get(allOption, 'operation_id', null);
     const comment = get(allOption, 'comment', '');
-    const { tableData, fuelRates } = this.state;
+    const rate_on_date = get(allOption, 'rate_on_date', 0);
+    const is_excluding_mileage = get(allOption, 'is_excluding_mileage', false);
+    const measure_unit_name = get(allOption, 'measure_unit_name', '-');
+
+    const { tableData } = this.state;
     const last_is_excluding_mileage = tableData[index].is_excluding_mileage;
 
     tableData[index].OPERATION = value;
     tableData[index].comment = comment;
-    const fuelRateByOperation = _.find(fuelRates, r => r.operation_id === value) || {};
-    tableData[index].FUEL_RATE = fuelRateByOperation.rate_on_date || 0;
-    tableData[index].is_excluding_mileage = (this.state.operations
-      .find(({ value: op_value }) => op_value === Number(value)) || {}).is_excluding_mileage || false;
+    tableData[index].FUEL_RATE = rate_on_date;
+    tableData[index].is_excluding_mileage = is_excluding_mileage;
     if (tableData[index].is_excluding_mileage) {
       tableData[index].iem_FACT_VALUE = tableData[index].FACT_VALUE;
       tableData[index].FACT_VALUE = 0;
@@ -201,8 +207,7 @@ export default class Taxes extends React.Component {
       tableData[index].FACT_VALUE = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
     }
     tableData[index].RESULT = Taxes.getResult(tableData[index]);
-    tableData[index].measure_unit_name = (this.state.operations
-      .find(({ value: op_value }) => op_value === Number(value)) || {}).measure_unit_name;
+    tableData[index].measure_unit_name = measure_unit_name;
 
     this.setState({ tableData });
     this.props.onChange(tableData);

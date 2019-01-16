@@ -246,7 +246,6 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-          {/* в запросе вместо POST -> PUT */}
           <Button disabled={!this.props.canSave || !isPermitted} onClick={this.props.defaultSubmit}>Сохранить</Button>
         </Modal.Footer>
       </Modal>

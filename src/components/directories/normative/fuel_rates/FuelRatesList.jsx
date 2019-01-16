@@ -44,9 +44,8 @@ class FuelRatesDirectory extends ElementsList {
       // eslint-disable-next-line no-console
       console.error(e);
     }
-
-    // flux.getActions('companyStructure').getCompanyStructure(); // уже есть на dev отрефакторенный, смерджить с dev
-    flux.getActions('odh').getMeasureUnits({ type: 'operation' }); // Тоже отрефакторить
+    flux.getActions('fuelRates').getFuelOperations(); // переделать
+    flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }
 

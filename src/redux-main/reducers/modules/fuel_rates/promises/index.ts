@@ -16,21 +16,6 @@ import {
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
 
-export const getFuelOperations = (payload: IFuelOperations = {}) => {
-  return FuelOperationsService
-    .get(payload)
-    .catch((error) => {
-      // tslint:disable-next-line:no-console
-      console.warn(error);
-
-      return {
-        result: {
-          rows: [],
-        },
-      };
-    }).then((r) => ({ fuelRateOperations: r.result.rows }));
-};
-
 export const getFuelRates = (payload = {}) => {
   return FuelConsumptionRateService
   .get(payload)
@@ -104,9 +89,38 @@ export const deleteFuelRate = ( id: number ) => {
   );
 };
 
-// export const getFuelOperations(payload) {
-//   return getFuelOperations(payload);
-// }
+export const getFuelOperationsIsActive = (payload: IFuelOperations = {}) => {
+  return FuelOperationsService
+    .get({
+      ...payload,
+      is_active: true,
+    })
+    .catch((error) => {
+      // tslint:disable-next-line:no-console
+      console.warn(error);
+
+      return {
+        result: {
+          rows: [],
+        },
+      };
+    }).then((r) => ({ fuelRateOperationsIsActiveList: r.result.rows }));
+};
+
+export const getFuelOperations = (payload: IFuelOperations = {}) => {
+  return FuelOperationsService
+    .get(payload)
+    .catch((error) => {
+      // tslint:disable-next-line:no-console
+      console.warn(error);
+
+      return {
+        result: {
+          rows: [],
+        },
+      };
+    }).then((r) => ({ fuelRateOperations: r.result.rows }));
+};
 
 export const createFuelOperation = ( formState ) => {
   const payload: fuelOperation = {};

@@ -1,11 +1,12 @@
 import {
-  getFuelOperations,
   getFuelRates,
   getFuelRatesByCarModel,
   getEquipmentFuelRatesByCarModel,
   createFuelRate,
   updateFuelRate,
   deleteFuelRate,
+  getFuelOperationsIsActive,
+  getFuelOperations,
   createFuelOperation,
   updateFuelOperation,
   deleteFuelOperation,
@@ -18,23 +19,12 @@ import {
   ICreateFuel,
   FuelRateUpd,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-//  import {
-//   FUEL_RATES_SET_DATA
-// } from 'redux-main/reducers/modules/fuel_rates/fuelRates'
 
 import { FUEL_RATES_SET_DATA } from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 
 export const FuelRatesGet = (type: string | null) => ({
   type: type || FUEL_RATES_SET_DATA, // for stores switch case
   payload: getFuelRates(),
-  meta: {
-    promise: true,
-  },
-});
-
-export const FuelOperationsGet = (type: string | null, payload: IFuelOperations) => ({
-  type,
-  payload: getFuelOperations(payload),
   meta: {
     promise: true,
   },
@@ -75,6 +65,22 @@ export const FuelRateUpdate = (type: string | null, payload: FuelRateUpd) => ({
 export const FuelRateDelete = (type: string | null, payload: number) => ({
   type,
   payload: deleteFuelRate(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelOperationsGet = (type: string | null, payload: IFuelOperations) => ({
+  type,
+  payload: getFuelOperations(payload),
+  meta: {
+    promise: true,
+  },
+});
+
+export const FuelOperationsIsActiveGet = (type: string | null, payload?: IFuelOperations) => ({
+  type,
+  payload: getFuelOperationsIsActive(payload),
   meta: {
     promise: true,
   },

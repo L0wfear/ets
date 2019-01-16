@@ -7,7 +7,8 @@ export const FUEL_RATES_SET_DATA = FUEL_RATES`SET_DATA`;
 
 const initialState: IStateFuelRates = {
   fuelRatesList: [],
-  fuelRateOperations: [],
+  fuelRateOperationsList: [],
+  fuelRateOperationsIsActiveList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

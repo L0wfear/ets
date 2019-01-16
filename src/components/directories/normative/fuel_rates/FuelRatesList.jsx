@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import {
   FuelRatesGet,
   FuelRateDelete,
+  FuelOperationsGet,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import {
   FUEL_RATES_SET_DATA,
@@ -18,7 +19,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 
 const loadingPageName = 'fuel-rates';
 
-@connectToStores(['odh', 'fuelRates', 'objects', 'session'])
+@connectToStores(['odh', 'objects', 'session'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
@@ -40,11 +41,12 @@ class FuelRatesDirectory extends ElementsList {
     try {
       this.props.FuelOperationsGet();
       this.props.FuelRatesGet();
+      this.props.FuelOperationsGet();
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
     }
-    flux.getActions('fuelRates').getFuelOperations(); // переделать
+
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }
@@ -57,7 +59,7 @@ export default compose(
   connect(
     state => ({
       fuelRatesList: state.fuelRates.fuelRatesList,
-      fuelRateOperations: state.fuelRates.fuelRateOperations,
+      fuelOperationsList: state.fuelRates.fuelRateOperationsList,
     }),
     dispatch => ({
       FuelOperationsGet: () => (
@@ -73,6 +75,11 @@ export default compose(
       FuelRateDelete: id => (
         dispatch(
           FuelRateDelete(FUEL_RATES_SET_DATA, id),
+        )
+      ),
+      FuelOperationsGet: () => (
+        dispatch(
+          FuelOperationsGet(FUEL_RATES_SET_DATA),
         )
       ),
     }),

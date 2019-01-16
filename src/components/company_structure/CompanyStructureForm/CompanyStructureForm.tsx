@@ -10,7 +10,6 @@ import companyStructurePermissions from 'components/company_structure/config-dat
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { companyStructureFormSchema } from 'components/company_structure/CompanyStructureForm/schema';
-import { get } from 'lodash';
 
 import {
   getdefaultCompanyStructureElement,
@@ -40,11 +39,6 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
     this.props.getCarpool();
   }
 
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
   handleChangeParentID = (parent_id) => {
     this.props.handleChange({
       type: null,
@@ -147,7 +141,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
                 error={errors.type}
                 options={STRUCTURE_TYPES[structureType]}
                 value={state.type}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="type"
                 clearable
               />
@@ -156,7 +150,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
                 label="Наименование"
                 error={errors.name}
                 value={state.name}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="name"
               />
               <ExtField
@@ -167,7 +161,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
                 error={errors.carpool_ids}
                 options={carpoolOptions}
                 value={state.carpool_ids}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="carpool_ids"
               />
               <ExtField
@@ -175,7 +169,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
                 label="Примечание"
                 error={errors.note}
                 value={state.note}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
               />
             </Col>

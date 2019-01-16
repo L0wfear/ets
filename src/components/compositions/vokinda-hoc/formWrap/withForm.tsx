@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { isFunction } from 'util';
+import { get } from 'lodash';
+import { isFunction, isString } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -42,7 +43,7 @@ type WithFormProps<P> = P & {
   isPermittedToCreate: boolean;
 };
 
-type FormWithHandleChange<F> = (objChange: { [K in keyof F]?: F[K] }) => any;
+type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
 type FormWithDefaultSubmit = () => void;
 
@@ -116,12 +117,18 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
         return Object.values(state.formErrors).every((error) => !error);
       }
-      handleChange: FormWithHandleChange<F> = (objChange) => {
+      handleChange: FormWithHandleChange<F> = (objChangeOrName, newRawValue) => {
+        const objChangeItareble = !isString(objChangeOrName)
+          ? objChangeOrName
+          : {
+            [objChangeOrName]: get(newRawValue, ['target', 'value'], newRawValue),
+          };
+
         setImmediate(() => {
           const { propertiesByKey } = this.state;
           const formState = { ...this.state.formState };
 
-          Object.entries(objChange).forEach(([key, value]) => {
+          Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
             if (key in propertiesByKey) {
               switch (propertiesByKey[key].type) {

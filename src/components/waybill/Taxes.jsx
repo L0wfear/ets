@@ -106,7 +106,7 @@ export default class Taxes extends React.Component {
         if (props.readOnly) {
           const operation = _.find(this.state.operations, op => `${OPERATION}` === `${op.operation_id}`);
 
-          return operation ? `${operation.name} ${row.comment ? `(${row.comment})` : ''}` || '' : '';
+          return operation ? `${operation.name} ${row.comment ? `(${row.comment})` : ''}${row.is_excluding_mileage ? ' [без учета пробега]' : ''}` || '' : '';
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
@@ -158,7 +158,7 @@ export default class Taxes extends React.Component {
       rate_on_date: data.rate_on_date,
       comment: data.comment || '',
       name: data.name,
-      label: data.comment ? `${data.name} (${data.comment})` : data.name,
+      label: `${data.comment ? `${data.name} (${data.comment})` : data.name}${data.is_excluding_mileage ? ' [без учета пробега]' : ''}`,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
     }));

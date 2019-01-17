@@ -49,11 +49,6 @@ import { getSpecialModelList } from 'redux-main/reducers/modules/some_uniq/speci
 
 class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
 
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
   handleHide = () => {
     this.props.handleHide(false);
   }
@@ -84,9 +79,9 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
   handleSpecialModelChange = (value) => {
     this.props.actionGetAndSetInStoreModelList({ car_special_model_id: value });
     if (!this.props.modelsList.find((model) => model.id === this.props.formState.car_model_id)) {
-      this.handleChange('car_model_id', null);
+      this.props.handleChange('car_model_id', null);
     }
-    this.handleChange('car_special_model_id', value);
+    this.props.handleChange('car_special_model_id', value);
   }
 
   makeOptionFromModelsList = (
@@ -163,7 +158,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 label="Дата приказа"
                 type="date"
                 date={state.order_date}
-                onChange={this.handleChange.bind(this, 'order_date')}
+                onChange={this.props.handleChange.bind(this, 'order_date')}
                 time={false}
                 error={errors.order_date}
                 disabled={!isPermitted}
@@ -176,7 +171,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 options={OPERATIONS}
                 clearable={false}
                 value={state.operation_id}
-                onChange={this.handleChange.bind(this, 'operation_id')}
+                onChange={this.props.handleChange.bind(this, 'operation_id')}
                 disabled={!isPermitted}
               />
 
@@ -191,7 +186,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 label="Примечание"
                 type="string"
                 value={state.comment}
-                onChange={this.handleChange.bind(this, 'comment')}
+                onChange={this.props.handleChange.bind(this, 'comment')}
               />
 
               <Field
@@ -199,7 +194,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 type="number"
                 error={errors.summer_rate}
                 value={state.summer_rate}
-                onChange={this.handleChange.bind(this, 'summer_rate')}
+                onChange={this.props.handleChange.bind(this, 'summer_rate')}
                 disabled={!isPermitted}
               />
 
@@ -208,7 +203,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 type="number"
                 error={errors.winter_rate}
                 value={state.winter_rate}
-                onChange={this.handleChange.bind(this, 'winter_rate')}
+                onChange={this.props.handleChange.bind(this, 'winter_rate')}
                 disabled={!isPermitted}
               />
 
@@ -230,7 +225,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 className="white-space-pre-wrap"
                 options={MODELS}
                 value={state.car_model_id}
-                onChange={this.handleChange.bind(this, 'car_model_id')}
+                onChange={this.props.handleChange.bind(this, 'car_model_id')}
                 disabled={!isPermitted || !state.car_special_model_id}
               />
               <Field
@@ -239,7 +234,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 options={COMPANY_ELEMENTS}
                 value={state.company_structure_id}
                 emptyValue={null}
-                onChange={this.handleChange.bind(this, 'company_structure_id')}
+                onChange={this.props.handleChange.bind(this, 'company_structure_id')}
                 disabled={!isPermitted}
               />
             </Col>

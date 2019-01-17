@@ -77,11 +77,6 @@ export default compose(
           FuelRateDelete(FUEL_RATES_SET_DATA, id),
         )
       ),
-      FuelOperationsGet: () => (
-        dispatch(
-          FuelOperationsGet(FUEL_RATES_SET_DATA),
-        )
-      ),
     }),
   ),
 )(FuelRatesDirectory);

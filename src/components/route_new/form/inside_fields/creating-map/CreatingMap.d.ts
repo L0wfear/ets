@@ -17,12 +17,13 @@ export type StatePropsCreatingMap = {
 };
 
 export type DispatchPropsCreatingMap = {
-  loadGeozoneMunicipalFacility: (municipal_facility_id: number, object_type_id: number) => Promise<any>;
+  loadGeozoneMunicipalFacility: (municipal_facility_id: number, technical_operation_id: number, object_type_id: number) => Promise<any>;
   getTechnicalOperationsObjects: () => Promise<any>;
 };
 
 export type OwnPropsCreatingMap = {
   municipal_facility_id: number | null;
+  technical_operation_id: number | null;
   bridges?: ModifyBridgesForRoute;
   input_lines: any[];
   object_list: any[];

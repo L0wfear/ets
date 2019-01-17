@@ -10,7 +10,7 @@ export const validateMultiValueOfArray = <F, P>(fieldData: MultiValueOfArrayProp
     title,
   } = fieldData;
 
-  if (fieldData.required && (isArray(value) ? !value.length : true)) {
+  if (fieldData.required && (isArray(value) ? !value.length : !value)) {
     return `Поле "${title}" должно быть заполнено`;
   }
 

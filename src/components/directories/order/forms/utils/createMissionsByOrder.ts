@@ -40,7 +40,7 @@ export const createMissionByOrder = async (flux, missionsArr, mission_source_id,
   let ansArr = [true];
 
   if (assign_to_waybill === ASSING_BY_KEY.assign_to_new_draft) {
-    const missionByCar = groupBy(missionsArr, 'car_id');
+    const missionByCar = groupBy(missionsArr, 'car_ids');
 
     ansArr = await Promise.all(
       Object.values(missionByCar).map(async ([firstMission, ...otherMissions]) => {

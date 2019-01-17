@@ -148,16 +148,58 @@ export function getDefaultMissionTemplate() {
   return {
     description: '',
     passes_count: 1,
+    car_ids: [],
+    car_type_id: [],
+    norm_id: [],
+    is_cleaning_norm: [],
+    assign_to_waybill: [],
     date_create: getDateWithMoscowTz(),
     is_new: true,
   };
 }
 
-export function getDefaultMissionsCreationTemplate() {
+export function getDefaultMissionsCreationTemplate(missionsObj, for_column) {
+  if (for_column) {
+    return {
+      date_start: getDateWithMoscowTz(),
+      date_end: getTomorrow9am(),
+      assign_to_waybill: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
+        newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+          newObjCarId[car_id] = 'assign_to_new_draft';
+
+          return newObjCarId;
+        }, {});
+
+        return newObj;
+      }, {}),
+      norm_id: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
+        newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+          newObjCarId[car_id] = null;
+
+          return newObjCarId;
+        }, {});
+
+        return newObj;
+      }, {}),
+      mission_source_id: 3,
+      passes_count: 1,
+      is_new: true,
+    };
+  }
+
   return {
     date_start: getDateWithMoscowTz(),
     date_end: getTomorrow9am(),
     assign_to_waybill: 'assign_to_new_draft',
+    norm_id: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
+      newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+        newObjCarId[car_id] = null;
+
+        return newObjCarId;
+      }, {});
+
+      return newObj;
+    }, {}),
     mission_source_id: 3,
     passes_count: 1,
     is_new: true,

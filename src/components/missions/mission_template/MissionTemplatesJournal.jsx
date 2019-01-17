@@ -12,6 +12,7 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
+import { getWarningNotification } from 'utils/notifications';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -137,7 +138,15 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   createMissions = () => {
-    this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+    const { checkedElements } = this.state;
+    const allCheckedMissionInArr = Object.values(checkedElements);
+    const hasMissionForColumn = allCheckedMissionInArr.some(mission => mission.for_column);
+
+    if (hasMissionForColumn && allCheckedMissionInArr.length > 1) {
+      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Для создания задания на колонну необходимо выбрать только 1 шаблон!'));
+    } else {
+      this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+    }
   }
 
   /**
@@ -160,6 +169,15 @@ class MissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
       selectedElement: _.cloneDeep(copiedElement),
     });
+  }
+
+  onFormHide = (clearCheckedElements) => {
+    this.setState(({ checkedElements }) => ({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: clearCheckedElements ? {} : checkedElements,
+    }));
   }
 
   getForms = () => {

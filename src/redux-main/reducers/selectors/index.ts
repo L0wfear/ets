@@ -50,3 +50,6 @@ export const getSomeUniqState: GetStateType<'some_uniq'> = (state) => (
 export const getGeoobjectState: GetStateType<'geoobject'> = (state) => (
   getStateDataByKey(state)('geoobject')
 );
+export const getMissionsState: GetStateType<'missions'> = (state) => (
+  getStateDataByKey(state)('missions')
+);

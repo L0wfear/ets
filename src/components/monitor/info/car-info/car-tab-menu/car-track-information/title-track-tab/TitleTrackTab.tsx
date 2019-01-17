@@ -70,8 +70,8 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
 
       if (diffDates(dates.date_end, dates.date_start, 'minutes', false) <= 0) {
         errorDates = 'Дата начала должна быть раньше даты окончания';
-      } else if (diffDates(dates.date_end, dates.date_start, 'days') > (process.env.STAND === 'prod' ? 10 : 30)) {
-        errorDates = `Период формирования трека не должен превышать ${process.env.STAND === 'prod' ? 10 : 30} суток`;
+      } else if (diffDates(dates.date_end, dates.date_start, 'days') > 10) {
+        errorDates = 'Период формирования трека не должен превышать 10 суток';
       } else {
         errorDates = '';
       }
@@ -131,7 +131,7 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
               title="Перезагрузить данные"
               className="reload-button"
               onClick={this.reloadTrackAndMissions}
-              disabled={forToday || track === -1 || disbledByTrackPlayStatys || !!errorDates}
+              disabled={forToday || track === -1 || disbledByTrackPlayStatys}
             >
               <Glyphicon glyph="repeat" />
             </Button>

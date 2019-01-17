@@ -119,7 +119,7 @@ class Paginator extends React.Component<PropsPaginator, StatePaginator> {
       ? (
         <EtsPaginatorContainer>
             <ButtonFirst registryKey={registryKey} />
-            <ButtonPrev registryKey={registryKey} />
+            <ButtonPrev registryKey={registryKey}/>
             { arrayForButton.map(this.renderMainButton) }
             <ButtonNext registryKey={registryKey} />
             <ButtonLast registryKey={registryKey} />

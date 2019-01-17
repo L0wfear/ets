@@ -25,7 +25,7 @@ class ButtonNext extends React.Component<PropsButtonNext, StatePaginator> {
   }
   render() {
     return (
-      <Button disabled={!this.props.show} onClick={this.handleButtonClick}>
+      <Button disabled={!this.props.show} onClick={this.handleButtonClick} className="pagination-control">
         <Glyphicon glyph="chevron-right" />
       </Button>
     );

@@ -82,6 +82,7 @@ export const GeozoneOdhService = ETS_API_FACTORY.createApiServiceAdapter('geozon
 export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});
 export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
+export const GeozoneFuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('geozones/fueling_water', {});
 
 export const GeozoneMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('geozone_municipal_facility', {});
 

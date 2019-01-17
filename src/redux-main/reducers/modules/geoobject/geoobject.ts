@@ -11,6 +11,7 @@ export const geoobjectInitialState: IStateGeoobject = {
   odhList: [],
   sspList: [],
   mspList: [],
+  fuelingWaterList: [],
 };
 
 export default (state = geoobjectInitialState, { type, payload }) => {

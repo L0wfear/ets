@@ -78,6 +78,7 @@ class WaybillJournal extends CheckableElementsList {
       this.setState({ page: 0 });
     } else {
       this.updateList();
+      this.changeWaybillListAction();
     }
   }
 
@@ -210,8 +211,15 @@ class WaybillJournal extends CheckableElementsList {
     return forms;
   }
 
+  // call create/update/delete waybill
+  changeWaybillListAction = () => {
+    const { flux } = this.context;
+    flux.getActions('objects').getSomeCars('WaybillCarService');
+  }
+
   formCallback = async () => {
     await this.updateList(this.state);
+    this.changeWaybillListAction();
     this.onFormHide();
   }
 

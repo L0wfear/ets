@@ -43,7 +43,7 @@ class CreatingMap extends React.PureComponent<PropsCreatingMap, StateCreatingMap
     OBJECT_LIST_OPTIONS: [],
     objectListIdArr: makeObjectListIdArr(this.props.object_list),
     type: this.props.type,
-    manual: false,
+    manual: this.props.type && routeTypesByKey[this.props.type].slug === 'points',
     hand: false,
   };
 

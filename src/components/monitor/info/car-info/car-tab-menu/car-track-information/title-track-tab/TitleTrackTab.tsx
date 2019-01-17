@@ -131,7 +131,7 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
               title="Перезагрузить данные"
               className="reload-button"
               onClick={this.reloadTrackAndMissions}
-              disabled={forToday || track === -1 || disbledByTrackPlayStatys}
+              disabled={forToday || track === -1 || disbledByTrackPlayStatys || !!errorDates}
             >
               <Glyphicon glyph="repeat" />
             </Button>

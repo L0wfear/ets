@@ -15,6 +15,9 @@ import {
   TpMessangeContainer,
 } from 'components/login/styled/styled';
 import SnowStorm from 'react-snowstorm';
+import { DivNone } from 'global-styled/global-styled';
+
+const STAND = process.env.STAND;
 
 class LoginPage extends React.PureComponent<any, any> {
   state = {
@@ -61,7 +64,15 @@ class LoginPage extends React.PureComponent<any, any> {
 
     return (
       <LoginPageContainer>
-        <SnowStorm followMouse={false} />
+        {
+          STAND === 'dev'
+            ? (
+              <SnowStorm followMouse={false} />
+            )
+            : (
+              <DivNone />
+            )
+        }
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
             <LoginPageFormContainer>

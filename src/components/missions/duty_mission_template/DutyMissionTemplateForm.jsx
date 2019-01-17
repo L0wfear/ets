@@ -36,7 +36,7 @@ class MissionTemplateForm extends DutyMissionForm {
       available_route_types = [],
       technicalOperationsList = [],
       TECH_OPERATIONS = [],
-      selectedRouteNew: route = null,
+      selectedRoute: route = null,
     } = this.state;
 
     const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);

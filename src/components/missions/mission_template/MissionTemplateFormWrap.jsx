@@ -135,9 +135,14 @@ class MissionTemplateFormWrap extends FormWrap {
         });
       } else {
         this.schema = missionsCreationTemplateSchema;
-        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
+        const for_column = Object.values(this.props.missions).some(missionData => missionData.for_column);
+
+        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate(this.props.missions, for_column);
+
         const formErrors = this.validate(defaultMissionsCreationTemplate, {});
         const dataTestRoute = checkMissionsByRouteType(Object.values(this.props.missions), defaultMissionsCreationTemplate);
+
+        defaultMissionsCreationTemplate.for_column = for_column;
         if (dataTestRoute.error) {
           defaultMissionsCreationTemplate.date_end = addTime(defaultMissionsCreationTemplate.date_start, dataTestRoute.time, 'hours');
         }
@@ -191,10 +196,12 @@ class MissionTemplateFormWrap extends FormWrap {
             date_start: formState.date_start,
             date_end: formState.date_end,
             assign_to_waybill: formState.assign_to_waybill,
+            for_column: formState.for_column,
+            norm_id: formState.norm_id,
           };
 
-          if (externalPayload.assign_to_waybill === ASSING_BY_KEY.assign_to_new_draft) {
-            const missionByCar = groupBy(missionsArr, 'car_id');
+          if (externalPayload.assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {
+            const missionByCar = groupBy(missionsArr, 'car_ids');
 
             const ansArr = await Promise.all(
               Object.values(missionByCar).map(async ([firstMission, ...other]) => {

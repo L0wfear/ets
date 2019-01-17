@@ -5,6 +5,7 @@ import {
   clone,
   cloneDeep,
   keys,
+  omit,
 } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
@@ -30,6 +31,7 @@ import {
 import {
   WaybillService,
 } from 'api/Services';
+import { isArray } from 'util';
 
 export const parseFilterObject = filter => (
   Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
@@ -131,7 +133,7 @@ export default class MissionsActions extends Actions {
     if (!defaultAssign) payload.assign_to_waybill = 'not_assign';
 
     if (mission.is_column) {
-      return MissionService.path('column/').post(
+      return MissionService.path('column').post(
         {
           missions: payload.car_id.map((car_id, index) => ({
             ...payload,
@@ -211,16 +213,13 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionTemplatesCars(payload = {}) {
-    if (payload.faxogramm_id) {
-      return MissionTemplatesForFaxogramm.get(payload);
-    }
-
     return MissionTemplateCarService.get(payload);
   }
 
   createMissionTemplate(missionTemplate) {
     const payload = clone(missionTemplate);
     payload.created_at = createValidDate(payload.created_at);
+    payload.norm_id = isArray(payload.norm_id) ? payload.norm_id[0] : payload.norm_id;
 
     delete payload.company_id;
     delete payload.number;
@@ -232,10 +231,46 @@ export default class MissionsActions extends Actions {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
-    const queries = keys(missionTemplates).map(key => missionTemplates[key]).map((query) => {
+
+    if (missionsCreationTemplate.for_column) {
+      return Promise.all(
+        Object.entries(missionTemplates).map(([id, mission]) => (
+          MissionService.path('column').post(
+            {
+              missions: mission.car_ids.map((car_id) => {
+                const payloadMission = {
+                  ...mission,
+                  car_id,
+                  ...missionsCreationTemplateCopy,
+                  is_column: true,
+                  date_start,
+                  date_end,
+                  norm_id: missionsCreationTemplateCopy.norm_id[id][car_id],
+                  assign_to_waybill: missionsCreationTemplateCopy.assign_to_waybill[id][car_id],
+                };
+
+                delete payloadMission.car_ids;
+                delete payloadMission.car_type_ids;
+                delete payloadMission.car_type_names;
+                delete payloadMission.car_gov_numbers;
+                delete payloadMission.car_gov_numbers_text;
+
+                return payloadMission;
+              }),
+            },
+            false,
+            'json',
+          )
+        )),
+      );
+    }
+
+    const queries = Object.entries(missionTemplates).map(([id, query]) => {
       const payload = clone(query);
+
       payload.date_start = date_start;
       payload.date_end = date_end;
+      [payload.car_id] = query.car_ids;
       payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
       payload.assign_to_waybill = missionsCreationTemplateCopy.assign_to_waybill;
       payload.hidden = true;
@@ -246,6 +281,7 @@ export default class MissionsActions extends Actions {
         payload.faxogramm_id = missionsCreationTemplateCopy.faxogramm_id;
       }
       payload.template_id = payload.id;
+      payload.norm_id = missionsCreationTemplateCopy.norm_id[id][payload.car_id];
 
       delete payload.company_id;
       delete payload.id;

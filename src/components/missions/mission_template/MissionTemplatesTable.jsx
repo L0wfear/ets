@@ -2,10 +2,12 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable';
 import { get } from 'lodash';
 
-export const getTableMeta = ({ 
+const forColumnLabelFunction = for_column => for_column ? 'Да' : 'Нет';
+
+export const getTableMeta = ({
   structures = [],
   govNumberFilter = [],
-  }) => {
+}) => {
   const tableMeta = {
     cols: [
       {
@@ -26,7 +28,7 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'car_id',
+        name: 'car_ids',
         displayName: 'Рег. номер ТС',
         type: 'number',
         filter: {
@@ -36,7 +38,7 @@ export const getTableMeta = ({
         cssClassName: 'width120',
       },
       {
-        name: 'car_type_name',
+        name: 'car_type_names',
         displayName: 'Тип техники',
         type: 'number',
         filter: {
@@ -79,6 +81,16 @@ export const getTableMeta = ({
         },
       },
       {
+        name: 'for_column',
+        displayName: 'Колонна',
+        type: 'number',
+        cssClassName: 'width60',
+        filter: {
+          type: 'multiselect',
+          labelFunction: forColumnLabelFunction,
+        },
+      },
+      {
         name: 'structure_id',
         displayName: 'Подразделение',
         cssClassName: 'width80',
@@ -103,17 +115,23 @@ export const getTableMeta = ({
 
 const renderers = {
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-  car_id: ({ rowData }) => <div>{get(rowData, 'car_gov_number') || '-'}</div>,
+  car_ids: ({ rowData }) => <div>{get(rowData, 'car_gov_numbers_text') || '-'}</div>,
+  car_type_names: ({ rowData }) => <div>{get(rowData, 'car_type_names_text') || '-'}</div>,
+  for_column: ({ data }) => <div>{forColumnLabelFunction(data)}</div>,
 };
 
-export default (props) => (
-  <Table
-    title="Шаблоны заданий"
-    renderers={renderers}
-    results={props.data}
-    tableMeta={getTableMeta(props)}
-    initialSort="number"
-    initialSortAscending={false}
-    {...props}
-  />
-);
+const MissionTemplatesTable = (props) => {
+  return (
+    <Table
+      title="Шаблоны заданий"
+      renderers={renderers}
+      results={props.data}
+      tableMeta={getTableMeta(props)}
+      initialSort="number"
+      initialSortAscending={false}
+      {...props}
+    />
+  );
+};
+
+export default MissionTemplatesTable;

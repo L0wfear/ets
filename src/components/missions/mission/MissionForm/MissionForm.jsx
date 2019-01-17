@@ -40,6 +40,7 @@ import {
   handleRouteFormHide,
   isOdhRouteTypePermitted,
   makeCarOptionLabel,
+  makePayloadFromState,
 } from 'components/missions/mission/MissionForm/utils';
 import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/types';
 
@@ -62,15 +63,6 @@ const ASSIGN_OPTIONS = [
   { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
 ];
 
-const makePayloadFromState = (formState, type_id) => ({
-  datetime: formState.date_start,
-  technical_operation_id: formState.technical_operation_id,
-  municipal_facility_id: formState.municipal_facility_id,
-  route_type: formState.route_type,
-  func_type_id: type_id || formState.type_id,
-  needs_brigade: false,
-});
-
 export class MissionForm extends Form {
   constructor(props) {
     super(props);
@@ -84,7 +76,6 @@ export class MissionForm extends Form {
       technicalOperationsList: [],
       columnPermittedTechOps: [],
       showColumnAssignment: false,
-      showBackButton: false,
       firstFormState: {
         ...this.props.formState,
       },
@@ -629,7 +620,6 @@ export class MissionForm extends Form {
               <ColumnAssignment
                 ASSIGN_OPTIONS={ASSIGN_OPTIONS}
                 formState={state}
-                showBackButton={this.state.showBackButton}
                 hideColumnAssignment={this.hideColumnAssignment}
                 handleChange={this.handleChange}
                 carsList={carsList}

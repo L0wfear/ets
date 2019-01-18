@@ -29,7 +29,6 @@ export const getCompanyStructureDescendantsByUser = (payload = {}) => (
 export const promiseCreateCompanyStructure = (ownPayload) => {
   const payload = {
     ...ownPayload,
-    carpool_id_list: ownPayload.carpool_ids,
   };
 
   return CompanyStructureService.post(
@@ -41,7 +40,6 @@ export const promiseCreateCompanyStructure = (ownPayload) => {
 export const promiseUpdateCompanyStructure = (ownPayload) => {
   const payload = {
     ...ownPayload,
-    carpool_id_list: ownPayload.carpool_ids,
   };
 
   return CompanyStructureService.put(

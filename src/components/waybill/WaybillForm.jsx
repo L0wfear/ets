@@ -168,10 +168,11 @@ class WaybillForm extends Form {
 
           this.setState({
             fuelRates,
-            operations: fuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            operations: fuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
+                  uniqKey: id,
                   rate_on_date,
                   comment,
                   measure_unit_name,
@@ -183,10 +184,11 @@ class WaybillForm extends Form {
             }, []),
             fuel_correction_rate,
             equipmentFuelRates,
-            equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            equipmentOperations: equipmentFuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
+                  uniqKey: id,
                   rate_on_date,
                   measure_unit_name,
                   is_excluding_mileage,
@@ -1069,6 +1071,7 @@ class WaybillForm extends Form {
           <Row>
             <Col md={8}>
               <Taxes
+                modalKey={modalKey}
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
                 readOnly={IS_CLOSED || !IS_ACTIVE && !this.state.canEditIfClose}
                 title="Расчет топлива по норме"
@@ -1081,6 +1084,7 @@ class WaybillForm extends Form {
                 type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               />
               <Taxes
+                modalKey={modalKey}
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !state.equipment_tax_data)}
                 readOnly={IS_CLOSED || !IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}

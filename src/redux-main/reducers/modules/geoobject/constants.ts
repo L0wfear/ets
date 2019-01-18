@@ -4,6 +4,7 @@ export const odh = 'odh';
 export const ssp = 'ssp';
 export const msp = 'msp';
 export const fueling_water = 'fueling_water';
+export const fountains = 'fountains';
 
 export default {
   [carpool]: 'carpool',
@@ -12,4 +13,5 @@ export default {
   [ssp]: 'ssp',
   [msp]: 'msp',
   [fueling_water]: 'fueling_water',
+  [fountains]: 'fountains',
 };

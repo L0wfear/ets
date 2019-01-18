@@ -70,8 +70,8 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
                   ? (
                     <ExtField
                       type="string"
-                      value={state.company_name}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ' : 'Учреждение'}
+                      value={state.company_name || '-'}
+                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
                       readOnly
                     />
                   )
@@ -82,38 +82,38 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
               <ExtField
                 type="string"
                 value={state.name}
-                label="Полное наименование"
+                label="Полное наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.shortname}
-                label="Краткое наименование"
+                label="Краткое наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.address}
-                label="Адрес"
+                label="Адрес:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={isNumber(state.productivity) ? parseFloat(state.productivity.toString()).toFixed(2) : ''}
-                label="Производительность (куб. м в сутки)"
+                label="Производительность (куб. м в сутки):"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={get(YES_NO_SELECT_OPTIONS_INT.find(({ value }) => value === state.is_mobile), 'label', '-')}
-                label="Мобильность"
+                label="Мобильность:"
                 readOnly
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
               <MapGeoobjectWrap
                 geoobjectData={state}
-                entity={'ssp'}
+                entity="ssp"
               />
             </Flex>
           </FlexContainer>

@@ -5,6 +5,7 @@ export const ssp = 'ssp';
 export const msp = 'msp';
 export const fueling_water = 'fueling_water';
 export const fountains = 'fountains';
+export const bridges = 'bridges';
 
 export default {
   [carpool]: 'carpool',
@@ -14,4 +15,5 @@ export default {
   [msp]: 'msp',
   [fueling_water]: 'fueling_water',
   [fountains]: 'fountains',
+  [bridges]: 'bridges',
 };

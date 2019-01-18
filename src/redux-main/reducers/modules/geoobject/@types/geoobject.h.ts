@@ -5,6 +5,7 @@ import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@
 import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
 import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
+import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types/index';
 
 export type IStateGeoobject = {
   carpoolList: Carpool[];
@@ -14,4 +15,5 @@ export type IStateGeoobject = {
   mspList: Msp[]
   fuelingWaterList: FuelingWater[];
   fountainsList: Fountains[];
+  bridgesList: Bridges[];
 };

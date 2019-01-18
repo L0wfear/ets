@@ -68,8 +68,8 @@ class FuelingWaterForm extends React.PureComponent<PropsFuelingWaterForm, StateF
                   ? (
                     <ExtField
                       type="string"
-                      value={state.company_name}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ' : 'Учреждение'}
+                      value={state.company_name || '-'}
+                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
                       readOnly
                     />
                   )
@@ -80,20 +80,20 @@ class FuelingWaterForm extends React.PureComponent<PropsFuelingWaterForm, StateF
               <ExtField
                 type="string"
                 value={state.name}
-                label="Полное наименование"
+                label="Полное наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.address}
-                label="Адрес"
+                label="Адрес:"
                 readOnly
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
               <MapGeoobjectWrap
                 geoobjectData={state}
-                entity={'FuelingWater'}
+                entity="fuelingWater"
               />
             </Flex>
           </FlexContainer>

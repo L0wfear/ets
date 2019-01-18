@@ -10,8 +10,8 @@ import permissions from 'components/directories/normative/maintenance_rate/confi
 
 import { connect } from 'react-redux';
 import {
-  MaintenanceRateGet,
-  MaintenanceRateDelete,
+  maintenanceRateGet,
+  maintenanceRateDelete,
 } from 'redux-main/reducers/modules/maintenance_rate/actions-maintenanceRate';
 import {
   MAINTENANCE_RATE_SET_DATA,
@@ -45,7 +45,7 @@ class MaintenanceRateDirectory extends ElementsList {
 
   init() {
     const { flux } = this.context;
-    this.props.MaintenanceRateGet(this.props.type);
+    this.props.maintenanceRateGet(this.props.type);
     // flux.getActions('objects').getMaintenanceRate(this.props.type); // redux
     flux.getActions('objects').getMaintenanceWork();
     flux.getActions('objects').getCleanCategories();
@@ -53,7 +53,7 @@ class MaintenanceRateDirectory extends ElementsList {
   }
 
   removeElementAction = (...arg) => (
-    this.props.MaintenanceRateDelete(this.props.type, ...arg)
+    this.props.maintenanceRateDelete(this.props.type, ...arg)
   );
 
   componentDidUpdate(prevProps) {
@@ -61,7 +61,7 @@ class MaintenanceRateDirectory extends ElementsList {
 
     if (prevProps.type !== type) {
       this.setExportType(type);
-      this.props.MaintenanceRateGet(type);
+      this.props.maintenanceRateGet(type);
     }
   }
 }
@@ -72,7 +72,9 @@ class MaintenanceRate extends Component {
   }
 
   render() {
-    const { type } = this.state;
+    const {
+      type,
+    } = this.state;
     return (
       <div>
         <div className="cleaning-rate-header">
@@ -81,7 +83,7 @@ class MaintenanceRate extends Component {
             <Button disabled active={this.state.type === 'dt'} onClick={() => this.setState({ type: 'dt' })}>ДТ</Button>
           </ButtonGroup>
         </div>
-        <MaintenanceRateDirectory type={type} />
+        <MaintenanceRateDirectory type={type} {...this.props} />
       </div>
     );
   }
@@ -97,14 +99,14 @@ export default compose(
       maintenanceRateList: state.maintenanceRate.maintenanceRateList,
     }),
     dispatch => ({
-      MaintenanceRateGet: type => (
+      maintenanceRateGet: type => (
         dispatch(
-          MaintenanceRateGet(MAINTENANCE_RATE_SET_DATA, type),
+          maintenanceRateGet(MAINTENANCE_RATE_SET_DATA, type),
         )
       ),
-      MaintenanceRateDelete: (type, id) => (
+      maintenanceRateDelete: (type, id) => (
         dispatch(
-          MaintenanceRateDelete(MAINTENANCE_RATE_SET_DATA, type, id),
+          maintenanceRateDelete(MAINTENANCE_RATE_SET_DATA, type, id),
         )
       ),
     }),

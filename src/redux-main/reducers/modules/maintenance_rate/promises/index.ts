@@ -10,7 +10,19 @@ export const getMaintenanceRate = (type: string) => {
   const payload = {
     type,
   };
-  return MaintenanceRateService.get(payload);
+
+  return MaintenanceRateService
+    .get(payload)
+    .catch((error) => {
+      // tslint:disable-next-line:no-console
+      console.warn(error);
+
+      return {
+        result: {
+          rows: [],
+        },
+      };
+    }).then((r) => ({ maintenanceRateList: r.result.rows }));
 };
 
 export const createMaintenanceRate = (type: string, formState: ICreateMaintenanceRate) => {
@@ -45,4 +57,4 @@ export const deleteMaintenanceRate = (type: string, id: number) => {
     this.getMaintenanceRate.bind(this, type),
     'json',
   );
-}
+};

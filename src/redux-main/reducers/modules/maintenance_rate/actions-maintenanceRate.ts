@@ -12,7 +12,7 @@ import {
 
 import { MAINTENANCE_RATE_SET_DATA } from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
 
-export const MaintenanceRateGet = (type: string | null, payload) => ({
+export const maintenanceRateGet = (type: string | null, payload) => ({
   type: type || MAINTENANCE_RATE_SET_DATA,
   payload: getMaintenanceRate(payload),
   meta: {
@@ -20,7 +20,7 @@ export const MaintenanceRateGet = (type: string | null, payload) => ({
   },
 });
 
-export const MaintenanceRateCreate = (type: string | null, mrType: string, formstate: ICreateMaintenanceRate) => ({
+export const maintenanceRateCreate = (type: string | null, mrType: string, formstate: ICreateMaintenanceRate) => ({
   type: type || MAINTENANCE_RATE_SET_DATA,
   payload: createMaintenanceRate(mrType, formstate),
   meta: {
@@ -28,7 +28,7 @@ export const MaintenanceRateCreate = (type: string | null, mrType: string, forms
   },
 });
 
-export const MaintenanceRateUpdate = (type: string | null, mrType: string, formstate: IMaintenanceRateUpd) => ({
+export const maintenanceRateUpdate = (type: string | null, mrType: string, formstate: IMaintenanceRateUpd) => ({
   type: type || MAINTENANCE_RATE_SET_DATA,
   payload: updateMaintenanceRate(mrType, formstate),
   meta: {
@@ -36,7 +36,7 @@ export const MaintenanceRateUpdate = (type: string | null, mrType: string, forms
   },
 });
 
-export const MaintenanceRateDelete = (type: string | null, mrType: string, id: number) => ({
+export const maintenanceRateDelete = (type: string | null, mrType: string, id: number) => ({
   type: type || MAINTENANCE_RATE_SET_DATA,
   payload: deleteMaintenanceRate(mrType, id),
   meta: {

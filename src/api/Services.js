@@ -83,6 +83,7 @@ export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh', {});
 export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp', {});
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
 export const GeozoneFuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('geozones/fueling_water', {});
+export const GeozoneDangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('geozones/danger_zone', {});
 
 export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
 export const GeozoneFountainsService = ETS_API_FACTORY.createApiServiceAdapter('gormost/fountains', {});

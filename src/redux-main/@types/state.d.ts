@@ -12,7 +12,7 @@ import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateGeoobject } from 'redux-main/reducers/modules/geoobject/@types/geoobject.h';
 import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-
+import { IStateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 export interface ReduxState {
   dashboard: InitialStateDashboard;
   registry: InitialStateTypeRegistry;
@@ -31,5 +31,6 @@ export interface ReduxState {
   loading: any;
   etsLoading: any;
   fuelRates: IStateFuelRates;
+  maintenanceRate: IStateMaintenanceRate;
   [key: string]: any;
 }

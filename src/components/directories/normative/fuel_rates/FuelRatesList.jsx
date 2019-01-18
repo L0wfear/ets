@@ -41,7 +41,6 @@ class FuelRatesDirectory extends ElementsList {
     try {
       this.props.FuelOperationsGet();
       this.props.FuelRatesGet();
-      this.props.FuelOperationsGet();
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

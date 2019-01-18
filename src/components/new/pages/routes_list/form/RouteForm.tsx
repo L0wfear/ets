@@ -37,7 +37,7 @@ import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 import routePermisions from 'components/new/pages/routes_list/config-data/permissions';
-import bridgesPermission from 'components/directories/geoobjects/pages/bridges/config-data/permissions';
+import bridgesPermission from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
 import { resetCachedDataForRoute } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';

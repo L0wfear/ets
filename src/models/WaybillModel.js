@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
-import { diffDates, getDateWithMoscowTz, getNextDay859am } from 'utils/dates';
+import { diffDates, getDateWithMoscowTz } from 'utils/dates';
 
 export const waybillSchema = {
   properties: [

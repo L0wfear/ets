@@ -29,7 +29,27 @@ export default class WaybillsActions extends Actions {
       sort_by,
       filter: JSON.stringify(parseFilterObject(cloneDeep(filter))),
     };
-    return WaybillService.get(payload);
+    return WaybillService.get(payload).then(ans => ({
+      ...ans,
+      result: ans.result.map((waybill) => {
+        if (waybill.tax_data) {
+          waybill.tax_data = waybill.tax_data.map((tax) => {
+            tax.originOperation = true;
+            tax.uniqKey = `originOperation_${tax.OPERATION}`;
+            return tax;
+          });
+        }
+        if (waybill.equipment_tax_data) {
+          waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax) => {
+            tax.originOperation = true;
+            tax.uniqKey = `originOperation_${tax.OPERATION}`;
+            return tax;
+          });
+        }
+
+        return waybill;
+      }),
+    }));
   }
 
   getLastClosedWaybill(car_id) {
@@ -107,11 +127,23 @@ export default class WaybillsActions extends Actions {
     payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
 
     if (payload.tax_data) {
-      const tax_data = payload.tax_data.filter((t) => !isEmpty(t.FACT_VALUE));
+      const tax_data = payload.tax_data.filter(t => !isEmpty(t.FACT_VALUE)).map((tax) => {
+        delete tax.originOperation;
+        delete tax.isDisabled;
+        delete tax.uniqKey;
+
+        return tax;
+      });
       payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
-      const equipment_tax_data = payload.equipment_tax_data.filter((t) => !isEmpty(t.FACT_VALUE));
+      const equipment_tax_data = payload.equipment_tax_data.filter(t => !isEmpty(t.FACT_VALUE)).map((tax) => {
+        delete tax.originOperation;
+        delete tax.isDisabled;
+        delete tax.uniqKey;
+
+        return tax;
+      });
       payload.equipment_tax_data = equipment_tax_data;
     }
 

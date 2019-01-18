@@ -110,14 +110,14 @@ export default class Taxes extends React.Component {
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
-          const usedOperations = taxes.map(t => `${t.OPERATION}${t.comment ? t.comment : ''}`);
+          const usedOperations = taxes.map(t => t.uniqKey);
           if (usedOperations.indexOf(op.value) > -1) {
-            op.disabled = true;
+            op.isDisabled = true;
           }
           return op;
         });
 
-        return <ReactSelect id={`operation_${index + 1}`} modalKey={this.props.modalKey} clearable={false} disabled={props.readOnly} options={options} value={`${OPERATION}${row.comment ? row.comment : ''}`} onChange={this.handleOperationChange.bind(this, index)} />;
+        return <ReactSelect clearable={false} modalKey={this.props.modalKey} id="norm_operation_id" disabled={props.readOnly} options={options} value={row.uniqKey} onChange={this.handleOperationChange.bind(this, index)} />;
       },
       measure_unit_name: measure_unit_name => measure_unit_name || '-',
       RESULT: RESULT => `${RESULT ? `${RESULT} л` : ''}`,
@@ -149,11 +149,11 @@ export default class Taxes extends React.Component {
   }
 
   static getDerivedStateFromProps(nexProps, prevProps) {
-    const { fuelRates, taxes = prevProps.tableData } = nexProps;
+    const { fuelRates, taxes } = nexProps;
     let { operations } = nexProps;
 
     operations = operations.map(data => ({
-      value: `${data.id}${data.comment ? data.comment : ''}`,
+      value: data.uniqKey,
       operation_id: data.id,
       rate_on_date: data.rate_on_date,
       comment: data.comment || '',
@@ -162,6 +162,25 @@ export default class Taxes extends React.Component {
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
     }));
+
+    taxes.forEach((data) => {
+      if (data.originOperation) {
+        const name = get(nexProps.operations.find(({ id }) => id === data.OPERATION), 'name', '-');
+
+        operations.push({
+          value: data.uniqKey,
+          operation_id: data.OPERATION,
+          rate_on_date: data.FUEL_RATE,
+          comment: data.comment,
+          name,
+          label: data.comment ? `${name} (${data.comment})` : name,
+          measure_unit_name: data.measure_unit_name,
+          is_excluding_mileage: data.is_excluding_mileage,
+          isDisabled: true,
+        });
+      }
+    });
+
     taxes.map(tax => ({ ...tax, RESULT: Taxes.getResult(tax) }));
 
     return { operations, fuelRates, tableData: taxes };
@@ -187,30 +206,36 @@ export default class Taxes extends React.Component {
   }
 
   handleOperationChange = (index, rawValue, allOption) => {
-    const value = get(allOption, 'operation_id', null);
-    const comment = get(allOption, 'comment', '');
-    const rate_on_date = get(allOption, 'rate_on_date', 0);
-    const is_excluding_mileage = get(allOption, 'is_excluding_mileage', false);
-    const measure_unit_name = get(allOption, 'measure_unit_name', '-');
+    const isDisabled = get(allOption, 'isDisabled', false);
+    if (!isDisabled) {
+      const value = get(allOption, 'operation_id', null);
+      const comment = get(allOption, 'comment', '');
+      const rate_on_date = get(allOption, 'rate_on_date', 0);
+      const is_excluding_mileage = get(allOption, 'is_excluding_mileage', false);
+      const measure_unit_name = get(allOption, 'measure_unit_name', '-');
+      const originOperation = get(allOption, 'originOperation', false);
 
-    const { tableData } = this.state;
-    const last_is_excluding_mileage = tableData[index].is_excluding_mileage;
+      const { tableData } = this.state;
+      const last_is_excluding_mileage = tableData[index].is_excluding_mileage;
 
-    tableData[index].OPERATION = value;
-    tableData[index].comment = comment;
-    tableData[index].FUEL_RATE = rate_on_date;
-    tableData[index].is_excluding_mileage = is_excluding_mileage;
-    if (tableData[index].is_excluding_mileage) {
-      tableData[index].iem_FACT_VALUE = tableData[index].FACT_VALUE;
-      tableData[index].FACT_VALUE = 0;
-    } else if (last_is_excluding_mileage) {
-      tableData[index].FACT_VALUE = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
+      tableData[index].uniqKey = rawValue;
+      tableData[index].originOperation = originOperation;
+      tableData[index].OPERATION = value;
+      tableData[index].comment = comment;
+      tableData[index].FUEL_RATE = rate_on_date;
+      tableData[index].is_excluding_mileage = is_excluding_mileage;
+      if (tableData[index].is_excluding_mileage) {
+        tableData[index].iem_FACT_VALUE = tableData[index].FACT_VALUE;
+        tableData[index].FACT_VALUE = 0;
+      } else if (last_is_excluding_mileage) {
+        tableData[index].FACT_VALUE = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
+      }
+      tableData[index].RESULT = Taxes.getResult(tableData[index]);
+      tableData[index].measure_unit_name = measure_unit_name;
+
+      this.setState({ tableData });
+      this.props.onChange(tableData);
     }
-    tableData[index].RESULT = Taxes.getResult(tableData[index]);
-    tableData[index].measure_unit_name = measure_unit_name;
-
-    this.setState({ tableData });
-    this.props.onChange(tableData);
   }
 
   addOperation = () => {

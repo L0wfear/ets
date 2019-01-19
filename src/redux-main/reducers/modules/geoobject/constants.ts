@@ -8,6 +8,7 @@ export const danger_zone = 'danger_zone';
 export const pgm_store = 'pgm_store';
 export const fountains = 'fountains';
 export const bridges = 'bridges';
+export const snow_storage = 'snow_storage';
 
 export default {
   [carpool]: 'carpool',
@@ -20,4 +21,5 @@ export default {
   [bridges]: 'bridges',
   [danger_zone]: 'danger_zone',
   [pgm_store]: 'pgm_store',
+  [snow_storage]: 'snow_storage',
 };

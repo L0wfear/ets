@@ -85,6 +85,7 @@ export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozon
 export const GeozoneFuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('geozones/fueling_water', {});
 export const GeozoneDangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('geozones/danger_zone', {});
 export const GeozonePgmStoreService = ETS_API_FACTORY.createApiServiceAdapter('geozones/pgm_store', {});
+export const GeozoneSnowStorageService = ETS_API_FACTORY.createApiServiceAdapter('geozones/snow_storage', {});
 
 export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
 export const GeozoneFountainsService = ETS_API_FACTORY.createApiServiceAdapter('gormost/fountains', {});

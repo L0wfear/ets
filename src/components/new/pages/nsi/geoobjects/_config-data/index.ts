@@ -10,6 +10,7 @@ import dangerZonesList from 'components/new/pages/nsi/geoobjects/pages/danger_zo
 import fountainsList from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data';
 import bridgesList from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data';
 import pgmStoreList from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data';
+import snowStorageList from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data';
 
 const children = {
   odhList,
@@ -20,7 +21,7 @@ const children = {
   // carpool,
   dangerZonesList,
   pgmStoreList,
-  // snowStorageList,
+  snowStorageList,
   bridgesList,
   // pedestrianTunnelsList,
   // pedestrianTunnelExitsList,

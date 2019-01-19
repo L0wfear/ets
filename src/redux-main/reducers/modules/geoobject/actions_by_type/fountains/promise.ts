@@ -7,7 +7,7 @@ import {
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { fountains } from 'redux-main/reducers/modules/geoobject/constants';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
-import { ODHService } from 'api/Services';
+import { GeozoneFountainsService } from 'api/Services';
 
 export const promiseGetFountains = geoobjectLoadByType(fountains);
 export const promiseCreateFountains = geoobjectCreateByType(fountains);
@@ -16,6 +16,6 @@ export const promiseUpdateFountains = (formState: Fountains) => {
     ...formState,
   };
 
-  return ODHService.put(payload, false, 'json');
+  return GeozoneFountainsService.put(payload, false, 'json');
 };
 export const promiseRemoveFountains = geoobjectRemoveByType(fountains);

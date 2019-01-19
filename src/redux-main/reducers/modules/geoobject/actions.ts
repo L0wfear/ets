@@ -10,6 +10,7 @@ import dangerZoneActions from 'redux-main/reducers/modules/geoobject/actions_by_
 import pgmStoreActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
 import fountainsActions from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/actions';
 import bridgesActions from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/actions';
+import snowStorageActions from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/actions';
 
 const geoobjectActions = {
   geoobjectSetNewData,
@@ -23,6 +24,7 @@ const geoobjectActions = {
   ...pgmStoreActions,
   ...fountainsActions,
   ...bridgesActions,
+  ...snowStorageActions,
 };
 
 export default geoobjectActions;

@@ -1,9 +1,10 @@
 import { Store } from 'flummox';
 
-import { userNotification, getFullAccess } from 'api/mocks/permissions';
+import { userNotification } from 'api/mocks/permissions';
 import { setUserContext } from 'config/raven';
 import { routToPer } from 'constants/routerAndPermission';
 import { getWarningNotification } from 'utils/notifications';
+import { withSpecificPermissions } from 'redux-main/reducers/modules/session/actions-session';
 import createFio from '../utils/create-fio';
 import { User } from '../models';
 
@@ -11,28 +12,6 @@ const defaultUser = {
   login: 'mayor',
   password: 'mayor',
   role: 'mayor',
-};
-
-export const getSpecificPermissions = (user) => {
-  const permissions = [];
-
-  if (user.login === 'gormost') {
-    permissions.push(...getFullAccess('bridges'));
-    permissions.push(...getFullAccess('pedestrian_tunnels'));
-    permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
-    permissions.push(...getFullAccess('fountains'));
-  }
-  /* DITETS-2080 */
-  permissions.push(...getFullAccess('leak'));
-
-  if (user.permissions.includes('pgm.list')) {
-    permissions.push('pgm_store.list');
-  }
-  if (user.permissions.includes('pgm.read')) {
-    permissions.push('pgm_store.read');
-  }
-
-  return permissions;
 };
 
 const getPermission = ({ permissions = [], permissionName, some = 1 }) => {
@@ -94,7 +73,7 @@ export default class SessionStore extends Store {
       currentUser.permissions = [
         ...currentUser.permissions,
         ...userNotification,
-        ...getSpecificPermissions(currentUser),
+        ...withSpecificPermissions(currentUser),
       ];
 
       const routeVal = Object.entries(routToPer).reduce((obj, [key, rTp]) => {

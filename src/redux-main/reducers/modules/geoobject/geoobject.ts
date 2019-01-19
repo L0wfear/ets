@@ -15,6 +15,7 @@ export const geoobjectInitialState: IStateGeoobject = {
   fountainsList: [],
   bridgesList: [],
   dangerZoneList: [],
+  pgmStoreList: [],
 };
 
 export default (state = geoobjectInitialState, { type, payload }) => {

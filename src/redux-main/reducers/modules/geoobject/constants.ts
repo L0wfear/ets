@@ -5,6 +5,7 @@ export const msp = 'msp';
 export const fueling_water = 'fueling_water';
 export const carpool = 'carpool';
 export const danger_zone = 'danger_zone';
+export const pgm_store = 'pgm_store';
 export const fountains = 'fountains';
 export const bridges = 'bridges';
 
@@ -18,4 +19,5 @@ export default {
   [fountains]: 'fountains',
   [bridges]: 'bridges',
   [danger_zone]: 'danger_zone',
+  [pgm_store]: 'pgm_store',
 };

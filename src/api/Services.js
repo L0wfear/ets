@@ -84,13 +84,13 @@ export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozon
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp', {});
 export const GeozoneFuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('geozones/fueling_water', {});
 export const GeozoneDangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('geozones/danger_zone', {});
+export const GeozonePgmStoreService = ETS_API_FACTORY.createApiServiceAdapter('geozones/pgm_store', {});
 
 export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost', {});
 export const GeozoneFountainsService = ETS_API_FACTORY.createApiServiceAdapter('gormost/fountains', {});
 export const GeozoneBridgesService = ETS_API_FACTORY.createApiServiceAdapter('gormost/bridges', {});
 
 export const GeozoneMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('geozone_municipal_facility', {});
-
 
 /* Reports - Отчеты */
 export const MissionReportsService = ETS_API_FACTORY.createApiServiceAdapter('car_travel_report', {});

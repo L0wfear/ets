@@ -1,6 +1,5 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-import pgm from 'components/directories/geoobjects/pages/pgm/config-data';
 import snowStorage from 'components/directories/geoobjects/pages/snow_storage/config-data';
 import pedestrianTunnels from 'components/directories/geoobjects/pages/pedestrian_tunnels/config-data';
 import pedestrianTunnelExits from 'components/directories/geoobjects/pages/pedestrian_tunnel_exits/config-data';
@@ -15,6 +14,7 @@ import fuelingWaterList from 'components/new/pages/nsi/geoobjects/pages/fueling_
 import dangerZonesList from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data';
 import fountainsList from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data';
 import bridgesList from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data';
+import pgmStoreList from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data';
 
 const children = {
   odhList,
@@ -24,7 +24,7 @@ const children = {
   fuelingWaterList,
   carpool,
   dangerZonesList,
-  pgm,
+  pgmStoreList,
   snowStorage,
   bridgesList,
   pedestrianTunnels,

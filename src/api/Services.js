@@ -91,6 +91,7 @@ export const GormostService = ETS_API_FACTORY.createApiServiceAdapter('gormost')
 export const GeozoneFountainsService = ETS_API_FACTORY.createApiServiceAdapter('gormost/fountains');
 export const GeozoneBridgesService = ETS_API_FACTORY.createApiServiceAdapter('gormost/bridges');
 export const GeozonePedestrianTunnelsService = ETS_API_FACTORY.createApiServiceAdapter('gormost/pedestrian_tunnels');
+export const GeozonePedestrianTunnelExitsService = ETS_API_FACTORY.createApiServiceAdapter('gormost/pedestrian_tunnel_exits');
 
 export const GeozoneMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('geozone_municipal_facility');
 

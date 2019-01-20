@@ -11,6 +11,7 @@ import pgmStoreList from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_c
 import snowStorageList from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data';
 import bridgesList from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data';
 import pedestrianTunnelsList from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data';
+import pedestrianTunnelExitsList from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/_config-data';
 import fountainsList from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data';
 
 const children = {
@@ -25,7 +26,7 @@ const children = {
   snowStorageList,
   bridgesList,
   pedestrianTunnelsList,
-  // pedestrianTunnelExitsList,
+  pedestrianTunnelExitsList,
   fountainsList,
 };
 

@@ -1,17 +1,17 @@
-import { GeozonePedestrianTunnelsService } from 'api/Services';
+import { GeozonePedestrianTunnelExitsService } from 'api/Services';
 
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
-import permissions from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data/permissions';
+import permissions from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
-export const registryKey = 'PedestrianTunnelsList';
+export const registryKey = 'PedestrianTunnelExitsList';
 
 export const config: TypeConfigData = {
-  Service: GeozonePedestrianTunnelsService,
+  Service: GeozonePedestrianTunnelExitsService,
   registryKey,
   header: {
-    title: 'Пешеходные тоннели',
+    title: 'Выходы из пешеходных тоннелей',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -49,11 +49,6 @@ export const config: TypeConfigData = {
         title: 'Район',
         type: 'multiselect',
       },
-      {
-        valueKey: 'location',
-        title: 'Адресный ориентир',
-        type: 'multiselect',
-      },
     ],
   },
   list: {
@@ -84,22 +79,17 @@ export const config: TypeConfigData = {
         {
           key: 'name',
           title: 'Наименование',
-          width: 400,
+          width: 500,
         },
         {
           key: 'adm_area',
           title: 'Административный округ',
-          width: 400,
+          width: 500,
         },
         {
           key: 'district',
           title: 'Район',
-          width: 400,
-        },
-        {
-          key: 'location',
-          title: 'Адресный ориентир',
-          width: 400,
+          width: 500,
         },
       ],
     },

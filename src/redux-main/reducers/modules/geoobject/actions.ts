@@ -12,6 +12,7 @@ import fountainsActions from 'redux-main/reducers/modules/geoobject/actions_by_t
 import bridgesActions from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/actions';
 import snowStorageActions from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/actions';
 import pedestrianTunnelsActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/actions';
+import pedestrianTunnelExitsActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/actions';
 
 const geoobjectActions = {
   geoobjectSetNewData,
@@ -27,6 +28,7 @@ const geoobjectActions = {
   ...bridgesActions,
   ...snowStorageActions,
   ...pedestrianTunnelsActions,
+  ...pedestrianTunnelExitsActions,
 };
 
 export default geoobjectActions;

@@ -10,6 +10,7 @@ export const fountains = 'fountains';
 export const bridges = 'bridges';
 export const snow_storage = 'snow_storage';
 export const pedestrian_tunnels = 'pedestrian_tunnels';
+export const pedestrian_tunnel_exits = 'pedestrian_tunnel_exits';
 
 export default {
   [carpool]: 'carpool',
@@ -24,4 +25,5 @@ export default {
   [pgm_store]: 'pgm_store',
   [snow_storage]: 'snow_storage',
   [pedestrian_tunnels]: 'pedestrian_tunnels',
+  [pedestrian_tunnel_exits]: 'pedestrian_tunnel_exits',
 };

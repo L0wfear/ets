@@ -7,8 +7,9 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
 import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
-import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types/index';
-import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/@types/index';
+import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
+import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/@types';
+import { PedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/@types';
 
 export type IStateGeoobject = {
   carpoolList: Carpool[];
@@ -22,4 +23,5 @@ export type IStateGeoobject = {
   dangerZoneList: DangerZone[];
   pgmStoreList: PgmStore[];
   snowStorageList: SnowStorage[];
+  pedestrianTunnelsList: PedestrianTunnels[];
 };

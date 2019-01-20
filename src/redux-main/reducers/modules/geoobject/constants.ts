@@ -12,18 +12,31 @@ export const snow_storage = 'snow_storage';
 export const pedestrian_tunnels = 'pedestrian_tunnels';
 export const pedestrian_tunnel_exits = 'pedestrian_tunnel_exits';
 
-export default {
+export const geoozones = {
   [carpool]: 'carpool',
   [dt]: 'dt',
   [odh]: 'odh',
   [ssp]: 'ssp',
   [msp]: 'msp',
   [fueling_water]: 'fueling_water',
-  [fountains]: 'fountains',
-  [bridges]: 'bridges',
   [danger_zone]: 'danger_zone',
   [pgm_store]: 'pgm_store',
   [snow_storage]: 'snow_storage',
+};
+
+export const gormost = {
+  [fountains]: 'fountains',
+  [bridges]: 'bridges',
   [pedestrian_tunnels]: 'pedestrian_tunnels',
   [pedestrian_tunnel_exits]: 'pedestrian_tunnel_exits',
+};
+
+export const geometryByType = {
+  geoozones,
+  gormost,
+};
+
+export default {
+  ...geoozones,
+  ...gormost,
 };

@@ -1,16 +1,16 @@
 import {
-  geoobjectCreateByType,
-  geoobjectRemoveByType,
+  geoozonesCreateByType,
+  geoozonesRemoveByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import {
-  geoobjectLoadByType,
+  geoozonesLoadByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { odh } from 'redux-main/reducers/modules/geoobject/constants';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import { ODHService } from 'api/Services';
 
-export const promiseGetOdh = geoobjectLoadByType(odh);
-export const promiseCreateOdh = geoobjectCreateByType(odh);
+export const promiseGetOdh = geoozonesLoadByType(odh);
+export const promiseCreateOdh = geoozonesCreateByType(odh);
 export const promiseUpdateOdh = (formState: Odh) => {
   const payload = {
     ...formState,
@@ -18,4 +18,4 @@ export const promiseUpdateOdh = (formState: Odh) => {
 
   return ODHService.put(payload, false, 'json');
 };
-export const promiseRemoveOdh = geoobjectRemoveByType(odh);
+export const promiseRemoveOdh = geoozonesRemoveByType(odh);

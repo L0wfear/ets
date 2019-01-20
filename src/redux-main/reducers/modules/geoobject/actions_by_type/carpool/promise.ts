@@ -1,14 +1,14 @@
 import {
-  geoobjectCreateByType,
-  geoobjectUpdateByType,
-  geoobjectRemoveByType,
+  geoozonesCreateByType,
+  geoozonesUpdateByType,
+  geoozonesRemoveByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import {
-  geoobjectLoadByType,
+  geoozonesLoadByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { carpool } from 'redux-main/reducers/modules/geoobject/constants';
 
-export const promiseGetCarpool = geoobjectLoadByType(carpool);
-export const promiseCreateCarpool = geoobjectCreateByType(carpool);
-export const promiseUpdateCarpool = geoobjectUpdateByType(carpool);
-export const promiseRemoveCarpool = geoobjectRemoveByType(carpool);
+export const promiseGetCarpool = geoozonesLoadByType(carpool);
+export const promiseCreateCarpool = geoozonesCreateByType(carpool);
+export const promiseUpdateCarpool = geoozonesUpdateByType(carpool);
+export const promiseRemoveCarpool = geoozonesRemoveByType(carpool);

@@ -1,16 +1,16 @@
 import {
-  geoobjectCreateByType,
-  geoobjectRemoveByType,
+  gormostCreateByType,
+  gormostRemoveByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import {
-  geoobjectLoadByType,
+  gormostLoadByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { fountains } from 'redux-main/reducers/modules/geoobject/constants';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
 import { GeozoneFountainsService } from 'api/Services';
 
-export const promiseGetFountains = geoobjectLoadByType(fountains);
-export const promiseCreateFountains = geoobjectCreateByType(fountains);
+export const promiseGetFountains = gormostLoadByType(fountains);
+export const promiseCreateFountains = gormostCreateByType(fountains);
 export const promiseUpdateFountains = (formState: Fountains) => {
   const payload = {
     ...formState,
@@ -18,4 +18,4 @@ export const promiseUpdateFountains = (formState: Fountains) => {
 
   return GeozoneFountainsService.put(payload, false, 'json');
 };
-export const promiseRemoveFountains = geoobjectRemoveByType(fountains);
+export const promiseRemoveFountains = gormostRemoveByType(fountains);

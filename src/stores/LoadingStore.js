@@ -7,7 +7,6 @@ export default class LoadingStore extends Store {
 
     const sessionActions = flux.getActions('session');
     const repairActions = flux.getActions('repair');
-    const geoObjectsActions = flux.getActions('geoObjects');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
     const objectsActions = flux.getActions('objects');
@@ -125,10 +124,8 @@ export default class LoadingStore extends Store {
       carActions.getDataByNormNormatives);
 
     this.reg(true,
-      geoObjectsActions.getGeozoneByTypeWithGeometry,
-      geoObjectsActions.getGeozoneByType,
-
-      missionsActons.getMissionsByCarAndDates);
+      missionsActons.getMissionsByCarAndDates,
+    );
 
     this.state = {
       operationsCount: 0,

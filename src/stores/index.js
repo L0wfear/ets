@@ -4,7 +4,6 @@
  */
 import employees from './EmployeesStore';
 import fuelRates from './FuelRatesStore';
-import geoObjects from './GeoObjectsStore';
 import loading from './LoadingStore';
 import missions from './MissionsStore';
 import notifications from './NotificationsStore';
@@ -18,7 +17,6 @@ import waybills from './WaybillsStore';
 export {
   employees,
   fuelRates,
-  geoObjects,
   loading,
   missions,
   notifications,

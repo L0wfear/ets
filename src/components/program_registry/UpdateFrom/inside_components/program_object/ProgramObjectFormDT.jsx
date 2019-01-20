@@ -9,7 +9,7 @@ import * as Panel from 'react-bootstrap/lib/Panel';
 
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep, keyBy, isEmpty } from 'lodash';
 
 import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
@@ -29,6 +29,9 @@ import {
   SpanContractor,
   PanelObjectInfo,
 } from 'components/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -99,20 +102,16 @@ class ProgramObjectFormDT extends Form {
 
         changesState.selectedObj = changesState.dtPolys[object_id];
 
-        changesFormState.elements = elements.map((d) => ({
+        changesFormState.elements = elements.map(d => ({
           ...d,
           measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
         }));
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
       } else {
-        this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('dt').then((ans) => {
-          const {
-            dtPolys: dtPolysOrigal = {},
-          } = this.props;
-
+        this.props.actionGetGetDt().then(({ payload: { data } }) => {
           const changesState = { manual };
-          changesState.dtPolys = cloneDeep(dtPolysOrigal);
+          changesState.dtPolys = keyBy(data, 'yard_id');
 
           changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(({
             data: {
@@ -123,8 +122,6 @@ class ProgramObjectFormDT extends Form {
           }));
 
           this.setState({ ...changesState });
-
-          return ans;
         });
       }
     });
@@ -554,4 +551,21 @@ class ProgramObjectFormDT extends Form {
 }
 
 
-export default tabable(connectToStores(ProgramObjectFormDT, ['repair', 'geoObjects']));
+export default compose(
+  tabable,
+  connect(
+    null,
+    dispatch => ({
+      actionGetGetDt: () => (
+        dispatch(
+          geoobjectActions.actionGetGetDt(
+            null,
+            {
+              page: null, path: null,
+            },
+          ),
+        )
+      ),
+    }),
+  ),
+)(connectToStores(ProgramObjectFormDT, ['repair']));

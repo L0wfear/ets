@@ -703,4 +703,4 @@ export class DutyMissionForm extends Form {
   }
 }
 
-export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes', 'geoObjects', 'session']);
+export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes', 'session']);

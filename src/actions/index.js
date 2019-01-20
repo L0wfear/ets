@@ -5,7 +5,6 @@
 import cars from './CarActions';
 import employees from './EmployeesActions';
 import fuelRates from './FuelRateActions';
-import geoObjects from './GeoObjectsActions';
 import missions from './MissionsActions';
 import objects from './ObjectsActions';
 import odh from './ODHActions';
@@ -19,7 +18,6 @@ export {
   cars,
   employees,
   fuelRates,
-  geoObjects,
   missions,
   objects,
   odh,

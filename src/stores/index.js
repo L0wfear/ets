@@ -10,7 +10,6 @@ import notifications from './NotificationsStore';
 import objects from './ObjectsStore';
 import odh from './ODHStore';
 import repair from './RepairStore';
-import routes from './RoutesStore';
 import session from './SessionStore';
 import waybills from './WaybillsStore';
 
@@ -23,7 +22,6 @@ export {
   objects,
   odh,
   repair,
-  routes,
   session,
   waybills,
 };

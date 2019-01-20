@@ -33,10 +33,6 @@ export default class NotificationsStore extends Store {
         actionNames: ['createODHNorm', 'updateODHNorm'],
       },
       {
-        actions: flux.getActions('routes'),
-        actionNames: ['createRoute', 'updateRoute', 'updateRoute'],
-      },
-      {
         actions: flux.getActions('waybills'),
         actionNames: ['updateWaybill', 'createWaybill'],
       },

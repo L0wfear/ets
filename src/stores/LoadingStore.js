@@ -102,14 +102,8 @@ export default class LoadingStore extends Store {
       missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
 
-      routesActions.getRoutes,
-      routesActions.createRoute,
-      routesActions.removeRoute,
-      routesActions.updateRoute,
       routesActions.getRouteById,
-      routesActions.validateRoute,
       routesActions.getRoutesBySomeData,
-      routesActions.getRoutesByTechnicalOperation,
       routesActions.getRoutesByMissionId,
       routesActions.getRoutesByDutyMissionId,
 

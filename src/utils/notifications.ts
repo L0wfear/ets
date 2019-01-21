@@ -99,7 +99,7 @@ export const saveDataSuccessNotification = {
   level: 'success',
   dismissible: true,
   position: 'tc',
-  autoDismiss: 0,
+  autoDismiss: 5,
 };
 
 export const reassignMissionSuccessNotification = {

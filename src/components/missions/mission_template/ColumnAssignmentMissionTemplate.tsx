@@ -39,6 +39,7 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
   handleSubmit = async () => {
     try {
       await this.props.handleSubmit();
+      this.props.hideColumnAssignmentMissionTemplate();
     } catch (e) {
       console.log(e); // tslint:disable-line
       this.setState({ showBackButton: true });

@@ -261,13 +261,15 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           checkedElements: {},
           canSubmit: true,
         });
+        return Promise.resolve(goodResponse);
       } else {
         this.setState({
           canSubmit: true,
         });
+        return Promise.resolve(goodResponse);
       }
     }
-    return Promise.resolve(false);
+    return Promise.reject(false);
   }
 
   render() {

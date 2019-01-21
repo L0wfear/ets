@@ -9,21 +9,21 @@ import { extractTableMeta, getServerSortingField, toServerFilteringObject } from
 import Paginator from 'components/ui/new/paginator/Paginator';
 import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
 import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import { getCompanyStructureState, getSessionState } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const is_archive = true;
 const loadingPageName = 'duty-mission-archive';
 
-const ButtonUpdateDutyMission = enhanceWithPermissions({
-  permission: permissions.update,
+const ButtonUpdateDutyMission = withRequirePermissionsNew({
+  permissions: permissions.update,
 })(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
@@ -216,6 +216,7 @@ export default compose(
   connect(
     state => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructureLinear: () => (

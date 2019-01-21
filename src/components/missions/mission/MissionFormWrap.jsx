@@ -1,4 +1,5 @@
 import React from 'react';
+import memoize from 'memoize-one';
 import {
   clone,
   isEmpty,
@@ -13,6 +14,10 @@ import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { DivNone } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
 
@@ -32,6 +37,12 @@ class MissionFormWrap extends FormWrap {
     return r;
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       const mission = props.element === null ? getDefaultMission() : clone(props.element);
@@ -44,7 +55,7 @@ class MissionFormWrap extends FormWrap {
       } = mission;
 
       if (mission.structure_id == null) {
-        mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        mission.structure_id = this.props.userStructureId;
       }
       const IS_ASSIGNED = status === 'assigned';
       const IS_IN_PROGRESS = status === 'in_progress';
@@ -321,4 +332,11 @@ class MissionFormWrap extends FormWrap {
   }
 }
 
-export default withMapInConsumer()(MissionFormWrap);
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+  withMapInConsumer(),
+)(MissionFormWrap);

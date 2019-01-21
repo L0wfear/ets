@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getEmployeeState } from 'redux-main/reducers/selectors';
+import { getEmployeeState, getSessionState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'employees';
 
@@ -88,6 +88,7 @@ export default compose(
   connect(
     state => ({
       employeeList: getEmployeeState(state).employeeList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       employeeGetAndSetInStore: () => (

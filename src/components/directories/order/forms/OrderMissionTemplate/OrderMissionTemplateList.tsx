@@ -32,6 +32,10 @@ import { createMissionByOrder, createDutyMissionByOrder } from '../utils/createM
 import { getWarningNotification } from 'utils/notifications';
 import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
 import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
@@ -52,7 +56,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   };
 
   componentDidMount() {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const { structures } = this.props.userData;
     if (this.props.typeClick === typeTemplate.missionTemplate) {
       const payload = {
         order_id: this.props.orderDates.faxogramm_id || null,
@@ -367,4 +371,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   }
 }
 
-export default OrderMissionTemplate;
+export default compose<any, any>(
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(OrderMissionTemplate);

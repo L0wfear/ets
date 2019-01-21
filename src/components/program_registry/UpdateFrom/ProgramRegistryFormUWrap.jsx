@@ -4,6 +4,9 @@ import * as React from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormBase from 'components/program_registry/UpdateFrom/ProgramRegistryUForm';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -61,7 +64,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
     const permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => ({
       ...newObj,
-      [buttonName]: this.context.flux.getStore('session').getPermission(buttonPerm),
+      [buttonName]: this.props.userPermissionsSet.has.getPermission(buttonPerm),
     }), {});
 
     const data = {
@@ -284,4 +287,11 @@ class ProgramRegistryFormWrap extends FormWrap {
   }
 }
 
-export default enhanceWithPermissions(ProgramRegistryFormWrap);
+export default compose(
+  connect(
+    state => ({
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    }),
+  ),
+  enhanceWithPermissions,
+)(ProgramRegistryFormWrap);

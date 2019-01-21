@@ -10,6 +10,8 @@ import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_co
 import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
@@ -230,4 +232,10 @@ class ProgramRemarkList extends CheckableElementsList {
   });
 }
 
-export default compose()(ProgramRemarkList);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(ProgramRemarkList);

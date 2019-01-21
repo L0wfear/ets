@@ -7,6 +7,9 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateFormWrap';
 import MaintenanceRateTable from 'components/directories/normative/maintenance_rate/MaintenanceRateTable';
 import permissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'maintenance_rate' })
@@ -52,6 +55,14 @@ class MaintenanceRateDirectory extends ElementsList {
   }
 }
 
+const MaintenanceRateDirectoryWithUserData = compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(MaintenanceRateDirectory);
+
 export default class MaintenanceRate extends Component {
   state = {
     type: 'odh',
@@ -67,7 +78,7 @@ export default class MaintenanceRate extends Component {
             <Button disabled active={this.state.type === 'dt'} onClick={() => this.setState({ type: 'dt' })}>ДТ</Button>
           </ButtonGroup>
         </div>
-        <MaintenanceRateDirectory type={type} />
+        <MaintenanceRateDirectoryWithUserData type={type} />
       </div>
     );
   }

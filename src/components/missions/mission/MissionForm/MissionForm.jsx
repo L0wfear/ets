@@ -50,6 +50,11 @@ import HiddenMapForPrint from 'components/missions/mission/MissionForm/print/Hid
 import missionPermission from 'components/missions/mission/config-data/permissions';
 import { isArray } from 'util';
 import { DropdownDateEnd, TimeDevider, DropdownDateEndCol } from 'components/missions/mission/MissionForm/styled';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import memoize from 'memoize-one';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -454,6 +459,12 @@ export class MissionForm extends Form {
     return Promise.resolve(false);
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -461,6 +472,8 @@ export class MissionForm extends Form {
     const {
       missionSourcesList = [],
       fromOrder = false,
+      userStructureId,
+      userStructures,
     } = this.props;
 
     const {
@@ -504,15 +517,16 @@ export class MissionForm extends Form {
     // является ли задание отложенным
     const isDeferred = diffDates(state.date_start, new Date()) > 0;
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.makeOptionsBySessionStructures(
+      userStructures,
+    );
 
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
-    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+    if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+    } else if (userStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_DELETABLE = true;
     }
     const structureValue = state.structure_id;
@@ -924,10 +938,15 @@ export class MissionForm extends Form {
   }
 }
 
-export default connectToStores(
+export default compose(
   withRequirePermissionsNew({
     permissions: missionPermission.update,
     withIsPermittedProps: true,
-  })(MissionForm),
-  ['objects', 'employees', 'missions', 'session'],
-);
+  }),
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructures: getSessionState(state).userData.structures,
+    }),
+  ),
+)(connectToStores(MissionForm, ['objects', 'employees', 'missions', 'session']));

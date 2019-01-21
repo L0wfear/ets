@@ -16,11 +16,14 @@ import { DivNone } from 'global-styled/global-styled';
 
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
-import { DutyMissionForm } from 'components/missions/duty_mission/DutyMissionForm';
+import { DutyMissionFormNoWrap } from 'components/missions/duty_mission/DutyMissionForm';
 import { makeRoutesForDutyMissionForm, getEmployeeFormDutyMission } from 'components/missions/duty_mission/utils';
 
 import dutyMissionTemplatePermission from 'components/missions/duty_mission_template/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const ButtonSaveDutyMissionTemplate = withRequirePermissionsNew({
   permissions: dutyMissionTemplatePermission.update,
@@ -28,7 +31,7 @@ const ButtonSaveDutyMissionTemplate = withRequirePermissionsNew({
 
 const modalKey = 'duty_mission_template';
 
-class MissionTemplateForm extends DutyMissionForm {
+class MissionTemplateForm extends DutyMissionFormNoWrap {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -38,6 +41,10 @@ class MissionTemplateForm extends DutyMissionForm {
       TECH_OPERATIONS = [],
       selectedRoute: route = null,
     } = this.state;
+    const {
+      userStructureId,
+      userStructures,
+    } = this.props;
 
     const ROUTES = makeRoutesForDutyMissionForm(this.state, this.props);
     const IS_CREATING = true;
@@ -48,8 +55,9 @@ class MissionTemplateForm extends DutyMissionForm {
       title = 'Создание шаблона наряд-задания';
     }
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.makeOptionsBySessionStructures(
+      userStructures,
+    );
 
     const {
       FOREMANS,
@@ -61,12 +69,12 @@ class MissionTemplateForm extends DutyMissionForm {
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
-    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
+    if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (userStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === userStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
-    } else if (currentStructureId === null && STRUCTURES.length > 0) {
+    } else if (userStructureId === null && STRUCTURES.length > 0) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
@@ -231,4 +239,11 @@ class MissionTemplateForm extends DutyMissionForm {
   }
 }
 
-export default connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'session']);
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructures: getSessionState(state).userData.structures,
+    }),
+  ),
+)(connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'session']));

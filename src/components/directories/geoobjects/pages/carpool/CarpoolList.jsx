@@ -5,7 +5,7 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import CarpoolFormWrap from 'components/directories/geoobjects/pages/carpool/form/CarpoolFormWrap';
 import permissions from 'components/directories/geoobjects/pages/carpool/config-data/permissions';
 import { connect } from 'react-redux';
-import { getGeoobjectState } from 'redux-main/reducers/selectors';
+import { getGeoobjectState, getSessionState } from 'redux-main/reducers/selectors';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { compose } from 'recompose';
@@ -56,6 +56,7 @@ export default compose(
   connect(
     state => ({
       carpoolList: getGeoobjectState(state).carpoolList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       getCarpool: () => (

@@ -5,6 +5,9 @@ import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import MedicalStatsTable from 'components/directories/medical_stats/MedicalStatsTable';
 import permissions from 'components/directories/medical_stats/config-data/permissions';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'medical_stats' })
@@ -15,8 +18,7 @@ import permissions from 'components/directories/medical_stats/config-data/permis
   tableComponent: MedicalStatsTable,
   operations: ['LIST'],
 })
-export default class MedicalStatsList extends ElementsList {
-
+class MedicalStatsList extends ElementsList {
   state = {
     date_from: getToday0am(),
     date_to: getToday2359(),
@@ -57,3 +59,11 @@ export default class MedicalStatsList extends ElementsList {
     );
   }
 }
+
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(MedicalStatsList);

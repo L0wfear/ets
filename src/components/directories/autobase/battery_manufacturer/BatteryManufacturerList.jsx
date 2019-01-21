@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'battery-manufacturer';
 
@@ -68,6 +68,7 @@ export default compose(
   connect(
     state => ({
       batteryManufacturerList: getAutobaseState(state).batteryManufacturerList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       batteryManufacturerGetAndSetInStore: () => (

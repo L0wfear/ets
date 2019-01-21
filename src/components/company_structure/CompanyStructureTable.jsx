@@ -3,15 +3,15 @@ import { ExtButton } from 'components/ui/new/button/ExtButton';
 
 import Table from 'components/ui/table/DataTable';
 import permissions from 'components/company_structure/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { StyleForCompnayStructureTable } from './styled/styled';
 
-const ButtonEditStructure = enhanceWithPermissions({
-  permission: permissions.update,
+const ButtonEditStructure = withRequirePermissionsNew({
+  permissions: permissions.update,
 })(ExtButton);
 
-const ButtonDeletetructure = enhanceWithPermissions({
-  permission: permissions.delete,
+const ButtonDeletetructure = withRequirePermissionsNew({
+  permissions: permissions.delete,
 })(ExtButton);
 
 

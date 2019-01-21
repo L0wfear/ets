@@ -7,6 +7,9 @@ import REPAIR from 'constants/repair';
 import ElementsList from 'components/ElementsList';
 import ObjectPropertyTable from 'components/directories/repair/object_property/ObjectPropertyTable';
 import permissions from 'components/directories/repair/object_property/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `${REPAIR.objectProperty}` })
@@ -67,6 +70,15 @@ class ObjectPropertyList extends ElementsList {
   }
 }
 
+const ObjectPropertyListWithUserData = compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(ObjectPropertyList);
+
+
 export default class ObjectProperty extends Component {
   state = {
     typeData: 'odh',
@@ -89,7 +101,7 @@ export default class ObjectProperty extends Component {
             <Button id="dt" active={typeData === 'dt'} onClick={this.setNewType}>ДТ</Button>
           </ButtonGroup>
         </div>
-        <ObjectPropertyList typeData={typeData} />
+        <ObjectPropertyListWithUserData typeData={typeData} />
       </div>
     );
   }

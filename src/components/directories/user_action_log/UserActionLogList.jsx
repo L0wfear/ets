@@ -5,6 +5,9 @@ import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import UserActionLogTable from 'components/directories/user_action_log/UserActionLogTable';
 import permissions from 'components/directories/user_action_log/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'user_action_log' })
@@ -15,7 +18,7 @@ import permissions from 'components/directories/user_action_log/config-data/perm
   tableComponent: UserActionLogTable,
   operations: ['LIST'],
 })
-export default class UserActionLogList extends ElementsList {
+class UserActionLogList extends ElementsList {
   init() {
     const state = {
       date_start: getToday0am(),
@@ -53,3 +56,11 @@ export default class UserActionLogList extends ElementsList {
     );
   }
 }
+
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(UserActionLogList);

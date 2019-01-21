@@ -12,6 +12,9 @@ import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CR
 import PercentModalTable from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
 import PercentModalFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['repair', 'session'])
 @staticProps({
@@ -22,7 +25,7 @@ import permissions from 'components/program_registry/UpdateFrom/inside_component
   formComponent: PercentModalFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'DELETE'],
 })
-export default class PercentModalList extends ElementsList {
+class PercentModalList extends ElementsList {
   constructor(props) {
     super(props);
     this.keyPressDisabled = true;
@@ -181,3 +184,11 @@ export default class PercentModalList extends ElementsList {
     );
   }
 }
+
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(PercentModalList);

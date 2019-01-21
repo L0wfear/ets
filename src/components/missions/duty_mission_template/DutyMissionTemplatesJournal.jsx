@@ -6,14 +6,16 @@ import { connectToStores, staticProps } from 'utils/decorators';
 
 import permissions from 'components/missions/duty_mission_template/config-data/permissions';
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import DutyMissionTemplateFormWrap from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
-  permission: permissions_duty_mission.create,
+const ButtonCreateDutyMissionByTemplate = withRequirePermissionsNew({
+  permissions: permissions_duty_mission.create,
 })(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
@@ -116,7 +118,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     const listName = this.constructor.listName;
     const listData = this.props[listName];
 
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const { structures } = this.props.userData;
     const technicalOperationIdsList = this.props.technicalOperationsList.map((item) => item.id);
 
     const dutyMissionTemplatesList = listData
@@ -129,4 +131,10 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
   }
 }
 
-export default compose()(DutyMissionTemplatesJournal);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(DutyMissionTemplatesJournal);

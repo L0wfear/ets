@@ -7,6 +7,9 @@ import permissions from 'components/directories/autobase/cars/config-data/permis
 import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import CarsTable from 'components/directories/autobase/cars/CarsTable';
 import { getWarningNotification } from 'utils/notifications';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['objects', 'session'])
 @exportable({ entity: 'car_actual' })
@@ -60,4 +63,10 @@ class CarsList extends ElementsList {
   }
 }
 
-export default CarsList;
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(CarsList);

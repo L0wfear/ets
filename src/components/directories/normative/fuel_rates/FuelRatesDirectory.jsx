@@ -4,6 +4,9 @@ import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/fuelRateSchema';
 import permissions from 'components/directories/normative/fuel_rates/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['odh', 'fuelRates', 'objects', 'session'])
 @exportable({ entity: 'fuel_consumption_rates' })
@@ -30,4 +33,10 @@ class FuelRatesDirectory extends ElementsList {
   }
 }
 
-export default FuelRatesDirectory;
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(FuelRatesDirectory);

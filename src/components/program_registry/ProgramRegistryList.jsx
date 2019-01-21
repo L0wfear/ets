@@ -5,6 +5,8 @@ import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTab
 import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch';
 import permissions from 'components/program_registry/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
@@ -68,4 +70,10 @@ class ProgramRegistryList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('programRegistry');
   }
 }
-export default compose()(ProgramRegistryList);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(ProgramRegistryList);

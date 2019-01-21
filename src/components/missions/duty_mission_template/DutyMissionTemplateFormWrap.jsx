@@ -11,6 +11,9 @@ import FormWrap from 'components/compositions/FormWrap';
 import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/customValidate';
 import DutyMissionTemplateForm from 'components/missions/duty_mission_template/DutyMissionTemplateForm';
 import DutyMissionsCreationForm from 'components/missions/duty_mission_template/DutyMissionsCreationForm';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 export const createDutyMissions = async (flux, element, payload) => flux.getActions('missions').createDutyMissions(element, payload);
 
@@ -27,7 +30,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
         const mission = props.element === null ? getDefaultDutyMissionTemplate() : clone(props.element);
 
         if (!mission.structure_id) {
-          mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+          mission.structure_id = this.props.userStructureId;
         }
         const formErrors = this.validate(mission, {});
         this.setState({
@@ -105,4 +108,10 @@ class DutyMissionTemplateFormWrap extends FormWrap {
   }
 }
 
-export default DutyMissionTemplateFormWrap;
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+)(DutyMissionTemplateFormWrap);

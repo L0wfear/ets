@@ -6,6 +6,8 @@ import StateProgramTable from 'components/directories/repair/state_program/State
 import StateProgramFormWrap from 'components/directories/repair/state_program/StateProgramFormWrap';
 import permissions from 'components/directories/repair/state_program/config-data/permissions';
 import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.stateProgram}` })
@@ -31,4 +33,10 @@ class StateProgramList extends CheckableElementsList {
   }
 }
 
-export default compose()(StateProgramList);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(StateProgramList);

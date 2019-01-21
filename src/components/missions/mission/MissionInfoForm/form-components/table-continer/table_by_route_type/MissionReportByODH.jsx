@@ -1,10 +1,13 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable';
 import ElementsList from 'components/ElementsList';
 import { sortFunc } from 'components/reports/operational/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/reports/operational/mission/utils/main';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -60,7 +63,7 @@ const getTableMeta = (props) => {
     cols: [
       {
         name: 'object_name',
-        displayName: 'ДТ',
+        displayName: 'ОДХ',
         type: 'string',
         filter: {
           type: 'multiselect',
@@ -97,28 +100,27 @@ const getTableMeta = (props) => {
   return tableMeta;
 };
 
+const renderers = {
+  traveled_percentage: ({ data, rowData }) => (
+    <div>
+      {`${checkFixed([rowData.traveled, rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      <br />
+      {`(${`${parseFloat(parseFloat(data) * 100).toFixed(0)}%`})`}
+    </div>
+  ),
+  left_percentage: ({ data, rowData }) => (
+    <div>
+      {`${checkFixed([rowData.left, rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      <br />
+      {`(${`${VALUE_FOR_FIXED.floatFixed(data * 100, 0)}%`})`}
+    </div>
+  ),
+  check_value: ({ data, rowData }) => <div>{ `${checkFixed([data, rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
+  route_with_speed: ({ rowData }) => <div>{`${VALUE_FOR_FIXED.floatFixed(rowData.traveled / (getDelForUnitRender(rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(rowData.traveled_high_speed / (getDelForUnitRender(rowData.route_check_unit)), 3)}`}</div>,
+};
 
-const MissionReportByDTTable = (props) => {
+const MissionReportByODHTable = (props) => {
   const tableMeta = getTableMeta(props);
-
-  const renderers = {
-    traveled_percentage: (data) => (
-      <div>
-        {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
-        <br />
-        {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
-      </div>
-    ),
-    left_percentage: (data) => (
-      <div>
-        {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
-        <br />
-        {`(${`${VALUE_FOR_FIXED.floatFixed(data.data * 100, 0)}%`})`}
-      </div>
-    ),
-    check_value: (meta) => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-    route_with_speed: (meta) => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)}`}</div>,
-  };
 
   if (!(props.data && props.data.length)) {
     return <div>Нет данных о прохождении задания</div>;
@@ -126,7 +128,7 @@ const MissionReportByDTTable = (props) => {
 
   return (
     <Table
-      title="Прохождение заданий по ДТ"
+      title="Прохождение заданий по ОДХ"
       initialSort="traveled_percentage"
       tableMeta={tableMeta}
       results={props.data}
@@ -136,10 +138,11 @@ const MissionReportByDTTable = (props) => {
   );
 };
 
-class MissionReportByDT extends ElementsList {
+const emptyArr = [];
+
+class MissionReportByODH extends ElementsList {
   static get propTypes() {
     return {
-      renderOnly: PropTypes.bool,
       onElementChange: PropTypes.func,
     };
   }
@@ -147,14 +150,8 @@ class MissionReportByDT extends ElementsList {
   constructor(props) {
     super(props);
 
-    this.selectField = props.selectField || 'dt_id';
-    this.mainListName = 'selectedReportDataDTS';
-  }
-
-  async componentDidMount() {
-    if (!this.props.renderOnly) {
-      this.context.flux.getActions('missions').getMissionReportByDTs(this.props.routeParams.index);
-    }
+    this.selectField = props.selectField || 'obj_id';
+    this.mainListName = 'selectedReportDataODHS';
   }
 
   selectElement = (el) => {
@@ -165,19 +162,23 @@ class MissionReportByDT extends ElementsList {
   }
 
   render() {
-    const { renderOnly = false } = this.props;
-
     return (
-      <MissionReportByDTTable
-        noHeader={renderOnly}
+      <MissionReportByODHTable
+        noHeader
         onRowSelected={this.selectElement}
         selected={this.state.selectedElement}
         selectField={this.selectField}
-        data={this.props.selectedReportDataDTS || []}
+        data={this.props[this.mainListName] || emptyArr}
         {...this.props}
       />
     );
   }
 }
 
-export default connectToStores(MissionReportByDT, ['missions']);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(MissionReportByODH);

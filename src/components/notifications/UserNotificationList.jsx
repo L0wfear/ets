@@ -15,7 +15,7 @@ import {
   markAllAsRead,
   markAsRead,
 } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
-import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+import { getUserNotificationsState, getSessionState } from 'redux-main/reducers/selectors';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { compose } from 'recompose';
 
@@ -141,7 +141,10 @@ class UserNotificationList extends CheckableElementsList {
 
 export default compose(
   connect(
-    getUserNotificationsState,
+    state => ({
+      ...getUserNotificationsState(state),
+      userData: getSessionState(state).userData,
+    }),
     dispatch => ({
       getUserNotificationInfo: () => (
         dispatch(

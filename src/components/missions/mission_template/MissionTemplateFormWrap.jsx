@@ -21,6 +21,9 @@ import MissionTemplateForm from 'components/missions/mission_template/MissionTem
 import MissionsCreationForm from 'components/missions/mission_template/MissionsCreationForm';
 import { ASSING_BY_KEY } from 'components/directories/order/forms/utils/constant';
 import { groupBy } from 'lodash';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const printMapKeyBig = 'mapMissionTemplateFormA3';
 const printMapKeySmall = 'mapMissionTemplateFormA4';
@@ -126,7 +129,7 @@ class MissionTemplateFormWrap extends FormWrap {
 
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {
-          mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+          mission.structure_id = this.props.userStructureId;
         }
         this.setState({
           formState: mission,
@@ -336,4 +339,11 @@ class MissionTemplateFormWrap extends FormWrap {
   }
 }
 
-export default withMapInConsumer()(MissionTemplateFormWrap);
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+  withMapInConsumer(),
+)(MissionTemplateFormWrap);

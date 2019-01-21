@@ -29,12 +29,17 @@ import { components } from 'react-select';
 
 import dutyMissionPermission from 'components/missions/duty_mission/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import memoize from 'memoize-one';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 const ButtonSaveDutyMission = withRequirePermissionsNew({
   permissions: dutyMissionPermission.update,
 })(Button);
 
-const makePayloadFromState = (formState) => ({
+const makePayloadFromState = formState => ({
   datetime: formState.plan_date_start,
   technical_operation_id: formState.technical_operation_id,
   municipal_facility_id: formState.municipal_facility_id,
@@ -44,7 +49,7 @@ const makePayloadFromState = (formState) => ({
 });
 const modalKey = 'duty_mission-form';
 
-export class DutyMissionForm extends Form {
+export class DutyMissionFormNoWrap extends Form {
   constructor(props) {
     super(props);
 
@@ -317,6 +322,12 @@ export class DutyMissionForm extends Form {
     }
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -326,6 +337,8 @@ export class DutyMissionForm extends Form {
       missionsList = [],
       readOnly = false,
       fromOrder = false,
+      userStructureId,
+      userStructures,
     } = this.props;
     const {
       TECH_OPERATIONS: [...TECH_OPERATIONS] = [],
@@ -377,22 +390,27 @@ export class DutyMissionForm extends Form {
 
     const IS_DISPLAY = !!state.status && state.status !== 'not_assigned';
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.makeOptionsBySessionStructures(
+      userStructures,
+    );
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
-    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+    console.log(userStructureId, STRUCTURES)
+    console.log(this.props.userData)
+    if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (userStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === userStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
-    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+    } else if (userStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
+
+    console.log(STRUCTURE_FIELD_VIEW)
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
@@ -703,4 +721,12 @@ export class DutyMissionForm extends Form {
   }
 }
 
-export default connectToStores(DutyMissionForm, ['objects', 'employees', 'missions', 'routes', 'session']);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructures: getSessionState(state).userData.structures,
+    }),
+  ),
+)(connectToStores(DutyMissionFormNoWrap, ['objects', 'employees', 'missions', 'session']));

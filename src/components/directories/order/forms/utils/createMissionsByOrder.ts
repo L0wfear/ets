@@ -3,7 +3,7 @@ import { createDutyMissions } from 'components/missions/duty_mission_template/Du
 import { groupBy } from 'lodash';
 import { ASSING_BY_KEY } from './constant';
 
-export const createMissionPromise = async (flux, mission, mission_source_id, assign_to_waybill, faxogramm_id) => {
+export const createMissionPromise = async (flux, mission, mission_source_id, assign_to_waybill, faxogramm_id, norm_id) => {
   const { id } = mission;
 
   const {
@@ -17,6 +17,7 @@ export const createMissionPromise = async (flux, mission, mission_source_id, ass
     passes_count,
     date_start,
     date_end,
+    norm_id,
     assign_to_waybill,
   };
 
@@ -36,7 +37,7 @@ export const createMissionPromise = async (flux, mission, mission_source_id, ass
   }
 };
 
-export const createMissionByOrder = async (flux, missionsArr, mission_source_id, assign_to_waybill, faxogramm_id) => {
+export const createMissionByOrder = async (flux, missionsArr, mission_source_id, assign_to_waybill, faxogramm_id, norm_id) => {
   let ansArr = [true];
 
   if (assign_to_waybill === ASSING_BY_KEY.assign_to_new_draft) {
@@ -44,10 +45,10 @@ export const createMissionByOrder = async (flux, missionsArr, mission_source_id,
 
     ansArr = await Promise.all(
       Object.values(missionByCar).map(async ([firstMission, ...otherMissions]) => {
-        const goodCreateFirstMission = await createMissionPromise(flux, firstMission, mission_source_id, assign_to_waybill, faxogramm_id);
+        const goodCreateFirstMission = await createMissionPromise(flux, firstMission, mission_source_id, assign_to_waybill, faxogramm_id, norm_id);
 
         if (goodCreateFirstMission) {
-          return createMissionByOrder(flux, otherMissions, mission_source_id, ASSING_BY_KEY.assign_to_available_draft, faxogramm_id);
+          return createMissionByOrder(flux, otherMissions, mission_source_id, ASSING_BY_KEY.assign_to_available_draft, faxogramm_id, norm_id);
         }
         return false;
       }),
@@ -56,7 +57,7 @@ export const createMissionByOrder = async (flux, missionsArr, mission_source_id,
   } else {
     ansArr = await Promise.all<boolean>(
       missionsArr.map((mission) => (
-        createMissionPromise(flux, mission, mission_source_id, assign_to_waybill, faxogramm_id)
+        createMissionPromise(flux, mission, mission_source_id, assign_to_waybill, faxogramm_id, norm_id)
       )),
     );
   }

@@ -29,6 +29,9 @@ import {
   IStateOrderMissionTemplate,
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
 import { createMissionByOrder, createDutyMissionByOrder } from '../utils/createMissionsByOrder';
+import { getWarningNotification } from 'utils/notifications';
+import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
+import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
 
 @connectToStores(['missions', 'session', 'employees', 'objects'])
 @FluxContext
@@ -37,6 +40,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
   state: any = {
     assign_to_waybill: 'assign_to_new_draft',
+    assign_to_waybill_for_column: {},
     missionsList: [],
     missionsIndex: {},
     selectedElement: undefined,
@@ -44,6 +48,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     structures: [],
     timeInterval: null,
     canSubmit: true,
+    showColumnAssignment: false,
   };
 
   componentDidMount() {
@@ -122,13 +127,43 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     } = this.props;
 
     const missionArr = Object.values(checkedElements);
+    const hasMissionForColumn = missionArr.some((mission: any) => mission.for_column);
+
+    if (hasMissionForColumn && missionArr.length > 1) {
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification(
+          'Для создания задания на колонну необходимо выбрать только 1 шаблон!',
+        ),
+      );
+      return;
+    }
+
+    if (hasMissionForColumn) {
+      this.setState({
+        showColumnAssignment: true,
+        assign_to_waybill_for_column: missionArr.reduce((newObj, { id, car_ids }) => {
+          newObj[id] = car_ids.reduce((newObjByCarId, car_id) => {
+            newObjByCarId[car_id] = 'assign_to_new_draft';
+            return newObjByCarId;
+          }, {});
+
+          return newObj;
+        }, {}),
+      });
+      return 'колонна';
+    }
 
     if (!checkStructureByTypeClick(typeClick, this.props as any, missionArr)) {
       this.setState({ canSubmit: false });
       let goodResponse = true;
 
       if (typeClick === typeTemplate.missionTemplate) {
-        goodResponse = await createMissionByOrder(this.context.flux, missionArr, mission_source_id, assign_to_waybill, faxogramm_id);
+        const norm_id = await getNormByMissionAndCar(
+          this.context.flux.getActions('missions').getCleaningOneNorm,
+          this.props.carsIndex,
+          missionArr,
+        );
+        goodResponse = await createMissionByOrder(this.context.flux, missionArr, mission_source_id, assign_to_waybill, faxogramm_id, norm_id);
       }
       if (typeClick === typeTemplate.missionDutyTemplate) {
         goodResponse = await createDutyMissionByOrder(this.context.flux, missionArr, mission_source_id, faxogramm_id);
@@ -163,7 +198,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       delete checkedElements[frontId];
     }
 
-    this.setState({ checkedElements });
+    this.setState({
+      checkedElements,
+    });
   }
 
   onAllChecked = (checkedElements: object, state) => this.setState({ checkedElements: state ? checkedElements : {} });
@@ -175,14 +212,88 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     this.props.onFormHide();
   }
 
+  handleChangeAssignToWaybillForColumn = (name, assign_to_waybill_for_column) => {
+    this.setState({
+      assign_to_waybill_for_column,
+    });
+  }
+
+  hideColumnAssignmentMissionTemplate = () => {
+    this.setState({
+      showColumnAssignment: false,
+      assign_to_waybill_for_column: {},
+    });
+  }
+
+  handleSubmitFromAssignmentModal = async () => {
+    const {
+      assign_to_waybill_for_column,
+      checkedElements,
+    } = this.state;
+    const {
+      mission_source_id,
+      orderDates: { faxogramm_id },
+      technical_operations: [],
+      typeClick,
+    } = this.props;
+
+    const missionArr = Object.values(checkedElements);
+
+    if (!checkStructureByTypeClick(this.props.typeClick, this.props as any, missionArr)) {
+      this.setState({ canSubmit: false });
+      let goodResponse = true;
+
+      if (typeClick === typeTemplate.missionTemplate) {
+        const norm_id = await getNormByMissionAndCar(
+          this.context.flux.getActions('missions').getCleaningOneNorm,
+          this.props.carsIndex,
+          missionArr,
+        );
+        goodResponse = await createMissionByOrder(this.context.flux, missionArr, mission_source_id, assign_to_waybill_for_column, faxogramm_id, norm_id);
+      }
+      if (typeClick === typeTemplate.missionDutyTemplate) {
+        goodResponse = await createDutyMissionByOrder(this.context.flux, missionArr, mission_source_id, faxogramm_id);
+      }
+
+      if (goodResponse) {
+        this.setState({
+          selectedElement: undefined,
+          checkedElements: {},
+          canSubmit: true,
+        });
+      } else {
+        this.setState({
+          canSubmit: true,
+        });
+      }
+    }
+    return Promise.resolve(false);
+  }
+
   render() {
     const {
       assign_to_waybill,
+      assign_to_waybill_for_column,
       missionsList,
       selectedElement,
       checkedElements,
       structures,
+      showColumnAssignment,
     } = this.state;
+
+    if (showColumnAssignment) {
+      return (
+        <ColumnAssignmentMissionTemplate
+          ASSIGN_OPTIONS={ASSIGN_OPTIONS}
+          missions={checkedElements}
+          assign_to_waybill={assign_to_waybill_for_column}
+          hideColumnAssignmentMissionTemplate={this.hideColumnAssignmentMissionTemplate}
+          handleChange={this.handleChangeAssignToWaybillForColumn}
+          carsList={this.props.carsList}
+          handleSubmit={this.handleSubmitFromAssignmentModal}
+        />
+      );
+    }
 
     const {
       showForm,
@@ -197,6 +308,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     if (typeClick === typeTemplate.missionDutyTemplate) {
       title = 'Создание наряд-заданий';
     }
+
+    const hasMissionForColumn = Object.values(checkedElements).some((mission: any) => mission.for_column);
 
     return (
       <Modal id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
@@ -235,7 +348,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
         </ModalBody>
         <Modal.Footer>
           <Div className="inline-block">
-            <Div hidden={typeClick === typeTemplate.missionDutyTemplate} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
+            <Div hidden={typeClick === typeTemplate.missionDutyTemplate || hasMissionForColumn} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
               <ReactSelect
                 type="select"
                 options={ASSIGN_OPTIONS}

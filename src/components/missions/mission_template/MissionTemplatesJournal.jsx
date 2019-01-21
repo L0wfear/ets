@@ -143,9 +143,16 @@ class MissionTemplatesJournal extends CheckableElementsList {
     const hasMissionForColumn = allCheckedMissionInArr.some(mission => mission.for_column);
 
     if (hasMissionForColumn && allCheckedMissionInArr.length > 1) {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Для создания задания на колонну необходимо выбрать только 1 шаблон!'));
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification(
+          'Для создания задания на колонну необходимо выбрать только 1 шаблон!',
+        ),
+      );
     } else {
-      this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+      this.setState({
+        showForm: true,
+        formType: 'MissionsCreationForm',
+      });
     }
   }
 

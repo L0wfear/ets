@@ -232,40 +232,36 @@ export default class MissionsActions extends Actions {
     const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
 
-    if (missionsCreationTemplate.for_column) {
-      return Promise.all(
-        Object.entries(missionTemplates).map(([id, mission]) => (
-          MissionService.path('column').post(
-            {
-              missions: mission.car_ids.map((car_id) => {
-                const payloadMission = {
-                  ...mission,
-                  car_id,
-                  ...missionsCreationTemplateCopy,
-                  is_column: true,
-                  date_start,
-                  date_end,
-                  norm_id: missionsCreationTemplateCopy.norm_id[id][car_id],
-                  assign_to_waybill: missionsCreationTemplateCopy.assign_to_waybill[id][car_id],
-                };
-
-                delete payloadMission.car_ids;
-                delete payloadMission.car_type_ids;
-                delete payloadMission.car_type_names;
-                delete payloadMission.car_gov_numbers;
-                delete payloadMission.car_gov_numbers_text;
-
-                return payloadMission;
-              }),
-            },
-            false,
-            'json',
-          )
-        )),
-      );
-    }
-
     const queries = Object.entries(missionTemplates).map(([id, query]) => {
+      if (query.for_column) {
+        return MissionService.path('column').post(
+          {
+            missions: query.car_ids.map((car_id) => {
+              const payloadMission = {
+                ...query,
+                car_id,
+                ...missionsCreationTemplateCopy,
+                is_column: true,
+                date_start,
+                date_end,
+                norm_id: missionsCreationTemplateCopy.norm_id[id][car_id],
+                assign_to_waybill: missionsCreationTemplateCopy.assign_to_waybill[id][car_id],
+              };
+
+              delete payloadMission.car_ids;
+              delete payloadMission.car_type_ids;
+              delete payloadMission.car_type_names;
+              delete payloadMission.car_gov_numbers;
+              delete payloadMission.car_gov_numbers_text;
+
+              return payloadMission;
+            }),
+          },
+          false,
+          'json',
+        );
+      }
+
       const payload = clone(query);
 
       payload.date_start = date_start;
@@ -285,6 +281,10 @@ export default class MissionsActions extends Actions {
 
       delete payload.company_id;
       delete payload.id;
+      delete payload.car_ids;
+      delete payload.car_gov_numbers;
+      delete payload.car_type_ids;
+      delete payload.car_type_names;
       delete payload.number;
 
       return MissionService.post(payload, false, 'json');

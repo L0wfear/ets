@@ -65,7 +65,7 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
             </Col>
           </Row>
           {
-            Object.entries(this.props.missions).map(([id, { car_ids }]) => (
+            Object.values(this.props.missions).map(({ id, car_ids }) => (
               <div key={id}>
                 {
                   car_ids.map((car_id, index) => (

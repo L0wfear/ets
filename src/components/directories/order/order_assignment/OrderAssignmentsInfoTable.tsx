@@ -84,6 +84,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       preventNoDataMessage
       selected={props.seleted}
       selectField={'order_operation_id'}
+      initialSort="order_operation_id"
       title="Реестр поручений"
       results={technical_operations}
       renderers={renderers}

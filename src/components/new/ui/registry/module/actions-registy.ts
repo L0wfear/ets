@@ -57,10 +57,18 @@ export const registryLoadDataByKey = (registryKey) => (dispatch, getState) => {
     payload: Service.get()
       .then((ans) => {
         const {
-          result: { rows: array },
+          result: { rows: arrayRaw },
         } = ans;
 
-        const { registry: { [registryKey]: { list } } } = getState();
+        const {
+          registry: {
+            [registryKey]: {
+              list,
+            },
+          },
+        } = getState();
+
+        const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
 
         return dispatch(
           registryChangeListData(

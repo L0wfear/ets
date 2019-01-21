@@ -38,6 +38,7 @@ const DtCoverageReportTable = (props) => {
     percentage_one_passes: floatFixed1Percentage,
   };
 
+  console.log(props.selectField)
   return (
     <Table
       title="Отчет по посещению ДТ"
@@ -47,6 +48,7 @@ const DtCoverageReportTable = (props) => {
       enumerated={false}
       tableMeta={getTableMeta(props)}
       className="waybills-table"
+      initialSort={props.selectField}
       {...props}
     />
   );

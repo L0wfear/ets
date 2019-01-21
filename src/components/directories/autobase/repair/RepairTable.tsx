@@ -118,6 +118,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       tableMeta={tableMeta(props)}
       renderers={renderers}
       noFilter
+      initialSort={props.selectField}
       {...props}
     />
   );

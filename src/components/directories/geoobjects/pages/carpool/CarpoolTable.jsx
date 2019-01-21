@@ -47,6 +47,7 @@ export default (props) => {
     <Table
       title="Автобазы"
       results={props.data}
+      initialSort={props.selectField}
       tableMeta={tableMeta(props)}
       renderers={renderers}
       {...props}

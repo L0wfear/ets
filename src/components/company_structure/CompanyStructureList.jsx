@@ -94,7 +94,10 @@ class CompanyStructureList extends ElementsList {
   }
 
   getSelectedProps() {
-    return null;
+    return {
+      selectField: this.selectField,
+      uniqName: this.selectField,
+    };
   }
 
   getAdditionalProps() {

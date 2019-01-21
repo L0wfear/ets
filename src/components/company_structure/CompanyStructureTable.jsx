@@ -72,6 +72,8 @@ export default (props) => {
     ),
   };
 
+  console.log(props)
+
   return (
     <>
       <StyleForCompnayStructureTable />
@@ -83,6 +85,7 @@ export default (props) => {
         isHierarchical
         noFilter
         enableSort={false}
+        initialSort={props.selectField}
         {...props}
       />
     </>

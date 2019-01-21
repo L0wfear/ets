@@ -38,6 +38,7 @@ const Table: React.FunctionComponent<any> = (props) => (
     title="Марки шин"
     results={props.data}
     tableMeta={tableMeta(props)}
+    initialSort={props.selectField}
     {...props}
   />
 );

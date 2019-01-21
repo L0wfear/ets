@@ -46,6 +46,7 @@ const Table: React.FunctionComponent<any> = (props) => (
     title="Реестр ремонтных организаций"
     results={props.data}
     tableMeta={tableMeta(props)}
+    initialSort={props.selectField}
     {...props}
   />
 );

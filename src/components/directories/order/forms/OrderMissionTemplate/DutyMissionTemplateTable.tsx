@@ -71,8 +71,9 @@ const Table: React.FunctionComponent<any> = (props) => (
     onAllRowsChecked={props.onAllRowsChecked}
     selected={props.selected}
     checked={props.checked}
-    selectField={'frontId'}
-  />
+    selectField="frontId"
+    initialSort="frontId"
+    />
 );
 
 export default Table;

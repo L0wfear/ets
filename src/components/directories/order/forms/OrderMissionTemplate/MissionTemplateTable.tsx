@@ -168,7 +168,8 @@ const Table: React.FunctionComponent<MissionTemplateOrderTableProps> = (props) =
       onRowChecked={props.onRowChecked}
       onAllRowsChecked={props.onAllRowsChecked}
       selected={props.selected}
-      selectField={'frontId'}
+      initialSort="frontId"
+      selectField="frontId"
       checked={props.checked}
     />
   );

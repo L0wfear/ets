@@ -16,7 +16,7 @@ const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
   permission: permissions_duty_mission.create,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'duty_mission_template',
   permissions,

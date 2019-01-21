@@ -39,7 +39,7 @@ const ButtonCopyTemplateMission = enhanceWithPermissions({
   permission: permissions.create,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'mission_template',
   listName: 'missionTemplatesList',

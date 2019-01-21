@@ -929,5 +929,5 @@ export default connectToStores(
     permissions: missionPermission.update,
     withIsPermittedProps: true,
   })(MissionForm),
-  ['objects', 'employees', 'missions', 'routes', 'session'],
+  ['objects', 'employees', 'missions', 'session'],
 );

@@ -42,7 +42,7 @@ const ButtonUpdateMission = enhanceWithPermissions({
   permission: permissions.update,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @exportable({ entity: 'mission' })
 @staticProps({
   entity: 'mission',

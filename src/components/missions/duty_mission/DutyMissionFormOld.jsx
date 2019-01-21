@@ -28,7 +28,7 @@ const getRoute = async (routesActions, { route_id, mission_id, isTemplate }) => 
   };
 };
 
-@connectToStores(['employees', 'routes', 'objects'])
+@connectToStores(['employees', 'objects'])
 @FluxContext
 class DutyMissionFormOld extends Form {
   static get propTypes() {

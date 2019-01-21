@@ -18,7 +18,7 @@ const boundKeysObj = {
   check_types: ['check_types'],
 };
 
-@connectToStores(['objects', 'employees', 'missions', 'routes'])
+@connectToStores(['objects', 'employees', 'missions'])
 export default class TechnicalOperationForm extends Form {
 
   handleCarFuncTypesChange = (v) => {

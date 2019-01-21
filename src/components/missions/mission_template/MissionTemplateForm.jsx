@@ -525,4 +525,4 @@ class MissionTemplateForm extends MissionForm {
   }
 }
 
-export default connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'routes', 'session']);
+export default connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'session']);

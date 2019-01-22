@@ -128,7 +128,6 @@ class MainApp extends React.Component {
               <NotifiactionOrders />
               <AdmNotification />
               <UserNotificationWs />
-
             </div>
           </div>
 

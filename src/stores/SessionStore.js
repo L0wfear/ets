@@ -117,6 +117,7 @@ export default class SessionStore extends Store {
   handleLogout(message) {
     localStorage.removeItem(global.SESSION_KEY2);
     localStorage.removeItem(global.CURRENT_USER2);
+    localStorage.removeItem(global.API__KEY2);
 
     this.setState({
       session: null,

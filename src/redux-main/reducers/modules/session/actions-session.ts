@@ -3,10 +3,13 @@ import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
   SESSION_SET_CONFIG,
+  SESSION_SET_TRACK_CONFIG,
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService } from 'api/Services';
 import { CONFIG_INITIAL } from 'redux-main/reducers/modules/session/session';
+import config from 'config';
+import { get } from 'lodash';
 
 export const withSpecificPermissions = (user) => {
   const permissions = [];
@@ -67,6 +70,29 @@ export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
     payload: {
       token: session,
       userData,
+    },
+  });
+};
+
+export const sessionSetTracksCachingConfig: any = (appConfigTracksCaching) => (dispatch) => {
+  const versionFromLocalStorage = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, '');
+
+  if (!versionFromLocalStorage) {
+    const { api_version_stable } = appConfigTracksCaching;
+
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+
+    if (!versions) {
+      versions = {};
+    }
+    versions[config.tracksCaching] = api_version_stable.toString();
+    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+  }
+
+  return dispatch({
+    type: SESSION_SET_TRACK_CONFIG,
+    payload: {
+      appConfigTracksCaching,
     },
   });
 };

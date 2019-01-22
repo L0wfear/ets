@@ -1,14 +1,16 @@
+import config from 'config';
 import ApiServiceFactory from './ApiServiceFactory';
 import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
-  apiUrl: `https://psd.mos.ru/tracks-caching${process.env.STAND !== 'prod' ? '-dev' : ''}`,
+  apiUrl: config.tracksCaching,
 });
 
-export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info');
-export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks');
+export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('info'); // в payload нужно прокидывать version из localStorage
+export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('tracks'); // в payload нужно прокидывать version из localStorage
+export const ConfigTrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter('config');
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('');
 export const ConfigService = ETS_API_FACTORY.createApiServiceAdapter('config');

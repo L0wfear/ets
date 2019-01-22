@@ -99,14 +99,7 @@ export default class NotificationsStore extends Store {
   }
 
   handleSave(text) {
-    global.NOTIFICATION_SYSTEM.notify({
-      title: '',
-      message: text,
-      level: 'success',
-      dismissible: true,
-      position: 'tc',
-      autoDismiss: 0,
-    }, 'success');
+    global.NOTIFICATION_SYSTEM.notify(text, 'success');
   }
 
   handleRemove() {

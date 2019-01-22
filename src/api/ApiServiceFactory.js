@@ -1,4 +1,3 @@
-import urljoin from 'url-join';
 import APIService from './APIService';
 
 export default class ApiServiceFactory {

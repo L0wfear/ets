@@ -67,6 +67,7 @@ const configs = {
   docs: config.develop.docs,
   backend: STANDS.develop.dev,
   notification_ws: notification_config.develop.dev,
+  tracksCaching: `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`,
 };
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 

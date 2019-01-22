@@ -2,6 +2,8 @@ import { getInfoNotification, getWarningNotification, getErrorNotificationFromBa
 import RequestWarningError from 'utils/errors/RequestWarningError';
 import Raven from 'raven-js';
 import urljoin from 'url-join';
+import config from 'config';
+import { get } from 'lodash';
 import {
   getJSON, postJSON, deleteJSON, putJSON, patchJSON,
 } from './adapter';
@@ -47,11 +49,16 @@ export default class APIService {
   }
 
   getUrlData() {
-    const version = localStorage.getItem(global.API__KEY2);
+    const version = get(JSON.parse(localStorage.getItem(global.API__KEY2)), this._apiUrl, '');
 
-    return version
-      ? urljoin(this._apiUrl, `/v${version}`, this._path)
-      : urljoin(this._apiUrl, this._path);
+    switch (this._apiUrl) {
+      case config.tracksCaching:
+        return urljoin(this._apiUrl, this._path);
+      default:
+        return version
+          ? urljoin(this._apiUrl, `/v${version}`, this._path)
+          : urljoin(this._apiUrl, this._path);
+    }
   }
 
   processResponse(r, callback) {

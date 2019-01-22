@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 import { connect } from 'react-redux';
 
 import * as Modal from 'react-bootstrap/lib/Modal';
@@ -20,6 +21,8 @@ import {
   OneOptionInStateModalSwitchApiVersion,
 } from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import config from 'config';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const modalKey = 'ModalSwitchApiVersion';
 const defaultNonVersionoption = {
@@ -29,17 +32,37 @@ const defaultNonVersionoption = {
 
 class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
   state = {
-    value: localStorage.getItem(global.API__KEY2),
+    serviceValue: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.backend], ''),
+    tracksCachingValue: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.tracksCaching], ''),
   };
 
   refresh = () => {
     global.window.location.reload();
   }
 
-  handleChange = (value: OneOptionInStateModalSwitchApiVersion['value']) => {
-    localStorage.setItem(global.API__KEY2, value === -1 ? '' : value.toString());
+  handleChangeService = (serviceValue: OneOptionInStateModalSwitchApiVersion['value']) => {
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY2));
+
+    if (!versions) {
+      versions = {};
+    }
+    versions[config.backend] = serviceValue === -1 ? '' : serviceValue.toString();
+    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
     this.setState({
-      value: value === -1 ? '' : value,
+      serviceValue: serviceValue === -1 ? '' : serviceValue,
+    });
+  }
+
+  handleChangeTracksCaching = (tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value']) => {
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY2));
+
+    if (!versions) {
+      versions = {};
+    }
+    versions[config.tracksCaching] = tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
+    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+    this.setState({
+      tracksCachingValue: tracksCachingValue === -1 ? '' : tracksCachingValue,
     });
   }
 
@@ -48,19 +71,40 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
       (api_versions: InitialStateSession['appConfig']['api_versions']) => ([
         defaultNonVersionoption,
         ...api_versions.map((version) => ({
-          value: version,
+          value: version.toString(),
           label: version,
         })),
       ]),
     )
   );
 
+  makeOptionsFromAppTracksCachingConfigApiVersions = (
+    memoize(
+      (api_versions: InitialStateSession['appConfigTracksCaching']['api_versions'], api_version_stable: InitialStateSession['appConfigTracksCaching']['api_version_stable']) => (
+        api_versions.map((version) => ({
+          value: version.toString(),
+          label: `${version}${version === api_version_stable ? ' (стабильная)' : ''}`,
+        }),
+      )),
+    )
+  );
+
   render() {
     const {
       appConfig: { api_versions },
+      appConfigTracksCaching: {
+        api_versions: tracks_api_versions,
+        api_version_stable,
+      },
     } = this.props;
+
     const apiVersionsOptions = this.makeOptionsFromAppConfigApiVersions(
       api_versions,
+    );
+
+    const apiTracksCachingVersionsOptions = this.makeOptionsFromAppTracksCachingConfigApiVersions(
+      tracks_api_versions,
+      api_version_stable,
     );
 
     return (
@@ -76,8 +120,21 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
                 type="select"
                 label="Версия API"
                 options={apiVersionsOptions}
-                value={this.state.value || -1}
-                onChange={this.handleChange}
+                value={this.state.serviceValue || -1}
+                onChange={this.handleChangeService}
+                clearable={false}
+                modalKey={modalKey}
+                emptyValue={null}
+              />
+            </Col>
+            <Col md={12}>
+              <ExtField
+                id="version_api"
+                type="select"
+                label="Версия API tracks-caching"
+                options={apiTracksCachingVersionsOptions}
+                value={this.state.tracksCachingValue || -1}
+                onChange={this.handleChangeTracksCaching}
                 clearable={false}
                 modalKey={modalKey}
                 emptyValue={null}
@@ -95,6 +152,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
 
 export default connect<StatePropsModalSwitchApiVersion, DispatchPropsModalSwitchApiVersion, OwnPropsModalSwitchApiVersion, ReduxState>(
   (state) => ({
-    appConfig: state.session.appConfig,
+    appConfig: getSessionState(state).appConfig,
+    appConfigTracksCaching: getSessionState(state).appConfigTracksCaching,
   }),
 )(ModalSwitchApiVersion);

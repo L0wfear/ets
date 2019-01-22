@@ -24,6 +24,7 @@ import {
   UserActionLogService,
   Country,
   WorkMode,
+  ConfigTrackService,
 } from 'api/Services';
 
 import {
@@ -98,6 +99,10 @@ export default class ObjectsActions extends Actions {
 
   getConfig() {
     return ConfigService.get();
+  }
+
+  getTrackConfig() {
+    return ConfigTrackService.get();
   }
 
   getMaterialConsumptionRate() {

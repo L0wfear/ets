@@ -27,6 +27,8 @@ import {
   TrackService,
   CarInfoService,
 } from 'api/Services';
+import config from 'config';
+import { get } from 'lodash';
 
 export const carInfoSetGpsNumber = (gps_code = null, gov_number = null) => ({
   type: CAR_INFO_SET_GPS_CODE,
@@ -126,7 +128,7 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
     payload: getCarGpsNumberByDateTime(payloadData)
       .then(({ gps_code }) => {
         const payloadToTrack = {
-          version: 3,
+          version: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.tracksCaching], ''),
           gps_code,
           from_dt: makeUnixTime(payloadData.date_start || date_start),
           to_dt: makeUnixTime(payloadData.date_end || date_end),

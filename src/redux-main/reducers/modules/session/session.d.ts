@@ -37,4 +37,8 @@ export type InitialStateSession = {
     footer_url: string | null,
     project_name: string | null,
   };
+  appConfigTracksCaching: {
+    api_version_stable: number | null,
+    api_versions: number[],
+  }
 };

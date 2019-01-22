@@ -16,10 +16,14 @@ global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
 global.APP_TIME_WITH_SECOND_FORMAT = 'HH:mm:ss';
 global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
+global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${process.env.STAND}2`;
 global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 
 import LoginPageWrap from 'components/login/LoginPageWrap';
 import MainAppWrap from 'components/MainAppWrap';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { sessionSetTracksCachingConfig } from 'redux-main/reducers/modules/session/actions-session';
 
 class App extends React.Component <any, any> {
 
@@ -60,7 +64,15 @@ class App extends React.Component <any, any> {
       return this.setState({ loading: false });
     }
     return AuthCheckService.get()
-          .then(() => flux.getActions('objects').getConfig())
+          .then(() => (
+            Promise.all([
+              flux.getActions('objects').getConfig(),
+              flux.getActions('objects').getTrackConfig()
+                .then((trackConfig) => (
+                  this.props.sessionSetTracksCachingConfig(trackConfig)
+                )),
+            ])
+          ))
           .then(() => this.setState({ loading: false }))
           .catch((ErrorData) => {
             const { error_text, errorIsShow } = ErrorData;
@@ -97,4 +109,17 @@ class App extends React.Component <any, any> {
   }
 }
 
-export default App;
+export default compose<any, any>(
+  connect(
+    null,
+    (dispatch) => ({
+      sessionSetTracksCachingConfig: (appTrackConfig) => (
+        dispatch(
+          sessionSetTracksCachingConfig(
+            appTrackConfig,
+          ),
+        )
+      ),
+    }),
+  ),
+)(App);

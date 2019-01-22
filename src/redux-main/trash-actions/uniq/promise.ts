@@ -3,7 +3,11 @@ import {
   TrackService,
   TimeMoscowService,
 } from 'api/Services';
-import { keyBy } from 'lodash';
+import {
+  get,
+  keyBy,
+} from 'lodash';
+import config from 'config';
 import { getDateWithMoscowTz, makeUnixTime } from 'utils/dates';
 import {
   getCarGpsNumberByDateTime,
@@ -71,7 +75,7 @@ export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
   getCarGpsNumberByDateTime(payloadData as any)
     .then(({ gps_code }) => {
       const payloadToTrack = {
-        version: 3,
+        version: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.tracksCaching], ''),
         gps_code,
         from_dt: makeUnixTime(payloadData.date_start),
         to_dt: makeUnixTime(payloadData.date_end),

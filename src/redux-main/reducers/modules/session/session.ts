@@ -7,6 +7,7 @@ export const SESSION_SET_DATA = SESSION`SET_DATA`;
 export const SESSION_RESET_DATA = SESSION`RESET_DATA`;
 
 export const SESSION_SET_CONFIG = SESSION`SET_CONFIG`;
+export const SESSION_SET_TRACK_CONFIG = SESSION`SET_TRACK_CONFIG`;
 
 const MAP_INITIAL_CENTER: InitialStateSession['userData']['map_config']['coordinates'] = [-399.43090337943863, -8521.192605428025];
 const MAP_INITIAL_ZOOM = 3;
@@ -38,6 +39,11 @@ export const CONFIG_INITIAL: InitialStateSession['appConfig'] = { // дефол�
   project_name: '',
 };
 
+export const TRACK_CONFIG_INITIAL = {
+  api_version_stable: null,
+  api_versions: [],
+};
+
 const initialState: InitialStateSession = {
   userData: {
     map_config: {
@@ -55,6 +61,7 @@ const initialState: InitialStateSession = {
   },
   token: null,
   appConfig: CONFIG_INITIAL,
+  appConfigTracksCaching: TRACK_CONFIG_INITIAL,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -76,6 +83,12 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         appConfig: payload.appConfig || CONFIG_INITIAL,
+      };
+    }
+    case SESSION_SET_TRACK_CONFIG: {
+      return {
+        ...state,
+        appConfigTracksCaching: payload.appConfigTracksCaching,
       };
     }
     case SESSION_RESET_DATA: {

@@ -143,8 +143,7 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
           gps_code: payloadData.gps_code,
         }));
       }).catch((error) => {
-        // tslint:disable-next-line
-        console.log(error);
+        console.log(error); // tslint:disable-line:no-console
 
         return {
           trackCaching: {

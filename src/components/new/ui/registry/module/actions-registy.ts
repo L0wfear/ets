@@ -215,7 +215,7 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
   };
 
   if (__DEVELOPMENT__) {
-    console.log('SAVE FILTER', processed.filterValues); // tslint:disable-line
+    console.log('SAVE FILTER', processed.filterValues); // tslint:disable-line:no-console
   } else {
     let filterAsString = '';
 
@@ -225,7 +225,7 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
       filterAsString = processed.filterValues;
     }
 
-    console.log('SAVE FILTER', filterAsString); // tslint:disable-line
+    console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
   }
 
   dispatch(

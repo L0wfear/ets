@@ -16,6 +16,10 @@ import {
 } from 'components/login/styled/styled';
 import SnowStorm from 'react-snowstorm';
 import { DivNone } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { ReduxState } from '../../redux-main/@types/state';
+import { sessionLogin } from 'redux-main/reducers/modules/session/actions-session';
 
 const STAND = process.env.STAND;
 
@@ -33,12 +37,11 @@ class LoginPage extends React.PureComponent<any, any> {
       password,
     };
 
-    this.props.login(user).then(({ payload }) => {
-      this.props.loadData();
-      if (payload.permissions.includes('role.change')) {
+    this.props.sessionLogin(user).then(({ userData }) => {
+      if (userData.isGlavControl) {
         this.props.history.push('/change-company');
       } else {
-        this.props.history.push(`/${payload.default_path}`);
+        this.props.history.push(userData.stableRedirect);
       }
     })
     .catch(() => {
@@ -100,4 +103,19 @@ class LoginPage extends React.PureComponent<any, any> {
   }
 }
 
-export default withRouter(LoginPage);
+export default compose<any, any>(
+  withRouter,
+  connect<any, any, any, ReduxState>(
+    null,
+    (dispatch) => ({
+      sessionLogin: (user) => (
+        dispatch(
+          sessionLogin(
+            user,
+            { page: 'main' },
+          ),
+        )
+      ),
+    }),
+  ),
+)(LoginPage);

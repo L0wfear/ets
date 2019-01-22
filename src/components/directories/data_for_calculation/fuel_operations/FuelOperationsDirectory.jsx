@@ -18,7 +18,6 @@ import { getSessionState } from 'redux-main/reducers/selectors';
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class FuelOperationsDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelOperation;

@@ -23,7 +23,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'objects', 'session'])
+@connectToStores(['repair', 'objects'])
 @staticProps({
   entity: 'repair_program_version',
   permissions,

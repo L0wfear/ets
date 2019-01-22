@@ -11,7 +11,7 @@ import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 
-@connectToStores(['employees', 'objects', 'session'])
+@connectToStores(['employees', 'objects'])
 @exportable({ entity: 'employee_on_car' })
 @staticProps({
   entity: 'employee_on_car',
@@ -99,7 +99,7 @@ class EmployeeOnCarList extends ElementsList {
         flux={this.context.flux}
         {...this.props}
       />,
-    ]
+    ];
   }
 }
 

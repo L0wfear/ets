@@ -10,7 +10,6 @@ import objects from './ObjectsActions';
 import odh from './ODHActions';
 import repair from './RepairAction';
 import routes from './RoutesActions';
-import session from './SessionActions';
 import technicalOperation from './TechnicalOperationsActions';
 import waybills from './WaybillsActions';
 
@@ -23,7 +22,6 @@ export {
   odh,
   repair,
   routes,
-  session,
   technicalOperation,
   waybills,
 };

@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
@@ -13,7 +13,6 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'battery-registry';
 
-@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryRegistry}` })
 @staticProps({
   entity: 'autobase_battery',

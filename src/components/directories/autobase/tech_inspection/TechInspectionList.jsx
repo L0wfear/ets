@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TechInspectionFormWrap from 'components/directories/autobase/tech_inspection/TechInspectionForm/TechInspectionFormWrap';
@@ -12,7 +12,7 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'tech_inspection';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
   entity: 'autobase_tech_inspection',

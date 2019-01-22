@@ -97,8 +97,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           //
         });
       }).catch((e) => {
-        // tslint:disable-next-line
-        console.log(e);
+        console.log(e); // tslint:disable-line:no-console
       });
   }
 

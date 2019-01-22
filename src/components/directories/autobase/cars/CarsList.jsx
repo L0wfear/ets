@@ -11,7 +11,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['objects', 'session'])
+@connectToStores(['objects'])
 @exportable({ entity: 'car_actual' })
 @staticProps({
   entity: 'car',

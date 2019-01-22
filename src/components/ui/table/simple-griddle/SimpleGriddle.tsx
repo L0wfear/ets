@@ -224,8 +224,7 @@ class SimpleGriddle extends React.Component<any, any> {
       if (fieldMeta && fieldMeta.sortable) {
         const initialSortAscending = title === this.state.initialSort ? !this.state.initialSortAscending : true;
 
-        // tslint:disable-next-line
-        console.log('CHANGE SORT', title, initialSortAscending);
+        console.log('CHANGE SORT', title, initialSortAscending); // tslint:disable-line:no-console
 
         this.props.externalChangeSort(title, initialSortAscending);
         this.setState({

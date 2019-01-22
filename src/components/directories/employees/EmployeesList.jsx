@@ -1,6 +1,6 @@
 import * as queryString from 'query-string';
 
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import EmployeeFormWrap from 'components/directories/employees/EmployeeForm/EmployeeFormWrap';
 import EmployeesTable from 'components/directories/employees/EmployeesTable';
@@ -14,7 +14,7 @@ import { getEmployeeState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'employees';
 
-@connectToStores(['session'])
+
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',

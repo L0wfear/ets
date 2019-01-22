@@ -1,7 +1,6 @@
-import { get } from 'lodash';
 import CarpoolTable, { tableMeta } from 'components/directories/geoobjects/pages/carpool/CarpoolTable';
 import ElementsList from 'components/ElementsList';
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import CarpoolFormWrap from 'components/directories/geoobjects/pages/carpool/form/CarpoolFormWrap';
 import permissions from 'components/directories/geoobjects/pages/carpool/config-data/permissions';
 import { connect } from 'react-redux';
@@ -12,7 +11,7 @@ import { compose } from 'recompose';
 
 const loadingPageName = 'company-structure';
 
-@connectToStores(['session'])
+
 @exportable({ path: 'geozones', entity: 'carpool' })
 @staticProps({
   path: 'geozones',

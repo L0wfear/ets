@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   sessionSetData,
 } from 'redux-main/reducers/modules/session/actions-session';
-import { connectToStores, FluxContext } from 'utils/decorators';
+import { FluxContext } from 'utils/decorators';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import { withRouter } from 'react-router-dom';
@@ -22,7 +22,7 @@ const CompanyOptionsWrap = compose(
     }),
   )
 )(
-  @connectToStores(['session'])
+  
   @FluxContext
   class extends React.Component<any, any> {
     context!: ETSCore.LegacyContext;
@@ -54,7 +54,6 @@ const CompanyOptionsWrap = compose(
 
             if (!value) {
               if (this.props.location.pathname !== '/change-company') {
-                console.log({ ...this.props.currentUser });
                 this.props.history.push(this.props.currentUser.stableRedirect);
               }
             } else {

@@ -1,43 +1,32 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-import requireAuth from 'utils/auth';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from '../../redux-main/reducers/selectors/index';
+import { Redirect } from 'react-router';
 
 const LoginPage = React.lazy(() => (
   import(/* webpackChunkName: "login_page" */ 'components/login/LoginPage')
 ));
 
 class LoginPageWrap extends React.Component<any, any> {
-  context!: ETSCore.LegacyContext;
-
-  static get contextTypes() {
-    return {
-      flux: PropTypes.object.isRequired,
-    };
-  }
-
   render() {
-    const {
-      flux,
-    } = this.context;
-
-    if (flux.getStore('session').isLoggedIn()) {
-      const user = flux.getStore('session').getCurrentUser();
-
-      return <Redirect to={requireAuth(flux, `/${user.default_path}`)} />;
-    } else {
+    if (this.props.hasValidToken) {
       return (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <LoginPage
-            {...this.props}
-            login={flux.getActions('session').login}
-            loadData={this.props.loadData}
-          />;
-        </React.Suspense>
+        <Redirect to="/" />
       );
     }
+
+    return (
+      <React.Suspense fallback={<LoadingComponent />}>
+        <LoginPage />;
+      </React.Suspense>
+    );
   }
 }
 
-export default (props) => <LoginPageWrap {...props} />;
+export default connect<any, any, any, ReduxState>(
+  (state) => ({
+    hasValidToken: Boolean(getSessionState(state).token),
+  }),
+)(LoginPageWrap);

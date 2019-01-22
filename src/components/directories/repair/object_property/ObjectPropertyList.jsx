@@ -11,7 +11,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @exportable({ entity: `${REPAIR.objectProperty}` })
 @staticProps({
   entity: 'ets_object_properties',

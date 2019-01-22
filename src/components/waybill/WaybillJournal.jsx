@@ -23,7 +23,7 @@ import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 
-@connectToStores(['waybills', 'objects', 'employees', 'session'])
+@connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
   entity: 'waybill',
   permissions,

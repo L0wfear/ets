@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as BootstrapButton from 'react-bootstrap/lib/Button';
 
-import { connectToStores, staticProps } from 'utils/decorators';
+import { staticProps } from 'utils/decorators';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
@@ -45,7 +45,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @staticProps({
   entity: 'repair_program_version',
   permissions,

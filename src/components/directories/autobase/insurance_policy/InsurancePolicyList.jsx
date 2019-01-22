@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import InsurancePolicyFormWrap from 'components/directories/autobase/insurance_policy/InsurancePolicyForm/InsurancePolicyFromWrap';
@@ -12,7 +12,6 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'insurance-policy';
 
-@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.insurancePolicy}` })
 @staticProps({
   entity: 'autobase_insurance_policy',

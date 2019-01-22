@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import RoadAccidentFormWrap from 'components/directories/autobase/road_accident/RoadAccidentForm/RoadAccidentFormWrap';
@@ -12,7 +12,7 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'road-accident';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
 @staticProps({
   entity: 'autobase_road_accident',

@@ -17,7 +17,6 @@ import { getSessionState } from 'redux-main/reducers/selectors';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class EfficiencyList extends ElementsList {
-
   constructor(props, context) {
     super(props);
 

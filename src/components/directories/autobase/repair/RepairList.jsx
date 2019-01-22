@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import RepairFormWrap from 'components/directories/autobase/repair/RepairForm/RepairFormWrap';
@@ -12,7 +12,6 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'repair';
 
-@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.repair}` })
 @staticProps({
   entity: 'autobase_repair',

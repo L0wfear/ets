@@ -161,7 +161,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             }
             formState[key] = newValue;
 
-            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line
+            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
           });
 
           const formErrors = this.validate(formState);

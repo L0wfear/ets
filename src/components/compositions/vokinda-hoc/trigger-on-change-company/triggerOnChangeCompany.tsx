@@ -1,48 +1,55 @@
 import * as React from 'react';
-import connectToStores from 'flummox/connect';
 import Preloader from 'components/ui/new/preloader/Preloader';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-const triggerOnChangeCompany = (Component) =>
-  connectToStores(class extends React.Component<any, any> {
-    constructor(props) {
-      super(props);
+const triggerOnChangeCompany = (Component) => (
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      userData: getSessionState(state).userData,
+    }),
+  )(
+    class extends React.Component<any, any> {
+      constructor(props) {
+        super(props);
 
-      this.state = {
-        company_id: props.currentUser.company_id,
-        loading: false,
-      };
-    }
-    componentDidUpdate() {
-      const { currentUser: { company_id } } = this.props;
-      if (company_id !== this.state.company_id) {
-        this.changeStatusLoading(true, company_id);
+        this.state = {
+          company_id: props.userData.company_id,
+          loading: false,
+        };
       }
-    }
-
-    changeStatusLoading = (loading, company_id) => {
-      setTimeout(() =>
-        this.setState({
-          loading,
-          company_id,
-        }),
-        loading ? 50 : 100,
-      );
-      if (loading) {
-        this.changeStatusLoading(false, company_id);
-      }
-    }
-
-    render() {
-      if (this.state.loading) {
-        return <Preloader typePreloader="mainpage" />;
+      componentDidUpdate() {
+        const { userData: { company_id } } = this.props;
+        if (company_id !== this.state.company_id) {
+          this.changeStatusLoading(true, company_id);
+        }
       }
 
-      return (
-        <Component {...this.props} />
-      );
-    }
-  },
-  ['session'],
+      changeStatusLoading = (loading, company_id) => {
+        setTimeout(() =>
+          this.setState({
+            loading,
+            company_id,
+          }),
+          loading ? 50 : 100,
+        );
+        if (loading) {
+          this.changeStatusLoading(false, company_id);
+        }
+      }
+
+      render() {
+        if (this.state.loading) {
+          return <Preloader typePreloader="mainpage" />;
+        }
+
+        return (
+          <Component {...this.props} />
+        );
+      }
+    },
+  )
 );
 
 export default triggerOnChangeCompany;

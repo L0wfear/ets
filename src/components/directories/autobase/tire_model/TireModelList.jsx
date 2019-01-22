@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TireModelFormWrap from 'components/directories/autobase/tire_model/TireModelForm/TireModelFormWrap';
@@ -13,7 +13,7 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'tire-model';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.tireModel}` })
 @staticProps({
   entity: 'autobase_tire_model',

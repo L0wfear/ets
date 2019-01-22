@@ -183,9 +183,6 @@ export class DutyMissionFormNoWrap extends Form {
     let kind_task_ids = null;
     let { selectedRoute } = this.state;
     let { routesList } = this.props;
-    const {
-      currentUser: { company_id },
-    } = this.props;
 
     if (!isEmpty(mission.route_id)) {
       selectedRoute = await routesActions.getRouteById(mission.route_id);
@@ -398,8 +395,6 @@ export class DutyMissionFormNoWrap extends Form {
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
-    console.log(userStructureId, STRUCTURES)
-    console.log(this.props.userData)
     if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
@@ -409,8 +404,6 @@ export class DutyMissionFormNoWrap extends Form {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
-
-    console.log(STRUCTURE_FIELD_VIEW)
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
@@ -729,4 +722,4 @@ export default compose(
       userStructures: getSessionState(state).userData.structures,
     }),
   ),
-)(connectToStores(DutyMissionFormNoWrap, ['objects', 'employees', 'missions', 'session']));
+)(connectToStores(DutyMissionFormNoWrap, ['objects', 'employees', 'missions']));

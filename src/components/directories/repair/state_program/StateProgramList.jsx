@@ -9,7 +9,7 @@ import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @exportable({ entity: `repair/${REPAIR.stateProgram}` })
 @staticProps({
   entity: 'repair_state_program',

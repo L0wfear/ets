@@ -17,6 +17,7 @@ export type InitialStateSession = {
     company_id: number | null;
     isOkrug: boolean;
     isKgh: boolean;
+    isGlavControl: boolean;
   };
   token: string | null;
   appConfig: {

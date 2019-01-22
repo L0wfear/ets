@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['odh', 'fuelRates', 'objects', 'session'])
+@connectToStores(['odh', 'fuelRates', 'objects'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',

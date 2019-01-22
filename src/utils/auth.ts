@@ -1,11 +1,19 @@
 import { routToPer } from 'constants/routerAndPermission';
+import { isArray } from 'util';
 
-const requireAuth = (flux, url) => {
+export const isPermitted = (permissionsSet, permissionName) => {
+  if (!isArray(permissionName)) {
+    return permissionsSet.has(permissionName);
+  }
+  return permissionName.some((pN) => permissionsSet.has(pN));
+};
+
+const requireAuth = (permissionsSet, url) => {
   if (routToPer[url]) {
-    if (!flux.getStore('session').getPermission(routToPer[url].p, true)) {
+    if (!isPermitted(permissionsSet, routToPer[url].p)) {
       const routeVal = Object.entries(routToPer).reduce((obj: any, [key, rTp]) => {
         if (!obj.lvl || obj.lvl > rTp.lvl) {
-          if (flux.getStore('session').getPermission(rTp.p, true)) {
+          if (isPermitted(permissionsSet, rTp.p)) {
             obj = {
               lvl: rTp.lvl,
               path: key,

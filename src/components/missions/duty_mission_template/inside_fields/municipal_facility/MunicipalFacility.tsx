@@ -123,8 +123,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
 
           this.loadMunicipalFacility(outerPayload);
         } else {
-          // tslint:disable-next-line
-          console.log('старая то без элемента');
+          console.log('старая то без элемента'); // tslint:disable-line:no-console
         }
       }
     }

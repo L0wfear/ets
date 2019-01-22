@@ -64,7 +64,7 @@ class ProgramRegistryFormWrap extends FormWrap {
 
     const permissionForButton = Object.entries(existButtonInForm).reduce((newObj, [buttonName, buttonPerm]) => ({
       ...newObj,
-      [buttonName]: this.props.userPermissionsSet.has.getPermission(buttonPerm),
+      [buttonName]: this.props.userPermissionsSet.has(buttonPerm),
     }), {});
 
     const data = {

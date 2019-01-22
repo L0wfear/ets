@@ -9,7 +9,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-@connectToStores(['objects', 'session'])
+@connectToStores(['objects'])
 @exportable({ entity: 'medical_stats' })
 @staticProps({
   entity: 'medical_stats',

@@ -26,7 +26,7 @@ const ButtonChangeCarData = withRequirePermissionsNew({
 const loadingPage = 'technical_operation_relations';
 
 @withRouter
-@connectToStores(['objects', 'session'])
+@connectToStores(['objects'])
 @staticProps({
   entity: 'technical_operation_relations',
   permissions,
@@ -149,8 +149,8 @@ class TechnicalOperationRelationsList extends ElementsList {
 
   getButtons() {
     return [
-      <ButtonChangeCarData key="change-driver" onClick={this.handleChangeDriver} disabled={!this.state.selectedElement}>{'Изменить водителей'}</ButtonChangeCarData>,
-      <ButtonUpdateRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>{'Изменить маршрут'}</ButtonUpdateRoute>,
+      <ButtonChangeCarData key="change-driver" onClick={this.handleChangeDriver} disabled={!this.state.selectedElement}>Изменить водителей</ButtonChangeCarData>,
+      <ButtonUpdateRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>Изменить маршрут</ButtonUpdateRoute>,
     ];
   }
 

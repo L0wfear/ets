@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import SparePartTable from 'components/directories/autobase/spare_part/SparePartTable';
@@ -12,7 +12,7 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'spare-part';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.sparePart}` })
 @staticProps({
   entity: 'autobase_spare_part',

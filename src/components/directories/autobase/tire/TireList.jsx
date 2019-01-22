@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TireFormWrap from 'components/directories/autobase/tire/TireForm/TireFormWrap';
@@ -12,7 +12,7 @@ import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors
 
 const loadingPageName = 'tire';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
   entity: 'autobase_tire',
@@ -54,7 +54,6 @@ class TireList extends ElementsList {
   }
 
   handleClickClone = async (id) => {
-    console.log(id)
     try {
       await this.props.autobaseCloneTire(id);
       this.init();
@@ -103,7 +102,7 @@ export default compose(
             tireId,
             {
               page: loadingPageName,
-            }
+            },
           ),
         )
       ),

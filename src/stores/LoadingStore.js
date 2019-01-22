@@ -5,7 +5,6 @@ export default class LoadingStore extends Store {
   constructor(flux) {
     super();
 
-    const sessionActions = flux.getActions('session');
     const repairActions = flux.getActions('repair');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
@@ -17,8 +16,6 @@ export default class LoadingStore extends Store {
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.reg(false,
-      sessionActions.cahngeCompanyOnAnother,
-
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,
       repairActions.contractor,

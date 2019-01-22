@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import permissions from 'components/company_structure/config-data/permissions';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
@@ -22,7 +22,6 @@ const ButtonAddStructure = withRequirePermissionsNew({
 
 const loadingPageName = 'company-structure';
 
-@connectToStores(['session'])
 @staticProps({
   entity: 'company_structure',
   permissions,

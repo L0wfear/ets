@@ -37,7 +37,7 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['missions', 'session', 'employees', 'objects'])
+@connectToStores(['missions', 'employees', 'objects'])
 @FluxContext
 class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTemplate> {
   context!: ETSCore.LegacyContext;
@@ -88,9 +88,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     const timeInterval = setInterval(this.checkMissionsList, 60 * 1000);
     const missionsList = old_missionsList.filter(({ date_to }) => diffDates(new Date(), date_to) < 0);
 
-    /* tslint:disable:no-console */
-    console.log('check on date end');
-    /* tslint:enable */
+    console.log('check on date end'); // tslint:disable-line:no-console
 
     this.setState({
       missionsList,

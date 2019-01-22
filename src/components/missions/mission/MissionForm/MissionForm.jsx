@@ -949,4 +949,4 @@ export default compose(
       userStructures: getSessionState(state).userData.structures,
     }),
   ),
-)(connectToStores(MissionForm, ['objects', 'employees', 'missions', 'session']));
+)(connectToStores(MissionForm, ['objects', 'employees', 'missions']));

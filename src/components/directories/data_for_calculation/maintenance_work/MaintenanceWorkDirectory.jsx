@@ -18,7 +18,6 @@ import { compose } from 'recompose';
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class MaintenanceWorkDirectory extends ElementsList {
-
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceWork;

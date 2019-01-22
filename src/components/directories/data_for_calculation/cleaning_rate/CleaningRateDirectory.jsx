@@ -51,7 +51,7 @@ const CleaningRateDirectoryWithUserData = compose(
       userData: getSessionState(state).userData,
     }),
   ),
-);
+)(CleaningRateDirectory);
 
 export default class CleaningRate extends Component {
   state = {

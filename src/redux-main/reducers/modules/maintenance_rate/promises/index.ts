@@ -33,9 +33,18 @@ export const createMaintenanceRate = (type: string, formState: ICreateMaintenanc
 
   return MaintenanceRateService.post(
       payload,
-      this.getMaintenanceRate.bind(this, type),
+      null,
       'json',
-    );
+    ).catch((error) => {
+      // tslint:disable-next-line:no-console
+      console.warn(error);
+
+      return {
+        result: {
+          rows: [],
+        },
+      };
+    }).then((r) => ({ maintenanceRateList: r.result.rows }));;
 };
 
 export const updateMaintenanceRate = (type: string, formState: IMaintenanceRateUpd) => {
@@ -46,15 +55,30 @@ export const updateMaintenanceRate = (type: string, formState: IMaintenanceRateU
 
   return MaintenanceRateService.path(formState.id).put(
     payload,
-    this.getMaintenanceRate.bind(this, type),
+    null,
     'json',
-  );
+  ).catch((error) => {
+    // tslint:disable-next-line:no-console
+    console.warn(error);
+
+    return {
+      result: {
+        rows: [],
+      },
+    };
+  }).then((r) => ({ maintenanceRateList: r.result.rows }));
 };
 
-export const deleteMaintenanceRate = (type: string, id: number) => {
-  return MaintenanceRateService.path(id).delete(
+export const deleteMaintenanceRate = (id: number) => MaintenanceRateService.path(id).delete(
     {},
-    this.getMaintenanceRate.bind(this, type),
-    'json',
-  );
-};
+    null,
+    'json'
+  ).catch((error) => {
+  // tslint:disable-next-line:no-console
+  console.warn(error);
+  return {
+    result: {
+      rows: [],
+    },
+  };
+}).then((r) => ({ maintenanceRateList: r.result.rows }));

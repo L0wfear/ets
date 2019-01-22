@@ -4,7 +4,8 @@ import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateFormWrap';
+import MaintenanceRateFormWrap from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/MaintenanceRateFormWrap';
+
 import MaintenanceRateTable from 'components/directories/normative/maintenance_rate/MaintenanceRateTable';
 import permissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
 
@@ -32,11 +33,11 @@ const loadingPageName = 'maintenance-rate';
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class MaintenanceRateDirectory extends ElementsList {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
-    this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceRate.bind(this, props.type);
 
     this.setExportType(props.type);
+    this.removeElementAction = this.props.maintenanceRateDelete;
   }
 
   setExportType(type) {
@@ -45,16 +46,12 @@ class MaintenanceRateDirectory extends ElementsList {
 
   init() {
     const { flux } = this.context;
+
     this.props.maintenanceRateGet(this.props.type);
-    // flux.getActions('objects').getMaintenanceRate(this.props.type); // redux
     flux.getActions('objects').getMaintenanceWork();
     flux.getActions('objects').getCleanCategories();
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
-
-  removeElementAction = (...arg) => (
-    this.props.maintenanceRateDelete(this.props.type, ...arg)
-  );
 
   componentDidUpdate(prevProps) {
     const { type } = this.props;
@@ -104,9 +101,9 @@ export default compose(
           maintenanceRateGet(MAINTENANCE_RATE_SET_DATA, type),
         )
       ),
-      maintenanceRateDelete: (type, id) => (
+      maintenanceRateDelete: id => (
         dispatch(
-          maintenanceRateDelete(MAINTENANCE_RATE_SET_DATA, type, id),
+          maintenanceRateDelete(MAINTENANCE_RATE_SET_DATA, id),
         )
       ),
     }),

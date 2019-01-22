@@ -11,11 +11,12 @@ import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['objects'])
-export default class MaintenanceRateForm extends Form {
+class MaintenanceRateForm extends Form {
   handleChangeCategory = (value) => {
     this.handleChange('clean_subcategory_id', null);
     this.handleChange('clean_category_id', value);
   }
+
   myHandleSubmit = () => this.handleSubmit();
 
   render() {
@@ -125,3 +126,5 @@ export default class MaintenanceRateForm extends Form {
   }
 
 }
+
+export default MaintenanceRateForm;

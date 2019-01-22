@@ -36,9 +36,9 @@ export const maintenanceRateUpdate = (type: string | null, mrType: string, forms
   },
 });
 
-export const maintenanceRateDelete = (type: string | null, mrType: string, id: number) => ({
+export const maintenanceRateDelete = (type: string | null, id: number) => ({
   type: type || MAINTENANCE_RATE_SET_DATA,
-  payload: deleteMaintenanceRate(mrType, id),
+  payload: deleteMaintenanceRate(id),
   meta: {
     promise: true,
   },

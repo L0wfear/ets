@@ -49,7 +49,9 @@ export default class APIService {
   }
 
   getUrlData() {
-    const version = get(JSON.parse(localStorage.getItem(global.API__KEY2)), this._apiUrl, '');
+    const apiVersions = localStorage.getItem(global.API__KEY2) || '{}';
+
+    const version = get(JSON.parse(apiVersions), this._apiUrl, '');
 
     switch (this._apiUrl) {
       case config.tracksCaching:

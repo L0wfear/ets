@@ -32,8 +32,8 @@ const defaultNonVersionoption = {
 
 class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
   state = {
-    serviceValue: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.backend], ''),
-    tracksCachingValue: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.tracksCaching], ''),
+    serviceValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], null),
+    tracksCachingValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], null),
   };
 
   refresh = () => {
@@ -41,7 +41,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   }
 
   handleChangeService = (serviceValue: OneOptionInStateModalSwitchApiVersion['value']) => {
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2));
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
     if (!versions) {
       versions = {};
@@ -54,7 +54,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   }
 
   handleChangeTracksCaching = (tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value']) => {
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2));
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
     if (!versions) {
       versions = {};

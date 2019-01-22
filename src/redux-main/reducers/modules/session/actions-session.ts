@@ -75,12 +75,12 @@ export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
 };
 
 export const sessionSetTracksCachingConfig: any = (appConfigTracksCaching) => (dispatch) => {
-  const versionFromLocalStorage = get(JSON.parse(localStorage.getItem(global.API__KEY2)), config.tracksCaching, '');
+  const versionFromLocalStorage = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, '');
 
   if (!versionFromLocalStorage) {
     const { api_version_stable } = appConfigTracksCaching;
 
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2));
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
     if (!versions) {
       versions = {};

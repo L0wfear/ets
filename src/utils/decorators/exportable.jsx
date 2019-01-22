@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { saveData } from 'utils/functions';
 import { parseFilename } from 'utils/content-disposition';
 import config from 'config';
-import _ from 'lodash';
+import _, { get } from 'lodash';
 
 // TODO поменять на urlencode и использовать для составления параметров
 export function toUrlWithParams(url, data) {
@@ -38,7 +38,7 @@ export default function exportable(options) {
           ...payload,
           format: 'xls',
         };
-        const version = localStorage.getItem(global.API__KEY2);
+        const version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], '');
 
         const URL = version
           ? (
@@ -72,7 +72,7 @@ export default function exportable(options) {
 
       exportByPostFunction = (bodyPayload = {}, urlPayload = {}) => {
         const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
-        const version = localStorage.getItem(global.API__KEY2);
+        const version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], '');
 
         const URL = version
           ? (

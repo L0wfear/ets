@@ -11,7 +11,7 @@ export type OwnPropsModalSwitchApiVersion = {
 };
 
 export type NoneVersionOption = {
-  value: number;
+  value: number | null;
   label: string;
 };
 

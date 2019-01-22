@@ -75,7 +75,7 @@ export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
   getCarGpsNumberByDateTime(payloadData as any)
     .then(({ gps_code }) => {
       const payloadToTrack = {
-        version: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.tracksCaching], ''),
+        version: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], ''),
         gps_code,
         from_dt: makeUnixTime(payloadData.date_start),
         to_dt: makeUnixTime(payloadData.date_end),

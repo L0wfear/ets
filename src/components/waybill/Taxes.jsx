@@ -148,8 +148,8 @@ export default class Taxes extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(nexProps, prevProps) {
-    const { fuelRates, taxes } = nexProps;
+  static getDerivedStateFromProps(nexProps, prevState) {
+    const { fuelRates, taxes = prevState.tableData } = nexProps;
     let { operations } = nexProps;
 
     operations = operations.map(data => ({

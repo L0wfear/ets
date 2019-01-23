@@ -42,7 +42,7 @@ import { resetCachedDataForRoute } from 'components/new/pages/routes_list/form/i
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 import {
   routesCreateRoute,
   routesUpdateRoute,

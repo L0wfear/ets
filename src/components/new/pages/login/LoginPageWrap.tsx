@@ -2,11 +2,11 @@ import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from '../../redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 import { Redirect } from 'react-router';
 
 const LoginPage = React.lazy(() => (
-  import(/* webpackChunkName: "login_page" */ 'components/login/LoginPage')
+  import(/* webpackChunkName: "login_page" */ 'components/new/pages/login/LoginPage')
 ));
 
 class LoginPageWrap extends React.Component<any, any> {

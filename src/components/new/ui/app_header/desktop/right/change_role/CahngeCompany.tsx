@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import CompanyOptions from 'components/new/ui/app_header/desktop/right/change_role/CompanyOptionsNew';
 import requireAuth from 'utils/auth';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 

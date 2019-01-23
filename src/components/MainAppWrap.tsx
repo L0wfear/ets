@@ -29,13 +29,20 @@ class MainAppWrap extends React.Component <any, any> {
     } = props;
 
     const permittedPath = requireAuth(userData.permissionsSet, url);
+
     if (!hasValidToken) { // нет токена
-      return <Redirect to="/login" />;
+      return (
+        <Redirect to="/login" />
+      );
     } else if (url !== permittedPath) { // запрашиваемый урл не разрешён
-      return <Redirect to={permittedPath} />;
+      return (
+        <Redirect to={permittedPath} />
+      );
     }
-    if (url === '/change-company' && !userData.isGlavControl) { // для главконтроля сменя токена
-      return <Redirect to={requireAuth(userData.permissionsSet, '/monitor')} />;
+    if (url === '/change-company' && !userData.isGlavControl) { // для главконтроля
+      return (
+        <Redirect to={requireAuth(userData.permissionsSet, '/monitor')} />
+      );
     }
 
     return (

@@ -9,7 +9,7 @@ import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import { withRouter } from 'react-router-dom';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 class CompanyOptionsNew extends React.Component<any, any> {
   context!: ETSCore.LegacyContext;

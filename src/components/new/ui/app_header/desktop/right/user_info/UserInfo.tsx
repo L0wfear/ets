@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { DefaultFirstDt } from 'components/new/ui/app_header/styled';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 import { UserDataMenu, UserDataContainer, UserHeaderData, UserFio } from 'components/new/ui/app_header/desktop/right/user_info/styled';
 import { UserImg } from './styled/index';
 

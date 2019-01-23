@@ -3,8 +3,6 @@ import * as PropTypes from 'prop-types';
 
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
-import LoadingPage from 'components/LoadingPage';
-
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
@@ -15,7 +13,7 @@ global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${proce
 
 global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 
-import LoginPageWrap from 'components/login/LoginPageWrap';
+import LoginPageWrap from 'components/new/pages/login/LoginPageWrap';
 import MainAppWrap from 'components/MainAppWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -27,6 +25,7 @@ import {
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { Switch, Route } from 'react-router';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 class App extends React.Component <any, any> {
   static get childContextTypes() {
@@ -51,11 +50,6 @@ class App extends React.Component <any, any> {
 
   componentDidMount() {
     this.checkToken();
-    const el = document.getElementById('main-background');
-
-    if (el) {
-      document.body.removeChild(el);
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -70,7 +64,7 @@ class App extends React.Component <any, any> {
     this.setState({ loading: true });
 
     try {
-      this.props.checkToken();
+      await this.props.checkToken();
       this.setState({ loading: false });
     } catch (ErrorData) {
       const { error_text, errorIsShow } = ErrorData;
@@ -84,13 +78,19 @@ class App extends React.Component <any, any> {
       }
       return !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(t_error));
     }
+
+    const el = document.getElementById('main-background');
+
+    if (el) {
+      document.body.removeChild(el);
+    }
   }
 
   render() {
     const localStorageToken = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
 
     if (this.state.loading || localStorageToken !== this.props.token) {
-      return  <LoadingPage loaded />;
+      return <LoadingComponent />;
     }
 
     return(

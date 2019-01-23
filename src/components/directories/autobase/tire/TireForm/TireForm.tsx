@@ -29,7 +29,7 @@ import { Tire, TireSize, TireModel } from 'redux-main/reducers/modules/autobase/
 import { DivNone } from 'global-styled/global-styled';
 import TireToVehicleBlockComponent from 'components/directories/autobase/tire/TireForm/vehicle-block/TireToVehicleBlock';
 import { onChangeWithKeys } from 'components/compositions/hoc';
-import { getAutobaseState } from 'redux-main/reducers/selectors/index';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { InlineSpanValue } from './styled';
 

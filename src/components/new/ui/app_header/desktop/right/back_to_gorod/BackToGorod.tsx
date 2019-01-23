@@ -14,7 +14,7 @@ import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 import { isNull } from 'util';
 import { BackToGorodContainer } from 'components/new/ui/app_header/desktop/right/back_to_gorod/styled';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 class BackToGorod extends React.Component<any, any> {
   context!: ETSCore.LegacyContext;

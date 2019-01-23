@@ -20,7 +20,7 @@ import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
 import LayerDraw from 'components/new/ui/map/layers/default/layer-draw/LayerDraw';
 import { ReduxState } from 'redux-main/@types/state';
-import { getMonitorPageState } from '../../../../redux-main/reducers/selectors/index';
+import { getMonitorPageState } from 'redux-main/reducers/selectors';
 
 import {
   ButtonContainer,

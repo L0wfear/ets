@@ -145,7 +145,6 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
 
 export const sessionSetData: any = (userData, session) => async (dispatch) => {
   localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
-  localStorage.setItem(global.CURRENT_USER2, JSON.stringify(userData));
 
   setUserContext(userData);
 
@@ -211,7 +210,6 @@ export const checkToken: any = () => async (dispatch, getState) => {
 
 export const sessionResetData: any = () => (dispatch) => {
   localStorage.removeItem(global.SESSION_KEY2);
-  localStorage.removeItem(global.CURRENT_USER2);
   localStorage.removeItem(global.API__KEY2);
 
   dispatch({

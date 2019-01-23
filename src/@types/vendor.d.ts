@@ -13,7 +13,6 @@ declare namespace NodeJS  {
     API__KEY2: string;
     window: any;
     APP_DATE_FORMAT: string;
-    CURRENT_USER2: string;
     NOTIFICATION_READ_ARR: string;
     APP_TIME_FORMAT: string;
     APP_TIME_WITH_SECOND_FORMAT: string;

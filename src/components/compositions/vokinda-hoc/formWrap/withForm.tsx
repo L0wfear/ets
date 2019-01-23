@@ -124,60 +124,58 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [objChangeOrName]: get(newRawValue, ['target', 'value'], newRawValue),
           };
 
-        setImmediate(() => {
-          const { propertiesByKey } = this.state;
-          const formState = { ...this.state.formState };
+        const { propertiesByKey } = this.state;
+        const formState = { ...this.state.formState };
 
-          Object.entries(objChangeItareble).forEach(([key, value]) => {
-            let newValue = value;
-            if (key in propertiesByKey) {
-              switch (propertiesByKey[key].type) {
-                case 'number':
-                  const valueNumberString: number | string = (value as number | string);
+        Object.entries(objChangeItareble).forEach(([key, value]) => {
+          let newValue = value;
+          if (key in propertiesByKey) {
+            switch (propertiesByKey[key].type) {
+              case 'number':
+                const valueNumberString: number | string = (value as number | string);
 
-                  if (valueNumberString || valueNumberString === 0) {
-                    const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
-                    if (!isNaN(Number(valueReplaced))) {
-                      if (valueReplaced.match(/^.\d*$/)) {
-                        newValue = `0${valueReplaced}`;
-                      }
-                      newValue = valueReplaced;
-                    } else {
-                      newValue = valueReplaced;
+                if (valueNumberString || valueNumberString === 0) {
+                  const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
+                  if (!isNaN(Number(valueReplaced))) {
+                    if (valueReplaced.match(/^.\d*$/)) {
+                      newValue = `0${valueReplaced}`;
                     }
+                    newValue = valueReplaced;
                   } else {
-                    newValue = null;
+                    newValue = valueReplaced;
                   }
-                  break;
-                case 'boolean':
-                  newValue = value;
-                  break;
-                case 'string':
-                case 'date':
-                case 'datetime':
-                default:
-                newValue = Boolean(value) || value === 0 ? value : null;
-              }
+                } else {
+                  newValue = null;
+                }
+                break;
+              case 'boolean':
+                newValue = value;
+                break;
+              case 'string':
+              case 'date':
+              case 'datetime':
+              default:
+              newValue = Boolean(value) || value === 0 ? value : null;
             }
-            formState[key] = newValue;
+          }
+          formState[key] = newValue;
 
-            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
-          });
+          console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
+        });
 
-          const formErrors = this.validate(formState);
-          const newState = {
-            formState,
-            formErrors,
-            canSave: this.state.canSave,
-          };
+        const formErrors = this.validate(formState);
+        const newState = {
+          formState,
+          formErrors,
+          canSave: this.state.canSave,
+        };
 
-          this.setState({
+        this.setState({
+          ...newState,
+          canSave: this.canSave({
+            ...this.state,
             ...newState,
-            canSave: this.canSave({
-              ...this.state,
-              ...newState,
-            }),
-          });
+          }),
         });
       }
       submitAction = async <T extends any[], A extends any>(...payload: T) => {

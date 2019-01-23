@@ -112,8 +112,10 @@ export class MissionForm extends Form {
       changesObj.is_cleaning_norm = this.props.formState.car_id.map(() => false);
       changesObj.norm_id = this.props.formState.car_id.map(() => null);
     } else {
-      changesObj.is_cleaning_norm = false;
-      changesObj.norm_id = null;
+      if (!this.props.withDefineTypeId) {
+        changesObj.is_cleaning_norm = false;
+        changesObj.norm_id = null;
+      }
     }
 
     const { flux } = this.context;
@@ -280,6 +282,7 @@ export class MissionForm extends Form {
       changedObj.car_id = null;
       changedObj.type_id = null;
     }
+
     this.props.handleMultiFormChange({
       technical_operation_id,
       municipal_facility_id: null,
@@ -294,7 +297,7 @@ export class MissionForm extends Form {
 
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);
-    if (!this.props.fromWaybill) {
+    if (!this.props.withDefineTypeId) {
       this.handleChange('car_id', null);
     }
     this.handleRouteIdChange(undefined);
@@ -505,8 +508,18 @@ export class MissionForm extends Form {
     const isDeferred = diffDates(state.date_start, new Date()) > 0;
 
     const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    let STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
 
+    if (this.props.withDefineTypeId) {
+      const selectedCar = carsList.find(({ asuods_id }) => asuods_id === state.car_id);
+      const isCommonCar = get(selectedCar, 'is_common', false);
+
+      if (!isCommonCar) {
+        const companyStructureIdCar = get(selectedCar, 'company_structure_id', null);
+
+        STRUCTURES = STRUCTURES.filter(({ value }) => value === companyStructureIdCar);
+      }
+    }
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
@@ -772,7 +785,7 @@ export class MissionForm extends Form {
                   </Col>
                 </Row>
                 <Row>
-                  {IS_CREATING && !this.props.fromWaybill && (
+                  {IS_CREATING && !this.props.fromWaybill && !this.props.withDefineTypeId && (
                     <Col md={12}>
                       <ExtField
                         id="is_column"

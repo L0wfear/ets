@@ -96,7 +96,7 @@ export class MissionForm extends Form {
     const { formState } = this.props;
 
     Promise.all([
-      getTechnicalOperationData(formState, this.props.template, this.props.fromOrder, this.props.fromWaybill, missionsActions, technicalOperationsActions),
+      getTechnicalOperationData(formState, this.props.template, this.props.fromOrder, this.props.withDefineTypeId, missionsActions, technicalOperationsActions),
       getDataBySelectedRoute(formState, routesActions.getRouteById),
       getRoutesByMissionId(formState, this.props.template, routesActions.getRoutesByMissionId, this.props.routesList),
     ])
@@ -292,7 +292,7 @@ export class MissionForm extends Form {
   handleTechnicalOperationChange = (technical_operation_id) => {
     const changedObj = {};
 
-    if (!this.props.fromWaybill) {
+    if (!this.props.withDefineTypeId) {
       changedObj.car_id = null;
       changedObj.type_id = null;
     }
@@ -445,13 +445,13 @@ export class MissionForm extends Form {
 
     if (trigger) {
       const { flux } = this.context;
-      const { fromWaybill } = this.props;
+      const { withDefineTypeId } = this.props;
 
       return getDataByNormatives(
         normatives,
         this.state.kind_task_ids,
         formState,
-        fromWaybill,
+        withDefineTypeId,
         flux.getActions('technicalOperation').getTechOperationsByNormIds,
         flux.getActions('routes').getRoutesBySomeData,
         flux.getActions('cars').getCarsByNormIds,
@@ -577,7 +577,7 @@ export class MissionForm extends Form {
         IS_POST_CREATING_ASSIGNED
         || state.status === 'not_assigned'
         || IS_DISPLAY
-        || this.props.fromWaybill
+        || this.props.withDefineTypeId
         || (IS_CREATING && isEmpty(state.technical_operation_id))
         || isEmpty(state.municipal_facility_id)
       )
@@ -714,7 +714,7 @@ export class MissionForm extends Form {
                       technicalOperationsList={technicalOperationsList}
                       kind_task_ids={kind_task_ids}
                       getCleaningMunicipalFacilityList={this.context.flux.getActions('missions').getCleaningMunicipalFacilityList}
-                      typeIdWraomWaybill={this.props.fromWaybill ? state.type_id : null}
+                      typeIdWraomWaybill={this.props.withDefineTypeId ? state.type_id : null}
                       getDataByNormatives={this.getDataByNormatives}
                     />
                   </Col>

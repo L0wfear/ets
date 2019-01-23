@@ -30,11 +30,7 @@ const makePermissionOnCheck = (config, props) => {
 const checkOnisPermitted = (config, props, permissionsSet) => {
   const permissionsOnCheck = makePermissionOnCheck(config, props);
 
-  if (config.every) {
-    return permissionsOnCheck.some((permission) => !permissionsSet.has(permission));
-  }
-
-  return permissionsOnCheck.some((permission) => permissionsSet.has(permission));
+  return permissionsOnCheck.some((permission) => permission ? permissionsSet.has(permission) : true);
 };
 
 type StateProps = {

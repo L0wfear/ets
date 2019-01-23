@@ -21,6 +21,10 @@ import permissions from 'components/directories/data_for_calculation/cleaning_ra
 class CleaningRateDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
+
+    this.exportPayload = {
+      type: props.type,
+    };
     this.removeElementAction = context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
   }
 
@@ -38,6 +42,10 @@ class CleaningRateDirectory extends ElementsList {
 
     if (prevProps.type !== type) {
       this.context.flux.getActions('objects').getCleaningRate(type);
+
+      this.exportPayload = {
+        type: this.props.type,
+      };
     }
   }
 }

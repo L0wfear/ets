@@ -9,6 +9,7 @@ import { FluxContext } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 @FluxContext
 export class DutyMissionForm extends React.Component {

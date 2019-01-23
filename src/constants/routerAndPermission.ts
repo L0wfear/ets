@@ -7,10 +7,9 @@ import reports from 'components/reports/config-data';
 import companyStructure from 'components/company_structure/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
-// import changeCompany from 'components/nav-item-role/config-data';
 import changeCompany from 'components/new/ui/app_header/desktop/right/change_role/config-data';
 
-import dashboard from 'components/new/pages/dashboard/config-data/index';
+import dashboard from 'components/new/pages/dashboard/config-data';
 import routeList from 'components/new/pages/routes_list/config-data';
 
 const PROTO = window.location.protocol;

@@ -19,7 +19,4 @@ export type PropsCarInWorkOverall = (
 );
 
 export type StateCarInWorkOverall = {
-  ws: any;
-  carsTrackState: any;
-  countNotInTouch: number | {};
 };

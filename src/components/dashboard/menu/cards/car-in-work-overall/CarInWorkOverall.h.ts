@@ -5,6 +5,7 @@ import { InitialStateDashboard } from 'components/dashboard/redux-main/modules/d
 
 export type StatePropsCarInOveral = {
   items: InitialStateDashboard['car_in_work_overall']['data']['items'];
+  // carsByStatus: any; // заменить? поискать, может уже есть типчик
 };
 export type DispatchPropsCarInOveral = {
   setInfoData: (infoData: CarInWorkOverallInfoDataType) => any;
@@ -19,4 +20,7 @@ export type PropsCarInWorkOverall = (
 );
 
 export type StateCarInWorkOverall = {
+  ws: any;
+  carsTrackState: any;
+  countNotInTouch: number | {};
 };

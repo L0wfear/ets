@@ -6,7 +6,7 @@ import permissions from 'components/new/pages/nsi/cars/pages/types-attr/_config-
 
 export const registryKey = 'TypesAttr';
 
-export const config: TypeConfigData = {
+export const config: TypeConfigData<any> = {
   Service: TypesAttr,
   registryKey,
   header: {

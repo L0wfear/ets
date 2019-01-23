@@ -3,10 +3,11 @@ import { TypesService } from 'api/Services';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data/permissions';
+import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const registryKey = 'CarFuncTypes';
 
-export const config: TypeConfigData = {
+export const config: TypeConfigData<CarFuncTypes> = {
   Service: TypesService,
   registryKey,
   header: {

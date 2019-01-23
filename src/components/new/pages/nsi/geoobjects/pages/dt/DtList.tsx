@@ -30,6 +30,6 @@ class DtList extends React.Component<PropsDtList, StateDtList> {
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(DtList);

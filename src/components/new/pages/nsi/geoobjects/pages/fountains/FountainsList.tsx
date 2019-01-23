@@ -28,6 +28,6 @@ class FountainsList extends React.Component<PropsFountainsList, StateFountainsLi
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(FountainsList);

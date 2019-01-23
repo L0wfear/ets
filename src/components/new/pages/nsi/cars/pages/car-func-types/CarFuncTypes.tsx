@@ -28,6 +28,6 @@ class CarFuncTypes extends React.Component<PropsCarFuncTypes, StateCarFuncTypes>
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(CarFuncTypes);

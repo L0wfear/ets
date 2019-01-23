@@ -4,7 +4,6 @@ import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
 import reports from 'components/reports/config-data';
-import companyStructure from 'components/company_structure/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
 import changeCompany from 'components/new/ui/app_header/desktop/right/change_role/config-data';
@@ -25,7 +24,6 @@ const routerAndPermission = {
   nsi,
   reports,
   routeList,
-  companyStructure,
   notificationRegistry,
   programRegistry,
   admin: {

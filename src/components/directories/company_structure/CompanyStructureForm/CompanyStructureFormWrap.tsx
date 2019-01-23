@@ -4,10 +4,10 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { PropsCompanyStructureFormWrap } from 'components/company_structure/CompanyStructureForm/@types/CompanyStructureForm.h';
+import { PropsCompanyStructureFormWrap } from 'components/directories/company_structure/CompanyStructureForm/@types/CompanyStructureForm.h';
 
 const CompanyStructureForm = React.lazy(() => (
-  import(/* webpackChunkName: "company_structure_form" */ 'components/company_structure/CompanyStructureForm/CompanyStructureForm')
+  import(/* webpackChunkName: "company_structure_form" */ 'components/directories/company_structure/CompanyStructureForm/CompanyStructureForm')
 ));
 
 class BatteryBrandFormWrap extends React.Component<PropsCompanyStructureFormWrap, {}> {

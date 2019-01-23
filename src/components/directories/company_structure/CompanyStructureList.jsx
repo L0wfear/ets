@@ -3,14 +3,14 @@ import { get } from 'lodash';
 
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import permissions from 'components/company_structure/config-data/permissions';
+import permissions from 'components/directories/company_structure/config-data/permissions';
 import { staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
-import CompanyStructureFormWrap from 'components/company_structure/CompanyStructureForm/CompanyStructureFormWrap';
-import CompanyStructureTable from 'components/company_structure/CompanyStructureTable';
+import CompanyStructureFormWrap from 'components/directories/company_structure/CompanyStructureForm/CompanyStructureFormWrap';
+import CompanyStructureTable from 'components/directories/company_structure/CompanyStructureTable';
 import { connect } from 'react-redux';
 import { getCompanyStructureState, getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';

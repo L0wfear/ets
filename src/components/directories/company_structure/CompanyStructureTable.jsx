@@ -2,7 +2,7 @@ import React from 'react';
 import { ExtButton } from 'components/ui/new/button/ExtButton';
 
 import Table from 'components/ui/table/DataTable';
-import permissions from 'components/company_structure/config-data/permissions';
+import permissions from 'components/directories/company_structure/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { StyleForCompnayStructureTable } from './styled/styled';
 

@@ -1,5 +1,5 @@
-import permissions from 'components/company_structure/config-data/permissions';
-import component from 'components/company_structure/config-data/components';
+import permissions from 'components/directories/company_structure/config-data/permissions';
+import component from 'components/directories/company_structure/config-data/components';
 
 export default {
   path: '/company-structure',

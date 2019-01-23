@@ -69,7 +69,7 @@ class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> 
           showForm={this.state.showMissionFormWrap}
           element={element}
           carsList={carActualGpsNumberArray}
-          fromWaybill
+          withDefineTypeId
         />
       </FlexCenterButton>
     );

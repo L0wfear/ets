@@ -72,8 +72,7 @@ const checkFilterByAdvancedNumber = (f_data, rowCol) =>
       case 'gt': return !(Number(filter_value) < Number(rowCol));
       case 'gte': return !(Number(filter_value) <= Number(rowCol));
       default: {
-        // tslint:disable-next-line
-        console.log(`no define filter for ${filter_type}`);
+        console.log(`no define filter for ${filter_type}`); // tslint:disable-line:no-console
         return true;
       }
     }
@@ -90,8 +89,7 @@ const checkFilterByAdvancedString = (f_data, rowCol) =>
       case 'gt': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) < 0);
       case 'gte': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) <= 0);
       default: {
-        // tslint:disable-next-line
-        console.log(`no define filter for ${filter_type}`);
+        console.log(`no define filter for ${filter_type}`); // tslint:disable-line:no-console
         return true;
       }
     }

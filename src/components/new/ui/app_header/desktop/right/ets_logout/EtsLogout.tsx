@@ -1,12 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { ReduxState } from 'redux-main/@types/state';
 
 import {
   DefaultFirstDt,
   LinkFirstLvl,
   DefaultFirstLvlMenu,
 } from 'components/new/ui/app_header/styled';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { sessionResetData } from 'redux-main/reducers/modules/session/actions-session';
 
 class EtsLogout extends React.Component<any, {}> {
   node = React.createRef<any>();
@@ -43,11 +46,8 @@ class EtsLogout extends React.Component<any, {}> {
     }
   }
 
-  handleClick: React.MouseEventHandler<HTMLAnchorElement> = async (e) => {
-    e.preventDefault();
-
-    await this.context.flux.getActions('session').logout();
-    this.props.history.push('/login');
+  handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    this.props.sessionResetData();
   }
 
   render() {
@@ -63,4 +63,15 @@ class EtsLogout extends React.Component<any, {}> {
   }
 }
 
-export default withRouter(EtsLogout);
+export default compose<any, any>(
+  connect<any, any, any, ReduxState>(
+    null,
+    (dispatch) => ({
+      sessionResetData: () => (
+        dispatch(
+          sessionResetData(),
+        )
+      ),
+    }),
+  ),
+)(EtsLogout);

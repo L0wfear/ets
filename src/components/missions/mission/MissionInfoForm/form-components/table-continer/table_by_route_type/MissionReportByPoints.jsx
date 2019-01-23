@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import connectToStores from 'flummox/connect';
 import Table from 'components/ui/table/DataTable';
 import ElementsList from 'components/ElementsList';
+import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
 
 const tableMeta = {
   cols: [
@@ -63,12 +65,6 @@ class MissionReportByPoints extends ElementsList {
     this.mainListName = 'selectedReportDataPoints';
   }
 
-  async componentDidMount() {
-    if (!this.props.renderOnly) {
-      this.context.flux.getActions('missions').getMissionReportByPoints(this.props.routeParams.index);
-    }
-  }
-
   selectElement = (el) => {
     this.onRowClick(el);
     if (typeof this.props.onElementChange === 'function') {
@@ -77,11 +73,9 @@ class MissionReportByPoints extends ElementsList {
   }
 
   render() {
-    const { renderOnly = false } = this.props;
-
     return (
       <MissionReportByPointsTable
-        noHeader={renderOnly}
+        noHeader
         onRowSelected={this.selectElement}
         selected={this.state.selectedElement}
         selectField={this.selectField}
@@ -96,4 +90,10 @@ MissionReportByPoints.contextTypes = {
   flux: PropTypes.object,
 };
 
-export default connectToStores(MissionReportByPoints, ['missions']);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(MissionReportByPoints);

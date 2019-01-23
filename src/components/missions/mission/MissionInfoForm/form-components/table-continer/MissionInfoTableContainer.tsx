@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import MissionReportByODH from 'components/reports/operational/mission/MissionReportByODH';
-import MissionReportByDT from 'components/reports/operational/mission/MissionReportByDT';
-import MissionReportByPoints from 'components/reports/operational/mission/MissionReportByPoints';
+import MissionReportByODH from 'components/missions/mission/MissionInfoForm/form-components/table-continer/table_by_route_type/MissionReportByODH';
+import MissionReportByDT from 'components/missions/mission/MissionInfoForm/form-components/table-continer/table_by_route_type/MissionReportByDT';
+import MissionReportByPoints from 'components/missions/mission/MissionInfoForm/form-components/table-continer/table_by_route_type/MissionReportByPoints';
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsMissionInfoTableContainer } from 'components/missions/mission/MissionInfoForm/form-components/table-continer/MissionInfoTableContainer.h';

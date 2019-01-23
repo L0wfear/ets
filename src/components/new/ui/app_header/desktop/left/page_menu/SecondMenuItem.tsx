@@ -4,6 +4,7 @@ import { DefaultSecondLvlMenu, LinkSecontLvl, DivDivider } from 'components/new/
 import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
 import { withRouterMatchUrl, isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
+import { compose } from 'recompose';
 
 class SecondMenuItem extends React.Component<any, any> {
   state = {
@@ -113,6 +114,9 @@ class SecondMenuItem extends React.Component<any, any> {
   }
 }
 
-const SecondMenuItemWithUrl = showHeaderMenu(withRouterMatchUrl(SecondMenuItem));
+const SecondMenuItemWithUrl = compose<any, any>(
+  withRouterMatchUrl,
+  showHeaderMenu,
+)(SecondMenuItem);
 
 export default SecondMenuItemWithUrl;

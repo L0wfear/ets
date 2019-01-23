@@ -3,6 +3,9 @@ import FuelOperationsTable from 'components/directories/data_for_calculation/fue
 import ElementsList from 'components/ElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import permissions from 'components/directories/data_for_calculation/fuel_operations/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['fuelRates', 'objects', 'odh'])
 @exportable({ entity: 'fuel_operations' })
@@ -14,8 +17,7 @@ import permissions from 'components/directories/data_for_calculation/fuel_operat
   formComponent: FuelOperationFormWrap,
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class FuelOperationsDirectory extends ElementsList {
-
+class FuelOperationsDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelOperation;
@@ -31,3 +33,11 @@ export default class FuelOperationsDirectory extends ElementsList {
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
 }
+
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(FuelOperationsDirectory);

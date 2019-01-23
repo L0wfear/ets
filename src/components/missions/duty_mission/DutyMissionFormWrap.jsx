@@ -15,14 +15,15 @@ import dutyMissionSchema from 'models/DutyMissionModel';
 
 import DutyMissionForm from 'components/missions/duty_mission/DutyMissionForm';
 import DutyMissionFormOld from 'components/missions/duty_mission/DutyMissionFormOld';
+import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
 
 class DutyMissionFormWrap extends FormWrap {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.schema = dutyMissionSchema;
-    this.defaultElement = getDefaultDutyMission();
-    this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
   }
 
   componentWillReceiveProps(props) {
@@ -31,7 +32,7 @@ class DutyMissionFormWrap extends FormWrap {
 
       const ordersActions = this.context.flux.getActions('objects');
       if (!mission.structure_id) {
-        mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        mission.structure_id = this.props.userStructureId;
       }
 
       const {
@@ -240,4 +241,10 @@ class DutyMissionFormWrap extends FormWrap {
   }
 }
 
-export default DutyMissionFormWrap;
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+)(DutyMissionFormWrap);

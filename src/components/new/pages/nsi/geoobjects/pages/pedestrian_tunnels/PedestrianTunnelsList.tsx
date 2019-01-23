@@ -28,6 +28,6 @@ class PedestrianTunnelsList extends React.Component<PropsPedestrianTunnelsList, 
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(PedestrianTunnelsList);

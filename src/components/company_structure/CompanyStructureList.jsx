@@ -4,25 +4,24 @@ import { get } from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import permissions from 'components/company_structure/config-data/permissions';
-import { connectToStores, staticProps } from 'utils/decorators';
+import { staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 import CompanyStructureFormWrap from 'components/company_structure/CompanyStructureForm/CompanyStructureFormWrap';
 import CompanyStructureTable from 'components/company_structure/CompanyStructureTable';
 import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import { getCompanyStructureState, getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-const ButtonAddStructure = enhanceWithPermissions({
-  permission: permissions.create,
+const ButtonAddStructure = withRequirePermissionsNew({
+  permissions: permissions.create,
 })(Button);
 
 const loadingPageName = 'company-structure';
 
-@connectToStores(['session'])
 @staticProps({
   entity: 'company_structure',
   permissions,
@@ -136,6 +135,7 @@ export default compose(
     state => ({
       companyStructureList: getCompanyStructureState(state).companyStructureList,
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructure: () => (

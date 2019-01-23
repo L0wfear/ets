@@ -7,6 +7,7 @@ import { DivDivider, LinkSecontLvl } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
 import { SecondMenuContainerMobi, DefaultSecondLvlMenuMobi } from 'components/new/ui/app_header/mobi/styled';
+import { compose } from 'recompose';
 
 class OneMenu extends React.Component<any, any> {
   state = {
@@ -101,6 +102,9 @@ class OneMenu extends React.Component<any, any> {
   }
 }
 
-const OneMenuWrap = showHeaderMenu(withRouterMatchUrl(OneMenu));
+const OneMenuWrap = compose<any, any>(
+  withRouterMatchUrl,
+  showHeaderMenu,
+)(OneMenu);
 
 export default OneMenuWrap;

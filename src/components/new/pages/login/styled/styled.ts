@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import * as Button from 'react-bootstrap/lib/Button';
 
-const background = require('components/login/styled/bg.jpg');
-const jkh = require('components/login/styled/jkh.png');
+const background = require('components/new/pages/login/styled/bg.jpg');
+const jkh = require('components/new/pages/login/styled/jkh.png');
 
 export const LoginPageContainer = styled.div`
   position: absolute;

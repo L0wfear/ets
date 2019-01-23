@@ -15,25 +15,25 @@ import permissions_mission_template from 'components/missions/mission_template/c
 import permissions_duty_mission_template from 'components/missions/duty_mission_template/config-data/permissions';
 
 import { TypeDownload } from 'components/directories/order/constant-order';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { getBlobOrder } from 'components/directories/order/utils-order';
 
 const marginLeft = { marginLeft: 10 };
 
-const Button = enhanceWithPermissions({})(BootstrapButton);
+const Button = withRequirePermissionsNew({})(BootstrapButton);
 const title: any = <Glyphicon glyph="download-alt" />;
 
 const OrderTableChilrend: React.FunctionComponent<any> = (props) => (
   <div>
     <Button
-      permission={permissions_mission_template.create}
+      permissions={permissions_mission_template.create}
       disabled={props.disabledTemplateMission}
       onClick={props.handleClickOnCMTemplate}
     >
       {'Создать задание по шаблону'}
     </Button>
     <Button
-      permission={permissions_duty_mission_template.create}
+      permissions={permissions_duty_mission_template.create}
       disabled={props.disabledTemplateDutyMission}
       onClick={props.handleClickOnCDMTemplate}
     >

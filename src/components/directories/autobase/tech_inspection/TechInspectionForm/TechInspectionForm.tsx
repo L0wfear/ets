@@ -27,7 +27,7 @@ import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/auto
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateTechInspection> {
   state = {

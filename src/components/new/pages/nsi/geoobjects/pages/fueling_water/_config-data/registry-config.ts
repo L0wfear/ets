@@ -4,10 +4,11 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 
 export const registryKey = 'FuelingWaterList';
 
-export const config: TypeConfigData = {
+export const config: TypeConfigData<FuelingWater> = {
   Service: GeozoneFuelingWaterService,
   registryKey,
   header: {

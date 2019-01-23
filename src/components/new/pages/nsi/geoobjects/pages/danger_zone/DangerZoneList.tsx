@@ -28,6 +28,6 @@ class DangerZoneList extends React.Component<PropsDangerZoneList, StateDangerZon
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(DangerZoneList);

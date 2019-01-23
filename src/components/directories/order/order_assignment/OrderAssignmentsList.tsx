@@ -27,8 +27,8 @@ const OrderAssignmentsList: React.FunctionComponent<any> = (props) => (
       <ColOrderAssignmentHeaderTitleContainer md={8}>
         <TitleText>Расшифровка централизованного задания</TitleText>
         <div>
-          <ButtonOrderAssignment permission={permissions_mission.create} onClick={props.handleClickOnCM} disabled={props.disabledAssignmentButtonMission}>Создать задание</ButtonOrderAssignment>
-          <ButtonOrderAssignment permission={permissions_duty_mission.create} onClick={props.handleClickOnCDM} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
+          <ButtonOrderAssignment permissions={permissions_mission.create} onClick={props.handleClickOnCM} disabled={props.disabledAssignmentButtonMission}>Создать задание</ButtonOrderAssignment>
+          <ButtonOrderAssignment permissions={permissions_duty_mission.create} onClick={props.handleClickOnCDM} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
         </div>
       </ColOrderAssignmentHeaderTitleContainer>
       <Col md={8}>

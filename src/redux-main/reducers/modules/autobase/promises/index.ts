@@ -6,7 +6,7 @@ import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 export const autobaseLoadByType = (keyType: keyof typeof AUTOBASE) => (payload = {}) => (
   AutoBase.path(AUTOBASE[keyType]).get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line
+      console.log(error); // tslint:disable-line:no-console
     })
     .then((ans) => ({
       data: get(ans, ['result', 'rows'], []),
@@ -49,8 +49,7 @@ export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => 
 export const autobaseLoadCars = (payload = {}) => (
   CarService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
 
       return {
         result: {
@@ -70,8 +69,7 @@ export const autobaseUpdateCar = (ownPayload) => {
 export const autobaseLoadCarFuncTypess = (payload = {}) => (
   TypesService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
 
       return {
         result: {

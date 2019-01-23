@@ -4,10 +4,11 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
 
 export const registryKey = 'DangerZoneList';
 
-export const config: TypeConfigData = {
+export const config: TypeConfigData<DangerZone> = {
   Service: GeozoneDangerZoneService,
   registryKey,
   header: {

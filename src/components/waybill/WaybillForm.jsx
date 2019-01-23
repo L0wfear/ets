@@ -1,4 +1,5 @@
 import * as React from 'react';
+import memoize from 'memoize-one';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import * as Modal from 'react-bootstrap/lib/Modal';
@@ -47,7 +48,7 @@ import {
 import { confirmDialogChangeDate } from 'components/waybill/utils_react';
 
 import {
-  defaultSortingFunction,
+  defaultSortingFunction, defaultSelectListMapper,
 } from 'components/ui/input/ReactSelect/utils';
 
 import Form from 'components/compositions/Form';
@@ -58,6 +59,9 @@ import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionFiled from 'components/waybill/form/MissionFiled';
 import { isNullOrUndefined, isNumber } from 'util';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -145,7 +149,7 @@ class WaybillForm extends Form {
     if (!IS_CREATING) {
       flux.getActions('waybills').getWaybill(formState.id)
         .then(({ result: { closed_editable } }) => this.setState({
-          canEditIfClose: closed_editable ? flux.getStore('session').getPermission('waybill.update_closed') : false,
+          canEditIfClose: closed_editable ? this.props.userPermissionsSet.has('waybill.update_closed') : false,
           origFormState: formState,
         }))
         .catch((e) => {
@@ -553,6 +557,12 @@ class WaybillForm extends Form {
     this.props.onSubmit();
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
   render() {
     const {
       loadingFields,
@@ -574,6 +584,8 @@ class WaybillForm extends Form {
       workModeOptions,
       employeesIndex = {},
       isPermittedByKey = {},
+      userStructures,
+      userStructureId,
     } = this.props;
 
     let taxesControl = false;
@@ -587,18 +599,19 @@ class WaybillForm extends Form {
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.makeOptionsBySessionStructures(
+      userStructures,
+    );
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
-    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+    if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (userStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === userStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
-    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+    } else if (userStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
@@ -1324,4 +1337,13 @@ WaybillForm.contextTypes = {
   flux: PropTypes.object,
 };
 
-export default connectToStores(WaybillForm, ['objects', 'employees', 'waybills', 'missions']);
+export default compose(
+  connect(
+    state => ({
+      appConfig: getSessionState(state).appConfig,
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructures: getSessionState(state).userData.structures,
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    }),
+  ),
+)(connectToStores(WaybillForm, ['objects', 'employees', 'waybills', 'missions']));

@@ -4,15 +4,15 @@ import { getDefaultMission } from 'stores/MissionsStore';
 import {
   isEmpty,
 } from 'utils/functions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import permissionsMission from 'components/missions/mission/config-data/permissions';
 import * as Button from 'react-bootstrap/lib/Button';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
 
-const ButtonCreateMission = enhanceWithPermissions({
-  permission: permissionsMission.create,
+const ButtonCreateMission = withRequirePermissionsNew({
+  permissions: permissionsMission.create,
 })(Button);
 
 class MissionField extends React.Component<any, any> {
@@ -156,6 +156,6 @@ class MissionField extends React.Component<any, any> {
   }
 }
 
-export default enhanceWithPermissions({
-  permission: permissionsMission.read,
+export default withRequirePermissionsNew({
+  permissions: permissionsMission.read,
 })(MissionField);

@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import RepairCompanyTable from 'components/directories/autobase/repair_company/RepairCompanyTable';
@@ -8,11 +8,10 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'repair-company';
 
-@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.repairCompany}` })
 @staticProps({
   entity: 'autobase_company',
@@ -68,6 +67,7 @@ export default compose(
   connect(
     state => ({
       repairCompanyList: getAutobaseState(state).repairCompanyList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       repairCompanyGetAndSetInStore: () => (

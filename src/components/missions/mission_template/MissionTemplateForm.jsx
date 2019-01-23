@@ -37,6 +37,11 @@ import {
   isOdhRouteTypePermitted,
 } from 'components/missions/mission/MissionForm/utils';
 import { isArray } from 'util';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import memoize from 'memoize-one';
+import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
 
 const ButtonSaveMissionTemplate = withRequirePermissionsNew({
   permissions: missionTemplatePermission.update,
@@ -267,6 +272,12 @@ class MissionTemplateForm extends MissionForm {
     return Promise.resolve(false);
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -279,19 +290,25 @@ class MissionTemplateForm extends MissionForm {
       available_route_types = [],
     } = this.state;
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const {
+      userStructureId,
+      userStructures,
+    } = this.props;
+
+    const STRUCTURES = this.makeOptionsBySessionStructures(
+      userStructures,
+    );
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
 
-    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
+    if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (userStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === userStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
-    } else if (currentStructureId === null && STRUCTURES.length > 0) {
+    } else if (userStructureId === null && STRUCTURES.length > 0) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
@@ -525,4 +542,11 @@ class MissionTemplateForm extends MissionForm {
   }
 }
 
-export default connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions', 'session']);
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructures: getSessionState(state).userData.structures,
+    }),
+  ),
+)(connectToStores(MissionTemplateForm, ['objects', 'employees', 'missions']));

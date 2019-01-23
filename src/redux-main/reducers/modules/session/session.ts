@@ -58,6 +58,7 @@ const initialState: InitialStateSession = {
     company_id: null,
     isOkrug: false,
     isKgh: false,
+    isGlavControl: false,
     permissionsSet: new Set(),
   },
   token: null,
@@ -83,13 +84,17 @@ export default (state = initialState, { type, payload }) => {
     case SESSION_SET_CONFIG: {
       return {
         ...state,
-        appConfig: payload.appConfig || CONFIG_INITIAL,
+        appConfig: {
+          ...payload.appConfig,
+        },
       };
     }
     case SESSION_SET_TRACK_CONFIG: {
       return {
         ...state,
-        appConfigTracksCaching: payload.appConfigTracksCaching,
+        appConfigTracksCaching: {
+          ...payload.appConfigTracksCaching,
+        },
       };
     }
     case SESSION_RESET_DATA: {

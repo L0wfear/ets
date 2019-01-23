@@ -6,6 +6,9 @@ import TechnicalOperationFormWrap from 'components/directories/technical_operati
 import permissions from 'components/directories/technical_operation/config-data/permissions';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOptionsTableFromSensorTypes } from 'components/directories/technical_operation/table/helpData';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'cleaning/norm_registry' })
@@ -17,8 +20,7 @@ import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOp
   formComponent: TechnicalOperationFormWrap,
   operations: ['LIST', 'READ'],
 })
-export default class TechOperationsDirectory extends ElementsList {
-
+class TechOperationsDirectory extends ElementsList {
   init() {
     const { flux } = this.context;
     flux.getActions('technicalOperation').getTechnicalOperationsRegistry().then((ans) => {
@@ -70,3 +72,11 @@ export default class TechOperationsDirectory extends ElementsList {
     };
   }
 }
+
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(TechOperationsDirectory);

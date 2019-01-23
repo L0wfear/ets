@@ -15,7 +15,7 @@ import order_permissions from 'components/directories/order/config-data/permissi
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import PrintForm from 'components/missions/common/PrintForm';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
@@ -24,7 +24,7 @@ import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import { getCompanyStructureState, getSessionState } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
@@ -35,11 +35,11 @@ import moment from 'moment';
 const is_archive = false;
 const loadingPageName = 'mission';
 
-const ButtonGoFaxogramm = enhanceWithPermissions({
-  permission: order_permissions.list,
+const ButtonGoFaxogramm = withRequirePermissionsNew({
+  permissions: order_permissions.list,
 })(Button);
-const ButtonUpdateMission = enhanceWithPermissions({
-  permission: permissions.update,
+const ButtonUpdateMission = withRequirePermissionsNew({
+  permissions: permissions.update,
 })(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
@@ -475,6 +475,7 @@ export default compose(
   connect(
     state => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructureLinear: () => (

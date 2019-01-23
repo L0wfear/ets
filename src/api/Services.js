@@ -133,4 +133,4 @@ export const TimeMoscowService = ETS_API_FACTORY.createApiServiceAdapter('time')
 export { reports };
 
 /* Измнение роли */
-export const ChangeRole = ETS_API_FACTORY.createApiServiceAdapter('change_role');
+export const ChangeRoleService = ETS_API_FACTORY.createApiServiceAdapter('change_role');

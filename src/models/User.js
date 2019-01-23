@@ -20,6 +20,7 @@ export default class User extends Model {
       login: 'string',
       role: 'string',
       permissions: 'array',
+      permissionsSet: 'set',
       user_id: 'integer',
       structures: 'array',
       structure_id: 'integer',
@@ -29,6 +30,7 @@ export default class User extends Model {
       okrug_id: 'integer',
       okrug_name: 'string',
       stableRedirect: 'string',
+      isGlavControl: 'boolean',
     };
   }
 
@@ -55,9 +57,11 @@ export default class User extends Model {
     this.map_config = user.map_config || {};
     this.fio = user.fio;
     this.permissions = user.permissions || [];
+    this.permissionsSet = user.permissionsSet || new Set();
     this.okrug_id = user.okrug_id;
     this.okrug_name = user.okrug_name;
     this.stableRedirect = user.stableRedirect || '/login';
+    this.isGlavControl = user.isGlavControl || false;
   }
 
   getCompanyMapConfig = () => {

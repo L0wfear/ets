@@ -1,4 +1,4 @@
 export default {
-  list: 'dashboard',
+  list: 'ssss',
   manage: 'dashboard.manage',
 };

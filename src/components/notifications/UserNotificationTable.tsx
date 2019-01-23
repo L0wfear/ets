@@ -121,8 +121,6 @@ const renderers: ISchemaRenderer<IUserNotification> = {
     </div>,
 };
 
-// console.log('props.data == ', props.data);
-
 const Table: React.FunctionComponent<any> = (props) => (
   <DataTable
     title="Уведомления пользователей"

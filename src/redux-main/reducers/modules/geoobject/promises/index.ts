@@ -9,7 +9,7 @@ import { geoozones, gormost } from 'redux-main/reducers/modules/geoobject/consta
 export const geoozonesLoadByType = (keyType: keyof typeof geoozones) => (payload = {}) => (
   GeozonesService.path(geoozones[keyType]).get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line
+      console.log(error); // tslint:disable-line:no-console
     })
     .then((ans) => {
       const data = get(ans, ['result', 'rows'], []).map((geom) => {
@@ -76,7 +76,7 @@ export const geoozonesRemoveByType = (keyType: keyof typeof geoozones) => (id: n
 export const gormostLoadByType = (keyType: keyof typeof gormost) => (payload = {}) => (
   GormostService.path(gormost[keyType]).get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line
+      console.log(error); // tslint:disable-line:no-console
     })
     .then((ans) => {
       const data = get(ans, ['result', 'rows'], []).map((geom) => {

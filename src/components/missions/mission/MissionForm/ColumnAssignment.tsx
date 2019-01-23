@@ -72,7 +72,7 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
                     value={this.props.formState.assign_to_waybill[index]}
                     clearable={false}
                     onChange={this.handleChange}
-                    boundKeys={[index]}
+                    boundKeys={index}
                   />
                 </Col>
               </Row>

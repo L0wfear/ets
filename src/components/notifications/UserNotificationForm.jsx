@@ -207,7 +207,6 @@ class UserNotificationForm extends Form {
       return {};
     }
 
-    console.log(type)
     console.warn('addTypeDate in userNotificationForm'); // eslint-disable-line
     return {};
   }

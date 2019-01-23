@@ -7,12 +7,14 @@ import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import permissions from 'components/missions/mission_template/config-data/permissions';
 import permissions_mission from 'components/missions/mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
 import { getWarningNotification } from 'utils/notifications';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -32,11 +34,11 @@ const getMissionList = (checkedItems, selectedItem) => {
   };
 };
 
-const ButtonCreateMissionsByTemplates = enhanceWithPermissions({
-  permission: permissions_mission.create,
+const ButtonCreateMissionsByTemplates = withRequirePermissionsNew({
+  permissions: permissions_mission.create,
 })(Button);
-const ButtonCopyTemplateMission = enhanceWithPermissions({
-  permission: permissions.create,
+const ButtonCopyTemplateMission = withRequirePermissionsNew({
+  permissions: permissions.create,
 })(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
@@ -241,7 +243,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   getAdditionalProps = () => {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const { structures } = this.props.userData;
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
 
     const missionTemplatesList = this.props.missionTemplatesList
@@ -256,4 +258,10 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 }
 
-export default compose()(MissionTemplatesJournal);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(MissionTemplatesJournal);

@@ -1,6 +1,6 @@
 import * as queryString from 'query-string';
 
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import EmployeeFormWrap from 'components/directories/employees/EmployeeForm/EmployeeFormWrap';
 import EmployeesTable from 'components/directories/employees/EmployeesTable';
@@ -10,11 +10,11 @@ import { connect } from 'react-redux';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getEmployeeState } from 'redux-main/reducers/selectors';
+import { getEmployeeState, getSessionState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'employees';
 
-@connectToStores(['session'])
+
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
@@ -88,6 +88,7 @@ export default compose(
   connect(
     state => ({
       employeeList: getEmployeeState(state).employeeList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       employeeGetAndSetInStore: () => (

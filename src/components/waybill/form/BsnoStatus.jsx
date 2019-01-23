@@ -8,8 +8,10 @@ import Field from 'components/ui/Field';
 
 import config from 'config';
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-@FluxContext
 class BsnoStaus extends React.Component {
   static get propTypes() {
     return {
@@ -17,17 +19,19 @@ class BsnoStaus extends React.Component {
       gps_code: PropTypes.string,
       is_bnso_broken: PropTypes.bool,
       handleChange: PropTypes.func,
+      userToken: PropTypes.string.isRequired,
     };
   }
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     const {
       okStatus = false,
+      userToken,
     } = props;
+
     if (okStatus) {
-      const token = context.flux.getStore('session').getSession();
-      const wsUrl = `${config.ws}?token=${token}`;
+      const wsUrl = `${config.ws}?token=${userToken}`;
       const ws = new ReconnectingWebSocket(wsUrl, null);
 
       try {
@@ -122,4 +126,10 @@ class BsnoStaus extends React.Component {
   }
 }
 
-export default BsnoStaus;
+export default compose(
+  connect(
+    state => ({
+      userToken: getSessionState(state).token,
+    }),
+  ),
+)(BsnoStaus);

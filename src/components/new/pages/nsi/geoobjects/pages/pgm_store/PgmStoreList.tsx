@@ -28,6 +28,6 @@ class PgmStoreList extends React.Component<PropsPgmStoreList, StatePgmStoreList>
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(PgmStoreList);

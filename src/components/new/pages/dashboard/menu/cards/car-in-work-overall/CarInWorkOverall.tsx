@@ -28,19 +28,95 @@ import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
+import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as Raven from 'raven-js';
+import config from 'config';
+import { getSessionState } from 'redux-main/reducers/selectors';
+
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
+
+  constructor(props, context) {
+    super(props);
+    const {
+      userToken,
+    } = this.props;
+
+    const wsUrl = `${config.ws}?token=${userToken}`;
+    const ws = new ReconnectingWebSocket(wsUrl, null);
+
+    try {
+      ws.onmessage = ({ data }) => {
+        this.handleUpdateTs(JSON.parse(data));
+      };
+      ws.onclose = (event) => {
+        if (event.code === 1006) {
+          Raven.captureException(new Error('1006: A connection was closed abnormally (that is, with no close frame being sent). A low level WebSocket error.'));
+        }
+        // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
+      };
+      ws.onerror = () => {
+        // console.error('WEBSOCKET - Ошибка WebSocket');
+      };
+    } catch (e) {
+      global.NOTIFICATION_SYSTEM.notify('Ошибка подключения к потоку', 'error');
+    }
+    this.state = {
+      carsTrackState: {},
+      countNotInTouch: 0,
+      ws,
+    };
+  }
+
+  componentWillUnmount() {
+    const { ws } = this.state;
+    if (typeof ws !== 'undefined' && ws !== null) {
+      ws.close();
+      this.setState({ ws: null });
+    }
+  }
+
+  handleUpdateTs = (data) => {
+
+    const carsTrackState = {
+      ...this.state.carsTrackState,
+      ...data,
+    };
+
+    const countNotInTouch = Object.values(carsTrackState).reduce((count: number, value: any) => {
+      if (value.status === 4) {
+        count++;
+      }
+      return count;
+    }, 0);
+
+    this.setState({
+      carsTrackState,
+      countNotInTouch,
+    });
+  }
+
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
     this.props.setInfoData(this.props.items[index]);
   }
 
   render() {
-    const { items, } = this.props;
-    const counttoFirstShow = 2;
+    const {
+      items,
+    } = this.props;
+    const {
+      countNotInTouch,
+    } = this.state;
 
+    const customItem = {
+      title: `ТС, не передающие сигнал: ${countNotInTouch}`,
+      tooltip: 'Общее количество ТС организации, не передающие данные с БНСО (более 1 часа)',
+    };
+
+    items.splice(2, 1, customItem);
+    const counttoFirstShow = 2;
     const firstTwoItem = items.slice(0, counttoFirstShow);
     const collapsetItems = items.slice(counttoFirstShow);
-
     return (
       <div>
         <List
@@ -80,6 +156,7 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
   connect<StatePropsCarInOveral, DispatchPropsCarInOveral, OwnPropsCarInOveral, ReduxState>(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
+      userToken: getSessionState(state).token,
     }),
     (dispatch) => ({
       setInfoData: (infoData) => (

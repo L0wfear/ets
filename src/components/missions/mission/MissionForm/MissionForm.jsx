@@ -117,7 +117,7 @@ export class MissionForm extends Form {
       if (this.props.formState.is_column) {
         changesObj.is_cleaning_norm = this.props.formState.car_id.map(() => false);
         changesObj.norm_id = this.props.formState.car_id.map(() => null);
-      } else {
+      } else if (!this.props.withDefineTypeId) {
         changesObj.is_cleaning_norm = false;
         changesObj.norm_id = null;
       }
@@ -296,6 +296,7 @@ export class MissionForm extends Form {
       changedObj.car_id = null;
       changedObj.type_id = null;
     }
+
     this.props.handleMultiFormChange({
       technical_operation_id,
       municipal_facility_id: null,
@@ -310,7 +311,7 @@ export class MissionForm extends Form {
 
   handleChangeMF = (name, value) => {
     this.handleChange(name, value);
-    if (!this.props.fromWaybill) {
+    if (!this.props.withDefineTypeId) {
       this.handleChange('car_id', null);
     }
     this.handleRouteIdChange(undefined);
@@ -474,7 +475,23 @@ export class MissionForm extends Form {
 
   makeOptionsBySessionStructures = (
     memoize(
-      structures => structures.map(defaultSelectListMapper),
+      (
+        structures,
+        withDefineTypeId,
+        selectedCar,
+      ) => {
+        let STRUCTURES = structures.map(defaultSelectListMapper);
+
+        if (withDefineTypeId && selectedCar) {
+          const isCommonCar = get(selectedCar, 'is_common', false);
+          if (!isCommonCar) {
+            const companyStructureIdCar = get(selectedCar, 'company_structure_id', null);
+    
+            STRUCTURES = STRUCTURES.filter(({ value }) => value === companyStructureIdCar);
+          }
+        }
+        return STRUCTURES;
+      }
     )
   )
 
@@ -487,6 +504,7 @@ export class MissionForm extends Form {
       fromOrder = false,
       userStructureId,
       userStructures,
+      withDefineTypeId,
     } = this.props;
 
     const {
@@ -532,6 +550,8 @@ export class MissionForm extends Form {
 
     const STRUCTURES = this.makeOptionsBySessionStructures(
       userStructures,
+      withDefineTypeId,
+      withDefineTypeId ? carsList.find(({ asuods_id }) => asuods_id === state.car_id) : null,
     );
 
     let STRUCTURE_FIELD_READONLY = false;
@@ -799,7 +819,7 @@ export class MissionForm extends Form {
                   </Col>
                 </Row>
                 <Row>
-                  {IS_CREATING && !this.props.fromWaybill && (
+                  {IS_CREATING && !this.props.fromWaybill && !this.props.withDefineTypeId && (
                     <Col md={12}>
                       <ExtField
                         id="is_column"

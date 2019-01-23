@@ -1,7 +1,7 @@
 import {
   CarInWorkOverallInfoDataType,
-} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/car-in-work-overall.h';
-import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
+} from 'components/dashboard/redux-main/modules/dashboard/@types/car-in-work-overall.h';
+import { InitialStateDashboard } from 'components/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 
 export type StatePropsCarInOveral = {
   items: InitialStateDashboard['car_in_work_overall']['data']['items'];

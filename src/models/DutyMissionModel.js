@@ -66,6 +66,7 @@ const dutyMissionSchema = {
       key: 'municipal_facility_id',
       title: 'Элемент',
       type: 'number',
+      required: true,
     },
   ],
   dependencies: {

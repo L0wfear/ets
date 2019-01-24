@@ -6,9 +6,11 @@ import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main
 export type StatePropsCarInOveral = {
   items: InitialStateDashboard['car_in_work_overall']['data']['items'];
   userToken: string | null;
+  carActualGpsNumberIndex: any;
 };
 export type DispatchPropsCarInOveral = {
   setInfoData: (infoData: CarInWorkOverallInfoDataType) => any;
+  loadCarActualIndex: any;
 };
 export type OwnPropsCarInOveral = {
 };

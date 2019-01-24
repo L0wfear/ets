@@ -207,8 +207,7 @@ export default class ObjectsActions extends Actions {
     };
     return UserActionLogService.get(payload).then(response => (
       get(response, ['result', 'rows'], []).map((d) => {
-        const action = get(d, 'action', '') || '';
-        d.front_entity_number = action.match(/^mission\./) ? d.entity_id : d.entity_number;
+        d.front_entity_number = d.entity_number;
 
         return d;
       })

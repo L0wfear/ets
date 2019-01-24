@@ -414,7 +414,7 @@ class MissionTemplateForm extends MissionForm {
                 id="for_column"
                 type="boolean"
                 className="checkbox-input flex-reverse column_checkbox"
-                label="Создать задания на колонну"
+                label="Создать шаблон задания на колонну"
                 disabled={columnFlagDisability}
                 value={state.for_column}
                 onChange={this.handleColumnFlag}

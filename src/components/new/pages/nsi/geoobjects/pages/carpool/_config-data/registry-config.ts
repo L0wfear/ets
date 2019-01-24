@@ -1,17 +1,18 @@
-import { GeozonePedestrianTunnelsService } from 'api/Services';
+import { GeozoneCarpoolService } from 'api/Services';
 
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
-import permissions from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data/permissions';
+import permissions from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
-export const registryKey = 'PedestrianTunnelsList';
+export const registryKey = 'CarpoolList';
 
 export const config: TypeConfigData = {
-  Service: GeozonePedestrianTunnelsService,
+  Service: GeozoneCarpoolService,
   registryKey,
   header: {
-    title: 'Справочник пешеходных тоннелей',
+    title: 'Автобазы',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -36,23 +37,19 @@ export const config: TypeConfigData = {
       },
       {
         valueKey: 'name',
-        title: 'Наименование',
+        title: 'Полное наименование',
         type: 'multiselect',
       },
       {
-        valueKey: 'adm_area',
-        title: 'Административный округ',
+        valueKey: 'address',
+        title: 'Адрес',
         type: 'multiselect',
       },
       {
-        valueKey: 'district',
-        title: 'Район',
+        valueKey: 'is_main',
+        title: 'Основная автобаза',
         type: 'multiselect',
-      },
-      {
-        valueKey: 'location',
-        title: 'Адресный ориентир',
-        type: 'multiselect',
+        options: YES_NO_SELECT_OPTIONS_INT,
       },
     ],
   },
@@ -83,22 +80,18 @@ export const config: TypeConfigData = {
         },
         {
           key: 'name',
-          title: 'Наименование',
+          title: 'Полное наименование',
         },
         {
-          key: 'adm_area',
-          title: 'Административный округ',
+          key: 'address',
+          title: 'Адрес',
           width: 400,
         },
         {
-          key: 'district',
-          title: 'Район',
+          key: 'is_main',
+          title: 'Основная автобаза',
+          boolean: true,
           width: 200,
-        },
-        {
-          key: 'location',
-          title: 'Адресный ориентир',
-          width: 400,
         },
       ],
     },

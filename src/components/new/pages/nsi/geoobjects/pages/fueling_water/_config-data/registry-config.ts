@@ -74,7 +74,7 @@ export const config: TypeConfigData = {
         {
           key: 'name',
           title: 'Полное наименование',
-          width: 200,
+          width: 400,
         },
         {
           key: 'address',

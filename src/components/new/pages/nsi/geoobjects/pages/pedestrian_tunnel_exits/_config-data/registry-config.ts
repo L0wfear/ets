@@ -79,17 +79,16 @@ export const config: TypeConfigData = {
         {
           key: 'name',
           title: 'Наименование',
-          width: 500,
         },
         {
           key: 'adm_area',
           title: 'Административный округ',
-          width: 500,
+          width: 400,
         },
         {
           key: 'district',
           title: 'Район',
-          width: 500,
+          width: 300,
         },
       ],
     },

@@ -93,21 +93,25 @@ export const config: TypeConfigData = {
         {
           key: 'address_comm',
           title: 'Адресная привязка',
+          width: 400,
         },
         {
           key: 'roadway_area',
           title: 'Площадь на проезжей части, м²',
           toFixed: 2,
+          width: 200,
         },
         {
           key: 'sidewalk_area',
           title: 'Площадь на тротуаре, м²',
           toFixed: 2,
+          width: 200,
         },
         {
           key: 'sidelines_area',
           title: 'Площадь на обочинах, м²',
           toFixed: 2,
+          width: 200,
         },
       ],
     },

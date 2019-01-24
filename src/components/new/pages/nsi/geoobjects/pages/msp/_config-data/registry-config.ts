@@ -93,6 +93,7 @@ export const config: TypeConfigData = {
         {
           key: 'address',
           title: 'Адрес',
+          width: 400,
         },
         {
           key: 'productivity',

@@ -5,9 +5,7 @@ import dtList from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data';
 import sspList from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data';
 import mspList from 'components/new/pages/nsi/geoobjects/pages/msp/_config-data';
 import fuelingWaterList from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_config-data';
-
-import carpool from 'components/directories/geoobjects/pages/carpool/config-data';
-
+import carpoolList from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data';
 import dangerZonesList from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data';
 import pgmStoreList from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data';
 import snowStorageList from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data';
@@ -22,7 +20,7 @@ const children = {
   sspList,
   mspList,
   fuelingWaterList,
-  carpool,
+  carpoolList,
   dangerZonesList,
   pgmStoreList,
   snowStorageList,

@@ -100,6 +100,7 @@ export const config: TypeConfigData = {
         {
           key: 'address',
           title: 'Адрес',
+          width: 400,
         },
         {
           key: 'productivity',
@@ -111,7 +112,7 @@ export const config: TypeConfigData = {
           key: 'is_mobile',
           title: 'Мобильность',
           boolean: true,
-          width: 200,
+          width: 150,
         },
       ],
     },

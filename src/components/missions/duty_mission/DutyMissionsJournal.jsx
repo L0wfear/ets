@@ -6,7 +6,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { getWarningNotification } from 'utils/notifications';
-import { staticProps, exportable } from 'utils/decorators';
+import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
 import Paginator from 'components/ui/new/paginator/Paginator';
 import DutyMissionFormReject from 'components/missions/duty_mission/DutyMissionFormReject';

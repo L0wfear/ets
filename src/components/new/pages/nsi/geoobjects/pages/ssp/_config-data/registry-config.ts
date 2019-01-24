@@ -101,6 +101,7 @@ export const config: TypeConfigData<Ssp> = {
         {
           key: 'address',
           title: 'Адрес',
+          width: 400,
         },
         {
           key: 'productivity',
@@ -112,7 +113,7 @@ export const config: TypeConfigData<Ssp> = {
           key: 'is_mobile',
           title: 'Мобильность',
           boolean: true,
-          width: 200,
+          width: 150,
         },
       ],
     },

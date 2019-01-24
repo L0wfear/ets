@@ -94,6 +94,7 @@ export const config: TypeConfigData<Msp> = {
         {
           key: 'address',
           title: 'Адрес',
+          width: 400,
         },
         {
           key: 'productivity',

@@ -3,7 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunn
 
 export default {
   path: '/pedestrian_tunnel_exits',
-  title: 'Справочник выходы из пешеходных тоннелей',
+  title: 'Справочник выходов из пешеходных тоннелей',
   entyity: 'pedestrian_tunnel_exits',
   noDotList: false,
   component,

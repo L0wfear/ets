@@ -185,6 +185,9 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     ),
   );
 
+  const processedArray = makeProcessedArray(list.data.array, processed);
+  const total_count = processedArray.length;
+
   dispatch(
     registryChangeListData(
       registryKey,
@@ -192,7 +195,8 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
         ...list,
         processed: {
           ...processed,
-          processedArray: makeProcessedArray(list.data.array, processed),
+          total_count,
+          processedArray,
         },
       },
     ),
@@ -227,6 +231,8 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
 
     console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
   }
+  const processedArray = makeProcessedArray(list.data.array, processed);
+  const total_count = processedArray.length;
 
   dispatch(
     registryChangeListData(
@@ -235,7 +241,8 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
         ...list,
         processed: {
           ...processed,
-          processedArray: makeProcessedArray(list.data.array, processed),
+          total_count,
+          processedArray,
         },
       },
     ),

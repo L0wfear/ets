@@ -102,20 +102,16 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
     }
   }
 
-  handleSaveAsTemplate = () => {
-    try {
-      this.props.submitAction(this.props.formState, true);
+  handleSaveAsTemplate = async () => {
+    const result = await this.props.submitAction(this.props.formState, true);
+    if (result) {
       resetCachedDataForRoute();
-    } catch (e) {
-      //
     }
   }
-  handleSubmitForMission = () => {
-    try {
-      this.props.submitAction(this.props.formState, false);
+  handleSubmitForMission = async () => {
+    const result = await this.props.submitAction(this.props.formState, false);
+    if (result) {
       resetCachedDataForRoute();
-    } catch (e) {
-      //
     }
   }
 

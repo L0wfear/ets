@@ -12,7 +12,7 @@ export const config: TypeConfigData<PedestrianTunnels> = {
   Service: GeozonePedestrianTunnelsService,
   registryKey,
   header: {
-    title: 'Пешеходные тоннели',
+    title: 'Справочник пешеходных тоннелей',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -85,7 +85,6 @@ export const config: TypeConfigData<PedestrianTunnels> = {
         {
           key: 'name',
           title: 'Наименование',
-          width: 400,
         },
         {
           key: 'adm_area',
@@ -95,7 +94,7 @@ export const config: TypeConfigData<PedestrianTunnels> = {
         {
           key: 'district',
           title: 'Район',
-          width: 400,
+          width: 200,
         },
         {
           key: 'location',

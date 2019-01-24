@@ -75,7 +75,6 @@ export const config: TypeConfigData<SnowStorage> = {
         {
           key: 'name',
           title: 'Наименование',
-          width: 600,
         },
         {
           key: 'address',

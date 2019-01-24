@@ -1,18 +1,18 @@
-import { GeozoneBridgesService } from 'api/Services';
+import { GeozoneCarpoolService } from 'api/Services';
 
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
-import permissions from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
+import permissions from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
+import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
-export const registryKey = 'BridgesList';
+export const registryKey = 'CarpoolList';
 
-export const config: TypeConfigData<Bridges> = {
-  Service: GeozoneBridgesService,
+export const config: TypeConfigData = {
+  Service: GeozoneCarpoolService,
   registryKey,
   header: {
-    title: 'Мосты',
+    title: 'Автобазы',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -37,23 +37,19 @@ export const config: TypeConfigData<Bridges> = {
       },
       {
         valueKey: 'name',
-        title: 'Наименование',
+        title: 'Полное наименование',
         type: 'multiselect',
       },
       {
-        valueKey: 'district_text',
-        title: 'Район',
+        valueKey: 'address',
+        title: 'Адрес',
         type: 'multiselect',
       },
       {
-        valueKey: 'crossing',
-        title: 'Пересечение',
+        valueKey: 'is_main',
+        title: 'Основная автобаза',
         type: 'multiselect',
-      },
-      {
-        valueKey: 'year_of_commissioning',
-        title: 'Год ввода в эксплуатацию',
-        type: 'multiselect',
+        options: YES_NO_SELECT_OPTIONS_INT,
       },
     ],
   },
@@ -84,26 +80,17 @@ export const config: TypeConfigData<Bridges> = {
         },
         {
           key: 'name',
-          title: 'Наименование',
+          title: 'Полное наименование',
         },
         {
-          key: 'district_text',
-          title: 'Район',
-          width: 200,
+          key: 'address',
+          title: 'Адрес',
+          width: 400,
         },
         {
-          key: 'location',
-          title: 'Местоположение объекта',
-          width: 200,
-        },
-        {
-          key: 'crossing',
-          title: 'Пересечение',
-          width: 200,
-        },
-        {
-          key: 'year_of_commissioning',
-          title: 'Год ввода в эксплуатацию',
+          key: 'is_main',
+          title: 'Основная автобаза',
+          boolean: true,
           width: 200,
         },
       ],

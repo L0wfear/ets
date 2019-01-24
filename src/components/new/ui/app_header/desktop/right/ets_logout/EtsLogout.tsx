@@ -47,6 +47,7 @@ class EtsLogout extends React.Component<any, {}> {
     e.preventDefault();
 
     await this.context.flux.getActions('session').logout();
+    localStorage.setItem('featureBufferPolygon', '');
     this.props.history.push('/login');
   }
 

@@ -31,6 +31,10 @@ import { FluxContext } from 'utils/decorators';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
 import config from 'config';
+import { loadCarActualIndex } from 'redux-main/trash-actions/car';
+import {
+  MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
+} from 'components/monitor/redux-main/models/monitor-page';
 
 @FluxContext
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
@@ -64,6 +68,10 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
     };
   }
 
+  componentDidMount() {
+    this.props.loadCarActualIndex();
+  }
+
   componentWillUnmount() {
     const { ws } = this.state;
     if (typeof ws !== 'undefined' && ws !== null) {
@@ -78,9 +86,12 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
       ...this.state.carsTrackState,
       ...data,
     };
+    const {
+      carActualGpsNumberIndex,
+    } = this.props;
 
     const countNotInTouch = Object.values(carsTrackState).reduce((count: number, value: any) => {
-      if (value.status === 4) {
+      if (value.status === 4 && carActualGpsNumberIndex[value.id]) {
         count++;
       }
       return count;
@@ -153,11 +164,17 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
   connect<StatePropsCarInOveral, DispatchPropsCarInOveral, OwnPropsCarInOveral, ReduxState>(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
+      carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
     }),
     (dispatch) => ({
       setInfoData: (infoData) => (
         dispatch(
           dashboardSetInfoDataInCarInWorkOverall(infoData),
+        )
+      ),
+      loadCarActualIndex: () => (
+        dispatch(
+          loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX),
         )
       ),
     }),

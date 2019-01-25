@@ -1,18 +1,21 @@
-import { SparePart, MeasureUnit, SparePartGroup } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import {
-  AutobaseCreateSparePart,
-  AutobaseUpdateSparePart,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part/@types';
-import { GetMeasureUnit } from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit/@types';
-import { GetSparePartGroup } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/@types';
+  FuelCards,
+  Company,
+  FuelType,
+  AutobaseCreateFuelCards,
+  AutobaseUpdateFuelCards,
+  getFuelType,
+} from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+
+import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
-export type PropsSparePartFormWrap = {
+export type PropsFuelCardsFormWrap = {
   showForm: boolean;
-  element: SparePart | null;
+  element: FuelCards | null;
   onFormHide: OnFormHideType
 
   loadingPageName?: string;
@@ -20,33 +23,36 @@ export type PropsSparePartFormWrap = {
   path?: string;
 };
 
-export type StatePropsSparePart = {};
-export type DispatchPropsSparePart = {
-  createAction: AutobaseCreateSparePart;
-  updateAction: AutobaseUpdateSparePart;
-  autobaseGetSetMeasureUnit: GetMeasureUnit;
-  autobaseGetSetSparePartGroup: GetSparePartGroup;
+export type StatePropsFuelCards = {
+  // companiesList: Company[] | null;
+  companiesList: any;
+  fuelTypeList: FuelType[];
 };
-export type OwnSparePartProps = {
-  element: SparePart | null;
+export type DispatchPropsFuelCards = {
+  createAction: AutobaseCreateFuelCards;
+  updateAction: AutobaseUpdateFuelCards;
+  getFuelType: getFuelType;
+};
+export type OwnFuelCardsProps = {
+  element: FuelCards | null;
   handleHide: OnFormHideType
   page?: string;
   path?: string;
 };
 
-export type PropsSparePartWithForm = (
-  StatePropsSparePart
-  & DispatchPropsSparePart
-  & OwnSparePartProps
+export type PropsFuelCardsWithForm = (
+  StatePropsFuelCards
+  & DispatchPropsFuelCards
+  & OwnFuelCardsProps
 );
 
-export type PropsSparePart = OutputWithFormProps<
-  PropsSparePartWithForm,
-  SparePart,
-  [ SparePart ],
+export type PropsFuelCards = OutputWithFormProps<
+  PropsFuelCardsWithForm,
+  FuelCards,
+  [ FuelCards ],
   any
 >;
-export type StateSparePart = {
-  measureUnitOptions: DefaultSelectListMapper<MeasureUnit['id'], MeasureUnit['name'], MeasureUnit>;
-  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup['id'], SparePartGroup['name'], SparePartGroup>;
+export type StateFuelCards = {
+  companyOptions: DefaultSelectListMapper<Company['asuods_id'], Company['name'], Company>;
+  fuelTypeOptions: DefaultSelectListMapper<FuelType['id'], FuelType['name'], FuelType>;
 };

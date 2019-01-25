@@ -1,48 +1,27 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsSparePart } from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
-import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { PropsFuelCards } from 'components/directories/autobase/fuel_cards/FuelCardsForm/@types/FuelCards.h';
+import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
-export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
+export const fuelCardsFormSchema: SchemaType<FuelCards, PropsFuelCards> = {
   properties: [
     {
       key: 'number',
-      title: 'Номер поставки',
-      type: 'string',
-      maxLength: 128,
-      required: true,
-    },
-    {
-      key: 'name',
-      title: 'Подгруппа',
+      title: 'Номер',
       type: 'string',
       required: true,
       maxLength: 1024,
     },
     {
-      key: 'quantity',
-      title: 'Количество',
-      type: 'number',
-      required: true,
-      maxLength: 128,
-      min: 0,
-      integer: true,
+      key: 'fuel_type',
+      title: 'Тип топлива',
+      type: 'valueOfArray',
+      required: false,
     },
     {
-      key: 'spare_part_group_id',
-      title: 'Группа',
+      key: 'company_id',
+      title: 'Организация',
       type: 'valueOfArray',
       required: true,
-    },
-    {
-      key: 'measure_unit_id',
-      title: 'Единица измерения',
-      type: 'valueOfArray',
-      required: true,
-    },
-    {
-      key: 'supplied_at',
-      title: 'Дата поставки',
-      type: 'date',
     },
   ],
 };

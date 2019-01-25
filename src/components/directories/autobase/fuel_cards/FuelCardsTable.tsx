@@ -14,13 +14,13 @@ const meta: IDataTableSchema = {
     {
       name: 'number',
       displayName: 'Номер',
-      type: 'number',
+      type: 'string',
       filter: {
-        type: 'number',
+        type: 'string',
       },
     },
     {
-      name: 'fuel_type',
+      name: 'fuel_type_text',
       displayName: 'Тип топлива',
       type: 'string',
       filter: {
@@ -28,7 +28,7 @@ const meta: IDataTableSchema = {
       },
     },
     {
-      name: 'company_name',
+      name: 'company',
       displayName: 'Организация',
       type: 'string',
       filter: {

@@ -4,13 +4,13 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { PropsSparePartFormWrap } from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
+import { PropsFuelCardsFormWrap } from 'components/directories/autobase/fuel_cards/FuelCardsForm/@types/FuelCards.h';
 
-const SparePartFrom = React.lazy(() => (
-  import(/* webpackChunkName: "spare_part_form" */ 'components/directories/autobase/spare_part/SparePartForm/SparePartForm')
+const FuelCardsFrom = React.lazy(() => (
+  import(/* webpackChunkName: "fuel_cards_form" */ 'components/directories/autobase/fuel_cards/FuelCardsForm/FuelCardsForm')
 ));
 
-class SparePartFormWrap extends React.Component<PropsSparePartFormWrap, {}> {
+class FuelCardsFormWrap extends React.Component<PropsFuelCardsFormWrap, {}> {
   render() {
     const { showForm, ...props } = this.props;
     const page = props.loadingPageName || props.page;
@@ -20,7 +20,7 @@ class SparePartFormWrap extends React.Component<PropsSparePartFormWrap, {}> {
       (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
-            <SparePartFrom
+            <FuelCardsFrom
               element={props.element}
               handleHide={props.onFormHide}
 
@@ -37,4 +37,4 @@ class SparePartFormWrap extends React.Component<PropsSparePartFormWrap, {}> {
   }
 }
 
-export default SparePartFormWrap;
+export default FuelCardsFormWrap;

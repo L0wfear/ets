@@ -1,5 +1,6 @@
 import {
   FuelCards,
+  FuelTypeService,
 } from 'api/Services';
 import { get } from 'lodash';
 
@@ -33,6 +34,19 @@ export const updateFuelCards = (fuelCards) => {
 };
 
 export const getFuelCards = (payload) => FuelCards.get({ ...payload })
+  .catch((error) => {
+    console.log(error); // tslint:disable-line:no-console
+    return {
+      result: {
+        rows: [],
+      },
+    };
+  })
+  .then((ans) => ({
+    data: get(ans, ['result', 'rows'], []),
+  }));
+
+export const getFuelTypeService = (payload) => FuelTypeService.get({ ...payload })
   .catch((error) => {
     console.log(error); // tslint:disable-line:no-console
     return {

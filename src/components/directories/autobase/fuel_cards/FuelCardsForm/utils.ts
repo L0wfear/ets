@@ -1,23 +1,23 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h'
 
-export type GetDefaultSparePartElement = (sparePart: SparePart | null) => SparePart;
+export type GetDefaultFuelCardsElement = (sparePart: FuelCards | null) => FuelCards;
 
-export const defaultSparePart: SparePart = {
+export const defaultFuelCards: FuelCards = {
   id: null,
-  spare_part_group_id: null,
-  name: null,
   number: null,
-  measure_unit_id: null,
-  quantity: null,
-  supplied_at: null,
+  fuel_type: null,
+  company_id: null,
+  company_name: null,
+  company: null,
+  fuel_type_text: null,
 };
 
-export const getDefaultSparePartElement: GetDefaultSparePartElement = (element) => {
-  const newElement = { ...defaultSparePart };
+export const getDefaultFuelCardsElement: GetDefaultFuelCardsElement = (element) => {
+  const newElement = { ...defaultFuelCards };
   if (isObject(element)) {
-    Object.keys(defaultSparePart).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultSparePart[key];
+    Object.keys(defaultFuelCards).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultFuelCards[key];
     });
   }
 

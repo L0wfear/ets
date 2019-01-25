@@ -5,18 +5,34 @@ export type FuelCards = { // Доделать типчик, после перв�
   company_id: number | null;
   company_name: string | null;
   company: string | null; // Организация
+  fuel_type_text: string | null;
 };
 
 export type StateFuelCards = {
   fuelCardsList: FuelCards[];
 };
 
-// import { FuelCards } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+export type Company = {
+  id?: number | null;
+  asuods_id: number;
+  name: string | null;
+  // ... ещё опции
+};
 
-// export type AutobaseCreateFuelCards = (fuelCardsOld: FuelCards & { id?: number }, { page, path }: { page: string; path?: string }) => (
-//   Promise<any>
-// );
+export type FuelType = {
+  id: number;
+  name: string | null;
+  // ... ещё опции
+};
 
-// export type AutobaseUpdateFuelCards = (fuelCardsOld: FuelCards, { page, path }: { page: string; path?: string }) => (
-//   Promise<any>
-// );
+export type AutobaseCreateFuelCards = (fuelCardsOld: FuelCards & { id?: number }, { page, path }: { page: string; path?: string }) => (
+  Promise<any>
+);
+
+export type AutobaseUpdateFuelCards = (fuelCardsOld: FuelCards, { page, path }: { page: string; path?: string }) => (
+  Promise<any>
+);
+
+export type getFuelType = () => (
+  any
+);

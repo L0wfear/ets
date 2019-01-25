@@ -7,20 +7,21 @@ import { connect } from 'react-redux';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getFuelCardsState, getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
+import { getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
 
-const loadingPageName = 'fuelcards';
+const loadingPageName = 'fuel_cards';
 
 
-@exportable({ entity: 'fuelcards' })
+@exportable({ entity: 'fuel_cards' })
 @staticProps({
   entity: 'fuel_cards',
   permissions,
   listName: 'fuelCardsList',
   formComponent: FuelCardsFormWrap,
   tableComponent: FuelCardsTable,
-  operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
+  operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
 })
+
 class FuelCardsList extends ElementsList {
   removeElementAction = () => {
     console.log('нельзя удалить элемент из реестра');

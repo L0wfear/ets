@@ -309,6 +309,7 @@ export class MissionForm extends Form {
     };
 
     const car = this.props.carsIndex[this.props.formState.car_id];
+
     if (!structure_id) {
       if (car && !car.is_common) {
         this.handleChange('car_id', null);
@@ -513,10 +514,9 @@ export class MissionForm extends Form {
     if (this.props.withDefineTypeId) {
       const selectedCar = carsList.find(({ asuods_id }) => asuods_id === state.car_id);
       const isCommonCar = get(selectedCar, 'is_common', false);
+      const companyStructureIdCar = get(selectedCar, 'company_structure_id', null);
 
-      if (!isCommonCar) {
-        const companyStructureIdCar = get(selectedCar, 'company_structure_id', null);
-
+      if (!isCommonCar && companyStructureIdCar) {
         STRUCTURES = STRUCTURES.filter(({ value }) => value === companyStructureIdCar);
       }
     }

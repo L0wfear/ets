@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getFuelCardsState, getSessionState } from 'redux-main/reducers/selectors';
+import { getFuelCardsState, getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'fuelcards';
 
@@ -61,8 +61,8 @@ export default compose(
   }),
   connect(
     state => ({
-      fuelCardsList: getFuelCardsState(state).fuelCardsList,
-      userData: getSessionState(state).userData, // выпилить???
+      fuelCardsList: getAutobaseState(state).fuelCardsList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       fuelCardsGetAndSetInStore: () => (

@@ -53,6 +53,3 @@ export const getGeoobjectState: GetStateType<'geoobject'> = (state) => (
 export const getMissionsState: GetStateType<'missions'> = (state) => (
   getStateDataByKey(state)('missions')
 );
-export const getFuelCardsState: GetStateType<'fuelcards'> = (state) => (
-  getStateDataByKey(state)('fuelcards')
-);

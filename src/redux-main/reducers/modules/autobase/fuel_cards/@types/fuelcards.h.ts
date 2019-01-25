@@ -9,7 +9,7 @@ export type FuelCards = { // Доделать типчик, после перв�
 
 export type StateFuelCards = {
   fuelCardsList: FuelCards[];
-}
+};
 
 // import { FuelCards } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 

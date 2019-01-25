@@ -1,4 +1,3 @@
-import { getFullAccess } from 'api/mocks/permissions';
 import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
@@ -24,27 +23,6 @@ import { get } from 'lodash';
 import { setUserContext } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
-
-export const withSpecificPermissions = (user) => {
-  const permissions = [];
-
-  if (user.login === 'gormost') {
-    permissions.push(...getFullAccess('bridges'));
-    permissions.push(...getFullAccess('pedestrian_tunnels'));
-    permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
-    permissions.push(...getFullAccess('fountains'));
-  }
-  permissions.push(...getFullAccess('fuel_cards')); // !!! выпилить перед выкатом
-  user.permissions.forEach((permission) => {
-    if (permission.match(/^pgm\./)) {
-      permissions.push(
-        permission.replace(/^pgm\./, 'pgm_store.'),
-      );
-    }
-  });
-
-  return permissions;
-};
 
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,

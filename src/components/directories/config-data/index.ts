@@ -6,7 +6,7 @@ import order from 'components/directories/order/config-data';
 import technicalOperation from 'components/directories/technical_operation/config-data';
 import companies from 'components/directories/companies/config-data';
 import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
-import transportation from 'components/directories/autobase/config-data';
+import autobase from 'components/directories/autobase/config-data';
 import repairsRegistry from 'components/directories/repair/config-data';
 import normative from 'components/directories/normative/config-data';
 import geoobjects from 'components/directories/geoobjects/config-data';
@@ -23,7 +23,7 @@ const children = {
   companies,
   technicalOperationRelations,
   dividerOne: { divider: true },
-  transportation,
+  autobase,
   repairsRegistry,
   normative,
   geoobjects,

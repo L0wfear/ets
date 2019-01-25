@@ -4,7 +4,7 @@ import { userNotification } from 'api/mocks/permissions';
 
 import requireAuth from 'utils/auth';
 
-export const withSpecificPermissions = (user) => {
+const withSpecificPermissions = (user) => {
   const permissions = [];
 
   if (user.login === 'gormost') {
@@ -13,7 +13,7 @@ export const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
-
+  permissions.push(...getFullAccess('fuel_cards')); // !!! выпилить перед выкатом
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
       permissions.push(

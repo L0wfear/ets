@@ -10,13 +10,6 @@ import {
 import { getBlob, postBlob } from './adapterBlob';
 import { mocks } from './mocks';
 
-// временная ловушка
-const checkUrlWithPayload = (url, payload) => {
-  if (url.search(/\/services\/duty_mission$/) !== -1 && Object.keys(payload).length === 0) {
-    Raven.captureException(new Error('no payload in duty_mission GET'));
-  }
-};
-
 export default class APIService {
   /**
    * Creates APIService handler for backend service via provided url
@@ -157,7 +150,6 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
 
-    checkUrlWithPayload(url, payload);
     return getJSON(url, payload).then(r => this.processResponse(r, false));
   }
 

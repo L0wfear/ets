@@ -32,7 +32,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { Button } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
-import { isArray } from 'util';
+import { isArray, isFunction } from 'util';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -106,12 +106,22 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
     const result = await this.props.submitAction(this.props.formState, true);
     if (result) {
       resetCachedDataForRoute();
+      if (result) {
+        if (isFunction(this.props.handleHide)) {
+          this.props.handleHide(true, result);
+        }
+      }
     }
   }
   handleSubmitForMission = async () => {
     const result = await this.props.submitAction(this.props.formState, false);
     if (result) {
       resetCachedDataForRoute();
+      if (result) {
+        if (isFunction(this.props.handleHide)) {
+          this.props.handleHide(true, result);
+        }
+      }
     }
   }
 

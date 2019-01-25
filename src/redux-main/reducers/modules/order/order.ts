@@ -14,6 +14,7 @@ import {
   SET_EMPTY_MISSION_TEMPLATE_DATA,
   RESET_ORDER,
 } from 'redux-main/reducers/modules/order/action-order';
+import { isString } from 'util';
 
 const initialState = {
   OrdersList: [],
@@ -122,12 +123,16 @@ export default function(state = initialState, { type, payload }) {
             || diffDates(new Date(), dateTo) > 0
             || order_status === 'cancelled'
             || order_status === 'suspended'
-            || work_type_name === 'Ручные',
+            || (
+              isString(work_type_name) && work_type_name.match(/^Ручн*/)
+            ),
           dutyMission: order_status === 'suspended'
             || !(
               (
                 work_type_name === null
-                || work_type_name === 'Ручные'
+                || (
+                  isString(work_type_name) && work_type_name.match(/^Ручн*/)
+                )
                 || work_type_name === 'Комбинированный'
               )
               && num_exec > 0

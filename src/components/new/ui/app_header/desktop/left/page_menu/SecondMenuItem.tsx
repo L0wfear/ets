@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SecondMenuItemContainer, SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
-import { DefaultSecondLvlMenu, LinkSecontLvl, DivDivider } from 'components/new/ui/app_header/styled';
+import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl, DivDivider } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
 import { withRouterMatchUrl, isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
@@ -42,6 +42,16 @@ class SecondMenuItem extends React.Component<any, any> {
             <span className="caret"/>
           </DefaultSecondLvlMenu>
         </LinkSecontLvl>
+      );
+    }
+
+    if (data.noHash) {
+      return (
+        <LinkNoHashSecontLvl id={`link-${key}`} href={data.path}>
+          <DefaultSecondLvlMenu>
+            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+          </DefaultSecondLvlMenu>
+        </LinkNoHashSecontLvl>
       );
     }
 

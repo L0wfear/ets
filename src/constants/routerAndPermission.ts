@@ -10,10 +10,7 @@ import changeCompany from 'components/new/ui/app_header/desktop/right/change_rol
 
 import dashboard from 'components/new/pages/dashboard/config-data';
 import routeList from 'components/new/pages/routes_list/config-data';
-
-const PROTO = window.location.protocol;
-const HOST = window.location.host;
-const PATHNAME = window.location.pathname;
+import config from 'config';
 
 const routerAndPermission = {
   monitor,
@@ -27,7 +24,7 @@ const routerAndPermission = {
   notificationRegistry,
   programRegistry,
   admin: {
-    path: `${PROTO}//${HOST}${PATHNAME}admin`,
+    path: `${config.admin}`,
     title: 'Администрирование',
     entyity: 'administration',
     noHash: true,

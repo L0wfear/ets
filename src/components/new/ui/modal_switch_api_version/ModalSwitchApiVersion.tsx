@@ -35,7 +35,10 @@ const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
 class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
   state = {
     serviceValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], null),
-    tracksCachingValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [keyTracksCachingForTest], null),
+    tracksCachingValue: (
+      get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [keyTracksCachingForTest], null)
+      || get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], null)
+    ),
   };
 
   refresh = () => {

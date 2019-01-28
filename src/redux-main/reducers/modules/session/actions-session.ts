@@ -74,8 +74,6 @@ export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
   });
 };
 
-const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
-
 export const sessionSetTracksCachingConfig: any = (appConfigTracksCaching) => (dispatch) => {
   const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
 
@@ -89,13 +87,6 @@ export const sessionSetTracksCachingConfig: any = (appConfigTracksCaching) => (d
     console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
 
     versions[config.tracksCaching] = api_version_stable.toString();
-  }
-
-  const versionFromLocalStorageForTest = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), keyTracksCachingForTest, ''));
-  if (!versionFromLocalStorageForTest) {
-    console.log(`API SET VERSION FOR TEST ${keyTracksCachingForTest}`, api_version_stable); // tslint:disable-line:no-console
-
-    versions[keyTracksCachingForTest] = api_version_stable.toString();
   }
 
   localStorage.setItem(global.API__KEY2, JSON.stringify(versions));

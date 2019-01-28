@@ -24,8 +24,6 @@ import { setUserContext } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
 
-const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
-
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
   payload: ConfigService.get()
@@ -166,13 +164,6 @@ export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
     console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
 
     versions[config.tracksCaching] = api_version_stable.toString();
-  }
-
-  const versionFromLocalStorageForTest = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), keyTracksCachingForTest, ''));
-  if (!versionFromLocalStorageForTest) {
-    console.log(`API SET VERSION FOR TEST ${keyTracksCachingForTest}`, api_version_stable); // tslint:disable-line:no-console
-
-    versions[keyTracksCachingForTest] = api_version_stable.toString();
   }
 
   localStorage.setItem(global.API__KEY2, JSON.stringify(versions));

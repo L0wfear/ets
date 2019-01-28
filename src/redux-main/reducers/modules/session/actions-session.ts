@@ -1,4 +1,3 @@
-import { getFullAccess } from 'api/mocks/permissions';
 import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
@@ -25,26 +24,7 @@ import { setUserContext } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
 
-export const withSpecificPermissions = (user) => {
-  const permissions = [];
-
-  if (user.login === 'gormost') {
-    permissions.push(...getFullAccess('bridges'));
-    permissions.push(...getFullAccess('pedestrian_tunnels'));
-    permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
-    permissions.push(...getFullAccess('fountains'));
-  }
-
-  user.permissions.forEach((permission) => {
-    if (permission.match(/^pgm\./)) {
-      permissions.push(
-        permission.replace(/^pgm\./, 'pgm_store.'),
-      );
-    }
-  });
-
-  return permissions;
-};
+const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
 
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
@@ -174,19 +154,28 @@ export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
   } = await dispatch(
     sessionGetTracksCachingAppConfig(),
   );
-  const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
-  const { api_version_stable } = appConfigTracksCaching;
 
+  const { api_version_stable } = appConfigTracksCaching;
+  let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+  if (!versions) {
+    versions = {};
+  }
+
+  const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
   if (versionFromLocalStorage !== api_version_stable) {
     console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
-    if (!versions) {
-      versions = {};
-    }
     versions[config.tracksCaching] = api_version_stable.toString();
-    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
   }
+
+  const versionFromLocalStorageForTest = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), keyTracksCachingForTest, ''));
+  if (!versionFromLocalStorageForTest) {
+    console.log(`API SET VERSION FOR TEST ${keyTracksCachingForTest}`, api_version_stable); // tslint:disable-line:no-console
+
+    versions[keyTracksCachingForTest] = api_version_stable.toString();
+  }
+
+  localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
 };
 
 export const checkToken: any = () => async (dispatch, getState) => {

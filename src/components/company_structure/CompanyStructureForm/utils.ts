@@ -10,8 +10,6 @@ export const defaultCompanyStructure: CompanyStructure = {
   note: '',
   parent_id: null,
   type: null,
-  carpool_ids: [],
-  carpool_names: [],
 };
 
 export const getdefaultCompanyStructureElement: GetdefaultCompanyStructureElement = (element) => {

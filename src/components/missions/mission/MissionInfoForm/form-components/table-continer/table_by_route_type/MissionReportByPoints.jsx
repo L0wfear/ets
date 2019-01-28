@@ -22,7 +22,7 @@ const tableMeta = {
       type: 'string',
       filter: {
         type: 'multiselect',
-        labelFunction: data => (data === 'fail' || data === 'canceled') ? 'Не пройден' : 'Пройден',
+        labelFunction: (data) => data === 'fail' ? 'Не пройден' : 'Пройден',
       },
     },
   ],
@@ -30,7 +30,7 @@ const tableMeta = {
 
 const MissionReportByPointsTable = (props) => {
   const renderers = {
-    status: ({ data }) => <div>{(data === 'fail' || data === 'canceled') ? 'Не пройден' : 'Пройден'}</div>,
+    status: ({ data }) => <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>,
   };
 
   if (!(props.data && props.data.length)) {

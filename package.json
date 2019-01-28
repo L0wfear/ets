@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.26.34",
+    "version": "2.0.26.35",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -8,7 +8,7 @@
     "license": "Commercial",
     "dependencies": {
         "bootstrap3": "^3.3.5",
-        "classnames": "^2.2.6",
+        "classnames": "DITETS-5049^2.2.6",
         "flummox": "^3.6.9",
         "highcharts": "^6.2.0",
         "history": "^4.7.2",

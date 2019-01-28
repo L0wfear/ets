@@ -12,7 +12,7 @@ export const config: TypeConfigData<PgmStore> = {
   Service: GeozonePgmStoreService,
   registryKey,
   header: {
-    title: 'Пункты отпуска ПГМ',
+    title: 'Справочник пунктов отпуска ПГМ',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

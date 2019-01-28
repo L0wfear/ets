@@ -12,7 +12,7 @@ export const config: TypeConfigData<DangerZone> = {
   Service: GeozoneDangerZoneService,
   registryKey,
   header: {
-    title: 'Особо опасные места',
+    title: 'Справочник особо опасных мест',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

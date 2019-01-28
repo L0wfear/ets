@@ -12,7 +12,7 @@ export const config: TypeConfigData<SnowStorage> = {
   Service: GeozoneSnowStorageService,
   registryKey,
   header: {
-    title: 'Пункты временного складирования снега',
+    title: 'Справочник пунктов временного складирования снега',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

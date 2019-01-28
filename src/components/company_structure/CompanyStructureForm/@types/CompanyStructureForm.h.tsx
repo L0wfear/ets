@@ -21,7 +21,6 @@ export type StatePropsCompanyStructure = {
 export type DispatchPropsCompanyStructure = {
   createAction: any;
   updateAction: any;
-  getCarpool: any;
 };
 export type OwnCompanyStructureProps = {
   element: CompanyStructure | null;

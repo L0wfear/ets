@@ -32,13 +32,8 @@ import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/mo
 import { DivNone } from 'global-styled/global-styled';
 import { getCompanyStructureState, getGeoobjectState } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, StateCompanyStructure> {
-  componentDidMount() {
-    this.props.getCarpool();
-  }
-
   handleChangeParentID = (parent_id) => {
     this.props.handleChange({
       type: null,
@@ -64,17 +59,6 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
       ),
     )
   );
-  makeOptionFromCarpoolList = (
-    memoize(
-      (carpoolList) => (
-        carpoolList
-          .map((carpool) => ({
-            value: carpool.id,
-            label: `${carpool.name} (${carpool.address})`,
-          }))
-      ),
-    )
-  );
 
   render() {
     const {
@@ -83,7 +67,6 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
       page,
       path,
       companyStructureLinearList,
-      carpoolList,
     } = this.props;
 
     const {
@@ -92,10 +75,6 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
 
     const companyStructureOptions = this.makeOptionFromTechMaintTypeList(
       companyStructureLinearList,
-    );
-
-    const carpoolOptions = this.makeOptionFromCarpoolList(
-      carpoolList,
     );
 
     const IS_CREATING = !state.id;
@@ -154,17 +133,6 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
                 boundKeys="name"
               />
               <ExtField
-                id="carpool_ids"
-                type="select"
-                multi
-                label="Автобаза"
-                error={errors.carpool_ids}
-                options={carpoolOptions}
-                value={state.carpool_ids}
-                onChange={this.props.handleChange}
-                boundKeys="carpool_ids"
-              />
-              <ExtField
                 type="string"
                 label="Примечание"
                 error={errors.note}
@@ -210,14 +178,6 @@ export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
         dispatch(
           companyStructureActions.updateCompanyStructure(
             formState,
-            { page, path },
-          ),
-        )
-      ),
-      getCarpool: () => (
-        dispatch(
-          geoobjectActions.actionGetAndSetInStoreCarpool(
-            {},
             { page, path },
           ),
         )

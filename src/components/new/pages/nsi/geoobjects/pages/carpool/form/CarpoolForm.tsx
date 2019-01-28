@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
-import { ButtonUpdateMainCarpool } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/buttons/buttons';
 
 import {
   FlexContainer,
@@ -12,7 +11,6 @@ import carpoolPermissions from 'components/new/pages/nsi/geoobjects/pages/carpoo
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { carpoolSchema } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/schema';
-import { get } from 'lodash';
 
 import { getDefaultCarpoolElement } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -31,31 +29,11 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
-import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 import { getSessionState } from 'redux-main/reducers/selectors/index';
 
 class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm> {
-  handleClickMakeCarpoolMain = async () => {
-    const result = await this.props.submitAction({
-      ...this.props.formState,
-      is_main: true,
-    });
-    if (result) {
-      this.props.handleChange({
-        is_main: true,
-      });
-    }
-  }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
   handleHide = () => {
-    this.props.handleHide(
-      this.props.originalFormState.is_main !== this.props.formState.is_main,
-      this.props.formState,
-    );
+    this.props.handleHide(false);
   }
   render() {
     const {
@@ -67,10 +45,10 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    // const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-brand" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-carpool" show onHide={this.handleHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -103,25 +81,16 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
                 label="Адрес:"
                 readOnly
               />
-              <ExtField
-                type="string"
-                value={get(YES_NO_SELECT_OPTIONS_INT.find(({ value }) => Boolean(value) === state.is_main), 'label', '-')}
-                label="Основная автобаза:"
-                readOnly
-              />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
               <MapGeoobjectWrap
                 geoobjectData={state}
-                entity="ssp"
+                entity="carpool"
               />
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-          <ButtonUpdateMainCarpool disabled={state.is_main || !isPermitted} onClick={this.handleClickMakeCarpoolMain}>
-            Сделать основной
-          </ButtonUpdateMainCarpool>
         </Modal.Footer>
       </Modal>
     );

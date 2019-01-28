@@ -31,14 +31,6 @@ const tableMeta = {
       },
     },
     {
-      name: 'carpool_ids',
-      displayName: 'Автобаза',
-      type: 'array',
-      filter: {
-        type: 'text',
-      },
-    },
-    {
       name: 'note',
       displayName: 'Примечание',
       type: 'string',
@@ -65,14 +57,7 @@ export default (props) => {
         <ButtonDeletetructure className="action-button" onClick={props.onActionDelete} boundKeys={rowData}>Удалить</ButtonDeletetructure>
       </div>
     ),
-    carpool_ids: ({ rowData }) => (
-      <div>
-        {rowData.carpool_names.join(', ')}
-      </div>
-    ),
   };
-
-  console.log(props)
 
   return (
     <>

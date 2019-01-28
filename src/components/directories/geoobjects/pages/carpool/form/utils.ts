@@ -8,7 +8,6 @@ export const defaultCarpool: Carpool = {
   company_name: '',
   contractor_id: null,
   id: null,
-  is_main: false,
   name: '',
   shape: {},
 };

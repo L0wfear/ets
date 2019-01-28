@@ -19,6 +19,7 @@ export type InitialStateSession = {
     isKgh: boolean;
     isGlavControl: boolean;
     companies: [] | null;
+    company_name: string | null;
   };
   token: string | null;
   appConfig: {

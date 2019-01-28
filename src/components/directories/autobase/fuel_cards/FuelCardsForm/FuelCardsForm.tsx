@@ -12,7 +12,6 @@ import { get } from 'lodash';
 import {
   autobaseCreateFuelCards,
   fuelCardsUpdate,
-  fuelTypeGet,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -32,7 +31,6 @@ import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@type
 import { DivNone } from 'global-styled/global-styled';
 import {
   getSessionState,
-  getAutobaseState,
 } from 'redux-main/reducers/selectors';
 
 class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {
@@ -42,20 +40,18 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
   };
 
   componentDidMount() {
-    // this.loadFuelType(); // пока что выпилен на беке
+    this.loadFuelType();
     this.setCompaniesListOptionsFromProps();
   }
-  async loadFuelType() {
-    const { payload: { data } } = await this.props.getFuelType();
-
-    this.setState({ fuelTypeOptions: data.map(defaultSelectListMapper) });
+  loadFuelType() {
+    const fuelTypeList = this.getFuelTypesList(this.props.fuelType);
+    this.setState({ fuelTypeOptions: fuelTypeList.map(defaultSelectListMapper) });
   }
 
   setCompaniesListOptionsFromProps() {
     const {
       companiesList,
     } = this.props;
-    // asuods_id
     this.setState({
       companyOptions: companiesList.map(({ asuods_id, name, ...other }) =>
       ({
@@ -78,12 +74,23 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
   handleHide = () => {
     this.props.handleHide(false);
   }
+
+  getFuelTypesList = (fuelTypeObj) =>
+    Object.keys(fuelTypeObj).map((elem) => {
+      return {
+        id: elem,
+        name: fuelTypeObj[elem],
+      };
+    })
+
   render() {
     const {
       formState: state,
       formErrors: errors,
       page,
       path,
+      companiesList,
+      userCompany,
     } = this.props;
     const {
       fuelTypeOptions,
@@ -92,8 +99,25 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
 
     const IS_CREATING = !state.id;
 
-    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const title =
+      !IS_CREATING
+      ? 'Изменение записи'
+      : 'Создание записи';
+
+    const isPermitted =
+          !IS_CREATING
+          ? this.props.isPermittedToUpdate
+          : this.props.isPermittedToCreate;
+
+    const companiesFieldIsDisable =
+          companiesList.length <= 1
+          ? true
+          : false;
+
+    const companiesDefaultValue =
+          IS_CREATING && companiesFieldIsDisable
+          ? userCompany.company_id
+          : state.company_id;
 
     return (
       <Modal id="modal-fuel-cards" show onHide={this.handleHide} backdrop="static">
@@ -127,17 +151,17 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 label="Организация"
                 error={errors.company_id}
                 options={companyOptions}
-                value={state.company_id}
+                value={companiesDefaultValue}
                 onChange={this.handleChange}
                 boundKeys="company_id"
-                disabled={!isPermitted}
+                disabled={!isPermitted || companiesFieldIsDisable}
               />
             </Col>
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          isPermitted // либо обновление, либо создание
+          isPermitted
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )
@@ -156,7 +180,11 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
   connect<StatePropsFuelCards, DispatchPropsFuelCards, OwnFuelCardsProps, ReduxState>(
     (state) => ({
       companiesList: getSessionState(state).userData.companies,
-      fuelTypeList: getAutobaseState(state).fuelTypeList,
+      userCompany: {
+        company_id: getSessionState(state).userData.company_id,
+        name: getSessionState(state).userData.company_name,
+      },
+      fuelType: getSessionState(state).appConfig.enums.FUEL_TYPE,
     }),
     (dispatch, { page, path }) => ({
       createAction: (formState) => (
@@ -175,20 +203,33 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
           ),
         )
       ),
-      getFuelType: () => (
-        dispatch(
-          fuelTypeGet(
-            {},
-            { page, path },
-          ),
-        )
-      ),
     }),
   ),
   withForm<PropsFuelCardsWithForm, FuelCards>({
     uniqField: 'id',
     mergeElement: (props) => {
-      return getDefaultFuelCardsElement(props.element);
+      const {
+        companiesList,
+        userCompany,
+      } = props;
+
+      const id = props.element ? props.element.id : null;
+      const IS_CREATING = !id;
+      const companiesFieldIsDisable =
+            companiesList.length <= 1
+              ? true
+              : false;
+      const companiesDefaultValue =
+            IS_CREATING && companiesFieldIsDisable
+              ? userCompany.company_id
+              : props.element.company_id;
+
+      const newElement = {
+        ...props.element,
+        company_id: companiesDefaultValue,
+      };
+
+      return getDefaultFuelCardsElement(newElement);
     },
     schema: fuelCardsFormSchema,
     permissions: fuelCardsPermissions,

@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h'
+import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 export type GetDefaultFuelCardsElement = (sparePart: FuelCards | null) => FuelCards;
 

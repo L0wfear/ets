@@ -4,7 +4,6 @@ import {
   FuelType,
   AutobaseCreateFuelCards,
   AutobaseUpdateFuelCards,
-  getFuelType,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -24,14 +23,13 @@ export type PropsFuelCardsFormWrap = {
 };
 
 export type StatePropsFuelCards = {
-  // companiesList: Company[] | null;
-  companiesList: any;
-  fuelTypeList: FuelType[];
+  companiesList: Company[] | null;
+  fuelType: object | null;
+  userCompany: Company | null;
 };
 export type DispatchPropsFuelCards = {
   createAction: AutobaseCreateFuelCards;
   updateAction: AutobaseUpdateFuelCards;
-  getFuelType: getFuelType;
 };
 export type OwnFuelCardsProps = {
   element: FuelCards | null;

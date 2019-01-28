@@ -51,7 +51,7 @@ export const TypesService = ETS_API_FACTORY.createApiServiceAdapter('types');
 export const TypesAttr = ETS_API_FACTORY.createApiServiceAdapter('types_attr');
 
 export const WaybillDriverService = ETS_API_FACTORY.createApiServiceAdapter('medical_stats/allowed_drivers');
-export const FuelTypeService = ETS_API_FACTORY.createApiServiceAdapter('fuel_type');
+export const FuelTypeService = ETS_API_FACTORY.createApiServiceAdapter('fuel_type'); // сервис отключен, типы тут getSessionState(state).appConfig.enums.FUEL_TYPE
 export const FuelConsumptionRateService = ETS_API_FACTORY.createApiServiceAdapter('fuel_consumption_rates');
 export const FuelOperationsService = ETS_API_FACTORY.createApiServiceAdapter('fuel_operations');
 export const WorkKindsService = ETS_API_FACTORY.createApiServiceAdapter('work_kind');

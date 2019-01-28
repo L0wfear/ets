@@ -14,15 +14,14 @@ export type StateFuelCards = {
 
 export type Company = {
   id?: number | null;
-  asuods_id: number;
+  asuods_id?: number;
+  company_id?: number;
   name: string | null;
-  // ... ещё опции
 };
 
 export type FuelType = {
-  id: number;
+  id: string;
   name: string | null;
-  // ... ещё опции
 };
 
 export type AutobaseCreateFuelCards = (fuelCardsOld: FuelCards & { id?: number }, { page, path }: { page: string; path?: string }) => (

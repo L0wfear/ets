@@ -15,7 +15,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCards, PropsFuelCards> = {
       key: 'fuel_type',
       title: 'Тип топлива',
       type: 'valueOfArray',
-      required: false,
+      required: true,
     },
     {
       key: 'company_id',

@@ -3,7 +3,6 @@ import {
   createFuelCards,
   updateFuelCards,
   getFuelCards,
-  getFuelTypeService,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/promises';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 
@@ -82,30 +81,4 @@ export const fuelCardsUpdate: any = (fuelCardsOld: FuelCards, { page, path }: { 
   });
 
   return fuelCards;
-};
-
-export const fuelTypeGet: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getFuelTypeService(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export const fuelTypeGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    fuelTypeGet(payload, { page, path }),
-  );
-
-  dispatch(
-    setFuelType(data),
-  );
-
-  return {
-    fuelTypeList: data,
-  };
 };

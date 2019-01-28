@@ -614,7 +614,12 @@ body.application {
                 position: absolute;
                 display: flex;
                 align-items: baseline;
-                transform: translate(-100%, -50%);
+                &.show_tc {
+                  transform: translate(-130%, -50%);
+                }
+                &.remove {
+                  transform: translate(-110%, -50%);
+                }
                 background-color: white;
                 padding: 5px;
                 cursor: pointer;

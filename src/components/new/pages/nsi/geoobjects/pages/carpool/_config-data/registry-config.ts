@@ -12,7 +12,7 @@ export const config: TypeConfigData = {
   Service: GeozoneCarpoolService,
   registryKey,
   header: {
-    title: 'Автобазы',
+    title: 'Справочник Автобаз',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

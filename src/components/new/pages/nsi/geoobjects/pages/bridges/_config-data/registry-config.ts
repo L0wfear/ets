@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozoneBridgesService,
   registryKey,
   header: {
-    title: 'Мосты',
+    title: 'Справочник мостов',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

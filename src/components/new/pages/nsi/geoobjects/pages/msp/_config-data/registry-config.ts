@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozoneMspService,
   registryKey,
   header: {
-    title: 'Мобильные снегоплавильные пункты',
+    title: 'Справочник МСП',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

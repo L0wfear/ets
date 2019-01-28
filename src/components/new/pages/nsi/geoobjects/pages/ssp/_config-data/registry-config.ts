@@ -12,7 +12,7 @@ export const config: TypeConfigData = {
   Service: GeozoneSspService,
   registryKey,
   header: {
-    title: 'Стационарные снегоплавильные пункты',
+    title: 'Справочник ССП',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

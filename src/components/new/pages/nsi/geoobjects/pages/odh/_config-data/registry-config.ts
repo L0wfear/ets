@@ -12,7 +12,7 @@ export const config: TypeConfigData = {
   Service: GeozoneOdhService,
   registryKey,
   header: {
-    title: 'Реестр ОДХ',
+    title: 'Справочник ОДХ',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

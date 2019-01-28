@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozonePedestrianTunnelExitsService,
   registryKey,
   header: {
-    title: 'Выходы из пешеходных тоннелей',
+    title: 'Справочник выходов из пешеходных тоннелей',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

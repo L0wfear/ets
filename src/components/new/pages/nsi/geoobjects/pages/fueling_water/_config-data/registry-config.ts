@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozoneFuelingWaterService,
   registryKey,
   header: {
-    title: 'Базы гидрантов',
+    title: 'Справочник баз гидрантов',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,

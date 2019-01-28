@@ -21,7 +21,7 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
     cols: [
       {
         name: 'date_from',
-        displayName: 'Начало действия поручения',
+        displayName: 'Начало действия',
         type: 'datetime',
         filter: {
           type: 'datetime',
@@ -29,7 +29,7 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
       },
       {
         name: 'date_to',
-        displayName: 'Окончание действия поручения',
+        displayName: 'Окончание действия',
         type: 'datetime',
         filter: {
           type: 'datetime',

@@ -9,7 +9,7 @@ import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { getDefaultMission } from 'stores/MissionsStore';
 import { saveData, printData } from 'utils/functions';
-import { diffDates, setZeroSecondsToDate } from 'utils/dates';
+import { diffDates, setZeroSecondsToDate, getDateWithMoscowTz, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
@@ -18,6 +18,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
 
@@ -84,6 +85,7 @@ class MissionFormWrap extends FormWrap {
         });
       }
       if (props.fromOrder) {
+        this.checkOnMosckowTime();
         const { order } = props;
 
         const formErrors = this.validateWrap(mission, {}, { order });
@@ -119,6 +121,24 @@ class MissionFormWrap extends FormWrap {
     await this.context.flux.getActions('missions').updateMission(formState);
     if (this.props.refreshTableList) {
       await this.props.refreshTableList();
+    }
+  }
+
+  async checkOnMosckowTime() {
+    const {
+      time: {
+        date,
+      },
+    } = await loadMoscowTime();
+
+    const currentTime = getDateWithMoscowTzByTimestamp(date);
+
+    const {
+      formState,
+    } = this.state;
+
+    if (diffDates(currentTime, formState.date_start) > 0) {
+      this.handleFormStateChange('date_start', currentTime);
     }
   }
 

@@ -17,11 +17,5 @@ export const companyStructureFormSchema: SchemaType<CompanyStructure, PropsCompa
       type: 'string',
       required: true,
     },
-    {
-      key: 'carpool_ids',
-      title: 'Автобаза',
-      type: 'multiValueOfArray',
-      required: true,
-    },
   ],
 };

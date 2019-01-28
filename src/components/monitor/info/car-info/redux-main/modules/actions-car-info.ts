@@ -122,13 +122,20 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
     },
   } = getState();
 
+  let version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], '');
+  const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [`TEST::${config.tracksCaching}`], '');
+
+  if (test_version) {
+    version = test_version;
+  }
+
   dispatch(carInfoResetTrackCahing());
   dispatch({
     type: CAR_INFO_SET_TRACK_CACHING,
     payload: getCarGpsNumberByDateTime(payloadData)
       .then(({ gps_code }) => {
         const payloadToTrack = {
-          version: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], ''),
+          version,
           gps_code,
           from_dt: makeUnixTime(payloadData.date_start || date_start),
           to_dt: makeUnixTime(payloadData.date_end || date_end),

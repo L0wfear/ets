@@ -74,20 +74,31 @@ export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
   });
 };
 
+const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
+
 export const sessionSetTracksCachingConfig: any = (appConfigTracksCaching) => (dispatch) => {
   const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
+
   const { api_version_stable } = appConfigTracksCaching;
+  let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+  if (!versions) {
+    versions = {};
+  }
 
   if (versionFromLocalStorage !== api_version_stable) {
     console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
-    if (!versions) {
-      versions = {};
-    }
     versions[config.tracksCaching] = api_version_stable.toString();
-    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
   }
+
+  const versionFromLocalStorageForTest = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), keyTracksCachingForTest, ''));
+  if (!versionFromLocalStorageForTest) {
+    console.log(`API SET VERSION FOR TEST ${keyTracksCachingForTest}`, api_version_stable); // tslint:disable-line:no-console
+
+    versions[keyTracksCachingForTest] = api_version_stable.toString();
+  }
+
+  localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
 
   return dispatch({
     type: SESSION_SET_TRACK_CONFIG,

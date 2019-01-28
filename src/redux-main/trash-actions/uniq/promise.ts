@@ -71,20 +71,29 @@ export const loadMoscowTime = () => (
   })
 );
 
-export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
-  getCarGpsNumberByDateTime(payloadData as any)
-    .then(({ gps_code }) => {
-      const payloadToTrack = {
-        version: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], ''),
-        gps_code,
-        from_dt: makeUnixTime(payloadData.date_start),
-        to_dt: makeUnixTime(payloadData.date_end),
-        sensors: 1,
-      };
+export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => {
+  let version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], '');
+  const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [`TEST::${config.tracksCaching}`], '');
 
-      return TrackService.get(payloadToTrack).then((ans) => ({
-        ...ans,
-        ...checkAndModifyTrack(ans, odh_mkad),
-      }));
-    })
-);
+  if (test_version) {
+    version = test_version;
+  }
+
+  return (
+    getCarGpsNumberByDateTime(payloadData as any)
+      .then(({ gps_code }) => {
+        const payloadToTrack = {
+          version,
+          gps_code,
+          from_dt: makeUnixTime(payloadData.date_start),
+          to_dt: makeUnixTime(payloadData.date_end),
+          sensors: 1,
+        };
+
+        return TrackService.get(payloadToTrack).then((ans) => ({
+          ...ans,
+          ...checkAndModifyTrack(ans, odh_mkad),
+        }));
+      })
+  );
+};

@@ -59,9 +59,13 @@ import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionFiled from 'components/waybill/form/MissionFiled';
 import { isNullOrUndefined, isNumber } from 'util';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getAutobaseState,
+} from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -86,6 +90,10 @@ class WaybillForm extends Form {
       fuelRateAllList: [],
       tooLongFactDates: false,
       notAvailableMissions: [],
+      fuel_method: null,
+      fuel_card_id: null,
+      equipment_fuel_method: null,
+      equipment_fuel_card_id: null,
     };
   }
 
@@ -113,6 +121,8 @@ class WaybillForm extends Form {
   }
 
   async componentDidMount() {
+    this.props.fuelCardsGetAndSetInStore();
+
     const {
       formState,
       formState: { status },
@@ -220,6 +230,10 @@ class WaybillForm extends Form {
           });
         });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetSetFuelCards();
   }
 
   handlePlanDepartureDates = (field, value) => {
@@ -563,6 +577,23 @@ class WaybillForm extends Form {
     )
   )
 
+  getFuelCardsListOptions(fuelCardsList, fuel_type_filter) {
+    return fuelCardsList.reduce((newArr, { number, fuel_type, ...other }) => {
+      if (fuel_type === fuel_type_filter || !fuel_type_filter) {
+        newArr.push({
+          value: number,
+          label: number,
+          rowData: {
+            number,
+            fuel_type,
+            ...other,
+          },
+        });
+      }
+      return newArr;
+    }, []);
+  }
+
   render() {
     const {
       loadingFields,
@@ -586,6 +617,7 @@ class WaybillForm extends Form {
       isPermittedByKey = {},
       userStructures,
       userStructureId,
+      fuelCardsList,
     } = this.props;
 
     let taxesControl = false;
@@ -596,6 +628,22 @@ class WaybillForm extends Form {
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
+    const FUEL_CARDS = this.getFuelCardsListOptions(fuelCardsList, state.fuel_type);
+    const EQUIPMENT_FUEL_CARDS = this.getFuelCardsListOptions(fuelCardsList, state.equipment_fuel_type);
+
+    const FUEL_METHOD = [
+      {
+        value: 'naliv',
+        label: 'Налив',
+      },
+      {
+        value: 'fuel_card',
+        label: 'Топливная карта',
+      },
+    ];
+
+    const fuelCardDisable = !state.fuel_method || state.fuel_method === 'naliv';
+    const equipmentFuelCardDisable = !state.fuel_method || state.equipment_fuel_method === 'naliv';
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
@@ -1021,6 +1069,28 @@ class WaybillForm extends Form {
                     value={state.fuel_type}
                     onChange={this.handleChange.bind(this, 'fuel_type')}
                   />
+                  <Field
+                    id="fuel-method"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Способ заправки"
+                    error={errors.fuel_method}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
+                    options={FUEL_METHOD}
+                    value={state.fuel_method}
+                    onChange={this.handleChange.bind(this, 'fuel_method')}
+                  />
+                  <Field
+                    id="fuel-card-id"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Топливная карта"
+                    error={errors.fuel_card_id}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || fuelCardDisable || !IS_DRAFT}
+                    options={FUEL_CARDS}
+                    value={state.fuel_card_id}
+                    onChange={this.handleChange.bind(this, 'fuel_card_id')}
+                  />
 
                   <Field
                     id="fuel_start"
@@ -1158,6 +1228,28 @@ class WaybillForm extends Form {
                     options={FUEL_TYPES}
                     value={state.equipment_fuel_type}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
+                  />
+                  <Field
+                    id="equipment-fuel-method"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Способ заправки"
+                    error={errors.equipment_fuel_method}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
+                    options={FUEL_METHOD}
+                    value={state.equipment_fuel_method}
+                    onChange={this.handleChange.bind(this, 'equipment_fuel_method')}
+                  />
+                  <Field
+                    id="equipment-fuel-card-id"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Топливная карта"
+                    error={errors.equipment_fuel_card_id}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || equipmentFuelCardDisable || !IS_DRAFT}
+                    options={EQUIPMENT_FUEL_CARDS}
+                    value={state.equipment_fuel_card_id}
+                    onChange={this.handleChange.bind(this, 'equipment_fuel_card_id')}
                   />
                   <Field
                     id="equipment-fuel-start"
@@ -1344,6 +1436,22 @@ export default compose(
       userStructureId: getSessionState(state).userData.structure_id,
       userStructures: getSessionState(state).userData.structures,
       userPermissionsSet: getSessionState(state).userData.permissionsSet,
+      fuelCardsList: getAutobaseState(state).fuelCardsList,
+    }),
+    dispatch => ({
+      fuelCardsGetAndSetInStore: () => (
+        dispatch(
+          fuelCardsActions.fuelCardsGetAndSetInStore(
+            {},
+            {},
+          ),
+        )
+      ),
+      resetSetFuelCards: () => (
+        dispatch(
+          fuelCardsActions.resetSetFuelCards(),
+        )
+      ),
     }),
   ),
 )(connectToStores(WaybillForm, ['objects', 'employees', 'waybills', 'missions']));

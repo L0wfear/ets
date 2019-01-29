@@ -17,16 +17,16 @@ import {
   get,
   isEmpty,
 } from 'lodash';
-import { ExtField } from 'components/ui/new/field/ExtField';
 
 @connectToStores(['objects', 'missions'])
 @FluxContext
 class MissionRejectForm extends React.Component {
+
   static get propTypes() {
     return {
-      mission: PropTypes.object.isRequired,
+      mission: PropTypes.object,
       missions: PropTypes.object,
-      onReject: PropTypes.func.isRequired,
+      onReject: PropTypes.func,
     };
   }
 
@@ -59,7 +59,6 @@ class MissionRejectForm extends React.Component {
       missionList,
       mIndex,
       comment: '',
-      canceled: false,
       ...this.getPropsMission(missionList, mIndex),
       car_id: null,
       car_func_types: [],
@@ -148,7 +147,8 @@ class MissionRejectForm extends React.Component {
       const response = await this.context.flux.getActions('missions').getMissionById(this.state.mission_id);
       const rows = get(response, ['result', 'rows'], []);
       const mission = rows[0];
-      mission.status = this.state.canceled ? 'canceled' : 'fail';
+      mission.status = 'fail';
+
       mission.comment = this.state.comment;
       resolve = await this.context.flux.getActions('missions').updateMission({ ...mission, action_at });
     } else {
@@ -158,7 +158,6 @@ class MissionRejectForm extends React.Component {
             car_id: this.state.car_id,
             mission_id: this.state.mission_id,
             comment: this.state.comment,
-            canceled: this.state.canceled,
             date_start: this.state.date_start,
             date_end: this.state.date_end,
             action_at,
@@ -172,7 +171,6 @@ class MissionRejectForm extends React.Component {
               car_id: this.state.car_id,
               mission_id: this.state.mission_id,
               comment: this.state.comment,
-              canceled: this.state.canceled,
               missions,
               date_start: this.state.date_start,
               date_end: this.state.date_end,
@@ -184,7 +182,6 @@ class MissionRejectForm extends React.Component {
               car_id: this.state.car_id,
               mission_id: this.state.mission_id,
               comment: this.state.comment,
-              canceled: this.state.canceled,
               date_start: this.state.date_start,
               date_end: this.state.date_end,
               waybill_id: this.state.data.waybill_id,
@@ -197,7 +194,7 @@ class MissionRejectForm extends React.Component {
           break;
       }
     }
-    if (resolve && (!resolve.errors || (resolve.errors && !resolve.errors.length))) {
+    if (!resolve.errors || (resolve.errors && !resolve.errors.length)) {
       const { missionList, mIndex } = this.state;
       global.NOTIFICATION_SYSTEM.notify(reassignMissionSuccessNotification);
 
@@ -207,7 +204,6 @@ class MissionRejectForm extends React.Component {
         this.setState({
           needUpdateParent: true,
           comment: '',
-          canceled: false,
           car_id: null,
           mIndex: mIndex - 1,
           ...this.getPropsMission(missionList, mIndex - 1),
@@ -234,18 +230,11 @@ class MissionRejectForm extends React.Component {
     } else {
       this.setState({
         comment: '',
-        canceled: false,
         car_id: null,
         mIndex: mIndex - 1,
         ...this.getPropsMission(missionList, mIndex - 1),
       });
     }
-  }
-
-  toggleIsCanceled = () => {
-    this.setState(state => ({
-      canceled: !state.canceled,
-    }));
   }
 
   render() {
@@ -261,10 +250,10 @@ class MissionRejectForm extends React.Component {
     let CARS = [];
     const {
       car_gov_number: mission_car_gov_number,
-      canceled,
       number,
       waybill_number,
     } = mission;
+
     CARS = props.carsList.reduce((carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
       if ((mission_car_gov_number !== gov_number) && (!isEmpty(car_func_types) ? car_func_types.includes(car_type_id) : true)) {
         carOptions.push({ value: asuods_id, label: gov_number });
@@ -324,20 +313,12 @@ class MissionRejectForm extends React.Component {
           />
           <Field
             type="select"
-            label="Переназначить задание на:"
+            label="Переназначить задание на ТС:"
             error={errors.car_id}
             options={CARS}
             value={state.car_id}
             onChange={this.handleChangeCarId}
             clearable
-          />
-          <br />
-          <ExtField
-            type="boolean"
-            label="Отмена задания"
-            value={Boolean(this.state.canceled)}
-            onChange={this.toggleIsCanceled}
-            className="flex-reverse"
           />
           <br />
           {state.data && state.data.missions ? (

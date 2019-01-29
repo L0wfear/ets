@@ -4,6 +4,8 @@ import {
   promiseGetMissionTemplate,
   promiseCreateMissionTemplate,
   promiseUpdateMissionTemplate,
+  promiseRemoveMissionTemplates,
+  promiseRemoveMissionTemplate,
 } from 'redux-main/reducers/modules/missions/mission_template/promise';
 import { MissionTemplate } from './@types/index.h';
 
@@ -40,7 +42,7 @@ export const actionGetAndSetInStoreMissionTemplate: any = (payload = {}, { page,
   );
 
   return {
-    driverList: data,
+    missionTemplateList: data,
   };
 };
 export const actionCreateMissionTemplate: any = (missionTemplateRaw: MissionTemplate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
@@ -69,6 +71,32 @@ export const actionUpdateMissionTemplate: any = (missionTemplateOld: MissionTemp
 
   return missionTemplate;
 };
+export const actionRemoveMissionTemplates: any = (missionTemplateOldArr: MissionTemplate[], { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload: { missionTemplate } } = await dispatch({
+    type: 'none',
+    payload: promiseRemoveMissionTemplates(missionTemplateOldArr.map(({ id }) => id)),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  });
+
+  return missionTemplate;
+};
+export const actionRemoveMissionTemplate: any = (missionTemplateOld: MissionTemplate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload: { missionTemplate } } = await dispatch({
+    type: 'none',
+    payload: promiseRemoveMissionTemplate(missionTemplateOld.id),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  });
+
+  return missionTemplate;
+};
 
 export default {
   actionSetMissionTemplate,
@@ -77,4 +105,6 @@ export default {
   actionGetAndSetInStoreMissionTemplate,
   actionCreateMissionTemplate,
   actionUpdateMissionTemplate,
+  actionRemoveMissionTemplates,
+  actionRemoveMissionTemplate,
 };

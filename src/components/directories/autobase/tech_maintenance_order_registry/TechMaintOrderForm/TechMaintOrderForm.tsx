@@ -40,7 +40,7 @@ import {
 } from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/@types/TechMaintOrderForm.h';
 import { TechMaintOrder, TechMaintType, MeasureUnitRun } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getAutobaseState, getSomeUniqState } from 'redux-main/reducers/selectors';
-import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 
 class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateTechMaintOrder> {
   componentDidMount() {

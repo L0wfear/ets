@@ -9,10 +9,7 @@ class MissionsStore extends Store {
     const missionsActons = flux.getActions('missions');
     this.register(missionsActons.getMissions, this.handleGetMissions);
     this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
-    this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
     this.register(missionsActons.getMissionTemplatesCars, this.handleGetMissionTemplatesCars);
-    this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
-    this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
     this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
     this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
     this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
@@ -27,7 +24,6 @@ class MissionsStore extends Store {
     this.state = {
       missionsList: [],
       missionSourcesList: [],
-      missionTemplatesList: [],
       selectedReportData: [],
       selectedReportDataODHS: [],
       dutyMissionsList: [],
@@ -53,9 +49,6 @@ class MissionsStore extends Store {
     this.setState({ missionSourcesList });
   }
 
-  handleGetMissionTemplates(missionTemplate) {
-    this.setState({ missionTemplatesList: missionTemplate.result });
-  }
   handleGetMissionTemplatesCars(govNumbers) {
     this.setState({ govNumberFilter: govNumbers.result.rows });
   }

@@ -54,13 +54,13 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
     const { props } = this;
 
     return (
-      <Div>
+      <div>
         <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
           <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
           <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
           </OverlayTrigger>
         </Div>
-        <Div hidden={!props.isPermittedByKey.update}className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
+        <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
           <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
             <Dropdown.Toggle disabled={!props.canSave}>
               <Glyphicon glyph="print" />
@@ -94,7 +94,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
         <Div permissions={permissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
           <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
         </Div>
-      </Div>
+      </div>
     );
   }
 }

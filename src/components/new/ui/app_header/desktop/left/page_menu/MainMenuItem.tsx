@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DefaultFirstLvlMenu, LinkFirstLvl, DefaultFirstDt } from 'components/new/ui/app_header/styled';
+import { DefaultFirstLvlMenu, LinkFirstLvl, LinkNoHashFirstLvl, DefaultFirstDt } from 'components/new/ui/app_header/styled';
 import { DivNone } from 'global-styled/global-styled';
 import SecondMenuItem from 'components/new/ui/app_header/desktop/left/page_menu/SecondMenuItem';
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
@@ -49,6 +49,16 @@ class MainMenuItem extends React.Component<any, any> {
             <span className="caret"/>
           </DefaultFirstLvlMenu>
         </LinkFirstLvl>
+      );
+    }
+
+    if (data.noHash) {
+      return (
+        <LinkNoHashFirstLvl id={`link-${key}`} href={data.path}>
+          <DefaultFirstLvlMenu>
+            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+          </DefaultFirstLvlMenu>
+        </LinkNoHashFirstLvl>
       );
     }
 

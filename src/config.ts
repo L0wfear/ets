@@ -9,6 +9,19 @@ const PATHNAME = window.location.pathname;
 const WS_PROTO = 'wss:';
 const STAND = process.env.STAND;
 
+const ADMIN_URL = {
+  develop: {
+    dev: 'http://dev2-ets.gost-group.com/admin',
+    stage: 'https://ets-test.mos.ru/admin/',
+    prod: 'http://ets.mos.ru/admin/',
+  },
+  origin: {
+    dev: 'http://dev2-ets.gost-group.com/admin/',
+    stage: `${PROTO}//${HOST}${PATHNAME}admin/`,
+    prod: `${PROTO}//${HOST}${PATHNAME}admin/`,
+  },
+};
+
 const DOC_URL = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/docs/',
@@ -27,11 +40,13 @@ const config = {
     ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
     images: 'https://ets.mos.ru/ets/data/images/',
     docs: DOC_URL.develop[process.env.STAND],
+    admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
     ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
     images: `${PROTO}//ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin[process.env.STAND],
+    admin: ADMIN_URL.origin[process.env.STAND],
   },
 };
 
@@ -65,6 +80,7 @@ const configs = {
   ws: config.develop.ws,
   images: config.develop.images,
   docs: config.develop.docs,
+  admin: config.develop.admin,
   backend: STANDS.develop.dev,
   notification_ws: notification_config.develop.dev,
   tracksCaching: `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`,
@@ -75,6 +91,7 @@ try {
   configs.ws = config[pathToConfig].ws;
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;
+  configs.admin = config[pathToConfig].admin;
   configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
   configs.notification_ws = notification_config[pathToConfig][STAND] || notification_config[pathToConfig].dev;
 } catch (e) {

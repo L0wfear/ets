@@ -39,12 +39,12 @@ class BatteryManufacturerList extends ElementsList {
     this.props.autobaseResetSetBatteryManufacturer();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }

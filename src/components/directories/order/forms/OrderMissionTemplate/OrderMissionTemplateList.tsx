@@ -2,11 +2,13 @@ import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 
-import { isEmpty } from 'lodash';
+import {
+  get,
+  isEmpty,
+} from 'lodash';
 
 import { FluxContext, connectToStores } from 'utils/decorators';
 
-import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
@@ -36,6 +38,12 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import missionActions from 'redux-main/reducers/modules/missions/actions';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
+import { DivNone } from 'global-styled/global-styled';
+
+const loadingPage = 'OrderMissionTemplateList';
 
 @connectToStores(['missions', 'employees', 'objects'])
 @FluxContext
@@ -106,7 +114,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     };
 
     switch (typeClick) {
-      case typeTemplate.missionTemplate: return flux.getActions('missions').getMissionTemplates(payload);
+      case typeTemplate.missionTemplate: return this.props.actionGetMissionTemplate(payload).then((ans) => ({
+        result: get(ans, ['payload', 'data'], []),
+      }));
       case typeTemplate.missionDutyTemplate: return flux.getActions('missions').getDutyMissionTemplates(payload);
       default: Promise.reject({ error: 'no typeClick' });
     }
@@ -320,36 +330,48 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
+        <ModalBodyPreloader page={loadingPage} typePreloader="mainpage">
+          <LoadingOverlayLegacy />
+          {
+            typeClick === typeTemplate.missionTemplate
+              ? (
+                <MissionTemplateTable
+                  data={missionsList}
+                  govNumberFilter={this.props.govNumberFilter}
+                  selected={selectedElement}
+                  checked={checkedElements}
+                  onRowSelected={this.onRowSelected}
+                  onAllRowsChecked={this.onAllChecked}
+                  onRowChecked={this.onRowChecked}
 
-        <ModalBody>
-          <Div hidden={typeClick !== typeTemplate.missionTemplate} >
-            <MissionTemplateTable
-              data={missionsList}
-              govNumberFilter={this.props.govNumberFilter}
-              selected={selectedElement}
-              checked={checkedElements}
-              onRowSelected={this.onRowSelected}
-              onAllRowsChecked={this.onAllChecked}
-              onRowChecked={this.onRowChecked}
+                  structures={structures}
+                />
+              )
+              : (
+                <DivNone />
+              )
+          }
+          {
+            typeClick === typeTemplate.missionDutyTemplate
+              ? (
+                <DutyMissionTemplateTable
+                  data={missionsList}
+                  selected={selectedElement}
+                  checked={checkedElements}
+                  onRowSelected={this.onRowSelected}
+                  onAllRowsChecked={this.onAllChecked}
+                  onRowChecked={this.onRowChecked}
+                  employeesList={this.props.employeesList}
+                  employeesIndex={this.props.employeesIndex}
 
-              structures={structures}
-            />
-          </Div>
-          <Div hidden={typeClick !== typeTemplate.missionDutyTemplate} >
-            <DutyMissionTemplateTable
-              data={missionsList}
-              selected={selectedElement}
-              checked={checkedElements}
-              onRowSelected={this.onRowSelected}
-              onAllRowsChecked={this.onAllChecked}
-              onRowChecked={this.onRowChecked}
-              employeesList={this.props.employeesList}
-              employeesIndex={this.props.employeesIndex}
-
-              structures={structures}
-            />
-          </Div>
-        </ModalBody>
+                  structures={structures}
+                />
+              )
+              : (
+                <DivNone />
+              )
+          }
+        </ModalBodyPreloader>
         <Modal.Footer>
           <Div className="inline-block">
             <Div hidden={typeClick === typeTemplate.missionDutyTemplate || hasMissionForColumn} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
@@ -373,6 +395,16 @@ export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
+    }),
+    (dispatch) => ({
+      actionGetMissionTemplate: (payload) => (
+        dispatch(
+          missionActions.actionGetMissionTemplate(
+            payload,
+            { page: loadingPage },
+          ),
+        )
+      ),
     }),
   ),
 )(OrderMissionTemplate);

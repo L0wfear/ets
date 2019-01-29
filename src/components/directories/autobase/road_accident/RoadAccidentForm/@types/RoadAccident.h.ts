@@ -1,5 +1,5 @@
 import { RoadAccident, RoadAccidentCause } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import {
   AutobaseCreateRoadAccident,
   AutobaseUpdateRoadAccident,
@@ -10,7 +10,7 @@ import { GetDriver } from 'redux-main/reducers/modules/employee/driver/@types';
 import { Driver } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsRoadAccidentFormWrap = {
   showForm: boolean;
@@ -53,6 +53,6 @@ export type PropsRoadAccident = OutputWithFormProps<
   any
 >;
 export type StateRoadAccident = {
-  roadAccidentCauseOptions: DefaultSelectListMapper<RoadAccidentCause['id'], RoadAccidentCause['name'], RoadAccidentCause>;
-  driversOptions: DefaultSelectListMapper<Driver['id'], Driver['fio_license'], Driver>;
+  roadAccidentCauseOptions: DefaultSelectListMapper<RoadAccidentCause>;
+  driversOptions: DefaultSelectOption<Driver['id'], Driver['fio_license'], Driver>[];
 };

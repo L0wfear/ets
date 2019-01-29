@@ -60,12 +60,12 @@ class EmployeesList extends ElementsList {
     this.props.employeeEmployeeResetSetEmployee();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }

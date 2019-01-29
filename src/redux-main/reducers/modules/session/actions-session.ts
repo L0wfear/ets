@@ -152,19 +152,21 @@ export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
   } = await dispatch(
     sessionGetTracksCachingAppConfig(),
   );
-  const versionFromLocalStorage = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, '');
 
-  if (!versionFromLocalStorage) {
-    const { api_version_stable } = appConfigTracksCaching;
-
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
-
-    if (!versions) {
-      versions = {};
-    }
-    versions[config.tracksCaching] = api_version_stable.toString();
-    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+  const { api_version_stable } = appConfigTracksCaching;
+  let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+  if (!versions) {
+    versions = {};
   }
+
+  const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
+  if (versionFromLocalStorage !== api_version_stable) {
+    console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
+
+    versions[config.tracksCaching] = api_version_stable.toString();
+  }
+
+  localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
 };
 
 export const checkToken: any = () => async (dispatch, getState) => {
@@ -189,6 +191,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
 export const sessionResetData: any = () => (dispatch) => {
   localStorage.removeItem(global.SESSION_KEY2);
   localStorage.removeItem(global.API__KEY2);
+  localStorage.removeItem('featureBufferPolygon');
 
   dispatch({
     type: SESSION_RESET_DATA,

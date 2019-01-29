@@ -86,6 +86,7 @@ export const ODHService = ETS_API_FACTORY.createApiServiceAdapter('odh');
 export const GeozoneSspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/ssp');
 export const GeozoneMspService = ETS_API_FACTORY.createApiServiceAdapter('geozones/msp');
 export const GeozoneFuelingWaterService = ETS_API_FACTORY.createApiServiceAdapter('geozones/fueling_water');
+export const GeozoneCarpoolService = ETS_API_FACTORY.createApiServiceAdapter('geozones/carpool');
 export const GeozoneDangerZoneService = ETS_API_FACTORY.createApiServiceAdapter('geozones/danger_zone');
 export const GeozonePgmStoreService = ETS_API_FACTORY.createApiServiceAdapter('geozones/pgm_store');
 export const GeozoneSnowStorageService = ETS_API_FACTORY.createApiServiceAdapter('geozones/snow_storage');
@@ -135,3 +136,6 @@ export { reports };
 
 /* Измнение роли */
 export const ChangeRoleService = ETS_API_FACTORY.createApiServiceAdapter('change_role');
+
+/* DITETS-2142 */
+export const CleaningMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('cleaning/municipal_facility');

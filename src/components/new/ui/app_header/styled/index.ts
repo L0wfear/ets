@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import SimpleLinkA from 'components/new/ui/simple_a/link';
 
 export const AppHeaderNav = styled.nav`
   display: flex;
@@ -42,7 +43,25 @@ export const LinkFirstLvl = styled(Link)`
   }
 `;
 
+export const LinkNoHashFirstLvl = styled(SimpleLinkA)`
+  &&& {
+    color: inherit;
+    :hover {
+      text-decoration: none;
+    }
+  }
+`;
+
 export const LinkSecontLvl = styled(LinkFirstLvl)`
+  &&& {
+    color: inherit;
+    :hover {
+      text-decoration: none;
+    }
+  }
+`;
+
+export const LinkNoHashSecontLvl = styled(SimpleLinkA)`
   &&& {
     color: inherit;
     :hover {

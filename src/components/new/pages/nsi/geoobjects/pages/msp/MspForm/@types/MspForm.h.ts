@@ -2,7 +2,7 @@ import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWra
 import { Msp, CreateMsp, UpdateMsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsMspFormWrap = {
   showForm: boolean;

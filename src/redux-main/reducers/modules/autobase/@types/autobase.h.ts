@@ -31,7 +31,7 @@ export type BatteryBrand = {
   manufacturer_name: string | null;
 };
 export type BatteryManufacturer = {
-  id?: number | null;
+  id: number | null;
   name: string | null;
 };
 export type BatteryOnCar = {
@@ -95,12 +95,50 @@ export type InsuranceType = {
 };
 
 export type Car = {
-  asuods_id: number;
-  gov_number: string;
-  type_name: string;
+  asuods_id: number | null;
+  available: boolean;
+  available_to_bind: boolean;
+  body_capacity: number | null;
+  car_group_id: number | null;
+  car_group_name: string;
+  company_id: number | null;
+  company_name: string;
+  company_structure_id: number | null;
+  company_structure_name: string | null;
+  condition: number | null;
+  condition_bool: boolean;
+  condition_text: string;
+  equipment_sensors_str: string;
+  equipment_sensors_types_ids: number[];
+  exploitation_date_start: string | null;
+  for_driver_license: boolean;
+  for_special_license: boolean;
+  fuel_correction_rate: number | null;
   full_model_name: string;
-  special_model_name: string | null;
-  model_name: string | null;
+  garage_number: string;
+  gov_number: string;
+  gps_code: string;
+  is_common: boolean;
+  is_trailer: boolean;
+  level_sensors_num: number | null;
+  load_capacity: number | null;
+  max_speed: number | null;
+  model_id: number | null;
+  model_name: string;
+  note: string;
+  okrug_id: number | null;
+  okrug_name: string;
+  owner_id: number | null;
+  owner_name: string;
+  parking_address: string;
+  season: number | null;
+  season_label: number | null;
+  season_name: string;
+  special_model_id: number | null;
+  special_model_name: string;
+  type_id: number | null;
+  type_image_name: string;
+  type_name: string;
 };
 
 export type CarFuncTypes = {

@@ -24,13 +24,14 @@ type ConfigWithForm<P, F, S> = {
 
 type WithFormConfigProps = {
   element: any,
-  handleHide?: <A>(isSubmited: boolean, result?: A) => any;
+  handleHide?: <A>(isSubmitted: boolean, result?: A) => any;
   createAction?: <T extends any[], A extends any>(...arg: T) => A;
   updateAction?: <T extends any[], A extends any>(...arg: T) => A;
 };
 
 type WithFormState<F> = {
   formState: F;
+  originalFormState: F,
   formErrors: FormErrorType<F>;
   canSave: boolean;
   propertiesByKey: {
@@ -85,6 +86,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
         const newState = {
           formState,
+          originalFormState: formState,
           formErrors,
           propertiesByKey: config.schema.properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
             newObj[key] = {
@@ -124,10 +126,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [objChangeOrName]: get(newRawValue, ['target', 'value'], newRawValue),
           };
 
-        setImmediate(() => {
-          const { propertiesByKey } = this.state;
-          const formState = { ...this.state.formState };
-
+        this.setState(({ propertiesByKey, formState }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
             if (key in propertiesByKey) {
@@ -171,13 +170,13 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             canSave: this.state.canSave,
           };
 
-          this.setState({
+          return {
             ...newState,
             canSave: this.canSave({
               ...this.state,
               ...newState,
             }),
-          });
+          };
         });
       }
       submitAction = async <T extends any[], A extends any>(...payload: T) => {
@@ -214,15 +213,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             throw new Error('Определи функцию updateAction в конфиге withForm');
           }
         }
-        const { handleHide } = this.props;
 
-        if (isFunction(handleHide)) {
-          handleHide(true, result);
-        }
         return result;
       }
 
-      defaultSubmit = () => {
+      defaultSubmit = async () => {
         const formatedFormState = { ...this.state.formState };
         config.schema.properties.forEach(({ key, type }) => {
           let value: any = formatedFormState[key];
@@ -234,7 +229,15 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           formatedFormState[key] = value;
         });
 
-        this.submitAction(formatedFormState);
+        const result = await this.submitAction(formatedFormState);
+
+        if (result) {
+          if (isFunction(this.props.handleHide)) {
+            this.props.handleHide(true, result);
+          }
+        }
+
+        return result;
       }
 
       render() {
@@ -242,6 +245,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           <Component
             {...this.props}
             formState={this.state.formState}
+            originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}
             canSave={this.state.canSave}
             handleChange={this.handleChange}

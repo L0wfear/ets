@@ -41,12 +41,12 @@ class TireBrandList extends ElementsList {
     this.props.autobaseResetSetTireModel();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }

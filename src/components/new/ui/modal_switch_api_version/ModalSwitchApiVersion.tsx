@@ -30,10 +30,15 @@ const defaultNonVersionoption = {
   label: 'Без версии',
 };
 
+const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
+
 class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
   state = {
     serviceValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], null),
-    tracksCachingValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], null),
+    tracksCachingValue: (
+      get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [keyTracksCachingForTest], null)
+      || get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], null)
+    ),
   };
 
   refresh = () => {
@@ -59,7 +64,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     if (!versions) {
       versions = {};
     }
-    versions[config.tracksCaching] = tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
+    versions[keyTracksCachingForTest] = tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
     localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
     this.setState({
       tracksCachingValue: tracksCachingValue === -1 ? '' : tracksCachingValue,

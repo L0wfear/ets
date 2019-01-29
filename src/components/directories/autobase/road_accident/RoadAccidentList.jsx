@@ -67,12 +67,12 @@ class RoadAccidentList extends ElementsList {
     });
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.loadMainData();
       changeState.selectedElement = null;
     }

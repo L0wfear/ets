@@ -1,5 +1,5 @@
 import { Repair, Car, RepairCompany, RepairType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import {
   AutobaseCreateRepair,
   AutobaseUpdateRepair,
@@ -10,7 +10,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { GetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/@types';
 import { GetRepairType } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/@types';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsRepairFormWrap = {
   showForm: boolean;
@@ -54,8 +54,8 @@ export type PropsRepair = OutputWithFormProps<
   any
 >;
 export type StateRepair = {
-  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
-  repairCompanyOptions: DefaultSelectListMapper<RepairCompany['id'], RepairCompany['name'], RepairCompany>;
-  repairTypeOptions: DefaultSelectListMapper<RepairType['id'], RepairType['name'], RepairType>;
-  statusOptions: DefaultSelectListMapper<string, string, any>;
+  carListOptions: DefaultSelectOption<Car['asuods_id'], Car['gov_number'], Car>[];
+  repairCompanyOptions: DefaultSelectListMapper<RepairCompany>;
+  repairTypeOptions: DefaultSelectListMapper<RepairType>;
+  statusOptions: DefaultSelectListMapper<any>;
 };

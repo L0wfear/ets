@@ -5,7 +5,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/car_func_types/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsCarFuncTypesFormWrap = {
   showForm: boolean;

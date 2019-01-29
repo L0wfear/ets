@@ -70,7 +70,7 @@ type TGetTechnicalOperationData = (
   formState: IFormState,
   isTemplate: boolean,
   fromOrder: boolean,
-  fromWaybill: boolean,
+  withDefineTypeId: boolean,
   missionSourceAction: () => Promise<any>,
   technicalOperationsActions: (props: ITechnicalOperationActionsProps) => Promise<any>,
 ) => Promise<{
@@ -82,11 +82,11 @@ type TGetTechnicalOperationData = (
 /**
  * @param formState состояние формы
  * @param fromOrder создание из реестра факсограмм?
- * @param fromWaybill создание из реестра ПЛ?
+ * @param withDefineTypeId тс нельзя изменить
  * @param missionSourceAction Получение списка источников заданий
  * @param technicalOperationsActions Получение списка тех операций
  */
-export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, isTemplate, fromOrder, fromWaybill, missionSourceAction, technicalOperationsActions) =>
+export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, isTemplate, fromOrder, withDefineTypeId, missionSourceAction, technicalOperationsActions) =>
   missionSourceAction()
     .then(({ order_mission_source_id }) => {
       const kind_task_ids =
@@ -102,7 +102,7 @@ export const getTechnicalOperationData: TGetTechnicalOperationData = (formState,
       ]);
     })
     .then(([ { result: technicalOperationsList }, kind_task_ids ]) => {
-      if ((fromWaybill || formState.status === 'not_assigned') && formState.type_id) {
+      if ((withDefineTypeId || formState.status === 'not_assigned') && formState.type_id) {
         return {
           TECH_OPERATIONS: makeTechnicalOperationOptionfFromWaybill(technicalOperationsList, formState),
           kind_task_ids,
@@ -178,18 +178,18 @@ export const handleRouteFormHide = (formState, stateData, routeActionGetRoutesBy
 export const getNormDataByNormatives = (normatives, kind_task_ids, action) =>
   action({ norm_ids: normatives.map(({ id }) => id).join(','), kind_task_ids }).then(({ result: normativesData }) => normativesData)
 ;
-export const getCarsByNormNormatives = (normatives, formState, fromWaybill, action) => {
-  if (!formState.status && !fromWaybill || formState.can_edit_car_and_route) {
+export const getCarsByNormNormatives = (normatives, formState, withDefineTypeId, action) => {
+  if (!formState.status && !withDefineTypeId || formState.can_edit_car_and_route) {
     return action({ norm_ids: normatives.map(({ id }) => id).join(',') }).then(({ result: { rows: carsList } }) => carsList);
   }
 
   return Promise.resolve(null);
 };
 
-export const getDataByNormatives = (normatives, kind_task_ids, formState, fromWaybill, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
+export const getDataByNormatives = (normatives, kind_task_ids, formState, withDefineTypeId, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
   Promise.all([
     getNormDataByNormatives(normatives, kind_task_ids, getTechOperationsByNormIds),
-    getCarsByNormNormatives(normatives, formState, fromWaybill, getCarsByNormIds),
+    getCarsByNormNormatives(normatives, formState, withDefineTypeId, getCarsByNormIds),
   ])
   .then(([ normativesData, carsList ]) => {
     const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);

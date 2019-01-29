@@ -10,11 +10,16 @@ import permissions_mission from 'components/missions/mission/config-data/permiss
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
+import MissionTemplateFormLazy from 'components/missions/mission_template/form/template';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
 import { getWarningNotification } from 'utils/notifications';
 import { connect } from 'react-redux';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
+import missionActions from 'redux-main/reducers/modules/missions/actions';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+const loadingPageName = 'mission_template';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -44,7 +49,7 @@ const ButtonCopyTemplateMission = withRequirePermissionsNew({
 @connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'mission_template',
-  listName: 'missionTemplatesList',
+  listName: 'missionTemplateList',
   permissions,
   tableComponent: MissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
@@ -102,16 +107,14 @@ class MissionTemplatesJournal extends CheckableElementsList {
       }
 
       try {
-        await Promise.all(
-          checkedMissions.map(mission => (
-            this.context.flux.getActions('missions').removeMissionTemplate(mission.id)
-          )),
+        await this.props.actionRemoveMissionTemplates(
+          checkedMissions,
         );
       } catch (e) {
-        //
+        console.warn(e); // eslint-disable-line
       }
 
-      this.loadMissionTemplate();
+      this.loadMissionTemplateData();
       this.setState({
         checkedElements: {},
         selectedElement: null,
@@ -119,17 +122,16 @@ class MissionTemplatesJournal extends CheckableElementsList {
     }
   }
 
-  loadMissionTemplate(payload) {
-    this.context.flux.getActions('missions').getMissionTemplates(payload);
+  loadMissionTemplateData() {
+    this.props.actionGetAndSetInStoreMissionTemplate();
+    this.context.flux.getActions('missions').getMissionTemplatesCars();
   }
 
   init() {
     const { flux } = this.context;
-    const { payload = {} } = this.props;
-    this.loadMissionTemplate(payload);
+    this.loadMissionTemplateData();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('objects').getCars();
-    flux.getActions('missions').getMissionTemplatesCars();
   }
 
   /**
@@ -189,15 +191,36 @@ class MissionTemplatesJournal extends CheckableElementsList {
     }));
   }
 
+  onFormHideCreateTemplate = (isSubmitted, result) => {
+    console.log(isSubmitted, result)
+    if (isSubmitted) {
+      this.loadMissionTemplateData();
+    }
+
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: {},
+    });
+  }
+
   getForms = () => {
     const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
     const { carsIndex = {} } = this.props;
 
     return [
+      <MissionTemplateFormLazy
+        key="template_form"
+        onFormHide={this.onFormHideCreateTemplate}
+        showForm={this.state.showForm && this.state.formType !== 'MissionsCreationForm'}
+        element={this.state.selectedElement}
+        page={loadingPageName}
+      />,
       <MissionTemplateFormWrap
         key="form"
         onFormHide={this.onFormHide}
-        showForm={this.state.showForm}
+        showForm={this.state.showForm && this.state.formType === 'MissionsCreationForm'}
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={missions}
@@ -242,26 +265,55 @@ class MissionTemplatesJournal extends CheckableElementsList {
     return buttons;
   }
 
+  getAdditionalFormProps() {
+    return {
+      page: loadingPageName,
+    };
+  }
+
   getAdditionalProps = () => {
     const { structures } = this.props.userData;
     const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
 
-    const missionTemplatesList = this.props.missionTemplatesList
+    const missionTemplateList = this.props.missionTemplateList
       .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
 
     return {
       structures,
       noHeader: this.props.renderOnly,
       noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий' : null,
-      data: missionTemplatesList,
+      data: missionTemplateList,
     };
   }
 }
 
 export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
   connect(
     state => ({
+      missionTemplateList: getMissionsState(state).missionTemplateList,
       userData: getSessionState(state).userData,
+    }),
+    dispatch => ({
+      actionGetAndSetInStoreMissionTemplate: () => (
+        dispatch(
+          missionActions.actionGetAndSetInStoreMissionTemplate(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+      actionRemoveMissionTemplates: missionTemplateArr => (
+        dispatch(
+          missionActions.actionRemoveMissionTemplates(
+            missionTemplateArr,
+            { page: loadingPageName },
+          ),
+        )
+      ),
     }),
   ),
 )(MissionTemplatesJournal);

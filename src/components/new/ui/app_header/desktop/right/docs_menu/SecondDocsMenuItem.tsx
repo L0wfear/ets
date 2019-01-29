@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/right/docs_menu/styled';
-import { DefaultSecondLvlMenu, LinkSecontLvl } from 'components/new/ui/app_header/styled';
+import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
 import { showHeaderMenu } from 'components/new/ui/app_header/utils';
@@ -37,6 +37,16 @@ class SecondDocsMenuItem extends React.Component<any, any> {
             <span className="caret"/>
           </DefaultSecondLvlMenu>
         </LinkSecontLvl>
+      );
+    }
+
+    if (data.noHash) {
+      return (
+        <LinkNoHashSecontLvl id={`link-${key}`} href={data.path}>
+          <DefaultSecondLvlMenu>
+            <span>{data.title}</span>
+          </DefaultSecondLvlMenu>
+        </LinkNoHashSecontLvl>
       );
     }
 

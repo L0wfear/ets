@@ -1,5 +1,5 @@
 import { InsurancePolicy, InsuranceType, Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import {
   AutobaseCreateInsurancePolicy,
   AutobaseUpdateInsurancePolicy,
@@ -8,7 +8,7 @@ import { GetInsurancePolicyType } from 'redux-main/reducers/modules/autobase/act
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsInsurancePolicyFormWrap = {
   showForm: boolean;
@@ -49,6 +49,6 @@ export type PropsInsurancePolicy = OutputWithFormProps<
   any
 >;
 export type StateInsurancePolicy = {
-  insuranceTypeOptions: DefaultSelectListMapper<InsuranceType['id'], InsuranceType['name'], InsuranceType>;
-  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+  insuranceTypeOptions: DefaultSelectListMapper<InsuranceType>;
+  carListOptions: DefaultSelectOption<Car['asuods_id'], Car['gov_number'], Car>[];
 };

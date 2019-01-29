@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const RouteGeoListContainer = styled.div<{ height?: string }>`
-  height: ${({ height }) => height ? height : '500px'};
+  max-height: ${({ height }) => height ? height : '500px'};
   overflow: scroll;
 `;
 

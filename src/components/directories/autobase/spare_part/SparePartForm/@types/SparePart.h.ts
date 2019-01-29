@@ -8,7 +8,7 @@ import { GetMeasureUnit } from 'redux-main/reducers/modules/autobase/actions_by_
 import { GetSparePartGroup } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsSparePartFormWrap = {
   showForm: boolean;
@@ -47,6 +47,6 @@ export type PropsSparePart = OutputWithFormProps<
   any
 >;
 export type StateSparePart = {
-  measureUnitOptions: DefaultSelectListMapper<MeasureUnit['id'], MeasureUnit['name'], MeasureUnit>;
-  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup['id'], SparePartGroup['name'], SparePartGroup>;
+  measureUnitOptions: DefaultSelectListMapper<MeasureUnit>;
+  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup>;
 };

@@ -27,11 +27,15 @@ import { compose } from 'recompose';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
-
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
 import config from 'config';
 import { getSessionState } from 'redux-main/reducers/selectors';
+
+import { loadCarActualIndex } from 'redux-main/trash-actions/car';
+import {
+  MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
+} from 'components/monitor/redux-main/models/monitor-page';
 
 class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
 
@@ -67,6 +71,10 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
     };
   }
 
+  componentDidMount() {
+    this.props.loadCarActualIndex();
+  }
+
   componentWillUnmount() {
     const { ws } = this.state;
     if (typeof ws !== 'undefined' && ws !== null) {
@@ -81,9 +89,12 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
       ...this.state.carsTrackState,
       ...data,
     };
+    const {
+      carActualGpsNumberIndex,
+    } = this.props;
 
     const countNotInTouch = Object.values(carsTrackState).reduce((count: number, value: any) => {
-      if (value.status === 4) {
+      if (value.status === 4 && carActualGpsNumberIndex[value.id]) {
         count++;
       }
       return count;
@@ -157,11 +168,17 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
       userToken: getSessionState(state).token,
+      carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
     }),
     (dispatch) => ({
       setInfoData: (infoData) => (
         dispatch(
           dashboardSetInfoDataInCarInWorkOverall(infoData),
+        )
+      ),
+      loadCarActualIndex: () => (
+        dispatch(
+          loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX),
         )
       ),
     }),

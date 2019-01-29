@@ -138,7 +138,7 @@ export default class CarActions extends Actions {
       gps_code,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
-      version: get(JSON.parse(localStorage.getItem(global.API__KEY2)), [config.tracksCaching], ''),
+      version: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], ''),
     };
 
     return InfoService.get(payload);

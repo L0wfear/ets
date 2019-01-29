@@ -6,7 +6,7 @@ import {
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTireFormWrap = {
   showForm: boolean;

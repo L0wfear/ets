@@ -371,7 +371,7 @@ export const registrySetSelectedRowToShowInForm: any = (registryKey, selectedRow
   );
 };
 
-export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmited) => (dispatch, getState) => {
+export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
   const {
     registry: {
       [registryKey]: {
@@ -380,7 +380,7 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmite
     },
   } = getState();
 
-  if (isSubmited) {
+  if (isSubmitted) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );

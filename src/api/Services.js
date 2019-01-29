@@ -135,3 +135,6 @@ export { reports };
 
 /* Измнение роли */
 export const ChangeRoleService = ETS_API_FACTORY.createApiServiceAdapter('change_role');
+
+/* DITETS-2142 */
+export const CleaningMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('cleaning/municipal_facility');

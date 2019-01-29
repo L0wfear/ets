@@ -39,12 +39,12 @@ class RepairCompanyList extends ElementsList {
     this.props.autobaseResetSetRepairCompany();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }

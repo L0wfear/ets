@@ -40,12 +40,12 @@ class BatteryRegList extends ElementsList {
     this.props.autobaseResetSetBatteryRegistry();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }

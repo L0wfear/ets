@@ -4,8 +4,6 @@ import {
   keyBy,
   clone,
   cloneDeep,
-  keys,
-  omit,
 } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
@@ -290,11 +288,6 @@ export default class MissionsActions extends Actions {
       return MissionService.post(payload, false, 'json');
     });
     return Promise.all(queries);
-  }
-
-  removeMissionTemplate(id) {
-    const payload = { id };
-    return MissionTemplateService.delete(payload, false, 'json');
   }
 
   updateMissionTemplate(missionTemplate) {

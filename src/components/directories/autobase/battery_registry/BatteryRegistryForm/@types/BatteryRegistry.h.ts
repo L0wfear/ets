@@ -6,7 +6,7 @@ import {
 import { GetBatteryBrand } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_brand/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsBatteryRegistryFormWrap = {
   showForm: boolean;

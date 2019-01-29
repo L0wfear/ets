@@ -30,7 +30,7 @@ export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extend
 )
 @connectToStores(['loading'])
 @FluxContext
-export default class LoadingOverlay extends React.Component {
+class LoadingOverlay extends React.Component {
   state = {
     show: true,
   };
@@ -63,3 +63,5 @@ export default class LoadingOverlay extends React.Component {
     return <div style={{ display: 'none' }} />;
   }
 };
+
+export default LoadingOverlay;

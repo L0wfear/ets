@@ -155,8 +155,8 @@ class RoutesList extends React.PureComponent<any, any> {
     }
   }
 
-  onFormHide = (isSubmited, route) => {
-    if (isSubmited === true && route) {
+  onFormHide = (isSubmitted, route) => {
+    if (isSubmitted === true && route) {
       this.refreshRoutes({ showForm: false })
         .then(() => this.selectRoute(route.id, true));
     } else {

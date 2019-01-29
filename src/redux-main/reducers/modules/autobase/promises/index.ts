@@ -1,5 +1,5 @@
 import { AutoBase, CarService, TypesService } from 'api/Services';
-import { get } from 'lodash';
+import { get, keyBy } from 'lodash';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 
 /* ------------- AUTOBASE ------------- */
@@ -46,21 +46,28 @@ export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => 
 };
 
 /* ------------- CARS ------------- */
-export const autobaseLoadCars = (payload = {}) => (
-  CarService.get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
+export const autobaseLoadCars = (payload = {}) => {
+  return (
+    CarService.get({ ...payload })
+      .catch((error) => {
+        console.log(error); // tslint:disable-line:no-console
 
-      return {
-        result: {
-          rows: [],
-        },
-      };
-    })
-    .then((ans) => ({
-      data: get(ans, ['result', 'rows'], []),
-    }))
-);
+        return {
+          result: {
+            rows: [],
+          },
+        };
+      })
+      .then((ans) => ({
+        data: get(ans, ['result', 'rows'], []),
+        dataIndex: keyBy(
+          get(ans, ['result', 'rows'], []),
+          'asuods_id',
+        ),
+      }))
+  );
+};
+
 export const autobaseUpdateCar = (ownPayload) => {
   return Promise.reject();
 };

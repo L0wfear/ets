@@ -39,12 +39,12 @@ class BatteryBrandList extends ElementsList {
     this.props.autobaseResetSetBatteryBrand();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }

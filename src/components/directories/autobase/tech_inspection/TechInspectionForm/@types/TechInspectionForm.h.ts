@@ -1,5 +1,4 @@
 import { TechInspection, Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import {
   AutobaseCreateTechInspection,
   AutobaseUpdateTechInspection,
@@ -8,8 +7,9 @@ import {
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTechInspectionFormWrap = {
   showForm: boolean;
@@ -51,5 +51,5 @@ export type PropsTechInspection = OutputWithFormProps<
   any
 >;
 export type StateTechInspection = {
-  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+  carListOptions: DefaultSelectOption<Car['asuods_id'], Car['gov_number'], Car>[];
 };

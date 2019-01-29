@@ -2,7 +2,7 @@ import { CompanyStructure, IStateCompanyStructure } from 'redux-main/reducers/mo
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsCompanyStructureFormWrap = {
   showForm: boolean;

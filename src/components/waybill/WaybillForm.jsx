@@ -594,6 +594,45 @@ class WaybillForm extends Form {
     }, []);
   }
 
+  handleFuelMethodChange = (value) => {
+    if (value !== 'fuel_card') {
+      this.handleChange('fuel_card_id', null);
+      this.props.handleMultipleChange({
+        fuel_card_id: null,
+        fuel_method: value,
+      });
+    } else {
+      this.handleChange('fuel_method', value);
+    }
+  }
+
+  handleEquipmentFuelMethodChange = (value) => {
+    if (value !== 'fuel_card') {
+      this.handleChange('fuel_card_id', null);
+      this.props.handleMultipleChange({
+        equipment_fuel_card_id: null,
+        equipment_fuel_method: value,
+      });
+    } else {
+      this.handleChange('equipment_fuel_method', value);
+    }
+  }
+
+  handleFuelTypeChange = (value) => {
+    this.props.handleMultipleChange({
+      fuel_card_id: null,
+      fuel_type: value,
+    });
+  }
+
+  handleEquipmentFuelTypeChange = (value) => {
+    this.props.handleMultipleChange({
+      equipment_fuel_card_id: null,
+      equipment_fuel_type: value,
+    });
+  }
+
+
   render() {
     const {
       loadingFields,
@@ -628,6 +667,7 @@ class WaybillForm extends Form {
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
+    // для теста если отвалился бек [{label: 'FUEL_CARDS', value: 'FUEL_CARDS' }] || 
     const FUEL_CARDS = this.getFuelCardsListOptions(fuelCardsList, state.fuel_type);
     const EQUIPMENT_FUEL_CARDS = this.getFuelCardsListOptions(fuelCardsList, state.equipment_fuel_type);
 
@@ -1067,7 +1107,7 @@ class WaybillForm extends Form {
                     disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     options={FUEL_TYPES}
                     value={state.fuel_type}
-                    onChange={this.handleChange.bind(this, 'fuel_type')}
+                    onChange={this.handleFuelTypeChange}
                   />
                   <Field
                     id="fuel-method"
@@ -1078,7 +1118,7 @@ class WaybillForm extends Form {
                     disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
                     options={FUEL_METHOD}
                     value={state.fuel_method}
-                    onChange={this.handleChange.bind(this, 'fuel_method')}
+                    onChange={this.handleFuelMethodChange}
                   />
                   <Field
                     id="fuel-card-id"
@@ -1227,7 +1267,7 @@ class WaybillForm extends Form {
                     disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     options={FUEL_TYPES}
                     value={state.equipment_fuel_type}
-                    onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
+                    onChange={this.handleEquipmentFuelTypeChange}
                   />
                   <Field
                     id="equipment-fuel-method"
@@ -1238,7 +1278,7 @@ class WaybillForm extends Form {
                     disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
                     options={FUEL_METHOD}
                     value={state.equipment_fuel_method}
-                    onChange={this.handleChange.bind(this, 'equipment_fuel_method')}
+                    onChange={this.handleEquipmentFuelMethodChange}
                   />
                   <Field
                     id="equipment-fuel-card-id"

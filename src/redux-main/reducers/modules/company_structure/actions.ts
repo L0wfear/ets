@@ -47,7 +47,7 @@ export const getAndSetInStoreCompanyStructure = (payload = {}, { page, path }: {
   };
 };
 export const createCompanyStructure: any = (companyStructureRaw: CompanyStructureLinear, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { companyStructure } } = await dispatch({
+  const { payload: companyStructure } = await dispatch({
     type: 'none',
     payload: promiseCreateCompanyStructure(companyStructureRaw),
     meta: {
@@ -60,7 +60,7 @@ export const createCompanyStructure: any = (companyStructureRaw: CompanyStructur
   return companyStructure;
 };
 export const updateCompanyStructure: any = (companyStructureOld: CompanyStructureLinear, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { companyStructure } } = await dispatch({
+  const { payload: companyStructure } = await dispatch({
     type: 'none',
     payload: promiseUpdateCompanyStructure(companyStructureOld),
     meta: {

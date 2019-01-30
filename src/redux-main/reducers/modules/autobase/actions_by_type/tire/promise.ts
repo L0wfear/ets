@@ -41,12 +41,16 @@ export const createSetTire = (rawTire) => {
     payload,
   );
 };
-export const cloneSetTire = (tireId) => {
-  return AutoBase.path(AUTOBASE[tire]).path(tireId).path('copy').post(
+export const cloneSetTire = async (tireId) => {
+  const response = await AutoBase.path(AUTOBASE[tire]).path(tireId).path('copy').post(
     {},
     false,
     'json',
   );
+
+  const data = get(response, ['result', 'rows', 0], null);
+
+  return data;
 };
 
 export const updateSetTire = (oldTire) => {

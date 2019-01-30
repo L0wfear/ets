@@ -45,7 +45,7 @@ export const propulsionTypeGetAndSetInStore = (payload = {}, { page, path }: { p
   };
 };
 export const autobaseCreatePropulsionType: any = (propulsionTypeOld: PropulsionType, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { propulsionType } } = await dispatch({
+  const { payload: propulsionType } = await dispatch({
     type: 'none',
     payload: createSetPropulsionType(propulsionTypeOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreatePropulsionType: any = (propulsionTypeOld: PropulsionT
   return propulsionType;
 };
 export const autobaseUpdatePropulsionType: any = (propulsionTypeOld: PropulsionType, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { propulsionType } } = await dispatch({
+  const { payload: propulsionType } = await dispatch({
     type: 'none',
     payload: updateSetPropulsionType(propulsionTypeOld),
     meta: {

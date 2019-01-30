@@ -49,10 +49,10 @@ export const employeeGetAndSetInStore = (payload = {}, { page, path }: { page: s
     employeeIndex: dataIndex,
   };
 };
-export const employeeCreateEmployee: any = (batteryBrandOld: Employee, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryBrand } } = await dispatch({
+export const employeeCreateEmployee: any = (employeeOld: Employee, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload: employee } = await dispatch({
     type: 'none',
-    payload: createSetEmployee(batteryBrandOld),
+    payload: createSetEmployee(employeeOld),
     meta: {
       promise: true,
       page,
@@ -60,12 +60,12 @@ export const employeeCreateEmployee: any = (batteryBrandOld: Employee, { page, p
     },
   });
 
-  return batteryBrand;
+  return employee;
 };
-export const employeeUpdateEmployee: any = (batteryBrandOld: Employee, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryBrand } } = await dispatch({
+export const employeeUpdateEmployee: any = (employeeOld: Employee, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload: employee } = await dispatch({
     type: 'none',
-    payload: updateSetEmployee(batteryBrandOld),
+    payload: updateSetEmployee(employeeOld),
     meta: {
       promise: true,
       page,
@@ -73,7 +73,7 @@ export const employeeUpdateEmployee: any = (batteryBrandOld: Employee, { page, p
     },
   });
 
-  return batteryBrand;
+  return employee;
 };
 export const employeeRemoveEmployee = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({

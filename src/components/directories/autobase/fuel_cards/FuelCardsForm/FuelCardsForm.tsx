@@ -9,10 +9,6 @@ import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { fuelCardsFormSchema } from 'components/directories/autobase/fuel_cards/FuelCardsForm/fuel-cards-from-schema';
 import { get } from 'lodash';
-import {
-  autobaseCreateFuelCards,
-  fuelCardsUpdate,
-} from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { getDefaultFuelCardsElement } from 'components/directories/autobase/fuel_cards/FuelCardsForm/utils';
@@ -32,45 +28,22 @@ import { DivNone } from 'global-styled/global-styled';
 import {
   getSessionState,
 } from 'redux-main/reducers/selectors';
+import { getSessionCompanyOptions } from 'redux-main/reducers/modules/session/selectors';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {
   state = {
     fuelTypeOptions: [],
-    companyOptions: [],
   };
 
   componentDidMount() {
     this.loadFuelType();
-    this.setCompaniesListOptionsFromProps();
   }
   loadFuelType() {
     const fuelTypeList = this.getFuelTypesList(this.props.fuelType);
     this.setState({ fuelTypeOptions: fuelTypeList.map(defaultSelectListMapper) });
   }
 
-  setCompaniesListOptionsFromProps() {
-    const {
-      companiesList,
-    } = this.props;
-    this.setState({
-      companyOptions: companiesList.map(({ asuods_id, name, ...other }) =>
-      ({
-        value: asuods_id,
-        label: name,
-        rowData: {
-          asuods_id,
-          name,
-          ...other,
-        }
-      })),
-    });
-  }
-
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
   handleHide = () => {
     this.props.handleHide(false);
   }
@@ -89,20 +62,20 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
       formErrors: errors,
       page,
       path,
-      companiesList,
+      companyOptions,
       userCompany,
     } = this.props;
     const {
       fuelTypeOptions,
-      companyOptions,
     } = this.state;
 
     const IS_CREATING = !state.id;
 
-    const title =
+    const title = (
       !IS_CREATING
-      ? 'Изменение записи'
-      : 'Создание записи';
+        ? 'Изменение записи'
+        : 'Создание записи'
+    );
 
     const isPermitted =
           !IS_CREATING
@@ -110,7 +83,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
           : this.props.isPermittedToCreate;
 
     const companiesFieldIsDisable =
-          companiesList.length <= 1
+        companyOptions.length <= 1
           ? true
           : false;
 
@@ -132,7 +105,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 label="Номер"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="number"
                 disabled={!isPermitted}
               />
@@ -142,7 +115,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 error={errors.fuel_type}
                 options={fuelTypeOptions}
                 value={state.fuel_type}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fuel_type"
                 disabled={!isPermitted}
               />
@@ -152,7 +125,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 error={errors.company_id}
                 options={companyOptions}
                 value={companiesDefaultValue}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="company_id"
                 disabled={!isPermitted || companiesFieldIsDisable}
               />
@@ -179,8 +152,8 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
 export default compose<PropsFuelCards, OwnFuelCardsProps>(
   connect<StatePropsFuelCards, DispatchPropsFuelCards, OwnFuelCardsProps, ReduxState>(
     (state) => ({
-      companiesList: getSessionState(state).userData.companies,
-      userCompany: {
+      companyOptions: getSessionCompanyOptions(state),
+      userCompany: { // в два свойства или в userData
         company_id: getSessionState(state).userData.company_id,
         name: getSessionState(state).userData.company_name,
       },
@@ -189,7 +162,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     (dispatch, { page, path }) => ({
       createAction: (formState) => (
         dispatch(
-          autobaseCreateFuelCards(
+          autobaseActions.autobaseCreateFuelCards(
             formState,
             { page, path },
           ),
@@ -197,7 +170,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       ),
       updateAction: (formState) => (
         dispatch(
-          fuelCardsUpdate(
+          autobaseActions.fuelCardsUpdate(
             formState,
             { page, path },
           ),
@@ -209,16 +182,16 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     uniqField: 'id',
     mergeElement: (props) => {
       const {
-        companiesList,
+        companyOptions,
         userCompany,
       } = props;
 
-      const id = props.element ? props.element.id : null;
-      const IS_CREATING = !id;
+      const IS_CREATING = !get(props, ['element', 'id'], null);
       const companiesFieldIsDisable =
-            companiesList.length <= 1
+        companyOptions.length <= 1
               ? true
               : false;
+
       const companiesDefaultValue =
             IS_CREATING && companiesFieldIsDisable
               ? userCompany.company_id

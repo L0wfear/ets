@@ -16,6 +16,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 import memoize from 'memoize-one';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types/index';
+import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
 class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFieldMunicipalFacilityMissionTemplate, StateFieldMunicipalFacilityMissionTemplate> {
   componentDidMount() {
@@ -101,7 +102,7 @@ class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFie
       (
         municipalFacilityList: MunicipalFacility[],
       ) => (
-        municipalFacilityList.map((mfData) => ({
+        municipalFacilityList.map<DefaultSelectOption<MunicipalFacility['municipal_facility_id'], MunicipalFacility['municipal_facility_name'], MunicipalFacility>>((mfData) => ({
           value: mfData.municipal_facility_id,
           label: mfData.municipal_facility_name,
           rowData: mfData,

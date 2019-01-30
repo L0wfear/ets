@@ -4,13 +4,13 @@ import {
   EmployeeUpdateEmployee,
   EmployeeCreateEmployee,
 } from 'redux-main/reducers/modules/employee/employee/@types';
-import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { GetPosition } from 'redux-main/reducers/modules/employee/position/@types';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -30,7 +30,7 @@ export type StatePropsEmployee = {
 export type DispatchPropsEmployee = {
   createAction: EmployeeCreateEmployee;
   updateAction: EmployeeUpdateEmployee;
-  autobaseGetSetCar: GetCar;
+  autobaseGetSetCar: typeof autobaseActions.autobaseGetSetCar;
   employeePositionGetSetPosition: GetPosition;
   companyStructureActions: any;
 };

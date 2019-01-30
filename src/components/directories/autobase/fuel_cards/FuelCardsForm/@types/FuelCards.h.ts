@@ -1,19 +1,18 @@
 import {
   FuelCards,
-  Company,
   FuelType,
-  AutobaseCreateFuelCards,
-  AutobaseUpdateFuelCards,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 import {
   DefaultSelectListMapper,
-  DefaultSelectOption,
 } from 'components/ui/input/ReactSelect/utils';
 
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { GetSessionCompanyOptionsAns } from 'redux-main/reducers/modules/session/selectors';
 import {
   OutputWithFormProps,
 } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
@@ -28,13 +27,13 @@ export type PropsFuelCardsFormWrap = {
 };
 
 export type StatePropsFuelCards = {
-  companiesList: Company[] | null;
-  fuelType: object | null;
-  userCompany: Company | null;
+  companyOptions: GetSessionCompanyOptionsAns;
+  fuelType: InitialStateSession['appConfig']['enums']['FUEL_TYPE'];
+  userCompany: Company | null; // переписать
 };
 export type DispatchPropsFuelCards = {
-  createAction: AutobaseCreateFuelCards;
-  updateAction: AutobaseUpdateFuelCards;
+  createAction: typeof autobaseActions.autobaseCreateFuelCards;
+  updateAction: typeof autobaseActions.fuelCardsUpdate;
 };
 export type OwnFuelCardsProps = {
   element: FuelCards | null;
@@ -56,6 +55,5 @@ export type PropsFuelCards = OutputWithFormProps<
   any
 >;
 export type StateFuelCards = {
-  companyOptions: DefaultSelectOption<Company['asuods_id'], Company['name'], Company>[];
   fuelTypeOptions: DefaultSelectListMapper<FuelType>;
 };

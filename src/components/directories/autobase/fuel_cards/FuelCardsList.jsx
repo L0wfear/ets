@@ -24,7 +24,7 @@ const loadingPageName = 'fuel_cards';
 
 class FuelCardsList extends ElementsList {
   removeElementAction = () => {
-    console.log('нельзя удалить элемент из реестра');
+    console.log('нельзя удалить элемент из реестра'); // eslint-disable-line
   }
 
   init() {

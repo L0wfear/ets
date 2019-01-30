@@ -3,6 +3,11 @@ export type OneSessionStructure = {
   id: number;
 };
 
+export type OneSessionCompany = {
+  asuods_id: number;
+  name: string;
+};
+
 export type InitialStateSession = {
   userData: {
     structure_id: number | null;
@@ -18,7 +23,7 @@ export type InitialStateSession = {
     isOkrug: boolean;
     isKgh: boolean;
     isGlavControl: boolean;
-    companies: [] | null;
+    companies: OneSessionCompany[] | null;
     company_name: string | null;
   };
   token: string | null;

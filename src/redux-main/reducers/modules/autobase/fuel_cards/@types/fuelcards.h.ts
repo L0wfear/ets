@@ -12,13 +12,6 @@ export type StateFuelCards = {
   fuelCardsList: FuelCards[];
 };
 
-export type Company = {
-  id?: number | null;
-  asuods_id?: number;
-  company_id?: number;
-  name: string | null;
-};
-
 export type FuelType = {
   id: string;
   name: string | null;

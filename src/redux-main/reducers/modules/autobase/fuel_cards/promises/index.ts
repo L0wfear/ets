@@ -3,33 +3,42 @@ import {
 } from 'api/Services';
 import { get } from 'lodash';
 
-export const createFuelCards = (rawFuelCards) => {
+export const createFuelCards = async (rawFuelCards) => {
   const payload = {
     ...rawFuelCards,
   };
-  // Если выбрана опция "Налив", то при PUT и POST запросах топливную карту надо отправлять как null
-  return FuelCards.post(
-    payload,
+
+  const response = await FuelCards.post(
+    {...payload},
     false,
     'json',
   );
+
+  const fuelCardsRes = get(response, ['result', 0],  null);
+
+  return {
+    fuelCardsRes,
+  };
+
 };
 
-export const updateFuelCards = (fuelCards) => {
+export const updateFuelCards = async (fuelCards) => {
   const payload = {
     ...fuelCards,
   };
-  // {
-  //   "number": "ТЕСТ23",
-  //   "fuel_type": "DT",
-  //   "company_id": 10227244
-  // }
-  // Если выбрана опция "Налив", то при PUT и POST запросах топливную карту надо отправлять как null
-  return FuelCards.path(fuelCards.id).put(
-    payload,
+
+  const response = await FuelCards.path(fuelCards.id).put(
+    {...payload},
     false,
     'json',
   );
+
+  const fuelCardsRes = get(response, ['result', 0],  null);
+
+  return {
+    fuelCardsRes,
+  };
+
 };
 
 export const getFuelCards = (payload) => FuelCards.get({ ...payload })

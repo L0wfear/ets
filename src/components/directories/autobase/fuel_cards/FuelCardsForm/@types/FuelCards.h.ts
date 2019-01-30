@@ -28,8 +28,8 @@ export type PropsFuelCardsFormWrap = {
 
 export type StatePropsFuelCards = {
   companyOptions: GetSessionCompanyOptionsAns;
-  fuelType: InitialStateSession['appConfig']['enums']['FUEL_TYPE'];
-  userCompany: Company | null; // переписать
+  fuelTypeOptions: InitialStateSession['appConfig']['enums']['FUEL_TYPE'];
+  userCompanyId: InitialStateSession['userData']['company_id'];
 };
 export type DispatchPropsFuelCards = {
   createAction: typeof autobaseActions.autobaseCreateFuelCards;

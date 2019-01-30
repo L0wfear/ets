@@ -56,7 +56,7 @@ export const fuelCardsGetAndSetInStore = (payload = {}, { page, path }: { page: 
 };
 
 export const autobaseCreateFuelCards: any = (fuelCardsOld: FuelCards, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { fuelCards } } = await dispatch({
+  const fuelCards = await dispatch({
     type: 'none',
     payload: createFuelCards(fuelCardsOld),
     meta: {
@@ -70,7 +70,7 @@ export const autobaseCreateFuelCards: any = (fuelCardsOld: FuelCards, { page, pa
 };
 
 export const fuelCardsUpdate: any = (fuelCardsOld: FuelCards, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { fuelCards } } = await dispatch({
+  const fuelCards = await dispatch({
     type: 'none',
     payload: updateFuelCards(fuelCardsOld),
     meta: {

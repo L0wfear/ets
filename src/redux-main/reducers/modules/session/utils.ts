@@ -13,7 +13,7 @@ const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
-  permissions.push(...getFullAccess('fuel_cards')); // !!! выпилить перед выкатом
+
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
       permissions.push(

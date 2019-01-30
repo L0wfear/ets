@@ -34,7 +34,7 @@ export type InitialStateSession = {
       category_special_license: [];
     };
     enums: {
-      FUEL_TYPE: any,
+      FUEL_TYPE: object,
     },
     defaults: {
       FUEL_TYPE: string | null,

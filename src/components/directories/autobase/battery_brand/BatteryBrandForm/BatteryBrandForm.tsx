@@ -121,22 +121,6 @@ export default compose<PropsBatteryBrand, OwnBatteryBrandProps>(
   connect<StatePropsBatteryBrand, DispatchPropsBatteryBrand, OwnBatteryBrandProps, ReduxState>(
     null,
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateBatteryBrand(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateBatteryBrand(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetBatteryManufacturer: () => (
         dispatch(
           autobaseActions.autobaseGetSetBatteryManufacturer(
@@ -149,6 +133,8 @@ export default compose<PropsBatteryBrand, OwnBatteryBrandProps>(
   ),
   withForm<PropsBatteryBrandWithForm, BatteryBrand>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateBatteryBrand,
+    updateAction: autobaseActions.autobaseUpdateBatteryBrand,
     mergeElement: (props) => {
       return getDefaultBatteryBrandElement(props.element);
     },

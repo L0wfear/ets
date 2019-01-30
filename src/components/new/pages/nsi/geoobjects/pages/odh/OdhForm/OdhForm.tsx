@@ -205,22 +205,6 @@ export default compose<PropsOdhForm, OwnPropsOdhForm>(
       companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateOdh(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateOdh(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       getAndSetInStoreCompanyStructureDescendantsByUser: () => (
         dispatch(
           getAndSetInStoreCompanyStructureDescendantsByUser(
@@ -233,6 +217,8 @@ export default compose<PropsOdhForm, OwnPropsOdhForm>(
   ),
   withForm<PropsOdhFormWithForm, Odh>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateOdh,
+    updateAction: geoobjectActions.actionUpdateOdh,
     mergeElement: (props) => {
       return getDefaultOdhFormElement(props.element);
     },

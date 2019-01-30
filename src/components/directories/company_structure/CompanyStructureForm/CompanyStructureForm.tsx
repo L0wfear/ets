@@ -165,27 +165,11 @@ export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
       carpoolList: getGeoobjectState(state).carpoolList,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState: CompanyStructure) => (
-        dispatch(
-          companyStructureActions.createCompanyStructure(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState: CompanyStructure) => (
-        dispatch(
-          companyStructureActions.updateCompanyStructure(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsCompanyStructureWithForm, CompanyStructure>({
     uniqField: 'id',
+    createAction: companyStructureActions.createCompanyStructure,
+    updateAction: companyStructureActions.updateCompanyStructure,
     mergeElement: (props) => {
       return getdefaultCompanyStructureElement(props.element);
     },

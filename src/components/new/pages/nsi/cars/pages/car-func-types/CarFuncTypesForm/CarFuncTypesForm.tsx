@@ -98,27 +98,11 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
 export default compose<PropsCarFuncTypes, OwnCarFuncTypesProps>(
   connect<StatePropsCarFuncTypes, DispatchPropsCarFuncTypes, OwnCarFuncTypesProps, ReduxState>(
     null,
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateCarFuncTypes(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateCarFuncTypes(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsCarFuncTypesWithForm, CarFuncTypes>({
     uniqField: 'asuods_id',
+    createAction: autobaseActions.autobaseCreateCarFuncTypes,
+    updateAction: autobaseActions.autobaseUpdateCarFuncTypes,
     mergeElement: (props) => {
       return getDefaultCarFuncTypesElement(props.element);
     },

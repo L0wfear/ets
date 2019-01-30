@@ -239,22 +239,6 @@ export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
   connect<StatePropsInsurancePolicy, DispatchPropsInsurancePolicy, OwnInsurancePolicyProps, ReduxState>(
     null,
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateInsurancePolicy(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateInsurancePolicy(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetInsuranceType: () => (
         dispatch(
           autobaseActions.autobaseGetInsuranceType(
@@ -275,6 +259,8 @@ export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
   ),
   withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateInsurancePolicy,
+    updateAction: autobaseActions.autobaseUpdateInsurancePolicy,
     mergeElement: (props) => {
       return getDefaultInsurancePolicyElement(props.element);
     },

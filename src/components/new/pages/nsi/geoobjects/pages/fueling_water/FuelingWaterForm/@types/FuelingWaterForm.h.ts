@@ -1,6 +1,7 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { FuelingWater, CreateFuelingWater, UpdateFuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
+import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -10,21 +11,18 @@ export type PropsFuelingWaterFormWrap = {
   onFormHide: OnFormHideType
 
   registryKey?: string;
-  page?: string;
+  page: string;
   path?: string;
 };
 
 export type StatePropsFuelingWaterForm = {
   userData: InitialStateSession['userData'];
 };
-export type DispatchPropsFuelingWaterForm = {
-  createAction: CreateFuelingWater;
-  updateAction: UpdateFuelingWater;
-};
+export type DispatchPropsFuelingWaterForm = DispatchProp;
 export type OwnPropsFuelingWaterForm = {
   element: FuelingWater | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

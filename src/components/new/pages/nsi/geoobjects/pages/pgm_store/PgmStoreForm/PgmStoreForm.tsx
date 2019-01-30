@@ -137,27 +137,11 @@ export default compose<PropsPgmStoreForm, OwnPropsPgmStoreForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState: PgmStore) => (
-        dispatch(
-          geoobjectActions.actionCreatePgmStore(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState: PgmStore) => (
-        dispatch(
-          geoobjectActions.actionUpdatePgmStore(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsPgmStoreFormWithForm, PgmStore>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreatePgmStore,
+    updateAction: geoobjectActions.actionUpdatePgmStore,
     mergeElement: (props) => {
       return getDefaultPgmStoreFormElement(props.element);
     },

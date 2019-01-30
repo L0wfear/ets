@@ -138,27 +138,11 @@ export default compose<PropsDangerZoneForm, OwnPropsDangerZoneForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateDangerZone(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateDangerZone(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsDangerZoneFormWithForm, DangerZone>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateDangerZone,
+    updateAction: geoobjectActions.actionUpdateDangerZone,
     mergeElement: (props) => {
       return getDefaultDangerZoneFormElement(props.element);
     },

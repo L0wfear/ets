@@ -598,22 +598,6 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
       category_license: state.session.appConfig.category_license,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          employeeActions.employeeCreateEmployee(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          employeeActions.employeeUpdateEmployee(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetCar: () => (
         dispatch(
           autobaseActions.autobaseGetSetCar(
@@ -642,6 +626,8 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
   ),
   withForm<PropsEmployeeWithForm, Employee>({
     uniqField: 'id',
+    createAction: employeeActions.employeeCreateEmployee,
+    updateAction: employeeActions.employeeUpdateEmployee,
     mergeElement: (props) => {
       return getDefaultEmployeeElement(props.element);
     },

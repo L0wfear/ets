@@ -102,27 +102,11 @@ export default compose<PropsCarpoolForm, OwnPropsCarpoolForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateCarpool(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateCarpool(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsCarpoolFormWithForm, Carpool>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateCarpool,
+    updateAction: geoobjectActions.actionUpdateCarpool,
     mergeElement: (props) => {
       return getDefaultCarpoolElement(props.element);
     },

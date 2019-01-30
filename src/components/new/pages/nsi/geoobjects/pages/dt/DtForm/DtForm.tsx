@@ -157,22 +157,6 @@ export default compose<PropsDtForm, OwnPropsDtForm>(
       companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateDt(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateDt(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       getAndSetInStoreCompanyStructureDescendantsByUser: () => (
         dispatch(
           getAndSetInStoreCompanyStructureDescendantsByUser(
@@ -185,6 +169,8 @@ export default compose<PropsDtForm, OwnPropsDtForm>(
   ),
   withForm<PropsDtFormWithForm, Dt>({
     uniqField: 'yard_id',
+    createAction: geoobjectActions.actionCreateDt,
+    updateAction: geoobjectActions.actionUpdateDt,
     mergeElement: (props) => {
       return getDefaultDtFormElement(props.element);
     },

@@ -249,22 +249,6 @@ export default compose<PropsTechInspection, OwnTechInspectionProps>(
       userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTechInspection(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTechInspection(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetCar: () => (
         dispatch(
           autobaseActions.autobaseGetSetCar(
@@ -277,6 +261,8 @@ export default compose<PropsTechInspection, OwnTechInspectionProps>(
   ),
   withForm<PropsTechInspectionWithForm, TechInspection>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTechInspection,
+    updateAction: autobaseActions.autobaseUpdateTechInspection,
     mergeElement: (props) => {
       return getDefaultTechInspectionElement(props.element);
     },

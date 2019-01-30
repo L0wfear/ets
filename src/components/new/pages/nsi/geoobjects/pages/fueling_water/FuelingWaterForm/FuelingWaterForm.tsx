@@ -119,27 +119,11 @@ export default compose<PropsFuelingWaterForm, OwnPropsFuelingWaterForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateFuelingWater(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateFuelingWater(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsFuelingWaterFormWithForm, FuelingWater>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateFuelingWater,
+    updateAction: geoobjectActions.actionUpdateFuelingWater,
     mergeElement: (props) => {
       return getDefaultFuelingWaterFormElement(props.element);
     },

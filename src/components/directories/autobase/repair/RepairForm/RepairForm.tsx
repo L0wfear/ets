@@ -296,22 +296,6 @@ export default compose<PropsRepair, OwnRepairProps>(
       userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateRepair(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateRepair(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetCar: () => (
         dispatch(
           autobaseActions.autobaseGetSetCar(
@@ -340,6 +324,8 @@ export default compose<PropsRepair, OwnRepairProps>(
   ),
   withForm<PropsRepairWithForm, Repair>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRepair,
+    updateAction: autobaseActions.autobaseUpdateRepair,
     mergeElement: (props) => {
       return getDefaultRepairElement(props.element);
     },

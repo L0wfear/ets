@@ -1,9 +1,5 @@
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import {
-  EmployeeUpdateEmployee,
-  EmployeeCreateEmployee,
-} from 'redux-main/reducers/modules/employee/employee/@types';
 import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -28,8 +24,6 @@ export type StatePropsEmployee = {
   category_license: ReduxState['session']['appConfig']['category_license'];
 };
 export type DispatchPropsEmployee = {
-  createAction: EmployeeCreateEmployee;
-  updateAction: EmployeeUpdateEmployee;
   autobaseGetSetCar: GetCar;
   employeePositionGetSetPosition: GetPosition;
   companyStructureActions: any;
@@ -37,7 +31,7 @@ export type DispatchPropsEmployee = {
 export type OwnEmployeeProps = {
   element: Employee | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

@@ -1,10 +1,4 @@
 import { TechMaint, IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-// import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-
-import {
-  AutobaseCreateTechMaint,
-  AutobaseUpdateTechMaint,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint/@types';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -27,8 +21,6 @@ export type StatePropsTechMaint = {
   techMaintOrderList: IStateAutobase['techMaintOrderList'];
 };
 export type DispatchPropsTechMaint = {
-  createAction: AutobaseCreateTechMaint;
-  updateAction: AutobaseUpdateTechMaint;
   techMaintOrderGetAndSetInStore: any;
   repairCompanyGetAndSetInStore: any
 };
@@ -37,7 +29,7 @@ export type OwnTechMaintProps = {
   handleHide: OnFormHideType
   car_id: number;
   car_model_id: number;
-  page?: string;
+  page: string;
   path?: string;
 };
 

@@ -139,27 +139,11 @@ export default compose<PropsSspForm, OwnPropsSspForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateSsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateSsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsSspFormWithForm, Ssp>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateSsp,
+    updateAction: geoobjectActions.actionUpdateSsp,
     mergeElement: (props) => {
       return getDefaultSspFormElement(props.element);
     },

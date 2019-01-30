@@ -143,27 +143,11 @@ export default compose<PropsBridgesForm, OwnPropsBridgesForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateBridges(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateBridges(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsBridgesFormWithForm, Bridges>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateBridges,
+    updateAction: geoobjectActions.actionUpdateBridges,
     mergeElement: (props) => {
       return getDefaultBridgesFormElement(props.element);
     },

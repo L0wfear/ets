@@ -1,9 +1,5 @@
 import { RoadAccident, RoadAccidentCause } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
-import {
-  AutobaseCreateRoadAccident,
-  AutobaseUpdateRoadAccident,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetRoadAccidentCauseType } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/@types';
 import { GetDriver } from 'redux-main/reducers/modules/employee/driver/@types';
@@ -27,8 +23,6 @@ export type StatePropsRoadAccident = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 export type DispatchPropsRoadAccident = {
-  createAction: AutobaseCreateRoadAccident;
-  updateAction: AutobaseUpdateRoadAccident;
   autobaseGetAccidentCause: GetRoadAccidentCauseType;
   employeeDriverGetSetDriver: GetDriver;
 };
@@ -36,7 +30,7 @@ export type OwnRoadAccidentProps = {
   element: RoadAccident | null;
   handleHide: OnFormHideType
   car_id: number;
-  page?: string;
+  page: string;
   path?: string;
 };
 

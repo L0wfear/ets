@@ -131,27 +131,11 @@ export default compose<PropsPedestrianTunnelsForm, OwnPropsPedestrianTunnelsForm
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreatePedestrianTunnels(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdatePedestrianTunnels(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsPedestrianTunnelsFormWithForm, PedestrianTunnels>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreatePedestrianTunnels,
+    updateAction: geoobjectActions.actionUpdatePedestrianTunnels,
     mergeElement: (props) => {
       return getDefaultPedestrianTunnelsFormElement(props.element);
     },

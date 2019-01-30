@@ -285,22 +285,6 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
       specialModelList: getSomeUniqState(state).specialModelList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTechMaintOrder(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTechMaintOrder(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       techMaintTypeGetAndSetInStore: () => (
         dispatch(
           autobaseActions.techMaintTypeGetAndSetInStore(
@@ -329,6 +313,8 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
   ),
   withForm<PropsTechMaintOrderWithForm, TechMaintOrder>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTechMaintOrder,
+    updateAction: autobaseActions.autobaseUpdateTechMaintOrder,
     mergeElement: (props) => {
       return getDefaultTechMaintOrderElement(props.element);
     },

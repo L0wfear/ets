@@ -1,9 +1,5 @@
 import { Repair, Car, RepairCompany, RepairType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
-import {
-  AutobaseCreateRepair,
-  AutobaseUpdateRepair,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/repair/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
@@ -27,8 +23,6 @@ export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 export type DispatchPropsRepair = {
-  createAction: AutobaseCreateRepair;
-  updateAction: AutobaseUpdateRepair;
   autobaseGetSetCar: GetCar;
   autobaseGetRepairCompany: GetRepairCompany;
   autobaseGetRepairType: GetRepairType;
@@ -37,7 +31,7 @@ export type OwnRepairProps = {
   element: Repair | null;
   handleHide: OnFormHideType
   car_id: number;
-  page?: string;
+  page: string;
   path?: string;
 };
 

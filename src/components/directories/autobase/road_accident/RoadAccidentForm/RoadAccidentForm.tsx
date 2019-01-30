@@ -220,22 +220,6 @@ export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
       userCompanyId: state.session.userData.company_id,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateRoadAccident(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateRoadAccident(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetAccidentCause: () => (
         dispatch(
           autobaseActions.autobaseGetSetRoadAccidentCause(
@@ -256,6 +240,8 @@ export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
   ),
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRoadAccident,
+    updateAction: autobaseActions.autobaseUpdateRoadAccident,
     mergeElement: (props) => {
       return getDefaultRoadAccidentElement(props.element);
     },

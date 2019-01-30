@@ -1,9 +1,6 @@
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import {
-  AutobaseCreateRepairCompany,
-  AutobaseUpdateRepairCompany,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -18,14 +15,11 @@ export type PropsRepairCompanyFormWrap = {
 };
 
 export type StatePropsRepairCompany = {};
-export type DispatchPropsRepairCompany = {
-  createAction: AutobaseCreateRepairCompany;
-  updateAction: AutobaseUpdateRepairCompany;
-};
+export type DispatchPropsRepairCompany = DispatchProp;
 export type OwnRepairCompanyProps = {
   element: RepairCompany | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

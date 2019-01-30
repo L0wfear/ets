@@ -98,27 +98,11 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
 export default compose<PropsRepairCompany, OwnRepairCompanyProps>(
   connect<StatePropsRepairCompany, DispatchPropsRepairCompany, OwnRepairCompanyProps, ReduxState>(
     null,
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateRepairCompany(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateRepairCompany(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsRepairCompanyWithForm, RepairCompany>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRepairCompany,
+    updateAction: autobaseActions.autobaseUpdateRepairCompany,
     mergeElement: (props) => {
       return getDefaultRepairCompanyElement(props.element);
     },

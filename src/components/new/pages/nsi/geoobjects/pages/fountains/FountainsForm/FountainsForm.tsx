@@ -183,27 +183,11 @@ export default compose<PropsFountainsForm, OwnPropsFountainsForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateFountains(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateFountains(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsFountainsFormWithForm, Fountains>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateFountains,
+    updateAction: geoobjectActions.actionUpdateFountains,
     mergeElement: (props) => {
       return getDefaultFountainsFormElement(props.element);
     },

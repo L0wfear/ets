@@ -1,6 +1,7 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { Ssp, CreateSsp, UpdateSsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
+import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -10,21 +11,18 @@ export type PropsSspFormWrap = {
   onFormHide: OnFormHideType
 
   registryKey?: string;
-  page?: string;
+  page: string;
   path?: string;
 };
 
 export type StatePropsSspForm = {
   userData: InitialStateSession['userData'];
 };
-export type DispatchPropsSspForm = {
-  createAction: CreateSsp;
-  updateAction: UpdateSsp;
-};
+export type DispatchPropsSspForm = DispatchProp;
 export type OwnPropsSspForm = {
   element: Ssp | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

@@ -227,22 +227,6 @@ export default compose<PropsTire, OwnTireProps>(
       tireSizeList: getAutobaseState(state).tireSizeList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTire(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTire(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       tireSizeGetAndSetInStore: () => (
         dispatch(
           autobaseActions.tireSizeGetAndSetInStore(
@@ -263,6 +247,8 @@ export default compose<PropsTire, OwnTireProps>(
   ),
   withForm<PropsTireWithForm, Tire>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTire,
+    updateAction: autobaseActions.autobaseUpdateTire,
     mergeElement: (props) => {
       return getDefaultTireElement(props.element);
     },

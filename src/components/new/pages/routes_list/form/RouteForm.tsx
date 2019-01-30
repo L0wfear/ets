@@ -276,16 +276,6 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
           routesValidateRoute(formState, { page, path }),
         )
       ),
-      createAction: (formState, isTemplate = false) => (
-        dispatch(
-          routesCreateRoute(formState, isTemplate, { page, path }),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          routesUpdateRoute(formState, { page, path }),
-        )
-      ),
       loadGeozones: (serverName) => (
         dispatch(
           loadGeozones(
@@ -303,6 +293,8 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
   ),
   withForm<PropsRouteWithForm, FormStateRouteForm>({
     uniqField: 'id',
+    createAction: routesCreateRoute,
+    updateAction: routesUpdateRoute,
     mergeElement: (props) => {
       const {
         element,

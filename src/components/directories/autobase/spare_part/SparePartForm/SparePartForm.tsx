@@ -161,22 +161,6 @@ export default compose<PropsSparePart, OwnSparePartProps>(
   connect<StatePropsSparePart, DispatchPropsSparePart, OwnSparePartProps, ReduxState>(
     null,
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateSparePart(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateSparePart(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetMeasureUnit: () => (
         dispatch(
           autobaseActions.autobaseGetMeasureUnit(
@@ -197,6 +181,8 @@ export default compose<PropsSparePart, OwnSparePartProps>(
   ),
   withForm<PropsSparePartWithForm, SparePart>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateSparePart,
+    updateAction: autobaseActions.autobaseUpdateSparePart,
     mergeElement: (props) => {
       return getDefaultSparePartElement(props.element);
     },

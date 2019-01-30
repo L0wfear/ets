@@ -1,8 +1,4 @@
 import { TechInspection, Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import {
-  AutobaseCreateTechInspection,
-  AutobaseUpdateTechInspection,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/@types';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
@@ -26,15 +22,13 @@ export type StatePropsTechInspection = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 export type DispatchPropsTechInspection = {
-  createAction: AutobaseCreateTechInspection;
-  updateAction: AutobaseUpdateTechInspection;
   autobaseGetSetCar: GetCar;
 };
 export type OwnTechInspectionProps = {
   element: TechInspection | null;
   handleHide: OnFormHideType
   car_id: number;
-  page?: string;
+  page: string;
   path?: string;
 };
 

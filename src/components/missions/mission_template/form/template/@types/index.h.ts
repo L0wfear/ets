@@ -11,6 +11,7 @@ export type PropsMissionTemplateFormLazy = {
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -19,14 +20,11 @@ export type StatePropsMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
 };
-export type DispatchPropsMissionTemplate = {
-  createAction: any;
-  updateAction: any;
-};
+export type DispatchPropsMissionTemplate = DispatchProp;
 export type OwnMissionTemplateProps = {
   element: Partial<MissionTemplate> | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

@@ -5,6 +5,8 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
 import { compose } from 'recompose';
+import { connect, DispatchProp } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
 
 type FormErrorType<F> = {
   [K in keyof F]?: string | null;
@@ -12,6 +14,8 @@ type FormErrorType<F> = {
 
 type ConfigWithForm<P, F, S> = {
   uniqField: keyof F;
+  createAction?: any;
+  updateAction?: any;
   mergeElement?: (props: P) => F;
   canSave?: (state: S, props: P) => boolean;
   validate?: (formState: F, props: P) => FormErrorType<F>;
@@ -25,8 +29,8 @@ type ConfigWithForm<P, F, S> = {
 type WithFormConfigProps = {
   element: any,
   handleHide?: <A>(isSubmitted: boolean, result?: A) => any;
-  createAction?: <T extends any[], A extends any>(...arg: T) => A;
-  updateAction?: <T extends any[], A extends any>(...arg: T) => A;
+  page: string;
+  path?: string;
 };
 
 type WithFormState<F> = {
@@ -39,7 +43,7 @@ type WithFormState<F> = {
   };
 };
 
-type WithFormProps<P> = P & {
+type WithFormProps<P> = P & DispatchProp & {
   isPermittedToUpdate: boolean;
   isPermittedToCreate: boolean;
 };
@@ -71,6 +75,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       withIsPermittedProps: true,
       permissionName: 'isPermittedToCreate',
     }),
+    connect<{}, DispatchProp, any, ReduxState>(
+      null,
+    ),
   )(
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F>> {
       constructor(props) {
@@ -185,13 +192,21 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [config.uniqField]: uniqValue,
           },
         } = this.state;
+        const {
+          page,
+          path,
+        } = this.props;
 
         let result = null;
 
         if (!uniqValue) {
-          if (isFunction(this.props.createAction)) {
+          const {
+            createAction,
+          } = config;
+
+          if (isFunction(createAction)) {
             try {
-              result = await this.props.createAction<T, A>(...payload);
+              result = await this.props.dispatch(createAction(...payload, { page, path }));
               global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line
@@ -201,9 +216,13 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             throw new Error('Определи функцию createAction в конфиге withForm');
           }
         } else {
-          if (isFunction(this.props.updateAction)) {
+          const {
+            updateAction,
+          } = config;
+
+          if (isFunction(updateAction)) {
             try {
-              result = await this.props.updateAction<T, A>(...payload);
+              result = await this.props.dispatch(updateAction(...payload, { page, path }));
               global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line

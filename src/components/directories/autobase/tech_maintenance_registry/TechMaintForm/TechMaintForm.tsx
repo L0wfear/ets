@@ -264,22 +264,6 @@ export default compose<PropsTechMaint, OwnTechMaintProps>(
       techMaintOrderList: getAutobaseState(state).techMaintOrderList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTechMaint(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTechMaint(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       techMaintOrderGetAndSetInStore: (car_model_id) => (
         dispatch(
           autobaseActions.techMaintOrderGetAndSetInStore(
@@ -300,6 +284,8 @@ export default compose<PropsTechMaint, OwnTechMaintProps>(
   ),
   withForm<PropsTechMaintWithForm, TechMaint>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTechMaint,
+    updateAction: autobaseActions.autobaseUpdateTechMaint,
     mergeElement: (props) => {
       return getDefaultTechMaintElement(props.element);
     },

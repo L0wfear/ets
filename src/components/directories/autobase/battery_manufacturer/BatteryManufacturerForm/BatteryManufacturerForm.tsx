@@ -89,27 +89,11 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
 export default compose<PropsBatteryManufacturer, OwnBatteryManufacturerProps>(
   connect<StatePropsBatteryManufacturer, DispatchPropsBatteryManufacturer, OwnBatteryManufacturerProps, ReduxState>(
     null,
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateBatteryManufacturer(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateBatteryManufacturer(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsBatteryManufacturerWithForm, BatteryManufacturer>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateBatteryManufacturer,
+    updateAction: autobaseActions.autobaseUpdateBatteryManufacturer,
     mergeElement: (props) => {
       return getDefaultBatteryManufacturerElement(props.element);
     },

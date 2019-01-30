@@ -119,27 +119,11 @@ export default compose<PropsSnowStorageForm, OwnPropsSnowStorageForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateSnowStorage(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateSnowStorage(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsSnowStorageFormWithForm, SnowStorage>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateSnowStorage,
+    updateAction: geoobjectActions.actionUpdateSnowStorage,
     mergeElement: (props) => {
       return getDefaultSnowStorageFormElement(props.element);
     },

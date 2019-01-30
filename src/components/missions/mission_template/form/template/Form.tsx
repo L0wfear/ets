@@ -237,27 +237,11 @@ export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState: MissionTemplate) => (
-        dispatch(
-          missionActions.actionCreateMissionTemplate(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState: MissionTemplate) => (
-        dispatch(
-          missionActions.actionUpdateMissionTemplate(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsMissionTemplateWithForm, MissionTemplate>({
     uniqField: 'id',
+    createAction: missionActions.actionCreateMissionTemplate,
+    updateAction: missionActions.actionUpdateMissionTemplate,
     mergeElement: ({ element, userStructureId, userStructureName }) => {
       return getDefaultMissionTemplateElement({
         ...element,

@@ -6,9 +6,14 @@ import {
   AutobaseUpdateFuelCards,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import {
+  DefaultSelectListMapper,
+  DefaultSelectOption,
+} from 'components/ui/input/ReactSelect/utils';
 
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import {
+  OutputWithFormProps,
+} from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
@@ -51,6 +56,6 @@ export type PropsFuelCards = OutputWithFormProps<
   any
 >;
 export type StateFuelCards = {
-  companyOptions: DefaultSelectListMapper<Company['asuods_id'], Company['name'], Company>;
-  fuelTypeOptions: DefaultSelectListMapper<FuelType['id'], FuelType['name'], FuelType>;
+  companyOptions: DefaultSelectOption<Company['asuods_id'], Company['name'], Company>[];
+  fuelTypeOptions: DefaultSelectListMapper<FuelType>;
 };

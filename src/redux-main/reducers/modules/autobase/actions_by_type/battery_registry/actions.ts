@@ -45,7 +45,7 @@ export const batteryRegistryGetAndSetInStore = (payload = {}, { page, path }: { 
   };
 };
 export const autobaseCreateBatteryRegistry: any = (batteryRegistryOld: BatteryRegistry, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryRegistry } } = await dispatch({
+  const { payload: batteryRegistry } = await dispatch({
     type: 'none',
     payload: createSetBatteryRegistry(batteryRegistryOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateBatteryRegistry: any = (batteryRegistryOld: BatteryRe
   return batteryRegistry;
 };
 export const autobaseUpdateBatteryRegistry: any = (batteryRegistryOld: BatteryRegistry, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryRegistry } } = await dispatch({
+  const { payload: batteryRegistry } = await dispatch({
     type: 'none',
     payload: updateSetBatteryRegistry(batteryRegistryOld),
     meta: {

@@ -25,27 +25,35 @@ export const getCompanyStructureDescendantsByUser = (payload = {}) => (
   getCompanyStructure({ descendants_by_user: true, linear: true, ...payload })
 );
 
-export const promiseCreateCompanyStructure = (ownPayload) => {
+export const promiseCreateCompanyStructure = async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return CompanyStructureService.post(
+  const response = await CompanyStructureService.post(
     payload,
     false,
     'json',
   );
+
+  const data = get(response, ['result', 0], null);
+
+  return data;
 };
-export const promiseUpdateCompanyStructure = (ownPayload) => {
+export const promiseUpdateCompanyStructure = async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return CompanyStructureService.put(
+  const response = await CompanyStructureService.put(
     payload,
     false,
     'json',
   );
+
+  const data = get(response, ['result', 0], null);
+
+  return data;
 };
 export const promiseDeleteCompanyStructure = (id) => {
   return CompanyStructureService.delete(

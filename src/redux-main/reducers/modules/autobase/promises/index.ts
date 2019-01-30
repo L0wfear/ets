@@ -13,27 +13,35 @@ export const autobaseLoadByType = (keyType: keyof typeof AUTOBASE) => (payload =
       extraData: get(ans, ['result', 'extra'], {}),
     }))
 );
-export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => (ownPayload) => {
+export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return AutoBase.path(AUTOBASE[keyType]).post(
+  const response = await AutoBase.path(AUTOBASE[keyType]).post(
     payload,
     false,
     'json',
   );
+
+  const data = get(response, ['result', 'rows', 0], null);
+
+  return data;
 };
-export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => (ownPayload) => {
+export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return AutoBase.path(AUTOBASE[keyType]).path(ownPayload.id).put(
+  const response = await AutoBase.path(AUTOBASE[keyType]).path(ownPayload.id).put(
     payload,
     false,
     'json',
   );
+
+  const data = get(response, ['result', 'rows', 0], null);
+
+  return data;
 };
 export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => {
   return AutoBase.path(`${AUTOBASE[keyType]}/${id}`).delete(

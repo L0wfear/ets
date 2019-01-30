@@ -45,7 +45,7 @@ export const roadAccidentGetAndSetInStore = (payload = {}, { page, path }: { pag
   };
 };
 export const autobaseCreateRoadAccident: any = (roadAccidentOld: RoadAccident, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { roadAccident } } = await dispatch({
+  const { payload: roadAccident } = await dispatch({
     type: 'none',
     payload: createSetRoadAccident(roadAccidentOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateRoadAccident: any = (roadAccidentOld: RoadAccident, {
   return roadAccident;
 };
 export const autobaseUpdateRoadAccident: any = (roadAccidentOld: RoadAccident, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { roadAccident } } = await dispatch({
+  const { payload: roadAccident } = await dispatch({
     type: 'none',
     payload: updateSetRoadAccident(roadAccidentOld),
     meta: {

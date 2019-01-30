@@ -45,7 +45,7 @@ export const techMaintOrderGetAndSetInStore: any = (payload = {}, { page, path }
   };
 };
 export const autobaseCreateTechMaintOrder: any = (techMaintOrderOld: TechMaintOrder, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { techMaintOrder } } = await dispatch({
+  const { payload: techMaintOrder } = await dispatch({
     type: 'none',
     payload: createSetTechMaintOrder(techMaintOrderOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateTechMaintOrder: any = (techMaintOrderOld: TechMaintOr
   return techMaintOrder;
 };
 export const autobaseUpdateTechMaintOrder: any = (techMaintOrderOld: TechMaintOrder, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { techMaintOrder } } = await dispatch({
+  const { payload: techMaintOrder } = await dispatch({
     type: 'none',
     payload: updateSetTechMaintOrder(techMaintOrderOld),
     meta: {

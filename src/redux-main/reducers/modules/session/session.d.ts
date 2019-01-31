@@ -3,6 +3,11 @@ export type OneSessionStructure = {
   id: number;
 };
 
+export type OneSessionCompany = {
+  asuods_id: number;
+  name: string;
+};
+
 export type InitialStateSession = {
   userData: {
     structure_id: number | null;
@@ -18,6 +23,8 @@ export type InitialStateSession = {
     isOkrug: boolean;
     isKgh: boolean;
     isGlavControl: boolean;
+    companies: OneSessionCompany[] | null;
+    company_name: string | null;
   };
   token: string | null;
   appConfig: {
@@ -27,7 +34,7 @@ export type InitialStateSession = {
       category_special_license: [];
     };
     enums: {
-      FUEL_TYPE: any,
+      FUEL_TYPE: object,
     },
     defaults: {
       FUEL_TYPE: string | null,

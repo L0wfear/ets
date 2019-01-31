@@ -1,3 +1,5 @@
+import { FuelCards, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+
 export type SparePart = {
   company_id?: number | null;
   company_name?: string | null;
@@ -429,4 +431,6 @@ export type IStateAutobase = {
   carCategoryList: CarCategory[];
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];
+  fuelCardsList: FuelCards[];
+  fuelTypeList: FuelType[];
 };

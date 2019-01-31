@@ -129,6 +129,19 @@ class WaybillFormWrap extends FormWrap {
           waybill.mission_id_list = [];
         }
 
+        if (waybill.fuel_card_id) {
+          waybill.fuel_method = 'fuel_card';
+        } else {
+          waybill.fuel_method = 'naliv';
+        }
+
+        if (waybill.equipment_fuel_card_id) {
+          waybill.equipment_fuel_method = 'fuel_card';
+        } else {
+          waybill.equipment_fuel_method = 'naliv';
+        }
+
+
         if (props.element.status === 'active' || props.element.status === 'closed') {
           const fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
           const fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;

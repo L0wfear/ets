@@ -60,6 +60,8 @@ const initialState: InitialStateSession = {
     isKgh: false,
     isGlavControl: false,
     permissionsSet: new Set(),
+    companies: [],
+    company_name: '',
   },
   token: null,
   appConfig: CONFIG_INITIAL,

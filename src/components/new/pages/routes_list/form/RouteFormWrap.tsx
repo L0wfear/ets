@@ -21,6 +21,7 @@ class RouteFormWrap extends React.Component<PropsRouteFormWrap, {}> {
             element={props.element}
             routesMapNameId={props.routesMapNameId}
             fromMission={props.fromMission}
+            fromMissionTemplate={props.fromMissionTemplate}
             fromOrder={props.fromOrder}
             missionAvailableRouteTypes={props.missionAvailableRouteTypes}
             hasMissionStructureId={props.hasMissionStructureId}

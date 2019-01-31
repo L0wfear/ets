@@ -224,6 +224,7 @@ class MissionTemplateForm extends DutyMissionForm {
           hasMissionStructureId={!!state.structure_id}
           missionAvailableRouteTypes={available_route_types}
           fromMission
+          fromMissionTemplate
         />
 
       </Modal>

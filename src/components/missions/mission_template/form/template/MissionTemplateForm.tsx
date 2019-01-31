@@ -37,10 +37,6 @@ import FieldForColumnMissionTemplate from 'components/missions/mission_template/
 import FieldRouteMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/route/FieldRouteMissionTemplate';
 
 class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, {}> {
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
-
   makeOptionFromStructures = (
     memoize(
       (structures: InitialStateSession['userData']['structures']) => (
@@ -78,7 +74,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
     );
 
     return (
-      <Modal id="modal-mission-template" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-mission-template" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

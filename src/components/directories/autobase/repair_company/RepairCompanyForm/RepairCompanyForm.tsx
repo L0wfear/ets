@@ -8,7 +8,6 @@ import repairCompanyPermissions from 'components/directories/autobase/repair_com
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { repairCompanyFormSchema } from 'components/directories/autobase/repair_company/RepairCompanyForm/repairCompany-schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultRepairCompanyElement } from 'components/directories/autobase/repair_company/RepairCompanyForm/utils';
@@ -27,14 +26,6 @@ import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autob
 import { DivNone } from 'global-styled/global-styled';
 
 class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRepairCompany> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -49,7 +40,7 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-repair-company" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-repair-company" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -62,7 +53,7 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
                 label="Наименование ремонтной организации"
                 value={state.name}
                 error={errors.name}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="name"
                 modalKey={path}
               />
@@ -72,7 +63,7 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
                 label="Примечание"
                 value={state.comment}
                 error={errors.comment}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="comment"
                 modalKey={path}
               />

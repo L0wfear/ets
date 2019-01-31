@@ -10,7 +10,6 @@ import odhPermissions from 'components/new/pages/nsi/geoobjects/pages/odh/_confi
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { odhFormSchema } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultOdhFormElement } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -58,14 +57,6 @@ class OdhForm extends React.PureComponent<PropsOdhForm, StateOdhForm> {
     )
   );
 
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -85,7 +76,7 @@ class OdhForm extends React.PureComponent<PropsOdhForm, StateOdhForm> {
     );
 
     return (
-      <Modal id="modal-odh" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-odh" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

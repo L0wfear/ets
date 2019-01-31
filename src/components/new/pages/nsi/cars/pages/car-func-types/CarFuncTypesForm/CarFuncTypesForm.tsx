@@ -8,7 +8,6 @@ import carFuncTypesPermissions from 'components/new/pages/nsi/cars/pages/car-fun
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { carFuncTypesFormSchema } from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/car-func-types-from-schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultCarFuncTypesElement } from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/utils';
@@ -27,14 +26,6 @@ import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autoba
 import { DivNone } from 'global-styled/global-styled';
 
 class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFuncTypes> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -49,7 +40,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-car-func-types" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-car-func-types" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -72,7 +63,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
                 type="string"
                 label="Среднее количество часов работы (1-24)"
                 value={state.avg_work_hours}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="avg_work_hours"
                 error={errors.avg_work_hours}
               />

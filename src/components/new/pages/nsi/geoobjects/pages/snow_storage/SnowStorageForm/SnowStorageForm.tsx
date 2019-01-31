@@ -6,7 +6,6 @@ import SnowStoragePermissions from 'components/new/pages/nsi/geoobjects/pages/sn
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { SnowStorageFormSchema } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultSnowStorageFormElement } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -35,14 +34,6 @@ import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-c
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 class SnowStorageForm extends React.PureComponent<PropsSnowStorageForm, StateSnowStorageForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -56,7 +47,7 @@ class SnowStorageForm extends React.PureComponent<PropsSnowStorageForm, StateSno
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-SnowStorage" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-SnowStorage" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

@@ -60,6 +60,7 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
     handleChange: FormWithHandleChange<F>;
     submitAction: FormWithSubmitAction<T, A>;
     defaultSubmit: FormWithDefaultSubmit;
+    hideWithoutChanges: (...arg: any[]) => void;
   }
 );
 
@@ -259,6 +260,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         return result;
       }
 
+      hideWithoutChanges = () => {
+        this.props.handleHide(false);
+      }
+
       render() {
         return (
           <Component
@@ -270,6 +275,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             handleChange={this.handleChange}
             submitAction={this.submitAction}
             defaultSubmit={this.defaultSubmit}
+            hideWithoutChanges={this.hideWithoutChanges}
           />
         );
       }

@@ -40,9 +40,6 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
       parent_id,
     });
   }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
 
   makeOptionFromTechMaintTypeList = (
     memoize(
@@ -95,7 +92,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
     }
 
     return (
-      <Modal id="modal-company-structure" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-company-structure" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

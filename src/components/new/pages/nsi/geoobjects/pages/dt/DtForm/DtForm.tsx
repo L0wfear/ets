@@ -10,7 +10,6 @@ import dtPermissions from 'components/new/pages/nsi/geoobjects/pages/dt/_config-
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { dtFormSchema } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultDtFormElement } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -58,14 +57,6 @@ class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
     )
   );
 
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -85,7 +76,7 @@ class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
     );
 
     return (
-      <Modal id="modal-dt" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-dt" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

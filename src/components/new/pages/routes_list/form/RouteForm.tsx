@@ -147,7 +147,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-route" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-route" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

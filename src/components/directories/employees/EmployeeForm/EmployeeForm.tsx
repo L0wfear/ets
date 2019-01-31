@@ -101,11 +101,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       companyStructureOptions: data.map(defaultSelectListMapper),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
+
   handleChangeDateEnd = (type: 'special_license_date_end', value) => {
     this.props.handleChange({
       [type]: value,
@@ -198,9 +194,6 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         })),
     });
   }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
 
   render() {
     const {
@@ -216,7 +209,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-registry" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -232,7 +225,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.last_name}
                     error={errors.last_name}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="last_name"
                   />
                 </Col>
@@ -244,7 +237,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.personnel_number}
                     error={errors.personnel_number}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="personnel_number"
                   />
                 </Col>
@@ -260,7 +253,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.first_name}
                     error={errors.first_name}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="first_name"
                   />
                 </Col>
@@ -288,7 +281,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.middle_name}
                     error={errors.middle_name}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="middle_name"
                   />
                 </Col>
@@ -303,7 +296,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.categorySpecialLicenseOptions}
                     error={errors.category_special_license}
                     disabled={!isPermitted || !state.special_license}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="category_special_license"
                   />
                 </Col>
@@ -320,7 +313,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     time={false}
                     error={errors.birthday}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="birthday"
                   />
                 </Col>
@@ -349,7 +342,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.phone}
                     error={errors.phone}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="phone"
                   />
                 </Col>
@@ -395,7 +388,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.categoryDriversLicenseOptions}
                     error={errors.category_drivers_license}
                     disabled={!isPermitted || !state.drivers_license}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="category_drivers_license"
                   />
                 </Col>
@@ -413,7 +406,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.driverStateOptions}
                     error={errors.active}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     clearable={false}
                     boundKeys="active"
                   />
@@ -444,7 +437,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.special_marks}
                     error={errors.special_marks}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="special_marks"
                   />
                 </Col>
@@ -477,7 +470,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.carOptions}
                     error={errors.secondary_car}
                     disabled={!isPermitted || !state.is_driver}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="secondary_car"
                   />
                 </Col>
@@ -495,7 +488,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.company_structure_id}
                     disabled={!isPermitted}
                     emptyValue={null}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="company_structure_id"
                   />
                 </Col>
@@ -507,7 +500,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.medical_certificate}
                     error={errors.medical_certificate}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="medical_certificate"
                   />
                 </Col>
@@ -524,7 +517,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.isCommonOptions}
                     value={state.is_common ? 1 : 0}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="is_common"
                     clearable={false}
                   />
@@ -538,7 +531,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     time={false}
                     error={errors.medical_certificate_date}
                     disabled={!isPermitted}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="medical_certificate_date"
                   />
                 </Col>
@@ -554,7 +547,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     modalKey={path}
                     multiple
                     value={state.medical_certificate_files}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="medical_certificate_files"
                     disabled={!isPermitted}
                   />
@@ -567,7 +560,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     label="Водительские удостоверения"
                     multiple
                     value={state.driver_license_files}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="driver_license_files"
                     disabled={!isPermitted}
                   />

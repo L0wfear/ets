@@ -10,7 +10,6 @@ import tirePermissions from 'components/directories/autobase/tire/config-data/pe
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { tireFormSchema } from 'components/directories/autobase/tire/TireForm/tire_from_schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultTireElement } from 'components/directories/autobase/tire/TireForm/utils';
@@ -48,11 +47,6 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
       canSave: isValidInput,
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
   handleChangeTireModel = (name, value, allOptionData) => {
     const {
       formState: { tire_model_id },
@@ -75,9 +69,6 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
         });
       }
     }
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
   }
 
   makeOptionFromTireSizeList = (
@@ -118,7 +109,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     );
 
     return (
-      <Modal id="modal-tire" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -149,7 +140,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 value={state.tire_size_id}
                 error={errors.tire_size_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="tire_size_id"
                 clearable={false}
               />
@@ -177,7 +168,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 value={state.comment}
                 error={errors.comment}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="comment"
               />
               {
@@ -186,7 +177,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                     <>
                       <h4>Транспортное средство, на котором установлена шина</h4>
                       <TireToVehicleBlock
-                        onChange={this.handleChange}
+                        onChange={this.props.handleChange}
                         boundKeys="tire_to_car"
                         inputList={state.tire_to_car}
                         onValidation={this.handleTireToCarValidity}

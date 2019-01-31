@@ -6,7 +6,6 @@ import mspPermissions from 'components/new/pages/nsi/geoobjects/pages/msp/_confi
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { mspFormSchema } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultMspFormElement } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -36,14 +35,6 @@ import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-c
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -57,7 +48,7 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-msp" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-msp" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

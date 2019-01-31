@@ -37,14 +37,6 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -58,7 +50,7 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-ssp" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-ssp" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

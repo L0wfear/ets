@@ -34,11 +34,6 @@ import {
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {
-
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
-
   render() {
     const {
       formState: state,
@@ -77,7 +72,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
       );
 
     return (
-      <Modal id="modal-fuel-cards" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-fuel-cards" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -126,7 +121,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
             <DivNone />
           )
         }
-        <Button onClick={this.handleHide}>Отменить</Button>
+        <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
         </Modal.Footer>
       </Modal>
     );

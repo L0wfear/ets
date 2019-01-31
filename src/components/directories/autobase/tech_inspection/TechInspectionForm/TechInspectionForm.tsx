@@ -56,11 +56,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
+
   handleChangeIsActiveToTrue = () => {
     if (!this.props.formState.is_allowed) {
       this.props.handleChange({
@@ -80,9 +76,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
       [name]: get(value, ['target', 'checked']),
     });
   }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -109,7 +103,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
     );
 
     return (
-      <Modal id="modal-tech-inspection" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-tech-inspection" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -125,7 +119,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                   error={errors.car_id}
                   options={carListOptions}
                   emptyValue={null}
-                  onChange={this.handleChange}
+                  onChange={this.props.handleChange}
                   boundKeys="car_id"
                   clearable={false}
                   disabled={!isPermitted}
@@ -138,7 +132,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 label="Номер диагностической карты/Талона ГТО"
                 value={state.reg_number}
                 error={errors.reg_number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="reg_number"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -150,7 +144,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 date={state.date_end}
                 time={false}
                 error={errors.date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -161,7 +155,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 label="Место выдачи"
                 value={state.tech_operator}
                 error={errors.tech_operator}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="tech_operator"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -173,7 +167,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 date={state.date_start}
                 time={false}
                 error={errors.date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -208,7 +202,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 label="Примечание"
                 value={state.note}
                 error={errors.note}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -219,7 +213,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 multiple
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={path}

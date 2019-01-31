@@ -38,9 +38,6 @@ import SimpleLinkA from 'components/new/ui/simple_a/link';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
 
 class FountainsForm extends React.PureComponent<PropsFountainsForm, StateFountainsForm> {
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -54,7 +51,7 @@ class FountainsForm extends React.PureComponent<PropsFountainsForm, StateFountai
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-fountains" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-fountains" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

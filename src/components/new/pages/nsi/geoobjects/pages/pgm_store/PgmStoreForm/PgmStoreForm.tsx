@@ -6,7 +6,6 @@ import PgmStorePermissions from 'components/new/pages/nsi/geoobjects/pages/pgm_s
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { PgmStoreFormSchema } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultPgmStoreFormElement } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -35,14 +34,6 @@ import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-c
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 class PgmStoreForm extends React.PureComponent<PropsPgmStoreForm, StatePgmStoreForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -56,7 +47,7 @@ class PgmStoreForm extends React.PureComponent<PropsPgmStoreForm, StatePgmStoreF
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-PgmStore" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-PgmStore" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

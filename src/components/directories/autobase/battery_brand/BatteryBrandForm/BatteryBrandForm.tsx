@@ -8,7 +8,6 @@ import batteryBrandPermissions from 'components/directories/autobase/battery_bra
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { batteryBrandFormSchema } from 'components/directories/autobase/battery_brand/BatteryBrandForm/battery-brand-from-schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -40,14 +39,7 @@ class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatte
 
     this.setState({ batteryManufacturerOptions: data.map(defaultSelectListMapper) });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -65,7 +57,7 @@ class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatte
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-brand" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-battery-brand" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -79,7 +71,7 @@ class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatte
                 value={state.name}
                 error={errors.name}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="name"
                 modalKey={page}
               />
@@ -93,7 +85,7 @@ class BatteryBrandForm extends React.PureComponent<PropsBatteryBrand, StateBatte
                 value={state.manufacturer_id}
                 error={errors.manufacturer_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="manufacturer_id"
                 clearable={false}
                 modalKey={page}

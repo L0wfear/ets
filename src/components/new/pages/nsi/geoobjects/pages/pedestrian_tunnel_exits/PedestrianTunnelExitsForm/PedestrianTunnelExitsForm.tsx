@@ -6,7 +6,6 @@ import PedestrianTunnelExitsPermissions from 'components/new/pages/nsi/geoobject
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { PedestrianTunnelExitsFormSchema } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultPedestrianTunnelExitsFormElement } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -35,14 +34,6 @@ import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-c
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 class PedestrianTunnelExitsForm extends React.PureComponent<PropsPedestrianTunnelExitsForm, StatePedestrianTunnelExitsForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -56,7 +47,7 @@ class PedestrianTunnelExitsForm extends React.PureComponent<PropsPedestrianTunne
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-PedestrianTunnelExits" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-PedestrianTunnelExits" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>

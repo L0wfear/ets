@@ -8,7 +8,6 @@ import insurancePolicyPermissions from 'components/directories/autobase/insuranc
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { insurancePolicyFormSchema } from 'components/directories/autobase/insurance_policy/InsurancePolicyForm/insurance-policy-from-schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -63,14 +62,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -90,7 +82,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-insurance-policy" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-insurance-policy" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -106,7 +98,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                   error={errors.car_id}
                   options={carListOptions}
                   emptyValue={null}
-                  onChange={this.handleChange}
+                  onChange={this.props.handleChange}
                   boundKeys="car_id"
                   clearable={false}
                   disabled={!isPermitted}
@@ -119,7 +111,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 label="Страховая организация"
                 value={state.insurer}
                 error={errors.insurer}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="insurer"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -132,7 +124,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 error={errors.insurance_type_id}
                 options={insuranceTypeOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="insurance_type_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -144,7 +136,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 label="Серия"
                 value={state.seria}
                 error={errors.seria}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="seria"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -155,7 +147,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 label="Номер"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="number"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -167,7 +159,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 date={state.date_start}
                 time={false}
                 error={errors.date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -179,7 +171,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 date={state.date_end}
                 time={false}
                 error={errors.date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -190,7 +182,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 label="Стоимость, руб."
                 value={state.price}
                 error={errors.price}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="price"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -201,7 +193,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 label="Примечание"
                 value={state.note}
                 error={errors.note}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -211,7 +203,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                 id="files"
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={path}

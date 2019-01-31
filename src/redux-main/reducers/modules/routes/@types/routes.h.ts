@@ -55,8 +55,13 @@ export type Route = {
   is_main: boolean;
   is_new: boolean;
   is_template: boolean;
+<<<<<<< HEAD:src/redux-main/reducers/modules/routes/@types/routes.h.ts
   municipal_facility_id: number | null;
   municipal_facility_name: string | null;
+=======
+  municipal_facility_id: number;
+  municipal_facility_name: string;
+>>>>>>> hotifx/DITETSSUP-1834:src/redux-main/trash-actions/route/@types/promise.h.ts
   norm_id: null;
   seasons: SeasonData[];
   structure_id: number | null;

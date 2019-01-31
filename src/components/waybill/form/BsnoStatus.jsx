@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Raven from 'raven-js';
-import { diffDates } from 'utils/dates';
+import { diffDates, getDateWithMoscowTzByTimestamp, getDateWithMoscowTz } from 'utils/dates';
 
 import { FluxContext } from 'utils/decorators';
 import Field from 'components/ui/Field';
@@ -11,6 +11,7 @@ import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 class BsnoStaus extends React.Component {
   static get propTypes() {
@@ -45,6 +46,9 @@ class BsnoStaus extends React.Component {
           // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
         };
         ws.onerror = () => {
+          if (!__DEVELOPMENT__) {
+            Raven.captureException(new Error('Ошибка подключения к сокету (Исправность датчика ГЛОНАСС)'));
+          }
           // console.error('WEBSOCKET - Ошибка WebSocket');
         };
       } catch (e) {
@@ -58,8 +62,22 @@ class BsnoStaus extends React.Component {
       this.state = {
         carsTrackState: {},
         ws: null,
+        date: getDateWithMoscowTz(),
+        itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
       };
     }
+  }
+
+  componentDidMount() {
+    loadMoscowTime()
+      .then(({ time }) => {
+        clearInterval(this.state.itervalId);
+
+        this.setState({
+          date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
+          itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
+        });
+      });
   }
 
   componentWillUnmount() {
@@ -68,7 +86,38 @@ class BsnoStaus extends React.Component {
       ws.close();
       this.setState({ ws: null });
     }
+    clearInterval(this.state.itervalId);
   }
+
+  updateDateOnSecond = () => {
+    const { date } = this.state;
+
+    date.setSeconds(date.getSeconds() + 1);
+
+    this.setState(({ carsTrackState }) => {
+      const {
+        okStatus = false,
+      } = this.props;
+
+      if (okStatus) {
+        const { gps_code = 0, is_bnso_broken: is_bnso_broken_old = '' } = this.props;
+
+        if (gps_code) {
+          const timestamp = carsTrackState[gps_code] || 0;
+          const is_bnso_broken = diffDates(date, timestamp * 1000, 'hours') > 1;
+
+          if (is_bnso_broken !== is_bnso_broken_old) {
+            this.props.handleChange('is_bnso_broken', is_bnso_broken);
+          }
+        }
+      }
+
+      return {
+        date,
+      };
+    });
+  }
+
 
   handleUpdatePoints = (data) => {
     const carsTrackState = {
@@ -84,7 +133,7 @@ class BsnoStaus extends React.Component {
 
       if (gps_code) {
         const timestamp = carsTrackState[gps_code] || 0;
-        const is_bnso_broken = diffDates(new Date(), timestamp * 1000, 'hours') > 1;
+        const is_bnso_broken = diffDates(this.state.date, timestamp * 1000, 'hours') > 1;
 
         if (is_bnso_broken !== is_bnso_broken_old) {
           this.props.handleChange('is_bnso_broken', is_bnso_broken);

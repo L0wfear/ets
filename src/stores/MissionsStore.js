@@ -10,9 +10,6 @@ class MissionsStore extends Store {
     this.register(missionsActons.getMissions, this.handleGetMissions);
     this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
     this.register(missionsActons.getMissionTemplatesCars, this.handleGetMissionTemplatesCars);
-    this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
-    this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
-    this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
     this.register(missionsActons.getDutyMissions, this.handleGetDutyMissions);
     this.register(missionsActons.getCarDutyMissions, this.handleGetCarDutyMissions);
     this.register(missionsActons.createDutyMission, this.handleGetDutyMissions);
@@ -23,8 +20,6 @@ class MissionsStore extends Store {
     this.state = {
       missionsList: [],
       missionSourcesList: [],
-      selectedReportData: [],
-      selectedReportDataODHS: [],
       dutyMissionsList: [],
       carDutyMissionList: [],
       municipalFacilityList: [],
@@ -62,28 +57,6 @@ class MissionsStore extends Store {
 
   getMissionSourceById(id) {
     return _.find(this.state.missionSourcesList, ms => ms.id === id) || {};
-  }
-
-  handleGetMissionReportByODHs(index) {
-    // TODO убрать добавку route_check_unit
-    const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataODHS = missionReport.report_by_obj;
-    _.each(selectedReportDataODHS, r => (r.route_check_unit = missionReport.route_check_unit));
-    this.setState({ selectedReportDataODHS });
-  }
-
-  handleGetMissionReportByPoints(index) {
-    const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataPoints = missionReport.report_by_point;
-    this.setState({ selectedReportDataPoints });
-  }
-
-  handleGetMissionReportByDTs(index) {
-    // TODO убрать добавку route_check_unit
-    const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataDTS = missionReport.report_by_dt;
-    _.each(selectedReportDataDTS, r => (r.route_check_unit = missionReport.route_check_unit));
-    this.setState({ selectedReportDataDTS });
   }
 }
 

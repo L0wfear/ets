@@ -449,18 +449,6 @@ export default class MissionsActions extends Actions {
 
   /* ---------- MISSION REPORTS ---------- */
 
-  getMissionReportByODHs(index) {
-    return index;
-  }
-
-  getMissionReportByPoints(index) {
-    return index;
-  }
-
-  getMissionReportByDTs(index) {
-    return index;
-  }
-
   getCleaningOneNorm(outerData) {
     const payload = {
       datetime: createValidDateTime(outerData.datetime || new Date()),

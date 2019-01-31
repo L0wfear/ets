@@ -1,13 +1,15 @@
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
 
 export type StatePropsFieldRouteMissionTemplate = {
   municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList'];
 };
 export type DispatchPropsFieldRouteMissionTemplate = {
-  routesLoadRouteById: any;
-  routesGetSetRoutes: any;
+  routesLoadRouteById: HandleThunkActionCreator<typeof routesActions.routesLoadRouteById>;
+  routesGetSetRoutes: HandleThunkActionCreator<typeof routesActions.routesGetSetRoutes>;
 };
 export type OwnPropsFieldRouteMissionTemplate = {
   handleChange: any;

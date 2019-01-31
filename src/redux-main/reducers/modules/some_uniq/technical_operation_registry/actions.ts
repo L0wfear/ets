@@ -1,6 +1,11 @@
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types/index';
+import { ThunkAction } from 'redux-thunk';
+import { ReduxState } from 'redux-main/@types/state';
+import { AnyAction } from 'redux';
 
 /* --------------- обновление стора --------------- */
 export const actionSetTechnicalOperationRegistry = (technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList']) => (dispatch) => (
@@ -87,11 +92,16 @@ export const actionGetAndSetInStoreTechnicalOperationRegistryForMission: any = (
     technicalOperationRegistryForMissionList: data,
   };
 };
-export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+
+export type ActionGetAndSetInStoreTechnicalOperationRegistryForDutyMissionAns = {
+  technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[],
+};
+export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission = (payload = {}, { page, path }: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreTechnicalOperationRegistryForDutyMissionAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetTechnicalOperationRegistry(
       {
-        for: 'duty-mission',
+        for: 'duty_mission',
+        needs_brigade: true,
         ...payload,
       },
       { page, path }),

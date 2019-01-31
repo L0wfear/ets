@@ -12,7 +12,12 @@ import DutyMissionTemplateFormWrap from 'components/missions/duty_mission_templa
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
+import DutyMissionTemplateFormLazy from 'components/missions/duty_mission_template/form/template';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import missionActions from 'redux-main/reducers/modules/missions/actions';
+
+const loadingPageName = 'duty_mission_template';
 
 const ButtonCreateDutyMissionByTemplate = withRequirePermissionsNew({
   permissions: permissions_duty_mission.create,
@@ -22,7 +27,7 @@ const ButtonCreateDutyMissionByTemplate = withRequirePermissionsNew({
 @staticProps({
   entity: 'duty_mission_template',
   permissions,
-  listName: 'dutyMissionTemplatesList',
+  listName: 'dutyMissionTemplateList',
   tableComponent: DutyMissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
@@ -36,28 +41,46 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       listData: [],
     });
   }
-  removeElementAction = id => this.context.flux.getActions('missions').removeDutyMissionTemplate(id).then(this.updateTable);
 
-  init() {
+  removeElementAction = (id) => {
+    try {
+      this.props.actionRemoveDutyMissionTemplate(
+        { id },
+        { page: loadingPageName },
+      );
+    } catch (error) {
+      console.warn(error); // eslint-disable-line
+      return;
+    }
+    this.updateTable();
+  }
+
+  async init() {
     const { flux } = this.context;
 
-    flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getMissionSources();
-    flux.getActions('employees').getEmployees().then(this.updateTable);
+    await Promise.all([
+      flux.getActions('technicalOperation').getTechnicalOperations(),
+      flux.getActions('missions').getMissionSources(),
+      flux.getActions('employees').getEmployees(),
+    ]);
+
+    this.updateTable();
   }
 
   updateTable = () => {
-    const { flux } = this.context;
-
-    return flux.getActions('missions').getDutyMissionTemplates();
+    this.props.actionGetAndSetInStoreDutyMissionTemplate(
+      {},
+      { page: loadingPageName },
+    );
   }
 
   showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
   }
 
-  createDutyMissions = () =>
-    this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+  createDutyMissions = () => (
+    this.setState({ showForm: true, formType: 'MissionsCreationForm' })
+  );
 
   /**
    * @override
@@ -70,14 +93,43 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
+  onFormHide = (clearCheckedElements) => {
+    this.setState(({ checkedElements }) => ({
+      showForm: false,
+      selectedElement: null,
+      checkedElements: clearCheckedElements ? {} : checkedElements,
+      formType: 'ViewForm',
+    }));
+  }
+
+  onDutyMissionTemplateFormHide = (isSubmitted) => {
+    if (isSubmitted) {
+      this.updateTable();
+    }
+
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: {},
+    });
+  }
+
   getForms = () => {
     const { employeesIndex = {} } = this.props;
 
     return [
+      <DutyMissionTemplateFormLazy
+        key="form_create_duty_mission_template"
+        element={this.state.selectedElement}
+        showForm={this.state.showForm && this.state.formType === 'ViewForm'}
+        onFormHide={this.onDutyMissionTemplateFormHide}
+        page={loadingPageName}
+      />,
       <DutyMissionTemplateFormWrap
-        key={'form'}
-        onFormHide={this.onFormHide.bind(this)}
-        showForm={this.state.showForm}
+        key="form_create_duty_mission"
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm && this.state.formType === 'MissionsCreationForm'}
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={this.state.checkedElements}
@@ -102,7 +154,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     // TODO отображение Сформировать наряд-задание в зависимости от прав
     buttons.push(
       <ButtonCreateDutyMissionByTemplate
-        key={'create-duty-mission-by-template'}
+        key="create-duty-mission-by-template"
         bsSize="small"
         onClick={this.createDutyMissions}
         disabled={!this.canCreateMission()}
@@ -114,27 +166,52 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     return buttons;
   }
 
+  getAdditionalFormProps() {
+    return {
+      page: loadingPageName,
+    };
+  }
+
   getAdditionalProps = () => {
-    const listName = this.constructor.listName;
+    const { listName } = this.constructor;
     const listData = this.props[listName];
 
-    const { structures } = this.props.userData;
-    const technicalOperationIdsList = this.props.technicalOperationsList.map((item) => item.id);
-
-    const dutyMissionTemplatesList = listData
-      .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
+    const {
+      technicalOperationsMap,
+      userData: { structures },
+    } = this.props;
 
     return {
       structures,
-      data: dutyMissionTemplatesList,
+      data: listData.filter(({ technical_operation_id }) => technicalOperationsMap.has(technical_operation_id)),
     };
   }
 }
 
 export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
   connect(
     state => ({
+      dutyMissionTemplateList: getMissionsState(state).dutyMissionTemplateList,
       userData: getSessionState(state).userData,
+    }),
+    dispatch => ({
+      actionGetAndSetInStoreDutyMissionTemplate: (...arg) => (
+        dispatch(
+          missionActions.actionGetAndSetInStoreDutyMissionTemplate(...arg),
+        )
+      ),
+      actionRemoveDutyMissionTemplate: missionTemplate => (
+        dispatch(
+          missionActions.actionRemoveDutyMissionTemplate(
+            missionTemplate,
+            { page: loadingPageName },
+          ),
+        )
+      ),
     }),
   ),
 )(DutyMissionTemplatesJournal);

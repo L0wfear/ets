@@ -8,12 +8,12 @@ export type MunicipalFacility = {
   }[];
   car_func_types_text: string;
   kind_tasks: {
-    kind_task_name: 'Централизованно';
-    kind_task_id: 1;
+    kind_task_name: string;
+    kind_task_id: number;
   }[];
-  municipal_facility_code: '1';
-  municipal_facility_id: 1;
-  municipal_facility_name: 'Проезжая часть';
+  municipal_facility_code: string;
+  municipal_facility_id: number;
+  municipal_facility_name: string;
   normatives: {
     id: number;
     oper_type_id: number;

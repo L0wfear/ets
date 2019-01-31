@@ -67,7 +67,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PropsFieldRouteMissionTemplate) {
     const {
       route_id,
       technical_operation_id,
@@ -133,7 +133,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
           || isDiffForColumn
         )
         || (
-          !municipalFacilityForMissionListLength
+          !prevProps.municipalFacilityForMissionList.length
         )
       )
     );
@@ -149,23 +149,26 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
   }
 
   async getRoutes(route_id, technical_operation_id, municipal_facility_id, for_column?) {
+    const { page, path } = this.props;
+
     const {
-      payload: {
-        data: routesList,
-      },
+      data: routesList,
     } = await this.props.routesGetSetRoutes(
-      technical_operation_id,
-      municipal_facility_id,
-      getAvailableRouteTypesMemo(
-        this.props.municipalFacilityForMissionList,
-        for_column ? null : municipal_facility_id,
-        for_column,
-      ).toString(),
+      {
+        technical_operation_id,
+        municipal_facility_id,
+        type: getAvailableRouteTypesMemo(
+          this.props.municipalFacilityForMissionList,
+          for_column ? null : municipal_facility_id,
+          for_column,
+        ).toString(),
+      },
+      { page, path },
     );
 
     let { selectedRoute } = this.state;
     if (route_id && (!selectedRoute || selectedRoute.id === route_id)) {
-      const { payload: { route_data } } = await this.props.routesLoadRouteById(route_id);
+      const { route_data } = await this.routesLoadRouteById(route_id);
       if (route_data) {
         selectedRoute = route_data;
 
@@ -221,7 +224,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
 
     if (route_id) {
       try {
-        const { payload: { route_data } } = await this.props.routesLoadRouteById(route_id);
+        const { route_data } = await this.routesLoadRouteById(route_id);
 
         if (route_data) {
           this.setState(({ routesList }) => {
@@ -242,6 +245,15 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
         selectedRoute: null,
       });
     }
+  }
+
+  routesLoadRouteById(route_id) {
+    const { page, path } = this.props;
+
+    return this.props.routesLoadRouteById(
+      route_id,
+      { page, path },
+    );
   }
 
   createNewRoute = () => {
@@ -406,25 +418,15 @@ export default connect<StatePropsFieldRouteMissionTemplate, DispatchPropsFieldRo
   (state) => ({
     municipalFacilityForMissionList: getSomeUniqState(state).municipalFacilityForMissionList,
   }),
-  (dispatch, { page, path }) => ({
-    routesLoadRouteById: (id: number) => (
+  (dispatch: any) => ({
+    routesLoadRouteById: (...arg) => (
       dispatch(
-        routesActions.routesLoadRouteById(
-          id,
-          { page, path },
-        ),
+        routesActions.routesLoadRouteById(...arg),
       )
     ),
-    routesGetSetRoutes: (technical_operation_id, municipal_facility_id, type) => (
+    routesGetSetRoutes: (...arg) => (
       dispatch(
-        routesActions.routesGetSetRoutes(
-          {
-            technical_operation_id,
-            municipal_facility_id,
-            type,
-          },
-          { page, path },
-        ),
+        routesActions.routesGetSetRoutes(...arg),
       )
     ),
   }),

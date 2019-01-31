@@ -29,5 +29,3 @@ export type MissionTemplate = {
   type_oper_id: number;
   work_class_id: number;
 };
-
-export type GetCompanyStructureLinear = () => Promise<any>;

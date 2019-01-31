@@ -85,7 +85,7 @@ export const getStructureParam = (userStructureId: InitialStateSession['userData
 export const getAvailableRouteTypes = (
   municipalFacilityForMissionList,
   municipal_facility_id,
-  for_column,
+  for_column?,
 ) => {
   if (for_column) {
     return ['mixed'];

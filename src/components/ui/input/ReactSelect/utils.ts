@@ -3,7 +3,7 @@ import { isString, isNumber } from 'lodash';
 export type DefaultSelectOption<V, L, R> = {
   value: V,
   label: L,
-  rowData: R,
+  rowData: Partial<R>,
 };
 
 export type DefaultSelectListMapper<R extends any> = DefaultSelectOption<R['id'], R['name'], R>[];

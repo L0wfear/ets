@@ -63,6 +63,7 @@ export default class ObjectsStore extends Store {
       modelsList: [],
       fuelTypes: [],
       technicalOperationsList: [],
+      technicalOperationsMap: new Map(),
       technicalOperationsRegistryList: [],
       technicalOperationRelationsList: [],
       workKindsList: [],
@@ -158,8 +159,16 @@ export default class ObjectsStore extends Store {
     this.setState({ fuelTypes: fuelTypes.result });
   }
 
-  handleGetTechOperations(techOperations) {
-    this.setState({ technicalOperationsList: techOperations.result });
+  handleGetTechOperations({ result }) {
+    const technicalOperationsMap = new Map();
+    result.forEach(to => (
+      technicalOperationsMap.set(to.id, to)
+    ));
+
+    this.setState({
+      technicalOperationsList: result,
+      technicalOperationsMap,
+    });
   }
 
   handleGetTechOperationsRegistry(techOperations) {

@@ -84,7 +84,7 @@ export const actionRemoveMissionTemplates: any = (missionTemplateOldArr: Mission
 
   return missionTemplate;
 };
-export const actionRemoveMissionTemplate: any = (missionTemplateOld: MissionTemplate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionRemoveMissionTemplate: any = (missionTemplateOld: Pick<MissionTemplate, 'id'> & Partial<MissionTemplate>, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { missionTemplate } } = await dispatch({
     type: 'none',
     payload: promiseRemoveMissionTemplate(missionTemplateOld.id),

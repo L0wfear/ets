@@ -170,7 +170,7 @@ class RoutesList extends React.PureComponent<any, any> {
   }
 
   getRouteById(id) {
-    return this.props.routesLoadRouteById(id).then(({ payload: { route_data: route } }) => route);
+    return this.props.routesLoadRouteById(id).then(({ route_data }) => route_data);
   }
 
   handleChangeSeasonId = (season_id) => {
@@ -206,9 +206,7 @@ class RoutesList extends React.PureComponent<any, any> {
 
   refreshRoutes = async (withState = null) => {
     const {
-      payload: {
-        data: routesListRaw,
-      },
+      data: routesListRaw,
     } = await this.props.routesGetSetRoutes();
 
     const routesList = makeRoutesListForRender(routesListRaw);
@@ -466,7 +464,7 @@ export default compose<any, any>(
       appConfig: getSessionState(state).appConfig,
       structures: getSessionState(state).userData.structures,
     }),
-    (dispatch) => ({
+    (dispatch: any) => ({
       routesGetSetRoutes: () => (
         dispatch(
           routesGetSetRoutes(

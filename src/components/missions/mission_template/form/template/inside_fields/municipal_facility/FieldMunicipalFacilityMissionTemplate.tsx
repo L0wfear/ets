@@ -33,7 +33,7 @@ class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFie
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PropsFieldMunicipalFacilityMissionTemplate) {
     const {
       technical_operation_id,
       technicalOperationRegistryForMissionList,
@@ -48,7 +48,7 @@ class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFie
           isDiffTechnicalOperationId
           && technicalOperationRegistryForMissionList.length
         )
-        || !prevProps.technicalOperationRegistryForMissionList
+        || !prevProps.technicalOperationRegistryForMissionList.length
       )
     );
 
@@ -71,7 +71,6 @@ class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFie
     const { municipalFacilityForMissionList } = await this.props.actionGetAndSetInStoreMunicipalFacilityRegistryForMission({
       start_date: new Date(),
       end_date: new Date(),
-      for: 'mission',
       norm_ids: normatives.map(({ id }) => id).join(','),
     });
 

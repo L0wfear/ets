@@ -387,27 +387,15 @@ export default class MissionsActions extends Actions {
     return CarDutyMissionService.get();
   }
 
-  getDutyMissionTemplates(data = {}) {
-    const payload = {};
-    if (data && data.order_id) { // 11
-      payload.order_id = data.order_id;
-    }
-
-    return DutyMissionTemplateService.get(payload).then(({ result }) => ({
-      result: result.map((empl) => {
-        const brigade_employee_id_list = get(empl, 'brigade_employee_id_list', []) || [];
-        empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
-        empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
-
-        return empl;
-      }),
-    }));
-  }
-
   createDutyMissionTemplate(mainMissionData) {
     const payload = cloneDeep(mainMissionData);
     payload.created_at = createValidDate(payload.created_at);
+    payload.brigade_employee_id_list = [...payload.brigade_employee_id_list_id];
+
     delete payload.brigadeEmployeeIdIndex;
+    delete payload.brigade_employee_id_list_fio;
+    delete payload.brigade_employee_id_list_id;
+
 
     return DutyMissionTemplateService.post(payload, false, 'json');
   }
@@ -423,11 +411,6 @@ export default class MissionsActions extends Actions {
     return DutyMissionTemplateService.put(payload, false, 'json');
   }
 
-  removeDutyMissionTemplate(id) {
-    const payload = { id };
-    return DutyMissionTemplateService.delete(payload, false, 'json');
-  }
-
   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
     const dutyMissionsCreationTemplateCopy = clone(dutyMissionsCreationTemplate);
     const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
@@ -441,6 +424,7 @@ export default class MissionsActions extends Actions {
       payload.fact_date_start = date_start;
       payload.fact_date_end = date_end;
       payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
+      payload.brigade_employee_id_list = [...payload.brigade_employee_id_list_id];
 
       if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
@@ -452,6 +436,10 @@ export default class MissionsActions extends Actions {
       delete payload.number;
       delete payload.technical_operation_name;
       delete payload.route_name;
+
+      delete payload.brigadeEmployeeIdIndex;
+      delete payload.brigade_employee_id_list_fio;
+      delete payload.brigade_employee_id_list_id;
 
       return DutyMissionService.post(payload, false, 'json');
     });

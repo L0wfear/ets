@@ -106,7 +106,6 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   }
 
   getMissionsList() {
-    const { flux } = this.context;
     const { typeClick } = this.props;
 
     const payload = {
@@ -117,7 +116,9 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       case typeTemplate.missionTemplate: return this.props.actionGetMissionTemplate(payload).then((ans) => ({
         result: get(ans, ['payload', 'data'], []),
       }));
-      case typeTemplate.missionDutyTemplate: return flux.getActions('missions').getDutyMissionTemplates(payload);
+      case typeTemplate.missionDutyTemplate: return this.props.actionGetDutyMissionTemplate(payload).then((ans) => ({
+        result: get(ans, ['payload', 'data'], []),
+      }));
       default: Promise.reject({ error: 'no typeClick' });
     }
   }
@@ -400,6 +401,14 @@ export default compose<any, any>(
       actionGetMissionTemplate: (payload) => (
         dispatch(
           missionActions.actionGetMissionTemplate(
+            payload,
+            { page: loadingPage },
+          ),
+        )
+      ),
+      actionGetDutyMissionTemplate: (payload) => (
+        dispatch(
+          missionActions.actionGetDutyMissionTemplate(
             payload,
             { page: loadingPage },
           ),

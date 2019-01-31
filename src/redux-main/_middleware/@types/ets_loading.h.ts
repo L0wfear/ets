@@ -3,3 +3,8 @@ export type ETSLoading<A, M = { promise: true, page?: string, path?: string }, T
   payload: A;
   meta: M
 }>;
+
+export type LoadingMeta = {
+  page: string;
+  path?: string;
+};

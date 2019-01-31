@@ -116,7 +116,10 @@ export default class ReactSelect extends React.Component<any, any> {
   }
 
   singleValueRender = ({ innerProps, ...props }: SingleValueProps<any>) => {
-    const { modalKey } = this.props;
+    const {
+      modalKey,
+      components: propsComponents ,
+    } = this.props;
 
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
 
@@ -127,6 +130,10 @@ export default class ReactSelect extends React.Component<any, any> {
 
     if (isString(props.data.label)) {
       newInnerProps.title = props.data.label;
+    }
+
+    if (isObject(propsComponents) && propsComponents.SingleValue) {
+      return <propsComponents.SingleValue innerProps={newInnerProps} {...props} />;
     }
 
     return <SingleValue innerProps={newInnerProps} {...props}  />;

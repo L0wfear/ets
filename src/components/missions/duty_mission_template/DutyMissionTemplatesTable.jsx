@@ -54,7 +54,7 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_id_list',
+        name: 'brigade_employee_id_list_id',
         displayName: 'Бригада',
         type: 'string',
         filter: {
@@ -90,13 +90,11 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export const getRenderers = (props) => ({
-  brigade_employee_id_list: ({ data, rowData }) => (
+export const getRenderers = props => ({
+  brigade_employee_id_list_id: ({ data, rowData }) => (
     <div>
       {
-        data.map((id) => (
-          get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
-        )).join(', ')
+        rowData.brigade_employee_id_list_fio.join(', ')
       }
     </div>
   ),

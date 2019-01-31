@@ -191,8 +191,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
     }));
   }
 
-  onFormHideCreateTemplate = (isSubmitted, result) => {
-    console.log(isSubmitted, result)
+  onFormHideCreateTemplate = (isSubmitted) => {
     if (isSubmitted) {
       this.loadMissionTemplateData();
     }
@@ -272,17 +271,19 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   getAdditionalProps = () => {
-    const { structures } = this.props.userData;
-    const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
+    const { listName } = this.constructor;
+    const listData = this.props[listName];
 
-    const missionTemplateList = this.props.missionTemplateList
-      .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
+    const {
+      technicalOperationsMap,
+      userData: { structures },
+    } = this.props;
 
     return {
       structures,
       noHeader: this.props.renderOnly,
       noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий' : null,
-      data: missionTemplateList,
+      data: listData.filter(({ technical_operation_id }) => technicalOperationsMap.has(technical_operation_id)),
     };
   }
 }

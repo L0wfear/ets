@@ -1,6 +1,11 @@
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { ThunkAction } from 'redux-thunk';
+import { ReduxState } from 'redux-main/@types/state';
+import { AnyAction } from 'redux';
+import { MunicipalFacility } from './@types';
 
 /* --------------- обновление стора --------------- */
 export const actionSetMunicipalFacility = (municipalFacilityList: IStateSomeUniq['municipalFacilityList']) => (dispatch) => (
@@ -87,7 +92,11 @@ export const actionGetAndSetInStoreMunicipalFacilityForMission: any = (payload =
     municipalFacilityForMissionList: data,
   };
 };
-export const actionGetAndSetInStoreMunicipalFacilityForDutyMission: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+
+export type ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns = {
+  municipalFacilityForDutyMissionList: MunicipalFacility[],
+};
+export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, { page, path }: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetMunicipalFacility(
       {

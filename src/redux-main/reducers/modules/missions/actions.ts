@@ -1,7 +1,9 @@
-import mission_template from 'redux-main/reducers/modules/missions/mission_template/actions';
+import missionTemplateActions from 'redux-main/reducers/modules/missions/mission_template/actions';
+import dutyMissionTemplateActions from 'redux-main/reducers/modules/missions/duty_mission_template/actions';
 
 const missionActions = {
-  ...mission_template,
+  ...missionTemplateActions,
+  ...dutyMissionTemplateActions,
 };
 
 export default missionActions;

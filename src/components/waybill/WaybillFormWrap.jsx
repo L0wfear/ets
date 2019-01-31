@@ -129,6 +129,9 @@ class WaybillFormWrap extends FormWrap {
           waybill.mission_id_list = [];
         }
 
+        waybill.fuel_method = 'fuel_card';
+        waybill.equipment_fuel_method = 'fuel_card';
+
         if (props.element.status === 'active' || props.element.status === 'closed') {
           const fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
           const fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;

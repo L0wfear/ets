@@ -149,10 +149,14 @@ class WaybillForm extends Form {
 
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
-        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))
+        .then(({ result: fuelRateAll }) => this.setState({
+          fuelRateAllList: fuelRateAll.map(d => d.car_model_id),
+        }))
         .catch((e) => {
           console.error(e); // eslint-disable-line
-          this.setState({ fuelRateAllList: [] });
+          this.setState({
+            fuelRateAllList: [],
+          });
         });
     }
 
@@ -578,12 +582,13 @@ class WaybillForm extends Form {
   )
 
   getFuelCardsListOptions(fuelCardsList, fuel_type_filter) {
-    return fuelCardsList.reduce((newArr, { number, fuel_type, ...other }) => {
+    return fuelCardsList.reduce((newArr, { id, number, fuel_type, ...other }) => {
       if (fuel_type === fuel_type_filter || !fuel_type_filter) {
         newArr.push({
-          value: number,
+          value: id,
           label: number,
           rowData: {
+            id,
             number,
             fuel_type,
             ...other,

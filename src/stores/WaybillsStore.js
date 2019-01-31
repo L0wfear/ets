@@ -35,5 +35,7 @@ export function getDefaultBill({ company_id = null }) {
     motohours_start: null,
     mission_id_list: [],
     company_id,
+    fuel_method: 'fuel_card',
+    equipment_fuel_method: 'fuel_card',
   };
 }

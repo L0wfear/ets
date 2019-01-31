@@ -274,7 +274,7 @@ export const waybillSchema = {
     equipment_fuel_method: [
       {
         validator: (value, formData) => {
-          if ( !value && formData.status === 'draft') {
+          if (!value && formData.status === 'draft' && formData.equipment_fuel) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
           if (value === 'fuel_card' && isEmpty(formData.equipment_fuel_card_id) && formData.status === 'draft') {

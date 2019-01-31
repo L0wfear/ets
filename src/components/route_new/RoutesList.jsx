@@ -356,13 +356,45 @@ class RoutesList extends React.Component {
     const OBJECTS = technicalOperationsObjectsList.map(({ type, full_name }) => ({ value: type, label: full_name }));
     const STRUCTURES = this.getStructures();
 
+    let ROUTES = _.cloneDeep(routesList).filter(r => this.shouldBeRendered(r));
+    ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
+    ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
+
+    ROUTES = Object.entries(_.groupBy(ROUTES, r => r.is_main ? 'main' : 'other')).reduce((newObj, [key, arr]) => {
+      newObj[key] = makeMainGroupRoute(arr);
+
+      return newObj;
+    }, {});
+
     let filterOptions = [
+      {
+        name: 'name',
+        displayName: 'Наименование маршрута',
+        filter: {
+          type: 'multiselect',
+          options: routesList.map(({ name }) => ({ value: name, label: name })),
+        },
+      },
       {
         name: 'technical_operation_name',
         displayName: 'Тех. операция',
         filter: {
           type: 'multiselect',
           options: TECH_OPERATIONS,
+        },
+      },
+      {
+        name: 'municipal_facility_id',
+        displayName: 'Элемент',
+        filter: {
+          type: 'multiselect',
+          options: _.uniqBy(
+            routesList.map(({ municipal_facility_id, municipal_facility_name }) => ({
+              value: municipal_facility_id,
+              label: municipal_facility_name,
+            })),
+            'value',
+          ),
         },
       },
       {
@@ -385,16 +417,6 @@ class RoutesList extends React.Component {
         },
       });
     }
-
-    let ROUTES = _.cloneDeep(routesList).filter(r => this.shouldBeRendered(r));
-    ROUTES = _.sortBy(ROUTES, o => o.name.toLowerCase());
-    ROUTES = ROUTES.filter(r => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
-
-    ROUTES = Object.entries(_.groupBy(ROUTES, r => r.is_main ? 'main' : 'other')).reduce((newObj, [key, arr]) => {
-      newObj[key] = makeMainGroupRoute(arr);
-
-      return newObj;
-    }, {});
 
     const {
       showForm,

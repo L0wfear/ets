@@ -56,6 +56,7 @@ export type RouteType = {
   is_new: boolean;
   is_template: boolean;
   municipal_facility_id: number;
+  municipal_facility_name: string;
   norm_id: null;
   seasons: SeasonData[];
   structure_id: number | void;

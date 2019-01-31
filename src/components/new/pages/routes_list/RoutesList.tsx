@@ -89,11 +89,26 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
 
 const filterOptions: any = [
   {
+    name: 'name',
+    displayName: 'Наименование маршрута',
+    filter: {
+      type: 'multiselect',
+    },
+  },
+  {
     name: 'technical_operation_id',
     displayName: 'Тех. операция',
     filter: {
       type: 'multiselect',
       byLabel: 'technical_operation_name',
+    },
+  },
+  {
+    name: 'municipal_facility_id',
+    displayName: 'Элемент',
+    filter: {
+      type: 'multiselect',
+      byLabel: 'municipal_facility_name',
     },
   },
   {

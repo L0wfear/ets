@@ -523,6 +523,7 @@ class MissionTemplateForm extends MissionForm {
           hasMissionStructureId={!!state.structure_id}
           missionAvailableRouteTypes={state.for_column ? available_route_types.filter(type => type === 'mixed') : available_route_types}
           fromMission
+          fromMissionTemplate
         />
 
       </Modal>

@@ -317,10 +317,17 @@ class RoutesList extends React.PureComponent<any, any> {
   }
 
   deleteRoute = async () => {
+    const { selectedRoute } = this.state;
     try {
       await global.confirmDialog({
         title: 'Внимание!',
-        body: 'Вы уверены, что хотите удалить выбранный маршрут?',
+        body: (
+          <>
+            <div>
+              <span>{'Удаляемый шаблон маршрута: '}</span><span><b>{selectedRoute.name}</b>.</span></div>
+            <div>{'Удаление шаблона маршрута возможно только вместе со связанными шаблонами заданий и наряд-заданий. Вы подтверждаете такое удаление?'}</div>
+          </>
+        ),
       });
     } catch (er) {
       return;

@@ -381,12 +381,15 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
                 showForm={showRouteForm}
                 handleHide={this.onRouteFormHide}
                 hasMissionStructureId={hasSelectedStructureId}
-                missionAvailableRouteTypes={getAvailableRouteTypesMemo(
-                  this.props.municipalFacilityForMissionList,
-                  for_column ? null : municipal_facility_id,
-                  for_column,
-                )}
+                missionAvailableRouteTypes={
+                  getAvailableRouteTypesMemo(
+                    this.props.municipalFacilityForMissionList,
+                    for_column ? null : municipal_facility_id,
+                    for_column,
+                  )
+                }
                 fromMission
+                fromMissionTemplate
                 page={page}
               />
             )

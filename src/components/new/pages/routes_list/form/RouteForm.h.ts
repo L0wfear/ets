@@ -23,6 +23,7 @@ export type InputRouteFormProps = {
   element: Route;
   routesMapNameId?: Map<string, number>;
   fromMission?: boolean;
+  fromMissionTemplate?: boolean;
   fromOrder?: boolean;
   missionAvailableRouteTypes?: string[];
   hasMissionStructureId?: boolean;

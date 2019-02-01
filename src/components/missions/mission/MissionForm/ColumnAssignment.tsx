@@ -22,7 +22,7 @@ type ColumnAssignmentState = {
   showBackButton: boolean,
 };
 
-class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, ColumnAssignmentState> {
+class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssignmentState> {
   state = {
     showBackButton: false,
   };
@@ -38,6 +38,7 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
   handleChange = (index, value) => {
     const { formState: { assign_to_waybill: [...assign_to_waybill] } } = this.props;
     assign_to_waybill[index] = value;
+
     this.props.handleChange('assign_to_waybill', assign_to_waybill);
   }
 

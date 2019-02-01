@@ -15,6 +15,8 @@ import { SingleValue } from 'components/ui/input/ReactSelect/styled/styled';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 
+const openMenuIds = {};
+
 /**
  * @todo уйти от легаси
  */
@@ -39,6 +41,13 @@ export default class ReactSelect extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
+    if (process.env.STAND !== 'prod') {
+      global.test = {
+        ...get(global, 'test', {}),
+        makeSelectIsOpenById: this.makeSelectIsOpenById,
+      };
+    }
+
     this.state = {
       components: {
         Option: this.optionRenderer,
@@ -47,6 +56,18 @@ export default class ReactSelect extends React.Component<any, any> {
         MultiValueContainer: this.multiValueContainerReander,
       },
     };
+  }
+
+  makeSelectIsOpenById = (key) => {
+    if (process.env.STAND !== 'prod') {
+      if (openMenuIds[key]) {
+        delete openMenuIds[key];
+      } else {
+        openMenuIds[key] = true;
+      }
+      console.log('%cСлушаюсь', 'font-size: 18px; background: #222; color: #bada55'); // tslint:disable-line:no-console
+      this.forceUpdate();
+    }
   }
 
   handleChange = (objectValue) => {
@@ -211,6 +232,7 @@ export default class ReactSelect extends React.Component<any, any> {
         noOptionsMessage={this.noOptionsMessage}
         components={this.state.components}
         isDisabled={disabled}
+        menuIsOpen={get(openMenuIds, id, undefined)}
       />
     );
   }

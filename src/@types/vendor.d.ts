@@ -18,6 +18,8 @@ declare namespace NodeJS  {
     APP_TIME_WITH_SECOND_FORMAT: string;
     toggleUpdateCarPoints: any;
     confirmDialog: (props: any) => Promise<any>;
+    makeReactSelectMenuOpen?: (key: string) => void;
+    test: any;
   }
 }
 

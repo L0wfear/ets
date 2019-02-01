@@ -120,13 +120,7 @@ export default (state = initialState, { type, payload }) => {
     case MONITOR_PAGE_CHANGE_CARS_BY_STATUS: {
       return {
         ...state,
-        carsByStatus: {
-          ...state.carsByStatus,
-          ...Object.entries(payload.changedCarsByStatus).reduce((newObj, [key, value]) => ({
-            ...newObj,
-            [key]: state.carsByStatus[key] + value,
-          }), {}),
-        },
+        carsByStatus: payload.carsByStatus,
       };
     }
     case MONITOR_PAGE_TOGGLE_STATUS_SHOW: {

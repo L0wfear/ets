@@ -26,10 +26,10 @@ export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) =
   },
 });
 
-export const monitoPageChangeCarsByStatus = (changedCarsByStatus) => ({
+export const monitoPageChangeCarsByStatus = (carsByStatus) => ({
   type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
   payload: {
-    changedCarsByStatus,
+    carsByStatus,
   },
 });
 

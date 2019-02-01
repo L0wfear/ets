@@ -11,7 +11,6 @@ import AdvancedNumberFilter from 'components/new/ui/registry/components/data/fil
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { DivNone } from 'global-styled/global-styled';
 import { isArray } from 'util';
 
 type PropsFiltersLines = {
@@ -50,7 +49,7 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
     }
 
     if (!formatedTitle) {
-      return <DivNone key={otherFilterData.valueKey} />;
+      return null;
     }
 
     switch (type) {

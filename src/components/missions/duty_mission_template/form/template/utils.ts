@@ -77,6 +77,7 @@ export const isPermittedEmployeeForDutyMission = (employee: Employee | null, str
     company_structure_id,
     position_name,
     can_duty_mission,
+    is_common,
   } = employee;
 
   const trigrrerOnPermitted = (
@@ -84,8 +85,8 @@ export const isPermittedEmployeeForDutyMission = (employee: Employee | null, str
     && can_duty_mission
     && active
     && (
-      !structure_id
-      || !company_structure_id
+      is_common
+      || !structure_id
       || company_structure_id === structure_id
     )
   );

@@ -21,6 +21,7 @@ import { monitoPageChangeCarsByStatus, monitorPageResetCarStatus, monitorPageMer
 import {
   getFrontStatus,
   checkOnVisible,
+  calcCountTsByStatus,
 } from 'components/monitor/layers/car-markers/utils';
 
 import {
@@ -205,12 +206,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
   }
 
   changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs, minZoom }) {
-    const carsByStatus = {
-      in_move: 0,
-      stop: 0,
-      parking: 0,
-      not_in_touch: 0,
-    };
     const filtredCarGpsCode = {};
     let hasDiffInFiltredCarGpsCode = false;
 
@@ -238,22 +233,17 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
           );
 
           const old_visible = feature.get('visible');
-          const old_status = feature.get('status');
 
           feature.set('visible', visible);
           feature.set('status', carPointsDataWs[gps_code].front_status);
 
           if (visible) {
-            if (old_visible) {
-              carsByStatus[old_status] -= 1;
-            } else {
+            if (!old_visible) {
               filtredCarGpsCode[gps_code] = true;
               hasDiffInFiltredCarGpsCode = true;
             }
-            carsByStatus[carPointsDataWs[gps_code].front_status] += 1;
           } else {
             if (old_visible) {
-              carsByStatus[old_status] -= 1;
               filtredCarGpsCode[gps_code] = false;
               hasDiffInFiltredCarGpsCode = true;
             }
@@ -275,9 +265,9 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
       }
     }
 
-    if (Object.values(carsByStatus).some((val) => !!val)) {
-      this.props.monitoPageChangeCarsByStatus(carsByStatus);
-    }
+    this.props.monitoPageChangeCarsByStatus(
+      calcCountTsByStatus(carPointsDataWs),
+    );
     if (hasDiffInFiltredCarGpsCode) {
       this.props.monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode);
     }
@@ -326,13 +316,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
       const zoomMore8 = zoom > 8;
       const { carPointsDataWs } = this.state;
 
-      const carsByStatus = {
-        in_move: 0,
-        stop: 0,
-        parking: 0,
-        not_in_touch: 0,
-      };
-
       const filtredCarGpsCode = {};
       let hasDiffInFiltredCarGpsCode = false;
       const minZoom = zoom <= MIN_ZOOM_VAL;
@@ -375,7 +358,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
           );
 
           if (visible) {
-            carsByStatus[point.front_status] += 1;
             filtredCarGpsCode[gps_code] = true;
             hasDiffInFiltredCarGpsCode = true;
           } else {
@@ -406,7 +388,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
           this.props.addFeaturesToSource(feature);
 
         } else if (carPointsDataWs[gps_code].timestamp < point.timestamp) {
-          const { [gps_code]: { front_status: old_status } } = carPointsDataWs as any;
 
           carPointsDataWs[gps_code] = {
             ...carPointsDataWs[gps_code],
@@ -444,16 +425,12 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
           );
 
           if (visible) {
-            if (old_visible) {
-              carsByStatus[old_status] -= 1;
-            } else {
+            if (!old_visible) {
               hasDiffInFiltredCarGpsCode = true;
               filtredCarGpsCode[gps_code] = true;
             }
-            carsByStatus[carPointsDataWs[gps_code].front_status] += 1;
           } else {
             if (old_visible) {
-              carsByStatus[old_status] -= 1;
               hasDiffInFiltredCarGpsCode = true;
               filtredCarGpsCode[gps_code] = false;
             }
@@ -483,9 +460,9 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         }
       });
 
-      if (Object.values(carsByStatus).some((val) => !!val)) {
-        this.props.monitoPageChangeCarsByStatus(carsByStatus);
-      }
+      this.props.monitoPageChangeCarsByStatus(
+        calcCountTsByStatus(carPointsDataWs),
+      );
 
       if (hasDiffInFiltredCarGpsCode) {
         this.props.monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode);

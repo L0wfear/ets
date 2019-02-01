@@ -61,3 +61,16 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, g
     )
   ))
 );
+
+export const calcCountTsByStatus = (carPointsDataWs) => Object.values(carPointsDataWs).reduce(
+  (carsByStatus, { front_status }) => {
+    carsByStatus[front_status] += 1;
+    return carsByStatus;
+  },
+  {
+    in_move: 0,
+    stop: 0,
+    parking: 0,
+    not_in_touch: 0,
+  },
+);

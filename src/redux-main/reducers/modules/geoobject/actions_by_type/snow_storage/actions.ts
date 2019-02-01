@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/@types';
 import {
   promiseGetSnowStorage,
+  promiseLoadPFSnowStorage,
   promiseCreateSnowStorage,
   promiseUpdateSnowStorage,
   promiseRemoveSnowStorage,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetSnowStorage: any = (snowStorageList: SnowStorage[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetSnowStorage: any = () => (dispatch) => (
     actionSetSnowStorage([]),
   )
 );
-export const actionGetGetSnowStorage: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobSnowStorage: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetSnowStorage(payload),
+    payload: promiseLoadPFSnowStorage(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetSnowStorage: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetSnowStorage(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStoreSnowStorage: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetSnowStorage(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemoveSnowStorage: any = (id, { page, path }: { page: string;
 export default {
   actionSetSnowStorage,
   geoobjectResetSetSnowStorage,
+  actionGetBlobSnowStorage,
   actionGetGetSnowStorage,
   actionGetAndSetInStoreSnowStorage,
   actionCreateSnowStorage,

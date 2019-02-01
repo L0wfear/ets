@@ -46,7 +46,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getCountry, this.handleGetCountry);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
-    this.register(objectsActions.getTypesAttr, this.handleGetTypesAttr);
 
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.getTechnicalOperationsRegistry, this.handleGetTechOperationsRegistry);

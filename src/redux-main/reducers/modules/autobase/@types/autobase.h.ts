@@ -398,6 +398,30 @@ export type PropulsionType = {
   name: string;
 };
 
+export type TypesAttr = {
+  car_func_type_id: number | null;
+  data_rate: number | null;
+  end_date: string | null;
+  equip_width: number | null;
+  full_name: string;
+  is_check_gov_number: number | null;
+  mkad_speed_lim: number | null;
+  object_type_id: number | null;
+  object_type_name: string;
+  oper_type_id: number | null;
+  oper_type_name: string;
+  parent_id: number | null;
+  route_type: string;
+  season_id: number | null;
+  season_name: string;
+  short_name: string;
+  speed_lim: number | null;
+  work_class_code: string;
+  work_class_id: number | null;
+  work_class_name: string;
+  work_class_short_name: string;
+};
+
 export type IStateAutobase = {
   sparePartList: SparePart[];
   measureUnitList: MeasureUnit[];
@@ -433,4 +457,5 @@ export type IStateAutobase = {
   propulsionTypeList: PropulsionType[];
   fuelCardsList: FuelCards[];
   fuelTypeList: FuelType[];
+  typesAttrList: TypesAttr[];
 };

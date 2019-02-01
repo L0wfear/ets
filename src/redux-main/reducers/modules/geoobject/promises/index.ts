@@ -28,6 +28,9 @@ export const geoozonesLoadByType = (keyType: keyof typeof geoozones) => (payload
       };
     })
 );
+export const promiseGeozonesLoadPFByType = (keyType: keyof typeof geoozones) => (payload = {}) => (
+  GeozonesService.path(geoozones[keyType]).getBlob({ ...payload })
+);
 export const geoozonesCreateByType = (keyType: keyof typeof geoozones) => (ownPayload) => {
   const payload = {
     ...ownPayload,
@@ -94,6 +97,9 @@ export const gormostLoadByType = (keyType: keyof typeof gormost) => (payload = {
         extraData: get(ans, ['result', 'extra'], {}),
       };
     })
+);
+export const promiseGormostLoadPFByType = (keyType: keyof typeof gormost) => (payload = {}) => (
+  GormostService.path(gormost[keyType]).getBlob({ ...payload })
 );
 export const gormostCreateByType = (keyType: keyof typeof gormost) => (ownPayload) => {
   const payload = {

@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
 import {
   promiseGetBridges,
+  promiseLoadPFBridges,
   promiseCreateBridges,
   promiseUpdateBridges,
   promiseRemoveBridges,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetBridges: any = (bridgesList: Bridges[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetBridges: any = () => (dispatch) => (
     actionSetBridges([]),
   )
 );
-export const actionGetGetBridges: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobBridges: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetBridges(payload),
+    payload: promiseLoadPFBridges(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetBridges: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetBridges(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStoreBridges: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetBridges(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemoveBridges: any = (id, { page, path }: { page: string; pat
 export default {
   actionSetBridges,
   geoobjectResetSetBridges,
+  actionGetBlobBridges,
   actionGetGetBridges,
   actionGetAndSetInStoreBridges,
   actionCreateBridges,

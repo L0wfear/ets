@@ -1,5 +1,3 @@
-import { GeozonePedestrianTunnelsService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data/permissions';
@@ -9,7 +7,10 @@ import { PedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions
 export const registryKey = 'PedestrianTunnelsList';
 
 export const config: TypeConfigData<PedestrianTunnels> = {
-  Service: GeozonePedestrianTunnelsService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetPedestrianTunnels'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobPedestrianTunnels'],
+  },
   registryKey,
   header: {
     title: 'Справочник пешеходных тоннелей',

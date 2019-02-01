@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
 import {
   promiseGetPgmStore,
+  promiseLoadPFPgmStore,
   promiseCreatePgmStore,
   promiseUpdatePgmStore,
   promiseRemovePgmStore,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetPgmStore: any = (pgmStoreList: PgmStore[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetPgmStore: any = () => (dispatch) => (
     actionSetPgmStore([]),
   )
 );
-export const actionGetGetPgmStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobPgmStore: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetPgmStore(payload),
+    payload: promiseLoadPFPgmStore(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetPgmStore: any = (payloadOwn = {}, { page, path }: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetPgmStore(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStorePgmStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetPgmStore(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemovePgmStore: any = (id, { page, path }: { page: string; pa
 export default {
   actionSetPgmStore,
   geoobjectResetSetPgmStore,
+  actionGetBlobPgmStore,
   actionGetGetPgmStore,
   actionGetAndSetInStorePgmStore,
   actionCreatePgmStore,

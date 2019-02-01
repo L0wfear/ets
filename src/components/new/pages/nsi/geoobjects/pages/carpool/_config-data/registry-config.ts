@@ -1,5 +1,3 @@
-import { GeozoneCarpoolService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/permissions';
@@ -9,7 +7,10 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 export const registryKey = 'CarpoolList';
 
 export const config: TypeConfigData<Carpool> = {
-  Service: GeozoneCarpoolService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetCarpool'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobCarpool'],
+  },
   registryKey,
   header: {
     title: 'Справочник Автобаз',

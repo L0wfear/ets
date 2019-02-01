@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 import {
   promiseGetFuelingWater,
+  promiseLoadPFFuelingWater,
   promiseCreateFuelingWater,
   promiseUpdateFuelingWater,
   promiseRemoveFuelingWater,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetFuelingWater: any = (fuelingWaterList: FuelingWater[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetFuelingWater: any = () => (dispatch) => (
     actionSetFuelingWater([]),
   )
 );
-export const actionGetGetFuelingWater: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobFuelingWater: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetFuelingWater(payload),
+    payload: promiseLoadPFFuelingWater(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetFuelingWater: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetFuelingWater(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStoreFuelingWater: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetFuelingWater(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemoveFuelingWater: any = (id, { page, path }: { page: string
 export default {
   actionSetFuelingWater,
   geoobjectResetSetFuelingWater,
+  actionGetBlobFuelingWater,
   actionGetGetFuelingWater,
   actionGetAndSetInStoreFuelingWater,
   actionCreateFuelingWater,

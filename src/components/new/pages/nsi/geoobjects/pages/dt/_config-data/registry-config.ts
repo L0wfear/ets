@@ -1,4 +1,3 @@
-import { GeozoneDtService } from 'api/Services';
 import TrTd from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data/renderers/TrTd';
 
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -10,7 +9,10 @@ import { Dt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/@ty
 export const registryKey = 'DtList';
 
 export const config: TypeConfigData<Dt> = {
-  Service: GeozoneDtService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetDt'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobDt'],
+  },
   registryKey,
   header: {
     title: 'Справочник ДТ',

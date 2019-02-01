@@ -5,9 +5,12 @@ import {
   REGISTRY_CHANGE_LIST,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
+import { get } from 'lodash';
 
 import { makeDataListAfterLoadInitialData } from 'components/new/ui/registry/module/utils/data';
 import { makeProcessedArray } from 'components/new/ui/registry/module/utils/processed';
+import allActions from 'redux-main/reducers/actions';
+
 import {
   setEmptyRawFilters,
   applyFilterFromRaw,
@@ -49,25 +52,22 @@ export const registryRemoveData = (registryKey) => ({
   },
 });
 
-export const registryLoadDataByKey = (registryKey) => (dispatch, getState) => {
-  const { registry: { [registryKey]: { Service } } } = getState();
+export const registryLoadDataByKey = (registryKey) => async (dispatch, getState) => {
+  const getPath = get(getState(), ['registry', registryKey, 'Service', 'getActionPath'], null);
 
-  return dispatch({
-    type: '',
-    payload: Service.get()
-      .then((ans) => {
-        const {
-          result: { rows: arrayRaw },
-        } = ans;
+  if (getPath) {
+    const action = get(allActions, getPath, null);
+    if (action) {
+      const { data: arrayRaw } = await dispatch(
+        action(
+          {},
+          { page: registryKey },
+        ),
+      );
 
-        const {
-          registry: {
-            [registryKey]: {
-              list,
-            },
-          },
-        } = getState();
+      const list: any = get(getState(), ['registry', registryKey, 'list']);
 
+      if (list) {
         const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
 
         return dispatch(
@@ -88,12 +88,9 @@ export const registryLoadDataByKey = (registryKey) => (dispatch, getState) => {
             },
           ),
         );
-      }),
-    meta: {
-      promise: true,
-      page: 'registry',
-    },
-  });
+          }
+    }
+  }
 };
 
 export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage = 0) => (dispatch, getState) => {
@@ -263,22 +260,27 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
   );
 };
 
-export const registyLoadPrintForm = (registryKey) => (dispatch, getState) => {
-  const { registry: { [registryKey]: { Service } } } = getState();
+export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState) => {
+  const getBlobPath = get(getState(), ['registry', registryKey, 'Service', 'getBlobActionPath'], null);
 
-  return dispatch({
-    type: '',
-    payload: Service.getBlob({ format: 'xls'})
-      .then((ans) => {
-        saveData(ans.blob, ans.fileName);
+  if (getBlobPath) {
+    const action = get(allActions, getBlobPath, null);
 
-        return ans;
-      }),
-    meta: {
-      promise: true,
-      page: registryKey,
-    },
-  });
+    if (action) {
+      const { blob, fileName } = await dispatch(
+        action(
+          { format: 'xls'},
+          { page: registryKey },
+        ),
+      );
+
+      saveData(blob, fileName);
+
+      return true;
+    }
+  } else {
+    console.warn('не определён путь до экшена для ПФ'); // tslint:disable-line:no-console
+  }
 };
 
 export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {

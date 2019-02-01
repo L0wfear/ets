@@ -1,4 +1,3 @@
-import { GeozoneOdhService } from 'api/Services';
 import TrTd from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/renderers/TrTd';
 
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -10,7 +9,10 @@ import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@
 export const registryKey = 'OdhList';
 
 export const config: TypeConfigData<Odh> = {
-  Service: GeozoneOdhService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetOdh'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobOdh'],
+  },
   registryKey,
   header: {
     title: 'Справочник ОДХ',

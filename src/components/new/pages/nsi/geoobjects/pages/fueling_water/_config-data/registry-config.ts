@@ -1,5 +1,3 @@
-import { GeozoneFuelingWaterService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_config-data/permissions';
@@ -9,7 +7,10 @@ import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_t
 export const registryKey = 'FuelingWaterList';
 
 export const config: TypeConfigData<FuelingWater> = {
-  Service: GeozoneFuelingWaterService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetFuelingWater'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobFuelingWater'],
+  },
   registryKey,
   header: {
     title: 'Справочник баз гидрантов',

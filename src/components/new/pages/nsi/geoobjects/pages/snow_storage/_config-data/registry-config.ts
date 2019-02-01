@@ -1,5 +1,3 @@
-import { GeozoneSnowStorageService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data/permissions';
@@ -9,7 +7,10 @@ import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_ty
 export const registryKey = 'SnowStorageList';
 
 export const config: TypeConfigData<SnowStorage> = {
-  Service: GeozoneSnowStorageService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetSnowStorage'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobSnowStorage'],
+  },
   registryKey,
   header: {
     title: 'Справочник пунктов временного складирования снега',

@@ -1,5 +1,3 @@
-import { GeozoneDangerZoneService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data/permissions';
@@ -9,7 +7,10 @@ import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_typ
 export const registryKey = 'DangerZoneList';
 
 export const config: TypeConfigData<DangerZone> = {
-  Service: GeozoneDangerZoneService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetDangerZone'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobDangerZone'],
+  },
   registryKey,
   header: {
     title: 'Справочник особо опасных мест',

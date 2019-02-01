@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
 import {
   promiseGetMsp,
+  promiseLoadPFMsp,
   promiseCreateMsp,
   promiseUpdateMsp,
   promiseRemoveMsp,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetMsp: any = (mspList: Msp[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetMsp: any = () => (dispatch) => (
     actionSetMsp([]),
   )
 );
-export const actionGetGetMsp: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobMsp: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetMsp(payload),
+    payload: promiseLoadPFMsp(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetMsp: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload } = dispatch({
+    type: 'none',
+    payload: promiseGetMsp(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStoreMsp: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetMsp(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemoveMsp: any = (id, { page, path }: { page: string; path?: 
 export default {
   actionSetMsp,
   geoobjectResetSetMsp,
+  actionGetBlobMsp,
   actionGetGetMsp,
   actionGetAndSetInStoreMsp,
   actionCreateMsp,

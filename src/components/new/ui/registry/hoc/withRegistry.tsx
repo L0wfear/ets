@@ -18,7 +18,7 @@ import { compose } from 'redux';
 const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Component) => (
   compose(
     withPreloader({
-      page: 'registry',
+      page: configData.registryKey,
       typePreloader: 'mainpage',
     }),
     connect<any, any, any, ReduxState>(

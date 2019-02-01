@@ -111,7 +111,7 @@ class ProgramObjectFormodh extends Form {
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
       } else {
-        this.props.actionGetGetOdh().then(({ payload: { data } }) => {
+        this.props.actionGetGetOdh().then(({ data }) => {
           const changesState = { manual };
           changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
 

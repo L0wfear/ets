@@ -1,5 +1,3 @@
-import { GeozoneSspService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/permissions';
@@ -10,7 +8,10 @@ import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@
 export const registryKey = 'SspList';
 
 export const config: TypeConfigData<Ssp> = {
-  Service: GeozoneSspService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetSsp'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobSsp'],
+  },
   registryKey,
   header: {
     title: 'Справочник ССП',

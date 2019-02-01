@@ -12,7 +12,6 @@ import {
   WaybillCarService,
   MissionCarService,
   TypesService,
-  TypesAttr,
   ModelsService,
   CompanyService,
   ConfigService,
@@ -37,10 +36,6 @@ function getMaterialConsumptionRates(payload = {}) {
 }
 
 export default class ObjectsActions extends Actions {
-  getTypesAttr(payload = {}) {
-    return TypesAttr.get(payload);
-  }
-
   getCars(technical_operation_id) {
     const payload = {};
     if (!isEmpty(technical_operation_id)) {

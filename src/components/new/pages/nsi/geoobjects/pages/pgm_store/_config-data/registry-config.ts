@@ -1,5 +1,3 @@
-import { GeozonePgmStoreService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data/permissions';
@@ -9,7 +7,10 @@ import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/
 export const registryKey = 'PgmStoreList';
 
 export const config: TypeConfigData<PgmStore> = {
-  Service: GeozonePgmStoreService,
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetPgmStore'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobPgmStore'],
+  },
   registryKey,
   header: {
     title: 'Справочник пунктов отпуска ПГМ',

@@ -1,8 +1,7 @@
 import {
   geoozonesCreateByType,
   geoozonesRemoveByType,
-} from 'redux-main/reducers/modules/geoobject/promises';
-import {
+  promiseGeozonesLoadPFByType,
   geoozonesLoadByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { danger_zone } from 'redux-main/reducers/modules/geoobject/constants';
@@ -10,6 +9,7 @@ import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_typ
 import { GeozoneDangerZoneService } from 'api/Services';
 
 export const promiseGetDangerZone = geoozonesLoadByType(danger_zone);
+export const promiseLoadPFDangerZone = promiseGeozonesLoadPFByType(danger_zone);
 export const promiseCreateDangerZone = geoozonesCreateByType(danger_zone);
 export const promiseUpdateDangerZone = (formState: DangerZone) => {
   const payload = {

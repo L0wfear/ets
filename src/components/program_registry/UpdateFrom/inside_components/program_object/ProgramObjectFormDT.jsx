@@ -109,7 +109,7 @@ class ProgramObjectFormDT extends Form {
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
       } else {
-        this.props.actionGetGetDt().then(({ payload: { data } }) => {
+        this.props.actionGetGetDt().then(({ data }) => {
           const changesState = { manual };
           changesState.dtPolys = keyBy(data, 'yard_id');
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   OverlayInsideContainer,
   EtsOverlayContainer,
+  OverlayLineInfoContainer,
 } from 'components/new/ui/map/overlay/styled/styled';
 
 export const OverlayInsideTrackContainer = styled(OverlayInsideContainer)``;
@@ -43,4 +44,8 @@ export const OverlayBoxInfoContainer = styled.div`
       border-right: none;
     }
   }
+`;
+
+export const OverlayLineObjectsStringContainer = styled(OverlayLineInfoContainer)`
+  white-space: normal;
 `;

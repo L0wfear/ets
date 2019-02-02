@@ -134,13 +134,14 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
   }
 
   handleEndDraw = (feature: ol.Feature) => { // конец рисования буфера
-    const qwe = createBuffer(feature, 1000);
-    this.drawBufferToMap(qwe);
+    const buffer = createBuffer(feature, 1000);
+    this.drawBufferToMap(buffer);
     this.setState({ activeDraw: false });
     this.props.monitorPageFalsePolygonBufferActive();
-    qwe
-      ? localStorage.setItem('featureBufferPolygon', JSON.stringify(qwe))
-      : null;
+
+    if (buffer) {
+      localStorage.setItem('featureBufferPolygon', JSON.stringify(buffer));
+    }
   }
 
   render() {

@@ -1,9 +1,14 @@
 import * as React from 'react';
 
-const SimpleLinkA = React.memo(
-  ({ title, href }: { title?: string, href: string }) => (
-    <a href={href}>{title || href}</a>
-  ),
+type PropsSimpleLinkA = {
+  id?: string;
+  className?: string;
+  title?: string;
+  href: string;
+};
+
+const SimpleLinkA: React.FunctionComponent<PropsSimpleLinkA> = ({ id, className, title, children, href }) => (
+  <a id={id} className={className} href={href}>{title || children || href}</a>
 );
 
 export default SimpleLinkA;

@@ -8,7 +8,7 @@ import roadAccidentPermissions from 'components/directories/autobase/road_accide
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/directories/autobase/road_accident/RoadAccidentForm/roadAccident-schema';
-import { get } from 'lodash';
+
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
@@ -54,12 +54,6 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
         label: driver.fio_license,
         rowData: driver,
       })),
-    });
-  }
-
-  handleChangeBoolean = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
     });
   }
 
@@ -151,7 +145,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Виновность"
                 value={state.is_guilty}
                 error={errors.is_guilty}
-                onChange={this.handleChangeBoolean}
+                onChange={this.props.handleChangeBoolean}
                 boundKeys="is_guilty"
                 disabled={!isPermitted}
                 modalKey={page}

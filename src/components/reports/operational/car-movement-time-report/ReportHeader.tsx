@@ -10,34 +10,41 @@ import {
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates } from 'utils/dates';
-import { bindable, FluxContext } from 'utils/decorators';
-import { connectToStores } from 'utils/decorators';
+import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import { ReduxState } from 'redux-main/@types/state';
+import { getCompanyState } from 'redux-main/reducers/selectors/index';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { compose } from 'recompose';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import companyActions from 'redux-main/reducers/modules/company/actions';
+import { IStateCompany } from 'redux-main/reducers/modules/company/@types/index';
 
 const DatePickerBindable: any = bindable(DatePicker);
+const page = 'car-movement-time-report';
 
 interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: string;
   date_end: any;
   company_id: null | number;
-  companies: any;
+  actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany>;
+  companyList: IStateCompany['companyList'];
 }
 
-@connectToStores(['objects'])
-@FluxContext
 class MissionProgressReportHeader extends React.Component<IPropsMissionProgressReportHeader, any> {
-  context!: ETSCore.LegacyContext;
+  async componentDidMount() {
+    const { companyList: [company] } = await this.props.actionGetAndSetInStoreCompany(
+      {},
+      { page },
+    );
 
-  componentDidMount() {
-    this.context.flux.getActions('objects').getCompanies().then(({ result: [company] }) => {
-      if (company) {
-        const { company_id } = this.getState();
-        if (!company_id) {
-          this.props.handleChange('company_id', company.company_id);
-        }
+    if (company) {
+      const { company_id } = this.getState();
+      if (!company_id) {
+        this.props.handleChange('company_id', company.company_id);
       }
-    });
+    }
   }
   getState() {
     const date_end_temp: Date = getDateWithMoscowTz();
@@ -73,7 +80,10 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     });
   }
   render() {
-    const { readOnly, companies } = this.props;
+    const {
+      readOnly,
+      companyList,
+    } = this.props;
 
     const {
       date_start,
@@ -90,7 +100,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
       errorMes = 'Дата окончания периода должна быть позже даты начала';
     }
 
-    const companyOptions = companies.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
+    const companyOptions = companyList.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
 
     return (
       <div>
@@ -151,4 +161,22 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
   }
 }
 
-export default ReportHeaderWrapper(MissionProgressReportHeader);
+export default compose<any, any>(
+  withPreloader({
+    page,
+    typePreloader: 'mainpage',
+  }),
+  connect<any, { actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany> }, any, ReduxState>(
+    (state) => ({
+      companyList: getCompanyState(state).companyList,
+    }),
+    (dispatch: any) => ({
+      actionGetAndSetInStoreCompany: (...arg) => (
+        dispatch(
+          companyActions.actionGetAndSetInStoreCompany(...arg),
+        )
+      ),
+    }),
+  ),
+  ReportHeaderWrapper,
+)(MissionProgressReportHeader);

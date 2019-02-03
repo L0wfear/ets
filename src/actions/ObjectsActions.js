@@ -2,7 +2,6 @@ import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import {
-  clone,
   get,
 } from 'lodash';
 import {
@@ -13,7 +12,6 @@ import {
   MissionCarService,
   TypesService,
   ModelsService,
-  CompanyService,
   ConfigService,
   MaterialConsumptionRateService,
   CleanCategoriesService,
@@ -69,15 +67,6 @@ export default class ObjectsActions extends Actions {
 
   getSensorTypes() {
     return SensorTypeService.get().then(r => ({ result: r.result.rows }));
-  }
-
-  getCompanies() {
-    return CompanyService.get();
-  }
-
-  updateCompanies(formState) {
-    const payload = clone(formState);
-    return CompanyService.path(formState.company_id).put(payload, this.getCompanies, 'json');
   }
 
   getWorkKinds() {

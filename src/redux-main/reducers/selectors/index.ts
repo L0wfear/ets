@@ -48,3 +48,6 @@ export const getGeoobjectState = (state: ReduxState) => (
 export const getMissionsState = (state: ReduxState) => (
   state.missions
 );
+export const getCompanyState = (state: ReduxState) => (
+  state.company
+);

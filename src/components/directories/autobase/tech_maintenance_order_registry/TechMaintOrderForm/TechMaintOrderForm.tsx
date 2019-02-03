@@ -1,8 +1,6 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 
-import { get } from 'lodash';
-
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Row from 'react-bootstrap/lib/Row';
@@ -60,12 +58,6 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
 
   loadMeasureUnitRun(tech_maintenance_type_id: TechMaintOrder['tech_maintenance_type_id']) {
     this.props.measureUnitRunGetAndSetInStore(tech_maintenance_type_id);
-  }
-
-  handleChangeBoolean = (name: keyof TechMaintOrder, value: HTMLInputElement) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
   }
 
   makeOptionFromTechMaintTypeList = (
@@ -201,7 +193,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 label="Признак периодического ТО"
                 value={state.is_periodic}
                 disabled={!isPermitted}
-                onChange={this.handleChangeBoolean}
+                onChange={this.props.handleChangeBoolean}
                 boundKeys="is_periodic"
                 modalKey={path}
               />

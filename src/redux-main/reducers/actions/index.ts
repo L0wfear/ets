@@ -9,10 +9,12 @@ import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 // import orderActions from 'redux-main/reducers/modules/order/action-order';
 // import routesActions from 'redux-main/reducers/modules/routes/actions';
 // import sessionActions from 'redux-main/reducers/modules/session/actions-session';
+import companyActions from 'redux-main/reducers/modules/company/actions';
 
 const allActions = {
   autobaseActions,
   geoobjectActions,
+  companyActions,
 };
 
 export default allActions;

@@ -27,6 +27,9 @@ Array(16).fill(1).map((d, r) =>
   ),
 );
 
+/**
+ * @todo move on company store (actionGetAndSetInStoreCompany)
+ */
 export const loadCompany = () => (
   CompanyService.get().then(({ result }) => {
     const companies = result.map((company) => ({

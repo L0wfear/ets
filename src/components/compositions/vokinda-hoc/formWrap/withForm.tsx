@@ -49,6 +49,7 @@ type WithFormProps<P> = P & DispatchProp & {
 };
 
 type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
+type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
 type FormWithDefaultSubmit = () => void;
 
@@ -58,6 +59,7 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
   & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'canSave' | 'validate' | 'schema'>
   & {
     handleChange: FormWithHandleChange<F>;
+    handleChangeBoolean: FormWithHandleChangeBoolean<F>;
     submitAction: FormWithSubmitAction<T, A>;
     defaultSubmit: FormWithDefaultSubmit;
     hideWithoutChanges: (...arg: any[]) => void;
@@ -126,6 +128,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         }
 
         return Object.values(state.formErrors).every((error) => !error);
+      }
+      handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
+        this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
       }
       handleChange: FormWithHandleChange<F> = (objChangeOrName, newRawValue) => {
         const objChangeItareble = !isString(objChangeOrName)
@@ -273,6 +278,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             formErrors={this.state.formErrors}
             canSave={this.state.canSave}
             handleChange={this.handleChange}
+            handleChangeBoolean={this.handleChangeBoolean}
             submitAction={this.submitAction}
             defaultSubmit={this.defaultSubmit}
             hideWithoutChanges={this.hideWithoutChanges}

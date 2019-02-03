@@ -3,13 +3,13 @@ import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegist
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "companies" */ 'components/directories/companies/CompaniesList')
+  import(/* webpackChunkName: "company" */ 'components/new/pages/nsi/company/CompanyList')
 ));
 
 export default (props) => (
-      <ErrorBoundaryRegistry>
-        <React.Suspense fallback={<TemplateRegistry />}>
-          <Component {...props}/>
-        </React.Suspense>
-      </ErrorBoundaryRegistry>
+  <ErrorBoundaryRegistry>
+    <React.Suspense fallback={<TemplateRegistry />}>
+      <Component {...props}/>
+    </React.Suspense>
+  </ErrorBoundaryRegistry>
 );

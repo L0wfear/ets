@@ -12,6 +12,7 @@ import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateGeoobject } from 'redux-main/reducers/modules/geoobject/@types/geoobject.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
+import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -27,6 +28,7 @@ export interface ReduxState {
   some_uniq: IStateSomeUniq;
   geoobject: IStateGeoobject;
   missions: IStateMissions;
+  company: IStateCompany;
 
   monitorPage: any;
   loading: any;

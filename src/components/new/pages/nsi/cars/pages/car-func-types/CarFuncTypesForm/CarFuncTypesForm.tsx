@@ -72,7 +72,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
         </ModalBodyPreloader>
         <Modal.Footer>
         {
-          !isPermitted // либо обновление, либо создание
+          isPermitted // либо обновление, либо создание
           ? (
             <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
           )

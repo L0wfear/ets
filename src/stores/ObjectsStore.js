@@ -1,10 +1,6 @@
 import { Store } from 'flummox';
 import _ from 'lodash';
 
-const colors = [];
-
-Array(16).fill(1).map((d, r) => Array(16).fill(1).map((d, g) => Array(16).fill(1).map((d, b) => colors.push(`rgb(${r * 16}, ${g * 16}, ${b * 16})`))));
-
 export default class ObjectsStore extends Store {
   constructor(flux) {
     super();
@@ -22,8 +18,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
-    this.register(objectsActions.getCompanies, this.handleGetCompanies);
-    this.register(objectsActions.updateCompanies, this.handleUpdateCompanies);
     this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
     this.register(objectsActions.createMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
@@ -70,7 +64,6 @@ export default class ObjectsStore extends Store {
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
       positionsList: [],
-      companies: [],
       materialConsumptionRateList: [],
       cleanCategoriesList: [],
       maintenanceWorkList: [],
@@ -88,14 +81,7 @@ export default class ObjectsStore extends Store {
 
       workMode: [],
       workModeOptions: [],
-      typesAttrList: [],
     };
-  }
-
-  handleGetTypesAttr({ result: { rows } }) {
-    this.setState({
-      typesAttrList: rows,
-    });
   }
 
   handleGetTechnicalOperationsObjects({ result: { rows = [] } = {} }) {
@@ -183,18 +169,6 @@ export default class ObjectsStore extends Store {
     this.setState({ workKindsList: workKinds.result.rows || workKinds.result });
   }
 
-  handleGetCompanies(companies) {
-    const companiesNew = companies.result.map(company => ({
-      ...company,
-      rgb_color: company.rgb_color || colors[Math.ceil(Math.random() * 4096)],
-    }));
-
-    this.setState({
-      companies: companiesNew,
-      companiesIndex: _.keyBy(companiesNew, 'company_id'),
-    });
-  }
-
   handleGetConfig(appConfig) {
     this.setState({ appConfig });
   }
@@ -206,11 +180,6 @@ export default class ObjectsStore extends Store {
 
   handleGetMaintenanceWork({ result: { rows: maintenanceWorkList } }) {
     this.setState({ maintenanceWorkList });
-  }
-
-  handleUpdateCompanies(r) {
-    const companies = r.result.rows || r.result;
-    this.setState({ companies });
   }
 
   handleGetCleaningRate(r) {

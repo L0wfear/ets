@@ -9,6 +9,8 @@ import * as Button from 'react-bootstrap/lib/Button';
 import {
   oldReportGetAnalytics,
 } from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import companyActions from 'redux-main/reducers/modules/company/actions';
+
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { connect } from 'react-redux';
@@ -18,20 +20,19 @@ import Field from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';
-import { connectToStores, FluxContext } from 'utils/decorators';
 
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
+import { getCompanyState } from 'redux-main/reducers/selectors';
 
 const page = 'analytics';
 
-@connectToStores(['objects'])
-@FluxContext
 class Analytics extends React.Component {
   static propTypes = {
-    companies: PropTypes.array.isRequired,
+    companyList: PropTypes.array.isRequired,
     oldReportGetAnalytics: PropTypes.func.isRequired,
+    actionGetAndSetInStoreCompany: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -57,8 +58,10 @@ class Analytics extends React.Component {
   }
 
   componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('objects').getCompanies();
+    this.props.actionGetAndSetInStoreCompany(
+      {},
+      { page },
+    );
   }
 
   handleSubmit() {
@@ -89,8 +92,7 @@ class Analytics extends React.Component {
       this.setState({ report_ids });
     } else if (field === 'companies_ids') {
       let { companies_ids, transcript } = this.state;
-      companies_ids = value ? (`${value}`).split(',') : [];
-      companies_ids = companies_ids.map(e => parseFloat(e));
+      companies_ids = value;
       if (companies_ids.length > 1) transcript = false;
       this.setState({ companies_ids, transcript });
     } else {
@@ -98,19 +100,10 @@ class Analytics extends React.Component {
     }
   }
 
-  handleCheckbox(e) {
-    let value;
-    if (e.target.checked) {
-      const { companies } = this.props;
-      value = companies.map(el => el.id).join(',');
-    } else {
-      value = '';
-    }
-    this.handleChange('companies_ids', value);
-  }
-
   render() {
-    const { companies } = this.props;
+    const {
+      companyList,
+    } = this.props;
 
     const reportsList = this.reports.map((e, i) => (
       <div key={e + i}>
@@ -125,7 +118,7 @@ class Analytics extends React.Component {
       </div>
     ));
 
-    const COMPANY = companies && companies.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
+    const COMPANY = companyList.map(({ company_id, company_name }) => ({ value: company_id, label: company_name }));
 
     return (
       <EtsPageWrap>
@@ -165,7 +158,7 @@ class Analytics extends React.Component {
                 label="Учреждение"
                 multi
                 options={COMPANY}
-                value={this.state.companies_ids.join(',')}
+                value={this.state.companies_ids}
                 onChange={this.handleChange.bind(this, 'companies_ids')}
               />
             </Div>
@@ -184,10 +177,17 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    null,
+    state => ({
+      companyList: getCompanyState(state).companyList,
+    }),
     dispatch => ({
       oldReportGetAnalytics: data => (
         dispatch(oldReportGetAnalytics(data, { page }))
+      ),
+      actionGetAndSetInStoreCompany: (...arg) => (
+        dispatch(
+          companyActions.actionGetAndSetInStoreCompany(...arg),
+        )
       ),
     }),
   ),

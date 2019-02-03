@@ -8,7 +8,6 @@ import techInspectionPermissions from 'components/directories/autobase/tech_insp
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { techInspectionFormSchema } from 'components/directories/autobase/tech_inspection/TechInspectionForm/tech_inspection_shema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultTechInspectionElement } from 'components/directories/autobase/tech_inspection/TechInspectionForm/utils';
@@ -70,11 +69,6 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
         is_allowed: false,
       });
     }
-  }
-  handleChangeBoolean = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
   }
 
   render() {

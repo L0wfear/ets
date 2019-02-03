@@ -75,7 +75,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                     <FieldStructureMissionTemplate
                       value={state.structure_id}
                       name={state.structure_name}
-                      disabled={false}
+                      disabled={!isPermitted}
                       error={errors.structure_id}
                       onChange={this.props.handleChange}
 
@@ -127,7 +127,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 value={state.for_column}
                 error={errors.car_ids}
                 onChange={this.props.handleChange}
-                disabled={false}
+                disabled={!isPermitted}
 
                 municipal_facility_id={state.municipal_facility_id}
 
@@ -145,6 +145,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 label="Количество циклов"
                 error={errors.passes_count}
                 value={state.passes_count}
+                disabled={!isPermitted}
                 onChange={this.props.handleChange}
                 boundKeys="passes_count"
                 min="0"
@@ -157,6 +158,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 modalKey={page}
                 label="Комментарий"
                 value={state.comment}
+                disabled={!isPermitted}
                 onChange={this.props.handleChange}
                 error={errors.comment}
                 boundKeys="comment"

@@ -12,6 +12,10 @@ import {
   OwnPropsFieldStructureMissionTemplate,
   StateFieldStructureMissionTemplate,
 } from 'components/missions/mission_template/form/template/inside_fields/structure/FieldStructureMissionTemplate.d';
+import {
+  getSessionStructuresOptions,
+  getSessionStructuresParams,
+} from 'redux-main/reducers/modules/session/selectors';
 
 class FieldStructureMissionTemplate extends React.PureComponent<PropsFieldStructureMissionTemplate, StateFieldStructureMissionTemplate> {
   handleChange = (value, option) => {
@@ -36,8 +40,8 @@ class FieldStructureMissionTemplate extends React.PureComponent<PropsFieldStruct
         id="structure_id"
         modalKey={props.page}
         label="Подразделение"
-        disabled={props.disabled}
-        clearable={props.clearable}
+        disabled={props.STRUCTURE_FIELD_READONLY || props.disabled}
+        clearable={props.STRUCTURE_FIELD_DELETABLE}
         options={props.STRUCTURES}
         emptyValue={null}
         value={props.value}
@@ -49,5 +53,8 @@ class FieldStructureMissionTemplate extends React.PureComponent<PropsFieldStruct
 }
 
 export default connect<StatePropsFieldStructureMissionTemplate, DispatchPropsFieldStructureMissionTemplate, OwnPropsFieldStructureMissionTemplate, ReduxState>(
-  null,
+  (state) => ({
+    STRUCTURES: getSessionStructuresOptions(state),
+    ...getSessionStructuresParams(state),
+  }),
 )(FieldStructureMissionTemplate);

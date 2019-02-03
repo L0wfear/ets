@@ -1,12 +1,9 @@
 import { isObject, isNullOrUndefined } from 'util';
 import {
   get,
-  find,
 } from 'lodash';
 
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
-import { InitialStateSession, OneSessionStructure } from 'redux-main/reducers/modules/session/session.d';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 
 export type GetDefaultMissionTemplateElement = (companyStructure: Partial<MissionTemplate> | null) => MissionTemplate;
@@ -58,28 +55,6 @@ export const getDefaultMissionTemplateElement: GetDefaultMissionTemplateElement 
   }
 
   return newElement;
-};
-
-export const getStructureParam = (userStructureId: InitialStateSession['userData']['structure_id'], STRUCTURES: DefaultSelectListMapper<OneSessionStructure>) => {
-  let STRUCTURE_FIELD_VIEW = false;
-  let STRUCTURE_FIELD_READONLY = false;
-  let STRUCTURE_FIELD_DELETABLE = false;
-
-  if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) { // когда пользователь привязан к конкретному подразделению
-    STRUCTURE_FIELD_VIEW = true;
-    STRUCTURE_FIELD_READONLY = true;
-  } else if (userStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, (el) => el.value === userStructureId)) {
-    STRUCTURE_FIELD_VIEW = true;
-  } else if (userStructureId === null && STRUCTURES.length > 0) {
-    STRUCTURE_FIELD_VIEW = true;
-    STRUCTURE_FIELD_DELETABLE = true;
-  }
-
-  return {
-    STRUCTURE_FIELD_VIEW,
-    STRUCTURE_FIELD_READONLY,
-    STRUCTURE_FIELD_DELETABLE,
-  };
 };
 
 export const getAvailableRouteTypes = (

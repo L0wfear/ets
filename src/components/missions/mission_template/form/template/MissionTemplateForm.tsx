@@ -1,5 +1,4 @@
 import * as React from 'react';
-import memoize from 'memoize-one';
 
 import {
   PropsMissionTemplateForm,
@@ -15,7 +14,7 @@ import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import missionTemplatePermissions from 'components/missions/mission_template/config-data/permissions';
 import { ReduxState } from 'redux-main/@types/state';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
-import { getDefaultMissionTemplateElement, getStructureParam } from './utils';
+import { getDefaultMissionTemplateElement } from './utils';
 import { missionTemplateFormSchema } from './schema';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -26,8 +25,6 @@ import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 import FieldTechnicalOperationMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/technical_operation/FieldTechnicalOperationMissionTemplate';
 import FieldStructureMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/structure/FieldStructureMissionTemplate';
@@ -35,43 +32,21 @@ import FieldMunicipalFacilityMissionTemplate from 'components/missions/mission_t
 import FieldCarIdsMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/car_ids/FieldCarIdsMissionTemplate';
 import FieldForColumnMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/for_column/FieldForColumnMissionTemplate';
 import FieldRouteMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/route/FieldRouteMissionTemplate';
+import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 
 class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, {}> {
-  makeOptionFromStructures = (
-    memoize(
-      (structures: InitialStateSession['userData']['structures']) => (
-        structures
-          .map(defaultSelectListMapper)
-      ),
-    )
-  );
-
   render() {
     const {
       formState: state,
       formErrors: errors,
       page,
       path,
-      userStructureId,
-      structures,
+      STRUCTURE_FIELD_VIEW,
     } = this.props;
 
     const IS_CREATING = !state.id;
     const title = !IS_CREATING ? 'Задание' : 'Создание шаблона задания';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-
-    const STRUCTURES = this.makeOptionFromStructures(
-      structures,
-    );
-
-    const {
-      STRUCTURE_FIELD_VIEW,
-      STRUCTURE_FIELD_READONLY,
-      STRUCTURE_FIELD_DELETABLE,
-    } = getStructureParam(
-      userStructureId,
-      STRUCTURES,
-    );
 
     return (
       <Modal id="modal-mission-template" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
@@ -99,10 +74,8 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                     <FieldStructureMissionTemplate
                       value={state.structure_id}
                       name={state.structure_name}
-                      disabled={STRUCTURE_FIELD_READONLY}
+                      disabled={false}
                       error={errors.structure_id}
-                      clearable={STRUCTURE_FIELD_DELETABLE}
-                      STRUCTURES={STRUCTURES}
                       onChange={this.props.handleChange}
 
                       car_ids={state.car_ids}
@@ -229,9 +202,9 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
 export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
   connect<StatePropsMissionTemplate, DispatchPropsMissionTemplate, OwnMissionTemplateProps, ReduxState>(
     (state) => ({
-      structures: getSessionState(state).userData.structures,
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
+      ...getSessionStructuresParams(state),
     }),
   ),
   withForm<PropsMissionTemplateWithForm, MissionTemplate>({

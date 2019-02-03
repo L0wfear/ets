@@ -45,7 +45,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
     } = this.props;
 
     const IS_CREATING = !state.id;
-    const title = !IS_CREATING ? 'Задание' : 'Создание шаблона задания';
+    const title = !IS_CREATING ? 'Шаблона задания' : 'Создание шаблона задания';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (

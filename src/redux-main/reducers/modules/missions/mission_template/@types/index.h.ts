@@ -10,7 +10,7 @@ export type MissionTemplate = {
   date_create: string;
   description: string;
   for_column: boolean;
-  id: number;
+  id: number | null;
   is_actual: boolean;
   is_cleaning_norm: boolean[];
   kind_task_ids: number[];

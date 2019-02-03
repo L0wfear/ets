@@ -15,32 +15,50 @@ import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
 
-export const actionSetMissionTemplate = (missionTemplateList: IStateMissions['missionTemplateList']) => (dispatch) => (
+export const actionSetMissionTemplate = (missionTemplateList: IStateMissions['missionTemplateList']): ThunkAction<IStateMissions['missionTemplateList'], ReduxState, {}, AnyAction> => (dispatch) => {
   dispatch(
     missionsSetNewData({
       missionTemplateList,
     }),
-  )
-);
-export const actionResetMissionTemplate: any = () => (dispatch) => (
+  );
+
+  return missionTemplateList;
+};
+export const actionResetMissionTemplate = (): ThunkAction<IStateMissions['missionTemplateList'], ReduxState, {}, AnyAction> => (dispatch) => {
+  const missionTemplateList = [];
+
   dispatch(
-    actionSetMissionTemplate([]),
-  )
-);
-export const actionSetCarsMissionTemplate = (carForMissionTemplateList: IStateMissions['carForMissionTemplateList'], carForMissionTemplateIndex: IStateMissions['carForMissionTemplateIndex']) => (dispatch) => (
+    actionSetMissionTemplate(missionTemplateList),
+  );
+
+  return missionTemplateList;
+};
+type ThunkActionSetCarsMissionTemplate = ThunkAction<Pick<IStateMissions, 'carForMissionTemplateIndex' | 'carForMissionTemplateList'>, ReduxState, {}, AnyAction>;
+export const actionSetCarsMissionTemplate = (carForMissionTemplateList: IStateMissions['carForMissionTemplateList'], carForMissionTemplateIndex: IStateMissions['carForMissionTemplateIndex']): ThunkActionSetCarsMissionTemplate => (dispatch) => {
   dispatch(
     missionsSetNewData({
       carForMissionTemplateList,
       carForMissionTemplateIndex,
     }),
-  )
-);
-export const actionResetCarsMissionTemplate = (): ThunkAction<null, ReduxState, {}, AnyAction> => (dispatch) => {
-  dispatch(
-    actionSetCarsMissionTemplate([], {}),
   );
 
-  return null;
+  return {
+    carForMissionTemplateList,
+    carForMissionTemplateIndex,
+  };
+};
+type ThunkActionResetCarsMissionTemplate = ThunkAction<Pick<IStateMissions, 'carForMissionTemplateIndex' | 'carForMissionTemplateList'>, ReduxState, {}, AnyAction>;
+export const actionResetCarsMissionTemplate = (): ThunkActionResetCarsMissionTemplate => (dispatch) => {
+  const carForMissionTemplateList = [];
+  const carForMissionTemplateIndex = {};
+  dispatch(
+    actionSetCarsMissionTemplate(carForMissionTemplateList, carForMissionTemplateIndex),
+  );
+
+  return {
+    carForMissionTemplateList,
+    carForMissionTemplateIndex,
+  };
 };
 export const actionLoadCarsForMissiontemplate = (ownPayload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof autobaseGetSetCar>>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const response = await dispatch(
@@ -72,31 +90,34 @@ export const actionGetAndSetInStoreCarForMission = (payload: object, meta: Loadi
     dataIndex,
   };
 };
-export const actionGetMissionTemplate: any = (payload = {}, meta: LoadingMeta) => async (dispatch) => (
-  dispatch({
+export const actionGetMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetMissionTemplate(payload),
+    payload: promiseGetMissionTemplate(payloadOwn),
     meta: {
       promise: true,
       ...meta,
     },
-  })
-);
-export const actionGetAndSetInStoreMissionTemplate: any = (payload = {}, meta: LoadingMeta) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    actionGetMissionTemplate(payload, meta),
+  });
+
+  return payload;
+};
+export const actionGetAndSetInStoreMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetMissionTemplate>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await dispatch(
+    actionGetMissionTemplate(
+      payloadOwn,
+      meta,
+    ),
   );
 
   dispatch(
-    actionSetMissionTemplate(data),
+    actionSetMissionTemplate(response.data),
   );
 
-  return {
-    missionTemplateList: data,
-  };
+  return response;
 };
-export const actionCreateMissionTemplate: any = (missionTemplateRaw: MissionTemplate, meta: LoadingMeta) => async (dispatch) => {
-  const { payload: { missionTemplate } } = await dispatch({
+export const actionCreateMissionTemplate = (missionTemplateRaw: Partial<MissionTemplate>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateMissionTemplate(missionTemplateRaw),
     meta: {
@@ -105,10 +126,10 @@ export const actionCreateMissionTemplate: any = (missionTemplateRaw: MissionTemp
     },
   });
 
-  return missionTemplate;
+  return payload;
 };
-export const actionUpdateMissionTemplate: any = (missionTemplateOld: MissionTemplate, meta: LoadingMeta) => async (dispatch) => {
-  const { payload: { missionTemplate } } = await dispatch({
+export const actionUpdateMissionTemplate = (missionTemplateOld: Partial<MissionTemplate> & Pick<MissionTemplate, 'id'>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateMissionTemplate(missionTemplateOld),
     meta: {
@@ -117,10 +138,10 @@ export const actionUpdateMissionTemplate: any = (missionTemplateOld: MissionTemp
     },
   });
 
-  return missionTemplate;
+  return payload;
 };
-export const actionRemoveMissionTemplates: any = (missionTemplateOldArr: MissionTemplate[], meta: LoadingMeta) => async (dispatch) => {
-  const { payload: { missionTemplate } } = await dispatch({
+export const actionRemoveMissionTemplates = (missionTemplateOldArr: (Partial<MissionTemplate> & Pick<MissionTemplate, 'id'>)[], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveMissionTemplates>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveMissionTemplates(missionTemplateOldArr.map(({ id }) => id)),
     meta: {
@@ -129,10 +150,10 @@ export const actionRemoveMissionTemplates: any = (missionTemplateOldArr: Mission
     },
   });
 
-  return missionTemplate;
+  return payload;
 };
-export const actionRemoveMissionTemplate: any = (missionTemplateOld: Pick<MissionTemplate, 'id'> & Partial<MissionTemplate>, meta: LoadingMeta) => async (dispatch) => {
-  const { payload: { missionTemplate } } = await dispatch({
+export const actionRemoveMissionTemplate = (missionTemplateOld: Pick<MissionTemplate, 'id'> & Partial<MissionTemplate>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveMissionTemplate(missionTemplateOld.id),
     meta: {
@@ -141,7 +162,7 @@ export const actionRemoveMissionTemplate: any = (missionTemplateOld: Pick<Missio
     },
   });
 
-  return missionTemplate;
+  return payload;
 };
 
 export default {

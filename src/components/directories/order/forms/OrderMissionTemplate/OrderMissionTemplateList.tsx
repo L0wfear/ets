@@ -3,7 +3,6 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import {
-  get,
   isEmpty,
 } from 'lodash';
 
@@ -72,8 +71,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       this.context.flux.getActions('missions').getMissionTemplatesCars(payload);
     }
 
-    this.getMissionsList().then(({ result = [] }) => {
-      const missionsList = getMissionListByFilter(result);
+    this.getMissionsList().then(({ data }) => {
+      const missionsList = getMissionListByFilter(data);
       const date = (new Date()).getTime();
 
       const timeInterval = setTimeout(this.checkMissionsList, new Date(date - (date % 60000) + 60 * 1000).getTime() - date + 1000);
@@ -113,15 +112,14 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     };
 
     switch (typeClick) {
-      case typeTemplate.missionTemplate: return this.props.actionGetMissionTemplate(payload).then((ans) => ({
-        result: get(ans, ['payload', 'data'], []),
-      }));
+      case typeTemplate.missionTemplate: return this.props.actionGetMissionTemplate(
+        payload,
+        { page: loadingPage },
+      );
       case typeTemplate.missionDutyTemplate: return this.props.actionGetDutyMissionTemplate(
         payload,
         { page: loadingPage },
-      ).then((ans) => ({
-        result: get(ans, ['data'], []),
-      }));
+      );
       default: Promise.reject({ error: 'no typeClick' });
     }
   }
@@ -396,6 +394,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 }
 
 type DispatchPropsOrderMissionTemplate = {
+  actionGetMissionTemplate: HandleThunkActionCreator<typeof missionActions.actionGetMissionTemplate>;
   actionGetDutyMissionTemplate: HandleThunkActionCreator<typeof missionActions.actionGetDutyMissionTemplate>;
 };
 
@@ -405,12 +404,9 @@ export default compose<any, any>(
       userData: getSessionState(state).userData,
     }),
     (dispatch: any) => ({
-      actionGetMissionTemplate: (payload) => (
+      actionGetMissionTemplate: (...arg) => (
         dispatch(
-          missionActions.actionGetMissionTemplate(
-            payload,
-            { page: loadingPage },
-          ),
+          missionActions.actionGetMissionTemplate(...arg),
         )
       ),
       actionGetDutyMissionTemplate: (...arg) => (

@@ -1,5 +1,6 @@
 import { get } from 'lodash';
 import { MissionTemplateService } from 'api/missions/index';
+import { MissionTemplate } from './@types/index.h';
 
 export const promiseGetMissionTemplate = async (payload) => {
   let response = null;
@@ -19,32 +20,28 @@ export const promiseGetMissionTemplate = async (payload) => {
   };
 };
 
-export const promiseCreateMissionTemplate = async (payload) => {
+export const promiseCreateMissionTemplate = async (payload: Partial<MissionTemplate>) => {
   const response = await MissionTemplateService.post(
     { ...payload },
     false,
     'json',
   );
 
-  const missionTemplate = get(response, ['result', 0],  null);
+  const data: Partial<MissionTemplate> = get(response, ['result', 0],  null);
 
-  return {
-    missionTemplate,
-  };
+  return data;
 };
 
-export const promiseUpdateMissionTemplate = async (payload) => {
+export const promiseUpdateMissionTemplate = async (payload: Partial<MissionTemplate> & Pick<MissionTemplate, 'id'>) => {
   const response = await MissionTemplateService.put(
     { ...payload },
     false,
     'json',
   );
 
-  const missionTemplate = get(response, ['result', 0],  null);
+  const data: Partial<MissionTemplate> = get(response, ['result', 0],  null);
 
-  return {
-    missionTemplate,
-  };
+  return data;
 };
 
 export const promiseRemoveMissionTemplates = async (ids: number[]) => {
@@ -55,7 +52,7 @@ export const promiseRemoveMissionTemplates = async (ids: number[]) => {
   );
 };
 
-export const promiseRemoveMissionTemplate = async (id: number) => {
+export const promiseRemoveMissionTemplate = async (id: number): Promise<Partial<MissionTemplate>> => {
   return MissionTemplateService.delete(
     { id },
     false,

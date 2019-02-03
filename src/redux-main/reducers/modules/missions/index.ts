@@ -11,6 +11,11 @@ const initialState: IStateMissions = {
   carForMissionTemplateIndex: {},
 
   dutyMissionTemplateList: [],
+
+  dutyMissionData: {
+    dutyMissionList: [],
+    total_count: 0,
+  },
 };
 
 export default (state = initialState, { type, payload }) => {

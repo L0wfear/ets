@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
@@ -35,9 +36,12 @@ class FieldCarIdsMissionTemplate extends React.PureComponent<PropsFieldCarIdsMis
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PropsFieldCarIdsMissionTemplate) {
     const {
       value,
+      car_gov_numbers,
+      car_type_ids,
+      car_type_names,
       for_column,
       municipal_facility_id,
       municipalFacilityForMissionList,
@@ -64,22 +68,53 @@ class FieldCarIdsMissionTemplate extends React.PureComponent<PropsFieldCarIdsMis
       }
     } else if (isDiffMunicipalFacilityId && !municipal_facility_id && value.length) {
       this.props.onChange({
+        car_gov_numbers: [],
+        car_gov_numbers_text: '',
         car_ids: [],
+        car_type_ids: [],
+        car_type_names: [],
+        car_type_names_text: '',
       });
-    } else if (for_column !== prevProps.for_column) {
+    } else if ((for_column !== prevProps.for_column) && value.length > 1) {
+      const car_gov_numbers_new = car_gov_numbers.slice(0, 1);
+      const car_type_ids_new = car_type_ids.slice(0, 1);
+      const car_type_names_new = car_type_names.slice(0, 1);
+
       this.props.onChange({
-        car_ids: value ? value.slice(0, 1) : [],
+        car_gov_numbers: car_gov_numbers_new,
+        car_gov_numbers_text: car_gov_numbers_new.join(', '),
+        car_ids: value.slice(0, 1),
+        car_type_ids: car_type_ids_new,
+        car_type_names: car_type_names_new,
+        car_type_names_text: car_type_names_new.join(', '),
       });
     } else if (structure_id !== prevProps.structure_id) {
       if (structure_id) {
-        const newValue = value.filter((car_id) => (
-          this.state.carIndex[car_id].is_common
-          || this.state.carIndex[car_id].company_structure_id === structure_id
-        ));
+        let hasSomeChange = false;
 
-        if (newValue.length !== value.length) {
+        const permittedIndexObj = value.reduce((newObj, car_id, index) => {
+          if (this.state.carIndex[car_id].is_common || this.state.carIndex[car_id].company_structure_id === structure_id) {
+            newObj[index] = true;
+          } else {
+            hasSomeChange = true;
+          }
+
+          return newObj;
+        }, {});
+
+        if (hasSomeChange) {
+          const car_ids = value.filter((_, index) => permittedIndexObj[index]);
+          const car_gov_numbers_new = car_gov_numbers.filter((_, index) => permittedIndexObj[index]);
+          const car_type_ids_new = car_type_ids.filter((_, index) => permittedIndexObj[index]);
+          const car_type_names_new = car_type_names.filter((_, index) => permittedIndexObj[index]);
+
           this.props.onChange({
-            car_ids: newValue,
+            car_gov_numbers: car_gov_numbers_new,
+            car_gov_numbers_text: car_gov_numbers_new.join(', '),
+            car_ids,
+            car_type_ids: car_type_ids_new,
+            car_type_names: car_type_names_new,
+            car_type_names_text: car_type_names_new.join(', '),
           });
         }
       }
@@ -100,14 +135,39 @@ class FieldCarIdsMissionTemplate extends React.PureComponent<PropsFieldCarIdsMis
 
     const {
       value,
+      car_gov_numbers,
+      car_type_ids,
+      car_type_names,
     } = this.props;
 
-    if (this.props.value) {
-      this.props.onChange({
-        car_ids: value.filter((car_id) => (
-          dataIndex[car_id]
-        )),
-      });
+    if (value.length) {
+      let hasSomeChange = false;
+
+      const permittedIndexObj = value.reduce((newObj, car_id, index) => {
+        if (dataIndex[car_id]) {
+          newObj[index] = true;
+        } else {
+          hasSomeChange = true;
+        }
+
+        return newObj;
+      }, {});
+
+      if (hasSomeChange) {
+        const car_ids = value.filter((_, index) => permittedIndexObj[index]);
+        const car_gov_numbers_new = car_gov_numbers.filter((_, index) => permittedIndexObj[index]);
+        const car_type_ids_new = car_type_ids.filter((_, index) => permittedIndexObj[index]);
+        const car_type_names_new = car_type_names.filter((_, index) => permittedIndexObj[index]);
+
+        this.props.onChange({
+          car_gov_numbers: car_gov_numbers_new,
+          car_gov_numbers_text: car_gov_numbers_new.join(', '),
+          car_ids,
+          car_type_ids: car_type_ids_new,
+          car_type_names: car_type_names_new,
+          car_type_names_text: car_type_names_new.join(', '),
+        });
+      }
     }
 
     this.setState({
@@ -116,14 +176,53 @@ class FieldCarIdsMissionTemplate extends React.PureComponent<PropsFieldCarIdsMis
     });
   }
 
-  handleChange = (value) => {
+  handleChange = (value, option) => {
     const { props } = this;
     const { for_column } = props;
 
     if (value !== props.value) {
-      props.onChange({
-        car_ids: for_column ? value : [value],
-      });
+      if (for_column) {
+        const car_gov_numbers = option.map(({ rowData }) => rowData.gov_number);
+        const car_type_ids = option.map(({ rowData }) => rowData.type_id);
+        const car_type_names = option.map(({ rowData }) => rowData.type_name);
+
+        props.onChange({
+          car_gov_numbers,
+          car_gov_numbers_text: car_gov_numbers.join(', '),
+          car_ids: value,
+          car_type_ids,
+          car_type_names,
+          car_type_names_text: car_type_names.join(', '),
+        });
+      } else {
+        if (!value) {
+          props.onChange({
+            car_gov_numbers: [],
+            car_gov_numbers_text: '',
+            car_ids: [],
+            car_type_ids: [],
+            car_type_names: [],
+            car_type_names_text: '',
+          });
+        } else {
+          let car_gov_numbers = get(option, ['rowData', 'gov_number'], '');
+          car_gov_numbers = car_gov_numbers ? [car_gov_numbers] : [];
+
+          let car_type_ids = get(option, ['rowData', 'type_id'], '');
+          car_type_ids = car_type_ids ? [car_type_ids] : [];
+          let car_type_names = get(option, ['rowData', 'type_name'], '');
+          car_type_names = car_type_names ? [car_type_names] : [];
+
+          props.onChange({
+            car_gov_numbers,
+            car_gov_numbers_text: car_gov_numbers.join(', '),
+            car_ids: [value],
+            car_type_ids,
+            car_type_names,
+            car_type_names_text: car_type_names.join(', '),
+          });
+        }
+      }
     }
   }
 
@@ -139,6 +238,7 @@ class FieldCarIdsMissionTemplate extends React.PureComponent<PropsFieldCarIdsMis
               value: carData.asuods_id,
               label: `${carData.gov_number} [${carData.model_name || ''}${carData.model_name ? '/' : ''}${carData.special_model_name || ''}${carData.type_name ? '/' : ''}${carData.type_name || ''}]`,
               type_id: carData.type_id,
+              rowData: carData,
             });
           }
 

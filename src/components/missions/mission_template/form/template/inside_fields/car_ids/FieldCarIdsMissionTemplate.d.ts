@@ -24,6 +24,9 @@ export type OwnPropsFieldCarIdsMissionTemplate = {
   onChange: (obj: { [key: string]: any }) => any;
 
   for_column: MissionTemplate['for_column'];
+  car_gov_numbers: MissionTemplate['car_gov_numbers'];
+  car_type_ids: MissionTemplate['car_type_ids'];
+  car_type_names: MissionTemplate['car_type_names'];
   municipal_facility_id: MissionTemplate['municipal_facility_id'];
   structure_id: MissionTemplate['structure_id'];
 

@@ -117,6 +117,9 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 for_column={state.for_column}
                 municipal_facility_id={state.municipal_facility_id}
                 structure_id={state.structure_id}
+                car_gov_numbers={state.car_gov_numbers}
+                car_type_ids={state.car_type_ids}
+                car_type_names={state.car_type_names}
 
                 page={page}
                 path={path}

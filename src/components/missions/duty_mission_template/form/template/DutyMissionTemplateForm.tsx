@@ -139,7 +139,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 foreman_fio={state.foreman_fio}
                 foreman_full_fio={state.foreman_full_fio}
                 name={state.foreman_fio}
-                error={errors.municipal_facility_id}
+                error={errors.foreman_id}
                 isPermitted={isPermitted}
                 disabled={!isPermitted}
                 onChange={this.props.handleChange}

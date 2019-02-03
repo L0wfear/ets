@@ -178,6 +178,9 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 technical_operation_name={state.technical_operation_name}
                 for_column={state.for_column}
 
+                disabled={!isPermitted}
+                isPermitted={isPermitted}
+
                 page={page}
                 path={path}
               />

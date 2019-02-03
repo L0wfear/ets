@@ -14,17 +14,21 @@ export type DispatchPropsFieldRouteMissionTemplate = {
 export type OwnPropsFieldRouteMissionTemplate = {
   handleChange: any;
 
+  error_route_id: string;
+  route_id: MissionTemplate['route_id'];
+  municipal_facility_id: MissionTemplate['municipal_facility_id'];
+  municipal_facility_name: MissionTemplate['municipal_facility_name'];
+  technical_operation_id: MissionTemplate['technical_operation_id'];
+  technical_operation_name: MissionTemplate['technical_operation_name'];
+  structure_id: MissionTemplate['structure_id'];
+  structure_name: MissionTemplate['structure_name'];
+  for_column: MissionTemplate['for_column'];
+
+  disabled: boolean;
+  isPermitted: boolean;
+
   page: string;
   path: string;
-  error_route_id: string,
-  route_id: MissionTemplate['route_id'],
-  municipal_facility_id: MissionTemplate['municipal_facility_id'],
-  municipal_facility_name: MissionTemplate['municipal_facility_name'],
-  technical_operation_id: MissionTemplate['technical_operation_id'],
-  technical_operation_name: MissionTemplate['technical_operation_name'],
-  structure_id: MissionTemplate['structure_id'],
-  structure_name: MissionTemplate['structure_name'],
-  for_column: MissionTemplate['for_column'],
 };
 
 export type PropsFieldRouteMissionTemplate = (
@@ -35,9 +39,9 @@ export type PropsFieldRouteMissionTemplate = (
 
 export type StateFieldRouteMissionTemplate = {
   printKey: {
-    big: string,
-    small: string,
-    routeInfo: string,
+    big: string;
+    small: string;
+    routeInfo: string;
   };
   showRouteForm: boolean;
   selectedRouteRaw: Partial<Route> | null;

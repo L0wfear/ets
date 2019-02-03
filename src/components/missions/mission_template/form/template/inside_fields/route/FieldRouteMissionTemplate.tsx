@@ -44,6 +44,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
 
   componentDidMount() {
     const {
+      isPermitted,
       route_id,
       technical_operation_id,
       municipal_facility_id,
@@ -52,7 +53,8 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
     } = this.props;
 
     const triggerOnGetRoutesList = (
-      !isNullOrUndefined(technical_operation_id)
+      isPermitted
+      && !isNullOrUndefined(technical_operation_id)
       && !isNullOrUndefined(municipal_facility_id)
       && Boolean(municipalFacilityForMissionList.length)
     );
@@ -64,6 +66,8 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
         municipal_facility_id,
         for_column,
       );
+    } else if (route_id) {
+      this.loadSelectedRoute(route_id);
     }
   }
 
@@ -223,27 +227,31 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
     });
 
     if (route_id) {
-      try {
-        const { route_data } = await this.routesLoadRouteById(route_id);
-
-        if (route_data) {
-          this.setState(({ routesList }) => {
-            const routesListNew = [...routesList, route_data];
-            return {
-              selectedRoute: route_data,
-              routesList: routesListNew,
-            };
-          });
-        } else {
-          throw new Error(`Не найден маршрут ${route_id}`);
-        }
-      } catch (error) {
-        console.warn(error); // tslint:disable-line
-      }
+      this.loadSelectedRoute(route_id);
     } else {
       this.setState({
         selectedRoute: null,
       });
+    }
+  }
+
+  async loadSelectedRoute(route_id) {
+    try {
+      const { route_data } = await this.routesLoadRouteById(route_id);
+
+      if (route_data) {
+        this.setState(({ routesList }) => {
+          const routesListNew = [...routesList, route_data];
+          return {
+            selectedRoute: route_data,
+            routesList: routesListNew,
+          };
+        });
+      } else {
+        throw new Error(`Не найден маршрут ${route_id}`);
+      }
+    } catch (error) {
+      console.warn(error); // tslint:disable-line
     }
   }
 
@@ -315,6 +323,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
       municipal_facility_id,
       structure_id,
       for_column,
+      disabled,
     } = this.props;
 
     const {
@@ -344,7 +353,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
               error={error_route_id}
               options={ROUTES}
               value={route_id}
-              disabled={!hasSelectedMunicipalFacilityId}
+              disabled={disabled || !hasSelectedMunicipalFacilityId}
               onChange={this.handleRouteIdChange}
               clearable
             />
@@ -354,7 +363,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
                   <Button
                     id="mt-create-route"
                     onClick={this.createNewRoute}
-                    disabled={!hasSelectedMunicipalFacilityId}
+                    disabled={disabled || !hasSelectedMunicipalFacilityId}
                   >
                     Создать новый
                   </Button>

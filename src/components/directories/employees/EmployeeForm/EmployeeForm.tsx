@@ -29,7 +29,6 @@ import {
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DivNone } from 'global-styled/global-styled';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   state = {
@@ -61,7 +60,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     this.loadCompanyStructurePosition();
   }
   async loadCars() {
-    const { payload: { data } }: { payload: { data: Car[] } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+
+    const { data } = await this.props.autobaseGetSetCar(
+      {},
+      { page, path },
+    );
 
     this.setState({
       carList: data,
@@ -590,13 +594,10 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
     (state) => ({
       category_license: state.session.appConfig.category_license,
     }),
-    (dispatch, { page, path }) => ({
-      autobaseGetSetCar: () => (
+    (dispatch: any, { page, path }) => ({
+      autobaseGetSetCar: (...arg) => (
         dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
+          autobaseActions.autobaseGetSetCar(...arg),
         )
       ),
       employeePositionGetSetPosition: () => (

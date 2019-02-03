@@ -7,6 +7,9 @@ export const MISSIONS_SET_DATA = MISSIONS`SET_DATA`;
 
 const initialState: IStateMissions = {
   missionTemplateList: [],
+  carForMissionTemplateList: [],
+  carForMissionTemplateIndex: {},
+
   dutyMissionTemplateList: [],
 };
 

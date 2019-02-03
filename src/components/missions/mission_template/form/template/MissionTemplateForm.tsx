@@ -110,7 +110,8 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
             <Col md={8}>
               <FieldCarIdsMissionTemplate
                 value={state.car_ids}
-                disabled={!state.municipal_facility_id}
+                disabled={!state.municipal_facility_id || !isPermitted}
+                isPermitted={isPermitted}
                 error={errors.car_ids}
                 onChange={this.props.handleChange}
 

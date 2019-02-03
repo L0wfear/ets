@@ -41,7 +41,11 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
     }
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+    const { data } = await this.props.autobaseGetSetCar(
+      {},
+      { page, path },
+    );
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -236,13 +240,10 @@ export default compose<PropsTechInspection, OwnTechInspectionProps>(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
-    (dispatch, { page, path }) => ({
-      autobaseGetSetCar: () => (
+    (dispatch: any) => ({
+      autobaseGetSetCar: (...arg) => (
         dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
+          autobaseActions.autobaseGetSetCar(...arg),
         )
       ),
     }),

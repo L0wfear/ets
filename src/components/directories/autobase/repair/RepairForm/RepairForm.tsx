@@ -64,7 +64,12 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     this.setState({ repairTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+
+    const { data } = await this.props.autobaseGetSetCar(
+      {},
+      { page, path },
+    );
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -287,13 +292,10 @@ export default compose<PropsRepair, OwnRepairProps>(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
-    (dispatch, { page, path }) => ({
-      autobaseGetSetCar: () => (
+    (dispatch: any, { page, path }) => ({
+      autobaseGetSetCar: (...arg) => (
         dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
+          autobaseActions.autobaseGetSetCar(...arg),
         )
       ),
       autobaseGetRepairCompany: () => (

@@ -2,25 +2,28 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import normative from 'components/directories/normative/config-data';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 
 export type StateFieldCarIdsMissionTemplate = {
-  carList: Car[];
-  carIndex: {
-    [asuods_id: string]: Car;
-  };
 };
 
 export type StatePropsFieldCarIdsMissionTemplate = {
   municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList'];
+  carForMissionTemplateList: IStateMissions['carForMissionTemplateList'];
+  carForMissionTemplateIndex: IStateMissions['carForMissionTemplateIndex'];
 };
 export type DispatchPropsFieldCarIdsMissionTemplate = {
-  autobaseGetSetCar: any;
+  actionGetAndSetInStoreCarForMission: HandleThunkActionCreator<typeof missionsActions.actionGetAndSetInStoreCarForMission>;
+  actionResetCarsMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionResetCarsMissionTemplate>;
 };
 
 export type OwnPropsFieldCarIdsMissionTemplate = {
   value: MissionTemplate['car_ids'];
   error: string | void;
   disabled: boolean;
+  isPermitted: boolean;
   onChange: (obj: { [key: string]: any }) => any;
 
   for_column: MissionTemplate['for_column'];

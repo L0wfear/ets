@@ -1,12 +1,13 @@
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { GetPosition } from 'redux-main/reducers/modules/employee/position/@types';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
+import { HandleThunkActionCreator } from 'react-redux';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -24,7 +25,7 @@ export type StatePropsEmployee = {
   category_license: ReduxState['session']['appConfig']['category_license'];
 };
 export type DispatchPropsEmployee = {
-  autobaseGetSetCar: GetCar;
+  autobaseGetSetCar: HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>;
   employeePositionGetSetPosition: GetPosition;
   companyStructureActions: any;
 };

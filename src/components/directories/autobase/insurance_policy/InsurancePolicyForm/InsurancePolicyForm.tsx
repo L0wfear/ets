@@ -48,7 +48,11 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
     this.setState({ insuranceTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+    const { data } = await this.props.autobaseGetSetCar(
+      {},
+      { page, path },
+    );
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -230,7 +234,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
 export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
   connect<StatePropsInsurancePolicy, DispatchPropsInsurancePolicy, OwnInsurancePolicyProps, ReduxState>(
     null,
-    (dispatch, { page, path }) => ({
+    (dispatch: any, { page, path }) => ({
       autobaseGetInsuranceType: () => (
         dispatch(
           autobaseActions.autobaseGetInsuranceType(
@@ -239,12 +243,9 @@ export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
           ),
         )
       ),
-      autobaseGetSetCar: () => (
+      autobaseGetSetCar: (...arg) => (
         dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
+          autobaseActions.autobaseGetSetCar(...arg),
         )
       ),
     }),

@@ -15,7 +15,7 @@ import {
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
-import { makeOptionsByMunicipalFacilityIdRegistryForMissionList } from './makeOptions';
+import { makeOptionsByMunicipalFacilityIdRegistryForDutyMissionList } from './makeOptions';
 
 class FieldMunicipalFacilityIdDutyMissionTemplate extends React.PureComponent<PropsFieldMunicipalFacilityIdDutyMissionTemplate, StateFieldMunicipalFacilityIdDutyMissionTemplate> {
   state = {
@@ -29,7 +29,7 @@ class FieldMunicipalFacilityIdDutyMissionTemplate extends React.PureComponent<Pr
       municipalFacilityForDutyMissionList,
     } = nextProps;
 
-    let MUNICIPAL_FACILITY_OPTIONS = makeOptionsByMunicipalFacilityIdRegistryForMissionList(
+    let MUNICIPAL_FACILITY_OPTIONS = makeOptionsByMunicipalFacilityIdRegistryForDutyMissionList(
       municipalFacilityForDutyMissionList,
     );
 

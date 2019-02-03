@@ -13,19 +13,56 @@ import {
 } from 'components/missions/mission_template/form/template/inside_fields/municipal_facility/FieldMunicipalFacilityMissionTemplate.d';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
-import memoize from 'memoize-one';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types/index';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { makeOptionsByMunicipalFacilityIdRegistryForMissionList } from './makeOptions';
 
 class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFieldMunicipalFacilityMissionTemplate, StateFieldMunicipalFacilityMissionTemplate> {
+  state = {
+    MUNICIPAL_FACILITY_OPTIONS: [],
+  };
+
+  static getDerivedStateFromProps(nextProps: PropsFieldMunicipalFacilityMissionTemplate) {
+    const {
+      value,
+      name,
+      municipalFacilityForMissionList,
+    } = nextProps;
+
+    let MUNICIPAL_FACILITY_OPTIONS = makeOptionsByMunicipalFacilityIdRegistryForMissionList(
+      municipalFacilityForMissionList,
+    );
+
+    const notElementInOptions = value && !MUNICIPAL_FACILITY_OPTIONS.some((toData) => (
+      toData.value === value
+    ));
+
+    if (notElementInOptions) {
+      MUNICIPAL_FACILITY_OPTIONS = [
+        ...MUNICIPAL_FACILITY_OPTIONS,
+        {
+          value,
+          label: name,
+          rowData: {
+            municipal_facility_id: value,
+            municipal_facility_name: name,
+          },
+        },
+      ];
+    }
+
+    return {
+      MUNICIPAL_FACILITY_OPTIONS,
+    };
+  }
+
   componentDidMount() {
     const {
+      isPermitted,
       technical_operation_id,
       technicalOperationRegistryForMissionList,
     } = this.props;
 
-    if (technical_operation_id && technicalOperationRegistryForMissionList.length) {
+    if (isPermitted && technical_operation_id && technicalOperationRegistryForMissionList.length) {
       const selectedToData = technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id);
       if (selectedToData) {
         this.getMunicipalFacilitys(selectedToData);
@@ -35,44 +72,57 @@ class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFie
 
   componentDidUpdate(prevProps: PropsFieldMunicipalFacilityMissionTemplate) {
     const {
+      isPermitted,
       technical_operation_id,
       technicalOperationRegistryForMissionList,
     } = this.props;
 
-    const isDiffTechnicalOperationId = (prevProps.technical_operation_id !== technical_operation_id);
+    if (isPermitted) {
+      const isDiffTechnicalOperationId = (prevProps.technical_operation_id !== technical_operation_id);
 
-    const triggerOnUpdate = (
-      technical_operation_id
-      && (
-        (
-          isDiffTechnicalOperationId
-          && technicalOperationRegistryForMissionList.length
+      const triggerOnUpdate = (
+        technical_operation_id
+        && (
+          (
+            isDiffTechnicalOperationId
+            && technicalOperationRegistryForMissionList.length
+          )
+          || !prevProps.technicalOperationRegistryForMissionList.length
         )
-        || !prevProps.technicalOperationRegistryForMissionList.length
-      )
-    );
+      );
 
-    if (triggerOnUpdate) {
-      const selectedToData = technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id);
-      if (selectedToData) {
-        this.getMunicipalFacilitys(selectedToData);
+      if (triggerOnUpdate) {
+        const selectedToData = technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id);
+        if (selectedToData) {
+          this.getMunicipalFacilitys(selectedToData);
+        }
+      } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
+        this.props.onChange({
+          municipal_facility_id: null,
+          municipal_facility_name: '',
+        });
       }
-    } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
-      this.props.onChange({
-        municipal_facility_id: null,
-        municipal_facility_name: '',
-      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.isPermitted) {
+      this.props.actionResetMunicipalFacilityForMission();
     }
   }
 
   async getMunicipalFacilitys(selectedToData: TechnicalOperationRegistry) {
     const { normatives } = selectedToData;
+    const { page, path } = this.props;
 
-    const { municipalFacilityForMissionList } = await this.props.actionGetAndSetInStoreMunicipalFacilityRegistryForMission({
-      start_date: new Date(),
-      end_date: new Date(),
-      norm_ids: normatives.map(({ id }) => id).join(','),
-    });
+    const { municipalFacilityForMissionList } = await this.props.actionGetAndSetInStoreMunicipalFacilityRegistryForMission(
+      {
+        start_date: new Date(),
+        end_date: new Date(),
+        norm_ids: normatives.map(({ id }) => id).join(','),
+      },
+      { page, path },
+    );
 
     const { value } = this.props;
 
@@ -96,32 +146,14 @@ class FieldMunicipalFacilityMissionTemplate extends React.PureComponent<PropsFie
     }
   }
 
-  makeOptionsByMunicipalFacility = (
-    memoize(
-      (
-        municipalFacilityList: MunicipalFacility[],
-      ) => (
-        municipalFacilityList.map<DefaultSelectOption<MunicipalFacility['municipal_facility_id'], MunicipalFacility['municipal_facility_name'], MunicipalFacility>>((mfData) => ({
-          value: mfData.municipal_facility_id,
-          label: mfData.municipal_facility_name,
-          rowData: mfData,
-        }))
-      ),
-    )
-  );
-
   render() {
     const {
       props,
     } = this;
 
     const {
-      municipalFacilityForMissionList,
-    } = props;
-
-    const MUNICIPAL_FACILITY_OPTIONS = this.makeOptionsByMunicipalFacility(
-      municipalFacilityForMissionList,
-    );
+      MUNICIPAL_FACILITY_OPTIONS,
+    } = this.state;
 
     return (
       <ExtField
@@ -145,17 +177,15 @@ export default connect<StatePropsFieldMunicipalFacilityMissionTemplate, Dispatch
     technicalOperationRegistryForMissionList: getSomeUniqState(state).technicalOperationRegistryForMissionList,
     municipalFacilityForMissionList: getSomeUniqState(state).municipalFacilityForMissionList,
   }),
-  (dispatch, { page, path }) => ({
-    actionGetAndSetInStoreMunicipalFacilityRegistryForMission: (payload) => (
+  (dispatch: any) => ({
+    actionGetAndSetInStoreMunicipalFacilityRegistryForMission: (...arg) => (
       dispatch(
-        someUniqActions.actionGetAndSetInStoreMunicipalFacilityForMission(
-          payload,
-          {
-            promise: true,
-            page,
-            path,
-          },
-        ),
+        someUniqActions.actionGetAndSetInStoreMunicipalFacilityForMission(...arg),
+      )
+    ),
+    actionResetMunicipalFacilityForMission: (...arg) => (
+      dispatch(
+        someUniqActions.actionResetMunicipalFacilityForMission(...arg),
       )
     ),
   }),

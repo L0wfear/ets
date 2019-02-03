@@ -20,7 +20,8 @@ export type OwnPropsFieldBrigadeEmployeeIdListDutyMissionTemplate = {
   brigade_employee_id_list: DutyMissionTemplate['brigade_employee_id_list'];
   value: DutyMissionTemplate['brigade_employee_id_list_id'];
   name: DutyMissionTemplate['brigade_employee_id_list_fio'];
-  disabled?: boolean;
+  isPermitted: boolean;
+  disabled: boolean;
   error: string | void;
   onChange: (obj: { [key in keyof DutyMissionTemplate]?: DutyMissionTemplate[key] }) => void;
 

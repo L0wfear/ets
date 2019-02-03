@@ -19,8 +19,9 @@ export type OwnPropsFieldForemanIdDutyMissionTemplate = {
   foreman_fio: DutyMissionTemplate['foreman_fio'];
   foreman_full_fio: DutyMissionTemplate['foreman_full_fio'];
   name: string | void;
-  disabled?: boolean;
+  disabled: boolean;
   error: string | void;
+  isPermitted: boolean;
   onChange: (obj: { [key in keyof DutyMissionTemplate]?: DutyMissionTemplate[key] }) => void;
 
   structure_id: DutyMissionTemplate['structure_id'];

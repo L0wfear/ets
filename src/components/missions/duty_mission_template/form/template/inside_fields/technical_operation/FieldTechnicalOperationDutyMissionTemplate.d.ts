@@ -19,6 +19,7 @@ export type DispatchPropsFieldTechnicalOperationDutyMissionTemplate = {
 export type OwnPropsFieldTechnicalOperationDutyMissionTemplate = {
   value: DutyMissionTemplate['technical_operation_id'];
   name: DutyMissionTemplate['technical_operation_name'];
+  isPermitted: boolean;
   disabled: boolean;
   error: string | void;
   onChange: (obj: { [key in keyof DutyMissionTemplate]?: DutyMissionTemplate[key] }) => void;

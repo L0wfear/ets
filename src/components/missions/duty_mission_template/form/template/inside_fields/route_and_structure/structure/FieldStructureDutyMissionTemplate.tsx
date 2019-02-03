@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionStructuresParams, getSessionStructuresOptions } from '../../../../../../../../redux-main/reducers/modules/session/selectors';
+import { getSessionStructuresParams, getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { DivNone } from 'global-styled/global-styled';
 import {
   PropsFieldStructureDutyMissionTemplate,
@@ -47,7 +47,7 @@ class FieldStructureDutyMissionTemplate extends React.PureComponent<PropsFieldSt
               id="structure_id"
               modalKey={props.page}
               label="Подразделение"
-              disabled={STRUCTURE_FIELD_READONLY}
+              disabled={STRUCTURE_FIELD_READONLY || this.props.disabled}
               clearable={STRUCTURE_FIELD_DELETABLE}
               options={STRUCTURES}
               emptyValue={null}

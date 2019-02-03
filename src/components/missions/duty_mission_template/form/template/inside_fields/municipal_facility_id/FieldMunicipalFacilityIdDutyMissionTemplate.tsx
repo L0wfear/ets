@@ -58,11 +58,12 @@ class FieldMunicipalFacilityIdDutyMissionTemplate extends React.PureComponent<Pr
 
   componentDidMount() {
     const {
+      isPermitted,
       technical_operation_id,
       technicalOperationRegistryForDutyMissionList,
     } = this.props;
 
-    if (technical_operation_id && technicalOperationRegistryForDutyMissionList.length) {
+    if (isPermitted && technical_operation_id && technicalOperationRegistryForDutyMissionList.length) {
       const selectedToData = technicalOperationRegistryForDutyMissionList.find(({ id }) => technical_operation_id === id);
       if (selectedToData) {
         this.getMunicipalFacilitys(selectedToData);
@@ -72,33 +73,36 @@ class FieldMunicipalFacilityIdDutyMissionTemplate extends React.PureComponent<Pr
 
   componentDidUpdate(prevProps: PropsFieldMunicipalFacilityIdDutyMissionTemplate) {
     const {
+      isPermitted,
       technical_operation_id,
       technicalOperationRegistryForDutyMissionList,
     } = this.props;
 
-    const isDiffTechnicalOperationId = (prevProps.technical_operation_id !== technical_operation_id);
+    if (isPermitted) {
+      const isDiffTechnicalOperationId = (prevProps.technical_operation_id !== technical_operation_id);
 
-    const triggerOnUpdate = (
-      technical_operation_id
-      && (
-        (
-          isDiffTechnicalOperationId
-          && technicalOperationRegistryForDutyMissionList.length
+      const triggerOnUpdate = (
+        technical_operation_id
+        && (
+          (
+            isDiffTechnicalOperationId
+            && technicalOperationRegistryForDutyMissionList.length
+          )
+          || !prevProps.technicalOperationRegistryForDutyMissionList.length
         )
-        || !prevProps.technicalOperationRegistryForDutyMissionList.length
-      )
-    );
+      );
 
-    if (triggerOnUpdate) {
-      const selectedToData = technicalOperationRegistryForDutyMissionList.find(({ id }) => technical_operation_id === id);
-      if (selectedToData) {
-        this.getMunicipalFacilitys(selectedToData);
+      if (triggerOnUpdate) {
+        const selectedToData = technicalOperationRegistryForDutyMissionList.find(({ id }) => technical_operation_id === id);
+        if (selectedToData) {
+          this.getMunicipalFacilitys(selectedToData);
+        }
+      } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
+        this.props.onChange({
+          municipal_facility_id: null,
+          municipal_facility_name: '',
+        });
       }
-    } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
-      this.props.onChange({
-        municipal_facility_id: null,
-        municipal_facility_name: '',
-      });
     }
   }
 

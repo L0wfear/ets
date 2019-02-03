@@ -21,6 +21,8 @@ export type OwnPropsFieldRouteAndStructureDutyMissionTemplate = {
   technical_operation_id: MissionTemplate['technical_operation_id'],
   technical_operation_name: MissionTemplate['technical_operation_name'],
 
+  isPermitted: boolean;
+
   structure_id: MissionTemplate['structure_id'],
   structure_name: MissionTemplate['structure_name'],
 

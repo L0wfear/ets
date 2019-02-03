@@ -38,12 +38,18 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
     const {
       page,
       path,
+      formState: state,
     } = this.props;
 
-    this.props.employeeGetAndSetInStore(
-      {},
-      { page, path },
-    );
+    const IS_CREATING = !state.id;
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+
+    if (isPermitted) {
+      this.props.employeeGetAndSetInStore(
+        {},
+        { page, path },
+      );
+    }
   }
 
   handleHide = () => {
@@ -73,7 +79,8 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
               <FieldTechnicalOperationDutyMissionTemplate
                 value={state.technical_operation_id}
                 name={state.technical_operation_name}
-                disabled={false}
+                disabled={!isPermitted}
+                isPermitted={isPermitted}
                 error={errors.technical_operation_id}
                 onChange={this.props.handleChange}
 
@@ -88,8 +95,9 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 type="string"
                 label="Комментарий"
                 value={state.comment}
-                onChange={this.props.handleChange}
                 error={errors.comment}
+                disabled={!isPermitted}
+                onChange={this.props.handleChange}
                 boundKeys="comment"
               />
             </Col>
@@ -99,8 +107,9 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
               <FieldMunicipalFacilityIdDutyMissionTemplate
                 value={state.municipal_facility_id}
                 name={state.municipal_facility_name}
-                disabled={!state.technical_operation_id}
+                disabled={!state.technical_operation_id || !isPermitted}
                 error={errors.municipal_facility_id}
+                isPermitted={isPermitted}
                 onChange={this.props.handleChange}
 
                 technical_operation_id={state.technical_operation_id}
@@ -118,6 +127,8 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 foreman_full_fio={state.foreman_full_fio}
                 name={state.foreman_fio}
                 error={errors.municipal_facility_id}
+                isPermitted={isPermitted}
+                disabled={!isPermitted}
                 onChange={this.props.handleChange}
 
                 structure_id={state.structure_id}
@@ -132,6 +143,8 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 value={state.brigade_employee_id_list_id}
                 name={state.brigade_employee_id_list_fio}
                 error={errors.brigade_employee_id_list_id}
+                isPermitted={isPermitted}
+                disabled={!isPermitted}
                 onChange={this.props.handleChange}
 
                 foreman_id={state.foreman_id}
@@ -152,6 +165,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
             technical_operation_name={state.technical_operation_name}
             structure_id={state.structure_id}
             structure_name={state.structure_name}
+            isPermitted={isPermitted}
 
             handleChange={this.props.handleChange}
 

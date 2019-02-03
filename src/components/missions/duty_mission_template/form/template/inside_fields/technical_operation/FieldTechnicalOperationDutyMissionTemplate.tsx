@@ -56,7 +56,9 @@ class FieldTechnicalOperationDutyMissionTemplate extends React.PureComponent<Pro
   }
 
   componentDidMount() {
-    this.getTechnicalOperations();
+    if (this.props.isPermitted) {
+      this.getTechnicalOperations();
+    }
   }
 
   getTechnicalOperations() {

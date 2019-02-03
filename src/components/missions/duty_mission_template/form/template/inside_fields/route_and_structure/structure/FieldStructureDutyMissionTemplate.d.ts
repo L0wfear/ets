@@ -22,6 +22,8 @@ export type OwnPropsFieldStructureDutyMissionTemplate = {
   value: DutyMissionTemplate['structure_id'];
   name: DutyMissionTemplate['structure_name'];
   error: string | void;
+  disabled: boolean;
+  isPermitted: boolean;
   onChange: (obj: Partial<DutyMissionTemplate>) => void;
 
   page: string;

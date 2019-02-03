@@ -60,42 +60,45 @@ class FieldBrigadeEmployeeIdListDutyMissionTemplate extends React.PureComponent<
       structure_id,
       page,
       path,
+      isPermitted,
     } = this.props;
 
-    if (foreman_id && foreman_id !== prevProps.foreman_id) {
-      const lastBrigade = await this.props.actionLoadLastBrigade(
-        { id: foreman_id },
-        { page, path },
-      );
+    if (isPermitted) {
+      if (foreman_id && foreman_id !== prevProps.foreman_id) {
+        const lastBrigade = await this.props.actionLoadLastBrigade(
+          { id: foreman_id },
+          { page, path },
+        );
 
-      this.props.onChange({
-        brigade_employee_id_list: lastBrigade.last_brigade.map((id, index) => ({
-          employee_id: id,
-          employee_fio: lastBrigade.last_brigade_fios[index],
-        })),
-        brigade_employee_id_list_id: lastBrigade.last_brigade,
-        brigade_employee_id_list_fio: lastBrigade.last_brigade_fios,
-      });
-    }
-
-    if (structure_id !== prevProps.structure_id) {
-      const {
-        brigade_employee_id_list,
-        employeeIndex,
-      } = this.props;
-      const sortedBrigadeByStructureId = brigade_employee_id_list.reduce((newArr, employeeInBrigade) => {
-        if (isPermittedEmployeeForDutyMission(employeeIndex[employeeInBrigade.employee_id], structure_id)) {
-          newArr.push(employeeInBrigade);
-        }
-        return newArr;
-      }, []);
-
-      if (sortedBrigadeByStructureId.length !== brigade_employee_id_list.length) {
         this.props.onChange({
-          brigade_employee_id_list: sortedBrigadeByStructureId,
-          brigade_employee_id_list_id: sortedBrigadeByStructureId.map(({ employee_id }) => employee_id),
-          brigade_employee_id_list_fio: sortedBrigadeByStructureId.map(({ employee_fio }) => employee_fio),
+          brigade_employee_id_list: lastBrigade.last_brigade.map((id, index) => ({
+            employee_id: id,
+            employee_fio: lastBrigade.last_brigade_fios[index],
+          })),
+          brigade_employee_id_list_id: lastBrigade.last_brigade,
+          brigade_employee_id_list_fio: lastBrigade.last_brigade_fios,
         });
+      }
+
+      if (structure_id !== prevProps.structure_id) {
+        const {
+          brigade_employee_id_list,
+          employeeIndex,
+        } = this.props;
+        const sortedBrigadeByStructureId = brigade_employee_id_list.reduce((newArr, employeeInBrigade) => {
+          if (isPermittedEmployeeForDutyMission(employeeIndex[employeeInBrigade.employee_id], structure_id)) {
+            newArr.push(employeeInBrigade);
+          }
+          return newArr;
+        }, []);
+
+        if (sortedBrigadeByStructureId.length !== brigade_employee_id_list.length) {
+          this.props.onChange({
+            brigade_employee_id_list: sortedBrigadeByStructureId,
+            brigade_employee_id_list_id: sortedBrigadeByStructureId.map(({ employee_id }) => employee_id),
+            brigade_employee_id_list_fio: sortedBrigadeByStructureId.map(({ employee_fio }) => employee_fio),
+          });
+        }
       }
     }
   }

@@ -57,17 +57,20 @@ class FieldForemanIdDutyMissionTemplate extends React.PureComponent<PropsFieldFo
 
   async componentDidUpdate(prevProps: PropsFieldForemanIdDutyMissionTemplate) {
     const {
+      isPermitted,
       value,
       structure_id,
       employeeIndex,
     } = this.props;
 
-    if (structure_id !== prevProps.structure_id && value) {
-      if (!isPermittedEmployeeForDutyMission(employeeIndex[value], structure_id)) {
-        this.props.onChange({
-          foreman_id: null,
-          foreman_full_fio: '',
-        });
+    if (isPermitted) {
+      if (structure_id !== prevProps.structure_id && value) {
+        if (!isPermittedEmployeeForDutyMission(employeeIndex[value], structure_id)) {
+          this.props.onChange({
+            foreman_id: null,
+            foreman_full_fio: '',
+          });
+        }
       }
     }
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { omit } from 'lodash';
 
 import { unpackObjectData } from 'api/utils';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
@@ -87,7 +88,7 @@ class CarFormWrap extends FormWrap {
         }
 
         if (typeof p.isSubmitted === 'function') {
-          formState = p.isSubmitted(formState) ? formState : _.omit(formState, p.key);
+          formState = p.isSubmitted(formState) ? formState : omit(formState, p.key);
         }
       });
     }

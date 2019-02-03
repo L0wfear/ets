@@ -80,7 +80,11 @@ export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = 
     technicalOperationRegistryList: data,
   };
 };
-export const actionGetAndSetInStoreTechnicalOperationRegistryForMission: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
+
+export type ActionGetAndSetInStoreTechnicalOperationRegistryForMissionAns = {
+  technicalOperationRegistryForMissionList: TechnicalOperationRegistry[],
+};
+export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (payload, { page, path }: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreTechnicalOperationRegistryForMissionAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetTechnicalOperationRegistry(
       {

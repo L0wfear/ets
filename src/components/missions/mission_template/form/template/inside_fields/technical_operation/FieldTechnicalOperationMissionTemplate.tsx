@@ -14,17 +14,65 @@ import {
 } from 'components/missions/mission_template/form/template/inside_fields/technical_operation/FieldTechnicalOperationMissionTemplate.d';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import memoize from 'memoize-one';
+import { makeOptionsByTechnicalOperationRegistryForMissionList } from './makeOptions';
 
 class FieldTechnicalOperationMissionTemplate extends React.PureComponent<PropsFieldTechnicalOperationMissionTemplate, StateFieldTechnicalOperationMissionTemplate> {
-  componentDidMount() {
-    this.getTechnicalOperations();
+  state = {
+    TECHNICAL_OPERATION_OPTIONS: [],
+  };
+
+  static getDerivedStateFromProps(nextProps: PropsFieldTechnicalOperationMissionTemplate) {
+    const {
+      value,
+      name,
+      technicalOperationRegistryForMissionList,
+    } = nextProps;
+
+    let TECHNICAL_OPERATION_OPTIONS = makeOptionsByTechnicalOperationRegistryForMissionList(
+      technicalOperationRegistryForMissionList,
+    );
+
+    const notAvtiveEmployee = value && !TECHNICAL_OPERATION_OPTIONS.some((toData) => (
+      toData.value === value
+    ));
+
+    if (notAvtiveEmployee) {
+      TECHNICAL_OPERATION_OPTIONS = [
+        ...TECHNICAL_OPERATION_OPTIONS,
+        {
+          value,
+          label: name,
+          rowData: {
+            id: value,
+            name,
+          },
+        },
+      ];
+    }
+
+    return {
+      TECHNICAL_OPERATION_OPTIONS,
+    };
   }
 
+  componentDidMount() {
+    if (this.props.isPermitted) {
+      this.getTechnicalOperations();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.isPermitted) {
+      this.props.actionResetTechnicalOperationRegistryForMission();
+    }
+  }
   getTechnicalOperations() {
-    this.props.actionGetAndSetInStoreTechnicalOperationRegistryForMission();
+    const { page, path } = this.props;
+
+    this.props.actionGetAndSetInStoreTechnicalOperationRegistryForMission(
+      {},
+      { page, path },
+    );
   }
 
   handleChange = (value, option) => {
@@ -38,27 +86,14 @@ class FieldTechnicalOperationMissionTemplate extends React.PureComponent<PropsFi
     }
   }
 
-  makeOptionsByTechnicalOperationRegistryForMissionList = (
-    memoize(
-      (technicalOperationRegistryForMissionList: TechnicalOperationRegistry[]) => (
-        technicalOperationRegistryForMissionList
-          .map(defaultSelectListMapper)
-      ),
-    )
-  );
-
   render() {
     const {
       props,
     } = this;
 
     const {
-      technicalOperationRegistryForMissionList,
-    } = props;
-
-    const TECHNICAL_OPERATION_OPTIONS = this.makeOptionsByTechnicalOperationRegistryForMissionList(
-      technicalOperationRegistryForMissionList,
-    );
+      TECHNICAL_OPERATION_OPTIONS,
+    } = this.state;
 
     return (
       <ExtField
@@ -81,17 +116,15 @@ export default connect<StatePropsFieldTechnicalOperationMissionTemplate, Dispatc
   (state) => ({
     technicalOperationRegistryForMissionList: getSomeUniqState(state).technicalOperationRegistryForMissionList,
   }),
-  (dispatch, { page, path }) => ({
-    actionGetAndSetInStoreTechnicalOperationRegistryForMission: () => (
+  (dispatch: any) => ({
+    actionGetAndSetInStoreTechnicalOperationRegistryForMission: (...arg) => (
       dispatch(
-        someUniqActions.actionGetAndSetInStoreTechnicalOperationRegistryForMission(
-          {},
-          {
-            promise: true,
-            page,
-            path,
-          },
-        ),
+        someUniqActions.actionGetAndSetInStoreTechnicalOperationRegistryForMission(...arg),
+      )
+    ),
+    actionResetTechnicalOperationRegistryForMission: (...arg) => (
+      dispatch(
+        someUniqActions.actionResetTechnicalOperationRegistryForMission(...arg),
       )
     ),
   }),

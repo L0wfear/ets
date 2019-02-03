@@ -59,7 +59,8 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
             <FieldTechnicalOperationMissionTemplate
               value={state.technical_operation_id}
               name={state.technical_operation_name}
-              disabled={false}
+              disabled={!isPermitted}
+              isPermitted={isPermitted}
               error={errors.technical_operation_id}
               onChange={this.props.handleChange}
 

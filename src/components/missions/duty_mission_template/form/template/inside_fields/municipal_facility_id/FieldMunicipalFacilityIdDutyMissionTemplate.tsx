@@ -106,6 +106,12 @@ class FieldMunicipalFacilityIdDutyMissionTemplate extends React.PureComponent<Pr
     }
   }
 
+  componentWillUnmount() {
+    if (this.props.isPermitted) {
+      this.props.actionResetMunicipalFacilityForDutyMission();
+    }
+  }
+
   async getMunicipalFacilitys(selectedToData: TechnicalOperationRegistry) {
     const { normatives } = selectedToData;
     const {
@@ -178,6 +184,11 @@ export default connect<StatePropsFieldMunicipalFacilityIdDutyMissionTemplate, Di
     actionGetAndSetInStoreMunicipalFacilityForDutyMission: (...arg) => (
       dispatch(
         someUniqActions.actionGetAndSetInStoreMunicipalFacilityForDutyMission(...arg),
+      )
+    ),
+    actionResetMunicipalFacilityForDutyMission: (...arg) => (
+      dispatch(
+        someUniqActions.actionResetMunicipalFacilityForDutyMission(...arg),
       )
     ),
   }),

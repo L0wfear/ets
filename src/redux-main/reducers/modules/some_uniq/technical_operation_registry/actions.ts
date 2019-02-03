@@ -31,24 +31,30 @@ export const actionSetTechnicalOperationRegistryForDutyMission = (technicalOpera
 );
 
 /* --------------- сброс стора --------------- */
-export const actionResetTechnicalOperationRegistry: any = () => (dispatch) => (
+export const actionResetTechnicalOperationRegistry = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
   dispatch(
     actionSetTechnicalOperationRegistry([]),
-  )
-);
-export const actionResetTechnicalOperationRegistryForMission: any = () => (dispatch) => (
+  );
+
+  return null;
+};
+export const actionResetTechnicalOperationRegistryForMission = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
   dispatch(
     actionSetTechnicalOperationRegistryForMission([]),
-  )
-);
-export const actionResetTechnicalOperationRegistryForDutyMission: any = () => (dispatch) => (
+  );
+
+  return null;
+};
+export const actionResetTechnicalOperationRegistryForDutyMission = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
   dispatch(
     actionSetTechnicalOperationRegistryForDutyMission([]),
-  )
-);
+  );
+
+  return null;
+};
 
 /* --------------- запрос --------------- */
-export const actionGetTechnicalOperationRegistry: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
+export const actionGetTechnicalOperationRegistry: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => (
   dispatch({
     type: 'none',
     payload: promiseGetTechnicalOperationRegistry(payload),
@@ -61,7 +67,7 @@ export const actionGetTechnicalOperationRegistry: any = (payload = {}, { page, p
 );
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetTechnicalOperationRegistry(payload, { page, path }),
   );
@@ -74,7 +80,7 @@ export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = 
     technicalOperationRegistryList: data,
   };
 };
-export const actionGetAndSetInStoreTechnicalOperationRegistryForMission: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistryForMission: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetTechnicalOperationRegistry(
       {

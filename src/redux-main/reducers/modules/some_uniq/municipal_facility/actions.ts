@@ -31,24 +31,30 @@ export const actionSetMunicipalFacilityForDutyMission = (municipalFacilityForDut
 );
 
 /* --------------- сброс стора --------------- */
-export const actionResetMunicipalFacility: any = () => (dispatch) => (
+export const actionResetMunicipalFacility: any = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacility([]),
-  )
-);
-export const actionResetMunicipalFacilityForMission: any = () => (dispatch) => (
+  );
+
+  return null;
+};
+export const actionResetMunicipalFacilityForMission: any = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacilityForMission([]),
-  )
-);
-export const actionResetMunicipalFacilityForDutyMission: any = () => (dispatch) => (
+  );
+
+  return null;
+};
+export const actionResetMunicipalFacilityForDutyMission: any = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacilityForDutyMission([]),
-  )
-);
+  );
+
+  return null;
+};
 
 /* --------------- запрос --------------- */
-export const actionGetMunicipalFacility: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
+export const actionGetMunicipalFacility: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => (
   dispatch({
     type: 'none',
     payload: promiseGetMunicipalFacility(payload),
@@ -61,7 +67,7 @@ export const actionGetMunicipalFacility: any = (payload = {}, { page, path }: { 
 );
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreMunicipalFacility: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionGetAndSetInStoreMunicipalFacility: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetMunicipalFacility(payload, { page, path }),
   );
@@ -74,7 +80,7 @@ export const actionGetAndSetInStoreMunicipalFacility: any = (payload = {}, { pag
     municipalFacilityList: data,
   };
 };
-export const actionGetAndSetInStoreMunicipalFacilityForMission: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const actionGetAndSetInStoreMunicipalFacilityForMission: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetMunicipalFacility(
       {

@@ -15,6 +15,7 @@ export type StatePropsFieldMunicipalFacilityIdDutyMissionTemplate = {
 };
 export type DispatchPropsFieldMunicipalFacilityIdDutyMissionTemplate = {
   actionGetAndSetInStoreMunicipalFacilityForDutyMission: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreMunicipalFacilityForDutyMission>;
+  actionResetMunicipalFacilityForDutyMission: HandleThunkActionCreator<typeof someUniqActions.actionResetMunicipalFacilityForDutyMission>;
 };
 
 export type OwnPropsFieldMunicipalFacilityIdDutyMissionTemplate = {

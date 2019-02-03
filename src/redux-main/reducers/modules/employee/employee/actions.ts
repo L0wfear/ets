@@ -23,11 +23,13 @@ export const employeeEmployeeSetEmployee = (employeeList: IStateEmployee['employ
     }),
   )
 );
-export const employeeEmployeeResetSetEmployee = () => (dispatch) => (
+export const employeeEmployeeResetSetEmployee = (): ThunkAction<void, ReduxState, {}, AnyAction> => (dispatch) => {
   dispatch(
     employeeEmployeeSetEmployee([], {}),
-  )
-);
+  );
+
+  return null;
+};
 export const employeeEmployeeGetSetEmployee: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({
     type: 'none',

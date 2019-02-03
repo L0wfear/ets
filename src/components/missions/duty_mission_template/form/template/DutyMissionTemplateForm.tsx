@@ -52,6 +52,19 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
     }
   }
 
+  componentWillUnmount() {
+    const {
+      formState: state,
+    } = this.props;
+
+    const IS_CREATING = !state.id;
+    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+
+    if (isPermitted) {
+      this.props.employeeEmployeeResetSetEmployee();
+    }
+  }
+
   handleHide = () => {
     this.props.handleHide(false);
   }
@@ -199,6 +212,11 @@ export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps
       employeeGetAndSetInStore: (...arg) => (
         dispatch(
           employeeActions.employeeGetAndSetInStore(...arg),
+        )
+      ),
+      employeeEmployeeResetSetEmployee: (...arg) => (
+        dispatch(
+          employeeActions.employeeEmployeeResetSetEmployee(...arg),
         )
       ),
     }),

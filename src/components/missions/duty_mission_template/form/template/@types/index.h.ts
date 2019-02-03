@@ -23,6 +23,7 @@ export type StatePropsDutyMissionTemplate = {
 
 export type DispatchPropsDutyMissionTemplate = {
   employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
+  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
 };
 export type OwnDutyMissionTemplateProps = {
   element: Partial<DutyMissionTemplate> | null;

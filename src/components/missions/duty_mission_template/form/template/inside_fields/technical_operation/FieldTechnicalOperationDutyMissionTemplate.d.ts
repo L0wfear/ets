@@ -14,6 +14,7 @@ export type StatePropsFieldTechnicalOperationDutyMissionTemplate = {
 };
 export type DispatchPropsFieldTechnicalOperationDutyMissionTemplate = {
   actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission>;
+  actionResetTechnicalOperationRegistryForDutyMission: HandleThunkActionCreator<typeof someUniqActions.actionResetTechnicalOperationRegistryForDutyMission>;
 };
 
 export type OwnPropsFieldTechnicalOperationDutyMissionTemplate = {

@@ -61,6 +61,12 @@ class FieldTechnicalOperationDutyMissionTemplate extends React.PureComponent<Pro
     }
   }
 
+  componentWillUnmount() {
+    if (this.props.isPermitted) {
+      this.props.actionResetTechnicalOperationRegistryForDutyMission();
+    }
+  }
+
   getTechnicalOperations() {
     const {
       page, path,
@@ -117,6 +123,11 @@ export default connect<StatePropsFieldTechnicalOperationDutyMissionTemplate, Dis
     actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission: (...arg) => (
       dispatch(
         someUniqActions.actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission(...arg),
+      )
+    ),
+    actionResetTechnicalOperationRegistryForDutyMission: (...arg) => (
+      dispatch(
+        someUniqActions.actionResetTechnicalOperationRegistryForDutyMission(...arg),
       )
     ),
   }),

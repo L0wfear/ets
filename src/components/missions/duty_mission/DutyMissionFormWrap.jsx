@@ -14,7 +14,6 @@ import { diffDates, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import dutyMissionSchema from 'models/DutyMissionModel';
 
 import DutyMissionForm from 'components/missions/duty_mission/DutyMissionForm';
-import DutyMissionFormOld from 'components/missions/duty_mission/DutyMissionFormOld';
 import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
@@ -231,32 +230,17 @@ class DutyMissionFormWrap extends FormWrap {
   render() {
     return (
       <Div hidden={!this.props.showForm}>
-        <Div hidden={!this.state.formState.is_new}>
-          <DutyMissionForm
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            onPrint={this.handleFormPrint}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            readOnly={this.props.readOnly || !this.state.formState.is_new}
-            fromOrder={!!this.props.fromOrder}
-            {...this.state}
-          />
-        </Div>
-        <Div hidden={this.state.formState.is_new}>
-          <DutyMissionFormOld
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            onPrint={this.handleFormPrint}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            readOnly={this.props.readOnly || !this.state.formState.is_new}
-            fromOrder={!!this.props.fromOrder}
-            {...this.state}
-          />
-        </Div>
+        <DutyMissionForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          onPrint={this.handleFormPrint}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          readOnly={this.props.readOnly || !this.state.formState.is_new}
+          fromOrder={!!this.props.fromOrder}
+          {...this.state}
+        />
       </Div>
     );
   }

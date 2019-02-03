@@ -8,94 +8,100 @@ import {
   promiseRemoveDutyMissionTemplate,
 } from 'redux-main/reducers/modules/missions/duty_mission_template/promise';
 import { DutyMissionTemplate } from './@types/index.h';
+import { ThunkAction } from 'redux-thunk';
+import { ReduxState } from 'redux-main/@types/state';
+import { AnyAction } from 'redux';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { HandleThunkActionCreator } from 'react-redux';
 
-export const actionSetDutyMissionTemplate = (dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList']) => (dispatch) => (
+export const actionSetDutyMissionTemplate = (dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList']): ThunkAction<IStateMissions['dutyMissionTemplateList'], ReduxState, {}, AnyAction> => (dispatch) => {
   dispatch(
     missionsSetNewData({
       dutyMissionTemplateList,
     }),
-  )
-);
-export const actionResetDutyMissionTemplate: any = () => (dispatch) => (
+  );
+
+  return dutyMissionTemplateList;
+};
+export const actionResetDutyMissionTemplate = (): ThunkAction<IStateMissions['dutyMissionTemplateList'], ReduxState, {}, AnyAction> => (dispatch) => {
+  const dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList'] = [];
+
   dispatch(
-    actionSetDutyMissionTemplate([]),
-  )
-);
-export const actionGetDutyMissionTemplate: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+    actionSetDutyMissionTemplate(dutyMissionTemplateList),
+  );
+
+  return dutyMissionTemplateList;
+};
+export const actionGetDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetDutyMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetDutyMissionTemplate(payload),
+    payload: promiseGetDutyMissionTemplate(payloadOwn),
     meta: {
       promise: true,
-      page,
-      path,
+      ...meta,
     },
-  })
-);
-export const actionGetAndSetInStoreDutyMissionTemplate: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    actionGetDutyMissionTemplate(payload, { page, path }),
+  });
+
+  return payload;
+};
+export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMissionTemplate>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await dispatch(
+    actionGetDutyMissionTemplate(payloadOwn, meta),
   );
 
   dispatch(
-    actionSetDutyMissionTemplate(data),
+    actionSetDutyMissionTemplate(response.data),
   );
 
-  return {
-    dutyDutyMissionTemplateList: data,
-  };
+  return response;
 };
-export const actionCreateDutyMissionTemplate: any = (dutyDutyMissionTemplateRaw: DutyMissionTemplate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { dutyDutyMissionTemplate } } = await dispatch({
+export const actionCreateDutyMissionTemplate = (dutyDutyMissionTemplateRaw: Partial<DutyMissionTemplate>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateDutyMissionTemplate>, ReduxState, {}, AnyAction>  => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateDutyMissionTemplate(dutyDutyMissionTemplateRaw),
     meta: {
       promise: true,
-      page,
-      path,
+      ...meta,
     },
   });
 
-  return dutyDutyMissionTemplate;
+  return payload;
 };
-export const actionUpdateDutyMissionTemplate: any = (dutyDutyMissionTemplateOld: DutyMissionTemplate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { dutyDutyMissionTemplate } } = await dispatch({
+export const actionUpdateDutyMissionTemplate = (dutyDutyMissionTemplateOld: Partial<DutyMissionTemplate> & Pick<DutyMissionTemplate, 'id'>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateDutyMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateDutyMissionTemplate(dutyDutyMissionTemplateOld),
     meta: {
       promise: true,
-      page,
-      path,
+      ...meta,
     },
   });
 
-  return dutyDutyMissionTemplate;
+  return payload;
 };
-export const actionRemoveDutyMissionTemplates: any = (dutyDutyMissionTemplateOldArr: DutyMissionTemplate[], { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { dutyDutyMissionTemplate } } = await dispatch({
+export const actionRemoveDutyMissionTemplates = (dutyDutyMissionTemplateOldArr: (Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>)[], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveDutyMissionTemplates>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissionTemplates(dutyDutyMissionTemplateOldArr.map(({ id }) => id)),
     meta: {
       promise: true,
-      page,
-      path,
+      ...meta,
     },
   });
 
-  return dutyDutyMissionTemplate;
+  return payload;
 };
-export const actionRemoveDutyMissionTemplate: any = (dutyDutyMissionTemplateOld: Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { dutyDutyMissionTemplate } } = await dispatch({
+export const actionRemoveDutyMissionTemplate = (dutyDutyMissionTemplateOld: Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveDutyMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissionTemplate(dutyDutyMissionTemplateOld.id),
     meta: {
       promise: true,
-      page,
-      path,
+      ...meta,
     },
   });
 
-  return dutyDutyMissionTemplate;
+  return payload;
 };
 
 export default {

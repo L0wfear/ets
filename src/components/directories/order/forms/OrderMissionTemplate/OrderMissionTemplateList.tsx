@@ -35,7 +35,7 @@ import { getWarningNotification } from 'utils/notifications';
 import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
 import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import missionActions from 'redux-main/reducers/modules/missions/actions';
@@ -116,8 +116,11 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       case typeTemplate.missionTemplate: return this.props.actionGetMissionTemplate(payload).then((ans) => ({
         result: get(ans, ['payload', 'data'], []),
       }));
-      case typeTemplate.missionDutyTemplate: return this.props.actionGetDutyMissionTemplate(payload).then((ans) => ({
-        result: get(ans, ['payload', 'data'], []),
+      case typeTemplate.missionDutyTemplate: return this.props.actionGetDutyMissionTemplate(
+        payload,
+        { page: loadingPage },
+      ).then((ans) => ({
+        result: get(ans, ['data'], []),
       }));
       default: Promise.reject({ error: 'no typeClick' });
     }
@@ -392,12 +395,16 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   }
 }
 
+type DispatchPropsOrderMissionTemplate = {
+  actionGetDutyMissionTemplate: HandleThunkActionCreator<typeof missionActions.actionGetDutyMissionTemplate>;
+};
+
 export default compose<any, any>(
-  connect<any, any, any, ReduxState>(
+  connect<any, DispatchPropsOrderMissionTemplate, any, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch) => ({
+    (dispatch: any) => ({
       actionGetMissionTemplate: (payload) => (
         dispatch(
           missionActions.actionGetMissionTemplate(
@@ -406,12 +413,9 @@ export default compose<any, any>(
           ),
         )
       ),
-      actionGetDutyMissionTemplate: (payload) => (
+      actionGetDutyMissionTemplate: (...arg) => (
         dispatch(
-          missionActions.actionGetDutyMissionTemplate(
-            payload,
-            { page: loadingPage },
-          ),
+          missionActions.actionGetDutyMissionTemplate(...arg),
         )
       ),
     }),

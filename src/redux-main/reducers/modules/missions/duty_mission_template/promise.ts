@@ -15,7 +15,7 @@ export const promiseGetDutyMissionTemplate = async (payload) => {
     response = null;
   }
 
-  const data = get(response, ['result'], []).map((employee) => {
+  const data: DutyMissionTemplate[] = get(response, ['result'], []).map((employee) => {
     const brigade_employee_id_list = get(employee, 'brigade_employee_id_list', []) || [];
 
     employee.brigade_employee_id_list_id = brigade_employee_id_list.map(({ employee_id }) => employee_id);
@@ -29,7 +29,7 @@ export const promiseGetDutyMissionTemplate = async (payload) => {
   };
 };
 
-export const promiseCreateDutyMissionTemplate = async (payloadOwn: DutyMissionTemplate) => {
+export const promiseCreateDutyMissionTemplate = async (payloadOwn: Partial<DutyMissionTemplate>) => {
   const payload: any = { ...payloadOwn };
 
   delete payload.brigade_employee_id_list_fio;
@@ -43,14 +43,12 @@ export const promiseCreateDutyMissionTemplate = async (payloadOwn: DutyMissionTe
     'json',
   );
 
-  const dutyDutyMissionTemplate = get(response, ['result', 0],  null);
+  const data: Partial<DutyMissionTemplate> = get(response, ['result', 0],  null);
 
-  return {
-    dutyDutyMissionTemplate,
-  };
+  return data;
 };
 
-export const promiseUpdateDutyMissionTemplate = async (payloadOwn: DutyMissionTemplate) => {
+export const promiseUpdateDutyMissionTemplate = async (payloadOwn: Partial<DutyMissionTemplate> & Pick<DutyMissionTemplate, 'id'>) => {
   const payload: any = { ...payloadOwn };
 
   delete payload.brigade_employee_id_list_fio;
@@ -64,11 +62,9 @@ export const promiseUpdateDutyMissionTemplate = async (payloadOwn: DutyMissionTe
     'json',
   );
 
-  const dutyDutyMissionTemplate = get(response, ['result', 0],  null);
+  const data: Partial<DutyMissionTemplate> = get(response, ['result', 0],  null);
 
-  return {
-    dutyDutyMissionTemplate,
-  };
+  return data;
 };
 
 export const promiseRemoveDutyMissionTemplates = async (ids: number[]) => {
@@ -79,7 +75,7 @@ export const promiseRemoveDutyMissionTemplates = async (ids: number[]) => {
   );
 };
 
-export const promiseRemoveDutyMissionTemplate = async (id: number) => {
+export const promiseRemoveDutyMissionTemplate = async (id: number): Promise<Partial<DutyMissionTemplate>> => {
   return DutyMissionTemplateService.delete(
     { id },
     false,

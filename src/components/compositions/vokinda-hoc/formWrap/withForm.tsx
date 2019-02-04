@@ -115,6 +115,23 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           }),
         };
       }
+
+      componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+          this.setState((oldState) => {
+            const formErrors = this.validate(oldState.formState);
+
+            return {
+              formErrors,
+              canSave: this.canSave({
+                ...oldState,
+                formErrors,
+              }),
+            };
+          });
+        }
+      }
+
       validate = (formState: F) => {
         if (isFunction(config.validate)) {
           return config.validate(formState, this.props);

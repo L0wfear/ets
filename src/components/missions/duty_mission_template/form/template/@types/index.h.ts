@@ -3,6 +3,7 @@ import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_m
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { HandleThunkActionCreator } from 'react-redux';
+import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 export type PropsDutyMissionTemplateFormLazy = {
   showForm: boolean;
@@ -19,6 +20,7 @@ export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 export type StatePropsDutyMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
+  employeeIndex: IStateEmployee['employeeIndex'];
 };
 
 export type DispatchPropsDutyMissionTemplate = {

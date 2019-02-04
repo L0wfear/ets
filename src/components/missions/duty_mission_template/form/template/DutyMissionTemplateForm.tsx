@@ -24,7 +24,7 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getEmployeeState } from 'redux-main/reducers/selectors';
 
 import FieldTechnicalOperationDutyMissionTemplate from 'components/missions/duty_mission_template/form/template/inside_fields/technical_operation/FieldTechnicalOperationDutyMissionTemplate';
 import FieldMunicipalFacilityIdDutyMissionTemplate from './inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMissionTemplate';
@@ -207,6 +207,7 @@ export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps
     (state) => ({
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
+      employeeIndex: getEmployeeState(state).employeeIndex,
     }),
     (dispatch: any) => ({
       employeeGetAndSetInStore: (...arg) => (

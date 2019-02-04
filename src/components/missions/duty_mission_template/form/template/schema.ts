@@ -1,6 +1,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_mission_template/@types/index.h';
 import { PropsDutyMissionTemplateForm } from './@types/index.h';
+import { isPermittedEmployeeForDutyMission } from './utils';
 
 export const dutyDutyMissionTemplateFormSchema: SchemaType<DutyMissionTemplate, PropsDutyMissionTemplateForm> = {
   properties: [
@@ -41,4 +42,40 @@ export const dutyDutyMissionTemplateFormSchema: SchemaType<DutyMissionTemplate, 
       required: false,
     },
   ],
+  dependencies: {
+    foreman_id: [
+      (value, { structure_id }, { employeeIndex }) => {
+        if (value) {
+          const isPermitted = isPermittedEmployeeForDutyMission(
+            employeeIndex[value],
+            structure_id,
+          );
+
+          if (!isPermitted) {
+            return 'Поле "Бригадир" должно быть заполнено активным сотрудником';
+          }
+        }
+
+        return '';
+      },
+    ],
+    brigade_employee_id_list_id: [
+      (value, { structure_id }, { employeeIndex }) => {
+        if (value) {
+          const isPermitted = value.length && !value.some((employee_id) => (
+            !isPermittedEmployeeForDutyMission(
+              employeeIndex[employee_id],
+              structure_id,
+            )
+          ));
+
+          if (!isPermitted) {
+            return 'Поле "Бригада" должно быть заполнено активными сотрудниками';
+          }
+        }
+
+        return '';
+      },
+    ],
+  },
 };

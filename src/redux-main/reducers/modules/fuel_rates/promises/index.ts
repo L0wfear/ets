@@ -98,13 +98,14 @@ export const getFuelOperationsIsActive = (payload: IFuelOperations = {}) => {
     .catch((error) => {
       // tslint:disable-next-line:no-console
       console.warn(error);
-
       return {
         result: {
           rows: [],
         },
       };
-    }).then((r) => ({ fuelRateOperationsIsActiveList: r.result.rows }));
+    }).then((r) => {
+      return ({ fuelRateOperationsIsActiveList: r.result.rows });
+    });
 };
 
 export const getFuelOperations = (payload: IFuelOperations = {}) => {

@@ -11,9 +11,9 @@ export type fuelRate = {
   company_structure_name: string | null;
   full_model_name: string | null;
   id: number | null;
-  isChecked: undefined | null;
+  isChecked: undefined | null; // Проверить что с бека приходит
   isHighlighted: boolean | null;
-  isSelected: boolean | null;
+  isSelected: boolean | null; // Проверить что с бека приходит
   is_excluding_mileage: boolean | null;
   load_capacity: number | null;
   max_speed: number | null;
@@ -24,7 +24,7 @@ export type fuelRate = {
   operation_id: number | null;
   operation_name: string | null;
   order_date: string | null;
-  rowNumber: number | null;
+  rowNumber: number | null; // Проверить что с бека приходит
   summer_rate: number | null;
   winter_rate: number | null;
 };
@@ -32,8 +32,6 @@ export type fuelRate = {
 export type FuelRateUpd = fuelRate & {
   rate_on_date: number | null; // Для updateFuelRate
   season?: string; // Для updateFuelRate
-  page?: string;
-  path?: string;
 };
 
 export type fuelOperation = { // перенести в реестр fuelOperation, после его рефакторинга
@@ -77,6 +75,4 @@ export type ICreateFuel = {
   winter_rate: number | null;
   car_model_name: string | null;
   car_special_model_name: string | null;
-  page?: string;
-  path?: string;
 };

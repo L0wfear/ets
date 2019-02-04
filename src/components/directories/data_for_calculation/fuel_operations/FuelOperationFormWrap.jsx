@@ -5,12 +5,9 @@ import BaseFuelOperationForm from 'components/directories/data_for_calculation/f
 
 import { connect } from 'react-redux';
 import {
-  FuelOperationCreate,
-  FuelOperationUpdate,
+  fuelOperationCreate,
+  fuelOperationUpdate,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
-import {
-  FUEL_RATES_SET_DATA,
-} from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 import { compose } from 'recompose';
 
 const FuelOperationForm = enhanceWithPermissions(BaseFuelOperationForm);
@@ -42,8 +39,8 @@ export class FuelOperationFormWrap extends FormWrap {
   constructor(props) {
     super(props);
     this.uniqueField = 'id';
-    this.createAction = this.props.FuelOperationCreate;
-    this.updateAction = this.props.FuelOperationUpdate;
+    this.createAction = this.props.fuelOperationCreate;
+    this.updateAction = this.props.fuelOperationUpdate;
     this.schema = fuelOperationSchema;
   }
 
@@ -74,14 +71,14 @@ export default compose(
       fuelRateOperations: state.fuelRates.fuelRateOperations,
     }),
     dispatch => ({
-      FuelOperationCreate: payload => (
+      fuelOperationCreate: payload => (
         dispatch(
-          FuelOperationCreate(FUEL_RATES_SET_DATA, payload),
+          fuelOperationCreate(payload),
         )
       ),
-      FuelOperationUpdate: payload => (
+      fuelOperationUpdate: payload => (
         dispatch(
-          FuelOperationUpdate(FUEL_RATES_SET_DATA, payload),
+          fuelOperationUpdate(payload),
         )
       ),
     }),

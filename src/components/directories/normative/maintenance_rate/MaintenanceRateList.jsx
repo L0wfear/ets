@@ -48,9 +48,9 @@ class MaintenanceRateDirectory extends ElementsList {
     const { flux } = this.context;
 
     this.props.maintenanceRateGet(this.props.type);
-    flux.getActions('objects').getMaintenanceWork();
-    flux.getActions('objects').getCleanCategories();
-    flux.getActions('technicalOperation').getTechnicalOperations();
+    flux.getActions('objects').getMaintenanceWork(); // проверить и перенести в форму
+    flux.getActions('objects').getCleanCategories(); // проверить и перенести в форму
+    flux.getActions('technicalOperation').getTechnicalOperations(); // проверить и перенести в форму
   }
 
   componentDidUpdate(prevProps) {

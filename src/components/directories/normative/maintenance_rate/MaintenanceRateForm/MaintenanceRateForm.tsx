@@ -52,8 +52,12 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
   }
 
   handleChangeCategory = (value) => {
-    this.props.handleChange('clean_subcategory_id', null);
-    this.props.handleChange('clean_category_id', value);
+    this.props.handleChange({
+      clean_subcategory_id: null,
+      clean_category_id: value,
+    });
+    // this.props.handleChange('clean_subcategory_id', null);
+    // this.props.handleChange('clean_category_id', value);
   }
 
   render() {
@@ -69,17 +73,16 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
       cleanCategoriesList = [],
     } = this.props;
 
-    state.type = this.props.type; // !!! дич или нет?
-
     const IS_CREATING = !state.id;
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
-    const { subcategories = [] } = (cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {});
+    const { subcategories = [] } = (cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {}); // subcategories через Lodash get, по деф пустой массив
 
     const TECH_OPERATIONS = technicalOperationsList.map(defaultSelectListMapper);
     const MAINTENANCE_WORK = maintenanceWorkList.map(defaultSelectListMapper);
     const CATEGORIES = cleanCategoriesList.map(defaultSelectListMapper);
     const SUBCATEGORIES = subcategories.map(defaultSelectListMapper);
+
     return (
       <Modal id="modal-maintenance-rate" show onHide={this.handleHide} backdrop="static">
         <Modal.Header closeButton>
@@ -121,7 +124,7 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
                 type="select"
                 label="Сезон"
                 error={errors.season_id}
-                options={[{ value: 2, label: 'Зима' }, { value: 1, label: 'Лето' }]}
+                options={[{ value: 2, label: 'Зима' }, { value: 1, label: 'Лето' }]} // in const
                 value={state.season_id}
                 onChange={this.props.handleChange}
                 boundKeys="season_id"
@@ -175,12 +178,12 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
 export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
   connect<StatePropsMaintenanceRate, DispatchPropsMaintenanceRate, OwnMaintenanceRateProps, ReduxState>(
     null,
-    (dispatch, { page, path }) => ({
+    (dispatch, { page, path, type }) => ({
       createAction: (formState) => (
         dispatch(
           maintenanceRateCreate(
             MAINTENANCE_RATE_SET_DATA,
-            formState.type,
+            type,
             { ...formState, page, path },
           ),
         )
@@ -189,7 +192,7 @@ export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
         dispatch(
           maintenanceRateUpdate(
             MAINTENANCE_RATE_SET_DATA,
-            formState.type,
+            type,
             { ...formState, page, path },
           ),
         )

@@ -14,8 +14,6 @@ export const defaultFuelRate: ICreateFuel = {
   winter_rate: null,
   car_model_name: null,
   car_special_model_name: null,
-  page: '',
-  path: '',
 };
 
 export const getDefaultFuelRateElement: GetDefaultFuelRateElement = (element) => {

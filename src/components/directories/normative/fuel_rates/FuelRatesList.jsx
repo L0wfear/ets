@@ -7,13 +7,10 @@ import permissions from 'components/directories/normative/fuel_rates/config-data
 
 import { connect } from 'react-redux';
 import {
-  FuelRatesGet,
-  FuelRateDelete,
-  FuelOperationsGet,
+  fuelRatesGetAndSetInStore,
+  fuelRateDelete,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
-import {
-  FUEL_RATES_SET_DATA,
-} from 'redux-main/reducers/modules/fuel_rates/fuelRates';
+
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
@@ -33,18 +30,15 @@ const loadingPageName = 'fuel-rates';
 class FuelRatesDirectory extends ElementsList {
   constructor(props) {
     super(props);
-    this.removeElementAction = this.props.FuelRateDelete;
+    this.removeElementAction = this.props.fuelRateDelete;
   }
+  // handleHide
+  // autobaseResetSetSparePart
 
   init() {
     const { flux } = this.context; // del
-    try {
-      this.props.FuelOperationsGet();
-      this.props.FuelRatesGet();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
+
+    this.props.fuelRatesGetAndSetInStore();
 
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
@@ -58,22 +52,21 @@ export default compose(
   connect(
     state => ({
       fuelRatesList: state.fuelRates.fuelRatesList,
-      fuelOperationsList: state.fuelRates.fuelRateOperationsList,
     }),
     dispatch => ({
-      FuelOperationsGet: () => (
+      fuelRatesGetAndSetInStore: () => (
         dispatch(
-          FuelOperationsGet(FUEL_RATES_SET_DATA),
+          fuelRatesGetAndSetInStore(
+            {},
+            {
+              page: loadingPageName,
+            },
+          ),
         )
       ),
-      FuelRatesGet: () => (
+      fuelRateDelete: id => (
         dispatch(
-          FuelRatesGet(FUEL_RATES_SET_DATA),
-        )
-      ),
-      FuelRateDelete: id => (
-        dispatch(
-          FuelRateDelete(FUEL_RATES_SET_DATA, id),
+          fuelRateDelete(id),
         )
       ),
     }),

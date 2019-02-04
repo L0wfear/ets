@@ -10,26 +10,21 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Field from 'components/ui/Field';
 
 import { getCompanyStructureState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { get } from 'lodash';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
-  FuelRateCreate,
-  FuelRateUpdate,
-  FuelOperationsIsActiveGet,
+  fuelRateCreate,
+  fuelRateUpdate,
+  fuelOperationsGetAndSetInStore,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
-// import { DivNone } from 'global-styled/global-styled';
-import {
-  FUEL_RATES_SET_DATA
-} from 'redux-main/reducers/modules/fuel_rates/fuelRates';
+
 import {
   OwnFuelRateProps,
   PropsFuelRate,
@@ -52,27 +47,18 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
   handleHide = () => {
     this.props.handleHide(false);
   }
-  handleChangeBoolean = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
-  }
 
   componentDidMount() {
     const {
-      car_special_model_id,
-    } = this.props.formState;
+      formState: {
+        car_special_model_id,
+      }
+    } = this.props;
 
-    try {
-      this.props.actionGetAndSetInStoreSpecialModel();
-      this.props.getAndSetInStoreCompanyStructureLinear();
-      this.props.actionGetAndSetInStoreModelList({ car_special_model_id });
-      this.props.FuelOperationsIsActiveGet();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      // tslint:disable-next-line:no-console
-      console.error(e);
-    }
+    this.props.actionGetAndSetInStoreSpecialModel();
+    this.props.getAndSetInStoreCompanyStructureLinear();
+    this.props.actionGetAndSetInStoreModelList({ car_special_model_id });
+    this.props.fuelOperationsGetAndSetInStore();
 
   }
 
@@ -86,9 +72,10 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
 
   makeOptionFromModelsList = (
     memoize(
-      (modelsList) => modelsList.map((m) => ({
-        value: m.id,
-        label: m.full_name,
+      (modelsList) => modelsList.map((modalListItem) => ({ // Добавить типчики
+        value: modalListItem.id,
+        label: modalListItem.full_name,
+        rowData: modalListItem,
       })), // change to custom
     )
   );
@@ -109,8 +96,9 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
     memoize(
       (fuelRateOperationsList) => fuelRateOperationsList.map((op) => ({
         value: op.id,
-        label: `${op.name}, ${op.measure_unit_name}${op.equipment ? ' [спецоборудование]' : ''}`,
+        label: `${op.name}, ${op.measure_unit_name}${op.equipment ? ' [спецоборудование]' : ''}`, // добавить условие новое
         measure_unit_name: op.measure_unit_name,
+        rowData: op,
       }))
       .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())), // change to custom
     )
@@ -118,18 +106,19 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
 
   render() {
     const {
-      page,
-      path,
       formState: state,
       formErrors: errors,
-      modelsList = [],
-      fuelRateOperationsIsActiveList = [],
+      page,
+      path,
+      modelsList,
+      fuelRateOperationsIsActiveList,
       specialModelList,
       companyStructureLinearList,
     } = this.props;
 
     const IS_CREATING = !state.id;
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+
     const COMPANY_ELEMENTS = this.makeOptionFromCompanyStructureLinearList(
       companyStructureLinearList,
     );
@@ -143,7 +132,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
       fuelRateOperationsIsActiveList,
     );
 
-    const measure_unit_name = (OPERATIONS.find(({ value }) => value === state.operation_id) || { measure_unit_name: '-' }).measure_unit_name || '-';
+    const measure_unit_name = (OPERATIONS.find(({ value }) => value === state.operation_id) || { measure_unit_name: '-' }).measure_unit_name || '-'; // переписать без find
 
     return (
       <Modal id="modal-fuel-rate" show onHide={this.handleHide} backdrop="static">
@@ -154,7 +143,9 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              <Field
+              <ExtField
+                id="order_date"
+                modalKey={page}
                 label="Дата приказа"
                 type="date"
                 date={state.order_date}
@@ -164,7 +155,9 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 disabled={!isPermitted}
               />
 
-              <Field
+              <ExtField
+                id="operation_id"
+                modalKey={page}
                 label="Операция"
                 error={errors.operation_id}
                 type="select"
@@ -176,20 +169,26 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
               />
 
               <ExtField
+                id="measure_unit_name"
+                modalKey={page}
                 type="string"
                 label="Единица измерения"
                 value={measure_unit_name}
                 disabled
               />
 
-              <Field
+              <ExtField
+                id="comment"
+                modalKey={page}
                 label="Примечание"
                 type="string"
                 value={state.comment}
                 onChange={this.props.handleChange.bind(this, 'comment')}
               />
 
-              <Field
+              <ExtField
+                id="summer_rate"
+                modalKey={page}
                 label="Норма для летнего периода"
                 type="number"
                 error={errors.summer_rate}
@@ -198,16 +197,21 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 disabled={!isPermitted}
               />
 
-              <Field
+              <ExtField
+                id="winter_rate"
+                modalKey={page}
                 label="Норма для зимнего периода"
                 type="number"
                 error={errors.winter_rate}
                 value={state.winter_rate}
-                onChange={this.props.handleChange.bind(this, 'winter_rate')}
+                boundKeys="winter_rate" // вместо bind
+                onChange={this.props.handleChange}
                 disabled={!isPermitted}
               />
 
-              <Field
+              <ExtField
+                id="car_special_model_id"
+                modalKey={page}
                 label="Модель ТС"
                 error={errors.car_special_model_id}
                 type="select"
@@ -218,7 +222,9 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 disabled={!isPermitted}
               />
 
-              <Field
+              <ExtField
+                id="car_model_id"
+                modalKey={page}
                 label="Марка шасси"
                 error={errors.car_model_id}
                 type="select"
@@ -228,7 +234,9 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 onChange={this.props.handleChange.bind(this, 'car_model_id')}
                 disabled={!isPermitted || !state.car_special_model_id}
               />
-              <Field
+              <ExtField
+                id="company_structure_id"
+                modalKey={page}
                 label="Подразделение"
                 type="select"
                 options={COMPANY_ELEMENTS}
@@ -259,17 +267,17 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
     (dispatch, { page, path }) => ({
       createAction: (formState) => (
         dispatch(
-          FuelRateCreate(
-            FUEL_RATES_SET_DATA,
-            { ...formState, page, path },
+          fuelRateCreate(
+            formState,
+            { page, path },
           ),
         )
       ),
       updateAction: (formState) => (
         dispatch(
-          FuelRateUpdate(
-            FUEL_RATES_SET_DATA,
-            { ...formState, page, path },
+          fuelRateUpdate(
+            formState,
+            { page, path },
           ),
         )
       ),
@@ -297,9 +305,15 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
           ),
         )
       ),
-      FuelOperationsIsActiveGet: () => (
+      fuelOperationsGetAndSetInStore: () => (
         dispatch(
-          FuelOperationsIsActiveGet(FUEL_RATES_SET_DATA),
+          fuelOperationsGetAndSetInStore(
+            {},
+            {
+              page,
+              path,
+            },
+          ),
         )
       ),
     }),
@@ -310,6 +324,6 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
       return getDefaultFuelRateElement(props.element);
     },
     schema: fuelRateSchema,
-    permissions: FuelRatePermissions,
+    permissions: FuelRatePermissions, // Lower case
   }),
 )(FuelRateForm);

@@ -22,12 +22,12 @@ export type StatePropsFuelRate = {
   companyStructureLinearList: IStateCompanyStructure['companyStructureLinearList'];
 };
 export type DispatchPropsFuelRate = {
-  createAction: any; // поменять any !!
-  updateAction: any; // поменять any !!
+  createAction: any;
+  updateAction: any;
   actionGetAndSetInStoreSpecialModel: any;
   getAndSetInStoreCompanyStructureLinear: any;
   actionGetAndSetInStoreModelList: any;
-  FuelOperationsIsActiveGet: any;
+  fuelOperationsGetAndSetInStore: any;
 };
 export type OwnFuelRateProps = { // fuelRateForm props
   element: FuelRateUpd | null;

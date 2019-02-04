@@ -152,6 +152,8 @@ class MissionReportByDT extends ElementsList {
     this.mainListName = 'selectedReportDataDTS';
   }
 
+  componentDidMount() {}
+
   selectElement = (el) => {
     this.onRowClick(el);
     if (typeof this.props.onElementChange === 'function') {

@@ -71,15 +71,9 @@ export type Position = {
 
 export type IStateEmployee = {
   employeeList: Employee[];
-  employeeIndex: {
-    [id: string]: Employee;
-  }
+  employeeIndex: Record<Employee['id'], Employee>;
   driverList: Driver[];
-  driverIndex: {
-    [id: string]: Driver;
-  };
+  driverIndex: Record<Driver['id'], Driver>;
   positionList: Position[];
-  positionIndex: {
-    [id: string]: Position;
-  };
+  positionIndex: Record<Position['id'], Position>;
 };

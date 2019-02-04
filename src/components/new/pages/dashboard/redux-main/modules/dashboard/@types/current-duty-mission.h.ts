@@ -1,4 +1,4 @@
-import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 export type CurrentDutyMissionsItemsSubItemDatasType = {
   duty_mission_date_end: string;

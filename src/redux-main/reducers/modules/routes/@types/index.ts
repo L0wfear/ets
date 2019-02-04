@@ -17,7 +17,7 @@ export type ObjectDtOdhData = {
   name: string;
   object_id: number;
   state: number;
-  type: 'odh' | 'dt';
+  type: string;
 };
 
 export type ObjectPointData = {
@@ -43,25 +43,27 @@ export type WorkTypeData = {
   work_type_name: string;
 };
 
+export type OdhValidate = {
+  odh_id: number;
+  odh_name: string;
+  state: number | null;
+  status: 'fail' | 'success';
+};
+
 export type Route = {
   name: string;
-  draw_object_list: DrawData[];
+  draw_object_list: (DrawData | ObjectDtOdhData)[];
   input_lines: DrawData[];
   object_list: ObjectDtOdhData[] | ObjectPointData[];
-  comment: null | null;
+  comment: string;
   company_id: number | null;
   created_at: string;
   id: number;
   is_main: boolean;
   is_new: boolean;
   is_template: boolean;
-<<<<<<< HEAD:src/redux-main/reducers/modules/routes/@types/routes.h.ts
   municipal_facility_id: number | null;
   municipal_facility_name: string | null;
-=======
-  municipal_facility_id: number;
-  municipal_facility_name: string;
->>>>>>> hotifx/DITETSSUP-1834:src/redux-main/trash-actions/route/@types/promise.h.ts
   norm_id: null;
   seasons: SeasonData[];
   structure_id: number | null;
@@ -74,7 +76,5 @@ export type Route = {
 
 export type IStateRoutes = {
   routesList: Route[];
-  routesIndex: {
-    [id: string]: Route;
-  };
+  routesIndex: Record<Route['id'], Route>;
 };

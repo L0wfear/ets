@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types';
 
 const ROUTES = createPath('ROUTES');
 

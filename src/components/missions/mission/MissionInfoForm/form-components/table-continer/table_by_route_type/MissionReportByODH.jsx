@@ -154,6 +154,8 @@ class MissionReportByODH extends ElementsList {
     this.mainListName = 'selectedReportDataODHS';
   }
 
+  componentDidMount() {}
+
   selectElement = (el) => {
     this.onRowClick(el);
     if (typeof this.props.onElementChange === 'function') {

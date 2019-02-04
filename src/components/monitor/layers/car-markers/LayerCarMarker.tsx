@@ -208,10 +208,11 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
   changeStyle({ carPointsDataWs, zoomMore8, gps_code: state_gps_code, statusShow, STATUS_SHOW_GOV_NUMBER, filters, carActualGpsNumberIndex, old_carPointsDataWs, minZoom }) {
     const filtredCarGpsCode = {};
     let hasDiffInFiltredCarGpsCode = false;
+    const newCarPointsDataWs = {};
 
     for (const gps_code in carPointsDataWs) {
       if (gps_code in carPointsDataWs) {
-        const data = carPointsDataWs[gps_code];
+        const data = { ...carPointsDataWs[gps_code] };
         const old_data = old_carPointsDataWs[gps_code];
         const feature = this.props.getFeatureById(gps_code);
 
@@ -231,6 +232,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
             },
             gps_code,
           );
+          data.visible = visible;
 
           const old_visible = feature.get('visible');
 
@@ -262,12 +264,26 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
 
           feature.setStyle(style);
         }
+
+        newCarPointsDataWs[gps_code] = data;
       }
     }
 
-    this.props.monitoPageChangeCarsByStatus(
-      calcCountTsByStatus(carPointsDataWs),
-    );
+    this.setState(({ carPointsDataWs: stateCarPointsDataWs }) => {
+      const newObj = {
+        ...stateCarPointsDataWs,
+        ...newCarPointsDataWs,
+      };
+
+      this.props.monitoPageChangeCarsByStatus(
+        calcCountTsByStatus(newObj),
+      );
+
+      return {
+        carPointsDataWs: newObj,
+      };
+    });
+
     if (hasDiffInFiltredCarGpsCode) {
       this.props.monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode);
     }
@@ -356,6 +372,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
             },
             gps_code,
           );
+          carPointsDataWs[gps_code].visible = visible;
 
           if (visible) {
             filtredCarGpsCode[gps_code] = true;
@@ -423,6 +440,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
             },
             gps_code,
           );
+          carPointsDataWs[gps_code].visible = visible;
 
           if (visible) {
             if (!old_visible) {

@@ -5,7 +5,6 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 
-import ModalBody from 'components/ui/Modal';
 import ChangeRouteTable from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteTable';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
@@ -16,7 +15,7 @@ import {
 } from 'components/new/pages/routes_list/buttons/buttons';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { routesRemoveRoute, routesLoadRouteById } from 'redux-main/reducers/modules/routes/routes/actions';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { DivNone } from 'global-styled/global-styled';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
@@ -29,8 +28,8 @@ class ChangeRouteForm extends React.Component {
       showForm: PropTypes.bool,
       onFormHide: PropTypes.func,
       routesData: PropTypes.any,
-      routesRemoveRoute: PropTypes.func.isRequired,
-      routesLoadRouteById: PropTypes.func.isRequired,
+      actionRemoveRoute: PropTypes.func.isRequired,
+      actionLoadRouteById: PropTypes.func.isRequired,
       page: PropTypes.string.isRequired,
       path: PropTypes.string.isRequired,
     };
@@ -73,10 +72,15 @@ class ChangeRouteForm extends React.Component {
     });
   }
 
-  handleChangeRouteNew = async () => {
+  handleChangeRoute = async () => {
     try {
       const { routeSelected } = this.state;
-      const { payload: { route_data } } = await this.props.routesLoadRouteById(routeSelected.id);
+      const { page, path } = this.props;
+
+      const route_data = await this.props.actionLoadRouteById(
+        routeSelected.id,
+        { page, path },
+      );
 
       this.setState({
         showRouteForm: true,
@@ -97,7 +101,12 @@ class ChangeRouteForm extends React.Component {
       return;
     }
     try {
-      await this.props.routesRemoveRoute(this.state.routeSelected.id);
+      const { page, path } = this.props;
+
+      await this.props.actionRemoveRoute(
+        this.state.routeSelected.id,
+        { page, path },
+      );
       this.onFormHide(true);
     } catch (e) {
       console.log(error); // eslint-disable-line
@@ -133,7 +142,7 @@ class ChangeRouteForm extends React.Component {
                 </ChangeRouteTable>
                 <Row>
                   <Col md={3} mdOffset={9}>
-                    <ButtonUpdateRoute id="change-route" bsClass="btn all-width" disabled={!routeSelected} onClick={this.handleChangeRouteNew}>Изменить</ButtonUpdateRoute>
+                    <ButtonUpdateRoute id="change-route" bsClass="btn all-width" disabled={!routeSelected} onClick={this.handleChangeRoute}>Изменить</ButtonUpdateRoute>
                   </Col>
                 </Row>
               </ModalBodyPreloader>
@@ -155,21 +164,15 @@ class ChangeRouteForm extends React.Component {
 export default compose(
   connect(
     null,
-    (dispatch, { page, path }) => ({
-      routesLoadRouteById: id => (
+    dispatch => ({
+      actionLoadRouteById: (...arg) => (
         dispatch(
-          routesLoadRouteById(
-            id,
-            { page, path },
-          ),
+          routesActions.actionLoadRouteById(...arg),
         )
       ),
-      routesRemoveRoute: id => (
+      actionRemoveRoute: (...arg) => (
         dispatch(
-          routesRemoveRoute(
-            id,
-            { page, path },
-          ),
+          routesActions.actionRemoveRoute(...arg),
         )
       ),
     }),

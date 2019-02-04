@@ -39,16 +39,22 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { isNull } from 'util';
-import {
-  routesGetSetRoutes,
-  routesLoadRouteById,
-  routesRemoveRoute,
-} from 'redux-main/reducers/modules/routes/routes/actions';
+import routesAction from 'redux-main/reducers/modules/routes/actions';
 
 import RoutesLeftTree from 'components/new/pages/routes_list/RoutesLeftTree';
 import { EMPTY_STUCTURE } from 'components/new/pages/routes_list/utils/utils';
 import { RoutesTreeColWrap, RouteListContainer } from 'components/new/pages/routes_list/styled/styled';
 import { getWarningNotification } from 'utils/notifications';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { getDefaultRouteElement } from './form/utils';
+
+import {
+  StatePropsRoutesList,
+  DispatchPropsRoutesList,
+  OwnPropsRoutesList,
+  PropsRoutesList,
+  StateRoutesList,
+} from 'components/new/pages/routes_list/@types/RoutesList.h';
 
 const SEASONS_OPTIONS = [
   {
@@ -129,7 +135,7 @@ const filterOptions: any = [
   },
 ];
 
-class RoutesList extends React.PureComponent<any, any> {
+class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   constructor(props) {
     super(props);
 
@@ -184,8 +190,12 @@ class RoutesList extends React.PureComponent<any, any> {
     }
   }
 
-  getRouteById(id) {
-    return this.props.routesLoadRouteById(id).then(({ route_data }) => route_data);
+  async getRouteById(id) {
+    const route_data = await this.props.actionLoadRouteById(
+      id,
+      { page },
+    );
+    return route_data;
   }
 
   handleChangeSeasonId = (season_id) => {
@@ -222,7 +232,10 @@ class RoutesList extends React.PureComponent<any, any> {
   refreshRoutes = async (withState = null) => {
     const {
       data: routesListRaw,
-    } = await this.props.routesGetSetRoutes();
+    } = await this.props.actionLoadRoutes(
+      {},
+      { page },
+    );
 
     const routesList = makeRoutesListForRender(routesListRaw);
 
@@ -295,18 +308,7 @@ class RoutesList extends React.PureComponent<any, any> {
     this.setState({
       showForm: true,
       selectedRoute: {
-        is_main: true,
-        name: '',
-        municipal_facility_id: null,
-        municipal_facility_name: '',
-        technical_operation_id: null,
-        technical_operation_name: '',
-        structure_id: null,
-        structure_name: '',
-        type: null,
-        object_list: [],
-        input_lines: [],
-        draw_object_list: [],
+        ...getDefaultRouteElement(),
       },
     })
   )
@@ -321,7 +323,6 @@ class RoutesList extends React.PureComponent<any, any> {
     const copiedRoute = cloneDeep(this.state.selectedRoute);
     delete copiedRoute.name;
     delete copiedRoute.id;
-    copiedRoute.copy = true;
 
     this.setState({
       showForm: true,
@@ -346,7 +347,10 @@ class RoutesList extends React.PureComponent<any, any> {
       return;
     }
 
-    await this.props.routesRemoveRoute(this.state.selectedRoute.id);
+    await this.props.actionRemoveRoute(
+      this.state.selectedRoute.id,
+      { page },
+    );
     this.refreshRoutes({ selectedRoute: null });
   }
 
@@ -473,37 +477,30 @@ class RoutesList extends React.PureComponent<any, any> {
   }
 }
 
-export default compose<any, any>(
-  connect<any, any, any, ReduxState>(
+export default compose<PropsRoutesList, OwnPropsRoutesList>(
+  withPreloader({
+    page,
+    typePreloader: 'mainpage',
+  }),
+  connect<StatePropsRoutesList, DispatchPropsRoutesList, OwnPropsRoutesList, ReduxState>(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
       structures: getSessionState(state).userData.structures,
     }),
     (dispatch: any) => ({
-      routesGetSetRoutes: () => (
+      actionLoadRoutes: (...arg) => (
         dispatch(
-          routesGetSetRoutes(
-            {},
-            { page },
-          ),
+          routesAction.actionLoadRoutes(...arg),
         )
       ),
-      routesLoadRouteById: (id) => (
+      actionLoadRouteById: (...arg) => (
         dispatch(
-          routesLoadRouteById(
-            id,
-            {
-              page,
-            },
-          ),
+          routesAction.actionLoadRouteById(...arg),
         )
       ),
-      routesRemoveRoute: (id) => (
+      actionRemoveRoute: (...arg) => (
         dispatch(
-          routesRemoveRoute(
-            id,
-            { page },
-          ),
+          routesAction.actionRemoveRoute(...arg),
         )
       ),
     }),

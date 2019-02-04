@@ -65,6 +65,8 @@ class MissionReportByPoints extends ElementsList {
     this.mainListName = 'selectedReportDataPoints';
   }
 
+  componentDidMount() {}
+
   selectElement = (el) => {
     this.onRowClick(el);
     if (typeof this.props.onElementChange === 'function') {

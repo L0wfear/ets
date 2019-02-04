@@ -44,9 +44,7 @@ export const employeeEmployeeGetSetEmployee: any = (payload = {}, { page, path }
 
 type EmployeeGetAndSetInStoreAns = {
   employeeList: Employee[],
-  employeeIndex: {
-    [id: string]: Employee;
-  };
+  employeeIndex: Record<Employee['id'], Employee>;
 };
 
 export const employeeGetAndSetInStore = (payload: object, meta: LoadingMeta): ThunkAction<Promise<EmployeeGetAndSetInStoreAns>, ReduxState, {}, AnyAction> => async (dispatch) => {

@@ -136,7 +136,7 @@ class FieldRouteAndStructureDutyMissionTemplate extends React.PureComponent<Prop
 
     const {
       data: routesList,
-    } = await this.props.routesGetSetRoutes(
+    } = await this.props.actionLoadRoutes(
       {
         technical_operation_id,
         municipal_facility_id,
@@ -151,7 +151,7 @@ class FieldRouteAndStructureDutyMissionTemplate extends React.PureComponent<Prop
     let { selectedRoute } = this.state;
     if (route_id && (!selectedRoute || selectedRoute.id === route_id)) {
 
-      const { route_data } = await this.routesLoadRouteById(route_id);
+      const route_data = await this.actionLoadRouteById(route_id);
 
       if (route_data) {
         selectedRoute = route_data;
@@ -170,10 +170,10 @@ class FieldRouteAndStructureDutyMissionTemplate extends React.PureComponent<Prop
     });
   }
 
-  routesLoadRouteById(route_id) {
+  actionLoadRouteById(route_id) {
     const { page, path } = this.props;
 
-    return this.props.routesLoadRouteById(
+    return this.props.actionLoadRouteById(
       route_id,
       { page, path },
     );
@@ -221,7 +221,7 @@ class FieldRouteAndStructureDutyMissionTemplate extends React.PureComponent<Prop
 
   async loadSelectedRoute(route_id) {
     try {
-      const { route_data } = await this.routesLoadRouteById(route_id);
+      const route_data = await this.actionLoadRouteById(route_id);
 
       if (route_data) {
         this.setState(({ routesList }) => {
@@ -411,14 +411,14 @@ export default connect<StatePropsFieldRouteAndStructureDutyMissionTemplate, Disp
     municipalFacilityForDutyMissionList: getSomeUniqState(state).municipalFacilityForDutyMissionList,
   }),
   (dispatch: any, { page, path }) => ({
-    routesLoadRouteById: (...arg) => (
+    actionLoadRouteById: (...arg) => (
       dispatch(
-        routesActions.routesLoadRouteById(...arg),
+        routesActions.actionLoadRouteById(...arg),
       )
     ),
-    routesGetSetRoutes: (...arg) => (
+    actionLoadRoutes: (...arg) => (
       dispatch(
-        routesActions.routesGetSetRoutes(...arg),
+        routesActions.actionLoadRoutes(...arg),
       )
     ),
   }),

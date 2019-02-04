@@ -12,6 +12,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
+import { HandleThunkActionCreator } from 'react-redux';
 
 export const actionSetCompany = (companyList: IStateCompany['companyList']): ThunkAction<IStateCompany['companyList'], ReduxState, {}, AnyAction> => (dispatch) => {
   dispatch(
@@ -54,28 +55,16 @@ export const actionLoadCompany = (payloadOwn: object, meta: LoadingMeta): ThunkA
   return payload;
 };
 
-type ActionGetAndSetInStoreCompanyAns = {
-  companyList: Company[],
-  companyIndex: {
-    [compnay_id: string]: Company;
-  },
-};
-export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreCompanyAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const {
-    data,
-    dataIndex,
-  } = await dispatch(
+export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await dispatch(
     actionLoadCompany(payload, meta),
   );
 
   dispatch(
-    actionSetCompany(data),
+    actionSetCompany(response.data),
   );
 
-  return {
-    companyList: data,
-    companyIndex: dataIndex,
-  };
+  return response;
 };
 export const actionCreateCompany = (companyRaw: Partial<Company>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateCompany>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const { payload: company } = await dispatch({

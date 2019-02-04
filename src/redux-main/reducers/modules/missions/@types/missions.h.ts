@@ -6,9 +6,7 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 export type IStateMissions = {
   missionTemplateList: MissionTemplate[];
   carForMissionTemplateList: Car[];
-  carForMissionTemplateIndex: {
-    [asuods_id: string]: Car;
-  };
+  carForMissionTemplateIndex: Record<Car['asuods_id'], Car>;
   dutyMissionTemplateList: DutyMissionTemplate[];
 
   dutyMissionData: {

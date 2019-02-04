@@ -1,7 +1,9 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
-import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
+import { HandleThunkActionCreator } from 'react-redux';
 
 export type PropsRouteFormWrap = InputRouteFormProps & {
   showForm: boolean;
@@ -13,14 +15,14 @@ export type StateRouteFormProps = {
 };
 
 export type DispatchRouteFormProps = {
-  validateRoute: (formState: FormStateRouteForm) => Promise<any>;
+  actionValidateRoute: HandleThunkActionCreator<typeof routesActions.actionValidateRoute>;
   loadGeozones: (serverName: string, company_id?: number | null) => any,
 };
 
 export type InputRouteFormProps = {
   handleHide: (hasSubmtit: boolean, route?: any) => any;
   page: string;
-  element: Route;
+  element: Partial<Route> | null;
   routesMapNameId?: Map<string, number>;
   fromMission?: boolean;
   fromMissionTemplate?: boolean;

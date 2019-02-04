@@ -34,7 +34,7 @@ interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IP
 
 class MissionProgressReportHeader extends React.Component<IPropsMissionProgressReportHeader, any> {
   async componentDidMount() {
-    const { companyList: [company] } = await this.props.actionGetAndSetInStoreCompany(
+    const { data: [company] } = await this.props.actionGetAndSetInStoreCompany(
       {},
       { page },
     );

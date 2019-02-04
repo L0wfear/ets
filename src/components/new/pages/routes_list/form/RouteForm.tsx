@@ -43,11 +43,8 @@ import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import {
-  routesCreateRoute,
-  routesUpdateRoute,
-  routesValidateRoute,
-} from 'redux-main/reducers/modules/routes/routes/actions';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
+import { getDefaultRouteElement } from './utils';
 
 const path = 'routeForm';
 
@@ -87,7 +84,10 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         draw_object_list: [],
       });
     } else {
-      const { payload: { route_validate } } = await this.props.validateRoute(formState);
+      const route_validate = await this.props.actionValidateRoute(
+        formState,
+        { page: this.props.page, path },
+      );
 
       this.props.handleChange({
         draw_object_list: route_validate.odh_validate_result
@@ -270,10 +270,10 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
     }),
-    (dispatch, { page }) => ({
-      validateRoute: (formState) => (
+    (dispatch: any, { page }) => ({
+      actionValidateRoute: (...arg) => (
         dispatch(
-          routesValidateRoute(formState, { page, path }),
+          routesActions.actionValidateRoute(...arg),
         )
       ),
       loadGeozones: (serverName) => (
@@ -293,15 +293,15 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
   ),
   withForm<PropsRouteWithForm, FormStateRouteForm>({
     uniqField: 'id',
-    createAction: routesCreateRoute,
-    updateAction: routesUpdateRoute,
+    createAction: routesActions.actionCreateRoute,
+    updateAction: routesActions.actionUpdateRoute,
     mergeElement: (props) => {
       const {
         element,
       } = props;
 
       return {
-        ...props.element,
+        ...getDefaultRouteElement(props.element),
         structure_id: element.structure_id || props.userStructureId,
         structure_name: element.structure_name || element.structure_id ? null : props.userStructureName,
         draw_object_list : isArray(props.element.draw_object_list) ? props.element.draw_object_list : [],

@@ -1,5 +1,6 @@
-import { AnsLoadGeozonesFunc } from 'redux-main/trash-actions/geometry/geometry.h';
 import { IMissionInfoFormState } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
 
 export interface IMIssionData {
   column_id: number | void;
@@ -79,15 +80,21 @@ export interface IMissionInfoFormState {
   speed_limits: ISpeedLimits;
 }
 
-export type PropsMissionInfoForm = {
-  element: IMissionInfoFormState;
-  onFormHide: any;
-  loadGeozones: (serverName: string, company_id?: number | null) => Promise<AnsLoadGeozonesFunc>,
-  routesLoadRouteById: (id: number) => any,
-  loadCarGpsCode: ({ asuods_id, date_start }) => Promise<any>,
+export type DispatchPropsMissionInfoForm = {
+  loadGeozones: any;
+  loadCarGpsCode: any;
   loadTrackCaching: any;
-  company_id: number | null;
+  actionLoadRouteById: HandleThunkActionCreator<typeof routesActions.actionLoadRouteById>;
 };
+
+export type PropsMissionInfoForm = (
+  DispatchPropsMissionInfoForm
+  & {
+    element: IMissionInfoFormState;
+    onFormHide: any;
+    company_id: number | null;
+  }
+);
 
 export type StateMissionInfoForm = {
   tooLongDates: boolean;

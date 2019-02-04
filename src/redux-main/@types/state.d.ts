@@ -8,7 +8,7 @@ import { IStateOldReport } from 'components/coverage_reports/redux-main/modules/
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
-import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateGeoobject } from 'redux-main/reducers/modules/geoobject/@types/geoobject.h';
 import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';

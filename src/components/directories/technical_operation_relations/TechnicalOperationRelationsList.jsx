@@ -134,7 +134,7 @@ class TechnicalOperationRelationsList extends ElementsList {
   );
 
   handleChangeRoutes = () => (
-    this.setState(selectedElement => ({
+    this.setState(({ selectedElement }) => ({
       routesData: selectedElement.routes,
       showRouteChangeForm: true,
     }))

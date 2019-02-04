@@ -9,18 +9,21 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import { IAppConfig } from 'api/@types/services/index.h';
 
-import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div';
 import FieldComponent from 'components/ui/Field';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
-import { bindable, FluxContext } from 'utils/decorators';
+import { bindable } from 'utils/decorators';
 import { getCurrentSeason } from 'utils/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 const DatePickerBindable: any = bindable(DatePicker);
 const Field: any = bindable(FieldComponent);
@@ -31,18 +34,10 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
   geozone_type: string;
   element_type: string;
   car_func_types_groups: any;
-  appConfig: IAppConfig;
+  appConfig: InitialStateSession['appConfig'];
 }
 
-@connectToStores(['objects'])
-@FluxContext
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
-  context!: ETSCore.LegacyContext;
-
-  componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('objects').getConfig();
-  }
   getState() {
     const {
       date_start = getYesterday9am(),
@@ -215,4 +210,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   }
 }
 
-export default ReportHeaderWrapper(ReportHeader);
+export default compose<any, any>(
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      appConfig: getSessionState(state).appConfig,
+    }),
+  ),
+  ReportHeaderWrapper,
+)(ReportHeader);

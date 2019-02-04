@@ -7,6 +7,9 @@ import { connectToStores, exportable, staticProps } from 'utils/decorators';
 import CleaningRateFormWrap from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateFormWrap';
 import CleaningRateTable from 'components/directories/data_for_calculation/cleaning_rate/CleaningRateTable';
 import permissions from 'components/directories/data_for_calculation/cleaning_rate/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['objects'])
 @exportable({ entity: 'cleaning_rate' })
@@ -21,6 +24,10 @@ import permissions from 'components/directories/data_for_calculation/cleaning_ra
 class CleaningRateDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
+
+    this.exportPayload = {
+      type: props.type,
+    };
     this.removeElementAction = context.flux.getActions('objects').deleteCleaningRate.bind(this, props.type);
   }
 
@@ -38,9 +45,21 @@ class CleaningRateDirectory extends ElementsList {
 
     if (prevProps.type !== type) {
       this.context.flux.getActions('objects').getCleaningRate(type);
+
+      this.exportPayload = {
+        type: this.props.type,
+      };
     }
   }
 }
+
+const CleaningRateDirectoryWithUserData = compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(CleaningRateDirectory);
 
 export default class CleaningRate extends Component {
   state = {
@@ -57,7 +76,7 @@ export default class CleaningRate extends Component {
             <Button active={this.state.type === 'dt'} onClick={() => this.setState({ type: 'dt' })}>ДТ</Button>
           </ButtonGroup>
         </div>
-        <CleaningRateDirectory type={type} key={type} />
+        <CleaningRateDirectoryWithUserData type={type} key={type} />
       </div>
     );
   }

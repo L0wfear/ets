@@ -1,18 +1,15 @@
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import {
-  EmployeeUpdateEmployee,
-  EmployeeCreateEmployee,
-} from 'redux-main/reducers/modules/employee/employee/@types';
-import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { GetPosition } from 'redux-main/reducers/modules/employee/position/@types';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
+import { HandleThunkActionCreator } from 'react-redux';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsEmployeeFormWrap = {
   showForm: boolean;
@@ -28,16 +25,14 @@ export type StatePropsEmployee = {
   category_license: ReduxState['session']['appConfig']['category_license'];
 };
 export type DispatchPropsEmployee = {
-  createAction: EmployeeCreateEmployee;
-  updateAction: EmployeeUpdateEmployee;
-  autobaseGetSetCar: GetCar;
+  autobaseGetSetCar: HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>;
   employeePositionGetSetPosition: GetPosition;
   companyStructureActions: any;
 };
 export type OwnEmployeeProps = {
   element: Employee | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 
@@ -55,9 +50,9 @@ export type PropsEmployee = OutputWithFormProps<
 >;
 export type StateEmployee = {
   carList: Car[];
-  carOptions: DefaultSelectListMapper<Car['asuods_id'], string, Car>;
-  positionOptions: DefaultSelectListMapper<Position['id'], Position['position'], Position>;
-  companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear['id'], CompanyStructureLinear['name'], CompanyStructureLinear>;
+  carOptions: DefaultSelectOption<Car['asuods_id'], string, Car>[];
+  positionOptions: DefaultSelectListMapper<Position>;
+  companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear>;
   isCommonOptions: { value: number; label: string }[];
   driverStateOptions: { value: number; label: string }[];
   categoryDriversLicenseOptions: { value: number; label: string }[];

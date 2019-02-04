@@ -152,14 +152,20 @@ export const setMakeReadAdmNotification: any = (notifyIds: number | number[]) =>
   );
 };
 
-export const getUserNotificationInfo: any = () => ({
-  type: SESSION_CHANGE_SOME_DATA,
-  payload: getCountNotRead(),
-  meta: {
-    promise: true,
-    page: 'notification-registry',
-  },
-});
+export const getUserNotificationInfo = (): ThunkAction<Promise<any>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await (
+    dispatch({
+      type: SESSION_CHANGE_SOME_DATA,
+      payload: getCountNotRead(),
+      meta: {
+        promise: true,
+        page: 'notification-registry',
+      },
+    })
+  );
+
+  return response;
+};
 
 export const setMakeReadOrderNotification = (notifyIds: number | number[]): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const notifyIdsAsArr = isArray(notifyIds) ? notifyIds : [notifyIds];

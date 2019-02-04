@@ -3,7 +3,11 @@ import {
   TrackService,
   TimeMoscowService,
 } from 'api/Services';
-import { keyBy } from 'lodash';
+import {
+  get,
+  keyBy,
+} from 'lodash';
+import config from 'config';
 import { getDateWithMoscowTz, makeUnixTime } from 'utils/dates';
 import {
   getCarGpsNumberByDateTime,
@@ -23,6 +27,9 @@ Array(16).fill(1).map((d, r) =>
   ),
 );
 
+/**
+ * @todo move on company store (actionGetAndSetInStoreCompany)
+ */
 export const loadCompany = () => (
   CompanyService.get().then(({ result }) => {
     const companies = result.map((company) => ({
@@ -67,20 +74,29 @@ export const loadMoscowTime = () => (
   })
 );
 
-export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => (
-  getCarGpsNumberByDateTime(payloadData as any)
-    .then(({ gps_code }) => {
-      const payloadToTrack = {
-        version: 3,
-        gps_code,
-        from_dt: makeUnixTime(payloadData.date_start),
-        to_dt: makeUnixTime(payloadData.date_end),
-        sensors: 1,
-      };
+export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => {
+  let version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], '');
+  const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [`TEST::${config.tracksCaching}`], '');
 
-      return TrackService.get(payloadToTrack).then((ans) => ({
-        ...ans,
-        ...checkAndModifyTrack(ans, odh_mkad),
-      }));
-    })
-);
+  if (test_version) {
+    version = test_version;
+  }
+
+  return (
+    getCarGpsNumberByDateTime(payloadData as any)
+      .then(({ gps_code }) => {
+        const payloadToTrack = {
+          version,
+          gps_code,
+          from_dt: makeUnixTime(payloadData.date_start),
+          to_dt: makeUnixTime(payloadData.date_end),
+          sensors: 1,
+        };
+
+        return TrackService.get(payloadToTrack).then((ans) => ({
+          ...ans,
+          ...checkAndModifyTrack(ans, odh_mkad),
+        }));
+      })
+  );
+};

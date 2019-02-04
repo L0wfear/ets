@@ -30,8 +30,10 @@ import * as techMaint from 'redux-main/reducers/modules/autobase/actions_by_type
 import * as carCategory from 'redux-main/reducers/modules/autobase/actions_by_type/car_category/actions';
 import * as engineType from 'redux-main/reducers/modules/autobase/actions_by_type/engine_type/actions';
 import * as propulsionType from 'redux-main/reducers/modules/autobase/actions_by_type/propulsion_type/actions';
+import * as fuelCards from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import * as typesAttr from 'redux-main/reducers/modules/autobase/types_attr/actions';
 
-export default {
+const autobaseActions = {
   autobaseSetNewData,
   ...sparePart,
   ...sparePartGroup,
@@ -64,4 +66,8 @@ export default {
   ...carCategory,
   ...engineType,
   ...propulsionType,
+  ...fuelCards,
+  ...typesAttr,
 };
+
+export default autobaseActions;

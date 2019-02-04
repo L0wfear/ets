@@ -1,10 +1,12 @@
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import {
-  getCarFuncTypess,
-  createSetCarFuncTypes,
-  updateSetCarFuncTypes,
+  promiseLoadCarFuncTypess,
+  promiseLoadPFCarFuncTypess,
+  promiseCreateCarFuncTypes,
+  promiseUpdateCarFuncTypes,
 } from 'redux-main/reducers/modules/autobase/car_func_types/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- CarFuncTypes ---------- */
 export const autobaseSetCarFuncTypes = (carFuncTypesList: CarFuncTypes[]) => (dispatch) => (
@@ -19,19 +21,32 @@ export const autobaseResetSetCarFuncTypes = () => (dispatch) => (
     autobaseSetCarFuncTypes([]),
   )
 );
-export const autobaseGetSetCarFuncTypes: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const autobaseGetBlobCarFuncTypes: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: getCarFuncTypess(payload),
+    payload: promiseLoadPFCarFuncTypess(payloadOwn),
     meta: {
       promise: true,
-      page,
-      path,
+      ...meta,
     },
-  })
-);
+  });
+
+  return payload;
+};
+export const autobaseGetSetCarFuncTypes: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseLoadCarFuncTypess(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
 export const carFuncTypesGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     autobaseGetSetCarFuncTypes(payload, { page, path }),
   );
 
@@ -40,13 +55,13 @@ export const carFuncTypesGetAndSetInStore = (payload = {}, { page, path }: { pag
   );
 
   return {
-    carFuncTypesList: data,
+    data,
   };
 };
 export const autobaseCreateCarFuncTypes: any = (carFuncTypesOld: CarFuncTypes, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carFuncTypes } } = await dispatch({
+  const { payload: carFuncTypes } = await dispatch({
     type: 'none',
-    payload: createSetCarFuncTypes(carFuncTypesOld),
+    payload: promiseCreateCarFuncTypes(carFuncTypesOld),
     meta: {
       promise: true,
       page,
@@ -57,9 +72,9 @@ export const autobaseCreateCarFuncTypes: any = (carFuncTypesOld: CarFuncTypes, {
   return carFuncTypes;
 };
 export const autobaseUpdateCarFuncTypes: any = (carFuncTypesOld: CarFuncTypes, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carFuncTypes } } = await dispatch({
+  const { payload: carFuncTypes } = await dispatch({
     type: 'none',
-    payload: updateSetCarFuncTypes(carFuncTypesOld),
+    payload: promiseUpdateCarFuncTypes(carFuncTypesOld),
     meta: {
       promise: true,
       page,

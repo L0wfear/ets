@@ -41,6 +41,9 @@ export const autobaseInitialState: IStateAutobase = {
   carCategoryList: [],
   engineTypeList: [],
   propulsionTypeList: [],
+  fuelCardsList: [],
+  fuelTypeList: [],
+  typesAttrList: [],
 };
 
 export default (state = autobaseInitialState, { type, payload }) => {

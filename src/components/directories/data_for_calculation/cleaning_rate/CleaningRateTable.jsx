@@ -40,6 +40,7 @@ export default (props) => (
     title="Показатели для расчета эффективности работы бригад"
     results={props.data}
     tableMeta={tableMeta}
+    initialSort={props.selectField}
     {...props}
   />
 );

@@ -2,7 +2,6 @@ import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
 import {
-  clone,
   get,
 } from 'lodash';
 import {
@@ -12,9 +11,7 @@ import {
   WaybillCarService,
   MissionCarService,
   TypesService,
-  TypesAttr,
   ModelsService,
-  CompanyService,
   ConfigService,
   MaterialConsumptionRateService,
   CleanCategoriesService,
@@ -24,6 +21,7 @@ import {
   UserActionLogService,
   Country,
   WorkMode,
+  ConfigTrackService,
 } from 'api/Services';
 
 import {
@@ -36,10 +34,6 @@ function getMaterialConsumptionRates(payload = {}) {
 }
 
 export default class ObjectsActions extends Actions {
-  getTypesAttr(payload = {}) {
-    return TypesAttr.get(payload);
-  }
-
   getCars(technical_operation_id) {
     const payload = {};
     if (!isEmpty(technical_operation_id)) {
@@ -75,15 +69,6 @@ export default class ObjectsActions extends Actions {
     return SensorTypeService.get().then(r => ({ result: r.result.rows }));
   }
 
-  getCompanies() {
-    return CompanyService.get();
-  }
-
-  updateCompanies(formState) {
-    const payload = clone(formState);
-    return CompanyService.path(formState.company_id).put(payload, this.getCompanies, 'json');
-  }
-
   getWorkKinds() {
     return WorkKindsService.get();
   }
@@ -98,6 +83,10 @@ export default class ObjectsActions extends Actions {
 
   getConfig() {
     return ConfigService.get();
+  }
+
+  getTrackConfig() {
+    return ConfigTrackService.get();
   }
 
   getMaterialConsumptionRate() {
@@ -197,8 +186,7 @@ export default class ObjectsActions extends Actions {
     };
     return UserActionLogService.get(payload).then(response => (
       get(response, ['result', 'rows'], []).map((d) => {
-        const action = get(d, 'action', '') || '';
-        d.front_entity_number = action.match(/^mission\./) ? d.entity_id : d.entity_number;
+        d.front_entity_number = d.entity_number;
 
         return d;
       })

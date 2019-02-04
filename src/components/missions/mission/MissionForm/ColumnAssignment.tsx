@@ -3,6 +3,7 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
+import { get } from 'lodash';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
@@ -17,12 +18,13 @@ type ColumnAssignmentProps = {
   handleChange: (key: string, data: any) => void,
   handleSubmit: () => Promise<any>,
   carsList: Car[],
+  show: boolean;
 };
 type ColumnAssignmentState = {
   showBackButton: boolean,
 };
 
-class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, ColumnAssignmentState> {
+class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssignmentState> {
   state = {
     showBackButton: false,
   };
@@ -38,10 +40,17 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
   handleChange = (index, value) => {
     const { formState: { assign_to_waybill: [...assign_to_waybill] } } = this.props;
     assign_to_waybill[index] = value;
+
     this.props.handleChange('assign_to_waybill', assign_to_waybill);
   }
 
   render() {
+    if (!this.props.show) {
+      return null;
+    }
+
+    const car_ids = get(this.props.formState, 'car_id', []);
+
     return (
       <Modal id="modal-column-assignment" show onHide={this.props.hideColumnAssignment}>
         <Modal.Header closeButton>
@@ -54,7 +63,7 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
             </Col>
           </Row>
           {
-            this.props.formState.car_id.map((car_id, index) => (
+            car_ids.map((car_id, index) => (
               <Row key={car_id}>
                 <Col md={6}>
                   <ExtField
@@ -72,7 +81,7 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
                     value={this.props.formState.assign_to_waybill[index]}
                     clearable={false}
                     onChange={this.handleChange}
-                    boundKeys={[index]}
+                    boundKeys={index}
                   />
                 </Col>
               </Row>

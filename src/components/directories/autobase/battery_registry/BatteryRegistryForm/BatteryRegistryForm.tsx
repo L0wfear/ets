@@ -54,20 +54,14 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
+
   handleChangeBrandId = (name, value, option) => {
     this.props.handleChange({
       [name]: value,
       brand_name: get(option, ['batteryBrand', 'brand_name'], null),
     });
   }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   handleBatteryToCarValidity = ({ isValidInput }) => (
     this.setState({ canSave: isValidInput })
   )
@@ -88,7 +82,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-registry" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -122,7 +116,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 label={'Серийный номер'}
                 value={state.serial_number}
                 error={errors.serial_number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="serial_number"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -133,7 +127,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 label="Срок службы, мес."
                 value={state.lifetime_months}
                 error={errors.lifetime_months}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="lifetime_months"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -145,7 +139,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 date={state.released_at}
                 time={false}
                 error={errors.released_at}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="released_at"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -163,7 +157,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                   <h4>Транспортное средство, на котором установлен аккумулятор</h4>
                   <BatteryVehicleBlock
                     id="files"
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="battery_to_car"
                     inputList={state.battery_to_car || []}
                     onValidation={this.handleBatteryToCarValidity}
@@ -199,22 +193,6 @@ export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
   connect<StatePropsBatteryRegistry, DispatchPropsBatteryRegistry, OwnBatteryRegistryProps, ReduxState>(
     null,
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateBatteryRegistry(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateBatteryRegistry(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetBatteryBrand: () => (
         dispatch(
           autobaseActions.autobaseGetSetBatteryBrand(
@@ -227,6 +205,8 @@ export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
   ),
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateBatteryRegistry,
+    updateAction: autobaseActions.autobaseUpdateBatteryRegistry,
     mergeElement: (props) => {
       return getDefaultBatteryRegistryElement(props.element);
     },

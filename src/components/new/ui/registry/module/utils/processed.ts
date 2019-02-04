@@ -80,8 +80,7 @@ export const filterArray = (array, filterValues) => {
           return value <= row[valueKey];
         }
 
-        // tslint:disable-next-line
-        console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType);
+        console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType); // tslint:disable-line:no-console
         return false;
       });
     });

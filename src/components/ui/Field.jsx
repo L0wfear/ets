@@ -15,6 +15,7 @@ function StringField(props) {
     error,
     label = '',
     modalKey,
+    isLoading,
     ...mainProps
   } = props;
   const {
@@ -23,7 +24,6 @@ function StringField(props) {
     className = '',
     wrapStyle,
     hidden,
-    isLoading,
     inline = false,
   } = props;
   let { value } = props;
@@ -34,7 +34,9 @@ function StringField(props) {
   if (isLoading) {
     return (
       <Div hidden={hidden}>
-        <label style={{ paddingTop: 5 }}>{label}</label>)<br />
+        <label style={{ paddingTop: 5 }}>{label}</label>
+)
+<br />
         <Preloader typePreloader="field" />
       </Div>
     );
@@ -45,23 +47,25 @@ function StringField(props) {
   }
   const showError = typeof error === 'boolean' ? error : true;
 
-  return !readOnly ?
-    <Div hidden={hidden} style={wrapStyle || {}}>
+  return !readOnly
+    ? <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
         {label && <label className="control-label"><span>{label}</span></label>}
         <FormControl type="text" disabled={disabled} className={inputClassName} {...mainProps} id={id} value={value} />
       </div>
       {showError && <Div hidden={!error} className="error">{error}</Div>}
-    </Div> :
-    <Div hidden={hidden} className={className}>
+    </Div>
+    : <Div hidden={hidden} className={className}>
       <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
       {!inline && <br />}
-      <span id={id} >{value}</span>
+      <span id={id}>{value}</span>
     </Div>;
 }
 
 function TextAreaField(props) {
-  const { error, label = '', readOnly = false, disabled = false, hidden, rows = 5, textAreaStyle = {}, modalKey } = props;
+  const {
+ error, label = '', readOnly = false, disabled = false, hidden, rows = 5, textAreaStyle = {}, modalKey 
+} = props;
   let { value } = props;
   if (value === undefined || value === null) {
     value = '';
@@ -136,8 +140,9 @@ export default class Field extends React.Component {
   }
 
   renderNumber() {
-    const { error, modalKey, ...mainProps } = this.props;
-    const { showRedBorder } = mainProps;
+    const {
+ error, modalKey, showRedBorder, ...mainProps 
+} = this.props;
 
     const inputClassName = cx({ 'has-error': error || showRedBorder });
     let { value } = this.props;
@@ -160,8 +165,12 @@ export default class Field extends React.Component {
   }
 
   renderDate() {
-    const { label, error, modalKey, ...props } = this.props;
-    const { readOnly = false, date, value, className = '' } = this.props;
+    const {
+ label, error, modalKey, ...props 
+} = this.props;
+    const {
+ readOnly = false, date, value, className = '' 
+} = this.props;
 
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
 
@@ -195,7 +204,9 @@ export default class Field extends React.Component {
 
   renderSelect() {
     const { label = '', ...props } = this.props;
-    const { error, className = '', readOnly = false, modalKey } = this.props;
+    const {
+ error, className = '', readOnly = false, modalKey 
+} = this.props;
 
     const selectClassName = cx({ 'has-error': error });
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
@@ -212,6 +223,7 @@ export default class Field extends React.Component {
   renderString() {
     return <StringField {...this.props} />;
   }
+
   renderText() {
     return <TextAreaField {...this.props} />;
   }

@@ -2,14 +2,15 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
 import MultiselectRegestryFilter from 'components/new/ui/registry/components/data/filters/filters-lines/multiselect/MultiselectRegestryFilter';
-import { EtsFiltersLines } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
+import {
+  EtsFiltersLines,
+  EtsFilterContainer,
+} from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { registryChangeFilterRawValues } from 'components/new/ui/registry/module/actions-registy';
 import AdvancedNumberFilter from 'components/new/ui/registry/components/data/filters/filters-lines/advanced-number/AdvancedNumberFilter';
-import * as Col from 'react-bootstrap/lib/Col';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { DivNone } from 'global-styled/global-styled';
 import { isArray } from 'util';
 
 type PropsFiltersLines = {
@@ -48,35 +49,35 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
     }
 
     if (!formatedTitle) {
-      return <DivNone key={otherFilterData.valueKey} />;
+      return null;
     }
 
     switch (type) {
       case 'multiselect': return (
-        <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
+        <EtsFilterContainer key={otherFilterData.valueKey}>
           <MultiselectRegestryFilter
             formatedTitle={formatedTitle}
             filterData={otherFilterData}
             registryKey={registryKey}
             onChange={this.handleChange}
           />
-        </Col>
+        </EtsFilterContainer>
       );
       case 'advanced-number': return (
-        <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
+        <EtsFilterContainer key={otherFilterData.valueKey}>
           <AdvancedNumberFilter
             formatedTitle={formatedTitle}
             filterData={otherFilterData}
             registryKey={registryKey}
             onChange={this.handleChange}
           />
-        </Col>
+        </EtsFilterContainer>
 
       );
       default: return (
-        <Col key={otherFilterData.valueKey} lg={3} md={4} sm={6}>
+        <EtsFilterContainer key={otherFilterData.valueKey}>
           {`not found filter with type ${type}`}
-        </Col>
+        </EtsFilterContainer>
 
       );
     }

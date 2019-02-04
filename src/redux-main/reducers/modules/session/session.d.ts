@@ -1,11 +1,18 @@
+export type OneSessionStructure = {
+  name: string;
+  id: number;
+};
+
+export type OneSessionCompany = {
+  asuods_id: number;
+  name: string;
+};
+
 export type InitialStateSession = {
   userData: {
     structure_id: number | null;
     structure_name: string | null;
-    structures: {
-      name: string;
-      id: number;
-    }[];
+    structures: OneSessionStructure[];
     map_config: {
       zoom: number;
       coordinates: [number, number];
@@ -15,6 +22,9 @@ export type InitialStateSession = {
     company_id: number | null;
     isOkrug: boolean;
     isKgh: boolean;
+    isGlavControl: boolean;
+    companies: OneSessionCompany[] | null;
+    company_name: string | null;
   };
   token: string | null;
   appConfig: {
@@ -24,7 +34,7 @@ export type InitialStateSession = {
       category_special_license: [];
     };
     enums: {
-      FUEL_TYPE: any,
+      FUEL_TYPE: object,
     },
     defaults: {
       FUEL_TYPE: string | null,
@@ -38,4 +48,8 @@ export type InitialStateSession = {
     footer_url: string | null,
     project_name: string | null,
   };
+  appConfigTracksCaching: {
+    api_version_stable: number | null,
+    api_versions: number[],
+  }
 };

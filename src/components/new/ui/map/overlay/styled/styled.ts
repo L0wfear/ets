@@ -8,7 +8,7 @@ export const EtsOverlayContainer = styled.div`
   pointer-events: all;
 
   padding: 5px;
-  width: 250px;
+  min-width: 250px;
 
   display: flex;
   background-color: white;
@@ -48,7 +48,8 @@ export const OverlayLineInfoContainer = styled.div`
 
 export const EtsTriangleWrapContainer = styled.div`
   width: 100%;
-  transform: translate(calc(50% - 10px), -1px);
+  display: flex;
+  justify-content: center;
 `;
 
 export const EtsTriangleContainer = styled.div`

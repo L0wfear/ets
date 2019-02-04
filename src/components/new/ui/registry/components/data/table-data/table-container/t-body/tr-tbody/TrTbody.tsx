@@ -21,7 +21,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import { compose } from 'recompose';
 import { registrySetSelectedRowToShowInForm, registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
   renderRow = ({ key, title, boolean, toFixed }, index) => {

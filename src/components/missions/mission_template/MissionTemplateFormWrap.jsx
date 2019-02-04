@@ -21,6 +21,9 @@ import MissionTemplateForm from 'components/missions/mission_template/MissionTem
 import MissionsCreationForm from 'components/missions/mission_template/MissionsCreationForm';
 import { ASSING_BY_KEY } from 'components/directories/order/forms/utils/constant';
 import { groupBy } from 'lodash';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const printMapKeyBig = 'mapMissionTemplateFormA3';
 const printMapKeySmall = 'mapMissionTemplateFormA4';
@@ -126,7 +129,7 @@ class MissionTemplateFormWrap extends FormWrap {
 
         const formErrors = this.validate(mission, {});
         if (mission.structure_id == null) {
-          mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+          mission.structure_id = this.props.userStructureId;
         }
         this.setState({
           formState: mission,
@@ -135,9 +138,14 @@ class MissionTemplateFormWrap extends FormWrap {
         });
       } else {
         this.schema = missionsCreationTemplateSchema;
-        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
+        const for_column = Object.values(this.props.missions).some(missionData => missionData.for_column);
+
+        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate(this.props.missions, for_column);
+
         const formErrors = this.validate(defaultMissionsCreationTemplate, {});
         const dataTestRoute = checkMissionsByRouteType(Object.values(this.props.missions), defaultMissionsCreationTemplate);
+
+        defaultMissionsCreationTemplate.for_column = for_column;
         if (dataTestRoute.error) {
           defaultMissionsCreationTemplate.date_end = addTime(defaultMissionsCreationTemplate.date_start, dataTestRoute.time, 'hours');
         }
@@ -191,10 +199,12 @@ class MissionTemplateFormWrap extends FormWrap {
             date_start: formState.date_start,
             date_end: formState.date_end,
             assign_to_waybill: formState.assign_to_waybill,
+            for_column: formState.for_column,
+            norm_id: formState.norm_id,
           };
 
-          if (externalPayload.assign_to_waybill === ASSING_BY_KEY.assign_to_new_draft) {
-            const missionByCar = groupBy(missionsArr, 'car_id');
+          if (externalPayload.assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {
+            const missionByCar = groupBy(missionsArr, 'car_ids');
 
             const ansArr = await Promise.all(
               Object.values(missionByCar).map(async ([firstMission, ...other]) => {
@@ -329,4 +339,11 @@ class MissionTemplateFormWrap extends FormWrap {
   }
 }
 
-export default withMapInConsumer()(MissionTemplateFormWrap);
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+  withMapInConsumer(),
+)(MissionTemplateFormWrap);

@@ -1,18 +1,20 @@
-import { GeozoneSspService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
 
 export const registryKey = 'SspList';
 
-export const config: TypeConfigData = {
-  Service: GeozoneSspService,
+export const config: TypeConfigData<Ssp> = {
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetSsp'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobSsp'],
+  },
   registryKey,
   header: {
-    title: 'Стационарные снегоплавильные пункты',
+    title: 'Справочник ССП',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -100,6 +102,7 @@ export const config: TypeConfigData = {
         {
           key: 'address',
           title: 'Адрес',
+          width: 400,
         },
         {
           key: 'productivity',
@@ -111,7 +114,7 @@ export const config: TypeConfigData = {
           key: 'is_mobile',
           title: 'Мобильность',
           boolean: true,
-          width: 200,
+          width: 150,
         },
       ],
     },

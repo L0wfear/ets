@@ -121,15 +121,13 @@ const renderers: ISchemaRenderer<IUserNotification> = {
     </div>,
 };
 
-// console.log('props.data == ', props.data);
-
 const Table: React.FunctionComponent<any> = (props) => (
   <DataTable
     title="Уведомления пользователей"
     results={props.data}
     tableMeta={tableMeta(props)}
     enumerated={false}
-    // initialSort={'created_at'}
+    initialSort={props.selectField}
     renderers={renderers}
     className="user-notification-table"
     {...props}

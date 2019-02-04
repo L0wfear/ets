@@ -45,7 +45,7 @@ export const batteryBrandGetAndSetInStore = (payload = {}, { page, path }: { pag
   };
 };
 export const autobaseCreateBatteryBrand: any = (batteryBrandOld: BatteryBrand, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryBrand } } = await dispatch({
+  const { payload: batteryBrand } = await dispatch({
     type: 'none',
     payload: createSetBatteryBrand(batteryBrandOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateBatteryBrand: any = (batteryBrandOld: BatteryBrand, {
   return batteryBrand;
 };
 export const autobaseUpdateBatteryBrand: any = (batteryBrandOld: BatteryBrand, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryBrand } } = await dispatch({
+  const { payload: batteryBrand } = await dispatch({
     type: 'none',
     payload: updateSetBatteryBrand(batteryBrandOld),
     meta: {

@@ -5,8 +5,7 @@ import { get } from 'lodash';
 export const employeeLoadEmployee = (payload = {}) => (
   EmployeeService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
 
       return {
         result: {
@@ -53,8 +52,7 @@ export const employeeDeleteEmployee = (id) => {
 export const employeeLoadDriver = (payload = {}) => (
   DriverService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
 
       return {
         result: [],
@@ -70,8 +68,7 @@ export const employeeLoadDriver = (payload = {}) => (
 export const employeeLoadPosition = (payload = {}) => (
   PositionService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
 
       return {
         result: [],

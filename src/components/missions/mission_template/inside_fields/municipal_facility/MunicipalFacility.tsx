@@ -44,9 +44,6 @@ type PropsMunicipalFacilityField = {
   disabled?: boolean;
   alreadyDefineNormId: boolean;
   technicalOperationsList: TechnicalOperationsType[];
-  norm_id: number | void;
-
-  typeIdWraomWaybill: number | void;
 
   getCleaningMunicipalFacilityList: GetMunicipalFacilityFunc,
   handleChange: (name: string, value: number | null) => any;
@@ -89,7 +86,6 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
     const {
       technical_operation_id,
       technicalOperationsList,
-      norm_id,
     } = props;
 
     const triggerOnUpdate = (
@@ -117,16 +113,11 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
             norm_ids: '',
           };
 
-          if (props.alreadyDefineNormId && norm_id) {
-            outerPayload.norm_ids = norm_id.toString();
-          } else {
-            outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
-          }
+          outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
 
           this.loadMunicipalFacility(outerPayload);
         } else {
-          // tslint:disable-next-line
-          console.log('старая то без элемента');
+          console.log('старая то без элемента'); // tslint:disable-line:no-console
         }
       }
     }

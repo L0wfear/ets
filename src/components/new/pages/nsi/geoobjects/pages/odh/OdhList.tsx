@@ -30,6 +30,6 @@ class OdhList extends React.Component<PropsOdhList, StateOdhList> {
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(OdhList);

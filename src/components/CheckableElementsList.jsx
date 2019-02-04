@@ -15,7 +15,7 @@ import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/b
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
  * @extends React.Component
  */
-export default class CheckableElementsList extends ElementsList {
+class CheckableElementsList extends ElementsList {
   static get propTypes() {
     return {
       onListStateChange: PropTypes.func,
@@ -64,10 +64,9 @@ export default class CheckableElementsList extends ElementsList {
     const tableProps = super.getTableProps();
     const operations = ['delete'];
     const check = this.constructor.operations.includes('CHECK');
-    const entity = this.constructor.entity;
-    const gp = p => this.context.flux.getStore('session').getPermission(p);
+    const { entity } = this.constructor;
 
-    const noPermission = !check && operations.every((o) => !gp(`${entity}.${o}`));
+    const noPermission = !check && operations.every(o => !this.props.userData.permissionsSet.has(`${entity}.${o}`));
     return noPermission
       ? Object.assign(tableProps, this.getCheckedProps(), { multiSelection: false })
       : Object.assign(tableProps, this.getCheckedProps());
@@ -214,3 +213,5 @@ export default class CheckableElementsList extends ElementsList {
     }
   }
 }
+
+export default CheckableElementsList;

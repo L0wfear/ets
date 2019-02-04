@@ -9,15 +9,6 @@ export const MISSION_STATUS_LABELS = {
   not_assigned: 'Не назначено',
   complete: 'Выполнено',
   fail: 'Не выполнено',
-  canceled: 'Отменено',
-};
-
-export const DUTY_MISSION_STATUS_LABELS = {
-  assigned: 'Назначено',
-  not_assigned: 'Не назначено',
-  complete: 'Выполнено',
-  fail: 'Не выполнено',
-  canceled: 'Отменено',
 };
 
 export const ORDER_STATUS_KEYS = {

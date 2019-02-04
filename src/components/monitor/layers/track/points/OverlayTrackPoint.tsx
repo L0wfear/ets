@@ -18,6 +18,7 @@ import {
   OverlayTrackTitleContainer,
   SensorsListContainer,
   OverlayBoxInfoContainer,
+  OverlayLineObjectsStringContainer,
 } from 'components/monitor/layers/track/points/styled/styled';
 
 import {
@@ -154,7 +155,13 @@ class OverlayTrackPoint extends React.Component<any, any> {
         coordsMsk={coords_msk}
         hidePopup={this.props.hidePopup}
       >
-        <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader typePreloader="field" />}</OverlayLineInfoContainer>
+        <OverlayLineObjectsStringContainer>
+          {
+            objectsString
+              ? objectsString
+              : <Preloader typePreloader="field" />
+          }
+        </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
           {
             missions === undefined ?

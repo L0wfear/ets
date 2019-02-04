@@ -8,6 +8,8 @@ import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_co
 import ProgramObjectFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -21,7 +23,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'objects', 'session'])
+@connectToStores(['repair', 'objects'])
 @staticProps({
   entity: 'repair_program_version',
   permissions,
@@ -266,4 +268,10 @@ class ProgramRemarkList extends CheckableElementsList {
   }
 }
 
-export default compose()(ProgramRemarkList);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(ProgramRemarkList);

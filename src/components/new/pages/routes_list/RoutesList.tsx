@@ -89,11 +89,26 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
 
 const filterOptions: any = [
   {
+    name: 'name',
+    displayName: 'Наименование маршрута',
+    filter: {
+      type: 'multiselect',
+    },
+  },
+  {
     name: 'technical_operation_id',
     displayName: 'Тех. операция',
     filter: {
       type: 'multiselect',
       byLabel: 'technical_operation_name',
+    },
+  },
+  {
+    name: 'municipal_facility_id',
+    displayName: 'Элемент',
+    filter: {
+      type: 'multiselect',
+      byLabel: 'municipal_facility_name',
     },
   },
   {
@@ -155,8 +170,8 @@ class RoutesList extends React.PureComponent<any, any> {
     }
   }
 
-  onFormHide = (isSubmited, route) => {
-    if (isSubmited === true && route) {
+  onFormHide = (isSubmitted, route) => {
+    if (isSubmitted === true && route) {
       this.refreshRoutes({ showForm: false })
         .then(() => this.selectRoute(route.id, true));
     } else {
@@ -170,7 +185,7 @@ class RoutesList extends React.PureComponent<any, any> {
   }
 
   getRouteById(id) {
-    return this.props.routesLoadRouteById(id).then(({ payload: { route_data: route } }) => route);
+    return this.props.routesLoadRouteById(id).then(({ route_data }) => route_data);
   }
 
   handleChangeSeasonId = (season_id) => {
@@ -206,9 +221,7 @@ class RoutesList extends React.PureComponent<any, any> {
 
   refreshRoutes = async (withState = null) => {
     const {
-      payload: {
-        data: routesListRaw,
-      },
+      data: routesListRaw,
     } = await this.props.routesGetSetRoutes();
 
     const routesList = makeRoutesListForRender(routesListRaw);
@@ -317,10 +330,17 @@ class RoutesList extends React.PureComponent<any, any> {
   }
 
   deleteRoute = async () => {
+    const { selectedRoute } = this.state;
     try {
       await global.confirmDialog({
         title: 'Внимание!',
-        body: 'Вы уверены, что хотите удалить выбранный маршрут?',
+        body: (
+          <>
+            <div>
+              <span>{'Удаляемый шаблон маршрута: '}</span><span><b>{selectedRoute.name}</b>.</span></div>
+            <div>{'Удаление шаблона маршрута возможно только вместе со связанными шаблонами заданий и наряд-заданий. Вы подтверждаете такое удаление?'}</div>
+          </>
+        ),
       });
     } catch (er) {
       return;
@@ -459,7 +479,7 @@ export default compose<any, any>(
       appConfig: getSessionState(state).appConfig,
       structures: getSessionState(state).userData.structures,
     }),
-    (dispatch) => ({
+    (dispatch: any) => ({
       routesGetSetRoutes: () => (
         dispatch(
           routesGetSetRoutes(

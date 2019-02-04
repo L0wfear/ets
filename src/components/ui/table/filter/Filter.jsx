@@ -13,6 +13,7 @@ import {
 import Div from 'components/ui/Div';
 import FilterRow from 'components/ui/table/filter/FilterRow';
 import { Col } from 'react-bootstrap';
+import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
 
 export default class Filter extends React.Component {
   static get propTypes() {
@@ -144,20 +145,24 @@ export default class Filter extends React.Component {
     });
 
     return (
-      <Collapse in={this.props.show}>
-        <Div className="filter-container">
-          <Div className="filter-buttons">
-            <Button id="apply-filter" onClick={this.submit}>Применить</Button>
-            <Button id="reset-filter" onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
-            <span id="filter-close" className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
+      <>
+        <Collapse in={this.props.show}>
+          <Div className="filter-container">
+            <Div className="filter-buttons">
+              <Button id="apply-filter" onClick={this.submit}>Применить</Button>
+              <Button id="reset-filter" onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
+              <span id="filter-close" className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
+            </Div>
+            <Row>
+              <Col md={12}>
+                <FilterRowsContainerDataTable>
+                  {filterRows}
+                </FilterRowsContainerDataTable>
+              </Col>
+            </Row>
           </Div>
-          <Row>
-            <Col md={12}>
-              {filterRows}
-            </Col>
-          </Row>
-        </Div>
-      </Collapse>
+        </Collapse>
+      </>
     );
   }
 }

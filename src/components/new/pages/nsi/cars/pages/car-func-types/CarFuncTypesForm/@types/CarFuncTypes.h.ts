@@ -1,11 +1,8 @@
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import {
-  AutobaseCreateCarFuncTypes,
-  AutobaseUpdateCarFuncTypes,
-} from 'redux-main/reducers/modules/autobase/car_func_types/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { DispatchProp } from 'react-redux';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsCarFuncTypesFormWrap = {
   showForm: boolean;
@@ -18,14 +15,11 @@ export type PropsCarFuncTypesFormWrap = {
 };
 
 export type StatePropsCarFuncTypes = {};
-export type DispatchPropsCarFuncTypes = {
-  createAction: AutobaseCreateCarFuncTypes;
-  updateAction: AutobaseUpdateCarFuncTypes;
-};
+export type DispatchPropsCarFuncTypes = DispatchProp;
 export type OwnCarFuncTypesProps = {
   element: CarFuncTypes | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

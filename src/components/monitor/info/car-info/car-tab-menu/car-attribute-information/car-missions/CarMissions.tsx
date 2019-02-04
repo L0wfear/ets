@@ -39,8 +39,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
             missionToShowInfo: mission_data,
           });
         } else {
-          // tslint:disable-next-line
-          console.log('not_find_mission_data');
+          console.log('not_find_mission_data'); // tslint:disable-line:no-console
           this.setState({ selectedMissionIdToShowInfo: null });
         }
       }
@@ -55,8 +54,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
             missionToShow: mission,
           });
         } else {
-          // tslint:disable-next-line
-          console.log('not_find_mission');
+          console.log('not_find_mission'); // tslint:disable-line:no-console
           this.setState({ selectedMissionIdToShowMain: null });
         }
       }

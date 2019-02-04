@@ -6,7 +6,6 @@ import mspPermissions from 'components/new/pages/nsi/geoobjects/pages/msp/_confi
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { mspFormSchema } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultMspFormElement } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -36,14 +35,6 @@ import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-c
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -57,7 +48,7 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-msp" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-msp" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -69,8 +60,8 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
                   ? (
                     <ExtField
                       type="string"
-                      value={state.company_name}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ' : 'Учреждение'}
+                      value={state.company_name || '-'}
+                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
                       readOnly
                     />
                   )
@@ -81,25 +72,25 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
               <ExtField
                 type="string"
                 value={state.name}
-                label="Полное наименование"
+                label="Полное наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.shortname}
-                label="Краткое наименование"
+                label="Краткое наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.address}
-                label="Адрес"
+                label="Адрес:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={isNumber(state.productivity) ? parseFloat(state.productivity.toString()).toFixed(2) : ''}
-                label="Производительность (куб. м в сутки)"
+                label="Производительность (куб. м в сутки):"
                 readOnly
               />
             </Flex>
@@ -132,27 +123,11 @@ export default compose<PropsMspForm, OwnPropsMspForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateMsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateMsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsMspFormWithForm, Msp>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateMsp,
+    updateAction: geoobjectActions.actionUpdateMsp,
     mergeElement: (props) => {
       return getDefaultMspFormElement(props.element);
     },

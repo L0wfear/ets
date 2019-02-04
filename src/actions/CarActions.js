@@ -10,6 +10,7 @@ import {
   InfoService,
   AutoBase,
 } from 'api/Services';
+import config from 'config';
 
 const updateCarInfo = async (id = null, payload, serviceName) => {
   if (id === null) {
@@ -133,11 +134,17 @@ export default class CarActions extends Actions {
   }
 
   getInfoFromCar(gps_code, from_dt, to_dt) {
+    let version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], '');
+    const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [`TEST::${config.tracksCaching}`], '');
+
+    if (test_version) {
+      version = test_version;
+    }
     const payload = {
       gps_code,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
-      version: 3,
+      version,
     };
 
     return InfoService.get(payload);

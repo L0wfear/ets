@@ -6,18 +6,12 @@ import { get } from 'lodash';
 import LoadingOverlay from 'components/ui/LoadingOverlay';
 import ModalTP from 'components/new/ui/modal_tp/ModalTP';
 import Routes from 'components/indexRoute';
-import { connectToStores, FluxContext } from 'utils/decorators';
-
 import NotifiactionOrders from 'components/new/ui/modal_notification/NotifiactionOrders';
 import AdmNotification from 'components/new/ui/adm_notification/AdmNotification';
 import UserNotificationWs from 'components/notifications/UserNotificationWs';
 
 import AppHeader from 'components/new/ui/app_header/AppHeader';
 
-import {
-  sessionResetData,
-  sessionSetData,
-} from 'redux-main/reducers/modules/session/actions-session';
 import { DivNone } from 'global-styled/global-styled';
 import ModalSwitchApiVersion from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion';
 
@@ -31,24 +25,11 @@ try {
 
 const countToShowChangeApi = 10;
 
-@connectToStores(['session'])
-@connect(
-  state => ({
-    appConfig: state.session.appConfig,
-  }),
-  dispatch => ({
-    sessionSetData: props => dispatch(sessionSetData(props)),
-    sessionResetData: () => dispatch(sessionResetData()),
-  }),
-)
-@FluxContext
 class MainApp extends React.Component {
   static get propTypes() {
     return {
-      currentUser: PropTypes.object,
-      sessionSetData: PropTypes.func,
-      sessionResetData: PropTypes.func,
-      appConfig: PropTypes.object,
+      currentUser: PropTypes.object.isRequired,
+      appConfig: PropTypes.object.isRequired,
     };
   }
 
@@ -59,18 +40,6 @@ class MainApp extends React.Component {
       showFormTp: false,
       clickOnVersionCount: 0,
     };
-  }
-
-  componentDidMount() {
-    if (this.props.currentUser.user_id) {
-      this.props.sessionSetData(this.props);
-    } else {
-      this.props.sessionResetData();
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.sessionResetData();
   }
 
   clickOnVersion = () => {
@@ -95,8 +64,6 @@ class MainApp extends React.Component {
       clickOnVersionCount: 0,
     });
   }
-
-  logout = () => this.context.flux.getActions('session').logout();
 
   hideFormTp = () => this.setState({ showFormTp: false });
 
@@ -128,7 +95,6 @@ class MainApp extends React.Component {
               <NotifiactionOrders />
               <AdmNotification />
               <UserNotificationWs />
-
             </div>
           </div>
 
@@ -143,7 +109,7 @@ class MainApp extends React.Component {
                     </div>
                   )
                   : (
-                    <div className="none"></div>
+                    <DivNone />
                   )
               }
             </div>
@@ -173,5 +139,9 @@ class MainApp extends React.Component {
   }
 }
 
-
-export default MainApp;
+export default connect(
+  state => ({
+    appConfig: state.session.appConfig,
+    currentUser: state.session.userData,
+  }),
+)(MainApp);

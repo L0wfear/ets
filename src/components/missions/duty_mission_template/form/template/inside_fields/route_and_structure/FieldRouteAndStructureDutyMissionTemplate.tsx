@@ -1,0 +1,425 @@
+import * as React from 'react';
+import memoize from 'memoize-one';
+import { get } from 'lodash';
+
+import * as Row from 'react-bootstrap/lib/Row';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Button from 'react-bootstrap/lib/Button';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import { DivNone } from 'global-styled/global-styled';
+import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
+import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
+import {
+  StatePropsFieldRouteAndStructureDutyMissionTemplate,
+  DispatchPropsFieldRouteAndStructureDutyMissionTemplate,
+  OwnPropsFieldRouteAndStructureDutyMissionTemplate,
+  PropsFieldRouteAndStructureDutyMissionTemplate,
+  StateFieldRouteAndStructureDutyMissionTemplate,
+} from 'components/missions/duty_mission_template/form/template/inside_fields/route_and_structure/FieldRouteAndStructureDutyMissionTemplate.d';
+import { ReduxState } from 'redux-main/@types/state';
+import { connect } from 'react-redux';
+import { isNullOrUndefined } from 'util';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
+import { getAvailableRouteTypes } from 'components/missions/mission_template/form/template/utils';
+import FieldStructureDutyMissionTemplate from './structure/FieldStructureDutyMissionTemplate';
+
+const getAvailableRouteTypesMemo = (
+  memoize(getAvailableRouteTypes)
+);
+
+class FieldRouteAndStructureDutyMissionTemplate extends React.PureComponent<PropsFieldRouteAndStructureDutyMissionTemplate, StateFieldRouteAndStructureDutyMissionTemplate> {
+  state = {
+    showRouteForm: false,
+    selectedRouteRaw: null,
+    selectedRoute: null,
+    routesList: [],
+  };
+
+  componentDidMount() {
+    const {
+      isPermitted,
+      route_id,
+      technical_operation_id,
+      municipal_facility_id,
+      municipalFacilityForDutyMissionList,
+    } = this.props;
+
+    const triggerOnGetRoutesList = (
+      isPermitted
+      && !isNullOrUndefined(technical_operation_id)
+      && !isNullOrUndefined(municipal_facility_id)
+      && Boolean(municipalFacilityForDutyMissionList.length)
+    );
+
+    if (triggerOnGetRoutesList) {
+      this.getRoutes(
+        route_id,
+        technical_operation_id,
+        municipal_facility_id,
+      );
+    } else if (route_id) {
+      this.loadSelectedRoute(route_id);
+    }
+  }
+
+  componentDidUpdate(prevProps: PropsFieldRouteAndStructureDutyMissionTemplate) {
+    const {
+      route_id,
+      technical_operation_id,
+      municipal_facility_id,
+      municipalFacilityForDutyMissionList,
+      structure_id,
+    } = this.props;
+    const {
+      selectedRoute,
+    } = this.state;
+
+    let newRouteId = route_id;
+
+    const isDiffTechnicalOperationId = (
+      technical_operation_id !== prevProps.technical_operation_id
+    );
+    const isDiffMunicipalFacilityId = (
+      municipal_facility_id !== prevProps.municipal_facility_id
+    );
+
+    const triggerOnReset = (
+      route_id
+      && (
+        isDiffTechnicalOperationId
+        || isDiffMunicipalFacilityId
+      )
+    );
+
+    if (triggerOnReset) {
+      if (isDiffTechnicalOperationId || isDiffMunicipalFacilityId) {
+        newRouteId = null;
+        this.handleRouteIdChange(newRouteId, null);
+      }
+    } else if (structure_id && route_id && selectedRoute) {
+      if (selectedRoute.structure_id !== structure_id) {
+        newRouteId = null;
+        this.handleRouteIdChange(newRouteId, null);
+      }
+    }
+
+    const municipalFacilityForDutyMissionListLength = municipalFacilityForDutyMissionList.length;
+
+    const triggerOnGetRoutesList = (
+      !isNullOrUndefined(technical_operation_id)
+      && !isNullOrUndefined(municipal_facility_id)
+      && Boolean(municipalFacilityForDutyMissionListLength)
+      && (
+        (
+          isDiffTechnicalOperationId
+          || isDiffMunicipalFacilityId
+        )
+        || (
+          !prevProps.municipalFacilityForDutyMissionList.length
+        )
+      )
+    );
+
+    if (triggerOnGetRoutesList) {
+      this.getRoutes(
+        newRouteId,
+        technical_operation_id,
+        municipal_facility_id,
+      );
+    }
+  }
+
+  async getRoutes(route_id, technical_operation_id, municipal_facility_id) {
+    const { page, path } = this.props;
+
+    const {
+      data: routesList,
+    } = await this.props.routesGetSetRoutes(
+      {
+        technical_operation_id,
+        municipal_facility_id,
+        type: getAvailableRouteTypesMemo(
+          this.props.municipalFacilityForDutyMissionList,
+          municipal_facility_id,
+        ).toString(),
+      },
+      { page, path },
+    );
+
+    let { selectedRoute } = this.state;
+    if (route_id && (!selectedRoute || selectedRoute.id === route_id)) {
+
+      const { route_data } = await this.routesLoadRouteById(route_id);
+
+      if (route_data) {
+        selectedRoute = route_data;
+
+        routesList.push(selectedRoute);
+      } else {
+        throw new Error(`not found route for id=${route_id}`);
+      }
+    } else {
+      selectedRoute = null;
+    }
+
+    this.setState({
+      routesList,
+      selectedRoute,
+    });
+  }
+
+  routesLoadRouteById(route_id) {
+    const { page, path } = this.props;
+
+    return this.props.routesLoadRouteById(
+      route_id,
+      { page, path },
+    );
+  }
+
+  onRouteFormHide = (isSubmitted, route) => {
+    const route_id = get(route, 'id', null);
+    const route_name = get(route, 'name', '');
+
+    this.props.handleChange({
+      route_id,
+      route_name,
+    });
+
+    if (isSubmitted) {
+      this.getRoutes(
+        get(route, 'id', 'null'),
+        this.props.technical_operation_id,
+        this.props.municipal_facility_id,
+      );
+    }
+
+    this.setState({
+      selectedRouteRaw: null,
+      showRouteForm: false,
+    });
+  }
+
+  handleRouteIdChange = async (route_id: any, route: any) => {
+    const route_name = get(route, 'name', '');
+
+    this.props.handleChange({
+      route_id,
+      route_name,
+    });
+
+    if (route_id) {
+      this.loadSelectedRoute(route_id);
+    } else {
+      this.setState({
+        selectedRoute: null,
+      });
+    }
+  }
+
+  async loadSelectedRoute(route_id) {
+    try {
+      const { route_data } = await this.routesLoadRouteById(route_id);
+
+      if (route_data) {
+        this.setState(({ routesList }) => {
+          const routesListNew = [...routesList, route_data];
+          return {
+            selectedRoute: route_data,
+            routesList: routesListNew,
+          };
+        });
+      } else {
+        throw new Error(`Не найден маршрут ${route_id}`);
+      }
+    } catch (error) {
+      console.warn(error); // tslint:disable-line
+    }
+  }
+
+  createNewRoute = () => {
+    const {
+      municipal_facility_id,
+      municipal_facility_name,
+      technical_operation_id,
+      technical_operation_name,
+      structure_id,
+      structure_name,
+    } = this.props;
+
+    this.setState({
+      showRouteForm: true,
+      selectedRouteRaw: {
+        is_main: true,
+        name: '',
+        municipal_facility_id,
+        municipal_facility_name,
+        technical_operation_id,
+        technical_operation_name,
+        structure_id,
+        structure_name,
+        type: null,
+        object_list: [],
+        input_lines: [],
+        draw_object_list: [],
+      },
+    });
+  }
+
+  makeOptionFromRouteList = (
+    memoize(
+      (
+        routesList,
+        structure_id,
+      ) => (
+        routesList.reduce((newArr, route) => {
+          const triggerOnAdRoutetoShow = (
+            !structure_id
+            || (route.structure_id === structure_id)
+          );
+
+          if (triggerOnAdRoutetoShow) {
+            newArr.push(defaultSelectListMapper(route));
+          }
+
+          return newArr;
+        }, [])
+      ),
+    )
+  );
+
+  render() {
+    const {
+      page,
+      error_route_id,
+      route_id,
+      municipal_facility_id,
+      structure_id,
+      isPermitted,
+    } = this.props;
+
+    const {
+      showRouteForm,
+      selectedRouteRaw,
+      selectedRoute,
+      routesList,
+    } = this.state;
+
+    const hasSelectedMunicipalFacilityId = Boolean(municipal_facility_id);
+    const hasSelectedStructureId = Boolean(structure_id);
+
+    const ROUTES = this.makeOptionFromRouteList(
+      routesList,
+      structure_id,
+    );
+
+    return (
+      <>
+        <Row>
+          <Col md={6}>
+            <ExtField
+              type="select"
+              id="route_id"
+              modalKey={page}
+              label="Маршрут"
+              error={error_route_id}
+              options={ROUTES}
+              value={route_id}
+              disabled={!hasSelectedMunicipalFacilityId || !isPermitted}
+              onChange={this.handleRouteIdChange}
+              clearable
+            />
+            {
+              !route_id
+                ? (
+                  <Button
+                    id="mt-create-route"
+                    onClick={this.createNewRoute}
+                    disabled={!hasSelectedMunicipalFacilityId || !isPermitted}
+                  >
+                    Создать новый
+                  </Button>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+          </Col>
+          <Col md={6}>
+            <FieldStructureDutyMissionTemplate
+              value={this.props.structure_id}
+              name={this.props.structure_name}
+              error={this.props.error_structure_id}
+              onChange={this.props.handleChange}
+              disabled={!isPermitted}
+              isPermitted={isPermitted}
+
+              page={page}
+              path={this.props.path}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            {
+              selectedRoute && !showRouteForm
+                ? (
+                  <RouteInfo
+                    route={selectedRoute}
+                    noRouteName
+                    mapKey="duty_mission__template_form"
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
+          </Col>
+        </Row>
+        {
+          showRouteForm
+            ? (
+              <RouteFormWrap
+                element={selectedRouteRaw}
+                showForm={showRouteForm}
+                handleHide={this.onRouteFormHide}
+                hasMissionStructureId={hasSelectedStructureId}
+                missionAvailableRouteTypes={
+                  getAvailableRouteTypesMemo(
+                    this.props.municipalFacilityForDutyMissionList,
+                    municipal_facility_id,
+                  )
+                }
+                fromMission
+                fromMissionTemplate
+                page={page}
+              />
+            )
+            : (
+              <DivNone />
+            )
+        }
+      </>
+    );
+  }
+}
+
+export default connect<StatePropsFieldRouteAndStructureDutyMissionTemplate, DispatchPropsFieldRouteAndStructureDutyMissionTemplate, OwnPropsFieldRouteAndStructureDutyMissionTemplate, ReduxState>(
+  (state) => ({
+    municipalFacilityForDutyMissionList: getSomeUniqState(state).municipalFacilityForDutyMissionList,
+  }),
+  (dispatch: any, { page, path }) => ({
+    routesLoadRouteById: (...arg) => (
+      dispatch(
+        routesActions.routesLoadRouteById(...arg),
+      )
+    ),
+    routesGetSetRoutes: (...arg) => (
+      dispatch(
+        routesActions.routesGetSetRoutes(...arg),
+      )
+    ),
+  }),
+)(FieldRouteAndStructureDutyMissionTemplate);

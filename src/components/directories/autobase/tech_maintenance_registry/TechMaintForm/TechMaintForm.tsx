@@ -1,8 +1,6 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 
-import { get } from 'lodash';
-
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Row from 'react-bootstrap/lib/Row';
@@ -43,21 +41,10 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 
 class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> {
   componentDidMount() {
-    // this.props.actionGetAndSetInStoreSpecialModel();
-    // this.props.techMaintTypeGetAndSetInStore();
     this.props.techMaintOrderGetAndSetInStore(
       this.props.car_model_id,
     );
     this.props.repairCompanyGetAndSetInStore();
-  }
-
-  handleChange = (name: keyof TechMaint, value: TechMaint[keyof TechMaint]) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
   }
 
   makeOptionFromTepairCompanyList = (
@@ -94,7 +81,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
     );
 
     return (
-      <Modal id="modal-tech-maint" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-tech-maint" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -108,7 +95,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 value={state.repair_company_id}
                 error={errors.repair_company_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="repair_company_id"
               />
             </Col>
@@ -120,7 +107,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 value={state.tech_maintenance_order_ids}
                 error={errors.tech_maintenance_order_ids}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="tech_maintenance_order_ids"
               />
             </Col>
@@ -131,7 +118,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 value={state.number}
                 error={errors.number}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="number"
               />
             </Col>
@@ -142,7 +129,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 date={state.plan_date_start}
                 error={errors.plan_date_start}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="plan_date_start"
               />
             </Col>
@@ -153,7 +140,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 date={state.plan_date_end}
                 error={errors.plan_date_end}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="plan_date_end"
               />
             </Col>
@@ -164,7 +151,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 date={state.fact_date_start}
                 error={errors.fact_date_start}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fact_date_start"
               />
             </Col>
@@ -175,7 +162,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 date={state.fact_date_end}
                 error={errors.fact_date_end}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fact_date_end"
               />
             </Col>
@@ -189,7 +176,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                     error={errors.odometr_fact}
                     disabled={!isPermitted}
                     value={state.odometr_fact}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="odometr_fact"
                   />
                 )
@@ -208,7 +195,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                       error={errors.motohours_fact}
                       disabled={!isPermitted}
                       value={state.motohours_fact}
-                      onChange={this.handleChange}
+                      onChange={this.props.handleChange}
                       boundKeys="motohours_fact"
                     />
                   )
@@ -224,7 +211,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 value={state.note}
                 error={errors.note}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
               />
             </Col>
@@ -234,7 +221,7 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
                 label="Файл"
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
               />
@@ -264,22 +251,6 @@ export default compose<PropsTechMaint, OwnTechMaintProps>(
       techMaintOrderList: getAutobaseState(state).techMaintOrderList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTechMaint(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTechMaint(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       techMaintOrderGetAndSetInStore: (car_model_id) => (
         dispatch(
           autobaseActions.techMaintOrderGetAndSetInStore(
@@ -300,6 +271,8 @@ export default compose<PropsTechMaint, OwnTechMaintProps>(
   ),
   withForm<PropsTechMaintWithForm, TechMaint>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTechMaint,
+    updateAction: autobaseActions.autobaseUpdateTechMaint,
     mergeElement: (props) => {
       return getDefaultTechMaintElement(props.element);
     },

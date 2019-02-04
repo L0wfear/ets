@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import SparePartTable from 'components/directories/autobase/spare_part/SparePartTable';
@@ -8,11 +8,11 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'spare-part';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.sparePart}` })
 @staticProps({
   entity: 'autobase_spare_part',
@@ -40,12 +40,12 @@ class SparePartList extends ElementsList {
     this.props.autobaseResetSetSparePart();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }
@@ -68,6 +68,7 @@ export default compose(
   connect(
     state => ({
       sparePartList: getAutobaseState(state).sparePartList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       sparePartGetAndSetInStore: () => (

@@ -1,7 +1,9 @@
 import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import {
   promiseGetOdh,
+  promiseLoadPFOdh,
   promiseCreateOdh,
   promiseUpdateOdh,
   promiseRemoveOdh,
@@ -19,19 +21,33 @@ export const geoobjectResetSetOdh = () => (dispatch) => (
     actionSetOdh([]),
   )
 );
-export const actionGetGetOdh: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobOdh: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetOdh(payload),
+    payload: promiseLoadPFOdh(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetOdh: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetOdh(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStoreOdh = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetOdh(payload, { page, path }),
   );
 
@@ -85,6 +101,7 @@ export default {
   actionSetOdh,
   geoobjectResetSetOdh,
   actionGetGetOdh,
+  actionGetBlobOdh,
   actionGetAndSetInStoreOdh,
   actionCreateOdh,
   actionUpdateOdh,

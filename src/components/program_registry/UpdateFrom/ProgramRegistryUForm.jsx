@@ -4,7 +4,6 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBody from 'components/ui/Modal';
@@ -22,6 +21,10 @@ import {
   ProgramObjectList,
 } from 'components/program_registry/UpdateFrom/inside_components';
 import MakeVersionFrom from 'components/program_registry/UpdateFrom/MakeVersionFrom';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { DivNone } from 'global-styled/global-styled';
 
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
@@ -44,15 +47,15 @@ const getTitleByStatus = (status) => {
 
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
-export default class ProgramRegistryForm extends Form {
-  constructor(props, context) {
+class ProgramRegistryForm extends Form {
+  constructor(props) {
     super(props);
     const {
       entity,
     } = props;
 
-    const isSupervisor = context.flux.getStore('session').getPermission(`${entity}.review`);
-    const isСustomer = context.flux.getStore('session').getPermission(`${entity}.create`);
+    const isSupervisor = this.props.userPermissionsSet.has(`${entity}.review`);
+    const isСustomer = this.props.userPermissionsSet.has(`${entity}.create`);
 
     this.state = {
       isSupervisor,
@@ -61,6 +64,7 @@ export default class ProgramRegistryForm extends Form {
       mainButtonEnable: true,
     };
   }
+
   componentDidMount() {
     const { flux } = this.context;
     const { fromCreating } = this.props;
@@ -69,6 +73,7 @@ export default class ProgramRegistryForm extends Form {
     }
     flux.getActions('repair').getRepairListByType('contractor', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
   }
+
   getButton = (key, onClick, text, show = false, canSave = true) => (
     show && <Button key={key} disabled={!canSave} onClick={onClick}>{text}</Button>
   )
@@ -91,6 +96,7 @@ export default class ProgramRegistryForm extends Form {
       .then(() => this.props.makeVersion())
       .then(() => this.setState({ makeVersionIsVisible: false }));
   }
+
   sendToApply = () => {
     this.setState({ mainButtonEnable: false });
     return this.props.sendToApply()
@@ -136,9 +142,9 @@ export default class ProgramRegistryForm extends Form {
     return (
       <div>
         <MakeVersionFrom
-          title={'Создание новой версии'}
+          title="Создание новой версии"
           TextBody={TextMakeVersion}
-          btName={'Загрузить файл и создать версию'}
+          btName="Загрузить файл и создать версию"
           show={makeVersionIsVisible}
           onHide={this.hideMakeVersionForm}
           onSubmit={this.handleMakeVersionClick}
@@ -169,7 +175,7 @@ export default class ProgramRegistryForm extends Form {
                   options={stateProgramOptions}
                   value={stateProgramOptions[0] && state.state_program_id}
                   onChange={this.handleChange}
-                  boundKeys={['state_program_id']}
+                  boundKeys="state_program_id"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                   clearable={false}
                 />
@@ -209,7 +215,7 @@ export default class ProgramRegistryForm extends Form {
                   value={state.name}
                   error={errors.name}
                   onChange={this.handleChange}
-                  boundKeys={['name']}
+                  boundKeys="name"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
@@ -221,7 +227,7 @@ export default class ProgramRegistryForm extends Form {
                   time={false}
                   error={errors.plan_date_start}
                   onChange={this.handleChange}
-                  boundKeys={['plan_date_start']}
+                  boundKeys="plan_date_start"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
@@ -233,7 +239,7 @@ export default class ProgramRegistryForm extends Form {
                   time={false}
                   error={errors.plan_date_end}
                   onChange={this.handleChange}
-                  boundKeys={['plan_date_end']}
+                  boundKeys="plan_date_end"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
@@ -255,7 +261,7 @@ export default class ProgramRegistryForm extends Form {
                   time={false}
                   error={errors.fact_date_start}
                   onChange={this.handleChange}
-                  boundKeys={['fact_date_start']}
+                  boundKeys="fact_date_start"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
@@ -267,7 +273,7 @@ export default class ProgramRegistryForm extends Form {
                   time={false}
                   error={errors.fact_date_end}
                   onChange={this.handleChange}
-                  boundKeys={['fact_date_end']}
+                  boundKeys="fact_date_end"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
@@ -291,7 +297,7 @@ export default class ProgramRegistryForm extends Form {
                   options={contractorOptions}
                   value={state.contractor_id}
                   onChange={this.handleChange}
-                  boundKeys={['contractor_id']}
+                  boundKeys="contractor_id"
                   disabled={!isPermitted || !isPermittetForContractorL || !is_active}
                 />
               </Col>
@@ -302,7 +308,7 @@ export default class ProgramRegistryForm extends Form {
                   value={state.contract_number}
                   error={errors.contract_number}
                   onChange={this.handleChange}
-                  boundKeys={['contract_number']}
+                  boundKeys="contract_number"
                   disabled={!isPermitted || !isPermittetForContractorL || !is_active}
                 />
               </Col>
@@ -315,7 +321,7 @@ export default class ProgramRegistryForm extends Form {
                   value={state.note ? state.note : ''}
                   onChange={this.handleChange}
                   error={errors.note}
-                  boundKeys={['note']}
+                  boundKeys="note"
                   textAreaStyle={{ resize: 'none' }}
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
@@ -329,36 +335,42 @@ export default class ProgramRegistryForm extends Form {
                   value={state.files}
                   error={errors.files}
                   onChange={this.handleChange}
-                  boundKeys={['files']}
+                  boundKeys="files"
                   isLoading={this.props.onOverlayLoading}
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </Col>
             </Row>
             <Row>
-              {state.id &&
-                <Col md={12}>
-                  <ProgramObjectList
-                    program_version_id={state.id}
-                    program_version_status={state.status}
-                    object_type_id={state.object_type_id}
-                    contract_number={state.contract_number}
-                    contractor_id={state.contractor_id}
-                    company_id={state.company_id}
-                    company_name={state.company_name}
-                    repair_type_name={state.repair_type_name}
-                    updateObjectData={this.updateObjectData}
-                    isPermittedByStatus={isPermittedByStatus}
-                    changeVersion={this.props.changeVersion}
-                  />
-                  <ProgramRemarkList
-                    isSupervisor={isSupervisor}
-                    isСustomer={isСustomer}
-                    program_version_id={state.id}
-                    program_version_status={state.status}
-                    isPermittedByStatus={isPermittedByStatus}
-                  />
-                </Col>
+              {
+                state.id
+                  ? (
+                    <Col md={12}>
+                      <ProgramObjectList
+                        program_version_id={state.id}
+                        program_version_status={state.status}
+                        object_type_id={state.object_type_id}
+                        contract_number={state.contract_number}
+                        contractor_id={state.contractor_id}
+                        company_id={state.company_id}
+                        company_name={state.company_name}
+                        repair_type_name={state.repair_type_name}
+                        updateObjectData={this.updateObjectData}
+                        isPermittedByStatus={isPermittedByStatus}
+                        changeVersion={this.props.changeVersion}
+                      />
+                      <ProgramRemarkList
+                        isSupervisor={isSupervisor}
+                        isСustomer={isСustomer}
+                        program_version_id={state.id}
+                        program_version_status={state.status}
+                        isPermittedByStatus={isPermittedByStatus}
+                      />
+                    </Col>
+                  )
+                  : (
+                    <DivNone />
+                  )
               }
             </Row>
           </Div>
@@ -390,3 +402,11 @@ export default class ProgramRegistryForm extends Form {
     );
   }
 }
+
+export default compose(
+  connect(
+    state => ({
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    }),
+  ),
+)(ProgramRegistryForm);

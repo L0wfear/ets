@@ -4,14 +4,15 @@ import { getDefaultMission } from 'stores/MissionsStore';
 import {
   isEmpty,
 } from 'utils/functions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import permissionsMission from 'components/missions/mission/config-data/permissions';
 import * as Button from 'react-bootstrap/lib/Button';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import { components } from 'react-select';
 
-const ButtonCreateMission = enhanceWithPermissions({
-  permission: permissionsMission.create,
+const ButtonCreateMission = withRequirePermissionsNew({
+  permissions: permissionsMission.create,
 })(Button);
 
 class MissionField extends React.Component<any, any> {
@@ -19,6 +20,14 @@ class MissionField extends React.Component<any, any> {
     showMissionForm: false,
     selectedMission: null,
   };
+
+  multiValueContainerReander({ innerProps, data, ...props }) {
+    const newInnerProps = {
+      ...innerProps,
+      title: data.title ? data.title : '',
+    };
+    return <components.MultiValueContainer innerProps={newInnerProps} {...props} />;
+  }
 
   handleMissionsChange = (newFormData) => {
     this.props.handleChange('mission_id_list', newFormData);
@@ -83,7 +92,14 @@ class MissionField extends React.Component<any, any> {
 
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
-    const MISSIONS = missionsList.map(({ id, number, technical_operation_name }) => ({ value: id, label: `№${number} (${technical_operation_name})`, clearableValue: countMissionMoreOne }));
+    const MISSIONS = missionsList
+      .map(({ id, number, technical_operation_name, municipal_facility_name }) => ({
+        value: id,
+        label: `№${number} (${technical_operation_name})`,
+        clearableValue: countMissionMoreOne,
+        title: `${number} - ${technical_operation_name} - ${municipal_facility_name}`,
+      }));
+
     const OUTSIDEMISSIONS = notAvailableMissions
       .map(({ id, number, technical_operation_name }) => ({
         value: id,
@@ -113,6 +129,7 @@ class MissionField extends React.Component<any, any> {
           disabled={isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update}
           clearable={false}
           onChange={this.handleMissionsChange}
+          multiValueContainerReander={this.multiValueContainerReander}
         />
         {(new Date(origFormState.fact_arrival_date).getTime() > new Date(state.fact_arrival_date).getTime()) && (state.status === 'active') && (
           <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map((m) => `№${m.number}`).join(', ')} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
@@ -130,6 +147,7 @@ class MissionField extends React.Component<any, any> {
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
           fromWaybill
+          withDefineTypeId
           waybillStartDate={state.plan_departure_date}
           waybillEndDate={state.plan_arrival_date}
           {...this.props}
@@ -139,6 +157,6 @@ class MissionField extends React.Component<any, any> {
   }
 }
 
-export default enhanceWithPermissions({
-  permission: permissionsMission.read,
+export default withRequirePermissionsNew({
+  permissions: permissionsMission.read,
 })(MissionField);

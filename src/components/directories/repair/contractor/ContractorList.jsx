@@ -6,8 +6,10 @@ import ContractorTable from 'components/directories/repair/contractor/Contractor
 import ContractorFormWrap from 'components/directories/repair/contractor/ContractorFormWrap';
 import permissions from 'components/directories/repair/contractor/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @exportable({ entity: `repair/${REPAIR.contractor}` })
 @staticProps({
   entity: 'repair_contractor',
@@ -29,4 +31,10 @@ class ContractorList extends CheckableElementsList {
   }
 }
 
-export default compose()(ContractorList);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(ContractorList);

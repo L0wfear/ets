@@ -1,1 +1,7 @@
-export type GetCompanyStructureLinear22 = () => Promise<any>;
+export type SpecialModel = {
+  body_space?: any | null;
+  id: number;
+  name: string;
+};
+
+export type GetCompanyStructureLinear = () => Promise<any>;

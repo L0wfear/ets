@@ -24,6 +24,6 @@ class TypesAttrList extends React.Component<PropsTypesAttrList, StateTypesAttrLi
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(TypesAttrList);

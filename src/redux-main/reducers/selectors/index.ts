@@ -1,52 +1,53 @@
 import { ReduxState } from 'redux-main/@types/state';
 
-export type GetStateDataByKeyType = (state: ReduxState) => <K extends keyof ReduxState>(stateKey: K) => ReduxState[K];
-export type GetStateType<K extends keyof ReduxState> = (state: ReduxState) => ReduxState[K];
-
-export const getStateDataByKey: GetStateDataByKeyType = (state) => (stateKey) => state[stateKey];
-
-export const getUserNotificationsState: GetStateType<'userNotifications'> = (state) => (
-  getStateDataByKey(state)('userNotifications')
+export const getUserNotificationsState = (state: ReduxState) => (
+  state.userNotifications
 );
-export const getDashboardState: GetStateType<'dashboard'> = (state) => (
-  getStateDataByKey(state)('dashboard')
+export const getDashboardState = (state: ReduxState) => (
+  state.dashboard
 );
-export const getRegistryState: GetStateType<'registry'> = (state) => (
-  getStateDataByKey(state)('registry')
+export const getRegistryState = (state: ReduxState) => (
+  state.registry
 );
-export const getReportState: GetStateType<'report'> = (state) => (
-  getStateDataByKey(state)('report')
+export const getReportState = (state: ReduxState) => (
+  state.report
 );
-export const getOldReportState: GetStateType<'old_report'> = (state) => (
-  getStateDataByKey(state)('old_report')
+export const getOldReportState = (state: ReduxState) => (
+  state.old_report
 );
-export const getSessionState: GetStateType<'session'> = (state) => (
-  getStateDataByKey(state)('session')
+export const getSessionState = (state: ReduxState) => (
+  state.session
 );
-export const getAutobaseState: GetStateType<'autobase'> = (state) => (
-  getStateDataByKey(state)('autobase')
+export const getAutobaseState = (state: ReduxState) => (
+  state.autobase
 );
-export const getEmployeeState: GetStateType<'employee'> = (state) => (
-  getStateDataByKey(state)('employee')
+export const getEmployeeState = (state: ReduxState) => (
+  state.employee
 );
-export const getMonitorPageState: GetStateType<'monitorPage'> = (state) => (
-  getStateDataByKey(state)('monitorPage')
+export const getMonitorPageState = (state: ReduxState) => (
+  state.monitorPage
 );
-export const getLoadingState: GetStateType<'loading'> = (state) => (
-  getStateDataByKey(state)('loading')
+export const getLoadingState = (state: ReduxState) => (
+  state.loading
 );
-export const getEtsLoadingState: GetStateType<'etsLoading'> = (state) => (
-  getStateDataByKey(state)('etsLoading')
+export const getEtsLoadingState = (state: ReduxState) => (
+  state.etsLoading
 );
-export const getCompanyStructureState: GetStateType<'company_structure'> = (state) => (
-  getStateDataByKey(state)('company_structure')
+export const getCompanyStructureState = (state: ReduxState) => (
+  state.company_structure
 );
-export const getRoutesState: GetStateType<'routes'> = (state) => (
-  getStateDataByKey(state)('routes')
+export const getRoutesState = (state: ReduxState) => (
+  state.routes
 );
-export const getSomeUniqState: GetStateType<'some_uniq'> = (state) => (
-  getStateDataByKey(state)('some_uniq')
+export const getSomeUniqState = (state: ReduxState) => (
+  state.some_uniq
 );
-export const getGeoobjectState: GetStateType<'geoobject'> = (state) => (
-  getStateDataByKey(state)('geoobject')
+export const getGeoobjectState = (state: ReduxState) => (
+  state.geoobject
+);
+export const getMissionsState = (state: ReduxState) => (
+  state.missions
+);
+export const getCompanyState = (state: ReduxState) => (
+  state.company
 );

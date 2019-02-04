@@ -15,8 +15,8 @@ class ErrorBoundaryForm extends React.Component<any, { hasError: boolean }> {
   }
 
   componentDidCatch(error, info) {
-    console.log(error); //tslint:disable-line
-    console.log(info); //tslint:disable-line
+    console.log(error); // tslint:disable-line:no-console
+    console.log(info); // tslint:disable-line:no-console
     global.NOTIFICATION_SYSTEM.notify(getErrorNotificationFromBack('Произошла непредвиденная ошибка'));
     Raven.captureException(new Error(error));
   }

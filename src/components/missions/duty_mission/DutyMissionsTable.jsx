@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
 import { uniqBy } from 'lodash';

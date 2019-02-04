@@ -72,7 +72,7 @@ class ElementsList extends React.Component {
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
 
-    const readPermission = this.context.flux.getStore('session').state.userPermissions.indexOf(`${this.entity}.read`) > -1;
+    const readPermission = this.props.userData.permissionsSet.has(`${this.entity}.read`) > -1;
     this.setState({ readPermission });
 
     this.init();

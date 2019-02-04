@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
-import { diffDates, getDateWithMoscowTz, getNextDay859am } from 'utils/dates';
+import { diffDates, getDateWithMoscowTz } from 'utils/dates';
 
 export const waybillSchema = {
   properties: [
@@ -127,6 +127,30 @@ export const waybillSchema = {
       required: false,
       type: 'number',
     },
+    {
+      key: 'fuel_method',
+      title: 'Способ заправки',
+      required: false,
+      type: 'string',
+    },
+    {
+      key: 'fuel_card_id',
+      title: 'Топливная карта',
+      required: false, // dependencies valid
+      type: 'string',
+    },
+    {
+      key: 'equipment_fuel_method',
+      title: 'Способ заправки',
+      required: false,
+      type: 'string',
+    },
+    {
+      key: 'equipment_fuel_card_id',
+      title: 'Топливная карта',
+      required: false, // dependencies valid
+      type: 'string',
+    },
   ],
   dependencies: {
     'plan_departure_date': [
@@ -209,6 +233,52 @@ export const waybillSchema = {
         validator: (value) => {
           if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
             return 'Поле "Ремонт" должно быть меньше 1000';
+          }
+          return false;
+        },
+      },
+    ],
+    fuel_card_id: [
+      {
+        validator: (value, formData) => {
+          if (!value && (formData.fuel_method === 'fuel_card') && formData.status === 'draft') {
+            return 'Поле "Топливная карта" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    fuel_method: [
+      {
+        validator: (value, formData) => {
+          if ( !value && formData.status === 'draft') {
+            return 'Поле "Способ заправки" должно быть заполнено';
+          }
+          if (value === 'fuel_card' && isEmpty(formData.fuel_card_id) && formData.status === 'draft') {
+            return 'Поле "Топливная карта" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    equipment_fuel_card_id: [
+      {
+        validator: (value, formData) => {
+          if (!value && (formData.equipment_fuel_method === 'fuel_card') && formData.status === 'draft') {
+            return 'Поле "Топливная карта" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    equipment_fuel_method: [
+      {
+        validator: (value, formData) => {
+          if (!value && formData.status === 'draft' && formData.equipment_fuel) {
+            return 'Поле "Способ заправки" должно быть заполнено';
+          }
+          if (value === 'fuel_card' && isEmpty(formData.equipment_fuel_card_id) && formData.status === 'draft') {
+            return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
         },

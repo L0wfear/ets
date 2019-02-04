@@ -9,6 +9,7 @@ import { FluxContext } from 'utils/decorators';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 @FluxContext
 export class DutyMissionForm extends React.Component {
@@ -18,7 +19,6 @@ export class DutyMissionForm extends React.Component {
     this.state = {
       indexCurrMission: props.rejectedDutyMission.length - 1,
       comment: '',
-      canceled: false,
       allQuery: [],
       needUpdate: false,
     };
@@ -27,12 +27,12 @@ export class DutyMissionForm extends React.Component {
   handleChangeRComment = ({ target: { value: comment } }) => this.setState({ comment });
   handleClick = () => {
     const { rejectedDutyMission } = this.props;
-    const { indexCurrMission, comment, needUpdate, canceled } = this.state;
+    const { indexCurrMission, comment, needUpdate } = this.state;
     const allQuery = [...this.state.allQuery];
 
     const updatedMission = {
       ...cloneDeep(rejectedDutyMission[indexCurrMission]),
-      status: this.state.canceled ? 'canceled' : 'fail',
+      status: 'fail',
       comment,
     };
 
@@ -45,7 +45,6 @@ export class DutyMissionForm extends React.Component {
       this.setState({
         allQuery,
         comment: '',
-        canceled: false,
         indexCurrMission: indexCurrMission - 1,
         needUpdate: true,
       });
@@ -63,15 +62,9 @@ export class DutyMissionForm extends React.Component {
       this.setState({
         allQuery,
         comment: '',
-        canceled: false,
         indexCurrMission: indexCurrMission - 1,
       });
     }
-  }
-  toggleIsCanceled = () => {
-    this.setState((state) => ({
-      canceled: !state.canceled,
-    }));
   }
 
   render() {
@@ -91,15 +84,6 @@ export class DutyMissionForm extends React.Component {
                 label="Причина"
                 value={comment}
                 onChange={this.handleChangeRComment}
-              />
-            </Col>
-            <Col md={12}>
-              <ExtField
-                type="boolean"
-                label="Отмена задания"
-                value={Boolean(this.state.canceled)}
-                onChange={this.toggleIsCanceled}
-                className="flex-reverse"
               />
             </Col>
           </Row>

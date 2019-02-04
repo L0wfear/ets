@@ -98,6 +98,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
     const triggerOnUpdate = (
       technicalOperationsList.length
       && technical_operation_id
+      && date_start
       && (
         date_start !== prevProps.date_start  // изменилась дата начала на форме
         || technical_operation_id !== prevProps.technical_operation_id  // или изменилась ТО на форме
@@ -110,30 +111,24 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
 
       if (toData) {
         const {
-          is_new,
           normatives,
         } = toData;
 
-        if (is_new) {
-          const outerPayload = {
-            start_date: date_start,
-            end_date: date_start,
-            kind_task_ids: props.kind_task_ids,
-            for: 'mission',
-            norm_ids: '',
-          };
+        const outerPayload = {
+          start_date: date_start,
+          end_date: date_start,
+          kind_task_ids: props.kind_task_ids,
+          for: 'mission',
+          norm_ids: '',
+        };
 
-          if (props.alreadyDefineNormId && norm_id) {
-            outerPayload.norm_ids = norm_id.toString();
-          } else {
-            outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
-          }
-
-          this.loadMunicipalFacility(outerPayload);
+        if (props.alreadyDefineNormId && norm_id) {
+          outerPayload.norm_ids = norm_id.toString();
         } else {
-          // tslint:disable-next-line
-          console.log('старая то без элемента');
+          outerPayload.norm_ids = normatives.map(({ id }) => id).join(',');
         }
+
+        this.loadMunicipalFacility(outerPayload);
       }
     }
   }

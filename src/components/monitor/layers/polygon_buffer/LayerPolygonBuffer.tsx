@@ -20,7 +20,7 @@ import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
 import LayerDraw from 'components/new/ui/map/layers/default/layer-draw/LayerDraw';
 import { ReduxState } from 'redux-main/@types/state';
-import { getMonitorPageState } from '../../../../redux-main/reducers/selectors/index';
+import { getMonitorPageState } from 'redux-main/reducers/selectors';
 
 import {
   ButtonContainer,
@@ -134,11 +134,14 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
   }
 
   handleEndDraw = (feature: ol.Feature) => { // конец рисования буфера
-    const qwe = createBuffer(feature, 1000);
-    this.drawBufferToMap(qwe);
+    const buffer = createBuffer(feature, 1000);
+    this.drawBufferToMap(buffer);
     this.setState({ activeDraw: false });
     this.props.monitorPageFalsePolygonBufferActive();
-    localStorage.setItem('featureBufferPolygon', JSON.stringify(qwe));
+
+    if (buffer) {
+      localStorage.setItem('featureBufferPolygon', JSON.stringify(buffer));
+    }
   }
 
   render() {

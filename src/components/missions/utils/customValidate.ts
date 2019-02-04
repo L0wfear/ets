@@ -3,7 +3,7 @@ import { diffDates } from 'utils/dates';
 
 interface IMission {
   structure_id: number | void;
-  car_id: number;
+  car_ids: number[];
   number: number;
   route_type: string;
   is_cleaning_norm: boolean;
@@ -48,12 +48,14 @@ export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (mi
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {
-    const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { structure_id, car_id, number }) => {
-      const { company_structure_id: car_structure_id = null, is_common = false } = carsIndex[car_id] || {};
+    const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { structure_id, car_ids, number }) => {
+      car_ids.forEach((car_id) => {
+        const { company_structure_id: car_structure_id = null, is_common = false } = carsIndex[car_id] || {};
 
-      if (!is_common && car_structure_id !== structure_id) {
-        newArr.push(`<${number}>`);
-      }
+        if (!is_common && car_structure_id !== structure_id) {
+          newArr.push(`<${number}>`);
+        }
+      });
 
       return newArr;
     }, []);

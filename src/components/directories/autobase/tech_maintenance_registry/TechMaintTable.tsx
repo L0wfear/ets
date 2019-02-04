@@ -114,7 +114,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       tableMeta={tableMeta(props)}
       renderers={renderers}
       noFilter={props.car_id !== undefined}
-      // initialSort={'full_name'}
+      initialSort={props.selectField}
       {...props}
     />
   );

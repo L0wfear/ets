@@ -1,4 +1,5 @@
 import React from 'react';
+import memoize from 'memoize-one';
 import {
   clone,
   isEmpty,
@@ -8,11 +9,16 @@ import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { getDefaultMission } from 'stores/MissionsStore';
 import { saveData, printData } from 'utils/functions';
-import { diffDates, setZeroSecondsToDate } from 'utils/dates';
+import { diffDates, setZeroSecondsToDate, getDateWithMoscowTz, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { DivNone } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 const printMapKeySmall = 'mapMissionTemplateFormA4';
 
@@ -32,6 +38,12 @@ class MissionFormWrap extends FormWrap {
     return r;
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
   componentWillReceiveProps(props) {
     if (props.showForm && (props.showForm !== this.props.showForm)) {
       const mission = props.element === null ? getDefaultMission() : clone(props.element);
@@ -44,7 +56,7 @@ class MissionFormWrap extends FormWrap {
       } = mission;
 
       if (mission.structure_id == null) {
-        mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        mission.structure_id = this.props.userStructureId;
       }
       const IS_ASSIGNED = status === 'assigned';
       const IS_IN_PROGRESS = status === 'in_progress';
@@ -73,6 +85,7 @@ class MissionFormWrap extends FormWrap {
         });
       }
       if (props.fromOrder) {
+        this.checkOnMosckowTime();
         const { order } = props;
 
         const formErrors = this.validateWrap(mission, {}, { order });
@@ -108,6 +121,24 @@ class MissionFormWrap extends FormWrap {
     await this.context.flux.getActions('missions').updateMission(formState);
     if (this.props.refreshTableList) {
       await this.props.refreshTableList();
+    }
+  }
+
+  async checkOnMosckowTime() {
+    const {
+      time: {
+        date,
+      },
+    } = await loadMoscowTime();
+
+    const currentTime = getDateWithMoscowTzByTimestamp(date);
+
+    const {
+      formState,
+    } = this.state;
+
+    if (diffDates(currentTime, formState.date_start) > 0) {
+      this.handleFormStateChange('date_start', currentTime);
     }
   }
 
@@ -293,6 +324,7 @@ class MissionFormWrap extends FormWrap {
       disabledProps: this.props.disabledProps || {},
       fromOrder: this.props.fromOrder || false,
       carsList: this.props.carsList || [],
+      withDefineTypeId: this.props.withDefineTypeId,
     };
 
     return (
@@ -321,4 +353,11 @@ class MissionFormWrap extends FormWrap {
   }
 }
 
-export default withMapInConsumer()(MissionFormWrap);
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+  withMapInConsumer(),
+)(MissionFormWrap);

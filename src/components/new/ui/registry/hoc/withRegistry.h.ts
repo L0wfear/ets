@@ -21,31 +21,38 @@ export type DisplayIfTitle = {
   title: string;
 };
 
-export type OneFilterType = {
-  valueKey: string;
+export type FilterOptionType<F> = {
+  value: F[keyof F];
+  label: string | number;
+  [k: string]: any
+};
+
+export type OneFilterType<F> = {
+  valueKey: keyof F;
   labelKey?: string;
   title: string | DisplayIfTitle[];
   type: 'multiselect'
     | 'advanced-number';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  options?: {
-    value: any;
-    label: string | number;
-    [k: string]: any;
-  }[];
+  options?: FilterOptionType<F>[];
 };
 
-export type TypeFields = {
-  key: string;
+export type TypeFields<F extends any> = {
+  key: keyof F;
   title: string | DisplayIfTitle[];
   width?: number;
   boolean?: boolean;
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   toFixed?: number;
-  childrenFields?: TypeFields[];
+  childrenFields?: TypeFields<F>[];
+} | {
+  key: 'enumerated';
+  title: string;
+  width?: number;
+  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 };
 
-export type TypeConfigData = {
+export type TypeConfigData<F extends any> = {
   Service: any;
   actionHelpers?: {
     get?: object;
@@ -61,9 +68,9 @@ export type TypeConfigData = {
   },
   filter?: {
     isOpen?: boolean;
-    fields: OneFilterType[];
+    fields: OneFilterType<F>[];
     rawFilterValues?: {
-      [key in OneFilterType['valueKey']]?: {
+      [key in OneFilterType<F>['valueKey']]?: {
         in: {
           value: any[];
         };
@@ -73,14 +80,14 @@ export type TypeConfigData = {
   list?: {
     data?: {
       uniqKey?: string;
-      array?: any[];
+      array?: F[];
       total_count?: number;
     },
     permissions: OneRegistryData['list']['permissions'];
     processed?: {
-      processedArray?: any[];
+      processedArray?: F[];
       sort?: {
-        field?: string;
+        field?: keyof F;
         reverse?: boolean
       };
       filterValues: object;
@@ -91,7 +98,7 @@ export type TypeConfigData = {
       perPage?: number,
     },
     meta: {
-      fields: TypeFields[];
+      fields: TypeFields<F>[];
     },
   };
   trash?: object;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as BootstrapButton from 'react-bootstrap/lib/Button';
 
-import { connectToStores, staticProps } from 'utils/decorators';
+import { staticProps } from 'utils/decorators';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
@@ -10,6 +10,8 @@ import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_co
 import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
@@ -43,7 +45,7 @@ const notifyTexts = {
   },
 };
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @staticProps({
   entity: 'repair_program_version',
   permissions,
@@ -230,4 +232,10 @@ class ProgramRemarkList extends CheckableElementsList {
   });
 }
 
-export default compose()(ProgramRemarkList);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(ProgramRemarkList);

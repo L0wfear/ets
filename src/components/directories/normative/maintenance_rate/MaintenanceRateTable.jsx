@@ -67,6 +67,7 @@ export default (props) => {
     <Table
       title="Нормы на содержание объектов"
       results={props.data}
+      initialSort={props.selectField}
       tableMeta={tableMeta}
       renderers={renderers}
       {...props}

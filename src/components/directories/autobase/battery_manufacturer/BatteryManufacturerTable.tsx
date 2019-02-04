@@ -30,6 +30,7 @@ const Table: React.FunctionComponent<any> = (props) => (
     title="Производители аккумуляторов"
     results={props.data}
     tableMeta={tableMeta(props)}
+    initialSort={props.selectField}
     // initialSort={'full_name'}
     {...props}
   />

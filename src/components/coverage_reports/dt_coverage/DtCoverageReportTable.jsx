@@ -47,6 +47,7 @@ const DtCoverageReportTable = (props) => {
       enumerated={false}
       tableMeta={getTableMeta(props)}
       className="waybills-table"
+      initialSort={props.selectField}
       {...props}
     />
   );

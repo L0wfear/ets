@@ -27,7 +27,7 @@ class ButtonPrev extends React.Component<PropsButtonPrev, StatePaginator> {
   }
   render() {
     return (
-      <Button disabled={!this.props.show} onClick={this.handleButtonClick}>
+      <Button disabled={!this.props.show} onClick={this.handleButtonClick} className="pagination-control">
         <Glyphicon glyph="chevron-left" />
       </Button>
     );

@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TireFormWrap from 'components/directories/autobase/tire/TireForm/TireFormWrap';
@@ -8,11 +8,11 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tire';
 
-@connectToStores(['session'])
+
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
   entity: 'autobase_tire',
@@ -40,12 +40,12 @@ class TireList extends ElementsList {
     this.props.autobaseResetSetTire();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }
@@ -54,7 +54,6 @@ class TireList extends ElementsList {
   }
 
   handleClickClone = async (id) => {
-    console.log(id)
     try {
       await this.props.autobaseCloneTire(id);
       this.init();
@@ -79,6 +78,7 @@ export default compose(
   connect(
     state => ({
       tireList: getAutobaseState(state).tireList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       tireGetAndSetInStore: () => (
@@ -102,7 +102,7 @@ export default compose(
             tireId,
             {
               page: loadingPageName,
-            }
+            },
           ),
         )
       ),

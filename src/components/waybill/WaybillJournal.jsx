@@ -20,8 +20,10 @@ import WaybillPrintForm from 'components/waybill/WaybillPrintForm';
 import WaybillsTable, { getTableMeta } from 'components/waybill/WaybillsTable';
 import permissions from 'components/waybill/config-data/permissions';
 import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
 
-@connectToStores(['waybills', 'objects', 'employees', 'session'])
+@connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
   entity: 'waybill',
   permissions,
@@ -57,7 +59,7 @@ class WaybillJournal extends CheckableElementsList {
 
     this.setState({
       readPermission: [permissions.read, permissions.departure_and_arrival_values].some(pName => (
-        flux.getStore('session').state.userPermissions.includes(pName)
+        this.props.userData.permissionsSet.has(pName)
       )),
     });
   }
@@ -78,6 +80,7 @@ class WaybillJournal extends CheckableElementsList {
       this.setState({ page: 0 });
     } else {
       this.updateList();
+      this.changeWaybillListAction();
     }
   }
 
@@ -110,7 +113,7 @@ class WaybillJournal extends CheckableElementsList {
   )
 
   getAdditionalProps = () => {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const { structures } = this.props.userData;
 
     return {
       structures,
@@ -210,8 +213,15 @@ class WaybillJournal extends CheckableElementsList {
     return forms;
   }
 
+  // call create/update/delete waybill
+  changeWaybillListAction = () => {
+    const { flux } = this.context;
+    flux.getActions('objects').getSomeCars('WaybillCarService');
+  }
+
   formCallback = async () => {
     await this.updateList(this.state);
+    this.changeWaybillListAction();
     this.onFormHide();
   }
 
@@ -224,4 +234,10 @@ class WaybillJournal extends CheckableElementsList {
   }
 }
 
-export default compose()(WaybillJournal);
+export default compose(
+  connect(
+    state => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
+)(WaybillJournal);

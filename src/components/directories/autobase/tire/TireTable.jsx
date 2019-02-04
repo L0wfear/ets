@@ -1,25 +1,16 @@
 import React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
-import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
 import permissions from 'components/directories/autobase/tire/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-const CloneButton = enhanceWithPermissions({
-  permission: permissions.create,
-})(onClickWithKeys(withMergeProps(
-  (props) => Object.keys(props).reduce((newProps, key) => {
-    if (key !== 'boundKeys') {
-      newProps[key] = props[key];
-    }
-
-    return newProps;
-  }, {}),
-)(Button)));
+const CloneButton = withRequirePermissionsNew({
+  permissions: permissions.create,
+})(onClickWithKeys(Button));
 
 export const tableMeta = ({
   schemaMakers = {},
@@ -132,6 +123,7 @@ export default (props) => {
       results={props.data}
       tableMeta={sortedMeta}
       renderers={renderers}
+      initialSort={props.selectField}
       {...props}
     />
   );

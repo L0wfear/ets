@@ -1,8 +1,6 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 
-import { get } from 'lodash';
-
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Row from 'react-bootstrap/lib/Row';
@@ -40,7 +38,7 @@ import {
 } from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/@types/TechMaintOrderForm.h';
 import { TechMaintOrder, TechMaintType, MeasureUnitRun } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getAutobaseState, getSomeUniqState } from 'redux-main/reducers/selectors';
-import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 
 class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateTechMaintOrder> {
   componentDidMount() {
@@ -60,20 +58,6 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
 
   loadMeasureUnitRun(tech_maintenance_type_id: TechMaintOrder['tech_maintenance_type_id']) {
     this.props.measureUnitRunGetAndSetInStore(tech_maintenance_type_id);
-  }
-
-  handleChange = (name: keyof TechMaintOrder, value: TechMaintOrder[keyof TechMaintOrder]) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleChangeBoolean = (name: keyof TechMaintOrder, value: HTMLInputElement) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
   }
 
   makeOptionFromTechMaintTypeList = (
@@ -125,7 +109,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
     const MEASURE_UNITS_RUN = this.makeOptionFromMeasureUnitRunList(this.props.measureUnitRunList);
 
     return (
-      <Modal id="modal-tech-maint-order" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-tech-maint-order" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -153,7 +137,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 value={state.measure_unit_run_id}
                 error={errors.measure_unit_run_id}
                 disabled={!isPermitted || !tech_maintenance_type_id}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 clearable={false}
                 boundKeys="measure_unit_run_id"
                 modalKey={path}
@@ -169,7 +153,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                       value={state.sequence}
                       error={errors.sequence}
                       disabled={!isPermitted}
-                      onChange={this.handleChange}
+                      onChange={this.props.handleChange}
                       clearable={false}
                       boundKeys="sequence"
                       modalKey={path}
@@ -186,7 +170,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 value={state.description}
                 error={errors.description}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="description"
                 modalKey={path}
               />
@@ -199,7 +183,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 error={errors.car_model_id}
                 disabled={!isPermitted}
                 clearable={false}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="car_model_id"
                 modalKey={path}
               />
@@ -209,7 +193,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 label="Признак периодического ТО"
                 value={state.is_periodic}
                 disabled={!isPermitted}
-                onChange={this.handleChangeBoolean}
+                onChange={this.props.handleChangeBoolean}
                 boundKeys="is_periodic"
                 modalKey={path}
               />
@@ -220,7 +204,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 error={errors.interval_probeg}
                 disabled={!isPermitted}
                 value={state.interval_probeg}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="interval_probeg"
                 modalKey={path}
               />
@@ -231,7 +215,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 error={errors.interval_time}
                 disabled={!isPermitted}
                 value={state.interval_time}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="interval_time"
                 modalKey={path}
               />
@@ -243,7 +227,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 value={state.interval_time_type}
                 error={errors.interval_time_type}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="interval_time_type"
                 modalKey={path}
               />
@@ -253,7 +237,7 @@ class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateT
                 multiple
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -285,22 +269,6 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
       specialModelList: getSomeUniqState(state).specialModelList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTechMaintOrder(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTechMaintOrder(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       techMaintTypeGetAndSetInStore: () => (
         dispatch(
           autobaseActions.techMaintTypeGetAndSetInStore(
@@ -329,6 +297,8 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
   ),
   withForm<PropsTechMaintOrderWithForm, TechMaintOrder>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTechMaintOrder,
+    updateAction: autobaseActions.autobaseUpdateTechMaintOrder,
     mergeElement: (props) => {
       return getDefaultTechMaintOrderElement(props.element);
     },

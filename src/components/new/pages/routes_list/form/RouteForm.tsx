@@ -32,16 +32,17 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { Button } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
-import { isArray } from 'util';
+import { isArray, isFunction } from 'util';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 import routePermisions from 'components/new/pages/routes_list/config-data/permissions';
-import bridgesPermission from 'components/directories/geoobjects/pages/bridges/config-data/permissions';
+import bridgesPermission from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
 import { resetCachedDataForRoute } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
+import { getSessionState } from 'redux-main/reducers/selectors';
 import {
   routesCreateRoute,
   routesUpdateRoute,
@@ -101,20 +102,27 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
     }
   }
 
-  handleSaveAsTemplate = () => {
-    try {
-      this.props.submitAction(this.props.formState, true);
+  handleSaveAsTemplate = async () => {
+    const result = await this.props.submitAction(this.props.formState, true);
+
+    if (result) {
       resetCachedDataForRoute();
-    } catch (e) {
-      //
+      if (result) {
+        if (isFunction(this.props.handleHide)) {
+          this.props.handleHide(true, result);
+        }
+      }
     }
   }
-  handleSubmitForMission = () => {
-    try {
-      this.props.submitAction(this.props.formState, false);
+  handleSubmitForMission = async () => {
+    const result = await this.props.submitAction(this.props.formState, false);
+    if (result) {
       resetCachedDataForRoute();
-    } catch (e) {
-      //
+      if (result) {
+        if (isFunction(this.props.handleHide)) {
+          this.props.handleHide(true, result);
+        }
+      }
     }
   }
 
@@ -139,7 +147,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-route" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-route" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -230,7 +238,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
             <>
               <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSaveAsTemplate}>Сохранить как шаблон</Button>
               {
-                this.props.fromMission
+                this.props.fromMission && !this.props.fromMissionTemplate
                   ? (
                     <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmitForMission}>Создать</Button>
                   )
@@ -259,23 +267,13 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
   }),
   connect<StateRouteFormProps, DispatchRouteFormProps, OwnRouteFormProps, ReduxState>(
     (state) => ({
-      userStructureId: state.session.userData.structure_id,
-      userStructureName: state.session.userData.structure_name,
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructureName: getSessionState(state).userData.structure_name,
     }),
     (dispatch, { page }) => ({
       validateRoute: (formState) => (
         dispatch(
           routesValidateRoute(formState, { page, path }),
-        )
-      ),
-      createAction: (formState, isTemplate = false) => (
-        dispatch(
-          routesCreateRoute(formState, isTemplate, { page, path }),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          routesUpdateRoute(formState, { page, path }),
         )
       ),
       loadGeozones: (serverName) => (
@@ -295,6 +293,8 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
   ),
   withForm<PropsRouteWithForm, FormStateRouteForm>({
     uniqField: 'id',
+    createAction: routesCreateRoute,
+    updateAction: routesUpdateRoute,
     mergeElement: (props) => {
       const {
         element,

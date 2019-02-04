@@ -37,14 +37,6 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -58,7 +50,7 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-ssp" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-ssp" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -70,8 +62,8 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
                   ? (
                     <ExtField
                       type="string"
-                      value={state.company_name}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ' : 'Учреждение'}
+                      value={state.company_name || '-'}
+                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
                       readOnly
                     />
                   )
@@ -82,38 +74,38 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
               <ExtField
                 type="string"
                 value={state.name}
-                label="Полное наименование"
+                label="Полное наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.shortname}
-                label="Краткое наименование"
+                label="Краткое наименование:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={state.address}
-                label="Адрес"
+                label="Адрес:"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={isNumber(state.productivity) ? parseFloat(state.productivity.toString()).toFixed(2) : ''}
-                label="Производительность (куб. м в сутки)"
+                label="Производительность (куб. м в сутки):"
                 readOnly
               />
               <ExtField
                 type="string"
                 value={get(YES_NO_SELECT_OPTIONS_INT.find(({ value }) => value === state.is_mobile), 'label', '-')}
-                label="Мобильность"
+                label="Мобильность:"
                 readOnly
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
               <MapGeoobjectWrap
                 geoobjectData={state}
-                entity={'ssp'}
+                entity="ssp"
               />
             </Flex>
           </FlexContainer>
@@ -139,27 +131,11 @@ export default compose<PropsSspForm, OwnPropsSspForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateSsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateSsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsSspFormWithForm, Ssp>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateSsp,
+    updateAction: geoobjectActions.actionUpdateSsp,
     mergeElement: (props) => {
       return getDefaultSspFormElement(props.element);
     },

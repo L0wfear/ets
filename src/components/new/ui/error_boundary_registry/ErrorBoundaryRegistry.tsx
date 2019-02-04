@@ -1,6 +1,16 @@
 import * as React from 'react';
 import * as Raven from 'raven-js';
-import { ErrorBoundaryRegistryContainer, ErorText, ErorTextTimeOut, ButtonRefreshRegistry } from './styled/index';
+import {
+  ErrorBoundaryRegistryContainer,
+  ErorText,
+  ErorTextTimeOut,
+  ButtonRefreshRegistry,
+  DivCat,
+  TextRefreshRegistry,
+} from './styled/index';
+import { DivNone } from 'global-styled/global-styled';
+
+const STAND = process.env.STAND;
 
 class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, countLeft: number, intervalId: any }> {
   state = {
@@ -16,8 +26,8 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
   }
 
   componentDidCatch(error, info) {
-    console.log(error); //tslint:disable-line
-    console.log(info); //tslint:disable-line
+    console.log(error); // tslint:disable-line:no-console
+    console.log(info); // tslint:disable-line:no-console
     Raven.captureException(new Error(error));
     this.setState({
       intervalId: setInterval(this.updateCountLeft, 1000),
@@ -62,10 +72,17 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
         <ErrorBoundaryRegistryContainer>
           <ErorText font_size={0} />
           <ErorText font_size={40}>
-            Произошла непредвиденная ошибка
+            <div>
+              Произошла непредвиденная ошибка
+            </div>
+            {
+              STAND === 'dev'
+                ? <DivCat />
+                : <DivNone />
+            }
           </ErorText>
           <ErorTextTimeOut font_size={30}>
-            {`Обновление через ${countLeft}`}
+            <TextRefreshRegistry>{`Обновление через ${countLeft}`}</TextRefreshRegistry>
             <ButtonRefreshRegistry onClick={this.refreshNow}>Обновить сейчас</ButtonRefreshRegistry>
           </ErorTextTimeOut>
         </ErrorBoundaryRegistryContainer>

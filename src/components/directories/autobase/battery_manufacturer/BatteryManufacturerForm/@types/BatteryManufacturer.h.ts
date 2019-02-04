@@ -1,11 +1,8 @@
 import { BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import {
-  AutobaseCreateBatteryManufacturer,
-  AutobaseUpdateBatteryManufacturer,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/battery_manufacturer/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { DispatchProp } from 'react-redux';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsBatteryManufacturerFormWrap = {
   showForm: boolean;
@@ -18,14 +15,11 @@ export type PropsBatteryManufacturerFormWrap = {
 };
 
 export type StatePropsBatteryManufacturer = {};
-export type DispatchPropsBatteryManufacturer = {
-  createAction: AutobaseCreateBatteryManufacturer;
-  updateAction: AutobaseUpdateBatteryManufacturer;
-};
+export type DispatchPropsBatteryManufacturer = DispatchProp;
 export type OwnBatteryManufacturerProps = {
   element: BatteryManufacturer | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

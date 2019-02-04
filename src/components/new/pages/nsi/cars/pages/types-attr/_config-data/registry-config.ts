@@ -1,13 +1,14 @@
-import { TypesAttr } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/cars/pages/types-attr/_config-data/permissions';
 
 export const registryKey = 'TypesAttr';
 
-export const config: TypeConfigData = {
-  Service: TypesAttr,
+export const config: TypeConfigData<any> = {
+  Service: {
+    getActionPath: ['autobaseActions', 'autobaseGetSetTypesAttr'],
+    getBlobActionPath: ['autobaseActions', 'autobaseGetBlobTypesAttr'],
+  },
   registryKey,
   header: {
     title: 'Таблица нормативных скоростей и ширин',

@@ -4,6 +4,7 @@ export interface ICheckedElements {
 
 export interface IStateOrderMissionTemplate {
   assign_to_waybill: string;
+  assign_to_waybill_for_column: object;
   missionsList: any[];
   missionsIndex: any;
   selectedElement: void | any;
@@ -11,4 +12,5 @@ export interface IStateOrderMissionTemplate {
   structures: any[];
   timeInterval: number | NodeJS.Timer;
   canSubmit: boolean;
+  showColumnAssignment: boolean;
 }

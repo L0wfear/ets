@@ -1,15 +1,12 @@
 import { TechInspection, Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import {
-  AutobaseCreateTechInspection,
-  AutobaseUpdateTechInspection,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/@types';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { GetCar } from 'redux-main/reducers/modules/autobase/car/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { HandleThunkActionCreator } from 'react-redux';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTechInspectionFormWrap = {
   showForm: boolean;
@@ -26,15 +23,13 @@ export type StatePropsTechInspection = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 export type DispatchPropsTechInspection = {
-  createAction: AutobaseCreateTechInspection;
-  updateAction: AutobaseUpdateTechInspection;
-  autobaseGetSetCar: GetCar;
+  autobaseGetSetCar: HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>;
 };
 export type OwnTechInspectionProps = {
   element: TechInspection | null;
   handleHide: OnFormHideType
   car_id: number;
-  page?: string;
+  page: string;
   path?: string;
 };
 
@@ -51,5 +46,5 @@ export type PropsTechInspection = OutputWithFormProps<
   any
 >;
 export type StateTechInspection = {
-  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+  carListOptions: DefaultSelectOption<Car['asuods_id'], Car['gov_number'], Car>[];
 };

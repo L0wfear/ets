@@ -10,8 +10,7 @@ import { getErrorNotificationFromBack } from 'utils/notifications';
 export const routesLoadRoutes = (payload = {}) => (
   RouteService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
 
       return {
         result: [],

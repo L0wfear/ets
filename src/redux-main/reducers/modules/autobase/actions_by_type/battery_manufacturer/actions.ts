@@ -45,7 +45,7 @@ export const batteryManufacturerGetAndSetInStore = (payload = {}, { page, path }
   };
 };
 export const autobaseCreateBatteryManufacturer: any = (batteryManufacturerOld: BatteryManufacturer, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryManufacturer } } = await dispatch({
+  const { payload: batteryManufacturer } = await dispatch({
     type: 'none',
     payload: createSetBatteryManufacturer(batteryManufacturerOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateBatteryManufacturer: any = (batteryManufacturerOld: B
   return batteryManufacturer;
 };
 export const autobaseUpdateBatteryManufacturer: any = (batteryManufacturerOld: BatteryManufacturer, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { batteryManufacturer } } = await dispatch({
+  const { payload: batteryManufacturer } = await dispatch({
     type: 'none',
     payload: updateSetBatteryManufacturer(batteryManufacturerOld),
     meta: {

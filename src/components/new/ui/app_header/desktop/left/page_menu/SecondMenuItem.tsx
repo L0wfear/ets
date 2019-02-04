@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { SecondMenuItemContainer, SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
-import { DefaultSecondLvlMenu, LinkSecontLvl, DivDivider } from 'components/new/ui/app_header/styled';
+import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl, DivDivider } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
 import { withRouterMatchUrl, isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
+import { compose } from 'recompose';
 
 class SecondMenuItem extends React.Component<any, any> {
   state = {
@@ -41,6 +42,16 @@ class SecondMenuItem extends React.Component<any, any> {
             <span className="caret"/>
           </DefaultSecondLvlMenu>
         </LinkSecontLvl>
+      );
+    }
+
+    if (data.noHash) {
+      return (
+        <LinkNoHashSecontLvl id={`link-${key}`} href={data.path}>
+          <DefaultSecondLvlMenu>
+            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+          </DefaultSecondLvlMenu>
+        </LinkNoHashSecontLvl>
       );
     }
 
@@ -113,6 +124,9 @@ class SecondMenuItem extends React.Component<any, any> {
   }
 }
 
-const SecondMenuItemWithUrl = showHeaderMenu(withRouterMatchUrl(SecondMenuItem));
+const SecondMenuItemWithUrl = compose<any, any>(
+  withRouterMatchUrl,
+  showHeaderMenu,
+)(SecondMenuItem);
 
 export default SecondMenuItemWithUrl;

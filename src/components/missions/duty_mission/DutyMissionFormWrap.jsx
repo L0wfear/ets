@@ -10,19 +10,20 @@ import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { getDefaultDutyMission } from 'stores/MissionsStore';
 import { saveData } from 'utils/functions';
-import { diffDates } from 'utils/dates';
+import { diffDates, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import dutyMissionSchema from 'models/DutyMissionModel';
 
 import DutyMissionForm from 'components/missions/duty_mission/DutyMissionForm';
-import DutyMissionFormOld from 'components/missions/duty_mission/DutyMissionFormOld';
+import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 class DutyMissionFormWrap extends FormWrap {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.schema = dutyMissionSchema;
-    this.defaultElement = getDefaultDutyMission();
-    this.defaultElement.structure_id = context.flux.getStore('session').getCurrentUser().structure_id;
   }
 
   componentWillReceiveProps(props) {
@@ -31,7 +32,7 @@ class DutyMissionFormWrap extends FormWrap {
 
       const ordersActions = this.context.flux.getActions('objects');
       if (!mission.structure_id) {
-        mission.structure_id = this.context.flux.getStore('session').getCurrentUser().structure_id;
+        mission.structure_id = this.props.userStructureId;
       }
 
       const {
@@ -53,6 +54,8 @@ class DutyMissionFormWrap extends FormWrap {
       }
 
       if (props.fromOrder) {
+        this.checkOnMosckowTime();
+
         const { order } = props;
 
         const formErrors = this.validateWrap(mission, {}, { order });
@@ -111,6 +114,24 @@ class DutyMissionFormWrap extends FormWrap {
     } catch (error) {
       return 'isError'; // если ошибка, проверять в handleFormSubmit
       // function refreshTableList not in father modules
+    }
+  }
+
+  async checkOnMosckowTime() {
+    const {
+      time: {
+        date,
+      },
+    } = await loadMoscowTime();
+
+    const currentTime = getDateWithMoscowTzByTimestamp(date);
+
+    const {
+      formState,
+    } = this.state;
+
+    if (diffDates(currentTime, formState.plan_date_start) > 0) {
+      this.handleFormStateChange('plan_date_start', currentTime);
     }
   }
 
@@ -209,35 +230,26 @@ class DutyMissionFormWrap extends FormWrap {
   render() {
     return (
       <Div hidden={!this.props.showForm}>
-        <Div hidden={!this.state.formState.is_new}>
-          <DutyMissionForm
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            onPrint={this.handleFormPrint}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            readOnly={this.props.readOnly || !this.state.formState.is_new}
-            fromOrder={!!this.props.fromOrder}
-            {...this.state}
-          />
-        </Div>
-        <Div hidden={this.state.formState.is_new}>
-          <DutyMissionFormOld
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit.bind(this)}
-            onPrint={this.handleFormPrint}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            readOnly={this.props.readOnly || !this.state.formState.is_new}
-            fromOrder={!!this.props.fromOrder}
-            {...this.state}
-          />
-        </Div>
+        <DutyMissionForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit.bind(this)}
+          onPrint={this.handleFormPrint}
+          handleFormChange={this.handleFormStateChange.bind(this)}
+          show={this.props.showForm}
+          onHide={this.props.onFormHide}
+          readOnly={this.props.readOnly || !this.state.formState.is_new}
+          fromOrder={!!this.props.fromOrder}
+          {...this.state}
+        />
       </Div>
     );
   }
 }
 
-export default DutyMissionFormWrap;
+export default compose(
+  connect(
+    state => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+    }),
+  ),
+)(DutyMissionFormWrap);

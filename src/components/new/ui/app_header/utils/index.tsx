@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { isArray } from 'util';
-import connectToStores from 'flummox/connect';
 import { DivNone } from 'global-styled/global-styled';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 export const withRouterMatchUrl: any = (Component) => (
   withRouter(
@@ -43,12 +45,12 @@ export const checkShow = (props) => {
     if (data.alwaysShow || data.divider) {
       isShow = true;
     } else if (!data.alwaysShow && permissions) {
-      const { userPermissions } = props;
+      const { permissionsSet } = props;
       const { list } = permissions;
       if (Array.isArray(list)) {
-        isShow = list.some((permission) => permission === true || userPermissions.includes(permission));
+        isShow = list.some((permission) => permission === true || permissionsSet.has(permission));
       } else {
-        isShow = list === true || userPermissions.includes(list);
+        isShow = list === true || permissionsSet.has(list);
       }
     }
 
@@ -61,7 +63,12 @@ export const checkShow = (props) => {
 };
 
 export const showHeaderMenu = (Component) => (
-  connectToStores(
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      userData: getSessionState(state).userData,
+      permissionsSet: getSessionState(state).userData.permissionsSet,
+    }),
+  )(
     (props) => (
       checkShow(props)
       ? (
@@ -70,5 +77,6 @@ export const showHeaderMenu = (Component) => (
       : (
         <DivNone />
       )
-    ), ['session'])
+    ),
+  )
 );

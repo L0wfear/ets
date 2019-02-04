@@ -8,7 +8,6 @@ import batteryManufacturerPermissions from 'components/directories/autobase/batt
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { batteryManufacturerFormSchema } from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerForm/battery-manufacturer-from-schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultBatteryManufacturerElement } from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerForm/utils';
@@ -27,14 +26,6 @@ import { BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types
 import { DivNone } from 'global-styled/global-styled';
 
 class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufacturer, StateBatteryManufacturer> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -49,7 +40,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-manufacturer" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-battery-manufacturer" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -63,7 +54,7 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
                 value={state.name}
                 error={errors.name}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="name"
                 modalKey={page}
               />
@@ -89,27 +80,11 @@ class BatteryManufacturerForm extends React.PureComponent<PropsBatteryManufactur
 export default compose<PropsBatteryManufacturer, OwnBatteryManufacturerProps>(
   connect<StatePropsBatteryManufacturer, DispatchPropsBatteryManufacturer, OwnBatteryManufacturerProps, ReduxState>(
     null,
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateBatteryManufacturer(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateBatteryManufacturer(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsBatteryManufacturerWithForm, BatteryManufacturer>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateBatteryManufacturer,
+    updateAction: autobaseActions.autobaseUpdateBatteryManufacturer,
     mergeElement: (props) => {
       return getDefaultBatteryManufacturerElement(props.element);
     },

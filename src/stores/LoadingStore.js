@@ -5,9 +5,7 @@ export default class LoadingStore extends Store {
   constructor(flux) {
     super();
 
-    const sessionActions = flux.getActions('session');
     const repairActions = flux.getActions('repair');
-    const geoObjectsActions = flux.getActions('geoObjects');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
     const objectsActions = flux.getActions('objects');
@@ -18,8 +16,6 @@ export default class LoadingStore extends Store {
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.reg(false,
-      sessionActions.cahngeCompanyOnAnother,
-
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,
       repairActions.contractor,
@@ -65,7 +61,6 @@ export default class LoadingStore extends Store {
       objectsActions.getCleaningRate,
       objectsActions.getUserActionLog,
       objectsActions.getMedicalStats,
-      objectsActions.getCompanies,
       objectsActions.createMaintenanceWork,
       objectsActions.updateMaintenanceWork,
 
@@ -87,30 +82,21 @@ export default class LoadingStore extends Store {
       missionsActons.getMissionTemplates,
       missionsActons.printMissionTemplate,
       missionsActons.createMissionTemplate,
-      missionsActons.removeMissionTemplate,
       missionsActons.createMissions,
       missionsActons.getDutyMissions,
       missionsActons.getCarDutyMissions,
       missionsActons.createDutyMission,
       missionsActons.updateDutyMission,
       missionsActons.removeDutyMission,
-      missionsActons.getDutyMissionTemplates,
       missionsActons.createDutyMissionTemplate,
       missionsActons.updateDutyMissionTemplate,
-      missionsActons.removeDutyMissionTemplate,
       missionsActons.printMission,
       missionsActons.printDutyMission,
       missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
 
-      routesActions.getRoutes,
-      routesActions.createRoute,
-      routesActions.removeRoute,
-      routesActions.updateRoute,
       routesActions.getRouteById,
-      routesActions.validateRoute,
       routesActions.getRoutesBySomeData,
-      routesActions.getRoutesByTechnicalOperation,
       routesActions.getRoutesByMissionId,
       routesActions.getRoutesByDutyMissionId,
 
@@ -125,10 +111,8 @@ export default class LoadingStore extends Store {
       carActions.getDataByNormNormatives);
 
     this.reg(true,
-      geoObjectsActions.getGeozoneByTypeWithGeometry,
-      geoObjectsActions.getGeozoneByType,
-
-      missionsActons.getMissionsByCarAndDates);
+      missionsActons.getMissionsByCarAndDates,
+    );
 
     this.state = {
       operationsCount: 0,

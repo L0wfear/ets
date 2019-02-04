@@ -90,7 +90,6 @@ class PrintForm extends React.Component<IPropsPrintForm, any> {
       </Modal>
     );
   }
-
 }
 
 export default PrintForm;

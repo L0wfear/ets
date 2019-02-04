@@ -15,16 +15,16 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'redux';
 
-const withRegistry = (configData: TypeConfigData) => (Component) => (
+const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Component) => (
   compose(
     withPreloader({
-      page: 'registry',
+      page: configData.registryKey,
       typePreloader: 'mainpage',
     }),
     connect<any, any, any, ReduxState>(
       null,
       (dispatch) => ({
-        registryAddInitialData: (config: TypeConfigData) => (
+        registryAddInitialData: (config: TypeConfigData<F>) => (
           dispatch(
             registryAddInitialData(config),
           )

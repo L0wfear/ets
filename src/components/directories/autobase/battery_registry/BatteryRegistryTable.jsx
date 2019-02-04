@@ -112,6 +112,7 @@ export default (props) => {
       results={props.data}
       tableMeta={sortedMeta}
       renderers={renderers}
+      initialSort={props.selectField}
       {...props}
     />
   );

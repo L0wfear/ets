@@ -116,6 +116,7 @@ export default (props) => {
       tableMeta={tableMeta}
       className="small-table"
       renderers={renderers}
+      initialSort={props.selectField}
       {...props}
     />
   );

@@ -14,8 +14,6 @@ export type StateRouteFormProps = {
 
 export type DispatchRouteFormProps = {
   validateRoute: (formState: FormStateRouteForm) => Promise<any>;
-  createAction: (formState: FormStateRouteForm, isTemplate: boolean) => Promise<any>;
-  updateAction: (formState: FormStateRouteForm) => Promise<any>;
   loadGeozones: (serverName: string, company_id?: number | null) => any,
 };
 
@@ -25,6 +23,7 @@ export type InputRouteFormProps = {
   element: Route;
   routesMapNameId?: Map<string, number>;
   fromMission?: boolean;
+  fromMissionTemplate?: boolean;
   fromOrder?: boolean;
   missionAvailableRouteTypes?: string[];
   hasMissionStructureId?: boolean;

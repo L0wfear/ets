@@ -26,19 +26,19 @@ export const ButtonDelete: React.FunctionComponent<ICRUDButton> = ({ permissions
 ;
 
 export const ButtonCreateNew: React.FunctionComponent<ICRUDButton & { permission: string }> = ({ permission, onClick, disabled, buttonName = 'Создать' }) =>
-  <ButtonPermission id="open-create-form" bsSize="small" onClick={onClick} permission={permission} disabled={disabled}>
+  <ButtonPermission id="open-create-form" bsSize="small" onClick={onClick} permissions={permission} disabled={disabled}>
     <Glyphicon glyph="plus" /> {buttonName}
   </ButtonPermission>
 ;
 
 export const ButtonReadNew: React.FunctionComponent<ICRUDButton & { permission: string }> = ({ permission, permissions, onClick, disabled, buttonName = 'Просмотреть' }) =>
-  <ButtonPermission id="open-update-form" bsSize="small" onClick={onClick} permission={permission} permissions={permissions} disabled={disabled}>
+  <ButtonPermission id="open-update-form" bsSize="small" onClick={onClick} permissions={permission} disabled={disabled}>
     <Glyphicon glyph="search" /> {buttonName}
   </ButtonPermission>
 ;
 
 export const ButtonDeleteNew: React.FunctionComponent<ICRUDButton & { permission: string }> = ({ permission, onClick, disabled, buttonName = 'Удалить' }) =>
-  <ButtonPermission id="remove-element" bsSize="small" onClick={onClick} permission={permission} disabled={disabled}>
+  <ButtonPermission id="remove-element" bsSize="small" onClick={onClick} permissions={permission} disabled={disabled}>
     <Glyphicon glyph="remove" /> {buttonName}
   </ButtonPermission>
 ;

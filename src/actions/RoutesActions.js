@@ -1,23 +1,12 @@
 import { Actions } from 'flummox';
 import {
-  cloneDeep,
-  each,
   get,
 } from 'lodash';
 import {
   RouteService,
-  RouteValidateService,
 } from 'api/Services';
 
 export default class RoutesActions extends Actions {
-  getRoutes(technical_operation_id) {
-    const payload = {};
-    if (technical_operation_id) {
-      payload.technical_operation_id = technical_operation_id;
-    }
-    return RouteService.get(payload);
-  }
-
   getRoutesBySomeData(data) {
     const payload = {
       ...data,
@@ -134,50 +123,5 @@ export default class RoutesActions extends Actions {
     }
 
     return route;
-  }
-
-  async createRoute(route, isTemplate = 0) {
-    const payload = cloneDeep(route);
-    const params = {
-      is_template: +isTemplate,
-    };
-    delete payload.polys;
-    delete payload.odh_list;
-    delete payload.odh_fail_list;
-    delete payload.draw_odh_list;
-    delete payload.copy;
-
-    const createdRoute = await RouteService.post(payload, false, 'json', params);
-    const routes = await RouteService.get();
-    return { createdRoute, routes };
-  }
-
-  removeRoute(route) {
-    const payload = { id: Number(route.id) };
-    return RouteService.delete(payload, false, 'json');
-  }
-
-  async updateRoute(route) {
-    const payload = cloneDeep(route);
-    delete payload.polys;
-    delete payload.odh_list;
-    delete payload.odh_fail_list;
-    delete payload.draw_odh_list;
-    each(payload.object_list, o => delete o.shape);
-
-    const createdRoute = await RouteService.put(payload, false, 'json');
-    const routes = await RouteService.get();
-
-    return { createdRoute, routes };
-  }
-
-  validateRoute(route) {
-    const payload = {
-      technical_operation_id: route.technical_operation_id,
-      object_list: route.input_lines,
-      municipal_facility_id: route.is_new ? route.municipal_facility_id : null,
-      norm_id: route.is_new ? route.norm_id : null,
-    };
-    return RouteValidateService.post(payload, false, 'json');
   }
 }

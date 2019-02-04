@@ -8,7 +8,7 @@ import roadAccidentPermissions from 'components/directories/autobase/road_accide
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/directories/autobase/road_accident/RoadAccidentForm/roadAccident-schema';
-import { get } from 'lodash';
+
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
@@ -56,19 +56,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleChangeBoolean = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -93,7 +81,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
     );
     return (
 
-      <Modal id="modal-insurance-policy" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-insurance-policy" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -107,7 +95,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 date={state.accident_date}
                 time={false}
                 error={errors.accident_date}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="accident_date"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -120,7 +108,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 error={errors.driver_id}
                 options={this.state.driversOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="driver_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -134,7 +122,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 error={errors.cause_id}
                 options={this.state.roadAccidentCauseOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="cause_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -146,7 +134,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Место ДТП"
                 value={state.accident_place}
                 error={errors.accident_place}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="accident_place"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -157,7 +145,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Виновность"
                 value={state.is_guilty}
                 error={errors.is_guilty}
-                onChange={this.handleChangeBoolean}
+                onChange={this.props.handleChangeBoolean}
                 boundKeys="is_guilty"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -168,7 +156,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Стоимость ущерба, руб."
                 value={state.damage_price}
                 error={errors.damage_price}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="damage_price"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -179,7 +167,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Примечание"
                 value={state.comment}
                 error={errors.comment}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="comment"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -190,7 +178,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 multiple
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -220,22 +208,6 @@ export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
       userCompanyId: state.session.userData.company_id,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateRoadAccident(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateRoadAccident(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetAccidentCause: () => (
         dispatch(
           autobaseActions.autobaseGetSetRoadAccidentCause(
@@ -256,6 +228,8 @@ export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
   ),
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRoadAccident,
+    updateAction: autobaseActions.autobaseUpdateRoadAccident,
     mergeElement: (props) => {
       return getDefaultRoadAccidentElement(props.element);
     },

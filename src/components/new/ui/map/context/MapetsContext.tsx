@@ -13,7 +13,7 @@ const MapEtsContext = React.createContext<StateMapEtsProvider>(defaultState);
 
 export const MapEtsConsumer = MapEtsContext.Consumer;
 
-export class MapEtsProvider extends React.PureComponent<{}, StateMapEtsProvider> {
+export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
   constructor(props) {
     super(props);
 
@@ -28,8 +28,7 @@ export class MapEtsProvider extends React.PureComponent<{}, StateMapEtsProvider>
 
   setMapToContext = (key: string, map: ol.Map) => {
     setTimeout(() => {
-      // tslint:disable-next-line
-      console.log('SET MAP INTO CONTEXT', key);
+      console.log('SET MAP INTO CONTEXT', key); // tslint:disable-line:no-console
 
       this.setState({
         mapByKeys: {
@@ -41,8 +40,7 @@ export class MapEtsProvider extends React.PureComponent<{}, StateMapEtsProvider>
   }
 
   removeMapToContext = (key: string) => {
-    // tslint:disable-next-line
-    console.log('REMOVE MAP FROM CONTEXT', key);
+    console.log('REMOVE MAP FROM CONTEXT', key); // tslint:disable-line:no-console
 
     const { mapByKeys: { ...mapByKeys } } = this.state;
 

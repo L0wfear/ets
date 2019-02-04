@@ -1,12 +1,8 @@
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import {
-  AutobaseCreateTire,
-  AutobaseUpdateTire,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tire/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTireFormWrap = {
   showForm: boolean;
@@ -23,15 +19,13 @@ export type StatePropsTire = {
   tireSizeList: IStateAutobase['tireSizeList'];
 };
 export type DispatchPropsTire = {
-  createAction: AutobaseCreateTire;
-  updateAction: AutobaseUpdateTire;
   tireSizeGetAndSetInStore: any;
   tireModelGetAndSetInStore: any;
 };
 export type OwnTireProps = {
   element: Tire | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

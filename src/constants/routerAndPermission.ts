@@ -4,17 +4,13 @@ import waybillJournal from 'components/waybill/config-data';
 import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
 import reports from 'components/reports/config-data';
-import companyStructure from 'components/company_structure/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
-import changeCompany from 'components/nav-item-role/config-data';
+import changeCompany from 'components/new/ui/app_header/desktop/right/change_role/config-data';
 
-import dashboard from 'components/new/pages/dashboard/config-data/index';
+import dashboard from 'components/new/pages/dashboard/config-data';
 import routeList from 'components/new/pages/routes_list/config-data';
-
-const PROTO = window.location.protocol;
-const HOST = window.location.host;
-const PATHNAME = window.location.pathname;
+import config from 'config';
 
 const routerAndPermission = {
   monitor,
@@ -25,11 +21,10 @@ const routerAndPermission = {
   nsi,
   reports,
   routeList,
-  companyStructure,
   notificationRegistry,
   programRegistry,
   admin: {
-    path: `${PROTO}//${HOST}${PATHNAME}admin`,
+    path: `${config.admin}`,
     title: 'Администрирование',
     entyity: 'administration',
     noHash: true,

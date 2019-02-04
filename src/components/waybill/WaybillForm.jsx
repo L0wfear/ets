@@ -1,4 +1,5 @@
 import * as React from 'react';
+import memoize from 'memoize-one';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import * as Modal from 'react-bootstrap/lib/Modal';
@@ -47,7 +48,7 @@ import {
 import { confirmDialogChangeDate } from 'components/waybill/utils_react';
 
 import {
-  defaultSortingFunction,
+  defaultSortingFunction, defaultSelectListMapper,
 } from 'components/ui/input/ReactSelect/utils';
 
 import Form from 'components/compositions/Form';
@@ -58,6 +59,13 @@ import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionFiled from 'components/waybill/form/MissionFiled';
 import { isNullOrUndefined, isNumber } from 'util';
+import {
+  getSessionState,
+  getAutobaseState,
+} from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -82,6 +90,10 @@ class WaybillForm extends Form {
       fuelRateAllList: [],
       tooLongFactDates: false,
       notAvailableMissions: [],
+      fuel_method: null,
+      fuel_card_id: null,
+      equipment_fuel_method: null,
+      equipment_fuel_card_id: null,
     };
   }
 
@@ -109,6 +121,8 @@ class WaybillForm extends Form {
   }
 
   async componentDidMount() {
+    this.props.fuelCardsGetAndSetInStore();
+
     const {
       formState,
       formState: { status },
@@ -135,17 +149,21 @@ class WaybillForm extends Form {
 
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
-        .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))
+        .then(({ result: fuelRateAll }) => this.setState({
+          fuelRateAllList: fuelRateAll.map(d => d.car_model_id),
+        }))
         .catch((e) => {
           console.error(e); // eslint-disable-line
-          this.setState({ fuelRateAllList: [] });
+          this.setState({
+            fuelRateAllList: [],
+          });
         });
     }
 
     if (!IS_CREATING) {
       flux.getActions('waybills').getWaybill(formState.id)
         .then(({ result: { closed_editable } }) => this.setState({
-          canEditIfClose: closed_editable ? flux.getStore('session').getPermission('waybill.update_closed') : false,
+          canEditIfClose: closed_editable ? this.props.userPermissionsSet.has('waybill.update_closed') : false,
           origFormState: formState,
         }))
         .catch((e) => {
@@ -172,10 +190,11 @@ class WaybillForm extends Form {
 
           this.setState({
             fuelRates,
-            operations: fuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            operations: fuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
+                  uniqKey: id,
                   rate_on_date,
                   comment,
                   measure_unit_name,
@@ -187,10 +206,11 @@ class WaybillForm extends Form {
             }, []),
             fuel_correction_rate,
             equipmentFuelRates,
-            equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            equipmentOperations: equipmentFuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
+                  uniqKey: id,
                   rate_on_date,
                   measure_unit_name,
                   is_excluding_mileage,
@@ -214,6 +234,10 @@ class WaybillForm extends Form {
           });
         });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetSetFuelCards();
   }
 
   handlePlanDepartureDates = (field, value) => {
@@ -551,6 +575,69 @@ class WaybillForm extends Form {
     this.props.onSubmit();
   }
 
+  makeOptionsBySessionStructures = (
+    memoize(
+      structures => structures.map(defaultSelectListMapper),
+    )
+  )
+
+  getFuelCardsListOptions(fuelCardsList, fuel_type_filter) {
+    return fuelCardsList.reduce((newArr, { id, number, fuel_type, ...other }) => {
+      if (fuel_type === fuel_type_filter || !fuel_type_filter) {
+        newArr.push({
+          value: id,
+          label: number,
+          rowData: {
+            id,
+            number,
+            fuel_type,
+            ...other,
+          },
+        });
+      }
+      return newArr;
+    }, []);
+  }
+
+  handleFuelMethodChange = (value) => {
+    if (value !== 'fuel_card') {
+      this.handleChange('fuel_card_id', null);
+      this.props.handleMultipleChange({
+        fuel_card_id: null,
+        fuel_method: value,
+      });
+    } else {
+      this.handleChange('fuel_method', value);
+    }
+  }
+
+  handleEquipmentFuelMethodChange = (value) => {
+    if (value !== 'fuel_card') {
+      this.handleChange('fuel_card_id', null);
+      this.props.handleMultipleChange({
+        equipment_fuel_card_id: null,
+        equipment_fuel_method: value,
+      });
+    } else {
+      this.handleChange('equipment_fuel_method', value);
+    }
+  }
+
+  handleFuelTypeChange = (value) => {
+    this.props.handleMultipleChange({
+      fuel_card_id: null,
+      fuel_type: value,
+    });
+  }
+
+  handleEquipmentFuelTypeChange = (value) => {
+    this.props.handleMultipleChange({
+      equipment_fuel_card_id: null,
+      equipment_fuel_type: value,
+    });
+  }
+
+
   render() {
     const {
       loadingFields,
@@ -572,6 +659,9 @@ class WaybillForm extends Form {
       workModeOptions,
       employeesIndex = {},
       isPermittedByKey = {},
+      userStructures,
+      userStructureId,
+      fuelCardsList,
     } = this.props;
 
     let taxesControl = false;
@@ -582,21 +672,39 @@ class WaybillForm extends Form {
     const CARS = getCarsByStructId(carsList);
     const TRAILERS = getTrailersByStructId(carsList);
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({ value: k, label: v }));
+    // для теста если отвалился бек [{label: 'FUEL_CARDS', value: 'FUEL_CARDS' }] || 
+    const FUEL_CARDS = this.getFuelCardsListOptions(fuelCardsList, state.fuel_type);
+    const EQUIPMENT_FUEL_CARDS = this.getFuelCardsListOptions(fuelCardsList, state.equipment_fuel_type);
+
+    const FUEL_METHOD = [
+      {
+        value: 'naliv',
+        label: 'Налив',
+      },
+      {
+        value: 'fuel_card',
+        label: 'Топливная карта',
+      },
+    ];
+
+    const fuelCardDisable = !state.fuel_method || state.fuel_method === 'naliv';
+    const equipmentFuelCardDisable = !state.fuel_method || state.equipment_fuel_method === 'naliv';
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
-    const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
-    const STRUCTURES = this.context.flux.getStore('session').getCurrentUser().structures.map(({ id, name }) => ({ value: id, label: name }));
+    const STRUCTURES = this.makeOptionsBySessionStructures(
+      userStructures,
+    );
 
     let STRUCTURE_FIELD_VIEW = false;
     let STRUCTURE_FIELD_READONLY = false;
     let STRUCTURE_FIELD_DELETABLE = false;
-    if (currentStructureId !== null && STRUCTURES.length === 1 && currentStructureId === STRUCTURES[0].value) {
+    if (userStructureId !== null && STRUCTURES.length === 1 && userStructureId === STRUCTURES[0].value) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_READONLY = true;
-    } else if (currentStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === currentStructureId)) {
+    } else if (userStructureId !== null && STRUCTURES.length > 1 && find(STRUCTURES, el => el.value === userStructureId)) {
       STRUCTURE_FIELD_VIEW = true;
-    } else if (currentStructureId === null && STRUCTURES.length > 1) {
+    } else if (userStructureId === null && STRUCTURES.length > 1) {
       STRUCTURE_FIELD_VIEW = true;
       STRUCTURE_FIELD_DELETABLE = true;
     }
@@ -1004,7 +1112,29 @@ class WaybillForm extends Form {
                     disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     options={FUEL_TYPES}
                     value={state.fuel_type}
-                    onChange={this.handleChange.bind(this, 'fuel_type')}
+                    onChange={this.handleFuelTypeChange}
+                  />
+                  <Field
+                    id="fuel-method"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Способ заправки"
+                    error={errors.fuel_method}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
+                    options={FUEL_METHOD}
+                    value={state.fuel_method}
+                    onChange={this.handleFuelMethodChange}
+                  />
+                  <Field
+                    id="fuel-card-id"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Топливная карта"
+                    error={errors.fuel_card_id}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || fuelCardDisable || !IS_DRAFT}
+                    options={FUEL_CARDS}
+                    value={state.fuel_card_id}
+                    onChange={this.handleChange.bind(this, 'fuel_card_id')}
                   />
 
                   <Field
@@ -1048,7 +1178,6 @@ class WaybillForm extends Form {
                     disabled
                   />
                   <ExtField
-                    multi
                     id="fact-fuel-end"
                     type="number"
                     modalKey={modalKey}
@@ -1127,7 +1256,7 @@ class WaybillForm extends Form {
                   <div className="form-group">
                     <div className="checkbox">
                       <label htmlFor="show-fuel-consumption">
-                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} />
+                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} readOnly={true}/>
                         <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
                       </label>
                     </div>
@@ -1143,7 +1272,29 @@ class WaybillForm extends Form {
                     disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                     options={FUEL_TYPES}
                     value={state.equipment_fuel_type}
-                    onChange={this.handleChange.bind(this, 'equipment_fuel_type')}
+                    onChange={this.handleEquipmentFuelTypeChange}
+                  />
+                  <Field
+                    id="equipment-fuel-method"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Способ заправки"
+                    error={errors.equipment_fuel_method}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
+                    options={FUEL_METHOD}
+                    value={state.equipment_fuel_method}
+                    onChange={this.handleEquipmentFuelMethodChange}
+                  />
+                  <Field
+                    id="equipment-fuel-card-id"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Топливная карта"
+                    error={errors.equipment_fuel_card_id}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || equipmentFuelCardDisable || !IS_DRAFT}
+                    options={EQUIPMENT_FUEL_CARDS}
+                    value={state.equipment_fuel_card_id}
+                    onChange={this.handleChange.bind(this, 'equipment_fuel_card_id')}
                   />
                   <Field
                     id="equipment-fuel-start"
@@ -1323,4 +1474,29 @@ WaybillForm.contextTypes = {
   flux: PropTypes.object,
 };
 
-export default connectToStores(WaybillForm, ['objects', 'employees', 'waybills', 'missions']);
+export default compose(
+  connect(
+    state => ({
+      appConfig: getSessionState(state).appConfig,
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructures: getSessionState(state).userData.structures,
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
+      fuelCardsList: getAutobaseState(state).fuelCardsList,
+    }),
+    dispatch => ({
+      fuelCardsGetAndSetInStore: () => (
+        dispatch(
+          fuelCardsActions.fuelCardsGetAndSetInStore(
+            {},
+            {},
+          ),
+        )
+      ),
+      resetSetFuelCards: () => (
+        dispatch(
+          fuelCardsActions.resetSetFuelCards(),
+        )
+      ),
+    }),
+  ),
+)(connectToStores(WaybillForm, ['objects', 'employees', 'waybills', 'missions']));

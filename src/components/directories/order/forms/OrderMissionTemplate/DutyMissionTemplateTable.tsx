@@ -16,7 +16,7 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
     cols: [
       {
         name: 'date_from',
-        displayName: 'Начало действия поручения',
+        displayName: 'Начало действия',
         type: 'datetime',
         filter: {
           type: 'datetime',
@@ -24,7 +24,7 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
       },
       {
         name: 'date_to',
-        displayName: 'Окончание действия поручения',
+        displayName: 'Окончание действия',
         type: 'datetime',
         filter: {
           type: 'datetime',
@@ -47,12 +47,10 @@ const getRenders = (props) => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    brigade_employee_id_list: ({ data, rowData }) => (
+    brigade_employee_id_list_id: ({ data, rowData }) => (
       <div>
         {
-          data.map((id) => (
-            get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
-          )).join(', ')
+          rowData.brigade_employee_id_list_fio.join(', ')
         }
       </div>
     ),
@@ -71,8 +69,9 @@ const Table: React.FunctionComponent<any> = (props) => (
     onAllRowsChecked={props.onAllRowsChecked}
     selected={props.selected}
     checked={props.checked}
-    selectField={'frontId'}
-  />
+    selectField="frontId"
+    initialSort="frontId"
+    />
 );
 
 export default Table;

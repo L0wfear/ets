@@ -3,7 +3,7 @@ import { Label } from 'react-bootstrap';
 import { uniqBy, get } from 'lodash';
 import { getPermittetEmployeeForBrigade } from 'components/missions/utils/utils';
 
-import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import createFio from 'utils/create-fio';
 
 export const FormTitle: React.FunctionComponent<{ number?: string | number, status: string }> = (props) => (
@@ -13,7 +13,7 @@ export const FormTitle: React.FunctionComponent<{ number?: string | number, stat
   </div>
 );
 
-export const makeRoutesForDutyMissionForm = ({ selectedRouteNew: route, routesList = [] }, { formState: state }) => {
+export const makeRoutesForDutyMissionForm = ({ selectedRoute: route, routesList = [] }, { formState: state }) => {
   const routes = routesList.filter((r) => (
     (!state.structure_id || r.structure_id === state.structure_id)
   ));

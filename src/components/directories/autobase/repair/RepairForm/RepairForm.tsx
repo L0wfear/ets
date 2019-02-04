@@ -8,7 +8,6 @@ import repairPermissions from 'components/directories/autobase/repair/config-dat
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { repairFormSchema } from 'components/directories/autobase/repair/RepairForm/repairFrom_schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -65,7 +64,12 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     this.setState({ repairTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+
+    const { data } = await this.props.autobaseGetSetCar(
+      {},
+      { page, path },
+    );
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -79,14 +83,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -114,7 +111,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     );
 
     return (
-      <Modal id="modal-repair" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-repair" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -130,7 +127,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   error={errors.car_id}
                   options={carListOptions}
                   emptyValue={null}
-                  onChange={this.handleChange}
+                  onChange={this.props.handleChange}
                   boundKeys="car_id"
                   clearable={false}
                   disabled={!isPermitted}
@@ -145,7 +142,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 error={errors.repair_company_id}
                 options={this.state.repairCompanyOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="repair_company_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -159,7 +156,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 error={errors.repair_type_id}
                 options={this.state.repairTypeOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="repair_type_id"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -170,7 +167,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Номер документа"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="number"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -182,7 +179,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.plan_date_start}
                 time={false}
                 error={errors.plan_date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="plan_date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -194,7 +191,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.plan_date_end}
                 time={false}
                 error={errors.plan_date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="plan_date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -206,7 +203,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.fact_date_start}
                 time={false}
                 error={errors.fact_date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fact_date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -218,7 +215,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.fact_date_end}
                 time={false}
                 error={errors.fact_date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fact_date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -229,7 +226,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Описание неисправности"
                 value={state.description}
                 error={errors.description}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="description"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -240,7 +237,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Примечание"
                 value={state.note}
                 error={errors.note}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -250,7 +247,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Файл"
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -265,7 +262,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                     error={errors.status}
                     options={this.state.statusOptions}
                     emptyValue={null}
-                    onChange={this.handleChange}
+                    onChange={this.props.handleChange}
                     boundKeys="status"
                     disabled={!isPermitted}
                     modalKey={path}
@@ -295,29 +292,10 @@ export default compose<PropsRepair, OwnRepairProps>(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
+    (dispatch: any, { page, path }) => ({
+      autobaseGetSetCar: (...arg) => (
         dispatch(
-          autobaseActions.autobaseCreateRepair(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateRepair(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetCar: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
+          autobaseActions.autobaseGetSetCar(...arg),
         )
       ),
       autobaseGetRepairCompany: () => (
@@ -340,6 +318,8 @@ export default compose<PropsRepair, OwnRepairProps>(
   ),
   withForm<PropsRepairWithForm, Repair>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRepair,
+    updateAction: autobaseActions.autobaseUpdateRepair,
     mergeElement: (props) => {
       return getDefaultRepairElement(props.element);
     },

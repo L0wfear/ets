@@ -8,7 +8,7 @@ import permissions from 'components/missions/mission/config-data/permissions';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import { extractTableMeta, getServerSortingField } from 'components/ui/table/utils';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import PrintForm from 'components/missions/common/PrintForm';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
@@ -16,18 +16,18 @@ import MissionsTable, { getTableMeta } from 'components/missions/mission/Mission
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import { getCompanyStructureState, getSessionState } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const is_archive = true;
 const loadingPageName = 'mission-archive';
 
-const ButtonUpdateMission = enhanceWithPermissions({
-  permission: permissions.update,
+const ButtonUpdateMission = withRequirePermissionsNew({
+  permissions: permissions.update,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'mission',
   permissions,
@@ -37,7 +37,6 @@ const ButtonUpdateMission = enhanceWithPermissions({
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
 })
 class MissionsArchiveJournal extends CheckableElementsList {
-
   constructor(props) {
     super(props);
 
@@ -229,6 +228,7 @@ export default compose(
   connect(
     state => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructureLinear: () => (

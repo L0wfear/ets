@@ -45,7 +45,7 @@ export const tireModelGetAndSetInStore: any = (payload = {}, { page, path }: { p
   };
 };
 export const autobaseCreateTireModel: any = (tireModelOld: TireModel, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { tireModel } } = await dispatch({
+  const { payload: tireModel } = await dispatch({
     type: 'none',
     payload: createSetTireModel(tireModelOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateTireModel: any = (tireModelOld: TireModel, { page, pa
   return tireModel;
 };
 export const autobaseUpdateTireModel: any = (tireModelOld: TireModel, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { tireModel } } = await dispatch({
+  const { payload: tireModel } = await dispatch({
     type: 'none',
     payload: updateSetTireModel(tireModelOld),
     meta: {

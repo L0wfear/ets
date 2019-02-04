@@ -5,7 +5,6 @@ import {
 } from 'api/missions';
 
 import {
-  keyBy,
   cloneDeep,
 } from 'lodash';
 import { createValidDateTime } from 'utils/dates';
@@ -75,8 +74,8 @@ export const getDutyMissionById = (id) => (
       return {
         duty_mission: {
           ...duty_mission,
-          brigadeEmployeeIdIndex: keyBy(duty_mission.brigade_employee_id_list, 'employee_id'),
-          brigade_employee_id_list: duty_mission.brigade_employee_id_list.map(({ employee_id }) => employee_id),
+          brigade_employee_id_list_id: duty_mission.brigade_employee_id_list.map(({ employee_id }) => employee_id),
+          brigade_employee_id_list_fio: duty_mission.brigade_employee_id_list.map(({ employee_fio }) => employee_fio),
         },
       };
     })

@@ -57,7 +57,7 @@ export const missionTemplateFormSchema: SchemaType<MissionTemplate, PropsMission
           return 'Для создания шаблона задания на колонну должно быть выбрано более одного ТС';
         }
 
-        return undefined;
+        return '';
       },
     ],
   },

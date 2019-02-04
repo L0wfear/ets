@@ -28,7 +28,7 @@ class FieldBrigadeEmployeeIdListDutyMissionTemplate extends React.PureComponent<
     );
 
     const notAvtiveEmployee = nextProps.brigade_employee_id_list.reduce<StateFieldBrigadeEmployeeIdListDutyMissionTemplate['BRIGADE']>((newArr, employee) => {
-      if (!BRIGADE.some((empl) => empl.value !== employee.employee_id)) {
+      if (!BRIGADE.find((empl) => empl.value === employee.employee_id)) {
         newArr.push({
           value: employee.employee_id,
           label: employee.employee_fio,

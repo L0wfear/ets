@@ -8,6 +8,7 @@ interface IFormState {
   mission_source_id?: number;
   route_id?: number;
   status?: string | void;
+  car_id?: number;
   type_id?: number;
 }
 interface ITechnicalOperation {
@@ -63,14 +64,14 @@ export const makeTechnicalOperationOptionDefault: TMakeTechnicalOperationOptionD
 interface ITechnicalOperationActionsProps {
   kind_task_ids?: string;
   for?: string;
-  func_type_id?: number;
+  car_id?: number;
 }
 
 type TGetTechnicalOperationData = (
   formState: IFormState,
   isTemplate: boolean,
   fromOrder: boolean,
-  withDefineTypeId: boolean,
+  withDefineCarId: boolean,
   missionSourceAction: () => Promise<any>,
   technicalOperationsActions: (props: ITechnicalOperationActionsProps) => Promise<any>,
 ) => Promise<{
@@ -82,11 +83,11 @@ type TGetTechnicalOperationData = (
 /**
  * @param formState состояние формы
  * @param fromOrder создание из реестра факсограмм?
- * @param withDefineTypeId тс нельзя изменить
+ * @param withDefineCarId тс нельзя изменить
  * @param missionSourceAction Получение списка источников заданий
  * @param technicalOperationsActions Получение списка тех операций
  */
-export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, isTemplate, fromOrder, withDefineTypeId, missionSourceAction, technicalOperationsActions) =>
+export const getTechnicalOperationData: TGetTechnicalOperationData = (formState, isTemplate, fromOrder, withDefineCarId, missionSourceAction, technicalOperationsActions) =>
   missionSourceAction()
     .then(({ order_mission_source_id }) => {
       const kind_task_ids =
@@ -97,12 +98,12 @@ export const getTechnicalOperationData: TGetTechnicalOperationData = (formState,
           null
         ;
       return Promise.all([
-        technicalOperationsActions({ kind_task_ids, for: 'mission', func_type_id: formState.type_id }),
+        technicalOperationsActions({ kind_task_ids, for: 'mission', car_id: formState.car_id }),
         Promise.resolve(kind_task_ids),
       ]);
     })
     .then(([ { result: technicalOperationsList }, kind_task_ids ]) => {
-      if ((withDefineTypeId || formState.status === 'not_assigned') && formState.type_id) {
+      if ((withDefineCarId || formState.status === 'not_assigned') && formState.car_id) {
         return {
           TECH_OPERATIONS: makeTechnicalOperationOptionfFromWaybill(technicalOperationsList, formState),
           kind_task_ids,
@@ -178,18 +179,18 @@ export const handleRouteFormHide = (formState, stateData, routeActionGetRoutesBy
 export const getNormDataByNormatives = (normatives, kind_task_ids, action) =>
   action({ norm_ids: normatives.map(({ id }) => id).join(','), kind_task_ids }).then(({ result: normativesData }) => normativesData)
 ;
-export const getCarsByNormNormatives = (normatives, formState, withDefineTypeId, action) => {
-  if (!formState.status && !withDefineTypeId || formState.can_edit_car_and_route) {
+export const getCarsByNormNormatives = (normatives, formState, withDefineCarId, action) => {
+  if (!formState.status && !withDefineCarId || formState.can_edit_car_and_route) {
     return action({ norm_ids: normatives.map(({ id }) => id).join(',') }).then(({ result: { rows: carsList } }) => carsList);
   }
 
   return Promise.resolve(null);
 };
 
-export const getDataByNormatives = (normatives, kind_task_ids, formState, withDefineTypeId, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
+export const getDataByNormatives = (normatives, kind_task_ids, formState, withDefineCarId, getTechOperationsByNormIds, routeActionGetRoutesBySomeData, getCarsByNormIds) =>
   Promise.all([
     getNormDataByNormatives(normatives, kind_task_ids, getTechOperationsByNormIds),
-    getCarsByNormNormatives(normatives, formState, withDefineTypeId, getCarsByNormIds),
+    getCarsByNormNormatives(normatives, formState, withDefineCarId, getCarsByNormIds),
   ])
   .then(([ normativesData, carsList ]) => {
     const available_route_types = normativesData.reduce((newArr, { route_types }) => [...newArr, ...route_types], []);

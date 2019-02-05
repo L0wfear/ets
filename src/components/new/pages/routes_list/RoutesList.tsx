@@ -145,12 +145,16 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       selectedRoute: null,
       selectedRoute_old: null,
       showForm: false,
-      filterValues: {},
+      filterValues: {
+        season_id: {
+          type: 'multiselect',
+          value: [3, getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end) === 'winter' ? 2 : 1],
+        },
+      },
       filterModalIsOpen: false,
       ROUTES: {},
       routesList: [],
       showId: new Set(),
-      season_id: [3, getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end) === 'winter' ? 2 : 1],
       routesMapNameId: new Map(),
     };
   }
@@ -160,7 +164,9 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
     const searchObject = queryString.parse(search);
 
     if (search && searchObject) {
-      const filterValues = {};
+      const filterValues = {
+        ...this.state.filterValues,
+      };
       Object.entries(searchObject).forEach(([ key, value ]) => {
         filterValues[key] = {
           type: 'multiselect',
@@ -198,8 +204,16 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
     return route_data;
   }
 
-  handleChangeSeasonId = (season_id) => {
-    this.setState({ season_id });
+  handleChangeSeasonId = (value) => {
+    const { filterValues } = this.state;
+
+    this.saveFilter({
+      ...filterValues,
+      season_id: {
+        ...filterValues.season_id,
+        value,
+      },
+    });
   }
 
   closeFilter = () => {
@@ -361,16 +375,15 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   )
 
   shouldBeRendered(obj, filterValues) {
-    if (this.state.season_id.some((season_id) => (obj.seasons.some((seasonData) => seasonData.season_id === season_id)))) {
-      return Object.entries(filterValues).every(([key, { value }]: any) => {
-        if (Array.isArray(obj[key])) {
-          return obj[key].some((data) => value.includes(data));
-        }
-        return value.includes(obj[key]);
-      });
-    }
-
-    return false;
+    return Object.entries(filterValues).every(([key, { value }]: any) => {
+      if (key === 'season_id') {
+        return value.some((season_id) => (obj.seasons.some((seasonData) => seasonData.season_id === season_id)));
+      }
+      if (Array.isArray(obj[key])) {
+        return obj[key].some((data) => value.includes(data));
+      }
+      return value.includes(obj[key]);
+    });
   }
 
   render() {
@@ -409,7 +422,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                     multi
                     label={false}
                     options={SEASONS_OPTIONS}
-                    value={this.state.season_id}
+                    value={this.state.filterValues.season_id.value}
                     onChange={this.handleChangeSeasonId}
                   />
                 </SeasonsFilterContainer>

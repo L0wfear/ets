@@ -23,7 +23,7 @@ export type DispatchPropsMaintenanceRate = {
 export type OwnMaintenanceRateProps = {
   element: IMaintenanceRateUpd | null;
   handleHide: OnFormHideType;
-  page?: string;
+  page: string;
   path?: string;
   type?: any;
   technicalOperationsList?: any[];

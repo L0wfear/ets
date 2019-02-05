@@ -1,5 +1,4 @@
 import * as React from 'react';
-import memoize from 'memoize-one';
 
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
@@ -10,9 +9,6 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
-
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -37,10 +33,18 @@ import {
 import { getDefaultFuelRateElement } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema';
 import { ICreateFuel } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-import FuelRatePermissions from 'components/directories/normative/fuel_rates/config-data/permissions';
+import fuelRatePermissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
-import { getModelsListState } from 'redux-main/reducers/modules/some_uniq/modelList/selectors';
-import { getSpecialModelList } from 'redux-main/reducers/modules/some_uniq/special_model/selectors';
+import {
+  getModelsListState,
+  getModelsListOptions
+} from 'redux-main/reducers/modules/some_uniq/modelList/selectors';
+import {
+  getSomeUniqSpecialModelOptions,
+} from 'redux-main/reducers/modules/some_uniq/special_model/selectors';
+import { getCompanyStructureLinearOptions } from 'redux-main/reducers/modules/company_structure/selectors';
+import { getFuelRateOperationsIsActiveOptions } from 'redux-main/reducers/modules/fuel_rates/selectors';
+import { get } from 'lodash';
 
 class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
 
@@ -52,57 +56,45 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
     const {
       formState: {
         car_special_model_id,
-      }
+      },
+      page,
+      path,
     } = this.props;
 
-    this.props.actionGetAndSetInStoreSpecialModel();
-    this.props.getAndSetInStoreCompanyStructureLinear();
-    this.props.actionGetAndSetInStoreModelList({ car_special_model_id });
-    this.props.fuelOperationsGetAndSetInStore();
+    this.props.actionGetAndSetInStoreSpecialModel(
+      {},
+      { page, path },
+    );
+    this.props.getAndSetInStoreCompanyStructureLinear(
+      {},
+      { page, path },
+    );
+    this.props.actionGetAndSetInStoreModelList(
+      { car_special_model_id },
+      { page, path },
+    );
+    this.props.fuelOperationsGetAndSetInStore(
+      {},
+      { page, path },
+    );
 
   }
 
   handleSpecialModelChange = (value) => {
-    this.props.actionGetAndSetInStoreModelList({ car_special_model_id: value });
+    const {
+      page,
+      path,
+    } = this.props;
+
+    this.props.actionGetAndSetInStoreModelList(
+      { car_special_model_id: value },
+      { page, path },
+    );
     if (!this.props.modelsList.find((model) => model.id === this.props.formState.car_model_id)) {
       this.props.handleChange('car_model_id', null);
     }
     this.props.handleChange('car_special_model_id', value);
   }
-
-  makeOptionFromModelsList = (
-    memoize(
-      (modelsList) => modelsList.map((modalListItem) => ({ // Добавить типчики
-        value: modalListItem.id,
-        label: modalListItem.full_name,
-        rowData: modalListItem,
-      })), // change to custom
-    )
-  );
-
-  makeOptionFromSpecialModelsList = (
-    memoize(
-      (specialModelList) => specialModelList.map(defaultSelectListMapper),
-    )
-  );
-
-  makeOptionFromCompanyStructureLinearList = (
-    memoize(
-      (companyStructureLinearList) => companyStructureLinearList.map(defaultSelectListMapper),
-    )
-  );
-
-  makeOptionFromFuelRateOperations = (
-    memoize(
-      (fuelRateOperationsList) => fuelRateOperationsList.map((op) => ({
-        value: op.id,
-        label: `${op.name}, ${op.measure_unit_name}${op.equipment ? ' [спецоборудование]' : ''}`, // добавить условие новое
-        measure_unit_name: op.measure_unit_name,
-        rowData: op,
-      }))
-      .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())), // change to custom
-    )
-  );
 
   render() {
     const {
@@ -110,29 +102,19 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
       formErrors: errors,
       page,
       path,
-      modelsList,
-      fuelRateOperationsIsActiveList,
-      specialModelList,
-      companyStructureLinearList,
+      specialModelOptions,
+      companyStructureLinearOptions,
+      modelsListOptions,
+      fuelRateOperationsIsActiveOptions,
     } = this.props;
 
     const IS_CREATING = !state.id;
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
-    const COMPANY_ELEMENTS = this.makeOptionFromCompanyStructureLinearList(
-      companyStructureLinearList,
+    const masureUnitItem = fuelRateOperationsIsActiveOptions.find(
+      ({ value }) => (value === state.operation_id),
     );
-    const SPECIALMODELS = this.makeOptionFromSpecialModelsList(
-      specialModelList,
-    );
-    const MODELS = this.makeOptionFromModelsList(
-      modelsList,
-    );
-    const OPERATIONS = this.makeOptionFromFuelRateOperations(
-      fuelRateOperationsIsActiveList,
-    );
-
-    const measure_unit_name = (OPERATIONS.find(({ value }) => value === state.operation_id) || { measure_unit_name: '-' }).measure_unit_name || '-'; // переписать без find
+    const measure_unit_name = get(masureUnitItem, 'rowData.measure_unit_name', '-' );
 
     return (
       <Modal id="modal-fuel-rate" show onHide={this.handleHide} backdrop="static">
@@ -149,7 +131,8 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 label="Дата приказа"
                 type="date"
                 date={state.order_date}
-                onChange={this.props.handleChange.bind(this, 'order_date')}
+                onChange={this.props.handleChange}
+                boundKeys="order_date"
                 time={false}
                 error={errors.order_date}
                 disabled={!isPermitted}
@@ -161,10 +144,11 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 label="Операция"
                 error={errors.operation_id}
                 type="select"
-                options={OPERATIONS}
+                options={fuelRateOperationsIsActiveOptions}
                 clearable={false}
                 value={state.operation_id}
-                onChange={this.props.handleChange.bind(this, 'operation_id')}
+                onChange={this.props.handleChange}
+                boundKeys="operation_id"
                 disabled={!isPermitted}
               />
 
@@ -183,7 +167,8 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 label="Примечание"
                 type="string"
                 value={state.comment}
-                onChange={this.props.handleChange.bind(this, 'comment')}
+                onChange={this.props.handleChange}
+                boundKeys="comment"
               />
 
               <ExtField
@@ -193,7 +178,8 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 type="number"
                 error={errors.summer_rate}
                 value={state.summer_rate}
-                onChange={this.props.handleChange.bind(this, 'summer_rate')}
+                onChange={this.props.handleChange}
+                boundKeys="summer_rate"
                 disabled={!isPermitted}
               />
 
@@ -215,7 +201,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 label="Модель ТС"
                 error={errors.car_special_model_id}
                 type="select"
-                options={SPECIALMODELS}
+                options={specialModelOptions}
                 clearable={false}
                 value={state.car_special_model_id}
                 onChange={this.handleSpecialModelChange}
@@ -229,9 +215,10 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 error={errors.car_model_id}
                 type="select"
                 className="white-space-pre-wrap"
-                options={MODELS}
+                options={modelsListOptions}
                 value={state.car_model_id}
-                onChange={this.props.handleChange.bind(this, 'car_model_id')}
+                onChange={this.props.handleChange}
+                boundKeys="car_model_id"
                 disabled={!isPermitted || !state.car_special_model_id}
               />
               <ExtField
@@ -239,10 +226,11 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 modalKey={page}
                 label="Подразделение"
                 type="select"
-                options={COMPANY_ELEMENTS}
+                options={companyStructureLinearOptions}
                 value={state.company_structure_id}
                 emptyValue={null}
-                onChange={this.props.handleChange.bind(this, 'company_structure_id')}
+                onChange={this.props.handleChange}
+                boundKeys="company_structure_id"
                 disabled={!isPermitted}
               />
             </Col>
@@ -259,71 +247,43 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
 export default compose<PropsFuelRate, OwnFuelRateProps>(
   connect<StatePropsFuelRate, DispatchPropsFuelRate, OwnFuelRateProps, ReduxState>(
     (state) => ({
-      specialModelList: getSpecialModelList(state),
-      companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
       modelsList: getModelsListState(state),
-      fuelRateOperationsIsActiveList: state.fuelRates.fuelRateOperationsIsActiveList,
+      specialModelOptions: getSomeUniqSpecialModelOptions(state),
+      companyStructureLinearOptions: getCompanyStructureLinearOptions(state),
+      modelsListOptions: getModelsListOptions(state),
+      fuelRateOperationsIsActiveOptions: getFuelRateOperationsIsActiveOptions(state),
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
+    (dispatch: any) => ({
+      actionGetAndSetInStoreModelList: (...arg) => (
         dispatch(
-          fuelRateCreate(
-            formState,
-            { page, path },
-          ),
+          someUniqActions.actionGetAndSetInStoreModelList(...arg),
         )
       ),
-      updateAction: (formState) => (
+      actionGetAndSetInStoreSpecialModel: (...arg) => (
         dispatch(
-          fuelRateUpdate(
-            formState,
-            { page, path },
-          ),
+          someUniqActions.actionGetAndSetInStoreSpecialModel(...arg),
         )
       ),
-      actionGetAndSetInStoreModelList: (payload) => (
+      getAndSetInStoreCompanyStructureLinear: (...arg) => (
         dispatch(
-          someUniqActions.actionGetAndSetInStoreModelList(
-            {},
-            { ...payload, page, path },
-          ),
+          companyStructureActions.getAndSetInStoreCompanyStructureLinear(...arg),
         )
       ),
-      actionGetAndSetInStoreSpecialModel: () => (
+      fuelOperationsGetAndSetInStore: (...arg) => (
         dispatch(
-          someUniqActions.actionGetAndSetInStoreSpecialModel(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      getAndSetInStoreCompanyStructureLinear: () => (
-        dispatch(
-          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      fuelOperationsGetAndSetInStore: () => (
-        dispatch(
-          fuelOperationsGetAndSetInStore(
-            {},
-            {
-              page,
-              path,
-            },
-          ),
+          fuelOperationsGetAndSetInStore(...arg),
         )
       ),
     }),
   ),
   withForm<PropsFuelRateWithForm, ICreateFuel>({
     uniqField: 'id',
+    createAction: fuelRateCreate,
+    updateAction: fuelRateUpdate,
     mergeElement: (props) => {
       return getDefaultFuelRateElement(props.element);
     },
     schema: fuelRateSchema,
-    permissions: FuelRatePermissions, // Lower case
+    permissions: fuelRatePermissions,
   }),
 )(FuelRateForm);

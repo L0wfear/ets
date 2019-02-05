@@ -13,10 +13,14 @@ import {
 
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import {
+  getSessionState,
+  getFuelRatesState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'fuel-rates';
 
-@connectToStores(['odh', 'objects', 'session'])
+@connectToStores(['odh', 'objects'])
 @exportable({ entity: 'fuel_consumption_rates' })
 @staticProps({
   entity: 'fuel_consumption_rate',
@@ -32,11 +36,9 @@ class FuelRatesDirectory extends ElementsList {
     super(props);
     this.removeElementAction = this.props.fuelRateDelete;
   }
-  // handleHide
-  // autobaseResetSetSparePart
 
   init() {
-    const { flux } = this.context; // del
+    const { flux } = this.context;
 
     this.props.fuelRatesGetAndSetInStore();
 
@@ -51,7 +53,8 @@ export default compose(
   }),
   connect(
     state => ({
-      fuelRatesList: state.fuelRates.fuelRatesList,
+      fuelRatesList: getFuelRatesState(state).fuelRatesList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
       fuelRatesGetAndSetInStore: () => (

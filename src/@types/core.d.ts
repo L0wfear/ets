@@ -25,3 +25,8 @@ declare namespace ETSCore {
 
   type LegacyContext = any;
 }
+/**
+ * get typeof element in array
+ * @example ValuesOf<Array<TypeOfElement>> = TypeOfElement
+ */
+type ValuesOf<T extends any[]>= T[number];

@@ -17,8 +17,6 @@ export type PropsMaintenanceRateFormWrap = {
 export type StatePropsMaintenanceRate = {
 };
 export type DispatchPropsMaintenanceRate = {
-  createAction: any;
-  updateAction: any;
 };
 export type OwnMaintenanceRateProps = {
   element: IMaintenanceRateUpd | null;

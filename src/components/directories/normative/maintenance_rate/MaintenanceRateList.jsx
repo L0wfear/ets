@@ -11,14 +11,17 @@ import permissions from 'components/directories/normative/maintenance_rate/confi
 
 import { connect } from 'react-redux';
 import {
-  maintenanceRateGet,
+  maintenanceRateGetAndSetInStore,
   maintenanceRateDelete,
 } from 'redux-main/reducers/modules/maintenance_rate/actions-maintenanceRate';
-import {
-  MAINTENANCE_RATE_SET_DATA,
-} from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
+
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+import {
+  getSessionState,
+  getMaintenanceRateState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'maintenance-rate';
 
@@ -40,14 +43,10 @@ class MaintenanceRateDirectory extends ElementsList {
     this.removeElementAction = this.props.maintenanceRateDelete;
   }
 
-  setExportType(type) {
-    this.exportPayload = { type };
-  }
-
   init() {
     const { flux } = this.context;
 
-    this.props.maintenanceRateGet(this.props.type);
+    this.props.maintenanceRateGetAndSetInStore(this.props.type);
     flux.getActions('objects').getMaintenanceWork(); // проверить и перенести в форму
     flux.getActions('objects').getCleanCategories(); // проверить и перенести в форму
     flux.getActions('technicalOperation').getTechnicalOperations(); // проверить и перенести в форму
@@ -58,8 +57,25 @@ class MaintenanceRateDirectory extends ElementsList {
 
     if (prevProps.type !== type) {
       this.setExportType(type);
-      this.props.maintenanceRateGet(type);
+      this.props.maintenanceRateGetAndSetInStore(type);
     }
+  }
+
+  setExportType(type) {
+    this.exportPayload = { type };
+  }
+
+  onFormHide = (isSubmitted) => {
+    const changeState = {
+      showForm: false,
+    };
+
+    if (isSubmitted) {
+      this.init();
+      changeState.selectedElement = null;
+    }
+
+    this.setState(changeState);
   }
 }
 
@@ -93,17 +109,23 @@ export default compose(
   }),
   connect(
     state => ({
-      maintenanceRateList: state.maintenanceRate.maintenanceRateList,
+      maintenanceRateList: getMaintenanceRateState(state).maintenanceRateList,
+      userData: getSessionState(state).userData,
     }),
     dispatch => ({
-      maintenanceRateGet: type => (
+      maintenanceRateGetAndSetInStore: type => (
         dispatch(
-          maintenanceRateGet(MAINTENANCE_RATE_SET_DATA, type),
+          maintenanceRateGetAndSetInStore(
+            { type },
+            {
+              page: loadingPageName,
+            },
+          ),
         )
       ),
       maintenanceRateDelete: id => (
         dispatch(
-          maintenanceRateDelete(MAINTENANCE_RATE_SET_DATA, id),
+          maintenanceRateDelete(id),
         )
       ),
     }),

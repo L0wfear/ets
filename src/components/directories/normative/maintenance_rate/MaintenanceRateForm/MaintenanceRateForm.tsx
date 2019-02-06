@@ -13,22 +13,15 @@ import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { get } from 'lodash';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   maintenanceRateCreate,
   maintenanceRateUpdate,
 } from 'redux-main/reducers/modules/maintenance_rate/actions-maintenanceRate';
 
 import {
-  MAINTENANCE_RATE_SET_DATA
-} from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
-import {
   OwnMaintenanceRateProps,
   PropsMaintenanceRate,
   StateMaintenanceRate,
-  StatePropsMaintenanceRate,
-  DispatchPropsMaintenanceRate,
   PropsMaintenanceRateWithForm,
 } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/@types/MaintenanceRate.h';
 
@@ -84,7 +77,7 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
     const SUBCATEGORIES = subcategories.map(defaultSelectListMapper);
 
     return (
-      <Modal id="modal-maintenance-rate" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-maintenance-rate" show onHide={this.handleHide} backdrop="static" bsSize="large">
         <Modal.Header closeButton>
           <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} нормы на содержание {type === 'odh' ? 'ОДХ' : 'ДТ'}</Modal.Title>
         </Modal.Header>
@@ -176,33 +169,16 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
 }
 
 export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
-  connect<StatePropsMaintenanceRate, DispatchPropsMaintenanceRate, OwnMaintenanceRateProps, ReduxState>(
-    null,
-    (dispatch, { page, path, type }) => ({
-      createAction: (formState) => (
-        dispatch(
-          maintenanceRateCreate(
-            MAINTENANCE_RATE_SET_DATA,
-            type,
-            { ...formState, page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          maintenanceRateUpdate(
-            MAINTENANCE_RATE_SET_DATA,
-            type,
-            { ...formState, page, path },
-          ),
-        )
-      ),
-    }),
-  ),
   withForm<PropsMaintenanceRateWithForm, IMaintenanceRateUpd>({
     uniqField: 'id',
+    createAction: maintenanceRateCreate,
+    updateAction: maintenanceRateUpdate,
     mergeElement: (props) => {
-      return getDefaultMaintenanceRateElement(props.element);
+      const elementWithType = {
+        type: props.type,
+        ...props.element,
+      };
+      return getDefaultMaintenanceRateElement(elementWithType);
     },
     schema: maintenanceRateSchema,
     permissions: MaintenanceRatePermissions,

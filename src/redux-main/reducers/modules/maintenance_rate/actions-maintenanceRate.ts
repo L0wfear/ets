@@ -12,32 +12,67 @@ import {
 
 import { MAINTENANCE_RATE_SET_DATA } from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
 
-export const maintenanceRateGet = (type: string | null, payload) => ({
-  type: type || MAINTENANCE_RATE_SET_DATA, // Заменить на none
-  payload: getMaintenanceRate(payload),
-  meta: {
-    promise: true,
-  },
+export const maintenanceRateGet = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
+  dispatch({
+    type: 'none',
+    payload: getMaintenanceRate(payload),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  })
+);
+
+export const maintenanceRateCreate: any = (payload: ICreateMaintenanceRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const newMaintenanceRate = await dispatch({
+    type: 'none',
+    payload: createMaintenanceRate(payload),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  });
+  await maintenanceRateGetAndSetInStore({}, {page, path});
+  return newMaintenanceRate;
+};
+
+export const maintenanceRateSetNewData = (newStateData) => ({
+  type: MAINTENANCE_RATE_SET_DATA,
+  payload: newStateData,
 });
 
-export const maintenanceRateCreate = (type: string | null, mrType: string, formstate: ICreateMaintenanceRate) => ({
-  type: type || MAINTENANCE_RATE_SET_DATA, // Заменить на none
-  payload: createMaintenanceRate(mrType, formstate),
-  meta: {
-    promise: true,
-  },
-});
+export const maintenanceRateGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload: { maintenanceRateList } } = await dispatch(
+    maintenanceRateGet(payload, { page, path, }),
+  );
 
-export const maintenanceRateUpdate = (type: string | null, mrType: string, formstate: IMaintenanceRateUpd) => ({
-  type: type || MAINTENANCE_RATE_SET_DATA, // Заменить на none
-  payload: updateMaintenanceRate(mrType, formstate),
-  meta: {
-    promise: true,
-  },
-});
+  dispatch(
+    maintenanceRateSetNewData({maintenanceRateList}),
+  );
 
-export const maintenanceRateDelete = (type: string | null, id: number) => ({
-  type: type || MAINTENANCE_RATE_SET_DATA, // Заменить на none
+  return {
+    maintenanceRateList,
+  };
+};
+
+export const maintenanceRateUpdate: any = (payload: IMaintenanceRateUpd, { page, path }: {page: string, path?: string }) => async (dispatch) => {
+  const maintenanceRateUpd = await dispatch({
+    type: 'none',
+    payload: updateMaintenanceRate(payload),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  });
+  await maintenanceRateGetAndSetInStore({}, {page, path});
+  return maintenanceRateUpd;
+};
+
+export const maintenanceRateDelete = (id: number) => ({
+  type: 'none',
   payload: deleteMaintenanceRate(id),
   meta: {
     promise: true,

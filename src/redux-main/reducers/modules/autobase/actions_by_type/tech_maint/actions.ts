@@ -51,7 +51,7 @@ export const techMaintGetAndSetInStore = (payload = {}, { page, path }: { page: 
   };
 };
 export const autobaseCreateTechMaint: any = (techMaintOld: TechMaint, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { techMaint } } = await dispatch({
+  const { payload: techMaint } = await dispatch({
     type: 'none',
     payload: createSetTechMaint(techMaintOld),
     meta: {
@@ -64,7 +64,7 @@ export const autobaseCreateTechMaint: any = (techMaintOld: TechMaint, { page, pa
   return techMaint;
 };
 export const autobaseUpdateTechMaint: any = (techMaintOld: TechMaint, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { techMaint } } = await dispatch({
+  const { payload: techMaint } = await dispatch({
     type: 'none',
     payload: updateSetTechMaint(techMaintOld),
     meta: {

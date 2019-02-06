@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozonePgmStoreService,
   registryKey,
   header: {
-    title: 'Пункты отпуска ПГМ',
+    title: 'Справочник пунктов отпуска ПГМ',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -93,18 +93,22 @@ export const config: TypeConfigData = {
         {
           key: 'address',
           title: 'Адрес',
+          width: 400,
         },
         {
           key: 'liquid_pgm_volume',
           title: 'Объем жидких ПГМ',
+          width: 200,
         },
         {
           key: 'solid_pgm_volume',
           title: 'Объем твердых ПГМ',
+          width: 200,
         },
         {
           key: 'pgm_stores_type_name',
           title: 'Тип ПГМ',
+          width: 200,
         },
       ],
     },

@@ -45,7 +45,7 @@ export const carCategoryGetAndSetInStore = (payload = {}, { page, path }: { page
   };
 };
 export const autobaseCreateCarCategory: any = (carCategoryOld: CarCategory, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carCategory } } = await dispatch({
+  const { payload: carCategory } = await dispatch({
     type: 'none',
     payload: createSetCarCategory(carCategoryOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateCarCategory: any = (carCategoryOld: CarCategory, { pa
   return carCategory;
 };
 export const autobaseUpdateCarCategory: any = (carCategoryOld: CarCategory, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carCategory } } = await dispatch({
+  const { payload: carCategory } = await dispatch({
     type: 'none',
     payload: updateSetCarCategory(carCategoryOld),
     meta: {

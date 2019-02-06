@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozoneFountainsService,
   registryKey,
   header: {
-    title: 'Фонтаны',
+    title: 'Справочник фонтанов',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -128,22 +128,27 @@ export const config: TypeConfigData = {
         {
           key: 'adm_area',
           title: 'Административный округ',
+          width: 230,
         },
         {
           key: 'district',
           title: 'Район',
+          width: 200,
         },
         {
           key: 'location',
           title: 'Адресный ориентир',
+          width: 200,
         },
         {
           key: 'departmental_affiliation',
           title: 'Ведомственная принадлежность',
+          width: 200,
         },
         {
           key: 'balance_holder_name',
           title: 'Балансодержатель',
+          width: 200,
         },
       ],
     },

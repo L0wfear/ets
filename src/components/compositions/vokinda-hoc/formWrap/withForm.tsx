@@ -31,6 +31,7 @@ type WithFormConfigProps = {
 
 type WithFormState<F> = {
   formState: F;
+  originalFormState: F,
   formErrors: FormErrorType<F>;
   canSave: boolean;
   propertiesByKey: {
@@ -85,6 +86,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
         const newState = {
           formState,
+          originalFormState: formState,
           formErrors,
           propertiesByKey: config.schema.properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
             newObj[key] = {
@@ -212,15 +214,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             throw new Error('Определи функцию updateAction в конфиге withForm');
           }
         }
-        const { handleHide } = this.props;
 
-        if (isFunction(handleHide)) {
-          handleHide(true, result);
-        }
         return result;
       }
 
-      defaultSubmit = () => {
+      defaultSubmit = async () => {
         const formatedFormState = { ...this.state.formState };
         config.schema.properties.forEach(({ key, type }) => {
           let value: any = formatedFormState[key];
@@ -232,7 +230,15 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           formatedFormState[key] = value;
         });
 
-        this.submitAction(formatedFormState);
+        const result = await this.submitAction(formatedFormState);
+
+        if (result) {
+          if (isFunction(this.props.handleHide)) {
+            this.props.handleHide(true, result);
+          }
+        }
+
+        return result;
       }
 
       render() {
@@ -240,6 +246,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           <Component
             {...this.props}
             formState={this.state.formState}
+            originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}
             canSave={this.state.canSave}
             handleChange={this.handleChange}

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
-import { ButtonUpdateMainCarpool } from 'components/directories/geoobjects/pages/carpool/form/buttons/buttons';
 
 import {
   FlexContainer,
@@ -31,22 +30,9 @@ import {
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
-const renderers = {
-  is_main: ({ data }) => <span> {!!data ? 'Да' : 'Нет'} </span>,
-};
+const renderers = {};
 
 class CarpoolForm extends React.PureComponent<PropsCarpool, StateCarpool> {
-  carpoolIsMain = async () => {
-    const good = await this.props.submitAction({
-      ...this.props.formState,
-      is_main: true,
-    });
-    if (good) {
-      this.props.handleChange({
-        is_main: true,
-      });
-    }
-  }
   handleChange = (name, value) => {
     this.props.handleChange({
       [name]: get(value, ['target', 'value'], value),
@@ -67,10 +53,10 @@ class CarpoolForm extends React.PureComponent<PropsCarpool, StateCarpool> {
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    // const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-brand" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-carpool" show onHide={this.handleHide} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -94,9 +80,6 @@ class CarpoolForm extends React.PureComponent<PropsCarpool, StateCarpool> {
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-          <ButtonUpdateMainCarpool disabled={state.is_main || !isPermitted} onClick={this.carpoolIsMain}>
-            Сделать основной
-          </ButtonUpdateMainCarpool>
         </Modal.Footer>
       </Modal>
     );

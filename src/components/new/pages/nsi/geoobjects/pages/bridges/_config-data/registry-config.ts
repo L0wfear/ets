@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozoneBridgesService,
   registryKey,
   header: {
-    title: 'Мосты',
+    title: 'Справочник мостов',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -88,18 +88,22 @@ export const config: TypeConfigData = {
         {
           key: 'district_text',
           title: 'Район',
+          width: 200,
         },
         {
           key: 'location',
           title: 'Местоположение объекта',
+          width: 200,
         },
         {
           key: 'crossing',
           title: 'Пересечение',
+          width: 200,
         },
         {
           key: 'year_of_commissioning',
           title: 'Год ввода в эксплуатацию',
+          width: 200,
         },
       ],
     },

@@ -11,7 +11,7 @@ export const config: TypeConfigData = {
   Service: GeozoneSnowStorageService,
   registryKey,
   header: {
-    title: 'Пункты временного складирования снега',
+    title: 'Справочник пунктов временного складирования снега',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
@@ -74,7 +74,6 @@ export const config: TypeConfigData = {
         {
           key: 'name',
           title: 'Наименование',
-          width: 600,
         },
         {
           key: 'address',

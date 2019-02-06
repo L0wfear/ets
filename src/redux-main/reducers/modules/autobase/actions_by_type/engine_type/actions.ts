@@ -45,7 +45,7 @@ export const engineTypeGetAndSetInStore = (payload = {}, { page, path }: { page:
   };
 };
 export const autobaseCreateEngineType: any = (engineTypeOld: EngineType, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { engineType } } = await dispatch({
+  const { payload: engineType } = await dispatch({
     type: 'none',
     payload: createSetEngineType(engineTypeOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateEngineType: any = (engineTypeOld: EngineType, { page,
   return engineType;
 };
 export const autobaseUpdateEngineType: any = (engineTypeOld: EngineType, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { engineType } } = await dispatch({
+  const { payload: engineType } = await dispatch({
     type: 'none',
     payload: updateSetEngineType(engineTypeOld),
     meta: {

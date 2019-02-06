@@ -45,7 +45,7 @@ export const insurancePolicyGetAndSetInStore = (payload = {}, { page, path }: { 
   };
 };
 export const autobaseCreateInsurancePolicy: any = (insurancePolicyOld: InsurancePolicy, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { insurancePolicy } } = await dispatch({
+  const { payload: insurancePolicy } = await dispatch({
     type: 'none',
     payload: createSetInsurancePolicy(insurancePolicyOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateInsurancePolicy: any = (insurancePolicyOld: Insurance
   return insurancePolicy;
 };
 export const autobaseUpdateInsurancePolicy: any = (insurancePolicyOld: InsurancePolicy, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { insurancePolicy } } = await dispatch({
+  const { payload: insurancePolicy } = await dispatch({
     type: 'none',
     payload: updateSetInsurancePolicy(insurancePolicyOld),
     meta: {

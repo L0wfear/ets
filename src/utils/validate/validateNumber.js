@@ -34,7 +34,7 @@ const fixedValidators = [
   {
     name: 'min',
     validator(config, value) {
-      const parsedValue = parseInt(value, 10);
+      const parsedValue = Number(value);
       if (typeof config.min === 'undefined' || isNaN(parsedValue)) return undefined;
       return parsedValue < config.min ? `Поле "${config.title || config.key}" должно быть не меньше ${config.min}` : undefined;
     },

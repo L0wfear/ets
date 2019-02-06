@@ -49,7 +49,7 @@ export const missionTemplateSchema = {
           }
 
           if (for_column && Array.isArray(value) && value.length === 1) {
-            return 'Для создания задания на колонну должно быть выбрано более одного ТС';
+            return 'Для создания шаблона задания на колонну должно быть выбрано более одного ТС';
           }
 
           return undefined;

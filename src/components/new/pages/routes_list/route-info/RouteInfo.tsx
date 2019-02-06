@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {
   RouteInfoContainerDiv,
-  RouteNameCol,
+  RouteName,
 } from 'components/new/pages/routes_list/route-info/styled/styled';
 
 import RouteInfoMap from 'components/new/pages/routes_list/route-info/map/RouteInfoMap';
@@ -21,22 +21,24 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
 
     return (
       <RouteInfoContainerDiv>
-        <RouteNameCol none={props.noRouteName} md={8}>
-          <Row>
-            <Col md={4}>
-              <div>Наименование маршрута:</div>
-              <b>{route.name}</b>
-            </Col>
-            <Col md={4}>
-              <div>Технологическая операция:</div>
-              <b>{route.technical_operation_name}</b>
-            </Col>
-            <Col md={4}>
-              <div>Элемент:</div>
-              <b>{route.municipal_facility_name}</b>
-            </Col>
-          </Row>
-        </RouteNameCol>
+        <RouteName isDisplay={Boolean(!props.noRouteName)}>
+          <Col md={8}>
+            <Row>
+              <Col md={4}>
+                <div>Наименование маршрута:</div>
+                <b>{route.name}</b>
+              </Col>
+              <Col md={4}>
+                <div>Технологическая операция:</div>
+                <b>{route.technical_operation_name}</b>
+              </Col>
+              <Col md={4}>
+                <div>Элемент:</div>
+                <b>{route.municipal_facility_name}</b>
+              </Col>
+            </Row>
+          </Col>
+        </RouteName>
         <Col md={12}>
           <Row>
             <Col md={8}>

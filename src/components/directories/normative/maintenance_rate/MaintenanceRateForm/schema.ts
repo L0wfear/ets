@@ -5,6 +5,7 @@ import {
 import {
   PropsMaintenanceRate,
 } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/@types/MaintenanceRate.h';
+
 export const maintenanceRateSchema: SchemaType<ICreateMaintenanceRate, PropsMaintenanceRate> = {
   properties: [
     {

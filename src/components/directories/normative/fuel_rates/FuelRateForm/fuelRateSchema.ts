@@ -6,7 +6,8 @@ import {
 import {
   PropsFuelRate,
 } from 'components/directories/normative/fuel_rates/FuelRateForm/@types/FuelRate.h';
-export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { //ICreateFuel заменить на fuelRate
+
+export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { // ICreateFuel заменить на fuelRate
   properties: [
     {
       key: 'order_date',

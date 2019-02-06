@@ -46,7 +46,7 @@ export const updateMaintenanceRate = async (payload) => {
     payload,
     null,
     'json',
-  )
+  );
 
   const maintenanceRateList = get(
     response,

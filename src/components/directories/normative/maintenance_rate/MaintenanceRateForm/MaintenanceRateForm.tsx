@@ -26,7 +26,7 @@ import {
 } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/@types/MaintenanceRate.h';
 
 import { getDefaultMaintenanceRateElement } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/utils';
-import { maintenanceRateSchema } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/maintenanceRateSchema';
+import { maintenanceRateSchema } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/schema';
 import { IMaintenanceRateUpd } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import MaintenanceRatePermissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
 import { connectToStores } from 'utils/decorators';

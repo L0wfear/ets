@@ -265,7 +265,7 @@ class WaybillFormWrap extends FormWrap {
     newState.canSave = (
       !filter(
         formErrors,
-        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
@@ -298,7 +298,7 @@ class WaybillFormWrap extends FormWrap {
     newState.canSave = (
       !filter(
         formErrors,
-        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)

@@ -36,7 +36,7 @@ const TireToVehicleBlock: any = onChangeWithKeys(TireToVehicleBlockComponent);
 
 class TireForm extends React.PureComponent<PropsTire, StateTire> {
   state = {
-    canSave: false,
+    canSave: true,
   };
   componentDidMount() {
     this.props.tireModelGetAndSetInStore();

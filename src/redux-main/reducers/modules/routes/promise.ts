@@ -112,6 +112,10 @@ export const promiseCreateRoute = async (formState: Partial<Route>, isTemplate?:
     is_template: Number(isTemplate),
   };
 
+  if (isTemplate) {
+    payload.is_template = true;
+  }
+
   let response = null;
 
   try {

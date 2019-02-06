@@ -23,11 +23,10 @@ export type StateRoutesList = {
   selectedRoute: Route | null;
   selectedRoute_old: Route | null;
   showForm: boolean;
-  filterValues: object;
+  filterValues: any;
   filterModalIsOpen: boolean;
   ROUTES: object;
   routesList: Route[];
   showId: Set<any>;
-  season_id: number[];
   routesMapNameId: Map<any, any>,
 };

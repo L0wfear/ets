@@ -44,9 +44,11 @@ class LayerShowPointsRoute extends React.PureComponent<PropsLayerLayerShowPoints
     const extent = this.props.getOlLayer().getSource().getExtent();
 
     if (isFinite(extent[0])) {
-      this.props.centerOn({
-        extent,
-        opt_options: { padding: [50, 50, 50, 50], maxZoom: 13, duration: 500 },
+      setImmediate(() => {
+        this.props.centerOn({
+          extent,
+          opt_options: { padding: [50, 50, 50, 50], maxZoom: 13 },
+        });
       });
     }
   }

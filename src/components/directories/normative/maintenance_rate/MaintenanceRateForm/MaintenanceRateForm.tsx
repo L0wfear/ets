@@ -49,8 +49,6 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
       clean_subcategory_id: null,
       clean_category_id: value,
     });
-    // this.props.handleChange('clean_subcategory_id', null);
-    // this.props.handleChange('clean_category_id', value);
   }
 
   render() {
@@ -69,7 +67,7 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
     const IS_CREATING = !state.id;
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
-    const { subcategories = [] } = (cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {}); // subcategories через Lodash get, по деф пустой массив
+    const subcategories = get(cleanCategoriesList.find((c) => state.clean_category_id === c.id), 'subcategories', []);
 
     const TECH_OPERATIONS = technicalOperationsList.map(defaultSelectListMapper);
     const MAINTENANCE_WORK = maintenanceWorkList.map(defaultSelectListMapper);

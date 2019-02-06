@@ -40,11 +40,9 @@ export const createMaintenanceRate = async (payload: ICreateMaintenanceRate) => 
 };
 
 export const updateMaintenanceRate = async (payload) => {
-  const {
-    formState,
-  } = payload;
 
-  const response = await MaintenanceRateService.path(formState.id).put(
+  const elementId = get(payload, 'id', null);
+  const response = await MaintenanceRateService.path(elementId).put(
     payload,
     null,
     'json',

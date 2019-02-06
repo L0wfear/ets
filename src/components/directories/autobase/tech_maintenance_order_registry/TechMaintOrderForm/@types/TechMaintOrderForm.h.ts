@@ -2,6 +2,8 @@ import { TechMaintOrder, IStateAutobase } from 'redux-main/reducers/modules/auto
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -24,7 +26,7 @@ export type StatePropsTechMaintOrder = {
 export type DispatchPropsTechMaintOrder = {
   techMaintTypeGetAndSetInStore: () => any;
   measureUnitRunGetAndSetInStore: (tech_maintenance_type_id: TechMaintOrder['tech_maintenance_type_id']) => any;
-  actionGetAndSetInStoreSpecialModel: () => any;
+  actionGetAndSetInStoreSpecialModel: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreSpecialModel>;
 };
 export type OwnTechMaintOrderProps = {
   element: TechMaintOrder | null;
@@ -46,6 +48,6 @@ export type PropsTechMaintOrder = OutputWithFormProps<
   [ TechMaintOrder ],
   any
 >;
-//  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+
 export type StateTechMaintOrder = {
 };

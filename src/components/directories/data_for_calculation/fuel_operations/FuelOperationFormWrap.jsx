@@ -3,6 +3,13 @@ import FormWrap from 'components/compositions/FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import BaseFuelOperationForm from 'components/directories/data_for_calculation/fuel_operations/FuelOperationForm';
 
+import { connect } from 'react-redux';
+import {
+  fuelOperationCreate,
+  fuelOperationUpdate,
+} from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
+import { compose } from 'recompose';
+
 const FuelOperationForm = enhanceWithPermissions(BaseFuelOperationForm);
 
 
@@ -21,23 +28,26 @@ export const fuelOperationSchema = {
       required: true,
       integer: true,
     },
+    {
+      key: 'equipment',
+      required: false,
+    },
   ],
 };
 
-export default class FuelOperationFormWrap extends FormWrap {
-  constructor(props, context) {
+export class FuelOperationFormWrap extends FormWrap {
+  constructor(props) {
     super(props);
-
     this.uniqueField = 'id';
-    this.createAction = context.flux.getActions('fuelRates').createFuelOperation;
-    this.updateAction = context.flux.getActions('fuelRates').updateFuelOperation;
+    this.createAction = this.props.fuelOperationCreate;
+    this.updateAction = this.props.fuelOperationUpdate;
     this.schema = fuelOperationSchema;
   }
 
   render() {
-    const props = this.props;
+    const { showForm } = this.props;
 
-    return props.showForm
+    return showForm
       ? (
         <FuelOperationForm
           formState={this.state.formState}
@@ -54,3 +64,23 @@ export default class FuelOperationFormWrap extends FormWrap {
       : null;
   }
 }
+export default compose(
+  connect(
+    state => ({
+      fuelRatesList: state.fuelRates.fuelRatesList,
+      fuelRateOperations: state.fuelRates.fuelRateOperations,
+    }),
+    dispatch => ({
+      fuelOperationCreate: payload => (
+        dispatch(
+          fuelOperationCreate(payload),
+        )
+      ),
+      fuelOperationUpdate: payload => (
+        dispatch(
+          fuelOperationUpdate(payload),
+        )
+      ),
+    }),
+  ),
+)(FuelOperationFormWrap);

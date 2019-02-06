@@ -15,6 +15,8 @@ import registry from 'components/new/ui/registry/module/registry';
 import userNotifications from 'redux-main/reducers/modules/user_notifications/user_notifications';
 import old_report from 'components/coverage_reports/redux-main/modules/old-report/old_report';
 import autobase from 'redux-main/reducers/modules/autobase/autobase';
+import fuelRates from 'redux-main/reducers/modules/fuel_rates/fuelRates';
+import maintenanceRate from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
 import employee from 'redux-main/reducers/modules/employee/employee';
 import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
 import routes from 'redux-main/reducers/modules/routes/routes';
@@ -35,11 +37,13 @@ export default combineReducers({
   userNotifications,
   old_report,
   autobase,
+  fuelRates,
   employee,
   company_structure,
   routes,
   some_uniq,
   geoobject,
+  maintenanceRate,
   missions,
   company,
 });

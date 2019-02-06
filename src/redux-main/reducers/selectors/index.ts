@@ -51,3 +51,9 @@ export const getMissionsState = (state: ReduxState) => (
 export const getCompanyState = (state: ReduxState) => (
   state.company
 );
+export const getFuelRatesState = (state: ReduxState) => (
+  state.fuelRates
+);
+export const getMaintenanceRateState = (state: ReduxState) => (
+  state.maintenanceRate
+);

@@ -16,7 +16,7 @@ function getFuelRates(payload = {}) {
 }
 
 export default class FuelRateActions extends Actions {
-  getFuelRates() {
+  getFuelRates() { // -
     return getFuelRates();
   }
 

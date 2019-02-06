@@ -42,7 +42,16 @@ import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_mode
 
 class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateTechMaintOrder> {
   componentDidMount() {
-    this.props.actionGetAndSetInStoreSpecialModel();
+    const {
+      page,
+      path,
+    } = this.props;
+
+    this.props.actionGetAndSetInStoreSpecialModel(
+      {},
+      { page, path },
+    );
+
     this.props.techMaintTypeGetAndSetInStore();
 
     const {
@@ -268,7 +277,7 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
       measureUnitRunList: getAutobaseState(state).measureUnitRunList,
       specialModelList: getSomeUniqState(state).specialModelList,
     }),
-    (dispatch, { page, path }) => ({
+    (dispatch: any, { page, path }) => ({
       techMaintTypeGetAndSetInStore: () => (
         dispatch(
           autobaseActions.techMaintTypeGetAndSetInStore(
@@ -285,12 +294,9 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
           ),
         )
       ),
-      actionGetAndSetInStoreSpecialModel: () => (
+      actionGetAndSetInStoreSpecialModel: (...arg) => (
         dispatch(
-          someUniqActions.actionGetAndSetInStoreSpecialModel(
-            {},
-            { page, path },
-          ),
+          someUniqActions.actionGetAndSetInStoreSpecialModel(...arg),
         )
       ),
     }),

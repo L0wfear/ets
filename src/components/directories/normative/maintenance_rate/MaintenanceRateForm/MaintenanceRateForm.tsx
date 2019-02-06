@@ -30,6 +30,7 @@ import { maintenanceRateSchema } from 'components/directories/normative/maintena
 import { IMaintenanceRateUpd } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import MaintenanceRatePermissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
 import { connectToStores } from 'utils/decorators';
+import memoize from 'memoize-one';
 
 @connectToStores(['objects'])
 class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, StateMaintenanceRate> {
@@ -51,6 +52,12 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
     });
   }
 
+  makeOptionsMemoList = (
+    memoize(
+      (inputList) => inputList.map(defaultSelectListMapper),
+    )
+  );
+
   render() {
     const {
       page,
@@ -68,11 +75,10 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     const subcategories = get(cleanCategoriesList.find((c) => state.clean_category_id === c.id), 'subcategories', []);
-
-    const TECH_OPERATIONS = technicalOperationsList.map(defaultSelectListMapper);
-    const MAINTENANCE_WORK = maintenanceWorkList.map(defaultSelectListMapper);
-    const CATEGORIES = cleanCategoriesList.map(defaultSelectListMapper);
-    const SUBCATEGORIES = subcategories.map(defaultSelectListMapper);
+    const TECH_OPERATIONS = this.makeOptionsMemoList(technicalOperationsList);
+    const MAINTENANCE_WORK = this.makeOptionsMemoList(maintenanceWorkList);
+    const CATEGORIES = this.makeOptionsMemoList(cleanCategoriesList);
+    const SUBCATEGORIES = this.makeOptionsMemoList(subcategories);
 
     return (
       <Modal id="modal-maintenance-rate" show onHide={this.handleHide} backdrop="static" bsSize="large">

@@ -40,16 +40,24 @@ class MaintenanceRateDirectory extends ElementsList {
     super(props);
 
     this.setExportType(props.type);
-    this.removeElementAction = this.props.maintenanceRateDelete;
+  }
+
+  removeElementAction = async (id) => {
+    try {
+      await this.props.maintenanceRateDelete(id);
+      this.init();
+    } catch (e) {
+      //
+    }
   }
 
   init() {
     const { flux } = this.context;
 
     this.props.maintenanceRateGetAndSetInStore(this.props.type);
-    flux.getActions('objects').getMaintenanceWork(); // проверить и перенести в форму
-    flux.getActions('objects').getCleanCategories(); // проверить и перенести в форму
-    flux.getActions('technicalOperation').getTechnicalOperations(); // проверить и перенести в форму
+    flux.getActions('objects').getMaintenanceWork();
+    flux.getActions('objects').getCleanCategories();
+    flux.getActions('technicalOperation').getTechnicalOperations();
   }
 
   componentDidUpdate(prevProps) {

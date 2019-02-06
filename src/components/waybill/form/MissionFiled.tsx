@@ -147,6 +147,7 @@ class MissionField extends React.Component<any, any> {
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
           fromWaybill
+          withDefineTypeId
           waybillStartDate={state.plan_departure_date}
           waybillEndDate={state.plan_arrival_date}
           {...this.props}

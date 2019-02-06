@@ -293,6 +293,7 @@ class MissionFormWrap extends FormWrap {
       disabledProps: this.props.disabledProps || {},
       fromOrder: this.props.fromOrder || false,
       carsList: this.props.carsList || [],
+      withDefineTypeId: this.props.withDefineTypeId,
     };
 
     return (

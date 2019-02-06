@@ -44,6 +44,19 @@ class FuelRatesDirectory extends ElementsList {
 
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
+
+  onFormHide = (isSubmitted) => {
+    const changeState = {
+      showForm: false,
+    };
+
+    if (isSubmitted) {
+      this.init();
+      changeState.selectedElement = null;
+    }
+
+    this.setState(changeState);
+  }
 }
 
 export default compose(

@@ -108,11 +108,11 @@ export class MissionForm extends Form {
       route_id,
     };
 
-    if (this.props.formState.is_column) {
-      changesObj.is_cleaning_norm = this.props.formState.car_id.map(() => false);
-      changesObj.norm_id = this.props.formState.car_id.map(() => null);
-    } else {
-      if (!this.props.withDefineCarId) {
+    if (!this.props.fromOrder) {
+      if (this.props.formState.is_column) {
+        changesObj.is_cleaning_norm = this.props.formState.car_id.map(() => false);
+        changesObj.norm_id = this.props.formState.car_id.map(() => null);
+      } else if (!this.props.withDefineCarId) {
         changesObj.is_cleaning_norm = false;
         changesObj.norm_id = null;
       }
@@ -204,13 +204,22 @@ export class MissionForm extends Form {
         });
       }
 
-      this.props.handleMultiFormChange({
+      const {
+        fromOrder,
+      } = this.props;
+
+      const chageObj = {
         car_id,
         type_id,
         assign_to_waybill,
-        is_cleaning_norm: isArray(car_id) ? car_id.map(() => false) : false,
-        norm_id: isArray(car_id) ? car_id.map(() => null) : null,
-      });
+      };
+
+      if (!fromOrder) {
+        chageObj.is_cleaning_norm = isArray(car_id) ? car_id.map(() => false) : false;
+        chageObj.norm_id = isArray(car_id) ? car_id.map(() => null) : null;
+      }
+
+      this.props.handleMultiFormChange(chageObj);
 
       this.handleRouteIdChange(undefined);
     }
@@ -247,14 +256,14 @@ export class MissionForm extends Form {
       if (is_column) {
         norm_id = [norm_id];
       } else {
-        norm_id = null;
+        norm_id = this.props.formOrder ? norm_id : null;
       }
     }
     if (is_cleaning_norm) {
       if (is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       } else {
-        is_cleaning_norm = false;
+        is_cleaning_norm = this.props.formOrder ? is_cleaning_norm : null;
       }
     }
     if (assign_to_waybill) {
@@ -374,6 +383,8 @@ export class MissionForm extends Form {
       if (!this.props.formState.is_column) {
         is_cleaning_norm = [is_cleaning_norm];
       }
+
+      is_cleaning_norm = isArray(is_cleaning_norm) ? is_cleaning_norm : [is_cleaning_norm];
 
       const changesObj = {
         date_start,

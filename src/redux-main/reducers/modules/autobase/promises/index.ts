@@ -24,7 +24,11 @@ export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (o
     'json',
   );
 
-  const data = get(response, ['result', 'rows', 0], null);
+  const data = get(
+    response,
+    ['result', 'rows', 0],
+    get(response, ['result', 0], null),
+  );
 
   return data;
 };
@@ -39,7 +43,11 @@ export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (o
     'json',
   );
 
-  const data = get(response, ['result', 'rows', 0], null);
+  const data = get(
+    response,
+    ['result', 'rows', 0],
+    get(response, ['result', 0], null),
+  );
 
   return data;
 };

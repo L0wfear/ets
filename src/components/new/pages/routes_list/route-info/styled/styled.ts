@@ -7,5 +7,5 @@ export const RouteInfoContainerDiv = styled(Row)`
 
 export const RouteName = styled.div<{ isDisplay?: boolean }>`
   margin-bottom: 10px;
-  display: ${({ isDisplay }) => isDisplay ? 'none' : 'initial'}
+  display: ${({ isDisplay }) => !isDisplay ? 'none' : 'initial'}
 `;

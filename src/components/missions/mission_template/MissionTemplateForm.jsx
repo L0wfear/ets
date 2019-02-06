@@ -100,23 +100,17 @@ class MissionTemplateForm extends MissionForm {
 
     this.props.handleMultiFormChange({
       route_id,
-      is_cleaning_norm: this.props.formState.car_ids.map(() => false),
     });
   }
 
-  handleCarIdChange = (value, options) => {
+  handleCarIdChange = (value) => {
     const { formState } = this.props;
 
     const car_ids = isArray(value) ? value : [value];
-    const dataCar = isArray(options) ? options : [options];
 
     if (car_ids !== formState.car_ids) {
-      const car_type_id = dataCar.map(car => car.type_id);
-
       this.props.handleMultiFormChange({
         car_ids,
-        car_type_id,
-        is_cleaning_norm: car_ids.map(() => false),
       });
 
       this.handleRouteIdChange(undefined);
@@ -129,15 +123,11 @@ class MissionTemplateForm extends MissionForm {
     const {
       formState: {
         car_ids,
-        car_type_id,
-        is_cleaning_norm,
       },
     } = this.props;
 
     this.props.handleMultiFormChange({
       car_ids: car_ids ? car_ids.slice(0, 1) : [],
-      car_type_id: car_type_id ? car_type_id.slice(0, 1) : [],
-      is_cleaning_norm: is_cleaning_norm ? is_cleaning_norm.slice(0, 1) : [],
       for_column,
     });
   }
@@ -146,10 +136,8 @@ class MissionTemplateForm extends MissionForm {
     this.props.handleMultiFormChange({
       technical_operation_id,
       municipal_facility_id: null,
-      is_cleaning_norm: [],
       for_column: false,
       car_ids: [],
-      car_type_id: [],
     });
 
     this.handleRouteIdChange(undefined);

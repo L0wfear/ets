@@ -116,13 +116,7 @@ export const promiseCreateRoute = async (formState: Partial<Route>, isTemplate?:
     payload.is_template = true;
   }
 
-  let response = null;
-
-  try {
-    response = await RouteService.post(payload, false, 'json', params);
-  } catch (error) {
-    console.warn(error); // tslint:disable-line:no-console
-  }
+  const response = await RouteService.post(payload, false, 'json', params);
 
   const route_data: Partial<Route> = {
     ...formState,
@@ -136,13 +130,7 @@ export const promiseUpdateRoute = async (formState: Partial<Route>) => {
     ...formState,
   };
 
-  let response = null;
-
-  try {
-    response = await RouteService.put(payload, false, 'json');
-  } catch (error) {
-    console.warn(error); // tslint:disable-line:no-console
-  }
+  const response = await RouteService.put(payload, false, 'json');
 
   const route_data: Partial<Route> = {
     ...formState,

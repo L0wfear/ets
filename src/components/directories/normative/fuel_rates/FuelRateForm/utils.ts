@@ -1,26 +1,65 @@
-import { isObject } from 'util';
-import { ICreateFuel } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { isObject, isNullOrUndefined } from 'util';
+import { FuelRate, FuelOperation } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 
-export type GetDefaultFuelRateElement = (ICreateFuel: ICreateFuel | null) => ICreateFuel;
-
-export const defaultFuelRate: ICreateFuel = {
-  id: null,
+export const makeDefaultFuelRate = (): FuelRate => ({
+  body_capacity: null,
   car_model_id: null,
+  car_model_name: null,
   car_special_model_id: null,
+  car_special_model_name: null,
+  comment: null,
+  company_id: null,
+  company_name: null,
   company_structure_id: null,
+  company_structure_name: null,
+  full_model_name: null,
+  id: null,
+  is_excluding_mileage: null,
+  load_capacity: null,
+  max_speed: null,
+  measure_unit_id: null,
+  measure_unit_name: null,
+  model_name: null,
+  operation_equipment: null,
   operation_id: null,
-  order_date: new Date(),
+  operation_name: null,
+  order_date: createValidDateTime(
+    getDateWithMoscowTz(),
+  ),
   summer_rate: null,
   winter_rate: null,
-  car_model_name: null,
-  car_special_model_name: null,
+});
+
+export const getDefaultFuelRateElement = (element?: Partial<FuelRate>) => {
+  const newElement = makeDefaultFuelRate();
+  if (isObject(element)) {
+    Object.keys(newElement).forEach((key) => {
+      if (!isNullOrUndefined(element[key])) {
+        newElement[key] = element[key];
+      }
+    });
+  }
+
+  return newElement;
 };
 
-export const getDefaultFuelRateElement: GetDefaultFuelRateElement = (element) => {
-  const newElement = { ...defaultFuelRate };
+export const makeDefaultFuelOperation = (): FuelOperation => ({
+  equipment: null,
+  id: null,
+  is_excluding_mileage: null,
+  measure_unit_id: null,
+  measure_unit_name: null,
+  name: null,
+});
+
+export const getDefaultFuelOperationElement = (element?: Partial<FuelOperation>) => {
+  const newElement = makeDefaultFuelOperation();
   if (isObject(element)) {
-    Object.entries(element).forEach(([key, value]) => {
-      newElement[key] = element[key] || value;
+    Object.keys(newElement).forEach((key) => {
+      if (!isNullOrUndefined(element[key])) {
+        newElement[key] = element[key];
+      }
     });
   }
 

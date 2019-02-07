@@ -1,12 +1,13 @@
 import { isEmpty } from 'utils/functions';
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import {
-  ICreateFuel
+  FuelRate
 } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import {
   PropsFuelRate,
 } from 'components/directories/normative/fuel_rates/FuelRateForm/@types/FuelRate.h';
-export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { //ICreateFuel заменить на fuelRate
+
+export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
   properties: [
     {
       key: 'order_date',
@@ -17,8 +18,7 @@ export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { //ICreat
     {
       key: 'operation_id',
       title: 'Операция',
-      type: 'number',
-      integer: true,
+      type: 'valueOfArray',
       required: true,
     },
     {
@@ -36,16 +36,14 @@ export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { //ICreat
     {
       key: 'car_special_model_id',
       title: 'Модель ТС',
-      type: 'number',
-      integer: true,
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'car_model_id',
       title: 'Марка шасси',
-      type: 'number',
+      type: 'valueOfArray',
       required: false,
-      integer: true, // parse value to integer before sending to server
     },
   ],
   dependencies: {
@@ -54,7 +52,7 @@ export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { //ICreat
         if (isEmpty(formState.winter_rate) && isEmpty(value)) {
           return 'Одна из норм должна быть заполнена';
         }
-        return undefined;
+        return '';
       },
     ],
     winter_rate: [
@@ -62,7 +60,7 @@ export const fuelRateSchema: SchemaType<ICreateFuel, PropsFuelRate> = { //ICreat
         if (isEmpty(formState.summer_rate) && isEmpty(value)) {
           return 'Одна из норм должна быть заполнена';
         }
-        return undefined;
+        return '';
       },
     ],
   },

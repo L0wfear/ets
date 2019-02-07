@@ -1,4 +1,4 @@
-import { FuelRateUpd, fuelOperation } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { FuelRate, FuelOperation } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { HandleThunkActionCreator } from 'react-redux';
@@ -20,7 +20,7 @@ export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
 export type PropsFuelRateFormWrap = {
   showForm: boolean;
-  element: FuelRateUpd | null;
+  element: FuelRate | null;
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -30,7 +30,7 @@ export type PropsFuelRateFormWrap = {
 
 export type StatePropsFuelRate = {
   modelsList: IStateSomeUniq['modelsList'];
-  fuelRateOperationsIsActiveList?: fuelOperation[];
+  fuelRateOperationsIsActiveList?: FuelOperation[];
   specialModelOptions: ReturnType<typeof getSomeUniqSpecialModelOptions>;
   companyStructureLinearOptions: ReturnType<typeof getCompanyStructureLinearOptions>;
   modelsListOptions: ReturnType<typeof getModelsListOptions>;
@@ -43,7 +43,7 @@ export type DispatchPropsFuelRate = {
   fuelOperationsGetAndSetInStore: HandleThunkActionCreator<typeof fuelOperationsGetAndSetInStore>;
 };
 export type OwnFuelRateProps = { // fuelRateForm props
-  element: FuelRateUpd | null;
+  element: FuelRate | null;
   handleHide: OnFormHideType;
   page: string;
   path?: string;
@@ -57,8 +57,8 @@ export type PropsFuelRateWithForm = (
 
 export type PropsFuelRate = OutputWithFormProps<
   PropsFuelRateWithForm,
-  FuelRateUpd,
-  [ FuelRateUpd ],
+  FuelRate,
+  [ FuelRate ],
   any
 >;
 export type StateFuelRate = {

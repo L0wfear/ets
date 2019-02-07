@@ -32,7 +32,7 @@ import {
 
 import { getDefaultFuelRateElement } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
 import { fuelRateSchema } from 'components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema';
-import { ICreateFuel } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import fuelRatePermissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
 import {
@@ -47,11 +47,6 @@ import { getFuelRateOperationsIsActiveOptions } from 'redux-main/reducers/module
 import { get } from 'lodash';
 
 class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
-
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
-
   componentDidMount() {
     const {
       formState: {
@@ -77,9 +72,8 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
       {},
       { page, path },
     );
-
   }
-
+//unmount
   handleSpecialModelChange = (value) => {
     const {
       page,
@@ -117,7 +111,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
     const measure_unit_name = get(masureUnitItem, 'rowData.measure_unit_name', '-' );
 
     return (
-      <Modal id="modal-fuel-rate" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-fuel-rate" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива</Modal.Title>
         </Modal.Header>
@@ -190,7 +184,7 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
                 type="number"
                 error={errors.winter_rate}
                 value={state.winter_rate}
-                boundKeys="winter_rate" // вместо bind
+                boundKeys="winter_rate" // bind вместо
                 onChange={this.props.handleChange}
                 disabled={!isPermitted}
               />
@@ -276,7 +270,7 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
       ),
     }),
   ),
-  withForm<PropsFuelRateWithForm, ICreateFuel>({
+  withForm<PropsFuelRateWithForm, FuelRate>({
     uniqField: 'id',
     createAction: fuelRateCreate,
     updateAction: fuelRateUpdate,

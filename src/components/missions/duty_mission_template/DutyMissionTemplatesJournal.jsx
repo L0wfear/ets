@@ -66,6 +66,10 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     this.updateTable();
   }
 
+  componentWillUnmount() {
+    this.props.actionResetDutyMissionTemplate();
+  }
+
   updateTable = () => {
     this.props.actionGetAndSetInStoreDutyMissionTemplate(
       {},
@@ -209,6 +213,11 @@ export default compose(
             missionTemplate,
             { page: loadingPageName },
           ),
+        )
+      ),
+      actionResetDutyMissionTemplate: () => (
+        dispatch(
+          missionsActions.actionResetDutyMissionTemplate(),
         )
       ),
     }),

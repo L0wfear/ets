@@ -127,6 +127,10 @@ class MissionTemplatesJournal extends CheckableElementsList {
     this.context.flux.getActions('missions').getMissionTemplatesCars();
   }
 
+  componentWillUnmount() {
+    this.props.actionResetMissionTemplate();
+  }
+
   init() {
     const { flux } = this.context;
     this.loadMissionTemplateData();
@@ -313,6 +317,11 @@ export default compose(
             missionTemplateArr,
             { page: loadingPageName },
           ),
+        )
+      ),
+      actionResetMissionTemplate: () => (
+        dispatch(
+          missionsActions.actionResetMissionTemplate(),
         )
       ),
     }),

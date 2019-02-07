@@ -16,19 +16,32 @@ export type ButtonDefineType = {
 
 export type TypeOneDisplayIf = 'isKgh' | 'isOkrug' | 'lenghtOptionMoreOne' | false;
 
+export type DisplayIfTitle = {
+  displayIf: TypeOneDisplayIf | TypeOneDisplayIf[];
+  title: string;
+};
+
 export type OneFilterType = {
   valueKey: string;
   labelKey?: string;
-  title: string;
+  title: string | DisplayIfTitle[];
   type: 'multiselect'
     | 'advanced-number';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  options?: {
+    value: any;
+    label: string | number;
+    [k: string]: any;
+  }[];
 };
 
 export type TypeFields = {
   key: string;
-  title: any;
+  title: string | DisplayIfTitle[];
   width?: number;
+  boolean?: boolean;
+  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  toFixed?: number;
   childrenFields?: TypeFields[];
 };
 

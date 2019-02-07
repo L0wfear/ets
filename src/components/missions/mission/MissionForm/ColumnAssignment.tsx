@@ -3,15 +3,13 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
+import { get } from 'lodash';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import ModalBody from 'components/ui/Modal';
-
-interface CarOption {
-  value: number;
-  label: string;
-}
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { makeCarOptionLabel } from './utils';
 
 type ColumnAssignmentProps = {
   formState: any,
@@ -19,13 +17,14 @@ type ColumnAssignmentProps = {
   ASSIGN_OPTIONS: any[],
   handleChange: (key: string, data: any) => void,
   handleSubmit: () => Promise<any>,
-  CARS: CarOption[],
+  carsList: Car[],
+  show: boolean;
 };
 type ColumnAssignmentState = {
   showBackButton: boolean,
 };
 
-class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, ColumnAssignmentState> {
+class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssignmentState> {
   state = {
     showBackButton: false,
   };
@@ -41,10 +40,17 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
   handleChange = (index, value) => {
     const { formState: { assign_to_waybill: [...assign_to_waybill] } } = this.props;
     assign_to_waybill[index] = value;
+
     this.props.handleChange('assign_to_waybill', assign_to_waybill);
   }
 
   render() {
+    if (!this.props.show) {
+      return null;
+    }
+
+    const car_ids = get(this.props.formState, 'car_id', []);
+
     return (
       <Modal id="modal-column-assignment" show onHide={this.props.hideColumnAssignment}>
         <Modal.Header closeButton>
@@ -57,13 +63,13 @@ class ColumnAssignment extends React.PureComponent<ColumnAssignmentProps, Column
             </Col>
           </Row>
           {
-            this.props.formState.car_id.map((car_id, index) => (
+            car_ids.map((car_id, index) => (
               <Row key={car_id}>
                 <Col md={6}>
                   <ExtField
                     id={`car-number-${index}`}
                     type="string"
-                    value={this.props.CARS.find(({ value }) => value === car_id).label}
+                    value={makeCarOptionLabel(this.props.carsList.find(({ asuods_id }) => asuods_id === car_id))}
                     readOnly
                   />
                 </Col>

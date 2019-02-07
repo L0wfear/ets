@@ -1,4 +1,3 @@
-import urljoin from 'url-join';
 import APIService from './APIService';
 
 export default class ApiServiceFactory {
@@ -12,7 +11,8 @@ export default class ApiServiceFactory {
   }
 
   createApiServiceAdapter = (path, options) => new APIService(
-    urljoin(this._apiUrl, path),
+    this._apiUrl,
+    path,
     {
       headers: this._providedHeaders,
       ...options,

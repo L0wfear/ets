@@ -9,6 +9,7 @@ import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
 import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
 import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
+import { compose } from 'recompose';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
@@ -51,7 +52,7 @@ const notifyTexts = {
   tableComponent: ProgramRemarkTable,
   operations: [],
 })
-export default class ProgramRemarkList extends CheckableElementsList {
+class ProgramRemarkList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
     const {
@@ -228,3 +229,5 @@ export default class ProgramRemarkList extends CheckableElementsList {
     displayTable: this.props.programRemarkRegistryList.length !== 0,
   });
 }
+
+export default compose()(ProgramRemarkList);

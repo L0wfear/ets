@@ -1,5 +1,6 @@
 import * as React from 'react';
 import clone from 'lodash/clone';
+import get from 'lodash/get';
 import filter from 'lodash/filter';
 import Div from 'components/ui/Div';
 import { getDefaultMissionTemplate, getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
@@ -14,10 +15,12 @@ import {
   checkMissionsOnStructureIdCar,
 } from 'components/missions/utils/customValidate';
 import { isEmpty, printData } from 'utils/functions';
-import withMapInConsumer from 'components/map/context/withMapInConsumer';
+import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 
 import MissionTemplateForm from 'components/missions/mission_template/MissionTemplateForm';
 import MissionsCreationForm from 'components/missions/mission_template/MissionsCreationForm';
+import { ASSING_BY_KEY } from 'components/directories/order/forms/utils/constant';
+import { groupBy } from 'lodash';
 
 const printMapKeyBig = 'mapMissionTemplateFormA3';
 const printMapKeySmall = 'mapMissionTemplateFormA4';
@@ -26,9 +29,12 @@ export const createMissions = async (flux, element, payload) => {
   let error = false;
   try {
     await flux.getActions('missions').createMissions(element, payload);
+    return false;
   } catch ({ error_text: e }) {
     error = true;
-    if (e && e.message.code === 'no_active_waybill') {
+    const code = get(e, ['message', 'code'], null);
+
+    if (code === 'no_active_waybill') {
       let cancel = false;
       try {
         await confirmDialog({
@@ -49,7 +55,7 @@ export const createMissions = async (flux, element, payload) => {
         await createMissions(element, newPayload);
       }
     }
-    if (e && e.message.code === 'invalid_period') {
+    if (code === 'invalid_period') {
       const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
 
       const body = self => (
@@ -92,6 +98,7 @@ export const createMissions = async (flux, element, payload) => {
           date_end: interval[1],
           assign_to_waybill: payload.assign_to_waybill,
         };
+
         await createMissions(element, newPayload);
       }
     }
@@ -128,9 +135,14 @@ class MissionTemplateFormWrap extends FormWrap {
         });
       } else {
         this.schema = missionsCreationTemplateSchema;
-        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate();
+        const for_column = Object.values(this.props.missions).some(missionData => missionData.for_column);
+
+        const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate(this.props.missions, for_column);
+
         const formErrors = this.validate(defaultMissionsCreationTemplate, {});
         const dataTestRoute = checkMissionsByRouteType(Object.values(this.props.missions), defaultMissionsCreationTemplate);
+
+        defaultMissionsCreationTemplate.for_column = for_column;
         if (dataTestRoute.error) {
           defaultMissionsCreationTemplate.date_end = addTime(defaultMissionsCreationTemplate.date_start, dataTestRoute.time, 'hours');
         }
@@ -184,27 +196,60 @@ class MissionTemplateFormWrap extends FormWrap {
             date_start: formState.date_start,
             date_end: formState.date_end,
             assign_to_waybill: formState.assign_to_waybill,
+            for_column: formState.for_column,
+            norm_id: formState.norm_id,
           };
 
-          let closeForm = true;
-          try {
-            await Promise.all(missionsArr.map(async (mission) => {
-              const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
+          if (externalPayload.assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {
+            const missionByCar = groupBy(missionsArr, 'car_ids');
 
-              if (e) {
-                closeForm = false;
-              }
-            }));
-          } catch (e) {
-            closeForm = false;
-          }
+            const ansArr = await Promise.all(
+              Object.values(missionByCar).map(async ([firstMission, ...other]) => {
+                const successFM = await this.createMissionWrap([firstMission], externalPayload);
+                if (successFM) {
+                  const successEvery = await this.createMissionWrap(other, {
+                    ...externalPayload,
+                    assign_to_waybill: ASSING_BY_KEY.assign_to_available_draft,
+                  });
+                  if (!successEvery) {
+                    return false;
+                  }
+                  return true;
+                }
+                return false;
+              }),
+            );
 
-          if (closeForm) {
-            this.props.onFormHide(true);
+            if (!ansArr.some(ans => !ans)) {
+              this.props.onFormHide(true);
+            }
+          } else {
+            const success = await this.createMissionWrap(missionsArr, externalPayload);
+            if (success) {
+              this.props.onFormHide(true);
+            }
           }
         }
       }
     }
+  }
+
+  async createMissionWrap(missionsArr, externalPayload) {
+    const { flux } = this.context;
+    let success = true;
+    try {
+      await Promise.all(missionsArr.map(async (mission) => {
+        const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
+
+        if (e) {
+          success = false;
+        }
+      }));
+    } catch (e) {
+      success = false;
+    }
+
+    return success;
   }
 
   handlMultiFormStateChange = (changesObj) => {

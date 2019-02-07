@@ -267,7 +267,7 @@ class PlanTab extends React.Component<any, any> {
                 time={false}
                 error={errors[date_from]}
                 onChange={this.props.handleChange}
-                boundKeys={[date_from]}
+                boundKeys={date_from}
                 disabled={!isPermitted}
               />
             </div>
@@ -279,7 +279,7 @@ class PlanTab extends React.Component<any, any> {
                 time={false}
                 error={errors[date_to]}
                 onChange={this.props.handleChange}
-                boundKeys={[date_to]}
+                boundKeys={date_to}
                 disabled={!isPermitted}
               />
             </div>
@@ -306,7 +306,7 @@ class PlanTab extends React.Component<any, any> {
             label={'Примечание'}
             error={errors.name}
             onChange={this.props.handleChange}
-            boundKeys={['note']}
+            boundKeys="note"
             disabled={!isPermitted}
           />
         </Col>

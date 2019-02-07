@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import MapEts from 'components/map/MapEts';
+import MapEts from 'components/new/ui/map/MapEts';
 import LayerGeooobjects from 'components/monitor/layers/geoobjects/LayerGeooobjects';
 import LayerSelectedGeooobjects from 'components/monitor/layers/geoobjects/selected/LayerSelectedGeooobjects';
 import LayerTrackLines from 'components/monitor/layers/track/lines/LayerTrackLines';
@@ -14,7 +14,7 @@ import LayerCarMarker from 'components/monitor/layers/car-markers/LayerCarMarker
 import LayerFuelEventLeakPoint from 'components/monitor/layers/fuel-event/leak/LayerFuelEventLeakPoint';
 import MapInfo from 'components/monitor/info/MapInfo';
 
-import { MapEtsConsumer } from 'components/map/context/MapetsContext';
+import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 
 type PropsMapWrap = {
   enableInteractions: boolean;
@@ -60,7 +60,7 @@ const MapWrap: React.FunctionComponent<PropsMapWrap> = (props) => (
 const mapStateToProps = (state) => ({
   enableInteractions: !(!!state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR || state.monitorPage.carInfo.playTrack.status === 'play'),
   disabledCenterOn: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR && !(state.monitorPage.carInfo.playTrack.status === 'play'),
-  disabledMouseSingleClick: state.monitorPage.measureActive,
+  disabledMouseSingleClick: state.monitorPage.drawActive.all,
 });
 
 export default connect(

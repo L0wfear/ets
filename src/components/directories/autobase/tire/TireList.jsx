@@ -1,11 +1,18 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
-import TireFormWrap from 'components/directories/autobase/tire/TireFormWrap';
+import TireFormWrap from 'components/directories/autobase/tire/TireForm/TireFormWrap';
 import TireTable from 'components/directories/autobase/tire/TireTable';
 import permissions from 'components/directories/autobase/tire/config-data/permissions';
+import { connect } from 'react-redux';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { compose } from 'recompose';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['autobase', 'objects', 'session'])
+const loadingPageName = 'tire';
+
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
   entity: 'autobase_tire',
@@ -15,21 +22,100 @@ import permissions from 'components/directories/autobase/tire/config-data/permis
   formComponent: TireFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class TireList extends ElementsList {
-  constructor(props, context) {
-    super(props);
-    this.removeElementAction = context.flux.getActions('autobase').removeTire;
+class TireList extends ElementsList {
+  removeElementAction = async (id) => {
+    try {
+      await this.props.autobaseRemoveTire(id);
+      this.init();
+    } catch (e) {
+      //
+    }
   }
+
   init() {
-    const { flux } = this.context;
-    flux.getActions('autobase').getAutobaseListByType('tire');
+    this.props.tireGetAndSetInStore();
   }
-  handleCloneClick = (tireId) => {
-    this.context.flux.getActions('autobase').cloneTire(tireId);
+
+  componentWillUnmount() {
+    this.props.autobaseResetSetTire();
   }
+
+  onFormHide = (isSubmited) => {
+    const changeState = {
+      showForm: false,
+    };
+
+    if (isSubmited) {
+      this.init();
+      changeState.selectedElement = null;
+    }
+
+    this.setState(changeState);
+  }
+
+  handleClickClone = async (id) => {
+    console.log(id)
+    try {
+      await this.props.autobaseCloneTire(id);
+      this.init();
+    } catch (e) {
+      console.warn(e); //eslint-disable-line
+    }
+  }
+
   getAdditionalProps() {
     return {
-      onCloneClick: this.handleCloneClick,
+      loadingPageName,
+      onCloneClick: this.handleClickClone,
     };
   }
 }
+
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      tireList: getAutobaseState(state).tireList,
+    }),
+    dispatch => ({
+      tireGetAndSetInStore: () => (
+        dispatch(
+          autobaseActions.tireGetAndSetInStore(
+            {},
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+      autobaseResetSetTire: () => (
+        dispatch(
+          autobaseActions.autobaseResetSetTire(),
+        )
+      ),
+      autobaseCloneTire: tireId => (
+        dispatch(
+          autobaseActions.autobaseCloneTire(
+            tireId,
+            {
+              page: loadingPageName,
+            }
+          ),
+        )
+      ),
+      autobaseRemoveTire: id => (
+        dispatch(
+          autobaseActions.autobaseRemoveTire(
+            id,
+            {
+              page: loadingPageName,
+            },
+          ),
+        )
+      ),
+    }),
+  ),
+)(TireList);

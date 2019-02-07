@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
-import { diffDates, getDateWithMoscowTz, getNextDay859am } from 'utils/dates';
+import { diffDates, getDateWithMoscowTz } from 'utils/dates';
 
 export const waybillSchema = {
   properties: [
@@ -137,7 +137,7 @@ export const waybillSchema = {
             return false;
           }
 
-          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) {
+          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) { // уже не работает
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
@@ -248,7 +248,6 @@ const closingProperties = [
     title: 'Топливо.Возврат по таксировке',
     type: 'number',
     float: 3,
-    min: 0,
     required: true,
   },
   {
@@ -256,6 +255,7 @@ const closingProperties = [
     title: 'Топливо.Возврат фактический',
     type: 'number',
     float: 3,
+    min: 0,
   },
   {
     key: 'equipment_fuel_end',

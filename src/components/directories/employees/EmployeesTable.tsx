@@ -200,7 +200,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
-      initialSort={'full_name'}
+      initialSort="full_name"
       initialSortAscending={true}
       {...props}
     />

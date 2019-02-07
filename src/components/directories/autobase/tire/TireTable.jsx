@@ -113,12 +113,12 @@ export const tableMeta = ({
 export default (props) => {
   const renderers = {
     installed_at: ({ data }) => <DateFormatter date={data} />,
-    cloneButton: (meta) => (
+    cloneButton: ({ rowData }) => (
       <CloneButton
         onClick={props.onCloneClick}
-        boundKeys={[meta.rowData.id]}
+        boundKeys={rowData.id}
       >
-Создать копированием
+        Создать копированием
       </CloneButton>
     ),
   };
@@ -132,6 +132,7 @@ export default (props) => {
       results={props.data}
       tableMeta={sortedMeta}
       renderers={renderers}
+      initialSort={props.selectField}
       {...props}
     />
   );

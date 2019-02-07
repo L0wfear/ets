@@ -14,11 +14,13 @@ import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsRoutes } from 'components/directories/technical_operation_relations/helpData';
 import {
   ButtonUpdateRoute,
-} from 'components/route_new/buttons/buttons';
+} from 'components/new/pages/routes_list/buttons/buttons';
 
 const ButtonChangeCarData = enhanceWithPermissions({
   permission: permissionsCar.update,
 })(Button);
+
+const loadingPage = 'technical_operation_relations';
 
 @withRouter
 @connectToStores(['objects', 'session'])
@@ -30,7 +32,7 @@ const ButtonChangeCarData = enhanceWithPermissions({
   tableComponent: TechnicalOperationRelationsTable,
   operations: ['LIST'],
 })
-export default class TechnicalOperationRelationsList extends ElementsList {
+class TechnicalOperationRelationsList extends ElementsList {
   constructor(props) {
     super(props);
 
@@ -43,6 +45,7 @@ export default class TechnicalOperationRelationsList extends ElementsList {
       ROUTES_OPTIONS: [],
     };
   }
+
   init() {
     this.context.flux.getActions('objects').getCars();
 
@@ -119,15 +122,27 @@ export default class TechnicalOperationRelationsList extends ElementsList {
       });
     }
   }
-  onCarFormHide = () => this.setState({ carElement: null, showCarForm: false });
 
-  handleChangeRoutes = () => {
+  onCarFormHide = () => (
     this.setState({
-      routesData: this.state.selectedElement.routes,
+      carElement: null,
+      showCarForm: false,
+    })
+  );
+
+  handleChangeRoutes = () => (
+    this.setState(selectedElement => ({
+      routesData: selectedElement.routes,
       showRouteChangeForm: true,
-    });
-  }
-  onRouteFormHide = () => this.setState({ routesData: [], showRouteChangeForm: false });
+    }))
+  );
+
+  onRouteFormHide = () => (
+    this.setState({
+      routesData: [],
+      showRouteChangeForm: false,
+    })
+  );
 
   getButtons() {
     return [
@@ -153,11 +168,13 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         showForm={this.state.showCarForm}
         onFormHide={this.onCarFormHide}
         element={this.state.carElement}
-        entity={'car'}
+        entity="car"
         permissions={['car.read']}
         flux={this.context.flux}
         refreshList={this.refreshList}
         {...this.props}
+        page={loadingPage}
+        path="сarFormWrap"
       />,
       <ChangeRouteForm
         key="ChangeRouteForm"
@@ -167,7 +184,11 @@ export default class TechnicalOperationRelationsList extends ElementsList {
         technical_operation_id={this.props.technical_operation_id}
         municipal_facility_id={this.props.municipal_facility_id}
         refreshList={this.refreshList}
+        page={loadingPage}
+        path="changeRouteForm"
       />,
     ];
   }
 }
+
+export default TechnicalOperationRelationsList;

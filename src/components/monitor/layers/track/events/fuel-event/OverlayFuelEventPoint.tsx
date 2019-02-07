@@ -1,6 +1,6 @@
 import * as React from 'react';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 import * as moment from 'moment';
-import Overlay from 'components/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -8,7 +8,7 @@ import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } fro
 
 import {
   OverlayLineInfoContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 const getTitleByType = (event_type) => {
   switch (event_type) {

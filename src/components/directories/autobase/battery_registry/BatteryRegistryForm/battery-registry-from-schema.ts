@@ -8,6 +8,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
       key: 'brand_id',
       title: 'Марка аккумулятора',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

@@ -18,6 +18,7 @@ export const maintenanceWorkSchema = {
       key: 'measure_unit_id',
       title: 'Единица измерения',
       type: 'number',
+      integer: true,
       required: true,
     },
   ],

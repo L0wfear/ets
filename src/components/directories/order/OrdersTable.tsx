@@ -108,7 +108,7 @@ const Table: React.FunctionComponent<any> = (props) => (
     externalChangeSort={props.changeSort}
     useServerFilter={true}
     useServerSort={true}
-    initialSort={'create_date'}
+    initialSort="create_date"
     initialSortAscending={false}
     className="order"
     selectField={'id'}

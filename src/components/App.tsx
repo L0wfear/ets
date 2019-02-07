@@ -6,7 +6,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 import { AuthCheckService } from 'api/Services';
 import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
 
-import { MapEtsProvider } from 'components/map/context/MapetsContext';
+import { MapEtsProvider } from 'components/new/ui/map/context/MapetsContext';
 
 import LoadingPage from 'components/LoadingPage';
 
@@ -17,6 +17,7 @@ global.APP_TIME_FORMAT = 'HH:mm';
 global.APP_TIME_WITH_SECOND_FORMAT = 'HH:mm:ss';
 global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
 global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${process.env.STAND}2`;
+
 global.CURRENT_USER2 = `${location.host}${location.pathname}-current-user-${process.env.STAND}2`;
 
 import LoginPageWrap from 'components/login/LoginPageWrap';

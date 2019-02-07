@@ -1,10 +1,11 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 const ReportForm = React.lazy(() => (
-  import(/* webpackChunkName: "ReportForm" */'components/reports/operational/track_events/form/ReportForm')
+  import(/* webpackChunkName: "ReportForm" */ 'components/reports/operational/track_events/form/ReportForm')
 ));
 
 type PropsReportFormWrap = {
@@ -23,12 +24,14 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
     return (
       showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <ReportForm
-            onFormHide={props.onFormHide}
-            coords={props.coords}
-          />
-        </React.Suspense>
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <ReportForm
+              onFormHide={props.onFormHide}
+              coords={props.coords}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       ( <DivNone /> )

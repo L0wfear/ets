@@ -7,9 +7,9 @@ import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import Div from 'components/ui/Div';
+import { ColFilter } from 'components/ui/tableNew/filter/styled';
 
 export default class FilterRow extends React.Component {
-
   static get propTypes() {
     return {
       value: PropTypes.any,
@@ -45,12 +45,13 @@ export default class FilterRow extends React.Component {
       byLabel = '',
       displayName,
       labelFunction,
-      onChange,
       name,
       data,
       type,
+      entity,
     } = this.props;
     let { value } = this.props;
+    const idLabel = name ? `${entity ? `${entity}-` : ''}${name}-label` : undefined;
 
     let input = (
       <div className="form-group">
@@ -60,13 +61,13 @@ export default class FilterRow extends React.Component {
     if (type) {
       if (type === 'select' || type === 'multiselect' || type === 'multiselect-boolean' || type === 'advanced-select-like') {
         let options = availableOptions || _(data)
-                        .uniqBy(name)
-                        .map((d) => ({
-                          value: typeof d[name] === 'boolean' ? +d[name] : d[name],
-                          label: labelFunction(d[byLabel || name]),
-                        }))
-                        .filter((d) => !!d.label)
-                        .value();
+          .uniqBy(name)
+          .map(d => ({
+            value: typeof d[name] === 'boolean' ? +d[name] : d[name],
+            label: labelFunction(d[byLabel || name]),
+          }))
+          .filter(d => !!d.label)
+          .value();
         if (type === 'select' || type === 'advanced-select-like') {
           if (!!value && !_.find(options, o => o.value === value)) {
             value = null;
@@ -111,10 +112,10 @@ export default class FilterRow extends React.Component {
     }
 
     return (
-      <Div className="filter-row">
-        <label htmlFor="input">{displayName}</label>
+      <ColFilter lg={3} md={4} sm={6}>
+        <label id={idLabel} htmlFor="input">{displayName}</label>
         {input}
-      </Div>
+      </ColFilter>
     );
   }
 }

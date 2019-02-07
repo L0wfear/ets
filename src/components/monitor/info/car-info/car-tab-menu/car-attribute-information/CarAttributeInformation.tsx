@@ -11,6 +11,7 @@ import { makeDate, makeTime } from 'utils/dates';
 
 import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
+import CarCreateMission from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/CreateMission';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
@@ -19,7 +20,7 @@ const makeLastPointString = (lastPoint: TypeLastPoint): string => {
 };
 
 const CarAttributeInformation: React.FunctionComponent<PropsCarAttributeInformation> = (props) => {
-  const { lastPoint, errorInLoadTrack } = props;
+  const { lastPoint, errorInLoadTrack, gps_code } = props;
 
   return (
     <div>
@@ -61,6 +62,9 @@ const CarAttributeInformation: React.FunctionComponent<PropsCarAttributeInformat
         </div>
       </div>
       <CarMissions />
+      <CarCreateMission
+        gps_code={gps_code}
+      />
     </div>
   );
 };
@@ -78,6 +82,7 @@ const mapStateToProps = (state) => ({
   status: state.monitorPage.carInfo.status,
   lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
+  carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 });
 
 export default connect<any, any, any, ReduxState>(

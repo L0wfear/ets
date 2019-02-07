@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { batteryBrand } from 'constants/autobase';
+import { batteryBrand } from 'redux-main/reducers/modules/autobase/constants';
 
 export const getBatteryBrand = autobaseLoadByType(batteryBrand);
 export const createBatteryBrand = autobaseCreateByType(batteryBrand);

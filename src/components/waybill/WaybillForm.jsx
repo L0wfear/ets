@@ -108,7 +108,7 @@ class WaybillForm extends Form {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       formState,
       formState: { status },
@@ -121,14 +121,18 @@ class WaybillForm extends Form {
     const IS_CLOSED = status === 'closed';
 
     this.getMissionsByCarAndDates(formState, false);
-    flux.getActions('objects').getCars();
-    flux.getActions('employees').getEmployees();
-    flux.getActions('objects').getWorkMode();
-    flux.getActions('missions').getMissionSources();
-    getWaybillDrivers(
-      this.context.flux.getActions('employees').getWaybillDrivers,
-      this.props.formState,
-    );
+
+    await Promise.all([
+      flux.getActions('objects').getCars(),
+      flux.getActions('employees').getEmployees(),
+      flux.getActions('objects').getWorkMode(),
+      flux.getActions('missions').getMissionSources(),
+      getWaybillDrivers(
+        this.context.flux.getActions('employees').getWaybillDrivers,
+        this.props.formState,
+      ),
+    ]);
+
     if (IS_CREATING || IS_DRAFT) {
       flux.getActions('fuelRates').getFuelRates()
         .then(({ result: fuelRateAll }) => this.setState({ fuelRateAllList: fuelRateAll.map(d => d.car_model_id) }))
@@ -168,10 +172,11 @@ class WaybillForm extends Form {
 
           this.setState({
             fuelRates,
-            operations: fuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            operations: fuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
+                  uniqKey: id,
                   rate_on_date,
                   comment,
                   measure_unit_name,
@@ -183,10 +188,11 @@ class WaybillForm extends Form {
             }, []),
             fuel_correction_rate,
             equipmentFuelRates,
-            equipmentOperations: equipmentFuelRates.reduce((newArr, { operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            equipmentOperations: equipmentFuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
+                  uniqKey: id,
                   rate_on_date,
                   measure_unit_name,
                   is_excluding_mileage,
@@ -211,8 +217,6 @@ class WaybillForm extends Form {
         });
     }
   }
-
-  employeeFIOLabelFunction = (...arg) => employeeFIOLabelFunction(this.context.flux)(...arg);
 
   handlePlanDepartureDates = (field, value) => {
     if (value === null) {
@@ -624,7 +628,7 @@ class WaybillForm extends Form {
     const taxeTotalHidden = allTaxes.length === 0;
 
     if (state.driver_id && !DRIVERS.some(d => d.value === state.driver_id)) {
-      DRIVERS.push({ label: this.employeeFIOLabelFunction(state.driver_id), value: state.driver_id });
+      DRIVERS.push({ label: employeeFIOLabelFunction(this.props.employeesIndex, state.driver_id), value: state.driver_id });
     }
     const { gps_code } = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
     let distanceOrTrackOrNodata = state.distance;
@@ -870,7 +874,7 @@ class WaybillForm extends Form {
                 label="Водитель"
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
-                value={this.employeeFIOLabelFunction(state.driver_id, true)}
+                value={employeeFIOLabelFunction(employeesIndex, state.driver_id, true)}
               />
             </Col>
             <Col md={6}>
@@ -1046,7 +1050,6 @@ class WaybillForm extends Form {
                     disabled
                   />
                   <ExtField
-                    multi
                     id="fact-fuel-end"
                     type="number"
                     modalKey={modalKey}
@@ -1069,6 +1072,7 @@ class WaybillForm extends Form {
           <Row>
             <Col md={8}>
               <Taxes
+                modalKey={modalKey}
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.tax_data && state.tax_data.length === 0) || (IS_CLOSED && !state.tax_data)}
                 readOnly={IS_CLOSED || !IS_ACTIVE && !this.state.canEditIfClose}
                 title="Расчет топлива по норме"
@@ -1081,6 +1085,7 @@ class WaybillForm extends Form {
                 type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               />
               <Taxes
+                modalKey={modalKey}
                 hidden={!isPermittedByKey.update || !(IS_CLOSED || IS_ACTIVE) || state.status === 'draft' || (IS_CLOSED && state.equipment_tax_data && state.equipment_tax_data.length === 0) || (IS_CLOSED && !state.equipment_tax_data)}
                 readOnly={IS_CLOSED || !IS_ACTIVE && !this.state.canEditIfClose}
                 taxes={state.equipment_tax_data}
@@ -1123,7 +1128,7 @@ class WaybillForm extends Form {
                   <div className="form-group">
                     <div className="checkbox">
                       <label htmlFor="show-fuel-consumption">
-                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} />
+                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} readOnly={true}/>
                         <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
                       </label>
                     </div>
@@ -1233,8 +1238,8 @@ class WaybillForm extends Form {
               <h4>Простои на линии, ч.</h4>
             </Col>
             <Row>
-              <Div style={{ paddingLeft: 15 }}>
-                <Col md={4}>
+              <Col md={8}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-work"
                     type="string"
@@ -1245,7 +1250,7 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_work}
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-duty"
                     type="string"
@@ -1256,11 +1261,11 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_duty}
                   />
                 </Col>
-              </Div>
+              </Col>
             </Row>
             <Row>
-              <Div style={{ paddingLeft: 15 }}>
-                <Col md={4}>
+              <Col md={8}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-dinner"
                     type="string"
@@ -1271,7 +1276,7 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_dinner}
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Field
                     id="downtime-hours-repair"
                     type="string"
@@ -1282,7 +1287,7 @@ class WaybillForm extends Form {
                     error={errors.downtime_hours_repair}
                   />
                 </Col>
-              </Div>
+              </Col>
             </Row>
           </Row>
           <Row>

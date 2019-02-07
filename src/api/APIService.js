@@ -24,18 +24,24 @@ export default class APIService {
    * @param {object} options - options
    * @param {boolean} options.useMock - use mock instead of backend service
    */
-  constructor(url, options = {}) {
+  constructor(_apiUrl, path, options = {}) {
     const { useMock = false } = options;
-    this.serviceName = url.split('/').pop();
     this.useMock = useMock;
 
+    this._apiUrl = _apiUrl;
+    this._path = path;
+
+    const url = this.getUrlData();
+
+    this.serviceName = urljoin(this._apiUrl, this._path).split('/').pop();
+
     this.url = url;
-    this.canonicUrl = url;
+    this.addPath = [];
 
     this.get = this.get.bind(this);
     this.processResponse = this.processResponse.bind(this);
 
-    this.logFunction = method => console.info(`API SERVICE ${method} ${this.url}`); // eslint-disable-line
+    this.logFunction = method => console.info(`API SERVICE ${method} ${this.getUrl()}`); // eslint-disable-line
     this.warningNotificationFunction = warning => global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
     this.errrorNotificationFunction = errror => global.NOTIFICATION_SYSTEM.notify(getErrorNotification(errror));
 
@@ -43,7 +49,9 @@ export default class APIService {
   }
 
   getUrlData() {
-    const version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), this._apiUrl, '');
+    const apiVersions = localStorage.getItem(global.API__KEY2) || '{}';
+
+    const version = get(JSON.parse(apiVersions), this._apiUrl, '');
 
     switch (this._apiUrl) {
       case config.tracksCaching:
@@ -145,7 +153,8 @@ export default class APIService {
       });
     }
     this.log('GET');
-    const { url } = this;
+
+    const url = this.getUrl();
     this.resetPath();
 
     checkUrlWithPayload(url, payload);
@@ -154,56 +163,60 @@ export default class APIService {
 
   getBlob(payload = {}) {
     this.log('GET BLOB');
-    const { url } = this;
+    const url = this.getUrl();
     this.resetPath();
     return getBlob(url, payload).then(r => this.processResponse(r, false));
   }
 
   postBlob(payload = {}) {
     this.log('GET (POST) BLOB');
-    const { url } = this;
+    const url = this.getUrl();
     this.resetPath();
     return postBlob(url, payload).then(r => this.processResponse(r, false));
   }
 
   post(payload = {}, callback, type = 'form', params = {}) {
     this.log('POST');
-    const { url } = this;
+    const url = this.getUrl();
     this.resetPath();
     return postJSON(url, payload, type, params).then(r => this.processResponse(r, callback));
   }
 
   put(payload = {}, callback, type = 'form') {
     this.log('PUT');
-    const { url } = this;
+    const url = this.getUrl();
     this.resetPath();
     return putJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   patch(payload = {}, callback, type = 'form') {
     this.log('PATCH');
-    const { url } = this;
+    const url = this.getUrl();
     this.resetPath();
     return patchJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   delete(payload = {}, callback, type = 'form') {
     this.log('DELETE');
-    const { url } = this;
+    const url = this.getUrl();
     this.resetPath();
     return deleteJSON(url, payload, type).then(r => this.processResponse(r, callback));
   }
 
   getUrl() {
-    return this.url;
+    return urljoin(
+      this.getUrlData(),
+      ...this.addPath.map(b => String(b)),
+    );
   }
 
   resetPath() {
-    this.url = this.canonicUrl;
+    this.url = this.getUrlData();
+    this.addPath = [];
   }
 
   path(...args) {
-    this.url = urljoin(this.url, ...args.map(b => String(b)));
+    this.addPath = [...this.addPath, ...args];
     return this;
   }
 

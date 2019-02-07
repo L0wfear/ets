@@ -33,12 +33,11 @@ export const tableMeta = ({
 });
 
 export default (props) => {
-  const renderers = {};
-
   return (
     <Table
       title="Автобазы"
       results={props.data}
+      initialSort={props.selectField}
       tableMeta={tableMeta(props)}
       renderers={renderers}
       {...props}

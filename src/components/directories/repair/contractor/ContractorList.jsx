@@ -5,6 +5,7 @@ import CheckableElementsList from 'components/CheckableElementsList';
 import ContractorTable from 'components/directories/repair/contractor/ContractorTable';
 import ContractorFormWrap from 'components/directories/repair/contractor/ContractorFormWrap';
 import permissions from 'components/directories/repair/contractor/config-data/permissions';
+import { compose } from 'recompose';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.contractor}` })
@@ -28,4 +29,4 @@ class ContractorList extends CheckableElementsList {
   }
 }
 
-export default ContractorList;
+export default compose()(ContractorList);

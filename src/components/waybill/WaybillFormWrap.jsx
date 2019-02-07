@@ -21,6 +21,7 @@ import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
+import { connect } from 'react-redux';
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -71,7 +72,7 @@ class WaybillFormWrap extends FormWrap {
     onCallback: () => {},
   }
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = {
       formState: null,
@@ -81,8 +82,8 @@ class WaybillFormWrap extends FormWrap {
       canPrint: false,
       name: 'waybillFormWrap',
       isPermittedByKey: {
-        update: context.flux.getStore('session').state.userPermissions.includes(permissions.update),
-        departure_and_arrival_values: context.flux.getStore('session').state.userPermissions.includes(permissions.departure_and_arrival_values),
+        update: false,
+        departure_and_arrival_values: false,
       },
     };
   }
@@ -93,10 +94,19 @@ class WaybillFormWrap extends FormWrap {
 
       timeId = setTimeout(() => this.checkError(), (60 - currentDate.getSeconds()) * 1000);
 
+      this.setState({
+        isPermittedByKey: {
+          update: this.props.currentUser.permissions.includes(permissions.update),
+          departure_and_arrival_values: this.props.currentUser.permissions.includes(permissions.departure_and_arrival_values),
+        },
+      });
+
       if (props.element === null) {
-        const defaultBill = getDefaultBill();
+        const defaultBill = getDefaultBill({
+          company_id: this.props.currentUser.company_id,
+        });
         if (typeof defaultBill.structure_id === 'undefined') {
-          const currentStructureId = this.context.flux.getStore('session').getCurrentUser().structure_id;
+          const currentStructureId = this.props.currentUser.structure_id;
           defaultBill.structure_id = currentStructureId;
         }
         this.schema = waybillSchema;
@@ -242,7 +252,7 @@ class WaybillFormWrap extends FormWrap {
     newState.canSave = (
       !filter(
         formErrors,
-        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
@@ -275,7 +285,7 @@ class WaybillFormWrap extends FormWrap {
     newState.canSave = (
       !filter(
         formErrors,
-        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'fact_fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
+        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
@@ -558,4 +568,8 @@ class WaybillFormWrap extends FormWrap {
   }
 }
 
-export default WaybillFormWrap;
+export default connect(
+  state => ({
+    currentUser: state.session.userData,
+  }),
+)(WaybillFormWrap);

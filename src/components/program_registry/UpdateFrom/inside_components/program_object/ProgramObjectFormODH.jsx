@@ -8,7 +8,7 @@ import * as NavItem from 'react-bootstrap/lib/NavItem';
 
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep, keyBy, isEmpty } from 'lodash';
 
 import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
@@ -24,6 +24,9 @@ import TabInfo from 'components/program_registry/UpdateFrom/inside_components/pr
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
+import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -101,20 +104,16 @@ class ProgramObjectFormodh extends Form {
 
         changesState.selectedObj = changesState.odhPolys[object_id];
 
-        changesFormState.elements = elements.map((d) => ({
+        changesFormState.elements = elements.map(d => ({
           ...d,
           measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
         }));
         this.props.handleMultiChange({ ...changesFormState });
         this.setState({ ...changesState });
       } else {
-        this.context.flux.getActions('geoObjects').getGeozoneByTypeWithGeometry('odh').then((ans) => {
-          const {
-            odhPolys: odhPolysOrigal = {},
-          } = this.props;
-
+        this.props.actionGetGetOdh().then(({ payload: { data } }) => {
           const changesState = { manual };
-          changesState.odhPolys = cloneDeep(odhPolysOrigal);
+          changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
 
           changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({
             data: {
@@ -125,8 +124,6 @@ class ProgramObjectFormodh extends Form {
           }));
 
           this.setState({ ...changesState });
-
-          return ans;
         });
       }
     });
@@ -369,7 +366,7 @@ class ProgramObjectFormodh extends Form {
                 options={OBJECT_OPTIONS}
                 value={state.asuods_id}
                 onChange={this.handleChangeInfoObject}
-                boundKeys={['asuods_id']}
+                boundKeys="asuods_id"
                 disabled={!IS_CREATING || !isPermitted}
                 clearable={false}
               />
@@ -418,7 +415,7 @@ class ProgramObjectFormodh extends Form {
                   value={state.contract_number}
                   error={errors.name}
                   onChange={this.handleChange}
-                  boundKeys={['contract_number']}
+                  boundKeys="contract_number"
                   disabled={!isPermitted}
                 />
               </Col>
@@ -430,7 +427,7 @@ class ProgramObjectFormodh extends Form {
                   options={CONTRACTOR_OPTIONS}
                   value={state.contractor_id}
                   onChange={this.handleChange}
-                  boundKeys={['contractor_id']}
+                  boundKeys="contractor_id"
                   disabled={!isPermitted}
                 />
               </Col>
@@ -516,5 +513,21 @@ class ProgramObjectFormodh extends Form {
   }
 }
 
-
-export default tabable(connectToStores(ProgramObjectFormodh, ['repair', 'geoObjects']));
+export default compose(
+  tabable,
+  connect(
+    null,
+    dispatch => ({
+      actionGetGetOdh: () => (
+        dispatch(
+          geoobjectActions.actionGetGetOdh(
+            null,
+            {
+              page: null, path: null,
+            },
+          ),
+        )
+      ),
+    }),
+  ),
+)(connectToStores(ProgramObjectFormodh, ['repair']));

@@ -1,5 +1,5 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import BatteryManufacturerFormWrap from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerForm/BatteryManufacturerFormWrap';
 import BatteryManufacturerTable from 'components/directories/autobase/battery_manufacturer/BatteryManufacturerTable';
@@ -12,7 +12,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'battery-manufacturer';
 
-@connectToStores(['autobase', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryManufacturer}` })
 @staticProps({
   entity: 'autobase_battery_manufacturer',
@@ -53,7 +53,7 @@ class BatteryManufacturerList extends ElementsList {
     this.setState(changeState);
   }
 
-  getAdditionalProps() {
+  getAdditionalFormProps() {
     return {
       loadingPageName,
     };

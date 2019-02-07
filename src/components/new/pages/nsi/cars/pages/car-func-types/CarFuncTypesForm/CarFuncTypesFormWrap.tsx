@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -10,7 +11,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 
 const CarFuncTypesFrom = React.lazy(() => (
-  import(/* webpackChunkName: "car_func_types_form" */'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/CarFuncTypesForm')
+  import(/* webpackChunkName: "car_func_types_form" */ 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/CarFuncTypesForm')
 ));
 
 class CarFuncTypesFormWrap extends React.Component<PropsCarFuncTypesFormWrap, {}> {
@@ -21,15 +22,17 @@ class CarFuncTypesFormWrap extends React.Component<PropsCarFuncTypesFormWrap, {}
 
     return element ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <CarFuncTypesFrom
-            element={element}
-            handleHide={props.onFormHide}
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <CarFuncTypesFrom
+              element={element}
+              handleHide={props.onFormHide}
 
-            page={page}
-            path={path}
-          />
-        </React.Suspense>
+              page={page}
+              path={path}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       (
@@ -43,10 +46,11 @@ export default connect<any, any, any, ReduxState>(
     element: getListData(state.registry, registryKey).data.selectedRowToShow,
   }),
   (dispatch, { registryKey }) => ({
-    onFormHide: () => (
+    onFormHide: (...arg) => (
       dispatch(
         registryResetSelectedRowToShowInForm(
           registryKey,
+          ...arg,
         ),
       )
     ),

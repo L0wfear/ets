@@ -1,5 +1,5 @@
 import permissions from 'components/reports/regulated/cleaning_status_tech_op/config-data/permissions';
-import components from 'components/reports/regulated/cleaning_status_tech_op/config-data/components';
+import component from 'components/reports/regulated/cleaning_status_tech_op/config-data/components';
 
 export default {
   path: '/cleaning-status-tech-op-report',
@@ -7,6 +7,6 @@ export default {
   entyity: 'cleaning_status_tech_op_report',
   noDotList: false,
   hiddenNav: true,
-  components,
+  component,
   permissions,
 };

@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import operational from 'components/reports/operational/config-data';
 import regulated from 'components/reports/regulated/config-data';
@@ -13,5 +13,5 @@ const children = {
 export default {
   title: 'Отчёты',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

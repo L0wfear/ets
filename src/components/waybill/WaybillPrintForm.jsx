@@ -147,7 +147,7 @@ class WaybillPrintForm extends React.Component {
                 value={this.state.month}
                 clearable={false}
                 onChange={this.handleChange}
-                boundKeys={['month']}
+                boundKeys="month"
                 error={errors.month}
                 disabled={this.state.DISABLE_SUBMIT}
               />
@@ -158,7 +158,7 @@ class WaybillPrintForm extends React.Component {
                 value={this.state.year}
                 clearable={false}
                 onChange={this.handleChange}
-                boundKeys={['year']}
+                boundKeys="year"
                 error={errors.year}
                 disabled={this.state.DISABLE_SUBMIT}
               />
@@ -183,7 +183,7 @@ class WaybillPrintForm extends React.Component {
                   label="Время с"
                   date={this.state.date_from}
                   onChange={this.handleChange}
-                  boundKeys={['date_from']}
+                  boundKeys="date_from"
                 />
               </Col>
               <Col md={6}>
@@ -193,7 +193,7 @@ class WaybillPrintForm extends React.Component {
                   label="Время по"
                   date={this.state.date_to}
                   onChange={this.handleChange}
-                  boundKeys={['date_to']}
+                  boundKeys="date_to"
                 />
               </Col>
             </Row>

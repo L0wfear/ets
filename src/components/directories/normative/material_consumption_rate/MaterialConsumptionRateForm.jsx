@@ -54,7 +54,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 options={TECH_OPERATIONS}
                 value={state.technical_operation_id}
                 onChange={this.handleChange}
-                boundKeys={['technical_operation_id']}
+                boundKeys="technical_operation_id"
                 disabled={!isPermitted}
               />
             </Col>
@@ -68,7 +68,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 options={CONSUMABLE_MATERIALS}
                 value={state.consumable_material_id}
                 onChange={this.handleChange}
-                boundKeys={['consumable_material_id']}
+                boundKeys="consumable_material_id"
                 disabled={!isPermitted}
               />
             </Col>
@@ -82,7 +82,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 options={[{ value: 2, label: 'Зима' }, { value: 1, label: 'Лето' }]}
                 value={state.season_id}
                 onChange={this.handleChange}
-                boundKeys={['season_id']}
+                boundKeys="season_id"
                 disabled={!isPermitted}
               />
             </Col>
@@ -106,7 +106,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 options={SUBCATEGORIES}
                 value={state.clean_subcategory_id}
                 onChange={this.handleChange}
-                boundKeys={['clean_subcategory_id']}
+                boundKeys="clean_subcategory_id"
               />
             </Col>
             <Col md={3}>
@@ -116,7 +116,7 @@ export default class MaterialConsumptionRateForm extends Form {
                 error={errors.value}
                 value={state.value}
                 onChange={this.handleChange}
-                boundKeys={['value']}
+                boundKeys="value"
                 disabled={!isPermitted}
               />
             </Col>

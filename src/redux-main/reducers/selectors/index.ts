@@ -20,7 +20,7 @@ export const getReportState: GetStateType<'report'> = (state) => (
 export const getOldReportState: GetStateType<'old_report'> = (state) => (
   getStateDataByKey(state)('old_report')
 );
-export const getsSssionState: GetStateType<'session'> = (state) => (
+export const getSessionState: GetStateType<'session'> = (state) => (
   getStateDataByKey(state)('session')
 );
 export const getAutobaseState: GetStateType<'autobase'> = (state) => (
@@ -40,4 +40,16 @@ export const getEtsLoadingState: GetStateType<'etsLoading'> = (state) => (
 );
 export const getCompanyStructureState: GetStateType<'company_structure'> = (state) => (
   getStateDataByKey(state)('company_structure')
+);
+export const getRoutesState: GetStateType<'routes'> = (state) => (
+  getStateDataByKey(state)('routes')
+);
+export const getSomeUniqState: GetStateType<'some_uniq'> = (state) => (
+  getStateDataByKey(state)('some_uniq')
+);
+export const getGeoobjectState: GetStateType<'geoobject'> = (state) => (
+  getStateDataByKey(state)('geoobject')
+);
+export const getMissionsState: GetStateType<'missions'> = (state) => (
+  getStateDataByKey(state)('missions')
 );

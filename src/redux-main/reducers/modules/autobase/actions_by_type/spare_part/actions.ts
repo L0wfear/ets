@@ -45,7 +45,7 @@ export const sparePartGetAndSetInStore = (payload = {}, { page, path }: { page: 
   };
 };
 export const autobaseCreateSparePart: any = (sparePartOld: SparePart, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { sparePart } } = await dispatch({
+  const { payload: sparePart } = await dispatch({
     type: 'none',
     payload: createSetSparePart(sparePartOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateSparePart: any = (sparePartOld: SparePart, { page, pa
   return sparePart;
 };
 export const autobaseUpdateSparePart: any = (sparePartOld: SparePart, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { sparePart } } = await dispatch({
+  const { payload: sparePart } = await dispatch({
     type: 'none',
     payload: updateSetSparePart(sparePartOld),
     meta: {

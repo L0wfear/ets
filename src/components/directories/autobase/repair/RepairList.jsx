@@ -1,5 +1,5 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import RepairFormWrap from 'components/directories/autobase/repair/RepairForm/RepairFormWrap';
 import RepairTable, { tableMeta } from 'components/directories/autobase/repair/RepairTable';
@@ -81,7 +81,7 @@ class RepareList extends ElementsList {
     this.setState(changeState);
   }
 
-  getAdditionalProps() {
+  getAdditionalFormProps() {
     return {
       loadingPageName,
     };

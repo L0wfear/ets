@@ -1,12 +1,13 @@
 import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsBatteryRegistryFormWrap } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/@types/BatteryRegistry.h';
 
 const BatteryRegistryFrom = React.lazy(() => (
-  import(/* webpackChunkName: "battery_registry_form" */'components/directories/autobase/battery_registry/BatteryRegistryForm/BatteryRegistryForm')
+  import(/* webpackChunkName: "battery_registry_form" */ 'components/directories/autobase/battery_registry/BatteryRegistryForm/BatteryRegistryForm')
 ));
 
 class BatteryRegistryFormWrap extends React.Component<PropsBatteryRegistryFormWrap, {}> {
@@ -17,15 +18,17 @@ class BatteryRegistryFormWrap extends React.Component<PropsBatteryRegistryFormWr
 
     return showForm ?
       (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <BatteryRegistryFrom
-            element={props.element}
-            handleHide={props.onFormHide}
+        <ErrorBoundaryForm>
+          <React.Suspense fallback={<LoadingComponent />}>
+            <BatteryRegistryFrom
+              element={props.element}
+              handleHide={props.onFormHide}
 
-            page={page}
-            path={path}
-          />
-        </React.Suspense>
+              page={page}
+              path={path}
+            />
+          </React.Suspense>
+        </ErrorBoundaryForm>
       )
       :
       (

@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import fuelConsumption from 'components/reports/regulated/fuel_consumption/config-data';
 import fuelConsumptionSummary from 'components/reports/regulated/fuel_consumption_summary/config-data';
@@ -17,5 +17,5 @@ const children = {
 export default {
   title: 'Регламентированные отчеты',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

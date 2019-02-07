@@ -25,7 +25,6 @@ export const MonitorPageContainer = styled.div`
     pointer-events: none;
     display: flex;
     flex-direction: row-reverse;
-    z-index: 1;
     >.icon-map-help {
       flex: 1 1;
       margin: 10px;

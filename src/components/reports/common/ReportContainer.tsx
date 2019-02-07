@@ -60,7 +60,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const searchObject = queryString.parse(search);
 
     if (Object.keys(searchObject).length > 0) {
-      this.getReportData(searchObject);
+      try {
+        this.getReportData(searchObject);
+      } catch (e) {
+        console.warn(e); // tslint:disable-line
+        return;
+      }
     } else {
       this.getTableMetaInfo();
     }
@@ -93,7 +98,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(searchObject, searchNextxObject)) {
       if (Object.keys(searchNextxObject).length > 0) {
-        this.getReportData(searchNextxObject);
+        try {
+          this.getReportData(searchNextxObject);
+        } catch (e) {
+          console.warn(e); // tslint:disable-line
+          return;
+        }
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
@@ -129,11 +139,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
             level: data.result.meta.levels.summary.level,
           };
 
-          await this.props.getReportData(
-            this.props.serviceName,
-            summaryQuery,
-            'summary',
-          );
+          try {
+            await this.props.getReportData(
+              this.props.serviceName,
+              summaryQuery,
+              'summary',
+            );
+          } catch (e) {
+            console.warn(e); // tslint:disable-line
+          }
         }
 
         if (data.result.rows.length === 0) {
@@ -169,9 +183,16 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       if (Object.keys(searchObject).length === 0) {
         const payload: any = { ...headerData };
 
-        const data = await this.getReportData(payload);
+        let data = null;
 
-        if (data.result.rows.length === 0) {
+        try {
+          data = await this.getReportData(payload);
+        } catch (e) {
+          console.warn(e); // tslint:disable-line
+          return;
+        }
+
+        if (get(data, ['result', 'rows'], []).length === 0) {
           return;
         }
 
@@ -324,10 +345,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       };
     }
 
-    await this.props.exportByPostData(
-      payload,
-      searchObject,
-    );
+    try {
+      await this.props.exportByPostData(
+        payload,
+        searchObject,
+      );
+    } catch (e) {
+      console.warn(e); // tslint:disable-line
+    }
 
     this.setState({ exportFetching: false });
   }

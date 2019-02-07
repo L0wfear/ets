@@ -61,6 +61,11 @@ export type BatteryRegistry = {
   worked_months: number | null;
 };
 
+export type BatteryAvailableCar = {
+  id: number;
+  name: string;
+};
+
 export type InsurancePolicy = {
   car_id: number | null;
   company_id: number | null;
@@ -167,6 +172,191 @@ export type RoadAccidentCause = {
   id: number | null;
   name: string | null;
 };
+export type TechInspection = {
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  company_short_name: string | null;
+  created_at: string | null;
+  date_end: string | null;
+  date_start: string | null;
+  gov_number: string | null;
+  id?: number;
+  is_allowed: boolean;
+  note: string | null;
+  reg_number: string | null;
+  tech_operator: string | null;
+  updated_at: string | null;
+  files?: any[];
+};
+export type TechMaintOrder = {
+  car_model_id: number | null;
+  car_model_name: string;
+  description: string;
+  entity_name: string;
+  id?: number;
+  interval_probeg: number | null;
+  interval_time: number | null;
+  interval_time_type: number | null;
+  is_periodic: boolean;
+  measure_unit_run_id: number | null;
+  measure_unit_run_name: string;
+  sequence: number | null;
+  tech_maintenance_type_id: number | null;
+  tech_maintenance_type_name: string;
+  files?: any[];
+};
+
+export type TechMaintType = {
+  id: number;
+  name: string;
+};
+export type MeasureUnitRun = {
+  id: number;
+  name: string;
+  tech_maintenance_type_id: number;
+  tech_maintenance_type_name: string;
+};
+export type TireModel = {
+  id: number | null;
+  name: string | null;
+  tire_manufacturer_id: number | null;
+  tire_manufacturer_name: string | null;
+};
+export type TireManufacturer = {
+  id: number;
+  name: string;
+};
+export type Tire = {
+  car_id: number | null;
+  comment: string;
+  company_id: number | null;
+  company_name: string;
+  gov_number: string;
+  id?: number;
+  installed_at: string | null;
+  motohours_diff: number | null;
+  odometr_diff: number | null;
+  tire_manufacturer_id: number | null;
+  tire_manufacturer_name: string;
+  tire_model_id: number | null;
+  tire_model_name: string;
+  tire_size_id: number | null;
+  tire_size_name: string;
+  tire_to_car: {
+    car_id: number | null;
+    gov_number: string | null;
+    id?: number;
+    installed_at: string;
+    motohours_diff: number | null;
+    odometr_diff: number | null;
+    uninstalled_at: string;
+  }[];
+  tire_to_car_id: number | null;
+  uninstalled_at: string | null;
+};
+export type TireSize = {
+  id: number;
+  name: string;
+};
+export type TireAvailableCar = {
+  car_id: number;
+  gov_number: string;
+};
+
+export type ActualBatteriesOnCar = {
+  battery_to_car_id: number | null;
+  brand_id: number | null;
+  brand_name: string | null;
+  car_id: number | null;
+  company_id: number | null;
+  company_name: string | null;
+  gov_number: string | null;
+  id: number;
+  installed_at: string;
+  lifetime_months: number | null;
+  manufacturer_id: number | null;
+  manufacturer_name: string | null;
+  odometr_start: string | null;
+  released_at: string;
+  serial_number: string | null;
+  uninstalled_at: string;
+  worked_months: number | null;
+};
+export type ActualTiresOnCar = {
+  car_id: number | null;
+  comment: string | null;
+  company_id: number | null;
+  company_name: string | null;
+  gov_number: string | null;
+  id: number;
+  installed_at: string;
+  motohours_diff: number | null;
+  odometr_diff: number | null;
+  tire_manufacturer_id: number | null;
+  tire_manufacturer_name: string | null;
+  tire_model_id: number | null;
+  tire_model_name: string | null;
+  tire_size_id: number | null;
+  tire_size_name: string | null;
+  tire_to_car_id: number | null;
+  uninstalled_at: string;
+};
+export type TechMaint = {
+  can_edit: boolean;
+  car_id: number | null;
+  company_id: number | null;
+  company_name: number | null;
+  company_short_name: number | null;
+  fact_date_end: string | null;
+  fact_date_start: string | null;
+  gov_number: number | null;
+  id: number | null;
+  motohours_fact: null
+  note: string;
+  number: number | string | null;
+  odometr_fact: null
+  plan_date_end: string;
+  plan_date_start: string;
+  repair_company_id: number | null;
+  repair_company_name: string | null;
+  tech_maintenance_order_ids: number[]
+  tech_maintenance_orders: {
+    car_model_id: number | null;
+    car_model_name: string | null;
+    description: string | null;
+    entity_name: string | null;
+    id: number;
+    interval_probeg: number | null;
+    interval_time: number | null;
+    interval_time_type: string | null;
+    is_periodic: boolean;
+    measure_unit_run_id: number | null;
+    measure_unit_run_name: string | null;
+    sequence: number | null;
+    tech_maintenance_type_id: number | null;
+    tech_maintenance_type_name: string | null;
+  }[]
+  tech_maintenance_orders_text: string | null;
+  files: any[];
+};
+export type TechMaintExtra = {
+  car_interval_probeg: number | null;
+  car_interval_time: number | null;
+};
+
+export type CarCategory = {
+  id: number;
+  name: string;
+};
+export type EngineType = {
+  id: number;
+  name: string;
+};
+export type PropulsionType = {
+  id: number;
+  name: string;
+};
 
 export type IStateAutobase = {
   sparePartList: SparePart[];
@@ -175,6 +365,7 @@ export type IStateAutobase = {
   batteryBrandList: BatteryBrand[];
   batteryManufacturerList: BatteryManufacturer[];
   batteryRegistryList: BatteryRegistry[];
+  batteryAvailableCarList: BatteryAvailableCar[];
   insuranceTypeList: InsuranceType[];
   insurancePolicyList: InsurancePolicy[];
   carList: Car[];
@@ -182,6 +373,22 @@ export type IStateAutobase = {
   repairList: Repair[];
   repairCompanyList: RepairCompany[];
   repairTypeList: RepairType[];
-  roadAccidentList: RoadAccident[]
-  roadAccidentCauseList: RoadAccidentCause[],
+  roadAccidentList: RoadAccident[];
+  roadAccidentCauseList: RoadAccidentCause[];
+  techInspectionList: TechInspection[];
+  techMaintOrderList: TechMaintOrder[];
+  techMaintTypeList: TechMaintType[];
+  measureUnitRunList: MeasureUnitRun[];
+  tireModelList: TireModel[];
+  tireManufacturerList: TireManufacturer[];
+  tireList: Tire[];
+  tireSizeList: TireSize[];
+  tireAvailableCarList: TireAvailableCar[];
+  actualBatteriesOnCarList: ActualBatteriesOnCar[];
+  actualTiresOnCarList: ActualTiresOnCar[];
+  techMaintList: TechMaint[];
+  techMaintExtra: TechMaintExtra;
+  carCategoryList: CarCategory[];
+  engineTypeList: EngineType[];
+  propulsionTypeList: PropulsionType[];
 };

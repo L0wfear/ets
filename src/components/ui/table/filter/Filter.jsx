@@ -3,11 +3,17 @@ import * as PropTypes from 'prop-types';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Collapse from 'react-bootstrap/lib/Collapse';
 import * as Button from 'react-bootstrap/lib/Button';
+import * as Row from 'react-bootstrap/lib/Row';
 
 import { isEmpty } from 'utils/functions';
-import _ from 'lodash';
+import {
+  reduce,
+  cloneDeep,
+} from 'lodash';
 import Div from 'components/ui/Div';
 import FilterRow from 'components/ui/table/filter/FilterRow';
+import { Col } from 'react-bootstrap';
+import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
 
 export default class Filter extends React.Component {
   static get propTypes() {
@@ -72,26 +78,8 @@ export default class Filter extends React.Component {
     this.setState({ filterValues });
   }
 
-  handleFilterMultipleValueChange(key, v) {
-    const filterValues = { ...this.state.filterValues };
-    const data = !isEmpty(v) ? v : [];
-    const { filter } = this.props.options.find(({ name }) => key.match(`^${name}`));
-
-    // для формата под новую таблицу
-    filterValues[key] = {
-      type: filter.type || '',
-      value: data,
-    };
-
-    if (data.length === 0) {
-      delete filterValues[key];
-    }
-
-    this.setState({ filterValues });
-  }
-
-  submit= () => {
-    const filterValues = _.reduce(this.state.filterValues, (cur, v, k) => {
+  submit = () => {
+    const filterValues = reduce(this.state.filterValues, (cur, v, k) => {
       if (typeof v !== 'undefined') {
         if (typeof v === 'string') {
           if (v.length > 0) {
@@ -110,12 +98,33 @@ export default class Filter extends React.Component {
 
   checkDisabledButton = filterValues => Object.keys(filterValues).length === 0;
 
+  handleFilterMultipleValueChange(key, v) {
+    const { filterValues: oldFilterValues } = this.state;
+
+    const filterValues = cloneDeep(oldFilterValues);
+    const data = !isEmpty(v) ? v : [];
+    const { filter } = this.props.options.find(({ name }) => key.match(`^${name}`));
+
+    // для формата под новую таблицу
+    filterValues[key] = {
+      type: filter.type || '',
+      value: data,
+    };
+
+    if (data.length === 0) {
+      delete filterValues[key];
+    }
+
+    this.setState({ filterValues });
+  }
+
   render() {
     const { filterValues } = this.state;
     const { tableData, options: filters } = this.props;
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options, byKey, byLabel } = filter;
+
       return (
         <FilterRow
           tableData={tableData}
@@ -136,16 +145,24 @@ export default class Filter extends React.Component {
     });
 
     return (
-      <Collapse in={this.props.show}>
-        <Div className="filter-container">
-          <Div className="filter-buttons">
-            <Button id="apply-filter" onClick={this.submit}>Применить</Button>
-            <Button id="reset-filter" onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
-            <span id="filter-close" className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
+      <>
+        <Collapse in={this.props.show}>
+          <Div className="filter-container">
+            <Div className="filter-buttons">
+              <Button id="apply-filter" onClick={this.submit}>Применить</Button>
+              <Button id="reset-filter" onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
+              <span id="filter-close" className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
+            </Div>
+            <Row>
+              <Col md={12}>
+                <FilterRowsContainerDataTable>
+                  {filterRows}
+                </FilterRowsContainerDataTable>
+              </Col>
+            </Row>
           </Div>
-          {filterRows}
-        </Div>
-      </Collapse>
+        </Collapse>
+      </>
     );
   }
 }

@@ -8,6 +8,7 @@ export const COMPANY_STRUCTURE_SET_DATA = COMPANY_STRUCTURE`SET_DATA`;
 const initialState: IStateCompanyStructure = {
   companyStructureList: [],
   companyStructureLinearList: [],
+  companyStructureDescendantsByUserList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

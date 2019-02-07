@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Overlay from 'components/map/overlay/Overlay';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { carInfoSetParkingPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -7,7 +7,7 @@ import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } fro
 
 import {
   OverlayLineInfoContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 const OverlayTrackPoint: React.FunctionComponent<any> = (props) => {
   const { parkingPoint } = props;

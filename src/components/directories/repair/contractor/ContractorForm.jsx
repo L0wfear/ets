@@ -34,7 +34,7 @@ export default class SparePartForm extends Form {
                 error={errors.name}
                 value={state.name}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
               />
             </Col>
           </Row>
@@ -46,7 +46,7 @@ export default class SparePartForm extends Form {
                 error={errors.inn}
                 value={state.inn}
                 onChange={this.handleChange}
-                boundKeys={['inn']}
+                boundKeys="inn"
               />
             </Col>
             <Col md={3}>
@@ -56,7 +56,7 @@ export default class SparePartForm extends Form {
                 error={errors.kpp}
                 value={state.kpp}
                 onChange={this.handleChange}
-                boundKeys={['kpp']}
+                boundKeys="kpp"
               />
             </Col>
             <Col md={3}>
@@ -66,7 +66,7 @@ export default class SparePartForm extends Form {
                 error={errors.ogrn}
                 value={state.ogrn}
                 onChange={this.handleChange}
-                boundKeys={['ogrn']}
+                boundKeys="ogrn"
               />
             </Col>
             <Col md={3}>
@@ -76,7 +76,7 @@ export default class SparePartForm extends Form {
                 error={errors.okpo}
                 value={state.okpo}
                 onChange={this.handleChange}
-                boundKeys={['okpo']}
+                boundKeys="okpo"
               />
             </Col>
           </Row>
@@ -88,7 +88,7 @@ export default class SparePartForm extends Form {
                 error={errors.postal_address}
                 value={state.postal_address}
                 onChange={this.handleChange}
-                boundKeys={['postal_address']}
+                boundKeys="postal_address"
               />
             </Col>
             <Col md={4}>
@@ -98,7 +98,7 @@ export default class SparePartForm extends Form {
                 error={errors.email}
                 value={state.email}
                 onChange={this.handleChange}
-                boundKeys={['email']}
+                boundKeys="email"
               />
             </Col>
           </Row>
@@ -110,7 +110,7 @@ export default class SparePartForm extends Form {
                 error={errors.phone}
                 value={state.phone}
                 onChange={this.handleChange}
-                boundKeys={['phone']}
+                boundKeys="phone"
               />
             </Col>
             <Col md={4}>
@@ -120,7 +120,7 @@ export default class SparePartForm extends Form {
                 error={errors.fax}
                 value={state.fax}
                 onChange={this.handleChange}
-                boundKeys={['fax']}
+                boundKeys="fax"
               />
             </Col>
             <Col md={4}>
@@ -130,7 +130,7 @@ export default class SparePartForm extends Form {
                 error={errors.bik}
                 value={state.bik}
                 onChange={this.handleChange}
-                boundKeys={['bik']}
+                boundKeys="bik"
               />
             </Col>
           </Row>

@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { repairType } from 'constants/autobase';
+import { repairType } from 'redux-main/reducers/modules/autobase/constants';
 
 export const getRepairType = autobaseLoadByType(repairType);
 export const createRepairType = autobaseCreateByType(repairType);

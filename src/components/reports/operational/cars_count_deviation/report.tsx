@@ -12,22 +12,10 @@ const reportUrl = 'cars-count-deviation';
 const serviceName = 'CarsCountDeviation';
 
 const schemaMakers: ISchemaMaker = {
-  a: (schema) => ({
+  deviation: (schema) => ({
     ...schema,
     filter: {
-      type: 'advanced-numbe',
-    },
-  }),
-  b: (schema) => ({
-    ...schema,
-    filter: {
-      type: 'advanced-numbe',
-    },
-  }),
-  c: (schema) => ({
-    ...schema,
-    filter: {
-      type: 'advanced-numbe',
+      type: 'advanced-number',
     },
   }),
 };

@@ -48,7 +48,7 @@ export default class SparePartForm extends Form {
                     value={state.remark}
                     error={errors.remark}
                     onChange={this.handleChange}
-                    boundKeys={['remark']}
+                    boundKeys="remark"
                     disabled={!(IS_CREATING || allowChangeRemark)}
                   />
                 </Col>
@@ -61,7 +61,7 @@ export default class SparePartForm extends Form {
                     value={state.comment}
                     error={errors.comment}
                     onChange={this.handleChange}
-                    boundKeys={['comment']}
+                    boundKeys="comment"
                     disabled={!(IS_CREATING || allowChangeComment)}
                   />
                 </Col>

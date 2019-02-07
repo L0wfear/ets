@@ -24,11 +24,11 @@ type StateCarChartsInformation = {
 };
 
 const CarFuelChart = React.lazy<React.ComponentType<OwnPropsCarFuelChart>>(() => (
-  import(/* webpackChunkName: "car_fuel_chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart')
+  import(/* webpackChunkName: "car_fuel_chart" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart')
 ));
 
 const CarSpeedChart = React.lazy<React.ComponentType<OwnPropsCarSpeedChart>>(() => (
-  import(/* webpackChunkName: "car_speed_Chart" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart')
+  import(/* webpackChunkName: "car_speed_Chart" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart')
 ));
 
 class CarChartsInformation extends React.Component<PropsCarChartsInformation, StateCarChartsInformation> {

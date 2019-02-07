@@ -129,7 +129,7 @@ const Table: React.FunctionComponent<any> = (props) => (
     results={props.data}
     tableMeta={tableMeta(props)}
     enumerated={false}
-    // initialSort={'created_at'}
+    initialSort={props.selectField}
     renderers={renderers}
     className="user-notification-table"
     {...props}

@@ -1,5 +1,5 @@
 import permissions from 'components/reports/operational/route_odh_coverage/config-data/permissions';
-import components from 'components/reports/operational/route_odh_coverage/config-data/components';
+import component from 'components/reports/operational/route_odh_coverage/config-data/components';
 
 export default {
   path: '/route-odh-coverage-report',
@@ -7,6 +7,6 @@ export default {
   entyity: 'route_odh_coverage_report',
   noDotList: false,
   hiddenNav: process.env.STAND === 'prod',
-  components,
+  component,
   permissions,
 };

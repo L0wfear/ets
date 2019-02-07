@@ -28,8 +28,6 @@ export type PropsCarFuelChart = (
 
 export type StateCarFuelChart = {
   sensorRawData: boolean,
-  data: any[],
-  front_cars_sensors_level: TypeFrontCarsSensorsLevel;
 };
 
 export type StatePropsCarSpeedChart = {

@@ -1,4 +1,4 @@
-import { getChildrenPermissions } from 'utils/routes/getChildrenPermissions';
+import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import routeOdhCoverage from 'components/reports/operational/route_odh_coverage/config-data';
 import mission from 'components/reports/operational/mission/config-data';
@@ -16,7 +16,7 @@ import carMovementTimeReport from 'components/reports/operational/car-movement-t
 import cleaningVolume from 'components/reports/operational/cleaning_volume/config-data';
 import deviationFromNormOfCars from 'components/reports/operational/cars_count_deviation/config-data';
 
-const children = {
+const children: any = {
   routeOdhCoverage,
   mission,
   carUsageReportWithTrack,
@@ -31,11 +31,14 @@ const children = {
   carDowntimeAndOvermileage,
   carMovementTimeReport,
   cleaningVolume,
-  deviationFromNormOfCars,
 };
+
+if (process.env.STAND === 'dev' || __DEVELOPMENT__) {
+  children.deviationFromNormOfCars = deviationFromNormOfCars;
+}
 
 export default {
   title: 'Оперативные отчеты',
   children,
-  permissions: getChildrenPermissions(children),
+  ...getChildrenData(children),
 };

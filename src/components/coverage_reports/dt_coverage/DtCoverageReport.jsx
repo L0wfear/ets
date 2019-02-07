@@ -91,7 +91,7 @@ class DtCoverageReport extends React.Component {
 
     return (
       <EtsPageWrap>
-        <DtCoverageReportTable data={dtCoverageReport}>
+        <DtCoverageReportTable data={dtCoverageReport} selectField="company_id">
           <div className="daily-cleaning-report-period">
             Период формирования:
             <div className="form-group">

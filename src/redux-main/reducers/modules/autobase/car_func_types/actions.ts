@@ -44,7 +44,7 @@ export const carFuncTypesGetAndSetInStore = (payload = {}, { page, path }: { pag
   };
 };
 export const autobaseCreateCarFuncTypes: any = (carFuncTypesOld: CarFuncTypes, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carFuncTypes } } = await dispatch({
+  const { payload: carFuncTypes } = await dispatch({
     type: 'none',
     payload: createSetCarFuncTypes(carFuncTypesOld),
     meta: {
@@ -57,7 +57,7 @@ export const autobaseCreateCarFuncTypes: any = (carFuncTypesOld: CarFuncTypes, {
   return carFuncTypes;
 };
 export const autobaseUpdateCarFuncTypes: any = (carFuncTypesOld: CarFuncTypes, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { carFuncTypes } } = await dispatch({
+  const { payload: carFuncTypes } = await dispatch({
     type: 'none',
     payload: updateSetCarFuncTypes(carFuncTypesOld),
     meta: {

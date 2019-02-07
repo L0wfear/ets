@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   OverlayInsideContainer,
   EtsOverlayContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 export const OverlayInsideTrackContainer = styled(OverlayInsideContainer)``;
 

@@ -30,6 +30,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       title="Реестр централизованных заданий"
       tableMeta={tableMeta()}
       className="order"
+      initialSort="id"
       results={[{ id: 0, order_info }]}
     />
   );

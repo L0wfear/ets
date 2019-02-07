@@ -11,7 +11,7 @@ import { getToday0am, createValidDate } from 'utils/dates';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { ButtonSubmit } from './styled/index';
+import { ButtonSubmit } from 'components/reports/operational/cars_count_deviation/styled';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   start_date: string;

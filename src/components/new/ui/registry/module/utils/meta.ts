@@ -3,9 +3,9 @@ import { isObject } from 'util';
 export const getRowKeys = (cols) => (
   cols.reduce((newCols, col) => {
     if (col.childrenFields && col.childrenFields.length) {
-        newCols.push(...(getRowKeys(col.childrenFields)));
+      newCols.push(...(getRowKeys(col.childrenFields)));
     } else {
-        newCols.push(col);
+      newCols.push(col);
     }
 
     return newCols;

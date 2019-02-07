@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Overlay from 'components/map/overlay/Overlay';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
@@ -18,11 +18,12 @@ import {
   OverlayTrackTitleContainer,
   SensorsListContainer,
   OverlayBoxInfoContainer,
+  OverlayLineObjectsStringContainer,
 } from 'components/monitor/layers/track/points/styled/styled';
 
 import {
   OverlayLineInfoContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 import {
   DivNone,
@@ -154,7 +155,13 @@ class OverlayTrackPoint extends React.Component<any, any> {
         coordsMsk={coords_msk}
         hidePopup={this.props.hidePopup}
       >
-        <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader typePreloader="field" />}</OverlayLineInfoContainer>
+        <OverlayLineObjectsStringContainer>
+          {
+            objectsString
+              ? objectsString
+              : <Preloader typePreloader="field" />
+          }
+        </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
           {
             missions === undefined ?

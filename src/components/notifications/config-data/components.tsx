@@ -1,7 +1,15 @@
-import Component from 'components/notifications/UserNotificationList';
+import * as React from 'react';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
-export default [
-  {
-    component: Component,
-  },
-];
+const Component = React.lazy(() => (
+  import(/* webpackChunkName: "user_notification" */ 'components/notifications/UserNotificationList')
+));
+
+export default (props) => (
+      <ErrorBoundaryRegistry>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <Component {...props}/>
+        </React.Suspense>
+      </ErrorBoundaryRegistry>
+);

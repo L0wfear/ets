@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 import { loadingReducer } from 'redux-promise-loading';
 import { etsLoading } from 'redux-main/_middleware/etsLoading';
 
-import rootReducers from 'components/redux-main/reducer';
+import reports from 'components/reports/redux-main/reducer';
 
 import order from 'redux-main/reducers/modules/order/order';
 import session from 'redux-main/reducers/modules/session/session';
 import monitorPage from 'components/monitor/redux-main/models/monitor-page';
-import dashboard from 'components/dashboard/redux-main/modules/dashboard/dashboard';
+import dashboard from 'components/new/pages/dashboard/redux-main/modules/dashboard/dashboard';
 
 import registry from 'components/new/ui/registry/module/registry';
 
@@ -17,9 +17,13 @@ import old_report from 'components/coverage_reports/redux-main/modules/old-repor
 import autobase from 'redux-main/reducers/modules/autobase/autobase';
 import employee from 'redux-main/reducers/modules/employee/employee';
 import company_structure from 'redux-main/reducers/modules/company_structure/company_structure';
+import routes from 'redux-main/reducers/modules/routes/routes';
+import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
+import geoobject from 'redux-main/reducers/modules/geoobject/geoobject';
+import missions from 'redux-main/reducers/modules/missions';
 
 export default combineReducers({
-  ...rootReducers,
+  reports,
   dashboard,
   loading: loadingReducer,
   etsLoading,
@@ -32,4 +36,8 @@ export default combineReducers({
   autobase,
   employee,
   company_structure,
+  routes,
+  some_uniq,
+  geoobject,
+  missions,
 });

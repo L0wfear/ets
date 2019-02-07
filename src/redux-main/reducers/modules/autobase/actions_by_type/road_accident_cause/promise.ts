@@ -7,7 +7,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { roadAccidentCause } from 'constants/autobase';
+import { roadAccidentCause } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
 
 export const getRoadAccidentCause = autobaseLoadByType(roadAccidentCause);

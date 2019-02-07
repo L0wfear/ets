@@ -25,6 +25,7 @@ type PropsAdvancedNumberFilter = {
     labelKey?: string;
   };
   filterValuesObj: any;
+  formatedTitle: string;
   onChange: (valueKey: string, type: string, value: any) => any;
 };
 
@@ -103,7 +104,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
 
     return (
       <EtsFilter>
-        <EtsFilterTitle>{this.props.filterData.title}</EtsFilterTitle>
+        <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>
             <AdvacedSelectContainer>

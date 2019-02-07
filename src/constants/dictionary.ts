@@ -2,44 +2,6 @@
  * Всё то, что не приходит с бэка для заполнения данными выпадающих списков и других элементов интерфейса.
  */
 
-export const AUTOBASE_REPAIR_STATUS = {
-  passed: {
-    name: 'Пройден',
-    has: [
-      'plan_date_start',
-      'plan_date_end',
-      'fact_date_start',
-      'fact_date_end',
-    ],
-  },
-  failed: {
-    name: 'Не пройден',
-    has: [
-      'plan_date_start',
-      'plan_date_end',
-      'fact_date_start',
-      'fact_date_end',
-    ],
-  },
-  planned: {
-    name: 'Запланирован',
-    has: [
-      'plan_date_start',
-      'plan_date_end',
-    ],
-    disabled: true,
-  },
-  in_progress: {
-    name: 'Прохождение',
-    has: [
-      'plan_date_start',
-      'plan_date_end',
-      'fact_date_start',
-    ],
-    disabled: true,
-  },
-};
-
 export const MISSION_STATUS_LABELS = {
   assigned: 'Назначено',
   in_progress: 'Выполняется',
@@ -47,6 +9,7 @@ export const MISSION_STATUS_LABELS = {
   not_assigned: 'Не назначено',
   complete: 'Выполнено',
   fail: 'Не выполнено',
+  canceled: 'Отменено',
 };
 
 export const DUTY_MISSION_STATUS_LABELS = {
@@ -54,6 +17,7 @@ export const DUTY_MISSION_STATUS_LABELS = {
   not_assigned: 'Не назначено',
   complete: 'Выполнено',
   fail: 'Не выполнено',
+  canceled: 'Отменено',
 };
 
 export const ORDER_STATUS_KEYS = {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Overlay from 'components/map/overlay/Overlay';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/redux-main/models/actions-monitor-page';
@@ -7,7 +7,7 @@ import { getFormattedDateTime } from 'utils/dates';
 
 import {
   OverlayLineInfoContainer,
-} from 'components/map/overlay/styled/styled';
+} from 'components/new/ui/map/overlay/styled/styled';
 
 const OverlayFuelEventLeakPoint: React.FunctionComponent<any> = (props) => {
   const { overlayData } = props;

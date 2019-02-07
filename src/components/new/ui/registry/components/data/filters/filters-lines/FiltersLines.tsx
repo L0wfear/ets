@@ -2,13 +2,21 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
 import MultiselectRegestryFilter from 'components/new/ui/registry/components/data/filters/filters-lines/multiselect/MultiselectRegestryFilter';
-import { EtsFiltersLines } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
+import {
+  EtsFiltersLines,
+  EtsFilterContainer,
+} from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { registryChangeFilterRawValues } from 'components/new/ui/registry/module/actions-registy';
 import AdvancedNumberFilter from 'components/new/ui/registry/components/data/filters/filters-lines/advanced-number/AdvancedNumberFilter';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { isArray } from 'util';
 
 type PropsFiltersLines = {
   registryKey: string;
   fileds: any[];
+  userData: InitialStateSession['userData'];
   onChangeFilterRawValue: (valueKey: string, type: string, value: any) => any;
 };
 
@@ -20,32 +28,57 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
     this.props.onChangeFilterRawValue(valueKey, type, value);
   }
 
-  fieldMap = ({ type, ...otherFilterData }) => {
+  fieldMap = ({ type, ...otherFilterData }, index) => {
     const { registryKey } = this.props;
+
+    let formatedTitle = otherFilterData.title;
+
+    if (isArray(otherFilterData.title)) {
+      formatedTitle = otherFilterData.title.reduce((filtredTitle, titleSomeValue) => {
+        const { displayIf } = titleSomeValue;
+
+        if (displayIf === displayIfContant.isKgh && this.props.userData.isKgh) {
+          return titleSomeValue.title;
+        }
+        if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
+          return titleSomeValue.title;
+        }
+
+        return filtredTitle;
+      }, null);
+    }
+
+    if (!formatedTitle) {
+      return null;
+    }
 
     switch (type) {
       case 'multiselect': return (
-        <MultiselectRegestryFilter
-          key={otherFilterData.valueKey}
-          filterData={otherFilterData}
-          registryKey={registryKey}
-          onChange={this.handleChange}
-        />
+        <EtsFilterContainer key={otherFilterData.valueKey}>
+          <MultiselectRegestryFilter
+            formatedTitle={formatedTitle}
+            filterData={otherFilterData}
+            registryKey={registryKey}
+            onChange={this.handleChange}
+          />
+        </EtsFilterContainer>
       );
       case 'advanced-number': return (
-        <AdvancedNumberFilter
-          key={otherFilterData.valueKey}
-          filterData={otherFilterData}
-          registryKey={registryKey}
-          onChange={this.handleChange}
-        />
+        <EtsFilterContainer key={otherFilterData.valueKey}>
+          <AdvancedNumberFilter
+            formatedTitle={formatedTitle}
+            filterData={otherFilterData}
+            registryKey={registryKey}
+            onChange={this.handleChange}
+          />
+        </EtsFilterContainer>
+
       );
       default: return (
-        <div
-          key={otherFilterData.valueKey}
-        >
+        <EtsFilterContainer key={otherFilterData.valueKey}>
           {`not found filter with type ${type}`}
-        </div>
+        </EtsFilterContainer>
+
       );
     }
   }
@@ -59,6 +92,7 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
 }
 
 const mapStateToProps = (state, { registryKey }) => ({
+  userData: getSessionState(state).userData,
   fileds: getFilterData(state.registry, registryKey).fields,
 });
 

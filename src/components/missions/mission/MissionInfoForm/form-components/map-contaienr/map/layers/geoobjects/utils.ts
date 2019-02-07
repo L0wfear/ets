@@ -1,5 +1,6 @@
 import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
+import { get } from 'lodash';
 
 import { getCasheStyleForGeoobject } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/feature-style';
 import {
@@ -7,7 +8,7 @@ import {
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/geoobjects/LayerMissionGeoobject.h';
 import {
   inputLineStyleFunc,
-} from 'components/route/route-info/map/layers/layer-route-info-geometry/feature-style';
+} from 'components/new/pages/routes_list/route-info/map/layers/layer-route-info-geometry/feature-style';
 
 /**
  * изменение геометрии фичи, если shape разный
@@ -16,7 +17,8 @@ import {
  * @param oldFeature текущая фича геообъекта
  */
 const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldFeatureFunc = (geoobj, geoobj_old, oldFeature) => {
-  if (geoobj_old.shape !== geoobj.shape && geoobj.shape) {
+  const oldShape = get(geoobj_old, ['shape'], null);
+  if (oldShape !== geoobj.shape && geoobj.shape) {
     oldFeature.setGeometry(geoJSON.readGeometry(geoobj.shape));
   }
   if (geoobj_old.frontIsSelected !== geoobj.frontIsSelected) {

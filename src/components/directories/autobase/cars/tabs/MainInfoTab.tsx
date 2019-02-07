@@ -65,7 +65,7 @@ class MainInfoTab extends React.PureComponent<IPropsMainInfoTab, {}> {
               label="Дата ввода ТС в эксплуатацию"
               date={props.state.exploitation_date_start}
               onChange={props.onChange}
-              boundKeys={['exploitation_date_start']}
+              boundKeys="exploitation_date_start"
               disabled={!props.isPermitted}
             />
             <ExtField
@@ -73,7 +73,7 @@ class MainInfoTab extends React.PureComponent<IPropsMainInfoTab, {}> {
               label="Гаражный номер"
               value={props.state.garage_number}
               onChange={props.onChange}
-              boundKeys={['garage_number']}
+              boundKeys="garage_number"
               disabled={!props.isPermitted}
             />
             <ExtField
@@ -82,7 +82,7 @@ class MainInfoTab extends React.PureComponent<IPropsMainInfoTab, {}> {
               options={props.companyElements}
               value={props.state.company_structure_id}
               onChange={props.onChange}
-              boundKeys={['company_structure_id']}
+              boundKeys="company_structure_id"
               disabled={!props.isPermitted}
             />
             <ExtField
@@ -90,7 +90,7 @@ class MainInfoTab extends React.PureComponent<IPropsMainInfoTab, {}> {
               label="Адрес стоянки"
               value={props.state.parking_address}
               onChange={props.onChange}
-              boundKeys={['parking_address']}
+              boundKeys="parking_address"
               disabled={!props.isPermitted}
               error={props.errors.parking_address}
             />
@@ -101,7 +101,7 @@ class MainInfoTab extends React.PureComponent<IPropsMainInfoTab, {}> {
               label="Поправочный коэффициент"
               value={props.state.fuel_correction_rate}
               onChange={props.onChange}
-              boundKeys={['fuel_correction_rate']}
+              boundKeys="fuel_correction_rate"
               disabled={!props.isPermitted}
             />
             <ExtField
@@ -109,7 +109,7 @@ class MainInfoTab extends React.PureComponent<IPropsMainInfoTab, {}> {
               label="Примечание"
               value={props.state.note}
               onChange={props.onChange}
-              boundKeys={['note']}
+              boundKeys="note"
               textAreaStyle={{ resize: 'none' }}
               rows={7}
               disabled={!props.isPermitted}

@@ -1,5 +1,5 @@
 import permissions from 'components/company_structure/config-data/permissions';
-import components from 'components/company_structure/config-data/components';
+import component from 'components/company_structure/config-data/components';
 
 export default {
   path: '/company-structure',
@@ -7,6 +7,6 @@ export default {
   entyity: 'company_structure',
   noDotList: false,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
-  components,
+  component,
   permissions,
 };

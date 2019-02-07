@@ -1,51 +1,64 @@
 import { CompanyStructureService } from 'api/Services';
-import { get } from 'lodash';
+import {
+  keyBy,
+  get,
+} from 'lodash';
 
 /* ------------- COMPANY_STRUCTURE ------------- */
-export const companyStructureLoadCompanyStructure = (payload = {}) => (
+export const getCompanyStructure = (payload = {}) => (
   CompanyStructureService.get({ ...payload })
     .catch((error) => {
       // tslint:disable-next-line
       console.log(error);
-
+    })
+    .then((ans) => {
+      const data = get(ans, ['result'], []);
       return {
-        result: {
-          rows: [],
-        },
+        data,
+        dataIndex: keyBy(data, 'id'),
       };
     })
-    .then((ans) => ({
-      data: get(ans, ['result'], []),
-    }))
 );
-export const companyStructureLoadCompanyStructureLineat = (payload = {}) => (
-  companyStructureLoadCompanyStructure({ linear: true, ...payload })
+export const getCompanyStructureLinear = (payload = {}) => (
+  getCompanyStructure({ linear: true, ...payload })
 );
-export const companyStructureCreateCompanyStructure = (ownPayload) => {
+export const getCompanyStructureDescendantsByUser = (payload = {}) => (
+  getCompanyStructure({ descendants_by_user: true, linear: true, ...payload })
+);
+
+export const promiseCreateCompanyStructure = async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return CompanyStructureService.post(
+  await CompanyStructureService.post(
     payload,
     false,
     'json',
   );
+
+  return {
+    ...ownPayload,
+  };
 };
-export const companyStructureUpdateCompanyStructure = (ownPayload) => {
+export const promiseUpdateCompanyStructure = async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return CompanyStructureService.put(
+  await CompanyStructureService.put(
     payload,
     false,
     'json',
   );
+
+  return {
+    ...ownPayload,
+  };
 };
-export const companyStructureDeleteCompanyStructure = (id) => {
-  return CompanyStructureService.path(id).delete(
-    {},
+export const promiseDeleteCompanyStructure = (id) => {
+  return CompanyStructureService.delete(
+    { id },
     false,
     'json',
   ).then(() => {

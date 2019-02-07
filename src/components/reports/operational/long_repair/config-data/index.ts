@@ -1,11 +1,11 @@
 import permissions from 'components/reports/operational/long_repair/config-data/permissions';
-import components from 'components/reports/operational/long_repair/config-data/components';
+import component from 'components/reports/operational/long_repair/config-data/components';
 
 export default {
   path: '/long-repair',
   title: 'Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне',
   entyity: 'autobase_long_repair_report',
   noDotList: false,
-  components,
+  component,
   permissions,
 };

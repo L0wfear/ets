@@ -1,5 +1,5 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import RoadAccidentFormWrap from 'components/directories/autobase/road_accident/RoadAccidentForm/RoadAccidentFormWrap';
 import RoadAccidentTable from 'components/directories/autobase/road_accident/RoadAccidentTable';
@@ -12,7 +12,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'road-accident';
 
-@connectToStores(['autobase', 'employees', 'session'])
+@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
 @staticProps({
   entity: 'autobase_road_accident',
@@ -80,7 +80,7 @@ class RoadAccidentList extends ElementsList {
     this.setState(changeState);
   }
 
-  getAdditionalProps() {
+  getAdditionalFormProps() {
     return {
       loadingPageName,
     };

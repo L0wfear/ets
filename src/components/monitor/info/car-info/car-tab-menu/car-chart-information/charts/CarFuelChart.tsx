@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import memoize from 'memoize-one';
+
 import LineChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
 import { NO_DATA_TEXT, NO_SENSORS_LEVEL_TEXT } from 'constants/statuses';
 import EventTable from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/event-table/EventTable';
@@ -16,7 +18,7 @@ import {
   DispatchPropsCarFuelChart,
 } from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 
-const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, { sensorRawData = false }) => (
+const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, sensorRawData = false) => (
   Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {
     const data = sensor[sensorRawData ? 'raw_data' : 'data'];
 
@@ -38,41 +40,18 @@ const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, { sensorR
 );
 
 class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart> {
-  constructor(props) {
-    super(props);
+  state = {
+    sensorRawData: false,
+  };
 
-    const sensorRawData = false;
-    const { front_cars_sensors_level } = props;
-
-    const data = makeData(front_cars_sensors_level, { sensorRawData });
-
-    this.state = {
-      sensorRawData,
-      data,
-      front_cars_sensors_level,
-    };
-  }
-  static getDerivedStateFromProps(nextProps: PropsCarFuelChart, prevState: StateCarFuelChart) {
-    const { front_cars_sensors_level } = nextProps;
-    if (front_cars_sensors_level !== prevState.front_cars_sensors_level) {
-      const data = makeData(front_cars_sensors_level, prevState);
-
-      return {
-        front_cars_sensors_level,
-        data,
-      };
-    }
-
-    return null;
-  }
   handleClick = () => {
     const sensorRawData = !this.state.sensorRawData;
 
     this.setState({
       sensorRawData,
-      data: makeData(this.state.front_cars_sensors_level, { sensorRawData }),
     });
   }
+
   handleChartClick = ({ point: { x: timestamp } } ) => {
     const { track } = this.props;
 
@@ -89,8 +68,28 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
 
     this.props.handleChartClick(selected_point);
   }
+
+  makeData = memoize(
+    (front_cars_sensors_level, sensorRawData) => (
+      makeData(
+        front_cars_sensors_level,
+        sensorRawData,
+      )
+    ),
+  );
+
   render() {
-    const { data } = this.state;
+    const {
+      sensorRawData,
+    } = this.state;
+    const {
+      front_cars_sensors_level,
+    } = this.props;
+
+    const data = this.makeData(
+      front_cars_sensors_level,
+      sensorRawData,
+    );
 
     return (
       <div>

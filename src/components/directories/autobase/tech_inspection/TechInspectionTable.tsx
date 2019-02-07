@@ -81,25 +81,20 @@ export function tableMeta({
   return meta;
 }
 
+const renderers: ISchemaRenderer = {
+  date_start: ({ data }) => (<DateFormatter date={data} />),
+  date_end: ({ data }) => (<DateFormatter date={data} />),
+  is_allowed: ({ data }) => <input type="checkbox" disabled checked={data} />,
+};
+
 const Table: React.FunctionComponent<any> = (props) => {
-  const { car_id = -1  } = props;
-
-  const renderers: ISchemaRenderer = {
-    date_start: ({ data }) => (<DateFormatter date={data} />),
-    date_end: ({ data }) => (<DateFormatter date={data} />),
-    is_allowed: ({ data }) => <input type="checkbox" disabled checked={data} />,
-  };
-
-  let meta = tableMeta(props);
-  if (car_id === -1) {
-    meta = { cols: meta.cols.filter((el) => el.name !== 'car_id') };
-  }
   return (
     <DataTable
       title="Реестр техосмотров"
       results={props.data}
       tableMeta={tableMeta(props)}
       renderers={renderers}
+      initialSort={props.selectField}
       {...props}
     />
   );

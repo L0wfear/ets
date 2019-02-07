@@ -8,6 +8,7 @@ import { FluxContext } from 'utils/decorators';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsTechnicalOperation, customOptionsMunicipalFacility, customOptionsFuncType } from 'components/directories/technical_operation_relations/helpData';
 import TechnicalOperationRelationsList from 'components/directories/technical_operation_relations/TechnicalOperationRelationsList';
+import { TechnicalOperationRelationsListWrapContainer, TechnicalOperationRelationsListContainer } from './styled';
 
 @FluxContext
 class TechnicalOperationRelationsListWrap extends React.Component {
@@ -160,7 +161,7 @@ class TechnicalOperationRelationsListWrap extends React.Component {
     } = this.state;
 
     return (
-      <div>
+      <TechnicalOperationRelationsListWrapContainer>
         <Row>
           <Col md={12} className="header">
             <Col md={12}>
@@ -221,7 +222,7 @@ class TechnicalOperationRelationsListWrap extends React.Component {
             </Col>
           </Col>
         </Row>
-        <div>
+        <TechnicalOperationRelationsListContainer>
           {
             technical_operation_id && municipal_facility_id && route_types.length && func_type_id
               ? (
@@ -234,8 +235,8 @@ class TechnicalOperationRelationsListWrap extends React.Component {
               )
               : null
           }
-        </div>
-      </div>
+        </TechnicalOperationRelationsListContainer>
+      </TechnicalOperationRelationsListWrapContainer>
     );
   }
 }

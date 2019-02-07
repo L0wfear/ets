@@ -29,6 +29,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/ui/input/fields';
 import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
@@ -292,7 +293,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
 export default compose<PropsRepair, OwnRepairProps>(
   connect<StatePropsRepair, DispatchPropsRepair, OwnRepairProps, ReduxState>(
     (state) => ({
-      userCompanyId: state.session.userData.company_id,
+      userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch, { page, path }) => ({
       createAction: (formState) => (

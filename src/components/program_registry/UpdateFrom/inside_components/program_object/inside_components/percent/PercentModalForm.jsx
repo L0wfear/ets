@@ -5,13 +5,11 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import ModalBody from 'components/ui/Modal';
-import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Form from 'components/compositions/Form';
 
-@connectToStores(['autobase'])
-export default class SparePartForm extends Form {
+export default class PercentModalForm extends Form {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
@@ -49,7 +47,7 @@ export default class SparePartForm extends Form {
                 date={state.reviewed_at}
                 error={IS_CREATING ? errors.reviewed_at : null}
                 onChange={this.handleChange}
-                boundKeys={['reviewed_at']}
+                boundKeys="reviewed_at"
                 disabled={!isPermitted || !IS_CREATING}
               />
               <ExtField
@@ -58,7 +56,7 @@ export default class SparePartForm extends Form {
                 value={state.percent}
                 error={IS_CREATING ? errors.percent : null}
                 onChange={this.handleChange}
-                boundKeys={['percent']}
+                boundKeys="percent"
                 disabled={!isPermitted || !IS_CREATING}
               />
               <ExtField
@@ -67,7 +65,7 @@ export default class SparePartForm extends Form {
                 value={state.comment}
                 error={errors.comment}
                 onChange={this.handleChange}
-                boundKeys={['comment']}
+                boundKeys="comment"
                 disabled={!isPermitted || !IS_CREATING}
               />
             </Col>

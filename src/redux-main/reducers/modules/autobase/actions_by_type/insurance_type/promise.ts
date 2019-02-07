@@ -1,6 +1,6 @@
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { insuranceType } from 'constants/autobase';
+import { insuranceType } from 'redux-main/reducers/modules/autobase/constants';
 
 export const getInsuranceType = autobaseLoadByType(insuranceType);

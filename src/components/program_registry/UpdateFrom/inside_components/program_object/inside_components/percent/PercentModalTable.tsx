@@ -69,6 +69,7 @@ const Table: React.FunctionComponent<any> = (props) =>
       title="Проставление процента выполнения работ"
       noFilter={true}
       results={props.data}
+      initialSort={props.selectField}
       renderers={renderers}
       tableMeta={tableMeta(props)}
       className={'table-percent'}

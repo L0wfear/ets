@@ -11,6 +11,7 @@ import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-dat
 type PropsTrTh = {
   registryKey: string;
   colData: any;
+  formatedTitle: string;
   registryTriggerOnChangeSelectedField: any;
   sort: {
     field: string;
@@ -50,7 +51,10 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
   }
 
   render() {
-    const { colData } = this.props;
+    const {
+      colData,
+      formatedTitle,
+    } = this.props;
 
     return (
       <EtsTheadTh
@@ -60,7 +64,7 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
         onClick={this.handleClick}
         width={colData.key === 'enumerated' ? 30 : colData.width}
       >
-        {colData.title}
+        {formatedTitle}
         <Glyphicon glyph={getGlyphName(this.props)} />
       </EtsTheadTh>
     );

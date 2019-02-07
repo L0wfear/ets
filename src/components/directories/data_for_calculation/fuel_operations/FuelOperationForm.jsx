@@ -34,7 +34,7 @@ export default class FuelOperationForm extends Form {
                 value={state.name}
                 error={errors.name}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
                 disabled={!isPermitted}
               />
             </Col>
@@ -46,7 +46,7 @@ export default class FuelOperationForm extends Form {
                 error={errors.measure_unit_id}
                 options={MEASUREUNITS}
                 onChange={this.handleChange}
-                boundKeys={['measure_unit_id']}
+                boundKeys="measure_unit_id"
                 disabled={!isPermitted}
               />
             </Col>

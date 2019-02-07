@@ -44,7 +44,10 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
   };
 
   carInfoToggleForToday: any = (e) => {
-    if (!this.props.disabledForToday) {
+    const disbledByTrackPlayStatys = this.props.status !== 'stop';
+    const { errorDates } = this.state;
+
+    if (!((this.props.loadingTrack && this.props.disabledForToday) || disbledByTrackPlayStatys || !!errorDates)) {
       this.props.carInfoToggleForToday();
       if (!this.props.forToday) {
         const payload = {
@@ -115,7 +118,7 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
               time
               date={this.props.date_start}
               onChange={this.handleChangeDate}
-              boundKeys={['date_start']}
+              boundKeys="date_start"
               disabled={forToday || track === -1}
             />
             <span className="carinfo-divider">–</span>
@@ -124,7 +127,7 @@ class TitleTrackTab extends React.Component<PropsTitleTrackTab, StateTitleTrackT
               time
               date={this.props.date_end}
               onChange={this.handleChangeDate}
-              boundKeys={['date_end']}
+              boundKeys="date_end"
               disabled={forToday || track === -1}
             />
             <Button

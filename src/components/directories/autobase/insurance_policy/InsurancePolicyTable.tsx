@@ -106,6 +106,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       tableMeta={tableMeta(props)}
       renderers={renderers}
       noFilter={car_id !== -1}
+      initialSort={props.selectField}
       {...props}
     />
   );

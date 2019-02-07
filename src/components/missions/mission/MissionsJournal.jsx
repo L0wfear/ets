@@ -22,8 +22,18 @@ import Paginator from 'components/ui/new/paginator/Paginator';
 import MissionsTable, { getTableMeta } from 'components/missions/mission/MissionsTable';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import { diffDates } from 'utils/dates';
+import moment from 'moment';
 
 const is_archive = false;
+const loadingPageName = 'mission';
 
 const ButtonGoFaxogramm = enhanceWithPermissions({
   permission: order_permissions.list,
@@ -32,7 +42,7 @@ const ButtonUpdateMission = enhanceWithPermissions({
   permission: permissions.update,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @exportable({ entity: 'mission' })
 @staticProps({
   entity: 'mission',
@@ -42,8 +52,7 @@ const ButtonUpdateMission = enhanceWithPermissions({
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
 })
-export default class MissionsJournal extends CheckableElementsList {
-
+class MissionsJournal extends CheckableElementsList {
   constructor(props, context) {
     super(props);
 
@@ -58,32 +67,33 @@ export default class MissionsJournal extends CheckableElementsList {
       page: 0,
       sortBy: ['number:desc'],
       filter: {},
+      action_at: null,
+      completeMarkerBtnDisable: false,
     };
   }
 
   async init() {
     const { flux } = this.context;
-    const linear = true;
     const outerPayload = {
       start_date: new Date(),
       end_date: new Date(),
     };
 
-    flux.getActions('companyStructure').getCompanyStructure(linear);
+    this.props.getAndSetInStoreCompanyStructureLinear();
+
     flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
     flux.getActions('objects').getSomeCars('MissionCarService');
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('missions').getMissionSources();
-    flux.getActions('companyStructure').getCompanyStructure(linear);
     flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page ||
-      prevState.sortBy !== this.state.sortBy ||
-      prevState.filter !== this.state.filter
+      prevState.page !== this.state.page
+      || prevState.sortBy !== this.state.sortBy
+      || prevState.filter !== this.state.filter
     ) {
       this.refreshList(this.state);
     }
@@ -93,6 +103,9 @@ export default class MissionsJournal extends CheckableElementsList {
     this.setState({
       selectedElement: null,
       checkedElements: {},
+      showPrintForm: false,
+      showMissionRejectForm: false,
+      showMissionInfoForm: false,
     });
 
     const missions = await this.context.flux.getActions('missions').getMissions(null, MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, state.filter, is_archive);
@@ -127,13 +140,11 @@ export default class MissionsJournal extends CheckableElementsList {
     ));
   }
 
-  checkDisabledDelete = () => {
-    return (
-      super.checkDisabledDelete()
-      || this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned'
-      || Object.values(this.state.checkedElements).some((el) => el.status !== 'not_assigned')
-    );
-  }
+  checkDisabledDelete = () => (
+    super.checkDisabledDelete()
+      || (this.state.selectedElement && this.state.selectedElement.status !== 'not_assigned')
+      || Object.values(this.state.checkedElements).some(el => el.status !== 'not_assigned')
+  )
 
   checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
@@ -149,29 +160,59 @@ export default class MissionsJournal extends CheckableElementsList {
     ));
   }
 
-  rejectMission = () => this.setState({ showMissionRejectForm: true });
+  rejectMission = () => {
+    loadMoscowTime()
+      .then(({ time }) => {
+        const action_at = time.date;
+        this.setState({
+          showMissionRejectForm: true,
+          action_at,
+        });
+      })
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      });
+  };
 
   completeCheckedElements = () => {
     const { selectedElement } = this.state;
     const missionsObj = this.state.checkedElements || {};
+    let action_at = null;
     if (selectedElement && Object.values(missionsObj).length === 0) {
       missionsObj[selectedElement.id] = selectedElement;
     }
-    Promise.all(
-      Object.values(missionsObj).map(mission =>
-        this.context.flux.getActions('missions')
-          .updateMission({ ...cloneDeep(mission), status: 'complete' }),
-      ),
-    ).then(() => {
-      global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
-    })
-    .catch(({ errorIsShow }) => {
-      !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
-      this.refreshList(this.state);
-      this.setState({ checkedElements: {} });
-    })
+    loadMoscowTime()
+      .then(({ time }) => {
+        action_at = time.date;
+        if (this.state.selectedElement) {
+          if (diffDates(moment(this.state.selectedElement.date_start), moment(time.date)) >= 0) {
+            const completeMarkerBtnDisable = true;
+            this.setState({ completeMarkerBtnDisable });
+            global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Невозможно изменить статус задания до начала его выполнения'));
+          } else {
+            Promise.all(
+              Object.values(missionsObj).map(mission => this.context.flux.getActions('missions')
+                .updateMission({ ...cloneDeep(mission), status: 'complete', action_at })),
+            ).then(() => {
+              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+              this.refreshList(this.state);
+              this.setState({ checkedElements: {} });
+            })
+              .catch(({ errorIsShow }) => {
+                !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+                this.refreshList(this.state);
+                this.setState({ checkedElements: {} });
+              });
+          }
+        }
+      })
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      });
   }
 
   rejectCheckedElements = () => {
@@ -188,11 +229,10 @@ export default class MissionsJournal extends CheckableElementsList {
     });
   }
 
-  removeElement = () => {
-    return confirmDialog({
-      title: 'Внимание',
-      body: 'Вы уверены, что хотите удалить выбранные элементы?',
-    })
+  removeElement = () => confirmDialog({
+    title: 'Внимание',
+    body: 'Вы уверены, что хотите удалить выбранные элементы?',
+  })
     .then(() => {
       const {
         selectedElement = {},
@@ -206,10 +246,9 @@ export default class MissionsJournal extends CheckableElementsList {
         });
         global.NOTIFICATION_SYSTEM.notify('Данные успешно удалены');
       })
-      .catch(({ errorIsShow }) => !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
+        .catch(({ errorIsShow }) => !errorIsShow && global.NOTIFICATION_SYSTEM.notify('Произошла ошибка при удалении', 'error'));
     })
-    .catch(() => {});
-  }
+    .catch(() => {})
 
   defActionFunc = ({
     bodyConfirmDialog,
@@ -229,31 +268,31 @@ export default class MissionsJournal extends CheckableElementsList {
         title: 'Внимание',
         body: bodyConfirmDialog,
       })
-      .then(() => {
-        const elList = Array(countCheckEl).fill(false);
+        .then(() => {
+          const elList = Array(countCheckEl).fill(false);
 
-        checkElList.forEach((el, i) => {
-          callbackForCheckedElement(el[this.selectField], false).then(() => {
-            elList[i] = true;
-            if (!elList.some(elD => !elD)) {
-              this.refreshList();
-              global.NOTIFICATION_SYSTEM.notify(notifyText);
-            }
-          })
-          .catch(({ errorIsShow }) => {
-            elList[i] = true;
-            if (!elList.some(elD => !elD)) {
-              this.refreshList();
-              !errorIsShow && global.NOTIFICATION_SYSTEM.notify(notifyText);
-            }
+          checkElList.forEach((el, i) => {
+            callbackForCheckedElement(el[this.selectField], false).then(() => {
+              elList[i] = true;
+              if (!elList.some(elD => !elD)) {
+                this.refreshList();
+                global.NOTIFICATION_SYSTEM.notify(notifyText);
+              }
+            })
+              .catch(({ errorIsShow }) => {
+                elList[i] = true;
+                if (!elList.some(elD => !elD)) {
+                  this.refreshList();
+                  !errorIsShow && global.NOTIFICATION_SYSTEM.notify(notifyText);
+                }
+              });
           });
-        });
-        this.setState({
-          checkedElements: {},
-          selectedElement: null,
-        });
-      })
-      .catch(() => {});
+          this.setState({
+            checkedElements: {},
+            selectedElement: null,
+          });
+        })
+        .catch(() => {});
     } else {
       callBackForOneElement().then(() => {
         this.refreshList();
@@ -267,10 +306,9 @@ export default class MissionsJournal extends CheckableElementsList {
     };
     if (refresh) {
       this.refreshList(this.state);
-      newPropsState.checkedElements = {};
-      newPropsState.selectedElement = null;
+    } else {
+      this.setState({ ...newPropsState });
     }
-    this.setState({ ...newPropsState });
   }
 
   archiveCheckedElements = () => {
@@ -287,15 +325,12 @@ export default class MissionsJournal extends CheckableElementsList {
       title: 'Внимание',
       body: `Вы уверены, что хотите перенести в архив ${moreOne ? 'выбранные задания' : 'выбранное задание'}?`,
     })
-    .then(() =>
-        Promise.all(
-          Object.entries(checkedElements).map(([id]) =>
-            this.context.flux.getActions('missions').changeArchiveMissionStatus(id, true),
-          )
-        ).then(() => {
-          this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены в' : 'Выбранное задание перенесено в'} архив`);
-        })
+      .then(() => Promise.all(
+        Object.entries(checkedElements).map(([id]) => this.context.flux.getActions('missions').changeArchiveMissionStatus(id, true)),
+      ).then(() => {
+        this.refreshList();
+        global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены в' : 'Выбранное задание перенесено в'} архив`);
+      })
         .catch(() => {
           this.refreshList();
         })
@@ -304,9 +339,8 @@ export default class MissionsJournal extends CheckableElementsList {
             selectedElement: null,
             checkedElements: {},
           });
-        })
-    )
-    .catch(() => {});
+        }))
+      .catch(() => {});
   }
 
   mapView = async (id) => {
@@ -318,9 +352,8 @@ export default class MissionsJournal extends CheckableElementsList {
     }
   }
 
-  getForms = () => {
-    return [
-      <div key={'forms'}>
+  getForms = () => [
+    <div key="forms">
         <MissionFormWrap
           onFormHide={this.onFormHide}
           showForm={this.state.showForm}
@@ -329,16 +362,17 @@ export default class MissionsJournal extends CheckableElementsList {
           {...this.props}
         />
         {
-          this.state.showMissionRejectForm
-          && (
-            <MissionRejectForm
-              show={this.state.showMissionRejectForm}
-              onReject={this.onReject}
-              mission={this.state.selectedElement}
-              missions={this.state.checkedElements}
-            />
-          )
-        }
+            this.state.showMissionRejectForm
+            && (
+              <MissionRejectForm
+                show={this.state.showMissionRejectForm}
+                onReject={this.onReject}
+                mission={this.state.selectedElement}
+                missions={this.state.checkedElements}
+                action_at={this.state.action_at}
+              />
+            )
+          }
         <MissionInfoFormWrap
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
           showForm={this.state.showMissionInfoForm}
@@ -348,24 +382,24 @@ export default class MissionsJournal extends CheckableElementsList {
           onExport={this.processExport}
           show={this.state.showPrintForm}
           onHide={() => this.setState({ showPrintForm: false })}
-          title={'Печать журнала заданий'}
+          title="Печать журнала заданий"
         />
       </div>,
-    ];
-  }
+  ]
+
   goToOrders = () => {
     this.props.history.push('/orders');
   }
 
-  getbuttonAddCZ = () => {
-    return (
-      <div key={'00.1'} className="container-button-create-cz">
-        <ButtonGoFaxogramm bsSize="small" bsStyle="success" onClick={this.goToOrders} disabled={false}>
-          <Glyphicon glyph="plus" /> Исполнение централизованного задания
-        </ButtonGoFaxogramm>
-      </div>
-    );
-  }
+  getbuttonAddCZ = () => (
+    <div key="00.1" className="container-button-create-cz">
+      <ButtonGoFaxogramm bsSize="small" bsStyle="success" onClick={this.goToOrders} disabled={false}>
+        <Glyphicon glyph="plus" />
+        {' '}
+        Исполнение централизованного задания
+      </ButtonGoFaxogramm>
+    </div>
+  )
 
   getButtons = () => {
     const superButtons = super.getButtons({
@@ -379,11 +413,18 @@ export default class MissionsJournal extends CheckableElementsList {
     ];
 
     buttons.push(
-      <ButtonUpdateMission key="button-complete-mission" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateMission>,
-      <ButtonUpdateMission key="butto-reject-mission" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateMission>,
-      <ButtonUpdateMission key="butto-archive-mission" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateMission>,
+      <ButtonUpdateMission key="button-complete-mission" id="mission-complete" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled() || this.state.completeMarkerBtnDisable}>
+        <Glyphicon glyph="ok" />
+        {' '}
+        Отметка о выполнении
+      </ButtonUpdateMission>,
+      <ButtonUpdateMission key="butto-reject-mission" id="mission-reject" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}>
+        <Glyphicon glyph="ban-circle" />
+        {' '}
+        Отметка о невыполнении
+      </ButtonUpdateMission>,
+      <ButtonUpdateMission key="butto-archive-mission" id="mission-archive" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateMission>,
     );
-
     return buttons;
   }
 
@@ -395,16 +436,20 @@ export default class MissionsJournal extends CheckableElementsList {
     this.setState({ filter });
   }
 
-  getAdditionalProps = () => {
+  getAdditionalProps = () => ({
+    mapView: this.mapView,
+    structures: this.props.companyStructureLinearList,
+    changeSort: this.changeSort,
+    changeFilter: this.changeFilter,
+    filterValues: this.state.filter,
+    rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    useServerFilter: true,
+    useServerSort: true,
+  })
+
+  getAdditionalFormProps() {
     return {
-      mapView: this.mapView,
-      structures: this.props.companyStructureLinearList,
-      changeSort: this.changeSort,
-      changeFilter: this.changeFilter,
-      filterValues: this.state.filter,
-      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
-      useServerFilter: true,
-      useServerSort: true,
+      loadingPageName,
     };
   }
 
@@ -412,14 +457,34 @@ export default class MissionsJournal extends CheckableElementsList {
     this.setState({ showPrintForm: true });
   }
 
-  additionalRender = () => {
-    return (
-      <Paginator
-        currentPage={this.state.page}
-        maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
-        setPage={page => this.setState({ page })}
-        firstLastButtons
-      />
-    );
-  }
+  additionalRender = () => (
+    <Paginator
+      currentPage={this.state.page}
+      maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
+      setPage={page => this.setState({ page })}
+      firstLastButtons
+    />
+  )
 }
+
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    state => ({
+      companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+    }),
+    dispatch => ({
+      getAndSetInStoreCompanyStructureLinear: () => (
+        dispatch(
+          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+    }),
+  ),
+)(MissionsJournal);

@@ -2,7 +2,7 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
 import { WAYBILL_STATUSES } from 'constants/statuses';
-import { employeeFIOLabelFunction as _employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { get } from 'lodash';
 import { missionsStatusBySlag } from 'components/waybill/constant/table';
 
@@ -29,7 +29,7 @@ const getOptions = (name, array, map) => {
 };
 
 export const getTableMeta = ({
-  employeeFIOLabelFunction = () => {},
+  employeesIndex = {},
   driversList = [],
   carsFilterList = [],
   employeesList = [],
@@ -52,7 +52,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(WAYBILL_STATUSES).map((key) => ({ label: WAYBILL_STATUSES[key], value: key })),
+          options: Object.keys(WAYBILL_STATUSES).map(key => ({ label: WAYBILL_STATUSES[key], value: key })),
         },
       },
       {
@@ -86,7 +86,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: driversList.map((e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: driversList.map((e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
         },
       },
       {
@@ -175,7 +175,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
         },
       },
       {
@@ -187,7 +187,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
         },
       },
       {
@@ -199,7 +199,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
         },
       },
       {
@@ -324,11 +324,11 @@ export const getTableMeta = ({
 export default (props) => {
   const renderers = {
     status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
-    responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
-    driver_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
-    created_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
-    activated_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
-    closed_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(data)}</div>,
+    responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
+    driver_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
+    created_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
+    activated_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
+    closed_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
     date_create: ({ data }) => <DateFormatter date={data} time />,
     closing_date: ({ data }) => <DateFormatter date={data} time />,
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
@@ -340,12 +340,6 @@ export default (props) => {
     car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '-')}</div>,
   };
 
-  const employeeFIOLabelFunction = _employeeFIOLabelFunction(props.flux);
-  const extProps = {
-    ...props,
-    employeeFIOLabelFunction,
-  };
-
   return (
     <Table
       title="Журнал путевых листов"
@@ -354,7 +348,7 @@ export default (props) => {
       initialSort="number"
       enumerated
       initialSortAscending={false}
-      tableMeta={getTableMeta(extProps)}
+      tableMeta={getTableMeta(props)}
       columnControl
       serverPagination
       externalFilter={props.changeFilter}

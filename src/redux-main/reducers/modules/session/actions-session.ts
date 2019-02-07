@@ -20,12 +20,14 @@ export const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
-  if (user.permissions.includes('pgm.list')) {
-    permissions.push('pgm_store.list');
-  }
-  if (user.permissions.includes('pgm.read')) {
-    permissions.push('pgm_store.read');
-  }
+
+  user.permissions.forEach((permission) => {
+    if (permission.match(/^pgm\./)) {
+      permissions.push(
+        permission.replace(/^pgm\./, 'pgm_store.'),
+      );
+    }
+  });
 
   return permissions;
 };
@@ -73,10 +75,11 @@ export const sessionSetData: any = ({ currentUser, session }) => (dispatch) => {
 };
 
 export const sessionSetTracksCachingConfig: any = (appConfigTracksCaching) => (dispatch) => {
-  const versionFromLocalStorage = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, '');
+  const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
   const { api_version_stable } = appConfigTracksCaching;
 
-  if (!versionFromLocalStorage !== api_version_stable) {
+  if (versionFromLocalStorage !== api_version_stable) {
+    console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
     let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
     if (!versions) {

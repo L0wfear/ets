@@ -23,15 +23,15 @@ type StateCarTabMenu = {
 };
 
 const CarAttributeInformation = React.lazy(() => (
-  import(/* webpackChunkName: "car_attribute_information" */'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation')
+  import(/* webpackChunkName: "car_attribute_information" */ 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation')
 ));
 
 const CarChartsInformation = React.lazy(() => (
-  import(/* webpackChunkName: "car_charts_information" */'components/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation')
+  import(/* webpackChunkName: "car_charts_information" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation')
 ));
 
 const CarTrackInformation = React.lazy(() => (
-  import(/* webpackChunkName: "car_track_information" */'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation')
+  import(/* webpackChunkName: "car_track_information" */ 'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation')
 ));
 
 class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {

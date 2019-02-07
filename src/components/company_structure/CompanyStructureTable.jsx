@@ -1,17 +1,18 @@
 import React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import { ExtButton } from 'components/ui/new/button/ExtButton';
 
 import Table from 'components/ui/table/DataTable';
 import permissions from 'components/company_structure/config-data/permissions';
 import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import { StyleForCompnayStructureTable } from './styled/styled';
 
 const ButtonEditStructure = enhanceWithPermissions({
   permission: permissions.update,
-})(Button);
+})(ExtButton);
 
 const ButtonDeletetructure = enhanceWithPermissions({
   permission: permissions.delete,
-})(Button);
+})(ExtButton);
 
 
 const tableMeta = {
@@ -50,24 +51,28 @@ const tableMeta = {
 
 export default (props) => {
   const renderers = {
-    id: ({ data }) => (
+    id: ({ rowData }) => (
       <div>
-        <ButtonEditStructure className="action-button" onClick={props.onActionEdit.bind(null, data)}>Редактировать</ButtonEditStructure>
-        <ButtonDeletetructure className="action-button" onClick={props.onActionDelete.bind(null, data)}>Удалить</ButtonDeletetructure>
+        <ButtonEditStructure className="action-button" onClick={props.onActionEdit} boundKeys={rowData}>Редактировать</ButtonEditStructure>
+        <ButtonDeletetructure className="action-button" onClick={props.onActionDelete} boundKeys={rowData}>Удалить</ButtonDeletetructure>
       </div>
     ),
   };
 
   return (
-    <Table
-      title="Структура предприятия"
-      results={props.data}
-      renderers={renderers}
-      tableMeta={tableMeta}
-      isHierarchical
-      noFilter
-      enableSort={false}
-      {...props}
-    />
+    <>
+      <StyleForCompnayStructureTable />
+      <Table
+        title="Структура предприятия"
+        results={props.data}
+        renderers={renderers}
+        tableMeta={tableMeta}
+        isHierarchical
+        noFilter
+        enableSort={false}
+        initialSort={props.selectField}
+        {...props}
+      />
+    </>
   );
 };

@@ -4,6 +4,7 @@ import CheckableElementsList from 'components/CheckableElementsList';
 import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTable';
 import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch';
 import permissions from 'components/program_registry/config-data/permissions';
+import { compose } from 'recompose';
 
 @connectToStores(['repair', 'session'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
@@ -67,5 +68,4 @@ class ProgramRegistryList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('programRegistry');
   }
 }
-
-export default ProgramRegistryList;
+export default compose()(ProgramRegistryList);

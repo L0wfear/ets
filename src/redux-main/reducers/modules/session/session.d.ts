@@ -1,11 +1,13 @@
+export type OneSessionStructure = {
+  name: string;
+  id: number;
+};
+
 export type InitialStateSession = {
   userData: {
     structure_id: number | null;
     structure_name: string | null;
-    structures: {
-      name: string;
-      id: number;
-    }[];
+    structures: OneSessionStructure[];
     map_config: {
       zoom: number;
       coordinates: [number, number];
@@ -18,6 +20,7 @@ export type InitialStateSession = {
   };
   token: string | null;
   appConfig: {
+    api_versions: string[];
     category_license: {
       category_drivers_license: [];
       category_special_license: [];

@@ -1,0 +1,67 @@
+import {
+  autobaseCreateByType,
+  autobaseUpdateByType,
+  autobaseRemoveByType,
+} from 'redux-main/reducers/modules/autobase/promises';
+import {
+  autobaseLoadByType,
+} from 'redux-main/reducers/modules/autobase/promises';
+import { techMaint } from 'redux-main/reducers/modules/autobase/constants';
+import {
+  clone,
+  get,
+} from 'lodash';
+import { TechMaint } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { createValidDate } from 'utils/dates';
+
+export const getTechMaint = autobaseLoadByType(techMaint);
+export const createTechMaint = autobaseCreateByType(techMaint);
+export const updateTechMaint = autobaseUpdateByType(techMaint);
+export const removeTechMaint = autobaseRemoveByType(techMaint);
+
+export const getSetTechMaint = async (payload) => {
+  const { data, extraData } = await getTechMaint(payload);
+
+  return {
+    data: data.map((rowData) => {
+      rowData.files = get(rowData, 'files', []);
+
+      return rowData;
+    }),
+    extraData,
+  };
+};
+
+const editTechMaintBeforeSave = (rawTechMaint: TechMaint) => {
+  const newObj = clone(rawTechMaint);
+  newObj.plan_date_start = createValidDate(newObj.plan_date_start);
+  newObj.plan_date_end = createValidDate(newObj.plan_date_end);
+  newObj.fact_date_start = createValidDate(newObj.fact_date_start);
+  newObj.fact_date_end = createValidDate(newObj.fact_date_end);
+
+  return newObj;
+};
+
+export const createSetTechMaint = (rawTechMaint: TechMaint) => {
+  const payload = editTechMaintBeforeSave(
+    rawTechMaint,
+  );
+
+  return createTechMaint(
+    payload,
+  );
+};
+export const updateSetTechMaint = (oldTechMaint: TechMaint) => {
+  const payload = editTechMaintBeforeSave(
+    oldTechMaint,
+  );
+
+  return updateTechMaint(
+    payload,
+  );
+};
+export const autobaseDeleteTechMaint = (id: number) => {
+  return removeTechMaint(
+    id,
+  );
+};

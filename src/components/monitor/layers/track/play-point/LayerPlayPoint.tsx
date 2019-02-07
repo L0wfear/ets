@@ -3,7 +3,7 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
-import withLayerProps from 'components/map/layers/base-hoc/layer/LayerProps';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
 import { makeFeaute } from 'components/monitor/layers/track/play-point/feature/utils-feature';
 import { actionOnPlay, actionOnStop } from 'components/monitor/layers/track/play-point/play-events/utils-play-event';

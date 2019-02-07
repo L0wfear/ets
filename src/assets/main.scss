@@ -26,9 +26,14 @@ html, body {
 .app {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100vh;
   overflow: hidden;
+}
+
+.app-content-absolute {
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .app-content {
@@ -274,6 +279,7 @@ button {
   &.disabled {
     color: rgba(0, 0, 0, 0.5);
     cursor: not-allowed;
+    pointer-events: none;
   }
 }
 .car_info-track_date_control {
@@ -400,102 +406,6 @@ body.application {
   font-size: 14px;
 }
 
-.navbar-default {
-  min-height: $navbarHeight;
-
-  border: none;
-  border-radius: 0;
-  margin-bottom: 5px;
-
-  background-color: #292929;
-  color: #fff;
-  z-index: 1001;
-
-  .container-fluid {
-    padding: 0 !important;
-    padding-left: 15px !important;
-  }
-
-  .navbar-nav > li {
-    @media (min-width: 768px) {
-      & > a {
-        padding-top: $navbarPaddingA;
-        padding-bottom: $navbarPaddingA;
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-    }
-
-    & > a,
-    &.open > a  {
-      text-decoration: underline;
-    }
-
-    &.active > a,
-    &:hover > a {
-      background-color: #4c4c4c;
-    }
-
-    & > a,
-    & > a:focus,
-    & > a:active,
-    &.active > a,
-    &:hover > a {
-      color: inherit;
-    }
-  }
-
-  .user-guide>a {
-    text-decoration: none !important;
-  }
-
-  .navbar-brand {
-    color: $colorGray;
-    text-decoration: none;
-
-    &:hover {
-      color: #fff;
-    }
-
-    @media (min-width: 768px) {
-      height: $navbarHeight;
-
-      padding-top: $navbarPaddingA;
-      padding-bottom: $navbarPaddingA;
-    }
-  }
-}
-
-.company-switcher-back-to-city>a {
-  height: 80px;
-  &>span {
-    height: 80px;
-  }
-}
-
-.company-switcher-back-to-city {
-  position: relative;
-  display: inline-block;
-  
-  .switcher-tooltiptext {
-    visibility: hidden;
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    padding: 5px 0;
-    text-align: center;
-
-    /* Position the tooltip */
-    position: absolute;
-    left: -80px;
-    top: 40px;
-    z-index: 1;
-  }
-  &:hover .switcher-tooltiptext {
-    visibility: visible;
-  }
-}
-
 .company-switcher {
   width: 250px;
 
@@ -521,65 +431,6 @@ body.application {
     } 
   }
 
-}
-.navbar-user {
-  text-decoration: none;
-
-  & > a {
-    display: block !important;
-    height: $navbarHeight !important;
-    padding: 10px 15px 0 15px !important;
-    text-decoration: none !important;
-  }
-
-  &__avatar {
-    float: left;
-    width: 43px;
-    height: 43px;
-    overflow: hidden;
-
-    &-img {
-      display: block;
-      width: 43px;
-      height: auto;
-      margin: 0;
-      border: none;
-      outline: none;
-    }
-  }
-
-  &__data {
-    margin-left: 53px;
-    padding-top: 2px;
-
-    &-type {
-      color: $colorGray;
-    }
-
-    &-name-short {
-      max-width: 140px !important;
-    }
-  }
-}
-.navbar-inverse {
-  background-color: #3d4a57;
-  border-color: #333;
-}
-
-/* route-list */
-.sidebar {
-  background-color: #eee;
-  height: 100%;
-}
-
-.sidebar__header {
-  padding-top: 30px;
-
-  &-title {
-    //height: 120px;
-    font-size: 20px;
-    color: #000;
-  }
 }
 
 .small-table {
@@ -963,18 +814,9 @@ body.application {
   width: 28px;
   position: relative;
   left: 20px;
-  z-index: 999;
 
   button {
     background-color: transparent;
-  }
-}
-
-/** APP NAVIGATION */
-.app-navigation {
-  z-index: 1000;
-  & >nav {
-    margin: 0px;
   }
 }
 
@@ -1025,27 +867,6 @@ body.application {
   bottom: -11px;
 }
 
-.routes-form-map-wrapper {
-  .route-odhs-list {
-    position:relative;
-    left:620px;
-    width:380px;
-    margin-top:-15px;
-    ul {
-      margin-left:-20px;
-      li {
-        display: block;
-        max-width: 240px;
-      }
-      li:before{
-        content: "";
-        display: list-item;
-        position: absolute;
-      }
-    }
-  }
-}
-
 .mission-reject-info-modal {
   min-width: 760px;
   width: 760px;
@@ -1069,13 +890,7 @@ body.application {
 }
 
 .modal-backdrop.in {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  opacity:.7;
+  opacity: 0.7;
 }
 
 .form-control[disabled] {
@@ -1177,29 +992,10 @@ body.application {
   margin-top: 5px;
   font-size: 20px;
   color: #444;
-}
+  transition: color 0.2s;
 
-@media (min-width: 1600px) {
-  .filter-row {
-    width: 18%;
-    display: inline-table;
-    margin: 0 1% 10px 1%;
-  }
-}
-
-@media (min-width: 1025px) and (max-width: 1600px) {
-  .filter-row {
-    width: 22%;
-    display: inline-table;
-    margin: 0 1% 10px 1%;
-  }
-}
-
-@media (max-width: 1024px) {
-  .filter-row {
-    width: 26%;
-    display: inline-table;
-    margin: 0 1% 10px 1%;
+  :hover {
+    color: red;
   }
 }
 
@@ -1225,12 +1021,11 @@ body.application {
 
 .column-control-button {
   position: relative;
-  z-index: 999;
   margin-left: 0 !important;
 }
 
 .column-control-container {
-  z-index: 1000;
+  z-index: 1;
   position: absolute;
   top: 0;
 
@@ -1562,37 +1357,11 @@ div.none {
   }
 }
 
-.destination-points {
-  margin-top: 20px;
-  .destination-point {
-
-    .form-group {
-      display: inline-block;
-    }
-    .btn {
-      margin-left: 5px;
-      margin-bottom: 2px;
-    }
-  }
-}
-
-.text-right {
-  text-align: right;
-}
-
 .text-right-flex {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.monitor-dashboard {
-  height: 90vh;
-  .openlayers-container {
-    border: 1px solid #ccc;
-    position: relative !important;
-  }
 }
 
 .company-structure .griddle-body table tbody {
@@ -1601,7 +1370,7 @@ div.none {
   }
   & tr:not(:first-child).child-row {
     &> td:first-child {
-      padding-left: 20px !important;
+      padding-left: 30px !important;
     }
     &> td:not(:first-child) {
       padding: 5px !important;
@@ -1647,7 +1416,6 @@ div.none {
   }
 }
 
-
 .action-button {
   &:not(.disabled):not([disabled]):hover, &:focus, &.active {
     background-color: $colorBadge;
@@ -1681,7 +1449,6 @@ div.none {
   min-height: 30px;
   display: flex;
   justify-content: space-between;
-  z-index: 2;
   line-height: 30px;
   color: white;
 
@@ -1700,6 +1467,7 @@ div.none {
   >.container-version {
     display: flex;
     justify-content: flex-end;
+    cursor: default;
   }
   >div {
     overflow: hidden;
@@ -1761,16 +1529,6 @@ div.none {
   left: 520px;
   button {
     width: 54px;
-  }
-}
-
-.vector-toggle {
-  position: absolute;
-  z-index: 10000;
-  top: 10px;
-  left: 25px;
-  .btn {
-    width: 120px;
   }
 }
 
@@ -1913,47 +1671,17 @@ div.car-movement-time-report {
   font-weight: 800;
 }
 
-/* RouteList */
-.sidebar__list-container {
-  margin: auto;
-  position: absolute;
-  left: 0;
-  top: 120px;
-  bottom: 0;
-  right: 0;
-  padding-right: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  h5 {
-    font-weight: normal;
-  }
-}
-
-.sidebar__list {
-  margin: 0 0 20px 0;
-  padding: 0;
-
-  &-item {
-    display: block;
-    margin: 0 0 8px 0;
-    padding: 5px 5px;
-    //height: 32px;
-    font-size: 16px;
-    color: $colorLink;
-    cursor: pointer;
-
-    &:hover, &.active {
-      background-color: $colorGreen;
-      color: #fff;
-    }
-  }
-}
-/*---------*/
 .checkbox-input {
   margin: 0 -5px;
   >label {
     margin: 5px;
   }
+}
+
+.column_checkbox {
+  height: 78px;
+  display: flex;
+  align-items: center;
 }
 .rw-calendar-popup .rw-popup-transition {
   padding: 0!important;

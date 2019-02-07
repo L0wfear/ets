@@ -17,6 +17,9 @@ import {
 } from 'redux-main/reducers/modules/user_notifications/utils';
 import { isArray } from 'util';
 import { get, uniqBy } from 'lodash';
+import { ThunkAction } from 'redux-thunk';
+import { AnyAction } from 'redux';
+import { ReduxState } from 'redux-main/@types/state';
 
 export const userAdmNotificationPut = (type: string | null, read_ids: number | number[], { page = 'notification-registry', path = null } = {}) => ({
   type,
@@ -158,7 +161,7 @@ export const getUserNotificationInfo: any = () => ({
   },
 });
 
-export const setMakeReadOrderNotification: any = (notifyIds: number | number[]) => async (dispatch, getState) => {
+export const setMakeReadOrderNotification = (notifyIds: number | number[]): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const notifyIdsAsArr = isArray(notifyIds) ? notifyIds : [notifyIds];
 
   await dispatch(
@@ -202,7 +205,7 @@ export const setMakeReadOrderNotification: any = (notifyIds: number | number[]) 
   );
 };
 
-export const getNotifications = () => async (dispatch, getState) => {
+export const getNotifications = (): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const { payload: { notify } } = await dispatch(
     userNotificationGet(
       'none',

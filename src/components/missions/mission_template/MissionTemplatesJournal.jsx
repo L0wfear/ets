@@ -11,6 +11,8 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
+import { compose } from 'recompose';
+import { getWarningNotification } from 'utils/notifications';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -37,7 +39,7 @@ const ButtonCopyTemplateMission = enhanceWithPermissions({
   permission: permissions.create,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'mission_template',
   listName: 'missionTemplatesList',
@@ -68,7 +70,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
     });
   }
 
-    /**
+  /**
    * Дополнительная проверка на наличие выбранных элементов
    * @override
    */
@@ -124,7 +126,6 @@ class MissionTemplatesJournal extends CheckableElementsList {
     const { payload = {} } = this.props;
     this.loadMissionTemplate(payload);
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('routes').getRoutes();
     flux.getActions('objects').getCars();
     flux.getActions('missions').getMissionTemplatesCars();
   }
@@ -137,7 +138,22 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   createMissions = () => {
-    this.setState({ showForm: true, formType: 'MissionsCreationForm' });
+    const { checkedElements } = this.state;
+    const allCheckedMissionInArr = Object.values(checkedElements);
+    const hasMissionForColumn = allCheckedMissionInArr.some(mission => mission.for_column);
+
+    if (hasMissionForColumn && allCheckedMissionInArr.length > 1) {
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification(
+          'Для создания задания на колонну необходимо выбрать только 1 шаблон!',
+        ),
+      );
+    } else {
+      this.setState({
+        showForm: true,
+        formType: 'MissionsCreationForm',
+      });
+    }
   }
 
   /**
@@ -160,6 +176,15 @@ class MissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
       selectedElement: _.cloneDeep(copiedElement),
     });
+  }
+
+  onFormHide = (clearCheckedElements) => {
+    this.setState(({ checkedElements }) => ({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: clearCheckedElements ? {} : checkedElements,
+    }));
   }
 
   getForms = () => {
@@ -206,7 +231,8 @@ class MissionTemplatesJournal extends CheckableElementsList {
         onClick={this.copyElement}
         disabled={this.state.selectedElement === null}
       >
-        <Glyphicon glyph="copy" /> Копировать
+        <Glyphicon glyph="copy" />
+        Копировать
       </ButtonCopyTemplateMission>,
     ];
     buttons.push(...additionalButtons);
@@ -230,4 +256,4 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 }
 
-export default MissionTemplatesJournal;
+export default compose()(MissionTemplatesJournal);

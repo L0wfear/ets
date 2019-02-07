@@ -12,14 +12,12 @@ export default class ObjectsStore extends Store {
     const objectsActions = flux.getActions('objects');
     const carActions = flux.getActions('cars');
     const technicalOperationsActions = flux.getActions('technicalOperation');
-    const companyStructreActions = flux.getActions('companyStructure');
 
     this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
     this.register(objectsActions.getModels, this.handleGetModels);
-    this.register(objectsActions.getSpecialModels, this.handleGetSpecialModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
@@ -50,11 +48,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
     this.register(objectsActions.getTypesAttr, this.handleGetTypesAttr);
 
-    this.register(companyStructreActions.getCompanyStructure, this.handleGetCompanyStructure);
-    this.register(companyStructreActions.createCompanyElement, this.handleGetCompanyStructureAfterCUD);
-    this.register(companyStructreActions.updateCompanyElement, this.handleGetCompanyStructureAfterCUD);
-    this.register(companyStructreActions.deleteCompanyElement, this.handleGetCompanyStructureAfterCUD);
-
     this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
     this.register(technicalOperationsActions.getTechnicalOperationsRegistry, this.handleGetTechOperationsRegistry);
     this.register(technicalOperationsActions.getTechnicalOperationRelations, this.handleGetTechnicalOperationRelations);
@@ -68,7 +61,6 @@ export default class ObjectsStore extends Store {
       typesList: [],
       sensorTypesList: [],
       modelsList: [],
-      specialModelsList: [],
       fuelTypes: [],
       technicalOperationsList: [],
       technicalOperationsRegistryList: [],
@@ -77,9 +69,6 @@ export default class ObjectsStore extends Store {
       OrdersList: [],
       technicalOperationsObjectsList: [],
       technicalOperationsTypesList: [],
-      companyStructureList: [],
-      companyStructureLinearList: [],
-      companyStructureLinearForUserList: [],
       positionsList: [],
       companies: [],
       materialConsumptionRateList: [],
@@ -88,7 +77,6 @@ export default class ObjectsStore extends Store {
       cleaningRateList: [],
       userActionLogList: [],
       medicalStatsList: [],
-      companyStructureLinearList: [],
       appConfig: {},
 
       carsIndex: {},
@@ -127,26 +115,6 @@ export default class ObjectsStore extends Store {
     this.setState({ technicalOperationsTypesList: technicalOperationsTypes.result });
   }
 
-  handleGetCompanyStructure({ data: { result = [] }, linear = false, descendants_by_user = false }) {
-    const myName = this.getNameCompanyStructureList(linear, descendants_by_user);
-
-    this.setState({ [myName]: result });
-  }
-
-  handleGetCompanyStructureAfterCUD({ result = [] }) {
-    this.setState({ companyStructureList: result });
-  }
-
-  getNameCompanyStructureList(linear, descendants_by_user) {
-    if (linear) {
-      if (descendants_by_user) {
-        return 'companyStructureLinearForUserList';
-      }
-      return 'companyStructureLinearList';
-    }
-    return 'companyStructureList';
-  }
-
   handleGetCars(cars) {
     const carsList = cars.result.map((c) => {
       const model = _.find(this.state.modelsList, m => m.id === c.model_id);
@@ -174,10 +142,6 @@ export default class ObjectsStore extends Store {
   handleGetModels({ result: { rows = [] } }) {
     const modelsIndex = _.keyBy(rows, 'id');
     this.setState({ modelsList: rows, modelsIndex });
-  }
-
-  handleGetSpecialModels({ result: { rows: specialModelsList } }) {
-    this.setState({ specialModelsList });
   }
 
   handleGetTypes({ result: { rows = [] } }) {

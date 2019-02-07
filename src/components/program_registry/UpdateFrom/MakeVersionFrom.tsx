@@ -47,7 +47,7 @@ class MakeFileModal extends React.Component<any, any> {
                 label="Файл"
                 value={this.state.files}
                 onChange={this.handleChange}
-                boundKeys={['files']}
+                boundKeys="files"
                 isLoading={this.props.onOverlayLoading}
               />
             </Col>

@@ -1,7 +1,15 @@
-import Component from 'components/missions/duty_mission/DutyMissionsJournal';
+import * as React from 'react';
+import LoadingComponent from 'components/ui/PreloaderMainPage';
+import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
-export default [
-  {
-    component: Component,
-  },
-];
+const Component = React.lazy(() => (
+  import(/* webpackChunkName: "duty_mission" */ 'components/missions/duty_mission/DutyMissionsJournal')
+));
+
+export default (props) => (
+      <ErrorBoundaryRegistry>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <Component {...props}/>
+        </React.Suspense>
+      </ErrorBoundaryRegistry>
+);

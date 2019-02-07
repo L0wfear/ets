@@ -1,47 +1,57 @@
 import { AutoBase, CarService, TypesService } from 'api/Services';
 import { get } from 'lodash';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 
 /* ------------- AUTOBASE ------------- */
-export const autobaseLoadByType = (keyType) => (payload = {}) => (
+export const autobaseLoadByType = (keyType: keyof typeof AUTOBASE) => (payload = {}) => (
   AutoBase.path(AUTOBASE[keyType]).get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
-
-      return {
-        result: {
-          rows: [],
-        },
-      };
+      console.log(error); // tslint:disable-line
     })
     .then((ans) => ({
       data: get(ans, ['result', 'rows'], []),
+      extraData: get(ans, ['result', 'extra'], {}),
     }))
 );
-export const autobaseCreateByType = (keyType) => (ownPayload) => {
+export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return AutoBase.path(AUTOBASE[keyType]).post(
+  const response = await AutoBase.path(AUTOBASE[keyType]).post(
     payload,
     false,
     'json',
   );
+
+  const data = get(
+    response,
+    ['result', 'rows', 0],
+    get(response, ['result', 0], null),
+  );
+
+  return data;
 };
-export const autobaseUpdateByType = (keyType) => (ownPayload) => {
+export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  return AutoBase.path(AUTOBASE[keyType]).path(ownPayload.id).put(
+  const response = await AutoBase.path(AUTOBASE[keyType]).path(ownPayload.id).put(
     payload,
     false,
     'json',
   );
+
+  const data = get(
+    response,
+    ['result', 'rows', 0],
+    get(response, ['result', 0], null),
+  );
+
+  return data;
 };
-export const autobaseRemoveByType = (keyType) => (id) => {
+export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => {
   return AutoBase.path(`${AUTOBASE[keyType]}/${id}`).delete(
     {},
     false,

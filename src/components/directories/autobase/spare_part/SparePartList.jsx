@@ -1,5 +1,5 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
-import AUTOBASE from 'constants/autobase';
+import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import SparePartTable from 'components/directories/autobase/spare_part/SparePartTable';
 import SparePartFormWrap from 'components/directories/autobase/spare_part/SparePartForm/SparePartFormWrap';
@@ -53,7 +53,7 @@ class SparePartList extends ElementsList {
     this.setState(changeState);
   }
 
-  getAdditionalProps() {
+  getAdditionalFormProps() {
     return {
       loadingPageName,
     };

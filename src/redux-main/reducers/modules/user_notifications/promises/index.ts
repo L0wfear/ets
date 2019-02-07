@@ -65,8 +65,12 @@ export const getCountNotRead = () => (
     }))
 );
 
-export const getNotify = (ownPayload) => {
-  const payload: any = {};
+export type NotifyAns = {
+  notify: any[];
+};
+
+export const getNotify = (ownPayload: { is_read?: boolean; type_id?: number }): any => {
+  const payload: typeof ownPayload = {};
 
   if (isBoolean(ownPayload.is_read)) {
     payload.is_read = ownPayload.is_read;
@@ -79,8 +83,7 @@ export const getNotify = (ownPayload) => {
   return UserNotificationService
     .get(payload)
     .catch((error) => {
-      // tslint:disable-next-line
-      console.warn(error);
+      console.warn(error); // tslint:disable-line
 
       return {
         result: {

@@ -85,7 +85,7 @@ export default class ProgramRegistryForm extends Form {
                 options={stateProgramOptions}
                 value={state.state_program_id}
                 onChange={this.handleChange}
-                boundKeys={['state_program_id']}
+                boundKeys="state_program_id"
                 disabled={!isPermitted}
                 clearable={false}
               />
@@ -95,7 +95,7 @@ export default class ProgramRegistryForm extends Form {
                 value={state.name}
                 error={errors.name}
                 onChange={this.handleChange}
-                boundKeys={['name']}
+                boundKeys="name"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -105,7 +105,7 @@ export default class ProgramRegistryForm extends Form {
                 options={OBJECTS}
                 value={state.object_type_id}
                 onChange={this.handleChangeObjectType}
-                boundKeys={['object_type_id']}
+                boundKeys="object_type_id"
                 disabled={!isPermitted}
                 clearable={false}
               />
@@ -116,7 +116,7 @@ export default class ProgramRegistryForm extends Form {
                 options={REPAIR_TYPES_OPTIONS}
                 value={state.repair_type_id}
                 onChange={this.handleChange}
-                boundKeys={['repair_type_id']}
+                boundKeys="repair_type_id"
                 disabled={!isPermitted || !state.object_type_id}
                 clearable={false}
               />
@@ -127,7 +127,7 @@ export default class ProgramRegistryForm extends Form {
                 time={false}
                 error={errors.plan_date_start}
                 onChange={this.handleChange}
-                boundKeys={['plan_date_start']}
+                boundKeys="plan_date_start"
                 disabled={!isPermitted}
               />
               <ExtField
@@ -137,7 +137,7 @@ export default class ProgramRegistryForm extends Form {
                 time={false}
                 error={errors.plan_date_end}
                 onChange={this.handleChange}
-                boundKeys={['plan_date_end']}
+                boundKeys="plan_date_end"
                 disabled={!isPermitted}
               />
             </Col>

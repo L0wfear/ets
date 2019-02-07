@@ -3,21 +3,20 @@ import * as React from 'react';
 import { ISharedPropsDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
 import { IExternalPropsDataTableInputWrapper } from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 
-import { connectToStores, FluxContext } from 'utils/decorators';
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
 import { meta, renderers, validationSchema } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/vehicle-block/table-schema';
+import { ReduxState } from 'redux-main/@types/state';
+import { connect } from 'react-redux';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
   batteryId: number;
 }
 
-@connectToStores(['autobase'])
-@FluxContext
 class BatteryToVehicleBlock extends React.Component<IPropsBatteryToVehicleBlock, any> {
-  context!: ETSCore.LegacyContext;
-
   componentDidMount() {
-    this.context.flux.getActions('autobase').getAutobaseListByType('batteryAvailableCar', {
+    this.props.batteryAvailableCarGetAndSetInStore({
       battery_id: this.props.batteryId,
     });
   }
@@ -36,4 +35,18 @@ class BatteryToVehicleBlock extends React.Component<IPropsBatteryToVehicleBlock,
   }
 }
 
-export default BatteryToVehicleBlock;
+export default connect<any, any, any, ReduxState>(
+  (state) => ({
+    batteryAvailableCarList: getAutobaseState(state).batteryAvailableCarList,
+  }),
+  (dispatch, { page, path }) => ({
+    batteryAvailableCarGetAndSetInStore: (payload) => (
+      dispatch(
+        autobaseActions.batteryAvailableCarGetAndSetInStore(
+          payload,
+          { page, path },
+        ),
+      )
+    ),
+  }),
+)(BatteryToVehicleBlock);

@@ -6,9 +6,7 @@ export default class LoadingStore extends Store {
     super();
 
     const sessionActions = flux.getActions('session');
-    const autoBaseActions = flux.getActions('autobase');
     const repairActions = flux.getActions('repair');
-    const geoObjectsActions = flux.getActions('geoObjects');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
     const objectsActions = flux.getActions('objects');
@@ -17,16 +15,9 @@ export default class LoadingStore extends Store {
     const missionsActons = flux.getActions('missions');
     const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
-    const companyStructureActions = flux.getActions('companyStructure');
 
     this.reg(false,
       sessionActions.cahngeCompanyOnAnother,
-
-      autoBaseActions.getAutobaseListByType,
-      autoBaseActions.techInspection,
-      autoBaseActions.techMaintOrder,
-      autoBaseActions.techMaint,
-      autoBaseActions.tire,
 
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,
@@ -67,7 +58,6 @@ export default class LoadingStore extends Store {
       objectsActions.getTypes,
       objectsActions.getCars,
       objectsActions.getSomeCars,
-      objectsActions.getSpecialModels,
       objectsActions.getWorkKinds,
 
       objectsActions.getMaintenanceWork,
@@ -112,14 +102,8 @@ export default class LoadingStore extends Store {
       missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
 
-      routesActions.getRoutes,
-      routesActions.createRoute,
-      routesActions.removeRoute,
-      routesActions.updateRoute,
       routesActions.getRouteById,
-      routesActions.validateRoute,
       routesActions.getRoutesBySomeData,
-      routesActions.getRoutesByTechnicalOperation,
       routesActions.getRoutesByMissionId,
       routesActions.getRoutesByDutyMissionId,
 
@@ -130,24 +114,12 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 
-      companyStructureActions.getCompanyStructure,
-      companyStructureActions.updateCompanyElement,
-      companyStructureActions.createCompanyElement,
-      companyStructureActions.deleteCompanyElement,
-
       carActions.updateCarAdditionalInfo,
-      carActions.getDataByNormNormatives,
-
-      geoObjectsActions.getGeozones,
-      geoObjectsActions.getOdhMkad);
+      carActions.getDataByNormNormatives);
 
     this.reg(true,
-      geoObjectsActions.updateODH,
-      geoObjectsActions.updateDT,
-      geoObjectsActions.getGeozoneByTypeWithGeometry,
-      geoObjectsActions.getGeozoneByType,
-
-      missionsActons.getMissionsByCarAndDates);
+      missionsActons.getMissionsByCarAndDates,
+    );
 
     this.state = {
       operationsCount: 0,
@@ -189,11 +161,11 @@ export default class LoadingStore extends Store {
   isLoading() {
     if (__DEVELOPMENT__) {
       if (this.state.operationsCount > 0 && notTime) {
-        console.time('----> timeLoad');
+        console.time('----> timeLoad'); // eslint-disable-line
         notTime = false;
       }
       if (this.state.operationsCount === 0 && !notTime) {
-        console.timeEnd('----> timeLoad');
+        console.timeEnd('----> timeLoad'); // eslint-disable-line
         notTime = true;
       }
     }

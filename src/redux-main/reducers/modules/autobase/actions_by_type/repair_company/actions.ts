@@ -31,7 +31,7 @@ export const autobaseGetSetRepairCompany: any = (payload = {}, { page, path }: {
     },
   })
 );
-export const repairCompanyGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const repairCompanyGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     autobaseGetSetRepairCompany(payload, { page, path }),
   );
@@ -45,7 +45,7 @@ export const repairCompanyGetAndSetInStore = (payload = {}, { page, path }: { pa
   };
 };
 export const autobaseCreateRepairCompany: any = (repairCompanyOld: RepairCompany, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { repairCompany } } = await dispatch({
+  const { payload: repairCompany } = await dispatch({
     type: 'none',
     payload: createSetRepairCompany(repairCompanyOld),
     meta: {
@@ -58,7 +58,7 @@ export const autobaseCreateRepairCompany: any = (repairCompanyOld: RepairCompany
   return repairCompany;
 };
 export const autobaseUpdateRepairCompany: any = (repairCompanyOld: RepairCompany, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { repairCompany } } = await dispatch({
+  const { payload: repairCompany } = await dispatch({
     type: 'none',
     payload: updateSetRepairCompany(repairCompanyOld),
     meta: {

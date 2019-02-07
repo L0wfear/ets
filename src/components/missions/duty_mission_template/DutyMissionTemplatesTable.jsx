@@ -8,7 +8,7 @@ import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 export const getTableMeta = ({
   employeesList = [],
   structures = [],
-  flux = null,
+  employeesIndex = {},
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -62,7 +62,7 @@ export const getTableMeta = ({
           someInRowValue: true,
           options: uniqBy(employeesList.map(({ id }) => ({
             value: id,
-            label: flux && employeeFIOLabelFunction(flux)(id),
+            label: employeeFIOLabelFunction(employeesIndex, id),
           })), 'value'),
         },
       },

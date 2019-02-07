@@ -43,6 +43,7 @@ const Table: React.FunctionComponent<any> = (props) => {
     <DataTable
       title="Справочник характеристик объектов"
       results={props.data}
+      initialSort={props.selectField}
       renderers={renderers}
       tableMeta={tableMeta(props)}
       {...props}

@@ -48,6 +48,7 @@ const EfficiencyTable = (props) => {
       results={props.data}
       tableMeta={tableMeta}
       renderers={renderers}
+      initialSort={props.selectField}
       {...props}
     />
   );

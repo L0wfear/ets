@@ -21,24 +21,25 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { isArray } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
-import insurancePolicyComponents from 'components/directories/autobase/insurance_policy/config-data/components';
-import techInspectionComponents from 'components/directories/autobase/tech_inspection/config-data/components';
-import techMaintComponents from 'components/directories/autobase/tech_maintenance_registry/config-data/components';
-import repairComponents from 'components/directories/autobase/repair/config-data/components';
-import roadAccidenComponents from 'components/directories/autobase/road_accident/config-data/components';
+import InsurancePolicyList from 'components/directories/autobase/insurance_policy/config-data/components';
+import TechInspectionList from 'components/directories/autobase/tech_inspection/config-data/components';
+import RepairList from 'components/directories/autobase/repair/config-data/components';
+import RoadAccidentList from 'components/directories/autobase/road_accident/config-data/components';
 
 import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
 import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
 import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
-import BatteryTab from 'components/directories/autobase/cars/tabs/BatteryTab';
-import TireTab from 'components/directories/autobase/cars/tabs/TireTab';
-import TechMaintTab from 'components/directories/autobase/cars/tabs/TechMaintTab';
 
-const InsurancePolicyList = insurancePolicyComponents[0].component;
-const TechInspectionList = techInspectionComponents[0].component;
-const TechMaintList = techMaintComponents[0].component;
-const RepairList = repairComponents[0].component;
-const RoadAccidentList = roadAccidenComponents[0].component;
+import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/battery_tab/lazy';
+import { TireTabLazyWrap } from 'components/directories/autobase/cars/tabs/tire_tab/lazy';
+import TechMaintTab from 'components/directories/autobase/cars/tabs/tech_main_tab';
+import { connect } from 'react-redux';
+import {
+  getAutobaseState,
+  getCompanyStructureState,
+} from 'redux-main/reducers/selectors';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 export const CAR_TAB_INDEX = {
   info: '1',
@@ -73,14 +74,6 @@ class CarForm extends Form {
 
     if (currentFormState.asuods_id !== lastFormState.asuods_id && currentFormState.asuods_id) {
       this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
-      const payload = {
-        car_id: currentFormState.asuods_id,
-      };
-      const { flux } = this.context;
-
-      flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
-      flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
-      flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
     }
   }
 
@@ -89,25 +82,16 @@ class CarForm extends Form {
     if (search) {
       this.props.handleTabSelect(queryString.parse(search).active_tab);
     }
-    const nextState = this.props.formState;
-    const linear = true;
-    const descendants_by_user = true;
-
-    const payload = {
-      car_id: nextState.asuods_id,
-    };
 
     const { flux } = this.context;
     flux.getActions('employees').getEmployees();
     flux.getActions('employees').getDrivers();
-    flux.getActions('companyStructure').getCompanyStructure(linear, descendants_by_user);
     flux.getActions('objects').getCountry();
-    flux.getActions('autobase').getAutobaseListByType('engineType');
-    flux.getActions('autobase').getAutobaseListByType('propulsionType');
-    flux.getActions('autobase').getAutobaseListByType('carCategory');
-    flux.getActions('autobase').getAutobaseListByType('actualBatteriesOnCar', payload);
-    flux.getActions('autobase').getAutobaseListByType('actualTiresOnCar', payload);
-    flux.getActions('autobase').getAutobaseListByType('techMaint', payload);
+
+    this.props.carCategoryGetAndSetInStore();
+    this.props.engineTypeGetAndSetInStore();
+    this.props.propulsionTypeGetAndSetInStore();
+    this.props.getAndSetInStoreCompanyStructureDescendantsByUser();
   }
 
   handleChangeMainInfoTab = (key, value) => {
@@ -131,9 +115,8 @@ class CarForm extends Form {
     const errors = this.props.formErrors;
     const {
       isPermitted = false,
-      techMaintListExtra = {},
       tabKey,
-      companyStructureLinearForUserList = [],
+      companyStructureDescendantsByUserList = [],
       countryOptions = [],
       engineTypeList = [],
       propulsionTypeList = [],
@@ -143,7 +126,7 @@ class CarForm extends Form {
       driversList = [],
     } = this.props;
 
-    const COMPANY_ELEMENTS = companyStructureLinearForUserList.map(defaultSelectListMapper);
+    const COMPANY_ELEMENTS = companyStructureDescendantsByUserList.map(defaultSelectListMapper);
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);
     const propulsionTypeOptions = propulsionTypeList.map(defaultSelectListMapper);
     const carCategoryOptions = carCategoryList.map(defaultSelectListMapper);
@@ -264,15 +247,35 @@ class CarForm extends Form {
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
-            <BatteryTab
-              data={this.props.actualBatteriesOnCarList}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.battery
+                ? (
+                  <BatteryTabLazyWrap
+                    car_id={state.asuods_id}
+                    page={this.props.page}
+                    path={this.props.path}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.tire} tabKey={tabKey}>
-            <TireTab
-              data={this.props.actualTiresOnCarList}
-            />
+            {
+              tabKey === CAR_TAB_INDEX.tire
+                ? (
+                  <TireTabLazyWrap
+                    car_id={state.asuods_id}
+                    page={this.props.page}
+                    path={this.props.path}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </TabContent>
 
           <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>
@@ -309,14 +312,10 @@ class CarForm extends Form {
                 ? (
                   <TechMaintTab
                     type={state.gov_number && !!(state.gov_number).toString().match(/\d{4}/)}
-                    techMaintListExtra={techMaintListExtra}
-                  >
-                    <TechMaintList
-                      car_id={state.asuods_id}
-                      car_model_id={state.special_model_id}
-                      gov_number={state.gov_number}
-                    />
-                  </TechMaintTab>
+                    car_id={state.asuods_id}
+                    car_model_id={state.special_model_id}
+                    gov_number={state.gov_number}
+                  />
                 )
                 : (
                   <DivNone />
@@ -361,4 +360,52 @@ class CarForm extends Form {
   }
 }
 
-export default tabable(connectToStores(CarForm, ['objects', 'employees', 'autobase']));
+export default connect(
+  state => ({
+    engineTypeList: getAutobaseState(state).engineTypeList,
+    propulsionTypeList: getAutobaseState(state).propulsionTypeList,
+    carCategoryList: getAutobaseState(state).carCategoryList,
+    companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
+  }),
+  (dispatch, { page, path }) => ({
+    carCategoryGetAndSetInStore: () => (
+      dispatch(
+        autobaseActions.carCategoryGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    engineTypeGetAndSetInStore: () => (
+      dispatch(
+        autobaseActions.engineTypeGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    propulsionTypeGetAndSetInStore: () => (
+      dispatch(
+        autobaseActions.propulsionTypeGetAndSetInStore(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+    getAndSetInStoreCompanyStructureDescendantsByUser: () => (
+      dispatch(
+        companyStructureActions.getAndSetInStoreCompanyStructureDescendantsByUser(
+          {},
+          { page, path },
+        ),
+      )
+    ),
+  }),
+)(
+  tabable(
+    connectToStores(
+      CarForm,
+      ['objects', 'employees'],
+    ),
+  ),
+);

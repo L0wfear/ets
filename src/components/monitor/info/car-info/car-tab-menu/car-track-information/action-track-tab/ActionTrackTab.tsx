@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import { get } from 'lodash';
 import { makeDateFromUnix } from 'utils/dates';
 import { carInfoTogglePlay, carInfoStopPlay, carInfoIncTrackPointIndex } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
@@ -85,9 +86,9 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
             <div>
               <dl className="car-info-play-info">
               <dt>Координаты:</dt>
-              <dd>{Number.parseFloat(track[trackPointIndex].coords_msk[1]).toFixed(5)}, {Number.parseFloat(track[trackPointIndex].coords_msk[0]).toFixed(5)}</dd>
+              <dd>{Number.parseFloat(get(track, [trackPointIndex, 'coords_msk'], [0, 0])[1]).toFixed(5)}, {Number.parseFloat(get(track, [trackPointIndex, 'coords_msk'], [0, 0])[0]).toFixed(5)}</dd>
               <dt>Время:</dt>
-              <dd>{makeDateFromUnix(track[trackPointIndex].timestamp)}</dd>
+              <dd>{makeDateFromUnix(get(track, [trackPointIndex], { timestamp: 0 }).timestamp)}</dd>
               <dt>Скорость:</dt>
               <dd>{track[trackPointIndex].speed_avg}</dd>
           </dl>

@@ -74,6 +74,7 @@ const UserActionLogTable = (props) => {
       {...props}
       title="Статистика прохождения мед. осмотров"
       results={props.data}
+      initialSort={props.selectField}
       tableMeta={tableMeta(props)}
       renderers={renderers}
       rowNumberLabel="№ п/п"

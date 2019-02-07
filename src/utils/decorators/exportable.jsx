@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { saveData } from 'utils/functions';
 import { parseFilename } from 'utils/content-disposition';
 import config from 'config';
-import _ from 'lodash';
+import _, { get } from 'lodash';
 
 // TODO поменять на urlencode и использовать для составления параметров
 export function toUrlWithParams(url, data) {
@@ -38,10 +38,21 @@ export default function exportable(options) {
           ...payload,
           format: 'xls',
         };
-        const URL = toUrlWithParams(
-          `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}/${id}`,
-          payload,
-        );
+        const version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], '');
+
+        const URL = version
+          ? (
+            toUrlWithParams(
+              `${config.backend}/v${version}/${this.path || ''}${this.path ? '/' : ''}${this.entity}/${id}`,
+              payload,
+            )
+          )
+          : (
+            toUrlWithParams(
+              `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}/${id}`,
+              payload,
+            )
+          );
         // TODO blob
         return fetch(URL, {
           method: 'get',
@@ -61,14 +72,27 @@ export default function exportable(options) {
 
       exportByPostFunction = (bodyPayload = {}, urlPayload = {}) => {
         const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
+        const version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], '');
 
-        const URL = toUrlWithParams(
-          `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}`,
-          {
-            format: 'xls',
-            ...urlPayload,
-          },
-        );
+        const URL = version
+          ? (
+            toUrlWithParams(
+              `${config.backend}/v${version}/${this.path || ''}${this.path ? '/' : ''}${this.entity}`,
+              {
+                format: 'xls',
+                ...urlPayload,
+              },
+            )
+          )
+          : (
+            toUrlWithParams(
+              `${config.backend}/${this.path || ''}${this.path ? '/' : ''}${this.entity}`,
+              {
+                format: 'xls',
+                ...urlPayload,
+              },
+            )
+          );
         // TODO blob
         return fetch(URL, {
           method: 'post',

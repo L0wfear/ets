@@ -10,12 +10,13 @@ import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
 
 import DutyMissionTemplateFormWrap from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
+import { compose } from 'recompose';
 
 const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
   permission: permissions_duty_mission.create,
 })(Button);
 
-@connectToStores(['missions', 'objects', 'employees', 'routes'])
+@connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'duty_mission_template',
   permissions,
@@ -23,7 +24,7 @@ const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
   tableComponent: DutyMissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class DutyMissionTemplatesJournal extends CheckableElementsList {
+class DutyMissionTemplatesJournal extends CheckableElementsList {
 
   constructor(props) {
     super(props);
@@ -127,3 +128,5 @@ export default class DutyMissionTemplatesJournal extends CheckableElementsList {
     };
   }
 }
+
+export default compose()(DutyMissionTemplatesJournal);

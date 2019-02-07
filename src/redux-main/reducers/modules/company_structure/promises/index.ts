@@ -31,30 +31,30 @@ export const promiseCreateCompanyStructure = async (ownPayload) => {
     ...ownPayload,
   };
 
-  const response = await CompanyStructureService.post(
+  await CompanyStructureService.post(
     payload,
     false,
     'json',
   );
 
-  const data = get(response, ['result', 0], null);
-
-  return data;
+  return {
+    ...ownPayload,
+  };
 };
 export const promiseUpdateCompanyStructure = async (ownPayload) => {
   const payload = {
     ...ownPayload,
   };
 
-  const response = await CompanyStructureService.put(
+  await CompanyStructureService.put(
     payload,
     false,
     'json',
   );
 
-  const data = get(response, ['result', 0], null);
-
-  return data;
+  return {
+    ...ownPayload,
+  };
 };
 export const promiseDeleteCompanyStructure = (id) => {
   return CompanyStructureService.delete(

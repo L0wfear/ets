@@ -241,7 +241,7 @@ export const waybillSchema = {
     fuel_card_id: [
       {
         validator: (value, formData) => {
-          if (!value && (formData.fuel_method === 'fuel_card') && formData.status === 'draft') {
+          if (!value && (formData.fuel_method === 'fuel_card') && (formData.status === 'draft' || !formData.status)) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -254,7 +254,7 @@ export const waybillSchema = {
           if ( !value && formData.status === 'draft') {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
-          if (value === 'fuel_card' && isEmpty(formData.fuel_card_id) && formData.status === 'draft') {
+          if (value === 'fuel_card' && isEmpty(formData.fuel_card_id) && (formData.status === 'draft' || !formData.status)) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -264,7 +264,7 @@ export const waybillSchema = {
     equipment_fuel_card_id: [
       {
         validator: (value, formData) => {
-          if (!value && (formData.equipment_fuel_method === 'fuel_card') && formData.status === 'draft') {
+          if (!value && (formData.equipment_fuel_method === 'fuel_card') && (formData.status === 'draft' || !formData.status)) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -277,7 +277,7 @@ export const waybillSchema = {
           if (!value && formData.status === 'draft' && formData.equipment_fuel) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
-          if (value === 'fuel_card' && isEmpty(formData.equipment_fuel_card_id) && formData.status === 'draft') {
+          if (value === 'fuel_card' && isEmpty(formData.equipment_fuel_card_id) && (formData.status === 'draft' || !formData.status)) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;

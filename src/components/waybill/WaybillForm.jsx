@@ -1120,7 +1120,7 @@ class WaybillForm extends Form {
                     modalKey={modalKey}
                     label="Способ заправки"
                     error={errors.fuel_method}
-                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !(IS_CREATING || IS_DRAFT)}
                     options={FUEL_METHOD}
                     value={state.fuel_method}
                     onChange={this.handleFuelMethodChange}
@@ -1131,7 +1131,7 @@ class WaybillForm extends Form {
                     modalKey={modalKey}
                     label="Топливная карта"
                     error={errors.fuel_card_id}
-                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || fuelCardDisable || !IS_DRAFT}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || fuelCardDisable || !(IS_CREATING || IS_DRAFT)}
                     options={FUEL_CARDS}
                     value={state.fuel_card_id}
                     onChange={this.handleChange.bind(this, 'fuel_card_id')}
@@ -1280,7 +1280,7 @@ class WaybillForm extends Form {
                     modalKey={modalKey}
                     label="Способ заправки"
                     error={errors.equipment_fuel_method}
-                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !IS_DRAFT}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || !(IS_CREATING || IS_DRAFT)}
                     options={FUEL_METHOD}
                     value={state.equipment_fuel_method}
                     onChange={this.handleEquipmentFuelMethodChange}
@@ -1291,7 +1291,7 @@ class WaybillForm extends Form {
                     modalKey={modalKey}
                     label="Топливная карта"
                     error={errors.equipment_fuel_card_id}
-                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || equipmentFuelCardDisable || !IS_DRAFT}
+                    disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update || equipmentFuelCardDisable || !(IS_CREATING || IS_DRAFT)}
                     options={EQUIPMENT_FUEL_CARDS}
                     value={state.equipment_fuel_card_id}
                     onChange={this.handleChange.bind(this, 'equipment_fuel_card_id')}

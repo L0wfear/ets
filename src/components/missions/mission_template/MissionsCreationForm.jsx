@@ -21,7 +21,7 @@ import { addTime, diffDates } from 'utils/dates';
 import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
 import { DivNone } from 'global-styled/global-styled';
 import { getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
-import { makePayloadFromState } from '../mission/MissionForm/utils';
+import { makePayloadFromState } from 'components/missions/mission/MissionForm/utils';
 
 const ASSIGN_OPTIONS = [
   { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },

@@ -9,13 +9,12 @@ import {
 import Div from 'components/ui/Div';
 
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
-import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 import OrderMissionTemplate from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
+import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 
 // todo
 // Описать интерфейсы форм
 const MissionFormWrapTSX: any = MissionFormWrap;
-const DutyMissionFormWrapTSX: any = DutyMissionFormWrap;
 
 const OrderMissionController: React.FunctionComponent<any> = (props) => {
   const {
@@ -33,12 +32,10 @@ const OrderMissionController: React.FunctionComponent<any> = (props) => {
         element={missionData.mElement}
         order={missionData.order}
       />
-      <DutyMissionFormWrapTSX
-        fromOrder={true}
+      <DutyMissionFormLazy
         showForm={dutyMissionData.showForm}
         onFormHide={props.onHideCDM}
         element={dutyMissionData.dmElement}
-        order={dutyMissionData.order}
       />
       <Div hidden={!missionTemplateData.showForm} >
         <OrderMissionTemplate

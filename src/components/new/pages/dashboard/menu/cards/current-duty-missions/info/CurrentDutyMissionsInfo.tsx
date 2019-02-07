@@ -15,14 +15,11 @@ import {
   dashboardLoadMissionDataForCurrentMission,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import {
-  loadDutyMissionById,
-  updateDutyMissionByPayload,
-} from 'redux-main/trash-actions/mission';
 import { ButtonUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { LinkToOpenRouteInfoForm } from 'components/new/pages/routes_list/buttons/buttons';
 
 import {
+  DispatchPropsCurrentMissionInfo,
   PropsCurrentMissionInfo,
   StateCurrentMissionInfo,
 } from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/@types/CurrentDutyMissionsInfo.h';
@@ -31,6 +28,7 @@ import {
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -61,8 +59,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   rejectDutyMission = () => {
-    this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
-      .then(({ payload: { duty_mission } }) => {
+    this.props.actionGetDutyMissionById(
+      this.props.infoData.duty_mission_data.duty_mission_id,
+      { page: 'dashboard' },
+    )
+      .then((duty_mission) => {
         // надо уйти от этого
         // react 16 Portal
         return global.confirmDialog({
@@ -104,17 +105,21 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   updateDutyMission = (newProps) => (
     (
       newProps.number ?
-      Promise.resolve({ payload: { duty_mission: newProps } })
+      Promise.resolve(newProps)
       :
-      this.props.getDutyMissionById(this.props.infoData.duty_mission_data.duty_mission_id)
+      this.props.actionGetDutyMissionById(
+        this.props.infoData.duty_mission_data.duty_mission_id,
+        { page: 'dashboard' },
+      )
     )
-      .then(({ payload: { duty_mission } }) => {
+      .then((duty_mission) => {
         if (duty_mission) {
-          this.props.updateDutyMission(
+          this.props.actionUpdateDutyMission(
             {
               ...duty_mission,
               ...newProps,
             },
+            { page: 'dashboard' },
           )
           .then(() => {
             this.refreshCard();
@@ -177,11 +182,11 @@ export default compose<any, any>(
     path: ['dashboard', 'current_duty_missions', 'infoData'],
     type: 'none',
   }),
-  connect<any, any, any, ReduxState>(
+  connect<any, DispatchPropsCurrentMissionInfo, any, ReduxState>(
     (state) => ({
       infoData: getDashboardState(state).current_duty_missions.infoData,
     }),
-    (dispatch) => ({
+    (dispatch: any) => ({
       handleClose: () => (
         dispatch(
           dashboardLoadMissionDataForCurrentMission(null),
@@ -192,28 +197,14 @@ export default compose<any, any>(
           dashboardLoadCurrentDutyMissions(),
         )
       ),
-      getDutyMissionById: (id) => (
+      actionGetDutyMissionById: (...arg) => (
         dispatch(
-          loadDutyMissionById(
-            'none',
-            id,
-            {
-              promise: true,
-              page: 'dashboard',
-            },
-          ),
+          missionsActions.actionGetDutyMissionById(...arg),
         )
       ),
-      updateDutyMission: (payload) => (
+      actionUpdateDutyMission: (...arg) => (
         dispatch(
-          updateDutyMissionByPayload(
-            'none',
-            payload,
-            {
-              promise: true,
-              page: 'dashboard',
-            },
-          ),
+          missionsActions.actionUpdateDutyMission(...arg),
         )
       ),
     }),

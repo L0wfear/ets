@@ -30,7 +30,7 @@ const actionSetRoutes = (routesList: IStateRoutes['routesList'], routesIndex: IS
     routesIndex,
   };
 };
-const actionResetSet = (): ThunkAction<Pick<IStateRoutes, 'routesList' | 'routesIndex'>, ReduxState, {}, AnyAction> => (dispatch) => {
+const actionResetSetRoutes = (): ThunkAction<Pick<IStateRoutes, 'routesList' | 'routesIndex'>, ReduxState, {}, AnyAction> => (dispatch) => {
   const routesList = [];
   const routesIndex = {};
 
@@ -137,7 +137,7 @@ const actionValidateRoute = (route: Partial<Route> & Pick<Route, 'technical_oper
 const routesActions = {
   actionSetNewData,
   actionSetRoutes,
-  actionResetSet,
+  actionResetSetRoutes,
   actionLoadRoutes,
   actionLoadAndSetInStoreRoutes,
   actionLoadRouteById,

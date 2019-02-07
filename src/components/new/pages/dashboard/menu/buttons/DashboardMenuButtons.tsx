@@ -4,7 +4,6 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
-import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
 
 import {
   dashboardLoadDependentDataByWaybillDraft,
@@ -33,6 +32,7 @@ import {
   PropsDashboardMenuButtons,
   StateDashboardMenuButtons,
 } from 'components/new/pages/dashboard/menu/buttons/DashboardMenuButtons.h';
+import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 
 class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, StateDashboardMenuButtons> {
   state = {
@@ -70,8 +70,10 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
     this.setState({ showDutyMissionFormWrap: true });
   }
 
-  handleFormHideDutyMissionFormWrap = () => {
-    this.props.loadDataAfterCreateDutyMission();
+  handleFormHideDutyMissionFormWrap = (isSubmitted) => {
+    if (isSubmitted) {
+      this.props.loadDataAfterCreateDutyMission();
+    }
     this.setState({ showDutyMissionFormWrap: false });
   }
 
@@ -101,10 +103,11 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
           fromDashboard
           element={null}
         />
-        <DutyMissionFormWrap
+        <DutyMissionFormLazy
           onFormHide={this.handleFormHideDutyMissionFormWrap}
           showForm={this.state.showDutyMissionFormWrap}
           element={null}
+          page="dashboarc"
         />
       </DashboardMenuButtonsContainer>
     );

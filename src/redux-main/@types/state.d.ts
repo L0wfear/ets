@@ -15,6 +15,7 @@ import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/f
 import { IStateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
+import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -31,6 +32,8 @@ export interface ReduxState {
   geoobject: IStateGeoobject;
   missions: IStateMissions;
   company: IStateCompany;
+
+  order: IStateOrder; // partial
 
   monitorPage: any;
   loading: any;

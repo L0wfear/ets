@@ -2,20 +2,29 @@ import * as React from 'react';
 
 import { IStateBrigadeEfficiency } from 'components/reports/operational/brigade_efficiency/@types/report.h';
 
-import { DutyMissionService } from 'api/missions';
 import { exportable } from 'utils/decorators';
-import { getTableMeta as dutyMissionTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
-import DutyMissionFormSCC from 'components/missions/duty_mission/DutyMissionFormWrap';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from 'components/reports/operational/brigade_efficiency/reportProps';
+import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
+import { compose } from 'recompose';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { ReduxState } from 'redux-main/@types/state';
 
-const DutyMissionForm: any = DutyMissionFormSCC;
 const exportableTSX: any = exportable;
+
+type DispatchPropsBrigadeEfficiencyReport = {
+  actionGetDutyMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetDutyMissionById>;
+};
+type PropsBrigadeEfficiencyReport = (
+  DispatchPropsBrigadeEfficiencyReport
+) & Record<string, any>;
 
 @exportableTSX({
   entity: serviceUrl,
 })
-class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficiency> {
+class BrigadeEfficiencyReport extends React.Component<PropsBrigadeEfficiencyReport, IStateBrigadeEfficiency> {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,13 +34,16 @@ class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficien
   }
   handleDutyNumberLinkClick = async (dutyNumber) => {
     try {
-      const dutyMission = await DutyMissionService.path(`${dutyNumber}/`).get();
+      const dutyMission = await this.props.actionGetDutyMissionById(
+        dutyNumber,
+        { page: 'order' },
+      );
 
-      if (dutyMission.result.length === 0) { return; }
+      if (!dutyMission) { return; }
 
       this.setState({
         dutyMissionFormVisibility: true,
-        dutyMissionSelectedItem: dutyMission.result[0],
+        dutyMissionSelectedItem: dutyMission,
       });
     } catch ({ error_text }) {
       // tslint:disable-next-line
@@ -42,16 +54,14 @@ class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficien
     this.setState({ dutyMissionFormVisibility: false });
   }
   render() {
-    const formSchema = dutyMissionTableMeta({ structures: [] });
-
     const dutyNumberForm = (
-      <DutyMissionForm
+      <DutyMissionFormLazy
         key={'BrigadesEfficiency_DutyMissionForm'}
         onFormHide={this.handleDutyMissionFormVisibility}
         showForm={this.state.dutyMissionFormVisibility}
         element={this.state.dutyMissionSelectedItem}
-        meta={formSchema}
-        readOnly
+        readOnly={true}
+        page="duty_mission"
       />
     );
 
@@ -68,4 +78,19 @@ class BrigadeEfficiencyReport extends React.Component<any, IStateBrigadeEfficien
   }
 }
 
-export default BrigadeEfficiencyReport;
+export default compose(
+  withPreloader({
+    page: 'report',
+    typePreloader: 'mainpage',
+  }),
+  connect<null, DispatchPropsBrigadeEfficiencyReport, any, ReduxState>(
+    null,
+    (dispatch: any) => ({
+      actionGetDutyMissionById: (...arg) => (
+        dispatch(
+          missionsActions.actionGetDutyMissionById(...arg),
+        )
+      ),
+    }),
+  ),
+)(BrigadeEfficiencyReport);

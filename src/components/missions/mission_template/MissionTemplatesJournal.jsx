@@ -16,7 +16,7 @@ import { compose } from 'recompose';
 import { getWarningNotification } from 'utils/notifications';
 import { connect } from 'react-redux';
 import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
-import missionActions from 'redux-main/reducers/modules/missions/actions';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const loadingPageName = 'mission_template';
@@ -301,7 +301,7 @@ export default compose(
     dispatch => ({
       actionGetAndSetInStoreMissionTemplate: () => (
         dispatch(
-          missionActions.actionGetAndSetInStoreMissionTemplate(
+          missionsActions.actionGetAndSetInStoreMissionTemplate(
             {},
             { page: loadingPageName },
           ),
@@ -309,7 +309,7 @@ export default compose(
       ),
       actionRemoveMissionTemplates: missionTemplateArr => (
         dispatch(
-          missionActions.actionRemoveMissionTemplates(
+          missionsActions.actionRemoveMissionTemplates(
             missionTemplateArr,
             { page: loadingPageName },
           ),

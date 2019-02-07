@@ -9,7 +9,7 @@ import {
 } from './@types/index.h';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import missionActions from 'redux-main/reducers/modules/missions/actions';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import missionTemplatePermissions from 'components/missions/mission_template/config-data/permissions';
 import { ReduxState } from 'redux-main/@types/state';
@@ -220,8 +220,8 @@ export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
   ),
   withForm<PropsMissionTemplateWithForm, MissionTemplate>({
     uniqField: 'id',
-    createAction: missionActions.actionCreateMissionTemplate,
-    updateAction: missionActions.actionUpdateMissionTemplate,
+    createAction: missionsActions.actionCreateMissionTemplate,
+    updateAction: missionsActions.actionUpdateMissionTemplate,
     mergeElement: ({ element, userStructureId, userStructureName }) => {
       return getDefaultMissionTemplateElement({
         ...element,

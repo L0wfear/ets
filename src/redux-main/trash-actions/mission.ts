@@ -1,8 +1,6 @@
 import {
   getMissionById,
   updateMission,
-  getDutyMissionById,
-  updateDutyMission,
   getMissionDataById,
 } from 'redux-main/trash-actions/mission/promise';
 
@@ -22,26 +20,6 @@ export const updateMissionByPayload = (type, payload, meta = { loading: true } a
   return {
     type,
     payload: updateMission(payload),
-    meta: {
-      ...meta,
-    },
-  };
-};
-
-export const loadDutyMissionById = (type, id, meta = { loading: true } as TypeMeta) => {
-  return {
-    type,
-    payload: getDutyMissionById(id),
-    meta: {
-      ...meta,
-    },
-  };
-};
-
-export const updateDutyMissionByPayload = (type, payload, meta = { loading: true } as TypeMeta) => {
-  return {
-    type,
-    payload: updateDutyMission(payload),
     meta: {
       ...meta,
     },

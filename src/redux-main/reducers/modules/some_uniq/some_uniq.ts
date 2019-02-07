@@ -14,6 +14,10 @@ const initialState: IStateSomeUniq = {
   municipalFacilityList: [],
   municipalFacilityForMissionList: [],
   municipalFacilityForDutyMissionList: [],
+  missionSource: {
+    list: [],
+    order_mission_source_id: null,
+  },
 };
 
 export default (state = initialState, { type, payload }) => {

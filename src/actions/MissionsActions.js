@@ -1,7 +1,5 @@
 import { Actions } from 'flummox';
 import {
-  get,
-  keyBy,
   clone,
   cloneDeep,
 } from 'lodash';
@@ -16,11 +14,9 @@ import {
   MissionTemplateService,
   MissionTemplateCarService,
   DutyMissionService,
-  DutyMissionArchiveService,
   DutyMissionTemplateService,
   MissionPrintService,
   MissionTemplatePrintService,
-  DutyMissionPrintService,
   MissionDataService,
   CarDutyMissionService,
   Cleaning,
@@ -304,80 +300,6 @@ export default class MissionsActions extends Actions {
     const payload = cloneDeep(data);
 
     return MissionTemplatePrintService.postBlob(payload);
-  }
-
-
-  /* ---------- MISSION DUTY ---------- */
-
-
-  getDutyMissions(limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
-    const filterValues = parseFilterObject(filter);
-    const payload = {
-      limit,
-      offset,
-      sort_by,
-      filter: JSON.stringify(filterValues),
-      is_archive,
-    };
-
-    return DutyMissionService.get(payload).then(({ result }) => ({
-      result: {
-        ...result,
-        rows: result.rows.map((empl) => {
-          const brigade_employee_id_list = get(empl, 'brigade_employee_id_list', []) || [];
-          empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
-          empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
-
-          return empl;
-        }),
-      },
-    }));
-  }
-
-  createDutyMission(mission) {
-    const payload = cloneDeep(mission);
-    payload.plan_date_start = createValidDateTime(payload.plan_date_start);
-    payload.plan_date_end = createValidDateTime(payload.plan_date_end);
-    payload.fact_date_start = createValidDateTime(payload.fact_date_start);
-    payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    delete payload.brigadeEmployeeIdIndex;
-
-    return DutyMissionService.post(payload, false, 'json');
-  }
-
-  updateDutyMission(mission) {
-    const payload = cloneDeep(mission);
-    delete payload.number;
-    delete payload.technical_operation_name;
-    delete payload.route_name;
-    delete payload.foreman_fio;
-    delete payload.car_mission_name;
-    delete payload.brigadeEmployeeIdIndex;
-
-    payload.plan_date_start = createValidDateTime(payload.plan_date_start);
-    payload.plan_date_end = createValidDateTime(payload.plan_date_end);
-    payload.fact_date_start = createValidDateTime(payload.fact_date_start);
-    payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-
-    return DutyMissionService.put(payload, false, 'json');
-  }
-
-  changeArchiveDutuMissionStatus(id, is_archive) {
-    const payload = {
-      is_archive,
-    };
-
-    return DutyMissionArchiveService.path(id).put(payload, false, 'json');
-  }
-
-  removeDutyMission(id) {
-    const payload = { id };
-    return DutyMissionService.delete(payload, false, 'json');
-  }
-
-  printDutyMission(duty_mission_id) {
-    const payload = { duty_mission_id };
-    return DutyMissionPrintService.getBlob(payload);
   }
 
 

@@ -139,3 +139,5 @@ export const ChangeRoleService = ETS_API_FACTORY.createApiServiceAdapter('change
 
 /* DITETS-2142 */
 export const CleaningMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter('cleaning/municipal_facility');
+
+export const MissionSourceService = ETS_API_FACTORY.createApiServiceAdapter('mission_source', {});

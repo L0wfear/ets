@@ -14,7 +14,7 @@ global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${proce
 import LoginPageWrap from 'components/new/pages/login/LoginPageWrap';
 import MainAppWrap from 'components/MainAppWrap';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   checkToken,
@@ -24,6 +24,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { Switch, Route } from 'react-router';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 class App extends React.Component <any, any> {
   static get childContextTypes() {
@@ -62,7 +63,13 @@ class App extends React.Component <any, any> {
     this.setState({ loading: true });
 
     try {
-      await this.props.checkToken();
+      const result = await this.props.checkToken();
+      if (result) {
+        await this.props.actionGetAndSetInStoreMissionSource(
+          {},
+          { page: 'mainpage '},
+        );
+      }
       this.setState({ loading: false });
     } catch (ErrorData) {
       const { error_text, errorIsShow } = ErrorData;
@@ -105,12 +112,12 @@ export default compose<any, any>(
     page: 'main',
     typePreloader: 'mainpage',
   }),
-  connect<any, any, any, ReduxState>(
+  connect<any, { actionGetAndSetInStoreMissionSource: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreMissionSource> }, any, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
       token: getSessionState(state).token,
     }),
-    (dispatch) => ({
+    (dispatch: any) => ({
       checkToken: () => (
         dispatch(
           checkToken(),
@@ -119,6 +126,11 @@ export default compose<any, any>(
       sessionResetData: () => (
         dispatch(
           sessionResetData(),
+        )
+      ),
+      actionGetAndSetInStoreMissionSource: (...arg) => (
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMissionSource(...arg),
         )
       ),
     }),

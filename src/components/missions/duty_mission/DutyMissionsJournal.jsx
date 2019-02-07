@@ -16,15 +16,16 @@ import permissions from 'components/missions/duty_mission/config-data/permission
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
-import DutyMissionFormWrap from 'components/missions/duty_mission/DutyMissionFormWrap';
+import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState, getSessionState } from 'redux-main/reducers/selectors';
+import { getCompanyStructureState, getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 const is_archive = false;
-const loadingPageName = 'duty-mission';
+const loadingPageName = 'duty_mission';
 
 const ButtonUpdateDutyMission = withRequirePermissionsNew({
   permissions: permissions.update,
@@ -35,18 +36,15 @@ const ButtonUpdateDutyMission = withRequirePermissionsNew({
 @staticProps({
   entity: 'duty_mission',
   permissions,
-  listName: 'dutyMissionsList',
+  listName: 'dutyMissionList',
   tableComponent: DutyMissionsTable,
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
   exportable: true,
 })
 class DutyMissionsJournal extends CheckableElementsList {
-
-  constructor(props, context) {
+  constructor(props) {
     super(props);
-
-    this.removeElementAction = id => context.flux.getActions('missions').removeDutyMission(id);
 
     this.state = {
       ...this.state,
@@ -58,14 +56,22 @@ class DutyMissionsJournal extends CheckableElementsList {
     };
   }
 
+  removeElementAction = id => (
+    this.props.actionRemoveDutyMission(id, { page: loadingPageName })
+  );
+
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page ||
-      prevState.sortBy !== this.state.sortBy ||
-      prevState.filter !== this.state.filter
+      prevState.page !== this.state.page
+      || prevState.sortBy !== this.state.sortBy
+      || prevState.filter !== this.state.filter
     ) {
       this.refreshList(this.state);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.actionResetDutyMission();
   }
 
   init() {
@@ -77,8 +83,8 @@ class DutyMissionsJournal extends CheckableElementsList {
 
     this.props.getAndSetInStoreCompanyStructureLinear();
 
+    this.refreshList();
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, 0, this.state.sortBy, this.state.filter, is_archive);
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
@@ -94,12 +100,18 @@ class DutyMissionsJournal extends CheckableElementsList {
       checkedElements: {},
     });
 
-    const missions = await this.context.flux.getActions('missions').getDutyMissions(MAX_ITEMS_PER_PAGE, state.page * MAX_ITEMS_PER_PAGE, state.sortBy, filter, is_archive);
+    const { data, total_count } = await this.props.actionGetAndSetInStoreDutyMission(
+      {
+        limit: MAX_ITEMS_PER_PAGE,
+        offset: state.page * MAX_ITEMS_PER_PAGE,
+        sort_by: state.sortBy,
+        filter,
+        is_archive,
+      },
+      { page: loadingPageName },
+    );
 
-    const { total_count } = missions.result.meta;
-    const resultCount = missions.result.rows.length;
-
-    if (resultCount === 0 && total_count > 0) {
+    if (data === 0 && total_count > 0) {
       this.setState({ page: (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) });
     }
   }
@@ -117,6 +129,7 @@ class DutyMissionsJournal extends CheckableElementsList {
 
     return !(selectedDutyMissions.length || (selectedElement && selectedElement.status === 'assigned'));
   }
+
   checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
     const { selectedElement } = this.state;
@@ -130,7 +143,10 @@ class DutyMissionsJournal extends CheckableElementsList {
   completeMission = () => {
     const mission = _.cloneDeep(this.state.selectedElement);
     mission.status = 'complete';
-    this.context.flux.getActions('missions').updateDutyMission(mission).then(() => {
+    this.props.actionUpdateDutyMission(
+      mission,
+      { page: loadingPageName },
+    ).then(() => {
       this.refreshList(this.state);
     });
   }
@@ -149,7 +165,7 @@ class DutyMissionsJournal extends CheckableElementsList {
 
     query.then(() => {
       this.refreshList(this.state);
-    }).catch((error) => (
+    }).catch(error => (
       console.warn(error) // eslint-disable-line
     ));
   }
@@ -165,7 +181,10 @@ class DutyMissionsJournal extends CheckableElementsList {
         const updatedMission = _.cloneDeep(mission);
         updatedMission.status = 'complete';
 
-        return this.context.flux.getActions('missions').updateDutyMission(updatedMission);
+        return this.props.actionUpdateDutyMission(
+          updatedMission,
+          { page: loadingPageName },
+        );
       });
       try {
         await Promise.all(allQuerys);
@@ -215,8 +234,7 @@ class DutyMissionsJournal extends CheckableElementsList {
       this.setState({
         dutyMissionToRejectList: [],
       });
-    })
-    .catch(() => {
+    }).catch(() => {
       this.setState({
         dutyMissionToRejectList: [],
       });
@@ -240,7 +258,7 @@ class DutyMissionsJournal extends CheckableElementsList {
       } catch (err) {
         return;
       }
-      const allQuerys = missions.map((mission) => (
+      const allQuerys = missions.map(mission => (
         this.removeElementAction(mission.id)
       ));
 
@@ -270,60 +288,82 @@ class DutyMissionsJournal extends CheckableElementsList {
     confirmDialog({
       title: 'Внимание',
       body: `Вы уверены, что хотите перенести в архив ${moreOne ? 'выбранные-наряд задания' : 'выбранное наряд-задание'}?`,
-    })
-    .then(() =>
-        Promise.all(
-          Object.entries(checkedElements).map(([id]) =>
-            this.context.flux.getActions('missions').changeArchiveDutuMissionStatus(id, true),
+    }).then(() => (
+      Promise.all(
+        Object.entries(checkedElements).map(([id]) => (
+          this.props.actionChangeArchiveDutuMissionStatus(
+            id,
+            true,
+            { page: loadingPageName },
           )
-        ).then(() => {
-          this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены в' : 'Выбранное наряд-задание перенесено в'} архив`);
-        })
-        .catch(() => {
-          this.refreshList();
-        })
-    )
-    .catch(() => {});
+        )),
+      ).then(() => {
+        this.refreshList();
+        global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены в' : 'Выбранное наряд-задание перенесено в'} архив`);
+      }).catch(() => {
+        this.refreshList();
+      })
+    )).catch(() => {});
   }
 
   getButtons = () => {
     const buttons = super.getButtons();
     // TODO отображение 2 кнопорей в зависимости от прав
     buttons.push(
-      <ButtonUpdateDutyMission key="button-complete-mission" id="mission-complete" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ok" /> Отметка о выполнении</ButtonUpdateDutyMission>,
-      <ButtonUpdateDutyMission key="button-reject-mission" id="mission-reject" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}><Glyphicon glyph="ban-circle" /> Отметка о невыполнении</ButtonUpdateDutyMission>,
-      <ButtonUpdateDutyMission key="button-archive-mission" id="mission-archive" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-complete-mission" id="mission-complete" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled()}>
+        <Glyphicon glyph="ok" />
+        {' '}
+        Отметка о выполнении
+      </ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-reject-mission" id="mission-reject" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}>
+        <Glyphicon glyph="ban-circle" />
+        {' '}
+        Отметка о невыполнении
+      </ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission key="button-archive-mission" id="mission-archive" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>
+        В архив
+      </ButtonUpdateDutyMission>,
     );
 
     return buttons;
   }
 
-  getForms = () => {
-    return [
-      <div key={'forms'}>
-        <DutyMissionFormWrap
-          onFormHide={this.onFormHide}
-          showForm={this.state.showForm}
-          element={this.state.selectedElement}
-          refreshTableList={this.refreshList}
-          {...this.props}
-        />
-        <PrintForm
-          onExport={this.processExport}
-          show={this.state.showPrintForm}
-          onHide={() => this.setState({ showPrintForm: false })}
-          title={'Печать журнала наряд-заданий'}
-        />
-        <Div key={'other-render'} hidden={this.state.dutyMissionToRejectList.length === 0} >
-          <DutyMissionFormReject
-            rejectedDutyMission={this.state.dutyMissionToRejectList}
-            onRejectAll={this.handleRejectAll}
-          />
-        </Div>
-      </div>,
-    ];
+  onDutyMissionFormLazyHide = (isSubmitted) => {
+    if (isSubmitted) {
+      this.refreshList();
+    }
+
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: {},
+    });
   }
+
+  getForms = () => ([
+    <div key="DutyMissionFormLazy">
+      <DutyMissionFormLazy
+        onFormHide={this.onDutyMissionFormLazyHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        page={loadingPageName}
+      />
+      <PrintForm
+        onExport={this.processExport}
+        show={this.state.showPrintForm}
+        onHide={() => this.setState({ showPrintForm: false })}
+        title="Печать журнала наряд-заданий"
+      />
+      <Div key="other-render" hidden={this.state.dutyMissionToRejectList.length === 0}>
+        <DutyMissionFormReject
+          rejectedDutyMission={this.state.dutyMissionToRejectList}
+          onRejectAll={this.handleRejectAll}
+          page={loadingPageName}
+        />
+      </Div>
+    </div>,
+  ]);
 
   changeSort = (field, direction) => {
     this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
@@ -333,17 +373,15 @@ class DutyMissionsJournal extends CheckableElementsList {
     this.setState({ filter });
   }
 
-  getAdditionalProps = () => {
-    return {
-      structures: this.props.companyStructureLinearList,
-      changeSort: this.changeSort,
-      changeFilter: this.changeFilter,
-      filterValues: this.state.filter,
-      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
-      useServerFilter: true,
-      useServerSort: true,
-    };
-  }
+  getAdditionalProps = () => ({
+    structures: this.props.companyStructureLinearList,
+    changeSort: this.changeSort,
+    changeFilter: this.changeFilter,
+    filterValues: this.state.filter,
+    rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    useServerFilter: true,
+    useServerSort: true,
+  });
 
   getAdditionalFormProps() {
     return {
@@ -355,17 +393,15 @@ class DutyMissionsJournal extends CheckableElementsList {
     this.setState({ showPrintForm: true });
   }
 
-  additionalRender = () => {
-    return [
-      <Paginator
-        key="paginator"
-        currentPage={this.state.page}
-        maxPage={Math.ceil(this.props.dutyMissionsTotalCount / MAX_ITEMS_PER_PAGE)}
-        setPage={page => this.setState({ page })}
-        firstLastButtons
-      />,
-    ];
-  }
+  additionalRender = () => ([
+    <Paginator
+      key="paginator"
+      currentPage={this.state.page}
+      maxPage={Math.ceil(this.props.total_count / MAX_ITEMS_PER_PAGE)}
+      setPage={page => this.setState({ page })}
+      firstLastButtons
+    />,
+  ]);
 }
 
 export default compose(
@@ -377,6 +413,8 @@ export default compose(
     state => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
       userData: getSessionState(state).userData,
+      dutyMissionList: getMissionsState(state).dutyMissionData.dutyMissionList,
+      total_count: getMissionsState(state).dutyMissionData.total_count,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructureLinear: () => (
@@ -385,6 +423,33 @@ export default compose(
             {},
             { page: loadingPageName },
           ),
+        )
+      ),
+      actionRemoveDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.actionRemoveDutyMission(
+            ...arg,
+          ),
+        )
+      ),
+      actionGetAndSetInStoreDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.actionGetAndSetInStoreDutyMission(...arg),
+        )
+      ),
+      actionResetDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.actionResetDutyMission(...arg),
+        )
+      ),
+      actionUpdateDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.actionUpdateDutyMission(...arg),
+        )
+      ),
+      actionChangeArchiveDutuMissionStatus: (...arg) => (
+        dispatch(
+          missionsActions.actionChangeArchiveDutuMissionStatus(...arg),
         )
       ),
     }),

@@ -9,7 +9,7 @@ import {
 } from './@types/index.h';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import missionActions from 'redux-main/reducers/modules/missions/actions';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import dutyDutyMissionTemplatePermissions from 'components/missions/duty_mission_template/config-data/permissions';
 import { ReduxState } from 'redux-main/@types/state';
@@ -38,18 +38,12 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
     const {
       page,
       path,
-      formState: state,
     } = this.props;
 
-    const IS_CREATING = !state.id;
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-
-    if (isPermitted) {
-      this.props.employeeGetAndSetInStore(
-        {},
-        { page, path },
-      );
-    }
+    this.props.employeeGetAndSetInStore(
+      {},
+      { page, path },
+    );
   }
 
   componentWillUnmount() {
@@ -224,8 +218,8 @@ export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps
   ),
   withForm<PropsDutyMissionTemplateWithForm, DutyMissionTemplate>({
     uniqField: 'id',
-    createAction: missionActions.actionCreateDutyMissionTemplate,
-    updateAction: missionActions.actionUpdateDutyMissionTemplate,
+    createAction: missionsActions.actionCreateDutyMissionTemplate,
+    updateAction: missionsActions.actionUpdateDutyMissionTemplate,
     mergeElement: ({ element, userStructureId, userStructureName }) => {
       return getDefaultDutyMissionTemplateElement({
         ...element,

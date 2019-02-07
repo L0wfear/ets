@@ -8,7 +8,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 
 import ModalBody from 'components/ui/Modal';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { makeCarOptionLabel } from '../mission/MissionForm/utils';
+import { makeCarOptionLabel } from 'components/missions/mission/MissionForm/utils';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { cloneDeep } from 'lodash';
 

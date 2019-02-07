@@ -185,7 +185,11 @@ export const checkToken: any = () => async (dispatch, getState) => {
         JSON.parse(localStorage.getItem(global.SESSION_KEY2)),
       ),
     );
+
+    return data;
   }
+
+  return null;
 };
 
 export const sessionResetData: any = () => (dispatch) => {

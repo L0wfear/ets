@@ -9,11 +9,11 @@ import dutyMissionTemplateSchema from 'models/DutyMissionTemplateModel';
 import dutyMissionsCreationTemplateSchema from 'models/DutyMissionsCreationTemplateModel';
 import FormWrap from 'components/compositions/FormWrap';
 import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/customValidate';
-import DutyMissionTemplateForm from 'components/missions/duty_mission_template/DutyMissionTemplateForm';
 import DutyMissionsCreationForm from 'components/missions/duty_mission_template/DutyMissionsCreationForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { DivNone } from 'global-styled/global-styled';
 
 export const createDutyMissions = async (flux, element, payload) => flux.getActions('missions').createDutyMissions(element, payload);
 
@@ -78,19 +78,7 @@ class DutyMissionTemplateFormWrap extends FormWrap {
 
   render() {
     if (this.props.formType === 'ViewForm') {
-      return (
-        <Div hidden={!this.props.showForm}>
-          <DutyMissionTemplateForm
-            formState={this.state.formState}
-            onSubmit={this.handleFormSubmit}
-            handleFormChange={this.handleFormStateChange.bind(this)}
-            show={this.props.showForm}
-            onHide={this.props.onFormHide}
-            template
-            {...this.state}
-          />
-        </Div>
-      );
+      return <DivNone />;
     }
     return (
       <Div hidden={!this.props.showForm}>

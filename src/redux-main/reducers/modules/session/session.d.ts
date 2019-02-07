@@ -51,5 +51,5 @@ export type InitialStateSession = {
   appConfigTracksCaching: {
     api_version_stable: number | null,
     api_versions: number[],
-  }
+  };
 };

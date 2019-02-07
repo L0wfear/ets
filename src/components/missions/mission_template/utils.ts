@@ -1,4 +1,4 @@
-import { makePayloadFromState } from '../mission/MissionForm/utils';
+import { makePayloadFromState } from 'components/missions/mission/MissionForm/utils';
 import {
   get,
 } from 'lodash';

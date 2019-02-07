@@ -5,14 +5,15 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 
-import { FluxContext } from 'utils/decorators';
-
-import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { compose } from 'recompose';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { connect } from 'react-redux';
 
-@FluxContext
-export class DutyMissionForm extends React.Component {
+const pagePath = 'reject';
+
+class DutyMissionForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -25,6 +26,7 @@ export class DutyMissionForm extends React.Component {
   }
 
   handleChangeRComment = ({ target: { value: comment } }) => this.setState({ comment });
+
   handleClick = () => {
     const { rejectedDutyMission } = this.props;
     const { indexCurrMission, comment, needUpdate } = this.state;
@@ -36,7 +38,10 @@ export class DutyMissionForm extends React.Component {
       comment,
     };
 
-    const query = this.context.flux.getActions('missions').updateDutyMission(updatedMission, false);
+    const query = this.props.actionUpdateDutyMission(
+      updatedMission,
+      { page: this.props.page, path: pagePath },
+    );
     allQuery.push(query);
 
     if (indexCurrMission === 0) {
@@ -50,6 +55,7 @@ export class DutyMissionForm extends React.Component {
       });
     }
   }
+
   handlClickNext = () => {
     const { indexCurrMission, needUpdate } = this.state;
 
@@ -76,10 +82,10 @@ export class DutyMissionForm extends React.Component {
         <Modal.Header closeButton>
           <Modal.Title>{`Введите причину для наряд-задания №${this.props.rejectedDutyMission[indexCurrMission].number}`}</Modal.Title>
         </Modal.Header>
-        <ModalBody>
+        <ModalBodyPreloader page={this.props.page} path={pagePath} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              <Field
+              <ExtField
                 type="string"
                 label="Причина"
                 value={comment}
@@ -87,7 +93,7 @@ export class DutyMissionForm extends React.Component {
               />
             </Col>
           </Row>
-        </ModalBody>
+        </ModalBodyPreloader>
         <Modal.Footer>
           <Button disabled={!comment} onClick={this.handleClick} >Отметка о невыполнении</Button>
           <Button onClick={this.handlClickNext} >Отмена</Button>
@@ -97,4 +103,15 @@ export class DutyMissionForm extends React.Component {
   }
 }
 
-export default DutyMissionForm;
+export default compose(
+  connect(
+    null,
+    dispatch => ({
+      actionUpdateDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.actionUpdateDutyMission(...arg)
+        )
+      ),
+    }),
+  ),
+)(DutyMissionForm);

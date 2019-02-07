@@ -33,7 +33,7 @@ export type DutyMission = {
   object_type_id: number | null;
   object_type_name: string | null;
   operation_num_execution: null
-  order_number: number | null;
+  order_number: string | null;
   order_operation_id: number | null;
   order_status: string | null;
   plan_date_end: string | null;
@@ -46,4 +46,4 @@ export type DutyMission = {
   technical_operation_id: number | null;
   technical_operation_name: string;
   work_class_id: number | null;
-  };
+};

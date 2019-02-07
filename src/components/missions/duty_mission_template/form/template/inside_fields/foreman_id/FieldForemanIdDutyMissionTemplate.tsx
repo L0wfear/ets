@@ -12,7 +12,7 @@ import {
   StateFieldForemanIdDutyMissionTemplate,
 } from 'components/missions/duty_mission_template/form/template/inside_fields/foreman_id/FieldForemanIdDutyMissionTemplate.d';
 import { getEmployeeState } from 'redux-main/reducers/selectors/index';
-import { isPermittedEmployeeForDutyMission, makeOptionsByEmployee } from '../../utils';
+import { isPermittedEmployeeForDutyMission, makeOptionsByEmployee } from 'components/missions/duty_mission_template/form/template/utils';
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { componentsForSelect } from './styled';

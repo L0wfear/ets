@@ -29,7 +29,7 @@ import {
 import {
   IStateOrderMissionTemplate,
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
-import { createMissionByOrder, createDutyMissionByOrder } from '../utils/createMissionsByOrder';
+import { createMissionByOrder, createDutyMissionByOrder } from 'components/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
 import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
 import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
@@ -37,7 +37,7 @@ import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import missionActions from 'redux-main/reducers/modules/missions/actions';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
@@ -394,8 +394,8 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 }
 
 type DispatchPropsOrderMissionTemplate = {
-  actionGetMissionTemplate: HandleThunkActionCreator<typeof missionActions.actionGetMissionTemplate>;
-  actionGetDutyMissionTemplate: HandleThunkActionCreator<typeof missionActions.actionGetDutyMissionTemplate>;
+  actionGetMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionGetMissionTemplate>;
+  actionGetDutyMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionGetDutyMissionTemplate>;
 };
 
 export default compose<any, any>(
@@ -406,12 +406,12 @@ export default compose<any, any>(
     (dispatch: any) => ({
       actionGetMissionTemplate: (...arg) => (
         dispatch(
-          missionActions.actionGetMissionTemplate(...arg),
+          missionsActions.actionGetMissionTemplate(...arg),
         )
       ),
       actionGetDutyMissionTemplate: (...arg) => (
         dispatch(
-          missionActions.actionGetDutyMissionTemplate(...arg),
+          missionsActions.actionGetDutyMissionTemplate(...arg),
         )
       ),
     }),

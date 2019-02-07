@@ -9,7 +9,7 @@ import {
 } from 'redux-main/reducers/modules/missions/mission_template/promise';
 import { MissionTemplate } from './@types/index.h';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { autobaseGetSetCar } from '../../autobase/car/actions';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';

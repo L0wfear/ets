@@ -29,6 +29,8 @@ type ConfigWithForm<P, F, S> = {
 type WithFormConfigProps = {
   element: any,
   handleHide?: <A>(isSubmitted: boolean, result?: A) => any;
+  readOnly?: boolean;
+
   page: string;
   path?: string;
 };
@@ -290,6 +292,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         return (
           <Component
             {...this.props}
+            isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
+            isPermittedToUpdate={this.props.isPermittedToCreate && !this.props.readOnly}
             formState={this.state.formState}
             originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}

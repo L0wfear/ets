@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
 import DutyMissionTemplateFormLazy from 'components/missions/duty_mission_template/form/template';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import missionActions from 'redux-main/reducers/modules/missions/actions';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 const loadingPageName = 'duty_mission_template';
 
@@ -32,7 +32,6 @@ const ButtonCreateDutyMissionByTemplate = withRequirePermissionsNew({
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class DutyMissionTemplatesJournal extends CheckableElementsList {
-
   constructor(props) {
     super(props);
 
@@ -160,7 +159,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
         disabled={!this.canCreateMission()}
       >
         Сформировать наряд-задание
-      </ButtonCreateDutyMissionByTemplate>
+      </ButtonCreateDutyMissionByTemplate>,
     );
 
     return buttons;
@@ -201,12 +200,12 @@ export default compose(
     dispatch => ({
       actionGetAndSetInStoreDutyMissionTemplate: (...arg) => (
         dispatch(
-          missionActions.actionGetAndSetInStoreDutyMissionTemplate(...arg),
+          missionsActions.actionGetAndSetInStoreDutyMissionTemplate(...arg),
         )
       ),
       actionRemoveDutyMissionTemplate: missionTemplate => (
         dispatch(
-          missionActions.actionRemoveDutyMissionTemplate(
+          missionsActions.actionRemoveDutyMissionTemplate(
             missionTemplate,
             { page: loadingPageName },
           ),

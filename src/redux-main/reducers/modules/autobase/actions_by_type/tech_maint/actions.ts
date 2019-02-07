@@ -1,6 +1,6 @@
 import { TechMaint } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
-import { TechMaintExtra } from '../../@types/autobase.h';
+import { TechMaintExtra } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import {
   getSetTechMaint,
   createSetTechMaint,

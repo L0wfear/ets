@@ -7,14 +7,13 @@ import {
   FuelOperationsService,
 } from 'api/Services';
 import {
-  IFuelOperations,
+  FuelOperation,
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
-  ICreateFuel,
-  FuelRateUpd,
-  fuelOperation,
+  FuelRate,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
+import { makeDefaultFuelOperation } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
 
 export const getFuelRates = (payload = {}) => {
   return FuelConsumptionRateService
@@ -39,7 +38,7 @@ export const getEquipmentFuelRatesByCarModel = (payload: IEquipmentFuelRatesByCa
   return getFuelRates(payload);
 };
 
-export const createFuelRate = (rate: ICreateFuel) => {
+export const createFuelRate = (rate: FuelRate) => {
   const {
     car_model_name,
     car_special_model_name,
@@ -61,10 +60,8 @@ export const createFuelRate = (rate: ICreateFuel) => {
   );
 };
 
-export const updateFuelRate = (newFuelRate: FuelRateUpd) => {
+export const updateFuelRate = (newFuelRate: FuelRate) => {
   const {
-    rate_on_date,
-    season,
     car_model_name,
     car_special_model_name,
     ...payload
@@ -89,7 +86,7 @@ export const deleteFuelRate = ( id: number ) => {
   );
 };
 
-export const getFuelOperationsIsActive = (payload: IFuelOperations = {}) => {
+export const getFuelOperationsIsActive = (payload = {}) => {
   return FuelOperationsService
     .get({
       ...payload,
@@ -108,7 +105,7 @@ export const getFuelOperationsIsActive = (payload: IFuelOperations = {}) => {
     });
 };
 
-export const getFuelOperations = (payload: IFuelOperations = {}) => {
+export const getFuelOperations = (payload = {}) => {
   return FuelOperationsService
     .get(payload)
     .catch((error) => {
@@ -124,7 +121,7 @@ export const getFuelOperations = (payload: IFuelOperations = {}) => {
 };
 
 export const createFuelOperation = ( formState ) => {
-  const payload: fuelOperation = {};
+  const payload: FuelOperation = makeDefaultFuelOperation();
 
   if (typeof formState.name === 'string' && formState.name !== '') {
     payload.name = formState.name;
@@ -137,7 +134,8 @@ export const createFuelOperation = ( formState ) => {
 };
 
 export const updateFuelOperation = (formState) => {
-  const payload: fuelOperation = {
+  const payload: FuelOperation = {
+    ...makeDefaultFuelOperation(),
     id: formState.id,
   };
   if (typeof formState.name === 'string' && formState.name !== '') {

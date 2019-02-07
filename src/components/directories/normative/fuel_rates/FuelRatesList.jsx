@@ -32,7 +32,6 @@ const loadingPageName = 'fuel-rates';
   operations: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class FuelRatesDirectory extends ElementsList {
-
   removeElementAction = async (id) => {
     try {
       await this.props.fuelRateDelete(id);

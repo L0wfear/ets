@@ -13,15 +13,15 @@ import {
 } from 'redux-main/reducers/modules/fuel_rates/promises/index';
 
 import {
-  IFuelOperations,
+  FuelOperation,
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
-  ICreateFuel,
-  FuelRateUpd,
+  FuelRate,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 
 import {
   FUEL_RATES_SET_DATA,
+  initialState as fuelRatesInitialState,
 } from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 
 export const fuelRatesGet = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
@@ -71,7 +71,7 @@ export const equipmentFuelRatesByCarModelGet = (payload: IEquipmentFuelRatesByCa
   },
 });
 
-export const fuelRateCreate: any = (payload: ICreateFuel, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const fuelRateCreate: any = (payload: FuelRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const newFuelRate = await dispatch({
     type: 'none',
     payload: createFuelRate(payload),
@@ -85,7 +85,7 @@ export const fuelRateCreate: any = (payload: ICreateFuel, { page, path }: { page
   return newFuelRate;
 };
 
-export const fuelRateUpdate: any = (payload: FuelRateUpd, { page, path }: {page: string, path?: string }) => async (dispatch) => {
+export const fuelRateUpdate: any = (payload: FuelRate, { page, path }: {page: string, path?: string }) => async (dispatch) => {
   const fuelRateUpd = await dispatch({
     type: 'none',
     payload: updateFuelRate(payload),
@@ -107,7 +107,7 @@ export const fuelRateDelete = (payload: number) => ({
   },
 });
 
-export const fuelOperationsGet = (payload: IFuelOperations, { page, path }: { page: string; path?: string }) => async (dispatch) => (
+export const fuelOperationsGet = (payload, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({
     type: 'none',
     payload: getFuelOperations(payload),
@@ -119,7 +119,18 @@ export const fuelOperationsGet = (payload: IFuelOperations, { page, path }: { pa
   })
 );
 
-export const fuelOperationsGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const resetFuelRates = () => (dispatch) => (
+  dispatch(
+    fuelRatesSetNewData(fuelRatesInitialState),
+  )
+);
+export const resetFuelOperations = () => (dispatch) => (
+  dispatch(
+    fuelRatesSetNewData({fuelRateOperationsIsActiveList: []}),
+  )
+);
+
+export const fuelOperationsGetAndSetInStore: any = (payload: FuelOperation, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: { fuelRateOperations } } = await dispatch(
     fuelOperationsGet(payload, { page, path, }),
   );
@@ -133,7 +144,7 @@ export const fuelOperationsGetAndSetInStore: any = (payload = {}, { page, path }
   };
 };
 
-export const fuelOperationsIsActiveGet = (payload?: IFuelOperations) => ({
+export const fuelOperationsIsActiveGet = (payload) => ({
   type: 'none',
   payload: getFuelOperationsIsActive(payload),
   meta: {

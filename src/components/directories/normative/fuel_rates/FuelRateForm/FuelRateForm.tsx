@@ -19,6 +19,7 @@ import {
   fuelRateCreate,
   fuelRateUpdate,
   fuelOperationsGetAndSetInStore,
+  resetFuelOperations,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 
 import {
@@ -73,7 +74,14 @@ class FuelRateForm extends React.PureComponent<PropsFuelRate, StateFuelRate> {
       { page, path },
     );
   }
-//unmount
+
+  componentWillUnmount() {
+    this.props.actionResetModelList();
+    this.props.actionResetSpecialModel();
+    this.props.resetSetCompanyStructureLinear();
+    this.props.resetFuelOperations();
+  }
+
   handleSpecialModelChange = (value) => {
     const {
       page,
@@ -266,6 +274,26 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
       fuelOperationsGetAndSetInStore: (...arg) => (
         dispatch(
           fuelOperationsGetAndSetInStore(...arg),
+        )
+      ),
+      actionResetModelList: () => (
+        dispatch(
+          someUniqActions.actionResetModelList(),
+        )
+      ),
+      actionResetSpecialModel: () => (
+        dispatch(
+          someUniqActions.actionResetSpecialModel(),
+        )
+      ),
+      resetSetCompanyStructureLinear: () => (
+        dispatch(
+          companyStructureActions.resetSetCompanyStructureLinear(),
+        )
+      ),
+      resetFuelOperations: () => (
+        dispatch(
+          resetFuelOperations(),
         )
       ),
     }),

@@ -21,6 +21,7 @@ import {
 
 import {
   FUEL_RATES_SET_DATA,
+  initialState as fuelRatesInitialState,
 } from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 
 export const fuelRatesGet = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
@@ -116,6 +117,17 @@ export const fuelOperationsGet = (payload, { page, path }: { page: string; path?
       path,
     },
   })
+);
+
+export const resetFuelRates = () => (dispatch) => (
+  dispatch(
+    fuelRatesSetNewData(fuelRatesInitialState),
+  )
+);
+export const resetFuelOperations = () => (dispatch) => (
+  dispatch(
+    fuelRatesSetNewData({fuelRateOperationsIsActiveList: []}),
+  )
 );
 
 export const fuelOperationsGetAndSetInStore: any = (payload: FuelOperation, { page, path }: { page: string; path?: string }) => async (dispatch) => {

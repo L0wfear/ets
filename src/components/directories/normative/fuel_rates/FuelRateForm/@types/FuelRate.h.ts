@@ -14,6 +14,7 @@ import { getFuelRateOperationsIsActiveOptions } from 'redux-main/reducers/module
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import {
   fuelOperationsGetAndSetInStore,
+  resetFuelOperations,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
@@ -41,6 +42,10 @@ export type DispatchPropsFuelRate = {
   getAndSetInStoreCompanyStructureLinear: HandleThunkActionCreator<typeof companyStructureActions.getAndSetInStoreCompanyStructureLinear>;
   actionGetAndSetInStoreModelList: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreModelList>;
   fuelOperationsGetAndSetInStore: HandleThunkActionCreator<typeof fuelOperationsGetAndSetInStore>;
+  actionResetModelList: HandleThunkActionCreator<typeof someUniqActions.actionResetModelList>;
+  actionResetSpecialModel: HandleThunkActionCreator<typeof someUniqActions.actionResetSpecialModel>;
+  resetSetCompanyStructureLinear: HandleThunkActionCreator<typeof companyStructureActions.resetSetCompanyStructureLinear>;
+  resetFuelOperations: HandleThunkActionCreator<typeof resetFuelOperations>;
 };
 export type OwnFuelRateProps = { // fuelRateForm props
   element: FuelRate | null;

@@ -5,7 +5,7 @@ const FUEL_RATES = createPath('FUEL_RATES');
 
 export const FUEL_RATES_SET_DATA = FUEL_RATES`SET_DATA`;
 
-const initialState: IStateFuelRates = {
+export const initialState: IStateFuelRates = {
   fuelRatesList: [],
   fuelRateOperationsList: [],
   fuelRateOperationsIsActiveList: [],

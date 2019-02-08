@@ -62,6 +62,8 @@ export const loadMoscowTime = () => (
     }));
   })
   .catch(() => {
+    // tslint:disable-next-line:no-console
+    console.warn('get js time');
     return {
       time: {
         timestamp: +(getDateWithMoscowTz()) / 1000,

@@ -18,7 +18,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
 import { initialMissionsState } from 'redux-main/reducers/modules/missions';
-import { actionGetMission } from 'redux-main/reducers/modules/missions/mission/actions';
+import missionActions from 'redux-main/reducers/modules/missions/mission/actions';
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
@@ -95,9 +95,9 @@ const actionGetAndSetInStoreDutyMission = (payloadOwn: object, meta: LoadingMeta
 
   return response;
 };
-const actionGetAvaliableMissionsToBind = (payloadOwn: GetMissionPayload, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetMission>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionGetAvaliableMissionsToBind = (payloadOwn: GetMissionPayload, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof missionActions.actionGetMission>>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const response = await dispatch(
-    actionGetMission(
+    missionActions.actionGetMission(
       payloadOwn,
       meta,
     ),

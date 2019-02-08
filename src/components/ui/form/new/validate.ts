@@ -8,6 +8,7 @@ import { validateNumber } from 'components/ui/form/new/number/numberValidate';
 import { validateValueOfArray } from 'components/ui/form/new/valueOfArray/valueOfArrayValidate';
 import { validateMultiValueOfArray } from 'components/ui/form/new/multiValueOfArray/multiValueOfArrayValidate';
 import { validateDate } from 'components/ui/form/new/date/dateValidate';
+import { validateDatetime } from 'components/ui/form/new/datetime/datetimeValidate';
 import { validateBoolean } from 'components/ui/form/new/boolean/booleanValidate';
 
 import { isObject } from 'util';
@@ -34,6 +35,9 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
         break;
       case 'date':
         newObj[fieldData.key] = validateDate<F, P>(fieldData, formState, props);
+        break;
+      case 'datetime':
+        newObj[fieldData.key] = validateDatetime<F, P>(fieldData, formState, props);
         break;
       case 'boolean':
         newObj[fieldData.key] = validateBoolean<F, P>(fieldData, formState, props);

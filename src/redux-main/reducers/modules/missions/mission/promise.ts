@@ -1,12 +1,22 @@
 import {
   get,
 } from 'lodash';
-import { MissionService } from 'api/missions/index';
-import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { createValidDateTime } from 'utils/dates';
-import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
+import {
+  MissionPrintService,
+  MissionService,
+} from 'api/missions/index';
+import { Mission, GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
 
-export const promiseGetMission = async (payloadOwn: any) => {
+import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
+import { MissionArchiveService } from 'api/missions';
+
+const getFrontMission = (missionRaw: any) => {
+  const mission: Mission = { ...missionRaw };
+
+  return mission;
+};
+
+export const promiseGetMission = async (payloadOwn: GetMissionPayload) => {
   let response = null;
   const payload = {
     ...payloadOwn,
@@ -15,6 +25,7 @@ export const promiseGetMission = async (payloadOwn: any) => {
   if (payloadOwn.filter) {
     payload.filter = JSON.stringify(parseFilterObject(payloadOwn.filter));
   }
+
   try {
     response = await MissionService.get(
       { ...payload },
@@ -24,14 +35,9 @@ export const promiseGetMission = async (payloadOwn: any) => {
     response = null;
   }
 
-  const data: Mission[] = get(response, ['result', 'rows'], []).map((employee) => {
-    const brigade_employee_id_list = get(employee, 'brigade_employee_id_list', []) || [];
-
-    employee.brigade_employee_id_list_id = brigade_employee_id_list.map(({ employee_id }) => employee_id);
-    employee.brigade_employee_id_list_fio = brigade_employee_id_list.map(({ employee_fio }) => employee_fio);
-
-    return employee;
-  });
+  const data: Mission[] = get(response, ['result', 'rows'], []).map((mission) => (
+    getFrontMission(mission)
+  ));
 
   const total_count: number = get(response, ['result', 'meta', 'total_count'], 0);
 
@@ -41,50 +47,29 @@ export const promiseGetMission = async (payloadOwn: any) => {
   };
 };
 
+export const promiseGetPrintFormMission = async (id: Mission['id']) => {
+  return MissionPrintService.getBlob({ mission_id: id });
+};
+
+export const promiseGetMissionById = async (id: Mission['id']) => {
+  const response = await MissionService.get({ id });
+  const mission: Mission = get(response, 'result.rows.0', null);
+
+  return getFrontMission(mission);
+};
+
 export const promiseCreateMission = async (payloadOwn: Partial<Mission>) => {
-  const payload: any = { ...payloadOwn };
-
-  delete payload.brigade_employee_id_list_fio;
-  delete payload.brigade_employee_id_list_id;
-
-  payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(({ employee_id }) => employee_id);
-  payload.plan_date_start = createValidDateTime(payload.plan_date_start);
-  payload.plan_date_end = createValidDateTime(payload.plan_date_end);
-  payload.fact_date_start = createValidDateTime(payload.fact_date_start);
-  payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-
-  const response = await MissionService.post(
-    { ...payload },
-    false,
-    'json',
-  );
-
-  const dutyMission: Partial<Mission> = get(response, ['result', 0],  null);
-
-  return dutyMission;
+  throw new Error('non define promiseCreateMission');
 };
 
 export const promiseUpdateMission = async (payloadOwn: Partial<Mission>) => {
-  const payload: any = { ...payloadOwn };
+  throw new Error('non define promiseUpdateMission');
+};
 
-  delete payload.brigade_employee_id_list_fio;
-  delete payload.brigade_employee_id_list_id;
+export const promiseChangeArchiveDutuMissionStatus = async (id: Mission['id'], is_archive: boolean) => {
+  const responce = await MissionArchiveService.path(id).put({ is_archive }, false, 'json');
 
-  payload.brigade_employee_id_list = payload.brigade_employee_id_list.map(({ employee_id }) => employee_id);
-  payload.plan_date_start = createValidDateTime(payload.plan_date_start);
-  payload.plan_date_end = createValidDateTime(payload.plan_date_end);
-  payload.fact_date_start = createValidDateTime(payload.fact_date_start);
-  payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-
-  const response = await MissionService.put(
-    { ...payload },
-    false,
-    'json',
-  );
-
-  const dutyMission = get(response, ['result', 0],  null);
-
-  return dutyMission;
+  return get(responce, 'result.rows.0', null);
 };
 
 export const promiseRemoveMissions = async (ids: number[]) => {

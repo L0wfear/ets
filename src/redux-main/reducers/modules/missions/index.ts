@@ -21,6 +21,8 @@ export const initialMissionsState: IStateMissions = {
   },
   missionData: {
     list: [],
+    dependeceOrder: null,
+    dependeceTechnicalOperation: null,
     total_count: 0,
   },
 };

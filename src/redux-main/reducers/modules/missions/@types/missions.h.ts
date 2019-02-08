@@ -23,6 +23,8 @@ export type IStateMissions = {
   };
   missionData: {
     list: Mission[];
+    dependeceOrder: Order;
+    dependeceTechnicalOperation: OrderTechnicalOperation;
     total_count: number;
   };
 };

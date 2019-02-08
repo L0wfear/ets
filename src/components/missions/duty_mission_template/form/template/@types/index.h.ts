@@ -4,6 +4,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 
 export type PropsDutyMissionTemplateFormLazy = {
   showForm: boolean;
@@ -21,6 +22,7 @@ export type StatePropsDutyMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
   employeeIndex: IStateEmployee['employeeIndex'];
+  STRUCTURE_FIELD_VIEW: ReturnType<typeof getSessionStructuresParams>['STRUCTURE_FIELD_VIEW'];
 };
 
 export type DispatchPropsDutyMissionTemplate = {

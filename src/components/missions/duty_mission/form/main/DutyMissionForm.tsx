@@ -249,6 +249,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 error={errors.technical_operation_id}
                 onChange={this.props.handleChange}
 
+                IS_TEMPLATE={false}
+                DUTY_MISSION_IS_ORDER_SOURCE={DUTY_MISSION_IS_ORDER_SOURCE}
+
                 page={page}
                 path={path}
               />
@@ -287,6 +290,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onChange={this.props.handleChange}
 
                 technical_operation_id={state.technical_operation_id}
+
+                IS_TEMPLATE={false}
+                DUTY_MISSION_IS_ORDER_SOURCE={DUTY_MISSION_IS_ORDER_SOURCE}
 
                 page={page}
                 path={path}

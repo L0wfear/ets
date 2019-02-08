@@ -25,13 +25,15 @@ import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState, getEmployeeState } from 'redux-main/reducers/selectors';
-
-import FieldTechnicalOperationDutyMissionTemplate from 'components/missions/duty_mission_template/form/template/inside_fields/technical_operation/FieldTechnicalOperationDutyMissionTemplate';
-import FieldMunicipalFacilityIdDutyMissionTemplate from './inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMissionTemplate';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
-import FieldForemanIdDutyMissionTemplate from './inside_fields/foreman_id/FieldForemanIdDutyMissionTemplate';
-import FieldBrigadeEmployeeIdListDutyMissionTemplate from './inside_fields/brigade_employee_id_list/FieldBrigadeEmployeeIdListDutyMissionTemplate';
-import FieldRouteAndStructureDutyMissionTemplate from 'components/missions/duty_mission_template/form/template/inside_fields/route_and_structure/FieldRouteAndStructureDutyMissionTemplate';
+
+import FieldTechnicalOperationDutyMission from 'components/missions/duty_mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationDutyMission';
+import FieldMunicipalFacilityIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMission';
+import FieldForemanIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/foreman_id/FieldForemanIdDutyMission';
+import FieldBrigadeEmployeeIdListDutyMission from 'components/missions/duty_mission/form/main/inside_fields/brigade_employee_id_list/FieldBrigadeEmployeeIdListDutyMission';
+import FieldStructureDutyMission from 'components/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
+import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
+import FieldRouteIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/route_id/FieldRouteIdDutyMission';
 
 class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTemplateForm, {}> {
   componentDidMount() {
@@ -69,6 +71,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
       formErrors: errors,
       page,
       path,
+      STRUCTURE_FIELD_VIEW,
     } = this.props;
 
     const IS_CREATING = !state.id;
@@ -83,13 +86,16 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={6}>
-              <FieldTechnicalOperationDutyMissionTemplate
+              <FieldTechnicalOperationDutyMission
                 value={state.technical_operation_id}
                 name={state.technical_operation_name}
                 disabled={!isPermitted}
                 isPermitted={isPermitted}
                 error={errors.technical_operation_id}
                 onChange={this.props.handleChange}
+
+                IS_TEMPLATE
+                DUTY_MISSION_IS_ORDER_SOURCE={false}
 
                 page={page}
                 path={path}
@@ -111,7 +117,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
           </Row>
           <Row>
             <Col md={12}>
-              <FieldMunicipalFacilityIdDutyMissionTemplate
+              <FieldMunicipalFacilityIdDutyMission
                 value={state.municipal_facility_id}
                 name={state.municipal_facility_name}
                 disabled={!state.technical_operation_id || !isPermitted}
@@ -121,6 +127,9 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
 
                 technical_operation_id={state.technical_operation_id}
 
+                IS_TEMPLATE
+                DUTY_MISSION_IS_ORDER_SOURCE={false}
+
                 page={page}
                 path={path}
               />
@@ -128,7 +137,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
           </Row>
           <Row>
             <Col md={6}>
-              <FieldForemanIdDutyMissionTemplate
+              <FieldForemanIdDutyMission
                 value={state.foreman_id}
                 foreman_fio={state.foreman_fio}
                 foreman_full_fio={state.foreman_full_fio}
@@ -144,8 +153,8 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 path={path}
               />
             </Col>
-            <Col md={6}>
-              <FieldBrigadeEmployeeIdListDutyMissionTemplate
+            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
+              <FieldBrigadeEmployeeIdListDutyMission
                 brigade_employee_id_list={state.brigade_employee_id_list}
                 value={state.brigade_employee_id_list_id}
                 name={state.brigade_employee_id_list_fio}
@@ -161,24 +170,54 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 path={path}
               />
             </Col>
+            {
+              STRUCTURE_FIELD_VIEW
+                ? (
+                  <Col md={3}>
+                    <FieldStructureDutyMission
+                      value={state.structure_id}
+                      name={state.structure_name}
+                      error={errors.structure_id}
+                      disabled={!isPermitted}
+                      isPermitted={isPermitted}
+                      onChange={this.props.handleChange}
+
+                      page={page}
+                      path={path}
+                    />
+                  </Col>
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </Row>
-          <FieldRouteAndStructureDutyMissionTemplate
-            error_route_id={errors.route_id}
-            error_structure_id={errors.structure_id}
-            route_id={state.route_id}
-            municipal_facility_id={state.municipal_facility_id}
-            municipal_facility_name={state.municipal_facility_name}
-            technical_operation_id={state.technical_operation_id}
-            technical_operation_name={state.technical_operation_name}
-            structure_id={state.structure_id}
-            structure_name={state.structure_name}
-            isPermitted={isPermitted}
+          <Row>
+            <Col md={12}>
+              <FieldRouteIdDutyMission
+                error={errors.route_id}
+                value={state.route_id}
+                name={state.route_name}
+                municipal_facility_id={state.municipal_facility_id}
+                municipal_facility_name={state.municipal_facility_name}
+                technical_operation_id={state.technical_operation_id}
+                technical_operation_name={state.technical_operation_name}
 
-            handleChange={this.props.handleChange}
+                DUTY_MISSION_IS_ORDER_SOURCE={false}
 
-            page={page}
-            path={path}
-          />
+                disabled={!isPermitted}
+                isPermitted={isPermitted}
+
+                structure_id={state.structure_id}
+                structure_name={state.structure_name}
+
+                onChange={this.props.handleChange}
+
+                page={page}
+                path={path}
+              />
+            </Col>
+          </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
         {
@@ -202,6 +241,7 @@ export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
       employeeIndex: getEmployeeState(state).employeeIndex,
+      STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state).STRUCTURE_FIELD_VIEW,
     }),
     (dispatch: any) => ({
       employeeGetAndSetInStore: (...arg) => (

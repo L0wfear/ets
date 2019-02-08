@@ -115,16 +115,22 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
   async getMunicipalFacilitys(selectedToData: TechnicalOperationRegistry) {
     const { normatives } = selectedToData;
     const {
+      IS_TEMPLATE,
+      DUTY_MISSION_IS_ORDER_SOURCE,
       page, path,
     } = this.props;
 
+    const payload: any = {
+      start_date: new Date(),
+      end_date: new Date(),
+      norm_ids: normatives.map(({ id }) => id).join(','),
+    };
+    if (!DUTY_MISSION_IS_ORDER_SOURCE && !IS_TEMPLATE) {
+      payload.kind_task_ids = 3;
+    }
+
     const { municipalFacilityForDutyMissionList } = await this.props.actionGetAndSetInStoreMunicipalFacilityForDutyMission(
-      {
-        start_date: new Date(),
-        end_date: new Date(),
-        norm_ids: normatives.map(({ id }) => id).join(','),
-        kind_task_ids: 3,
-      },
+      payload,
       { page, path },
     );
 

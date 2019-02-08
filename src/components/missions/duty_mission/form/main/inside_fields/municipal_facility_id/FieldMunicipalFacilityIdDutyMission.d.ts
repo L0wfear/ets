@@ -28,6 +28,9 @@ export type OwnPropsFieldMunicipalFacilityIdDutyMission = {
 
   technical_operation_id: DutyMission['technical_operation_id'];
 
+  IS_TEMPLATE: boolean;
+  DUTY_MISSION_IS_ORDER_SOURCE: boolean;
+
   page: string;
   path: string;
 };

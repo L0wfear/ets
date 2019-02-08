@@ -25,6 +25,9 @@ export type OwnPropsFieldTechnicalOperationDutyMission = {
   error: string | void;
   onChange: (obj: { [key in keyof DutyMission]?: DutyMission[key] }) => void;
 
+  IS_TEMPLATE: boolean;
+  DUTY_MISSION_IS_ORDER_SOURCE: boolean;
+
   page: string;
   path: string;
 };

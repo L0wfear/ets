@@ -69,13 +69,18 @@ class FieldTechnicalOperationDutyMission extends React.PureComponent<PropsFieldT
 
   getTechnicalOperations() {
     const {
+      IS_TEMPLATE,
+      DUTY_MISSION_IS_ORDER_SOURCE,
       page, path,
     } = this.props;
 
+    const payload: any = {};
+    if (!DUTY_MISSION_IS_ORDER_SOURCE && !IS_TEMPLATE) {
+      payload.kind_task_ids = 3;
+    }
+
     this.props.actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission(
-      {
-        kind_task_ids: 3,
-      },
+      payload,
       { page, path },
     );
   }

@@ -45,7 +45,7 @@ export const dutyDutyMissionTemplateFormSchema: SchemaType<DutyMissionTemplate, 
   dependencies: {
     foreman_id: [
       (value, { structure_id }, { employeeIndex }) => {
-        if (value) {
+        if (value && Object.keys(employeeIndex).length) {
           const isPermitted = isPermittedEmployeeForDutyMission(
             employeeIndex[value],
             structure_id,
@@ -61,7 +61,7 @@ export const dutyDutyMissionTemplateFormSchema: SchemaType<DutyMissionTemplate, 
     ],
     brigade_employee_id_list_id: [
       (value, { structure_id }, { employeeIndex }) => {
-        if (value.length) {
+        if (value.length && Object.keys(employeeIndex).length) {
           const isPermitted = !value.some((employee_id) => (
             !isPermittedEmployeeForDutyMission(
               employeeIndex[employee_id],

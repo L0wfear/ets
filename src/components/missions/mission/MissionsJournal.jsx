@@ -186,7 +186,7 @@ class MissionsJournal extends CheckableElementsList {
       this.setState({ checkedElements: {} });
     })
       .catch(({ errorIsShow }) => {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка 1!'));
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       });
@@ -218,7 +218,7 @@ class MissionsJournal extends CheckableElementsList {
         }
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка 2!'));
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         this.refreshList(this.state);
         this.setState({ checkedElements: {} });
       });

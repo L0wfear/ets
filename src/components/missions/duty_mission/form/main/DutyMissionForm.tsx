@@ -85,6 +85,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       isPermitted,
       IS_CREATING,
       DUTY_MISSION_IS_ORDER_SOURCE,
+      DUTY_MISSION_IS_DISPLAY,
     } = this.state;
 
     this.props.employeeGetAndSetInStore(
@@ -92,7 +93,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       { page, path },
     );
 
-    if (isPermitted && DUTY_MISSION_IS_ORDER_SOURCE) {
+    if (isPermitted && DUTY_MISSION_IS_ORDER_SOURCE && !DUTY_MISSION_IS_DISPLAY) {
       if (!dependeceOrder) {
         this.props.actionLoadOrderAndTechnicalOperationById(
           state.faxogramm_id,
@@ -132,11 +133,12 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     const {
       isPermitted,
       DUTY_MISSION_IS_ORDER_SOURCE,
+      DUTY_MISSION_IS_DISPLAY,
     } = this.state;
 
     this.props.employeeEmployeeResetSetEmployee();
 
-    if (isPermitted && DUTY_MISSION_IS_ORDER_SOURCE) {
+    if (isPermitted && DUTY_MISSION_IS_ORDER_SOURCE && !DUTY_MISSION_IS_DISPLAY) {
       if (dependeceOrder) {
         this.props.actionSetDependenceOrderDataForDutyMission(
           null,

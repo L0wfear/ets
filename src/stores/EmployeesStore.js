@@ -1,5 +1,6 @@
 import { Store } from 'flummox';
 import keyBy from 'lodash/keyBy';
+import uniqBy from 'lodash/uniqBy';
 
 export default class EmployeeStore extends Store {
   constructor(flux) {
@@ -16,7 +17,8 @@ export default class EmployeeStore extends Store {
     this.state = {
       employeesList: [],
       employeesIndex: {},
-      employeesBindedoOCarList: [],
+      employeesBindedoOnCarList: [],
+      uniqEmployeesBindedoOnCarList: [],
       employeeOnCarList: [],
       driversList: [],
       foremanList: [],
@@ -38,7 +40,16 @@ export default class EmployeeStore extends Store {
 
   handleGetEmployeeBindedToCar(result) {
     this.setState({
-      employeesBindedoOCarList: result,
+      employeesBindedoOnCarList: result,
+      uniqEmployeesBindedoOnCarList: Object.values(result.reduce((newObj, partialEmployee) => {
+        if (!newObj[partialEmployee.employee_id]) {
+          newObj[partialEmployee.employee_id] = partialEmployee;
+        } else if (partialEmployee.binding_type === 'primary') {
+          newObj[partialEmployee.employee_id] = partialEmployee;
+        }
+
+        return newObj;
+      }, {})),
     });
   }
 

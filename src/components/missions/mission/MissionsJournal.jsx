@@ -212,7 +212,6 @@ class MissionsJournal extends CheckableElementsList {
             }
             return true;
           });
-          console.log('correctMissionsList == ', correctMissionsList);
           if (correctMissionsList.length) {
             this.actionCompleteMissions(correctMissionsList, action_at);
           }

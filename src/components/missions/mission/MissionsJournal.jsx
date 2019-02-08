@@ -219,7 +219,6 @@ class MissionsJournal extends CheckableElementsList {
     this.rejectMission();
   }
 
-
   removeCheckedElements = () => {
     this.defActionFunc({
       bodyConfirmDialog: 'Вы уверены, что хотите удалить выбранные элементы?',

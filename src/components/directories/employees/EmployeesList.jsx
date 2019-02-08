@@ -78,6 +78,21 @@ class EmployeesList extends ElementsList {
       loadingPageName,
     };
   }
+
+  getBasicProps() {
+    const { listName } = this.constructor;
+
+    return {
+      data: this.props[listName],
+      entity: this.entity,
+      filterValues: {
+        active: {
+          type: 'multiselect',
+          value: [1],
+        },
+      },
+    };
+  }
 }
 
 export default compose(

@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { mobiSize } from 'global-styled/global-constants';
 
-export const EtsHeaderContainer = styled.div`
+export const DataTableHeadLineTitle = styled.div`
+  white-space: nowrap;
+`;
+
+export const DataTableHeadLine = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  padding: 20px 20px 10px 20px;
 
   @media screen and (max-width: ${mobiSize}px) {
     flex-wrap: wrap;

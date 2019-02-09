@@ -3,12 +3,13 @@ import { AppHeaderNav } from 'components/new/ui/app_header/styled';
 
 import AppHeaderDesktop from 'components/new/ui/app_header/desktop/AppHeaderDesktop';
 import AppHeaderMobi from 'components/new/ui/app_header/mobi/AppHeaderMobi';
+import { mobiSize } from 'global-styled/global-constants';
 
 class AppHeader extends React.Component<{}, any> {
   node = React.createRef<any>();
   state = {
     width: document.body.offsetWidth,
-    mobi: document.body.offsetWidth < 768,
+    mobi: document.body.offsetWidth < mobiSize,
   };
 
   componentDidMount() {
@@ -25,7 +26,7 @@ class AppHeader extends React.Component<{}, any> {
   resizeWindow = () => {
     this.setState(() => ({
       width: document.body.offsetWidth,
-      mobi: document.body.offsetWidth < 768,
+      mobi: document.body.offsetWidth < mobiSize,
     }));
   }
 

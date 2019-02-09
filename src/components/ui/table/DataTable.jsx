@@ -25,6 +25,7 @@ import Filter from 'components/ui/table/filter/Filter';
 import FilterButton from 'components/ui/table/filter/FilterButton';
 import Div from 'components/ui/Div';
 import Paginator from 'components/ui/new/paginator/Paginator';
+import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 
 export default class DataTable extends React.Component {
   /**
@@ -674,10 +675,10 @@ export default class DataTable extends React.Component {
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
-          <div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
-            <div>
+          <DataTableHeadLine>
+            <DataTableHeadLineTitle>
               {noTitle ? '' : title}
-            </div>
+            </DataTableHeadLineTitle>
             <div className="waybills-buttons">
               {columnControl
                 && (
@@ -699,7 +700,7 @@ export default class DataTable extends React.Component {
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />
-                  )
+                )
               }
               {refreshable
                 && (
@@ -713,7 +714,7 @@ export default class DataTable extends React.Component {
               }
               {!noCustomButton && this.props.children}
             </div>
-          </div>
+          </DataTableHeadLine>
           {!noFilter
             && (
             <Filter

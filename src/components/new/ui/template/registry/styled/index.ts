@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { EtsPageWrap } from 'global-styled/global-styled';
+import { DataTableHeadLine } from 'components/ui/table/styled';
 
 export const TemplateRegistryContainer = styled(EtsPageWrap)`
   opacity: 0.5;
@@ -12,10 +13,7 @@ export const MaintTemplateComponent = styled.div`
   height: 30px;
 `;
 
-export const TemplateHeaderLineContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+export const TemplateHeaderLineContainer = styled(DataTableHeadLine)`
   align-items: center;
 `;
 
@@ -27,6 +25,7 @@ export const TemplateTitle = styled(MaintTemplateComponent)`
 export const TemplateButtonsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 `;
 
 export const TemplateButton = styled(MaintTemplateComponent)`
@@ -34,7 +33,7 @@ export const TemplateButton = styled(MaintTemplateComponent)`
 `;
 
 export const TemplateButtonRead = styled(MaintTemplateComponent)`
-  min-width: 140px;
+  min-width: 160px;
 `;
 
 export const TemplateButtonCreate = styled(MaintTemplateComponent)`

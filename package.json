@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.26.163",
+    "version": "2.0.26.167",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -129,7 +129,7 @@
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "lint:ts": "tslint --project tsconfig.json -c tslint.json 'src/**/*{.ts,.tsx}'",
         "bump": "node webpack/utils/updateVersion.js",
-        "prettier": "prettier -c \"src/**/*.js\" --write",
+        "prettier": "prettier -c \"src/**/*.tsx\" --parser --write",
         "test": "jest --collectCoverage",
         "lint-staged": "lint-staged"
     },
@@ -139,8 +139,12 @@
         }
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx}": [
+        "src/**/*.{js,jsx}": [
             "prettier --write",
+            "git add"
+        ],
+        "src/**/*.{ts,tsx}": [
+            "prettier --parser typescript --write",
             "git add"
         ]
     },

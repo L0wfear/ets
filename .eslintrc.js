@@ -23,7 +23,7 @@ module.exports = {
         "quote-props": "off", // временно
         "no-underscore-dangle": ["error", { "allowAfterThis": true }],
         "class-methods-use-this": "off",
-        "max-len": ["off", 120],
+        "max-len": ["off", 80],
         "camelcase": ["off"], // временно
         "no-param-reassign": ["off"], // временно
         "no-unused-expressions": ["error", { "allowShortCircuit": true }],

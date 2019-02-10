@@ -1,15 +1,22 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { loginErrorNotification, getErrorNotification } from 'utils/notifications';
+import {
+  loginErrorNotification,
+  getErrorNotification,
+} from 'utils/notifications';
 
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
 global.APP_TIME_WITH_SECOND_FORMAT = 'HH:mm:ss';
-global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${process.env.STAND}2`;
-global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${process.env.STAND}2`;
+global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${
+  process.env.STAND
+}2`;
+global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${
+  process.env.STAND
+}2`;
 
 import LoginPageWrap from 'components/new/pages/login/LoginPageWrap';
 import MainAppWrap from 'components/MainAppWrap';
@@ -26,7 +33,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
-class App extends React.Component <any, any> {
+class App extends React.Component<any, any> {
   static get childContextTypes() {
     return {
       flux: PropTypes.object,
@@ -52,9 +59,14 @@ class App extends React.Component <any, any> {
   }
 
   componentDidUpdate(prevProps) {
-    const localStorageToken = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
+    const localStorageToken = JSON.parse(
+      window.localStorage.getItem(global.SESSION_KEY2),
+    );
 
-    if (prevProps.token !== this.props.token && localStorageToken !== this.props.token) {
+    if (
+      prevProps.token !== this.props.token &&
+      localStorageToken !== this.props.token
+    ) {
       this.checkToken();
     }
   }
@@ -81,7 +93,10 @@ class App extends React.Component <any, any> {
         this.props.sessionResetData();
         return global.NOTIFICATION_SYSTEM.notify(loginErrorNotification);
       }
-      return !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(t_error));
+      return (
+        !errorIsShow &&
+        global.NOTIFICATION_SYSTEM.notify(getErrorNotification(t_error))
+      );
     }
 
     const el = document.getElementById('main-background');
@@ -89,16 +104,18 @@ class App extends React.Component <any, any> {
     if (el) {
       document.body.removeChild(el);
     }
-  }
+  };
 
   render() {
-    const localStorageToken = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
+    const localStorageToken = JSON.parse(
+      window.localStorage.getItem(global.SESSION_KEY2),
+    );
 
     if (this.state.loading || localStorageToken !== this.props.token) {
       return <LoadingComponent />;
     }
 
-    return(
+    return (
       <Switch>
         <Route path="/login" component={LoginPageWrap} />
         <Route path="*" component={MainAppWrap} />
@@ -112,27 +129,25 @@ export default compose<any, any>(
     page: 'main',
     typePreloader: 'mainpage',
   }),
-  connect<any, { actionGetAndSetInStoreMissionSource: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreMissionSource> }, any, ReduxState>(
+  connect<
+    any,
+    {
+      actionGetAndSetInStoreMissionSource: HandleThunkActionCreator<
+        typeof someUniqActions.actionGetAndSetInStoreMissionSource
+      >;
+    },
+    any,
+    ReduxState
+  >(
     (state) => ({
       userData: getSessionState(state).userData,
       token: getSessionState(state).token,
     }),
     (dispatch: any) => ({
-      checkToken: () => (
-        dispatch(
-          checkToken(),
-        )
-      ),
-      sessionResetData: () => (
-        dispatch(
-          sessionResetData(),
-        )
-      ),
-      actionGetAndSetInStoreMissionSource: (...arg) => (
-        dispatch(
-          someUniqActions.actionGetAndSetInStoreMissionSource(...arg),
-        )
-      ),
+      checkToken: () => dispatch(checkToken()),
+      sessionResetData: () => dispatch(sessionResetData()),
+      actionGetAndSetInStoreMissionSource: (...arg) =>
+        dispatch(someUniqActions.actionGetAndSetInStoreMissionSource(...arg)),
     }),
   ),
 )(App);

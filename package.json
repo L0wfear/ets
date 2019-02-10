@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.26.157",
+    "version": "2.0.26.163",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -92,6 +92,7 @@
         "husky": "^1.3.1",
         "jest": "^24.1.0",
         "jsdoc": "3.5.5",
+        "lint-staged": "^8.1.3",
         "mini-css-extract-plugin": "^0.5.0",
         "node-sass": "^4.11.0",
         "openurl": "^1.1.1",
@@ -129,12 +130,19 @@
         "lint:ts": "tslint --project tsconfig.json -c tslint.json 'src/**/*{.ts,.tsx}'",
         "bump": "node webpack/utils/updateVersion.js",
         "prettier": "prettier -c \"src/**/*.js\" --write",
-        "test": "jest --collectCoverage"
+        "test": "jest --collectCoverage",
+        "lint-staged": "lint-staged"
     },
-    "config": {
-        "husky": {
-            "pre-commit": "npm run lint:ts && npm run bump && git add package.json"
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged && npm run bump && git add package.json"
         }
+    },
+    "lint-staged": {
+        "src/**/*.{js,jsx,ts,tsx}": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "engines": {
         "node": ">=5.1.0",

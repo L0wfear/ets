@@ -14,6 +14,7 @@ module.exports = {
       },
       "parser": "babel-eslint",
       "rules": {
+        "arrow-parens": ["error", "always"],
         "strict": "off",
         "no-tabs": "error",
         "no-continue": "off",

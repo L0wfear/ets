@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { mobiSize } from 'global-styled/global-constants';
+import { EtsHeaderTitle } from '../title/styled/styled';
 
 export const EtsHeaderContainer = styled.div`
   display: flex;
@@ -10,5 +11,11 @@ export const EtsHeaderContainer = styled.div`
   @media screen and (max-width: ${mobiSize}px) {
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+
+    ${EtsHeaderTitle} {
+      text-align: center;
+      white-space: initial;
+    }
   }
 `;

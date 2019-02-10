@@ -18,6 +18,9 @@ export const DivRed = styled.div`
 `;
 
 export const EtsPageWrap = styled.div<EtsPageWrapProps>`
+  position: relative;
+  height: 100%;
+
   padding: 15px;
   display: ${({ inheritDisplay }) => inheritDisplay ? 'inherit' : 'flex'};
   flex-direction: column;

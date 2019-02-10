@@ -37,7 +37,7 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
         const { isLoading, dispatch, page, path, typePreloader, ...props } = this.props;
 
         return (
-          <div className="shadow">
+          <>
             {
               isLoading ?
               (
@@ -49,7 +49,7 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
               )
             }
             <Component {...props} />
-          </div>
+          </>
         );
       }
     },

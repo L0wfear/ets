@@ -46,7 +46,7 @@ export const TableContainer = styled(MaintTemplateComponent)`
 `;
 
 export const PaginatorContainer = styled(MaintTemplateComponent)`
-  margin: 20px 0;
+  margin: 20px 0 0 0;
 
   min-width: 200px;
   width: 350px;

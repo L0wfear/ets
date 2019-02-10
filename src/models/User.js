@@ -1,8 +1,5 @@
 import Model from './Model';
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
-
 /**
  * Пользователь
  * @extends Model
@@ -62,15 +59,5 @@ export default class User extends Model {
     this.okrug_name = user.okrug_name;
     this.stableRedirect = user.stableRedirect || '/login';
     this.isGlavControl = user.isGlavControl || false;
-  }
-
-  getCompanyMapConfig = () => {
-    if (this.map_config && this.map_config.zoom && this.map_config.coordinates) {
-      return this.map_config;
-    }
-    return {
-      coordinates: MAP_INITIAL_CENTER,
-      zoom: MAP_INITIAL_ZOOM,
-    };
   }
 }

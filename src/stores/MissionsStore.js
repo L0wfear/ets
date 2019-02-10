@@ -77,14 +77,6 @@ export function getDefaultDutyMission() {
   };
 }
 
-export function getDefaultDutyMissionTemplate() {
-  return {
-    date_create: getDateWithMoscowTz(),
-    is_new: true,
-    brigade_employee_id_list: [],
-  };
-}
-
 export function getDefaultDutyMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),

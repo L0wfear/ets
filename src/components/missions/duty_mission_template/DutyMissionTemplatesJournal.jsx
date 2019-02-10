@@ -8,7 +8,7 @@ import permissions from 'components/missions/duty_mission_template/config-data/p
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import DutyMissionTemplateFormWrap from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
+import DutyMissionsCreationFormWrap from 'components/missions/duty_mission_template/DutyMissionsCreationFormWrap';
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -129,7 +129,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
         onFormHide={this.onDutyMissionTemplateFormHide}
         page={loadingPageName}
       />,
-      <DutyMissionTemplateFormWrap
+      <DutyMissionsCreationFormWrap
         key="form_create_duty_mission"
         onFormHide={this.onFormHide}
         showForm={this.state.showForm && this.state.formType === 'MissionsCreationForm'}

@@ -1,5 +1,5 @@
-import { createMissions } from 'components/missions/mission_template/MissionTemplateFormWrap';
-import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
+import { createMissions } from 'components/missions/mission_template/MissionsCreationFormWrap';
+import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionsCreationFormWrap';
 import { groupBy } from 'lodash';
 import { ASSING_BY_KEY } from './constant';
 

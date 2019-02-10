@@ -79,13 +79,9 @@ export default class LoadingStore extends Store {
       missionsActons.createMission,
       missionsActons.removeMission,
       missionsActons.updateMission,
-      missionsActons.getMissionTemplates,
       missionsActons.printMissionTemplate,
-      missionsActons.createMissionTemplate,
       missionsActons.createMissions,
       missionsActons.getCarDutyMissions,
-      missionsActons.createDutyMissionTemplate,
-      missionsActons.updateDutyMissionTemplate,
       missionsActons.printMission,
       missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
@@ -93,7 +89,6 @@ export default class LoadingStore extends Store {
       routesActions.getRouteById,
       routesActions.getRoutesBySomeData,
       routesActions.getRoutesByMissionId,
-      routesActions.getRoutesByDutyMissionId,
 
       technicalOperationsActions.getTechnicalOperations,
       technicalOperationsActions.getTechnicalOperationsWithBrigades,
@@ -102,8 +97,7 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 
-      carActions.updateCarAdditionalInfo,
-      carActions.getDataByNormNormatives);
+      carActions.updateCarAdditionalInfo);
 
     this.reg(true,
       missionsActons.getMissionsByCarAndDates,

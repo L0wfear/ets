@@ -39,11 +39,7 @@ export default class NotificationsStore extends Store {
       {
         actions: missionsActions,
         actionNames: [
-          'createDutyMission',
-          'createDutyMissionTemplate',
-          'updateMissionTemplate',
           'createDutyMissions',
-          'updateDutyMissionTemplate',
         ],
       },
     ];
@@ -63,9 +59,6 @@ export default class NotificationsStore extends Store {
 
     removeNotificationQueue.forEach(opts => opts.actionNames.forEach(name => this.register(opts.actions[name], this.handleRemove)));
 
-
-    // this.register(missionsActions.updateMissionFromReassignation, this.handleSave);
-    // this.register(missionsActions.createMissionFromReassignation, this.handleSave);
 
     this.register(missionsActions.createMission, this.handleMissionCreate);
     this.register(missionsActions.createMissions, this.handleMissionsCreate);

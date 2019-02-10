@@ -11,7 +11,7 @@ import permissions from 'components/missions/mission_template/config-data/permis
 import permissions_mission from 'components/missions/mission/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
+import MissionsCreationFormWrap from 'components/missions/mission_template/MissionsCreationFormWrap';
 import MissionTemplateFormLazy from 'components/missions/mission_template/form/template';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
@@ -224,7 +224,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         page={loadingPageName}
       />,
-      <MissionTemplateFormWrap
+      <MissionsCreationFormWrap
         key="form"
         onFormHide={this.onFormHide}
         showForm={this.state.showForm && this.state.formType === 'MissionsCreationForm'}

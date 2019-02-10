@@ -4,7 +4,7 @@ import {
   SESSION_SET_CONFIG,
   SESSION_SET_TRACK_CONFIG,
 } from 'redux-main/reducers/modules/session/session';
-import { User } from 'models';
+import User from 'models/User';
 
 import {
   ConfigService,

@@ -11,10 +11,8 @@ import {
   MissionArchiveService,
   MissionReassignationService,
   MissionSourceService,
-  MissionTemplateService,
   MissionTemplateCarService,
   DutyMissionService,
-  DutyMissionTemplateService,
   MissionPrintService,
   MissionTemplatePrintService,
   MissionDataService,
@@ -25,7 +23,6 @@ import {
 import {
   WaybillService,
 } from 'api/Services';
-import { isArray } from 'util';
 
 export const parseFilterObject = filter => (
   Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
@@ -200,25 +197,8 @@ export default class MissionsActions extends Actions {
 
 
   /* ---------- MISSION TEMPLATES ---------- */
-
-
-  getMissionTemplates(payload = {}) {
-    return MissionTemplateService.get(payload);
-  }
-
   getMissionTemplatesCars(payload = {}) {
     return MissionTemplateCarService.get(payload);
-  }
-
-  createMissionTemplate(missionTemplate) {
-    const payload = clone(missionTemplate);
-    payload.created_at = createValidDate(payload.created_at);
-    payload.norm_id = isArray(payload.norm_id) ? payload.norm_id[0] : payload.norm_id;
-
-    delete payload.company_id;
-    delete payload.number;
-
-    return MissionTemplateService.post(payload, null, 'json');
   }
 
   createMissions(missionTemplates, missionsCreationTemplate) {
@@ -286,16 +266,6 @@ export default class MissionsActions extends Actions {
     return Promise.all(queries);
   }
 
-  updateMissionTemplate(missionTemplate) {
-    const payload = cloneDeep(missionTemplate);
-    payload.created_at = createValidDate(payload.created_at);
-
-    delete payload.number;
-    delete payload.company_id;
-
-    return MissionTemplateService.put(payload, null, 'json');
-  }
-
   printMissionTemplate(data) {
     const payload = cloneDeep(data);
 
@@ -307,30 +277,6 @@ export default class MissionsActions extends Actions {
 
   getCarDutyMissions() {
     return CarDutyMissionService.get();
-  }
-
-  createDutyMissionTemplate(mainMissionData) {
-    const payload = cloneDeep(mainMissionData);
-    payload.created_at = createValidDate(payload.created_at);
-    payload.brigade_employee_id_list = [...payload.brigade_employee_id_list_id];
-
-    delete payload.brigadeEmployeeIdIndex;
-    delete payload.brigade_employee_id_list_fio;
-    delete payload.brigade_employee_id_list_id;
-
-
-    return DutyMissionTemplateService.post(payload, false, 'json');
-  }
-
-  updateDutyMissionTemplate(mission) {
-    const payload = cloneDeep(mission);
-    payload.created_at = createValidDate(payload.created_at);
-
-    delete payload.brigadeEmployeeIdIndex;
-    delete payload.number;
-    delete payload.technical_operation_name;
-    delete payload.route_name;
-    return DutyMissionTemplateService.put(payload, false, 'json');
   }
 
   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {

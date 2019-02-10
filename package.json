@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.26.167",
+    "version": "2.0.26.169",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -80,9 +80,10 @@
         "eslint-config-airbnb": "^17.1.0",
         "eslint-import-resolver-webpack": "^0.11.0",
         "eslint-loader": "^2.1.1",
+        "eslint-plugin-babel": "^5.3.0",
         "eslint-plugin-import": "^2.14.0",
         "eslint-plugin-jsx-a11y": "^6.1.2",
-        "eslint-plugin-react": "^7.11.1",
+        "eslint-plugin-react": "^7.12.4",
         "express": "^4.16.4",
         "file-loader": "^3.0.1",
         "fork-ts-checker-webpack-plugin": "^0.5.2",
@@ -126,10 +127,10 @@
         "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:stage": "cross-env STAND=stage NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js",
-        "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
+        "lint": "eslint -c .eslintrc.js --quiet --fix --ext .js --ext .jsx src",
         "lint:ts": "tslint --project tsconfig.json -c tslint.json 'src/**/*{.ts,.tsx}'",
         "bump": "node webpack/utils/updateVersion.js",
-        "prettier": "prettier -c \"src/**/*.tsx\" --parser --write",
+        "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",
         "test": "jest --collectCoverage",
         "lint-staged": "lint-staged"
     },
@@ -141,6 +142,7 @@
     "lint-staged": {
         "src/**/*.{js,jsx}": [
             "prettier --write",
+            "eslint --fix",
             "git add"
         ],
         "src/**/*.{ts,tsx}": [

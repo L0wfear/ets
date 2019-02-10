@@ -67,7 +67,7 @@ class App extends React.Component <any, any> {
       if (result) {
         await this.props.actionGetAndSetInStoreMissionSource(
           {},
-          { page: 'mainpage '},
+          { page: 'mainpage' },
         );
       }
       this.setState({ loading: false });

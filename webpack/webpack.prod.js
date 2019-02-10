@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const stand = process.env.STAND || 'dev';
 
@@ -41,43 +42,46 @@ module.exports = {
       {
         test: /\.(jsx|js|ts|tsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: false,
-            babelrc: false,
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  targets: {
-                    'chrome': '47',
-                    'firefox': '42',
-                    'ie': '11',
+        use: [
+          "thread-loader",
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: false,
+              babelrc: false,
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: {
+                      'chrome': '47',
+                      'firefox': '42',
+                      'ie': '11',
+                    },
+                    useBuiltIns: 'usage',
                   },
-                  useBuiltIns: 'usage',
-                },
+                ],
+                '@babel/preset-typescript',
+                '@babel/preset-react',
               ],
-              '@babel/preset-typescript',
-              '@babel/preset-react',
-            ],
-            plugins: [
-              [
-                '@babel/plugin-proposal-decorators',
-                {
-                  legacy: true,
-                },
+              plugins: [
+                [
+                  '@babel/plugin-proposal-decorators',
+                  {
+                    legacy: true,
+                  },
+                ],
+                [
+                  '@babel/plugin-proposal-class-properties',
+                  {
+                    loose: true,
+                  },
+                ],
+                '@babel/plugin-syntax-dynamic-import',
               ],
-              [
-                '@babel/plugin-proposal-class-properties',
-                {
-                  loose: true,
-                },
-              ],
-              '@babel/plugin-syntax-dynamic-import',
-            ],
+            },
           },
-        },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -206,6 +210,12 @@ module.exports = {
   ],
   optimization: {
     noEmitOnErrors: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         styles: {

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import _ from 'lodash';
+import {
+  cloneDeep,
+} from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import CheckableElementsList from 'components/CheckableElementsList';
@@ -176,15 +178,17 @@ class MissionTemplatesJournal extends CheckableElementsList {
   }
 
   copyElement = () => {
-    const copiedElement = _.cloneDeep(this.state.selectedElement);
-    delete copiedElement.id;
-    delete copiedElement.name;
-    this.setState({
-      showForm: true,
-      formType: 'ViewForm',
-      selectedElement: _.cloneDeep(copiedElement),
+    this.setState(({ selectedElement }) => {
+      const copiedElement = cloneDeep(selectedElement);
+      delete copiedElement.id;
+      delete copiedElement.name;
+      return {
+        showForm: true,
+        formType: 'ViewForm',
+        selectedElement: copiedElement,
+      };
     });
-  }
+  };
 
   onFormHide = (clearCheckedElements) => {
     this.setState(({ checkedElements }) => ({

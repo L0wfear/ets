@@ -34,7 +34,9 @@ class EmployeeOnCarList extends ElementsList {
 
   init() {
     this.context.flux.getActions('objects').getCars();
-    this.context.flux.getActions('employees').getEmployeeOnCarList()
+    this.context.flux
+      .getActions('employees')
+      .getEmployeeOnCarList()
       .then(({ result }) => {
         const options = makeOptions({
           data: result,
@@ -52,14 +54,18 @@ class EmployeeOnCarList extends ElementsList {
         selectedElement: data,
       });
     }
-  }
+  };
 
   onRowDoubleClick = ({ props: { data } }) => {
     if (this.props.userPermissions.includes(permissionsCar.read)) {
-      const carElement = this.props.carsList.find(({ asuods_id }) => asuods_id === data.asuods_id);
+      const carElement = this.props.carsList.find(
+        ({ asuods_id }) => asuods_id === data.asuods_id,
+      );
 
       if (!carElement) {
-        console.error(`Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`);
+        console.error(
+          `Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`,
+        );
       } else {
         this.setState({
           showCarForm: true,
@@ -67,12 +73,12 @@ class EmployeeOnCarList extends ElementsList {
         });
       }
     }
-  }
+  };
 
   onCarFormHide = () => {
     this.setState({ carElement: null, showCarForm: false });
     this.init();
-  }
+  };
 
   getAdditionalProps = () => {
     const {
@@ -85,7 +91,7 @@ class EmployeeOnCarList extends ElementsList {
       GARAGE_NUMBERS,
       DRIVER_FIOS,
     };
-  }
+  };
 
   additionalRender() {
     return [
@@ -104,9 +110,7 @@ class EmployeeOnCarList extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(EmployeeOnCarList);

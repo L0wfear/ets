@@ -9,7 +9,6 @@ import { saveDataSuccessNotification } from 'utils/notifications';
 import CarForm from 'components/directories/autobase/cars/CarForm';
 import schema from 'components/directories/autobase/cars/schema';
 
-
 const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
 
@@ -24,15 +23,22 @@ class CarFormWrap extends FormWrap {
 
   async inheritedComponentWillReceiveProps(nextProps) {
     if (this.props.showForm !== nextProps.showForm && nextProps.element) {
-      const {
-        element,
-      } = nextProps;
+      const { element } = nextProps;
 
       const formState = element || {};
 
-      const register_info = await this.context.flux.getActions('cars').getCarRegisterInfo(element.asuods_id) || {};
-      const register_passport_info = await this.context.flux.getActions('cars').getCarPassportRegistryInfo(element.asuods_id) || {};
-      const car_drivers_info = await this.context.flux.getActions('cars').getCarDriversInfo(element.asuods_id) || {};
+      const register_info =
+        (await this.context.flux
+          .getActions('cars')
+          .getCarRegisterInfo(element.asuods_id)) || {};
+      const register_passport_info =
+        (await this.context.flux
+          .getActions('cars')
+          .getCarPassportRegistryInfo(element.asuods_id)) || {};
+      const car_drivers_info =
+        (await this.context.flux
+          .getActions('cars')
+          .getCarDriversInfo(element.asuods_id)) || {};
       const { type = '', id = null } = register_passport_info;
 
       this.setState({
@@ -41,7 +47,10 @@ class CarFormWrap extends FormWrap {
           ...unpackObjectData('register', register_info),
           passport_type: type,
           passport_id: id,
-          ...unpackObjectData(`passport_${type.toLowerCase()}`, register_passport_info),
+          ...unpackObjectData(
+            `passport_${type.toLowerCase()}`,
+            register_passport_info,
+          ),
           ...unpackObjectData('car_drivers', car_drivers_info),
         },
       });
@@ -53,7 +62,7 @@ class CarFormWrap extends FormWrap {
       this.props.history.push(this.props.match.url);
     }
     this.props.onFormHide();
-  }
+  };
 
   handleFormSubmitWrap = () => {
     if (this.props.location.search) {
@@ -65,7 +74,7 @@ class CarFormWrap extends FormWrap {
         this.props.refreshList();
       }
     });
-  }
+  };
 
   handleFormOnlySubmit = async () => {
     const uniqueField = this.uniqueField || 'id';
@@ -80,7 +89,10 @@ class CarFormWrap extends FormWrap {
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
-          formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
+          formState[p.key] =
+            !isNaN(formState[p.key]) && formState[p.key] !== null
+              ? parseFloat(formState[p.key])
+              : null;
         }
         if (p.type === 'number' && p.integer) {
           const parsedValue = parseInt(formState[p.key], 10);
@@ -88,7 +100,9 @@ class CarFormWrap extends FormWrap {
         }
 
         if (typeof p.isSubmitted === 'function') {
-          formState = p.isSubmitted(formState) ? formState : omit(formState, p.key);
+          formState = p.isSubmitted(formState)
+            ? formState
+            : omit(formState, p.key);
         }
       });
     }
@@ -141,33 +155,34 @@ class CarFormWrap extends FormWrap {
         throw new Error('Update action called but not specified');
       }
       // в случае успешного обновления выдаем всплывающее окно
-      if (!this.preventDefaultNotification) global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
+      if (!this.preventDefaultNotification)
+        global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
+
+      return result;
     }
-  }
+  };
 
   render() {
     const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm
-      ? (
-        <CarForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmitWrap}
-          handleFormOnlySubmit={this.handleFormOnlySubmit}
-          permissions={[`${entity}.update`]}
-          addPermissionProp
-          isPermitted={isPermitted}
-          handleFormChange={this.handleFormStateChange}
-          show={this.props.showForm}
-          onHide={this.handleFormHide}
-          {...this.state}
-          canSave={canSave}
-          location={this.props.location}
-        />
-      )
-      : null;
+    return this.props.showForm ? (
+      <CarForm
+        formState={this.state.formState}
+        onSubmit={this.handleFormSubmitWrap}
+        handleFormOnlySubmit={this.handleFormOnlySubmit}
+        permissions={[`${entity}.update`]}
+        addPermissionProp
+        isPermitted={isPermitted}
+        handleFormChange={this.handleFormStateChange}
+        show={this.props.showForm}
+        onHide={this.handleFormHide}
+        {...this.state}
+        canSave={canSave}
+        location={this.props.location}
+      />
+    ) : null;
   }
 }
 

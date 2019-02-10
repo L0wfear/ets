@@ -29,19 +29,31 @@ import { DivNone } from 'global-styled/global-styled';
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
   <Row>
-    <Col md={12} style={styleTextMakeVersion}>После создания новой версии программы ремонта, текущая версия станет недействующей и недоступной для ввода данных.</Col>
-    <Col md={12} style={styleTextMakeVersion}>Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию документа, на основании которого создается новая версия.</Col>
+    <Col md={12} style={styleTextMakeVersion}>
+      После создания новой версии программы ремонта, текущая версия станет
+      недействующей и недоступной для ввода данных.
+    </Col>
+    <Col md={12} style={styleTextMakeVersion}>
+      Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию
+      документа, на основании которого создается новая версия.
+    </Col>
   </Row>
 );
 
 const getTitleByStatus = (status) => {
   switch (status) {
-    case 'draft': return 'Программа ремонта. Черновик';
-    case 'sent_on_review': return 'Программа ремонта. Отправлена на согласование';
-    case 'accepted': return 'Программа ремонта. Согласована';
-    case 'rejected': return 'Программа ремонта. Не согласована';
-    case 'closed': return 'Программа ремонта. Выполнена';
-    default: return 'Программа ремонта. Редактирование';
+    case 'draft':
+      return 'Программа ремонта. Черновик';
+    case 'sent_on_review':
+      return 'Программа ремонта. Отправлена на согласование';
+    case 'accepted':
+      return 'Программа ремонта. Согласована';
+    case 'rejected':
+      return 'Программа ремонта. Не согласована';
+    case 'closed':
+      return 'Программа ремонта. Выполнена';
+    default:
+      return 'Программа ремонта. Редактирование';
   }
 };
 
@@ -50,9 +62,7 @@ const getTitleByStatus = (status) => {
 class ProgramRegistryForm extends Form {
   constructor(props) {
     super(props);
-    const {
-      entity,
-    } = props;
+    const { entity } = props;
 
     const isSupervisor = this.props.userPermissionsSet.has(`${entity}.review`);
     const isСustomer = this.props.userPermissionsSet.has(`${entity}.create`);
@@ -69,14 +79,29 @@ class ProgramRegistryForm extends Form {
     const { flux } = this.context;
     const { fromCreating } = this.props;
     if (!fromCreating) {
-      flux.getActions('repair').getRepairListByType('stateProgram', { status: 'active' }, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+      flux
+        .getActions('repair')
+        .getRepairListByType(
+          'stateProgram',
+          { status: 'active' },
+          { makeOptions: true, selectListMapper: defaultSelectListMapper },
+        );
     }
-    flux.getActions('repair').getRepairListByType('contractor', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+    flux
+      .getActions('repair')
+      .getRepairListByType(
+        'contractor',
+        {},
+        { makeOptions: true, selectListMapper: defaultSelectListMapper },
+      );
   }
 
-  getButton = (key, onClick, text, show = false, canSave = true) => (
-    show && <Button key={key} disabled={!canSave} onClick={onClick}>{text}</Button>
-  )
+  getButton = (key, onClick, text, show = false, canSave = true) =>
+    show && (
+      <Button key={key} disabled={!canSave} onClick={onClick}>
+        {text}
+      </Button>
+    );
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
 
@@ -85,30 +110,36 @@ class ProgramRegistryForm extends Form {
   hideMakeVersionForm = () => {
     this.setState({ makeVersionIsVisible: false });
     this.handleChange('files', undefined);
-  }
+  };
 
   handleMakeVersionClick = (fileState) => {
     const stateForPatchFile = {
       ...fileState,
       id: this.props.activeVersionId,
     };
-    return this.props.onSubmitFiles(stateForPatchFile)
+    return this.props
+      .onSubmitFiles(stateForPatchFile)
       .then(() => this.props.makeVersion())
       .then(() => this.setState({ makeVersionIsVisible: false }));
-  }
+  };
 
   sendToApply = () => {
     this.setState({ mainButtonEnable: false });
-    return this.props.sendToApply()
+    return this.props
+      .sendToApply()
       .then(() => this.setState({ mainButtonEnable: true }));
-  }
+  };
 
   updateObjectData = (needVersionUpdate = true) => {
     if (needVersionUpdate) {
       this.props.updateVersionOuter();
     }
-    return this.context.flux.getActions('repair').getRepairListByType('objects', { program_version_id: this.props.formState.id });
-  }
+    return this.context.flux
+      .getActions('repair')
+      .getRepairListByType('objects', {
+        program_version_id: this.props.formState.id,
+      });
+  };
 
   render() {
     const {
@@ -117,10 +148,7 @@ class ProgramRegistryForm extends Form {
       isPermitted = false,
       isPermittedByStatus = false,
       isPermittetForContractorL = false,
-      RepairOptions: {
-        stateProgramOptions,
-        contractorOptions,
-      },
+      RepairOptions: { stateProgramOptions, contractorOptions },
       activeVersionId,
       versionOptions,
       permissionForButton,
@@ -133,10 +161,7 @@ class ProgramRegistryForm extends Form {
       isСustomer,
     } = this.state;
 
-    const {
-      is_active = false,
-      status = 'draft',
-    } = state;
+    const { is_active = false, status = 'draft' } = state;
 
     const title = getTitleByStatus(status);
     return (
@@ -149,9 +174,14 @@ class ProgramRegistryForm extends Form {
           onHide={this.hideMakeVersionForm}
           onSubmit={this.handleMakeVersionClick}
         />
-        <Modal id="modal-program-registry-u" show={this.props.show && !makeVersionIsVisible} onHide={this.props.onHide} bsSize="lg" backdrop="static">
+        <Modal
+          id="modal-program-registry-u"
+          show={this.props.show && !makeVersionIsVisible}
+          onHide={this.props.onHide}
+          bsSize="lg"
+          backdrop="static">
           <Modal.Header closeButton>
-            <Modal.Title>{ title }</Modal.Title>
+            <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
           <Div style={{ padding: '0px 15px' }}>
             <Row>
@@ -298,7 +328,9 @@ class ProgramRegistryForm extends Form {
                   value={state.contractor_id}
                   onChange={this.handleChange}
                   boundKeys="contractor_id"
-                  disabled={!isPermitted || !isPermittetForContractorL || !is_active}
+                  disabled={
+                    !isPermitted || !isPermittetForContractorL || !is_active
+                  }
                 />
               </Col>
               <Col md={6}>
@@ -309,7 +341,9 @@ class ProgramRegistryForm extends Form {
                   error={errors.contract_number}
                   onChange={this.handleChange}
                   boundKeys="contract_number"
-                  disabled={!isPermitted || !isPermittetForContractorL || !is_active}
+                  disabled={
+                    !isPermitted || !isPermittetForContractorL || !is_active
+                  }
                 />
               </Col>
             </Row>
@@ -342,36 +376,32 @@ class ProgramRegistryForm extends Form {
               </Col>
             </Row>
             <Row>
-              {
-                state.id
-                  ? (
-                    <Col md={12}>
-                      <ProgramObjectList
-                        program_version_id={state.id}
-                        program_version_status={state.status}
-                        object_type_id={state.object_type_id}
-                        contract_number={state.contract_number}
-                        contractor_id={state.contractor_id}
-                        company_id={state.company_id}
-                        company_name={state.company_name}
-                        repair_type_name={state.repair_type_name}
-                        updateObjectData={this.updateObjectData}
-                        isPermittedByStatus={isPermittedByStatus}
-                        changeVersion={this.props.changeVersion}
-                      />
-                      <ProgramRemarkList
-                        isSupervisor={isSupervisor}
-                        isСustomer={isСustomer}
-                        program_version_id={state.id}
-                        program_version_status={state.status}
-                        isPermittedByStatus={isPermittedByStatus}
-                      />
-                    </Col>
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {state.id ? (
+                <Col md={12}>
+                  <ProgramObjectList
+                    program_version_id={state.id}
+                    program_version_status={state.status}
+                    object_type_id={state.object_type_id}
+                    contract_number={state.contract_number}
+                    contractor_id={state.contractor_id}
+                    company_id={state.company_id}
+                    company_name={state.company_name}
+                    repair_type_name={state.repair_type_name}
+                    updateObjectData={this.updateObjectData}
+                    isPermittedByStatus={isPermittedByStatus}
+                    changeVersion={this.props.changeVersion}
+                  />
+                  <ProgramRemarkList
+                    isSupervisor={isSupervisor}
+                    isСustomer={isСustomer}
+                    program_version_id={state.id}
+                    program_version_status={state.status}
+                    isPermittedByStatus={isPermittedByStatus}
+                  />
+                </Col>
+              ) : (
+                <DivNone />
+              )}
             </Row>
           </Div>
           <ModalBody />
@@ -379,20 +409,81 @@ class ProgramRegistryForm extends Form {
             <Row>
               <Col md={12}>
                 {[
-                  this.getButton(0, this.props.handleExportVersion, <Glyphicon glyph="download-alt" />, false && permissionForButton.exportPDF),
-                  this.getButton(1, this.showMakeVersionForm, 'Создать версию', permissionForButton.createVersion, this.props.canSave && state.status === 'accepted' && state.is_active && mainButtonEnable),
-                  this.getButton(2, this.sendToApply, 'Сохранить и отправить на согласование', permissionForButton.sendToApply, this.props.canSave && (state.status === 'draft' || state.status === 'rejected') && mainButtonEnable),
-                  this.getButton(3, this.props.onSubmit, 'Сохранить', permissionForButton.onSubmit, this.props.canSave && (state.status === 'draft' || state.status === 'rejected' || state.status === 'accepted') && mainButtonEnable),
-                  this.getButton(4, this.props.onSubmitAndContinue, 'Сохранить и продолжить', permissionForButton.onSubmitAndContinue, this.props.canSave && (state.status === 'draft' || state.status === 'rejected' || state.status === 'accepted') && mainButtonEnable),
+                  this.getButton(
+                    0,
+                    this.props.handleExportVersion,
+                    <Glyphicon glyph="download-alt" />,
+                    false && permissionForButton.exportPDF,
+                  ),
+                  this.getButton(
+                    1,
+                    this.showMakeVersionForm,
+                    'Создать версию',
+                    permissionForButton.createVersion,
+                    this.props.canSave &&
+                      state.status === 'accepted' &&
+                      state.is_active &&
+                      mainButtonEnable,
+                  ),
+                  this.getButton(
+                    2,
+                    this.sendToApply,
+                    'Сохранить и отправить на согласование',
+                    permissionForButton.sendToApply,
+                    this.props.canSave &&
+                      (state.status === 'draft' ||
+                        state.status === 'rejected') &&
+                      mainButtonEnable,
+                  ),
+                  this.getButton(
+                    3,
+                    this.props.onSubmit,
+                    'Сохранить',
+                    permissionForButton.onSubmit,
+                    this.props.canSave &&
+                      (state.status === 'draft' ||
+                        state.status === 'rejected' ||
+                        state.status === 'accepted') &&
+                      mainButtonEnable,
+                  ),
+                  this.getButton(
+                    4,
+                    this.props.onSubmitAndContinue,
+                    'Сохранить и продолжить',
+                    permissionForButton.onSubmitAndContinue,
+                    this.props.canSave &&
+                      (state.status === 'draft' ||
+                        state.status === 'rejected' ||
+                        state.status === 'accepted') &&
+                      mainButtonEnable,
+                  ),
                 ]}
               </Col>
             </Row>
             <Row style={{ marginTop: 5 }}>
               <Col md={12}>
                 {[
-                  this.getButton(20, this.props.applyVersion, 'Согласовать', permissionForButton.applyVersion, this.props.canSave && state.status === 'sent_on_review'),
-                  this.getButton(21, this.props.canselVersion, 'Отклонить', permissionForButton.canselVersion, this.props.canSave && state.status === 'sent_on_review'),
-                  this.getButton(22, this.props.closeVersion, 'Закрыть программу (завершить)', permissionForButton.closeVersion, this.props.canSave && state.status === 'accepted'),
+                  this.getButton(
+                    20,
+                    this.props.applyVersion,
+                    'Согласовать',
+                    permissionForButton.applyVersion,
+                    this.props.canSave && state.status === 'sent_on_review',
+                  ),
+                  this.getButton(
+                    21,
+                    this.props.canselVersion,
+                    'Отклонить',
+                    permissionForButton.canselVersion,
+                    this.props.canSave && state.status === 'sent_on_review',
+                  ),
+                  this.getButton(
+                    22,
+                    this.props.closeVersion,
+                    'Закрыть программу (завершить)',
+                    permissionForButton.closeVersion,
+                    this.props.canSave && state.status === 'accepted',
+                  ),
                 ]}
               </Col>
             </Row>
@@ -404,9 +495,7 @@ class ProgramRegistryForm extends Form {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userPermissionsSet: getSessionState(state).userData.permissionsSet,
-    }),
-  ),
+  connect((state) => ({
+    userPermissionsSet: getSessionState(state).userData.permissionsSet,
+  })),
 )(ProgramRegistryForm);

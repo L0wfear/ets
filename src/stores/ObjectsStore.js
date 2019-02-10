@@ -19,35 +19,100 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(objectsActions.getConfig, this.handleGetConfig);
-    this.register(objectsActions.getMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
-    this.register(objectsActions.createMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
-    this.register(objectsActions.updateMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
-    this.register(objectsActions.deleteMaterialConsumptionRate, this.handleGetMaterialConsumptionRate);
-    this.register(objectsActions.getMaintenanceWork, this.handleGetMaintenanceWork);
-    this.register(objectsActions.createMaintenanceWork, this.handleGetMaintenanceWork);
-    this.register(objectsActions.updateMaintenanceWork, this.handleGetMaintenanceWork);
-    this.register(objectsActions.deleteMaintenanceWork, this.handleGetMaintenanceWork);
+    this.register(
+      objectsActions.getMaterialConsumptionRate,
+      this.handleGetMaterialConsumptionRate,
+    );
+    this.register(
+      objectsActions.createMaterialConsumptionRate,
+      this.handleGetMaterialConsumptionRate,
+    );
+    this.register(
+      objectsActions.updateMaterialConsumptionRate,
+      this.handleGetMaterialConsumptionRate,
+    );
+    this.register(
+      objectsActions.deleteMaterialConsumptionRate,
+      this.handleGetMaterialConsumptionRate,
+    );
+    this.register(
+      objectsActions.getMaintenanceWork,
+      this.handleGetMaintenanceWork,
+    );
+    this.register(
+      objectsActions.createMaintenanceWork,
+      this.handleGetMaintenanceWork,
+    );
+    this.register(
+      objectsActions.updateMaintenanceWork,
+      this.handleGetMaintenanceWork,
+    );
+    this.register(
+      objectsActions.deleteMaintenanceWork,
+      this.handleGetMaintenanceWork,
+    );
     this.register(objectsActions.getCleaningRate, this.handleGetCleaningRate);
-    this.register(objectsActions.createCleaningRate, this.handleGetCleaningRate);
-    this.register(objectsActions.updateCleaningRate, this.handleGetCleaningRate);
-    this.register(objectsActions.deleteCleaningRate, this.handleGetCleaningRate);
-    this.register(objectsActions.getMaintenanceRate, this.handleGetMaintenanceRate);
-    this.register(objectsActions.createMaintenanceRate, this.handleGetMaintenanceRate);
-    this.register(objectsActions.updateMaintenanceRate, this.handleGetMaintenanceRate);
-    this.register(objectsActions.deleteMaintenanceRate, this.handleGetMaintenanceRate);
-    this.register(objectsActions.getCleanCategories, this.handleGetCleanCategories);
+    this.register(
+      objectsActions.createCleaningRate,
+      this.handleGetCleaningRate,
+    );
+    this.register(
+      objectsActions.updateCleaningRate,
+      this.handleGetCleaningRate,
+    );
+    this.register(
+      objectsActions.deleteCleaningRate,
+      this.handleGetCleaningRate,
+    );
+    this.register(
+      objectsActions.getMaintenanceRate,
+      this.handleGetMaintenanceRate,
+    );
+    this.register(
+      objectsActions.createMaintenanceRate,
+      this.handleGetMaintenanceRate,
+    );
+    this.register(
+      objectsActions.updateMaintenanceRate,
+      this.handleGetMaintenanceRate,
+    );
+    this.register(
+      objectsActions.deleteMaintenanceRate,
+      this.handleGetMaintenanceRate,
+    );
+    this.register(
+      objectsActions.getCleanCategories,
+      this.handleGetCleanCategories,
+    );
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getCountry, this.handleGetCountry);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
-    this.register(technicalOperationsActions.getTechnicalOperations, this.handleGetTechOperations);
-    this.register(technicalOperationsActions.getTechnicalOperationsRegistry, this.handleGetTechOperationsRegistry);
-    this.register(technicalOperationsActions.getTechnicalOperationRelations, this.handleGetTechnicalOperationRelations);
-    this.register(technicalOperationsActions.updateTechnicalOperation, this.handleGetTechOperationsRegistry);
-    this.register(technicalOperationsActions.getTechnicalOperationsObjects, this.handleGetTechnicalOperationsObjects);
-    this.register(technicalOperationsActions.getTechnicalOperationsTypes, this.handleGetTechnicalOperationsTypes);
-
+    this.register(
+      technicalOperationsActions.getTechnicalOperations,
+      this.handleGetTechOperations,
+    );
+    this.register(
+      technicalOperationsActions.getTechnicalOperationsRegistry,
+      this.handleGetTechOperationsRegistry,
+    );
+    this.register(
+      technicalOperationsActions.getTechnicalOperationRelations,
+      this.handleGetTechnicalOperationRelations,
+    );
+    this.register(
+      technicalOperationsActions.updateTechnicalOperation,
+      this.handleGetTechOperationsRegistry,
+    );
+    this.register(
+      technicalOperationsActions.getTechnicalOperationsObjects,
+      this.handleGetTechnicalOperationsObjects,
+    );
+    this.register(
+      technicalOperationsActions.getTechnicalOperationsTypes,
+      this.handleGetTechnicalOperationsTypes,
+    );
 
     this.state = {
       carsList: [],
@@ -98,14 +163,19 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetTechnicalOperationsTypes(technicalOperationsTypes) {
-    this.setState({ technicalOperationsTypesList: technicalOperationsTypes.result });
+    this.setState({
+      technicalOperationsTypesList: technicalOperationsTypes.result,
+    });
   }
 
   handleGetCars(cars) {
     const carsList = cars.result.map((c) => {
-      const model = _.find(this.state.modelsList, m => m.id === c.model_id);
+      const model = _.find(this.state.modelsList, (m) => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';
-      const type = _.find(this.state.typesList, t => t.asuods_id === c.type_id);
+      const type = _.find(
+        this.state.typesList,
+        (t) => t.asuods_id === c.type_id,
+      );
       c.type = type ? type.title : 'Н/Д';
       return c;
     });
@@ -115,9 +185,12 @@ export default class ObjectsStore extends Store {
 
   handleGetSomeCars(cars) {
     const carsFilterList = cars.result.rows.map((c) => {
-      const model = _.find(this.state.modelsList, m => m.id === c.model_id);
+      const model = _.find(this.state.modelsList, (m) => m.id === c.model_id);
       c.model = model ? model.title : 'Н/Д';
-      const type = _.find(this.state.typesList, t => t.asuods_id === c.type_id);
+      const type = _.find(
+        this.state.typesList,
+        (t) => t.asuods_id === c.type_id,
+      );
       c.type = type ? type.title : 'Н/Д';
       return c;
     });
@@ -146,9 +219,7 @@ export default class ObjectsStore extends Store {
 
   handleGetTechOperations({ result }) {
     const technicalOperationsMap = new Map();
-    result.forEach(to => (
-      technicalOperationsMap.set(to.id, to)
-    ));
+    result.forEach((to) => technicalOperationsMap.set(to.id, to));
 
     this.setState({
       technicalOperationsList: result,
@@ -207,16 +278,23 @@ export default class ObjectsStore extends Store {
   handleGetCountry({ result: { rows = [] } }) {
     this.setState({
       countryList: rows,
-      countryOptions: rows.map(one => ({ value: one.id, label: one.short_name })),
+      countryOptions: rows.map((one) => ({
+        value: one.id,
+        label: one.short_name,
+      })),
     });
   }
 
   handleGetWorkMode({ result: { rows = [] } }) {
     this.setState({
       workMode: rows,
-      workModeOptions: rows.map(({
-        id, name, start_time_text, end_time_text,
-      }) => ({ value: id, label: `${name} (${start_time_text} - ${end_time_text})`, name })),
+      workModeOptions: rows.map(
+        ({ id, name, start_time_text, end_time_text }) => ({
+          value: id,
+          label: `${name} (${start_time_text} - ${end_time_text})`,
+          name,
+        }),
+      ),
     });
   }
 }

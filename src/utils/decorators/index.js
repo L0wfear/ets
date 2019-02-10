@@ -22,8 +22,9 @@ function FluxContext(target) {
  * @param {object} options - свойства (поля переданного объекта)
  */
 function staticProps(options) {
-  return function decorate(target) {
-    target = Object.assign(target, options);
+  // prettier-ignore
+  return function decorate(target) { // eslint-disable-line
+    target = Object.assign(target, options); // eslint-disable-line
   };
 }
 
@@ -40,10 +41,4 @@ function connectToStores(...args) {
   };
 }
 
-export {
-  exportable,
-  bindable,
-  connectToStores,
-  FluxContext,
-  staticProps,
-};
+export { exportable, bindable, connectToStores, FluxContext, staticProps };

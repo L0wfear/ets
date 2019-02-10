@@ -1,15 +1,14 @@
 import React from 'react';
 import memoize from 'memoize-one';
-import {
-  clone,
-  isEmpty,
-  filter,
-} from 'lodash';
-import Div from 'components/ui/Div';
+import { clone, isEmpty, filter } from 'lodash';
 import FormWrap from 'components/compositions/FormWrap';
 import { getDefaultMission } from 'stores/MissionsStore';
 import { saveData, printData } from 'utils/functions';
-import { diffDates, setZeroSecondsToDate, getDateWithMoscowTz, getDateWithMoscowTzByTimestamp } from 'utils/dates';
+import {
+  diffDates,
+  setZeroSecondsToDate,
+  getDateWithMoscowTzByTimestamp,
+} from 'utils/dates';
 import { missionSchema } from 'models/MissionModel';
 import MissionForm from 'components/missions/mission/MissionForm/MissionForm';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
@@ -30,7 +29,12 @@ class MissionFormWrap extends FormWrap {
   }
 
   async createAction(formState) {
-    const r = await this.context.flux.getActions('missions').createMission(formState, !this.props.fromWaybill || !!this.props.fromOrder);
+    const r = await this.context.flux
+      .getActions('missions')
+      .createMission(
+        formState,
+        !this.props.fromWaybill || !!this.props.fromOrder,
+      );
     if (this.props.refreshTableList) {
       this.props.refreshTableList();
     }
@@ -38,22 +42,18 @@ class MissionFormWrap extends FormWrap {
     return r;
   }
 
-  makeOptionsBySessionStructures = (
-    memoize(
-      structures => structures.map(defaultSelectListMapper),
-    )
-  )
+  makeOptionsBySessionStructures = memoize((structures) =>
+    structures.map(defaultSelectListMapper),
+  );
 
   componentWillReceiveProps(props) {
-    if (props.showForm && (props.showForm !== this.props.showForm)) {
-      const mission = props.element === null ? getDefaultMission() : clone(props.element);
+    if (props.showForm && props.showForm !== this.props.showForm) {
+      const mission =
+        props.element === null ? getDefaultMission() : clone(props.element);
       const waybillsActions = this.context.flux.getActions('waybills');
       const ordersActions = this.context.flux.getActions('objects');
 
-      const {
-        status,
-        order_id,
-      } = mission;
+      const { status, order_id } = mission;
 
       if (mission.structure_id == null) {
         mission.structure_id = this.props.userStructureId;
@@ -63,15 +63,17 @@ class MissionFormWrap extends FormWrap {
       const IS_EXPIRED = status === 'expired';
 
       if (IS_ASSIGNED || IS_IN_PROGRESS || IS_EXPIRED) {
-        waybillsActions.getWaybill(mission.waybill_id).then(({ result: inWaybill }) => {
-          const formErrors = this.validateWrap(mission, {}, { inWaybill });
+        waybillsActions
+          .getWaybill(mission.waybill_id)
+          .then(({ result: inWaybill }) => {
+            const formErrors = this.validateWrap(mission, {}, { inWaybill });
 
-          this.setState({
-            canSave: !filter(formErrors).length,
-            formErrors,
-            inWaybill,
+            this.setState({
+              canSave: !filter(formErrors).length,
+              formErrors,
+              inWaybill,
+            });
           });
-        });
       }
       if (order_id) {
         ordersActions.getOrderById(order_id).then(({ result: [order] }) => {
@@ -105,7 +107,7 @@ class MissionFormWrap extends FormWrap {
         });
       }
     }
-    if (!props.showForm && (props.showForm !== this.props.showForm)) {
+    if (!props.showForm && props.showForm !== this.props.showForm) {
       this.setState({
         order: {},
         inWaybill: {},
@@ -126,16 +128,12 @@ class MissionFormWrap extends FormWrap {
 
   async checkOnMosckowTime() {
     const {
-      time: {
-        date,
-      },
+      time: { date },
     } = await loadMoscowTime();
 
     const currentTime = getDateWithMoscowTzByTimestamp(date);
 
-    const {
-      formState,
-    } = this.state;
+    const { formState } = this.state;
 
     if (diffDates(currentTime, formState.date_start) > 0) {
       this.handleFormStateChange('date_start', currentTime);
@@ -143,7 +141,8 @@ class MissionFormWrap extends FormWrap {
   }
 
   handleFormStateChange = (field, e) => {
-    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    const value =
+      e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
     const newState = {};
@@ -153,7 +152,10 @@ class MissionFormWrap extends FormWrap {
 
     formErrors = this.validateWrap(formState, formErrors);
 
-    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+    newState.canSave = Object.values(formErrors).reduce(
+      (boolean, oneError) => boolean && !oneError,
+      true,
+    );
 
     newState.formState = formState;
     newState.formErrors = formErrors;
@@ -161,19 +163,13 @@ class MissionFormWrap extends FormWrap {
     this.setState(newState);
 
     return newState;
-  }
+  };
 
   validateWrap = (formState, errors, otherData = {}) => {
     let formErrors = this.validate(formState, errors);
 
-    const {
-      inWaybill: othInWaybill = {},
-      order: othOrder = {},
-    } = otherData;
-    const {
-      inWaybill = othInWaybill,
-      order = othOrder,
-    } = this.state;
+    const { inWaybill: othInWaybill = {}, order: othOrder = {} } = otherData;
+    const { inWaybill = othInWaybill, order = othOrder } = this.state;
     const date_start = setZeroSecondsToDate(formState.date_start);
     const date_end = setZeroSecondsToDate(formState.date_end);
     const waybillStartDate = setZeroSecondsToDate(this.props.waybillStartDate);
@@ -181,14 +177,20 @@ class MissionFormWrap extends FormWrap {
 
     if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
       if (diffDates(date_start, waybillStartDate) < -1) {
-        formErrors.date_start = 'Дата не должна выходить за пределы путевого листа';
+        formErrors.date_start =
+          'Дата не должна выходить за пределы путевого листа';
       }
       if (diffDates(date_end, waybillEndDate) > 1) {
-        formErrors.date_end = 'Дата не должна выходить за пределы путевого листа';
+        formErrors.date_end =
+          'Дата не должна выходить за пределы путевого листа';
       }
     }
 
-    if (!this.props.fromWaybill && !this.props.fromOrder && !isEmpty(inWaybill)) {
+    if (
+      !this.props.fromWaybill &&
+      !this.props.fromOrder &&
+      !isEmpty(inWaybill)
+    ) {
       formErrors = {
         ...formErrors,
         ...this.checkDataByWaybillDefault(inWaybill, formState),
@@ -202,7 +204,7 @@ class MissionFormWrap extends FormWrap {
     }
 
     return formErrors;
-  }
+  };
 
   checkDataByWaybillDefault(inWaybill, state) {
     const {
@@ -213,16 +215,14 @@ class MissionFormWrap extends FormWrap {
       fact_arrival_date: fad,
     } = inWaybill;
 
-    const {
-      date_start: new_ds,
-      date_end: new_de,
-    } = state;
+    const { date_start: new_ds, date_end: new_de } = state;
 
     const ansError = {};
 
     if (status === 'draft') {
       if (diffDates(new_ds, pdd) < 0) {
-        ansError.date_start = 'Дата не должна выходить за пределы путевого листа';
+        ansError.date_start =
+          'Дата не должна выходить за пределы путевого листа';
       }
       if (diffDates(new_de, pad) > 0) {
         ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
@@ -231,7 +231,8 @@ class MissionFormWrap extends FormWrap {
 
     if (status === 'active') {
       if (diffDates(new_ds, fdd || pdd) < 0) {
-        ansError.date_start = 'Дата не должна выходить за пределы путевого листа';
+        ansError.date_start =
+          'Дата не должна выходить за пределы путевого листа';
       }
       if (diffDates(new_de, fad || pad) > 0) {
         ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
@@ -249,28 +250,37 @@ class MissionFormWrap extends FormWrap {
       passes_count: new_pc,
     } = state;
 
-    const {
-      order_date,
-      order_date_to,
-      technical_operations = [],
-    } = order;
+    const { order_date, order_date_to, technical_operations = [] } = order;
 
     const {
       date_from = order_date,
       date_to = order_date_to,
       num_exec: order_pc,
-    } = technical_operations.find(({ order_operation_id: to_order_operation_id }) => to_order_operation_id === order_operation_id) || {};
+    } =
+      technical_operations.find(
+        ({ order_operation_id: to_order_operation_id }) =>
+          to_order_operation_id === order_operation_id,
+      ) || {};
 
     const ansError = {};
 
-    if (diffDates(new_ds, date_from || order_date) < 0 || diffDates(new_ds, date_to || order_date_to) > 0) {
-      ansError.date_start = 'Дата не должна выходить за пределы поручения (факсограммы)';
+    if (
+      diffDates(new_ds, date_from || order_date) < 0 ||
+      diffDates(new_ds, date_to || order_date_to) > 0
+    ) {
+      ansError.date_start =
+        'Дата не должна выходить за пределы поручения (факсограммы)';
     }
-    if (diffDates(new_de, date_to || order_date_to) > 0 || diffDates(new_de, date_from || order_date) < 0) {
-      ansError.date_end = 'Дата не должна выходить за пределы поручения (факсограммы)';
+    if (
+      diffDates(new_de, date_to || order_date_to) > 0 ||
+      diffDates(new_de, date_from || order_date) < 0
+    ) {
+      ansError.date_end =
+        'Дата не должна выходить за пределы поручения (факсограммы)';
     }
     if (Number.parseInt(new_pc, 0) > order_pc) {
-      ansError.passes_count = 'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
+      ansError.passes_count =
+        'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
     }
 
     return ansError;
@@ -283,13 +293,16 @@ class MissionFormWrap extends FormWrap {
 
     this.props.getMapImageInBase64ByKey(printMapKeySmall).then((image) => {
       data.image = image;
-      flux.getActions('missions').printMission(data).then(({ blob }) => {
-        if (print_form_type === 1) {
-          saveData(blob, `Задание №${f.number}.pdf`);
-        } else {
-          printData(blob);
-        }
-      });
+      flux
+        .getActions('missions')
+        .printMission(data)
+        .then(({ blob }) => {
+          if (print_form_type === 1) {
+            saveData(blob, `Задание №${f.number}.pdf`);
+          } else {
+            printData(blob);
+          }
+        });
     });
   }
 
@@ -298,7 +311,8 @@ class MissionFormWrap extends FormWrap {
     const { formState } = this.state;
 
     Object.entries(changesObj).forEach(([field, e]) => {
-      const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      const value =
+        e !== undefined && e !== null && !!e.target ? e.target.value : e;
       console.info('Form changed', field, value);
       formState[field] = value;
     });
@@ -306,13 +320,16 @@ class MissionFormWrap extends FormWrap {
     const newState = {};
     formErrors = this.validateWrap(formState, formErrors);
 
-    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+    newState.canSave = Object.values(formErrors).reduce(
+      (boolean, oneError) => boolean && !oneError,
+      true,
+    );
 
     newState.formState = formState;
     newState.formErrors = formErrors;
 
     this.setState(newState);
-  }
+  };
 
   render() {
     const props = {
@@ -329,35 +346,29 @@ class MissionFormWrap extends FormWrap {
 
     return (
       <React.Fragment>
-        {
-          this.props.showForm
-            ? (
-              <MissionForm
-                formState={this.state.formState}
-                onSubmit={this.handleFormSubmit.bind(this)}
-                handleFormChange={this.handleFormStateChange.bind(this)}
-                handleMultiFormChange={this.handlMultiFormStateChange}
-                handlePrint={this.handlePrint.bind(this)}
-                printMapKeySmall={printMapKeySmall}
-                {...props}
-                {...this.state}
-                show
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
+        {this.props.showForm ? (
+          <MissionForm
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit.bind(this)}
+            handleFormChange={this.handleFormStateChange.bind(this)}
+            handleMultiFormChange={this.handlMultiFormStateChange}
+            handlePrint={this.handlePrint.bind(this)}
+            printMapKeySmall={printMapKeySmall}
+            {...props}
+            {...this.state}
+            show
+          />
+        ) : (
+          <DivNone />
+        )}
       </React.Fragment>
     );
   }
 }
 
 export default compose(
-  connect(
-    state => ({
-      userStructureId: getSessionState(state).userData.structure_id,
-    }),
-  ),
+  connect((state) => ({
+    userStructureId: getSessionState(state).userData.structure_id,
+  })),
   withMapInConsumer(),
 )(MissionFormWrap);

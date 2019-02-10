@@ -25,11 +25,12 @@ class DutyMissionForm extends React.Component {
     };
   }
 
-  handleChangeRComment = ({ target: { value: comment } }) => this.setState({ comment });
+  handleChangeRComment = ({ target: { value: comment } }) =>
+    this.setState({ comment });
 
   handleClick = () => {
     const { rejectedDutyMission } = this.props;
-    const { indexCurrMission, comment, needUpdate } = this.state;
+    const { indexCurrMission, comment } = this.state;
     const allQuery = [...this.state.allQuery];
 
     const updatedMission = {
@@ -38,10 +39,10 @@ class DutyMissionForm extends React.Component {
       comment,
     };
 
-    const query = this.props.actionUpdateDutyMission(
-      updatedMission,
-      { page: this.props.page, path: pagePath },
-    );
+    const query = this.props.actionUpdateDutyMission(updatedMission, {
+      page: this.props.page,
+      path: pagePath,
+    });
     allQuery.push(query);
 
     if (indexCurrMission === 0) {
@@ -54,7 +55,7 @@ class DutyMissionForm extends React.Component {
         needUpdate: true,
       });
     }
-  }
+  };
 
   handlClickNext = () => {
     const { indexCurrMission, needUpdate } = this.state;
@@ -71,18 +72,26 @@ class DutyMissionForm extends React.Component {
         indexCurrMission: indexCurrMission - 1,
       });
     }
-  }
+  };
 
   render() {
     const { comment, indexCurrMission } = this.state;
 
     return (
-      <Modal id="modal-duty-mission-reject" onHide={this.handlClickNext} show backdrop="static">
-
+      <Modal
+        id="modal-duty-mission-reject"
+        onHide={this.handlClickNext}
+        show
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{`Введите причину для наряд-задания №${this.props.rejectedDutyMission[indexCurrMission].number}`}</Modal.Title>
+          <Modal.Title>{`Введите причину для наряд-задания №${
+            this.props.rejectedDutyMission[indexCurrMission].number
+          }`}</Modal.Title>
         </Modal.Header>
-        <ModalBodyPreloader page={this.props.page} path={pagePath} typePreloader="mainpage">
+        <ModalBodyPreloader
+          page={this.props.page}
+          path={pagePath}
+          typePreloader="mainpage">
           <Row>
             <Col md={12}>
               <ExtField
@@ -95,8 +104,10 @@ class DutyMissionForm extends React.Component {
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-          <Button disabled={!comment} onClick={this.handleClick} >Отметка о невыполнении</Button>
-          <Button onClick={this.handlClickNext} >Отмена</Button>
+          <Button disabled={!comment} onClick={this.handleClick}>
+            Отметка о невыполнении
+          </Button>
+          <Button onClick={this.handlClickNext}>Отмена</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -106,12 +117,9 @@ class DutyMissionForm extends React.Component {
 export default compose(
   connect(
     null,
-    dispatch => ({
-      actionUpdateDutyMission: (...arg) => (
-        dispatch(
-          missionsActions.actionUpdateDutyMission(...arg)
-        )
-      ),
+    (dispatch) => ({
+      actionUpdateDutyMission: (...arg) =>
+        dispatch(missionsActions.actionUpdateDutyMission(...arg)),
     }),
   ),
 )(DutyMissionForm);

@@ -6,10 +6,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Row from 'react-bootstrap/lib/Row';
 
 import { isEmpty } from 'utils/functions';
-import {
-  reduce,
-  cloneDeep,
-} from 'lodash';
+import { reduce, cloneDeep } from 'lodash';
 import Div from 'components/ui/Div';
 import FilterRow from 'components/ui/table/filter/FilterRow';
 import { Col } from 'react-bootstrap';
@@ -55,19 +52,25 @@ export default class Filter extends React.Component {
   // переделать
   getName = (name, type) => {
     switch (type) {
-      case 'advanced-select-like': return `${name}__like`;
-      default: return name;
+      case 'advanced-select-like':
+        return `${name}__like`;
+      default:
+        return name;
     }
-  }
+  };
 
   handleFilterValueChange = (key, e) => {
-    const { filterValues: { ...filterValues } } = this.state;
+    const {
+      filterValues: { ...filterValues },
+    } = this.state;
 
     if (!e || isEmpty(e.target ? e.target.value : e)) {
       delete filterValues[key];
     } else {
       const data = e.target ? e.target.value : e;
-      const { filter } = this.props.options.find(({ name }) => key.match(`^${name}`));
+      const { filter } = this.props.options.find(({ name }) =>
+        key.match(`^${name}`),
+      );
 
       filterValues[key] = {
         type: filter.type || 'text',
@@ -76,34 +79,41 @@ export default class Filter extends React.Component {
     }
 
     this.setState({ filterValues });
-  }
+  };
 
   submit = () => {
-    const filterValues = reduce(this.state.filterValues, (cur, v, k) => {
-      if (typeof v !== 'undefined') {
-        if (typeof v === 'string') {
-          if (v.length > 0) {
+    const filterValues = reduce(
+      this.state.filterValues,
+      (cur, v, k) => {
+        if (typeof v !== 'undefined') {
+          if (typeof v === 'string') {
+            if (v.length > 0) {
+              cur[k] = v;
+            }
+          } else {
             cur[k] = v;
           }
-        } else {
-          cur[k] = v;
         }
-      }
-      return cur;
-    }, {});
+        return cur;
+      },
+      {},
+    );
     this.props.onSubmit(filterValues);
-  }
+  };
 
   reset = () => this.props.onSubmit({});
 
-  checkDisabledButton = filterValues => Object.keys(filterValues).length === 0;
+  checkDisabledButton = (filterValues) =>
+    Object.keys(filterValues).length === 0;
 
   handleFilterMultipleValueChange(key, v) {
     const { filterValues: oldFilterValues } = this.state;
 
     const filterValues = cloneDeep(oldFilterValues);
     const data = !isEmpty(v) ? v : [];
-    const { filter } = this.props.options.find(({ name }) => key.match(`^${name}`));
+    const { filter } = this.props.options.find(({ name }) =>
+      key.match(`^${name}`),
+    );
 
     // для формата под новую таблицу
     filterValues[key] = {
@@ -138,8 +148,18 @@ export default class Filter extends React.Component {
           labelFunction={labelFunction}
           availableOptions={options}
           displayName={displayName}
-          onChange={(...args) => this.handleFilterValueChange(this.getName(byKey || name, type), ...args)}
-          onMultiChange={(...args) => this.handleFilterMultipleValueChange(this.getName(byKey || name, type), ...args)}
+          onChange={(...args) =>
+            this.handleFilterValueChange(
+              this.getName(byKey || name, type),
+              ...args,
+            )
+          }
+          onMultiChange={(...args) =>
+            this.handleFilterMultipleValueChange(
+              this.getName(byKey || name, type),
+              ...args,
+            )
+          }
         />
       );
     });
@@ -149,9 +169,21 @@ export default class Filter extends React.Component {
         <Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
-              <Button id="apply-filter" onClick={this.submit}>Применить</Button>
-              <Button id="reset-filter" onClick={this.reset} disabled={this.checkDisabledButton(filterValues)}>Сброс</Button>
-              <span id="filter-close" className="filter-close" onClick={this.props.onHide}><Glyphicon glyph="remove" /></span>
+              <Button id="apply-filter" onClick={this.submit}>
+                Применить
+              </Button>
+              <Button
+                id="reset-filter"
+                onClick={this.reset}
+                disabled={this.checkDisabledButton(filterValues)}>
+                Сброс
+              </Button>
+              <span
+                id="filter-close"
+                className="filter-close"
+                onClick={this.props.onHide}>
+                <Glyphicon glyph="remove" />
+              </span>
             </Div>
             <Row>
               <Col md={12}>

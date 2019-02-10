@@ -15,20 +15,35 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 const PermittedSlug = ['dt', 'odh'];
 const setTypeOptionsBySlug = (slug, allOptions) => {
   switch (slug) {
-    case 'dt': return allOptions.filter(({ label }) => label === 'Капитальный');
-    case 'odh': return allOptions;
-    default: return [];
+    case 'dt':
+      return allOptions.filter(({ label }) => label === 'Капитальный');
+    case 'odh':
+      return allOptions;
+    default:
+      return [];
   }
 };
 
 @connectToStores(['repair', 'objects'])
-export default class ProgramRegistryForm extends Form {
+class ProgramRegistryForm extends Form {
   state = { REPAIR_TYPES_OPTIONS: [] };
   componentDidMount() {
     const { flux } = this.context;
 
-    flux.getActions('repair').getRepairListByType('stateProgram', { status: 'active' }, { makeOptions: true, selectListMapper: defaultSelectListMapper });
-    flux.getActions('repair').getRepairListByType('repairType', {}, { makeOptions: true, selectListMapper: defaultSelectListMapper });
+    flux
+      .getActions('repair')
+      .getRepairListByType(
+        'stateProgram',
+        { status: 'active' },
+        { makeOptions: true, selectListMapper: defaultSelectListMapper },
+      );
+    flux
+      .getActions('repair')
+      .getRepairListByType(
+        'repairType',
+        {},
+        { makeOptions: true, selectListMapper: defaultSelectListMapper },
+      );
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
   }
 
@@ -41,14 +56,14 @@ export default class ProgramRegistryForm extends Form {
 
     const REPAIR_TYPES_OPTIONS = setTypeOptionsBySlug(
       technicalOperationsObjectsList.find(({ id }) => id === val).slug,
-      repairTypeOptions
+      repairTypeOptions,
     );
 
     this.setState({ REPAIR_TYPES_OPTIONS });
 
     this.handleChange(fieldName, val);
     this.handleChange('repair_type_id', null);
-  }
+  };
   render() {
     const {
       formState: state,
@@ -60,20 +75,27 @@ export default class ProgramRegistryForm extends Form {
 
     const { REPAIR_TYPES_OPTIONS = [] } = this.state;
 
-    const OBJECTS = technicalOperationsObjectsList.reduce((arr, { id, full_name, slug }) => {
-      if (PermittedSlug.includes(slug)) {
-        arr.push({ value: id, label: full_name, slug });
-      }
+    const OBJECTS = technicalOperationsObjectsList.reduce(
+      (arr, { id, full_name, slug }) => {
+        if (PermittedSlug.includes(slug)) {
+          arr.push({ value: id, label: full_name, slug });
+        }
 
-      return arr;
-    }, []);
+        return arr;
+      },
+      [],
+    );
 
     const title = 'Создание программы ремонта';
 
     return (
-      <Modal id="modal-program-registry-c" show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal
+        id="modal-program-registry-c"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>
@@ -145,9 +167,13 @@ export default class ProgramRegistryForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.props.onSubmit}>Далее</Button>
+          <Button disabled={!this.props.canSave} onClick={this.props.onSubmit}>
+            Далее
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
 }
+
+export default ProgramRegistryForm;

@@ -30,7 +30,7 @@ export default class Mock {
   getData(payload = {}) {
     let data = this.data;
     map(payload, (v, k) => {
-      data = data.filter(obj => obj[k] === v);
+      data = data.filter((obj) => obj[k] === v);
     });
     return {
       data,

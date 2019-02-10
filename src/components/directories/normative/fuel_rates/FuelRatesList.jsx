@@ -39,7 +39,7 @@ class FuelRatesDirectory extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { flux } = this.context;
@@ -60,7 +60,7 @@ class FuelRatesDirectory extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 }
 
 export default compose(
@@ -69,12 +69,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       fuelRatesList: getFuelRatesState(state).fuelRatesList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      fuelRatesGetAndSetInStore: () => (
+    (dispatch) => ({
+      fuelRatesGetAndSetInStore: () =>
         dispatch(
           fuelRatesGetAndSetInStore(
             {},
@@ -82,13 +82,8 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      fuelRateDelete: id => (
-        dispatch(
-          fuelRateDelete(id),
-        )
-      ),
+        ),
+      fuelRateDelete: (id) => dispatch(fuelRateDelete(id)),
     }),
   ),
 )(FuelRatesDirectory);

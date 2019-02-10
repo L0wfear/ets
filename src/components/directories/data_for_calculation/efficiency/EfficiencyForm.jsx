@@ -9,8 +9,7 @@ import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['odh', 'objects'])
-export default class EfficiencyForm extends Form {
-
+class EfficiencyForm extends Form {
   async componentDidMount() {
     const { flux } = this.context;
     await flux.getActions('odh').getODHNorm();
@@ -21,19 +20,42 @@ export default class EfficiencyForm extends Form {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { technicalOperationsList = [], odhNormList = [] } = this.props;
-    const IS_CREATING = !!!state.id;
-    const title = IS_CREATING ? 'Добавление показателя для расчета эффективности' : 'Изменение показателя для расчета эффективности';
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
-    const ODH_NORMS = odhNormList.map(({ id, norm }) => ({ value: id, label: norm }));
-    const ODH_FIELDS = ['Общая площадь (кв.м.)', 'Протяженность (п.м.)', 'Площадь проезжей части (кв.м.)', 'Площадь тротуаров (кв.м.)',
-      'Площадь уборки (кв.м.)', 'Площадь механизированной уборки тротуаров (кв.м.)', 'Площадь ручной уборки тротуаров (кв.м.)',
-      'Площадь уборки снега (кв.м.)', 'Протяженность лотков (п.м.)'].map((label, value) => ({ value, label }));
-    const SOURCES = [{ value: 0, label: 'Реестр ОДХ' }, { value: 1, label: 'Справочник показателей норм на содержание ОДХ' }];
+    const IS_CREATING = !state.id;
+    const title = IS_CREATING
+      ? 'Добавление показателя для расчета эффективности'
+      : 'Изменение показателя для расчета эффективности';
+    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({
+      value: id,
+      label: name,
+    }));
+    const ODH_NORMS = odhNormList.map(({ id, norm }) => ({
+      value: id,
+      label: norm,
+    }));
+    const ODH_FIELDS = [
+      'Общая площадь (кв.м.)',
+      'Протяженность (п.м.)',
+      'Площадь проезжей части (кв.м.)',
+      'Площадь тротуаров (кв.м.)',
+      'Площадь уборки (кв.м.)',
+      'Площадь механизированной уборки тротуаров (кв.м.)',
+      'Площадь ручной уборки тротуаров (кв.м.)',
+      'Площадь уборки снега (кв.м.)',
+      'Протяженность лотков (п.м.)',
+    ].map((label, value) => ({ value, label }));
+    const SOURCES = [
+      { value: 0, label: 'Реестр ОДХ' },
+      { value: 1, label: 'Справочник показателей норм на содержание ОДХ' },
+    ];
 
     return (
-      <Modal id="modal-efficiency" show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal
+        id="modal-efficiency"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Div>
@@ -80,9 +102,15 @@ export default class EfficiencyForm extends Form {
           </Div>
         </ModalBody>
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button
+            disabled={!this.props.canSave}
+            onClick={this.handleSubmit.bind(this)}>
+            Сохранить
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
 }
+
+export default EfficiencyForm;

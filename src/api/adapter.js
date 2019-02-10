@@ -29,11 +29,16 @@ export function toFormData(data) {
 }
 
 function urlencode(jsonObject) {
-  return Object.keys(jsonObject).map(k => `${k}=${encodeURIComponent(jsonObject[k])}`).join('&');
+  return Object.keys(jsonObject)
+    .map((k) => `${k}=${encodeURIComponent(jsonObject[k])}`)
+    .join('&');
 }
 
 function checkResponse(url, response, body, method) {
-  const usedUrl = url.slice(0, url.indexOf('?') > -1 ? url.indexOf('?') : url.length);
+  const usedUrl = url.slice(
+    0,
+    url.indexOf('?') > -1 ? url.indexOf('?') : url.length,
+  );
   const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
 
   if (response.status === 500) {
@@ -64,7 +69,9 @@ function checkResponse(url, response, body, method) {
 
     body.errors.forEach((er) => {
       console.error(er);
-      global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}`));
+      global.NOTIFICATION_SYSTEM.notify(
+        getServerErrorNotification(`/${method} ${serviceName}`),
+      );
     });
     const errorThrow = {
       error: body,
@@ -74,16 +81,19 @@ function checkResponse(url, response, body, method) {
   }
 }
 
-function httpMethod(url, data = {}, method, type, params = {}) {
+function httpMethod(urlOwn, dataOwn = {}, method, type, params = {}) {
   let body;
-  data = { ...data };
-  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2) || null);
+  let url = urlOwn;
+  const data = { ...dataOwn };
+  const token = JSON.parse(
+    window.localStorage.getItem(global.SESSION_KEY2) || null,
+  );
 
   const options = {
     method,
     headers: {
-      'Accept': 'application/json',
-      'Authorization': `Token ${token}`,
+      Accept: 'application/json',
+      Authorization: `Token ${token}`,
     },
     credentials: 'include',
   };
@@ -124,9 +134,9 @@ function httpMethod(url, data = {}, method, type, params = {}) {
         const currV = process.env.VERSION;
 
         if (servV) {
-          const [,, minorS, someS] = servV.split('.');
-          const [,, minorV, someV] = currV.split('.');
-          if ((minorS > minorV) || (someS > someV && (minorS === minorV))) {
+          const [, , minorS, someS] = servV.split('.');
+          const [, , minorV, someV] = currV.split('.');
+          if (minorS > minorV || (someS > someV && minorS === minorV)) {
             global.NOTIFICATION_SYSTEM.notifyWithObject({
               title: 'Вышла новая версия',
               level: 'warning',

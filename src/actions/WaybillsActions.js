@@ -1,14 +1,7 @@
 import { Actions } from 'flummox';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import {
-  cloneDeep,
-  clone,
-  mapKeys,
-} from 'lodash';
-import {
-  hasMotohours,
-  isEmpty,
-} from 'utils/functions';
+import { cloneDeep, clone, mapKeys } from 'lodash';
+import { hasMotohours, isEmpty } from 'utils/functions';
 import {
   WaybillService,
   LatestWaybillDriverService,
@@ -20,7 +13,6 @@ import { parseFilterObject } from 'actions/MissionsActions';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
-
 export default class WaybillsActions extends Actions {
   getWaybills(limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
     const payload = {
@@ -29,7 +21,7 @@ export default class WaybillsActions extends Actions {
       sort_by,
       filter: JSON.stringify(parseFilterObject(cloneDeep(filter))),
     };
-    return WaybillService.get(payload).then(ans => ({
+    return WaybillService.get(payload).then((ans) => ({
       ...ans,
       result: ans.result.map((waybill) => {
         if (waybill.tax_data) {
@@ -93,7 +85,9 @@ export default class WaybillsActions extends Actions {
       payload.date = createValidDate(state.date);
     }
 
-    return WaybillJournalReportService.path(`?filter=${JSON.stringify(parseFilterObject(cloneDeep(filter)))}`).postBlob(payload);
+    return WaybillJournalReportService.path(
+      `?filter=${JSON.stringify(parseFilterObject(cloneDeep(filter)))}`,
+    ).postBlob(payload);
   }
 
   getWaybillsReport(state, filter) {
@@ -119,31 +113,39 @@ export default class WaybillsActions extends Actions {
 
   updateWaybill(waybill) {
     const payload = clone(waybill);
-    payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
+    payload.plan_departure_date = createValidDateTime(
+      payload.plan_departure_date,
+    );
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
     payload.equipment_fuel = +payload.equipment_fuel;
 
-    payload.fact_departure_date = createValidDateTime(payload.fact_departure_date);
+    payload.fact_departure_date = createValidDateTime(
+      payload.fact_departure_date,
+    );
     payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
 
     if (payload.tax_data) {
-      const tax_data = payload.tax_data.filter(t => !isEmpty(t.FACT_VALUE)).map((tax) => {
-        delete tax.originOperation;
-        delete tax.isDisabled;
-        delete tax.uniqKey;
+      const tax_data = payload.tax_data
+        .filter((t) => !isEmpty(t.FACT_VALUE))
+        .map((tax) => {
+          delete tax.originOperation;
+          delete tax.isDisabled;
+          delete tax.uniqKey;
 
-        return tax;
-      });
+          return tax;
+        });
       payload.tax_data = tax_data;
     }
     if (payload.equipment_tax_data) {
-      const equipment_tax_data = payload.equipment_tax_data.filter(t => !isEmpty(t.FACT_VALUE)).map((tax) => {
-        delete tax.originOperation;
-        delete tax.isDisabled;
-        delete tax.uniqKey;
+      const equipment_tax_data = payload.equipment_tax_data
+        .filter((t) => !isEmpty(t.FACT_VALUE))
+        .map((tax) => {
+          delete tax.originOperation;
+          delete tax.isDisabled;
+          delete tax.uniqKey;
 
-        return tax;
-      });
+          return tax;
+        });
       payload.equipment_tax_data = equipment_tax_data;
     }
 
@@ -185,7 +187,10 @@ export default class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    if (!isEmpty(payload.mission_id_list) && payload.mission_id_list.length === 0) {
+    if (
+      !isEmpty(payload.mission_id_list) &&
+      payload.mission_id_list.length === 0
+    ) {
       payload.mission_id_list = [];
     }
 
@@ -199,7 +204,9 @@ export default class WaybillsActions extends Actions {
    */
   createWaybill(waybill) {
     const payload = clone(waybill);
-    payload.plan_departure_date = createValidDateTime(payload.plan_departure_date);
+    payload.plan_departure_date = createValidDateTime(
+      payload.plan_departure_date,
+    );
     payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
 
     payload.equipment_fuel = +payload.equipment_fuel;
@@ -208,7 +215,7 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
     delete payload.all_missions_completed_or_failed;
-    mapKeys(payload, (v, k) => isEmpty(v) ? delete payload[k] : undefined);
+    mapKeys(payload, (v, k) => (isEmpty(v) ? delete payload[k] : undefined));
 
     if (hasMotohours(payload.gov_number)) {
       delete payload.odometr_start;
@@ -220,7 +227,10 @@ export default class WaybillsActions extends Actions {
       payload.mission_id_list = [];
     }
 
-    if (!isEmpty(payload.mission_id_list) && payload.mission_id_list.length === 0) {
+    if (
+      !isEmpty(payload.mission_id_list) &&
+      payload.mission_id_list.length === 0
+    ) {
       payload.mission_id_list = [];
     }
 

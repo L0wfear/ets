@@ -21,7 +21,9 @@ class MaterialConsumptionRateDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('objects').deleteMaterialConsumptionRate;
+    this.removeElementAction = context.flux.getActions(
+      'objects',
+    ).deleteMaterialConsumptionRate;
   }
 
   init() {
@@ -34,9 +36,7 @@ class MaterialConsumptionRateDirectory extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(MaterialConsumptionRateDirectory);

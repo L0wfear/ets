@@ -20,8 +20,8 @@ export default class NotificationsStore extends Store {
           'programVersionPut',
         ],
         actionNotifications: {
-          'stateProgram': 'Запись успешно добавлена',
-          'contractor': 'Запись успешно добавлена',
+          stateProgram: 'Запись успешно добавлена',
+          contractor: 'Запись успешно добавлена',
         },
       },
       {
@@ -38,9 +38,7 @@ export default class NotificationsStore extends Store {
       },
       {
         actions: missionsActions,
-        actionNames: [
-          'createDutyMissions',
-        ],
+        actionNames: ['createDutyMissions'],
       },
     ];
 
@@ -55,14 +53,30 @@ export default class NotificationsStore extends Store {
       },
     ];
 
-    saveNotificationQueue.forEach(opts => opts.actionNames.forEach(name => this.register(opts.actions[name], this.handleSave.bind(null, get(opts, ['actionNotifications', name], 'Данные успешно сохранены')))));
+    saveNotificationQueue.forEach((opts) =>
+      opts.actionNames.forEach((name) =>
+        this.register(
+          opts.actions[name],
+          this.handleSave.bind(
+            null,
+            get(
+              opts,
+              ['actionNotifications', name],
+              'Данные успешно сохранены',
+            ),
+          ),
+        ),
+      ),
+    );
 
-    removeNotificationQueue.forEach(opts => opts.actionNames.forEach(name => this.register(opts.actions[name], this.handleRemove)));
-
+    removeNotificationQueue.forEach((opts) =>
+      opts.actionNames.forEach((name) =>
+        this.register(opts.actions[name], this.handleRemove),
+      ),
+    );
 
     this.register(missionsActions.createMission, this.handleMissionCreate);
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
-
 
     this.state = {
       operationsCount: 0,
@@ -72,7 +86,9 @@ export default class NotificationsStore extends Store {
   checkResponse(response) {
     let valid = false;
     if (Array.isArray(response)) {
-      valid = response.filter(obj => obj.errors && obj.errors.length > 0).length === 0;
+      valid =
+        response.filter((obj) => obj.errors && obj.errors.length > 0).length ===
+        0;
     } else if (!response.errors || response.errors.length === 0) {
       valid = true;
     }
@@ -81,13 +97,17 @@ export default class NotificationsStore extends Store {
 
   handleMissionCreate(response) {
     if (this.checkResponse(response)) {
-      global.NOTIFICATION_SYSTEM.notify(notifications.missionCreateSuccessNotification);
+      global.NOTIFICATION_SYSTEM.notify(
+        notifications.missionCreateSuccessNotification,
+      );
     }
   }
 
   handleMissionsCreate(response) {
     if (this.checkResponse(response)) {
-      global.NOTIFICATION_SYSTEM.notify(notifications.missionsCreationSuccessNotification);
+      global.NOTIFICATION_SYSTEM.notify(
+        notifications.missionsCreationSuccessNotification,
+      );
     }
   }
 

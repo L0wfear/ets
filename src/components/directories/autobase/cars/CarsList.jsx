@@ -32,9 +32,7 @@ class CarsList extends ElementsList {
     const { flux } = this.context;
 
     const {
-      location: {
-        search,
-      },
+      location: { search },
     } = this.props;
 
     const searchObject = queryString.parse(search);
@@ -46,7 +44,9 @@ class CarsList extends ElementsList {
 
     if (searchObject.asuods_id) {
       const asuods_id = parseInt(searchObject.asuods_id, 10);
-      const selectedElement = cars.result.find(car => car.asuods_id === asuods_id);
+      const selectedElement = cars.result.find(
+        (car) => car.asuods_id === asuods_id,
+      );
 
       if (selectedElement) {
         this.setState({
@@ -54,7 +54,11 @@ class CarsList extends ElementsList {
           showForm: true,
         });
       } else {
-        global.NOTIFICATION_SYSTEM.notify(getWarningNotification(`Не найдено ТС c (asuods_id = ${searchObject.asuods_id})`));
+        global.NOTIFICATION_SYSTEM.notify(
+          getWarningNotification(
+            `Не найдено ТС c (asuods_id = ${searchObject.asuods_id})`,
+          ),
+        );
       }
     }
     if (searchObject) {
@@ -64,9 +68,7 @@ class CarsList extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(CarsList);

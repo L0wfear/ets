@@ -8,13 +8,15 @@ import * as queryString from 'query-string';
 import Preloader from 'components/ui/new/preloader/Preloader';
 import { FluxContext } from 'utils/decorators';
 
-import {
-  EtsPageWrap,
-} from 'global-styled/global-styled';
+import { EtsPageWrap } from 'global-styled/global-styled';
 
 import {
-  ButtonCreateNew, ButtonReadNew, ButtonDeleteNew,
-  ButtonCreate, ButtonRead, ButtonDelete,
+  ButtonCreateNew,
+  ButtonReadNew,
+  ButtonDeleteNew,
+  ButtonCreate,
+  ButtonRead,
+  ButtonDelete,
 } from 'components/ui/buttons/CRUD';
 
 /**
@@ -22,8 +24,6 @@ import {
  * используется для наследования
  * @extends React.Component
  */
-
-const lastDate = +(new Date());
 
 @FluxContext
 class ElementsList extends React.Component {
@@ -72,7 +72,8 @@ class ElementsList extends React.Component {
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
 
-    const readPermission = this.props.userData.permissionsSet.has(`${this.entity}.read`) > -1;
+    const readPermission =
+      this.props.userData.permissionsSet.has(`${this.entity}.read`) > -1;
     this.setState({ readPermission });
 
     this.init();
@@ -98,7 +99,7 @@ class ElementsList extends React.Component {
     if (selectedElement[this.selectField]) {
       this.setState({ selectedElement });
     }
-  }
+  };
 
   onRowClick = ({ props: { data } }) => {
     if (data[this.selectField]) {
@@ -106,7 +107,7 @@ class ElementsList extends React.Component {
         selectedElement: data,
       });
     }
-  }
+  };
 
   onRowDoubleClick = ({ props: { data } }) => {
     if (this.state.readPermission && data[this.selectField]) {
@@ -115,10 +116,10 @@ class ElementsList extends React.Component {
         showForm: true,
       });
     }
-  }
+  };
 
-  setNewSelectedElement = selectedElement => Promise.resolve(this.setState({ showForm: false }))
-    .then(() => {
+  setNewSelectedElement = (selectedElement) =>
+    Promise.resolve(this.setState({ showForm: false })).then(() => {
       this.setState({
         showForm: true,
         selectedElement,
@@ -133,7 +134,7 @@ class ElementsList extends React.Component {
       showForm: true,
       selectedElement: null,
     });
-  }
+  };
 
   /**
    * Открывает форму
@@ -142,7 +143,7 @@ class ElementsList extends React.Component {
     this.setState({
       showForm: true,
     });
-  }
+  };
 
   /**
    * Закрывает форму и обнуляет выбранный элемент
@@ -152,11 +153,11 @@ class ElementsList extends React.Component {
       showForm: false,
       selectedElement: null,
     });
-  }
+  };
 
   formCallback = () => {
     this.onFormHide();
-  }
+  };
 
   /**
    * Вызывает диалог подтверждения удаления выбранного элемента и в случае подтверждения удаляет выбранный элемент
@@ -165,7 +166,10 @@ class ElementsList extends React.Component {
    * this.removeElementCallback переопределяет операцию по умолчанию ([serviceName].get) после удаления
    */
   removeElement = () => {
-    if (typeof this.removeElementAction !== 'function' || this.state.selectedElement === null) {
+    if (
+      typeof this.removeElementAction !== 'function' ||
+      this.state.selectedElement === null
+    ) {
       return Promise.reject();
     }
 
@@ -176,25 +180,33 @@ class ElementsList extends React.Component {
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
       .then(() => {
-        const query = this.removeElementAction(this.state.selectedElement[this.selectField], removeCallback);
+        const query = this.removeElementAction(
+          this.state.selectedElement[this.selectField],
+          removeCallback,
+        );
 
         this.setState({ selectedElement: null });
         return query;
       })
       .catch(() => {});
-  }
+  };
 
   onKeyPress(e) {
     const { activeElement } = document;
 
     if (activeElement) {
       const activeTabIndex = activeElement.getAttribute('tabIndex');
-      const appropriateTabIndex = activeTabIndex === '1' || activeTabIndex === '2';
+      const appropriateTabIndex =
+        activeTabIndex === '1' || activeTabIndex === '2';
       if (!appropriateTabIndex) {
         return;
       }
 
-      if (e.code === 'Enter' && this.state.selectedElement !== null && this.state.readPermission) {
+      if (
+        e.code === 'Enter' &&
+        this.state.selectedElement !== null &&
+        this.state.readPermission
+      ) {
         this.showForm();
       }
 
@@ -230,81 +242,76 @@ class ElementsList extends React.Component {
 
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
-        this.permissions.create
-          ? (
-            <ButtonCreateNew
-              key="button-create"
-              buttonName={BCbuttonName}
-              onClick={this.createElement}
-              permission={this.permissions.create}
-            />
-          )
-          : (
-            <ButtonCreate
-              buttonName={BCbuttonName}
-              key={buttons.length}
-              onClick={this.createElement}
-              permissions={[`${entity}.create`]}
-            />
-          ),
+        this.permissions.create ? (
+          <ButtonCreateNew
+            key="button-create"
+            buttonName={BCbuttonName}
+            onClick={this.createElement}
+            permission={this.permissions.create}
+          />
+        ) : (
+          <ButtonCreate
+            buttonName={BCbuttonName}
+            key={buttons.length}
+            onClick={this.createElement}
+            permissions={[`${entity}.create`]}
+          />
+        ),
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
-        this.permissions.read
-          ? (
-            <ButtonReadNew
-              key="button-read"
-              buttonName={BRbuttonName}
-              onClick={this.showForm}
-              permission={this.permissions.read}
-              disabled={this.checkDisabledRead()}
-            />
-          )
-          : (
-            <ButtonRead
-              buttonName={BRbuttonName}
-              key={buttons.length}
-              onClick={this.showForm}
-              disabled={this.checkDisabledRead()}
-              permissions={[`${entity}.read`]}
-            />
-          ),
+        this.permissions.read ? (
+          <ButtonReadNew
+            key="button-read"
+            buttonName={BRbuttonName}
+            onClick={this.showForm}
+            permission={this.permissions.read}
+            disabled={this.checkDisabledRead()}
+          />
+        ) : (
+          <ButtonRead
+            buttonName={BRbuttonName}
+            key={buttons.length}
+            onClick={this.showForm}
+            disabled={this.checkDisabledRead()}
+            permissions={[`${entity}.read`]}
+          />
+        ),
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
-        this.permissions.read
-          ? (
-            <ButtonDeleteNew
-              key="button-delete"
-              buttonName={BDbuttonName}
-              onClick={this.removeElement}
-              permission={this.permissions.delete}
-              disabled={this.checkDisabledDelete()}
-            />
-          )
-          : (
-            <ButtonDelete
-              buttonName={BDbuttonName}
-              key={buttons.length}
-              onClick={this.removeElement}
-              disabled={this.checkDisabledDelete()}
-              permissions={[`${entity}.delete`]}
-            />
-          ),
+        this.permissions.read ? (
+          <ButtonDeleteNew
+            key="button-delete"
+            buttonName={BDbuttonName}
+            onClick={this.removeElement}
+            permission={this.permissions.delete}
+            disabled={this.checkDisabledDelete()}
+          />
+        ) : (
+          <ButtonDelete
+            buttonName={BDbuttonName}
+            key={buttons.length}
+            onClick={this.removeElement}
+            disabled={this.checkDisabledDelete()}
+            permissions={[`${entity}.delete`]}
+          />
+        ),
       );
     }
     if (this.props.exportable) {
-      const isEmptyList = this.props[this.mainListName] && this.props[this.mainListName].length === 0;
+      const isEmptyList =
+        this.props[this.mainListName] &&
+        this.props[this.mainListName].length === 0;
       buttons.push(
         <Button
           id="regestry-download-alt"
           disabled={isEmptyList}
           key={buttons.length}
           bsSize="small"
-          onClick={this.handleExport}
-        >
+          onClick={this.handleExport}>
           <Glyphicon glyph="download-alt" />
         </Button>,
       );
@@ -320,7 +327,7 @@ class ElementsList extends React.Component {
     } catch (error) {
       this.setState({ exportFetching: false });
     }
-  }
+  };
 
   handleExport = () => {
     if (typeof this.export === 'function') {
@@ -329,7 +336,7 @@ class ElementsList extends React.Component {
     }
 
     this.processExport();
-  }
+  };
 
   /**
    * Получение props, связанных с выбором элементов
@@ -405,8 +412,7 @@ class ElementsList extends React.Component {
       <TableComponent
         {...this.getTableProps()}
         {...this.props}
-        flux={this.context.flux}
-      >
+        flux={this.context.flux}>
         {this.getButtons()}
       </TableComponent>
     );
@@ -457,7 +463,7 @@ class ElementsList extends React.Component {
 
   setNode = (node) => {
     this.node = node;
-  }
+  };
 
   /**
    * React render
@@ -466,7 +472,9 @@ class ElementsList extends React.Component {
     const table = this.getTable();
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
-    const preloader = this.state.exportFetching && <Preloader typePreloader="mainpage" />;
+    const preloader = this.state.exportFetching && (
+      <Preloader typePreloader="mainpage" />
+    );
 
     return (
       <EtsPageWrap ref={this.setNode}>

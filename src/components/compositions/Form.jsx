@@ -20,7 +20,7 @@ class Form extends React.Component {
 
   static defaultProps() {
     return {
-      handleMultipleChange: v => v,
+      handleMultipleChange: (v) => v,
     };
   }
 
@@ -32,13 +32,9 @@ class Form extends React.Component {
     };
   }
 
-  handleChange = (field, e) => (
-    this.props.handleFormChange(field, e)
-  )
+  handleChange = (field, e) => this.props.handleFormChange(field, e);
 
-  handleMultipleChange = fields => (
-    this.props.handleMultipleChange(fields)
-  )
+  handleMultipleChange = (fields) => this.props.handleMultipleChange(fields);
 
   handleSubmit = (...props) => this.props.onSubmit(...props);
 

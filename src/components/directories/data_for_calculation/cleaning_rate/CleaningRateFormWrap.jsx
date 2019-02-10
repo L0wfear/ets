@@ -5,7 +5,6 @@ import BaseCleaningRateForm from 'components/directories/data_for_calculation/cl
 
 const CleaningRateForm = enhanceWithPermissions(BaseCleaningRateForm);
 
-
 export const cleaningRateSchema = {
   properties: [
     {
@@ -47,30 +46,30 @@ export default class CleaningRateFormWrap extends FormWrap {
     this.handleFormSubmit = this.handleFormSubmit.bind(this, props.type);
   }
 
-  createAction = (...arg) => (
-    this.context.flux.getActions('objects').createCleaningRate(this.props.type, ...arg)
-  );
+  createAction = (...arg) =>
+    this.context.flux
+      .getActions('objects')
+      .createCleaningRate(this.props.type, ...arg);
 
-  updateAction = (...arg) => (
-    this.context.flux.getActions('objects').updateCleaningRate(this.props.type, ...arg)
-  );
+  updateAction = (...arg) =>
+    this.context.flux
+      .getActions('objects')
+      .updateCleaningRate(this.props.type, ...arg);
 
   render() {
     const { props } = this;
-    return props.showForm
-      ? (
-        <CleaningRateForm
-          formState={this.state.formState}
-          permissions={['cleaning_rate.update']}
-          addPermissionProp
-          onSubmit={this.handleFormSubmit}
-          handleFormChange={this.handleFormStateChange}
-          show={props.showForm}
-          onHide={props.onFormHide}
-          type={props.type}
-          {...this.state}
-        />
-      )
-      : null;
+    return props.showForm ? (
+      <CleaningRateForm
+        formState={this.state.formState}
+        permissions={['cleaning_rate.update']}
+        addPermissionProp
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
+        show={props.showForm}
+        onHide={props.onFormHide}
+        type={props.type}
+        {...this.state}
+      />
+    ) : null;
   }
 }

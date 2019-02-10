@@ -8,10 +8,12 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tire';
-
 
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
@@ -30,7 +32,7 @@ class TireList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     this.props.tireGetAndSetInStore();
@@ -51,7 +53,7 @@ class TireList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   handleClickClone = async (id) => {
     try {
@@ -60,7 +62,7 @@ class TireList extends ElementsList {
     } catch (e) {
       console.warn(e); //eslint-disable-line
     }
-  }
+  };
 
   getAdditionalProps() {
     return {
@@ -76,12 +78,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       tireList: getAutobaseState(state).tireList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      tireGetAndSetInStore: () => (
+    (dispatch) => ({
+      tireGetAndSetInStore: () =>
         dispatch(
           autobaseActions.tireGetAndSetInStore(
             {},
@@ -89,33 +91,21 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      autobaseResetSetTire: () => (
+        ),
+      autobaseResetSetTire: () =>
+        dispatch(autobaseActions.autobaseResetSetTire()),
+      autobaseCloneTire: (tireId) =>
         dispatch(
-          autobaseActions.autobaseResetSetTire(),
-        )
-      ),
-      autobaseCloneTire: tireId => (
+          autobaseActions.autobaseCloneTire(tireId, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseRemoveTire: (id) =>
         dispatch(
-          autobaseActions.autobaseCloneTire(
-            tireId,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
-      autobaseRemoveTire: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveTire(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveTire(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(TireList);

@@ -1,6 +1,4 @@
-import {
-  find,
-} from 'lodash';
+import { find } from 'lodash';
 
 import * as number from './validateNumber';
 import * as floatFixed3 from './validateFloatFixed3';
@@ -24,16 +22,37 @@ function validateFieldByType(config, value, formData, componentProps) {
   const { type } = config;
   const validator = validators[type];
 
-  return validator ? validator.validate(config, value, formData, componentProps) : undefined;
+  return validator
+    ? validator.validate(config, value, formData, componentProps)
+    : undefined;
 }
 
-function validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps) {
+function validateFieldByDependencyType(
+  type,
+  config,
+  value,
+  dependentFieldConfig,
+  dependentFieldValue,
+  formData,
+  schema,
+  componentProps,
+) {
   if (typeof type === 'undefined') {
     return undefined;
   }
   const validator = dependencyValidators[type];
 
-  return validator ? validator.validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps) : undefined;
+  return validator
+    ? validator.validate(
+      config,
+      value,
+      dependentFieldConfig,
+      dependentFieldValue,
+      formData,
+      schema,
+      componentProps,
+    )
+    : undefined;
 }
 
 export function validateField(config, value, formData, schema, componentProps) {
@@ -55,16 +74,41 @@ export function validateField(config, value, formData, schema, componentProps) {
           return undefined;
         }
         // We need to check dependent field to work on comparisons
-        const dependentFieldConfig = find(schema.properties, object => object.key === field);
+        const dependentFieldConfig = find(
+          schema.properties,
+          (object) => object.key === field,
+        );
         if (typeof dependentFieldConfig === 'undefined') {
-          throw new Error(`Dependent field "${field}" for key "${config.key}" was not found in schema`);
+          throw new Error(
+            `Dependent field "${field}" for key "${
+              config.key
+            }" was not found in schema`,
+          );
         }
         const dependentFieldValue = formData[field];
-        const dependentFieldValidationError = validateFieldByType(dependentFieldConfig, dependentFieldValue, formData, componentProps);
+        const dependentFieldValidationError = validateFieldByType(
+          dependentFieldConfig,
+          dependentFieldValue,
+          formData,
+          componentProps,
+        );
         if (dependentFieldValidationError) {
-          return `Для проверки поля ${config.title} необходимо правильное заполнение поля ${dependentFieldConfig.title}`;
+          return `Для проверки поля ${
+            config.title
+          } необходимо правильное заполнение поля ${
+            dependentFieldConfig.title
+          }`;
         }
-        return validateFieldByDependencyType(type, config, value, dependentFieldConfig, dependentFieldValue, formData, schema, componentProps);
+        return validateFieldByDependencyType(
+          type,
+          config,
+          value,
+          dependentFieldConfig,
+          dependentFieldValue,
+          formData,
+          schema,
+          componentProps,
+        );
       })
       .filter((d) => !!d)[0];
   }

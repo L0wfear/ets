@@ -15,7 +15,8 @@ export default class LoadingStore extends Store {
     const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
-    this.reg(false,
+    this.reg(
+      false,
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,
       repairActions.contractor,
@@ -97,11 +98,10 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 
-      carActions.updateCarAdditionalInfo);
-
-    this.reg(true,
-      missionsActons.getMissionsByCarAndDates,
+      carActions.updateCarAdditionalInfo,
     );
+
+    this.reg(true, missionsActons.getMissionsByCarAndDates);
 
     this.state = {
       operationsCount: 0,
@@ -110,10 +110,14 @@ export default class LoadingStore extends Store {
   }
 
   reg(lazy, ...actions) {
-    actions.forEach(action => this.registerAsync(action,
-      () => this.inc(action, lazy),
-      () => this.dec(lazy),
-      () => this.dec(lazy)));
+    actions.forEach((action) =>
+      this.registerAsync(
+        action,
+        () => this.inc(action, lazy),
+        () => this.dec(lazy),
+        () => this.dec(lazy),
+      ),
+    );
   }
 
   inc(action, lazy) {

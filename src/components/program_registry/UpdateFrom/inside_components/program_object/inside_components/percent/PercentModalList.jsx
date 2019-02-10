@@ -7,7 +7,11 @@ import { isEmpty } from 'lodash';
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import ModalBody from 'components/ui/Modal';
-import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
+import {
+  ButtonCreate,
+  ButtonRead,
+  ButtonDelete,
+} from 'components/ui/buttons/CRUD';
 
 import PercentModalTable from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
 import PercentModalFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalFormWrap';
@@ -31,31 +35,34 @@ class PercentModalList extends ElementsList {
     this.keyPressDisabled = true;
   }
 
-  removeElementAction = id => this.context.flux.getActions('repair').removePercent(id).then(this.checkMinVals);
+  removeElementAction = (id) =>
+    this.context.flux
+      .getActions('repair')
+      .removePercent(id)
+      .then(this.checkMinVals);
 
   init() {
     this.checkMinVals();
   }
 
   checkMinVals = () => {
-    const {
-      object_id: id,
-    } = this.props;
-    this.context.flux.getActions('repair').getDataAboutObjectById(id).then((ans) => {
-      const {
-        result: {
-          rows = [],
-        } = {},
-      } = ans;
-      const { other = {} } = this.state;
-      other.minPercent = Math.max(...rows.map(({ percent }) => percent));
-      other.minReviewedAt = isEmpty(rows) ? moment().year(1900) : moment.max(rows.map(({ reviewed_at }) => moment(reviewed_at)));
+    const { object_id: id } = this.props;
+    this.context.flux
+      .getActions('repair')
+      .getDataAboutObjectById(id)
+      .then((ans) => {
+        const { result: { rows = [] } = {} } = ans;
+        const { other = {} } = this.state;
+        other.minPercent = Math.max(...rows.map(({ percent }) => percent));
+        other.minReviewedAt = isEmpty(rows)
+          ? moment().year(1900)
+          : moment.max(rows.map(({ reviewed_at }) => moment(reviewed_at)));
 
-      this.setState({ other });
+        this.setState({ other });
 
-      return ans;
-    });
-  }
+        return ans;
+      });
+  };
 
   /**
    * @override
@@ -70,7 +77,7 @@ class PercentModalList extends ElementsList {
         reviewed_at: new Date(),
       },
     });
-  }
+  };
 
   /**
    * @override
@@ -95,7 +102,7 @@ class PercentModalList extends ElementsList {
         onClick={this.createElement}
         permissions={[`${entity}.create`]}
         disabled={!isPermittedByStatus}
-      />
+      />,
     );
     buttons.push(
       <ButtonRead
@@ -104,7 +111,7 @@ class PercentModalList extends ElementsList {
         onClick={this.showForm}
         disabled={this.checkDisabledRead() || !isPermittedByStatus}
         permissions={[`${entity}.read`]}
-      />
+      />,
     );
     buttons.push(
       <ButtonDelete
@@ -113,7 +120,7 @@ class PercentModalList extends ElementsList {
         onClick={this.removeElement}
         disabled={this.checkDisabledDelete() || !isPermittedByStatus}
         permissions={[`${entity}.delete`]}
-      />
+      />,
     );
 
     return buttons;
@@ -125,9 +132,7 @@ class PercentModalList extends ElementsList {
   checkDisabledDelete() {
     if (!super.checkDisabledDelete()) {
       const {
-        selectedElement: {
-          created_at,
-        },
+        selectedElement: { created_at },
       } = this.state;
 
       return moment().diff(created_at, 'days') > 0;
@@ -144,9 +149,7 @@ class PercentModalList extends ElementsList {
     if (!FormComponent) {
       return forms;
     }
-    const {
-      other,
-    } = this.state;
+    const { other } = this.state;
 
     forms.push(
       <FormComponent
@@ -163,7 +166,7 @@ class PercentModalList extends ElementsList {
         other={other}
         checkMinVals={this.checkMinVals}
         {...this.props}
-      />
+      />,
     );
 
     return forms;
@@ -171,11 +174,16 @@ class PercentModalList extends ElementsList {
 
   render() {
     return (
-      <Modal id="modal-percent-list" show={this.props.show} onHide={this.props.onHide} bsSize="lg" backdrop="static">
+      <Modal
+        id="modal-percent-list"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        bsSize="lg"
+        backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{'Проставление процента выполнения работ'}</Modal.Title>
         </Modal.Header>
-        { super.render() }
+        {super.render()}
         <ModalBody />
         <Modal.Footer>
           <Button onClick={this.props.onHide}>Закрыть</Button>
@@ -186,9 +194,7 @@ class PercentModalList extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(PercentModalList);

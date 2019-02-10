@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {
-  cloneDeep,
-} from 'lodash';
+import { cloneDeep } from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import CheckableElementsList from 'components/CheckableElementsList';
@@ -17,7 +15,10 @@ import MissionTemplatesTable from 'components/missions/mission_template/MissionT
 import { compose } from 'recompose';
 import { getWarningNotification } from 'utils/notifications';
 import { connect } from 'react-redux';
-import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getMissionsState,
+} from 'redux-main/reducers/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
@@ -109,9 +110,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
       }
 
       try {
-        await this.props.actionRemoveMissionTemplates(
-          checkedMissions,
-        );
+        await this.props.actionRemoveMissionTemplates(checkedMissions);
       } catch (e) {
         console.warn(e); // eslint-disable-line
       }
@@ -122,7 +121,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         selectedElement: null,
       });
     }
-  }
+  };
 
   loadMissionTemplateData() {
     this.props.actionGetAndSetInStoreMissionTemplate();
@@ -145,12 +144,14 @@ class MissionTemplatesJournal extends CheckableElementsList {
    */
   showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
-  }
+  };
 
   createMissions = () => {
     const { checkedElements } = this.state;
     const allCheckedMissionInArr = Object.values(checkedElements);
-    const hasMissionForColumn = allCheckedMissionInArr.some(mission => mission.for_column);
+    const hasMissionForColumn = allCheckedMissionInArr.some(
+      (mission) => mission.for_column,
+    );
 
     if (hasMissionForColumn && allCheckedMissionInArr.length > 1) {
       global.NOTIFICATION_SYSTEM.notify(
@@ -164,7 +165,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         formType: 'MissionsCreationForm',
       });
     }
-  }
+  };
 
   /**
    * @override
@@ -175,7 +176,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
       selectedElement: null,
       formType: 'ViewForm',
     });
-  }
+  };
 
   copyElement = () => {
     this.setState(({ selectedElement }) => {
@@ -197,7 +198,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
       checkedElements: clearCheckedElements ? {} : checkedElements,
     }));
-  }
+  };
 
   onFormHideCreateTemplate = (isSubmitted) => {
     if (isSubmitted) {
@@ -210,38 +211,48 @@ class MissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
       checkedElements: {},
     });
-  }
+  };
 
   getForms = () => {
-    const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
+    const missions = getMissionList(
+      this.state.checkedElements,
+      this.state.selectedElement,
+    );
     const { carsIndex = {} } = this.props;
 
     return [
       <MissionTemplateFormLazy
         key="template_form"
         onFormHide={this.onFormHideCreateTemplate}
-        showForm={this.state.showForm && this.state.formType !== 'MissionsCreationForm'}
+        showForm={
+          this.state.showForm && this.state.formType !== 'MissionsCreationForm'
+        }
         element={this.state.selectedElement}
         page={loadingPageName}
       />,
       <MissionsCreationFormWrap
         key="form"
         onFormHide={this.onFormHide}
-        showForm={this.state.showForm && this.state.formType === 'MissionsCreationForm'}
+        showForm={
+          this.state.showForm && this.state.formType === 'MissionsCreationForm'
+        }
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={missions}
         _carsIndex={carsIndex}
       />,
     ];
-  }
+  };
 
   canCreateMission = () => {
     const { checkedElements = {} } = this.state;
     const missions = Object.values(checkedElements);
 
-    return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
-  }
+    return (
+      missions.length &&
+      !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
+    );
+  };
 
   getButtons = () => {
     const buttons = super.getButtons();
@@ -252,8 +263,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         id="create-missions-by-template"
         bsSize="small"
         onClick={this.createMissions}
-        disabled={!this.canCreateMission()}
-      >
+        disabled={!this.canCreateMission()}>
         Сформировать децентрализованное задание
       </ButtonCreateMissionsByTemplates>,
       <ButtonCopyTemplateMission
@@ -261,8 +271,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         id="copy-template"
         bsSize="small"
         onClick={this.copyElement}
-        disabled={this.state.selectedElement === null}
-      >
+        disabled={this.state.selectedElement === null}>
         <Glyphicon glyph="copy" />
         Копировать
       </ButtonCopyTemplateMission>,
@@ -270,7 +279,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
     buttons.push(...additionalButtons);
 
     return buttons;
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -290,10 +299,14 @@ class MissionTemplatesJournal extends CheckableElementsList {
     return {
       structures,
       noHeader: this.props.renderOnly,
-      noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий' : null,
-      data: listData.filter(({ technical_operation_id }) => technicalOperationsMap.has(technical_operation_id)),
+      noDataMessage: this.props.payload.faxogramm_id
+        ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий'
+        : null,
+      data: listData.filter(({ technical_operation_id }) =>
+        technicalOperationsMap.has(technical_operation_id),
+      ),
     };
-  }
+  };
 }
 
 export default compose(
@@ -302,32 +315,26 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       missionTemplateList: getMissionsState(state).missionTemplateList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      actionGetAndSetInStoreMissionTemplate: () => (
+    (dispatch) => ({
+      actionGetAndSetInStoreMissionTemplate: () =>
         dispatch(
           missionsActions.actionGetAndSetInStoreMissionTemplate(
             {},
             { page: loadingPageName },
           ),
-        )
-      ),
-      actionRemoveMissionTemplates: missionTemplateArr => (
+        ),
+      actionRemoveMissionTemplates: (missionTemplateArr) =>
         dispatch(
-          missionsActions.actionRemoveMissionTemplates(
-            missionTemplateArr,
-            { page: loadingPageName },
-          ),
-        )
-      ),
-      actionResetMissionTemplate: () => (
-        dispatch(
-          missionsActions.actionResetMissionTemplate(),
-        )
-      ),
+          missionsActions.actionRemoveMissionTemplates(missionTemplateArr, {
+            page: loadingPageName,
+          }),
+        ),
+      actionResetMissionTemplate: () =>
+        dispatch(missionsActions.actionResetMissionTemplate()),
     }),
   ),
 )(MissionTemplatesJournal);

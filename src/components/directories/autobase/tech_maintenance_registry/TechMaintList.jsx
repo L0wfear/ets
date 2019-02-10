@@ -8,10 +8,12 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tech_maint';
-
 
 @exportable({ entity: `autobase/${AUTOBASE.techMaint}` })
 @staticProps({
@@ -30,7 +32,7 @@ class TechMaintList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { car_id } = this.props;
@@ -57,11 +59,7 @@ class TechMaintList extends ElementsList {
   }
 
   createElement = () => {
-    const {
-      car_id = null,
-      car_model_id,
-      gov_number,
-    } = this.props;
+    const { car_id = null, car_model_id, gov_number } = this.props;
 
     this.setState({
       showForm: true,
@@ -71,7 +69,7 @@ class TechMaintList extends ElementsList {
         gov_number,
       },
     });
-  }
+  };
 
   onFormHide = (isSubmitted) => {
     const changeState = {
@@ -84,7 +82,7 @@ class TechMaintList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -99,41 +97,27 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       techMaintList: getAutobaseState(state).techMaintList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      carGetAndSetInStore: () => (
+    (dispatch) => ({
+      carGetAndSetInStore: () =>
+        dispatch(autobaseActions.carGetAndSetInStore()),
+      techMaintGetAndSetInStore: (payload = {}) =>
         dispatch(
-          autobaseActions.carGetAndSetInStore(),
-        )
-      ),
-      techMaintGetAndSetInStore: (payload = {}) => (
+          autobaseActions.techMaintGetAndSetInStore(payload, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseResetSetTechMaint: () =>
+        dispatch(autobaseActions.autobaseResetSetTechMaint()),
+      autobaseRemoveTechMaint: (id) =>
         dispatch(
-          autobaseActions.techMaintGetAndSetInStore(
-            payload,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
-      autobaseResetSetTechMaint: () => (
-        dispatch(
-          autobaseActions.autobaseResetSetTechMaint(),
-        )
-      ),
-      autobaseRemoveTechMaint: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveTechMaint(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveTechMaint(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(TechMaintList);

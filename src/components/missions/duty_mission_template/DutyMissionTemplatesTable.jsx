@@ -60,10 +60,13 @@ export const getTableMeta = ({
         filter: {
           type: 'multiselect',
           someInRowValue: true,
-          options: uniqBy(employeesList.map(({ id }) => ({
-            value: id,
-            label: employeeFIOLabelFunction(employeesIndex, id),
-          })), 'value'),
+          options: uniqBy(
+            employeesList.map(({ id }) => ({
+              value: id,
+              label: employeeFIOLabelFunction(employeesIndex, id),
+            })),
+            'value',
+          ),
         },
       },
       {
@@ -90,15 +93,13 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export const getRenderers = props => ({
-  brigade_employee_id_list_id: ({ data, rowData }) => (
-    <div>
-      {
-        rowData.brigade_employee_id_list_fio.join(', ')
-      }
-    </div>
+export const getRenderers = () => ({
+  brigade_employee_id_list_id: ({ rowData }) => (
+    <div>{rowData.brigade_employee_id_list_fio.join(', ')}</div>
   ),
-  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  structure_id: ({ rowData }) => (
+    <div>{get(rowData, 'structure_name') || '-'}</div>
+  ),
 });
 
 const DataTable = (props) => (

@@ -10,9 +10,7 @@ export default class FieldWrap extends React.Component {
   }
 
   getFieldByPropertyMeta() {
-    const {
-      field, value, error, onChange,
-    } = this.props;
+    const { field, value, error, onChange } = this.props;
     let fieldProps = {};
     console.log(value); // eslint-disable-line
 
@@ -58,12 +56,6 @@ export default class FieldWrap extends React.Component {
   }
 
   render() {
-    const { field } = this.props;
-
-    return (
-      <Div>
-        {this.getFieldByPropertyMeta()}
-      </Div>
-    );
+    return <Div>{this.getFieldByPropertyMeta()}</Div>;
   }
 }

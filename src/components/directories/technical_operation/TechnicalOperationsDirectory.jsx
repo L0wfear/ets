@@ -5,7 +5,11 @@ import TechnicalOperationsTable from 'components/directories/technical_operation
 import TechnicalOperationFormWrap from 'components/directories/technical_operation/TechnicalOperationFormWrap';
 import permissions from 'components/directories/technical_operation/config-data/permissions';
 import { makeOptions } from 'components/ui/input/makeOptions';
-import { customOptionsTableFromMainResult, customOptionsTableFromTypes, customOptionsTableFromSensorTypes } from 'components/directories/technical_operation/table/helpData';
+import {
+  customOptionsTableFromMainResult,
+  customOptionsTableFromTypes,
+  customOptionsTableFromSensorTypes,
+} from 'components/directories/technical_operation/table/helpData';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -23,35 +27,44 @@ import { connect } from 'react-redux';
 class TechOperationsDirectory extends ElementsList {
   init() {
     const { flux } = this.context;
-    flux.getActions('technicalOperation').getTechnicalOperationsRegistry().then((ans) => {
-      const options = makeOptions({
-        data: ans.result,
-        options: customOptionsTableFromMainResult,
+    flux
+      .getActions('technicalOperation')
+      .getTechnicalOperationsRegistry()
+      .then((ans) => {
+        const options = makeOptions({
+          data: ans.result,
+          options: customOptionsTableFromMainResult,
+        });
+
+        this.setState({ ...options });
+        return ans;
       });
 
-      this.setState({ ...options });
-      return ans;
-    });
+    flux
+      .getActions('objects')
+      .getTypes()
+      .then((ans) => {
+        const options = makeOptions({
+          data: ans.result.rows,
+          options: customOptionsTableFromTypes,
+        });
 
-    flux.getActions('objects').getTypes().then((ans) => {
-      const options = makeOptions({
-        data: ans.result.rows,
-        options: customOptionsTableFromTypes,
+        this.setState({ ...options });
+        return ans;
       });
 
-      this.setState({ ...options });
-      return ans;
-    });
+    flux
+      .getActions('objects')
+      .getSensorTypes()
+      .then((ans) => {
+        const options = makeOptions({
+          data: ans.result,
+          options: customOptionsTableFromSensorTypes,
+        });
 
-    flux.getActions('objects').getSensorTypes().then((ans) => {
-      const options = makeOptions({
-        data: ans.result,
-        options: customOptionsTableFromSensorTypes,
+        this.setState({ ...options });
+        return ans;
       });
-
-      this.setState({ ...options });
-      return ans;
-    });
   }
 
   /**
@@ -70,13 +83,11 @@ class TechOperationsDirectory extends ElementsList {
       CAR_TYPES,
       SENSORS_TYPE_OPTIONS,
     };
-  }
+  };
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(TechOperationsDirectory);

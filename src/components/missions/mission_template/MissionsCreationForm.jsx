@@ -1,9 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {
-  cloneDeep,
-  get,
-} from 'lodash';
+import { cloneDeep, get } from 'lodash';
 import connectToStores from 'flummox/connect';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
@@ -46,23 +43,36 @@ class MissionsCreationForm extends Form {
       date_start,
     };
 
-    const { formState: { date_end }, countBumpDateEnd } = this.props;
+    const {
+      formState: { date_end },
+      countBumpDateEnd,
+    } = this.props;
     this.handleChange('date_start', date_start);
-    if (this.props.needMoveDateEnd && date_start && date_end && diffDates(date_end, date_start, 'hours') > countBumpDateEnd) {
+    if (
+      this.props.needMoveDateEnd &&
+      date_start &&
+      date_end &&
+      diffDates(date_end, date_start, 'hours') > countBumpDateEnd
+    ) {
       const date_end_new = addTime(date_start, countBumpDateEnd, 'hours');
       this.handleChange('date_end', date_end_new);
     }
 
     this.updateNormIdForAllCarInAllMissions(newFormState);
-  }
+  };
 
   async updateNormIdForAllCarInAllMissions(formState) {
     if (formState.date_start) {
       Object.entries(this.props.missions).forEach(([id, missionData]) => {
         missionData.car_ids.forEach(async (car_id) => {
-          const normData = await this.context.flux.getActions('missions').getCleaningOneNorm({
-            ...makePayloadFromState(missionData, get(this.props.carsIndex, [car_id, 'type_id'], null)),
-          });
+          const normData = await this.context.flux
+            .getActions('missions')
+            .getCleaningOneNorm({
+              ...makePayloadFromState(
+                missionData,
+                get(this.props.carsIndex, [car_id, 'type_id'], null),
+              ),
+            });
 
           const norm_id = cloneDeep(this.props.formState.norm_id);
           norm_id[id][car_id] = normData.norm_id;
@@ -70,7 +80,13 @@ class MissionsCreationForm extends Form {
         });
       });
     } else {
-      this.handleChange('norm_id', getDefaultMissionsCreationTemplate(this.props.missions, formState.for_column).norm_id);
+      this.handleChange(
+        'norm_id',
+        getDefaultMissionsCreationTemplate(
+          this.props.missions,
+          formState.for_column,
+        ).norm_id,
+      );
     }
   }
 
@@ -80,13 +96,13 @@ class MissionsCreationForm extends Form {
     } else {
       this.props.onSubmit(...props);
     }
-  }
+  };
 
   handleSubmitFromAssignmentModal = (...props) => this.props.onSubmit(...props);
 
   hideColumnAssignmentMissionTemplate = () => {
     this.setState({ showColumnAssignment: false });
-  }
+  };
 
   render() {
     const state = this.props.formState;
@@ -97,7 +113,9 @@ class MissionsCreationForm extends Form {
           ASSIGN_OPTIONS={ASSIGN_OPTIONS}
           missions={this.props.missions}
           assign_to_waybill={state.assign_to_waybill}
-          hideColumnAssignmentMissionTemplate={this.hideColumnAssignmentMissionTemplate}
+          hideColumnAssignmentMissionTemplate={
+            this.hideColumnAssignmentMissionTemplate
+          }
           handleChange={this.handleChange}
           carsList={this.props.carsList}
           handleSubmit={this.handleSubmitFromAssignmentModal}
@@ -108,20 +126,27 @@ class MissionsCreationForm extends Form {
 
     const { missionSourcesList = [] } = this.props;
 
-    const MISSION_SOURCES = missionSourcesList.reduce((newArr, { id, name, auto }) => {
-      if (!auto || state.mission_source_id === id) {
-        newArr.push({ value: id, label: name });
-      }
-      return newArr;
-    }, []);
+    const MISSION_SOURCES = missionSourcesList.reduce(
+      (newArr, { id, name, auto }) => {
+        if (!auto || state.mission_source_id === id) {
+          newArr.push({ value: id, label: name });
+        }
+        return newArr;
+      },
+      [],
+    );
 
     console.log('form state is ', state); // eslint-disable-line
 
     const title = 'Формирование заданий из шаблонов';
 
     return (
-      <Modal id="modal-missions-creation" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
-
+      <Modal
+        id="modal-missions-creation"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -163,7 +188,11 @@ class MissionsCreationForm extends Form {
                 boundKeys="mission_source_id"
                 clearable
               />
-              <span className="help-block-mission-source">Задания на основе централизованных заданий необходимо создавать во вкладке "НСИ"-"Реестр централизованных заданий".</span>
+              <span className="help-block-mission-source">
+                Задания на основе централизованных заданий необходимо создавать
+                во вкладке {'"'}НСИ{'"'}-{'"'}Реестр централизованных заданий
+                {'"'}.
+              </span>
             </Col>
           </Row>
           <Row>
@@ -178,34 +207,32 @@ class MissionsCreationForm extends Form {
               />
             </Col>
           </Row>
-
         </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block">
-            {
-              !state.for_column
-                ? (
-                  <Div className="inline-block assignToWaybillCheck">
-                    <ReactSelect
-                      type="select"
-                      options={ASSIGN_OPTIONS}
-                      value={state.assign_to_waybill}
-                      clearable={false}
-                      onChange={this.handleChange.bind(this, 'assign_to_waybill')}
-                    />
-                  </Div>
-                )
-                : (
-                  <DivNone />
-                )
-            }
+            {!state.for_column ? (
+              <Div className="inline-block assignToWaybillCheck">
+                <ReactSelect
+                  type="select"
+                  options={ASSIGN_OPTIONS}
+                  value={state.assign_to_waybill}
+                  clearable={false}
+                  onChange={this.handleChange.bind(this, 'assign_to_waybill')}
+                />
+              </Div>
+            ) : (
+              <DivNone />
+            )}
             <Div hidden={state.status === 'closed'}>
-              <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>Сформировать</Button>
+              <Button
+                disabled={!this.props.canSave}
+                onClick={this.handleSubmit}>
+                Сформировать
+              </Button>
             </Div>
           </Div>
         </Modal.Footer>
-
       </Modal>
     );
   }

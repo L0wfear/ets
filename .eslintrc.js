@@ -58,6 +58,10 @@ module.exports = {
       "error",
       "always",
     ],
+    "no-console": [
+      "error",
+      { allow: ["warn", "info", "error"] },
+    ],
     "no-tabs": "error",
     "no-continue": "error",
     "no-mixed-spaces-and-tabs": "error",

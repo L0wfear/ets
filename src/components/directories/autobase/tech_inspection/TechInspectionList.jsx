@@ -2,16 +2,20 @@ import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TechInspectionFormWrap from 'components/directories/autobase/tech_inspection/TechInspectionForm/TechInspectionFormWrap';
-import TechInspectionTable, { tableMeta } from 'components/directories/autobase/tech_inspection/TechInspectionTable';
+import TechInspectionTable, {
+  tableMeta,
+} from 'components/directories/autobase/tech_inspection/TechInspectionTable';
 import permissions from 'components/directories/autobase/tech_inspection/config-data/permissions';
 import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tech_inspection';
-
 
 @exportable({ entity: `autobase/${AUTOBASE.techInspection}` })
 @staticProps({
@@ -31,7 +35,7 @@ class TechInspectionList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { car_id } = this.props;
@@ -66,7 +70,7 @@ class TechInspectionList extends ElementsList {
         car_id,
       },
     });
-  }
+  };
 
   onFormHide = (isSubmitted) => {
     const changeState = {
@@ -79,7 +83,7 @@ class TechInspectionList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -94,41 +98,27 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       techInspectionList: getAutobaseState(state).techInspectionList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      carGetAndSetInStore: () => (
+    (dispatch) => ({
+      carGetAndSetInStore: () =>
+        dispatch(autobaseActions.carGetAndSetInStore()),
+      techInspectionGetAndSetInStore: (payload = {}) =>
         dispatch(
-          autobaseActions.carGetAndSetInStore(),
-        )
-      ),
-      techInspectionGetAndSetInStore: (payload = {}) => (
+          autobaseActions.techInspectionGetAndSetInStore(payload, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseResetSetTechInspection: () =>
+        dispatch(autobaseActions.autobaseResetSetTechInspection()),
+      autobaseRemoveTechInspection: (id) =>
         dispatch(
-          autobaseActions.techInspectionGetAndSetInStore(
-            payload,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
-      autobaseResetSetTechInspection: () => (
-        dispatch(
-          autobaseActions.autobaseResetSetTechInspection(),
-        )
-      ),
-      autobaseRemoveTechInspection: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveTechInspection(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveTechInspection(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(TechInspectionList);

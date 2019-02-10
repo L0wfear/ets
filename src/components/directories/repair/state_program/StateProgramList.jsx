@@ -22,7 +22,9 @@ import { connect } from 'react-redux';
 class StateProgramList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('repair').removeStateProgram;
+    this.removeElementAction = context.flux.getActions(
+      'repair',
+    ).removeStateProgram;
   }
 
   init() {
@@ -34,9 +36,7 @@ class StateProgramList extends CheckableElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(StateProgramList);

@@ -39,18 +39,18 @@ class ChangeRouteForm extends React.Component {
     routeSelected: null,
     showRouteForm: false,
     routeElement: null,
-  }
+  };
 
   onRowClick = ({ props: { data } }) => {
     this.setState({ routeSelected: data });
-  }
+  };
 
   onFormHide = () => {
     this.props.refreshList();
     this.setState({
       showRouteForm: false,
     });
-  }
+  };
 
   handleCreateNewRouteNew = () => {
     this.setState({
@@ -70,7 +70,7 @@ class ChangeRouteForm extends React.Component {
         draw_object_list: [],
       },
     });
-  }
+  };
 
   handleChangeRoute = async () => {
     try {
@@ -89,7 +89,7 @@ class ChangeRouteForm extends React.Component {
     } catch (e) {
       console.log(e); // eslint-disable-line
     }
-  }
+  };
 
   removeRoute = async () => {
     try {
@@ -103,60 +103,67 @@ class ChangeRouteForm extends React.Component {
     try {
       const { page, path } = this.props;
 
-      await this.props.actionRemoveRoute(
-        this.state.routeSelected.id,
-        { page, path },
-      );
+      await this.props.actionRemoveRoute(this.state.routeSelected.id, {
+        page,
+        path,
+      });
       this.onFormHide(true);
     } catch (e) {
       console.log(error); // eslint-disable-line
     }
-  }
+  };
 
   render() {
-    const {
-      routeSelected,
-    } = this.state;
+    const { routeSelected } = this.state;
 
-    const {
-      page,
-      path,
-    } = this.props;
+    const { page, path } = this.props;
 
-    return (
-      this.props.showForm
-        ? (
-          <div>
-            <Modal id="modal-technical-operation" show onHide={this.props.onFormHide} bsSize="large" backdrop="static">
-              <Modal.Header closeButton>
-                <Modal.Title>Маршруты</Modal.Title>
-              </Modal.Header>
-              <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-                <ChangeRouteTable
-                  data={this.props.routesData}
-                  onRowClick={this.onRowClick}
-                  selected={routeSelected}
-                >
-                  <ButtonCreateRoute onClick={this.handleCreateNewRouteNew}>Создать новый маршрут</ButtonCreateRoute>
-                  <ButtonDeleteRoute disabled={!routeSelected} onClick={this.removeRoute}>Удалить маршрут</ButtonDeleteRoute>
-                </ChangeRouteTable>
-                <Row>
-                  <Col md={3} mdOffset={9}>
-                    <ButtonUpdateRoute id="change-route" bsClass="btn all-width" disabled={!routeSelected} onClick={this.handleChangeRoute}>Изменить</ButtonUpdateRoute>
-                  </Col>
-                </Row>
-              </ModalBodyPreloader>
-            </Modal>
-            <RouteFormWrap
-              element={this.state.routeElement}
-              handleHide={this.onFormHide}
-              showForm={this.state.showRouteForm}
-            />
-          </div>
-        )
-        : (
-          <DivNone />
-        )
+    return this.props.showForm ? (
+      <div>
+        <Modal
+          id="modal-technical-operation"
+          show
+          onHide={this.props.onFormHide}
+          bsSize="large"
+          backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title>Маршруты</Modal.Title>
+          </Modal.Header>
+          <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+            <ChangeRouteTable
+              data={this.props.routesData}
+              onRowClick={this.onRowClick}
+              selected={routeSelected}>
+              <ButtonCreateRoute onClick={this.handleCreateNewRouteNew}>
+                Создать новый маршрут
+              </ButtonCreateRoute>
+              <ButtonDeleteRoute
+                disabled={!routeSelected}
+                onClick={this.removeRoute}>
+                Удалить маршрут
+              </ButtonDeleteRoute>
+            </ChangeRouteTable>
+            <Row>
+              <Col md={3} mdOffset={9}>
+                <ButtonUpdateRoute
+                  id="change-route"
+                  bsClass="btn all-width"
+                  disabled={!routeSelected}
+                  onClick={this.handleChangeRoute}>
+                  Изменить
+                </ButtonUpdateRoute>
+              </Col>
+            </Row>
+          </ModalBodyPreloader>
+        </Modal>
+        <RouteFormWrap
+          element={this.state.routeElement}
+          handleHide={this.onFormHide}
+          showForm={this.state.showRouteForm}
+        />
+      </div>
+    ) : (
+      <DivNone />
     );
   }
 }
@@ -164,17 +171,11 @@ class ChangeRouteForm extends React.Component {
 export default compose(
   connect(
     null,
-    dispatch => ({
-      actionLoadRouteById: (...arg) => (
-        dispatch(
-          routesActions.actionLoadRouteById(...arg),
-        )
-      ),
-      actionRemoveRoute: (...arg) => (
-        dispatch(
-          routesActions.actionRemoveRoute(...arg),
-        )
-      ),
+    (dispatch) => ({
+      actionLoadRouteById: (...arg) =>
+        dispatch(routesActions.actionLoadRouteById(...arg)),
+      actionRemoveRoute: (...arg) =>
+        dispatch(routesActions.actionRemoveRoute(...arg)),
     }),
   ),
 )(ChangeRouteForm);

@@ -8,7 +8,10 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'insurance-policy';
 
@@ -29,7 +32,7 @@ class InsurancePolicyList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { car_id } = this.props;
@@ -64,8 +67,7 @@ class InsurancePolicyList extends ElementsList {
         car_id,
       },
     });
-  }
-
+  };
 
   onFormHide = (isSubmitted) => {
     const changeState = {
@@ -78,7 +80,7 @@ class InsurancePolicyList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -93,41 +95,27 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       insurancePolicyList: getAutobaseState(state).insurancePolicyList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      carGetAndSetInStore: () => (
+    (dispatch) => ({
+      carGetAndSetInStore: () =>
+        dispatch(autobaseActions.carGetAndSetInStore()),
+      insurancePolicyGetAndSetInStore: (payload = {}) =>
         dispatch(
-          autobaseActions.carGetAndSetInStore(),
-        )
-      ),
-      insurancePolicyGetAndSetInStore: (payload = {}) => (
+          autobaseActions.insurancePolicyGetAndSetInStore(payload, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseResetSetInsurancePolicy: () =>
+        dispatch(autobaseActions.autobaseResetSetInsurancePolicy()),
+      autobaseRemoveInsurancePolicy: (id) =>
         dispatch(
-          autobaseActions.insurancePolicyGetAndSetInStore(
-            payload,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
-      autobaseResetSetInsurancePolicy: () => (
-        dispatch(
-          autobaseActions.autobaseResetSetInsurancePolicy(),
-        )
-      ),
-      autobaseRemoveInsurancePolicy: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveInsurancePolicy(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveInsurancePolicy(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(InsurancePolicyList);

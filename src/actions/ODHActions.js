@@ -8,7 +8,7 @@ import {
 import { clone } from 'lodash';
 
 function getODHNorm() {
-  return ODHNormService.get().then(r => ({ result: r.result.rows }));
+  return ODHNormService.get().then((r) => ({ result: r.result.rows }));
 }
 
 export default class ODHActions extends Actions {

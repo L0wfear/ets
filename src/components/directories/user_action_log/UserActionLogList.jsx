@@ -28,7 +28,10 @@ class UserActionLogList extends ElementsList {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.date_start !== prevState.date_start || this.state.date_end !== prevState.date_end) {
+    if (
+      this.state.date_start !== prevState.date_start ||
+      this.state.date_end !== prevState.date_end
+    ) {
       this.exportPayload = {
         date_start: createValidDateTime(this.state.date_start),
         date_end: createValidDateTime(this.state.date_end),
@@ -46,11 +49,17 @@ class UserActionLogList extends ElementsList {
     return (
       <div className="log-interval-picker">
         <div className="inline-block faxogramms-date">
-          <Datepicker date={date_start} onChange={v => this.setState({ date_start: v })} />
+          <Datepicker
+            date={date_start}
+            onChange={(v) => this.setState({ date_start: v })}
+          />
         </div>
         <div className="date-divider">—</div>
         <div className="inline-block">
-          <Datepicker date={date_end} onChange={v => this.setState({ date_end: v })} />
+          <Datepicker
+            date={date_end}
+            onChange={(v) => this.setState({ date_end: v })}
+          />
         </div>
       </div>
     );
@@ -58,9 +67,7 @@ class UserActionLogList extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(UserActionLogList);

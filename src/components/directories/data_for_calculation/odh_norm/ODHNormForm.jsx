@@ -10,31 +10,30 @@ import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['odh'])
-export default class ODHNormForm extends Form {
-
+class ODHNormForm extends Form {
   render() {
-    const [
-      state = {},
-      errors = {},
-    ] = [
+    const [state = {}, errors = {}] = [
       this.props.formState,
       this.props.formErrors,
     ];
 
-    const {
-      isPermitted = false,
-      measureUnitList = [],
-    } = this.props;
+    const { isPermitted = false, measureUnitList = [] } = this.props;
 
     const IS_CREATING = !state.id;
     const MEASUREUNIT_OPTION = measureUnitList.map(defaultSelectListMapper);
 
-    const title = IS_CREATING ? 'Добавление расходного материала' : 'Изменение расходного материала'; //'Добавление норматива по содержанию ОДХ' : 'Изменение норматива по содержанию ОДХ';
+    const title = IS_CREATING
+      ? 'Добавление расходного материала'
+      : 'Изменение расходного материала'; //'Добавление норматива по содержанию ОДХ' : 'Изменение норматива по содержанию ОДХ';
 
     return (
-      <Modal id="modal-odh-norm" show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal
+        id="modal-odh-norm"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Div>
@@ -60,9 +59,15 @@ export default class ODHNormForm extends Form {
           </Div>
         </ModalBody>
         <Modal.Footer>
-          <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button
+            disabled={!this.props.canSave || !isPermitted}
+            onClick={this.handleSubmit.bind(this)}>
+            Сохранить
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
 }
+
+export default ODHNormForm;

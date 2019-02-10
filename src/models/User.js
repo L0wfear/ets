@@ -34,10 +34,6 @@ export default class User extends Model {
   constructor(user = {}) {
     super();
 
-    if (user === null) {
-      user = {};
-    }
-
     this.company_id = user.company_id;
     this.company_name = user.company_name;
     this.companies = user.companies || [];

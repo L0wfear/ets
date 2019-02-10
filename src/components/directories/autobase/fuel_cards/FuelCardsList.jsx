@@ -7,10 +7,12 @@ import { connect } from 'react-redux';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getAutobaseState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'fuel_cards';
-
 
 @exportable({ entity: 'fuel_cards' })
 @staticProps({
@@ -21,11 +23,10 @@ const loadingPageName = 'fuel_cards';
   tableComponent: FuelCardsTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE'],
 })
-
 class FuelCardsList extends ElementsList {
   removeElementAction = () => {
     console.log('нельзя удалить элемент из реестра'); // eslint-disable-line
-  }
+  };
 
   init() {
     this.props.fuelCardsGetAndSetInStore();
@@ -46,7 +47,7 @@ class FuelCardsList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -61,12 +62,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       fuelCardsList: getAutobaseState(state).fuelCardsList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      fuelCardsGetAndSetInStore: () => (
+    (dispatch) => ({
+      fuelCardsGetAndSetInStore: () =>
         dispatch(
           fuelCardsActions.fuelCardsGetAndSetInStore(
             {},
@@ -74,13 +75,8 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      resetSetFuelCards: () => (
-        dispatch(
-          fuelCardsActions.resetSetFuelCards(),
-        )
-      ),
+        ),
+      resetSetFuelCards: () => dispatch(fuelCardsActions.resetSetFuelCards()),
     }),
   ),
 )(FuelCardsList);

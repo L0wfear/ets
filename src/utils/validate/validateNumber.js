@@ -5,7 +5,9 @@ const fixedValidators = [
       if (config.required && config.required !== true) {
         if (data[config.required] == null) return undefined;
       }
-      return config.required && !value && value !== 0 ? `Поле "${config.title || config.key}" должно быть заполнено` : undefined;
+      return config.required && !value && value !== 0
+        ? `Поле "${config.title || config.key}" должно быть заполнено`
+        : undefined;
     },
   },
   {
@@ -20,14 +22,29 @@ const fixedValidators = [
           error = undefined;
         } else {
           // old
-          const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${config.float + 1},}$`);
-          error = regexp.test(value) ? `Поле ${config.title || config.key} должно быть неотрицательным числом с ${config.float} знаками после запятой` : undefined;
+          const regexp = new RegExp(
+            `^[+]?[0-9]*[\\.|,][0-9]{${config.float + 1},}$`,
+          );
+          error = regexp.test(value)
+            ? `Поле ${config.title ||
+                config.key} должно быть неотрицательным числом с ${
+              config.float
+            } знаками после запятой`
+            : undefined;
         }
       }
       if (config.integer) {
-        error = error || (typeof value !== 'number' && !/^\d+$/.test(value) ? `Поле "${config.title || config.key}" должно быть целочисленным` : undefined);
+        error =
+          error ||
+          (typeof value !== 'number' && !/^\d+$/.test(value)
+            ? `Поле "${config.title || config.key}" должно быть целочисленным`
+            : undefined);
       }
-      error = error || (typeof value !== 'number' && isNaN(value) ? `Поле "${config.title || config.key}" должно быть числом` : undefined);
+      error =
+        error ||
+        (typeof value !== 'number' && isNaN(value)
+          ? `Поле "${config.title || config.key}" должно быть числом`
+          : undefined);
       return error;
     },
   },
@@ -35,30 +52,48 @@ const fixedValidators = [
     name: 'min',
     validator(config, value) {
       const parsedValue = Number(value);
-      if (typeof config.min === 'undefined' || isNaN(parsedValue)) return undefined;
-      return parsedValue < config.min ? `Поле "${config.title || config.key}" должно быть не меньше ${config.min}` : undefined;
+      if (typeof config.min === 'undefined' || isNaN(parsedValue))
+        return undefined;
+      return parsedValue < config.min
+        ? `Поле "${config.title || config.key}" должно быть не меньше ${
+          config.min
+        }`
+        : undefined;
     },
   },
   {
     name: 'max',
     validator(config, value) {
       const parsedValue = parseInt(value, 10);
-      if (typeof config.max === 'undefined' || isNaN(parsedValue)) return undefined;
-      return parsedValue > config.max ? `Поле "${config.title || config.key}" должно быть не больше ${config.max}` : undefined;
+      if (typeof config.max === 'undefined' || isNaN(parsedValue))
+        return undefined;
+      return parsedValue > config.max
+        ? `Поле "${config.title || config.key}" должно быть не больше ${
+          config.max
+        }`
+        : undefined;
     },
   },
   {
     name: 'maxLength',
     validator(config, value) {
       if (typeof config.maxLength === 'undefined') return undefined;
-      return String(value).length > config.maxLength ? `Поле "${config.title || config.key}" должно содержать не больше ${config.maxLength} символов` : undefined;
+      return String(value).length > config.maxLength
+        ? `Поле "${config.title || config.key}" должно содержать не больше ${
+          config.maxLength
+        } символов`
+        : undefined;
     },
   },
   {
     name: 'minLength',
     validator(config, value) {
       if (typeof config.maxLength === 'undefined') return undefined;
-      return String(value).length < config.minLength ? `Поле "${config.title || config.key}" должно содержать не меньше ${config.minLength} символов` : undefined;
+      return String(value).length < config.minLength
+        ? `Поле "${config.title || config.key}" должно содержать не меньше ${
+          config.minLength
+        } символов`
+        : undefined;
     },
   },
   {
@@ -66,7 +101,11 @@ const fixedValidators = [
     validator(config, value) {
       if (typeof config.equalLength === 'undefined') return undefined;
       const stringPresent = String(value);
-      return stringPresent.length < config.equalLength || stringPresent.length > config.equalLength ? `Количество символов поля "${config.title || config.key}" должно быть равно ${config.equalLength}` : undefined;
+      return stringPresent.length < config.equalLength ||
+        stringPresent.length > config.equalLength
+        ? `Количество символов поля "${config.title ||
+            config.key}" должно быть равно ${config.equalLength}`
+        : undefined;
     },
   },
 ];

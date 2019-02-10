@@ -22,7 +22,7 @@ class MedicalStatsList extends ElementsList {
   state = {
     date_from: getToday0am(),
     date_to: getToday2359(),
-  }
+  };
 
   exportPayload = {
     date_from: createValidDateTime(this.state.date_from),
@@ -35,7 +35,10 @@ class MedicalStatsList extends ElementsList {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.date_from !== prevState.date_from || this.state.date_to !== prevState.date_to) {
+    if (
+      this.state.date_from !== prevState.date_from ||
+      this.state.date_to !== prevState.date_to
+    ) {
       this.exportPayload = {
         date_from: createValidDateTime(this.state.date_from),
         date_to: createValidDateTime(this.state.date_to),
@@ -49,11 +52,17 @@ class MedicalStatsList extends ElementsList {
     return (
       <div className="log-interval-picker">
         <div className="datepicker-range">
-          <Datepicker date={date_from} onChange={v => this.setState({ date_from: v })} />
+          <Datepicker
+            date={date_from}
+            onChange={(v) => this.setState({ date_from: v })}
+          />
         </div>
         <div className="date-divider">—</div>
         <div className="inline-block">
-          <Datepicker date={date_to} onChange={v => this.setState({ date_to: v })} />
+          <Datepicker
+            date={date_to}
+            onChange={(v) => this.setState({ date_to: v })}
+          />
         </div>
       </div>
     );
@@ -61,9 +70,7 @@ class MedicalStatsList extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(MedicalStatsList);

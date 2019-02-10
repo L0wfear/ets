@@ -2,13 +2,18 @@ import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import RepairFormWrap from 'components/directories/autobase/repair/RepairForm/RepairFormWrap';
-import RepairTable, { tableMeta } from 'components/directories/autobase/repair/RepairTable';
+import RepairTable, {
+  tableMeta,
+} from 'components/directories/autobase/repair/RepairTable';
 import permissions from 'components/directories/autobase/repair/config-data/permissions';
 import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'repair';
 
@@ -30,7 +35,7 @@ class RepareList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { car_id } = this.props;
@@ -65,7 +70,7 @@ class RepareList extends ElementsList {
         car_id,
       },
     });
-  }
+  };
 
   onFormHide = (isSubmitted) => {
     const changeState = {
@@ -78,7 +83,7 @@ class RepareList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -93,41 +98,27 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       repairList: getAutobaseState(state).repairList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      carGetAndSetInStore: () => (
+    (dispatch) => ({
+      carGetAndSetInStore: () =>
+        dispatch(autobaseActions.carGetAndSetInStore()),
+      repairGetAndSetInStore: (payload = {}) =>
         dispatch(
-          autobaseActions.carGetAndSetInStore(),
-        )
-      ),
-      repairGetAndSetInStore: (payload = {}) => (
+          autobaseActions.repairGetAndSetInStore(payload, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseResetSetRepair: () =>
+        dispatch(autobaseActions.autobaseResetSetRepair()),
+      autobaseRemoveRepair: (id) =>
         dispatch(
-          autobaseActions.repairGetAndSetInStore(
-            payload,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
-      autobaseResetSetRepair: () => (
-        dispatch(
-          autobaseActions.autobaseResetSetRepair(),
-        )
-      ),
-      autobaseRemoveRepair: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveRepair(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveRepair(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(RepareList);

@@ -49,7 +49,7 @@ class MaintenanceRateDirectory extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { flux } = this.context;
@@ -84,24 +84,31 @@ class MaintenanceRateDirectory extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 }
 
 class MaintenanceRate extends Component {
   state = {
     type: 'odh',
-  }
+  };
 
   render() {
-    const {
-      type,
-    } = this.state;
+    const { type } = this.state;
     return (
       <div>
         <div className="cleaning-rate-header">
           <ButtonGroup>
-            <Button active={this.state.type === 'odh'} onClick={() => this.setState({ type: 'odh' })}>ОДХ</Button>
-            <Button disabled active={this.state.type === 'dt'} onClick={() => this.setState({ type: 'dt' })}>ДТ</Button>
+            <Button
+              active={this.state.type === 'odh'}
+              onClick={() => this.setState({ type: 'odh' })}>
+              ОДХ
+            </Button>
+            <Button
+              disabled
+              active={this.state.type === 'dt'}
+              onClick={() => this.setState({ type: 'dt' })}>
+              ДТ
+            </Button>
           </ButtonGroup>
         </div>
         <MaintenanceRateDirectory type={type} {...this.props} />
@@ -116,12 +123,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       maintenanceRateList: getMaintenanceRateState(state).maintenanceRateList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      maintenanceRateGetAndSetInStore: type => (
+    (dispatch) => ({
+      maintenanceRateGetAndSetInStore: (type) =>
         dispatch(
           maintenanceRateGetAndSetInStore(
             { type },
@@ -129,13 +136,8 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      maintenanceRateDelete: id => (
-        dispatch(
-          maintenanceRateDelete(id),
-        )
-      ),
+        ),
+      maintenanceRateDelete: (id) => dispatch(maintenanceRateDelete(id)),
     }),
   ),
 )(MaintenanceRate);

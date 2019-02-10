@@ -22,7 +22,7 @@ const tableMeta = {
       type: 'string',
       filter: {
         type: 'multiselect',
-        labelFunction: (data) => data === 'fail' ? 'Не пройден' : 'Пройден',
+        labelFunction: (data) => (data === 'fail' ? 'Не пройден' : 'Пройден'),
       },
     },
   ],
@@ -30,7 +30,9 @@ const tableMeta = {
 
 const MissionReportByPointsTable = (props) => {
   const renderers = {
-    status: ({ data }) => <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>,
+    status: ({ data }) => (
+      <div>{data === 'fail' ? 'Не пройден' : 'Пройден'}</div>
+    ),
   };
 
   if (!(props.data && props.data.length)) {
@@ -72,7 +74,7 @@ class MissionReportByPoints extends ElementsList {
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
-  }
+  };
 
   render() {
     return (
@@ -93,9 +95,7 @@ MissionReportByPoints.contextTypes = {
 };
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(MissionReportByPoints);

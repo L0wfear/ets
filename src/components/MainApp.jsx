@@ -44,12 +44,25 @@ class MainApp extends React.Component {
 
   clickOnVersion = () => {
     const project_name = get(this.props, ['appConfig', 'project_name'], '');
-    const isPermittedSwitchApiVersion = get(this.props, ['appConfig', 'can_switch_api_version'], false);
+    const isPermittedSwitchApiVersion = get(
+      this.props,
+      ['appConfig', 'can_switch_api_version'],
+      false,
+    );
 
     if (project_name === 'ets-dev2' || isPermittedSwitchApiVersion) {
       this.setState((state) => {
-        if (state.clickOnVersionCount > 1 && state.clickOnVersionCount < countToShowChangeApi - 1) {
-          console.log(`%c Пожалуйста, продолжай (${countToShowChangeApi - state.clickOnVersionCount - 1})`, 'font-size: 18px; background: #222; color: #bada55'); // eslint-disable-line
+        if (
+          state.clickOnVersionCount > 1 &&
+          state.clickOnVersionCount < countToShowChangeApi - 1
+        ) {
+          // prettier-ignore
+          console.log( // eslint-disable-line
+            `%c Пожалуйста, продолжай (${countToShowChangeApi -
+              state.clickOnVersionCount -
+              1})`,
+            'font-size: 18px; background: #222; color: #bada55',
+          ); // eslint-disable-line
         }
 
         return {
@@ -57,13 +70,13 @@ class MainApp extends React.Component {
         };
       });
     }
-  }
+  };
 
   hideFormChangeApiVersion = () => {
     this.setState({
       clickOnVersionCount: 0,
     });
-  }
+  };
 
   hideFormTp = () => this.setState({ showFormTp: false });
 
@@ -72,9 +85,7 @@ class MainApp extends React.Component {
   render() {
     const {
       currentUser,
-      appConfig: {
-        footer_url,
-      },
+      appConfig: { footer_url },
     } = this.props;
 
     const company_name = currentUser.company_name || '';
@@ -86,10 +97,7 @@ class MainApp extends React.Component {
           <AppHeader />
           <div className="app-content">
             <div className="app-content-absolute">
-              <ModalTP
-                show={this.state.showFormTp}
-                onHide={this.hideFormTp}
-              />
+              <ModalTP show={this.state.showFormTp} onHide={this.hideFormTp} />
               <Routes />
               <LoadingOverlay main />
               <NotifiactionOrders />
@@ -100,48 +108,38 @@ class MainApp extends React.Component {
 
           <div className="app-footer">
             <div className="container-tp">
-              <a className="tp" onClick={this.showFormTp}>Техническая поддержка</a>
-              {
-                footer_url
-                  ? (
-                    <div className="container-tp">
-                      <a className="tp not-red" href={footer_url}>{footer_url}</a>
-                    </div>
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              <a className="tp" onClick={this.showFormTp}>
+                Техническая поддержка
+              </a>
+              {footer_url ? (
+                <div className="container-tp">
+                  <a className="tp not-red" href={footer_url}>
+                    {footer_url}
+                  </a>
+                </div>
+              ) : (
+                <DivNone />
+              )}
             </div>
             <div className="container-company">
               <span>{`${company_name} ${structure_name}`}</span>
             </div>
             <div className="container-version" onClick={this.clickOnVersion}>
-              <span>
-                {VERSION_DESCRIPTION}
-              </span>
+              <span>{VERSION_DESCRIPTION}</span>
             </div>
           </div>
         </div>
-        {
-          this.state.clickOnVersionCount >= countToShowChangeApi
-            ? (
-              <ModalSwitchApiVersion
-                onHide={this.hideFormChangeApiVersion}
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
+        {this.state.clickOnVersionCount >= countToShowChangeApi ? (
+          <ModalSwitchApiVersion onHide={this.hideFormChangeApiVersion} />
+        ) : (
+          <DivNone />
+        )}
       </>
     );
   }
 }
 
-export default connect(
-  state => ({
-    appConfig: state.session.appConfig,
-    currentUser: state.session.userData,
-  }),
-)(MainApp);
+export default connect((state) => ({
+  appConfig: state.session.appConfig,
+  currentUser: state.session.userData,
+}))(MainApp);

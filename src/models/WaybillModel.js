@@ -153,7 +153,7 @@ export const waybillSchema = {
     },
   ],
   dependencies: {
-    'plan_departure_date': [
+    plan_departure_date: [
       {
         validator: (value, { status }) => {
           // а надо ли?
@@ -161,7 +161,10 @@ export const waybillSchema = {
             return false;
           }
 
-          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) { // уже не работает
+          if (
+            diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0
+          ) {
+            // уже не работает
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
@@ -172,7 +175,7 @@ export const waybillSchema = {
         },
       },
     ],
-    'odometr_start': [
+    odometr_start: [
       {
         validator: (value, formData) => {
           if (!hasMotohours(formData.gov_number) && isEmpty(value)) {
@@ -182,7 +185,7 @@ export const waybillSchema = {
         },
       },
     ],
-    'motohours_start': [
+    motohours_start: [
       {
         validator: (value, formData) => {
           if (hasMotohours(formData.gov_number) && isEmpty(value)) {
@@ -192,7 +195,7 @@ export const waybillSchema = {
         },
       },
     ],
-    'plan_arrival_date': [
+    plan_arrival_date: [
       {
         type: 'gt',
         field: 'plan_departure_date',
@@ -201,7 +204,12 @@ export const waybillSchema = {
     downtime_hours_work: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value &&
+            parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Работа" должно быть меньше 1000';
           }
           return false;
@@ -211,7 +219,12 @@ export const waybillSchema = {
     downtime_hours_duty: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value &&
+            parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Дежурство" должно быть меньше 1000';
           }
           return false;
@@ -221,7 +234,12 @@ export const waybillSchema = {
     downtime_hours_dinner: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value &&
+            parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Обед" должно быть меньше 1000';
           }
           return false;
@@ -231,7 +249,12 @@ export const waybillSchema = {
     downtime_hours_repair: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value &&
+            parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Ремонт" должно быть меньше 1000';
           }
           return false;
@@ -241,7 +264,11 @@ export const waybillSchema = {
     fuel_card_id: [
       {
         validator: (value, formData) => {
-          if (!value && (formData.fuel_method === 'fuel_card') && (formData.status === 'draft' || !formData.status)) {
+          if (
+            !value &&
+            formData.fuel_method === 'fuel_card' &&
+            (formData.status === 'draft' || !formData.status)
+          ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -251,10 +278,14 @@ export const waybillSchema = {
     fuel_method: [
       {
         validator: (value, formData) => {
-          if ( !value && formData.status === 'draft') {
+          if (!value && formData.status === 'draft') {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
-          if (value === 'fuel_card' && isEmpty(formData.fuel_card_id) && (formData.status === 'draft' || !formData.status)) {
+          if (
+            value === 'fuel_card' &&
+            isEmpty(formData.fuel_card_id) &&
+            (formData.status === 'draft' || !formData.status)
+          ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -264,7 +295,11 @@ export const waybillSchema = {
     equipment_fuel_card_id: [
       {
         validator: (value, formData) => {
-          if (!value && (formData.equipment_fuel_method === 'fuel_card') && (formData.status === 'draft' || !formData.status)) {
+          if (
+            !value &&
+            formData.equipment_fuel_method === 'fuel_card' &&
+            (formData.status === 'draft' || !formData.status)
+          ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -274,10 +309,18 @@ export const waybillSchema = {
     equipment_fuel_method: [
       {
         validator: (value, formData) => {
-          if (!value && formData.status === 'draft' && formData.equipment_fuel) {
+          if (
+            !value &&
+            formData.status === 'draft' &&
+            formData.equipment_fuel
+          ) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
-          if (value === 'fuel_card' && isEmpty(formData.equipment_fuel_card_id) && (formData.status === 'draft' || !formData.status)) {
+          if (
+            value === 'fuel_card' &&
+            isEmpty(formData.equipment_fuel_card_id) &&
+            (formData.status === 'draft' || !formData.status)
+          ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
@@ -373,25 +416,25 @@ const closingProperties = [
 
 const closingDependencies = {
   ...waybillSchema.dependencies,
-  'motohours_end': [
+  motohours_end: [
     {
       type: 'gte',
       field: 'motohours_start',
     },
   ],
-  'motohours_equip_end': [
+  motohours_equip_end: [
     {
       type: 'gte',
       field: 'motohours_equip_start',
     },
   ],
-  'odometr_end': [
+  odometr_end: [
     {
       type: 'gte',
       field: 'odometr_start',
     },
   ],
-  'fact_departure_date': [
+  fact_departure_date: [
     {
       validator(value, { status }) {
         const IS_ACTIVE = status && status === 'active';
@@ -405,14 +448,17 @@ const closingDependencies = {
     },
     {
       validator(value, { plan_departure_date }) {
-        if (value && moment(value).diff(moment(plan_departure_date), 'minutes') < 0) {
+        if (
+          value &&
+          moment(value).diff(moment(plan_departure_date), 'minutes') < 0
+        ) {
           return '"Выезд факт." должно быть не раньше "Выезда план."';
         }
         return false;
       },
     },
   ],
-  'fact_arrival_date': [
+  fact_arrival_date: [
     {
       validator(value, { status }) {
         const IS_ACTIVE = status && status === 'active';
@@ -426,7 +472,11 @@ const closingDependencies = {
     },
     {
       validator(value, { fact_departure_date }) {
-        if (value && fact_departure_date && moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {
+        if (
+          value &&
+          fact_departure_date &&
+          moment(value).diff(moment(fact_departure_date), 'minutes') <= 0
+        ) {
           return '"Возвращение факт." должно быть позже "Выезд факт."';
         }
         return false;
@@ -434,17 +484,27 @@ const closingDependencies = {
     },
     {
       validator(value, { plan_arrival_date }) {
-        if (value && plan_arrival_date && moment(value).diff(moment(plan_arrival_date), 'minutes') > 180) {
+        if (
+          value &&
+          plan_arrival_date &&
+          moment(value).diff(moment(plan_arrival_date), 'minutes') > 180
+        ) {
           return 'Время, указанное в поле "Возвращение факт" не может превышать время в поле "Возвращение план" больше чем на 3 часа';
         }
         return false;
       },
     },
   ],
-  'distance': [
+  distance: [
     {
       validator: (value, formData) => {
-        if (Math.abs((parseFloat(formData.odometr_diff || formData.motohours_diff || 0) - parseFloat(value || 0)) / 100) > 0.1) {
+        if (
+          Math.abs(
+            (parseFloat(formData.odometr_diff || formData.motohours_diff || 0) -
+              parseFloat(value || 0)) /
+              100,
+          ) > 0.1
+        ) {
           return 'Расхождение в показателях пробега';
         }
         return false;

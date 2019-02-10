@@ -1,8 +1,8 @@
+import React from 'react';
 import FormWrap from 'components/compositions/FormWrap';
 import { schema } from 'models/ODHNorm';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import BaseODHNormForm from 'components/directories/data_for_calculation/odh_norm/ODHNormForm';
-
 
 const ODHNormForm = enhanceWithPermissions(BaseODHNormForm);
 
@@ -17,20 +17,18 @@ export default class ODHNormFormWrap extends FormWrap {
   }
 
   render() {
-    return this.props.showForm
-      ? (
-        <ODHNormForm
-          formState={this.state.formState}
-          formErrors={this.state.formErrors}
-          permissions={['odh_norm.update']}
-          addPermissionProp
-          canSave={this.state.canSave}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
-          show={this.props.showForm}
-          onHide={this.props.onFormHide}
-        />
-      )
-      : null;
+    return this.props.showForm ? (
+      <ODHNormForm
+        formState={this.state.formState}
+        formErrors={this.state.formErrors}
+        permissions={['odh_norm.update']}
+        addPermissionProp
+        canSave={this.state.canSave}
+        onSubmit={this.handleFormSubmit.bind(this)}
+        handleFormChange={this.handleFormStateChange.bind(this)}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+      />
+    ) : null;
   }
 }

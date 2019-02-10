@@ -14,7 +14,6 @@ const ButtonDeletetructure = withRequirePermissionsNew({
   permissions: permissions.delete,
 })(ExtButton);
 
-
 const tableMeta = {
   cols: [
     {
@@ -53,8 +52,18 @@ export default (props) => {
   const renderers = {
     id: ({ rowData }) => (
       <div>
-        <ButtonEditStructure className="action-button" onClick={props.onActionEdit} boundKeys={rowData}>Редактировать</ButtonEditStructure>
-        <ButtonDeletetructure className="action-button" onClick={props.onActionDelete} boundKeys={rowData}>Удалить</ButtonDeletetructure>
+        <ButtonEditStructure
+          className="action-button"
+          onClick={props.onActionEdit}
+          boundKeys={rowData}>
+          Редактировать
+        </ButtonEditStructure>
+        <ButtonDeletetructure
+          className="action-button"
+          onClick={props.onActionDelete}
+          boundKeys={rowData}>
+          Удалить
+        </ButtonDeletetructure>
       </div>
     ),
   };

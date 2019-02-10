@@ -11,24 +11,17 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 const VALUE_FOR_FIXED = {
   TWO_F: {
     val: 2,
-    list: [
-      'кв. м.',
-      'м.',
-    ],
+    list: ['кв. м.', 'м.'],
     type: 'floatFixed',
   },
   THREE_F: {
     val: 3,
-    list: [
-      'км',
-    ],
+    list: ['км'],
     type: 'floatFixed',
   },
   TEN_I: {
     val: 10,
-    list: [
-      'раз',
-    ],
+    list: ['раз'],
     type: 'intFixed',
     another: {
       val: 2,
@@ -70,25 +63,31 @@ const getTableMeta = (props) => {
       },
       {
         name: 'check_value',
-        displayName: `Нужно пройти (${props.data[0] && props.data[0].route_check_unit})`,
+        displayName: `Нужно пройти (${props.data[0] &&
+          props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'traveled_percentage',
-        displayName: `Пройдено в рабочем режиме (${props.data[0] && props.data[0].route_check_unit})*`,
+        displayName: `Пройдено в рабочем режиме (${props.data[0] &&
+          props.data[0].route_check_unit})*`,
         type: 'string',
         filter: false,
       },
       {
         name: 'left_percentage',
-        displayName: `Осталось (${props.data[0] && props.data[0].route_check_unit})`,
+        displayName: `Осталось (${props.data[0] &&
+          props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'route_with_speed',
-        displayName: `Контроль (${props.data[0] && (props.data[0].route_check_unit === 'м.' ? 'км.' : props.data[0].route_check_unit)})**`,
+        displayName: `Контроль (${props.data[0] &&
+          (props.data[0].route_check_unit === 'м.'
+            ? 'км.'
+            : props.data[0].route_check_unit)})**`,
         type: 'string',
         sortFunc,
         filter: false,
@@ -99,27 +98,47 @@ const getTableMeta = (props) => {
   return tableMeta;
 };
 
-
 const MissionReportByDTTable = (props) => {
   const tableMeta = getTableMeta(props);
 
   const renderers = {
-    traveled_percentage: data => (
+    traveled_percentage: (data) => (
       <div>
-        {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
+        {`${checkFixed(
+          [data.rowData.traveled, data.rowData.route_check_unit],
+          'TEN_I',
+        ).join(' ')}`}
         <br />
         {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
       </div>
     ),
-    left_percentage: data => (
+    left_percentage: (data) => (
       <div>
-        {`${checkFixed([data.rowData.left, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
+        {`${checkFixed(
+          [data.rowData.left, data.rowData.route_check_unit],
+          'TEN_I',
+        ).join(' ')}`}
         <br />
         {`(${`${VALUE_FOR_FIXED.floatFixed(data.data * 100, 0)}%`})`}
       </div>
     ),
-    check_value: meta => <div>{ `${checkFixed([meta.data, meta.rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-    route_with_speed: meta => <div>{`${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(meta.rowData.traveled_high_speed / (getDelForUnitRender(meta.rowData.route_check_unit)), 3)}`}</div>,
+    check_value: (meta) => (
+      <div>{`${checkFixed(
+        [meta.data, meta.rowData.route_check_unit],
+        'TWO_F',
+      ).join(' ')}`}</div>
+    ),
+    route_with_speed: (meta) => (
+      <div>{`${VALUE_FOR_FIXED.floatFixed(
+        meta.rowData.traveled /
+          getDelForUnitRender(meta.rowData.route_check_unit),
+        3,
+      )} / ${VALUE_FOR_FIXED.floatFixed(
+        meta.rowData.traveled_high_speed /
+          getDelForUnitRender(meta.rowData.route_check_unit),
+        3,
+      )}`}</div>
+    ),
   };
 
   if (!(props.data && props.data.length)) {
@@ -159,7 +178,7 @@ class MissionReportByDT extends ElementsList {
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
-  }
+  };
 
   render() {
     return (
@@ -176,9 +195,7 @@ class MissionReportByDT extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(MissionReportByDT);

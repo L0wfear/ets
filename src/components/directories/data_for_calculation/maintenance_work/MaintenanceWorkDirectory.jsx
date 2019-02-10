@@ -20,7 +20,9 @@ import { compose } from 'recompose';
 class MaintenanceWorkDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('objects').deleteMaintenanceWork;
+    this.removeElementAction = context.flux.getActions(
+      'objects',
+    ).deleteMaintenanceWork;
   }
 
   init() {
@@ -31,9 +33,7 @@ class MaintenanceWorkDirectory extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(MaintenanceWorkDirectory);

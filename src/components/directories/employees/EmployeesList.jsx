@@ -10,10 +10,12 @@ import { connect } from 'react-redux';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getEmployeeState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getEmployeeState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'employees';
-
 
 @exportable({ entity: 'employee' })
 @staticProps({
@@ -34,12 +36,14 @@ class EmployeesList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   async init() {
     const { employeeIndex } = await this.props.employeeGetAndSetInStore();
 
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
 
     if (searchObject.employee_id) {
@@ -71,7 +75,7 @@ class EmployeesList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -101,12 +105,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       employeeList: getEmployeeState(state).employeeList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      employeeGetAndSetInStore: () => (
+    (dispatch) => ({
+      employeeGetAndSetInStore: () =>
         dispatch(
           employeeActions.employeeGetAndSetInStore(
             {},
@@ -114,23 +118,15 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      employeeEmployeeResetSetEmployee: () => (
+        ),
+      employeeEmployeeResetSetEmployee: () =>
+        dispatch(employeeActions.employeeEmployeeResetSetEmployee()),
+      employeeRemoveEmployee: (id) =>
         dispatch(
-          employeeActions.employeeEmployeeResetSetEmployee(),
-        )
-      ),
-      employeeRemoveEmployee: id => (
-        dispatch(
-          employeeActions.employeeRemoveEmployee(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          employeeActions.employeeRemoveEmployee(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(EmployeesList);

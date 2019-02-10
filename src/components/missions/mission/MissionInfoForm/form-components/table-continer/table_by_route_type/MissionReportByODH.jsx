@@ -8,28 +8,20 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-
 const VALUE_FOR_FIXED = {
   TWO_F: {
     val: 2,
-    list: [
-      'кв. м.',
-      'м.',
-    ],
+    list: ['кв. м.', 'м.'],
     type: 'floatFixed',
   },
   THREE_F: {
     val: 3,
-    list: [
-      'км',
-    ],
+    list: ['км'],
     type: 'floatFixed',
   },
   TEN_I: {
     val: 10,
-    list: [
-      'раз',
-    ],
+    list: ['раз'],
     type: 'intFixed',
     another: {
       val: 2,
@@ -71,25 +63,31 @@ const getTableMeta = (props) => {
       },
       {
         name: 'check_value',
-        displayName: `Нужно пройти (${props.data[0] && props.data[0].route_check_unit})`,
+        displayName: `Нужно пройти (${props.data[0] &&
+          props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'traveled_percentage',
-        displayName: `Пройдено в рабочем режиме (${props.data[0] && props.data[0].route_check_unit})*`,
+        displayName: `Пройдено в рабочем режиме (${props.data[0] &&
+          props.data[0].route_check_unit})*`,
         type: 'string',
         filter: false,
       },
       {
         name: 'left_percentage',
-        displayName: `Осталось (${props.data[0] && props.data[0].route_check_unit})`,
+        displayName: `Осталось (${props.data[0] &&
+          props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'route_with_speed',
-        displayName: `Контроль (${props.data[0] && (props.data[0].route_check_unit === 'м.' ? 'км.' : props.data[0].route_check_unit)})**`,
+        displayName: `Контроль (${props.data[0] &&
+          (props.data[0].route_check_unit === 'м.'
+            ? 'км.'
+            : props.data[0].route_check_unit)})**`,
         type: 'string',
         sortFunc,
         filter: false,
@@ -103,20 +101,38 @@ const getTableMeta = (props) => {
 const renderers = {
   traveled_percentage: ({ data, rowData }) => (
     <div>
-      {`${checkFixed([rowData.traveled, rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      {`${checkFixed(
+        [rowData.traveled, rowData.route_check_unit],
+        'TEN_I',
+      ).join(' ')}`}
       <br />
       {`(${`${parseFloat(parseFloat(data) * 100).toFixed(0)}%`})`}
     </div>
   ),
   left_percentage: ({ data, rowData }) => (
     <div>
-      {`${checkFixed([rowData.left, rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      {`${checkFixed([rowData.left, rowData.route_check_unit], 'TEN_I').join(
+        ' ',
+      )}`}
       <br />
       {`(${`${VALUE_FOR_FIXED.floatFixed(data * 100, 0)}%`})`}
     </div>
   ),
-  check_value: ({ data, rowData }) => <div>{ `${checkFixed([data, rowData.route_check_unit], 'TWO_F').join(' ')}` }</div>,
-  route_with_speed: ({ rowData }) => <div>{`${VALUE_FOR_FIXED.floatFixed(rowData.traveled / (getDelForUnitRender(rowData.route_check_unit)), 3)} / ${VALUE_FOR_FIXED.floatFixed(rowData.traveled_high_speed / (getDelForUnitRender(rowData.route_check_unit)), 3)}`}</div>,
+  check_value: ({ data, rowData }) => (
+    <div>{`${checkFixed([data, rowData.route_check_unit], 'TWO_F').join(
+      ' ',
+    )}`}</div>
+  ),
+  route_with_speed: ({ rowData }) => (
+    <div>{`${VALUE_FOR_FIXED.floatFixed(
+      rowData.traveled / getDelForUnitRender(rowData.route_check_unit),
+      3,
+    )} / ${VALUE_FOR_FIXED.floatFixed(
+      rowData.traveled_high_speed /
+        getDelForUnitRender(rowData.route_check_unit),
+      3,
+    )}`}</div>
+  ),
 };
 
 const MissionReportByODHTable = (props) => {
@@ -161,7 +177,7 @@ class MissionReportByODH extends ElementsList {
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
-  }
+  };
 
   render() {
     return (
@@ -178,9 +194,7 @@ class MissionReportByODH extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(MissionReportByODH);

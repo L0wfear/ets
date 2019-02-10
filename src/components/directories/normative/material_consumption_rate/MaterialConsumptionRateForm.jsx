@@ -12,13 +12,13 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import Form from 'components/compositions/Form';
 
 @connectToStores(['objects', 'odh'])
-export default class MaterialConsumptionRateForm extends Form {
+class MaterialConsumptionRateForm extends Form {
   handleSubmitWrap = () => this.handleSubmit();
 
   handleChangeCategory = (value) => {
     this.handleChange('clean_subcategory_id', null);
     this.handleChange('clean_category_id', value);
-  }
+  };
 
   render() {
     const state = this.props.formState;
@@ -29,20 +29,30 @@ export default class MaterialConsumptionRateForm extends Form {
       cleanCategoriesList = [],
       odhNormList = [],
     } = this.props;
-    const { subcategories = [] } = cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {};
+    const { subcategories = [] } =
+      cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {};
 
     const IS_CREATING = !state.id;
-    const TECH_OPERATIONS = technicalOperationsList.map(defaultSelectListMapper);
+    const TECH_OPERATIONS = technicalOperationsList.map(
+      defaultSelectListMapper,
+    );
     const CONSUMABLE_MATERIALS = odhNormList.map(defaultSelectListMapper);
     const CATEGORIES = cleanCategoriesList.map(defaultSelectListMapper);
     const SUBCATEGORIES = subcategories.map(defaultSelectListMapper);
 
-    const title = IS_CREATING ? 'Добавление нормы на расход расходных материалов' : 'Изменение нормы на расход расходных материалов';
+    const title = IS_CREATING
+      ? 'Добавление нормы на расход расходных материалов'
+      : 'Изменение нормы на расход расходных материалов';
 
     return (
-      <Modal id="modal-material-consumption-rate" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-material-consumption-rate"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>
@@ -79,7 +89,10 @@ export default class MaterialConsumptionRateForm extends Form {
                 type="select"
                 label="Сезон"
                 error={errors.season_id}
-                options={[{ value: 2, label: 'Зима' }, { value: 1, label: 'Лето' }]}
+                options={[
+                  { value: 2, label: 'Зима' },
+                  { value: 1, label: 'Лето' },
+                ]}
                 value={state.season_id}
                 onChange={this.handleChange}
                 boundKeys="season_id"
@@ -123,9 +136,15 @@ export default class MaterialConsumptionRateForm extends Form {
           </Row>
         </ModalBody>
         <Modal.Footer>
-          <Button disabled={!this.props.canSave || !isPermitted} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Button
+            disabled={!this.props.canSave || !isPermitted}
+            onClick={this.handleSubmitWrap}>
+            Сохранить
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
 }
+
+export default MaterialConsumptionRateForm;

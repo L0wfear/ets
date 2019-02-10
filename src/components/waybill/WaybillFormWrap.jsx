@@ -1,17 +1,8 @@
 import React from 'react';
-import {
-  clone,
-  cloneDeep,
-  filter,
-  get,
-  last,
-} from 'lodash';
+import { clone, cloneDeep, filter, get, last } from 'lodash';
 import FormWrap from 'components/compositions/FormWrap';
 import { getWarningNotification } from 'utils/notifications';
-import {
-  saveData,
-  printData,
-} from 'utils/functions';
+import { saveData, printData } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
 import { FluxContext } from 'utils/decorators';
 import permissions from 'components/waybill/config-data/permissions';
@@ -28,15 +19,21 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   if (waybill.status) {
     // Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
     if (field === 'odometr_end') {
-      waybill.odometr_diff = value ? waybill.odometr_end - waybill.odometr_start : null;
+      waybill.odometr_diff = value
+        ? waybill.odometr_end - waybill.odometr_start
+        : null;
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end') {
-      waybill.motohours_diff = value ? waybill.motohours_end - waybill.motohours_start : null;
+      waybill.motohours_diff = value
+        ? waybill.motohours_end - waybill.motohours_start
+        : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
     if (field === 'motohours_equip_end') {
-      waybill.motohours_equip_diff = value ? waybill.motohours_equip_end - waybill.motohours_equip_start : null;
+      waybill.motohours_equip_diff = value
+        ? waybill.motohours_equip_end - waybill.motohours_equip_start
+        : null;
     }
   }
   return waybill;
@@ -50,17 +47,19 @@ const checkDataForDepartureAndArrivalValues = [
   'motohours_equip_end',
 ];
 
-const filterFormErrorByPerission = (isPermittedByKey, formErrors) => (
+const filterFormErrorByPerission = (isPermittedByKey, formErrors) =>
   Object.entries(formErrors).reduce((newFormError, [key, value]) => {
     if (isPermittedByKey.update) {
       newFormError[key] = value;
-    } else if (isPermittedByKey.departure_and_arrival_values && checkDataForDepartureAndArrivalValues.includes(key)) {
+    } else if (
+      isPermittedByKey.departure_and_arrival_values &&
+      checkDataForDepartureAndArrivalValues.includes(key)
+    ) {
       newFormError[key] = value;
     }
 
     return newFormError;
-  }, {})
-);
+  }, {});
 
 // избавиться
 // добавил из-за перерендера
@@ -70,7 +69,7 @@ let timeId = 0;
 class WaybillFormWrap extends FormWrap {
   static defaultProps = {
     onCallback: () => {},
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -92,12 +91,19 @@ class WaybillFormWrap extends FormWrap {
     if (props.showForm && props.showForm !== this.props.showForm) {
       const currentDate = new Date();
 
-      timeId = setTimeout(() => this.checkError(), (60 - currentDate.getSeconds()) * 1000);
+      timeId = setTimeout(
+        () => this.checkError(),
+        (60 - currentDate.getSeconds()) * 1000,
+      );
 
       this.setState({
         isPermittedByKey: {
-          update: this.props.currentUser.permissions.includes(permissions.update),
-          departure_and_arrival_values: this.props.currentUser.permissions.includes(permissions.departure_and_arrival_values),
+          update: this.props.currentUser.permissions.includes(
+            permissions.update,
+          ),
+          departure_and_arrival_values: this.props.currentUser.permissions.includes(
+            permissions.departure_and_arrival_values,
+          ),
         },
       });
 
@@ -125,7 +131,7 @@ class WaybillFormWrap extends FormWrap {
         if (!waybill.equipment_tax_data) {
           waybill.equipment_tax_data = [];
         }
-        if (waybill.mission_id_list.filter(v => v).length === 0) {
+        if (waybill.mission_id_list.filter((v) => v).length === 0) {
           waybill.mission_id_list = [];
         }
 
@@ -141,26 +147,54 @@ class WaybillFormWrap extends FormWrap {
           waybill.equipment_fuel_method = 'naliv';
         }
 
-
-        if (props.element.status === 'active' || props.element.status === 'closed') {
-          const fuelStart = waybill.fuel_start ? parseFloat(waybill.fuel_start) : 0;
-          const fuelGiven = waybill.fuel_given ? parseFloat(waybill.fuel_given) : 0;
+        if (
+          props.element.status === 'active' ||
+          props.element.status === 'closed'
+        ) {
+          const fuelStart = waybill.fuel_start
+            ? parseFloat(waybill.fuel_start)
+            : 0;
+          const fuelGiven = waybill.fuel_given
+            ? parseFloat(waybill.fuel_given)
+            : 0;
           const fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
-          const equipmentFuelStart = waybill.equipment_fuel_start ? parseFloat(waybill.equipment_fuel_start) : 0;
-          const equipmentFuelGiven = waybill.equipment_fuel_given ? parseFloat(waybill.equipment_fuel_given) : 0;
-          const equipmentFuelTaxes = Taxes.calculateFinalResult(waybill.equipment_tax_data);
+          const equipmentFuelStart = waybill.equipment_fuel_start
+            ? parseFloat(waybill.equipment_fuel_start)
+            : 0;
+          const equipmentFuelGiven = waybill.equipment_fuel_given
+            ? parseFloat(waybill.equipment_fuel_given)
+            : 0;
+          const equipmentFuelTaxes = Taxes.calculateFinalResult(
+            waybill.equipment_tax_data,
+          );
 
           if (waybill.equipment_fuel) {
-            waybill.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes).toFixed(3);
-            waybill.equipment_fuel_end = ((equipmentFuelStart + equipmentFuelGiven) - equipmentFuelTaxes).toFixed(3);
+            waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+            waybill.equipment_fuel_end = (
+              equipmentFuelStart +
+              equipmentFuelGiven -
+              equipmentFuelTaxes
+            ).toFixed(3);
           } else {
-            waybill.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+            waybill.fuel_end = (
+              fuelStart +
+              fuelGiven -
+              fuelTaxes -
+              equipmentFuelTaxes
+            ).toFixed(3);
           }
 
           // Расчет пробегов
-          waybill.odometr_diff = waybill.odometr_end ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0) : null;
-          waybill.motohours_diff = waybill.motohours_end ? (waybill.motohours_end) - (waybill.motohours_start || 0) : null;
-          waybill.motohours_equip_diff = waybill.motohours_equip_end ? (waybill.motohours_equip_end || 0) - (waybill.motohours_equip_start || 0) : null;
+          waybill.odometr_diff = waybill.odometr_end
+            ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0)
+            : null;
+          waybill.motohours_diff = waybill.motohours_end
+            ? waybill.motohours_end - (waybill.motohours_start || 0)
+            : null;
+          waybill.motohours_equip_diff = waybill.motohours_equip_end
+            ? (waybill.motohours_equip_end || 0) -
+              (waybill.motohours_equip_start || 0)
+            : null;
 
           if (props.element.status === 'active') {
             this.schema = waybillClosingSchema;
@@ -173,33 +207,33 @@ class WaybillFormWrap extends FormWrap {
               formState: waybill,
               formErrors,
               canPrint: false,
-              canSave: (
-                (
-                  this.state.isPermittedByKey.update
-                  || this.state.isPermittedByKey.departure_and_arrival_values
-                )
-                && !clone(
-                  formErrors,
-                  (v, k) => (
-                    [
-                      'fact_arrival_date',
-                      'fact_departure_date',
-                      'fuel_end',
-                      'distance',
-                      'motohours_equip_end',
-                      'motohours_end',
-                      'odometr_end',
-                    ].includes(k)
-                      ? false
-                      : v
-                  ),
-                ).length
-                && !(
-                  (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
-                  || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-                )
-              ),
-              canClose: this.state.isPermittedByKey.update && !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length,
+              canSave:
+                (this.state.isPermittedByKey.update ||
+                  this.state.isPermittedByKey.departure_and_arrival_values) &&
+                !clone(formErrors, (v, k) =>
+                  [
+                    'fact_arrival_date',
+                    'fact_departure_date',
+                    'fuel_end',
+                    'distance',
+                    'motohours_equip_end',
+                    'motohours_end',
+                    'odometr_end',
+                  ].includes(k)
+                    ? false
+                    : v,
+                ).length &&
+                !(
+                  (formErrors.fact_arrival_date &&
+                    !formErrors.fact_departure_date) ||
+                  (!formErrors.fact_arrival_date &&
+                    formErrors.fact_departure_date)
+                ),
+              canClose:
+                this.state.isPermittedByKey.update &&
+                !filter(formErrors, (v, k) =>
+                  ['distance'].includes(k) ? false : v,
+                ).length,
             });
           } else {
             this.setState({
@@ -217,7 +251,10 @@ class WaybillFormWrap extends FormWrap {
           this.setState({
             formState: waybill,
             canPrint: true,
-            canSave: (this.state.isPermittedByKey.update || this.state.isPermittedByKey.departure_and_arrival_values) && !formErrors.length,
+            canSave:
+              (this.state.isPermittedByKey.update ||
+                this.state.isPermittedByKey.departure_and_arrival_values) &&
+              !formErrors.length,
             canClose: this.state.isPermittedByKey.update && formErrors.length,
             formErrors,
           });
@@ -234,21 +271,43 @@ class WaybillFormWrap extends FormWrap {
     let { formErrors } = this.state;
     const newState = {};
 
-    const fuelStart = formState.fuel_start ? parseFloat(formState.fuel_start) : 0;
-    const fuelGiven = formState.fuel_given ? parseFloat(formState.fuel_given) : 0;
+    const fuelStart = formState.fuel_start
+      ? parseFloat(formState.fuel_start)
+      : 0;
+    const fuelGiven = formState.fuel_given
+      ? parseFloat(formState.fuel_given)
+      : 0;
     const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
-    const equipmentFuelStart = formState.equipment_fuel_start ? parseFloat(formState.equipment_fuel_start) : 0;
-    const equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
-    const equipmentFuelTaxes = Taxes.calculateFinalResult(formState.equipment_tax_data);
+    const equipmentFuelStart = formState.equipment_fuel_start
+      ? parseFloat(formState.equipment_fuel_start)
+      : 0;
+    const equipmentFuelGiven = formState.equipment_fuel_given
+      ? parseFloat(formState.equipment_fuel_given)
+      : 0;
+    const equipmentFuelTaxes = Taxes.calculateFinalResult(
+      formState.equipment_tax_data,
+    );
 
     if (formState.equipment_fuel) {
-      formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes).toFixed(3);
-      formState.equipment_fuel_end = ((equipmentFuelStart + equipmentFuelGiven) - equipmentFuelTaxes).toFixed(3);
+      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+      formState.equipment_fuel_end = (
+        equipmentFuelStart +
+        equipmentFuelGiven -
+        equipmentFuelTaxes
+      ).toFixed(3);
     } else {
-      formState.fuel_end = ((fuelStart + fuelGiven) - fuelTaxes - equipmentFuelTaxes).toFixed(3);
+      formState.fuel_end = (
+        fuelStart +
+        fuelGiven -
+        fuelTaxes -
+        equipmentFuelTaxes
+      ).toFixed(3);
     }
 
-    if (formState.fuel_end !== this.state.formState.fuel_end || isNullOrUndefined(formState.fact_fuel_end)) {
+    if (
+      formState.fuel_end !== this.state.formState.fuel_end ||
+      isNullOrUndefined(formState.fact_fuel_end)
+    ) {
       formState.fact_fuel_end = formState.fuel_end;
     }
 
@@ -262,23 +321,33 @@ class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = (
-      !filter(
-        formErrors,
-        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
-      ).length
-      && !(
-        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
-        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-      )
-    );
+    newState.canSave =
+      !filter(formErrors, (v, k) =>
+        [
+          'fact_arrival_date',
+          'fact_departure_date',
+          'fuel_end',
+          'distance',
+          'motohours_equip_end',
+          'motohours_end',
+          'odometr_end',
+        ].includes(k)
+          ? false
+          : v,
+      ).length &&
+      !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date) ||
+        (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      );
 
-    newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
+    newState.canClose = !filter(formErrors, (v, k) =>
+      ['distance'].includes(k) ? false : v,
+    ).length;
 
     newState.formState = formState;
     newState.formErrors = formErrors;
     this.setState(newState);
-  }
+  };
 
   checkError = (formState = this.state.formState) => {
     let { formErrors } = this.state;
@@ -295,27 +364,40 @@ class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave = (
-      !filter(
-        formErrors,
-        (v, k) => ['fact_arrival_date', 'fact_departure_date', 'fuel_end', 'distance', 'motohours_equip_end', 'motohours_end', 'odometr_end'].includes(k) ? false : v
-      ).length
-      && !(
-        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
-        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-      )
-    );
+    newState.canSave =
+      !filter(formErrors, (v, k) =>
+        [
+          'fact_arrival_date',
+          'fact_departure_date',
+          'fuel_end',
+          'distance',
+          'motohours_equip_end',
+          'motohours_end',
+          'odometr_end',
+        ].includes(k)
+          ? false
+          : v,
+      ).length &&
+      !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date) ||
+        (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      );
 
-    newState.canClose = !filter(formErrors, (v, k) => ['distance'].includes(k) ? false : v).length;
+    newState.canClose = !filter(formErrors, (v, k) =>
+      ['distance'].includes(k) ? false : v,
+    ).length;
 
     newState.formErrors = formErrors;
     timeId = setTimeout(() => this.checkError(), 60 * 1000);
 
-    if (Object.entries(formErrors).some(([key, value]) => value !== this.state.formErrors[key])) {
+    if (
+      Object.entries(formErrors).some(
+        ([key, value]) => value !== this.state.formErrors[key],
+      )
+    ) {
       this.setState(newState);
     }
-  }
-
+  };
 
   handleFormStateChange = (field, e) => {
     const value = get(e, ['target', 'value'], e);
@@ -354,8 +436,12 @@ class WaybillFormWrap extends FormWrap {
             lastTax.RESULT = Taxes.getResult(lastTax);
           }
         }
-        if (field === 'motohours_equip_end' && formState.equipment_tax_data
-          && formState.equipment_tax_data.length && formState.motohours_equip_diff > 0) {
+        if (
+          field === 'motohours_equip_end' &&
+          formState.equipment_tax_data &&
+          formState.equipment_tax_data.length &&
+          formState.motohours_equip_diff > 0
+        ) {
           const lastEquipmentTax = last(formState.equipment_tax_data);
           lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
           lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
@@ -363,7 +449,7 @@ class WaybillFormWrap extends FormWrap {
       }
     }
     this.handleFieldsChange(formState);
-  }
+  };
 
   clearSomeData = () => {
     const formState = cloneDeep(this.state.formState);
@@ -371,10 +457,18 @@ class WaybillFormWrap extends FormWrap {
     delete formState.equipment_fuel_start;
     delete formState.fuel_start;
     delete formState.motohours_equip_start;
-    console.log('delete', '----->', 'equipment_fuel_start', 'fuel_start', 'motohours_equip_start'); // eslint-disable-line
+
+    // prettier-ignore
+    console.log( // eslint-disable-line
+      'delete',
+      '----->',
+      'equipment_fuel_start',
+      'fuel_start',
+      'motohours_equip_start',
+    ); // eslint-disable-line
 
     this.handleMultipleChange(formState);
-  }
+  };
 
   handleMultipleChange = (fields) => {
     let formState = cloneDeep(this.state.formState);
@@ -387,7 +481,7 @@ class WaybillFormWrap extends FormWrap {
     });
 
     this.handleFieldsChange(formState);
-  }
+  };
 
   /**
    * Выдача (печать) Путевого листа
@@ -412,15 +506,14 @@ class WaybillFormWrap extends FormWrap {
       uid: 'waybilPrintCurrForm',
       children: makeReactMessange('Формирование печатной формы'),
     });
-    const callback = (waybill_id = currentWaybillId) => (
-      flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
-        .then(respoce => (
-          saveData(respoce.blob, respoce.fileName)
-        ))
+    const callback = (waybill_id = currentWaybillId) =>
+      flux
+        .getActions('waybills')
+        .printWaybill(print_form_type, waybill_id)
+        .then((respoce) => saveData(respoce.blob, respoce.fileName))
         .catch((error) => {
           console.warn('waybillFormWrap saveData', error); // eslint-disable-line
-        })
-    );
+        });
 
     try {
       if (printonly) {
@@ -434,7 +527,7 @@ class WaybillFormWrap extends FormWrap {
 
     global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
     this.setState({ canSave: true });
-  }
+  };
 
   /**
    * Отправка формы ПЛ
@@ -447,7 +540,8 @@ class WaybillFormWrap extends FormWrap {
     const waybillStatus = formState.status;
     const { flux } = this.context;
 
-    if (!waybillStatus) { // если создаем ПЛ
+    if (!waybillStatus) {
+      // если создаем ПЛ
       if (typeof callback === 'function') {
         formState.status = 'draft';
         const r = await flux.getActions('waybills').createWaybill(formState);
@@ -462,7 +556,10 @@ class WaybillFormWrap extends FormWrap {
           await flux.getActions('waybills').updateWaybill(formState);
           callback(id);
         } catch ({ errorIsShow }) {
-          !errorIsShow && global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
+          !errorIsShow &&
+            global.NOTIFICATION_SYSTEM.removeNotification(
+              'waybilPrintCurrForm',
+            );
           this.setState({
             formState: {
               ...formState,
@@ -482,7 +579,8 @@ class WaybillFormWrap extends FormWrap {
         }
       }
       this.props.onCallback();
-    } else if (waybillStatus === 'draft') { // если ПЛ обновляем
+    } else if (waybillStatus === 'draft') {
+      // если ПЛ обновляем
       if (typeof callback === 'function') {
         formState.status = 'active';
 
@@ -520,69 +618,76 @@ class WaybillFormWrap extends FormWrap {
       }
       this.props.onCallback();
     }
-  }
+  };
 
   handleClose = async (taxesControl) => {
     const { formState } = this.state;
     const prevStatus = formState.status;
     if (!taxesControl) {
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Необходимо заполнить нормы для расчета топлива!'));
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification(
+          'Необходимо заполнить нормы для расчета топлива!',
+        ),
+      );
       return;
     }
 
     confirmDialog({
-      title: 'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
+      title:
+        'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
       body: 'Вы уверены, что хотите закрыть окно?',
     })
       .then(async () => {
         try {
           formState.status = 'closed';
-          await this.context.flux.getActions('waybills').updateWaybill(formState);
+          await this.context.flux
+            .getActions('waybills')
+            .updateWaybill(formState);
           this.props.onCallback();
         } catch (e) {
           formState.status = prevStatus;
         }
       })
       .catch(() => {});
-  }
+  };
 
   handlePrintFromMiniButton = (print_form_type = 'plate_special') => {
-    const { formState: { id: waybill_id } } = this.state;
+    const {
+      formState: { id: waybill_id },
+    } = this.state;
 
-    this.context.flux.getActions('waybills').printWaybill(print_form_type, waybill_id)
+    this.context.flux
+      .getActions('waybills')
+      .printWaybill(print_form_type, waybill_id)
       .then(({ blob }) => printData(blob))
       .catch(() => {});
-  }
+  };
 
   render() {
     const { entity } = this.props;
 
-    return this.props.showForm
-      ? (
-        <WaybillForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmit}
-          handlePrint={this.handlePrint}
-          handleClose={this.handleClose}
-          handleFormChange={this.handleFormStateChange}
-          handleMultipleChange={this.handleMultipleChange}
-          show={this.props.showForm}
-          onHide={this.props.onFormHide}
-          entity={entity || 'waybill'}
-          handlePrintFromMiniButton={this.handlePrintFromMiniButton}
-          clearSomeData={this.clearSomeData}
-          isPermittedByKey={this.state.isPermittedByKey}
-          {...this.state}
-        />
-      )
-      : (
-        <DivNone />
-      );
+    return this.props.showForm ? (
+      <WaybillForm
+        formState={this.state.formState}
+        onSubmit={this.handleFormSubmit}
+        handlePrint={this.handlePrint}
+        handleClose={this.handleClose}
+        handleFormChange={this.handleFormStateChange}
+        handleMultipleChange={this.handleMultipleChange}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+        entity={entity || 'waybill'}
+        handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+        clearSomeData={this.clearSomeData}
+        isPermittedByKey={this.state.isPermittedByKey}
+        {...this.state}
+      />
+    ) : (
+      <DivNone />
+    );
   }
 }
 
-export default connect(
-  state => ({
-    currentUser: state.session.userData,
-  }),
-)(WaybillFormWrap);
+export default connect((state) => ({
+  currentUser: state.session.userData,
+}))(WaybillFormWrap);

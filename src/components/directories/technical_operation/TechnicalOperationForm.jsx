@@ -5,7 +5,6 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 
 import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import Div from 'components/ui/Div';
 import Form from 'components/compositions/Form';
@@ -13,33 +12,40 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { connectToStores } from 'utils/decorators';
 import _ from 'lodash';
 
-const seasonsList = [{ id: 1, name: 'Лето' }, { id: 2, name: 'Зима' }, { id: 3, name: 'Всесезон' }];
+const seasonsList = [
+  { id: 1, name: 'Лето' },
+  { id: 2, name: 'Зима' },
+  { id: 3, name: 'Всесезон' },
+];
 const boundKeysObj = {
   check_types: ['check_types'],
 };
 
 @connectToStores(['objects', 'employees', 'missions'])
-export default class TechnicalOperationForm extends Form {
-
+class TechnicalOperationForm extends Form {
   handleCarFuncTypesChange = (v) => {
     const data = v.map((d) => Number(d));
 
     const { typesList = [] } = this.props;
 
-    const types = data.map((d) => typesList.find(({ asuods_id }) => d === asuods_id)).map((d) => ({
-      ...d,
-      id: d.asuods_id,
-    }));
+    const types = data
+      .map((d) => typesList.find(({ asuods_id }) => d === asuods_id))
+      .map((d) => ({
+        ...d,
+        id: d.asuods_id,
+      }));
     this.props.handleFormChange('car_func_types', types);
-  }
+  };
 
   handleObjectsChange(arrayOfObjects) {
-    const objects = this.props.technicalOperationsObjectsList.filter(obj => arrayOfObjects.includes(obj.id));
+    const objects = this.props.technicalOperationsObjectsList.filter((obj) =>
+      arrayOfObjects.includes(obj.id),
+    );
     this.props.handleFormChange('objects', objects);
   }
   handleChangeSensorTypeIds = (sensor_type_ids) => {
     this.props.handleFormChange('sensor_type_ids', sensor_type_ids || []);
-  }
+  };
 
   componentDidMount() {
     const { flux } = this.context;
@@ -62,23 +68,36 @@ export default class TechnicalOperationForm extends Form {
     const isPermitted = false;
 
     const SEASONS = seasonsList.map(defaultSelectListMapper);
-    const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({ value: asuods_id, label: full_name }));
-    const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList
-                                        .map(({ id, full_name }) => ({ value: id, label: full_name }));
-    const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(({ name, key }) => ({ value: key, label: name }));
-    const CONDITIONS = state.period_interval_name ? `${state.norm_period} в ${state.period_interval_name}` : state.norm_period;
-    const SENSORS_TYPE_OPTIONS = this.props.sensorTypesList.map(defaultSelectListMapper);
+    const CAR_TYPES = typesList.map(({ asuods_id, full_name }) => ({
+      value: asuods_id,
+      label: full_name,
+    }));
+    const TECHNICAL_OPERATION_OBJECTS = technicalOperationsObjectsList.map(
+      ({ id, full_name }) => ({ value: id, label: full_name }),
+    );
+    const TECHNICAL_OPERATION_TYPES = technicalOperationsTypesList.map(
+      ({ name, key }) => ({ value: key, label: name }),
+    );
+    const CONDITIONS = state.period_interval_name
+      ? `${state.norm_period} в ${state.period_interval_name}`
+      : state.norm_period;
+    const SENSORS_TYPE_OPTIONS = this.props.sensorTypesList.map(
+      defaultSelectListMapper,
+    );
 
     return (
-      <Modal id="modal-technical-operation" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
-
+      <Modal
+        id="modal-technical-operation"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>
           <Row>
-
             <Col md={3}>
               <ExtField
                 type="string"
@@ -178,7 +197,7 @@ export default class TechnicalOperationForm extends Form {
                 type="select"
                 label="Объект"
                 multi
-                value={state.objects.map(cft => cft.id)}
+                value={state.objects.map((cft) => cft.id)}
                 options={TECHNICAL_OPERATION_OBJECTS}
                 onChange={this.handleObjectsChange}
                 disabled={!isPermitted}
@@ -203,7 +222,9 @@ export default class TechnicalOperationForm extends Form {
                 type="select"
                 label="Типы ТС"
                 multi
-                value={_.uniq(state.car_func_types.map(cft => cft.asuods_id)).join(',')}
+                value={_.uniq(
+                  state.car_func_types.map((cft) => cft.asuods_id),
+                ).join(',')}
                 options={CAR_TYPES}
                 onChange={this.handleCarFuncTypesChange}
                 disabled={!isPermitted}
@@ -221,15 +242,18 @@ export default class TechnicalOperationForm extends Form {
               />
             </Col>
           </Row>
-
         </ModalBody>
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={!isPermittedOuter} onClick={this.handleSubmit}>Сохранить</Button>
+            <Button disabled={!isPermittedOuter} onClick={this.handleSubmit}>
+              Сохранить
+            </Button>
           </Div>
         </Modal.Footer>
       </Modal>
     );
   }
 }
+
+export default TechnicalOperationForm;

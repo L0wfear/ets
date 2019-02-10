@@ -27,7 +27,7 @@ export default class FilterRow extends React.Component {
 
   static get defaultProps() {
     return {
-      labelFunction: v => v,
+      labelFunction: (v) => v,
       data: [],
     };
   }
@@ -36,7 +36,7 @@ export default class FilterRow extends React.Component {
 
   onMultiChange = (...arg) => {
     this.props.onMultiChange(this.props, ...arg);
-  }
+  };
 
   // TODO добавить в FilterInput type и поддержку select
   render() {
@@ -51,7 +51,9 @@ export default class FilterRow extends React.Component {
       entity,
     } = this.props;
     let { value } = this.props;
-    const idLabel = name ? `${entity ? `${entity}-` : ''}${name}-label` : undefined;
+    const idLabel = name
+      ? `${entity ? `${entity}-` : ''}${name}-label`
+      : undefined;
 
     let input = (
       <div className="form-group">
@@ -59,52 +61,127 @@ export default class FilterRow extends React.Component {
       </div>
     );
     if (type) {
-      if (type === 'select' || type === 'multiselect' || type === 'multiselect-boolean' || type === 'advanced-select-like') {
-        let options = availableOptions || _(data)
-          .uniqBy(name)
-          .map(d => ({
-            value: typeof d[name] === 'boolean' ? +d[name] : d[name],
-            label: labelFunction(d[byLabel || name]),
-          }))
-          .filter(d => !!d.label)
-          .value();
+      if (
+        type === 'select' ||
+        type === 'multiselect' ||
+        type === 'multiselect-boolean' ||
+        type === 'advanced-select-like'
+      ) {
+        let options =
+          availableOptions ||
+          _(data)
+            .uniqBy(name)
+            .map((d) => ({
+              value: typeof d[name] === 'boolean' ? +d[name] : d[name],
+              label: labelFunction(d[byLabel || name]),
+            }))
+            .filter((d) => !!d.label)
+            .value();
         if (type === 'select' || type === 'advanced-select-like') {
-          if (!!value && !_.find(options, o => o.value === value)) {
+          if (!!value && !_.find(options, (o) => o.value === value)) {
             value = null;
           }
           if (name === 'operation_id') {
-            options = options.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+            options = options.sort((a, b) =>
+              a.label.toLowerCase().localeCompare(b.label.toLowerCase()),
+            );
           }
-          input = <ReactSelect options={options} value={value} onChange={this.onChange} />;
+          input = (
+            <ReactSelect
+              options={options}
+              value={value}
+              onChange={this.onChange}
+            />
+          );
         } else if (type === 'multiselect' || type === 'multiselect-boolean') {
-          if (value && !!value.length) value = value.filter((v) => _.find(options, o => o.value === v));
+          if (value && !!value.length)
+            value = value.filter((v) => _.find(options, (o) => o.value === v));
           input = (
             <Div className="filter-multiselect-container">
-              <ReactSelect options={options} multi delimiter={'$'} value={value} onChange={this.onMultiChange} />
+              <ReactSelect
+                options={options}
+                multi
+                delimiter={'$'}
+                value={value}
+                onChange={this.onMultiChange}
+              />
             </Div>
           );
         }
       }
       if (type === 'advanced-number') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="number" onChange={this.onChange} />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="number"
+            onChange={this.onChange}
+          />
+        );
       }
       if (type === 'advanced-string') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={this.onChange} />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="string"
+            onChange={this.onChange}
+          />
+        );
       }
       if (type === 'advanced-string-like') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="string" onChange={this.onChange} single filterType="like" />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="string"
+            onChange={this.onChange}
+            single
+            filterType="like"
+          />
+        );
       }
       if (type === 'advanced-date') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={this.onChange} />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="date"
+            onChange={this.onChange}
+          />
+        );
       }
       if (type === 'advanced-datetime') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={this.onChange} />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="datetime"
+            onChange={this.onChange}
+          />
+        );
       }
       if (type === 'date') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="date" onChange={this.onChange} single />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="date"
+            onChange={this.onChange}
+            single
+          />
+        );
       }
       if (type === 'datetime') {
-        input = <FilterInput filterValue={value} fieldName={name} inputType="datetime" onChange={this.onChange} single />;
+        input = (
+          <FilterInput
+            filterValue={value}
+            fieldName={name}
+            inputType="datetime"
+            onChange={this.onChange}
+            single
+          />
+        );
       }
       if (type === 'date_interval') {
         input = <IntervalPicker interval={value} onChange={this.onChange} />;
@@ -113,7 +190,9 @@ export default class FilterRow extends React.Component {
 
     return (
       <ColFilter lg={3} md={4} sm={6}>
-        <label id={idLabel} htmlFor="input">{displayName}</label>
+        <label id={idLabel} htmlFor="input">
+          {displayName}
+        </label>
         {input}
       </ColFilter>
     );

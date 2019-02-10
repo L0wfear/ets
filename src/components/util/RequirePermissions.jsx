@@ -10,12 +10,10 @@ const defaultProps = {
   hidden: false,
 };
 
-const enhanceWithPermissions = ComposedComponent => (
-  connect(
-    state => ({
-      userPermissionsSet: getSessionState(state).userData.permissionsSet,
-    }),
-  )(
+const enhanceWithPermissions = (ComposedComponent) =>
+  connect((state) => ({
+    userPermissionsSet: getSessionState(state).userData.permissionsSet,
+  }))(
     class RequirePermissions extends React.Component {
       static get propTypes() {
         return {
@@ -36,16 +34,13 @@ const enhanceWithPermissions = ComposedComponent => (
        * @return {boolean} isPermitted - доступен ли компонент для отображения
        */
       isPermitted() {
-        const {
-          userPermissionsSet,
-          permissions,
-        } = this.props;
+        const { userPermissionsSet, permissions } = this.props;
 
         if (permissions.length === 0) {
           return true;
         }
 
-        return !!permissions.filter(p => userPermissionsSet.has(p)).length;
+        return !!permissions.filter((p) => userPermissionsSet.has(p)).length;
       }
 
       /**
@@ -61,15 +56,9 @@ const enhanceWithPermissions = ComposedComponent => (
           return null;
         }
 
-        return (
-          <ComposedComponent
-            {...this.props}
-            isPermitted={isPermitted}
-          />
-        );
+        return <ComposedComponent {...this.props} isPermitted={isPermitted} />;
       }
     },
-  )
-);
+  );
 
 export default enhanceWithPermissions;

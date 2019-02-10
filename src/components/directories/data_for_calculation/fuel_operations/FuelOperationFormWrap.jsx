@@ -12,7 +12,6 @@ import { compose } from 'recompose';
 
 const FuelOperationForm = enhanceWithPermissions(BaseFuelOperationForm);
 
-
 export const fuelOperationSchema = {
   properties: [
     {
@@ -47,40 +46,30 @@ export class FuelOperationFormWrap extends FormWrap {
   render() {
     const { showForm } = this.props;
 
-    return showForm
-      ? (
-        <FuelOperationForm
-          formState={this.state.formState}
-          permissions={['fuel_operation.update']}
-          addPermissionProp
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
-          show={this.props.showForm}
-          onHide={this.props.onFormHide}
-          measureUnitList={this.props.measureUnitList}
-          {...this.state}
-        />
-      )
-      : null;
+    return showForm ? (
+      <FuelOperationForm
+        formState={this.state.formState}
+        permissions={['fuel_operation.update']}
+        addPermissionProp
+        onSubmit={this.handleFormSubmit.bind(this)}
+        handleFormChange={this.handleFormStateChange.bind(this)}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+        measureUnitList={this.props.measureUnitList}
+        {...this.state}
+      />
+    ) : null;
   }
 }
 export default compose(
   connect(
-    state => ({
+    (state) => ({
       fuelRatesList: state.fuelRates.fuelRatesList,
       fuelRateOperations: state.fuelRates.fuelRateOperations,
     }),
-    dispatch => ({
-      fuelOperationCreate: payload => (
-        dispatch(
-          fuelOperationCreate(payload),
-        )
-      ),
-      fuelOperationUpdate: payload => (
-        dispatch(
-          fuelOperationUpdate(payload),
-        )
-      ),
+    (dispatch) => ({
+      fuelOperationCreate: (payload) => dispatch(fuelOperationCreate(payload)),
+      fuelOperationUpdate: (payload) => dispatch(fuelOperationUpdate(payload)),
     }),
   ),
 )(FuelOperationFormWrap);

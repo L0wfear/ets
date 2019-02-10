@@ -71,18 +71,17 @@ export const missionSchema = {
     passes_count: [
       {
         validator(value) {
-          if (value < 1)
-            return '"Количество циклов" должно быть больше 0';
-        }
-      }
+          if (value < 1) return '"Количество циклов" должно быть больше 0';
+        },
+      },
     ],
-    'date_end': [
+    date_end: [
       {
         type: 'gt',
         field: 'date_start',
       },
     ],
-    'municipal_facility_id': [
+    municipal_facility_id: [
       {
         validator: (value) => {
           if (!value) {
@@ -92,7 +91,7 @@ export const missionSchema = {
         },
       },
     ],
-    'car_id': [
+    car_id: [
       {
         validator: (value = [], { is_column }) => {
           if (!value || value.length === 0) {

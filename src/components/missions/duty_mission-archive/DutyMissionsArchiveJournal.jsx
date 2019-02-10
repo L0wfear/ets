@@ -5,16 +5,26 @@ import * as Button from 'react-bootstrap/lib/Button';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
-import { extractTableMeta, getServerSortingField, toServerFilteringObject } from 'components/ui/table/utils';
+import {
+  extractTableMeta,
+  getServerSortingField,
+  toServerFilteringObject,
+} from 'components/ui/table/utils';
 import Paginator from 'components/ui/new/paginator/Paginator';
 import PrintForm from 'components/missions/common/PrintForm';
 import permissions from 'components/missions/duty_mission/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import DutyMissionsTable, { getTableMeta } from 'components/missions/duty_mission/DutyMissionsTable';
+import DutyMissionsTable, {
+  getTableMeta,
+} from 'components/missions/duty_mission/DutyMissionsTable';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState, getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
+import {
+  getCompanyStructureState,
+  getSessionState,
+  getMissionsState,
+} from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
@@ -53,9 +63,9 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
 
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page
-      || prevState.sortBy !== this.state.sortBy
-      || prevState.filter !== this.state.filter
+      prevState.page !== this.state.page ||
+      prevState.sortBy !== this.state.sortBy ||
+      prevState.filter !== this.state.filter
     ) {
       this.refreshList(this.state);
     }
@@ -79,14 +89,19 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
-    flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
+    flux
+      .getActions('missions')
+      .getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
-  }
+  };
 
   refreshList = async (state = this.state) => {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
-    const { data, total_count } = await this.props.actionGetAndSetInStoreDutyMission(
+    const {
+      data,
+      total_count,
+    } = await this.props.actionGetAndSetInStoreDutyMission(
       {
         limit: MAX_ITEMS_PER_PAGE,
         offset: state.page * MAX_ITEMS_PER_PAGE,
@@ -98,9 +113,9 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
     );
 
     if (data === 0 && total_count > 0) {
-      this.setState({ page: (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) });
+      this.setState({ page: Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1 });
     }
-  }
+  };
 
   checkDisabledArchive = () => {
     const validateMissionsArr = Object.values(this.state.checkedElements);
@@ -110,7 +125,7 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
     }
 
     return validateMissionsArr.length === 0;
-  }
+  };
 
   archiveCheckedElements = () => {
     const { selectedElement } = this.state;
@@ -124,39 +139,54 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
 
     confirmDialog({
       title: 'Внимание',
-      body: `Вы уверены, что хотите перенести из архива ${moreOne ? 'выбранные-наряд задания' : 'выбранное наряд-задание'}?`,
+      body: `Вы уверены, что хотите перенести из архива ${
+        moreOne ? 'выбранные-наряд задания' : 'выбранное наряд-задание'
+      }?`,
     })
-      .then(() => (
+      .then(() =>
         Promise.all(
-          Object.entries(checkedElements).map(([id]) => (
-            this.props.actionChangeArchiveDutuMissionStatus(
-              id,
-              false,
-              { page: loadingPageName },
-            )
-          )),
-        ).then(() => {
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные наряд-задания перенесены из' : 'Выбранное наряд-задание перенесено из'} архива`);
-        }).catch(() => {
-        }).then(() => {
-          this.refreshList();
-          this.setState({
-            selectedElement: null,
-            checkedElements: {},
-          });
-        })
-      )).catch(() => {});
-  }
+          Object.entries(checkedElements).map(([id]) =>
+            this.props.actionChangeArchiveDutuMissionStatus(id, false, {
+              page: loadingPageName,
+            }),
+          ),
+        )
+          .then(() => {
+            global.NOTIFICATION_SYSTEM.notify(
+              `${
+                moreOne
+                  ? 'Выбранные наряд-задания перенесены из'
+                  : 'Выбранное наряд-задание перенесено из'
+              } архива`,
+            );
+          })
+          .catch(() => {})
+          .then(() => {
+            this.refreshList();
+            this.setState({
+              selectedElement: null,
+              checkedElements: {},
+            });
+          }),
+      )
+      .catch(() => {});
+  };
 
   getButtons = () => {
     const buttons = super.getButtons();
 
     buttons.push(
-      <ButtonUpdateDutyMission key="button-archive-mission" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>Перенести из архива</ButtonUpdateDutyMission>,
+      <ButtonUpdateDutyMission
+        key="button-archive-mission"
+        bsSize="small"
+        onClick={this.archiveCheckedElements}
+        disabled={this.checkDisabledArchive()}>
+        Перенести из архива
+      </ButtonUpdateDutyMission>,
     );
 
     return buttons;
-  }
+  };
 
   onDutyMissionFormLazyHide = (isSubmitted) => {
     if (isSubmitted) {
@@ -169,9 +199,9 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
       formType: 'ViewForm',
       checkedElements: {},
     });
-  }
+  };
 
-  getForms = () => ([
+  getForms = () => [
     <div key="forms">
       <DutyMissionFormLazy
         onFormHide={this.onDutyMissionFormLazyHide}
@@ -186,15 +216,21 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
         title="Печать журнала наряд-заданий"
       />
     </div>,
-  ]);
+  ];
 
   changeSort = (field, direction) => {
-    this.setState({ sortBy: getServerSortingField(field, direction, _.get(this.tableMeta, [field, 'sort', 'serverFieldName'])) });
-  }
+    this.setState({
+      sortBy: getServerSortingField(
+        field,
+        direction,
+        _.get(this.tableMeta, [field, 'sort', 'serverFieldName']),
+      ),
+    });
+  };
 
   changeFilter = (filter) => {
     this.setState({ filter });
-  }
+  };
 
   getAdditionalProps = () => ({
     structures: this.props.companyStructureLinearList,
@@ -213,15 +249,17 @@ class DutyMissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
-  additionalRender = () => ([
+  additionalRender = () => [
     <Paginator
       key="paginator"
       currentPage={this.state.page}
-      maxPage={Math.ceil(this.props.dutyMissionsTotalCount / MAX_ITEMS_PER_PAGE)}
-      setPage={page => this.setState({ page })}
+      maxPage={Math.ceil(
+        this.props.dutyMissionsTotalCount / MAX_ITEMS_PER_PAGE,
+      )}
+      setPage={(page) => this.setState({ page })}
       firstLastButtons
     />,
-  ]);
+  ];
 }
 
 export default compose(
@@ -230,36 +268,27 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
-      companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+    (state) => ({
+      companyStructureLinearList: getCompanyStructureState(state)
+        .companyStructureLinearList,
       userData: getSessionState(state).userData,
       dutyMissionList: getMissionsState(state).dutyMissionData.dutyMissionList,
       total_count: getMissionsState(state).dutyMissionData.total_count,
     }),
-    dispatch => ({
-      getAndSetInStoreCompanyStructureLinear: () => (
+    (dispatch) => ({
+      getAndSetInStoreCompanyStructureLinear: () =>
         dispatch(
           companyStructureActions.getAndSetInStoreCompanyStructureLinear(
             {},
             { page: loadingPageName },
           ),
-        )
-      ),
-      actionGetAndSetInStoreDutyMission: (...arg) => (
-        dispatch(
-          missionsActions.actionGetAndSetInStoreDutyMission(...arg),
-        )
-      ),
-      actionResetDutyMission: (...arg) => (
-        dispatch(
-          missionsActions.actionResetDutyMission(...arg),
-        )
-      ),
-      actionChangeArchiveDutuMissionStatus: (...arg) => (
-        dispatch(
-          missionsActions.actionChangeArchiveDutuMissionStatus(...arg),
-        )
-      ),
+        ),
+      actionGetAndSetInStoreDutyMission: (...arg) =>
+        dispatch(missionsActions.actionGetAndSetInStoreDutyMission(...arg)),
+      actionResetDutyMission: (...arg) =>
+        dispatch(missionsActions.actionResetDutyMission(...arg)),
+      actionChangeArchiveDutuMissionStatus: (...arg) =>
+        dispatch(missionsActions.actionChangeArchiveDutuMissionStatus(...arg)),
     }),
   ),
 )(DutyMissionsArchiveJournal);

@@ -66,10 +66,7 @@ export default class DataTable extends React.Component {
       noHeader: PropTypes.bool,
       enableSort: PropTypes.bool,
 
-      title: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-      ]),
+      title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       rowNumberLabel: PropTypes.string,
 
       tableMeta: PropTypes.object,
@@ -171,12 +168,20 @@ export default class DataTable extends React.Component {
         data: this.state.data,
       };
 
-      if (firstUseExternalInitialSort && props.initialSort && props.initialSort !== initialSort) {
+      if (
+        firstUseExternalInitialSort &&
+        props.initialSort &&
+        props.initialSort !== initialSort
+      ) {
         changesFields.initialSort = props.initialSort;
         changesFields.firstUseExternalInitialSort = false;
       }
 
-      if (firstUseExternalInitialSort && props.initialSortAscending && props.initialSortAscending !== initialSortAscending) {
+      if (
+        firstUseExternalInitialSort &&
+        props.initialSortAscending &&
+        props.initialSortAscending !== initialSortAscending
+      ) {
         changesFields.initialSortAscending = props.initialSortAscending;
       }
       if (props.useServerFilter) {
@@ -192,7 +197,10 @@ export default class DataTable extends React.Component {
       }
 
       if (!props.useServerSort || !props.useServerFilter) {
-        changesFields.data = makeData(changesFields.originalData, this.state, { ...props, ...changesFields });
+        changesFields.data = makeData(changesFields.originalData, this.state, {
+          ...props,
+          ...changesFields,
+        });
       }
       this.state = {
         ...this.state,
@@ -207,11 +215,12 @@ export default class DataTable extends React.Component {
       this.setState({ filterValues: this.props.filterValues });
     }
     if (columnControl) {
-      const columnControlValues = JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) || [];
+      const columnControlValues =
+        JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) ||
+        [];
       this.setState({ columnControlValues });
     }
   }
-
 
   static getDerivedStateFromProps(nextProps, preveState) {
     const {
@@ -234,7 +243,10 @@ export default class DataTable extends React.Component {
       if (nextProps.initialSort && nextProps.initialSort !== initialSort) {
         changesFields.initialSort = nextProps.initialSort;
       }
-      if (nextProps.initialSortAscending && nextProps.initialSortAscending !== initialSortAscending) {
+      if (
+        nextProps.initialSortAscending &&
+        nextProps.initialSortAscending !== initialSortAscending
+      ) {
         changesFields.initialSortAscending = nextProps.initialSortAscending;
       }
       changesFields.firstUseExternalInitialSort = false;
@@ -252,13 +264,19 @@ export default class DataTable extends React.Component {
       changesFields.filterValues = {};
     }
 
-    if (Array.isArray(nextProps.results) && nextProps.results !== originalData) {
+    if (
+      Array.isArray(nextProps.results) &&
+      nextProps.results !== originalData
+    ) {
       changesFields.originalData = nextProps.results;
       changesFields.data = nextProps.results;
     }
 
     if (!nextProps.useServerSort || !nextProps.useServerFilter) {
-      changesFields.data = makeData(changesFields.originalData, preveState, { ...nextProps, ...changesFields });
+      changesFields.data = makeData(changesFields.originalData, preveState, {
+        ...nextProps,
+        ...changesFields,
+      });
     }
 
     return changesFields;
@@ -272,15 +290,17 @@ export default class DataTable extends React.Component {
     if (this.state.filterModalIsOpen === true) {
       this.setState({ filterModalIsOpen: false });
     }
-  }
+  };
 
   toggleFilter = () => {
     this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
-  }
+  };
 
   toggleColumnControl = () => {
-    this.setState({ columnControlModalIsOpen: !this.state.columnControlModalIsOpen });
-  }
+    this.setState({
+      columnControlModalIsOpen: !this.state.columnControlModalIsOpen,
+    });
+  };
 
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
@@ -302,16 +322,22 @@ export default class DataTable extends React.Component {
       return;
     }
     if (typeof this.props.onAllRowsChecked === 'function') {
-      this.props.onAllRowsChecked(this.props.results.reduce((cur, val) => { cur[val.id] = val; return cur; }, {}), false);
+      this.props.onAllRowsChecked(
+        this.props.results.reduce((cur, val) => {
+          cur[val.id] = val;
+          return cur;
+        }, {}),
+        false,
+      );
     }
     this.setState({ filterValues, globalCheckboxState: false });
-  }
+  };
 
   closeColumnControl = () => {
     if (this.state.columnControlModalIsOpen === true) {
       this.setState({ columnControlModalIsOpen: false });
     }
-  }
+  };
 
   saveColumnControl = (column) => {
     const { columnControlValues } = this.state;
@@ -322,8 +348,11 @@ export default class DataTable extends React.Component {
       columnControlValues.splice(i, 1);
     }
     this.setState({ columnControlValues });
-    localStorage.setItem(this.props.columnControlStorageName, JSON.stringify(columnControlValues));
-  }
+    localStorage.setItem(
+      this.props.columnControlStorageName,
+      JSON.stringify(columnControlValues),
+    );
+  };
 
   handleRowCheck = (id) => {
     const value = !this.props.checked[id];
@@ -332,24 +361,29 @@ export default class DataTable extends React.Component {
     if (value === false) delete clonedData[id];
     this.props.onRowChecked(id, value);
     this.setState({
-      globalCheckboxState: Object.keys(clonedData).length === _(this.props.results).filter(r => this.shouldBeRendered(r)).value().length,
+      globalCheckboxState:
+        Object.keys(clonedData).length ===
+        _(this.props.results)
+          .filter((r) => this.shouldBeRendered(r))
+          .value().length,
     });
-  }
+  };
 
   globalCheckHandler = (shortResult, event) => {
-    const checked = (shortResult)
-      .reduce((cur, val) => {
-        cur[val[this.props.selectField]] = val;
-        return cur;
-      },
-      {} );
+    const checked = shortResult.reduce((cur, val) => {
+      cur[val[this.props.selectField]] = val;
+      return cur;
+    }, {});
 
     this.props.onAllRowsChecked(checked, !this.state.globalCheckboxState);
-    this.setState({ globalCheckboxState: !this.state.globalCheckboxState }, () => {
-      this.forceUpdate();
-    });
+    this.setState(
+      { globalCheckboxState: !this.state.globalCheckboxState },
+      () => {
+        this.forceUpdate();
+      },
+    );
     event && event.stopPropagation();
-  }
+  };
 
   defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
     return tableMetaCols.reduce((cur, col) => {
@@ -359,13 +393,18 @@ export default class DataTable extends React.Component {
 
       const metaObject = {
         columnName: col.name,
-        displayName: col.customHeaderComponent ? col.customHeaderComponent : col.displayName,
-        sortable: (typeof col.sortable === 'boolean') ? col.sortable : true,
+        displayName: col.customHeaderComponent
+          ? col.customHeaderComponent
+          : col.displayName,
+        sortable: typeof col.sortable === 'boolean' ? col.sortable : true,
       };
       if (col.type === 'string') {
-        const callbackF = (typeof renderers[col.name] === 'function' && renderers[col.name]) || false;
+        const callbackF =
+          (typeof renderers[col.name] === 'function' && renderers[col.name]) ||
+          false;
         if (!col.fullString) {
-          metaObject.customComponent = props => this.cutString(callbackF, props);
+          metaObject.customComponent = (props) =>
+            this.cutString(callbackF, props);
         }
       } else if (typeof renderers[col.name] === 'function') {
         metaObject.customComponent = renderers[col.name];
@@ -382,7 +421,10 @@ export default class DataTable extends React.Component {
 
   initializeMetadata(tableMetaCols = [], renderers = {}) {
     const {
-      multiSelection, enumerated, rowNumberLabel = '№', rowNumberClassName = 'width30',
+      multiSelection,
+      enumerated,
+      rowNumberLabel = '№',
+      rowNumberClassName = 'width30',
     } = this.props;
     const initialArray = [];
 
@@ -405,7 +447,9 @@ export default class DataTable extends React.Component {
         customComponent: renderers.rowNumber,
       });
     }
-    initialArray.push(...this.defaultIinitializeMetadata(tableMetaCols, renderers));
+    initialArray.push(
+      ...this.defaultIinitializeMetadata(tableMetaCols, renderers),
+    );
 
     return initialArray;
   }
@@ -414,7 +458,10 @@ export default class DataTable extends React.Component {
     const newProps = { ...props };
     let { data = '' } = props;
 
-    if (typeof data === 'string' && data.split(' ').some(d => d.length > 30)) {
+    if (
+      typeof data === 'string' &&
+      data.split(' ').some((d) => d.length > 30)
+    ) {
       data = `${data.slice(0, 50)}...`;
     }
 
@@ -423,13 +470,13 @@ export default class DataTable extends React.Component {
     if (callback) {
       return callback(newProps);
     }
-    return (<div>{data}</div>);
+    return <div>{data}</div>;
   }
 
   initializeRowMetadata() {
     const defaultClass = 'standard-row';
     return {
-      'bodyCssClassName': (rowData) => {
+      bodyCssClassName: (rowData) => {
         if (rowData.isSelected) {
           return 'selected-row';
         }
@@ -442,7 +489,7 @@ export default class DataTable extends React.Component {
 
         return defaultClass;
       },
-      'tdCssClassName': (col) => {
+      tdCssClassName: (col) => {
         // [field_name, field_value];
         if (typeof this.props.highlightClassColMapper === 'function') {
           return this.props.highlightClassColMapper(col);
@@ -464,21 +511,27 @@ export default class DataTable extends React.Component {
     // проверка берется по this.state.filterValues
     let isValid = true;
     const {
-      tableMeta: {
-        cols = [],
-      },
+      tableMeta: { cols = [] },
     } = this.props;
 
     Object.entries(filterValues).forEach(([key, { value }]) => {
       if (key.includes('additionalFilter')) {
         try {
-          const { filter: { filterFunction } } = cols.find(d => d.name === key);
+          const {
+            filter: { filterFunction },
+          } = cols.find((d) => d.name === key);
           isValid = filterFunction(value, obj);
         } catch (e) {
-          console.warn(`Ошибка при поиске кастомной функции фильтрации ${key}`, e);
+          console.warn(
+            `Ошибка при поиске кастомной функции фильтрации ${key}`,
+            e,
+          );
         }
       } else {
-        if (obj[key] === null && !key.includes('additionalFilter') || !isValid) {
+        if (
+          (obj[key] === null && !key.includes('additionalFilter')) ||
+          !isValid
+        ) {
           isValid = false;
           return;
         }
@@ -487,68 +540,140 @@ export default class DataTable extends React.Component {
 
         if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
           const { filter } = cols.find(({ name }) => name === key);
-          if (filter && filter.type === 'datetime' && diffDates(obj[key], value) !== 0) {
+          if (
+            filter &&
+            filter.type === 'datetime' &&
+            diffDates(obj[key], value) !== 0
+          ) {
             isValid = false;
-          } else if (moment(obj[key]).format(global.APP_DATE_FORMAT) !== moment(value).format(global.APP_DATE_FORMAT)) {
+          } else if (
+            moment(obj[key]).format(global.APP_DATE_FORMAT) !==
+            moment(value).format(global.APP_DATE_FORMAT)
+          ) {
             isValid = false;
           }
-        } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) !== 'date_interval') {
-          if (value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) === -1) {
+        } else if (
+          key.indexOf('date') > -1 &&
+          IS_ARRAY &&
+          this.getFilterTypeByKey(key) !== 'date_interval'
+        ) {
+          if (
+            value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) ===
+            -1
+          ) {
             isValid = false;
           }
-        } else if (key.indexOf('date') > -1 && IS_ARRAY && this.getFilterTypeByKey(key) === 'date_interval') {
-          const intervalPickerDate1 = moment(value[0]).toDate().getTime() || 0;
-          const intervalPickerDate2 = moment(value[1]).toDate().getTime() || Infinity;
-          const valueDate = moment(obj[key]).toDate().getTime();
-          if (!(intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2)) {
+        } else if (
+          key.indexOf('date') > -1 &&
+          IS_ARRAY &&
+          this.getFilterTypeByKey(key) === 'date_interval'
+        ) {
+          const intervalPickerDate1 =
+            moment(value[0])
+              .toDate()
+              .getTime() || 0;
+          const intervalPickerDate2 =
+            moment(value[1])
+              .toDate()
+              .getTime() || Infinity;
+          const valueDate = moment(obj[key])
+            .toDate()
+            .getTime();
+          if (
+            !(
+              intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2
+            )
+          ) {
             isValid = false;
           }
         } else if (IS_ARRAY) {
-          const a = this.props.tableMeta.cols.find(e => e.name === key);
+          const a = this.props.tableMeta.cols.find((e) => e.name === key);
           if (Array.isArray(obj[key])) {
             if (a.filter.strict) {
-              if (!(obj[key].every(el => el.id && value.indexOf(el.id.toString()) > -1) && obj[key].length === value.length)) {
+              if (
+                !(
+                  obj[key].every(
+                    (el) => el.id && value.indexOf(el.id.toString()) > -1,
+                  ) && obj[key].length === value.length
+                )
+              ) {
                 isValid = false;
               }
             } else if (a.filter.someInRowValue) {
-              if (!value.some(val => obj[key].some(el => el.toString().includes(val.toString())))) {
+              if (
+                !value.some((val) =>
+                  obj[key].some((el) => el.toString().includes(val.toString())),
+                )
+              ) {
                 isValid = false;
               }
-            } else if (!(obj[key].find(el => (el.id && value.indexOf(el.id.toString()) > -1) || (el && value.indexOf(el) > -1)))) {
+            } else if (
+              !obj[key].find(
+                (el) =>
+                  (el.id && value.indexOf(el.id.toString()) > -1) ||
+                  (el && value.indexOf(el) > -1),
+              )
+            ) {
               isValid = false;
             }
           } else if (typeof obj[key] === 'boolean') {
-            if (value.map(v => typeof v === 'string' ? v === 'true' || v === '1' : !!parseInt(v, 10)).indexOf(obj[key]) === -1) {
+            if (
+              value
+                .map((v) =>
+                  typeof v === 'string'
+                    ? v === 'true' || v === '1'
+                    : !!parseInt(v, 10),
+                )
+                .indexOf(obj[key]) === -1
+            ) {
               isValid = false;
             }
           } else if (a && a.filter && a.filter.someInRowValue) {
-            if (value.findIndex(d => obj[key].toString().toLowerCase().includes(d.toLowerCase()))) {
+            if (
+              value.findIndex((d) =>
+                obj[key]
+                  .toString()
+                  .toLowerCase()
+                  .includes(d.toLowerCase()),
+              )
+            ) {
               isValid = false;
             }
-          } else if (value.findIndex((d) => {
-            if (isNaN(Number(d))) {
-              return (d || '').toLowerCase() === obj[key].toString().toLowerCase();
-            }
-            return Number(d) === Number(obj[key]);
-          }) === -1) {
+          } else if (
+            value.findIndex((d) => {
+              if (isNaN(Number(d))) {
+                return (
+                  (d || '').toLowerCase() === obj[key].toString().toLowerCase()
+                );
+              }
+              return Number(d) === Number(obj[key]);
+            }) === -1
+          ) {
             isValid = false;
           }
           /**
            * Фильтр: строка
            * Значение: массив строк
            */
-        } else if (isStringArrayData(value, obj[key], key, this.props.tableMeta)) {
+        } else if (
+          isStringArrayData(value, obj[key], key, this.props.tableMeta)
+        ) {
           isValid = isValid && stringArrayDataMatching(value, obj[key]);
           /**
            * Фильтр: селект лист из чисел
            * Значение: массив чисел
            */
-        } else if (isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)) {
+        } else if (
+          isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)
+        ) {
           isValid = isValid && numberArrayDataMatching(value, obj[key]);
         } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
-          const metaCol = this.props.tableMeta.cols.find(item => item.name === key);
+          const metaCol = this.props.tableMeta.cols.find(
+            (item) => item.name === key,
+          );
           const filterType = _.get(metaCol, 'filter.type', '');
-          isValid = isValid && parseAdvancedFilter(value, key, obj[key], filterType);
+          isValid =
+            isValid && parseAdvancedFilter(value, key, obj[key], filterType);
         } else if (typeof obj[key] === 'string') {
           isValid = isValid && stringArrayDataMatching(value, [obj[key]]);
         } else if (obj[key] !== value) {
@@ -558,10 +683,13 @@ export default class DataTable extends React.Component {
     });
 
     return isValid;
-  }
+  };
 
   processSelected(selected, selectField, onRowSelected, el) {
-    el.isChecked = this.props.checked && this.props.checked[el[selectField]] && this.shouldBeRendered(el);
+    el.isChecked =
+      this.props.checked &&
+      this.props.checked[el[selectField]] &&
+      this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
       return el;
@@ -592,11 +720,20 @@ export default class DataTable extends React.Component {
     return el;
   }
 
-  processTableData(data, tableCols, selected, selectField, onRowSelected, highlight = []) {
+  processTableData(
+    data,
+    tableCols,
+    selected,
+    selectField,
+    onRowSelected,
+    highlight = [],
+  ) {
     return data
       .map(this.processEmptyCols.bind(this, tableCols))
       .map(this.processHighlighted.bind(this, highlight))
-      .map(this.processSelected.bind(this, selected, selectField, onRowSelected))
+      .map(
+        this.processSelected.bind(this, selected, selectField, onRowSelected),
+      )
       .filter(this.shouldBeRendered);
   }
 
@@ -616,13 +753,16 @@ export default class DataTable extends React.Component {
 
     this.setState({
       ...nextProps,
-      data: makeData(this.state.originalData, prevState, { ...this.props, ...nextProps }),
+      data: makeData(this.state.originalData, prevState, {
+        ...this.props,
+        ...nextProps,
+      }),
     });
-  }
+  };
 
   setPage = (currentPage) => {
     this.setState({ currentPage });
-  }
+  };
 
   handleKeyPress = (data, keyCode, e) => {
     if (isEmpty(this.props.selected)) {
@@ -638,8 +778,14 @@ export default class DataTable extends React.Component {
       direction = -1;
       e.preventDefault();
     }
-    const selected = data.find(el => el[this.props.selectField] === this.props.selected[this.props.selectField]);
-    const newSelected = data.find(el => el.rowNumber === selected.rowNumber + direction);
+    const selected = data.find(
+      (el) =>
+        el[this.props.selectField] ===
+        this.props.selected[this.props.selectField],
+    );
+    const newSelected = data.find(
+      (el) => el.rowNumber === selected.rowNumber + direction,
+    );
 
     this.props.onRowSelected({
       props: {
@@ -647,31 +793,54 @@ export default class DataTable extends React.Component {
         fromKey: true,
       },
     });
-  }
+  };
 
   render() {
     const {
-      tableMeta, renderers, onRowSelected, selected,
-      selectField, title, noTitle, noFilter,
-      enableSort, noDataMessage, className, noHeader,
+      tableMeta,
+      renderers,
+      onRowSelected,
+      selected,
+      selectField,
+      title,
+      noTitle,
+      noFilter,
+      enableSort,
+      noDataMessage,
+      className,
+      noHeader,
       noCustomButton = false,
-      refreshable, columnControl, highlight, serverPagination, externalChangeSort,
-      griddleHidden = false,
-      haveMax = true,
+      refreshable,
+      columnControl,
+      highlight,
+      serverPagination,
+      externalChangeSort,
     } = this.props;
     const {
-      initialSort, initialSortAscending, columnControlValues, isHierarchical,
+      initialSort,
+      initialSortAscending,
+      columnControlValues,
+      isHierarchical,
     } = this.state;
 
-    const tableMetaCols = (tableMeta.cols);
+    const tableMetaCols = tableMeta.cols;
     const { data } = this.state;
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
-    const tableCols = columnMetadata.map(m => m.columnName).filter(c => columnControlValues.indexOf(c) === -1);
+    const tableCols = columnMetadata
+      .map((m) => m.columnName)
+      .filter((c) => columnControlValues.indexOf(c) === -1);
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
 
-    const results = this.processTableData(data, tableCols, selected, selectField, onRowSelected, highlight);
+    const results = this.processTableData(
+      data,
+      tableCols,
+      selected,
+      selectField,
+      onRowSelected,
+      highlight,
+    );
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>
@@ -680,54 +849,43 @@ export default class DataTable extends React.Component {
               {noTitle ? '' : title}
             </DataTableHeadLineTitle>
             <div className="waybills-buttons">
-              {columnControl
-                && (
+              {columnControl && (
                 <ClickOutHandler onClickOut={this.closeColumnControl}>
                   <ColumnControl
                     show={this.state.columnControlModalIsOpen}
                     onChange={this.saveColumnControl}
                     onClick={this.toggleColumnControl}
                     values={this.state.columnControlValues}
-                    options={tableMetaCols.filter(el => el.display !== false)}
+                    options={tableMetaCols.filter((el) => el.display !== false)}
                   />
                 </ClickOutHandler>
-                )
-              }
-              {!noFilter
-                && (
+              )}
+              {!noFilter && (
                 <FilterButton
                   show={this.state.filterModalIsOpen}
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />
-                )
-              }
-              {refreshable
-                && (
-                <Button
-                  bsSize="small"
-                  onClick={this.props.onRefresh}
-                >
+              )}
+              {refreshable && (
+                <Button bsSize="small" onClick={this.props.onRefresh}>
                   <Glyphicon glyph="refresh" />
                 </Button>
-                )
-              }
+              )}
               {!noCustomButton && this.props.children}
             </div>
           </DataTableHeadLine>
-          {!noFilter
-            && (
+          {!noFilter && (
             <Filter
               show={this.state.filterModalIsOpen}
               onSubmit={this.saveFilter}
               onHide={this.closeFilter}
               values={this.state.filterValues}
-              options={tableMetaCols.filter(el => el.filter !== false)}
+              options={tableMetaCols.filter((el) => el.filter !== false)}
               tableData={this.props.results}
               entity={this.props.entity}
             />
-            )
-          }
+          )}
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
         <SimpleGriddle
@@ -753,19 +911,15 @@ export default class DataTable extends React.Component {
           currentPage={this.state.currentPage}
           globalCheckHandler={this.globalCheckHandler}
         />
-        {
-          serverPagination
-            ? (
-              <div />
-            )
-            : (
-              <Paginator
-                currentPage={this.state.currentPage}
-                maxPage={Math.ceil(results.length / 15)}
-                setPage={this.setPage}
-              />
-            )
-        }
+        {serverPagination ? (
+          <div />
+        ) : (
+          <Paginator
+            currentPage={this.state.currentPage}
+            maxPage={Math.ceil(results.length / 15)}
+            setPage={this.setPage}
+          />
+        )}
       </Div>
     );
   }

@@ -34,8 +34,12 @@ class ObjectPropertyList extends ElementsList {
   async init() {
     const { flux } = this.context;
 
-    await flux.getActions('repair').getObjectProperty({ object_type: 'odh' }, { name: 'odh' });
-    flux.getActions('repair').setActiveList('objectPropertyList', 'objectPropertyOdhList');
+    await flux
+      .getActions('repair')
+      .getObjectProperty({ object_type: 'odh' }, { name: 'odh' });
+    flux
+      .getActions('repair')
+      .setActiveList('objectPropertyList', 'objectPropertyOdhList');
   }
 
   getAdditionalProps() {
@@ -46,7 +50,7 @@ class ObjectPropertyList extends ElementsList {
 
   componentDidUpdate(prevProps) {
     const { typeData } = this.props;
-    const { iHaveType = { 'odh': true } } = this.state;
+    const { iHaveType = { odh: true } } = this.state;
 
     if (typeData !== prevProps.typeData) {
       this.setExportType(typeData);
@@ -55,7 +59,9 @@ class ObjectPropertyList extends ElementsList {
       if (!iHaveType[typeData]) {
         iHaveType[typeData] = true;
 
-        flux.getActions('repair').getObjectProperty({ object_type: typeData }, { name: typeData })
+        flux
+          .getActions('repair')
+          .getObjectProperty({ object_type: typeData }, { name: typeData })
           .then(() => {
             this.setState({
               iHaveType,
@@ -65,30 +71,32 @@ class ObjectPropertyList extends ElementsList {
             console.warn(error);
           });
       }
-      flux.getActions('repair').setActiveList('objectPropertyList', `objectProperty${typeData[0].toUpperCase()}${typeData.slice(1)}List`);
+      flux
+        .getActions('repair')
+        .setActiveList(
+          'objectPropertyList',
+          `objectProperty${typeData[0].toUpperCase()}${typeData.slice(1)}List`,
+        );
     }
   }
 }
 
 const ObjectPropertyListWithUserData = compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(ObjectPropertyList);
-
 
 export default class ObjectProperty extends Component {
   state = {
     typeData: 'odh',
-  }
+  };
 
   setNewType = ({ target: { id: typeDateNew } }) => {
     if (this.state.typeData !== typeDateNew) {
       this.setState({ typeData: typeDateNew });
     }
-  }
+  };
 
   render() {
     const { typeData } = this.state;
@@ -97,8 +105,18 @@ export default class ObjectProperty extends Component {
       <div>
         <div className="cleaning-rate-header">
           <ButtonGroup>
-            <Button id="odh" active={typeData === 'odh'} onClick={this.setNewType}>ОДХ</Button>
-            <Button id="dt" active={typeData === 'dt'} onClick={this.setNewType}>ДТ</Button>
+            <Button
+              id="odh"
+              active={typeData === 'odh'}
+              onClick={this.setNewType}>
+              ОДХ
+            </Button>
+            <Button
+              id="dt"
+              active={typeData === 'dt'}
+              onClick={this.setNewType}>
+              ДТ
+            </Button>
           </ButtonGroup>
         </div>
         <ObjectPropertyListWithUserData typeData={typeData} />

@@ -8,22 +8,26 @@ import Field from 'components/ui/Field';
 import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
-
 @connectToStores(['odh'])
-export default class MaintenanceWorkForm extends Form {
+class MaintenanceWorkForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-    const {
-      isPermitted = false,
-      measureUnitList = [],
-    } = this.props;
+    const { isPermitted = false, measureUnitList = [] } = this.props;
     const MEASUREUNIT_OPTIONS = measureUnitList.map(defaultSelectListMapper);
 
     return (
-      <Modal id="modal-mainenance-work" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-mainenance-work"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{!state.id ? 'Добавление' : 'Изменение'} показателя регламентных работ</Modal.Title>
+          <Modal.Title>
+            {!state.id ? 'Добавление' : 'Изменение'} показателя регламентных
+            работ
+          </Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Field
@@ -31,7 +35,7 @@ export default class MaintenanceWorkForm extends Form {
             label="Наименование"
             value={state.name}
             error={errors.name}
-            onChange={e => this.handleChange('name', e)}
+            onChange={(e) => this.handleChange('name', e)}
             disabled={!isPermitted}
           />
           <Field
@@ -40,18 +44,24 @@ export default class MaintenanceWorkForm extends Form {
             value={state.measure_unit_id}
             error={errors.measure_unit_id}
             options={MEASUREUNIT_OPTIONS}
-            onChange={e => this.handleChange('measure_unit_id', e)}
+            onChange={(e) => this.handleChange('measure_unit_id', e)}
             disabled={!isPermitted}
           />
         </ModalBody>
         <Modal.Footer>
           <Button
             onClick={() => this.handleSubmit()}
-            disabled={!this.props.canSave || !isPermitted || !this.props.saveButtonEnability}
-          >{this.props.saveButtonLabel}</Button>
+            disabled={
+              !this.props.canSave ||
+              !isPermitted ||
+              !this.props.saveButtonEnability
+            }>
+            {this.props.saveButtonLabel}
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
-
 }
+
+export default MaintenanceWorkForm;

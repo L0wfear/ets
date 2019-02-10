@@ -12,7 +12,10 @@ import DutyMissionsCreationFormWrap from 'components/missions/duty_mission_templ
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getMissionsState,
+} from 'redux-main/reducers/selectors';
 import DutyMissionTemplateFormLazy from 'components/missions/duty_mission_template/form/template';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
@@ -52,7 +55,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       return;
     }
     this.updateTable();
-  }
+  };
 
   async init() {
     const { flux } = this.context;
@@ -75,15 +78,14 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       {},
       { page: loadingPageName },
     );
-  }
+  };
 
   showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
-  }
+  };
 
-  createDutyMissions = () => (
-    this.setState({ showForm: true, formType: 'MissionsCreationForm' })
-  );
+  createDutyMissions = () =>
+    this.setState({ showForm: true, formType: 'MissionsCreationForm' });
 
   /**
    * @override
@@ -94,7 +96,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       selectedElement: null,
       formType: 'ViewForm',
     });
-  }
+  };
 
   onFormHide = (clearCheckedElements) => {
     this.setState(({ checkedElements }) => ({
@@ -103,7 +105,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       checkedElements: clearCheckedElements ? {} : checkedElements,
       formType: 'ViewForm',
     }));
-  }
+  };
 
   onDutyMissionTemplateFormHide = (isSubmitted) => {
     if (isSubmitted) {
@@ -116,7 +118,7 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
       checkedElements: {},
     });
-  }
+  };
 
   getForms = () => {
     const { employeesIndex = {} } = this.props;
@@ -132,7 +134,9 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       <DutyMissionsCreationFormWrap
         key="form_create_duty_mission"
         onFormHide={this.onFormHide}
-        showForm={this.state.showForm && this.state.formType === 'MissionsCreationForm'}
+        showForm={
+          this.state.showForm && this.state.formType === 'MissionsCreationForm'
+        }
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={this.state.checkedElements}
@@ -140,14 +144,17 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
         _employeesIndex={employeesIndex}
       />,
     ];
-  }
+  };
 
   canCreateMission = () => {
     const { checkedElements = {} } = this.state;
     const missions = Object.values(checkedElements);
 
-    return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
-  }
+    return (
+      missions.length &&
+      !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
+    );
+  };
 
   /**
    * @override
@@ -160,14 +167,13 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
         key="create-duty-mission-by-template"
         bsSize="small"
         onClick={this.createDutyMissions}
-        disabled={!this.canCreateMission()}
-      >
+        disabled={!this.canCreateMission()}>
         Сформировать наряд-задание
       </ButtonCreateDutyMissionByTemplate>,
     );
 
     return buttons;
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -186,9 +192,11 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
 
     return {
       structures,
-      data: listData.filter(({ technical_operation_id }) => technicalOperationsMap.has(technical_operation_id)),
+      data: listData.filter(({ technical_operation_id }) =>
+        technicalOperationsMap.has(technical_operation_id),
+      ),
     };
-  }
+  };
 }
 
 export default compose(
@@ -197,29 +205,23 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       dutyMissionTemplateList: getMissionsState(state).dutyMissionTemplateList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      actionGetAndSetInStoreDutyMissionTemplate: (...arg) => (
+    (dispatch) => ({
+      actionGetAndSetInStoreDutyMissionTemplate: (...arg) =>
         dispatch(
           missionsActions.actionGetAndSetInStoreDutyMissionTemplate(...arg),
-        )
-      ),
-      actionRemoveDutyMissionTemplate: missionTemplate => (
+        ),
+      actionRemoveDutyMissionTemplate: (missionTemplate) =>
         dispatch(
-          missionsActions.actionRemoveDutyMissionTemplate(
-            missionTemplate,
-            { page: loadingPageName },
-          ),
-        )
-      ),
-      actionResetDutyMissionTemplate: () => (
-        dispatch(
-          missionsActions.actionResetDutyMissionTemplate(),
-        )
-      ),
+          missionsActions.actionRemoveDutyMissionTemplate(missionTemplate, {
+            page: loadingPageName,
+          }),
+        ),
+      actionResetDutyMissionTemplate: () =>
+        dispatch(missionsActions.actionResetDutyMissionTemplate()),
     }),
   ),
 )(DutyMissionTemplatesJournal);

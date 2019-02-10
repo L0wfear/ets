@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.26.169",
+    "version": "2.0.26.170",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -142,7 +142,7 @@
     "lint-staged": {
         "src/**/*.{js,jsx}": [
             "prettier --write",
-            "eslint --fix",
+            "eslint --quiet --fix",
             "git add"
         ],
         "src/**/*.{ts,tsx}": [

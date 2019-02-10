@@ -3,31 +3,28 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import { connect } from 'react-redux';
 import Preloader from 'components/ui/new/preloader/Preloader';
 
-export const loadingOverlay = Cmp => @FluxContext class LoadingOverlayHOC extends React.Component {
-  handleOverlayLoading = (isLoading) => {
-    const loadingStore = this.context.flux.getStore('loading');
+export const loadingOverlay = (Cmp) =>
+  @FluxContext
+  class LoadingOverlayHOC extends React.Component {
+    handleOverlayLoading = (isLoading) => {
+      const loadingStore = this.context.flux.getStore('loading');
 
-    if (isLoading) {
-      loadingStore.inc();
-    } else {
-      loadingStore.dec();
+      if (isLoading) {
+        loadingStore.inc();
+      } else {
+        loadingStore.dec();
+      }
+    };
+    render() {
+      return (
+        <Cmp {...this.props} onOverlayLoading={this.handleOverlayLoading}>
+          {this.props.children}
+        </Cmp>
+      );
     }
-  }
-  render() {
-    return (
-      <Cmp
-        {...this.props}
-        onOverlayLoading={this.handleOverlayLoading}
-      >
-        {this.props.children}
-      </Cmp>
-    );
-  }
-};
+  };
 
-@connect(
-  (state) => state.loading
-)
+@connect((state) => state.loading)
 @connectToStores(['loading'])
 @FluxContext
 class LoadingOverlay extends React.Component {
@@ -38,7 +35,8 @@ class LoadingOverlay extends React.Component {
   static getDerivedStateFromProps(nextProps) {
     const modals = document.getElementsByClassName('modal-body');
     const modalsSmall = document.getElementsByClassName('modal-sm');
-    const showLoading = !(modals.length - modalsSmall.length) || !nextProps.main;
+    const showLoading =
+      !(modals.length - modalsSmall.length) || !nextProps.main;
 
     return {
       show: showLoading,
@@ -62,6 +60,6 @@ class LoadingOverlay extends React.Component {
 
     return <div style={{ display: 'none' }} />;
   }
-};
+}
 
 export default LoadingOverlay;

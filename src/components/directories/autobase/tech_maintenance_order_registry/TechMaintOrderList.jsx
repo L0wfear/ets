@@ -8,10 +8,12 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tech_maintenance_order';
-
 
 @exportable({ entity: `autobase/${AUTOBASE.techMaintOrder}` })
 @staticProps({
@@ -30,7 +32,7 @@ class TechMaintOrderList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     const { car_id } = this.props;
@@ -65,7 +67,7 @@ class TechMaintOrderList extends ElementsList {
         car_id,
       },
     });
-  }
+  };
 
   onFormHide = (isSubmitted) => {
     const changeState = {
@@ -78,7 +80,7 @@ class TechMaintOrderList extends ElementsList {
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -93,41 +95,27 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       techMaintOrderList: getAutobaseState(state).techMaintOrderList,
       userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      carGetAndSetInStore: () => (
+    (dispatch) => ({
+      carGetAndSetInStore: () =>
+        dispatch(autobaseActions.carGetAndSetInStore()),
+      techMaintOrderGetAndSetInStore: (payload = {}) =>
         dispatch(
-          autobaseActions.carGetAndSetInStore(),
-        )
-      ),
-      techMaintOrderGetAndSetInStore: (payload = {}) => (
+          autobaseActions.techMaintOrderGetAndSetInStore(payload, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseResetSetTechMaintOrder: () =>
+        dispatch(autobaseActions.autobaseResetSetTechMaintOrder()),
+      autobaseRemoveTechMaintOrder: (id) =>
         dispatch(
-          autobaseActions.techMaintOrderGetAndSetInStore(
-            payload,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
-      autobaseResetSetTechMaintOrder: () => (
-        dispatch(
-          autobaseActions.autobaseResetSetTechMaintOrder(),
-        )
-      ),
-      autobaseRemoveTechMaintOrder: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveTechMaintOrder(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveTechMaintOrder(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(TechMaintOrderList);

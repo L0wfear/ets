@@ -58,14 +58,14 @@ export const createMissions = async (flux, element, payload) => {
     if (code === 'invalid_period') {
       const waybillNumber = e.message.message.split('№')[1].split(' ')[0];
 
-      const body = self => (
+      const body = (self) => (
         <div>
           <div>{e.message.message}</div>
           <br />
           <center>Введите даты задания:</center>
           <IntervalPicker
             interval={self.state.interval}
-            onChange={interval => self.setState({ interval })}
+            onChange={(interval) => self.setState({ interval })}
           />
         </div>
       );
@@ -77,9 +77,14 @@ export const createMissions = async (flux, element, payload) => {
           title: <b>{`Задание будет добавлено в ПЛ №${waybillNumber}`}</b>,
           body,
           checkOnOk: (self) => {
-            const { state: { interval } } = self;
-            if (!interval || interval.some(date => !date)) {
-              global.NOTIFICATION_SYSTEM.notify('Поля дат задания должны быть заполнены', 'warning');
+            const {
+              state: { interval },
+            } = self;
+            if (!interval || interval.some((date) => !date)) {
+              global.NOTIFICATION_SYSTEM.notify(
+                'Поля дат задания должны быть заполнены',
+                'warning',
+              );
               return false;
             }
             return true;
@@ -120,16 +125,28 @@ class MissionsCreationFormWrap extends FormWrap {
   componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
       this.schema = missionsCreationTemplateSchema;
-      const for_column = Object.values(this.props.missions).some(missionData => missionData.for_column);
+      const for_column = Object.values(this.props.missions).some(
+        (missionData) => missionData.for_column,
+      );
 
-      const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate(this.props.missions, for_column);
+      const defaultMissionsCreationTemplate = getDefaultMissionsCreationTemplate(
+        this.props.missions,
+        for_column,
+      );
 
       const formErrors = this.validate(defaultMissionsCreationTemplate, {});
-      const dataTestRoute = checkMissionsByRouteType(Object.values(this.props.missions), defaultMissionsCreationTemplate);
+      const dataTestRoute = checkMissionsByRouteType(
+        Object.values(this.props.missions),
+        defaultMissionsCreationTemplate,
+      );
 
       defaultMissionsCreationTemplate.for_column = for_column;
       if (dataTestRoute.error) {
-        defaultMissionsCreationTemplate.date_end = addTime(defaultMissionsCreationTemplate.date_start, dataTestRoute.time, 'hours');
+        defaultMissionsCreationTemplate.date_end = addTime(
+          defaultMissionsCreationTemplate.date_start,
+          dataTestRoute.time,
+          'hours',
+        );
       }
 
       this.setState({
@@ -144,10 +161,7 @@ class MissionsCreationFormWrap extends FormWrap {
 
   handleFormSubmit = async () => {
     const { formState } = this.state;
-    const {
-      _carsIndex = {},
-      missions = {},
-    } = this.props;
+    const { _carsIndex = {}, missions = {} } = this.props;
 
     const missionsArr = Object.values(missions);
 
@@ -155,7 +169,12 @@ class MissionsCreationFormWrap extends FormWrap {
       const dataTestRoute = checkMissionsByRouteType(missionsArr, formState);
 
       if (dataTestRoute.error) {
-        global.NOTIFICATION_SYSTEM.notify(`Время выполнения задания для ${dataTestRoute.title} должно составлять не более ${dataTestRoute.time} часов`, 'error');
+        global.NOTIFICATION_SYSTEM.notify(
+          `Время выполнения задания для ${
+            dataTestRoute.title
+          } должно составлять не более ${dataTestRoute.time} часов`,
+          'error',
+        );
       } else {
         const externalPayload = {
           mission_source_id: formState.mission_source_id,
@@ -167,50 +186,67 @@ class MissionsCreationFormWrap extends FormWrap {
           norm_id: formState.norm_id,
         };
 
-        if (externalPayload.assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {
+        if (
+          externalPayload.assign_to_waybill[0] ===
+          ASSING_BY_KEY.assign_to_new_draft
+        ) {
           const missionByCar = groupBy(missionsArr, 'car_ids');
 
           const ansArr = await Promise.all(
-            Object.values(missionByCar).map(async ([firstMission, ...other]) => {
-              const successFM = await this.createMissionWrap([firstMission], externalPayload);
-              if (successFM) {
-                const successEvery = await this.createMissionWrap(other, {
-                  ...externalPayload,
-                  assign_to_waybill: ASSING_BY_KEY.assign_to_available_draft,
-                });
-                if (!successEvery) {
-                  return false;
+            Object.values(missionByCar).map(
+              async ([firstMission, ...other]) => {
+                const successFM = await this.createMissionWrap(
+                  [firstMission],
+                  externalPayload,
+                );
+                if (successFM) {
+                  const successEvery = await this.createMissionWrap(other, {
+                    ...externalPayload,
+                    assign_to_waybill: ASSING_BY_KEY.assign_to_available_draft,
+                  });
+                  if (!successEvery) {
+                    return false;
+                  }
+                  return true;
                 }
-                return true;
-              }
-              return false;
-            }),
+                return false;
+              },
+            ),
           );
 
-          if (!ansArr.some(ans => !ans)) {
+          if (!ansArr.some((ans) => !ans)) {
             this.props.onFormHide(true);
           }
         } else {
-          const success = await this.createMissionWrap(missionsArr, externalPayload);
+          const success = await this.createMissionWrap(
+            missionsArr,
+            externalPayload,
+          );
           if (success) {
             this.props.onFormHide(true);
           }
         }
       }
     }
-  }
+  };
 
   async createMissionWrap(missionsArr, externalPayload) {
     const { flux } = this.context;
     let success = true;
     try {
-      await Promise.all(missionsArr.map(async (mission) => {
-        const e = await createMissions(flux, { [mission.id]: mission }, externalPayload);
+      await Promise.all(
+        missionsArr.map(async (mission) => {
+          const e = await createMissions(
+            flux,
+            { [mission.id]: mission },
+            externalPayload,
+          );
 
-        if (e) {
-          success = false;
-        }
-      }));
+          if (e) {
+            success = false;
+          }
+        }),
+      );
     } catch (e) {
       success = false;
     }
@@ -235,12 +271,14 @@ class MissionsCreationFormWrap extends FormWrap {
 
     this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
       data.image = image;
-      flux.getActions('missions').printMissionTemplate(data).then(({ blob }) => {
-        printData(blob);
-      });
+      flux
+        .getActions('missions')
+        .printMissionTemplate(data)
+        .then(({ blob }) => {
+          printData(blob);
+        });
     });
-  }
-
+  };
 
   render() {
     return (
@@ -260,10 +298,8 @@ class MissionsCreationFormWrap extends FormWrap {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userStructureId: getSessionState(state).userData.structure_id,
-    }),
-  ),
+  connect((state) => ({
+    userStructureId: getSessionState(state).userData.structure_id,
+  })),
   withMapInConsumer(),
 )(MissionsCreationFormWrap);

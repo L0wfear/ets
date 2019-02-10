@@ -22,7 +22,9 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 class ContractorList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('repair').removeСontractor;
+    this.removeElementAction = context.flux.getActions(
+      'repair',
+    ).removeСontractor;
   }
 
   init() {
@@ -32,9 +34,7 @@ class ContractorList extends CheckableElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(ContractorList);

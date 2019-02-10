@@ -8,10 +8,22 @@ class MissionsStore extends Store {
 
     const missionsActons = flux.getActions('missions');
     this.register(missionsActons.getMissions, this.handleGetMissions);
-    this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
-    this.register(missionsActons.getMissionTemplatesCars, this.handleGetMissionTemplatesCars);
-    this.register(missionsActons.getCarDutyMissions, this.handleGetCarDutyMissions);
-    this.register(missionsActons.getCleaningMunicipalFacilityAllList, this.handleGetCleaningMunicipalFacilityAllList);
+    this.register(
+      missionsActons.getMissionSources,
+      this.handleGetMissionSources,
+    );
+    this.register(
+      missionsActons.getMissionTemplatesCars,
+      this.handleGetMissionTemplatesCars,
+    );
+    this.register(
+      missionsActons.getCarDutyMissions,
+      this.handleGetCarDutyMissions,
+    );
+    this.register(
+      missionsActons.getCleaningMunicipalFacilityAllList,
+      this.handleGetCleaningMunicipalFacilityAllList,
+    );
 
     this.state = {
       missionsList: [],
@@ -23,13 +35,18 @@ class MissionsStore extends Store {
     };
   }
 
-  handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
+  handleGetCleaningMunicipalFacilityAllList({
+    result: { rows: municipalFacilityList = [] },
+  }) {
     this.setState({ municipalFacilityList });
   }
 
   handleGetMissions(missions) {
     if (!missions.result.meta) return;
-    this.setState({ missionsList: missions.result.rows, missionsTotalCount: missions.result.meta.total_count });
+    this.setState({
+      missionsList: missions.result.rows,
+      missionsTotalCount: missions.result.meta.total_count,
+    });
   }
 
   handleGetMissionSources({ result: { rows: missionSourcesList } }) {
@@ -45,14 +62,18 @@ class MissionsStore extends Store {
   }
 
   getMissionSourceById(id) {
-    return _.find(this.state.missionSourcesList, ms => ms.id === id) || {};
+    return _.find(this.state.missionSourcesList, (ms) => ms.id === id) || {};
   }
 }
 
 export default MissionsStore;
 
-export function getDefaultMission(date_start = getDateWithMoscowTz(), date_end = getTomorrow9am()) {
-  return {  // Если будете исправлять, проверте типизацию
+export function getDefaultMission(
+  date_start = getDateWithMoscowTz(),
+  date_end = getTomorrow9am(),
+) {
+  return {
+    // Если будете исправлять, проверте типизацию
     description: '',
     date_start,
     date_end,
@@ -104,24 +125,30 @@ export function getDefaultMissionsCreationTemplate(missionsObj, for_column) {
     return {
       date_start: getDateWithMoscowTz(),
       date_end: getTomorrow9am(),
-      assign_to_waybill: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
-        newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
-          newObjCarId[car_id] = 'assign_to_new_draft';
+      assign_to_waybill: Object.entries(missionsObj).reduce(
+        (newObj, [id, { car_ids }]) => {
+          newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+            newObjCarId[car_id] = 'assign_to_new_draft';
 
-          return newObjCarId;
-        }, {});
+            return newObjCarId;
+          }, {});
 
-        return newObj;
-      }, {}),
-      norm_id: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
-        newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
-          newObjCarId[car_id] = null;
+          return newObj;
+        },
+        {},
+      ),
+      norm_id: Object.entries(missionsObj).reduce(
+        (newObj, [id, { car_ids }]) => {
+          newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+            newObjCarId[car_id] = null;
 
-          return newObjCarId;
-        }, {});
+            return newObjCarId;
+          }, {});
 
-        return newObj;
-      }, {}),
+          return newObj;
+        },
+        {},
+      ),
       mission_source_id: 3,
       passes_count: 1,
       is_new: true,

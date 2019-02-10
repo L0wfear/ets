@@ -113,7 +113,7 @@ const getTableMeta = ({
         type: 'boolean',
         filter: {
           type: 'multiselect',
-          labelFunction: (data) => data ? 'Да' : 'Нет',
+          labelFunction: (data) => (data ? 'Да' : 'Нет'),
         },
       },
       {
@@ -145,11 +145,28 @@ const getTableMeta = ({
 
 export default (props) => {
   const renderers = {
-    use_in_reports: ({ data: value }) => <input type="checkbox" disabled checked={!!value} />,
+    use_in_reports: ({ data: value }) => (
+      <input type="checkbox" disabled checked={!!value} />
+    ),
     elements_names: ({ data }) => <div>{data.join(',\n')}</div>,
     objects_names: ({ data }) => <div>{data.join(',\n')}</div>,
-    kind_task_names: ({ rowData: { kind_task_names_text } }) => <div>{kind_task_names_text}</div>,
-    sensor_type_ids: ({ data }) => <span>{data.map(id => (props.sensorTypesList.find(({ id: id_s }) => id_s === id) || { name: '' }).name).join(',')}</span>,
+    kind_task_names: ({ rowData: { kind_task_names_text } }) => (
+      <div>{kind_task_names_text}</div>
+    ),
+    sensor_type_ids: ({ data }) => (
+      <span>
+        {data
+          .map(
+            (id) =>
+              (
+                props.sensorTypesList.find(({ id: id_s }) => id_s === id) || {
+                  name: '',
+                }
+              ).name,
+          )
+          .join(',')}
+      </span>
+    ),
   };
 
   return (

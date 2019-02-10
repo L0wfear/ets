@@ -2,7 +2,9 @@ const fixedValidators = [
   {
     name: 'required',
     validator(config, data) {
-      return config.required && !data && data !== 0 ? `Поле "${config.title || config.key}" должно быть заполнено` : undefined;
+      return config.required && !data && data !== 0
+        ? `Поле "${config.title || config.key}" должно быть заполнено`
+        : undefined;
     },
   },
   {
@@ -11,14 +13,22 @@ const fixedValidators = [
       if (!data && data !== 0) {
         return undefined;
       }
-      return typeof data !== 'number' && !/^[ +]?[0-9]*[\.,]?[0-9]{1,3}$/.test(data) ? `Поле "${config.title || config.key}" должно быть неотрицательным числом с 3 знаками после запятой` : undefined;
+      return typeof data !== 'number' &&
+        !/^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data)
+        ? `Поле "${config.title ||
+            config.key}" должно быть неотрицательным числом с 3 знаками после запятой`
+        : undefined;
     },
   },
   {
     name: 'min',
     validator(config, data) {
       if (typeof config.min === 'undefined') return undefined;
-      return parseFloat(data) < config.min ? `Поле "${config.title || config.key}" должно быть не меньше ${config.min}` : undefined;
+      return parseFloat(data) < config.min
+        ? `Поле "${config.title || config.key}" должно быть не меньше ${
+          config.min
+        }`
+        : undefined;
     },
   },
 ];

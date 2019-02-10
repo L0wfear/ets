@@ -3,7 +3,6 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 
-
 export default class IntervalPicker extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +30,12 @@ export default class IntervalPicker extends Component {
             с
           </Col>
           <Col md={11} style={{ padding: 0 }}>
-            <DatePicker time={this.props.time} date={interval[0]} onChange={this.handleChange.bind(this, 0)} max={interval[1]} />
+            <DatePicker
+              time={this.props.time}
+              date={interval[0]}
+              onChange={this.handleChange.bind(this, 0)}
+              max={interval[1]}
+            />
           </Col>
         </Row>
         <Row style={{ margin: 0 }}>
@@ -39,7 +43,12 @@ export default class IntervalPicker extends Component {
             по
           </Col>
           <Col md={11} style={{ padding: 0 }}>
-            <DatePicker time={this.props.time} date={interval[1]} onChange={this.handleChange.bind(this, 1)} min={interval[0]} />
+            <DatePicker
+              time={this.props.time}
+              date={interval[1]}
+              onChange={this.handleChange.bind(this, 1)}
+              min={interval[0]}
+            />
           </Col>
         </Row>
       </div>

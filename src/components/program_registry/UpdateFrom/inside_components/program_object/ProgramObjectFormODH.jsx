@@ -10,7 +10,10 @@ import connectToStores from 'flummox/connect';
 import moment from 'moment';
 import { cloneDeep, keyBy, isEmpty } from 'lodash';
 
-import { OBJ_TAB_INDEX, ELEMENT_NULL_OBJECT } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
+import {
+  OBJ_TAB_INDEX,
+  ELEMENT_NULL_OBJECT,
+} from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
 import { tabable } from 'components/compositions/hoc';
 
@@ -30,10 +33,13 @@ import { connect } from 'react-redux';
 
 const getObjectsType = (slug) => {
   switch (slug) {
-    case 'dt': return 'simple_dt';
+    case 'dt':
+      return 'simple_dt';
     case 'odh':
-    case 'mixed': return 'mixed';
-    default: return 'simple_dt';
+    case 'mixed':
+      return 'mixed';
+    default:
+      return 'simple_dt';
   }
 };
 const log = {};
@@ -41,14 +47,12 @@ const log = {};
 class ProgramObjectFormodh extends Form {
   static defaultProps = {
     tabKey: OBJ_TAB_INDEX.PLAN,
-  }
+  };
 
   constructor(props) {
     super(props);
     const {
-      formState: {
-        id,
-      },
+      formState: { id },
     } = props;
 
     this.state = {
@@ -61,78 +65,99 @@ class ProgramObjectFormodh extends Form {
   }
 
   async componentDidMount() {
-    const {
-      IS_CREATING,
-    } = this.state;
+    const { IS_CREATING } = this.state;
 
-    this.context.flux.getActions('repair').getObjectProperty({ object_type: 'odh' }).then(({ data: { result: { rows: objectPropertyList } } }) => {
-      const {
-        formState: {
-          asuods_id = null,
-          type_slug: type,
-          plan_shape_json: {
-            manual,
-            odhPolys: odhPolysOut,
-            draw_object_list = [],
-            object_list,
-          },
-          elements = [],
-        },
-      } = this.props;
-
-      if (!IS_CREATING) {
-        const changesState = { manual };
-
-        const changesFormState = {};
-        if (manual) {
-          changesFormState.draw_object_list = draw_object_list;
-          changesFormState.objectsType = getObjectsType('mixed');
-        } else {
-          changesFormState.object_list = object_list;
-          changesFormState.objectsType = getObjectsType(type);
-        }
-        changesState.odhPolys = odhPolysOut;
-        changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({
-          data: {
-            id: value, name: label, total_area, id, name,
-          },
-        }) => ({
-          value, label, total_area, id, name,
-        }));
-
-        const { id: object_id } = changesState.OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
-
-        changesState.selectedObj = changesState.odhPolys[object_id];
-
-        changesFormState.elements = elements.map(d => ({
-          ...d,
-          measure_unit_name: (objectPropertyList.find(({ id }) => id === d.object_property_id) || {}).measure_unit_name,
-        }));
-        this.props.handleMultiChange({ ...changesFormState });
-        this.setState({ ...changesState });
-      } else {
-        this.props.actionGetGetOdh().then(({ data }) => {
-          const changesState = { manual };
-          changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
-
-          changesState.OBJECT_OPTIONS = Object.values(changesState.odhPolys).map(({
-            data: {
-              id: value, name: label, total_area, id, name,
+    this.context.flux
+      .getActions('repair')
+      .getObjectProperty({ object_type: 'odh' })
+      .then(({ data: { result: { rows: objectPropertyList } } }) => {
+        const {
+          formState: {
+            asuods_id = null,
+            type_slug: type,
+            plan_shape_json: {
+              manual,
+              odhPolys: odhPolysOut,
+              draw_object_list = [],
+              object_list,
             },
-          }) => ({
-            value, label, total_area, id, name,
-          }));
+            elements = [],
+          },
+        } = this.props;
 
+        if (!IS_CREATING) {
+          const changesState = { manual };
+
+          const changesFormState = {};
+          if (manual) {
+            changesFormState.draw_object_list = draw_object_list;
+            changesFormState.objectsType = getObjectsType('mixed');
+          } else {
+            changesFormState.object_list = object_list;
+            changesFormState.objectsType = getObjectsType(type);
+          }
+          changesState.odhPolys = odhPolysOut;
+          changesState.OBJECT_OPTIONS = Object.values(
+            changesState.odhPolys,
+          ).map(
+            ({ data: { id: value, name: label, total_area, id, name } }) => ({
+              value,
+              label,
+              total_area,
+              id,
+              name,
+            }),
+          );
+
+          const { id: object_id } =
+            changesState.OBJECT_OPTIONS.find(
+              ({ value: id }) => id === asuods_id,
+            ) || {};
+
+          changesState.selectedObj = changesState.odhPolys[object_id];
+
+          changesFormState.elements = elements.map((d) => ({
+            ...d,
+            measure_unit_name: (
+              objectPropertyList.find(
+                ({ id }) => id === d.object_property_id,
+              ) || {}
+            ).measure_unit_name,
+          }));
+          this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
-        });
-      }
-    });
+        } else {
+          this.props.actionGetGetOdh().then(({ data }) => {
+            const changesState = { manual };
+            changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
+
+            changesState.OBJECT_OPTIONS = Object.values(
+              changesState.odhPolys,
+            ).map(
+              ({ data: { id: value, name: label, total_area, id, name } }) => ({
+                value,
+                label,
+                total_area,
+                id,
+                name,
+              }),
+            );
+
+            this.setState({ ...changesState });
+          });
+        }
+      });
   }
 
   setManualOnFalse = () => {
-    const { formState: { draw_object_list = [] } } = this.props;
+    const {
+      formState: { draw_object_list = [] },
+    } = this.props;
     const { odhPolys: odhPolysOld } = this.props;
-    const { object_list, object_list: [selectedShape] } = log;
+    const {
+      object_list,
+      object_list: [selectedShape],
+    } = log;
 
     const odhPolys = cloneDeep(odhPolysOld);
 
@@ -146,10 +171,16 @@ class ProgramObjectFormodh extends Form {
       objectsType: log.objectsType,
     });
     this.setState({ manual: false, odhPolys });
-  }
+  };
 
   setManualOnTrue = () => {
-    const { formState: { objectsType, object_list, object_list: [selectedShape] } } = this.props;
+    const {
+      formState: {
+        objectsType,
+        object_list,
+        object_list: [selectedShape],
+      },
+    } = this.props;
     const { odhPolys: odhPolysOld } = this.props;
 
     const odhPolys = {
@@ -167,7 +198,7 @@ class ProgramObjectFormodh extends Form {
       objectsType: getObjectsType('mixed'),
     });
     this.setState({ manual: true, odhPolys });
-  }
+  };
 
   showPercentForm = () => this.setState({ showPercentForm: true });
 
@@ -183,12 +214,19 @@ class ProgramObjectFormodh extends Form {
       };
 
       if (manual) {
-        const { formState: { draw_object_list } } = this.props;
+        const {
+          formState: { draw_object_list },
+        } = this.props;
 
         plan_shape_json.odhPolys = odhPolys;
         plan_shape_json.draw_object_list = draw_object_list;
       } else {
-        const { formState: { object_list, object_list: [selectedShape] } } = this.props;
+        const {
+          formState: {
+            object_list,
+            object_list: [selectedShape],
+          },
+        } = this.props;
         const { object_id } = selectedShape;
 
         plan_shape_json.odhPolys = { [object_id]: odhPolys[object_id] };
@@ -197,43 +235,51 @@ class ProgramObjectFormodh extends Form {
       this.handleChange('plan_shape_json', plan_shape_json);
     }
     return new Promise(() => this.handleSubmit());
-  }
+  };
 
   handleFeatureClick = ({ id: object_id }) => {
     const { odhPolys } = this.state;
-    const { data: { id: asuods_id } } = odhPolys[object_id];
+    const {
+      data: { id: asuods_id },
+    } = odhPolys[object_id];
 
     this.handleChangeInfoObject('asuods_id', asuods_id);
-  }
+  };
 
   startDraw = () => {
     this.handleChange('draw_object_list', []);
-  }
+  };
 
   handleAddDrawLines = (drawObjectNew) => {
-    const { formState: { draw_object_list = [] } } = this.props;
+    const {
+      formState: { draw_object_list = [] },
+    } = this.props;
 
     draw_object_list.push(...drawObjectNew);
 
     this.handleChange('draw_object_list', draw_object_list);
-  }
+  };
 
   handleDrawFeatureClick = ({ index, state }) => {
-    const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
+    const {
+      formState: { draw_object_list: draw_object_list_old = [] },
+    } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
 
     draw_object_list[index].state = state;
 
     this.handleChange('draw_object_list', draw_object_list);
-  }
+  };
 
   handleRemoveLastDrawFeature = () => {
-    const { formState: { draw_object_list: draw_object_list_old = [] } } = this.props;
+    const {
+      formState: { draw_object_list: draw_object_list_old = [] },
+    } = this.props;
     const draw_object_list = cloneDeep(draw_object_list_old);
     draw_object_list.pop();
 
     this.handleChange('draw_object_list', draw_object_list);
-  }
+  };
 
   handleChangeInfoObject = (field, value) => {
     const asuods_id = value;
@@ -248,18 +294,12 @@ class ProgramObjectFormodh extends Form {
       objectPropertyList = [],
     } = this.props;
 
-    const {
-      OBJECT_OPTIONS = [],
-      odhPolys: odhPolysOld = {},
-    } = this.state;
+    const { OBJECT_OPTIONS = [], odhPolys: odhPolysOld = {} } = this.state;
 
     const odhPolys = cloneDeep(odhPolysOld);
 
-    const {
-      id: object_id,
-      label: name,
-      total_area: info_total_area,
-    } = OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
+    const { id: object_id, label: name, total_area: info_total_area } =
+      OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
 
     if (!isEmpty(object_list_old)) {
       const [{ object_id: object_id_old }] = object_list_old;
@@ -279,7 +319,9 @@ class ProgramObjectFormodh extends Form {
       name,
       elements: elements_old.map((d) => {
         const newD = { ...d };
-        const { original_name } = objectPropertyList.find(({ object_property_id }) => object_property_id === d.id);
+        const { original_name } = objectPropertyList.find(
+          ({ object_property_id }) => object_property_id === d.id,
+        );
         newD.value = selectedObj.data[original_name];
         return newD;
       }),
@@ -288,31 +330,28 @@ class ProgramObjectFormodh extends Form {
         total_area: info_total_area,
       },
       objectsType: getObjectsType(type_slug),
-      object_list: [{
-        name,
-        object_id,
-        state: odhPolys[object_id].state,
-        type: type_slug,
-      }],
+      object_list: [
+        {
+          name,
+          object_id,
+          state: odhPolys[object_id].state,
+          type: type_slug,
+        },
+      ],
     };
 
     this.setState({ selectedObj, odhPolys });
     this.props.handleMultiChange({ ...changeObject });
-  }
+  };
 
   pushElement = () => {
     const {
-      formState: {
-        elements = [],
-      },
+      formState: { elements = [] },
     } = this.props;
-    const newElements = [
-      ...elements,
-      { ...ELEMENT_NULL_OBJECT },
-    ];
+    const newElements = [...elements, { ...ELEMENT_NULL_OBJECT }];
 
     this.handleChange('elements', newElements);
-  }
+  };
 
   render() {
     const {
@@ -342,9 +381,13 @@ class ProgramObjectFormodh extends Form {
       draw_object_list: drawObjectList,
     } = state;
 
-    const title = IS_CREATING ? 'Создание карточки ДТ капитального ремонта.' : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
+    const title = IS_CREATING
+      ? 'Создание карточки ДТ капитального ремонта.'
+      : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
-    const CONTRACTOR_OPTIONS = contractorList.map(({ id: value, name: label }) => ({ value, label }));
+    const CONTRACTOR_OPTIONS = contractorList.map(
+      ({ id: value, name: label }) => ({ value, label }),
+    );
     const buttonPercentProps = {
       className: !id ? undefined : 'active',
       disabled: !id,
@@ -352,7 +395,12 @@ class ProgramObjectFormodh extends Form {
     };
 
     return (
-      <Modal id="modal-program-object-odh" show={this.props.show} onHide={this.props.onHide} dialogClassName="modal-xlg" backdrop="static">
+      <Modal
+        id="modal-program-object-odh"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        dialogClassName="modal-xlg"
+        backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -432,7 +480,12 @@ class ProgramObjectFormodh extends Form {
                 />
               </Col>
             </Row>
-            <Nav style={{ marginBottom: 20 }} bsStyle="tabs" activeKey={tabKey} onSelect={this.props.handleTabSelect} id="refs-car-tabs">
+            <Nav
+              style={{ marginBottom: 20 }}
+              bsStyle="tabs"
+              activeKey={tabKey}
+              onSelect={this.props.handleTabSelect}
+              id="refs-car-tabs">
               <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
               <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
             </Nav>
@@ -447,15 +500,17 @@ class ProgramObjectFormodh extends Form {
                 <Col md={3}>
                   <div className="pr-object-data">
                     <span>Дата осмотра</span>
-                    <span>{moment(state.reviewed_at).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`)}</span>
+                    <span>
+                      {moment(state.reviewed_at).format(
+                        `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
+                      )}
+                    </span>
                   </div>
                 </Col>
                 <Col md={2} xsOffset={1}>
                   <Col md={12}>
                     <Button {...buttonPercentProps}>
-                      <div style={{ width: 200, textAlign: 'center' }}>
-                        %
-                      </div>
+                      <div style={{ width: 200, textAlign: 'center' }}>%</div>
                     </Button>
                   </Col>
                 </Col>
@@ -490,7 +545,9 @@ class ProgramObjectFormodh extends Form {
                     isPermittedMap={IS_CREATING && isPermitted}
                     handleAddDrawLines={this.handleAddDrawLines}
                     handleDrawFeatureClick={this.handleDrawFeatureClick}
-                    handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+                    handleRemoveLastDrawFeature={
+                      this.handleRemoveLastDrawFeature
+                    }
                   />
                 </Div>
               </Col>
@@ -506,7 +563,11 @@ class ProgramObjectFormodh extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Button
+            disabled={!this.props.canSave}
+            onClick={this.handleSubmitWrap}>
+            Сохранить
+          </Button>
         </Modal.Footer>
       </Modal>
     );
@@ -517,17 +578,14 @@ export default compose(
   tabable,
   connect(
     null,
-    dispatch => ({
-      actionGetGetOdh: () => (
+    (dispatch) => ({
+      actionGetGetOdh: () =>
         dispatch(
-          geoobjectActions.actionGetGetOdh(
-            null,
-            {
-              page: null, path: null,
-            },
-          ),
-        )
-      ),
+          geoobjectActions.actionGetGetOdh(null, {
+            page: null,
+            path: null,
+          }),
+        ),
     }),
   ),
 )(connectToStores(ProgramObjectFormodh, ['repair']));

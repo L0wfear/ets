@@ -20,12 +20,14 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 class FuelOperationsDirectory extends ElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('fuelRates').deleteFuelOperation;
+    this.removeElementAction = context.flux.getActions(
+      'fuelRates',
+    ).deleteFuelOperation;
   }
 
   exportPayload = {
     is_active: true,
-  }
+  };
 
   init() {
     const { flux } = this.context;
@@ -35,9 +37,7 @@ class FuelOperationsDirectory extends ElementsList {
 }
 
 export default compose(
-  connect(
-    state => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
 )(FuelOperationsDirectory);

@@ -56,60 +56,111 @@ class WaybillPrintForm extends React.Component {
       children: makeReactMessange('Формирование печатной формы'),
     });
     if (this.props.show === 1) {
-      const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+      const MONTHS = [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ];
       this.setState({ DISABLE_SUBMIT: true });
-      await this.props.printData(
-        this.context.flux.getActions('waybills').getWaybillJournalReport,
-        this.state,
-      ).then(({ blob }) => {
-        switch (this.state.formationPeriod) {
-          case 'month': return saveData(blob, `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${this.state.year}.xls`);
-          case 'date': return saveData(blob, `Отчет по журналу ПЛ за ${makeDate(this.state.date)}.xls`);
-          default: return false;
-        }
-      });
+      await this.props
+        .printData(
+          this.context.flux.getActions('waybills').getWaybillJournalReport,
+          this.state,
+        )
+        .then(({ blob }) => {
+          switch (this.state.formationPeriod) {
+            case 'month':
+              return saveData(
+                blob,
+                `Отчет по журналу ПЛ за ${MONTHS[this.state.month - 1]} ${
+                  this.state.year
+                }.xls`,
+              );
+            case 'date':
+              return saveData(
+                blob,
+                `Отчет по журналу ПЛ за ${makeDate(this.state.date)}.xls`,
+              );
+            default:
+              return false;
+          }
+        });
     } else {
       this.setState({ DISABLE_SUBMIT: true });
-      await this.props.printData(
-        this.context.flux.getActions('waybills').getWaybillsReport,
-        this.state,
-      ).then(({ blob }) => { saveData(blob, `Отчет по выработке ТС за ${makeDate(this.state.date_from)} - ${makeDate(this.state.date_to)}.xls`); });
+      await this.props
+        .printData(
+          this.context.flux.getActions('waybills').getWaybillsReport,
+          this.state,
+        )
+        .then(({ blob }) => {
+          saveData(
+            blob,
+            `Отчет по выработке ТС за ${makeDate(
+              this.state.date_from,
+            )} - ${makeDate(this.state.date_to)}.xls`,
+          );
+        });
     }
 
     global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintForm');
 
-    this.setState({
-      month: new Date().getMonth() + 1,
-      year: new Date().getYear() + 1900,
-      date_from: getToday9am(),
-      date_to: getTomorrow9am(),
-      DISABLE_SUBMIT: false,
-    }, () => this.props.onHide());
-  }
+    this.setState(
+      {
+        month: new Date().getMonth() + 1,
+        year: new Date().getYear() + 1900,
+        date_from: getToday9am(),
+        date_to: getTomorrow9am(),
+        DISABLE_SUBMIT: false,
+      },
+      () => this.props.onHide(),
+    );
+  };
 
   toggleWithFilter = (e) => {
-    this.setState(
-      state => ({
-        with_filter: !state.with_filter,
-      }),
-    );
+    this.setState((state) => ({
+      with_filter: !state.with_filter,
+    }));
     e.stopPropagation();
-  }
+  };
 
   handleChange = (field, e) => {
     console.log(field, get(e, ['target', 'value'], e)); // eslint-disable-line
     this.setState({ [field]: get(e, ['target', 'value'], e) });
-  }
+  };
 
-  handleChangeFormationPeriod = formationPeriod => this.setState({ formationPeriod });
+  handleChangeFormationPeriod = (formationPeriod) =>
+    this.setState({ formationPeriod });
 
-  handleChangeDate = date => this.setState({ date });
+  handleChangeDate = (date) => this.setState({ date });
 
   render() {
-    const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-      'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'].map((m, i) => ({ label: m, value: i + 1 }));
-    const YEARS = Array.from({ length: 11 }, (y, i) => ({ label: `${i + 2016}`, value: i + 2016 }));
+    const MONTHS = [
+      'Январь',
+      'Февраль',
+      'Март',
+      'Апрель',
+      'Май',
+      'Июнь',
+      'Июль',
+      'Август',
+      'Сентябрь',
+      'Октябрь',
+      'Ноябрь',
+      'Декабрь',
+    ].map((m, i) => ({ label: m, value: i + 1 }));
+    const YEARS = Array.from({ length: 11 }, (y, i) => ({
+      label: `${i + 2016}`,
+      value: i + 2016,
+    }));
 
     const errors = {
       month: !this.state.month ? 'Поле "Месяц" обязательно для заполнения' : '',
@@ -117,18 +168,26 @@ class WaybillPrintForm extends React.Component {
       date_from: !this.state.date_from ? 'Поле обязательно для заполнения' : '',
       date_to: !this.state.date_to ? 'Поле обязательно для заполнения' : '',
     };
-    const DISABLE_SUBMIT = (this.props.show === 1 ? !!(errors.month || errors.year) : !!(errors.date_to || errors.date_from));
+    const DISABLE_SUBMIT =
+      this.props.show === 1
+        ? !!(errors.month || errors.year)
+        : !!(errors.date_to || errors.date_from);
 
     return (
-      <Modal id="modal-waybill-print" show={!!this.props.show} onHide={this.props.onHide} backdrop="static">
-
+      <Modal
+        id="modal-waybill-print"
+        show={!!this.props.show}
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header>
           <Modal.Title>Печать отчета по выработке ТС</Modal.Title>
         </Modal.Header>
 
         <ModalBody>
           <Div hidden={this.props.show !== 1}>
-            <span style={{ marginBottom: 15, display: 'block' }}>Выберите период:</span>
+            <span style={{ marginBottom: 15, display: 'block' }}>
+              Выберите период:
+            </span>
             <ExtField
               type="select"
               label="Период формирования"
@@ -199,15 +258,22 @@ class WaybillPrintForm extends React.Component {
             </Row>
             <Row className="checkbox-print-with-filter">
               <Col md={12} onClick={this.toggleWithFilter}>
-                <input type="checkbox" readOnly checked={this.state.with_filter} />
+                <input
+                  type="checkbox"
+                  readOnly
+                  checked={this.state.with_filter}
+                />
                 <span>С применением фильтрации</span>
               </Col>
             </Row>
             <Div hidden={!DISABLE_SUBMIT}>
-              <label style={{
-                color: 'red', fontWeight: 'normal', fontSize: 12, marginTop: 10,
-              }}
-              >
+              <label
+                style={{
+                  color: 'red',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                  marginTop: 10,
+                }}>
                 Даты должны быть указаны
               </label>
             </Div>
@@ -216,7 +282,11 @@ class WaybillPrintForm extends React.Component {
 
         <Modal.Footer>
           <Div className="inline-block">
-            <Button disabled={DISABLE_SUBMIT || this.state.DISABLE_SUBMIT} onClick={this.handleSubmit}>OK</Button>
+            <Button
+              disabled={DISABLE_SUBMIT || this.state.DISABLE_SUBMIT}
+              onClick={this.handleSubmit}>
+              OK
+            </Button>
             <Button onClick={this.props.onHide}>Отмена</Button>
           </Div>
         </Modal.Footer>

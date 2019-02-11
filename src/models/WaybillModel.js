@@ -297,6 +297,7 @@ export const waybillSchema = {
         validator: (value, formData) => {
           if (
             !value &&
+            formData.equipment_fuel &&
             formData.equipment_fuel_method === 'fuel_card' &&
             (formData.status === 'draft' || !formData.status)
           ) {
@@ -311,6 +312,7 @@ export const waybillSchema = {
         validator: (value, formData) => {
           if (
             !value &&
+            formData.equipment_fuel &&
             formData.status === 'draft' &&
             formData.equipment_fuel
           ) {
@@ -318,6 +320,7 @@ export const waybillSchema = {
           }
           if (
             value === 'fuel_card' &&
+            formData.equipment_fuel &&
             isEmpty(formData.equipment_fuel_card_id) &&
             (formData.status === 'draft' || !formData.status)
           ) {

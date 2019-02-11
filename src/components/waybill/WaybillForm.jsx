@@ -735,10 +735,10 @@ class WaybillForm extends Form {
     structures.map(defaultSelectListMapper),
   );
 
-  getFuelCardsListOptions(fuelCardsList, fuel_type_filter) {
+  getFuelCardsListOptions = (fuelCardsList, fuelTypeFilter) => {
     return fuelCardsList.reduce(
       (newArr, { id, number, fuel_type, ...other }) => {
-        if (fuel_type === fuel_type_filter || !fuel_type_filter) {
+        if (fuel_type === fuelTypeFilter || !fuelTypeFilter) {
           newArr.push({
             value: id,
             label: number,
@@ -754,7 +754,7 @@ class WaybillForm extends Form {
       },
       [],
     );
-  }
+  };
 
   handleFuelMethodChange = (value) => {
     if (value !== 'fuel_card') {

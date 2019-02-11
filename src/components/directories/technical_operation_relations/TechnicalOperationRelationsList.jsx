@@ -62,14 +62,14 @@ class TechnicalOperationRelationsList extends ElementsList {
     } = this.props;
 
     if (
-      technical_operation_id &&
-      municipal_facility_id &&
-      route_types &&
-      func_type_id &&
-      (technical_operation_id !== prevProps.technical_operation_id ||
-        municipal_facility_id !== prevProps.municipal_facility_id ||
-        route_types !== prevProps.route_types ||
-        func_type_id !== prevProps.func_type_id)
+      technical_operation_id
+      && municipal_facility_id
+      && route_types
+      && func_type_id
+      && (technical_operation_id !== prevProps.technical_operation_id
+        || municipal_facility_id !== prevProps.municipal_facility_id
+        || route_types !== prevProps.route_types
+        || func_type_id !== prevProps.func_type_id)
     ) {
       this.getData(this.props);
     }

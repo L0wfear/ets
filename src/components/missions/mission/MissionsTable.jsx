@@ -277,8 +277,8 @@ export default (props) => {
     date_end: ({ data }) => <DateFormatter date={data} time />,
     id: ({ data, rowData }) => {
       if (rowData.status === 'not_assigned') return <div>Нет данных</div>;
-      const className =
-        Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
+      const className
+        = Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
 
       return (
         <div className={className} style={{ width: '100%', heigth: '100%' }}>

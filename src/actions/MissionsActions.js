@@ -256,10 +256,10 @@ export default class MissionsActions extends Actions {
       payload.date_start = date_start;
       payload.date_end = date_end;
       [payload.car_id] = query.car_ids;
-      payload.mission_source_id =
-        missionsCreationTemplateCopy.mission_source_id;
-      payload.assign_to_waybill =
-        missionsCreationTemplateCopy.assign_to_waybill;
+      payload.mission_source_id
+        = missionsCreationTemplateCopy.mission_source_id;
+      payload.assign_to_waybill
+        = missionsCreationTemplateCopy.assign_to_waybill;
       payload.hidden = true;
       if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
         payload.passes_count = parseInt(
@@ -271,8 +271,8 @@ export default class MissionsActions extends Actions {
         payload.faxogramm_id = missionsCreationTemplateCopy.faxogramm_id;
       }
       payload.template_id = payload.id;
-      payload.norm_id =
-        missionsCreationTemplateCopy.norm_id[id][payload.car_id];
+      payload.norm_id
+        = missionsCreationTemplateCopy.norm_id[id][payload.car_id];
 
       delete payload.company_id;
       delete payload.id;
@@ -319,8 +319,8 @@ export default class MissionsActions extends Actions {
         payload.plan_date_end = date_end;
         payload.fact_date_start = date_start;
         payload.fact_date_end = date_end;
-        payload.mission_source_id =
-          dutyMissionsCreationTemplateCopy.mission_source_id;
+        payload.mission_source_id
+          = dutyMissionsCreationTemplateCopy.mission_source_id;
         payload.brigade_employee_id_list = [
           ...payload.brigade_employee_id_list_id,
         ];

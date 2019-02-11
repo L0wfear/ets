@@ -66,13 +66,13 @@ class PercentModalFormWrap extends FormWrap {
     const { other: { minPercent, minReviewedAt } = {} } = this.props;
 
     if (state.percent < minPercent) {
-      newErrors.percent =
-        'Процент выполнения не должен быть меньше последнего процента выполнения';
+      newErrors.percent
+        = 'Процент выполнения не должен быть меньше последнего процента выполнения';
     }
 
     if (moment(state.reviewed_at).diff(minReviewedAt, 'minutes') < 0) {
-      newErrors.reviewed_at =
-        'Дата осмотра должна быть позже последней даты осмотра';
+      newErrors.reviewed_at
+        = 'Дата осмотра должна быть позже последней даты осмотра';
     }
 
     return newErrors;

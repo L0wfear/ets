@@ -205,8 +205,8 @@ export const waybillSchema = {
       {
         validator: (value) => {
           if (
-            value &&
-            parseFloat(value)
+            value
+            && parseFloat(value)
               .toFixed(1)
               .match(/^\d{4,}/)
           ) {
@@ -220,8 +220,8 @@ export const waybillSchema = {
       {
         validator: (value) => {
           if (
-            value &&
-            parseFloat(value)
+            value
+            && parseFloat(value)
               .toFixed(1)
               .match(/^\d{4,}/)
           ) {
@@ -235,8 +235,8 @@ export const waybillSchema = {
       {
         validator: (value) => {
           if (
-            value &&
-            parseFloat(value)
+            value
+            && parseFloat(value)
               .toFixed(1)
               .match(/^\d{4,}/)
           ) {
@@ -250,8 +250,8 @@ export const waybillSchema = {
       {
         validator: (value) => {
           if (
-            value &&
-            parseFloat(value)
+            value
+            && parseFloat(value)
               .toFixed(1)
               .match(/^\d{4,}/)
           ) {
@@ -265,9 +265,9 @@ export const waybillSchema = {
       {
         validator: (value, formData) => {
           if (
-            !value &&
-            formData.fuel_method === 'fuel_card' &&
-            (formData.status === 'draft' || !formData.status)
+            !value
+            && formData.fuel_method === 'fuel_card'
+            && (formData.status === 'draft' || !formData.status)
           ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
@@ -282,9 +282,9 @@ export const waybillSchema = {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
           if (
-            value === 'fuel_card' &&
-            isEmpty(formData.fuel_card_id) &&
-            (formData.status === 'draft' || !formData.status)
+            value === 'fuel_card'
+            && isEmpty(formData.fuel_card_id)
+            && (formData.status === 'draft' || !formData.status)
           ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
@@ -296,9 +296,9 @@ export const waybillSchema = {
       {
         validator: (value, formData) => {
           if (
-            !value &&
-            formData.equipment_fuel_method === 'fuel_card' &&
-            (formData.status === 'draft' || !formData.status)
+            !value
+            && formData.equipment_fuel_method === 'fuel_card'
+            && (formData.status === 'draft' || !formData.status)
           ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
@@ -310,16 +310,16 @@ export const waybillSchema = {
       {
         validator: (value, formData) => {
           if (
-            !value &&
-            formData.status === 'draft' &&
-            formData.equipment_fuel
+            !value
+            && formData.status === 'draft'
+            && formData.equipment_fuel
           ) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
           if (
-            value === 'fuel_card' &&
-            isEmpty(formData.equipment_fuel_card_id) &&
-            (formData.status === 'draft' || !formData.status)
+            value === 'fuel_card'
+            && isEmpty(formData.equipment_fuel_card_id)
+            && (formData.status === 'draft' || !formData.status)
           ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
@@ -449,8 +449,8 @@ const closingDependencies = {
     {
       validator(value, { plan_departure_date }) {
         if (
-          value &&
-          moment(value).diff(moment(plan_departure_date), 'minutes') < 0
+          value
+          && moment(value).diff(moment(plan_departure_date), 'minutes') < 0
         ) {
           return '"Выезд факт." должно быть не раньше "Выезда план."';
         }
@@ -473,9 +473,9 @@ const closingDependencies = {
     {
       validator(value, { fact_departure_date }) {
         if (
-          value &&
-          fact_departure_date &&
-          moment(value).diff(moment(fact_departure_date), 'minutes') <= 0
+          value
+          && fact_departure_date
+          && moment(value).diff(moment(fact_departure_date), 'minutes') <= 0
         ) {
           return '"Возвращение факт." должно быть позже "Выезд факт."';
         }
@@ -485,9 +485,9 @@ const closingDependencies = {
     {
       validator(value, { plan_arrival_date }) {
         if (
-          value &&
-          plan_arrival_date &&
-          moment(value).diff(moment(plan_arrival_date), 'minutes') > 180
+          value
+          && plan_arrival_date
+          && moment(value).diff(moment(plan_arrival_date), 'minutes') > 180
         ) {
           return 'Время, указанное в поле "Возвращение факт" не может превышать время в поле "Возвращение план" больше чем на 3 часа';
         }
@@ -500,9 +500,9 @@ const closingDependencies = {
       validator: (value, formData) => {
         if (
           Math.abs(
-            (parseFloat(formData.odometr_diff || formData.motohours_diff || 0) -
-              parseFloat(value || 0)) /
-              100,
+            (parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
+              - parseFloat(value || 0))
+              / 100,
           ) > 0.1
         ) {
           return 'Расхождение в показателях пробега';

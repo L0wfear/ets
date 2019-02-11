@@ -31,8 +31,8 @@ class ProgramObjectFormWrap extends FormWrap {
     const newState = {};
 
     Object.entries(fields).forEach(([field, e]) => {
-      const value =
-        e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      const value
+        = e !== undefined && e !== null && !!e.target ? e.target.value : e;
       console.info('Form changed', field, value);
       formState[field] = value;
     });

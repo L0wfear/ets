@@ -49,10 +49,10 @@ class MissionsCreationForm extends Form {
     } = this.props;
     this.handleChange('date_start', date_start);
     if (
-      this.props.needMoveDateEnd &&
-      date_start &&
-      date_end &&
-      diffDates(date_end, date_start, 'hours') > countBumpDateEnd
+      this.props.needMoveDateEnd
+      && date_start
+      && date_end
+      && diffDates(date_end, date_start, 'hours') > countBumpDateEnd
     ) {
       const date_end_new = addTime(date_start, countBumpDateEnd, 'hours');
       this.handleChange('date_end', date_end_new);

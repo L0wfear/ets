@@ -63,29 +63,29 @@ const getTableMeta = (props) => {
       },
       {
         name: 'check_value',
-        displayName: `Нужно пройти (${props.data[0] &&
-          props.data[0].route_check_unit})`,
+        displayName: `Нужно пройти (${props.data[0]
+          && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'traveled_percentage',
-        displayName: `Пройдено в рабочем режиме (${props.data[0] &&
-          props.data[0].route_check_unit})*`,
+        displayName: `Пройдено в рабочем режиме (${props.data[0]
+          && props.data[0].route_check_unit})*`,
         type: 'string',
         filter: false,
       },
       {
         name: 'left_percentage',
-        displayName: `Осталось (${props.data[0] &&
-          props.data[0].route_check_unit})`,
+        displayName: `Осталось (${props.data[0]
+          && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
       },
       {
         name: 'route_with_speed',
-        displayName: `Контроль (${props.data[0] &&
-          (props.data[0].route_check_unit === 'м.'
+        displayName: `Контроль (${props.data[0]
+          && (props.data[0].route_check_unit === 'м.'
             ? 'км.'
             : props.data[0].route_check_unit)})**`,
         type: 'string',
@@ -128,8 +128,8 @@ const renderers = {
       rowData.traveled / getDelForUnitRender(rowData.route_check_unit),
       3,
     )} / ${VALUE_FOR_FIXED.floatFixed(
-      rowData.traveled_high_speed /
-        getDelForUnitRender(rowData.route_check_unit),
+      rowData.traveled_high_speed
+        / getDelForUnitRender(rowData.route_check_unit),
       3,
     )}`}</div>
   ),

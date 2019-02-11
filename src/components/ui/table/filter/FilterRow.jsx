@@ -69,13 +69,13 @@ class FilterRow extends React.Component {
 
     if (type) {
       if (
-        type === 'select' ||
-        type === 'multiselect' ||
-        type === 'advanced-select-like'
+        type === 'select'
+        || type === 'multiselect'
+        || type === 'advanced-select-like'
       ) {
-        let options =
-          availableOptions ||
-          _(tableData)
+        let options
+          = availableOptions
+          || _(tableData)
             .uniqBy(name)
             .map((d) => ({
               value: typeof d[name] === 'boolean' ? +d[name] : d[name],

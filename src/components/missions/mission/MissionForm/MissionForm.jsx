@@ -232,9 +232,9 @@ export class MissionForm extends Form {
       }
 
       if (
-        IS_ASSIGNED &&
-        IS_NOT_IN_WAYBILL &&
-        formState.car_id === this.state.firstFormState.car_id
+        IS_ASSIGNED
+        && IS_NOT_IN_WAYBILL
+        && formState.car_id === this.state.firstFormState.car_id
       ) {
         global.NOTIFICATION_SYSTEM.notify({
           title: 'Внимание!',
@@ -372,8 +372,8 @@ export class MissionForm extends Form {
         changesObj.car_id = null;
       }
       if (
-        this.state.selectedRoute &&
-        structure_id !== this.state.selectedRoute.structure_id
+        this.state.selectedRoute
+        && structure_id !== this.state.selectedRoute.structure_id
       ) {
         this.handleRouteIdChange(undefined);
       }
@@ -442,10 +442,10 @@ export class MissionForm extends Form {
       const { selectedRoute } = this.state;
 
       if (
-        date_start &&
-        date_end &&
-        is_cleaning_norm.some((value) => value) &&
-        selectedRoute
+        date_start
+        && date_end
+        && is_cleaning_norm.some((value) => value)
+        && selectedRoute
       ) {
         const { time } = routeTypesByKey[selectedRoute.type];
 
@@ -486,15 +486,15 @@ export class MissionForm extends Form {
   getDataByNormatives = (normatives) => {
     const { formState } = this.props;
 
-    const trigger =
-      !formState.normatives ||
-      normatives.some(
+    const trigger
+      = !formState.normatives
+      || normatives.some(
         ({ id }) =>
           !formState.normatives.find(
             ({ id: formStateNormativeId }) => id === formStateNormativeId,
           ),
-      ) ||
-      formState.can_edit_car_and_route;
+      )
+      || formState.can_edit_car_and_route;
 
     if (trigger) {
       const { flux } = this.context;
@@ -582,11 +582,11 @@ export class MissionForm extends Form {
     const CARS = carsList
       .filter(
         (c) =>
-          ((!state.structure_id ||
-            c.is_common ||
-            c.company_structure_id === state.structure_id) &&
-            c.available_to_bind) ||
-          (state.car_id && state.car_id === c.asuods_id),
+          ((!state.structure_id
+            || c.is_common
+            || c.company_structure_id === state.structure_id)
+            && c.available_to_bind)
+          || (state.car_id && state.car_id === c.asuods_id),
       )
       .map((c) => ({
         value: c.asuods_id,
@@ -599,10 +599,10 @@ export class MissionForm extends Form {
       (r) => !state.structure_id || r.structure_id === state.structure_id,
     );
 
-    const filteredRoutes =
-      route !== null &&
-      route.id !== undefined &&
-      routes.find((item) => item.value === route.id) === undefined
+    const filteredRoutes
+      = route !== null
+      && route.id !== undefined
+      && routes.find((item) => item.value === route.id) === undefined
         ? routes.concat([route])
         : routes;
 
@@ -628,9 +628,9 @@ export class MissionForm extends Form {
     let STRUCTURE_FIELD_DELETABLE = false;
 
     if (
-      userStructureId !== null &&
-      STRUCTURES.length === 1 &&
-      userStructureId === STRUCTURES[0].value
+      userStructureId !== null
+      && STRUCTURES.length === 1
+      && userStructureId === STRUCTURES[0].value
     ) {
       STRUCTURE_FIELD_READONLY = true;
     } else if (userStructureId === null && STRUCTURES.length > 1) {
@@ -641,23 +641,23 @@ export class MissionForm extends Form {
     const IS_COMPLETE = state.status === 'complete';
     const IS_FAIL = state.status === 'fail';
     const IS_CREATING = !state.status;
-    const IS_POST_CREATING_NOT_ASSIGNED =
-      state.status === 'not_assigned' || this.props.fromWaybill;
+    const IS_POST_CREATING_NOT_ASSIGNED
+      = state.status === 'not_assigned' || this.props.fromWaybill;
     const IS_ASSIGNED = state.status === 'assigned';
     const IS_IN_PROGRESS = state.status === 'in_progress';
     const IS_EXPIRED = state.status === 'expired';
-    const IS_POST_CREATING_ASSIGNED =
-      (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && isDeferred;
-    const IS_DISPLAY =
-      !IS_CREATING &&
-      !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED); // (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
-    const IS_DISABLED_ASSIGNED =
-      IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
+    const IS_POST_CREATING_ASSIGNED
+      = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && isDeferred;
+    const IS_DISPLAY
+      = !IS_CREATING
+      && !(IS_POST_CREATING_NOT_ASSIGNED || IS_POST_CREATING_ASSIGNED); // (!!state.status && state.status !== 'not_assigned') || (!isDeferred && !IS_CREATING);
+    const IS_DISABLED_ASSIGNED
+      = IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS ? false : IS_DISPLAY; // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
     const IS_NOT_IN_WAYBILL = state.can_edit_car_and_route;
-    const IS_VALID_PUSH =
-      state.car_id &&
-      state.car_gov_number &&
-      !CARS.some(({ value }) => value === state.car_id);
+    const IS_VALID_PUSH
+      = state.car_id
+      && state.car_gov_number
+      && !CARS.some(({ value }) => value === state.car_id);
 
     if (IS_VALID_PUSH) {
       CARS.push({
@@ -675,40 +675,40 @@ export class MissionForm extends Form {
 
     const sourceIsOrder = !lodashIsEmpty(state.order_operation_id);
 
-    const carEditionDisability =
-      (IS_POST_CREATING_ASSIGNED ||
-        state.status === 'not_assigned' ||
-        IS_DISPLAY ||
-        this.props.withDefineCarId ||
-        (IS_CREATING && isEmpty(state.technical_operation_id)) ||
-        isEmpty(state.municipal_facility_id)) &&
-      !IS_NOT_IN_WAYBILL;
+    const carEditionDisability
+      = (IS_POST_CREATING_ASSIGNED
+        || state.status === 'not_assigned'
+        || IS_DISPLAY
+        || this.props.withDefineCarId
+        || (IS_CREATING && isEmpty(state.technical_operation_id))
+        || isEmpty(state.municipal_facility_id))
+      && !IS_NOT_IN_WAYBILL;
 
-    const columnFlagDisability =
-      isEmpty(state.technical_operation_id) ||
-      isEmpty(state.municipal_facility_id) ||
-      !isOdhRouteTypePermitted(this.state.available_route_types);
+    const columnFlagDisability
+      = isEmpty(state.technical_operation_id)
+      || isEmpty(state.municipal_facility_id)
+      || !isOdhRouteTypePermitted(this.state.available_route_types);
 
-    const hiddenAssignToWaybill =
-      (!!state.status || this.props.fromWaybill) &&
-      !(IS_NOT_IN_WAYBILL && this.state.firstFormState.car_id !== state.car_id);
+    const hiddenAssignToWaybill
+      = (!!state.status || this.props.fromWaybill)
+      && !(IS_NOT_IN_WAYBILL && this.state.firstFormState.car_id !== state.car_id);
 
-    const routeIdDisabled =
-      (IS_POST_CREATING_ASSIGNED ||
-        IS_DISPLAY ||
-        !state.car_id ||
-        !state.municipal_facility_id) &&
-      !IS_NOT_IN_WAYBILL;
+    const routeIdDisabled
+      = (IS_POST_CREATING_ASSIGNED
+        || IS_DISPLAY
+        || !state.car_id
+        || !state.municipal_facility_id)
+      && !IS_NOT_IN_WAYBILL;
 
-    const municipalFacilityIdDisabled =
-      (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) ||
-      sourceIsOrder ||
-      fromOrder;
+    const municipalFacilityIdDisabled
+      = (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
+      || sourceIsOrder
+      || fromOrder;
 
-    const alreadyDefineNormId =
-      sourceIsOrder ||
-      fromOrder ||
-      (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY));
+    const alreadyDefineNormId
+      = sourceIsOrder
+      || fromOrder
+      || (!IS_CREATING && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY));
 
     if (IS_CREATING) {
       title = (
@@ -756,10 +756,10 @@ export class MissionForm extends Form {
                     label="Технологическая операция"
                     error={errors.technical_operation_id}
                     disabled={
-                      (!IS_CREATING &&
-                        (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)) ||
-                      this.props.fromOrder ||
-                      sourceIsOrder
+                      (!IS_CREATING
+                        && (IS_POST_CREATING_ASSIGNED || IS_DISPLAY))
+                      || this.props.fromOrder
+                      || sourceIsOrder
                     }
                     options={TECH_OPERATIONS}
                     value={state.technical_operation_id}
@@ -776,10 +776,10 @@ export class MissionForm extends Form {
                       label="Подразделение"
                       error={errors.structure_id}
                       disabled={
-                        STRUCTURE_FIELD_READONLY ||
-                        this.props.fromWaybill ||
-                        (!IS_CREATING && !this.props.fromWaybill) ||
-                        !IS_CREATING
+                        STRUCTURE_FIELD_READONLY
+                        || this.props.fromWaybill
+                        || (!IS_CREATING && !this.props.fromWaybill)
+                        || !IS_CREATING
                       }
                       clearable={STRUCTURE_FIELD_DELETABLE}
                       options={STRUCTURES}
@@ -834,14 +834,14 @@ export class MissionForm extends Form {
                             date={state.date_start}
                             disabled={IS_DISABLED_ASSIGNED}
                             min={
-                              this.props.fromWaybill &&
-                              this.props.waybillStartDate
+                              this.props.fromWaybill
+                              && this.props.waybillStartDate
                                 ? this.props.waybillStartDate
                                 : null
                             }
                             max={
-                              this.props.fromWaybill &&
-                              this.props.waybillEndDate
+                              this.props.fromWaybill
+                              && this.props.waybillEndDate
                                 ? this.props.waybillEndDate
                                 : null
                             }
@@ -884,8 +884,8 @@ export class MissionForm extends Form {
                             disabled={IS_DISABLED_ASSIGNED}
                             min={state.date_start}
                             max={
-                              this.props.fromWaybill &&
-                              this.props.waybillEndDate
+                              this.props.fromWaybill
+                              && this.props.waybillEndDate
                                 ? this.props.waybillEndDate
                                 : null
                             }
@@ -917,9 +917,9 @@ export class MissionForm extends Form {
                 </Col>
               </Row>
               <Row>
-                {IS_CREATING &&
-                  !this.props.fromWaybill &&
-                  !this.props.withDefineCarId && (
+                {IS_CREATING
+                  && !this.props.fromWaybill
+                  && !this.props.withDefineCarId && (
                   <Col md={12}>
                     <ExtField
                       id="is_column"
@@ -976,8 +976,8 @@ export class MissionForm extends Form {
                     label="Количество циклов"
                     error={errors.passes_count}
                     disabled={
-                      (IS_POST_CREATING_ASSIGNED || IS_DISPLAY) &&
-                      (IS_FAIL || IS_COMPLETE)
+                      (IS_POST_CREATING_ASSIGNED || IS_DISPLAY)
+                      && (IS_FAIL || IS_COMPLETE)
                     }
                     value={state.passes_count}
                     onChange={this.handleChange.bind(this, 'passes_count')}
@@ -992,10 +992,10 @@ export class MissionForm extends Form {
                     label="Источник получения задания"
                     error={errors.mission_source_id}
                     disabled={
-                      IS_POST_CREATING_ASSIGNED ||
-                      IS_DISPLAY ||
-                      fromOrder ||
-                      sourceIsOrder
+                      IS_POST_CREATING_ASSIGNED
+                      || IS_DISPLAY
+                      || fromOrder
+                      || sourceIsOrder
                     }
                     options={MISSION_SOURCES}
                     value={state.mission_source_id}

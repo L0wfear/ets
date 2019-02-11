@@ -184,8 +184,8 @@ class ProgramRemarkList extends CheckableElementsList {
     } = this.props;
 
     const slugTypeObjectPr = (
-      technicalOperationsObjectsList.find(({ id }) => id === object_type_id) ||
-      {}
+      technicalOperationsObjectsList.find(({ id }) => id === object_type_id)
+      || {}
     ).slug;
 
     const buttons = [
@@ -194,9 +194,9 @@ class ProgramRemarkList extends CheckableElementsList {
         key={0}
         onClick={this.removeCheckedElements}
         disabled={
-          this.checkDisabledDelete() ||
-          program_version_status === 'accepted' ||
-          !isPermittedByStatus
+          this.checkDisabledDelete()
+          || program_version_status === 'accepted'
+          || !isPermittedByStatus
         }
         permissions={[`${entity}.delete`]}
       />,
@@ -217,9 +217,9 @@ class ProgramRemarkList extends CheckableElementsList {
           onClick={this.createDT}
           permissions={[`${entity}.update`]}
           disabled={
-            program_version_status === 'accepted' ||
-            repair_type_name !== 'Капитальный' ||
-            !isPermittedByStatus
+            program_version_status === 'accepted'
+            || repair_type_name !== 'Капитальный'
+            || !isPermittedByStatus
           }
         />,
       );

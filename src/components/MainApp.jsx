@@ -53,14 +53,14 @@ class MainApp extends React.Component {
     if (project_name === 'ets-dev2' || isPermittedSwitchApiVersion) {
       this.setState((state) => {
         if (
-          state.clickOnVersionCount > 1 &&
-          state.clickOnVersionCount < countToShowChangeApi - 1
+          state.clickOnVersionCount > 1
+          && state.clickOnVersionCount < countToShowChangeApi - 1
         ) {
           // prettier-ignore
           console.log( // eslint-disable-line
-            `%c Пожалуйста, продолжай (${countToShowChangeApi -
-              state.clickOnVersionCount -
-              1})`,
+            `%c Пожалуйста, продолжай (${countToShowChangeApi
+              - state.clickOnVersionCount
+              - 1})`,
             'font-size: 18px; background: #222; color: #bada55',
           ); // eslint-disable-line
         }

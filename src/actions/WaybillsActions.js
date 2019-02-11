@@ -188,8 +188,8 @@ export default class WaybillsActions extends Actions {
     }
 
     if (
-      !isEmpty(payload.mission_id_list) &&
-      payload.mission_id_list.length === 0
+      !isEmpty(payload.mission_id_list)
+      && payload.mission_id_list.length === 0
     ) {
       payload.mission_id_list = [];
     }
@@ -228,8 +228,8 @@ export default class WaybillsActions extends Actions {
     }
 
     if (
-      !isEmpty(payload.mission_id_list) &&
-      payload.mission_id_list.length === 0
+      !isEmpty(payload.mission_id_list)
+      && payload.mission_id_list.length === 0
     ) {
       payload.mission_id_list = [];
     }

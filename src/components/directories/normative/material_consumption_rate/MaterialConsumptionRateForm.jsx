@@ -29,8 +29,8 @@ class MaterialConsumptionRateForm extends Form {
       cleanCategoriesList = [],
       odhNormList = [],
     } = this.props;
-    const { subcategories = [] } =
-      cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {};
+    const { subcategories = [] }
+      = cleanCategoriesList.find((c) => state.clean_category_id === c.id) || {};
 
     const IS_CREATING = !state.id;
     const TECH_OPERATIONS = technicalOperationsList.map(

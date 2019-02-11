@@ -35,8 +35,8 @@ class LoadingOverlay extends React.Component {
   static getDerivedStateFromProps(nextProps) {
     const modals = document.getElementsByClassName('modal-body');
     const modalsSmall = document.getElementsByClassName('modal-sm');
-    const showLoading =
-      !(modals.length - modalsSmall.length) || !nextProps.main;
+    const showLoading
+      = !(modals.length - modalsSmall.length) || !nextProps.main;
 
     return {
       show: showLoading,

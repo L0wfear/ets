@@ -52,8 +52,8 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) =>
     if (isPermittedByKey.update) {
       newFormError[key] = value;
     } else if (
-      isPermittedByKey.departure_and_arrival_values &&
-      checkDataForDepartureAndArrivalValues.includes(key)
+      isPermittedByKey.departure_and_arrival_values
+      && checkDataForDepartureAndArrivalValues.includes(key)
     ) {
       newFormError[key] = value;
     }
@@ -148,8 +148,8 @@ class WaybillFormWrap extends FormWrap {
         }
 
         if (
-          props.element.status === 'active' ||
-          props.element.status === 'closed'
+          props.element.status === 'active'
+          || props.element.status === 'closed'
         ) {
           const fuelStart = waybill.fuel_start
             ? parseFloat(waybill.fuel_start)
@@ -171,16 +171,16 @@ class WaybillFormWrap extends FormWrap {
           if (waybill.equipment_fuel) {
             waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
             waybill.equipment_fuel_end = (
-              equipmentFuelStart +
-              equipmentFuelGiven -
-              equipmentFuelTaxes
+              equipmentFuelStart
+              + equipmentFuelGiven
+              - equipmentFuelTaxes
             ).toFixed(3);
           } else {
             waybill.fuel_end = (
-              fuelStart +
-              fuelGiven -
-              fuelTaxes -
-              equipmentFuelTaxes
+              fuelStart
+              + fuelGiven
+              - fuelTaxes
+              - equipmentFuelTaxes
             ).toFixed(3);
           }
 
@@ -192,8 +192,8 @@ class WaybillFormWrap extends FormWrap {
             ? waybill.motohours_end - (waybill.motohours_start || 0)
             : null;
           waybill.motohours_equip_diff = waybill.motohours_equip_end
-            ? (waybill.motohours_equip_end || 0) -
-              (waybill.motohours_equip_start || 0)
+            ? (waybill.motohours_equip_end || 0)
+              - (waybill.motohours_equip_start || 0)
             : null;
 
           if (props.element.status === 'active') {
@@ -208,9 +208,9 @@ class WaybillFormWrap extends FormWrap {
               formErrors,
               canPrint: false,
               canSave:
-                (this.state.isPermittedByKey.update ||
-                  this.state.isPermittedByKey.departure_and_arrival_values) &&
-                !clone(formErrors, (v, k) =>
+                (this.state.isPermittedByKey.update
+                  || this.state.isPermittedByKey.departure_and_arrival_values)
+                && !clone(formErrors, (v, k) =>
                   [
                     'fact_arrival_date',
                     'fact_departure_date',
@@ -222,16 +222,16 @@ class WaybillFormWrap extends FormWrap {
                   ].includes(k)
                     ? false
                     : v,
-                ).length &&
-                !(
-                  (formErrors.fact_arrival_date &&
-                    !formErrors.fact_departure_date) ||
-                  (!formErrors.fact_arrival_date &&
-                    formErrors.fact_departure_date)
+                ).length
+                && !(
+                  (formErrors.fact_arrival_date
+                    && !formErrors.fact_departure_date)
+                  || (!formErrors.fact_arrival_date
+                    && formErrors.fact_departure_date)
                 ),
               canClose:
-                this.state.isPermittedByKey.update &&
-                !filter(formErrors, (v, k) =>
+                this.state.isPermittedByKey.update
+                && !filter(formErrors, (v, k) =>
                   ['distance'].includes(k) ? false : v,
                 ).length,
             });
@@ -252,9 +252,9 @@ class WaybillFormWrap extends FormWrap {
             formState: waybill,
             canPrint: true,
             canSave:
-              (this.state.isPermittedByKey.update ||
-                this.state.isPermittedByKey.departure_and_arrival_values) &&
-              !formErrors.length,
+              (this.state.isPermittedByKey.update
+                || this.state.isPermittedByKey.departure_and_arrival_values)
+              && !formErrors.length,
             canClose: this.state.isPermittedByKey.update && formErrors.length,
             formErrors,
           });
@@ -291,22 +291,22 @@ class WaybillFormWrap extends FormWrap {
     if (formState.equipment_fuel) {
       formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
       formState.equipment_fuel_end = (
-        equipmentFuelStart +
-        equipmentFuelGiven -
-        equipmentFuelTaxes
+        equipmentFuelStart
+        + equipmentFuelGiven
+        - equipmentFuelTaxes
       ).toFixed(3);
     } else {
       formState.fuel_end = (
-        fuelStart +
-        fuelGiven -
-        fuelTaxes -
-        equipmentFuelTaxes
+        fuelStart
+        + fuelGiven
+        - fuelTaxes
+        - equipmentFuelTaxes
       ).toFixed(3);
     }
 
     if (
-      formState.fuel_end !== this.state.formState.fuel_end ||
-      isNullOrUndefined(formState.fact_fuel_end)
+      formState.fuel_end !== this.state.formState.fuel_end
+      || isNullOrUndefined(formState.fact_fuel_end)
     ) {
       formState.fact_fuel_end = formState.fuel_end;
     }
@@ -321,8 +321,8 @@ class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave =
-      !filter(formErrors, (v, k) =>
+    newState.canSave
+      = !filter(formErrors, (v, k) =>
         [
           'fact_arrival_date',
           'fact_departure_date',
@@ -334,10 +334,10 @@ class WaybillFormWrap extends FormWrap {
         ].includes(k)
           ? false
           : v,
-      ).length &&
-      !(
-        (formErrors.fact_arrival_date && !formErrors.fact_departure_date) ||
-        (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      ).length
+      && !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
       );
 
     newState.canClose = !filter(formErrors, (v, k) =>
@@ -364,8 +364,8 @@ class WaybillFormWrap extends FormWrap {
       this.validate(formState, formErrors),
     );
 
-    newState.canSave =
-      !filter(formErrors, (v, k) =>
+    newState.canSave
+      = !filter(formErrors, (v, k) =>
         [
           'fact_arrival_date',
           'fact_departure_date',
@@ -377,10 +377,10 @@ class WaybillFormWrap extends FormWrap {
         ].includes(k)
           ? false
           : v,
-      ).length &&
-      !(
-        (formErrors.fact_arrival_date && !formErrors.fact_departure_date) ||
-        (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+      ).length
+      && !(
+        (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
+        || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
       );
 
     newState.canClose = !filter(formErrors, (v, k) =>
@@ -437,10 +437,10 @@ class WaybillFormWrap extends FormWrap {
           }
         }
         if (
-          field === 'motohours_equip_end' &&
-          formState.equipment_tax_data &&
-          formState.equipment_tax_data.length &&
-          formState.motohours_equip_diff > 0
+          field === 'motohours_equip_end'
+          && formState.equipment_tax_data
+          && formState.equipment_tax_data.length
+          && formState.motohours_equip_diff > 0
         ) {
           const lastEquipmentTax = last(formState.equipment_tax_data);
           lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
@@ -556,8 +556,8 @@ class WaybillFormWrap extends FormWrap {
           await flux.getActions('waybills').updateWaybill(formState);
           callback(id);
         } catch ({ errorIsShow }) {
-          !errorIsShow &&
-            global.NOTIFICATION_SYSTEM.removeNotification(
+          !errorIsShow
+            && global.NOTIFICATION_SYSTEM.removeNotification(
               'waybilPrintCurrForm',
             );
           this.setState({

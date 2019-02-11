@@ -109,9 +109,9 @@ class MissionsJournal extends CheckableElementsList {
 
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page ||
-      prevState.sortBy !== this.state.sortBy ||
-      prevState.filter !== this.state.filter
+      prevState.page !== this.state.page
+      || prevState.sortBy !== this.state.sortBy
+      || prevState.filter !== this.state.filter
     ) {
       this.refreshList(this.state);
     }
@@ -158,22 +158,22 @@ class MissionsJournal extends CheckableElementsList {
     }
 
     return (
-      !validateMissionsArr.length ||
-      !validateMissionsArr.every(
+      !validateMissionsArr.length
+      || !validateMissionsArr.every(
         ({ status, can_be_closed }) =>
-          (status === 'assigned' ||
-            status === 'in_progress' ||
-            status === 'expired') &&
-          can_be_closed,
+          (status === 'assigned'
+            || status === 'in_progress'
+            || status === 'expired')
+          && can_be_closed,
       )
     );
   };
 
   checkDisabledDelete = () =>
-    super.checkDisabledDelete() ||
-    (this.state.selectedElement &&
-      this.state.selectedElement.status !== 'not_assigned') ||
-    Object.values(this.state.checkedElements).some(
+    super.checkDisabledDelete()
+    || (this.state.selectedElement
+      && this.state.selectedElement.status !== 'not_assigned')
+    || Object.values(this.state.checkedElements).some(
       (el) => el.status !== 'not_assigned',
     );
 
@@ -185,12 +185,12 @@ class MissionsJournal extends CheckableElementsList {
     }
 
     return (
-      !validateMissionsArr.length ||
-      validateMissionsArr.some(
+      !validateMissionsArr.length
+      || validateMissionsArr.some(
         ({ status }) =>
-          status === 'assigned' ||
-          status === 'in_progress' ||
-          status === 'expired',
+          status === 'assigned'
+          || status === 'in_progress'
+          || status === 'expired',
       )
     );
   };
@@ -205,8 +205,8 @@ class MissionsJournal extends CheckableElementsList {
         });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify(
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify(
             getWarningNotification('Произошла непредвиденная ошибка!'),
           );
         this.refreshList(this.state);
@@ -233,8 +233,8 @@ class MissionsJournal extends CheckableElementsList {
         this.setState({ checkedElements: {} });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify(
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify(
             getWarningNotification('Произошла непредвиденная ошибка!'),
           );
         this.refreshList(this.state);
@@ -274,8 +274,8 @@ class MissionsJournal extends CheckableElementsList {
         }
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify(
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify(
             getWarningNotification('Произошла непредвиденная ошибка!'),
           );
         this.refreshList(this.state);
@@ -315,8 +315,8 @@ class MissionsJournal extends CheckableElementsList {
           })
           .catch(
             ({ errorIsShow }) =>
-              !errorIsShow &&
-              global.NOTIFICATION_SYSTEM.notify(
+              !errorIsShow
+              && global.NOTIFICATION_SYSTEM.notify(
                 'Произошла ошибка при удалении',
                 'error',
               ),

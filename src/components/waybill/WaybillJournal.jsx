@@ -77,9 +77,9 @@ class WaybillJournal extends CheckableElementsList {
 
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page ||
-      prevState.sortBy !== this.state.sortBy ||
-      prevState.filter !== this.state.filter
+      prevState.page !== this.state.page
+      || prevState.sortBy !== this.state.sortBy
+      || prevState.filter !== this.state.filter
     ) {
       this.updateList();
     }

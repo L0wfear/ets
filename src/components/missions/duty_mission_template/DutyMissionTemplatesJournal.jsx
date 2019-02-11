@@ -151,8 +151,8 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     const missions = Object.values(checkedElements);
 
     return (
-      missions.length &&
-      !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
+      missions.length
+      && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
     );
   };
 

@@ -63,9 +63,9 @@ class ProgramRegistryList extends CheckableElementsList {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
           if (
-            this.state.selectedElement &&
-            id === this.state.selectedElement[this.selectField] &&
-            this.state.readPermission
+            this.state.selectedElement
+            && id === this.state.selectedElement[this.selectField]
+            && this.state.readPermission
           ) {
             onDoubleClick.call(this);
           }

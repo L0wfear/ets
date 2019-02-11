@@ -169,18 +169,18 @@ export default class DataTable extends React.Component {
       };
 
       if (
-        firstUseExternalInitialSort &&
-        props.initialSort &&
-        props.initialSort !== initialSort
+        firstUseExternalInitialSort
+        && props.initialSort
+        && props.initialSort !== initialSort
       ) {
         changesFields.initialSort = props.initialSort;
         changesFields.firstUseExternalInitialSort = false;
       }
 
       if (
-        firstUseExternalInitialSort &&
-        props.initialSortAscending &&
-        props.initialSortAscending !== initialSortAscending
+        firstUseExternalInitialSort
+        && props.initialSortAscending
+        && props.initialSortAscending !== initialSortAscending
       ) {
         changesFields.initialSortAscending = props.initialSortAscending;
       }
@@ -215,9 +215,9 @@ export default class DataTable extends React.Component {
       this.setState({ filterValues: this.props.filterValues });
     }
     if (columnControl) {
-      const columnControlValues =
-        JSON.parse(localStorage.getItem(this.props.columnControlStorageName)) ||
-        [];
+      const columnControlValues
+        = JSON.parse(localStorage.getItem(this.props.columnControlStorageName))
+        || [];
       this.setState({ columnControlValues });
     }
   }
@@ -244,8 +244,8 @@ export default class DataTable extends React.Component {
         changesFields.initialSort = nextProps.initialSort;
       }
       if (
-        nextProps.initialSortAscending &&
-        nextProps.initialSortAscending !== initialSortAscending
+        nextProps.initialSortAscending
+        && nextProps.initialSortAscending !== initialSortAscending
       ) {
         changesFields.initialSortAscending = nextProps.initialSortAscending;
       }
@@ -265,8 +265,8 @@ export default class DataTable extends React.Component {
     }
 
     if (
-      Array.isArray(nextProps.results) &&
-      nextProps.results !== originalData
+      Array.isArray(nextProps.results)
+      && nextProps.results !== originalData
     ) {
       changesFields.originalData = nextProps.results;
       changesFields.data = nextProps.results;
@@ -362,8 +362,8 @@ export default class DataTable extends React.Component {
     this.props.onRowChecked(id, value);
     this.setState({
       globalCheckboxState:
-        Object.keys(clonedData).length ===
-        _(this.props.results)
+        Object.keys(clonedData).length
+        === _(this.props.results)
           .filter((r) => this.shouldBeRendered(r))
           .value().length,
     });
@@ -399,9 +399,9 @@ export default class DataTable extends React.Component {
         sortable: typeof col.sortable === 'boolean' ? col.sortable : true,
       };
       if (col.type === 'string') {
-        const callbackF =
-          (typeof renderers[col.name] === 'function' && renderers[col.name]) ||
-          false;
+        const callbackF
+          = (typeof renderers[col.name] === 'function' && renderers[col.name])
+          || false;
         if (!col.fullString) {
           metaObject.customComponent = (props) =>
             this.cutString(callbackF, props);
@@ -459,8 +459,8 @@ export default class DataTable extends React.Component {
     let { data = '' } = props;
 
     if (
-      typeof data === 'string' &&
-      data.split(' ').some((d) => d.length > 30)
+      typeof data === 'string'
+      && data.split(' ').some((d) => d.length > 30)
     ) {
       data = `${data.slice(0, 50)}...`;
     }
@@ -529,8 +529,8 @@ export default class DataTable extends React.Component {
         }
       } else {
         if (
-          (obj[key] === null && !key.includes('additionalFilter')) ||
-          !isValid
+          (obj[key] === null && !key.includes('additionalFilter'))
+          || !isValid
         ) {
           isValid = false;
           return;
@@ -541,39 +541,39 @@ export default class DataTable extends React.Component {
         if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
           const { filter } = cols.find(({ name }) => name === key);
           if (
-            filter &&
-            filter.type === 'datetime' &&
-            diffDates(obj[key], value) !== 0
+            filter
+            && filter.type === 'datetime'
+            && diffDates(obj[key], value) !== 0
           ) {
             isValid = false;
           } else if (
-            moment(obj[key]).format(global.APP_DATE_FORMAT) !==
-            moment(value).format(global.APP_DATE_FORMAT)
+            moment(obj[key]).format(global.APP_DATE_FORMAT)
+            !== moment(value).format(global.APP_DATE_FORMAT)
           ) {
             isValid = false;
           }
         } else if (
-          key.indexOf('date') > -1 &&
-          IS_ARRAY &&
-          this.getFilterTypeByKey(key) !== 'date_interval'
+          key.indexOf('date') > -1
+          && IS_ARRAY
+          && this.getFilterTypeByKey(key) !== 'date_interval'
         ) {
           if (
-            value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT)) ===
-            -1
+            value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT))
+            === -1
           ) {
             isValid = false;
           }
         } else if (
-          key.indexOf('date') > -1 &&
-          IS_ARRAY &&
-          this.getFilterTypeByKey(key) === 'date_interval'
+          key.indexOf('date') > -1
+          && IS_ARRAY
+          && this.getFilterTypeByKey(key) === 'date_interval'
         ) {
-          const intervalPickerDate1 =
-            moment(value[0])
+          const intervalPickerDate1
+            = moment(value[0])
               .toDate()
               .getTime() || 0;
-          const intervalPickerDate2 =
-            moment(value[1])
+          const intervalPickerDate2
+            = moment(value[1])
               .toDate()
               .getTime() || Infinity;
           const valueDate = moment(obj[key])
@@ -610,8 +610,8 @@ export default class DataTable extends React.Component {
             } else if (
               !obj[key].find(
                 (el) =>
-                  (el.id && value.indexOf(el.id.toString()) > -1) ||
-                  (el && value.indexOf(el) > -1),
+                  (el.id && value.indexOf(el.id.toString()) > -1)
+                  || (el && value.indexOf(el) > -1),
               )
             ) {
               isValid = false;
@@ -672,8 +672,8 @@ export default class DataTable extends React.Component {
             (item) => item.name === key,
           );
           const filterType = _.get(metaCol, 'filter.type', '');
-          isValid =
-            isValid && parseAdvancedFilter(value, key, obj[key], filterType);
+          isValid
+            = isValid && parseAdvancedFilter(value, key, obj[key], filterType);
         } else if (typeof obj[key] === 'string') {
           isValid = isValid && stringArrayDataMatching(value, [obj[key]]);
         } else if (obj[key] !== value) {
@@ -686,10 +686,10 @@ export default class DataTable extends React.Component {
   };
 
   processSelected(selected, selectField, onRowSelected, el) {
-    el.isChecked =
-      this.props.checked &&
-      this.props.checked[el[selectField]] &&
-      this.shouldBeRendered(el);
+    el.isChecked
+      = this.props.checked
+      && this.props.checked[el[selectField]]
+      && this.shouldBeRendered(el);
     if (!selected || typeof onRowSelected === 'undefined') {
       el.isSelected = false;
       return el;
@@ -780,8 +780,8 @@ export default class DataTable extends React.Component {
     }
     const selected = data.find(
       (el) =>
-        el[this.props.selectField] ===
-        this.props.selected[this.props.selectField],
+        el[this.props.selectField]
+        === this.props.selected[this.props.selectField],
     );
     const newSelected = data.find(
       (el) => el.rowNumber === selected.rowNumber + direction,

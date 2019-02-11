@@ -27,16 +27,16 @@ class CarFormWrap extends FormWrap {
 
       const formState = element || {};
 
-      const register_info =
-        (await this.context.flux
+      const register_info
+        = (await this.context.flux
           .getActions('cars')
           .getCarRegisterInfo(element.asuods_id)) || {};
-      const register_passport_info =
-        (await this.context.flux
+      const register_passport_info
+        = (await this.context.flux
           .getActions('cars')
           .getCarPassportRegistryInfo(element.asuods_id)) || {};
-      const car_drivers_info =
-        (await this.context.flux
+      const car_drivers_info
+        = (await this.context.flux
           .getActions('cars')
           .getCarDriversInfo(element.asuods_id)) || {};
       const { type = '', id = null } = register_passport_info;
@@ -89,8 +89,8 @@ class CarFormWrap extends FormWrap {
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
-          formState[p.key] =
-            !isNaN(formState[p.key]) && formState[p.key] !== null
+          formState[p.key]
+            = !isNaN(formState[p.key]) && formState[p.key] !== null
               ? parseFloat(formState[p.key])
               : null;
         }

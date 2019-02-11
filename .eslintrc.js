@@ -50,6 +50,7 @@ module.exports = {
       "error",
       "single"
     ],
+    "operator-linebreak": ["error", "before"],
     "semi": [ // ; в конце каждой строки
       "error",
       "always"

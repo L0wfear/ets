@@ -15,7 +15,7 @@ export const EtsHeaderContainer = styled.div`
 
     ${EtsHeaderTitle} {
       text-align: center;
-      white-space: initial;
+      white-space: normal;
     }
   }
 `;

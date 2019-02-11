@@ -49,19 +49,19 @@ class LoginPage extends React.PureComponent<any, any> {
     } catch (e) {
       //
     }
-  }
+  };
 
-  handleChangeLogin = ({ target: { value } }) => {
+  handleChangeLogin = (event) => {
     this.setState({
       login: get(event, ['target', 'value'], event),
     });
-  }
+  };
 
   handleChangePassword = (event) => {
     this.setState({
       password: get(event, ['target', 'value'], event),
     });
-  }
+  };
 
   render() {
     const { login, password } = this.state;
@@ -69,28 +69,39 @@ class LoginPage extends React.PureComponent<any, any> {
 
     return (
       <LoginPageContainer>
-        {
-          STAND === 'dev'
-            ? (
-              <SnowStorm followMouse={false} />
-            )
-            : (
-              <DivNone />
-            )
-        }
+        {STAND === 'dev' ? <SnowStorm followMouse={false} /> : <DivNone />}
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
             <LoginPageFormContainer>
               <LoginPageFormHeader>ЕТС</LoginPageFormHeader>
               <LoginPageFormContent>
-                <LoginPageFormContentLabel>Система мониторинга</LoginPageFormContentLabel>
-                <LoginPageFormContentInput id="login" type="text" className="form-control" placeholder="Логин" value={login} onChange={this.handleChangeLogin} />
-                <LoginPageFormContentInput id="password" type="password" className="form-control" placeholder="Пароль" value={password} onChange={this.handleChangePassword} />
-                <LoginPageFormContentButton id="submit" disabled={disabled} type="submit">Войти</LoginPageFormContentButton>
+                <LoginPageFormContentLabel>
+                  Система мониторинга
+                </LoginPageFormContentLabel>
+                <LoginPageFormContentInput
+                  id="login"
+                  type="text"
+                  className="form-control"
+                  placeholder="Логин"
+                  value={login}
+                  onChange={this.handleChangeLogin}
+                />
+                <LoginPageFormContentInput
+                  id="password"
+                  type="password"
+                  className="form-control"
+                  placeholder="Пароль"
+                  value={password}
+                  onChange={this.handleChangePassword}
+                />
+                <LoginPageFormContentButton
+                  id="submit"
+                  disabled={disabled}
+                  type="submit">
+                  Войти
+                </LoginPageFormContentButton>
                 <TpMessangeContainer>
-                  <span>
-                  Служба технической поддержки
-                  </span>
+                  <span>Служба технической поддержки</span>
                   <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
                   <a href="tel:84951501193">8(495) 150-11-93</a>
                 </TpMessangeContainer>
@@ -110,14 +121,7 @@ export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     null,
     (dispatch) => ({
-      sessionLogin: (user) => (
-        dispatch(
-          sessionLogin(
-            user,
-            { page: 'any' },
-          ),
-        )
-      ),
+      sessionLogin: (user) => dispatch(sessionLogin(user, { page: 'any' })),
     }),
   ),
 )(LoginPage);

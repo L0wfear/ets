@@ -14,7 +14,7 @@ export const DataTableHeadLine = styled.div`
     justify-content: center;
 
     ${DataTableHeadLineTitle} {
-      white-space: initial;
+      white-space: normal;
     }
   }
 `;

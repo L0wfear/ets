@@ -77,14 +77,13 @@ module.exports = {
       "error",
       { "allowAfterThis": true },
     ],
-    "class-methods-use-this": 1,  // если у функции нет обращения к контексту, то такая функция должна быть статичной
+    "class-methods-use-this": 0,  // если у функции нет обращения к контексту, то такая функция должна быть статичной
     "max-len": [
       1,
       130,
     ],
     "camelcase": [
-      1,
-      { ignoreDestructuring: true, properties: "never" },
+      0,
     ],
     "no-param-reassign": [ // скажем нет мутации
       "error",

@@ -230,19 +230,23 @@ class MissionTemplateForm extends React.PureComponent<
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
             <>
-              <Dropdown
-                id="mission_template-print-dropdown"
-                dropup
-                onSelect={this.handlePrint}
-                disabled={!this.props.canSave}>
-                <Dropdown.Toggle>
-                  <Glyphicon id="m-print" glyph="print" />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
-                  <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
-                </Dropdown.Menu>
-              </Dropdown>
+              {!IS_CREATING ? (
+                <Dropdown
+                  id="mission_template-print-dropdown"
+                  dropup
+                  onSelect={this.handlePrint}
+                  disabled={!this.props.canSave}>
+                  <Dropdown.Toggle>
+                    <Glyphicon id="m-print" glyph="print" />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
+                    <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <DivNone />
+              )}
               <Button
                 disabled={!this.props.canSave}
                 onClick={this.props.defaultSubmit}>

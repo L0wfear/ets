@@ -25,15 +25,14 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
 import { getAvailableRouteTypes } from 'components/missions/mission_template/form/template/utils';
 
-const getAvailableRouteTypesMemo = (
-  memoize(getAvailableRouteTypes)
-);
+const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
 
-class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissionTemplate, StateFieldRouteMissionTemplate> {
+class FieldRouteMissionTemplate extends React.PureComponent<
+  PropsFieldRouteMissionTemplate,
+  StateFieldRouteMissionTemplate
+> {
   state = {
     printKey: {
-      big: 'printMapKeyBig',
-      small: 'printMapKeyBig',
       routeInfo: 'mapMissionTemplateFrom',
     },
     showRouteForm: false,
@@ -52,12 +51,11 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
       municipalFacilityForMissionList,
     } = this.props;
 
-    const triggerOnGetRoutesList = (
-      isPermitted
-      && !isNullOrUndefined(technical_operation_id)
-      && !isNullOrUndefined(municipal_facility_id)
-      && Boolean(municipalFacilityForMissionList.length)
-    );
+    const triggerOnGetRoutesList =
+      isPermitted &&
+      !isNullOrUndefined(technical_operation_id) &&
+      !isNullOrUndefined(municipal_facility_id) &&
+      Boolean(municipalFacilityForMissionList.length);
 
     if (triggerOnGetRoutesList) {
       this.getRoutes(
@@ -80,37 +78,24 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
       municipalFacilityForMissionList,
       structure_id,
     } = this.props;
-    const {
-      selectedRoute,
-    } = this.state;
+    const { selectedRoute } = this.state;
 
     let newRouteId = route_id;
 
-    const isDiffTechnicalOperationId = (
-      technical_operation_id !== prevProps.technical_operation_id
-    );
-    const isDiffMunicipalFacilityId = (
-      municipal_facility_id !== prevProps.municipal_facility_id
-    );
-    const isDiffForColumn = (
-      for_column !== prevProps.for_column
-    );
+    const isDiffTechnicalOperationId =
+      technical_operation_id !== prevProps.technical_operation_id;
+    const isDiffMunicipalFacilityId =
+      municipal_facility_id !== prevProps.municipal_facility_id;
+    const isDiffForColumn = for_column !== prevProps.for_column;
 
-    const triggerOnReset = (
-      route_id
-      && (
-        !for_column
-        || (
-          for_column
-          && get(this.state.selectedRoute, 'type', null) !== 'mixed'
-        )
-      )
-      && (
-        isDiffTechnicalOperationId
-        || isDiffMunicipalFacilityId
-        || isDiffForColumn
-      )
-    );
+    const triggerOnReset =
+      route_id &&
+      (!for_column ||
+        (for_column &&
+          get(this.state.selectedRoute, 'type', null) !== 'mixed')) &&
+      (isDiffTechnicalOperationId ||
+        isDiffMunicipalFacilityId ||
+        isDiffForColumn);
 
     if (triggerOnReset) {
       if (isDiffTechnicalOperationId || isDiffMunicipalFacilityId) {
@@ -124,23 +109,17 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
       }
     }
 
-    const municipalFacilityForMissionListLength = municipalFacilityForMissionList.length;
+    const municipalFacilityForMissionListLength =
+      municipalFacilityForMissionList.length;
 
-    const triggerOnGetRoutesList = (
-      !isNullOrUndefined(technical_operation_id)
-      && !isNullOrUndefined(municipal_facility_id)
-      && Boolean(municipalFacilityForMissionListLength)
-      && (
-        (
-          isDiffTechnicalOperationId
-          || isDiffMunicipalFacilityId
-          || isDiffForColumn
-        )
-        || (
-          !prevProps.municipalFacilityForMissionList.length
-        )
-      )
-    );
+    const triggerOnGetRoutesList =
+      !isNullOrUndefined(technical_operation_id) &&
+      !isNullOrUndefined(municipal_facility_id) &&
+      Boolean(municipalFacilityForMissionListLength) &&
+      (isDiffTechnicalOperationId ||
+        isDiffMunicipalFacilityId ||
+        isDiffForColumn ||
+        !prevProps.municipalFacilityForMissionList.length);
 
     if (triggerOnGetRoutesList) {
       this.getRoutes(
@@ -152,12 +131,15 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
     }
   }
 
-  async getRoutes(route_id, technical_operation_id, municipal_facility_id, for_column?) {
+  async getRoutes(
+    route_id,
+    technical_operation_id,
+    municipal_facility_id,
+    for_column?,
+  ) {
     const { page, path } = this.props;
 
-    const {
-      data: routesList,
-    } = await this.props.actionLoadRoutes(
+    const { data: routesList } = await this.props.actionLoadRoutes(
       {
         technical_operation_id,
         municipal_facility_id,
@@ -214,7 +196,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
       selectedRouteRaw: null,
       showRouteForm: false,
     });
-  }
+  };
 
   handleRouteIdChange = async (route_id: any, route: any) => {
     const route_type = get(route, 'type', '');
@@ -233,7 +215,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
         selectedRoute: null,
       });
     }
-  }
+  };
 
   async loadSelectedRoute(route_id) {
     try {
@@ -258,10 +240,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
   actionLoadRouteById(route_id) {
     const { page, path } = this.props;
 
-    return this.props.actionLoadRouteById(
-      route_id,
-      { page, path },
-    );
+    return this.props.actionLoadRouteById(route_id, { page, path });
   }
 
   createNewRoute = () => {
@@ -291,28 +270,19 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
         draw_object_list: [],
       },
     });
-  }
+  };
 
-  makeOptionFromRouteList = (
-    memoize(
-      (
-        routesList,
-        structure_id,
-      ) => (
-        routesList.reduce((newArr, route) => {
-          const triggerOnAdRoutetoShow = (
-            !structure_id
-            || (route.structure_id === structure_id)
-          );
+  makeOptionFromRouteList = memoize((routesList, structure_id) =>
+    routesList.reduce((newArr, route) => {
+      const triggerOnAdRoutetoShow =
+        !structure_id || route.structure_id === structure_id;
 
-          if (triggerOnAdRoutetoShow) {
-            newArr.push(defaultSelectListMapper(route));
-          }
+      if (triggerOnAdRoutetoShow) {
+        newArr.push(defaultSelectListMapper(route));
+      }
 
-          return newArr;
-        }, [])
-      ),
-    )
+      return newArr;
+    }, []),
   );
 
   render() {
@@ -336,10 +306,7 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
     const hasSelectedMunicipalFacilityId = Boolean(municipal_facility_id);
     const hasSelectedStructureId = Boolean(structure_id);
 
-    const ROUTES = this.makeOptionFromRouteList(
-      routesList,
-      structure_id,
-    );
+    const ROUTES = this.makeOptionFromRouteList(routesList, structure_id);
 
     return (
       <>
@@ -357,86 +324,71 @@ class FieldRouteMissionTemplate extends React.PureComponent<PropsFieldRouteMissi
               onChange={this.handleRouteIdChange}
               clearable
             />
-            {
-              !route_id
-                ? (
-                  <Button
-                    id="mt-create-route"
-                    onClick={this.createNewRoute}
-                    disabled={disabled || !hasSelectedMunicipalFacilityId}
-                  >
-                    Создать новый
-                  </Button>
-                )
-                : (
-                  <DivNone />
-                )
-            }
+            {!route_id ? (
+              <Button
+                id="mt-create-route"
+                onClick={this.createNewRoute}
+                disabled={disabled || !hasSelectedMunicipalFacilityId}>
+                Создать новый
+              </Button>
+            ) : (
+              <DivNone />
+            )}
           </Col>
           <Col md={6}>
-            {
-              selectedRoute && !showRouteForm
-                ? (
-                  <RouteInfo
-                    route={selectedRoute}
-                    noRouteName
-                    mapKey={this.state.printKey.routeInfo}
-                  />
-                )
-                : (
-                  <DivNone />
-                )
-            }
+            {selectedRoute && !showRouteForm ? (
+              <RouteInfo
+                route={selectedRoute}
+                noRouteName
+                mapKey={this.state.printKey.routeInfo}
+              />
+            ) : (
+              <DivNone />
+            )}
           </Col>
         </Row>
         <HiddenMapForPrint
           route={showRouteForm ? null : selectedRoute}
-          printMapKeyBig={this.state.printKey.big}
-          printMapKeySmall={this.state.printKey.small}
+          printMapKeyBig={this.props.printMapKeyBig}
+          printMapKeySmall={this.props.printMapKeySmall}
         />
-        {
-          showRouteForm
-            ? (
-              <RouteFormWrap
-                element={selectedRouteRaw}
-                showForm={showRouteForm}
-                handleHide={this.onRouteFormHide}
-                hasMissionStructureId={hasSelectedStructureId}
-                missionAvailableRouteTypes={
-                  getAvailableRouteTypesMemo(
-                    this.props.municipalFacilityForMissionList,
-                    for_column ? null : municipal_facility_id,
-                    for_column,
-                  )
-                }
-                fromMission
-                fromMissionTemplate
-                page={page}
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
+        {showRouteForm ? (
+          <RouteFormWrap
+            element={selectedRouteRaw}
+            showForm={showRouteForm}
+            handleHide={this.onRouteFormHide}
+            hasMissionStructureId={hasSelectedStructureId}
+            missionAvailableRouteTypes={getAvailableRouteTypesMemo(
+              this.props.municipalFacilityForMissionList,
+              for_column ? null : municipal_facility_id,
+              for_column,
+            )}
+            fromMission
+            fromMissionTemplate
+            page={page}
+          />
+        ) : (
+          <DivNone />
+        )}
       </>
     );
   }
 }
 
-export default connect<StatePropsFieldRouteMissionTemplate, DispatchPropsFieldRouteMissionTemplate, OwnPropsFieldRouteMissionTemplate, ReduxState>(
+export default connect<
+  StatePropsFieldRouteMissionTemplate,
+  DispatchPropsFieldRouteMissionTemplate,
+  OwnPropsFieldRouteMissionTemplate,
+  ReduxState
+>(
   (state) => ({
-    municipalFacilityForMissionList: getSomeUniqState(state).municipalFacilityForMissionList,
+    municipalFacilityForMissionList: getSomeUniqState(state)
+      .municipalFacilityForMissionList,
   }),
   (dispatch: any) => ({
-    actionLoadRouteById: (...arg) => (
-      dispatch(
-        routesActions.actionLoadRouteById(...arg),
-      )
-    ),
-    actionLoadRoutes: (...arg) => (
-      dispatch(
-        routesActions.actionLoadRoutes(...arg),
-      )
-    ),
+    actionLoadRouteById: (...arg) =>
+      dispatch(routesActions.actionLoadRouteById(...arg)),
+    actionLoadRoutes: (...arg) =>
+      dispatch(routesActions.actionLoadRoutes(...arg)),
   }),
 )(FieldRouteMissionTemplate);

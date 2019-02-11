@@ -8,8 +8,12 @@ export type StatePropsFieldRouteMissionTemplate = {
   municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList'];
 };
 export type DispatchPropsFieldRouteMissionTemplate = {
-  actionLoadRouteById: HandleThunkActionCreator<typeof routesActions.actionLoadRouteById>;
-  actionLoadRoutes: HandleThunkActionCreator<typeof routesActions.actionLoadRoutes>;
+  actionLoadRouteById: HandleThunkActionCreator<
+    typeof routesActions.actionLoadRouteById
+  >;
+  actionLoadRoutes: HandleThunkActionCreator<
+    typeof routesActions.actionLoadRoutes
+  >;
 };
 export type OwnPropsFieldRouteMissionTemplate = {
   handleChange: any;
@@ -27,20 +31,19 @@ export type OwnPropsFieldRouteMissionTemplate = {
   disabled: boolean;
   isPermitted: boolean;
 
+  printMapKeyBig: string;
+  printMapKeySmall: string;
+
   page: string;
   path: string;
 };
 
-export type PropsFieldRouteMissionTemplate = (
-  StatePropsFieldRouteMissionTemplate
-  & DispatchPropsFieldRouteMissionTemplate
-  & OwnPropsFieldRouteMissionTemplate
-);
+export type PropsFieldRouteMissionTemplate = StatePropsFieldRouteMissionTemplate &
+  DispatchPropsFieldRouteMissionTemplate &
+  OwnPropsFieldRouteMissionTemplate;
 
 export type StateFieldRouteMissionTemplate = {
   printKey: {
-    big: string;
-    small: string;
     routeInfo: string;
   };
   showRouteForm: boolean;

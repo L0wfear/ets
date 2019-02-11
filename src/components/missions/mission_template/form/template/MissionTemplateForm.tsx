@@ -33,11 +33,49 @@ import FieldCarIdsMissionTemplate from 'components/missions/mission_template/for
 import FieldForColumnMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/for_column/FieldForColumnMissionTemplate';
 import FieldRouteMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/route/FieldRouteMissionTemplate';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
+import { Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
+import { printData } from 'utils/functions';
+
+const printMapKeyBig = 'printMapKeyBig';
+const printMapKeySmall = 'printMapKeySmall';
 
 class MissionTemplateForm extends React.PureComponent<
   PropsMissionTemplateForm,
   {}
 > {
+  async printMissionTemplate(payloadOwn) {
+    const { page, path } = this.props;
+
+    const { blob } = await this.props.actionPrintFormMissionTemplate(
+      payloadOwn,
+      { page, path },
+    );
+    printData(blob);
+  }
+  handlePrint: any = (mapKey: string) => {
+    const { formState: state } = this.props;
+
+    const data = {
+      template_id: state.id,
+      size: '',
+      image: null,
+    };
+
+    if (mapKey === printMapKeyBig) {
+      data.size = 'a3';
+    }
+    if (mapKey === printMapKeySmall) {
+      data.size = 'a4';
+    }
+
+    this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
+      if (image) {
+        data.image = image;
+        this.printMissionTemplate(data);
+      }
+    });
+  };
   render() {
     const {
       formState: state,
@@ -181,6 +219,8 @@ class MissionTemplateForm extends React.PureComponent<
                 for_column={state.for_column}
                 disabled={!isPermitted}
                 isPermitted={isPermitted}
+                printMapKeyBig={printMapKeyBig}
+                printMapKeySmall={printMapKeySmall}
                 page={page}
                 path={path}
               />
@@ -190,6 +230,19 @@ class MissionTemplateForm extends React.PureComponent<
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
             <>
+              <Dropdown
+                id="mission_template-print-dropdown"
+                dropup
+                onSelect={this.handlePrint}
+                disabled={!this.props.canSave}>
+                <Dropdown.Toggle>
+                  <Glyphicon id="m-print" glyph="print" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
+                  <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
+                </Dropdown.Menu>
+              </Dropdown>
               <Button
                 disabled={!this.props.canSave}
                 onClick={this.props.defaultSubmit}>
@@ -211,11 +264,18 @@ export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
     DispatchPropsMissionTemplate,
     OwnMissionTemplateProps,
     ReduxState
-  >((state) => ({
-    userStructureId: getSessionState(state).userData.structure_id,
-    userStructureName: getSessionState(state).userData.structure_name,
-    ...getSessionStructuresParams(state),
-  })),
+  >(
+    (state) => ({
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructureName: getSessionState(state).userData.structure_name,
+      ...getSessionStructuresParams(state),
+    }),
+    (dispatch: any) => ({
+      actionPrintFormMissionTemplate: (...arg) =>
+        dispatch(missionsActions.actionPrintFormMissionTemplate(...arg)),
+    }),
+  ),
+  withMapInConsumer(),
   withForm<PropsMissionTemplateWithForm, MissionTemplate>({
     uniqField: 'id',
     createAction: missionsActions.actionCreateMissionTemplate,

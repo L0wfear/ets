@@ -1,13 +1,14 @@
 import { get } from 'lodash';
-import { MissionTemplateService } from 'api/missions/index';
+import {
+  MissionTemplateService,
+  MissionTemplatePrintService,
+} from 'api/missions/index';
 import { MissionTemplate } from './@types/index.h';
 
 export const promiseGetMissionTemplate = async (payload) => {
   let response = null;
   try {
-    response = await MissionTemplateService.get(
-      { ...payload },
-    );
+    response = await MissionTemplateService.get({ ...payload });
   } catch (error) {
     console.warn(error); // tslint:disable-line
     response = null;
@@ -20,42 +21,46 @@ export const promiseGetMissionTemplate = async (payload) => {
   };
 };
 
-export const promiseCreateMissionTemplate = async (payload: Partial<MissionTemplate>) => {
+export const promiseGetPrintFormMissionTemplate = async (payload: any) => {
+  return MissionTemplatePrintService.postBlob({ ...payload });
+};
+
+export const promiseCreateMissionTemplate = async (
+  payload: Partial<MissionTemplate>,
+) => {
   const response = await MissionTemplateService.post(
     { ...payload },
     false,
     'json',
   );
 
-  const data: Partial<MissionTemplate> = get(response, ['result', 0],  null);
+  const data: Partial<MissionTemplate> = get(response, ['result', 0], null);
 
   return data;
 };
 
-export const promiseUpdateMissionTemplate = async (payload: Partial<MissionTemplate> & Pick<MissionTemplate, 'id'>) => {
+export const promiseUpdateMissionTemplate = async (
+  payload: Partial<MissionTemplate> & Pick<MissionTemplate, 'id'>,
+) => {
   const response = await MissionTemplateService.put(
     { ...payload },
     false,
     'json',
   );
 
-  const data: Partial<MissionTemplate> = get(response, ['result', 0],  null);
+  const data: Partial<MissionTemplate> = get(response, ['result', 0], null);
 
   return data;
 };
 
 export const promiseRemoveMissionTemplates = async (ids: number[]) => {
   return Promise.all(
-    ids.map((idNumber) => (
-      promiseRemoveMissionTemplate(idNumber)
-    )),
+    ids.map((idNumber) => promiseRemoveMissionTemplate(idNumber)),
   );
 };
 
-export const promiseRemoveMissionTemplate = async (id: number): Promise<Partial<MissionTemplate>> => {
-  return MissionTemplateService.delete(
-    { id },
-    false,
-    'json',
-  );
+export const promiseRemoveMissionTemplate = async (
+  id: number,
+): Promise<Partial<MissionTemplate>> => {
+  return MissionTemplateService.delete({ id }, false, 'json');
 };

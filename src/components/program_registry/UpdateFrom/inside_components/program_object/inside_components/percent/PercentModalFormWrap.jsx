@@ -15,27 +15,30 @@ class PercentModalFormWrap extends FormWrap {
     this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
-    const {
-      object_id,
-    } = props;
+    const { object_id } = props;
 
     this.defaultElement = {
       object_id,
     };
   }
 
-  createAction = (formState) => this.context.flux.getActions('repair').postDataToUpdateObjectPercent(formState).then((ans) => {
-    global.NOTIFICATION_SYSTEM.notify({
-      message: 'Удаление сохраненной записи возможно в течении дня создания.',
-      level: 'info',
-      position: 'tr',
-    });
+  createAction = (formState) =>
+    this.context.flux
+      .getActions('repair')
+      .postDataToUpdateObjectPercent(formState)
+      .then((ans) => {
+        global.NOTIFICATION_SYSTEM.notify({
+          message:
+            'Удаление сохраненной записи возможно в течении дня создания.',
+          level: 'info',
+          position: 'tr',
+        });
 
-    this.props.updateObjectData();
-    this.props.checkMinVals();
+        this.props.updateObjectData();
+        this.props.checkMinVals();
 
-    return ans;
-  })
+        return ans;
+      });
 
   /**
    * @override
@@ -46,26 +49,30 @@ class PercentModalFormWrap extends FormWrap {
     const schema = this.schema;
     const formState = { ...state };
 
-    const newErrors = schema.properties.reduce((formErrors, prop) => {
-      const { key } = prop;
-      formErrors[key] = validateField(prop, formState[key], formState, this.schema);
-      return formErrors;
-    },
-    { ...errors });
+    const newErrors = schema.properties.reduce(
+      (formErrors, prop) => {
+        const { key } = prop;
+        formErrors[key] = validateField(
+          prop,
+          formState[key],
+          formState,
+          this.schema,
+        );
+        return formErrors;
+      },
+      { ...errors },
+    );
 
-    const {
-      other: {
-        minPercent,
-        minReviewedAt,
-      } = {},
-    } = this.props;
+    const { other: { minPercent, minReviewedAt } = {} } = this.props;
 
     if (state.percent < minPercent) {
-      newErrors.percent = 'Процент выполнения не должен быть меньше последнего процента выполнения';
+      newErrors.percent =
+        'Процент выполнения не должен быть меньше последнего процента выполнения';
     }
 
     if (moment(state.reviewed_at).diff(minReviewedAt, 'minutes') < 0) {
-      newErrors.reviewed_at = 'Дата осмотра должна быть позже последней даты осмотра';
+      newErrors.reviewed_at =
+        'Дата осмотра должна быть позже последней даты осмотра';
     }
 
     return newErrors;
@@ -76,23 +83,21 @@ class PercentModalFormWrap extends FormWrap {
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
-    return this.props.showForm
-      ? (
-        <PercentModalForm
-          formState={this.state.formState}
-          formErrors={this.state.formErrors}
-          permissions={[`${entity}.update`]}
-          addPermissionProp
-          isPermitted={isPermitted}
-          canSave={canSave}
-          onSubmit={this.handleFormSubmit.bind(this)}
-          handleFormChange={this.handleFormStateChange.bind(this)}
-          show={this.props.showForm}
-          onHide={this.props.onFormHide}
-          isPermittedByStatus={isPermittedByStatus}
-        />
-      )
-      : null;
+    return this.props.showForm ? (
+      <PercentModalForm
+        formState={this.state.formState}
+        formErrors={this.state.formErrors}
+        permissions={[`${entity}.update`]}
+        addPermissionProp
+        isPermitted={isPermitted}
+        canSave={canSave}
+        onSubmit={this.handleFormSubmit.bind(this)}
+        handleFormChange={this.handleFormStateChange.bind(this)}
+        show={this.props.showForm}
+        onHide={this.props.onFormHide}
+        isPermittedByStatus={isPermittedByStatus}
+      />
+    ) : null;
   }
 }
 

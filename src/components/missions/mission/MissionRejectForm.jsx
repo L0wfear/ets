@@ -12,16 +12,11 @@ import Div from 'components/ui/Div';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications';
-import {
-  cloneDeep,
-  get,
-  isEmpty,
-} from 'lodash';
+import { cloneDeep, get, isEmpty } from 'lodash';
 
 @connectToStores(['objects', 'missions'])
 @FluxContext
 class MissionRejectForm extends React.Component {
-
   static get propTypes() {
     return {
       mission: PropTypes.object,
@@ -38,10 +33,7 @@ class MissionRejectForm extends React.Component {
 
   constructor(props) {
     super(props);
-    const {
-      mission,
-      missions,
-    } = props;
+    const { mission, missions } = props;
 
     const missionList = [];
     let mIndex = 0;
@@ -72,16 +64,19 @@ class MissionRejectForm extends React.Component {
   }
 
   getCarFuncTypesByNormId() {
-    const {
-      missionList,
-      mIndex,
-    } = this.state;
+    const { missionList, mIndex } = this.state;
 
     const { norm_id, date_start: datetime } = missionList[mIndex];
 
     if (norm_id) {
-      this.context.flux.getActions('missions')
-        .getCleaningByTypeInActiveMission({ type: 'norm_registry', norm_id, datetime }).then(({ result: { rows: [norm_data] } }) => {
+      this.context.flux
+        .getActions('missions')
+        .getCleaningByTypeInActiveMission({
+          type: 'norm_registry',
+          norm_id,
+          datetime,
+        })
+        .then(({ result: { rows: [norm_data] } }) => {
           const car_func_types = norm_data.car_func_types.map(({ id }) => id);
 
           this.setState({ car_func_types });
@@ -90,7 +85,10 @@ class MissionRejectForm extends React.Component {
     }
   }
 
-  getPropsMission(missionList = this.state.missionList, mIndex = this.state.mIndex) {
+  getPropsMission(
+    missionList = this.state.missionList,
+    mIndex = this.state.mIndex,
+  ) {
     const mission = missionList[mIndex];
 
     const mission_id = mission.mission_id || mission.id;
@@ -106,21 +104,21 @@ class MissionRejectForm extends React.Component {
 
   handleChangeComment = (e) => {
     this.setState({ comment: e.target.value });
-  }
+  };
 
   handleChangeCarId = async (car_id) => {
     if (car_id) {
-      const {
-        missionList,
-        mIndex,
-      } = this.state;
+      const { missionList, mIndex } = this.state;
 
-      const mission_id = missionList[mIndex].mission_id || missionList[mIndex].id;
+      const mission_id =
+        missionList[mIndex].mission_id || missionList[mIndex].id;
       const payload = {
         car_id,
         mission_id,
       };
-      const result = await this.context.flux.getActions('missions').getMissionReassignationParameters(payload);
+      const result = await this.context.flux
+        .getActions('missions')
+        .getMissionReassignationParameters(payload);
       const data = result ? result.result : null;
 
       this.setState({
@@ -133,7 +131,7 @@ class MissionRejectForm extends React.Component {
         data: null,
       });
     }
-  }
+  };
 
   handleChange(field, e) {
     this.setState({ [field]: e });
@@ -144,13 +142,17 @@ class MissionRejectForm extends React.Component {
     let payload;
     const { action_at } = this.props;
     if (!this.state.data) {
-      const response = await this.context.flux.getActions('missions').getMissionById(this.state.mission_id);
+      const response = await this.context.flux
+        .getActions('missions')
+        .getMissionById(this.state.mission_id);
       const rows = get(response, ['result', 'rows'], []);
       const mission = rows[0];
       mission.status = 'fail';
 
       mission.comment = this.state.comment;
-      resolve = await this.context.flux.getActions('missions').updateMission({ ...mission, action_at });
+      resolve = await this.context.flux
+        .getActions('missions')
+        .updateMission({ ...mission, action_at });
     } else {
       switch (this.state.data.mark) {
         case 'create':
@@ -162,7 +164,9 @@ class MissionRejectForm extends React.Component {
             date_end: this.state.date_end,
             action_at,
           };
-          resolve = await this.context.flux.getActions('missions').createMissionFromReassignation(payload);
+          resolve = await this.context.flux
+            .getActions('missions')
+            .createMissionFromReassignation(payload);
           break;
         case 'update':
           if (this.state.data.missions) {
@@ -188,7 +192,9 @@ class MissionRejectForm extends React.Component {
               action_at,
             };
           }
-          resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          resolve = await this.context.flux
+            .getActions('missions')
+            .updateMissionFromReassignation(payload);
           break;
         default:
           break;
@@ -235,7 +241,7 @@ class MissionRejectForm extends React.Component {
         ...this.getPropsMission(missionList, mIndex - 1),
       });
     }
-  }
+  };
 
   render() {
     const { state, props } = this;
@@ -245,7 +251,8 @@ class MissionRejectForm extends React.Component {
 
     const mission = missionList[mIndex];
 
-    if (!state.comment) errors.comment = 'Поле должно быть обязательно заполнено';
+    if (!state.comment)
+      errors.comment = 'Поле должно быть обязательно заполнено';
 
     let CARS = [];
     const {
@@ -254,56 +261,89 @@ class MissionRejectForm extends React.Component {
       waybill_number,
     } = mission;
 
-    CARS = props.carsList.reduce((carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
-      if ((mission_car_gov_number !== gov_number) && (!isEmpty(car_func_types) ? car_func_types.includes(car_type_id) : true)) {
-        carOptions.push({ value: asuods_id, label: gov_number });
-      }
+    CARS = props.carsList.reduce(
+      (carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
+        if (
+          mission_car_gov_number !== gov_number &&
+          (!isEmpty(car_func_types)
+            ? car_func_types.includes(car_type_id)
+            : true)
+        ) {
+          carOptions.push({ value: asuods_id, label: gov_number });
+        }
 
-      return carOptions;
-    }, []);
+        return carOptions;
+      },
+      [],
+    );
 
     const title = `Задание №${number}, ТС: ${mission_car_gov_number}`;
-    const waybillText = waybill_number ? `, задание будет исключено из ПЛ №${waybill_number}` : '';
+    const waybillText = waybill_number
+      ? `, задание будет исключено из ПЛ №${waybill_number}`
+      : '';
     const bodyText = `Статус задания №${number} будет изменен на «Не назначено»${waybillText}`;
     const missions = this.state.data ? this.state.data.missions : null;
-    const datePickers = missions && missions.map((oneM, i) => (
-      <Row style={{ marginBottom: '4px' }} key={i}>
-        <Col md={4} style={{ paddingRight: '0' }}>
-          <div
-            title={oneM.technical_operation_name}
+    const datePickers =
+      missions &&
+      missions.map((oneM, i) => (
+        <Row style={{ marginBottom: '4px' }} key={i}>
+          <Col md={4} style={{ paddingRight: '0' }}>
+            <div
+              title={oneM.technical_operation_name}
+              style={{
+                paddingTop: '9px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              }}>
+              {`№: ${oneM.number} (${oneM.technical_operation_name})`}
+            </div>
+          </Col>
+          <Col
+            md={8}
             style={{
-              paddingTop: '9px',
-              textOverflow: 'ellipsis',
+              textAlign: 'right',
+              paddingLeft: '0',
               whiteSpace: 'nowrap',
-              overflow: 'hidden',
-            }}
-          >
-            {`№: ${oneM.number} (${oneM.technical_operation_name})`}
-          </div>
-        </Col>
-        <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
-          <Div className="inline-block reports-date">
-            <Datepicker date={oneM.date_start} onChange={this.handleMissionsDateChange.bind(this, 'date_start', oneM.id)} />
-          </Div>
-          {' — '}
-          <Div className="inline-block reports-date">
-            <Datepicker date={oneM.date_end} onChange={this.handleMissionsDateChange.bind(this, 'date_end', oneM.id)} />
-          </Div>
-        </Col>
-      </Row>
-    ));
+            }}>
+            <Div className="inline-block reports-date">
+              <Datepicker
+                date={oneM.date_start}
+                onChange={this.handleMissionsDateChange.bind(
+                  this,
+                  'date_start',
+                  oneM.id,
+                )}
+              />
+            </Div>
+            {' — '}
+            <Div className="inline-block reports-date">
+              <Datepicker
+                date={oneM.date_end}
+                onChange={this.handleMissionsDateChange.bind(
+                  this,
+                  'date_end',
+                  oneM.id,
+                )}
+              />
+            </Div>
+          </Col>
+        </Row>
+      ));
 
     return (
-      <Modal id="modal-mission-reject" show={this.props.show} onHide={this.props.onHide} dialogClassName="mission-reject-info-modal" backdrop="static">
-
+      <Modal
+        id="modal-mission-reject"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        dialogClassName="mission-reject-info-modal"
+        backdrop="static">
         <Modal.Header>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         <ModalBody>
-          <p>
-            {bodyText}
-          </p>
+          <p>{bodyText}</p>
           <Field
             type="string"
             label="Введите причину:"
@@ -324,38 +364,62 @@ class MissionRejectForm extends React.Component {
           {state.data && state.data.missions ? (
             <Div>
               <label style={{ marginBottom: '10px' }}>
-                {`Задание будет добавлено в п.л. №${state.data.waybill_number} (Выезд: ${getFormattedDateTime(state.data.waybill_plan_departure_date)}, Возвращение: ${getFormattedDateTime(state.data.waybill_plan_arrival_date)})`}
+                {`Задание будет добавлено в п.л. №${
+                  state.data.waybill_number
+                } (Выезд: ${getFormattedDateTime(
+                  state.data.waybill_plan_departure_date,
+                )}, Возвращение: ${getFormattedDateTime(
+                  state.data.waybill_plan_arrival_date,
+                )})`}
               </label>
               <Row style={{ marginBottom: '4px' }}>
                 <Col md={4} style={{ paddingRight: '0' }}>
-                  <div style={{
-                    paddingTop: '9px',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                  }}
-                  >
+                  <div
+                    style={{
+                      paddingTop: '9px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                    }}>
                     Переносимое задание
                   </div>
                 </Col>
-                <Col md={8} style={{ textAlign: 'right', paddingLeft: '0', whiteSpace: 'nowrap' }}>
+                <Col
+                  md={8}
+                  style={{
+                    textAlign: 'right',
+                    paddingLeft: '0',
+                    whiteSpace: 'nowrap',
+                  }}>
                   <Div className="inline-block reports-date">
-                    <Datepicker date={state.date_start} onChange={this.handleChange.bind(this, 'date_start')} />
+                    <Datepicker
+                      date={state.date_start}
+                      onChange={this.handleChange.bind(this, 'date_start')}
+                    />
                   </Div>
                   {' — '}
                   <Div className="inline-block reports-date">
-                    <Datepicker date={state.date_end} onChange={this.handleChange.bind(this, 'date_end')} />
+                    <Datepicker
+                      date={state.date_end}
+                      onChange={this.handleChange.bind(this, 'date_end')}
+                    />
                   </Div>
                 </Col>
               </Row>
             </Div>
-          ) : ''}
+          ) : (
+            ''
+          )}
           {datePickers}
         </ModalBody>
 
         <Modal.Footer>
           <Div>
-            <Button disabled={!!errors.comment} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+            <Button
+              disabled={!!errors.comment}
+              onClick={this.handleSubmit.bind(this)}>
+              Сохранить
+            </Button>
             <Button onClick={this.reject}>Отменить</Button>
           </Div>
         </Modal.Footer>

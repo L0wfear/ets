@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.26.176",
+    "version": "2.0.26.177",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -127,7 +127,7 @@
         "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:stage": "cross-env STAND=stage NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js",
-        "lint": "eslint -c .eslintrc.js --quiet --fix --ext .js --ext .jsx src",
+        "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "lint:ts": "tslint --project tsconfig.json -c tslint.json 'src/**/*{.ts,.tsx}'",
         "bump": "node webpack/utils/updateVersion.js",
         "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",

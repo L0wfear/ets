@@ -84,7 +84,7 @@ module.exports = {
     ],
     "camelcase": [
       1,
-      { ignoreDestructuring: true },
+      { ignoreDestructuring: true, properties: "never" },
     ],
     "no-param-reassign": [ // скажем нет мутации
       "error",
@@ -111,7 +111,7 @@ module.exports = {
     "react/display-name": [0],
     "react/destructuring-assignment": [0],
     "babel/new-cap": 1,
-    "babel/camelcase": 1,
+    "babel/camelcase": 0,
     "babel/no-invalid-this": 1,
     "babel/object-curly-spacing": 0,
     "babel/quotes": 0,

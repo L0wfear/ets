@@ -9,7 +9,8 @@ import { checkMissionsOnStructureIdBrigade } from 'components/missions/utils/cus
 import DutyMissionsCreationForm from 'components/missions/duty_mission_template/DutyMissionsCreationForm';
 import { DivNone } from 'global-styled/global-styled';
 
-export const createDutyMissions = async (flux, element, payload) => flux.getActions('missions').createDutyMissions(element, payload);
+export const createDutyMissions = async (flux, element, payload) =>
+  flux.getActions('missions').createDutyMissions(element, payload);
 
 class DutyMissionsCreationFormWrap extends FormWrap {
   constructor(props) {
@@ -36,12 +37,17 @@ class DutyMissionsCreationFormWrap extends FormWrap {
     const { formState } = this.state;
     const { _employeesIndex = {} } = this.props;
 
-    if (!checkMissionsOnStructureIdBrigade(Object.values(this.props.missions), _employeesIndex)) {
+    if (
+      !checkMissionsOnStructureIdBrigade(
+        Object.values(this.props.missions),
+        _employeesIndex,
+      )
+    ) {
       createDutyMissions(flux, this.props.missions, formState).then(() => {
         this.props.onFormHide(true);
       });
     }
-  }
+  };
 
   render() {
     if (this.props.formType === 'ViewForm') {

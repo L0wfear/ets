@@ -52,9 +52,9 @@ class MaintenanceWorkForm extends Form {
           <Button
             onClick={() => this.handleSubmit()}
             disabled={
-              !this.props.canSave ||
-              !isPermitted ||
-              !this.props.saveButtonEnability
+              !this.props.canSave
+              || !isPermitted
+              || !this.props.saveButtonEnability
             }>
             {this.props.saveButtonLabel}
           </Button>

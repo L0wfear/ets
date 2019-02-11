@@ -73,8 +73,8 @@ class CarForm extends Form {
     const currentFormState = this.props.formState;
 
     if (
-      currentFormState.asuods_id !== lastFormState.asuods_id &&
-      currentFormState.asuods_id
+      currentFormState.asuods_id !== lastFormState.asuods_id
+      && currentFormState.asuods_id
     ) {
       this.props.handleTabSelect(CAR_TAB_INDEX.main_info);
     }
@@ -170,16 +170,16 @@ class CarForm extends Form {
           if (driver.active) {
             if (isFourInGovNumver) {
               return (
-                driverData.special_license &&
-                driverData.special_license_date_end &&
-                diffDates(driverData.special_license_date_end, new Date()) > 0
+                driverData.special_license
+                && driverData.special_license_date_end
+                && diffDates(driverData.special_license_date_end, new Date()) > 0
               );
             }
 
             return (
-              driverData.drivers_license &&
-              driverData.drivers_license_date_end &&
-              diffDates(driverData.drivers_license_date_end, new Date()) > 0
+              driverData.drivers_license
+              && driverData.drivers_license_date_end
+              && diffDates(driverData.drivers_license_date_end, new Date()) > 0
             );
           }
         }
@@ -326,8 +326,8 @@ class CarForm extends Form {
             {tabKey === CAR_TAB_INDEX.tech_maintenance ? (
               <TechMaintTab
                 type={
-                  state.gov_number &&
-                  !!state.gov_number.toString().match(/\d{4}/)
+                  state.gov_number
+                  && !!state.gov_number.toString().match(/\d{4}/)
                 }
                 car_id={state.asuods_id}
                 car_model_id={state.special_model_id}

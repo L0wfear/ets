@@ -66,9 +66,9 @@ class CheckableElementsList extends ElementsList {
     const check = this.constructor.operations.includes('CHECK');
     const { entity } = this.constructor;
 
-    const noPermission =
-      !check &&
-      operations.every(
+    const noPermission
+      = !check
+      && operations.every(
         (o) => !this.props.userData.permissionsSet.has(`${entity}.${o}`),
       );
     return noPermission

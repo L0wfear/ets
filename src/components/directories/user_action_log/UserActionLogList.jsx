@@ -29,8 +29,8 @@ class UserActionLogList extends ElementsList {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.state.date_start !== prevState.date_start ||
-      this.state.date_end !== prevState.date_end
+      this.state.date_start !== prevState.date_start
+      || this.state.date_end !== prevState.date_end
     ) {
       this.exportPayload = {
         date_start: createValidDateTime(this.state.date_start),

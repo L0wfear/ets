@@ -221,8 +221,8 @@ class ProgramRemarkList extends CheckableElementsList {
         key={0}
         onClick={this.removeCheckedElements}
         disabled={
-          this.checkDisabledDelete() ||
-          program_version_status !== 'sent_on_review'
+          this.checkDisabledDelete()
+          || program_version_status !== 'sent_on_review'
         }
         permissions={['repair_program_version.review']}
       />,

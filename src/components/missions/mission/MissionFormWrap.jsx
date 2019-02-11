@@ -48,8 +48,8 @@ class MissionFormWrap extends FormWrap {
 
   componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
-      const mission =
-        props.element === null ? getDefaultMission() : clone(props.element);
+      const mission
+        = props.element === null ? getDefaultMission() : clone(props.element);
       const waybillsActions = this.context.flux.getActions('waybills');
       const ordersActions = this.context.flux.getActions('objects');
 
@@ -141,8 +141,8 @@ class MissionFormWrap extends FormWrap {
   }
 
   handleFormStateChange = (field, e) => {
-    const value =
-      e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    const value
+      = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
     const newState = {};
@@ -177,19 +177,19 @@ class MissionFormWrap extends FormWrap {
 
     if (this.props.fromWaybill && (waybillStartDate || waybillEndDate)) {
       if (diffDates(date_start, waybillStartDate) < -1) {
-        formErrors.date_start =
-          'Дата не должна выходить за пределы путевого листа';
+        formErrors.date_start
+          = 'Дата не должна выходить за пределы путевого листа';
       }
       if (diffDates(date_end, waybillEndDate) > 1) {
-        formErrors.date_end =
-          'Дата не должна выходить за пределы путевого листа';
+        formErrors.date_end
+          = 'Дата не должна выходить за пределы путевого листа';
       }
     }
 
     if (
-      !this.props.fromWaybill &&
-      !this.props.fromOrder &&
-      !isEmpty(inWaybill)
+      !this.props.fromWaybill
+      && !this.props.fromOrder
+      && !isEmpty(inWaybill)
     ) {
       formErrors = {
         ...formErrors,
@@ -221,8 +221,8 @@ class MissionFormWrap extends FormWrap {
 
     if (status === 'draft') {
       if (diffDates(new_ds, pdd) < 0) {
-        ansError.date_start =
-          'Дата не должна выходить за пределы путевого листа';
+        ansError.date_start
+          = 'Дата не должна выходить за пределы путевого листа';
       }
       if (diffDates(new_de, pad) > 0) {
         ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
@@ -231,8 +231,8 @@ class MissionFormWrap extends FormWrap {
 
     if (status === 'active') {
       if (diffDates(new_ds, fdd || pdd) < 0) {
-        ansError.date_start =
-          'Дата не должна выходить за пределы путевого листа';
+        ansError.date_start
+          = 'Дата не должна выходить за пределы путевого листа';
       }
       if (diffDates(new_de, fad || pad) > 0) {
         ansError.date_end = 'Дата не должна выходить за пределы путевого листа';
@@ -256,8 +256,8 @@ class MissionFormWrap extends FormWrap {
       date_from = order_date,
       date_to = order_date_to,
       num_exec: order_pc,
-    } =
-      technical_operations.find(
+    }
+      = technical_operations.find(
         ({ order_operation_id: to_order_operation_id }) =>
           to_order_operation_id === order_operation_id,
       ) || {};
@@ -265,22 +265,22 @@ class MissionFormWrap extends FormWrap {
     const ansError = {};
 
     if (
-      diffDates(new_ds, date_from || order_date) < 0 ||
-      diffDates(new_ds, date_to || order_date_to) > 0
+      diffDates(new_ds, date_from || order_date) < 0
+      || diffDates(new_ds, date_to || order_date_to) > 0
     ) {
-      ansError.date_start =
-        'Дата не должна выходить за пределы поручения (факсограммы)';
+      ansError.date_start
+        = 'Дата не должна выходить за пределы поручения (факсограммы)';
     }
     if (
-      diffDates(new_de, date_to || order_date_to) > 0 ||
-      diffDates(new_de, date_from || order_date) < 0
+      diffDates(new_de, date_to || order_date_to) > 0
+      || diffDates(new_de, date_from || order_date) < 0
     ) {
-      ansError.date_end =
-        'Дата не должна выходить за пределы поручения (факсограммы)';
+      ansError.date_end
+        = 'Дата не должна выходить за пределы поручения (факсограммы)';
     }
     if (Number.parseInt(new_pc, 0) > order_pc) {
-      ansError.passes_count =
-        'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
+      ansError.passes_count
+        = 'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
     }
 
     return ansError;
@@ -311,8 +311,8 @@ class MissionFormWrap extends FormWrap {
     const { formState } = this.state;
 
     Object.entries(changesObj).forEach(([field, e]) => {
-      const value =
-        e !== undefined && e !== null && !!e.target ? e.target.value : e;
+      const value
+        = e !== undefined && e !== null && !!e.target ? e.target.value : e;
       console.info('Form changed', field, value);
       formState[field] = value;
     });

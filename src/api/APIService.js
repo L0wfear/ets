@@ -82,13 +82,13 @@ export default class APIService {
         });
         throw errorThrow;
       } else if (
-        (r.warnings && r.warnings.message) ||
-        typeof r.warnings === 'string'
+        (r.warnings && r.warnings.message)
+        || typeof r.warnings === 'string'
       ) {
         const errorIsShow = !r.warnings.hidden;
 
-        !r.warnings.hidden &&
-          this.warningNotificationFunction(r.warnings.message || r.warnings);
+        !r.warnings.hidden
+          && this.warningNotificationFunction(r.warnings.message || r.warnings);
 
         const errorThrow = {
           error: r,
@@ -105,8 +105,8 @@ export default class APIService {
           !i.hidden && this.infoNotificationFunction(i.message || i);
         });
       } else if ((r.info && r.info.message) || typeof r.info === 'string') {
-        !r.info.hidden &&
-          this.infoNotificationFunction(r.info.message || r.info);
+        !r.info.hidden
+          && this.infoNotificationFunction(r.info.message || r.info);
       }
     }
     if (r.errors && r.errors.length) {
@@ -125,13 +125,13 @@ export default class APIService {
         });
         throw errorThrow;
       } else if (
-        (r.errors && r.errors.message) ||
-        typeof r.errors === 'string'
+        (r.errors && r.errors.message)
+        || typeof r.errors === 'string'
       ) {
         const errorIsShow = !r.errors.hidden;
 
-        !r.errors.hidden &&
-          this.errrorNotificationFunction(r.errors.message || r.errors);
+        !r.errors.hidden
+          && this.errrorNotificationFunction(r.errors.message || r.errors);
 
         const errorThrow = {
           error: r,

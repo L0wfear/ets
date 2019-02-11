@@ -91,8 +91,8 @@ class FormWrap extends React.Component {
   };
 
   handleFormStateChange = (field, e) => {
-    const value =
-      e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    const value
+      = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
     const newState = {};
@@ -158,8 +158,8 @@ class FormWrap extends React.Component {
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
-          formState[p.key] =
-            !isNaN(formState[p.key]) && formState[p.key] !== null
+          formState[p.key]
+            = !isNaN(formState[p.key]) && formState[p.key] !== null
               ? parseFloat(formState[p.key])
               : null;
         }

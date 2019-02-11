@@ -168,8 +168,8 @@ class WaybillPrintForm extends React.Component {
       date_from: !this.state.date_from ? 'Поле обязательно для заполнения' : '',
       date_to: !this.state.date_to ? 'Поле обязательно для заполнения' : '',
     };
-    const DISABLE_SUBMIT =
-      this.props.show === 1
+    const DISABLE_SUBMIT
+      = this.props.show === 1
         ? !!(errors.month || errors.year)
         : !!(errors.date_to || errors.date_from);
 

@@ -156,8 +156,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
       });
   };
 
@@ -179,8 +179,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify(
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify(
             'Запрос на согласование не отправлен',
             'error',
           );
@@ -229,8 +229,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify(
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify(
             'Ошибка согласования версии',
             'error',
           );
@@ -252,8 +252,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
       });
   };
 
@@ -284,8 +284,8 @@ class ProgramRegistryFormWrap extends FormWrap {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
+        !errorIsShow
+          && global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
       });
   };
 

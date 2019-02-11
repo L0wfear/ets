@@ -25,19 +25,19 @@ export default class SparePartForm extends Form {
     const IS_CREATING = !state.id;
     const title = IS_CREATING ? 'Создание замечания' : 'Изменение замечания';
 
-    const allowCreateRemark =
-      isSupervisor && program_version_status === 'sent_on_review';
-    const allowChangeRemark =
-      isPermitted &&
-      program_version_status === 'sent_on_review' &&
-      state.status === 'created';
+    const allowCreateRemark
+      = isSupervisor && program_version_status === 'sent_on_review';
+    const allowChangeRemark
+      = isPermitted
+      && program_version_status === 'sent_on_review'
+      && state.status === 'created';
 
-    const allowCreateComment =
-      isСustomer && program_version_status === 'rejected';
-    const allowChangeComment =
-      isPermitted &&
-      program_version_status === 'rejected' &&
-      state.status === 'created';
+    const allowCreateComment
+      = isСustomer && program_version_status === 'rejected';
+    const allowChangeComment
+      = isPermitted
+      && program_version_status === 'rejected'
+      && state.status === 'created';
 
     if (allowCreateRemark || allowCreateComment) {
       return (

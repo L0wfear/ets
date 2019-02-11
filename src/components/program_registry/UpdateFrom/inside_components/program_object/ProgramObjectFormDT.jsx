@@ -117,8 +117,8 @@ class ProgramObjectFormDT extends Form {
             }),
           );
 
-          const { id: object_id } =
-            changesState.OBJECT_OPTIONS.find(
+          const { id: object_id }
+            = changesState.OBJECT_OPTIONS.find(
               ({ value: yard_id }) => yard_id === asuods_id,
             ) || {};
 
@@ -344,8 +344,8 @@ class ProgramObjectFormDT extends Form {
       label: object_address,
       total_area: info_total_area,
       company_name: info_company_name,
-    } =
-      OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+    }
+      = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
     if (!isEmpty(object_list_old)) {
       const [{ object_id: object_id_old }] = object_list_old;
@@ -510,8 +510,8 @@ class ProgramObjectFormDT extends Form {
                   </Col>
                   <Col md={4}>
                     <Col md={12}>
-                      <span>{`Заказчик: ${company_name ||
-                        prCompanyName}`}</span>
+                      <span>{`Заказчик: ${company_name
+                        || prCompanyName}`}</span>
                     </Col>
                   </Col>
                 </PanelObjectInfo>

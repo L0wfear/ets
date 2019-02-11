@@ -72,8 +72,8 @@ class ElementsList extends React.Component {
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
 
-    const readPermission =
-      this.props.userData.permissionsSet.has(`${this.entity}.read`) > -1;
+    const readPermission
+      = this.props.userData.permissionsSet.has(`${this.entity}.read`) > -1;
     this.setState({ readPermission });
 
     this.init();
@@ -167,8 +167,8 @@ class ElementsList extends React.Component {
    */
   removeElement = () => {
     if (
-      typeof this.removeElementAction !== 'function' ||
-      this.state.selectedElement === null
+      typeof this.removeElementAction !== 'function'
+      || this.state.selectedElement === null
     ) {
       return Promise.reject();
     }
@@ -196,16 +196,16 @@ class ElementsList extends React.Component {
 
     if (activeElement) {
       const activeTabIndex = activeElement.getAttribute('tabIndex');
-      const appropriateTabIndex =
-        activeTabIndex === '1' || activeTabIndex === '2';
+      const appropriateTabIndex
+        = activeTabIndex === '1' || activeTabIndex === '2';
       if (!appropriateTabIndex) {
         return;
       }
 
       if (
-        e.code === 'Enter' &&
-        this.state.selectedElement !== null &&
-        this.state.readPermission
+        e.code === 'Enter'
+        && this.state.selectedElement !== null
+        && this.state.readPermission
       ) {
         this.showForm();
       }
@@ -302,9 +302,9 @@ class ElementsList extends React.Component {
       );
     }
     if (this.props.exportable) {
-      const isEmptyList =
-        this.props[this.mainListName] &&
-        this.props[this.mainListName].length === 0;
+      const isEmptyList
+        = this.props[this.mainListName]
+        && this.props[this.mainListName].length === 0;
       buttons.push(
         <Button
           id="regestry-download-alt"

@@ -33,9 +33,9 @@ export default class Taxes extends React.Component {
 
   static getResult({ FACT_VALUE, fuel_correction_rate, FUEL_RATE }) {
     if (
-      isEmpty(FACT_VALUE) ||
-      isEmpty(fuel_correction_rate) ||
-      isEmpty(FUEL_RATE)
+      isEmpty(FACT_VALUE)
+      || isEmpty(fuel_correction_rate)
+      || isEmpty(FUEL_RATE)
     ) {
       return 0;
     }
@@ -157,9 +157,9 @@ export default class Taxes extends React.Component {
           min: 0,
           value: FACT_VALUE,
           disabled:
-            typeof FUEL_RATE === 'undefined' ||
-            typeof OPERATION === 'undefined' ||
-            this.props.readOnly,
+            typeof FUEL_RATE === 'undefined'
+            || typeof OPERATION === 'undefined'
+            || this.props.readOnly,
         };
         return (
           <div className="form-group">
@@ -232,8 +232,8 @@ export default class Taxes extends React.Component {
     const current = tableData[index];
     current.FACT_VALUE = Math.abs(e.target.value);
     if (
-      current.is_excluding_mileage &&
-      current.measure_unit_name === 'л/подъем'
+      current.is_excluding_mileage
+      && current.measure_unit_name === 'л/подъем'
     ) {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }
@@ -276,8 +276,8 @@ export default class Taxes extends React.Component {
         tableData[index].iem_FACT_VALUE = tableData[index].FACT_VALUE;
         tableData[index].FACT_VALUE = 0;
       } else if (last_is_excluding_mileage) {
-        tableData[index].FACT_VALUE =
-          tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
+        tableData[index].FACT_VALUE
+          = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
       }
       tableData[index].RESULT = Taxes.getResult(tableData[index]);
       tableData[index].measure_unit_name = measure_unit_name;
@@ -292,8 +292,8 @@ export default class Taxes extends React.Component {
     const { correctionRate, baseFactValue } = this.props;
     const overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
 
-    const value =
-      baseFactValue || baseFactValue === 0
+    const value
+      = baseFactValue || baseFactValue === 0
         ? (baseFactValue - overallValue).toFixed(3)
         : null;
     tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
@@ -323,9 +323,9 @@ export default class Taxes extends React.Component {
     const hasTaxes = taxes.length > 0;
     const finalResult = Taxes.calculateFinalResult(taxes);
     const finalFactValue = Taxes.calculateFinalFactValue(taxes);
-    const finalFactValueEqualsBaseValue =
-      parseFloat(baseFactValue).toFixed(3) ===
-      parseFloat(finalFactValue).toFixed(3);
+    const finalFactValueEqualsBaseValue
+      = parseFloat(baseFactValue).toFixed(3)
+      === parseFloat(finalFactValue).toFixed(3);
     const finalFactValueClassName = cx({
       'taxes-result-label-positive': finalFactValueEqualsBaseValue,
       'taxes-result-label-negative': !finalFactValueEqualsBaseValue,

@@ -187,8 +187,8 @@ class MissionsCreationFormWrap extends FormWrap {
         };
 
         if (
-          externalPayload.assign_to_waybill[0] ===
-          ASSING_BY_KEY.assign_to_new_draft
+          externalPayload.assign_to_waybill[0]
+          === ASSING_BY_KEY.assign_to_new_draft
         ) {
           const missionByCar = groupBy(missionsArr, 'car_ids');
 

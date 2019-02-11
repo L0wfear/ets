@@ -36,8 +36,8 @@ class MedicalStatsList extends ElementsList {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.state.date_from !== prevState.date_from ||
-      this.state.date_to !== prevState.date_to
+      this.state.date_from !== prevState.date_from
+      || this.state.date_to !== prevState.date_to
     ) {
       this.exportPayload = {
         date_from: createValidDateTime(this.state.date_from),

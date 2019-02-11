@@ -86,9 +86,9 @@ export default class NotificationsStore extends Store {
   checkResponse(response) {
     let valid = false;
     if (Array.isArray(response)) {
-      valid =
-        response.filter((obj) => obj.errors && obj.errors.length > 0).length ===
-        0;
+      valid
+        = response.filter((obj) => obj.errors && obj.errors.length > 0).length
+        === 0;
     } else if (!response.errors || response.errors.length === 0) {
       valid = true;
     }

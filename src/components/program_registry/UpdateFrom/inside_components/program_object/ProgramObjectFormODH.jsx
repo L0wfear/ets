@@ -109,8 +109,8 @@ class ProgramObjectFormodh extends Form {
             }),
           );
 
-          const { id: object_id } =
-            changesState.OBJECT_OPTIONS.find(
+          const { id: object_id }
+            = changesState.OBJECT_OPTIONS.find(
               ({ value: id }) => id === asuods_id,
             ) || {};
 
@@ -298,8 +298,8 @@ class ProgramObjectFormodh extends Form {
 
     const odhPolys = cloneDeep(odhPolysOld);
 
-    const { id: object_id, label: name, total_area: info_total_area } =
-      OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
+    const { id: object_id, label: name, total_area: info_total_area }
+      = OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
 
     if (!isEmpty(object_list_old)) {
       const [{ object_id: object_id_old }] = object_list_old;

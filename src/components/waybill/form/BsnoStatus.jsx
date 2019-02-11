@@ -148,8 +148,8 @@ class BsnoStaus extends React.Component {
 
       if (gps_code) {
         const timestamp = carsTrackState[gps_code] || 0;
-        const is_bnso_broken =
-          diffDates(this.state.date, timestamp * 1000, 'hours') > 1;
+        const is_bnso_broken
+          = diffDates(this.state.date, timestamp * 1000, 'hours') > 1;
 
         if (is_bnso_broken !== is_bnso_broken_old) {
           this.props.handleChange('is_bnso_broken', is_bnso_broken);
@@ -166,8 +166,8 @@ class BsnoStaus extends React.Component {
     const is_bnso_broken_isBoolean = typeof is_bnso_broken === 'boolean';
 
     let value = '';
-    const error =
-      is_bnso_broken_isBoolean && is_bnso_broken
+    const error
+      = is_bnso_broken_isBoolean && is_bnso_broken
         ? 'Выполненные работы не будут учтены в системе'
         : '';
 

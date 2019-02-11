@@ -110,8 +110,8 @@ class MissionRejectForm extends React.Component {
     if (car_id) {
       const { missionList, mIndex } = this.state;
 
-      const mission_id =
-        missionList[mIndex].mission_id || missionList[mIndex].id;
+      const mission_id
+        = missionList[mIndex].mission_id || missionList[mIndex].id;
       const payload = {
         car_id,
         mission_id,
@@ -264,8 +264,8 @@ class MissionRejectForm extends React.Component {
     CARS = props.carsList.reduce(
       (carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
         if (
-          mission_car_gov_number !== gov_number &&
-          (!isEmpty(car_func_types)
+          mission_car_gov_number !== gov_number
+          && (!isEmpty(car_func_types)
             ? car_func_types.includes(car_type_id)
             : true)
         ) {
@@ -283,9 +283,9 @@ class MissionRejectForm extends React.Component {
       : '';
     const bodyText = `Статус задания №${number} будет изменен на «Не назначено»${waybillText}`;
     const missions = this.state.data ? this.state.data.missions : null;
-    const datePickers =
-      missions &&
-      missions.map((oneM, i) => (
+    const datePickers
+      = missions
+      && missions.map((oneM, i) => (
         <Row style={{ marginBottom: '4px' }} key={i}>
           <Col md={4} style={{ paddingRight: '0' }}>
             <div

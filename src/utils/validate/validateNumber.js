@@ -26,23 +26,23 @@ const fixedValidators = [
             `^[+]?[0-9]*[\\.|,][0-9]{${config.float + 1},}$`,
           );
           error = regexp.test(value)
-            ? `Поле ${config.title ||
-                config.key} должно быть неотрицательным числом с ${
+            ? `Поле ${config.title
+                || config.key} должно быть неотрицательным числом с ${
               config.float
             } знаками после запятой`
             : undefined;
         }
       }
       if (config.integer) {
-        error =
-          error ||
-          (typeof value !== 'number' && !/^\d+$/.test(value)
+        error
+          = error
+          || (typeof value !== 'number' && !/^\d+$/.test(value)
             ? `Поле "${config.title || config.key}" должно быть целочисленным`
             : undefined);
       }
-      error =
-        error ||
-        (typeof value !== 'number' && isNaN(value)
+      error
+        = error
+        || (typeof value !== 'number' && isNaN(value)
           ? `Поле "${config.title || config.key}" должно быть числом`
           : undefined);
       return error;
@@ -101,10 +101,10 @@ const fixedValidators = [
     validator(config, value) {
       if (typeof config.equalLength === 'undefined') return undefined;
       const stringPresent = String(value);
-      return stringPresent.length < config.equalLength ||
-        stringPresent.length > config.equalLength
-        ? `Количество символов поля "${config.title ||
-            config.key}" должно быть равно ${config.equalLength}`
+      return stringPresent.length < config.equalLength
+        || stringPresent.length > config.equalLength
+        ? `Количество символов поля "${config.title
+            || config.key}" должно быть равно ${config.equalLength}`
         : undefined;
     },
   },

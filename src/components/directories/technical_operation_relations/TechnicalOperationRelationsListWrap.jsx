@@ -69,8 +69,8 @@ class TechnicalOperationRelationsListWrap extends React.Component {
           changesState.MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS;
 
           if (changesState.MUNICIPAL_FACILITY_OPTIONS.length === 1) {
-            changesState.municipal_facility_id =
-              changesState.MUNICIPAL_FACILITY_OPTIONS[0].value;
+            changesState.municipal_facility_id
+              = changesState.MUNICIPAL_FACILITY_OPTIONS[0].value;
 
             this.getFuncTypes(
               changesState.MUNICIPAL_FACILITY_OPTIONS[0].normatives
@@ -245,10 +245,10 @@ class TechnicalOperationRelationsListWrap extends React.Component {
           </Col>
         </Row>
         <TechnicalOperationRelationsListContainer>
-          {technical_operation_id &&
-          municipal_facility_id &&
-          route_types.length &&
-          func_type_id ? (
+          {technical_operation_id
+          && municipal_facility_id
+          && route_types.length
+          && func_type_id ? (
               <TechnicalOperationRelationsList
                 technical_operation_id={technical_operation_id}
                 municipal_facility_id={municipal_facility_id}

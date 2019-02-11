@@ -9,8 +9,8 @@ import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 function getProperties(type = 'odh') {
-  const properties =
-    type === 'odh'
+  const properties
+    = type === 'odh'
       ? [
         { label: 'Общая площадь (кв.м.)', value: 'total_area' },
         { label: 'Протяженность (п.м.)', value: 'distance' },

@@ -71,9 +71,9 @@ class DutyMissionsJournal extends CheckableElementsList {
 
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page ||
-      prevState.sortBy !== this.state.sortBy ||
-      prevState.filter !== this.state.filter
+      prevState.page !== this.state.page
+      || prevState.sortBy !== this.state.sortBy
+      || prevState.filter !== this.state.filter
     ) {
       this.refreshList(this.state);
     }
@@ -135,8 +135,8 @@ class DutyMissionsJournal extends CheckableElementsList {
     const selectedDutyMissions = Object.values(checkedElements);
 
     return !(
-      selectedDutyMissions.length ||
-      (selectedElement && selectedElement.status === 'not_assigned')
+      selectedDutyMissions.length
+      || (selectedElement && selectedElement.status === 'not_assigned')
     );
   };
 
@@ -145,8 +145,8 @@ class DutyMissionsJournal extends CheckableElementsList {
     const selectedDutyMissions = Object.values(checkedElements);
 
     return !(
-      selectedDutyMissions.length ||
-      (selectedElement && selectedElement.status === 'assigned')
+      selectedDutyMissions.length
+      || (selectedElement && selectedElement.status === 'assigned')
     );
   }
 
@@ -158,8 +158,8 @@ class DutyMissionsJournal extends CheckableElementsList {
     }
 
     return (
-      validateMissionsArr.length === 0 ||
-      validateMissionsArr.some(({ status }) => status === 'assigned')
+      validateMissionsArr.length === 0
+      || validateMissionsArr.some(({ status }) => status === 'assigned')
     );
   };
 

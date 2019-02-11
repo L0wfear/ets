@@ -52,12 +52,7 @@ class MaintenanceRateDirectory extends ElementsList {
   }
 
   init() {
-    const { flux } = this.context;
-
     this.props.maintenanceRateGetAndSetInStore(this.props.type);
-    flux.getActions('objects').getMaintenanceWork();
-    flux.getActions('objects').getCleanCategories();
-    flux.getActions('technicalOperation').getTechnicalOperations();
   }
 
   componentDidUpdate(prevProps) {

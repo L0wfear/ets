@@ -10,31 +10,31 @@ export const maintenanceRateSchema: SchemaType<ICreateMaintenanceRate, PropsMain
     {
       key: 'technical_operation_id',
       title: 'Технологическая операция',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'maintenance_work_id',
       title: 'Наименование регламентной работы',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'season_id',
       title: 'Сезон',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'clean_category_id',
       title: 'Категория',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {
       key: 'clean_subcategory_id',
       title: 'Подкатегория',
-      type: 'number',
+      type: 'valueOfArray',
       required: false,
     },
     {

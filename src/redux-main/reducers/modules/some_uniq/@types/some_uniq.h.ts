@@ -1,6 +1,8 @@
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
+import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
 
 export type modelListElement = {
   body_capacity: number | null;
@@ -20,4 +22,6 @@ export type IStateSomeUniq = {
   municipalFacilityList: MunicipalFacility[],
   municipalFacilityForMissionList: MunicipalFacility[],
   municipalFacilityForDutyMissionList: MunicipalFacility[],
+  maintenanceWorkList: MaintenanceWork[],
+  cleanCategoriesList: CleanCategories[],
 };

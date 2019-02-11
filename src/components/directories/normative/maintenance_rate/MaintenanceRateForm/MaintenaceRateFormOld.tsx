@@ -23,49 +23,17 @@ import {
   PropsMaintenanceRate,
   StateMaintenanceRate,
   PropsMaintenanceRateWithForm,
-  StatePropsMaintenanceRate,
-  DispatchPropsMaintenanceRate,
 } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/@types/MaintenanceRate.h';
-
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 import { getDefaultMaintenanceRateElement } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/utils';
 import { maintenanceRateSchema } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/maintenanceRateSchema';
 import { IMaintenanceRateUpd } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import MaintenanceRatePermissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
+import { connectToStores } from 'utils/decorators';
 import memoize from 'memoize-one';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
-import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
+@connectToStores(['objects'])
 class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, StateMaintenanceRate> {
-  componentDidMount() {
-    const {
-      page,
-      path,
-    } = this.props;
-
-    this.props.actionGetAndSetInStoreTechnicalOperationRegistry(
-      {},
-      { page, path },
-    );
-
-    this.props.actionGetAndSetInStoreMaintenanceWork(
-      {},
-      { page, path },
-    );
-
-    this.props.actionGetAndSetInStoreCleanCategories(
-      {},
-      { page, path },
-    );
-  }
-
-  componentWillUnmount() {
-    this.props.actionResetTechnicalOperationRegistry();
-    this.props.actionResetMaintenanceWork();
-    this.props.actionResetCleanCategories();
-  }
 
   handleHide = () => {
     this.props.handleHide(false);
@@ -98,7 +66,7 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
       formErrors: errors,
 
       type,
-      technicalOperationRegistryList = [],
+      technicalOperationsList = [],
       maintenanceWorkList = [],
       cleanCategoriesList = [],
     } = this.props;
@@ -106,8 +74,8 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
     const IS_CREATING = !state.id;
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
-    const subcategories = get(cleanCategoriesList.find(({ id }) => state.clean_category_id === id), 'subcategories', []);
-    const TECH_OPERATIONS = this.makeOptionsMemoList(technicalOperationRegistryList);
+    const subcategories = get(cleanCategoriesList.find((c) => state.clean_category_id === c.id), 'subcategories', []);
+    const TECH_OPERATIONS = this.makeOptionsMemoList(technicalOperationsList);
     const MAINTENANCE_WORK = this.makeOptionsMemoList(maintenanceWorkList);
     const CATEGORIES = this.makeOptionsMemoList(cleanCategoriesList);
     const SUBCATEGORIES = this.makeOptionsMemoList(subcategories);
@@ -205,45 +173,6 @@ class MaintenanceRateForm extends React.PureComponent<PropsMaintenanceRate, Stat
 }
 
 export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
-  connect<StatePropsMaintenanceRate, DispatchPropsMaintenanceRate, OwnMaintenanceRateProps, ReduxState>(
-    (state) => ({
-      technicalOperationRegistryList: getSomeUniqState(state).technicalOperationRegistryList,
-      maintenanceWorkList: getSomeUniqState(state).maintenanceWorkList,
-      cleanCategoriesList: getSomeUniqState(state).cleanCategoriesList,
-    }),
-    (dispatch: any) => ({
-      actionGetAndSetInStoreTechnicalOperationRegistry: (...arg) => (
-        dispatch(
-          someUniqActions.actionGetAndSetInStoreTechnicalOperationRegistry(...arg),
-        )
-      ),
-      actionResetTechnicalOperationRegistry: () => (
-        dispatch(
-          someUniqActions.actionResetTechnicalOperationRegistry(),
-        )
-      ),
-      actionGetAndSetInStoreMaintenanceWork: (...arg) => (
-        dispatch(
-          someUniqActions.actionGetAndSetInStoreMaintenanceWork(...arg),
-        )
-      ),
-      actionResetMaintenanceWork: () => (
-        dispatch(
-          someUniqActions.actionResetMaintenanceWork(),
-        )
-      ),
-      actionGetAndSetInStoreCleanCategories: (...arg) => (
-        dispatch(
-          someUniqActions.actionGetAndSetInStoreCleanCategories(...arg),
-        )
-      ),
-      actionResetCleanCategories: () => (
-        dispatch(
-          someUniqActions.actionResetCleanCategories(),
-        )
-      ),
-    }),
-  ),
   withForm<PropsMaintenanceRateWithForm, IMaintenanceRateUpd>({
     uniqField: 'id',
     createAction: maintenanceRateCreate,

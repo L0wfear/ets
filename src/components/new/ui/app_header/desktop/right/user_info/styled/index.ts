@@ -26,7 +26,7 @@ export const UserHeaderData = styled.div`
 const shortCss = css`
   max-width: 140px;
   font-size: 12px;
-  white-space: initial;
+  white-space: normal;
 `;
 
 export const UserFio = styled(UserHeaderData)<{ short: boolean }>`

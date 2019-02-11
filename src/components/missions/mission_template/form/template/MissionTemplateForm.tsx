@@ -34,7 +34,10 @@ import FieldForColumnMissionTemplate from 'components/missions/mission_template/
 import FieldRouteMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/route/FieldRouteMissionTemplate';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 
-class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, {}> {
+class MissionTemplateForm extends React.PureComponent<
+  PropsMissionTemplateForm,
+  {}
+> {
   render() {
     const {
       formState: state,
@@ -45,51 +48,51 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
     } = this.props;
 
     const IS_CREATING = !state.id;
-    const title = !IS_CREATING ? 'Шаблона задания' : 'Создание шаблона задания';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const title = !IS_CREATING ? 'Шаблон задания' : 'Создание шаблона задания';
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-mission-template" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-mission-template"
+        show
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
-            <FieldTechnicalOperationMissionTemplate
-              value={state.technical_operation_id}
-              name={state.technical_operation_name}
-              disabled={!isPermitted}
-              isPermitted={isPermitted}
-              error={errors.technical_operation_id}
-              onChange={this.props.handleChange}
-
-              page={page}
-              path={path}
-            />
-          </Col>
-            {
-              STRUCTURE_FIELD_VIEW
-                ? (
-                  <Col md={3}>
-                    <FieldStructureMissionTemplate
-                      value={state.structure_id}
-                      name={state.structure_name}
-                      disabled={!isPermitted}
-                      error={errors.structure_id}
-                      onChange={this.props.handleChange}
-
-                      car_ids={state.car_ids}
-
-                      page={page}
-                      path={path}
-                    />
-                  </Col>
-                )
-                : (
-                  <DivNone />
-                )
-            }
+          <Row>
+            <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
+              <FieldTechnicalOperationMissionTemplate
+                value={state.technical_operation_id}
+                name={state.technical_operation_name}
+                disabled={!isPermitted}
+                isPermitted={isPermitted}
+                error={errors.technical_operation_id}
+                onChange={this.props.handleChange}
+                page={page}
+                path={path}
+              />
+            </Col>
+            {STRUCTURE_FIELD_VIEW ? (
+              <Col md={3}>
+                <FieldStructureMissionTemplate
+                  value={state.structure_id}
+                  name={state.structure_name}
+                  disabled={!isPermitted}
+                  error={errors.structure_id}
+                  onChange={this.props.handleChange}
+                  car_ids={state.car_ids}
+                  page={page}
+                  path={path}
+                />
+              </Col>
+            ) : (
+              <DivNone />
+            )}
           </Row>
           <Row>
             <Col md={12}>
@@ -100,9 +103,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 isPermitted={isPermitted}
                 error={errors.municipal_facility_id}
                 onChange={this.props.handleChange}
-
                 technical_operation_id={state.technical_operation_id}
-
                 page={page}
                 path={path}
               />
@@ -114,14 +115,12 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 isPermitted={isPermitted}
                 error={errors.car_ids}
                 onChange={this.props.handleChange}
-
                 for_column={state.for_column}
                 municipal_facility_id={state.municipal_facility_id}
                 structure_id={state.structure_id}
                 car_gov_numbers={state.car_gov_numbers}
                 car_type_ids={state.car_type_ids}
                 car_type_names={state.car_type_names}
-
                 page={page}
                 path={path}
               />
@@ -132,9 +131,7 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 error={errors.car_ids}
                 onChange={this.props.handleChange}
                 disabled={!isPermitted}
-
                 municipal_facility_id={state.municipal_facility_id}
-
                 page={page}
                 path={path}
               />
@@ -175,7 +172,6 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 error_route_id={errors.route_id}
                 route_id={state.route_id}
                 handleChange={this.props.handleChange}
-
                 municipal_facility_id={state.municipal_facility_id}
                 municipal_facility_name={state.municipal_facility_name}
                 structure_id={state.structure_id}
@@ -183,27 +179,26 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
                 technical_operation_id={state.technical_operation_id}
                 technical_operation_name={state.technical_operation_name}
                 for_column={state.for_column}
-
                 disabled={!isPermitted}
                 isPermitted={isPermitted}
-
                 page={page}
                 path={path}
               />
             </Col>
           </Row>
-
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <>
+              <Button
+                disabled={!this.props.canSave}
+                onClick={this.props.defaultSubmit}>
+                Сохранить
+              </Button>
+            </>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
       </Modal>
     );
@@ -211,13 +206,16 @@ class MissionTemplateForm extends React.PureComponent<PropsMissionTemplateForm, 
 }
 
 export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
-  connect<StatePropsMissionTemplate, DispatchPropsMissionTemplate, OwnMissionTemplateProps, ReduxState>(
-    (state) => ({
-      userStructureId: getSessionState(state).userData.structure_id,
-      userStructureName: getSessionState(state).userData.structure_name,
-      ...getSessionStructuresParams(state),
-    }),
-  ),
+  connect<
+    StatePropsMissionTemplate,
+    DispatchPropsMissionTemplate,
+    OwnMissionTemplateProps,
+    ReduxState
+  >((state) => ({
+    userStructureId: getSessionState(state).userData.structure_id,
+    userStructureName: getSessionState(state).userData.structure_name,
+    ...getSessionStructuresParams(state),
+  })),
   withForm<PropsMissionTemplateWithForm, MissionTemplate>({
     uniqField: 'id',
     createAction: missionsActions.actionCreateMissionTemplate,
@@ -225,8 +223,11 @@ export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
     mergeElement: ({ element, userStructureId, userStructureName }) => {
       return getDefaultMissionTemplateElement({
         ...element,
-        structure_id: element && element.structure_id || userStructureId,
-        structure_name: element && (element.structure_name || element.structure_id) ? null : userStructureName,
+        structure_id: (element && element.structure_id) || userStructureId,
+        structure_name:
+          element && (element.structure_name || element.structure_id)
+            ? null
+            : userStructureName,
       });
     },
     schema: missionTemplateFormSchema,

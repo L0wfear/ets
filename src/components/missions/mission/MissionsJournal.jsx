@@ -176,6 +176,22 @@ class MissionsJournal extends CheckableElementsList {
       });
   };
 
+  actionCompleteMissions = (correctMissionsList, action_at) => {
+    Promise.all(
+      correctMissionsList.map(mission => this.context.flux.getActions('missions')
+        .updateMission({ ...cloneDeep(mission), status: 'complete', action_at })),
+    ).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+      this.refreshList(this.state);
+      this.setState({ checkedElements: {} });
+    })
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+        this.refreshList(this.state);
+        this.setState({ checkedElements: {} });
+      });
+  }
+
   completeCheckedElements = () => {
     const { selectedElement } = this.state;
     const missionsObj = this.state.checkedElements || {};
@@ -183,28 +199,21 @@ class MissionsJournal extends CheckableElementsList {
     if (selectedElement && Object.values(missionsObj).length === 0) {
       missionsObj[selectedElement.id] = selectedElement;
     }
+    const missionsList = Object.values(missionsObj);
+
     loadMoscowTime()
       .then(({ time }) => {
         action_at = time.date;
-        if (this.state.selectedElement) {
-          if (diffDates(moment(this.state.selectedElement.date_start), moment(time.date)) >= 0) {
-            const completeMarkerBtnDisable = true;
-            this.setState({ completeMarkerBtnDisable });
-            global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Невозможно изменить статус задания до начала его выполнения'));
-          } else {
-            Promise.all(
-              Object.values(missionsObj).map(mission => this.context.flux.getActions('missions')
-                .updateMission({ ...cloneDeep(mission), status: 'complete', action_at })),
-            ).then(() => {
-              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-              this.refreshList(this.state);
-              this.setState({ checkedElements: {} });
-            })
-              .catch(({ errorIsShow }) => {
-                !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
-                this.refreshList(this.state);
-                this.setState({ checkedElements: {} });
-              });
+        if (this.state.selectedElement || missionsList.length > 1) {
+          const correctMissionsList = missionsList.filter((mission) => {
+            if (diffDates(moment(mission.date_start), moment(time.date)) >= 0) {
+              global.NOTIFICATION_SYSTEM.notify(getWarningNotification(`Невозможно изменить статус задания ${mission.number} до начала его выполнения`));
+              return false;
+            }
+            return true;
+          });
+          if (correctMissionsList.length) {
+            this.actionCompleteMissions(correctMissionsList, action_at);
           }
         }
       })
@@ -354,14 +363,14 @@ class MissionsJournal extends CheckableElementsList {
 
   getForms = () => [
     <div key="forms">
-        <MissionFormWrap
-          onFormHide={this.onFormHide}
-          showForm={this.state.showForm}
-          element={this.state.selectedElement}
-          refreshTableList={this.refreshList}
-          {...this.props}
-        />
-        {
+      <MissionFormWrap
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        refreshTableList={this.refreshList}
+        {...this.props}
+      />
+      {
             this.state.showMissionRejectForm
             && (
               <MissionRejectForm
@@ -373,18 +382,18 @@ class MissionsJournal extends CheckableElementsList {
               />
             )
           }
-        <MissionInfoFormWrap
-          onFormHide={() => this.setState({ showMissionInfoForm: false })}
-          showForm={this.state.showMissionInfoForm}
-          element={this.state.mission}
-        />
-        <PrintForm
-          onExport={this.processExport}
-          show={this.state.showPrintForm}
-          onHide={() => this.setState({ showPrintForm: false })}
-          title="Печать журнала заданий"
-        />
-      </div>,
+      <MissionInfoFormWrap
+        onFormHide={() => this.setState({ showMissionInfoForm: false })}
+        showForm={this.state.showMissionInfoForm}
+        element={this.state.mission}
+      />
+      <PrintForm
+        onExport={this.processExport}
+        show={this.state.showPrintForm}
+        onHide={() => this.setState({ showPrintForm: false })}
+        title="Печать журнала заданий"
+      />
+    </div>,
   ]
 
   goToOrders = () => {

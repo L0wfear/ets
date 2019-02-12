@@ -848,16 +848,15 @@ body.application {
 
 
 .waybills-buttons {
-  float:right;
-  button {
-    margin-left:10px;
-  }
-}
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
 
-.waybill-button-toolbar {
-  margin-left: 5px;
-  position: relative;
-  bottom: -11px;
+  >* {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .mission-reject-info-modal {
@@ -1176,10 +1175,6 @@ div.none {
   background-color: rgba(110, 158, 88, 0.4) !important;
   color: #333 !important;
   outline: none !important;
-}
-
-.waybills-buttons > div {
-  display: inline-block;
 }
 
 .inline-block {

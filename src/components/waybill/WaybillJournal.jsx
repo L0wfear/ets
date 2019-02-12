@@ -1,6 +1,5 @@
 import React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import * as Button from 'react-bootstrap/lib/Button';
@@ -30,6 +29,7 @@ import permissions from 'components/waybill/config-data/permissions';
 import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
+import { DropdownWrap } from './styled';
 
 @connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
@@ -192,23 +192,19 @@ class WaybillJournal extends CheckableElementsList {
     }
 
     buttons.push(
-      <ButtonToolbar
-        key="print-waybil-group"
-        className="waybill-button-toolbar">
-        <Dropdown id="dropdown-print" pullRight>
-          <Dropdown.Toggle noCaret bsSize="small">
-            <Glyphicon glyph="download-alt" />
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <MenuItem eventKey={1} onSelect={this.showPrintForm}>
-              Журнал путевых листов (ТМФ №8)
-            </MenuItem>
-            <MenuItem eventKey={2} onSelect={this.showPrintForm}>
-              Отчет по выработке ТС
-            </MenuItem>
-          </Dropdown.Menu>
-        </Dropdown>
-      </ButtonToolbar>,
+      <DropdownWrap id="dropdown-print" pullRight>
+        <Dropdown.Toggle noCaret bsSize="small">
+          <Glyphicon glyph="download-alt" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <MenuItem eventKey={1} onSelect={this.showPrintForm}>
+            Журнал путевых листов (ТМФ №8)
+          </MenuItem>
+          <MenuItem eventKey={2} onSelect={this.showPrintForm}>
+            Отчет по выработке ТС
+          </MenuItem>
+        </Dropdown.Menu>
+      </DropdownWrap>,
     );
 
     return buttons;

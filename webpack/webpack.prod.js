@@ -47,7 +47,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              cacheDirectory: false,
+              cacheDirectory: true,
               babelrc: false,
               presets: [
                 [

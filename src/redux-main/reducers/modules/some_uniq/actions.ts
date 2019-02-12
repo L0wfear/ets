@@ -4,6 +4,8 @@ import technicalOperationRegistryActions from 'redux-main/reducers/modules/some_
 import municipalFacilityActions from 'redux-main/reducers/modules/some_uniq/municipal_facility/actions';
 import missionSourceActions from 'redux-main/reducers/modules/some_uniq/mission_source/actions';
 import cleaningOneNormActions from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
+import maintenanceWorkListActions from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
+import cleanCategoriesListActions from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 
 const someUniqActions = {
   ...special_model,
@@ -12,6 +14,8 @@ const someUniqActions = {
   ...municipalFacilityActions,
   ...missionSourceActions,
   ...cleaningOneNormActions,
+  ...maintenanceWorkListActions,
+  ...cleanCategoriesListActions,
 };
 
 export default someUniqActions;

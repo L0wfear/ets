@@ -55,5 +55,3 @@ export type PropsMaintenanceRate = OutputWithFormProps<
   [ IMaintenanceRateUpd ],
   any
 >;
-export type StateMaintenanceRate = {
-};

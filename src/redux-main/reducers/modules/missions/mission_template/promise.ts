@@ -36,7 +36,10 @@ export const promiseCreateMissionTemplate = async (
 
   const data: Partial<MissionTemplate> = get(response, ['result', 0], null);
 
-  return data;
+  return {
+    ...payload,
+    data,
+  };
 };
 
 export const promiseUpdateMissionTemplate = async (
@@ -50,7 +53,10 @@ export const promiseUpdateMissionTemplate = async (
 
   const data: Partial<MissionTemplate> = get(response, ['result', 0], null);
 
-  return data;
+  return {
+    ...payload,
+    data,
+  };
 };
 
 export const promiseRemoveMissionTemplates = async (ids: number[]) => {

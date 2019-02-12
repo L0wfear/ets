@@ -200,8 +200,9 @@ class MissionTemplatesJournal extends CheckableElementsList {
     }));
   };
 
-  onFormHideCreateTemplate = (isSubmitted) => {
+  onFormHideCreateTemplate = (isSubmitted, result) => {
     if (isSubmitted) {
+      console.info(result); //DITETS-4857 добавил в CAR_OPTIONS, CAR_TYP_OPTIONS для фильтрац по ТС
       this.loadMissionTemplateData();
     }
 

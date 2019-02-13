@@ -6,6 +6,7 @@ import {
   EtsTableWrap,
   EtsTable,
 } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
+import { setStickyThead } from 'utils/stickyTableHeader';
 
 type PropsTableContainer = {
   registryKey: string;
@@ -14,16 +15,23 @@ type PropsTableContainer = {
   handleDoubleClickOnRow: any;
 };
 
-type StateTableContainer = {
-};
+type StateTableContainer = {};
 
-class TableContainer extends React.Component<PropsTableContainer, StateTableContainer> {
+class TableContainer extends React.Component<
+  PropsTableContainer,
+  StateTableContainer
+> {
+  componentDidMount() {
+    setStickyThead('.data-table .griddle', true);
+  }
+
+  componentWillUnmount() {
+    setStickyThead('.data-table .griddle', false);
+  }
+
   render() {
     const { props } = this;
-    const {
-      registryKey,
-      components,
-  } = props;
+    const { registryKey, components } = props;
 
     return (
       <EtsTableWrap>

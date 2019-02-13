@@ -22,11 +22,11 @@ class TableContainer extends React.Component<
   StateTableContainer
 > {
   componentDidMount() {
-    setStickyThead('.data-table .griddle', true);
+    setStickyThead('.ets_table_wrap', true);
   }
 
   componentWillUnmount() {
-    setStickyThead('.data-table .griddle', false);
+    setStickyThead('.ets_table_wrap', false);
   }
 
   render() {
@@ -34,7 +34,7 @@ class TableContainer extends React.Component<
     const { registryKey, components } = props;
 
     return (
-      <EtsTableWrap>
+      <EtsTableWrap className="ets_table_wrap">
         <EtsTable className="ets_table" bordered condensed>
           <Thead registryKey={registryKey} />
           <Tbody

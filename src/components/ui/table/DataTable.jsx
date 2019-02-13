@@ -26,6 +26,7 @@ import FilterButton from 'components/ui/table/filter/FilterButton';
 import Div from 'components/ui/Div';
 import Paginator from 'components/ui/new/paginator/Paginator';
 import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
+import { setStickyThead } from 'utils/stickyTableHeader';
 
 export default class DataTable extends React.Component {
   /**
@@ -220,6 +221,11 @@ export default class DataTable extends React.Component {
         || [];
       this.setState({ columnControlValues });
     }
+    setStickyThead('.data-table .griddle', true);
+  }
+
+  componentWillUnmount() {
+    setStickyThead('.data-table .griddle', false);
   }
 
   static getDerivedStateFromProps(nextProps, preveState) {

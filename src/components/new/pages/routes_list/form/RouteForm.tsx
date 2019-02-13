@@ -250,7 +250,9 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
                 id="route-submit-tempalte"
                 disabled={!canSave}
                 onClick={this.handleSaveAsTemplate}>
-                Сохранить как шаблон
+                {this.props.fromMission && !this.props.fromMissionTemplate
+                  ? 'Сохранить как шаблон'
+                  : 'Создать'}
               </Button>
               {this.props.fromMission && !this.props.fromMissionTemplate ? (
                 <Button

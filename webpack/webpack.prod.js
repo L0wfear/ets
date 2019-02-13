@@ -6,7 +6,6 @@ const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const stand = process.env.STAND || 'dev';
 
@@ -210,12 +209,6 @@ module.exports = {
   ],
   optimization: {
     noEmitOnErrors: true,
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-      }),
-    ],
     splitChunks: {
       cacheGroups: {
         styles: {

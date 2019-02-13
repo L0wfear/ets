@@ -24,7 +24,10 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
-import { getSessionState, getEmployeeState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getEmployeeState,
+} from 'redux-main/reducers/selectors';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
 import FieldTechnicalOperationDutyMission from 'components/missions/duty_mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationDutyMission';
@@ -34,27 +37,25 @@ import FieldBrigadeEmployeeIdListDutyMission from 'components/missions/duty_miss
 import FieldStructureDutyMission from 'components/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import FieldRouteIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/route_id/FieldRouteIdDutyMission';
+import EtsModal from 'components/new/ui/modal/Modal';
 
-class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTemplateForm, {}> {
+class DutyMissionTemplateForm extends React.PureComponent<
+  PropsDutyMissionTemplateForm,
+  {}
+> {
   componentDidMount() {
-    const {
-      page,
-      path,
-    } = this.props;
+    const { page, path } = this.props;
 
-    this.props.employeeGetAndSetInStore(
-      {},
-      { page, path },
-    );
+    this.props.employeeGetAndSetInStore({}, { page, path });
   }
 
   componentWillUnmount() {
-    const {
-      formState: state,
-    } = this.props;
+    const { formState: state } = this.props;
 
     const IS_CREATING = !state.id;
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     if (isPermitted) {
       this.props.employeeEmployeeResetSetEmployee();
@@ -63,7 +64,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
 
   handleHide = () => {
     this.props.handleHide(false);
-  }
+  };
 
   render() {
     const {
@@ -76,12 +77,20 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
 
     const IS_CREATING = !state.id;
     const title = !IS_CREATING ? 'Шаблон задания' : 'Создание шаблона задания';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-duty-mission-template" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <EtsModal
+        id="modal-duty-mission-template"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.handleHide}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
@@ -93,10 +102,8 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 isPermitted={isPermitted}
                 error={errors.technical_operation_id}
                 onChange={this.props.handleChange}
-
                 IS_TEMPLATE
                 DUTY_MISSION_IS_ORDER_SOURCE={false}
-
                 page={page}
                 path={path}
               />
@@ -124,12 +131,9 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 error={errors.municipal_facility_id}
                 isPermitted={isPermitted}
                 onChange={this.props.handleChange}
-
                 technical_operation_id={state.technical_operation_id}
-
                 IS_TEMPLATE
                 DUTY_MISSION_IS_ORDER_SOURCE={false}
-
                 page={page}
                 path={path}
               />
@@ -146,9 +150,7 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 isPermitted={isPermitted}
                 disabled={!isPermitted}
                 onChange={this.props.handleChange}
-
                 structure_id={state.structure_id}
-
                 page={page}
                 path={path}
               />
@@ -162,35 +164,28 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 isPermitted={isPermitted}
                 disabled={!isPermitted}
                 onChange={this.props.handleChange}
-
                 foreman_id={state.foreman_id}
                 structure_id={state.structure_id}
-
                 page={page}
                 path={path}
               />
             </Col>
-            {
-              STRUCTURE_FIELD_VIEW
-                ? (
-                  <Col md={3}>
-                    <FieldStructureDutyMission
-                      value={state.structure_id}
-                      name={state.structure_name}
-                      error={errors.structure_id}
-                      disabled={!isPermitted}
-                      isPermitted={isPermitted}
-                      onChange={this.props.handleChange}
-
-                      page={page}
-                      path={path}
-                    />
-                  </Col>
-                )
-                : (
-                  <DivNone />
-                )
-            }
+            {STRUCTURE_FIELD_VIEW ? (
+              <Col md={3}>
+                <FieldStructureDutyMission
+                  value={state.structure_id}
+                  name={state.structure_name}
+                  error={errors.structure_id}
+                  disabled={!isPermitted}
+                  isPermitted={isPermitted}
+                  onChange={this.props.handleChange}
+                  page={page}
+                  path={path}
+                />
+              </Col>
+            ) : (
+              <DivNone />
+            )}
           </Row>
           <Row>
             <Col md={12}>
@@ -202,17 +197,13 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
                 municipal_facility_name={state.municipal_facility_name}
                 technical_operation_id={state.technical_operation_id}
                 technical_operation_name={state.technical_operation_name}
-
                 DUTY_MISSION_IS_ORDER_SOURCE={false}
-
                 disabled={!isPermitted}
                 isPermitted={isPermitted}
-
                 structure_id={state.structure_id}
                 structure_name={state.structure_name}
-
                 onChange={this.props.handleChange}
-
+                deepLvl={this.props.deepLvl}
                 page={page}
                 path={path}
               />
@@ -220,40 +211,43 @@ class DutyMissionTemplateForm extends React.PureComponent<PropsDutyMissionTempla
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
 
-export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps>(
-  connect<StatePropsDutyMissionTemplate, DispatchPropsDutyMissionTemplate, OwnDutyMissionTemplateProps, ReduxState>(
+export default compose<
+  PropsDutyMissionTemplateForm,
+  OwnDutyMissionTemplateProps
+>(
+  connect<
+    StatePropsDutyMissionTemplate,
+    DispatchPropsDutyMissionTemplate,
+    OwnDutyMissionTemplateProps,
+    ReduxState
+  >(
     (state) => ({
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
       employeeIndex: getEmployeeState(state).employeeIndex,
-      STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state).STRUCTURE_FIELD_VIEW,
+      STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state)
+        .STRUCTURE_FIELD_VIEW,
     }),
     (dispatch: any) => ({
-      employeeGetAndSetInStore: (...arg) => (
-        dispatch(
-          employeeActions.employeeGetAndSetInStore(...arg),
-        )
-      ),
-      employeeEmployeeResetSetEmployee: (...arg) => (
-        dispatch(
-          employeeActions.employeeEmployeeResetSetEmployee(...arg),
-        )
-      ),
+      employeeGetAndSetInStore: (...arg) =>
+        dispatch(employeeActions.employeeGetAndSetInStore(...arg)),
+      employeeEmployeeResetSetEmployee: (...arg) =>
+        dispatch(employeeActions.employeeEmployeeResetSetEmployee(...arg)),
     }),
   ),
   withForm<PropsDutyMissionTemplateWithForm, DutyMissionTemplate>({
@@ -263,8 +257,11 @@ export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps
     mergeElement: ({ element, userStructureId, userStructureName }) => {
       return getDefaultDutyMissionTemplateElement({
         ...element,
-        structure_id: element && element.structure_id || userStructureId,
-        structure_name: element && (element.structure_name || element.structure_id) ? null : userStructureName,
+        structure_id: (element && element.structure_id) || userStructureId,
+        structure_name:
+          element && (element.structure_name || element.structure_id)
+            ? null
+            : userStructureName,
       });
     },
     schema: dutyDutyMissionTemplateFormSchema,

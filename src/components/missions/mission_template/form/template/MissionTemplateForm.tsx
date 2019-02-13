@@ -36,6 +36,7 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import { Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 const printMapKeyBig = 'printMapKeyBig';
 const printMapKeySmall = 'printMapKeySmall';
@@ -91,13 +92,15 @@ class MissionTemplateForm extends React.PureComponent<
       ? this.props.isPermittedToUpdate
       : this.props.isPermittedToCreate;
 
+    console.log(this.props.deepLvl);
     return (
-      <Modal
+      <EtsModal
         id="modal-mission-template"
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-        backdrop="static">
+        backdrop="static"
+        deepLvl={this.props.deepLvl}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -221,6 +224,7 @@ class MissionTemplateForm extends React.PureComponent<
                 isPermitted={isPermitted}
                 printMapKeyBig={printMapKeyBig}
                 printMapKeySmall={printMapKeySmall}
+                deepLvl={this.props.deepLvl}
                 page={page}
                 path={path}
               />
@@ -257,7 +261,7 @@ class MissionTemplateForm extends React.PureComponent<
             <DivNone />
           )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }

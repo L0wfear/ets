@@ -1,5 +1,13 @@
-import { Repair, Car, RepairCompany, RepairType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import {
+  Repair,
+  Car,
+  RepairCompany,
+  RepairType,
+} from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import {
+  DefaultSelectListMapper,
+  DefaultSelectOption,
+} from 'components/ui/input/ReactSelect/utils';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { GetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/@types';
@@ -13,7 +21,8 @@ export type PropsRepairFormWrap = {
   showForm: boolean;
   element: Repair | null;
   car_id: number;
-  onFormHide: OnFormHideType
+  deepLvl?: number;
+  onFormHide: OnFormHideType;
 
   loadingPageName?: string;
   page?: string;
@@ -24,32 +33,37 @@ export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 export type DispatchPropsRepair = {
-  autobaseGetSetCar: HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>;
+  autobaseGetSetCar: HandleThunkActionCreator<
+    typeof autobaseActions.autobaseGetSetCar
+  >;
   autobaseGetRepairCompany: GetRepairCompany;
   autobaseGetRepairType: GetRepairType;
 };
 export type OwnRepairProps = {
   element: Repair | null;
-  handleHide: OnFormHideType
+  handleHide: OnFormHideType;
   car_id: number;
+  deepLvl?: number;
   page: string;
   path?: string;
 };
 
-export type PropsRepairWithForm = (
-  StatePropsRepair
-  & DispatchPropsRepair
-  & OwnRepairProps
-);
+export type PropsRepairWithForm = StatePropsRepair &
+  DispatchPropsRepair &
+  OwnRepairProps;
 
 export type PropsRepair = OutputWithFormProps<
   PropsRepairWithForm,
   Repair,
-  [ Repair ],
+  [Repair],
   any
 >;
 export type StateRepair = {
-  carListOptions: DefaultSelectOption<Car['asuods_id'], Car['gov_number'], Car>[];
+  carListOptions: DefaultSelectOption<
+    Car['asuods_id'],
+    Car['gov_number'],
+    Car
+  >[];
   repairCompanyOptions: DefaultSelectListMapper<RepairCompany>;
   repairTypeOptions: DefaultSelectListMapper<RepairType>;
   statusOptions: DefaultSelectListMapper<any>;

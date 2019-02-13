@@ -11,7 +11,7 @@ import {
   MultiSelectField,
   DataTimeField,
   FileField,
- } from 'components/ui/input/fields';
+} from 'components/ui/input/fields';
 
 import { DivNone } from 'global-styled/global-styled';
 
@@ -33,29 +33,36 @@ import {
   DispatchPropsTechMaint,
   PropsTechMaintWithForm,
 } from 'components/directories/autobase/tech_maintenance_registry/TechMaintForm/@types/TechMaintForm.h';
-import { TechMaint, TechMaintOrder, RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import {
+  TechMaint,
+  TechMaintOrder,
+  RepairCompany,
+} from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { hasMotohours } from 'utils/functions';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import EtsModal from 'components/new/ui/modal/Modal';
 
-class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> {
+class TechMaintForm extends React.PureComponent<
+  PropsTechMaint,
+  StateTechMaint
+> {
   componentDidMount() {
-    this.props.techMaintOrderGetAndSetInStore(
-      this.props.car_model_id,
-    );
+    this.props.techMaintOrderGetAndSetInStore(this.props.car_model_id);
     this.props.repairCompanyGetAndSetInStore();
   }
 
-  makeOptionFromTepairCompanyList = (
-    memoize(
-      (repairCompanyList: RepairCompany[]) => repairCompanyList.map(defaultSelectListMapper),
-    )
+  makeOptionFromTepairCompanyList = memoize(
+    (repairCompanyList: RepairCompany[]) =>
+      repairCompanyList.map(defaultSelectListMapper),
   );
-  makeOptionFromTechMaintOrderList = (
-    memoize(
-      (techMaintOrderList: TechMaintOrder[]) => techMaintOrderList.map(({ tech_maintenance_type_name, id }) => ({ label: tech_maintenance_type_name, value: id })),
-    )
+  makeOptionFromTechMaintOrderList = memoize(
+    (techMaintOrderList: TechMaintOrder[]) =>
+      techMaintOrderList.map(({ tech_maintenance_type_name, id }) => ({
+        label: tech_maintenance_type_name,
+        value: id,
+      })),
   );
 
   render() {
@@ -71,7 +78,9 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     const REPAIR_COMPANIES = this.makeOptionFromTepairCompanyList(
       repairCompanyList,
@@ -81,9 +90,14 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
     );
 
     return (
-      <Modal id="modal-tech-maint" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsModal
+        id="modal-tech-maint"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
@@ -167,42 +181,34 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
               />
             </Col>
             <Col md={12}>
-              {
-                !hasMotohours(state.gov_number)
-                ? (
-                  <ExtField
-                    type="number"
-                    label="Пробег на момент ТО, км"
-                    error={errors.odometr_fact}
-                    disabled={!isPermitted}
-                    value={state.odometr_fact}
-                    onChange={this.props.handleChange}
-                    boundKeys="odometr_fact"
-                  />
-                )
-                : (
-                  <DivNone />
-                )
-              }
+              {!hasMotohours(state.gov_number) ? (
+                <ExtField
+                  type="number"
+                  label="Пробег на момент ТО, км"
+                  error={errors.odometr_fact}
+                  disabled={!isPermitted}
+                  value={state.odometr_fact}
+                  onChange={this.props.handleChange}
+                  boundKeys="odometr_fact"
+                />
+              ) : (
+                <DivNone />
+              )}
             </Col>
             <Col md={12}>
-              {
-                hasMotohours(state.gov_number)
-                  ? (
-                    <ExtField
-                      type="number"
-                      label="Счетчик м/ч на момент ТО, м/ч"
-                      error={errors.motohours_fact}
-                      disabled={!isPermitted}
-                      value={state.motohours_fact}
-                      onChange={this.props.handleChange}
-                      boundKeys="motohours_fact"
-                    />
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {hasMotohours(state.gov_number) ? (
+                <ExtField
+                  type="number"
+                  label="Счетчик м/ч на момент ТО, м/ч"
+                  error={errors.motohours_fact}
+                  disabled={!isPermitted}
+                  value={state.motohours_fact}
+                  onChange={this.props.handleChange}
+                  boundKeys="motohours_fact"
+                />
+              ) : (
+                <DivNone />
+              )}
             </Col>
             <Col md={12}>
               <ExtField
@@ -229,44 +235,44 @@ class TechMaintForm extends React.PureComponent<PropsTechMaint, StateTechMaint> 
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
 
 export default compose<PropsTechMaint, OwnTechMaintProps>(
-  connect<StatePropsTechMaint, DispatchPropsTechMaint, OwnTechMaintProps, ReduxState>(
+  connect<
+    StatePropsTechMaint,
+    DispatchPropsTechMaint,
+    OwnTechMaintProps,
+    ReduxState
+  >(
     (state) => ({
       repairCompanyList: getAutobaseState(state).repairCompanyList,
       techMaintOrderList: getAutobaseState(state).techMaintOrderList,
     }),
     (dispatch, { page, path }) => ({
-      techMaintOrderGetAndSetInStore: (car_model_id) => (
+      techMaintOrderGetAndSetInStore: (car_model_id) =>
         dispatch(
           autobaseActions.techMaintOrderGetAndSetInStore(
             { car_model_id },
             { page, path },
           ),
-        )
-      ),
-      repairCompanyGetAndSetInStore: () => (
+        ),
+      repairCompanyGetAndSetInStore: () =>
         dispatch(
-          autobaseActions.repairCompanyGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
+          autobaseActions.repairCompanyGetAndSetInStore({}, { page, path }),
+        ),
     }),
   ),
   withForm<PropsTechMaintWithForm, TechMaint>({

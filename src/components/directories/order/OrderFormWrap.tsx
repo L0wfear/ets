@@ -17,11 +17,7 @@ import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 const MissionFormWrapTSX: any = MissionFormWrap;
 
 const OrderMissionController: React.FunctionComponent<any> = (props) => {
-  const {
-    missionData,
-    dutyMissionData,
-    missionTemplateData,
-  } = props;
+  const { missionData, dutyMissionData, missionTemplateData } = props;
 
   return (
     <div>
@@ -31,13 +27,14 @@ const OrderMissionController: React.FunctionComponent<any> = (props) => {
         onFormHide={props.onHideCM}
         element={missionData.mElement}
         order={missionData.order}
+        deepLvl={1}
       />
       <DutyMissionFormLazy
         showForm={dutyMissionData.showForm}
         onFormHide={props.onHideCDM}
         element={dutyMissionData.dmElement}
       />
-      <Div hidden={!missionTemplateData.showForm} >
+      <Div hidden={!missionTemplateData.showForm}>
         <OrderMissionTemplate
           showForm={missionTemplateData.showForm}
           onFormHide={props.onHideCMTemplate}

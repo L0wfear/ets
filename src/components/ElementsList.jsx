@@ -217,11 +217,11 @@ class ElementsList extends React.Component {
   }
 
   checkDisabledDelete() {
-    return this.state.selectedElement === null;
+    return this.state.selectedElement === null || this.state.showForm;
   }
 
   checkDisabledRead() {
-    return this.state.selectedElement === null;
+    return this.state.selectedElement === null || this.state.showForm;
   }
 
   /**
@@ -248,6 +248,7 @@ class ElementsList extends React.Component {
             buttonName={BCbuttonName}
             onClick={this.createElement}
             permission={this.permissions.create}
+            disabled={this.state.showForm}
           />
         ) : (
           <ButtonCreate
@@ -255,6 +256,7 @@ class ElementsList extends React.Component {
             key={buttons.length}
             onClick={this.createElement}
             permissions={[`${entity}.create`]}
+            disabled={this.state.showForm}
           />
         ),
       );
@@ -308,7 +310,7 @@ class ElementsList extends React.Component {
       buttons.push(
         <Button
           id="regestry-download-alt"
-          disabled={isEmptyList}
+          disabled={isEmptyList || this.state.showForm}
           key={buttons.length}
           bsSize="small"
           onClick={this.handleExport}>
@@ -451,6 +453,7 @@ class ElementsList extends React.Component {
         flux={this.context.flux}
         {...this.getAdditionalFormProps()}
         {...this.props}
+        deepLvl={this.props.deepLvl || 1}
       />,
     );
 

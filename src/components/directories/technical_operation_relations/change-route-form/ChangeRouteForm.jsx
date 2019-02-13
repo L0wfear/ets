@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { DivNone } from 'global-styled/global-styled';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 class ChangeRouteForm extends React.Component {
   static get propTypes() {
@@ -32,6 +33,7 @@ class ChangeRouteForm extends React.Component {
       actionLoadRouteById: PropTypes.func.isRequired,
       page: PropTypes.string.isRequired,
       path: PropTypes.string.isRequired,
+      deepLvl: PropTypes.number.isRequired,
     };
   }
 
@@ -119,13 +121,14 @@ class ChangeRouteForm extends React.Component {
     const { page, path } = this.props;
 
     return this.props.showForm ? (
-      <div>
-        <Modal
+      <>
+        <EtsModal
           id="modal-technical-operation"
           show
           onHide={this.props.onFormHide}
           bsSize="large"
-          backdrop="static">
+          backdrop="static"
+          deepLvl={this.props.deepLvl}>
           <Modal.Header closeButton>
             <Modal.Title>Маршруты</Modal.Title>
           </Modal.Header>
@@ -155,13 +158,14 @@ class ChangeRouteForm extends React.Component {
               </Col>
             </Row>
           </ModalBodyPreloader>
-        </Modal>
+        </EtsModal>
         <RouteFormWrap
           element={this.state.routeElement}
           handleHide={this.onFormHide}
           showForm={this.state.showRouteForm}
+          deepLvl={this.props.deepLvl + 1}
         />
-      </div>
+      </>
     ) : (
       <DivNone />
     );

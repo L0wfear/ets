@@ -15,6 +15,7 @@ export type PropsDutyMissionFormLazy = {
   onFormHide: OnFormHideType;
   readOnly?: boolean;
 
+  deepLvl?: number;
   loadingPageName?: string;
   page?: string;
   path?: string;
@@ -26,33 +27,44 @@ export type StatePropsDutyMission = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
   employeeIndex: IStateEmployee['employeeIndex'];
-  STRUCTURE_FIELD_VIEW: ReturnType<typeof getSessionStructuresParams>['STRUCTURE_FIELD_VIEW'];
+  STRUCTURE_FIELD_VIEW: ReturnType<
+    typeof getSessionStructuresParams
+  >['STRUCTURE_FIELD_VIEW'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
   dependeceOrder: IStateMissions['dutyMissionData']['dependeceOrder'];
   dependeceTechnicalOperation: IStateMissions['dutyMissionData']['dependeceTechnicalOperation'];
 };
 
 export type DispatchPropsDutyMission = {
-  employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
-  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
-  actionPrintFormDutyMission: HandleThunkActionCreator<typeof missionsActions.actionPrintFormDutyMission>;
-  actionLoadOrderAndTechnicalOperationById: HandleThunkActionCreator<typeof missionsActions.actionLoadOrderAndTechnicalOperationById>;
-  actionSetDependenceOrderDataForDutyMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceOrderDataForDutyMission>;
+  employeeGetAndSetInStore: HandleThunkActionCreator<
+    typeof employeeActions.employeeGetAndSetInStore
+  >;
+  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<
+    typeof employeeActions.employeeEmployeeResetSetEmployee
+  >;
+  actionPrintFormDutyMission: HandleThunkActionCreator<
+    typeof missionsActions.actionPrintFormDutyMission
+  >;
+  actionLoadOrderAndTechnicalOperationById: HandleThunkActionCreator<
+    typeof missionsActions.actionLoadOrderAndTechnicalOperationById
+  >;
+  actionSetDependenceOrderDataForDutyMission: HandleThunkActionCreator<
+    typeof missionsActions.actionSetDependenceOrderDataForDutyMission
+  >;
 };
 export type OwnDutyMissionProps = {
   element: Partial<DutyMission> | null;
   handleHide: OnFormHideType;
   readOnly?: boolean;
 
+  deepLvl: number;
   page: string;
   path?: string;
 };
 
-export type PropsDutyMissionWithForm = (
-  StatePropsDutyMission
-  & DispatchPropsDutyMission
-  & OwnDutyMissionProps
-);
+export type PropsDutyMissionWithForm = StatePropsDutyMission &
+  DispatchPropsDutyMission &
+  OwnDutyMissionProps;
 
 export type PropsDutyMissionForm = OutputWithFormProps<
   PropsDutyMissionWithForm,
@@ -60,5 +72,4 @@ export type PropsDutyMissionForm = OutputWithFormProps<
   any,
   any
 >;
-export type StateDutyMission = {
-};
+export type StateDutyMission = {};

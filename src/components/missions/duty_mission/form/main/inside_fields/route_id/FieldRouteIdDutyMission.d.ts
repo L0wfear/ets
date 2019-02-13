@@ -13,38 +13,43 @@ export type StatePropsFieldRouteIdDutyMission = {
   dependeceTechnicalOperation: IStateMissions['dutyMissionData']['dependeceTechnicalOperation'];
 };
 export type DispatchPropsFieldRouteIdDutyMission = {
-  actionLoadRouteById: HandleThunkActionCreator<typeof routesActions.actionLoadRouteById>;
-  actionLoadAndSetInStoreRoutes: HandleThunkActionCreator<typeof routesActions.actionLoadAndSetInStoreRoutes>;
-  actionResetSetRoutes: HandleThunkActionCreator<typeof routesActions.actionResetSetRoutes>;
+  actionLoadRouteById: HandleThunkActionCreator<
+    typeof routesActions.actionLoadRouteById
+  >;
+  actionLoadAndSetInStoreRoutes: HandleThunkActionCreator<
+    typeof routesActions.actionLoadAndSetInStoreRoutes
+  >;
+  actionResetSetRoutes: HandleThunkActionCreator<
+    typeof routesActions.actionResetSetRoutes
+  >;
 };
 export type OwnPropsFieldRouteIdDutyMission = {
   error: string | null;
   value: DutyMission['route_id'];
   name: DutyMission['route_name'];
-  municipal_facility_id: DutyMission['municipal_facility_id'],
-  municipal_facility_name: DutyMission['municipal_facility_name'],
-  technical_operation_id: DutyMission['technical_operation_id'],
-  technical_operation_name: DutyMission['technical_operation_name'],
+  municipal_facility_id: DutyMission['municipal_facility_id'];
+  municipal_facility_name: DutyMission['municipal_facility_name'];
+  technical_operation_id: DutyMission['technical_operation_id'];
+  technical_operation_name: DutyMission['technical_operation_name'];
 
   DUTY_MISSION_IS_ORDER_SOURCE: boolean;
 
   isPermitted: boolean;
   disabled: boolean;
 
-  structure_id: DutyMission['structure_id'],
-  structure_name: DutyMission['structure_name'],
+  structure_id: DutyMission['structure_id'];
+  structure_name: DutyMission['structure_name'];
 
   onChange: (obj: Partial<DutyMission>) => void;
 
+  deepLvl: number;
   page: string;
   path: string;
 };
 
-export type PropsFieldRouteIdDutyMission = (
-  StatePropsFieldRouteIdDutyMission
-  & DispatchPropsFieldRouteIdDutyMission
-  & OwnPropsFieldRouteIdDutyMission
-);
+export type PropsFieldRouteIdDutyMission = StatePropsFieldRouteIdDutyMission &
+  DispatchPropsFieldRouteIdDutyMission &
+  OwnPropsFieldRouteIdDutyMission;
 
 export type StateFieldRouteIdDutyMission = {
   showRouteForm: boolean;

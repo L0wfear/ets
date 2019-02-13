@@ -11,6 +11,7 @@ export type PropsDutyMissionTemplateFormLazy = {
   element: Partial<DutyMissionTemplate> | null;
   onFormHide: OnFormHideType;
 
+  deepLvl?: number;
   loadingPageName?: string;
   page?: string;
   path?: string;
@@ -22,25 +23,30 @@ export type StatePropsDutyMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
   employeeIndex: IStateEmployee['employeeIndex'];
-  STRUCTURE_FIELD_VIEW: ReturnType<typeof getSessionStructuresParams>['STRUCTURE_FIELD_VIEW'];
+  STRUCTURE_FIELD_VIEW: ReturnType<
+    typeof getSessionStructuresParams
+  >['STRUCTURE_FIELD_VIEW'];
 };
 
 export type DispatchPropsDutyMissionTemplate = {
-  employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
-  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
+  employeeGetAndSetInStore: HandleThunkActionCreator<
+    typeof employeeActions.employeeGetAndSetInStore
+  >;
+  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<
+    typeof employeeActions.employeeEmployeeResetSetEmployee
+  >;
 };
 export type OwnDutyMissionTemplateProps = {
   element: Partial<DutyMissionTemplate> | null;
-  handleHide: OnFormHideType
+  handleHide: OnFormHideType;
+  deepLvl: number;
   page: string;
   path?: string;
 };
 
-export type PropsDutyMissionTemplateWithForm = (
-  StatePropsDutyMissionTemplate
-  & DispatchPropsDutyMissionTemplate
-  & OwnDutyMissionTemplateProps
-);
+export type PropsDutyMissionTemplateWithForm = StatePropsDutyMissionTemplate &
+  DispatchPropsDutyMissionTemplate &
+  OwnDutyMissionTemplateProps;
 
 export type PropsDutyMissionTemplateForm = OutputWithFormProps<
   PropsDutyMissionTemplateWithForm,
@@ -48,5 +54,4 @@ export type PropsDutyMissionTemplateForm = OutputWithFormProps<
   any,
   any
 >;
-export type StateDutyMissionTemplate = {
-};
+export type StateDutyMissionTemplate = {};

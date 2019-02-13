@@ -3,12 +3,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Col from 'react-bootstrap/lib/Col';
 
 import * as _ from 'lodash';
-import {
-  groupBy,
-  forOwn,
-  sortBy,
-  cloneDeep,
-} from 'lodash';
+import { groupBy, forOwn, sortBy, cloneDeep } from 'lodash';
 
 import * as queryString from 'query-string';
 import * as Raven from 'raven-js';
@@ -21,7 +16,10 @@ import {
 
 import Filter from 'components/ui/table/filter/Filter';
 import FilterButton from 'components/ui/table/filter/FilterButton';
-import { getTypeRoute, makeRoutesListForRender } from 'components/new/pages/routes_list/utils/utils';
+import {
+  getTypeRoute,
+  makeRoutesListForRender,
+} from 'components/new/pages/routes_list/utils/utils';
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
@@ -43,7 +41,10 @@ import routesAction from 'redux-main/reducers/modules/routes/actions';
 
 import RoutesLeftTree from 'components/new/pages/routes_list/RoutesLeftTree';
 import { EMPTY_STUCTURE } from 'components/new/pages/routes_list/utils/utils';
-import { RoutesTreeColWrap, RouteListContainer } from 'components/new/pages/routes_list/styled/styled';
+import {
+  RoutesTreeColWrap,
+  RouteListContainer,
+} from 'components/new/pages/routes_list/styled/styled';
 import { getWarningNotification } from 'utils/notifications';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { getDefaultRouteElement } from './form/utils';
@@ -85,7 +86,10 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
       ROUTES[key1][key2] = groupBy(arr2, (r: any) => r.front_work_type_name);
 
       Object.entries(ROUTES[key1][key2]).forEach(([key, arr]) => {
-        ROUTES[key1][key2][key] = groupBy(arr, (r: any) => r.technical_operation_name);
+        ROUTES[key1][key2][key] = groupBy(
+          arr,
+          (r: any) => r.technical_operation_name,
+        );
       });
     });
   });
@@ -148,7 +152,15 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       filterValues: {
         season_id: {
           type: 'multiselect',
-          value: [3, getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end) === 'winter' ? 2 : 1],
+          value: [
+            3,
+            getCurrentSeason(
+              this.props.appConfig.summer_start,
+              this.props.appConfig.summer_end,
+            ) === 'winter'
+              ? 2
+              : 1,
+          ],
         },
       },
       filterModalIsOpen: false,
@@ -160,14 +172,16 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   }
 
   async componentDidMount() {
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
 
     if (search && searchObject) {
       const filterValues = {
         ...this.state.filterValues,
       };
-      Object.entries(searchObject).forEach(([ key, value ]) => {
+      Object.entries(searchObject).forEach(([key, value]) => {
         filterValues[key] = {
           type: 'multiselect',
           value: [value],
@@ -184,8 +198,9 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
   onFormHide = (isSubmitted, route) => {
     if (isSubmitted === true && route) {
-      this.refreshRoutes({ showForm: false })
-        .then(() => this.selectRoute(route.id, true));
+      this.refreshRoutes({ showForm: false }).then(() =>
+        this.selectRoute(route.id, true),
+      );
     } else {
       const { selectedRoute_old } = this.state;
 
@@ -194,13 +209,10 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
         showForm: false,
       });
     }
-  }
+  };
 
   async getRouteById(id) {
-    const route_data = await this.props.actionLoadRouteById(
-      id,
-      { page },
-    );
+    const route_data = await this.props.actionLoadRouteById(id, { page });
     return route_data;
   }
 
@@ -214,39 +226,45 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
         value,
       },
     });
-  }
+  };
 
   closeFilter = () => {
     if (this.state.filterModalIsOpen === true) {
       this.setState({ filterModalIsOpen: false });
     }
-  }
+  };
 
   toggleFilter = () => {
     const { filterModalIsOpen } = this.state;
     this.setState({ filterModalIsOpen: !filterModalIsOpen });
-  }
+  };
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues); // tslint:disable-line
 
-    let ROUTES: any = cloneDeep(this.state.routesList).filter((r) => this.shouldBeRendered(r, filterValues));
+    let ROUTES: any = cloneDeep(this.state.routesList).filter((r) =>
+      this.shouldBeRendered(r, filterValues),
+    );
 
     ROUTES = sortBy(ROUTES, (o) => o.name.toLowerCase());
-    ROUTES = ROUTES.filter((r) => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
+    ROUTES = ROUTES.filter((r) => r.technical_operation_name).sort((a, b) =>
+      a.technical_operation_name
+        .toLowerCase()
+        .localeCompare(b.technical_operation_name.toLowerCase()),
+    );
 
-    ROUTES = Object.entries(groupBy(ROUTES, (r) => r.is_main ? 'main' : 'other')).reduce((newObj, [key, arr]) => {
+    ROUTES = Object.entries(
+      groupBy(ROUTES, (r) => (r.is_main ? 'main' : 'other')),
+    ).reduce((newObj, [key, arr]) => {
       newObj[key] = makeMainGroupRoute(arr);
 
       return newObj;
     }, {});
     this.setState({ filterValues, ROUTES });
-  }
+  };
 
   refreshRoutes = async (withState = null) => {
-    const {
-      data: routesListRaw,
-    } = await this.props.actionLoadRoutes(
+    const { data: routesListRaw } = await this.props.actionLoadRoutes(
       {},
       { page },
     );
@@ -257,11 +275,19 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
     routesList.forEach(({ id, name }) => routesMapNameId.set(name, id));
 
-    let ROUTES: any = cloneDeep(routesList).filter((r) => this.shouldBeRendered(r, this.state.filterValues));
+    let ROUTES: any = cloneDeep(routesList).filter((r) =>
+      this.shouldBeRendered(r, this.state.filterValues),
+    );
     ROUTES = sortBy(ROUTES, (o) => o.name.toLowerCase());
-    ROUTES = ROUTES.filter((r) => r.technical_operation_name).sort((a, b) => a.technical_operation_name.toLowerCase().localeCompare(b.technical_operation_name.toLowerCase()));
+    ROUTES = ROUTES.filter((r) => r.technical_operation_name).sort((a, b) =>
+      a.technical_operation_name
+        .toLowerCase()
+        .localeCompare(b.technical_operation_name.toLowerCase()),
+    );
 
-    ROUTES = Object.entries(groupBy(ROUTES, (r) => r.is_main ? 'main' : 'other')).reduce((newObj, [key, arr]) => {
+    ROUTES = Object.entries(
+      groupBy(ROUTES, (r) => (r.is_main ? 'main' : 'other')),
+    ).reduce((newObj, [key, arr]) => {
       newObj[key] = makeMainGroupRoute(arr);
 
       return newObj;
@@ -270,7 +296,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
     this.setState({ ...withState, routesList, routesMapNameId, ROUTES });
 
     return routesList;
-  }
+  };
 
   selectRoute = async (routeOrId, force = false) => {
     let routeData = routeOrId;
@@ -285,9 +311,13 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       routeData = await this.getRouteById(routeOrId);
     } catch (e) {
       console.warn(e); // tslint:disable-line
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Не найден маршрут'));
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification('Не найден маршрут'),
+      );
 
-      Raven.captureException(new Error(`Выбор несуществующего маршрута (${routeOrId})`));
+      Raven.captureException(
+        new Error(`Выбор несуществующего маршрута (${routeOrId})`),
+      );
       return;
     }
     const { showId: showIdOld } = this.state;
@@ -295,10 +325,13 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
     const pathToIsMain = routeData.is_main ? 'main' : 'other';
     const pathTo_type = pathToIsMain + getTypeRoute(routeData.type);
-    const pathTo_structure_name = pathTo_type + (routeData.structure_name || EMPTY_STUCTURE);
+    const pathTo_structure_name =
+      pathTo_type + (routeData.structure_name || EMPTY_STUCTURE);
     const pathTo_technical_operation_name_arr = [];
     routeData.work_types.forEach((elem) => {
-      const pathToStructureWorkType = `${pathTo_structure_name}${elem.work_type_name}`;
+      const pathToStructureWorkType = `${pathTo_structure_name}${
+        elem.work_type_name
+      }`;
 
       pathTo_technical_operation_name_arr.push(
         pathToStructureWorkType,
@@ -306,7 +339,14 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       );
     });
 
-    [pathToIsMain, pathTo_type, pathTo_structure_name, ...pathTo_technical_operation_name_arr].filter((r) => !!r).forEach((r) => showId.has(r) ? '' : showId.add(r));
+    [
+      pathToIsMain,
+      pathTo_type,
+      pathTo_structure_name,
+      ...pathTo_technical_operation_name_arr,
+    ]
+      .filter((r) => !!r)
+      .forEach((r) => (showId.has(r) ? '' : showId.add(r)));
 
     this.setState({
       showForm: false,
@@ -316,22 +356,20 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
     });
 
     return routeData;
-  }
+  };
 
-  createRoute = () => (
+  createRoute = () =>
     this.setState({
       showForm: true,
       selectedRoute: {
         ...getDefaultRouteElement(),
       },
-    })
-  )
+    });
 
-  updateRoute = () => (
+  updateRoute = () =>
     this.setState({
       showForm: true,
-    })
-  )
+    });
 
   copyRoute = () => {
     const copiedRoute = cloneDeep(this.state.selectedRoute);
@@ -342,7 +380,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       showForm: true,
       selectedRoute: cloneDeep(copiedRoute),
     });
-  }
+  };
 
   deleteRoute = async () => {
     const { selectedRoute } = this.state;
@@ -352,8 +390,16 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
         body: (
           <>
             <div>
-              <span>{'Удаляемый шаблон маршрута: '}</span><span><b>{selectedRoute.name}</b>.</span></div>
-            <div>{'Удаление шаблона маршрута возможно только вместе со связанными шаблонами заданий и наряд-заданий. Вы подтверждаете такое удаление?'}</div>
+              <span>{'Удаляемый шаблон маршрута: '}</span>
+              <span>
+                <b>{selectedRoute.name}</b>.
+              </span>
+            </div>
+            <div>
+              {
+                'Удаление шаблона маршрута возможно только вместе со связанными шаблонами заданий и наряд-заданий. Вы подтверждаете такое удаление?'
+              }
+            </div>
           </>
         ),
       });
@@ -361,23 +407,20 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       return;
     }
 
-    await this.props.actionRemoveRoute(
-      this.state.selectedRoute.id,
-      { page },
-    );
+    await this.props.actionRemoveRoute(this.state.selectedRoute.id, { page });
     this.refreshRoutes({ selectedRoute: null });
-  }
+  };
 
   handleChange = (selectedRoute) => this.setState({ selectedRoute });
 
-  changeShowId = (showId) => (
-    this.setState({ showId })
-  )
+  changeShowId = (showId) => this.setState({ showId });
 
   shouldBeRendered(obj, filterValues) {
     return Object.entries(filterValues).every(([key, { value }]: any) => {
       if (key === 'season_id') {
-        return value.some((season_id) => (obj.seasons.some((seasonData) => seasonData.season_id === season_id)));
+        return value.some((season_id) =>
+          obj.seasons.some((seasonData) => seasonData.season_id === season_id),
+        );
       }
       if (Array.isArray(obj[key])) {
         return obj[key].some((data) => value.includes(data));
@@ -387,15 +430,9 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   }
 
   render() {
-    const {
-      ROUTES,
-      routesList,
-      selectedRoute,
-    } = this.state;
+    const { ROUTES, routesList, selectedRoute } = this.state;
 
-    const {
-      showForm,
-    } = this.state;
+    const { showForm } = this.state;
 
     const activeFilter = !!Object.values(this.state.filterValues).length;
 
@@ -431,24 +468,25 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                   onClick={this.toggleFilter}
                 />
                 <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
-                  <Glyphicon glyph="plus" />
-                  {' '}
-                  Создать маршрут
+                  <Glyphicon glyph="plus" /> Создать маршрут
                 </ButtonCreateRoute>
-                <ButtonUpdateRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.updateRoute}>
-                  <Glyphicon glyph="pencil" />
-                  {' '}
-                  Изменить маршрут
+                <ButtonUpdateRoute
+                  bsSize="small"
+                  disabled={isNull(selectedRoute)}
+                  onClick={this.updateRoute}>
+                  <Glyphicon glyph="pencil" /> Изменить маршрут
                 </ButtonUpdateRoute>
-                <ButtonUpdateRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.copyRoute}>
-                  <Glyphicon glyph="copy" />
-                  {' '}
-                  Копировать маршрут
+                <ButtonUpdateRoute
+                  bsSize="small"
+                  disabled={isNull(selectedRoute)}
+                  onClick={this.copyRoute}>
+                  <Glyphicon glyph="copy" /> Копировать маршрут
                 </ButtonUpdateRoute>
-                <ButtonDeleteRoute bsSize="small" disabled={isNull(selectedRoute)} onClick={this.deleteRoute}>
-                  <Glyphicon glyph="remove" />
-                  {' '}
-                  Удалить
+                <ButtonDeleteRoute
+                  bsSize="small"
+                  disabled={isNull(selectedRoute)}
+                  onClick={this.deleteRoute}>
+                  <Glyphicon glyph="remove" /> Удалить
                 </ButtonDeleteRoute>
               </div>
             </RouteHeaderContainer>
@@ -463,24 +501,18 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
               tableData={routesList}
             />
             <div className="clearfix">
-              {
-                selectedRoute !== null && selectedRoute.id
-                  ? (
-                    <RouteInfo
-                      route={selectedRoute}
-                      mapKey="mapRouteList"
-                    />
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {selectedRoute !== null && selectedRoute.id ? (
+                <RouteInfo route={selectedRoute} mapKey="mapRouteList" />
+              ) : (
+                <DivNone />
+              )}
               <RouteFormWrap
                 page={page}
                 showForm={showForm}
                 handleHide={this.onFormHide}
                 element={selectedRoute}
                 routesMapNameId={this.state.routesMapNameId}
+                deepLvl={1}
               />
             </div>
           </Col>
@@ -495,27 +527,23 @@ export default compose<PropsRoutesList, OwnPropsRoutesList>(
     page,
     typePreloader: 'mainpage',
   }),
-  connect<StatePropsRoutesList, DispatchPropsRoutesList, OwnPropsRoutesList, ReduxState>(
+  connect<
+    StatePropsRoutesList,
+    DispatchPropsRoutesList,
+    OwnPropsRoutesList,
+    ReduxState
+  >(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
       structures: getSessionState(state).userData.structures,
     }),
     (dispatch: any) => ({
-      actionLoadRoutes: (...arg) => (
-        dispatch(
-          routesAction.actionLoadRoutes(...arg),
-        )
-      ),
-      actionLoadRouteById: (...arg) => (
-        dispatch(
-          routesAction.actionLoadRouteById(...arg),
-        )
-      ),
-      actionRemoveRoute: (...arg) => (
-        dispatch(
-          routesAction.actionRemoveRoute(...arg),
-        )
-      ),
+      actionLoadRoutes: (...arg) =>
+        dispatch(routesAction.actionLoadRoutes(...arg)),
+      actionLoadRouteById: (...arg) =>
+        dispatch(routesAction.actionLoadRouteById(...arg)),
+      actionRemoveRoute: (...arg) =>
+        dispatch(routesAction.actionRemoveRoute(...arg)),
     }),
   ),
 )(RoutesList);

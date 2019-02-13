@@ -10,13 +10,15 @@ export type PropsRouteFormWrap = InputRouteFormProps & {
 };
 
 export type StateRouteFormProps = {
-  userStructureId: InitialStateSession['userData']['structure_id'],
-  userStructureName: InitialStateSession['userData']['structure_name'],
+  userStructureId: InitialStateSession['userData']['structure_id'];
+  userStructureName: InitialStateSession['userData']['structure_name'];
 };
 
 export type DispatchRouteFormProps = {
-  actionValidateRoute: HandleThunkActionCreator<typeof routesActions.actionValidateRoute>;
-  loadGeozones: (serverName: string, company_id?: number | null) => any,
+  actionValidateRoute: HandleThunkActionCreator<
+    typeof routesActions.actionValidateRoute
+  >;
+  loadGeozones: (serverName: string, company_id?: number | null) => any;
 };
 
 export type InputRouteFormProps = {
@@ -29,17 +31,16 @@ export type InputRouteFormProps = {
   fromOrder?: boolean;
   missionAvailableRouteTypes?: string[];
   hasMissionStructureId?: boolean;
+  deepLvl?: number;
 };
 
 export type OwnRouteFormProps = InputRouteFormProps & {
   isPermittedToShowBridge: boolean;
 };
 
-export type PropsRouteWithForm = (
-  StateRouteFormProps
-  & DispatchRouteFormProps
-  & OwnRouteFormProps
-);
+export type PropsRouteWithForm = StateRouteFormProps &
+  DispatchRouteFormProps &
+  OwnRouteFormProps;
 
 export type FormStateRouteForm = Route & {
   normatives: any[];
@@ -50,10 +51,7 @@ export type FormStateRouteForm = Route & {
 export type PropsRouteForm = OutputWithFormProps<
   PropsRouteWithForm,
   FormStateRouteForm,
-  [
-    FormStateRouteForm,
-    boolean?
-  ],
+  [FormStateRouteForm, boolean?],
   any
 >;
 

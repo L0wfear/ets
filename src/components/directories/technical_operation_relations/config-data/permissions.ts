@@ -1,5 +1,5 @@
 export default {
-  list: 'technical_operation_relations.list',
+  list: 'route.list',
   create: 'technical_operation_relations.create',
   read: 'technical_operation_relations.read',
   update: 'technical_operation_relations.update',

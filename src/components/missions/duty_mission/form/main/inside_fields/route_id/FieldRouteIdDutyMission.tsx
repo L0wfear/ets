@@ -19,18 +19,22 @@ import {
 } from 'components/missions/duty_mission/form/main/inside_fields/route_id/FieldRouteIdDutyMission.d';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
-import { getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors/index';
+import {
+  getSomeUniqState,
+  getMissionsState,
+} from 'redux-main/reducers/selectors/index';
 import { getAvailableRouteTypes } from 'components/missions/mission_template/form/template/utils';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { getRoutesState } from 'redux-main/reducers/selectors/index';
 import { Route } from 'redux-main/reducers/modules/routes/@types/index';
 import { makeOptionFromRouteList } from 'components/missions/duty_mission/form/main/inside_fields/route_id/makeOptions';
 
-const getAvailableRouteTypesMemo = (
-  memoize(getAvailableRouteTypes)
-);
+const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
 
-class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyMission, StateFieldRouteIdDutyMission> {
+class FieldRouteIdDutyMission extends React.PureComponent<
+  PropsFieldRouteIdDutyMission,
+  StateFieldRouteIdDutyMission
+> {
   state = {
     showRouteForm: false,
     selectedRouteRaw: null,
@@ -39,20 +43,14 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
   };
 
   static getDerivedStateFromProps(nextProps: PropsFieldRouteIdDutyMission) {
-    const {
-      value,
-      name,
-      routesList,
-      structure_id,
-    } = nextProps;
+    const { value, name, routesList, structure_id } = nextProps;
 
-    let ROUTE_OPTIONS = makeOptionFromRouteList(
-      routesList,
-      structure_id,
-    );
+    let ROUTE_OPTIONS = makeOptionFromRouteList(routesList, structure_id);
 
     if (value) {
-      const selectedRouteNotInOption = ROUTE_OPTIONS.find((routeOptionData) => routeOptionData.value === value);
+      const selectedRouteNotInOption = ROUTE_OPTIONS.find(
+        (routeOptionData) => routeOptionData.value === value,
+      );
 
       if (!selectedRouteNotInOption) {
         ROUTE_OPTIONS = [
@@ -75,10 +73,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
   }
 
   componentDidMount() {
-    const {
-      value,
-      isPermitted,
-    } = this.props;
+    const { value, isPermitted } = this.props;
 
     if (isPermitted) {
       const {
@@ -89,15 +84,12 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         municipalFacilityForDutyMissionList,
       } = this.props;
 
-      const triggerOnGetRouteList = (
-        technical_operation_id
-        && municipal_facility_id
-        && (
-          DUTY_MISSION_IS_ORDER_SOURCE
-            ? dependeceTechnicalOperation
-            : municipalFacilityForDutyMissionList.length
-        )
-      );
+      const triggerOnGetRouteList =
+        technical_operation_id &&
+        municipal_facility_id &&
+        (DUTY_MISSION_IS_ORDER_SOURCE
+          ? dependeceTechnicalOperation
+          : municipalFacilityForDutyMissionList.length);
 
       if (triggerOnGetRouteList) {
         this.getRoutes(technical_operation_id, municipal_facility_id);
@@ -110,9 +102,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
   }
 
   componentDidUpdate(prevProps: PropsFieldRouteIdDutyMission) {
-    const {
-      isPermitted,
-    } = this.props;
+    const { isPermitted } = this.props;
 
     if (isPermitted) {
       const {
@@ -125,30 +115,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         DUTY_MISSION_IS_ORDER_SOURCE,
       } = this.props;
 
-      const triggerOne = (
-        (
-          (
-            technical_operation_id !== prevProps.technical_operation_id
-            || municipal_facility_id !== prevProps.municipal_facility_id
-          )
-          && (
-            DUTY_MISSION_IS_ORDER_SOURCE
-              ? dependeceTechnicalOperation
-              : municipalFacilityForDutyMissionList.length
-          )
-        )
-        || (
-          DUTY_MISSION_IS_ORDER_SOURCE
-            ? (
-                !dependeceTechnicalOperation
-                && prevProps.dependeceTechnicalOperation
-            )
-            : (
-              !municipalFacilityForDutyMissionList.length
-              && prevProps.municipalFacilityForDutyMissionList.length
-            )
-        )
-      );
+      const triggerOne =
+        ((technical_operation_id !== prevProps.technical_operation_id ||
+          municipal_facility_id !== prevProps.municipal_facility_id) &&
+          (DUTY_MISSION_IS_ORDER_SOURCE
+            ? dependeceTechnicalOperation
+            : municipalFacilityForDutyMissionList.length)) ||
+        (DUTY_MISSION_IS_ORDER_SOURCE
+          ? !dependeceTechnicalOperation &&
+            prevProps.dependeceTechnicalOperation
+          : !municipalFacilityForDutyMissionList.length &&
+            prevProps.municipalFacilityForDutyMissionList.length);
 
       if (triggerOne) {
         if (technical_operation_id && municipal_facility_id) {
@@ -161,7 +138,11 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
       }
       if (structure_id !== prevProps.structure_id) {
         if (structure_id) {
-          const route_structure_id = get(this.state.selectedRoute, 'structure_id', null);
+          const route_structure_id = get(
+            this.state.selectedRoute,
+            'structure_id',
+            null,
+          );
 
           if (route_structure_id !== structure_id) {
             this.handleRouteIdChange(null);
@@ -181,17 +162,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
     const {
       dependeceTechnicalOperation,
       DUTY_MISSION_IS_ORDER_SOURCE,
-      page, path,
+      page,
+      path,
     } = this.props;
 
     this.props.actionLoadAndSetInStoreRoutes(
       {
         technical_operation_id,
         municipal_facility_id,
-        type: (
-          DUTY_MISSION_IS_ORDER_SOURCE
-            ? dependeceTechnicalOperation.route_types
-            : getAvailableRouteTypesMemo(
+        type: (DUTY_MISSION_IS_ORDER_SOURCE
+          ? dependeceTechnicalOperation.route_types
+          : getAvailableRouteTypesMemo(
               this.props.municipalFacilityForDutyMissionList,
               municipal_facility_id,
             )
@@ -215,10 +196,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
     });
 
     if (isSubmitted) {
-      const {
-        technical_operation_id,
-        municipal_facility_id,
-      } = this.props;
+      const { technical_operation_id, municipal_facility_id } = this.props;
 
       this.getRoutes(technical_operation_id, municipal_facility_id);
     }
@@ -227,9 +205,12 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
       selectedRouteRaw: null,
       showRouteForm: false,
     });
-  }
+  };
 
-  handleRouteIdChange = async (route_id: DutyMission['route_id'], route?: ValuesOf<StateFieldRouteIdDutyMission['ROUTE_OPTIONS']>) => {
+  handleRouteIdChange = async (
+    route_id: DutyMission['route_id'],
+    route?: ValuesOf<StateFieldRouteIdDutyMission['ROUTE_OPTIONS']>,
+  ) => {
     const route_name = get(route, ['rowData', 'name'], '');
     const object_type_id = get(route, ['rowData', 'type_id'], null);
     const object_type_name = get(route, ['rowData', 'type_name'], '');
@@ -240,17 +221,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
       object_type_id,
       object_type_name,
     });
-  }
+  };
 
   async loadSelectedRoute(route_id: Route['id'] | null) {
     if (route_id) {
       const { page, path } = this.props;
 
       try {
-        const route_data = await this.props.actionLoadRouteById(
-          route_id,
-          { page, path },
-        );
+        const route_data = await this.props.actionLoadRouteById(route_id, {
+          page,
+          path,
+        });
 
         if (route_data) {
           this.setState({
@@ -297,7 +278,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         draw_object_list: [],
       },
     });
-  }
+  };
 
   render() {
     const {
@@ -336,91 +317,76 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
               onChange={this.handleRouteIdChange}
               clearable
             />
-            {
-              !value
-                ? (
-                  <Button
-                    id="mt-create-route"
-                    onClick={this.createNewRoute}
-                    disabled={!hasSelectedMunicipalFacilityId || this.props.disabled}
-                  >
-                    Создать новый
-                  </Button>
-                )
-                : (
-                  <DivNone />
-                )
-            }
+            {!value ? (
+              <Button
+                id="mt-create-route"
+                onClick={this.createNewRoute}
+                disabled={
+                  !hasSelectedMunicipalFacilityId || this.props.disabled
+                }>
+                Создать новый
+              </Button>
+            ) : (
+              <DivNone />
+            )}
           </Col>
           <Col md={6}>
-            {
-              selectedRoute && !showRouteForm
-                ? (
-                  <RouteInfo
-                    route={selectedRoute}
-                    noRouteName
-                    mapKey="duty_mission__template_form"
-                  />
-                )
-                : (
-                  <DivNone />
-                )
-            }
+            {selectedRoute && !showRouteForm ? (
+              <RouteInfo
+                route={selectedRoute}
+                noRouteName
+                mapKey="duty_mission__template_form"
+              />
+            ) : (
+              <DivNone />
+            )}
           </Col>
         </Row>
-        {
-          showRouteForm
-            ? (
-              <RouteFormWrap
-                element={selectedRouteRaw}
-                showForm={showRouteForm}
-                handleHide={this.onRouteFormHide}
-                hasMissionStructureId={hasSelectedStructureId}
-                missionAvailableRouteTypes={
-                  (
-                    DUTY_MISSION_IS_ORDER_SOURCE
-                      ? dependeceTechnicalOperation.route_types
-                      : getAvailableRouteTypesMemo(
-                        this.props.municipalFacilityForDutyMissionList,
-                        municipal_facility_id,
-                      )
-                  ).toString()
-                }
-                fromMission
-                fromMissionTemplate
-                page={page}
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
+        {showRouteForm ? (
+          <RouteFormWrap
+            element={selectedRouteRaw}
+            showForm={showRouteForm}
+            handleHide={this.onRouteFormHide}
+            hasMissionStructureId={hasSelectedStructureId}
+            missionAvailableRouteTypes={(DUTY_MISSION_IS_ORDER_SOURCE
+              ? dependeceTechnicalOperation.route_types
+              : getAvailableRouteTypesMemo(
+                  this.props.municipalFacilityForDutyMissionList,
+                  municipal_facility_id,
+                )
+            ).toString()}
+            fromMission
+            fromMissionTemplate
+            deepLvl={this.props.deepLvl + 1}
+            page={page}
+          />
+        ) : (
+          <DivNone />
+        )}
       </>
     );
   }
 }
 
-export default connect<StatePropsFieldRouteIdDutyMission, DispatchPropsFieldRouteIdDutyMission, OwnPropsFieldRouteIdDutyMission, ReduxState>(
+export default connect<
+  StatePropsFieldRouteIdDutyMission,
+  DispatchPropsFieldRouteIdDutyMission,
+  OwnPropsFieldRouteIdDutyMission,
+  ReduxState
+>(
   (state) => ({
     routesList: getRoutesState(state).routesList,
-    municipalFacilityForDutyMissionList: getSomeUniqState(state).municipalFacilityForDutyMissionList,
-    dependeceTechnicalOperation: getMissionsState(state).dutyMissionData.dependeceTechnicalOperation,
+    municipalFacilityForDutyMissionList: getSomeUniqState(state)
+      .municipalFacilityForDutyMissionList,
+    dependeceTechnicalOperation: getMissionsState(state).dutyMissionData
+      .dependeceTechnicalOperation,
   }),
   (dispatch: any, { page, path }) => ({
-    actionLoadRouteById: (...arg) => (
-      dispatch(
-        routesActions.actionLoadRouteById(...arg),
-      )
-    ),
-    actionLoadAndSetInStoreRoutes: (...arg) => (
-      dispatch(
-        routesActions.actionLoadAndSetInStoreRoutes(...arg),
-      )
-    ),
-    actionResetSetRoutes: (...arg) => (
-      dispatch(
-        routesActions.actionResetSetRoutes(...arg),
-      )
-    ),
+    actionLoadRouteById: (...arg) =>
+      dispatch(routesActions.actionLoadRouteById(...arg)),
+    actionLoadAndSetInStoreRoutes: (...arg) =>
+      dispatch(routesActions.actionLoadAndSetInStoreRoutes(...arg)),
+    actionResetSetRoutes: (...arg) =>
+      dispatch(routesActions.actionResetSetRoutes(...arg)),
   }),
 )(FieldRouteIdDutyMission);

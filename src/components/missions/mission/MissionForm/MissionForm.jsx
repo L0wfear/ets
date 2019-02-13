@@ -55,6 +55,7 @@ import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import memoize from 'memoize-one';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 const ButtonSaveMission = withRequirePermissionsNew({
   permissions: missionPermission.update,
@@ -735,12 +736,13 @@ export class MissionForm extends Form {
           handleSubmit={this.handleSubmitFromAssignmentModal}
           show={this.state.showColumnAssignment}
         />
-        <Modal
+        <EtsModal
           id="modal-mission"
           show={this.props.show}
           onHide={this.props.onHide}
           bsSize="large"
-          backdrop="static">
+          backdrop="static"
+          deepLvl={this.props.deepLvl}>
           <ExtDiv hidden={this.state.showColumnAssignment}>
             <Modal.Header closeButton>
               <Modal.Title>{title}</Modal.Title>
@@ -1103,9 +1105,10 @@ export class MissionForm extends Form {
                   : available_route_types
               }
               fromMission
+              deepLvl={this.props.deepLvl + 1}
             />
           </ExtDiv>
-        </Modal>
+        </EtsModal>
       </>
     );
   }

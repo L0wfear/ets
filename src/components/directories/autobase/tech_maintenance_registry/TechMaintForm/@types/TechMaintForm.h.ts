@@ -1,4 +1,7 @@
-import { TechMaint, IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import {
+  TechMaint,
+  IStateAutobase,
+} from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -9,7 +12,8 @@ export type PropsTechMaintFormWrap = {
   element: TechMaint | null;
   car_id: number;
   car_model_id: number;
-  onFormHide: OnFormHideType
+  deepLvl?: number;
+  onFormHide: OnFormHideType;
 
   loadingPageName?: string;
   page?: string;
@@ -22,29 +26,27 @@ export type StatePropsTechMaint = {
 };
 export type DispatchPropsTechMaint = {
   techMaintOrderGetAndSetInStore: any;
-  repairCompanyGetAndSetInStore: any
+  repairCompanyGetAndSetInStore: any;
 };
 export type OwnTechMaintProps = {
   element: TechMaint | null;
-  handleHide: OnFormHideType
+  handleHide: OnFormHideType;
   car_id: number;
   car_model_id: number;
+  deepLvl?: number;
   page: string;
   path?: string;
 };
 
-export type PropsTechMaintWithForm = (
-  StatePropsTechMaint
-  & DispatchPropsTechMaint
-  & OwnTechMaintProps
-);
+export type PropsTechMaintWithForm = StatePropsTechMaint &
+  DispatchPropsTechMaint &
+  OwnTechMaintProps;
 
 export type PropsTechMaint = OutputWithFormProps<
   PropsTechMaintWithForm,
   TechMaint,
-  [ TechMaint ],
+  [TechMaint],
   any
 >;
 //  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
-export type StateTechMaint = {
-};
+export type StateTechMaint = {};

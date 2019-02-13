@@ -60,6 +60,7 @@ import {
   createValidDateTime,
 } from 'utils/dates';
 import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMission';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -237,12 +238,13 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       : this.props.isPermittedToCreate;
 
     return (
-      <Modal
+      <EtsModal
         id="modal-duty-mission"
         show
         onHide={this.handleHideFom}
         bsSize="large"
-        backdrop="static">
+        backdrop="static"
+        deepLvl={this.props.deepLvl}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -454,6 +456,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 structure_id={state.structure_id}
                 structure_name={state.structure_name}
                 onChange={this.props.handleChange}
+                deepLvl={this.props.deepLvl}
                 page={page}
                 path={path}
               />
@@ -492,7 +495,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             <DivNone />
           )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }

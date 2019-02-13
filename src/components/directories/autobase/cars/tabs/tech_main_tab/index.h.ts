@@ -10,10 +10,9 @@ export type OwnPropsTechMaintTab = {
   car_id: number;
   car_model_id: number;
   gov_number: string;
+  deepLvl?: number;
 };
 
-export type PropsTechMaintTab = (
-  StatePropsTechMaintTab
-  & DispatchPropsTechMaintTab
-  & OwnPropsTechMaintTab
-);
+export type PropsTechMaintTab = StatePropsTechMaintTab &
+  DispatchPropsTechMaintTab &
+  OwnPropsTechMaintTab;

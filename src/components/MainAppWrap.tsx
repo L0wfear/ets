@@ -9,8 +9,9 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { MapEtsProvider } from './new/ui/map/context/MapetsContext';
+import EtsGlobalStyle from 'global-styled';
 
-class MainAppWrap extends React.Component <any, any> {
+class MainAppWrap extends React.Component<any, any> {
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,
@@ -18,11 +19,7 @@ class MainAppWrap extends React.Component <any, any> {
   }
 
   render() {
-    const {
-      hasValidToken,
-      userData,
-      ...props
-    } = this.props;
+    const { hasValidToken, userData, ...props } = this.props;
 
     const {
       match: { url },
@@ -30,23 +27,21 @@ class MainAppWrap extends React.Component <any, any> {
 
     const permittedPath = requireAuth(userData.permissionsSet, url);
 
-    if (!hasValidToken) { // нет токена
-      return (
-        <Redirect to="/login" />
-      );
-    } else if (url !== permittedPath) { // запрашиваемый урл не разрешён
-      return (
-        <Redirect to={permittedPath} />
-      );
+    if (!hasValidToken) {
+      // нет токена
+      return <Redirect to="/login" />;
+    } else if (url !== permittedPath) {
+      // запрашиваемый урл не разрешён
+      return <Redirect to={permittedPath} />;
     }
-    if (url === '/change-company' && !userData.isGlavControl) { // для главконтроля
-      return (
-        <Redirect to={requireAuth(userData.permissionsSet, '/monitor')} />
-      );
+    if (url === '/change-company' && !userData.isGlavControl) {
+      // для главконтроля
+      return <Redirect to={requireAuth(userData.permissionsSet, '/monitor')} />;
     }
 
     return (
       <MapEtsProvider>
+        <EtsGlobalStyle />
         <MainApp {...props} />
       </MapEtsProvider>
     );

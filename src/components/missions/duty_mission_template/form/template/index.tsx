@@ -5,34 +5,36 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 import { DivNone } from 'global-styled/global-styled';
 import { PropsDutyMissionTemplateFormLazy } from './@types/index.h';
 
-const DutyMissionTemplateForm = React.lazy(() => (
-  import(/* webpackChunkName: "duty_mission_template_form" */ 'components/missions/duty_mission_template/form/template/DutyMissionTemplateForm')
-));
+const DutyMissionTemplateForm = React.lazy(() =>
+  import(/* webpackChunkName: "duty_mission_template_form" */ 'components/missions/duty_mission_template/form/template/DutyMissionTemplateForm'),
+);
 
-class DutyMissionTemplateFormLazy extends React.Component<PropsDutyMissionTemplateFormLazy, {}> {
+class DutyMissionTemplateFormLazy extends React.Component<
+  PropsDutyMissionTemplateFormLazy,
+  {}
+> {
   render() {
     const { showForm, ...props } = this.props;
     const page = props.loadingPageName || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}duty_mission_template_form`;
+    const path = `${
+      props.path ? `${props.path}-` : ''
+    }duty_mission_template_form`;
 
-    return showForm ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <DutyMissionTemplateForm
-              element={props.element}
-              handleHide={props.onFormHide}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
+    return showForm ? (
+      <ErrorBoundaryForm>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <DutyMissionTemplateForm
+            element={props.element}
+            handleHide={props.onFormHide}
+            deepLvl={this.props.deepLvl || 1}
+            page={page}
+            path={path}
+          />
+        </React.Suspense>
+      </ErrorBoundaryForm>
+    ) : (
+      <DivNone />
+    );
   }
 }
 

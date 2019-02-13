@@ -21,9 +21,7 @@ import {
   CardTitleContainer,
   CardBodyContainer,
 } from 'components/new/pages/dashboard/menu/buttons/styled/styled';
-import {
-  CardContainer,
-} from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
+import { CardContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   StatePropsDashboardMenuButtons,
@@ -34,7 +32,10 @@ import {
 } from 'components/new/pages/dashboard/menu/buttons/DashboardMenuButtons.h';
 import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 
-class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, StateDashboardMenuButtons> {
+class DashboardMenuButtons extends React.Component<
+  PropsDashboardMenuButtons,
+  StateDashboardMenuButtons
+> {
   state = {
     showWaybillFormWrap: false,
     showMissionFormWrap: false,
@@ -43,39 +44,43 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      Object.entries(nextProps).some(([key, value]) => this.props[key] !== value)
-      || Object.entries(nextState).some(([key, value]) => this.state[key] !== value)
+      Object.entries(nextProps).some(
+        ([key, value]) => this.props[key] !== value,
+      ) ||
+      Object.entries(nextState).some(
+        ([key, value]) => this.state[key] !== value,
+      )
     );
   }
 
   showWaybillFormWrap = () => {
     this.setState({ showWaybillFormWrap: true });
-  }
+  };
 
   handleFormHideWaybillFormWrap = () => {
     this.props.loadDataAfterCreateWaybill();
     this.setState({ showWaybillFormWrap: false });
-  }
+  };
 
   showMissionFormWrap = () => {
     this.setState({ showMissionFormWrap: true });
-  }
+  };
 
   handleFormHideMissionFormWrap = () => {
     this.props.loadDataAfterCreateMission();
     this.setState({ showMissionFormWrap: false });
-  }
+  };
 
   showDutyMissionFormWrap = () => {
     this.setState({ showDutyMissionFormWrap: true });
-  }
+  };
 
   handleFormHideDutyMissionFormWrap = (isSubmitted) => {
     if (isSubmitted) {
       this.props.loadDataAfterCreateDutyMission();
     }
     this.setState({ showDutyMissionFormWrap: false });
-  }
+  };
 
   render() {
     return (
@@ -83,10 +88,18 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
         <CardContainer>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>
-            <ButtonCreateWaybill onClick={this.showWaybillFormWrap} >Создать путевой лист</ButtonCreateWaybill>
-            <LinkToOrder to="/orders"><Button active >Исполнение централизованного задания</Button></LinkToOrder>
-            <ButtonCreateMission onClick={this.showMissionFormWrap} >Создать децентрализованное задание</ButtonCreateMission>
-            <ButtonCreateDutyMission onClick={this.showDutyMissionFormWrap} >Создать наряд-задание</ButtonCreateDutyMission>
+            <ButtonCreateWaybill onClick={this.showWaybillFormWrap}>
+              Создать путевой лист
+            </ButtonCreateWaybill>
+            <LinkToOrder to="/orders">
+              <Button active>Исполнение централизованного задания</Button>
+            </LinkToOrder>
+            <ButtonCreateMission onClick={this.showMissionFormWrap}>
+              Создать децентрализованное задание
+            </ButtonCreateMission>
+            <ButtonCreateDutyMission onClick={this.showDutyMissionFormWrap}>
+              Создать наряд-задание
+            </ButtonCreateDutyMission>
           </CardBodyContainer>
         </CardContainer>
         <WaybillFormWrap
@@ -102,6 +115,7 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
           showForm={this.state.showMissionFormWrap}
           fromDashboard
           element={null}
+          deepLvl={1}
         />
         <DutyMissionFormLazy
           onFormHide={this.handleFormHideDutyMissionFormWrap}
@@ -114,23 +128,19 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
   }
 }
 
-export default connect<StatePropsDashboardMenuButtons, DispatchPropsDashboardMenuButtons, OwnerPropsDashboardMenuButtons, ReduxState>(
+export default connect<
+  StatePropsDashboardMenuButtons,
+  DispatchPropsDashboardMenuButtons,
+  OwnerPropsDashboardMenuButtons,
+  ReduxState
+>(
   null,
   (dispatch) => ({
-    loadDataAfterCreateWaybill: () => (
-      dispatch(
-        dashboardLoadDependentDataByWaybillDraft(),
-      )
-    ),
-    loadDataAfterCreateMission: () => (
-      dispatch(
-        dashboardLoadDependentDataByNewMission(),
-      )
-    ),
-    loadDataAfterCreateDutyMission: () => (
-      dispatch(
-        dashboardLoadDependentDataByNewDutyMission(),
-      )
-    ),
+    loadDataAfterCreateWaybill: () =>
+      dispatch(dashboardLoadDependentDataByWaybillDraft()),
+    loadDataAfterCreateMission: () =>
+      dispatch(dashboardLoadDependentDataByNewMission()),
+    loadDataAfterCreateDutyMission: () =>
+      dispatch(dashboardLoadDependentDataByNewDutyMission()),
   }),
 )(DashboardMenuButtons);

@@ -29,17 +29,20 @@ import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/ui/input/fields';
 import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
     carListOptions: [],
     repairCompanyOptions: [],
     repairTypeOptions: [],
-    statusOptions: Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, value]) => !value.disabled).map(([key, value]) => ({
-      value: key,
-      label: value.name,
-      rowData: null,
-    })),
+    statusOptions: Object.entries(AUTOBASE_REPAIR_STATUS)
+      .filter(([, value]) => !value.disabled)
+      .map(([key, value]) => ({
+        value: key,
+        label: value.name,
+        rowData: null,
+      })),
   };
 
   componentDidMount() {
@@ -54,22 +57,23 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     }
   }
   async loadRepairCompany() {
-    const { payload: { data } } = await this.props.autobaseGetRepairCompany();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetRepairCompany();
 
     this.setState({ repairCompanyOptions: data.map(defaultSelectListMapper) });
   }
   async loadRepairType() {
-    const { payload: { data } } = await this.props.autobaseGetRepairType();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetRepairType();
 
     this.setState({ repairTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
     const { page, path } = this.props;
 
-    const { data } = await this.props.autobaseGetSetCar(
-      {},
-      { page, path },
-    );
+    const { data } = await this.props.autobaseGetSetCar({}, { page, path });
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -92,33 +96,35 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       page,
       path,
     } = this.props;
-    const {
-      carListOptions,
-    } = this.state;
+    const { carListOptions } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const ownIsPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
-    const isPermitted = (
-      ownIsPermitted
-      && (
-        isNullOrUndefined(state.company_id)
-        || state.can_edit
-        || state.company_id === this.props.userCompanyId
-      )
-    );
+    const isPermitted =
+      ownIsPermitted &&
+      (isNullOrUndefined(state.company_id) ||
+        state.can_edit ||
+        state.company_id === this.props.userCompanyId);
 
     return (
-      <Modal id="modal-repair" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsModal
+        id="modal-repair"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              {IS_CREATING && !car_id &&
+              {IS_CREATING && !car_id && (
                 <ExtField
                   id="car_id"
                   type="select"
@@ -133,7 +139,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   disabled={!isPermitted}
                   modalKey={path}
                 />
-              }
+              )}
               <ExtField
                 id="repair_company_id"
                 type="select"
@@ -252,37 +258,36 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 disabled={!isPermitted}
                 modalKey={path}
               />
-              {
-                state.fact_date_start && state.fact_date_end &&
-                  <ExtField
-                    id="status"
-                    type="select"
-                    label="Итог проведенного ремонта"
-                    value={state.status}
-                    error={errors.status}
-                    options={this.state.statusOptions}
-                    emptyValue={null}
-                    onChange={this.props.handleChange}
-                    boundKeys="status"
-                    disabled={!isPermitted}
-                    modalKey={path}
-                  />
-              }
+              {state.fact_date_start && state.fact_date_end && (
+                <ExtField
+                  id="status"
+                  type="select"
+                  label="Итог проведенного ремонта"
+                  value={state.status}
+                  error={errors.status}
+                  options={this.state.statusOptions}
+                  emptyValue={null}
+                  onChange={this.props.handleChange}
+                  boundKeys="status"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+              )}
             </Col>
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
@@ -293,27 +298,14 @@ export default compose<PropsRepair, OwnRepairProps>(
       userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch: any, { page, path }) => ({
-      autobaseGetSetCar: (...arg) => (
+      autobaseGetSetCar: (...arg) =>
+        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
+      autobaseGetRepairCompany: () =>
         dispatch(
-          autobaseActions.autobaseGetSetCar(...arg),
-        )
-      ),
-      autobaseGetRepairCompany: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRepairCompany(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetRepairType: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRepairType(
-            {},
-            { page, path },
-          ),
-        )
-      ),
+          autobaseActions.autobaseGetSetRepairCompany({}, { page, path }),
+        ),
+      autobaseGetRepairType: () =>
+        dispatch(autobaseActions.autobaseGetSetRepairType({}, { page, path })),
     }),
   ),
   withForm<PropsRepairWithForm, Repair>({

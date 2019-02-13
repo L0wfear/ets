@@ -17,10 +17,10 @@ type defaultMissionI = {
   description: string;
   date_start: Date;
   date_end: Date;
-  assign_to_waybill: string,
-  mission_source_id: number,
-  passes_count: number,
-  is_new: boolean,
+  assign_to_waybill: string;
+  mission_source_id: number;
+  passes_count: number;
+  is_new: boolean;
 };
 
 type StateCarMissions = {
@@ -28,17 +28,17 @@ type StateCarMissions = {
   element: any;
 };
 
-class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> {
+class CreateMission extends React.Component<
+  PropsCarMissions,
+  StateCarMissions
+> {
   state = {
     showMissionFormWrap: false,
     element: null,
   };
 
   handleClickCreateMission = () => {
-    const {
-      gps_code,
-      carActualGpsNumberIndex,
-    } = this.props;
+    const { gps_code, carActualGpsNumberIndex } = this.props;
 
     const carInfo = carActualGpsNumberIndex[gps_code];
 
@@ -54,13 +54,10 @@ class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> 
       showMissionFormWrap: true,
       element,
     });
-  }
+  };
 
   handleHideMissionForm = () => {
-    const {
-      gps_code,
-      carActualGpsNumberIndex,
-    } = this.props;
+    const { gps_code, carActualGpsNumberIndex } = this.props;
 
     this.props.fetchMissionsData({
       asuods_id: carActualGpsNumberIndex[gps_code].asuods_id,
@@ -71,25 +68,16 @@ class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> 
       showMissionFormWrap: false,
       element: null,
     });
-  }
+  };
 
-  makeCarActualGpsNumberArray = (
-    memoizeOne(
-      (carActualGpsNumberIndex) => (
-        Object.values(carActualGpsNumberIndex)
-      ),
-    )
+  makeCarActualGpsNumberArray = memoizeOne((carActualGpsNumberIndex) =>
+    Object.values(carActualGpsNumberIndex),
   );
 
   render() {
-    const {
-      carActualGpsNumberIndex,
-    } = this.props;
+    const { carActualGpsNumberIndex } = this.props;
 
-    const {
-      element,
-      showMissionFormWrap,
-    } = this.state;
+    const { element, showMissionFormWrap } = this.state;
 
     const carActualGpsNumberArray = this.makeCarActualGpsNumberArray(
       carActualGpsNumberIndex,
@@ -97,7 +85,7 @@ class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> 
 
     return (
       <FlexCenterButton>
-        <ButtonCreateMission onClick={this.handleClickCreateMission} >
+        <ButtonCreateMission onClick={this.handleClickCreateMission}>
           Создать децентрализованное задание
         </ButtonCreateMission>
         <MissionFormWrap
@@ -106,6 +94,7 @@ class CreateMission extends React.Component<PropsCarMissions, StateCarMissions> 
           element={element}
           carsList={carActualGpsNumberArray}
           withDefineCarId
+          deepLvl={1}
         />
       </FlexCenterButton>
     );
@@ -116,17 +105,16 @@ const mapStateToProps = (state) => ({
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 });
 const mapDispatchToProps = (dispatch) => ({
-  fetchMissionsData: (props) => (
+  fetchMissionsData: (props) =>
     dispatch(
       fetchCarInfo({
         asuods_id: props.asuods_id,
         gps_code: props.gps_code,
       }),
-    )
-  ),
+    ),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-) (CreateMission);
+)(CreateMission);

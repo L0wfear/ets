@@ -72,6 +72,7 @@ class InsurancePolicyList extends ElementsList {
   onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
+      selectedElement: null,
     };
 
     if (isSubmitted) {
@@ -85,6 +86,7 @@ class InsurancePolicyList extends ElementsList {
   getAdditionalFormProps() {
     return {
       loadingPageName,
+      deepLvl: this.props.deepLvl || 1,
     };
   }
 }

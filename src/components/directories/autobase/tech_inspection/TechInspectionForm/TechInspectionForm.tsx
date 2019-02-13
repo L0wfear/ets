@@ -27,8 +27,12 @@ import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import EtsModal from 'components/new/ui/modal/Modal';
 
-class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateTechInspection> {
+class TechInspectionForm extends React.PureComponent<
+  PropsTechInspection,
+  StateTechInspection
+> {
   state = {
     carListOptions: [],
   };
@@ -42,10 +46,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
   }
   async loadCars() {
     const { page, path } = this.props;
-    const { data } = await this.props.autobaseGetSetCar(
-      {},
-      { page, path },
-    );
+    const { data } = await this.props.autobaseGetSetCar({}, { page, path });
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -66,14 +67,14 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
         is_allowed: true,
       });
     }
-  }
+  };
   handleChangeIsActiveToFalse = () => {
     if (this.props.formState.is_allowed) {
       this.props.handleChange({
         is_allowed: false,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -83,32 +84,34 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
       page,
       path,
     } = this.props;
-    const {
-      carListOptions,
-    } = this.state;
+    const { carListOptions } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const ownIsPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
-    const isPermitted = (
-      ownIsPermitted
-      && (
-        isNullOrUndefined(state.company_id)
-        || state.company_id === this.props.userCompanyId
-      )
-    );
+    const isPermitted =
+      ownIsPermitted &&
+      (isNullOrUndefined(state.company_id) ||
+        state.company_id === this.props.userCompanyId);
 
     return (
-      <Modal id="modal-tech-inspection" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsModal
+        id="modal-tech-inspection"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              {IS_CREATING && !car_id &&
+              {IS_CREATING && !car_id && (
                 <ExtField
                   id="car_id"
                   type="select"
@@ -123,7 +126,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                   disabled={!isPermitted}
                   modalKey={path}
                 />
-              }
+              )}
               <ExtField
                 id="reg_number"
                 type="string"
@@ -220,32 +223,34 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
 
 export default compose<PropsTechInspection, OwnTechInspectionProps>(
-  connect<StatePropsTechInspection, DispatchPropsTechInspection, OwnTechInspectionProps, ReduxState>(
+  connect<
+    StatePropsTechInspection,
+    DispatchPropsTechInspection,
+    OwnTechInspectionProps,
+    ReduxState
+  >(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch: any) => ({
-      autobaseGetSetCar: (...arg) => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(...arg),
-        )
-      ),
+      autobaseGetSetCar: (...arg) =>
+        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
     }),
   ),
   withForm<PropsTechInspectionWithForm, TechInspection>({

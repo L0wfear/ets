@@ -22,10 +22,7 @@ import { TechMaintTabWrap } from './styled';
 const Field: any = onChangeWithKeys(BaseField);
 
 const TechMaintTab: React.FunctionComponent<PropsTechMaintTab> = (props) => {
-  const {
-    type,
-    techMaintExtra,
-  } = props;
+  const { type, techMaintExtra } = props;
 
   return (
     <TechMaintTabWrap>
@@ -34,9 +31,13 @@ const TechMaintTab: React.FunctionComponent<PropsTechMaintTab> = (props) => {
           <Col md={6}>
             <Field
               type="string"
-              label={type ? 'Срок по пробегу, м/ч:' : 'Срок до ТО по пробегу, км:'}
+              label={
+                type ? 'Срок по пробегу, м/ч:' : 'Срок до ТО по пробегу, км:'
+              }
               readOnly
-              value={get(techMaintExtra, 'car_interval_probeg', '-') || 'Не указано'}
+              value={
+                get(techMaintExtra, 'car_interval_probeg', '-') || 'Не указано'
+              }
             />
           </Col>
           <Col md={6}>
@@ -53,13 +54,17 @@ const TechMaintTab: React.FunctionComponent<PropsTechMaintTab> = (props) => {
         car_id={props.car_id}
         car_model_id={props.car_model_id}
         gov_number={props.gov_number}
+        deepLvl={props.deepLvl}
       />
     </TechMaintTabWrap>
   );
 };
 
-export default connect<StatePropsTechMaintTab, DispatchPropsTechMaintTab, OwnPropsTechMaintTab, ReduxState>(
-  (state) => ({
-    techMaintExtra: getAutobaseState(state).techMaintExtra, // запрос в TechMaintList
-  }),
-)(TechMaintTab);
+export default connect<
+  StatePropsTechMaintTab,
+  DispatchPropsTechMaintTab,
+  OwnPropsTechMaintTab,
+  ReduxState
+>((state) => ({
+  techMaintExtra: getAutobaseState(state).techMaintExtra, // запрос в TechMaintList
+}))(TechMaintTab);

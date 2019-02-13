@@ -26,8 +26,12 @@ import {
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
+import EtsModal from 'components/new/ui/modal/Modal';
 
-class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, StateInsurancePolicy> {
+class InsurancePolicyForm extends React.PureComponent<
+  PropsInsurancePolicy,
+  StateInsurancePolicy
+> {
   state = {
     insuranceTypeOptions: [],
     carListOptions: [],
@@ -43,16 +47,15 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
     }
   }
   async loadInsuranceType() {
-    const { payload: { data } } = await this.props.autobaseGetInsuranceType();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetInsuranceType();
 
     this.setState({ insuranceTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
     const { page, path } = this.props;
-    const { data } = await this.props.autobaseGetSetCar(
-      {},
-      { page, path },
-    );
+    const { data } = await this.props.autobaseGetSetCar({}, { page, path });
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -75,25 +78,29 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
       page,
       path,
     } = this.props;
-    const {
-      insuranceTypeOptions,
-      carListOptions,
-    } = this.state;
+    const { insuranceTypeOptions, carListOptions } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-insurance-policy" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsModal
+        id="modal-insurance-policy"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              {IS_CREATING && !car_id &&
+              {IS_CREATING && !car_id && (
                 <ExtField
                   id="car_id"
                   type="select"
@@ -108,7 +115,7 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
                   disabled={!isPermitted}
                   modalKey={path}
                 />
-              }
+              )}
               <ExtField
                 id="insurer"
                 type="string"
@@ -216,38 +223,34 @@ class InsurancePolicyForm extends React.PureComponent<PropsInsurancePolicy, Stat
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
 
 export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
-  connect<StatePropsInsurancePolicy, DispatchPropsInsurancePolicy, OwnInsurancePolicyProps, ReduxState>(
+  connect<
+    StatePropsInsurancePolicy,
+    DispatchPropsInsurancePolicy,
+    OwnInsurancePolicyProps,
+    ReduxState
+  >(
     null,
     (dispatch: any, { page, path }) => ({
-      autobaseGetInsuranceType: () => (
-        dispatch(
-          autobaseActions.autobaseGetInsuranceType(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetCar: (...arg) => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(...arg),
-        )
-      ),
+      autobaseGetInsuranceType: () =>
+        dispatch(autobaseActions.autobaseGetInsuranceType({}, { page, path })),
+      autobaseGetSetCar: (...arg) =>
+        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
     }),
   ),
   withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({

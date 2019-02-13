@@ -23,6 +23,7 @@ import { get } from 'lodash';
 import { setUserContext } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
+import someUniqActions from '../some_uniq/actions';
 
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
@@ -58,12 +59,12 @@ export const sessionGetTracksCachingAppConfig = () => ({
   },
 });
 
-export const sessionCahngeCompanyOnAnother: any = (company_id, { page, path }) => async (dispatch) => {
+export const sessionCahngeCompanyOnAnother: any = (
+  company_id,
+  { page, path },
+) => async (dispatch) => {
   const {
-    payload: {
-      payload: userDataRaw,
-      token,
-    },
+    payload: { payload: userDataRaw, token },
   } = await dispatch({
     type: 'none',
     payload: ChangeRoleService.post({ company_id }, false, 'json'),
@@ -76,12 +77,7 @@ export const sessionCahngeCompanyOnAnother: any = (company_id, { page, path }) =
 
   const userData = makeUserData(userDataRaw);
 
-  dispatch(
-    sessionSetData(
-      userData,
-      token,
-    ),
-  );
+  dispatch(sessionSetData(userData, token));
 
   return {
     userData,
@@ -91,10 +87,7 @@ export const sessionCahngeCompanyOnAnother: any = (company_id, { page, path }) =
 
 export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
   const {
-    payload: {
-      payload: userDataRaw,
-      token,
-    },
+    payload: { payload: userDataRaw, token },
   } = await dispatch({
     type: 'none',
     payload: AuthService.post(user, false, 'json'),
@@ -108,12 +101,7 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
   // calc stableRedirect
   const userData = makeUserData(userDataRaw);
 
-  await dispatch(
-    sessionSetData(
-      userData,
-      token,
-    ),
-  );
+  await dispatch(sessionSetData(userData, token));
 
   return {
     userData,
@@ -127,11 +115,13 @@ export const sessionSetData: any = (userData, session) => async (dispatch) => {
   setUserContext(userData);
 
   await Promise.all([
+    dispatch(sessionSetAppConfig()),
+    dispatch(sessionLoadTracksCachingConfig()),
     dispatch(
-      sessionSetAppConfig(),
-    ),
-    dispatch(
-      sessionLoadTracksCachingConfig(),
+      someUniqActions.actionGetAndSetInStoreMissionSource(
+        {},
+        { page: 'mainpage' },
+      ),
     ),
   ]);
 
@@ -146,12 +136,8 @@ export const sessionSetData: any = (userData, session) => async (dispatch) => {
 
 export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
   const {
-    payload: {
-      appConfigTracksCaching,
-    },
-  } = await dispatch(
-    sessionGetTracksCachingAppConfig(),
-  );
+    payload: { appConfigTracksCaching },
+  } = await dispatch(sessionGetTracksCachingAppConfig());
 
   const { api_version_stable } = appConfigTracksCaching;
   let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
@@ -159,7 +145,13 @@ export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
     versions = {};
   }
 
-  const versionFromLocalStorage = Number(get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), config.tracksCaching, ''));
+  const versionFromLocalStorage = Number(
+    get(
+      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      config.tracksCaching,
+      '',
+    ),
+  );
   if (versionFromLocalStorage !== api_version_stable) {
     console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
 
@@ -170,7 +162,9 @@ export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
 };
 
 export const checkToken: any = () => async (dispatch, getState) => {
-  const { payload: { data } } = await dispatch({
+  const {
+    payload: { data },
+  } = await dispatch({
     type: 'none',
     payload: AuthCheckService.get(),
     meta: {

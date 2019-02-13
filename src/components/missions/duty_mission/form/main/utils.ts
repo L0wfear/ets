@@ -1,7 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import {
-  get,
-} from 'lodash';
+import { get } from 'lodash';
 import memoize from 'memoize-one';
 
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
@@ -30,7 +28,7 @@ export const makeDefaultDutyMission = (): DutyMission => ({
   id: null,
   is_archive: false,
   is_valid_to_order_operation: null,
-  mission_source_id: null,
+  mission_source_id: 3,
   mission_source_name: '',
   mission_source_text: '',
   municipal_facility_id: null,
@@ -56,7 +54,9 @@ export const makeDefaultDutyMission = (): DutyMission => ({
   work_class_id: null,
 });
 
-export const getDefaultDutyMissionElement = (element?: Partial<DutyMission>) => {
+export const getDefaultDutyMissionElement = (
+  element?: Partial<DutyMission>,
+) => {
   const newElement = makeDefaultDutyMission();
   if (isObject(element)) {
     Object.keys(newElement).forEach((key) => {
@@ -75,16 +75,17 @@ export const getAvailableRouteTypesForDutyMission = (
 ) => {
   return get(
     municipalFacilityForMissionList.find(
-      (mfData) => (
-        mfData.municipal_facility_id === municipal_facility_id
-      ),
+      (mfData) => mfData.municipal_facility_id === municipal_facility_id,
     ),
     'route_types',
     [],
   );
 };
 
-export const isPermittedEmployeeForDutyMission = (employee: Employee | null, structure_id: number | null) => {
+export const isPermittedEmployeeForDutyMission = (
+  employee: Employee | null,
+  structure_id: number | null,
+) => {
   if (!employee) {
     return false;
   }
@@ -97,71 +98,57 @@ export const isPermittedEmployeeForDutyMission = (employee: Employee | null, str
     is_common,
   } = employee;
 
-  const trigrrerOnPermitted = (
-    !!position_name
-    && can_duty_mission
-    && active
-    && (
-      is_common
-      || !structure_id
-      || company_structure_id === structure_id
-    )
-  );
+  const trigrrerOnPermitted =
+    !!position_name &&
+    can_duty_mission &&
+    active &&
+    (is_common || !structure_id || company_structure_id === structure_id);
 
   return trigrrerOnPermitted;
 };
 
-export const makeOptionsByEmployee = (
-  memoize(
-    (
-      employeeList: Employee[],
-      structure_id: DutyMission['structure_id'],
-    ) => {
-      const FOREMANS = employeeList.reduce<DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean }>[]>((newArr, employee) => {
-        const isPermitted = isPermittedEmployeeForDutyMission(
-          employee,
-          structure_id,
-        );
+export const makeOptionsByEmployee = memoize(
+  (employeeList: Employee[], structure_id: DutyMission['structure_id']) => {
+    const FOREMANS = employeeList.reduce<
+      DefaultSelectOption<
+        Employee['id'],
+        string,
+        Employee & { active_for_brigade: boolean }
+      >[]
+    >((newArr, employee) => {
+      const isPermitted = isPermittedEmployeeForDutyMission(
+        employee,
+        structure_id,
+      );
 
-        if (isPermitted) {
-          newArr.push({
-            value: employee.id,
-            label: createFio(employee, true),
-            rowData: {
-              active_for_brigade: true,
-              ...employee,
-            },
-          });
-        }
+      if (isPermitted) {
+        newArr.push({
+          value: employee.id,
+          label: createFio(employee, true),
+          rowData: {
+            active_for_brigade: true,
+            ...employee,
+          },
+        });
+      }
 
-        return newArr;
+      return newArr;
+    }, []);
 
-      }, []);
-
-      return FOREMANS;
-    },
-  )
+    return FOREMANS;
+  },
 );
 
-export const dutyMissionIsDisplay = (status) => (
-  Boolean(status)
-  && status !== DUTY_MISSION_STATUS.not_assigned
-);
-export const dutyMissionIsAssigned = (status) => (
-  status === DUTY_MISSION_STATUS.assigned
-);
-export const dutyMissionIsComplete = (status) => (
-  status === DUTY_MISSION_STATUS.complete
-);
-export const dutyMissionIsClosed = (status) => (
-  status === DUTY_MISSION_STATUS.complete
-  || status === DUTY_MISSION_STATUS.fail
-);
+export const dutyMissionIsDisplay = (status) =>
+  Boolean(status) && status !== DUTY_MISSION_STATUS.not_assigned;
+export const dutyMissionIsAssigned = (status) =>
+  status === DUTY_MISSION_STATUS.assigned;
+export const dutyMissionIsComplete = (status) =>
+  status === DUTY_MISSION_STATUS.complete;
+export const dutyMissionIsClosed = (status) =>
+  status === DUTY_MISSION_STATUS.complete ||
+  status === DUTY_MISSION_STATUS.fail;
 export const isOrderSource = (
-  (
-    mission_source_id: DutyMission['mission_source_id'],
-    order_mission_source_id: number,
-  ) => (
-    mission_source_id === order_mission_source_id
-  )
-);
+  mission_source_id: DutyMission['mission_source_id'],
+  order_mission_source_id: number,
+) => mission_source_id === order_mission_source_id;

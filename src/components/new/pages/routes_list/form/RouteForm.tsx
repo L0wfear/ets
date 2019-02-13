@@ -252,7 +252,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
                 onClick={this.handleSaveAsTemplate}>
                 {this.props.fromMission && !this.props.fromMissionTemplate
                   ? 'Сохранить как шаблон'
-                  : 'Создать'}
+                  : 'Сохранить'}
               </Button>
               {this.props.fromMission && !this.props.fromMissionTemplate ? (
                 <Button

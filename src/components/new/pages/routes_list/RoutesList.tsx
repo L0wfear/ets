@@ -241,6 +241,9 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
   saveFilter = (filterValues) => {
     console.info('SETTING FILTER VALUES', filterValues); // tslint:disable-line
+    if (!filterValues.season_id) {
+      filterValues.season_id = this.state.filterValues.season_id;
+    }
 
     let ROUTES: any = cloneDeep(this.state.routesList).filter((r) =>
       this.shouldBeRendered(r, filterValues),

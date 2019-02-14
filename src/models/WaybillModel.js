@@ -2,6 +2,8 @@ import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
+import { isNullOrUndefined, isNumber } from 'util';
+import { isArray } from 'highcharts';
 
 export const waybillSchema = {
   properties: [
@@ -330,6 +332,24 @@ export const waybillSchema = {
         },
       },
     ],
+    equipment_fuel_type: [
+      {
+        validator: (value, { motohours_start }) => {
+          if (!isNullOrUndefined(motohours_start) && isNullOrUndefined(value)) {
+            return 'Поле "Тип топлива" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    equipment_fuel_start: [
+      {
+        validator: (value, { motohours_start }) => {
+          if (!isNullOrUndefined(motohours_start) && isNullOrUndefined(value)) {
+            return 'Поле "Выезд, л" должно быть заполнено';
+          }
+        },
+      },
+    ],
   },
 };
 
@@ -381,6 +401,13 @@ const closingProperties = [
     required: false,
   },
   {
+    key: 'equipment_fact_fuel_end',
+    title: 'Топливо.Возврат фактический',
+    type: 'number',
+    float: 3,
+    min: 0,
+  },
+  {
     key: 'odometr_end',
     title: 'Одометр. Возвращение в гараж, км',
     type: 'number',
@@ -414,6 +441,11 @@ const closingProperties = [
     type: 'string',
     required: false,
     maxLength: 200,
+  },
+  {
+    key: 'equipment_tax_data',
+    title: 'Расчет топлива по норме для оборудования',
+    type: 'array',
   },
 ];
 
@@ -501,16 +533,31 @@ const closingDependencies = {
   distance: [
     {
       validator: (value, formData) => {
-        if (
-          Math.abs(
-            (parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
-              - parseFloat(value || 0))
-              / 100,
-          ) > 0.1
-        ) {
+        const abs = Math.abs(
+          (parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
+            - parseFloat(value || 0))
+            / 100,
+        );
+        if (abs > 0.1) {
           return 'Расхождение в показателях пробега';
         }
         return false;
+      },
+    },
+  ],
+  equipment_tax_data: [
+    {
+      validator: (value, { motohours_equip_start }) => {
+        if (
+          !isNullOrUndefined(motohours_equip_start)
+          && (!isArray(value)
+            || !value.filter(
+              ({ FACT_VALUE, OPERATION }) =>
+                isNumber(FACT_VALUE) && isNumber(OPERATION),
+            ).length)
+        ) {
+          return 'В Поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
+        }
       },
     },
   ],

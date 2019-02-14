@@ -311,6 +311,14 @@ class WaybillFormWrap extends FormWrap {
       formState.fact_fuel_end = formState.fuel_end;
     }
 
+    if (
+      formState.equipment_fuel_end
+        !== this.state.formState.equipment_fuel_end
+      || isNullOrUndefined(formState.equipment_fact_fuel_end)
+    ) {
+      formState.equipment_fact_fuel_end = formState.equipment_fuel_end;
+    }
+
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
     } else if (formState.status && formState.status !== 'draft') {

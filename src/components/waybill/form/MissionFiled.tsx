@@ -128,6 +128,7 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
         <ExtField
           id="mission-id-list"
           type="select"
+          label="&nbsp;"
           error={errors.mission_id_list}
           multi
           className="task-container"

@@ -44,3 +44,16 @@ export const Flex = styled.div<{
     ${({ basis }) => basis || 0}px;
   display: ${({ none }) => (none ? 'none' : 'initial')};
 `;
+
+export const BorderDash = styled.div<{
+  width?: number;
+  borderStyle?: string;
+  color?: string;
+}>`
+  border: ${(props) => {
+    props.width;
+    const { width = 1, borderStyle = 'solid', color = 'black' } = props;
+
+    return `${width}px ${borderStyle} ${color}`;
+  }};
+`;

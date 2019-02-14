@@ -110,6 +110,7 @@ module.exports = {
     "react/forbid-prop-types": [0],
     "react/display-name": [0],
     "react/destructuring-assignment": [0],
+    "react/jsx-no-bind": [1],
     "babel/new-cap": 1,
     "babel/camelcase": 0,
     "babel/no-invalid-this": 1,

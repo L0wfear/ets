@@ -4,9 +4,9 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
-import Field from 'components/ui/Field';
 import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 @connectToStores(['odh', 'objects'])
 class EfficiencyForm extends Form {
@@ -59,52 +59,54 @@ class EfficiencyForm extends Form {
         </Modal.Header>
         <ModalBody>
           <Div>
-            <Field
+            <ExtField
               type="select"
               label="Технологическая операция"
               error={errors.technical_operation_id}
               disabled={false}
               options={TECH_OPERATIONS}
               value={state.technical_operation_id}
-              onChange={this.handleChange.bind(this, 'technical_operation_id')}
+              onChange={this.handleChange}
+              boundKeys="technical_operation_id"
             />
           </Div>
           <Div>
-            <Field
+            <ExtField
               type="select"
               label="Источник"
               error={errors.source}
               disabled={false}
               options={SOURCES}
               value={state.source}
-              onChange={this.handleChange.bind(this, 'source')}
+              onChange={this.handleChange}
+              boundKeys="source"
             />
           </Div>
           <Div>
-            <Field
+            <ExtField
               type="select"
               label="Площадная характеристика"
               error={errors.areal_feature_id}
               disabled={typeof state.source === undefined}
               options={+state.source ? ODH_NORMS : ODH_FIELDS}
               value={state.areal_feature_id}
-              onChange={this.handleChange.bind(this, 'areal_feature_id')}
+              onChange={this.handleChange}
+              boundKeys="areal_feature_id"
             />
           </Div>
           <Div>
-            <Field
+            <ExtField
               type="number"
               label="Коэффициент"
               value={state.ratio}
               error={errors.ratio}
-              onChange={this.handleChange.bind(this, 'ratio')}
+              onChange={this.handleChange}
+              boundKeys="ratio"
             />
           </Div>
         </ModalBody>
         <Modal.Footer>
-          <Button
-            disabled={!this.props.canSave}
-            onClick={this.handleSubmit.bind(this)}>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>
             Сохранить
           </Button>
         </Modal.Footer>

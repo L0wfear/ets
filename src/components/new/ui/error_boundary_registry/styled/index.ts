@@ -6,6 +6,7 @@ const cat = require('assets/images/cat.jpeg');
 
 export const ErrorBoundaryRegistryContainer = styled(EtsPageWrap)`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 100%;

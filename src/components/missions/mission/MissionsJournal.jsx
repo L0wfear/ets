@@ -24,13 +24,17 @@ import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import {
+  getCompanyStructureState,
+  getSomeUniqState,
+} from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import { diffDates } from 'utils/dates';
 import moment from 'moment';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const is_archive = false;
 const loadingPageName = 'mission';
@@ -87,6 +91,7 @@ class MissionsJournal extends CheckableElementsList {
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.actionGetAndSetInStoreMissionCancelReasons();
   }
 
   componentDidUpdate(nextProps, prevState) {
@@ -97,6 +102,10 @@ class MissionsJournal extends CheckableElementsList {
     ) {
       this.refreshList(this.state);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.actionResetMissionCancelReasons();
   }
 
   refreshList = async (state = this.state) => {
@@ -425,12 +434,12 @@ class MissionsJournal extends CheckableElementsList {
       <ButtonUpdateMission key="button-complete-mission" id="mission-complete" bsSize="small" onClick={this.completeCheckedElements} disabled={this.checkDisabled() || this.state.completeMarkerBtnDisable}>
         <Glyphicon glyph="ok" />
         {' '}
-        Отметка о выполнении
+        Выполнено
       </ButtonUpdateMission>,
       <ButtonUpdateMission key="butto-reject-mission" id="mission-reject" bsSize="small" onClick={this.rejectCheckedElements} disabled={this.checkDisabled()}>
         <Glyphicon glyph="ban-circle" />
         {' '}
-        Отметка о невыполнении
+        Не выполнено / Отменено
       </ButtonUpdateMission>,
       <ButtonUpdateMission key="butto-archive-mission" id="mission-archive" bsSize="small" onClick={this.archiveCheckedElements} disabled={this.checkDisabledArchive()}>В архив</ButtonUpdateMission>,
     );
@@ -484,11 +493,28 @@ export default compose(
   connect(
     state => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+      missionCancelReasonsList: getSomeUniqState(state).missionCancelReasonsList,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructureLinear: () => (
         dispatch(
           companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+      actionGetAndSetInStoreMissionCancelReasons: () => (
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMissionCancelReasons(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+      actionResetMissionCancelReasons: () => (
+        dispatch(
+          someUniqActions.actionResetMissionCancelReasons(
             {},
             { page: loadingPageName },
           ),

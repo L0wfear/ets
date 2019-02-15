@@ -10,6 +10,9 @@ import * as Button from 'react-bootstrap/lib/Button';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
+import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import { getWarningNotification } from 'utils/notifications';
 
 const ButtonCreateMission = enhanceWithPermissions({
   permission: permissionsMission.create,
@@ -19,6 +22,10 @@ class MissionField extends React.Component<any, any> {
   state = {
     showMissionForm: false,
     selectedMission: null,
+    showMissionRejectForm: false,
+    status: '',
+    action_at: '',
+    mission_id_list: [],
   };
 
   multiValueContainerReander({ innerProps, data, ...props }) {
@@ -30,8 +37,14 @@ class MissionField extends React.Component<any, any> {
   }
 
   handleMissionsChange = (newFormData) => {
+
+    // this.props.mission_id_list - миссии до удаления
+    if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
+      this.rejectMission();
+    }
     this.props.handleChange('mission_id_list', newFormData);
   }
+
   onMissionFormHide = (result) => {
     const id = result && result.result ? result.result.id : null;
     if (id) {
@@ -77,6 +90,32 @@ class MissionField extends React.Component<any, any> {
         structure_id: state.structure_id,
       },
     });
+  }
+
+  rejectMission = () => {
+    loadMoscowTime()
+      .then(({ time }) => {
+        const action_at = time.date;
+        this.setState({
+          showMissionRejectForm: true,
+          action_at,
+        });
+      })
+      .catch(({ errorIsShow }) => {
+        !errorIsShow && global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
+      });
+  }
+
+  onReject = () => {
+    const newPropsState = {
+      showMissionRejectForm: false,
+    };
+    // if (refresh) {
+    //   this.refreshList(this.state);
+    // } else {
+    //   this.setState({ ...newPropsState });
+    // }
+    this.setState({ ...newPropsState });
   }
 
   render() {
@@ -152,6 +191,18 @@ class MissionField extends React.Component<any, any> {
           waybillEndDate={state.plan_arrival_date}
           {...this.props}
         />
+        {
+          this.state.showMissionRejectForm
+          && (
+            <MissionRejectForm
+              show={this.state.showMissionRejectForm}
+              onReject={this.onReject}
+              // mission={state.mission_id_list[0]}
+              missions={this.props.missionsList}
+              action_at={this.state.action_at}
+            />
+          )
+        }
       </>
     );
   }

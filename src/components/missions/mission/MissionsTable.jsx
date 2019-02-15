@@ -18,6 +18,7 @@ export const getTableMeta = ({
   technicalOperationsList = [],
   municipalFacilityList = [],
   technicalOperationsObjectsList = [],
+  missionCancelReasonsList = [],
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -189,6 +190,15 @@ export const getTableMeta = ({
         filter: false,
       },
       {
+        name: 'reason_id',
+        displayName: 'Причина',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+          options: missionCancelReasonsList.map(({ id, name }) => ({ value: id, label: name })),
+        },
+      },
+      {
         name: 'comment',
         displayName: 'Комментарий',
         type: 'string',
@@ -256,6 +266,7 @@ export default (props) => {
     type_id: ({ rowData }) => <div>{rowData.type_name}</div>,
     object_type_id: ({ rowData: { object_type_name } }) => <div>{object_type_name}</div>,
     technical_operation_id: ({ rowData }) => <div>{rowData.technical_operation_name}</div>,
+    reason_id: ({ rowData }) => <div>{rowData.reason_name}</div>,
   };
 
   return (

@@ -362,7 +362,7 @@ export class DutyMissionForm extends Form {
     const IS_CREATING = !state.number;
     const IS_CLOSING = state.status && state.status === 'assigned';
     const IS_COMPLETED = state.status && state.status === 'complete';
-    const IS_CLOSED = state.status === 'complete' || state.status === 'fail' || state.status === 'canceled';
+    const IS_CLOSED = state.status === 'complete' || state.status === 'fail';
 
     const title = IS_CREATING
       ? (

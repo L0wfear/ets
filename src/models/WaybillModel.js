@@ -334,8 +334,11 @@ export const waybillSchema = {
     ],
     equipment_fuel_type: [
       {
-        validator: (value, { motohours_start }) => {
-          if (!isNullOrUndefined(motohours_start) && isNullOrUndefined(value)) {
+        validator: (value, { motohours_equip_start }) => {
+          if (
+            !isNullOrUndefined(motohours_equip_start)
+            && isNullOrUndefined(value)
+          ) {
             return 'Поле "Тип топлива" должно быть заполнено';
           }
         },
@@ -343,8 +346,11 @@ export const waybillSchema = {
     ],
     equipment_fuel_start: [
       {
-        validator: (value, { motohours_start }) => {
-          if (!isNullOrUndefined(motohours_start) && isNullOrUndefined(value)) {
+        validator: (value, { motohours_equip_start }) => {
+          if (
+            !isNullOrUndefined(motohours_equip_start)
+            && isNullOrUndefined(value)
+          ) {
             return 'Поле "Выезд, л" должно быть заполнено';
           }
         },

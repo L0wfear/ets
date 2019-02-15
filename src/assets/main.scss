@@ -1679,3 +1679,9 @@ div.car-movement-time-report {
 .rw-calendar-popup .rw-popup-transition {
   padding: 0!important;
 }
+
+.data-table .griddle th,
+.ets_table_wrap th {
+  z-index: 1;
+  position: relative;
+}

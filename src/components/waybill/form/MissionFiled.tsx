@@ -26,6 +26,9 @@ class MissionField extends React.Component<any, any> {
     status: '',
     action_at: '',
     mission_id_list: [],
+    tempMissionIdList: [],
+    rejectMissionList: [], // Заменить на Index
+    rejectedMission: {},
   };
 
   multiValueContainerReander({ innerProps, data, ...props }) {
@@ -37,12 +40,23 @@ class MissionField extends React.Component<any, any> {
   }
 
   handleMissionsChange = (newFormData) => {
-
-    // this.props.mission_id_list - миссии до удаления
     if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
-      this.rejectMission();
+      const deletedElement = this.props.missionsList.filter((mission: any) => {
+        return newFormData.indexOf(mission.id) === -1;
+      });
+      const car_gov_number = this.props.state.gov_number;
+      const rejectedMission = {
+        ...deletedElement.length ? deletedElement[0] : null,
+        car_gov_number,
+      };
+      this.rejectMission(rejectedMission);
+      this.setState({
+        tempMissionIdList: newFormData,
+        rejectedMission,
+      });
+    } else {
+      this.props.handleChange('mission_id_list', newFormData);
     }
-    this.props.handleChange('mission_id_list', newFormData);
   }
 
   onMissionFormHide = (result) => {
@@ -92,13 +106,14 @@ class MissionField extends React.Component<any, any> {
     });
   }
 
-  rejectMission = () => {
+  rejectMission = (rejectedMission) => {
     loadMoscowTime()
       .then(({ time }) => {
         const action_at = time.date;
         this.setState({
           showMissionRejectForm: true,
           action_at,
+          rejectedMission,
         });
       })
       .catch(({ errorIsShow }) => {
@@ -106,15 +121,25 @@ class MissionField extends React.Component<any, any> {
       });
   }
 
-  onReject = () => {
+  onReject = (waybillPayload) => {
     const newPropsState = {
       showMissionRejectForm: false,
     };
-    // if (refresh) {
-    //   this.refreshList(this.state);
-    // } else {
-    //   this.setState({ ...newPropsState });
-    // }
+    const {
+      tempMissionIdList,
+      rejectMissionList,
+    } = this.state;
+    // перезаписать, если удалили, добавили и снова удалили задание, перейти на Index???
+    console.log('!!!!!!!!!! waybillPayload === ', waybillPayload);
+    // если НЕ!!! нажали на отмену или крестик в rejectForm
+    if (waybillPayload) {
+      this.props.handleChange('mission_id_list', tempMissionIdList);
+      this.setState({
+        rejectMissionList: [ ...rejectMissionList, waybillPayload ],
+      });
+      console.log('[ ...rejectMissionList, waybillPayload ] === ', [ ...rejectMissionList, waybillPayload ]);
+    }
+
     this.setState({ ...newPropsState });
   }
 
@@ -128,6 +153,10 @@ class MissionField extends React.Component<any, any> {
       isPermittedByKey,
       origFormState,
     } = this.props;
+
+    const {
+      rejectedMission,
+    } = this.state;
 
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
@@ -197,9 +226,10 @@ class MissionField extends React.Component<any, any> {
             <MissionRejectForm
               show={this.state.showMissionRejectForm}
               onReject={this.onReject}
-              // mission={state.mission_id_list[0]}
-              missions={this.props.missionsList}
+              mission={rejectedMission}
+              // missions={missionsList}
               action_at={this.state.action_at}
+              isWaybillForm
             />
           )
         }

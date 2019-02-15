@@ -214,8 +214,9 @@ class MissionRejectForm extends React.Component {
   async handleSubmit() {
     let resolve;
     let payload;
-    const { action_at } = this.props;
+    const { action_at, isWaybillForm } = this.props;
     const { reason_id } = this.state;
+    let handlerName = 'createMissionFromReassignation'; // имя хендлера для ПЛ
     const { status } = this.props.missionCancelReasonsList.find(
       reason => reason.id === reason_id,
     ) || this.state.status;
@@ -225,9 +226,16 @@ class MissionRejectForm extends React.Component {
       const rows = get(response, ['result', 'rows'], []);
       const mission = rows[0];
       mission.comment = this.state.comment;
-      resolve = await this.context.flux.getActions('missions').updateMission({
-        ...mission, action_at, reason_id, status,
-      });
+      payload = {
+        ...mission,
+        action_at,
+        reason_id,
+        status,
+      };
+      handlerName = 'updateMission';
+      if (!isWaybillForm) {
+        resolve = await this.context.flux.getActions('missions').updateMission(payload);
+      }
     } else {
       switch (this.state.data.mark) {
         case 'create':
@@ -241,7 +249,9 @@ class MissionRejectForm extends React.Component {
             reason_id: this.state.reason_id,
             status,
           };
-          resolve = await this.context.flux.getActions('missions').createMissionFromReassignation(payload);
+          if (!isWaybillForm) {
+            resolve = await this.context.flux.getActions('missions').createMissionFromReassignation(payload);
+          }
           break;
         case 'update':
           if (this.state.data.missions) {
@@ -271,13 +281,15 @@ class MissionRejectForm extends React.Component {
               status,
             };
           }
-          resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          if (!isWaybillForm) {
+            resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
+          }
           break;
         default:
           break;
       }
     }
-    if (!resolve.errors || (resolve.errors && !resolve.errors.length)) {
+    if (!isWaybillForm && (!resolve.errors || (resolve.errors && !resolve.errors.length))) {
       const { missionList, mIndex } = this.state;
       global.NOTIFICATION_SYSTEM.notify(reassignMissionSuccessNotification);
 
@@ -292,6 +304,14 @@ class MissionRejectForm extends React.Component {
           ...this.getPropsMission(missionList, mIndex - 1),
         });
       }
+    }
+
+    if (isWaybillForm) {
+      const waybillPayload = {
+        payload,
+        handlerName,
+      };
+      this.props.onReject(waybillPayload);
     }
   }
 
@@ -322,8 +342,8 @@ class MissionRejectForm extends React.Component {
     const CANCEL_REASON = this.makeOptionFromMissionCancelReasonsList(this.props.missionCancelReasonsList);
 
     const title = `Задание №${number}, ТС: ${mission_car_gov_number}`;
-    const waybillText = waybill_number ? `, задание будет исключено из ПЛ №${waybill_number}` : '';
-    const bodyText = `Статус задания №${number} будет изменен на «Не назначено»${waybillText}`;
+    // const waybillText = waybill_number ? `, задание будет исключено из ПЛ №${waybill_number}` : '';
+    // const bodyText = `Статус задания №${number} будет изменен на «Не назначено»${waybillText}`;
     const missions = this.state.data ? this.state.data.missions : null;
     const datePickers = missions && missions.map((oneM, i) => (
       <Row style={{ marginBottom: '4px' }} key={i}>
@@ -360,9 +380,6 @@ class MissionRejectForm extends React.Component {
         </Modal.Header>
 
         <ModalBody>
-          <p>
-            {bodyText}
-          </p>
           <Field
             type="select"
             label="Введите причину:"

@@ -735,6 +735,7 @@ export class MissionForm extends Form {
           carsList={carsList}
           handleSubmit={this.handleSubmitFromAssignmentModal}
           show={this.state.showColumnAssignment}
+          deepLvl={this.props.deepLvl + 1}
         />
         <EtsModal
           id="modal-mission"

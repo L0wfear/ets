@@ -367,7 +367,7 @@ body.application {
   background-color: $colorButton;
   color: #fff;
   border: none;
-  border-radius: 0;
+  border-radius: 3px;
   box-shadow: none !important;
 
   &.disabled, &[disabled] {
@@ -380,8 +380,9 @@ body.application {
     color: #fff;
   }
 }
-.container-button-create-cz>.btn {
-  background-color: $colorGreen;
+.btn-group .btn,
+.btn-group .btn-default {
+  border-radius: 0px;
 }
 
 .btn-primary {

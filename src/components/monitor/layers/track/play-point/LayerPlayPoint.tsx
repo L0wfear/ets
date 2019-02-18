@@ -24,14 +24,12 @@ class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidUpdate(prevProps) {
     const { playTrackStatus } = this.props;
 
-    if (playTrackStatus !== prevProps.playTrackStatus) {
-      if (playTrackStatus === 'play') {
-        actionOnPlay(this.props);
-      }
+    if (playTrackStatus === 'play') {
+      actionOnPlay(this.props);
+    }
 
-      if (playTrackStatus === 'stop') {
-        actionOnStop(this.props);
-      }
+    if (playTrackStatus === 'stop') {
+      actionOnStop(this.props);
     }
   }
 

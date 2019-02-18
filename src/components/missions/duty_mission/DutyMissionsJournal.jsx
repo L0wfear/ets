@@ -66,8 +66,8 @@ class DutyMissionsJournal extends CheckableElementsList {
     };
   }
 
-  removeElementAction = (id) =>
-    this.props.actionRemoveDutyMission(id, { page: loadingPageName });
+  removeElementAction = (dutyMission) =>
+    this.props.actionRemoveDutyMission(dutyMission, { page: loadingPageName });
 
   componentDidUpdate(nextProps, prevState) {
     if (
@@ -183,7 +183,7 @@ class DutyMissionsJournal extends CheckableElementsList {
       return;
     }
     const mission = _.cloneDeep(this.state.selectedElement);
-    const query = this.removeElementAction(mission.id);
+    const query = this.removeElementAction(mission);
 
     query
       .then(() => {
@@ -302,7 +302,7 @@ class DutyMissionsJournal extends CheckableElementsList {
         return;
       }
       const allQuerys = missions.map((mission) =>
-        this.removeElementAction(mission.id),
+        this.removeElementAction(mission),
       );
 
       try {

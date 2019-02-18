@@ -1394,7 +1394,7 @@ class WaybillForm extends Form {
                     <Col md={12}>
                       <Col md={12}>
                         <h4>
-                          На ТС установлено спецоборудования:
+                          На ТС установлено спецоборудование:
                           {'  '}
                           <ButtonGroup>
                             <WaybillEquipmentButton

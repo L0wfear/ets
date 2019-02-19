@@ -1,4 +1,3 @@
-
 /**
  * При разработке не имеем доступ к протоколу, хосту и всему прочему, если не хардкод
  */
@@ -12,12 +11,16 @@ const STAND = process.env.STAND;
 const ADMIN_URL = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/admin',
-    stage: 'https://ets-test.mos.ru/admin/',
+    gost_stage: 'http://ets-stage.gost-group.com/admin/',
+    ets_test: 'https://ets-test.mos.ru/admin/',
+    ets_hotfix: 'https://ets-hotfix.mos.ru/admin/',
     prod: 'http://ets.mos.ru/admin/',
   },
   origin: {
     dev: 'http://dev2-ets.gost-group.com/admin/',
-    stage: `${PROTO}//${HOST}${PATHNAME}admin/`,
+    gost_stage: `${PROTO}//${HOST}${PATHNAME}admin/`,
+    ets_test: `${PROTO}//${HOST}${PATHNAME}admin/`,
+    ets_hotfix: `${PROTO}//${HOST}${PATHNAME}admin/`,
     prod: `${PROTO}//${HOST}${PATHNAME}admin/`,
   },
 };
@@ -25,12 +28,16 @@ const ADMIN_URL = {
 const DOC_URL = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/docs/',
-    stage: 'https://ets-test.mos.ru/docs/',
+    gost_stage: 'http://ets-stage.gost-group.com/docs/',
+    ets_test: 'https://ets-test.mos.ru/docs/',
+    ets_hotfix: 'https://ets-hotfix.mos.ru/docs/',
     prod: 'http://ets.mos.ru/docs/',
   },
   origin: {
     dev: 'http://dev2-ets.gost-group.com/docs/',
-    stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
+    gost_stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
+    ets_test: `${PROTO}//${HOST}${PATHNAME}docs/`,
+    ets_hotfix: `${PROTO}//${HOST}${PATHNAME}docs/`,
     prod: `${PROTO}//${HOST}${PATHNAME}docs/`,
   },
 };
@@ -52,27 +59,35 @@ const config = {
 
 const notification_config = {
   develop: {
-    stage: 'wss://ets-test.mos.ru/services/notification_ws',
-    prod: 'wss://ets.mos.ru/services/notification_ws',
     dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
+    gost_stage: 'wss://ets-stage.gost-group.com/services/notification_ws',
+    ets_test: 'wss://ets-test.mos.ru/services/notification_ws',
+    ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',
+    prod: 'wss://ets.mos.ru/services/notification_ws',
   },
   origin: {
-    stage: `wss://${HOST}${PATHNAME}services/notification_ws`,
-    prod: `wss://${HOST}${PATHNAME}services/notification_ws`,
     dev: `ws://${HOST}${PATHNAME}services/notification_ws`,
+    gost_stage: `wss://${HOST}${PATHNAME}services/notification_ws`,
+    ets_test: `wss://${HOST}${PATHNAME}services/notification_ws`,
+    ets_hotfix: `wss://${HOST}${PATHNAME}services/notification_ws`,
+    prod: `wss://${HOST}${PATHNAME}services/notification_ws`,
   },
 };
 
 const STANDS = {
   develop: {
-    stage: 'https://ets-test.mos.ru/services',
-    prod: 'https://ets.mos.ru/services',
     dev: 'http://dev2-ets.gost-group.com/services',
+    gost_stage: 'http://ets-stage.gost-group.com',
+    ets_test: 'https://ets-test.mos.ru/services',
+    ets_hotfix: 'https://ets-hotfix.mos.ru/services',
+    prod: 'https://ets.mos.ru/services',
   },
   origin: {
-    stage: `${PROTO}//${HOST}${PATHNAME}services`,
-    prod: `${PROTO}//${HOST}${PATHNAME}services`,
     dev: 'http://dev2-ets.gost-group.com/services',
+    gost_stage: `${PROTO}//${HOST}${PATHNAME}services`,
+    ets_test: `${PROTO}//${HOST}${PATHNAME}services`,
+    ets_hotfix: `${PROTO}//${HOST}${PATHNAME}services`,
+    prod: `${PROTO}//${HOST}${PATHNAME}services`,
   },
 };
 
@@ -83,7 +98,9 @@ const configs = {
   admin: config.develop.admin,
   backend: STANDS.develop.dev,
   notification_ws: notification_config.develop.dev,
-  tracksCaching: `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`,
+  tracksCaching: `https://psd.mos.ru/tracks-caching${
+    STAND !== 'prod' ? '-dev' : ''
+  }`,
 };
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
@@ -93,7 +110,9 @@ try {
   configs.docs = config[pathToConfig].docs;
   configs.admin = config[pathToConfig].admin;
   configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
-  configs.notification_ws = notification_config[pathToConfig][STAND] || notification_config[pathToConfig].dev;
+  configs.notification_ws =
+    notification_config[pathToConfig][STAND] ||
+    notification_config[pathToConfig].dev;
 } catch (e) {
   // tslint:disable-next-line
   console.warn(e);

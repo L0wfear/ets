@@ -623,6 +623,8 @@ class WaybillForm extends Form {
       const fieldsToChange = {
         car_id,
         gov_number: '',
+        ...setEmptyFieldByKey(fieldToCheckHasData),
+        equipment_fuel: false,
       };
 
       if (!isEmpty(car_id)) {
@@ -644,6 +646,7 @@ class WaybillForm extends Form {
             }),
           );
       }
+
       /**
        * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
        */
@@ -1627,8 +1630,11 @@ class WaybillForm extends Form {
                             />
                           </Col>
                           <Col md={12}>
-                            Значение поля «Возврат фактический, л» обновляется
-                            при редактировании таксировки.
+                            {IS_ACTIVE || IS_CLOSED ? (
+                              'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
+                            ) : (
+                              <DivNone />
+                            )}
                           </Col>
                         </Row>
                       </Col>
@@ -1863,8 +1869,11 @@ class WaybillForm extends Form {
                                 />
                               </Col>
                               <Col md={12}>
-                                Значение поля «Возврат фактический, л»
-                                обновляется при редактировании таксировки.
+                                {IS_ACTIVE || IS_CLOSED ? (
+                                  'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
+                                ) : (
+                                  <DivNone />
+                                )}
                               </Col>
                             </Row>
                           </Col>

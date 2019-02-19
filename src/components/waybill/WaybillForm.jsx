@@ -129,8 +129,6 @@ class WaybillForm extends Form {
   constructor(props) {
     super(props);
 
-    const { formState } = props;
-
     this.state = {
       operations: [],
       equipmentOperations: [],
@@ -146,7 +144,6 @@ class WaybillForm extends Form {
       fuel_card_id: null,
       equipment_fuel_method: null,
       equipment_fuel_card_id: null,
-      hasEquipment: hasWaybillEquipmentData(formState, fieldToCheckHasData),
     };
   }
 
@@ -695,12 +692,10 @@ class WaybillForm extends Form {
       }
 
       if (lastCarUsedWaybill) {
-        this.setState({
-          hasEquipment: hasWaybillEquipmentData(
-            fieldsToChange,
-            fieldToCheckHasData,
-          ),
-        });
+        fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
+          fieldsToChange,
+          fieldToCheckHasData,
+        );
       }
     } else {
       fieldsToChange.fuel_start = 0;
@@ -772,7 +767,7 @@ class WaybillForm extends Form {
   };
 
   checkOnValidHasEquipment() {
-    if (!isBoolean(this.state.hasEquipment)) {
+    if (!isBoolean(this.props.formState.equipment_fuel)) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
           'Необходимо указать, установлено ли на ТС спецоборудование',
@@ -894,30 +889,27 @@ class WaybillForm extends Form {
   };
 
   handleChangeHasEquipmentOnTrue = () => {
-    if (!this.state.hasEquipment) {
-      this.setState({
-        hasEquipment: true,
-      });
-    }
+    this.handleChange('equipment_fuel', true);
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
-    if (hasWaybillEquipmentData(this.props.formState, fieldToCheckHasData)) {
-      try {
-        await confirmDialog({
-          title: 'Внимание',
-          body: 'Очистить введенные данные по спецоборудованию?',
-        });
+    const { formState } = this.props;
 
-        this.handleMultipleChange(setEmptyFieldByKey(fieldToCheckHasData));
-      } catch (e) {
-        return;
+    if (formState.equipment_fuel) {
+      if (hasWaybillEquipmentData(formState, fieldToCheckHasData)) {
+        try {
+          await confirmDialog({
+            title: 'Внимание',
+            body: 'Очистить введенные данные по спецоборудованию?',
+          });
+
+          this.handleMultipleChange(setEmptyFieldByKey(fieldToCheckHasData));
+        } catch (e) {
+          return;
+        }
       }
-    }
-    if (this.state.hasEquipment) {
-      this.setState({
-        hasEquipment: false,
-      });
+
+      this.handleChange('equipment_fuel', false);
     }
   };
 
@@ -959,6 +951,7 @@ class WaybillForm extends Form {
       label: v,
     }));
     // для теста если отвалился бек [{label: 'FUEL_CARDS', value: 'FUEL_CARDS' }] ||
+
     const FUEL_CARDS = this.getFuelCardsListOptions(
       fuelCardsList,
       state.fuel_type,
@@ -1393,8 +1386,8 @@ class WaybillForm extends Form {
                           <ButtonGroup>
                             <WaybillEquipmentButton
                               active={
-                                isBoolean(this.state.hasEquipment)
-                                && this.state.hasEquipment
+                                isBoolean(state.equipment_fuel)
+                                && state.equipment_fuel
                               }
                               disabled={!(IS_CREATING || IS_DRAFT)}
                               onClick={this.handleChangeHasEquipmentOnTrue}>
@@ -1402,8 +1395,8 @@ class WaybillForm extends Form {
                             </WaybillEquipmentButton>
                             <WaybillEquipmentButton
                               active={
-                                isBoolean(this.state.hasEquipment)
-                                && !this.state.hasEquipment
+                                isBoolean(state.equipment_fuel)
+                                && !state.equipment_fuel
                               }
                               disabled={!(IS_CREATING || IS_DRAFT)}
                               onClick={this.handleChangeHasEquipmentOnFalse}>
@@ -1676,7 +1669,7 @@ class WaybillForm extends Form {
                 </BorderDash>
               </Col>
             </Row>
-            {this.state.hasEquipment ? (
+            {state.equipment_fuel ? (
               <>
                 <Row>
                   <Col md={12}>

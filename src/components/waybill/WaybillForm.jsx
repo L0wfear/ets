@@ -810,12 +810,6 @@ class WaybillForm extends Form {
     return Promise.resolve(true);
   };
 
-  handleClose = (...arg) => {
-    if (this.checkOnValidHasEquipment()) {
-      this.props.handleClose(...arg);
-    }
-  };
-
   handlePrint = (...arg) => {
     if (this.checkOnValidHasEquipment()) {
       this.props.handlePrint(...arg);

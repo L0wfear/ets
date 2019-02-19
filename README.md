@@ -46,7 +46,11 @@ project
 
 `npm run dev` (подключение к development серверу (gost-group.com))
 
-`npm run dev:stage` (подключение к тестовому серверу (mos.ru))
+`npm run dev:gost_stage` (подключение к тестовому серверу (gost-group.com))
+
+`npm run dev:est_test` (подключение к серверу препрода (mos.ru))
+
+`npm run dev:ets_hotfix` (подключение к серверу с хотфиксами (mos.ru))
 
 `npm run dev:prod` (подключение к production-серверу (mos.ru))
 
@@ -56,7 +60,11 @@ project
 
 `npm run build` (сборка версии приложения для подключения к development серверу (gost-group.com))
 
-`npm run build:stage` (сборка версии приложения для подключения к тестовому серверу (mos.ru))
+`npm run build:gost_stage` (сборка версии приложения для подключения к тестовому серверу (gost-group.com))
+
+`npm run build:est_test` (сборка версии приложения для подключения к серверу препрода (mos.ru))
+
+`npm run build:ets_hotfix` (сборка версии приложения для подключения к тк серверу с хотфиксами (mos.ru))
 
 `npm run build:prod` (сборка версии приложения для подключения к production серверу (mos.ru))
 

@@ -168,6 +168,7 @@ export default class WaybillsActions extends Actions {
     delete payload.car_special_model_name;
     delete payload.car_model_name;
     delete payload.garage_number;
+    delete payload.hasEquipmentFuelRates;
 
     if (hasMotohours(payload.gov_number)) {
       delete payload.odometr_start;
@@ -217,6 +218,8 @@ export default class WaybillsActions extends Actions {
     delete payload.car_model_name;
     delete payload.garage_number;
     delete payload.all_missions_completed_or_failed;
+    delete payload.hasEquipmentFuelRates;
+
     mapKeys(payload, (v, k) => (isEmpty(v) ? delete payload[k] : undefined));
 
     if (hasMotohours(payload.gov_number)) {

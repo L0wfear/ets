@@ -360,6 +360,11 @@ class WaybillForm extends Form {
                 [],
               ),
             });
+
+            this.handleChange(
+              'hasEquipmentFuelRates',
+              equipmentFuelRates.length,
+            );
           },
         )
         .catch((e) => {

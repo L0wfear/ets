@@ -540,11 +540,10 @@ const closingDependencies = {
     {
       validator: (value, formData) => {
         const abs = Math.abs(
-          (parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
-            - parseFloat(value || 0))
-            / 100,
+          parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
+            - parseFloat(value || 0),
         );
-        if (abs > 0.1) {
+        if (abs / 100 > 0.1) {
           return 'Расхождение в показателях пробега';
         }
         return false;
@@ -553,9 +552,10 @@ const closingDependencies = {
   ],
   equipment_tax_data: [
     {
-      validator: (value, { motohours_equip_start }) => {
+      validator: (value, { motohours_equip_start, hasEquipmentFuelRates }) => {
         if (
-          !isNullOrUndefined(motohours_equip_start)
+          hasEquipmentFuelRates
+          && !isNullOrUndefined(motohours_equip_start)
           && (!isArray(value)
             || !value.filter(
               ({ FACT_VALUE, OPERATION }) =>

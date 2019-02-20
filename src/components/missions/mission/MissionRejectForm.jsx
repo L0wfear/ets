@@ -281,6 +281,7 @@ class MissionRejectForm extends React.Component {
               status,
             };
           }
+          handlerName = 'updateMissionFromReassignation';
           if (!isWaybillForm) {
             resolve = await this.context.flux.getActions('missions').updateMissionFromReassignation(payload);
           }

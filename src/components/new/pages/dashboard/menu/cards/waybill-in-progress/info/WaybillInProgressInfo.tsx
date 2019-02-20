@@ -79,11 +79,12 @@ class WaybillInProgressInfo extends React.PureComponent<PropsWaybillInProgressIn
     });
   }
 
-  handleWaybillFormWrapHideAfterSubmit = () => {
+  handleWaybillFormWrapHideAfterSubmit = (newState) => {
     this.props.loadAllWaybillCard();
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
+      ...newState,
     });
   }
 

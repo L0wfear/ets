@@ -79,11 +79,12 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
     });
   }
 
-  handleWaybillFormWrapHideAfterSubmit = () => {
+  handleWaybillFormWrapHideAfterSubmit = (newState) => {
     this.props.loadAllWaybillCard();
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
+      ...newState,
     });
   }
 

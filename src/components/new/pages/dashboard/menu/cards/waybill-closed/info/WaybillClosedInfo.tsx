@@ -51,10 +51,11 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
     });
   }
 
-  handleWaybillFormWrapHideAfterSubmit = () => {
+  handleWaybillFormWrapHideAfterSubmit = (newState) => {
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
+      ...newState,
     });
   }
 

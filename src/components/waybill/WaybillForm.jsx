@@ -56,8 +56,8 @@ import Taxes from 'components/waybill/Taxes';
 import WaybillFooter from 'components/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
-import MissionFiled from 'components/waybill/form/MissionFiled';
-import { isNullOrUndefined, isNumber } from 'util';
+import MissionField from 'components/waybill/form/MissionFiled';
+import { isNullOrUndefined, isNumber, debug } from 'util';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -82,6 +82,7 @@ class WaybillForm extends Form {
       fuelRateAllList: [],
       tooLongFactDates: false,
       notAvailableMissions: [],
+      rejectMissionList: [], // Массив с заданиями, которые надо будет отменить, формируется в missionField
     };
   }
 
@@ -172,7 +173,9 @@ class WaybillForm extends Form {
 
           this.setState({
             fuelRates,
-            operations: fuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            operations: fuelRates.reduce((newArr, {
+              id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment,
+            }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
@@ -188,7 +191,9 @@ class WaybillForm extends Form {
             }, []),
             fuel_correction_rate,
             equipmentFuelRates,
-            equipmentOperations: equipmentFuelRates.reduce((newArr, { id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment }) => {
+            equipmentOperations: equipmentFuelRates.reduce((newArr, {
+              id, operation_id, is_excluding_mileage, measure_unit_name, rate_on_date, comment,
+            }) => {
               if (fuelOperationsListById[operation_id]) {
                 newArr.push({
                   ...fuelOperationsListById[operation_id],
@@ -327,7 +332,11 @@ class WaybillForm extends Form {
         global.NOTIFICATION_SYSTEM.notify(notifications.missionsByCarAndDateUpdateNotification);
       }
 
-      this.setState({ missionsList, notAvailableMissions });
+      this.setState({
+        missionsList,
+        notAvailableMissions,
+        origMissionsList: missionsList,
+      });
     });
   }
 
@@ -531,13 +540,43 @@ class WaybillForm extends Form {
     this.props.handleMultipleChange(changeObj);
   }
 
-  handleClose = taxesControl => checkMissionSelectBeforeClose(
+  handleClose = taxesControl => checkMissionSelectBeforeClose( // Перевести ПЛ в статус "Закрыт"
     this.props.formState,
     groupBy([...this.state.missionsList, ...this.state.notAvailableMissions], 'id'),
     this.props.missionSourcesList.find(({ auto }) => auto).id,
     this.context.flux.getActions('objects').getOrderById,
   )
-    .then(() => this.props.handleClose(taxesControl))
+    .then(async () => {
+      if (this.props.formState.status === 'active') {
+        const { rejectMissionList } = this.state;
+        await this.rejectMissionHandler(rejectMissionList).then((res) => {
+          const {
+            origFormState: {
+              mission_id_list = [],
+            },
+            origMissionsList,
+          } = this.state;
+          // удаляем из старой mission_id_list миссии, которые удалось отменить
+          const newMission_id_list = mission_id_list.filter(mission => !res.acceptedRejectMissionsIdList.includes(mission));
+          const newMissionsList = origMissionsList.filter( // фильтруем исхожные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+            mission => !res.acceptedRejectMissionsIdList.includes(mission.number),
+          );
+          this.props.handleMultipleChange({
+            mission_id_list: newMission_id_list, // <<< на прод
+            // equipment_fuel_type: 'DT', // <<< удалить, заглушка
+            // equipment_fuel_start: 1, // <<< удалить, заглушка
+          });
+          this.setState({
+            missionsList: newMissionsList,
+          });
+          if (!res.rejectMissionSubmitError) {
+            this.props.handleClose(taxesControl);
+          }
+        }); // миссии, которые были успешно отменены, их удаляем из missionField
+      } else {
+        this.props.handleClose(taxesControl);
+      }
+    })
     .catch(() => {});
 
   sortingDrivers = (a, b) => {
@@ -548,9 +587,79 @@ class WaybillForm extends Form {
     return b.isPrefer - a.isPrefer;
   }
 
-  handleSubmit = () => {
+  rejectMissionHandler = (rejectMissionList) => {
+    let rejectMissionSubmitError = false;
+    const acceptedRejectMissionsIdList = rejectMissionList.map(async (rejectMission) => {
+      try {
+        await this.context.flux.getActions('missions')[rejectMission.handlerName](rejectMission.payload);
+      } catch (e) {
+        console.warn('rejectMissionHandler:', e);
+        rejectMissionSubmitError = true;
+        return null;
+      }
+      return rejectMission.payload.mission_id;
+    });
+
+    // чистим список с запросами на отмену заданий
+    this.setState({
+      rejectMissionList: [],
+    });
+    return Promise.all(acceptedRejectMissionsIdList).then(res => ({
+      acceptedRejectMissionsIdList: res,
+      rejectMissionSubmitError,
+    }));
+  }
+
+  /**
+   * Отправляем запросы на отмену, если один из запросов вернулся с ошибкой, то не отправляем запрос на сохранение ПЛ
+   * При закрытии ПЛ, таже самая логика
+  */
+
+  handleSubmit = async () => {
     delete this.props.formState.is_bnso_broken;
-    this.props.onSubmit();
+    // let rejectMissionSubmitError = false;
+    if (this.props.formState.status === 'active') {
+      const { rejectMissionList } = this.state;
+      await this.rejectMissionHandler(rejectMissionList).then((res) => {
+        const {
+          origFormState: {
+            mission_id_list = [],
+          },
+          origMissionsList,
+        } = this.state;
+        // удаляем из старой mission_id_list миссии, которые удалось отменить
+        const newMission_id_list = mission_id_list.filter(mission => !res.acceptedRejectMissionsIdList.includes(mission));
+        const newMissionsList = origMissionsList.filter( // фильтруем исхожные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+          mission => !res.acceptedRejectMissionsIdList.includes(mission.number),
+        );
+        this.props.handleMultipleChange({
+          mission_id_list: newMission_id_list, // <<< на прод
+          // equipment_fuel_type: 'DT', // <<< удалить, заглушка
+          // equipment_fuel_start: 1, // <<< удалить, заглушка
+        });
+        this.setState({
+          missionsList: newMissionsList,
+        });
+        this.props.onSubmitActiveWaybill(!res.rejectMissionSubmitError);
+      }); // миссии, которые были успешно отменены, их удаляем из missionField
+    } else {
+      this.props.onSubmit();
+    }
+  }
+
+  setRejectMissionList = (rejectMissionList) => {
+    let {
+      missionsList,
+    } = this.state;
+
+    if (rejectMissionList) {
+      // Удаляем из опций поля задание, миссии, которые в очереди на отмену, чо бы пользователь не смог их снова выбрать
+      missionsList = missionsList.filter(mission => !rejectMissionList.some(rejMis => rejMis.payload.mission_id === mission.number));
+    }
+    this.setState({
+      rejectMissionList,
+      missionsList,
+    });
   }
 
   render() {
@@ -1108,7 +1217,7 @@ class WaybillForm extends Form {
                 />
               </Div>
               <Div className="task-container">
-                <MissionFiled
+                <MissionField
                   carsList={this.props.carsList}
                   state={state}
                   errors={errors}
@@ -1119,6 +1228,7 @@ class WaybillForm extends Form {
                   origFormState={origFormState}
                   handleChange={this.handleChange}
                   getMissionsByCarAndDates={this.getMissionsByCarAndDates}
+                  setRejectMissionList={this.setRejectMissionList}
                 />
               </Div>
             </Col>
@@ -1128,7 +1238,7 @@ class WaybillForm extends Form {
                   <div className="form-group">
                     <div className="checkbox">
                       <label htmlFor="show-fuel-consumption">
-                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} readOnly={true}/>
+                        <input id="show-fuel-consumption" type="checkbox" checked={!!state.equipment_fuel} disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update} onClick={this.handleEquipmentFuelChange.bind(this, !state.equipment_fuel)} readOnly />
                         <label style={{ cursor: IS_ACTIVE || IS_CLOSED ? 'default' : 'pointer', fontWeight: 800 }}>Показать расход топлива для оборудования</label>
                       </label>
                     </div>

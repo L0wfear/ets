@@ -52,9 +52,12 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
     this.setState({ showWaybillFormWrap: true });
   }
 
-  handleFormHideWaybillFormWrap = () => {
+  handleFormHideWaybillFormWrap = (newState) => {
     this.props.loadDataAfterCreateWaybill();
-    this.setState({ showWaybillFormWrap: false });
+    this.setState({
+      showWaybillFormWrap: false,
+      ...newState,
+    });
   }
 
   showMissionFormWrap = () => {

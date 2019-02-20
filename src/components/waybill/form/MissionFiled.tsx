@@ -26,8 +26,8 @@ class MissionField extends React.Component<any, any> {
     status: '',
     action_at: '',
     mission_id_list: [],
-    tempMissionIdList: [],
-    rejectMissionList: [], // Заменить на Index
+    tempMissionIdList: [], // Временный массив, пока открыта rejectForm
+    rejectMissionList: [], // Массив с заданиями, которые надо будет отменить
     rejectedMission: {},
   };
 
@@ -40,6 +40,7 @@ class MissionField extends React.Component<any, any> {
   }
 
   handleMissionsChange = (newFormData) => {
+    // Если удаляем миссию и статус ПЛ Активен
     if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
       const deletedElement = this.props.missionsList.filter((mission: any) => {
         return newFormData.indexOf(mission.id) === -1;
@@ -122,24 +123,25 @@ class MissionField extends React.Component<any, any> {
   }
 
   onReject = (waybillPayload) => {
-    const newPropsState = {
-      showMissionRejectForm: false,
-    };
     const {
       tempMissionIdList,
       rejectMissionList,
     } = this.state;
-    // перезаписать, если удалили, добавили и снова удалили задание, перейти на Index???
-    console.log('!!!!!!!!!! waybillPayload === ', waybillPayload);
+    const newPropsState = {
+      showMissionRejectForm: false,
+      rejectMissionList,
+    };
     // если НЕ!!! нажали на отмену или крестик в rejectForm
     if (waybillPayload) {
       this.props.handleChange('mission_id_list', tempMissionIdList);
-      this.setState({
-        rejectMissionList: [ ...rejectMissionList, waybillPayload ],
-      });
-      console.log('[ ...rejectMissionList, waybillPayload ] === ', [ ...rejectMissionList, waybillPayload ]);
+      const inList = rejectMissionList.find(
+        (mission) => mission.payload.mission_id === waybillPayload.payload.mission_id,
+      );
+      if (!inList) {
+        newPropsState.rejectMissionList = [ ...rejectMissionList, waybillPayload ];
+        this.props.setRejectMissionList(newPropsState.rejectMissionList);
+      }
     }
-
     this.setState({ ...newPropsState });
   }
 
@@ -160,7 +162,7 @@ class MissionField extends React.Component<any, any> {
 
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
-    const MISSIONS = missionsList
+    const MISSIONS = missionsList // удалить отсюда задания, которые были отменены( записаны в кеш отмены)
       .map(({ id, number, technical_operation_name, municipal_facility_name }) => ({
         value: id,
         label: `№${number} (${technical_operation_name})`,

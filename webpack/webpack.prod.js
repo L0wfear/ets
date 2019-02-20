@@ -12,7 +12,9 @@ const stand = process.env.STAND || 'dev';
 const getNameFavicon = (stand) => {
   switch (stand) {
     case 'dev': return 'faviconDev.png';
-    case 'stage': return 'faviconStage.png';
+    case 'gost_stage': return 'faviconStage.png';
+    case 'ets_test': return 'faviconStage.png';
+    case 'ets_hotfix': return 'faviconStage.png';
     default: return 'favicon.png';
   }
 };

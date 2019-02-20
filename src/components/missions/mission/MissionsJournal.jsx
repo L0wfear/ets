@@ -29,6 +29,7 @@ import { connect } from 'react-redux';
 import {
   getCompanyStructureState,
   getSessionState,
+  getSomeUniqState,
 } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
@@ -36,6 +37,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import { diffDates } from 'utils/dates';
 import moment from 'moment';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const is_archive = false;
 const loadingPageName = 'mission';
@@ -105,6 +107,7 @@ class MissionsJournal extends CheckableElementsList {
       .getActions('missions')
       .getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.actionGetAndSetInStoreMissionCancelReasons();
   }
 
   componentDidUpdate(nextProps, prevState) {
@@ -115,6 +118,10 @@ class MissionsJournal extends CheckableElementsList {
     ) {
       this.refreshList(this.state);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.actionResetMissionCancelReasons();
   }
 
   refreshList = async (state = this.state) => {
@@ -509,7 +516,7 @@ class MissionsJournal extends CheckableElementsList {
         bsSize="small"
         onClick={this.completeCheckedElements}
         disabled={this.checkDisabled() || this.state.completeMarkerBtnDisable}>
-        <Glyphicon glyph="ok" /> Отметка о выполнении
+        <Glyphicon glyph="ok" /> Выполнено
       </ButtonUpdateMission>,
       <ButtonUpdateMission
         key="butto-reject-mission"
@@ -517,7 +524,7 @@ class MissionsJournal extends CheckableElementsList {
         bsSize="small"
         onClick={this.rejectCheckedElements}
         disabled={this.checkDisabled()}>
-        <Glyphicon glyph="ban-circle" /> Отметка о невыполнении
+        <Glyphicon glyph="ban-circle" /> Не выполнено / Отменено
       </ButtonUpdateMission>,
       <ButtonUpdateMission
         key="butto-archive-mission"
@@ -586,11 +593,27 @@ export default compose(
       companyStructureLinearList: getCompanyStructureState(state)
         .companyStructureLinearList,
       userData: getSessionState(state).userData,
+      missionCancelReasonsList: getSomeUniqState(state)
+        .missionCancelReasonsList,
     }),
     (dispatch) => ({
       getAndSetInStoreCompanyStructureLinear: () =>
         dispatch(
           companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionGetAndSetInStoreMissionCancelReasons: () =>
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMissionCancelReasons(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionResetMissionCancelReasons: () =>
+        dispatch(
+          someUniqActions.actionResetMissionCancelReasons(
             {},
             { page: loadingPageName },
           ),

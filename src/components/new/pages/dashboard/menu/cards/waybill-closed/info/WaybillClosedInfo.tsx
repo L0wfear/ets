@@ -19,7 +19,10 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWaybillClosedInfo> {
+class WaybillClosedInfo extends React.Component<
+  PropsWaybillClosedInfo,
+  StateWaybillClosedInfo
+> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
@@ -27,10 +30,15 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
-  }
+  };
 
-  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    this.props.getWaybillById(Number.parseInt(path, 0))
+  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({
+    currentTarget: {
+      dataset: { path },
+    },
+  }) => {
+    this.props
+      .getWaybillById(Number.parseInt(path, 0))
       .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
@@ -42,35 +50,41 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
           console.warn('not find waybill');
         }
       });
-  }
+  };
 
   handleWaybillFormWrapHide = () => {
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
     });
-  }
+  };
 
-  handleWaybillFormWrapHideAfterSubmit = () => {
+  handleWaybillFormWrapHideAfterSubmit = (newState) => {
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
+      ...newState,
     });
-  }
+  };
 
   render() {
     return (
       <InfoCard title="Информация о ПЛ" handleClose={this.handleClose}>
         <ul>
-        {
-          this.props.infoData.subItems.map(({ data: { waybill_id, ...data } }) => (
-            <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
-              {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>
-              <br />
-              {`${data.car_garage_number || '-'}, ${data.driver_fio || '-'}`}
-            </li>
-            ))
-          }
+          {this.props.infoData.subItems.map(
+            ({ data: { waybill_id, ...data } }) => (
+              <li
+                key={waybill_id}
+                className="pointer"
+                data-path={waybill_id}
+                onClick={this.openWaybillFormWrap}>
+                {`№${data.waybill_number}, `}
+                <b>{data.car_gov_number}</b>
+                <br />
+                {`${data.car_garage_number || '-'}, ${data.driver_fio || '-'}`}
+              </li>
+            ),
+          )}
         </ul>
         <WaybillFormWrap
           onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
@@ -95,28 +109,16 @@ export default compose<any, any>(
       infoDataRaw: getDashboardState(state).waybill_closed.data.items[0],
     }),
     (dispatch) => ({
-      handleClose: () => (
+      handleClose: () => dispatch(dashboardSetInfoDataInWaybillClosed(null)),
+      setInfoData: (infoData) =>
+        dispatch(dashboardSetInfoDataInWaybillClosed(infoData)),
+      getWaybillById: (id) =>
         dispatch(
-          dashboardSetInfoDataInWaybillClosed(null),
-        )
-      ),
-      setInfoData: (infoData) => (
-        dispatch(
-          dashboardSetInfoDataInWaybillClosed(infoData),
-        )
-      ),
-      getWaybillById: (id) => (
-        dispatch(
-          loadWaybillById(
-            'none',
-            id,
-            {
-              promise: true,
-              page: 'dashboard',
-            },
-          ),
-        )
-      ),
+          loadWaybillById('none', id, {
+            promise: true,
+            page: 'dashboard',
+          }),
+        ),
     }),
   ),
 )(WaybillClosedInfo);

@@ -45,7 +45,7 @@ import Taxes from 'components/waybill/Taxes';
 import WaybillFooter from 'components/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
-import MissionFiled from 'components/waybill/form/MissionFiled';
+import MissionField from 'components/waybill/form/MissionFiled';
 import { isNullOrUndefined, isNumber, isBoolean } from 'util';
 import {
   getSessionState,
@@ -148,6 +148,7 @@ class WaybillForm extends Form {
       fuel_card_id: null,
       equipment_fuel_method: null,
       equipment_fuel_card_id: null,
+      rejectMissionList: [], // Массив с заданиями, которые надо будет отменить, формируется в missionField
     };
   }
 
@@ -518,7 +519,11 @@ class WaybillForm extends Form {
           );
         }
 
-        this.setState({ missionsList, notAvailableMissions });
+        this.setState({
+          missionsList,
+          notAvailableMissions,
+          origMissionsList: missionsList,
+        });
       });
   };
 
@@ -799,13 +804,6 @@ class WaybillForm extends Form {
     return true;
   }
 
-  handleSubmit = () => {
-    if (this.checkOnValidHasEquipment()) {
-      delete this.props.formState.is_bnso_broken;
-      this.props.onSubmit();
-    }
-  };
-
   handleClose = (taxesControl) => {
     if (this.checkOnValidHasEquipment()) {
       return checkMissionSelectBeforeClose(
@@ -817,19 +815,48 @@ class WaybillForm extends Form {
         this.props.missionSourcesList.find(({ auto }) => auto).id,
         this.context.flux.getActions('objects').getOrderById,
       )
-        .then(() => this.props.handleClose(taxesControl))
+        .then(async () => {
+          if (this.props.formState.status === 'active') {
+            const { rejectMissionList } = this.state;
+            await this.rejectMissionHandler(rejectMissionList).then((res) => {
+              const {
+                origFormState: { mission_id_list = [] },
+                origMissionsList,
+              } = this.state;
+              // удаляем из старой mission_id_list миссии, которые удалось отменить
+              const newMission_id_list = mission_id_list.filter(
+                (mission) =>
+                  !res.acceptedRejectMissionsIdList.includes(mission),
+              );
+              const newMissionsList = origMissionsList.filter(
+                // фильтруем исхожные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+                (mission) =>
+                  !res.acceptedRejectMissionsIdList.includes(mission.number),
+              );
+              this.props.handleMultipleChange({
+                mission_id_list: newMission_id_list,
+              });
+              this.setState({
+                missionsList: newMissionsList,
+              });
+              if (!res.rejectMissionSubmitError) {
+                this.props.handleClose(taxesControl);
+              }
+            }); // миссии, которые были успешно отменены, их удаляем из missionField
+          } else {
+            this.props.handleClose(taxesControl);
+          }
+        })
         .catch(() => {});
     }
 
     return Promise.resolve(true);
   };
-
   handlePrint = (...arg) => {
     if (this.checkOnValidHasEquipment()) {
       this.props.handlePrint(...arg);
     }
   };
-
   handlePrintFromMiniButton = (...arg) => {
     if (this.checkOnValidHasEquipment()) {
       this.props.handlePrintFromMiniButton(...arg);
@@ -936,6 +963,87 @@ class WaybillForm extends Form {
 
       this.handleChange('equipment_fuel', false);
     }
+  };
+  rejectMissionHandler = (rejectMissionList) => {
+    let rejectMissionSubmitError = false;
+    const acceptedRejectMissionsIdList = rejectMissionList.map(
+      async (rejectMission) => {
+        try {
+          await this.context.flux
+            .getActions('missions')
+            [rejectMission.handlerName](rejectMission.payload);
+        } catch (e) {
+          console.warn('rejectMissionHandler:', e);
+          rejectMissionSubmitError = true;
+          return null;
+        }
+        return rejectMission.payload.id;
+      },
+    );
+
+    // чистим список с запросами на отмену заданий
+    this.setState({
+      rejectMissionList: [],
+    });
+    // rejectMissionHandler
+    return Promise.all(acceptedRejectMissionsIdList).then((res) => ({
+      acceptedRejectMissionsIdList: res,
+      rejectMissionSubmitError,
+    }));
+  };
+
+  /**
+   * Отправляем запросы на отмену, если один из запросов вернулся с ошибкой, то не отправляем запрос на сохранение ПЛ
+   * При закрытии ПЛ, таже самая логика
+   */
+
+  handleSubmit = async () => {
+    if (this.checkOnValidHasEquipment()) {
+      delete this.props.formState.is_bnso_broken;
+      if (this.props.formState.status === 'active') {
+        const { rejectMissionList } = this.state;
+        this.rejectMissionHandler(rejectMissionList).then((res) => {
+          const {
+            origFormState: { mission_id_list = [] },
+            origMissionsList,
+          } = this.state;
+          // удаляем из старой mission_id_list миссии, которые удалось отменить
+          const newMission_id_list = mission_id_list.filter(
+            (mission) => !res.acceptedRejectMissionsIdList.includes(mission),
+          );
+          const newMissionsList = origMissionsList.filter(
+            // фильтруем исхожные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+            (mission) =>
+              !res.acceptedRejectMissionsIdList.includes(mission.number),
+          );
+          this.handleChange('mission_id_list', newMission_id_list);
+          this.setState({
+            missionsList: newMissionsList,
+          });
+          this.props.onSubmitActiveWaybill(!res.rejectMissionSubmitError);
+        }); // миссии, которые были успешно отменены, их удаляем из missionField
+      } else {
+        this.props.onSubmit();
+      }
+    }
+  };
+
+  setRejectMissionList = (rejectMissionList) => {
+    let { missionsList } = this.state;
+
+    if (rejectMissionList) {
+      // Удаляем из опций поля задание, миссии, которые в очереди на отмену, чо бы пользователь не смог их снова выбрать
+      missionsList = missionsList.filter(
+        (mission) =>
+          !rejectMissionList.some(
+            (rejMis) => rejMis.payload.id === mission.number,
+          ),
+      );
+    }
+    this.setState({
+      rejectMissionList,
+      missionsList,
+    });
   };
 
   render() {
@@ -1951,7 +2059,7 @@ class WaybillForm extends Form {
           </Div>
           <Row>
             <Col md={8}>
-              <MissionFiled
+              <MissionField
                 carsList={this.props.carsList}
                 state={state}
                 errors={errors}
@@ -1962,7 +2070,7 @@ class WaybillForm extends Form {
                 origFormState={origFormState}
                 handleChange={this.handleChange}
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
-                deepLvl={this.props.deepLvl}
+                setRejectMissionList={this.setRejectMissionList}
               />
             </Col>
             <Col md={4}>

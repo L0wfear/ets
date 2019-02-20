@@ -117,14 +117,9 @@ export default class Taxes extends React.Component {
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
         if (props.readOnly) {
-          const operation = _.find(
-            this.state.operations,
-            (op) => `${OPERATION}` === `${op.operation_id}`,
-          );
-
-          return operation
-            ? `${operation.name} ${row.comment ? `(${row.comment})` : ''}` || ''
-            : '';
+          return `${row.operation_name} ${
+            row.comment ? `(${row.comment})` : ''
+          }`;
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
@@ -194,7 +189,7 @@ export default class Taxes extends React.Component {
       operation_id: data.id,
       rate_on_date: data.rate_on_date,
       comment: data.comment || '',
-      name: data.name,
+      operation_name: data.name,
       label: data.comment ? `${data.name} (${data.comment})` : data.name,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
@@ -202,19 +197,15 @@ export default class Taxes extends React.Component {
 
     taxes.forEach((data) => {
       if (data.originOperation) {
-        const name = get(
-          nexProps.operations.find(({ id }) => id === data.OPERATION),
-          'name',
-          '-',
-        );
-
         operations.push({
           value: data.uniqKey,
           operation_id: data.OPERATION,
           rate_on_date: data.FUEL_RATE,
           comment: data.comment,
-          name,
-          label: data.comment ? `${name} (${data.comment})` : name,
+          operation_name: data.operation_name,
+          label: data.comment
+            ? `${data.operation_name} (${data.comment})`
+            : data.operation_name,
           measure_unit_name: data.measure_unit_name,
           is_excluding_mileage: data.is_excluding_mileage,
           isDisabled: true,
@@ -253,6 +244,7 @@ export default class Taxes extends React.Component {
     const isDisabled = get(allOption, 'isDisabled', false);
     if (!isDisabled) {
       const value = get(allOption, 'operation_id', null);
+      const operation_name = get(allOption, 'operation_name', '');
       const comment = get(allOption, 'comment', '');
       const rate_on_date = get(allOption, 'rate_on_date', 0);
       const is_excluding_mileage = get(
@@ -261,15 +253,14 @@ export default class Taxes extends React.Component {
         false,
       );
       const measure_unit_name = get(allOption, 'measure_unit_name', '-');
-      const originOperation = get(allOption, 'originOperation', false);
 
       const { tableData } = this.state;
       const last_is_excluding_mileage = tableData[index].is_excluding_mileage;
 
       tableData[index].uniqKey = rawValue;
-      tableData[index].originOperation = originOperation;
       tableData[index].OPERATION = value;
       tableData[index].comment = comment;
+      tableData[index].operation_name = operation_name;
       tableData[index].FUEL_RATE = rate_on_date;
       tableData[index].is_excluding_mileage = is_excluding_mileage;
       if (tableData[index].is_excluding_mileage) {

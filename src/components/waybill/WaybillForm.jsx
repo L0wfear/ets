@@ -633,6 +633,8 @@ class WaybillForm extends Form {
         car_id,
         gov_number: '',
         equipment_fuel_method: null,
+        fuel_card_id: null,
+        fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
         equipment_fuel: false,
       };
@@ -1159,7 +1161,12 @@ class WaybillForm extends Form {
     const title = getTitleByStatus(state);
     const { tax_data = [], equipment_tax_data = [] } = state;
 
-    taxesControl = validateTaxesControl([tax_data, equipment_tax_data]);
+    if (this.state.fuelRates.length) {
+      taxesControl = validateTaxesControl([tax_data]);
+    } else {
+      taxesControl = true;
+    }
+
     const allTaxes = [...tax_data, ...equipment_tax_data];
     const taxesTotal = allTaxes.reduce(
       (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,

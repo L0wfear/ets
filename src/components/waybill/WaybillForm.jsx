@@ -241,17 +241,18 @@ class WaybillForm extends Form {
     }
 
     if (!IS_CREATING) {
-      flux
+      await flux
         .getActions('waybills')
         .getWaybill(formState.id)
-        .then(({ result: { closed_editable } }) =>
+        .then(({ result: waybill }) => {
+          this.handleMultipleChange(waybill);
           this.setState({
-            canEditIfClose: closed_editable
+            canEditIfClose: waybill.closed_editable
               ? this.props.userPermissionsSet.has('waybill.update_closed')
               : false,
             origFormState: formState,
-          }),
-        )
+          });
+        })
         .catch((e) => {
           console.error(e);
           this.setState({
@@ -301,6 +302,7 @@ class WaybillForm extends Form {
                   newArr,
                   {
                     id,
+                    operation_name,
                     operation_id,
                     is_excluding_mileage,
                     measure_unit_name,
@@ -311,6 +313,7 @@ class WaybillForm extends Form {
                   if (fuelOperationsListById[operation_id]) {
                     newArr.push({
                       ...fuelOperationsListById[operation_id],
+                      name: operation_name,
                       uniqKey: id,
                       rate_on_date,
                       comment,
@@ -330,6 +333,7 @@ class WaybillForm extends Form {
                   newArr,
                   {
                     id,
+                    operation_name,
                     operation_id,
                     is_excluding_mileage,
                     measure_unit_name,
@@ -340,6 +344,7 @@ class WaybillForm extends Form {
                   if (fuelOperationsListById[operation_id]) {
                     newArr.push({
                       ...fuelOperationsListById[operation_id],
+                      name: operation_name,
                       uniqKey: id,
                       rate_on_date,
                       measure_unit_name,

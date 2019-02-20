@@ -130,6 +130,7 @@ export default class WaybillsActions extends Actions {
         .map((tax) => {
           delete tax.originOperation;
           delete tax.isDisabled;
+          delete tax.operation_name;
           delete tax.uniqKey;
 
           return tax;
@@ -142,6 +143,7 @@ export default class WaybillsActions extends Actions {
         .map((tax) => {
           delete tax.originOperation;
           delete tax.isDisabled;
+          delete tax.operation_name;
           delete tax.uniqKey;
 
           return tax;

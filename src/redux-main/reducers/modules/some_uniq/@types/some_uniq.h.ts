@@ -13,6 +13,11 @@ export type modelListElement = {
   max_speed: number;
   title: string | null;
 };
+export type CancelReasons = {
+  id: number;
+  name: string;
+  status: string;
+};
 
 export type IStateSomeUniq = {
   specialModelList: SpecialModel[];
@@ -29,4 +34,5 @@ export type IStateSomeUniq = {
   };
   maintenanceWorkList: MaintenanceWork[];
   cleanCategoriesList: CleanCategories[];
+  missionCancelReasonsList: CancelReasons[];
 };

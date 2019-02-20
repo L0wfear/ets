@@ -68,7 +68,11 @@ let timeId = 0;
 @FluxContext
 class WaybillFormWrap extends FormWrap {
   static defaultProps = {
-    onCallback: () => {},
+    onCallback: (newState) => {
+      this.setState({
+        ...newState,
+      });
+    },
   };
 
   constructor(props) {
@@ -538,6 +542,35 @@ class WaybillFormWrap extends FormWrap {
   };
 
   /**
+   * Отправка формы активного ПЛ
+   * @param {boolean} closeForm - закрывать форму после обновления, false - если есть ошибка
+   * @param {object} state - содержимое формы
+   * @return {undefined}
+   */
+  submitActiveWaybill = async (closeForm, state = this.state.formState) => {
+    const formState = { ...state };
+    const { flux } = this.context;
+
+    if (closeForm) {
+      // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
+      try {
+        await flux.getActions('waybills').updateWaybill(formState);
+      } catch ({ error_text }) {
+        console.log(error_text); // eslint-disable-line
+        return;
+      }
+
+      this.props.onCallback({
+        showWaybillFormWrap: false,
+      });
+    } else {
+      this.props.onCallback({
+        showWaybillFormWrap: true,
+      });
+    }
+  };
+
+  /**
    * Отправка формы ПЛ
    * @param {object} state - содержимое формы
    * @param {function} callback - функция, вызываемая после отправки
@@ -610,13 +643,7 @@ class WaybillFormWrap extends FormWrap {
         this.props.onCallback();
       }
     } else if (waybillStatus === 'active') {
-      try {
-        await flux.getActions('waybills').updateWaybill(formState);
-      } catch ({ error_text }) {
-        console.log(error_text); // eslint-disable-line
-        return;
-      }
-      this.props.onCallback();
+      this.submitActiveWaybill();
     } else if (waybillStatus === 'closed') {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
@@ -678,6 +705,7 @@ class WaybillFormWrap extends FormWrap {
       <WaybillForm
         formState={this.state.formState}
         onSubmit={this.handleFormSubmit}
+        onSubmitActiveWaybill={this.submitActiveWaybill}
         handlePrint={this.handlePrint}
         handleClose={this.handleClose}
         handleFormChange={this.handleFormStateChange}

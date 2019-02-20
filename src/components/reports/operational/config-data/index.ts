@@ -31,11 +31,8 @@ const children: any = {
   carDowntimeAndOvermileage,
   carMovementTimeReport,
   cleaningVolume,
+  deviationFromNormOfCars,
 };
-
-if (process.env.STAND === 'dev' || __DEVELOPMENT__) {
-  children.deviationFromNormOfCars = deviationFromNormOfCars;
-}
 
 export default {
   title: 'Оперативные отчеты',

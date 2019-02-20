@@ -1051,7 +1051,8 @@ class WaybillForm extends Form {
         : [];
 
     const title = getTitleByStatus(state);
-    const { tax_data = [], equipment_tax_data = [] } = state;
+    const tax_data = get(state, 'tax_data', []) || [];
+    const equipment_tax_data = get(state, 'equipment_tax_data', []) || [];
 
     if (this.state.fuelRates.length) {
       taxesControl = validateTaxesControl([...tax_data]);

@@ -58,6 +58,7 @@ import { BorderDash, DivNone } from 'global-styled/global-styled';
 import { ButtonGroup } from 'react-bootstrap';
 import { isArray } from 'highcharts';
 import { WaybillEquipmentButton } from './styled';
+import { getDefaultBill } from 'stores/WaybillsStore';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -84,6 +85,9 @@ const fieldToCheckHasData = {
     type: 'array',
   },
   motohours_equip_end: {
+    type: 'field',
+  },
+  equipment_fuel_card_id: {
     type: 'field',
   },
   motohours_equip_start: {
@@ -623,6 +627,7 @@ class WaybillForm extends Form {
       const fieldsToChange = {
         car_id,
         gov_number: '',
+        equipment_fuel_method: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
         equipment_fuel: false,
       };
@@ -770,7 +775,11 @@ class WaybillForm extends Form {
   };
 
   checkOnValidHasEquipment() {
-    if (!isBoolean(this.props.formState.equipment_fuel)) {
+    const {
+      formState: { equipment_fuel },
+    } = this.props;
+
+    if (!isBoolean(equipment_fuel) && equipment_fuel) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
           'Необходимо указать, установлено ли на ТС спецоборудование',
@@ -892,7 +901,10 @@ class WaybillForm extends Form {
   };
 
   handleChangeHasEquipmentOnTrue = () => {
-    this.handleChange('equipment_fuel', true);
+    this.handleMultipleChange({
+      equipment_fuel: true,
+      equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
+    });
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
@@ -906,7 +918,10 @@ class WaybillForm extends Form {
             body: 'Очистить введенные данные по спецоборудованию?',
           });
 
-          this.handleMultipleChange(setEmptyFieldByKey(fieldToCheckHasData));
+          this.handleMultipleChange({
+            ...setEmptyFieldByKey(fieldToCheckHasData),
+            equipment_fuel_method: null,
+          });
         } catch (e) {
           return;
         }

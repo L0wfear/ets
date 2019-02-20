@@ -1798,7 +1798,7 @@ class WaybillForm extends Form {
                             || (!IS_ACTIVE && !this.state.canEditIfClose)
                           }
                           title="Расчет топлива по норме"
-                          taxes={state.tax_data}
+                          taxes={tax_data}
                           operations={this.state.operations}
                           fuelRates={this.state.fuelRates}
                           onChange={this.handleChange.bind(this, 'tax_data')}
@@ -2036,7 +2036,7 @@ class WaybillForm extends Form {
                                 IS_CLOSED
                                 || (!IS_ACTIVE && !this.state.canEditIfClose)
                               }
-                              taxes={state.equipment_tax_data}
+                              taxes={equipment_tax_data}
                               operations={this.state.equipmentOperations}
                               fuelRates={this.state.equipmentFuelRates}
                               title="Расчет топлива по норме для оборудования"

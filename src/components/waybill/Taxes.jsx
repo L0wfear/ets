@@ -187,6 +187,7 @@ export default class Taxes extends React.Component {
       operation_id: data.id,
       rate_on_date: data.rate_on_date,
       operation_name: data.name,
+      comment: data.comment || '',
       label: data.name,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
@@ -197,6 +198,7 @@ export default class Taxes extends React.Component {
         operations.push({
           value: data.uniqKey,
           operation_id: data.OPERATION,
+          comment: data.comment,
           rate_on_date: data.FUEL_RATE,
           operation_name: data.operation_name,
           label: data.operation_name,
@@ -240,6 +242,7 @@ export default class Taxes extends React.Component {
       const value = get(allOption, 'operation_id', null);
       const operation_name = get(allOption, 'operation_name', '');
       const rate_on_date = get(allOption, 'rate_on_date', 0);
+      const comment = get(allOption, 'comment', '');
       const is_excluding_mileage = get(
         allOption,
         'is_excluding_mileage',
@@ -252,6 +255,7 @@ export default class Taxes extends React.Component {
 
       tableData[index].uniqKey = rawValue;
       tableData[index].OPERATION = value;
+      tableData[index].comment = comment;
       tableData[index].operation_name = operation_name;
       tableData[index].FUEL_RATE = rate_on_date;
       tableData[index].is_excluding_mileage = is_excluding_mileage;

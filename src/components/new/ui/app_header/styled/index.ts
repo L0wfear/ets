@@ -5,7 +5,7 @@ import SimpleLinkA from 'components/new/ui/simple_a/link';
 export const AppHeaderNav = styled.nav`
   display: flex;
   justify-content: space-between;
-  z-index: 2;
+  z-index: 3;
   background-color: #292929;
 `;
 

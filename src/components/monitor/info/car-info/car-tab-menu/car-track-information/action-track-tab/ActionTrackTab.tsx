@@ -45,7 +45,7 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
     this.props.togglePlay();
 
     if (status !== 'play') {
-      const intervalId = setInterval(this.movePlayPoint, 500);
+      const intervalId = setInterval(this.movePlayPoint, 1500);
       this.setState({ intervalId });
     } else {
       clearInterval(this.state.intervalId);
@@ -58,7 +58,6 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
   }
 
   movePlayPoint = () => {
-
     const { trackPointIndex } = this.props;
 
     if (this.props.track.length - 1 !== trackPointIndex) {

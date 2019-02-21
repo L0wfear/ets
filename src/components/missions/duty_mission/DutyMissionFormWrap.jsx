@@ -10,11 +10,12 @@ import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { getDefaultDutyMission } from 'stores/MissionsStore';
 import { saveData } from 'utils/functions';
-import { diffDates } from 'utils/dates';
+import { diffDates, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import dutyMissionSchema from 'models/DutyMissionModel';
 
 import DutyMissionForm from 'components/missions/duty_mission/DutyMissionForm';
 import DutyMissionFormOld from 'components/missions/duty_mission/DutyMissionFormOld';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 class DutyMissionFormWrap extends FormWrap {
   constructor(props, context) {
@@ -53,6 +54,8 @@ class DutyMissionFormWrap extends FormWrap {
       }
 
       if (props.fromOrder) {
+        this.checkOnMosckowTime();
+
         const { order } = props;
 
         const formErrors = this.validateWrap(mission, {}, { order });
@@ -111,6 +114,24 @@ class DutyMissionFormWrap extends FormWrap {
     } catch (error) {
       return 'isError'; // если ошибка, проверять в handleFormSubmit
       // function refreshTableList not in father modules
+    }
+  }
+
+  async checkOnMosckowTime() {
+    const {
+      time: {
+        date,
+      },
+    } = await loadMoscowTime();
+
+    const currentTime = getDateWithMoscowTzByTimestamp(date);
+
+    const {
+      formState,
+    } = this.state;
+
+    if (diffDates(currentTime, formState.plan_date_start) > 0) {
+      this.handleFormStateChange('plan_date_start', currentTime);
     }
   }
 

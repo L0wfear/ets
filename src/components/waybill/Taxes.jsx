@@ -117,9 +117,7 @@ export default class Taxes extends React.Component {
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
         if (props.readOnly) {
-          return `${row.operation_name} ${
-            row.comment ? `(${row.comment})` : ''
-          }`;
+          return row.operation_name;
         }
         const options = this.state.operations.map((op) => {
           const { taxes = this.state.tableData } = this.props;
@@ -188,9 +186,8 @@ export default class Taxes extends React.Component {
       value: data.uniqKey,
       operation_id: data.id,
       rate_on_date: data.rate_on_date,
-      comment: data.comment || '',
       operation_name: data.name,
-      label: data.comment ? `${data.name} (${data.comment})` : data.name,
+      label: data.name,
       measure_unit_name: data.measure_unit_name,
       is_excluding_mileage: data.is_excluding_mileage,
     }));
@@ -201,11 +198,8 @@ export default class Taxes extends React.Component {
           value: data.uniqKey,
           operation_id: data.OPERATION,
           rate_on_date: data.FUEL_RATE,
-          comment: data.comment,
           operation_name: data.operation_name,
-          label: data.comment
-            ? `${data.operation_name} (${data.comment})`
-            : data.operation_name,
+          label: data.operation_name,
           measure_unit_name: data.measure_unit_name,
           is_excluding_mileage: data.is_excluding_mileage,
           isDisabled: true,
@@ -245,7 +239,6 @@ export default class Taxes extends React.Component {
     if (!isDisabled) {
       const value = get(allOption, 'operation_id', null);
       const operation_name = get(allOption, 'operation_name', '');
-      const comment = get(allOption, 'comment', '');
       const rate_on_date = get(allOption, 'rate_on_date', 0);
       const is_excluding_mileage = get(
         allOption,
@@ -259,7 +252,6 @@ export default class Taxes extends React.Component {
 
       tableData[index].uniqKey = rawValue;
       tableData[index].OPERATION = value;
-      tableData[index].comment = comment;
       tableData[index].operation_name = operation_name;
       tableData[index].FUEL_RATE = rate_on_date;
       tableData[index].is_excluding_mileage = is_excluding_mileage;

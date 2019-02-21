@@ -61,14 +61,14 @@ const config = {
 const notification_config = {
   develop: {
     dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
-    gost_stage: 'wss://ets-stage.gost-group.com/services/notification_ws',
+    gost_stage: 'ws://ets-stage.gost-group.com/services/notification_ws',
     ets_test: 'wss://ets-test.mos.ru/services/notification_ws',
     ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',
     prod: 'wss://ets.mos.ru/services/notification_ws',
   },
   origin: {
     dev: `ws://${HOST}${PATHNAME}services/notification_ws`,
-    gost_stage: `wss://${HOST}${PATHNAME}services/notification_ws`,
+    gost_stage: `ws://${HOST}${PATHNAME}services/notification_ws`,
     ets_test: `wss://${HOST}${PATHNAME}services/notification_ws`,
     ets_hotfix: `wss://${HOST}${PATHNAME}services/notification_ws`,
     prod: `wss://${HOST}${PATHNAME}services/notification_ws`,

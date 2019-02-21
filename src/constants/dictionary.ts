@@ -9,7 +9,7 @@ export const MISSION_STATUS_LABELS = {
   not_assigned: 'Не назначено',
   complete: 'Выполнено',
   fail: 'Не выполнено',
-  canceled: 'Отменено',
+  canceled: 'Отменено', // новый статус
 };
 
 export const DUTY_MISSION_STATUS_LABELS = {

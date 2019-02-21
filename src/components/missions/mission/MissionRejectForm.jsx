@@ -442,7 +442,7 @@ class MissionRejectForm extends React.Component {
 
         <Modal.Footer>
           <Div>
-            <Button disabled={!!errors.comment} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+            <Button disabled={!!errors.reason_id} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
             <Button onClick={this.reject}>Отменить</Button>
           </Div>
         </Modal.Footer>

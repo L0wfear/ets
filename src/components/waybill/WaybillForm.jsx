@@ -58,6 +58,7 @@ import { BorderDash, DivNone } from 'global-styled/global-styled';
 import { ButtonGroup } from 'react-bootstrap';
 import { isArray } from 'highcharts';
 import { WaybillEquipmentButton } from './styled';
+import { getDefaultBill } from 'stores/WaybillsStore';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -84,6 +85,9 @@ const fieldToCheckHasData = {
     type: 'array',
   },
   motohours_equip_end: {
+    type: 'field',
+  },
+  equipment_fuel_card_id: {
     type: 'field',
   },
   motohours_equip_start: {
@@ -129,8 +133,6 @@ class WaybillForm extends Form {
   constructor(props) {
     super(props);
 
-    const { formState } = props;
-
     this.state = {
       operations: [],
       equipmentOperations: [],
@@ -146,7 +148,6 @@ class WaybillForm extends Form {
       fuel_card_id: null,
       equipment_fuel_method: null,
       equipment_fuel_card_id: null,
-      hasEquipment: hasWaybillEquipmentData(formState, fieldToCheckHasData),
     };
   }
 
@@ -631,6 +632,11 @@ class WaybillForm extends Form {
       const fieldsToChange = {
         car_id,
         gov_number: '',
+        equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
+        fuel_card_id: null,
+        fuel_to_give: null,
+        ...setEmptyFieldByKey(fieldToCheckHasData),
+        equipment_fuel: false,
       };
 
       if (!isEmpty(car_id)) {
@@ -652,6 +658,7 @@ class WaybillForm extends Form {
             }),
           );
       }
+
       /**
        * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
        */
@@ -700,12 +707,10 @@ class WaybillForm extends Form {
       }
 
       if (lastCarUsedWaybill) {
-        this.setState({
-          hasEquipment: hasWaybillEquipmentData(
-            fieldsToChange,
-            fieldToCheckHasData,
-          ),
-        });
+        fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
+          fieldsToChange,
+          fieldToCheckHasData,
+        );
       }
     } else {
       fieldsToChange.fuel_start = 0;
@@ -777,7 +782,11 @@ class WaybillForm extends Form {
   };
 
   checkOnValidHasEquipment() {
-    if (!isBoolean(this.state.hasEquipment)) {
+    const {
+      formState: { equipment_fuel },
+    } = this.props;
+
+    if (!isBoolean(equipment_fuel) && equipment_fuel) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
           'Необходимо указать, установлено ли на ТС спецоборудование',
@@ -813,12 +822,6 @@ class WaybillForm extends Form {
     }
 
     return Promise.resolve(true);
-  };
-
-  handleClose = (...arg) => {
-    if (this.checkOnValidHasEquipment()) {
-      this.props.handleClose(...arg);
-    }
   };
 
   handlePrint = (...arg) => {
@@ -905,30 +908,33 @@ class WaybillForm extends Form {
   };
 
   handleChangeHasEquipmentOnTrue = () => {
-    if (!this.state.hasEquipment) {
-      this.setState({
-        hasEquipment: true,
-      });
-    }
+    this.handleMultipleChange({
+      equipment_fuel: true,
+      equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
+    });
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
-    if (hasWaybillEquipmentData(this.props.formState, fieldToCheckHasData)) {
-      try {
-        await confirmDialog({
-          title: 'Внимание',
-          body: 'Очистить введенные данные по спецоборудованию?',
-        });
+    const { formState } = this.props;
 
-        this.handleMultipleChange(setEmptyFieldByKey(fieldToCheckHasData));
-      } catch (e) {
-        return;
+    if (formState.equipment_fuel) {
+      if (hasWaybillEquipmentData(formState, fieldToCheckHasData)) {
+        try {
+          await confirmDialog({
+            title: 'Внимание',
+            body: 'Очистить введенные данные по спецоборудованию?',
+          });
+
+          this.handleMultipleChange({
+            ...setEmptyFieldByKey(fieldToCheckHasData),
+            equipment_fuel_method: null,
+          });
+        } catch (e) {
+          return;
+        }
       }
-    }
-    if (this.state.hasEquipment) {
-      this.setState({
-        hasEquipment: false,
-      });
+
+      this.handleChange('equipment_fuel', false);
     }
   };
 
@@ -970,6 +976,7 @@ class WaybillForm extends Form {
       label: v,
     }));
     // для теста если отвалился бек [{label: 'FUEL_CARDS', value: 'FUEL_CARDS' }] ||
+
     const FUEL_CARDS = this.getFuelCardsListOptions(
       fuelCardsList,
       state.fuel_type,
@@ -1049,9 +1056,15 @@ class WaybillForm extends Form {
         : [];
 
     const title = getTitleByStatus(state);
-    const { tax_data = [], equipment_tax_data = [] } = state;
+    const tax_data = get(state, 'tax_data', []) || [];
+    const equipment_tax_data = get(state, 'equipment_tax_data', []) || [];
 
-    taxesControl = validateTaxesControl([tax_data, equipment_tax_data]);
+    if (this.state.fuelRates.length) {
+      taxesControl = validateTaxesControl([...tax_data]);
+    } else {
+      taxesControl = true;
+    }
+
     const allTaxes = [...tax_data, ...equipment_tax_data];
     const taxesTotal = allTaxes.reduce(
       (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
@@ -1404,8 +1417,8 @@ class WaybillForm extends Form {
                           <ButtonGroup>
                             <WaybillEquipmentButton
                               active={
-                                isBoolean(this.state.hasEquipment)
-                                && this.state.hasEquipment
+                                isBoolean(state.equipment_fuel)
+                                && state.equipment_fuel
                               }
                               disabled={!(IS_CREATING || IS_DRAFT)}
                               onClick={this.handleChangeHasEquipmentOnTrue}>
@@ -1413,8 +1426,8 @@ class WaybillForm extends Form {
                             </WaybillEquipmentButton>
                             <WaybillEquipmentButton
                               active={
-                                isBoolean(this.state.hasEquipment)
-                                && !this.state.hasEquipment
+                                isBoolean(state.equipment_fuel)
+                                && !state.equipment_fuel
                               }
                               disabled={!(IS_CREATING || IS_DRAFT)}
                               onClick={this.handleChangeHasEquipmentOnFalse}>
@@ -1645,8 +1658,11 @@ class WaybillForm extends Form {
                             />
                           </Col>
                           <Col md={12}>
-                            Значение поля «Возврат фактический, л» обновляется
-                            при редактировании таксировки.
+                            {IS_ACTIVE || IS_CLOSED ? (
+                              'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
+                            ) : (
+                              <DivNone />
+                            )}
                           </Col>
                         </Row>
                       </Col>
@@ -1669,7 +1685,7 @@ class WaybillForm extends Form {
                             || (!IS_ACTIVE && !this.state.canEditIfClose)
                           }
                           title="Расчет топлива по норме"
-                          taxes={state.tax_data}
+                          taxes={tax_data}
                           operations={this.state.operations}
                           fuelRates={this.state.fuelRates}
                           onChange={this.handleChange.bind(this, 'tax_data')}
@@ -1687,7 +1703,7 @@ class WaybillForm extends Form {
                 </BorderDash>
               </Col>
             </Row>
-            {this.state.hasEquipment ? (
+            {state.equipment_fuel ? (
               <>
                 <Row>
                   <Col md={12}>
@@ -1881,8 +1897,11 @@ class WaybillForm extends Form {
                                 />
                               </Col>
                               <Col md={12}>
-                                Значение поля «Возврат фактический, л»
-                                обновляется при редактировании таксировки.
+                                {IS_ACTIVE || IS_CLOSED ? (
+                                  'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
+                                ) : (
+                                  <DivNone />
+                                )}
                               </Col>
                             </Row>
                           </Col>
@@ -1904,7 +1923,7 @@ class WaybillForm extends Form {
                                 IS_CLOSED
                                 || (!IS_ACTIVE && !this.state.canEditIfClose)
                               }
-                              taxes={state.equipment_tax_data}
+                              taxes={equipment_tax_data}
                               operations={this.state.equipmentOperations}
                               fuelRates={this.state.equipmentFuelRates}
                               title="Расчет топлива по норме для оборудования"

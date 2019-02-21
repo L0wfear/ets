@@ -51,6 +51,12 @@ export const waybillSchema = {
       required: true,
     },
     {
+      key: 'equipment_fuel_type',
+      title: 'Тип топлива',
+      type: 'valueOfArray',
+      required: false,
+    },
+    {
       key: 'equipment_fuel_start',
       title: 'Топливо.Выезд',
       type: 'number',

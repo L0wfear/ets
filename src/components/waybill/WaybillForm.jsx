@@ -14,7 +14,11 @@ import Div from 'components/ui/Div';
 import { isNotNull, isEmpty, hasMotohours } from 'utils/functions';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
-import { notifications, getWarningNotification } from 'utils/notifications';
+import {
+  notifications,
+  getWarningNotification,
+  getServerErrorNotification,
+} from 'utils/notifications';
 import { diffDates, getCurrentSeason } from 'utils/dates';
 
 import {
@@ -725,11 +729,9 @@ class WaybillForm extends Form {
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
-      fieldsToChange.equipment_fact_fuel_end
-        = fieldsToChange.equipment_fuel_end;
+      fieldsToChange.equipment_fact_fuel_end = null;
       fieldsToChange.odometr_start = 0;
-      fieldsToChange.motohours_start = 0;
-      fieldsToChange.motohours_equip_start = 0;
+      fieldsToChange.motohours_start = null;
     }
 
     return fieldsToChange;
@@ -971,21 +973,33 @@ class WaybillForm extends Form {
   };
   rejectMissionHandler = (rejectMissionList) => {
     let rejectMissionSubmitError = false;
-    const acceptedRejectMissionsIdList = rejectMissionList.map(async (rejectMission) => {
-      try {
-        await this.context.flux.getActions('missions')[rejectMission.handlerName](rejectMission.payload);
-      } catch (errorData) {
-        console.warn('rejectMissionHandler:', errorData);
-        const missionId = get(rejectMission, 'id', '');
-        if (!errorData.errorIsShow) {
-          const errorText = get(error, 'error_text', `Произошла ошибка, при попытке отмены задания №${missionId}`);
-          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorText}`));
+    const acceptedRejectMissionsIdList = rejectMissionList.map(
+      async (rejectMission) => {
+        try {
+          await this.context.flux
+            .getActions('missions')
+            [rejectMission.handlerName](rejectMission.payload);
+        } catch (errorData) {
+          console.warn('rejectMissionHandler:', errorData);
+          const missionId = get(rejectMission, 'id', '');
+          if (!errorData.errorIsShow) {
+            const errorText = get(
+              errorData,
+              'error_text',
+              `Произошла ошибка, при попытке отмены задания №${missionId}`,
+            );
+            global.NOTIFICATION_SYSTEM.notify(
+              getServerErrorNotification(
+                `${this.props.serviceUrl}: ${errorText}`,
+              ),
+            );
+          }
+          rejectMissionSubmitError = true;
+          return null;
         }
-        rejectMissionSubmitError = true;
-        return null;
-      }
-      return rejectMission.payload.mission_id;
-    });
+        return rejectMission.payload.mission_id;
+      },
+    );
 
     // чистим список с запросами на отмену заданий
     this.setState({

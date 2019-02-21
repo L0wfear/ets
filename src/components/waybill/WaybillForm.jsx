@@ -592,12 +592,17 @@ class WaybillForm extends Form {
     const acceptedRejectMissionsIdList = rejectMissionList.map(async (rejectMission) => {
       try {
         await this.context.flux.getActions('missions')[rejectMission.handlerName](rejectMission.payload);
-      } catch (e) {
-        console.warn('rejectMissionHandler:', e);
+      } catch (errorData) {
+        console.warn('rejectMissionHandler:', errorData);
+        const missionId = get(rejectMission, 'id', '');
+        if (!errorData.errorIsShow) {
+          const errorText = get(error, 'error_text', `Произошла ошибка, при попытке отмены задания №${missionId}`);
+          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorText}`));
+        }
         rejectMissionSubmitError = true;
         return null;
       }
-      return rejectMission.payload.id;
+      return rejectMission.payload.mission_id;
     });
 
     // чистим список с запросами на отмену заданий
@@ -654,7 +659,7 @@ class WaybillForm extends Form {
 
     if (rejectMissionList) {
       // Удаляем из опций поля задание, миссии, которые в очереди на отмену, чо бы пользователь не смог их снова выбрать
-      missionsList = missionsList.filter(mission => !rejectMissionList.some(rejMis => rejMis.payload.id === mission.number));
+      missionsList = missionsList.filter(mission => !rejectMissionList.some(rejMis => rejMis.payload.mission_id === mission.number));
     }
     this.setState({
       rejectMissionList,

@@ -50,11 +50,15 @@ class MissionField extends React.Component<any, any> {
         ...deletedElement.length ? deletedElement[0] : null,
         car_gov_number,
       };
-      this.rejectMission(rejectedMission);
-      this.setState({
-        tempMissionIdList: newFormData,
-        rejectedMission,
-      });
+      if (rejectedMission.can_be_closed){
+        this.rejectMission(rejectedMission);
+        this.setState({
+          tempMissionIdList: newFormData,
+          rejectedMission,
+        });
+      } else {
+        this.props.handleChange('mission_id_list', newFormData);
+      }
     } else {
       this.props.handleChange('mission_id_list', newFormData);
     }

@@ -234,6 +234,7 @@ class MissionRejectForm extends React.Component {
       const rows = get(response, ['result', 'rows'], []);
       const mission = rows[0];
       mission.comment = this.state.comment;
+      mission.mission_id = this.state.mission_id;
       payload = {
         ...mission,
         action_at,

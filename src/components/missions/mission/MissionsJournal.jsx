@@ -164,17 +164,8 @@ class MissionsJournal extends CheckableElementsList {
       validateMissionsArr.push(selectedElement);
     }
 
-    return (
-      !validateMissionsArr.length
-      || !validateMissionsArr.every(
-        ({ status, can_be_closed }) =>
-          (status === 'assigned'
-            || status === 'in_progress'
-            || status === 'expired')
-          && can_be_closed,
-      )
-    );
-  };
+    return !validateMissionsArr.length || !validateMissionsArr.every(({ can_be_closed }) => can_be_closed);
+  }
 
   checkDisabledDelete = () =>
     super.checkDisabledDelete()

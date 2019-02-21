@@ -715,11 +715,9 @@ class WaybillForm extends Form {
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
-      fieldsToChange.equipment_fact_fuel_end
-        = fieldsToChange.equipment_fuel_end;
+      fieldsToChange.equipment_fact_fuel_end = null;
       fieldsToChange.odometr_start = 0;
-      fieldsToChange.motohours_start = 0;
-      fieldsToChange.motohours_equip_start = 0;
+      fieldsToChange.motohours_start = null;
     }
 
     return fieldsToChange;

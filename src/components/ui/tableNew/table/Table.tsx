@@ -3,11 +3,9 @@ import * as Table from 'react-bootstrap/lib/Table';
 import Thead from 'components/ui/tableNew/table/thead/Thead';
 import Tbody from 'components/ui/tableNew/table/tbody/Tbody';
 import Paginator from 'components/ui/new/paginator/Paginator';
+import { setStickyThead } from 'utils/stickyTableHeader';
 
-import {
-  makeData,
-  makeDataByPagination,
-} from 'components/ui/tableNew/utils';
+import { makeData, makeDataByPagination } from 'components/ui/tableNew/utils';
 
 const PaginatorTsx: any = Paginator;
 
@@ -50,14 +48,30 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     });
 
     state.pagination.totalCount = state.data.length;
-    state.pagination.maxPage = Math.ceil(state.pagination.totalCount / state.pagination.perPageCount);
+    state.pagination.maxPage = Math.ceil(
+      state.pagination.totalCount / state.pagination.perPageCount,
+    );
 
-    state.showData = makeDataByPagination(state.data, state.pagination, props.uniqName);
+    state.showData = makeDataByPagination(
+      state.data,
+      state.pagination,
+      props.uniqName,
+    );
     this.state = state;
   }
 
-  static getDerivedStateFromProps(nextProps: DataTableProps, prevState: DataTableState) {
-    if (nextProps.data !== prevState.originalData || nextProps.filterValues !== prevState.filterValues) {
+  componentDidMount() {
+    setStickyThead('.custom-table-container', true);
+  }
+
+  static getDerivedStateFromProps(
+    nextProps: DataTableProps,
+    prevState: DataTableState,
+  ) {
+    if (
+      nextProps.data !== prevState.originalData ||
+      nextProps.filterValues !== prevState.filterValues
+    ) {
       const changesState: any = {};
       changesState.data = makeData({
         data: nextProps.data,
@@ -71,13 +85,29 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       changesState.originalData = nextProps.data;
       changesState.filterValues = nextProps.filterValues;
       changesState.activeFilter = nextProps.activeFilter;
-      changesState.pagination = { ...prevState.pagination, totalCount: changesState.data.length };
-      changesState.pagination.maxPage = Math.ceil(changesState.pagination.totalCount / changesState.pagination.perPageCount);
+      changesState.pagination = {
+        ...prevState.pagination,
+        totalCount: changesState.data.length,
+      };
+      changesState.pagination.maxPage = Math.ceil(
+        changesState.pagination.totalCount /
+          changesState.pagination.perPageCount,
+      );
 
-      if (changesState.pagination.maxPage - 1 < changesState.pagination.offset) {
-        changesState.pagination.offset = changesState.pagination.maxPage === 0 ? 0 : changesState.pagination.maxPage - 1;
+      if (
+        changesState.pagination.maxPage - 1 <
+        changesState.pagination.offset
+      ) {
+        changesState.pagination.offset =
+          changesState.pagination.maxPage === 0
+            ? 0
+            : changesState.pagination.maxPage - 1;
       }
-      changesState.showData = makeDataByPagination(changesState.data || prevState.data, changesState.pagination, nextProps.uniqName);
+      changesState.showData = makeDataByPagination(
+        changesState.data || prevState.data,
+        changesState.pagination,
+        nextProps.uniqName,
+      );
 
       return changesState;
     }
@@ -88,7 +118,8 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
   handleClickTh = (sortField) => {
     const changesState: any = {
       sortField,
-      sortAscending: this.state.sortField === sortField ? !this.state.sortAscending : false,
+      sortAscending:
+        this.state.sortField === sortField ? !this.state.sortAscending : false,
       data: this.state.data,
     };
 
@@ -99,25 +130,29 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       activeFilter: this.state.activeFilter,
       tableMeta: this.props.tableMeta,
     });
-    changesState.showData = makeDataByPagination(changesState.data, this.state.pagination, this.props.uniqName);
+    changesState.showData = makeDataByPagination(
+      changesState.data,
+      this.state.pagination,
+      this.props.uniqName,
+    );
 
     this.setState(changesState);
-  }
+  };
 
   handleRowSelect = (rowData) => {
     try {
-      this.props.onRowClick({ props: { data: rowData }});
+      this.props.onRowClick({ props: { data: rowData } });
     } catch (e) {
       // function handleRowSelect not defined in father
     }
-  }
+  };
   handleRowDoubleClick = (rowData) => {
     try {
-      this.props.onRowDoubleClick({ props: { data: rowData }});
+      this.props.onRowDoubleClick({ props: { data: rowData } });
     } catch (e) {
       // function onRowDoubleClick not defined in father
     }
-  }
+  };
   toggleChildren = (rowData) => {
     const { uniqName } = this.props;
 
@@ -125,7 +160,10 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       showData: makeData({
         data: this.state.showData.map((row) => ({
           ...row,
-          showChildren: rowData[uniqName] === row[uniqName] ? !row.showChildren : row.showChildren,
+          showChildren:
+            rowData[uniqName] === row[uniqName]
+              ? !row.showChildren
+              : row.showChildren,
         })),
         sortField: this.state.sortField,
         sortAscending: this.state.sortAscending,
@@ -135,47 +173,53 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
         tableMeta: this.props.tableMeta,
       }),
     });
-  }
+  };
 
   setPaginationOffset = (offset) => {
     const changesState: any = {};
     changesState.pagination = { ...this.state.pagination, offset };
-    changesState.showData = makeDataByPagination(this.state.data, changesState.pagination, this.props.uniqName);
+    changesState.showData = makeDataByPagination(
+      this.state.data,
+      changesState.pagination,
+      this.props.uniqName,
+    );
 
     this.setState({ ...changesState });
-  }
+  };
 
   render() {
     const { pagination } = this.state;
 
     return (
-      <div className="custom-table-container">
-        <Table striped condensed className={'custom-data-table'}>
-          <Thead
-            tableMeta={[this.props.tableMeta]}
-            handleClick={this.handleClickTh}
-            sortField={this.state.sortField}
-            sortAscending={this.state.sortAscending}
-          />
-          <Tbody
-            tableMeta={this.props.tableMeta}
-            data={this.state.showData}
-            uniqName={this.props.uniqName}
-            handleClick={this.handleRowSelect}
-            handleDoubleClick={this.handleRowDoubleClick}
-            toggleChildren={this.toggleChildren}
-            selected={this.props.selected}
-            offset={pagination.offset * pagination.perPageCount}
-            hasData={this.props.hasData}
-          />
-        </Table>
+      <>
+        <div className="custom-table-container">
+          <Table striped condensed className={'custom-data-table'}>
+            <Thead
+              tableMeta={[this.props.tableMeta]}
+              handleClick={this.handleClickTh}
+              sortField={this.state.sortField}
+              sortAscending={this.state.sortAscending}
+            />
+            <Tbody
+              tableMeta={this.props.tableMeta}
+              data={this.state.showData}
+              uniqName={this.props.uniqName}
+              handleClick={this.handleRowSelect}
+              handleDoubleClick={this.handleRowDoubleClick}
+              toggleChildren={this.toggleChildren}
+              selected={this.props.selected}
+              offset={pagination.offset * pagination.perPageCount}
+              hasData={this.props.hasData}
+            />
+          </Table>
+        </div>
         <PaginatorTsx
           firstLastButtons
           currentPage={pagination.offset}
           maxPage={pagination.maxPage}
           setPage={this.setPaginationOffset}
         />
-      </div>
+      </>
     );
   }
 }

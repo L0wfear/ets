@@ -221,6 +221,9 @@ export const getTableMeta = ({
         name: 'reason_id',
         displayName: 'Причина',
         type: 'number',
+        sort: {
+          serverFieldName: 'reason_name',
+        },
         filter: {
           type: 'multiselect',
           options: missionCancelReasonsList.map(({ id, name }) => ({

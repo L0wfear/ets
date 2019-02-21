@@ -236,7 +236,9 @@ class WaybillJournal extends CheckableElementsList {
     flux.getActions('objects').getSomeCars('WaybillCarService');
   };
 
-  formCallback = async ({ showWaybillFormWrap }) => {
+  formCallback = async (flags) => {
+    const showWaybillFormWrap = get(flags, 'showWaybillFormWrap', false);
+
     await this.updateList(this.state);
     this.changeWaybillListAction();
     if (!showWaybillFormWrap) {

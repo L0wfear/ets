@@ -597,7 +597,7 @@ class WaybillForm extends Form {
         rejectMissionSubmitError = true;
         return null;
       }
-      return rejectMission.payload.mission_id;
+      return rejectMission.payload.id;
     });
 
     // чистим список с запросами на отмену заданий
@@ -654,7 +654,7 @@ class WaybillForm extends Form {
 
     if (rejectMissionList) {
       // Удаляем из опций поля задание, миссии, которые в очереди на отмену, чо бы пользователь не смог их снова выбрать
-      missionsList = missionsList.filter(mission => !rejectMissionList.some(rejMis => rejMis.payload.mission_id === mission.number));
+      missionsList = missionsList.filter(mission => !rejectMissionList.some(rejMis => rejMis.payload.id === mission.number));
     }
     this.setState({
       rejectMissionList,

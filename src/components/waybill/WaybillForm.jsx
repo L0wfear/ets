@@ -642,7 +642,7 @@ class WaybillForm extends Form {
       const fieldsToChange = {
         car_id,
         gov_number: '',
-        equipment_fuel_method: null,
+        equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
         fuel_card_id: null,
         fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),

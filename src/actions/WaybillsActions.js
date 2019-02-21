@@ -86,9 +86,7 @@ export default class WaybillsActions extends Actions {
               tax.operation_name = `${tax.operation_name} (${tax.comment})`;
             }
             if (tax.is_excluding_mileage) {
-              tax.is_excluding_mileage = `${
-                tax.operation_name
-              } [без учета пробега]`;
+              tax.operation_name = `${tax.operation_name} [без учета пробега]`;
             }
             return tax;
           });
@@ -104,9 +102,7 @@ export default class WaybillsActions extends Actions {
               tax.operation_name = `${tax.operation_name} (${tax.comment})`;
             }
             if (tax.is_excluding_mileage) {
-              tax.is_excluding_mileage = `${
-                tax.operation_name
-              } [без учета пробега]`;
+              tax.operation_name = `${tax.operation_name} [без учета пробега]`;
             }
             return tax;
           });

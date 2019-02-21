@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import Div from 'components/ui/Div';
 import ModalBody from 'components/ui/Modal';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
+import { getToday9am, getTomorrow9am, createValidDateTime, addTime } from 'utils/dates';
 
 export interface IPropsPrintForm {
   show: boolean;
@@ -52,7 +52,7 @@ class PrintForm extends React.Component<IPropsPrintForm, any> {
 
     const exportPayload = {
       date_from: createValidDateTime(date_from),
-      date_to: createValidDateTime(date_to),
+      date_to: createValidDateTime(addTime(date_to, 1, 'days')),
     };
 
     this.handleHide();

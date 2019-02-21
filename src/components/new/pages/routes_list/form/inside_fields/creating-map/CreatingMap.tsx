@@ -213,6 +213,7 @@ class CreatingMap extends React.PureComponent<
     }
   }
   handleFeatureClick = (geo: OneGeozoneMunicipalFacility) => {
+    console.log(geo);
     if (this.props.isPermitted) {
       this.props.onChange({
         object_list: changeStateInObjectList(
@@ -249,9 +250,9 @@ class CreatingMap extends React.PureComponent<
     }
   };
   handleDrawFeatureClick = (line) => {
-    const { hand, manual } = this.state;
+    const { manual } = this.state;
 
-    if (!hand && !manual && this.props.isPermitted) {
+    if (!manual && this.props.isPermitted) {
       this.props.onChange({
         input_lines: mergeLineIntoInputLines(this.props.input_lines, line),
       });
@@ -371,16 +372,14 @@ class CreatingMap extends React.PureComponent<
                   id="manual"
                   active={hand}
                   onClick={this.setHandTrue}
-                  disabled={!isPermitted}
-                >
+                  disabled={!isPermitted}>
                   Вручную
                 </ButtonCheckTypeSelect>
                 <ButtonCheckTypeSelect
                   id="select-from-odh"
                   active={!hand}
                   onClick={this.setHandFalse}
-                  disabled={!isPermitted}
-                >
+                  disabled={!isPermitted}>
                   Выбор из ОДХ
                 </ButtonCheckTypeSelect>
               </ButtonOdhContainer>
@@ -421,8 +420,7 @@ class CreatingMap extends React.PureComponent<
                     !Boolean(
                       props.draw_object_list.length || props.input_lines.length,
                     )
-                  }
-                >
+                  }>
                   Проверить маршрут
                 </ButtonCheckRoute>
               ) : (
@@ -457,8 +455,7 @@ class CreatingMap extends React.PureComponent<
                   <ExtButton
                     disabled={!isPermitted}
                     boundKeys={index}
-                    onClick={this.handleRemovePoint}
-                  >
+                    onClick={this.handleRemovePoint}>
                     <Glyphicon glyph="remove" />
                   </ExtButton>
                 </FlexContainer>

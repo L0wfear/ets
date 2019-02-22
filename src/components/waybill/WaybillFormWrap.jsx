@@ -716,7 +716,6 @@ class WaybillFormWrap extends FormWrap {
         handlePrintFromMiniButton={this.handlePrintFromMiniButton}
         clearSomeData={this.clearSomeData}
         isPermittedByKey={this.state.isPermittedByKey}
-        deepLvl={this.props.deepLvl || 1}
         {...this.state}
       />
     ) : (

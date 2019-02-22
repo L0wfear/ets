@@ -15,7 +15,10 @@ export default class WaybillsStore extends Store {
   }
 
   handleGetWaybills(waybills) {
-    this.setState({ waybillsList: waybills.result, waybillstotalCount: waybills.total_count });
+    this.setState({
+      waybillsList: waybills.result,
+      waybillstotalCount: waybills.total_count,
+    });
   }
 }
 
@@ -29,7 +32,7 @@ export function getDefaultBill({ company_id = null }) {
     car_id: '',
     fuel_type: 'DT',
     fuel_start: '',
-    equipment_fuel: false,
+    equipment_fuel: null,
     equipment_fuel_type: 'DT',
     odometr_start: null,
     motohours_start: null,

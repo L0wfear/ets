@@ -650,7 +650,7 @@ class WaybillForm extends Form {
         fuel_card_id: null,
         fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
-        equipment_fuel: false,
+        equipment_fuel: getDefaultBill({}).equipment_fuel,
       };
 
       if (!isEmpty(car_id)) {

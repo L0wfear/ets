@@ -23,42 +23,42 @@ import {
   PropsWaybillCompletedInfo,
   StateWaybillCompletedInfo,
 } from 'components/new/pages/dashboard/menu/cards/waybill-completed/info/WaybillCompletedInfo.h';
-import {
-  WaybillCompletedItemsSubItemsType,
-} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-completed.h';
-import {
-  TitleWaybillInfoContainer,
-} from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
+import { WaybillCompletedItemsSubItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-completed.h';
+import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo, StateWaybillCompletedInfo> {
+class WaybillCompletedInfo extends React.PureComponent<
+  PropsWaybillCompletedInfo,
+  StateWaybillCompletedInfo
+> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
   };
 
-  filterInfoData = memoize(
-    (infoData) => {
-      if (infoData) {
-        return groupBy<WaybillCompletedItemsSubItemsType>(
-          infoData.subItems,
-          (waybill) => (
-            makeDate(waybill.data.create_date)
-          ),
-        );
-      }
+  filterInfoData = memoize((infoData) => {
+    if (infoData) {
+      return groupBy<WaybillCompletedItemsSubItemsType>(
+        infoData.subItems,
+        (waybill) => makeDate(waybill.data.create_date),
+      );
+    }
 
-      return {};
-    },
-  );
+    return {};
+  });
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
-  }
+  };
 
-  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    this.props.getWaybillById(Number.parseInt(path, 0))
+  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({
+    currentTarget: {
+      dataset: { path },
+    },
+  }) => {
+    this.props
+      .getWaybillById(Number.parseInt(path, 0))
       .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
@@ -70,55 +70,59 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
           console.warn('not find waybill');
         }
       });
-  }
+  };
 
   handleWaybillFormWrapHide = () => {
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
     });
-  }
+  };
 
-  handleWaybillFormWrapHideAfterSubmit = () => {
+  handleWaybillFormWrapHideAfterSubmit = (newState) => {
     this.props.loadAllWaybillCard();
     this.props.handleClose();
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
+      ...newState,
     });
-  }
+  };
 
   mapInfoDataGroupByDate = ({ data: { waybill_id, ...data } }) => (
-    <li key={waybill_id} className="pointer" data-path={waybill_id} onClick={this.openWaybillFormWrap}>
-      {`№${data.waybill_number}, `}<b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
+    <li
+      key={waybill_id}
+      className="pointer"
+      data-path={waybill_id}
+      onClick={this.openWaybillFormWrap}>
+      {`№${data.waybill_number}, `}
+      <b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
       <br />
-      {`${data.driver_fio || ''}${data.driver_phone ? `, ${data.driver_phone}` : ''}`}
+      {`${data.driver_fio || ''}${
+        data.driver_phone ? `, ${data.driver_phone}` : ''
+      }`}
     </li>
-  )
+  );
 
   render() {
-    const {
-      infoData,
-    } = this.props;
+    const { infoData } = this.props;
 
     const infoDataGroupByDate = this.filterInfoData(infoData);
 
     return (
-      <InfoCard title={infoData.subItemsTitle || 'Информация о ПЛ'} handleClose={this.handleClose}>
-        {
-          Object.entries(infoDataGroupByDate).sort().map(([key, arrData]) => (
+      <InfoCard
+        title={infoData.subItemsTitle || 'Информация о ПЛ'}
+        handleClose={this.handleClose}>
+        {Object.entries(infoDataGroupByDate)
+          .sort()
+          .map(([key, arrData]) => (
             <div key={key}>
               <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
               <div>
-                <ul>
-                  {
-                    arrData.map(this.mapInfoDataGroupByDate)
-                  }
-                </ul>
+                <ul>{arrData.map(this.mapInfoDataGroupByDate)}</ul>
               </div>
             </div>
-          ))
-        }
+          ))}
         <WaybillFormWrap
           onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
           onCallback={this.handleWaybillFormWrapHideAfterSubmit}
@@ -141,28 +145,16 @@ export default compose<any, any>(
       infoData: getDashboardState(state).waybill_completed.infoData,
     }),
     (dispatch) => ({
-      handleClose: () => (
+      handleClose: () => dispatch(dashboardSetInfoDataInWaybillCompleted(null)),
+      loadAllWaybillCard: () =>
+        dispatch(dashboardLoadDependentDataByWaybillCompleted()),
+      getWaybillById: (id: number) =>
         dispatch(
-          dashboardSetInfoDataInWaybillCompleted(null),
-        )
-      ),
-      loadAllWaybillCard: () => (
-        dispatch(
-          dashboardLoadDependentDataByWaybillCompleted(),
-        )
-      ),
-      getWaybillById: (id: number) => (
-        dispatch(
-          loadWaybillById(
-            'none',
-            id,
-            {
-              promise: true,
-              page: 'dashboard',
-            },
-          ),
-        )
-      ),
+          loadWaybillById('none', id, {
+            promise: true,
+            page: 'dashboard',
+          }),
+        ),
     }),
   ),
 )(WaybillCompletedInfo);

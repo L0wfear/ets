@@ -14,7 +14,11 @@ import Div from 'components/ui/Div';
 import { isNotNull, isEmpty, hasMotohours } from 'utils/functions';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
-import { notifications, getWarningNotification } from 'utils/notifications';
+import {
+  notifications,
+  getWarningNotification,
+  getServerErrorNotification,
+} from 'utils/notifications';
 import { diffDates, getCurrentSeason } from 'utils/dates';
 
 import {
@@ -45,7 +49,6 @@ import Taxes from 'components/waybill/Taxes';
 import WaybillFooter from 'components/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
-import MissionFiled from 'components/waybill/form/MissionFiled';
 import { isNullOrUndefined, isNumber, isBoolean } from 'util';
 import {
   getSessionState,
@@ -59,6 +62,7 @@ import { ButtonGroup } from 'react-bootstrap';
 import { isArray } from 'highcharts';
 import { WaybillEquipmentButton } from './styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
+import MissionField from 'components/waybill/form/MissionFiled';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -148,6 +152,7 @@ class WaybillForm extends Form {
       fuel_card_id: null,
       equipment_fuel_method: null,
       equipment_fuel_card_id: null,
+      rejectMissionList: [], // Массив с заданиями, которые надо будет отменить, формируется в missionField
     };
   }
 
@@ -359,6 +364,11 @@ class WaybillForm extends Form {
                 [],
               ),
             });
+
+            this.handleChange(
+              'hasEquipmentFuelRates',
+              equipmentFuelRates.length,
+            );
           },
         )
         .catch((e) => {
@@ -518,7 +528,11 @@ class WaybillForm extends Form {
           );
         }
 
-        this.setState({ missionsList, notAvailableMissions });
+        this.setState({
+          missionsList,
+          notAvailableMissions,
+          origMissionsList: missionsList,
+        });
       });
   };
 
@@ -797,30 +811,63 @@ class WaybillForm extends Form {
     return true;
   }
 
-  handleSubmit = () => {
-    if (this.checkOnValidHasEquipment()) {
-      delete this.props.formState.is_bnso_broken;
-      this.props.onSubmit();
-    }
-  };
-
-  handleClose = (taxesControl) => {
-    if (this.checkOnValidHasEquipment()) {
-      return checkMissionSelectBeforeClose(
-        this.props.formState,
-        groupBy(
-          [...this.state.missionsList, ...this.state.notAvailableMissions],
-          'id',
-        ),
-        this.props.missionSourcesList.find(({ auto }) => auto).id,
-        this.context.flux.getActions('objects').getOrderById,
-      )
-        .then(() => this.props.handleClose(taxesControl))
-        .catch(() => {});
-    }
-
-    return Promise.resolve(true);
-  };
+  handleClose = (taxesControl) =>
+    checkMissionSelectBeforeClose(
+      // Перевести ПЛ в статус "Закрыт"
+      this.props.formState,
+      groupBy(
+        [...this.state.missionsList, ...this.state.notAvailableMissions],
+        'id',
+      ),
+      this.props.missionSourcesList.find(({ auto }) => auto).id,
+      this.context.flux.getActions('objects').getOrderById,
+    )
+      .then(async () => {
+        if (this.props.formState.status === 'active') {
+          const { rejectMissionList } = this.state;
+          await this.rejectMissionHandler(rejectMissionList).then((res) => {
+            const {
+              origFormState: { mission_id_list = [] },
+              origMissionsList,
+            } = this.state;
+            // миссии, которые удалили из поля задание с бызовом rejectForm
+            const rejectMissionIdList = rejectMissionList.map(
+              (rejMission) => rejMission.payload.mission_id,
+            );
+            // задания, которые были удалены из формы без указания причины, т.к. они были отменены ранее
+            const rejCanceled = mission_id_list.filter(
+              (mission) =>
+                !this.props.formState.mission_id_list.includes(mission)
+                && !rejectMissionIdList.includes(mission),
+            );
+            // удаляем из старой mission_id_list миссии, которые удалось отменить
+            const newMission_id_list = mission_id_list.filter(
+              (mission) =>
+                !res.acceptedRejectMissionsIdList.includes(mission)
+                && !rejCanceled.includes(mission),
+            );
+            // фильтруем исходные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+            const newMissionsList = origMissionsList.filter(
+              (mission) =>
+                !res.acceptedRejectMissionsIdList.includes(mission.number),
+            );
+            this.props.handleMultipleChange({
+              mission_id_list: newMission_id_list, // <<< на прод
+              // equipment_fuel_type: 'DT', // <<< удалить, заглушка
+              // equipment_fuel_start: 1, // <<< удалить, заглушка
+            });
+            this.setState({
+              missionsList: newMissionsList,
+            });
+            if (!res.rejectMissionSubmitError) {
+              this.props.handleClose(taxesControl);
+            }
+          }); // миссии, которые были успешно отменены, их удаляем из missionField
+        } else {
+          this.props.handleClose(taxesControl);
+        }
+      })
+      .catch(() => {});
 
   handlePrint = (...arg) => {
     if (this.checkOnValidHasEquipment()) {
@@ -934,6 +981,112 @@ class WaybillForm extends Form {
 
       this.handleChange('equipment_fuel', false);
     }
+  };
+  rejectMissionHandler = (rejectMissionList) => {
+    let rejectMissionSubmitError = false;
+    const acceptedRejectMissionsIdList = rejectMissionList.map(
+      async (rejectMission) => {
+        try {
+          await this.context.flux
+            .getActions('missions')
+            [rejectMission.handlerName](rejectMission.payload);
+        } catch (errorData) {
+          console.warn('rejectMissionHandler:', errorData);
+          const missionId = get(rejectMission, 'id', '');
+          if (!errorData.errorIsShow) {
+            const errorText = get(
+              errorData,
+              'error_text',
+              `Произошла ошибка, при попытке отмены задания №${missionId}`,
+            );
+            global.NOTIFICATION_SYSTEM.notify(
+              getServerErrorNotification(
+                `${this.props.serviceUrl}: ${errorText}`,
+              ),
+            );
+          }
+          rejectMissionSubmitError = true;
+          return null;
+        }
+        return rejectMission.payload.mission_id;
+      },
+    );
+
+    // чистим список с запросами на отмену заданий
+    this.setState({
+      rejectMissionList: [],
+    });
+    return Promise.all(acceptedRejectMissionsIdList).then((res) => ({
+      acceptedRejectMissionsIdList: res,
+      rejectMissionSubmitError,
+    }));
+  };
+
+  /**
+   * Отправляем запросы на отмену, если один из запросов вернулся с ошибкой, то не отправляем запрос на сохранение ПЛ
+   * При закрытии ПЛ, таже самая логика
+   */
+
+  handleSubmit = async () => {
+    delete this.props.formState.is_bnso_broken;
+    // let rejectMissionSubmitError = false;
+    if (this.props.formState.status === 'active') {
+      const { rejectMissionList } = this.state;
+      await this.rejectMissionHandler(rejectMissionList).then((res) => {
+        const {
+          origFormState: { mission_id_list = [] },
+          origMissionsList,
+        } = this.state;
+        // миссии, которые удалили из поля задание с бызовом rejectForm
+        const rejectMissionIdList = rejectMissionList.map(
+          (rejMission) => rejMission.payload.mission_id,
+        );
+        // задания, которые были удалены из формы без указания причины, т.к. они были отменены ранее
+        const rejCanceled = mission_id_list.filter(
+          (mission) =>
+            !this.props.formState.mission_id_list.includes(mission)
+            && !rejectMissionIdList.includes(mission),
+        );
+        // удаляем из старой mission_id_list миссии, которые удалось отменить
+        const newMission_id_list = mission_id_list.filter(
+          (mission) =>
+            !res.acceptedRejectMissionsIdList.includes(mission)
+            && !rejCanceled.includes(mission),
+        );
+        // фильтруем исходные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+        const newMissionsList = origMissionsList.filter(
+          (mission) =>
+            !res.acceptedRejectMissionsIdList.includes(mission.number),
+        );
+        this.props.handleMultipleChange({
+          mission_id_list: newMission_id_list, // <<< на прод
+        });
+        this.setState({
+          missionsList: newMissionsList,
+        });
+        this.props.onSubmitActiveWaybill(!res.rejectMissionSubmitError);
+      }); // миссии, которые были успешно отменены, их удаляем из missionField
+    } else {
+      this.props.onSubmit();
+    }
+  };
+
+  setRejectMissionList = (rejectMissionList) => {
+    let { missionsList } = this.state;
+
+    if (rejectMissionList) {
+      // Удаляем из опций поля задание, миссии, которые в очереди на отмену, чо бы пользователь не смог их снова выбрать
+      missionsList = missionsList.filter(
+        (mission) =>
+          !rejectMissionList.some(
+            (rejMis) => rejMis.payload.mission_id === mission.number,
+          ),
+      );
+    }
+    this.setState({
+      rejectMissionList,
+      missionsList,
+    });
   };
 
   render() {
@@ -1950,7 +2103,7 @@ class WaybillForm extends Form {
           </Div>
           <Row>
             <Col md={8}>
-              <MissionFiled
+              <MissionField
                 carsList={this.props.carsList}
                 state={state}
                 errors={errors}
@@ -1961,7 +2114,7 @@ class WaybillForm extends Form {
                 origFormState={origFormState}
                 handleChange={this.handleChange}
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
-                deepLvl={this.props.deepLvl}
+                setRejectMissionList={this.setRejectMissionList}
               />
             </Col>
             <Col md={4}>

@@ -165,11 +165,11 @@ export default class Filter extends React.Component {
     });
 
     return (
-      <>
+      <form onSubmit={this.submit}>
         <Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
-              <Button id="apply-filter" onClick={this.submit}>
+              <Button id="apply-filter" type="submit">
                 Применить
               </Button>
               <Button
@@ -194,7 +194,7 @@ export default class Filter extends React.Component {
             </Row>
           </Div>
         </Collapse>
-      </>
+      </form>
     );
   }
 }

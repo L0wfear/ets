@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import * as Panel from 'react-bootstrap/lib/Panel';
 
-export const EtsFilterCntainer = styled.div`
+export const EtsFilterCntainer = styled.form`
   margin: 10px 25px;
   display: flex;
   background-color: #eee;

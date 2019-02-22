@@ -5,21 +5,21 @@ import ButtonsLine from 'components/new/ui/registry/components/data/filters/butt
 import FiltersLines from 'components/new/ui/registry/components/data/filters/filters-lines/FiltersLines';
 
 import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/filters/styled/styled';
+import { registryApplyRawFilters } from '../../../module/actions-registy';
 
 type PropsFilters = {
   registryKey: string;
+  hanleClickApplyRawFilters: any;
 };
 
-type StateFilters = {
-
-};
+type StateFilters = {};
 
 class Filters extends React.Component<PropsFilters, StateFilters> {
   render() {
     const { registryKey } = this.props;
 
     return (
-      <EtsFilterCntainer>
+      <EtsFilterCntainer onSubmit={this.props.hanleClickApplyRawFilters}>
         <ButtonsLine registryKey={registryKey} />
         <FiltersLines registryKey={registryKey} />
       </EtsFilterCntainer>
@@ -27,9 +27,14 @@ class Filters extends React.Component<PropsFilters, StateFilters> {
   }
 }
 
-const mapStateToProps = (state, { registryKey }) => ({
+const mapStateToProps = (state, { registryKey }) => ({});
+
+const mapDispatchToProps = (dispatch, { registryKey }) => ({
+  hanleClickApplyRawFilters: () =>
+    dispatch(registryApplyRawFilters(registryKey)),
 });
 
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(Filters);

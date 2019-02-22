@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   registryToggleIsOpenFilter,
   registryResetAllTypeFilter,
-  registryApplyRawFilters
+  registryApplyRawFilters,
 } from 'components/new/ui/registry/module/actions-registy';
 
 import {
@@ -13,7 +13,10 @@ import {
 } from 'components/new/ui/registry/module/selectors-registry';
 import { isBoolean, isString, isNumber } from 'util';
 import {
-  EtsFiltersButtonsLine, EtsFiltersCloseContainer, EtsFilterActionButton, EtsFilterActionButtonConteiner,
+  EtsFiltersButtonsLine,
+  EtsFiltersCloseContainer,
+  EtsFilterActionButton,
+  EtsFilterActionButtonConteiner,
 } from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 
@@ -28,9 +31,7 @@ type PropsButtonsLIne = {
   hanleClickApplyRawFilters: any;
 };
 
-type StateButtonsLIne = {
-
-};
+type StateButtonsLIne = {};
 
 class ButtonsLIne extends React.Component<PropsButtonsLIne, StateButtonsLIne> {
   render() {
@@ -38,13 +39,17 @@ class ButtonsLIne extends React.Component<PropsButtonsLIne, StateButtonsLIne> {
 
     return (
       <EtsFiltersButtonsLine>
-        <div></div>
+        <div />
         <EtsFilterActionButtonConteiner>
-          <EtsFilterActionButton onClick={props.hanleClickApplyRawFilters}>Применить</EtsFilterActionButton>
-          <EtsFilterActionButton onClick={props.resetAllTypeFilter} disabled={!props.canResetFilters}>Сброс</EtsFilterActionButton>
+          <EtsFilterActionButton type="submit">Применить</EtsFilterActionButton>
+          <EtsFilterActionButton
+            onClick={props.resetAllTypeFilter}
+            disabled={!props.canResetFilters}>
+            Сброс
+          </EtsFilterActionButton>
         </EtsFilterActionButtonConteiner>
         <EtsFiltersCloseContainer onClick={props.handleClose}>
-          <Glyphicon glyph="remove"/>
+          <Glyphicon glyph="remove" />
         </EtsFiltersCloseContainer>
       </EtsFiltersButtonsLine>
     );
@@ -52,58 +57,36 @@ class ButtonsLIne extends React.Component<PropsButtonsLIne, StateButtonsLIne> {
 }
 
 const mapStateToProps = (state, { registryKey }) => {
-  const canApply = (
-    Object.values(
-      getFilterData(state.registry, registryKey).rawFilterValues,
-    ).some((valuesObj) => (
-      Object.values(valuesObj).some(({ value }: any) => (
-        isNumber(value)
-        || isBoolean(value)
-        || isString(value) && !!value.length
-        || (
-          value
-          && (
-            !Array.isArray(value)
-            || (
-              Array.isArray(value) && !!value.length
-            )
-          )
-        )
-      ))
-    ))
+  const canApply = Object.values(
+    getFilterData(state.registry, registryKey).rawFilterValues,
+  ).some((valuesObj) =>
+    Object.values(valuesObj).some(
+      ({ value }: any) =>
+        isNumber(value) ||
+        isBoolean(value) ||
+        (isString(value) && !!value.length) ||
+        (value &&
+          (!Array.isArray(value) || (Array.isArray(value) && !!value.length))),
+    ),
   );
 
   return {
     canApply,
-    canResetFilters: (
-      canApply
-      || (
-        Boolean(
-          Object.values(
-            getListData(state.registry, registryKey).processed.filterValues,
-          ).length,
-        )
-      )
-    ),
+    canResetFilters:
+      canApply ||
+      Boolean(
+        Object.values(
+          getListData(state.registry, registryKey).processed.filterValues,
+        ).length,
+      ),
   };
 };
 
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  handleClose: () => (
-    dispatch(
-      registryToggleIsOpenFilter(registryKey),
-    )
-  ),
-  hanleClickApplyRawFilters: () => (
-    dispatch(
-      registryApplyRawFilters(registryKey),
-    )
-  ),
-  resetAllTypeFilter: () => (
-    dispatch(
-      registryResetAllTypeFilter(registryKey),
-    )
-  ),
+  handleClose: () => dispatch(registryToggleIsOpenFilter(registryKey)),
+  hanleClickApplyRawFilters: () =>
+    dispatch(registryApplyRawFilters(registryKey)),
+  resetAllTypeFilter: () => dispatch(registryResetAllTypeFilter(registryKey)),
 });
 
 export default connect<any, any, any, ReduxState>(

@@ -47,9 +47,9 @@ class Fiter extends React.Component<any, any> {
     }
 
     this.setState({ filterValues });
-  }
+  };
 
-  handleFilterMultipleValueChange = ({ name: key, type, customFilter}, v) => {
+  handleFilterMultipleValueChange = ({ name: key, type, customFilter }, v) => {
     const filterValues = { ...this.state.filterValues };
     const data = !isEmpty(v) ? v : [];
 
@@ -66,12 +66,14 @@ class Fiter extends React.Component<any, any> {
     }
 
     this.setState({ filterValues });
-  }
+  };
 
   getName(name, type) {
     switch (type) {
-      case 'advanced-select-like': return `${name}__like`;
-      default: return name;
+      case 'advanced-select-like':
+        return `${name}__like`;
+      default:
+        return name;
     }
   }
 
@@ -82,52 +84,58 @@ class Fiter extends React.Component<any, any> {
     const {
       name,
       filter,
-      filter: {
-        type,
-        notUse,
-        customFilter,
-      },
+      filter: { type, notUse, customFilter },
     } = col;
 
     const customName = this.getName(filter.byKey || name, type);
 
-    return !notUse && (
-      <FilterRowTSX
-        key={name}
-        data={this.props.data}
-        value={get(this.state.filterValues, [customName, 'value'], null)}
-        type={type}
-        customFilter={customFilter}
-        name={customName}
-        byLabel={filter.byLabel}
-        serverFieldName={filter.serverFieldName}
-        labelFunction={filter.labelFunction}
-        availableOptions={filter.options}
-        displayName={col.displayName}
-        onChange={this.handleFilterValueChange}
-        onMultiChange={this.handleFilterMultipleValueChange}
-      />
+    return (
+      !notUse && (
+        <FilterRowTSX
+          key={name}
+          data={this.props.data}
+          value={get(this.state.filterValues, [customName, 'value'], null)}
+          type={type}
+          customFilter={customFilter}
+          name={customName}
+          byLabel={filter.byLabel}
+          serverFieldName={filter.serverFieldName}
+          labelFunction={filter.labelFunction}
+          availableOptions={filter.options}
+          displayName={col.displayName}
+          onChange={this.handleFilterValueChange}
+          onMultiChange={this.handleFilterMultipleValueChange}
+        />
+      )
     );
-  }
+  };
 
   render() {
     return (
-      <Collapse in={this.props.show}>
-        <Div className="filter-container">
-          <Div className="filter-buttons">
-            <Button onClick={this.submit}>Применить</Button>
-            <Button onClick={this.reset} disabled={!this.props.haveActiveFilter}>Сброс</Button>
-            <span className="filter-close" onClick={this.props.toggleFilter}><Glyphicon glyph="remove" /></span>
+      <form onSubmit={this.submit}>
+        <Collapse in={this.props.show}>
+          <Div className="filter-container">
+            <Div className="filter-buttons">
+              <Button type="submit">Применить</Button>
+              <Button
+                onClick={this.reset}
+                disabled={!this.props.haveActiveFilter}>
+                Сброс
+              </Button>
+              <span className="filter-close" onClick={this.props.toggleFilter}>
+                <Glyphicon glyph="remove" />
+              </span>
+            </Div>
+            <Row>
+              <Col md={12}>
+                <FilterRowsContainerDataTable>
+                  {this.props.tableMeta.cols.map(this.renderFilterRow)}
+                </FilterRowsContainerDataTable>
+              </Col>
+            </Row>
           </Div>
-          <Row>
-            <Col md={12}>
-              <FilterRowsContainerDataTable>
-                { this.props.tableMeta.cols.map(this.renderFilterRow) }
-              </FilterRowsContainerDataTable>
-            </Col>
-          </Row>
-        </Div>
-      </Collapse>
+        </Collapse>
+      </form>
     );
   }
 }

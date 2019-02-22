@@ -53,7 +53,7 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
         ...(deletedElement.length ? deletedElement[0] : null),
         car_gov_number,
       };
-      if (rejectedMission.can_be_closed){
+      if (rejectedMission.can_be_closed) {
         this.rejectMission(rejectedMission);
         this.setState({
           tempMissionIdList: newFormData,

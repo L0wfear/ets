@@ -48,7 +48,6 @@ export const waybillSchema = {
       title: 'Топливо.Выезд',
       type: 'number',
       float: 3,
-      required: true,
     },
     {
       key: 'equipment_fuel_type',
@@ -67,7 +66,6 @@ export const waybillSchema = {
       key: 'fuel_type',
       title: 'Топливо.Тип',
       type: 'string',
-      required: true,
     },
     {
       key: 'fuel_to_give',
@@ -102,7 +100,6 @@ export const waybillSchema = {
       title: 'Счетчик моточасов оборудования.Выезд',
       type: 'number',
       integer: true,
-      required: false,
     },
     {
       key: 'distance',
@@ -203,6 +200,20 @@ export const waybillSchema = {
         },
       },
     ],
+    motohours_equip_start: [
+      {
+        validator: (value, formData) => {
+          if (
+            formData.equipment_fuel
+            && (!formData.status || formData.status === 'draft')
+            && isEmpty(value)
+          ) {
+            return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
     plan_arrival_date: [
       {
         type: 'gt',
@@ -286,7 +297,7 @@ export const waybillSchema = {
     fuel_method: [
       {
         validator: (value, formData) => {
-          if (!value && formData.status === 'draft') {
+          if (!value && (!formData.status || formData.status === 'draft')) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
           if (
@@ -322,7 +333,6 @@ export const waybillSchema = {
             !value
             && formData.equipment_fuel
             && formData.status === 'draft'
-            && formData.equipment_fuel
           ) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
@@ -338,11 +348,24 @@ export const waybillSchema = {
         },
       },
     ],
+    fuel_type: [
+      {
+        validator: (value, { status }) => {
+          if (status !== 'active' && isNullOrUndefined(value)) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      },
+    ],
     equipment_fuel_type: [
       {
-        validator: (value, { equipment_fuel, motohours_equip_start }) => {
+        validator: (
+          value,
+          { equipment_fuel, status, motohours_equip_start },
+        ) => {
           if (
             equipment_fuel
+            && status !== 'active'
             && !isNullOrUndefined(motohours_equip_start)
             && isNullOrUndefined(value)
           ) {
@@ -351,11 +374,24 @@ export const waybillSchema = {
         },
       },
     ],
+    fuel_start: [
+      {
+        validator: (value, { status }) => {
+          if (status !== 'active' && isNullOrUndefined(value)) {
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+        },
+      },
+    ],
     equipment_fuel_start: [
       {
-        validator: (value, { equipment_fuel, motohours_equip_start }) => {
+        validator: (
+          value,
+          { status, equipment_fuel, motohours_equip_start },
+        ) => {
           if (
             equipment_fuel
+            && status !== 'active'
             && !isNullOrUndefined(motohours_equip_start)
             && isNullOrUndefined(value)
           ) {

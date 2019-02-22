@@ -340,9 +340,10 @@ export const waybillSchema = {
     ],
     equipment_fuel_type: [
       {
-        validator: (value, { motohours_equip_start }) => {
+        validator: (value, { equipment_fuel, motohours_equip_start }) => {
           if (
-            !isNullOrUndefined(motohours_equip_start)
+            equipment_fuel
+            && !isNullOrUndefined(motohours_equip_start)
             && isNullOrUndefined(value)
           ) {
             return 'Поле "Тип топлива" должно быть заполнено';
@@ -352,9 +353,10 @@ export const waybillSchema = {
     ],
     equipment_fuel_start: [
       {
-        validator: (value, { motohours_equip_start }) => {
+        validator: (value, { equipment_fuel, motohours_equip_start }) => {
           if (
-            !isNullOrUndefined(motohours_equip_start)
+            equipment_fuel
+            && !isNullOrUndefined(motohours_equip_start)
             && isNullOrUndefined(value)
           ) {
             return 'Поле "Выезд, л" должно быть заполнено';
@@ -546,11 +548,10 @@ const closingDependencies = {
     {
       validator: (value, formData) => {
         const abs = Math.abs(
-          (parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
-            - parseFloat(value || 0))
-            / 100,
+          parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
+            - parseFloat(value || 0),
         );
-        if (abs > 0.1) {
+        if (abs / 100 > 0.1) {
           return 'Расхождение в показателях пробега';
         }
         return false;
@@ -559,9 +560,10 @@ const closingDependencies = {
   ],
   equipment_tax_data: [
     {
-      validator: (value, { motohours_equip_start }) => {
+      validator: (value, { equipment_fuel, motohours_equip_start }) => {
         if (
-          !isNullOrUndefined(motohours_equip_start)
+          equipment_fuel
+          && !isNullOrUndefined(motohours_equip_start)
           && (!isArray(value)
             || !value.filter(
               ({ FACT_VALUE, OPERATION }) =>

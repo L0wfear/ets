@@ -3,8 +3,10 @@
  */
 
 export function getEverGisToken(): Promise<string> {
-  const tokenUrl = `https://gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/Strategis.JsClient/ApiLogin.aspx?authId=505741D8-C667-440D-9CA0-32FD1FF6AF88&userName=ets_int&password=ejm*xbYz0G&ts=${new Date().getTime()}`;
-  return fetch(tokenUrl).then((response) => response.json()).then((data) => encodeURIComponent(data.token));
+  const tokenUrl = `https://gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/Strategis.JsClient/ApiLogin.aspx?authId=505741D8-C667-440D-9CA0-32FD1FF6AF88&userName=ets_int_sec&password=-.CFPuijdq*3&ts=${new Date().getTime()}`;
+  return fetch(tokenUrl)
+    .then((response) => response.json())
+    .then((data) => encodeURIComponent(data.token));
 }
 
 const ATTEMPTS_LIMIT = 10;
@@ -22,7 +24,7 @@ export default class EverGisTokenService {
 
   private refreshAttempts = (): void => {
     this.attempts = 0;
-  }
+  };
   public attemptsLimitExceeded(): boolean {
     return this.attempts >= ATTEMPTS_LIMIT;
   }
@@ -36,7 +38,10 @@ export default class EverGisTokenService {
     }
     // Добавляем интервал, через который попытки получения токена обнулятся, на случай долгой сессии
     if (!this.attemptsLimitExceeded()) {
-      this.refreshAttemptsTimeoutId = setTimeout(this.refreshAttempts, FIFTY_SECONDS);
+      this.refreshAttemptsTimeoutId = setTimeout(
+        this.refreshAttempts,
+        FIFTY_SECONDS,
+      );
     }
 
     this.loading = true;

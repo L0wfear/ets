@@ -651,6 +651,9 @@ class WaybillForm extends Form {
         fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
         equipment_fuel: getDefaultBill({}).equipment_fuel,
+        equipment_fuel_type: car_id
+          ? getDefaultBill({}).equipment_fuel_type
+          : null,
       };
 
       if (!isEmpty(car_id)) {
@@ -715,10 +718,9 @@ class WaybillForm extends Form {
       if (isNotNull(lastCarUsedWaybill.trailer_id)) {
         fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
       }
-      if (isNotNull(lastCarUsedWaybill.equipment_fuel_type)) {
-        fieldsToChange.equipment_fuel_type
-          = lastCarUsedWaybill.equipment_fuel_type;
-      }
+
+      fieldsToChange.equipment_fuel_type
+        = lastCarUsedWaybill.equipment_fuel_type;
 
       if (lastCarUsedWaybill) {
         fieldsToChange.equipment_fuel = hasWaybillEquipmentData(

@@ -41,18 +41,27 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
 
   handleMissionsChange = (newFormData) => {
     // Если удаляем миссию и статус ПЛ Активен
-    if (
-      newFormData.length < this.props.state.mission_id_list.length &&
-      this.props.state.status === 'active'
-    ) {
-      const deletedElement = this.props.missionsList.filter((mission: any) => {
-        return newFormData.indexOf(mission.id) === -1;
-      });
+    if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
+      const {
+        missionsList,
+      } = this.props;
+      const {
+        mission_id_list,
+      } = this.props.state;
+
+      const deletedElementId = mission_id_list.filter((mission: any) => {
+        return newFormData.indexOf(mission) === -1;
+      })[0]; // ошибки не будет, выше проверка
+      const deletedElement = missionsList.find((mission) =>
+        mission.id === deletedElementId,
+      );
+
       const car_gov_number = this.props.state.gov_number;
       const rejectedMission = {
-        ...(deletedElement.length ? deletedElement[0] : null),
+        ...deletedElement,
         car_gov_number,
       };
+
       if (rejectedMission.can_be_closed) {
         this.rejectMission(rejectedMission);
         this.setState({

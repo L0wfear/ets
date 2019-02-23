@@ -136,10 +136,9 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
         });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow &&
-          global.NOTIFICATION_SYSTEM.notify(
-            getWarningNotification('Произошла непредвиденная ошибка!'),
-          );
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка отмены!'));
+        }
       });
   };
 

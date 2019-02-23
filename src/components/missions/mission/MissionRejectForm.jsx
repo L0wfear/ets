@@ -217,8 +217,13 @@ class MissionRejectForm extends React.Component {
     const { action_at, isWaybillForm } = this.props;
     const { reason_id } = this.state;
     let handlerName = 'createMissionFromReassignation'; // имя хендлера для ПЛ
-    const { status } = this.props.missionCancelReasonsList.find(
-      reason => reason.id === reason_id,
+
+    const status = get(
+      this.props.missionCancelReasonsList.find(
+        reason => reason.id === reason_id,
+      ),
+      'status',
+      null,
     ) || this.state.status;
 
     if (!this.state.data) {

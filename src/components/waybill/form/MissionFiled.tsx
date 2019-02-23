@@ -79,12 +79,14 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
     const id = result && result.result ? result.result.id : null;
     if (id) {
       const {
+        car_id,
         mission_id_list: [...mission_id_list],
       } = this.props.state;
       mission_id_list.push(id);
       this.props.handleChange('mission_id_list', mission_id_list);
       this.props.getMissionsByCarAndDates(
         { ...this.props.state, mission_id_list },
+        car_id,
         false,
       );
     }

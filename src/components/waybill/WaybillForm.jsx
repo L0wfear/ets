@@ -175,7 +175,7 @@ class WaybillForm extends Form {
         nextFormState.plan_departure_date,
       )
     ) {
-      this.getMissionsByCarAndDates(nextFormState);
+      this.getMissionsByCarAndDates(nextFormState, oldFormState.car_id, true);
     }
     if (
       oldFormState.status === 'active'
@@ -197,7 +197,7 @@ class WaybillForm extends Form {
         )
       ) {
         this.getCarDistance(nextFormState);
-        this.getMissionsByCarAndDates(nextFormState);
+        this.getMissionsByCarAndDates(nextFormState, oldFormState.car_id, true);
       }
     }
   }
@@ -216,7 +216,7 @@ class WaybillForm extends Form {
     const IS_ACTIVE = status === 'active';
     const IS_CLOSED = status === 'closed';
 
-    this.getMissionsByCarAndDates(formState, false);
+    this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
     await Promise.all([
       flux.getActions('objects').getCars(),
@@ -472,15 +472,13 @@ class WaybillForm extends Form {
       );
   };
 
-  getMissionsByCarAndDates = (formState, notificate = true) => {
+  getMissionsByCarAndDates = (formState, oldCarId, notificate) => {
     const { missionsList: oldMissionsList = [] } = this.state;
     const { car_id, mission_id_list: currentMissions, status } = formState;
 
     if (!car_id) {
       return;
     }
-
-    const { formState: oldFormState } = this.props;
 
     this.context.flux
       .getActions('missions')
@@ -498,7 +496,7 @@ class WaybillForm extends Form {
 
         let newMissionIdList = formState.mission_id_list;
 
-        if (formState.car_id !== oldFormState.car_id) {
+        if (formState.car_id !== oldCarId) {
           newMissionIdList = currentMissions.filter((el) =>
             availableMissions.includes(el),
           );

@@ -77,7 +77,10 @@ class Fiter extends React.Component<any, any> {
     }
   }
 
-  submit = () => this.props.onSubmit(this.state.filterValues);
+  submit = (event) => {
+    event.preventDefault();
+    this.props.onSubmit(this.state.filterValues);
+  };
   reset = () => this.props.onSubmit({});
 
   renderFilterRow = (col) => {

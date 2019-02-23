@@ -30,8 +30,10 @@ class Filters extends React.Component<PropsFilters, StateFilters> {
 const mapStateToProps = (state, { registryKey }) => ({});
 
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  hanleClickApplyRawFilters: () =>
-    dispatch(registryApplyRawFilters(registryKey)),
+  hanleClickApplyRawFilters: (event) => {
+    event.preventDefault();
+    dispatch(registryApplyRawFilters(registryKey));
+  },
 });
 
 export default connect(

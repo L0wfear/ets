@@ -81,7 +81,9 @@ export default class Filter extends React.Component {
     this.setState({ filterValues });
   };
 
-  submit = () => {
+  submit = (event) => {
+    event.preventDefault();
+
     const filterValues = reduce(
       this.state.filterValues,
       (cur, v, k) => {

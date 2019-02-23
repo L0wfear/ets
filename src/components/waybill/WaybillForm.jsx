@@ -96,14 +96,14 @@ class WaybillForm extends Form {
     if (oldFormState.car_id !== nextFormState.car_id
         || !isEqual(oldFormState.plan_arrival_date, nextFormState.plan_arrival_date)
         || !isEqual(oldFormState.plan_departure_date, nextFormState.plan_departure_date)) {
-      this.getMissionsByCarAndDates(nextFormState);
+      this.getMissionsByCarAndDates(nextFormState, oldFormState.car_id, true);
     }
     if (oldFormState.status === 'active' && diffDates(nextFormState.fact_departure_date, nextFormState.fact_arrival_date, 'minutes') <= 0) {
       if (oldFormState.car_id !== nextFormState.car_id
           || !isEqual(oldFormState.fact_arrival_date, nextFormState.fact_arrival_date)
           || !isEqual(oldFormState.fact_departure_date, nextFormState.fact_departure_date)) {
         this.getCarDistance(nextFormState);
-        this.getMissionsByCarAndDates(nextFormState);
+        this.getMissionsByCarAndDates(nextFormState, oldFormState.car_id, true);
       }
     }
   }
@@ -120,7 +120,7 @@ class WaybillForm extends Form {
     const IS_ACTIVE = status === 'active';
     const IS_CLOSED = status === 'closed';
 
-    this.getMissionsByCarAndDates(formState, false);
+    this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
     await Promise.all([
       flux.getActions('objects').getCars(),
@@ -282,7 +282,7 @@ class WaybillForm extends Form {
         .catch(() => {}));
   }
 
-  getMissionsByCarAndDates = (formState, notificate = true) => {
+  getMissionsByCarAndDates = (formState, oldCarId, notificate) => {
     const {
       missionsList: oldMissionsList = [],
     } = this.state;
@@ -295,8 +295,6 @@ class WaybillForm extends Form {
     if (!car_id) {
       return;
     }
-
-    const { formState: oldFormState } = this.props;
 
     this.context.flux.getActions('missions').getMissionsByCarAndDates(
       car_id,
@@ -311,7 +309,7 @@ class WaybillForm extends Form {
 
       let newMissionIdList = formState.mission_id_list;
 
-      if (formState.car_id !== oldFormState.car_id) {
+      if (formState.car_id !== oldCarId) {
         newMissionIdList = currentMissions.filter(el => availableMissions.includes(el));
       } else {
         notAvailableMissions = notAvailableMissions

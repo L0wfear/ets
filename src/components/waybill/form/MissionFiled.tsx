@@ -38,7 +38,11 @@ class MissionField extends React.Component<any, any> {
       const { mission_id_list: [...mission_id_list] } = this.props.state;
       mission_id_list.push(id);
       this.props.handleChange('mission_id_list', mission_id_list);
-      this.props.getMissionsByCarAndDates({ ...this.props.state, mission_id_list }, false);
+      this.props.getMissionsByCarAndDates(
+        { ...this.props.state, mission_id_list },
+        car_id,
+        false,
+      );
     }
 
     this.setState({ showMissionForm: false, selectedMission: null });

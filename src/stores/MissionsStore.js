@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
+import { get, find } from 'lodash';
 import { getToday9am, getTomorrow9am, getDateWithMoscowTz } from 'utils/dates';
 
 class MissionsStore extends Store {
@@ -42,10 +42,9 @@ class MissionsStore extends Store {
   }
 
   handleGetMissions(missions) {
-    if (!missions.result.meta) return;
     this.setState({
-      missionsList: missions.result.rows,
-      missionsTotalCount: missions.result.meta.total_count,
+      missionsList: get(missions, 'result.rows', []),
+      missionsTotalCount: get(missions, 'result.meta.total_count', 0),
     });
   }
 
@@ -62,7 +61,7 @@ class MissionsStore extends Store {
   }
 
   getMissionSourceById(id) {
-    return _.find(this.state.missionSourcesList, (ms) => ms.id === id) || {};
+    return find(this.state.missionSourcesList, (ms) => ms.id === id) || {};
   }
 }
 

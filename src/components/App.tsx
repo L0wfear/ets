@@ -28,7 +28,7 @@ import {
   sessionResetData,
 } from 'redux-main/reducers/modules/session/actions-session';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { Switch, Route } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 

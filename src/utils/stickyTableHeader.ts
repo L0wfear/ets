@@ -1,8 +1,13 @@
 import { detectIE } from 'utils/functions';
 
-function tableFixHead(e, ie) {
+function tableFixHead(e, ie, selector) {
   const el = e.target;
-  const sT = el.scrollTop - 3;
+  let offsetTopIntoSelector;
+
+  selector === '.custom-table-container'
+    ? (offsetTopIntoSelector = 0)
+    : (offsetTopIntoSelector = 3);
+  const sT = el.scrollTop - offsetTopIntoSelector;
   ie
     ? [...el.querySelectorAll('thead th')].forEach((th) => {
         th.style.transform = `translateY(${sT}px)`;
@@ -25,7 +30,7 @@ export function setStickyThead(selector: string, addEventListener: boolean) {
 
   [].forEach.call(allTableContainer, (el) => {
     addEventListener
-      ? el.addEventListener('scroll', (e) => tableFixHead(e, ie))
-      : el.removeEventListener('scroll', (e) => tableFixHead(e, ie));
+      ? el.addEventListener('scroll', (e) => tableFixHead(e, ie, selector))
+      : el.removeEventListener('scroll', (e) => tableFixHead(e, ie, selector));
   });
 }

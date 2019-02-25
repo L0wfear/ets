@@ -14,6 +14,17 @@ import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { connect } from 'react-redux';
 
+const canSaveNotCheckField = [
+  'fact_arrival_date',
+  'fact_departure_date',
+  'fuel_end',
+  'distance',
+  'motohours_equip_end',
+  'equipment_tax_data',
+  'motohours_end',
+  'odometr_end',
+];
+
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
   if (waybill.status) {
@@ -215,17 +226,7 @@ class WaybillFormWrap extends FormWrap {
                 (this.state.isPermittedByKey.update
                   || this.state.isPermittedByKey.departure_and_arrival_values)
                 && !clone(formErrors, (v, k) =>
-                  [
-                    'fact_arrival_date',
-                    'fact_departure_date',
-                    'fuel_end',
-                    'distance',
-                    'motohours_equip_end',
-                    'motohours_end',
-                    'odometr_end',
-                  ].includes(k)
-                    ? false
-                    : v,
+                  canSaveNotCheckField.includes(k) ? false : v,
                 ).length
                 && !(
                   (formErrors.fact_arrival_date
@@ -335,17 +336,7 @@ class WaybillFormWrap extends FormWrap {
 
     newState.canSave
       = !filter(formErrors, (v, k) =>
-        [
-          'fact_arrival_date',
-          'fact_departure_date',
-          'fuel_end',
-          'distance',
-          'motohours_equip_end',
-          'motohours_end',
-          'odometr_end',
-        ].includes(k)
-          ? false
-          : v,
+        canSaveNotCheckField.includes(k) ? false : v,
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
@@ -378,17 +369,7 @@ class WaybillFormWrap extends FormWrap {
 
     newState.canSave
       = !filter(formErrors, (v, k) =>
-        [
-          'fact_arrival_date',
-          'fact_departure_date',
-          'fuel_end',
-          'distance',
-          'motohours_equip_end',
-          'motohours_end',
-          'odometr_end',
-        ].includes(k)
-          ? false
-          : v,
+        canSaveNotCheckField.includes(k) ? false : v,
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)

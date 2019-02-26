@@ -1,11 +1,9 @@
+import { get } from 'lodash';
+import { MissionPrintService, MissionService } from 'api/missions/index';
 import {
-  get,
-} from 'lodash';
-import {
-  MissionPrintService,
-  MissionService,
-} from 'api/missions/index';
-import { Mission, GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
+  Mission,
+  GetMissionPayload,
+} from 'redux-main/reducers/modules/missions/mission/@types';
 
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
@@ -27,19 +25,21 @@ export const promiseGetMission = async (payloadOwn: GetMissionPayload) => {
   }
 
   try {
-    response = await MissionService.get(
-      { ...payload },
-    );
+    response = await MissionService.get({ ...payload });
   } catch (error) {
     console.warn(error); // tslint:disable-line
     response = null;
   }
 
-  const data: Mission[] = get(response, ['result', 'rows'], []).map((mission) => (
-    getFrontMission(mission)
-  ));
+  const data: Mission[] = get(response, ['result', 'rows'], []).map((mission) =>
+    getFrontMission(mission),
+  );
 
-  const total_count: number = get(response, ['result', 'meta', 'total_count'], 0);
+  const total_count: number = get(
+    response,
+    ['result', 'meta', 'total_count'],
+    0,
+  );
 
   return {
     data,
@@ -66,24 +66,25 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>) => {
   throw new Error('non define promiseUpdateMission');
 };
 
-export const promiseChangeArchiveDutuMissionStatus = async (id: Mission['id'], is_archive: boolean) => {
-  const responce = await MissionArchiveService.path(id).put({ is_archive }, false, 'json');
+export const promiseChangeArchiveMissionStatus = async (
+  id: Mission['id'],
+  is_archive: boolean,
+) => {
+  const responce = await MissionArchiveService.path(id).put(
+    { is_archive },
+    false,
+    'json',
+  );
 
   return get(responce, 'result.rows.0', null);
 };
 
 export const promiseRemoveMissions = async (ids: number[]) => {
-  return Promise.all(
-    ids.map((idNumber) => (
-      promiseRemoveMission(idNumber)
-    )),
-  );
+  return Promise.all(ids.map((idNumber) => promiseRemoveMission(idNumber)));
 };
 
-export const promiseRemoveMission = async (id: number): Promise<Partial<Mission>> => {
-  return MissionService.delete(
-    { id },
-    false,
-    'json',
-  );
+export const promiseRemoveMission = async (
+  id: number,
+): Promise<Partial<Mission>> => {
+  return MissionService.delete({ id }, false, 'json');
 };

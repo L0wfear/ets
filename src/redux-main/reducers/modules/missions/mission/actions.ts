@@ -5,7 +5,7 @@ import {
   promiseGetPrintFormMission,
   promiseGetMissionById,
   promiseCreateMission,
-  promiseChangeArchiveDutuMissionStatus,
+  promiseChangeArchiveMissionStatus,
   promiseUpdateMission,
   promiseRemoveMissions,
   promiseRemoveMission,
@@ -19,10 +19,18 @@ import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
 import { initialMissionsState } from 'redux-main/reducers/modules/missions';
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
-import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/order/@types';
+import {
+  Order,
+  OrderTechnicalOperation,
+} from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 
-const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (dispatch, getState) => {
+const actionSetMissionPartialData = (
+  partialMissionData: Partial<IStateMissions['missionData']>,
+): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (
+  dispatch,
+  getState,
+) => {
   const newMissionData = {
     ...getMissionsState(getState()).missionData,
     ...partialMissionData,
@@ -36,14 +44,27 @@ const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions[
 
   return newMissionData;
 };
-const actionResetMission = (): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (dispatch) => {
+const actionResetMission = (): ThunkAction<
+  IStateMissions['missionData'],
+  ReduxState,
+  {},
+  AnyAction
+> => (dispatch) => {
   const newMissionData = dispatch(
     actionSetMissionPartialData(initialMissionsState.missionData),
   );
 
   return newMissionData;
 };
-const actionPrintFormMission = (id: Mission['id'], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetPrintFormMission>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionPrintFormMission = (
+  id: Mission['id'],
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseGetPrintFormMission>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetPrintFormMission(id),
@@ -56,7 +77,15 @@ const actionPrintFormMission = (id: Mission['id'], meta: LoadingMeta): ThunkActi
   return payload;
 };
 
-const actionGetMission = (payloadOwn: GetMissionPayload, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetMission>, ReduxState, {}, AnyAction>  => async (dispatch) => {
+const actionGetMission = (
+  payloadOwn: GetMissionPayload,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseGetMission>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetMission(payloadOwn),
@@ -68,7 +97,15 @@ const actionGetMission = (payloadOwn: GetMissionPayload, meta: LoadingMeta): Thu
 
   return payload;
 };
-const actionGetMissionById = (id: Mission['id'], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetMissionById>, ReduxState, {}, AnyAction>  => async (dispatch) => {
+const actionGetMissionById = (
+  id: Mission['id'],
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseGetMissionById>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetMissionById(id),
@@ -80,10 +117,16 @@ const actionGetMissionById = (id: Mission['id'], meta: LoadingMeta): ThunkAction
 
   return payload;
 };
-const actionGetAndSetInStoreMission = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetMission>>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const response = await dispatch(
-    actionGetMission(payloadOwn, meta),
-  );
+const actionGetAndSetInStoreMission = (
+  payloadOwn: object,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<HandleThunkActionCreator<typeof actionGetMission>>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
+  const response = await dispatch(actionGetMission(payloadOwn, meta));
 
   dispatch(
     actionSetMissionPartialData({
@@ -95,37 +138,55 @@ const actionGetAndSetInStoreMission = (payloadOwn: object, meta: LoadingMeta): T
   return response;
 };
 
-type ActionSetDependenceOrderDataForMissionAction = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
-const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['missionData']['dependeceOrder'], dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation']): ActionSetDependenceOrderDataForMissionAction => (
-  (dispatch, getState) => {
-    const missionData = dispatch(
-      actionSetMissionPartialData({
-        ...getMissionsState(getState()).missionData,
-        dependeceOrder,
-        dependeceTechnicalOperation,
-      }),
-    );
-
-    return missionData;
-  }
-);
-
-const actionLoadOrderAndTechnicalOperationById = (id: Order['id'], operation_id: OrderTechnicalOperation['order_operation_id'], meta: LoadingMeta) => async (dispatch) => {
-  const dependeceOrder: Order = await dispatch(
-    actionLoadOrderById(id, meta),
+type ActionSetDependenceOrderDataForMissionAction = ThunkAction<
+  ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>,
+  ReduxState,
+  {},
+  AnyAction
+>;
+const actionSetDependenceOrderDataForMission = (
+  dependeceOrder: IStateMissions['missionData']['dependeceOrder'],
+  dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'],
+): ActionSetDependenceOrderDataForMissionAction => (dispatch, getState) => {
+  const missionData = dispatch(
+    actionSetMissionPartialData({
+      ...getMissionsState(getState()).missionData,
+      dependeceOrder,
+      dependeceTechnicalOperation,
+    }),
   );
+
+  return missionData;
+};
+
+const actionLoadOrderAndTechnicalOperationById = (
+  id: Order['id'],
+  operation_id: OrderTechnicalOperation['order_operation_id'],
+  meta: LoadingMeta,
+) => async (dispatch) => {
+  const dependeceOrder: Order = await dispatch(actionLoadOrderById(id, meta));
 
   dispatch(
     actionSetDependenceOrderDataForMission(
       dependeceOrder,
-      dependeceOrder.technical_operations.find(({ order_operation_id }) => order_operation_id === operation_id),
+      dependeceOrder.technical_operations.find(
+        ({ order_operation_id }) => order_operation_id === operation_id,
+      ),
     ),
   );
 
   return dependeceOrder;
 };
 
-const actionCreateMission = (missionRaw: Partial<Mission>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateMission>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionCreateMission = (
+  missionRaw: Partial<Mission>,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseCreateMission>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateMission(missionRaw),
@@ -137,10 +198,19 @@ const actionCreateMission = (missionRaw: Partial<Mission>, meta: LoadingMeta): T
 
   return payload;
 };
-const actionChangeArchiveDutuMissionStatus = (missionId: Mission['id'], is_archive: boolean, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseChangeArchiveDutuMissionStatus>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionChangeArchiveMissionStatus = (
+  missionId: Mission['id'],
+  is_archive: boolean,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseChangeArchiveMissionStatus>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
-    payload: promiseChangeArchiveDutuMissionStatus(missionId, is_archive),
+    payload: promiseChangeArchiveMissionStatus(missionId, is_archive),
     meta: {
       promise: true,
       ...meta,
@@ -150,7 +220,15 @@ const actionChangeArchiveDutuMissionStatus = (missionId: Mission['id'], is_archi
   return payload;
 };
 
-const actionUpdateMission = (missionOld: Mission, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateMission>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionUpdateMission = (
+  missionOld: Mission,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseUpdateMission>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateMission(missionOld),
@@ -162,7 +240,15 @@ const actionUpdateMission = (missionOld: Mission, meta: LoadingMeta): ThunkActio
 
   return payload;
 };
-const actionRemoveMissions = (missionOldArr: (Pick<Mission, 'id'> & Partial<Mission>)[], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveMissions>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionRemoveMissions = (
+  missionOldArr: (Pick<Mission, 'id'> & Partial<Mission>)[],
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseRemoveMissions>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveMissions(missionOldArr.map(({ id }) => id)),
@@ -174,7 +260,15 @@ const actionRemoveMissions = (missionOldArr: (Pick<Mission, 'id'> & Partial<Miss
 
   return payload;
 };
-const actionRemoveMission: any = (missionOld: Pick<Mission, 'id'> & Partial<Mission>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveMission>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionRemoveMission: any = (
+  missionOld: Pick<Mission, 'id'> & Partial<Mission>,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseRemoveMission>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveMission(missionOld.id),
@@ -197,7 +291,7 @@ export default {
   actionSetDependenceOrderDataForMission,
   actionLoadOrderAndTechnicalOperationById,
   actionCreateMission,
-  actionChangeArchiveDutuMissionStatus,
+  actionChangeArchiveMissionStatus,
   actionUpdateMission,
   actionRemoveMissions,
   actionRemoveMission,

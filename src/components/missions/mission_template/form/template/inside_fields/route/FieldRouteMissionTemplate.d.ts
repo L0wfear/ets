@@ -1,25 +1,31 @@
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
-import { Route } from 'redux-main/reducers/modules/routes/@types';
+import { Route, IStateRoutes } from 'redux-main/reducers/modules/routes/@types';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
+import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 export type StatePropsFieldRouteMissionTemplate = {
+  routesList: IStateRoutes['routesList'];
   municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList'];
 };
 export type DispatchPropsFieldRouteMissionTemplate = {
   actionLoadRouteById: HandleThunkActionCreator<
     typeof routesActions.actionLoadRouteById
   >;
-  actionLoadRoutes: HandleThunkActionCreator<
-    typeof routesActions.actionLoadRoutes
+  actionLoadAndSetInStoreRoutes: HandleThunkActionCreator<
+    typeof routesActions.actionLoadAndSetInStoreRoutes
+  >;
+  actionResetSetRoutes: HandleThunkActionCreator<
+    typeof routesActions.actionResetSetRoutes
   >;
 };
 export type OwnPropsFieldRouteMissionTemplate = {
   handleChange: any;
 
-  error_route_id: string;
-  route_id: MissionTemplate['route_id'];
+  error: string;
+  value: MissionTemplate['route_id'];
+  name: MissionTemplate['route_name'];
   municipal_facility_id: MissionTemplate['municipal_facility_id'];
   municipal_facility_name: MissionTemplate['municipal_facility_name'];
   technical_operation_id: MissionTemplate['technical_operation_id'];
@@ -50,5 +56,5 @@ export type StateFieldRouteMissionTemplate = {
   showRouteForm: boolean;
   selectedRouteRaw: Partial<Route> | null;
   selectedRoute: Route | null;
-  routesList: Route[];
+  ROUTE_OPTIONS: DefaultSelectListMapper<Route>;
 };

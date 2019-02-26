@@ -210,8 +210,9 @@ class MissionTemplateForm extends React.PureComponent<
           <Row>
             <Col md={12}>
               <FieldRouteMissionTemplate
-                error_route_id={errors.route_id}
-                route_id={state.route_id}
+                error={errors.route_id}
+                value={state.route_id}
+                name={state.route_name}
                 handleChange={this.props.handleChange}
                 municipal_facility_id={state.municipal_facility_id}
                 municipal_facility_name={state.municipal_facility_name}

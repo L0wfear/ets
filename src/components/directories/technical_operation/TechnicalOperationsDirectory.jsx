@@ -23,6 +23,7 @@ import { connect } from 'react-redux';
   tableComponent: TechnicalOperationsTable,
   formComponent: TechnicalOperationFormWrap,
   operations: ['LIST', 'READ'],
+  selectField: 'front_custom_id',
 })
 class TechOperationsDirectory extends ElementsList {
   init() {

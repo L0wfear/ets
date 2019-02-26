@@ -1226,7 +1226,10 @@ div.none {
   outline: none !important;
 }
 
-
+.btn-default.btn-xs {
+  border-radius: 3px;
+  padding: 4px 10px;
+}
 .odh-generation, .odh-filters {
   .btn-primary, .btn-default {
     margin-top: 24px;

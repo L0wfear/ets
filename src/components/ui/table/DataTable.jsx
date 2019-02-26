@@ -310,7 +310,7 @@ export default class DataTable extends React.Component {
 
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
-      console.log('SAVE FILTER', filterValues); // eslint-disable-line
+      console.info('SAVE FILTER', filterValues);
     } else {
       let filterAsString = '';
 
@@ -320,7 +320,7 @@ export default class DataTable extends React.Component {
         filterAsString = filterValues;
       }
 
-      console.log('SAVE FILTER', filterAsString); // eslint-disable-line
+      console.info('SAVE FILTER', filterAsString);
     }
 
     if (this.props.externalFilter) {
@@ -847,6 +847,7 @@ export default class DataTable extends React.Component {
       onRowSelected,
       highlight,
     );
+
     return (
       <Div className={tableClassName}>
         <Div className="some-header" hidden={noHeader}>

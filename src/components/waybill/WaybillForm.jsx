@@ -668,7 +668,6 @@ class WaybillForm extends Form {
             notifications.missionFuelRateByCarUpdateNotification,
           );
         }
-
         this.props.clearSomeData();
         return this.context.flux
           .getActions('waybills')
@@ -723,6 +722,13 @@ class WaybillForm extends Form {
       }
       if (isNotNull(lastCarUsedWaybill.trailer_id)) {
         fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
+      }
+      if (isNotNull(lastCarUsedWaybill.fuel_card_id)) {
+        fieldsToChange.fuel_card_id = lastCarUsedWaybill.fuel_card_id;
+      }
+      if (isNotNull(lastCarUsedWaybill.equipment_fuel_card_id)) {
+        fieldsToChange.equipment_fuel_card_id
+          = lastCarUsedWaybill.equipment_fuel_card_id;
       }
 
       fieldsToChange.equipment_fuel_type

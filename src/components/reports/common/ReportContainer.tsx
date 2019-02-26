@@ -61,7 +61,7 @@ class ReportContainer extends React.Component<
       fetchedByMoveDownButton: false,
       exportFetching: false,
       selectedRow: null,
-      filterValues: props.tableProps.filterValuesRaw || {},
+      filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
       lastSearchObject: queryString.parse(this.props.location.search),
     };

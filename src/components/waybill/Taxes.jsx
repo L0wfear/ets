@@ -147,7 +147,6 @@ export default class Taxes extends React.Component {
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
-          min: 0,
           value: FACT_VALUE,
           disabled:
             typeof FUEL_RATE === 'undefined'
@@ -217,7 +216,7 @@ export default class Taxes extends React.Component {
   handleFactValueChange = (index, e) => {
     const { tableData } = this.state;
     const current = tableData[index];
-    current.FACT_VALUE = Math.abs(e.target.value);
+    current.FACT_VALUE = e.target.value === '' ? '' : Math.abs(e.target.value);
     if (
       current.is_excluding_mileage
       && current.measure_unit_name === 'л/подъем'

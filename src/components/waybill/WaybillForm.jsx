@@ -175,7 +175,11 @@ class WaybillForm extends Form {
         nextFormState.plan_departure_date,
       )
     ) {
-      this.getMissionsByCarAndDates(nextFormState, oldFormState.car_id, true);
+      this.getMissionsByCarAndDates(
+        nextFormState,
+        oldFormState.car_id,
+        oldFormState.car_id && nextFormState.car_id,
+      );
     }
     if (
       oldFormState.status === 'active'
@@ -197,7 +201,11 @@ class WaybillForm extends Form {
         )
       ) {
         this.getCarDistance(nextFormState);
-        this.getMissionsByCarAndDates(nextFormState, oldFormState.car_id, true);
+        this.getMissionsByCarAndDates(
+          nextFormState,
+          oldFormState.car_id,
+          oldFormState.car_id && nextFormState.car_id,
+        );
       }
     }
   }

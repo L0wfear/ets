@@ -20,10 +20,14 @@ import {
 } from 'components/missions/mission_template/form/template/inside_fields/route/FieldRouteMissionTemplate.d';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
-import { isNullOrUndefined } from 'util';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
+import {
+  getSomeUniqState,
+  getRoutesState,
+} from 'redux-main/reducers/selectors/index';
 import { getAvailableRouteTypes } from 'components/missions/mission_template/form/template/utils';
+import { makeOptionFromRouteList } from './makeOptions';
+import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
 
@@ -38,158 +42,194 @@ class FieldRouteMissionTemplate extends React.PureComponent<
     showRouteForm: false,
     selectedRouteRaw: null,
     selectedRoute: null,
-    routesList: [],
+    ROUTE_OPTIONS: [],
   };
 
-  componentDidMount() {
-    const {
-      isPermitted,
-      route_id,
-      technical_operation_id,
-      municipal_facility_id,
-      for_column,
-      municipalFacilityForMissionList,
-    } = this.props;
+  static getDerivedStateFromProps(nextProps: PropsFieldRouteMissionTemplate) {
+    const { value, name, routesList, structure_id } = nextProps;
 
-    const triggerOnGetRoutesList =
-      isPermitted &&
-      !isNullOrUndefined(technical_operation_id) &&
-      !isNullOrUndefined(municipal_facility_id) &&
-      Boolean(municipalFacilityForMissionList.length);
+    let ROUTE_OPTIONS = makeOptionFromRouteList(routesList, structure_id);
 
-    if (triggerOnGetRoutesList) {
-      this.getRoutes(
-        route_id,
-        technical_operation_id,
-        municipal_facility_id,
-        for_column,
+    if (value) {
+      const selectedRouteNotInOption = ROUTE_OPTIONS.find(
+        (routeOptionData) => routeOptionData.value === value,
       );
-    } else if (route_id) {
-      this.loadSelectedRoute(route_id);
+
+      if (!selectedRouteNotInOption) {
+        ROUTE_OPTIONS = [
+          ...ROUTE_OPTIONS,
+          {
+            value,
+            label: name,
+            rowData: {
+              id: value,
+              name,
+            },
+          },
+        ];
+      }
+    }
+
+    return {
+      ROUTE_OPTIONS,
+    };
+  }
+
+  componentDidMount() {
+    const { value, isPermitted } = this.props;
+
+    if (isPermitted) {
+      const {
+        municipal_facility_id,
+        technical_operation_id,
+        for_column,
+        municipalFacilityForMissionList,
+      } = this.props;
+
+      const triggerOnGetRouteList =
+        technical_operation_id &&
+        municipal_facility_id &&
+        municipalFacilityForMissionList.length;
+
+      if (triggerOnGetRouteList) {
+        this.getRoutes(
+          technical_operation_id,
+          municipal_facility_id,
+          for_column,
+        );
+      }
+    }
+
+    if (value) {
+      this.loadSelectedRoute(value);
     }
   }
 
   componentDidUpdate(prevProps: PropsFieldRouteMissionTemplate) {
-    const {
-      route_id,
-      technical_operation_id,
-      municipal_facility_id,
-      for_column,
-      municipalFacilityForMissionList,
-      structure_id,
-    } = this.props;
-    const { selectedRoute } = this.state;
+    const { isPermitted } = this.props;
 
-    let newRouteId = route_id;
-
-    const isDiffTechnicalOperationId =
-      technical_operation_id !== prevProps.technical_operation_id;
-    const isDiffMunicipalFacilityId =
-      municipal_facility_id !== prevProps.municipal_facility_id;
-    const isDiffForColumn = for_column !== prevProps.for_column;
-
-    const triggerOnReset =
-      route_id &&
-      (!for_column ||
-        (for_column &&
-          get(this.state.selectedRoute, 'type', null) !== 'mixed')) &&
-      (isDiffTechnicalOperationId ||
-        isDiffMunicipalFacilityId ||
-        isDiffForColumn);
-
-    if (triggerOnReset) {
-      if (isDiffTechnicalOperationId || isDiffMunicipalFacilityId) {
-        newRouteId = null;
-        this.handleRouteIdChange(newRouteId, null);
-      }
-    } else if (structure_id && route_id && selectedRoute) {
-      if (selectedRoute.structure_id !== structure_id) {
-        newRouteId = null;
-        this.handleRouteIdChange(newRouteId, null);
-      }
-    }
-
-    const municipalFacilityForMissionListLength =
-      municipalFacilityForMissionList.length;
-
-    const triggerOnGetRoutesList =
-      !isNullOrUndefined(technical_operation_id) &&
-      !isNullOrUndefined(municipal_facility_id) &&
-      Boolean(municipalFacilityForMissionListLength) &&
-      (isDiffTechnicalOperationId ||
-        isDiffMunicipalFacilityId ||
-        isDiffForColumn ||
-        !prevProps.municipalFacilityForMissionList.length);
-
-    if (triggerOnGetRoutesList) {
-      this.getRoutes(
-        newRouteId,
-        technical_operation_id,
+    if (isPermitted) {
+      const {
+        value,
+        structure_id,
         municipal_facility_id,
+        technical_operation_id,
         for_column,
-      );
+        municipalFacilityForMissionList,
+      } = this.props;
+
+      const triggerOne =
+        (technical_operation_id !== prevProps.technical_operation_id ||
+          municipal_facility_id !== prevProps.municipal_facility_id ||
+          for_column !== prevProps.for_column) &&
+        municipalFacilityForMissionList.length;
+
+      if (triggerOne) {
+        if (technical_operation_id && municipal_facility_id) {
+          this.getRoutesWithCheckCurrent(
+            technical_operation_id,
+            municipal_facility_id,
+            for_column,
+          );
+        } else {
+          this.handleRouteIdChange(null);
+        }
+      }
+
+      const triggerTwo =
+        technical_operation_id &&
+        municipal_facility_id &&
+        (!municipalFacilityForMissionList.length &&
+          prevProps.municipalFacilityForMissionList.length);
+
+      if (triggerTwo) {
+        this.getRoutes(
+          technical_operation_id,
+          municipal_facility_id,
+          for_column,
+        );
+      }
+
+      if (value !== prevProps.value) {
+        this.loadSelectedRoute(value);
+      }
+      if (structure_id !== prevProps.structure_id) {
+        if (structure_id) {
+          const route_structure_id = get(
+            this.state.selectedRoute,
+            'structure_id',
+            null,
+          );
+
+          if (route_structure_id !== structure_id) {
+            this.handleRouteIdChange(null);
+          }
+        }
+      }
     }
   }
 
-  async getRoutes(
-    route_id,
+  componentWillUnmount() {
+    if (this.props.isPermitted) {
+      this.props.actionResetSetRoutes();
+    }
+  }
+
+  async getRoutesWithCheckCurrent(
     technical_operation_id,
     municipal_facility_id,
-    for_column?,
+    for_column,
   ) {
+    const { dataIndex } = await this.getRoutes(
+      technical_operation_id,
+      municipal_facility_id,
+      for_column,
+    );
+    const { value } = this.props;
+
+    if (value && !dataIndex[value]) {
+      this.handleRouteIdChange(null);
+    }
+  }
+
+  async getRoutes(technical_operation_id, municipal_facility_id, for_column) {
     const { page, path } = this.props;
 
-    const { data: routesList } = await this.props.actionLoadRoutes(
+    return this.props.actionLoadAndSetInStoreRoutes(
       {
         technical_operation_id,
         municipal_facility_id,
         type: getAvailableRouteTypesMemo(
           this.props.municipalFacilityForMissionList,
-          for_column ? null : municipal_facility_id,
+          municipal_facility_id,
           for_column,
         ).toString(),
       },
       { page, path },
     );
-
-    let { selectedRoute } = this.state;
-    if (route_id && (!selectedRoute || selectedRoute.id === route_id)) {
-      const route_data = await this.actionLoadRouteById(route_id);
-      if (route_data) {
-        selectedRoute = route_data;
-
-        routesList.push(selectedRoute);
-      } else {
-        throw new Error(`not found route for id=${route_id}`);
-      }
-    } else {
-      selectedRoute = null;
-    }
-
-    this.setState({
-      routesList,
-      selectedRoute,
-    });
   }
 
   onRouteFormHide = (isSubmitted, route) => {
     const route_id = get(route, 'id', null);
-    const route_type = get(route, 'type', '');
     const route_name = get(route, 'name', '');
+    const object_type_id = get(route, 'type_id', null);
+    const object_type_name = get(route, 'type_name', '');
 
     this.props.handleChange({
       route_id,
-      route_type,
       route_name,
+      object_type_id,
+      object_type_name,
     });
 
     if (isSubmitted) {
-      this.getRoutes(
-        get(route, 'id', 'null'),
-        this.props.technical_operation_id,
-        this.props.municipal_facility_id,
-        this.props.for_column,
-      );
+      const {
+        technical_operation_id,
+        municipal_facility_id,
+        for_column,
+      } = this.props;
+
+      this.getRoutes(technical_operation_id, municipal_facility_id, for_column);
     }
 
     this.setState({
@@ -198,49 +238,48 @@ class FieldRouteMissionTemplate extends React.PureComponent<
     });
   };
 
-  handleRouteIdChange = async (route_id: any, route: any) => {
-    const route_type = get(route, 'type', '');
-    const route_name = get(route, 'name', '');
+  handleRouteIdChange = async (
+    route_id: MissionTemplate['route_id'],
+    route?: ValuesOf<StateFieldRouteMissionTemplate['ROUTE_OPTIONS']>,
+  ) => {
+    const route_name = get(route, ['rowData', 'name'], '');
+    const object_type_id = get(route, ['rowData', 'type_id'], null);
+    const object_type_name = get(route, ['rowData', 'type_name'], '');
 
     this.props.handleChange({
       route_id,
-      route_type,
       route_name,
+      object_type_id,
+      object_type_name,
     });
+  };
 
+  async loadSelectedRoute(route_id: Route['id'] | null) {
     if (route_id) {
-      this.loadSelectedRoute(route_id);
+      const { page, path } = this.props;
+
+      try {
+        const route_data = await this.props.actionLoadRouteById(route_id, {
+          page,
+          path,
+        });
+
+        if (route_data) {
+          this.setState({
+            selectedRoute: route_data,
+          });
+        } else {
+          throw new Error(`Не найден маршрут ${route_id}`);
+        }
+      } catch (error) {
+        console.warn(error); // tslint:disable-line
+        throw new Error(error);
+      }
     } else {
       this.setState({
         selectedRoute: null,
       });
     }
-  };
-
-  async loadSelectedRoute(route_id) {
-    try {
-      const route_data = await this.actionLoadRouteById(route_id);
-
-      if (route_data) {
-        this.setState(({ routesList }) => {
-          const routesListNew = [...routesList, route_data];
-          return {
-            selectedRoute: route_data,
-            routesList: routesListNew,
-          };
-        });
-      } else {
-        throw new Error(`Не найден маршрут ${route_id}`);
-      }
-    } catch (error) {
-      console.warn(error); // tslint:disable-line
-    }
-  }
-
-  actionLoadRouteById(route_id) {
-    const { page, path } = this.props;
-
-    return this.props.actionLoadRouteById(route_id, { page, path });
   }
 
   createNewRoute = () => {
@@ -272,24 +311,11 @@ class FieldRouteMissionTemplate extends React.PureComponent<
     });
   };
 
-  makeOptionFromRouteList = memoize((routesList, structure_id) =>
-    routesList.reduce((newArr, route) => {
-      const triggerOnAdRoutetoShow =
-        !structure_id || route.structure_id === structure_id;
-
-      if (triggerOnAdRoutetoShow) {
-        newArr.push(defaultSelectListMapper(route));
-      }
-
-      return newArr;
-    }, []),
-  );
-
   render() {
     const {
       page,
-      error_route_id,
-      route_id,
+      error,
+      value,
       municipal_facility_id,
       structure_id,
       for_column,
@@ -300,13 +326,11 @@ class FieldRouteMissionTemplate extends React.PureComponent<
       showRouteForm,
       selectedRouteRaw,
       selectedRoute,
-      routesList,
+      ROUTE_OPTIONS,
     } = this.state;
 
     const hasSelectedMunicipalFacilityId = Boolean(municipal_facility_id);
     const hasSelectedStructureId = Boolean(structure_id);
-
-    const ROUTES = this.makeOptionFromRouteList(routesList, structure_id);
 
     return (
       <>
@@ -317,14 +341,14 @@ class FieldRouteMissionTemplate extends React.PureComponent<
               id="route_id"
               modalKey={page}
               label="Маршрут"
-              error={error_route_id}
-              options={ROUTES}
-              value={route_id}
+              error={error}
+              options={ROUTE_OPTIONS}
+              value={value}
               disabled={disabled || !hasSelectedMunicipalFacilityId}
               onChange={this.handleRouteIdChange}
               clearable
             />
-            {!route_id ? (
+            {!value ? (
               <Button
                 id="mt-create-route"
                 onClick={this.createNewRoute}
@@ -383,13 +407,16 @@ export default connect<
   ReduxState
 >(
   (state) => ({
+    routesList: getRoutesState(state).routesList,
     municipalFacilityForMissionList: getSomeUniqState(state)
       .municipalFacilityForMissionList,
   }),
   (dispatch: any) => ({
     actionLoadRouteById: (...arg) =>
       dispatch(routesActions.actionLoadRouteById(...arg)),
-    actionLoadRoutes: (...arg) =>
-      dispatch(routesActions.actionLoadRoutes(...arg)),
+    actionLoadAndSetInStoreRoutes: (...arg) =>
+      dispatch(routesActions.actionLoadAndSetInStoreRoutes(...arg)),
+    actionResetSetRoutes: (...arg) =>
+      dispatch(routesActions.actionResetSetRoutes(...arg)),
   }),
 )(FieldRouteMissionTemplate);

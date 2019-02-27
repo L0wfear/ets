@@ -166,7 +166,7 @@ export const checkAndModifyTrack = (
               true,
             )}`,
             type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
-            value: `${Math.abs(event.event_val)} л`,
+            value: `${Math.abs(Number(event.event_val.toFixed(3)))} л`,
           };
         }),
       );

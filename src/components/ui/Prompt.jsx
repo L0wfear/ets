@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';
@@ -59,9 +60,10 @@ class Prompt extends React.Component {
 
   render() {
     return (
-      <Modal
+      <EtsModal
         show={this.state.isVisible}
         bsSize={this.state.bsSize}
+        deepLvl={65}
         id="delete-form">
         <Modal.Header>{this.state.title}</Modal.Header>
         <Modal.Body>
@@ -73,7 +75,7 @@ class Prompt extends React.Component {
           <Button onClick={this.ok}>Ок</Button>
           <Button onClick={this.cancel}>Отмена</Button>
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }

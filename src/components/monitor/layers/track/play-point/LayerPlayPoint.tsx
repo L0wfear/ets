@@ -6,19 +6,22 @@ import { connect } from 'react-redux';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
 import { makeFeaute } from 'components/monitor/layers/track/play-point/feature/utils-feature';
-import { actionOnPlay, actionOnStop } from 'components/monitor/layers/track/play-point/play-events/utils-play-event';
+import {
+  actionOnPlay,
+  actionOnStop,
+} from 'components/monitor/layers/track/play-point/play-events/utils-play-event';
 
 import { PropsLayerPlayPoint } from 'components/monitor/layers/track/play-point/LayerPlayPoint.h';
 
 class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
-    this.props.addLayer({ id: 'PlayPoint', zIndex: 11, renderMode: 'vector' }).then(() => {
-      this.props.setDataInLayer('singleclick', undefined);
+    this.props
+      .addLayer({ id: 'PlayPoint', zIndex: 11, renderMode: 'vector' })
+      .then(() => {
+        this.props.setDataInLayer('singleclick', undefined);
 
-      this.props.addFeaturesToSource(
-        makeFeaute(),
-      );
-    });
+        this.props.addFeaturesToSource(makeFeaute());
+      });
   }
 
   componentDidUpdate(prevProps) {
@@ -38,12 +41,15 @@ class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   }
 
   render() {
-    return <div></div>;
+    return <div />;
   }
 }
 
 const mapStateToProps = (state) => ({
-  point: state.monitorPage.carInfo.trackCaching.track[state.monitorPage.carInfo.playTrack.trackPointIndex],
+  point:
+    state.monitorPage.carInfo.trackCaching.track[
+      state.monitorPage.carInfo.playTrack.trackPointIndex
+    ],
   playTrackStatus: state.monitorPage.carInfo.playTrack.status,
 });
 
@@ -52,9 +58,7 @@ export default compose<any, any>(
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',
   }),
-  connect(
-    mapStateToProps,
-  ),
+  connect(mapStateToProps),
   withLayerProps({
     centerOn: true,
   }),

@@ -1310,7 +1310,7 @@ div.none {
 
 .datepicker-range {
   display: flex;
-  
+  z-index: 10;
   .date-divider {
     display: inline-block;
     margin-left: 10px;
@@ -1688,6 +1688,6 @@ div.car-movement-time-report {
 }
 
 .headerRow{
-  z-index: 3;
+  z-index: 20;
   position: relative;
 }

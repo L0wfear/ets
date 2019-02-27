@@ -28,13 +28,13 @@ export const CssloadLoader = styled.div`
   left: 25%;
   left: calc(50% - 73px);
   top: 50%;
-  z-index: 3;
+  z-index: 100;
 
   &:after {
-    content: "Загрузка ...";
+    content: 'Загрузка ...';
     text-transform: uppercase;
     color: white;
-    font-family: Lato,"Helvetica Neue" ;
+    font-family: Lato, 'Helvetica Neue';
     font-weight: 200;
     font-size: 10px;
     position: absolute;
@@ -48,8 +48,8 @@ export const CssloadLoader = styled.div`
     text-align: center;
   }
 
-  :before{
-    content: "";
+  :before {
+    content: '';
     position: absolute;
     background-color: rgb(0, 0, 0);
     top: -3px;
@@ -58,7 +58,7 @@ export const CssloadLoader = styled.div`
     width: 0px;
     z-index: 0;
     opacity: 1;
-    transform-origin:	100% 0%;
+    transform-origin: 100% 0%;
     animation: ${cssload} 11.5s ease-in-out infinite;
   }
 `;

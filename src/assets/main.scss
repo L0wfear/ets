@@ -844,6 +844,7 @@ body.application {
 .some-header {
   font-size: 18px;
   line-height: 40px;
+  z-index: 2;
 }
 
 
@@ -1683,5 +1684,10 @@ div.car-movement-time-report {
 .data-table .griddle th,
 .ets_table_wrap th {
   z-index: 1;
+  position: relative;
+}
+
+.headerRow{
+  z-index: 3;
   position: relative;
 }

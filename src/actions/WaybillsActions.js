@@ -71,7 +71,47 @@ export default class WaybillsActions extends Actions {
   }
 
   getWaybill(id) {
-    return WaybillService.path(id).get();
+    return WaybillService.path(id)
+      .get()
+      .then(({ result }) => {
+        const waybill = result;
+        if (waybill && waybill.tax_data) {
+          waybill.tax_data = waybill.tax_data.map((tax) => {
+            tax.originOperation = true;
+            tax.uniqKey = `originOperation_${tax.OPERATION}`;
+            tax.operation_name = `${tax.operation_name}, ${
+              tax.measure_unit_name
+            }`;
+            if (tax.comment) {
+              tax.operation_name = `${tax.operation_name} (${tax.comment})`;
+            }
+            if (tax.is_excluding_mileage) {
+              tax.operation_name = `${tax.operation_name} [без учета пробега]`;
+            }
+            return tax;
+          });
+        }
+        if (waybill && waybill.equipment_tax_data) {
+          waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax) => {
+            tax.originOperation = true;
+            tax.uniqKey = `originOperation_${tax.OPERATION}`;
+            tax.operation_name = `${tax.operation_name}, ${
+              tax.measure_unit_name
+            }`;
+            if (tax.comment) {
+              tax.operation_name = `${tax.operation_name} (${tax.comment})`;
+            }
+            if (tax.is_excluding_mileage) {
+              tax.operation_name = `${tax.operation_name} [без учета пробега]`;
+            }
+            return tax;
+          });
+        }
+
+        return {
+          result: waybill,
+        };
+      });
   }
 
   getWaybillJournalReport(state, filter) {
@@ -130,6 +170,7 @@ export default class WaybillsActions extends Actions {
         .map((tax) => {
           delete tax.originOperation;
           delete tax.isDisabled;
+          delete tax.operation_name;
           delete tax.uniqKey;
 
           return tax;
@@ -142,6 +183,7 @@ export default class WaybillsActions extends Actions {
         .map((tax) => {
           delete tax.originOperation;
           delete tax.isDisabled;
+          delete tax.operation_name;
           delete tax.uniqKey;
 
           return tax;

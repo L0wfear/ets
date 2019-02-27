@@ -17,7 +17,13 @@ function getTechnicalOperations(payload = {}) {
 function getTechnicalOperationsRegistry(payload = {}) {
   return Cleaning.path('norm_registry')
     .get(payload)
-    .then((r) => ({ result: r.result.rows }));
+    .then((r) => ({
+      result: r.result.rows.map((rowData, index) => {
+        rowData.front_custom_id = index + 1;
+
+        return rowData;
+      }),
+    }));
 }
 
 export default class TechnicalOperationsActions extends Actions {
@@ -91,6 +97,7 @@ export default class TechnicalOperationsActions extends Actions {
     delete payload.check_type_name;
     delete payload.object_name;
     delete payload.object_text;
+    delete payload.front_custom_id;
 
     return Cleaning.path('norm_registry')
       .path(data.id)

@@ -48,7 +48,12 @@ export const waybillSchema = {
       title: 'Топливо.Выезд',
       type: 'number',
       float: 3,
-      required: true,
+    },
+    {
+      key: 'equipment_fuel_type',
+      title: 'Тип топлива',
+      type: 'valueOfArray',
+      required: false,
     },
     {
       key: 'equipment_fuel_start',
@@ -61,7 +66,6 @@ export const waybillSchema = {
       key: 'fuel_type',
       title: 'Топливо.Тип',
       type: 'string',
-      required: true,
     },
     {
       key: 'fuel_to_give',
@@ -96,7 +100,6 @@ export const waybillSchema = {
       title: 'Счетчик моточасов оборудования.Выезд',
       type: 'number',
       integer: true,
-      required: false,
     },
     {
       key: 'distance',
@@ -197,6 +200,20 @@ export const waybillSchema = {
         },
       },
     ],
+    motohours_equip_start: [
+      {
+        validator: (value, formData) => {
+          if (
+            formData.equipment_fuel
+            && (!formData.status || formData.status === 'draft')
+            && isEmpty(value)
+          ) {
+            return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
     plan_arrival_date: [
       {
         type: 'gt',
@@ -280,15 +297,8 @@ export const waybillSchema = {
     fuel_method: [
       {
         validator: (value, formData) => {
-          if (!value && formData.status === 'draft') {
+          if (!value && (!formData.status || formData.status === 'draft')) {
             return 'Поле "Способ заправки" должно быть заполнено';
-          }
-          if (
-            value === 'fuel_card'
-            && isEmpty(formData.fuel_card_id)
-            && (formData.status === 'draft' || !formData.status)
-          ) {
-            return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
         },
@@ -316,27 +326,28 @@ export const waybillSchema = {
             !value
             && formData.equipment_fuel
             && formData.status === 'draft'
-            && formData.equipment_fuel
           ) {
             return 'Поле "Способ заправки" должно быть заполнено';
-          }
-          if (
-            value === 'fuel_card'
-            && formData.equipment_fuel
-            && isEmpty(formData.equipment_fuel_card_id)
-            && (formData.status === 'draft' || !formData.status)
-          ) {
-            return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
         },
       },
     ],
+    fuel_type: [
+      {
+        validator: (value, { status }) => {
+          if (status !== 'active' && isNullOrUndefined(value)) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      },
+    ],
     equipment_fuel_type: [
       {
-        validator: (value, { motohours_equip_start }) => {
+        validator: (value, { equipment_fuel, status }) => {
           if (
-            !isNullOrUndefined(motohours_equip_start)
+            equipment_fuel
+            && (status === 'draft' || !status)
             && isNullOrUndefined(value)
           ) {
             return 'Поле "Тип топлива" должно быть заполнено';
@@ -344,11 +355,21 @@ export const waybillSchema = {
         },
       },
     ],
+    fuel_start: [
+      {
+        validator: (value, { status }) => {
+          if (status !== 'active' && isNullOrUndefined(value)) {
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+        },
+      },
+    ],
     equipment_fuel_start: [
       {
-        validator: (value, { motohours_equip_start }) => {
+        validator: (value, { status, equipment_fuel }) => {
           if (
-            !isNullOrUndefined(motohours_equip_start)
+            equipment_fuel
+            && (status === 'draft' || !status)
             && isNullOrUndefined(value)
           ) {
             return 'Поле "Выезд, л" должно быть заполнено';
@@ -540,11 +561,10 @@ const closingDependencies = {
     {
       validator: (value, formData) => {
         const abs = Math.abs(
-          (parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
-            - parseFloat(value || 0))
-            / 100,
+          parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
+            - parseFloat(value || 0),
         );
-        if (abs > 0.1) {
+        if (abs / 100 > 0.1) {
           return 'Расхождение в показателях пробега';
         }
         return false;
@@ -553,9 +573,10 @@ const closingDependencies = {
   ],
   equipment_tax_data: [
     {
-      validator: (value, { motohours_equip_start }) => {
+      validator: (value, { equipment_fuel, motohours_equip_start }) => {
         if (
-          !isNullOrUndefined(motohours_equip_start)
+          equipment_fuel
+          && !isNullOrUndefined(motohours_equip_start)
           && (!isArray(value)
             || !value.filter(
               ({ FACT_VALUE, OPERATION }) =>

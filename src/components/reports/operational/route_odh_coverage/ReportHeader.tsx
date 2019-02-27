@@ -20,7 +20,9 @@ import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 
 const Field: any = bindable(FieldComponent);
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+interface IPropsReportHeader
+  extends IPropsReportHeaderCommon,
+    IPropsReportHeaderWrapper {
   technical_operations_ids: any;
   technicalOperationsList: Array<ITechnicalOperationType>;
 }
@@ -35,34 +37,32 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     flux.getActions('technicalOperation').getTechnicalOperations();
   }
   getState() {
-    const {
-      technical_operations_ids = '',
-    } = this.props;
+    const { technical_operations_ids = '' } = this.props;
 
     return {
       technical_operations_ids,
     };
   }
   handleSubmit = () => {
-    const {
-      technical_operations_ids,
-    } = this.getState();
+    const { technical_operations_ids } = this.getState();
 
-    const techOpIdsArray = typeof technical_operations_ids === 'string' ? [technical_operations_ids] : technical_operations_ids;
+    const techOpIdsArray =
+      typeof technical_operations_ids === 'string'
+        ? [technical_operations_ids]
+        : technical_operations_ids;
 
     const requestBody = {
       technical_operations_ids: `[${[...techOpIdsArray].join(',')}]`,
     };
 
-    this.props.onClick(technical_operations_ids !== ''
-      ? requestBody
-      : omit(requestBody, 'technical_operations_ids'),
+    this.props.onClick(
+      technical_operations_ids !== ''
+        ? requestBody
+        : omit(requestBody, 'technical_operations_ids'),
     );
-  }
+  };
   render() {
-    const {
-      technical_operations_ids,
-    } = this.getState();
+    const { technical_operations_ids } = this.getState();
 
     const { technicalOperationsList = [], readOnly } = this.props;
 
@@ -71,7 +71,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       .map((t) => ({ value: t.id, label: t.name }));
 
     return (
-      <Row>
+      <Row className="headerRow">
         <ColorForTable />
         <Col lg={10} md={9}>
           <Field
@@ -86,11 +86,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           />
         </Col>
         <Col lg={2} md={3} style={{ marginTop: 25 }}>
-          <Button
-            block
-            onClick={this.handleSubmit}
-            disabled={readOnly}
-          >Сформировать отчет</Button>
+          <Button block onClick={this.handleSubmit} disabled={readOnly}>
+            Сформировать отчет
+          </Button>
         </Col>
       </Row>
     );

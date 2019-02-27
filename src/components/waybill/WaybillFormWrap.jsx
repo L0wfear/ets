@@ -14,6 +14,17 @@ import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { connect } from 'react-redux';
 
+const canSaveNotCheckField = [
+  'fact_arrival_date',
+  'fact_departure_date',
+  'fuel_end',
+  'distance',
+  'motohours_equip_end',
+  'equipment_tax_data',
+  'motohours_end',
+  'odometr_end',
+];
+
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
   if (waybill.status) {
@@ -68,7 +79,11 @@ let timeId = 0;
 @FluxContext
 class WaybillFormWrap extends FormWrap {
   static defaultProps = {
-    onCallback: () => {},
+    onCallback: (newState) => {
+      this.setState({
+        ...newState,
+      });
+    },
   };
 
   constructor(props) {
@@ -211,17 +226,7 @@ class WaybillFormWrap extends FormWrap {
                 (this.state.isPermittedByKey.update
                   || this.state.isPermittedByKey.departure_and_arrival_values)
                 && !clone(formErrors, (v, k) =>
-                  [
-                    'fact_arrival_date',
-                    'fact_departure_date',
-                    'fuel_end',
-                    'distance',
-                    'motohours_equip_end',
-                    'motohours_end',
-                    'odometr_end',
-                  ].includes(k)
-                    ? false
-                    : v,
+                  canSaveNotCheckField.includes(k) ? false : v,
                 ).length
                 && !(
                   (formErrors.fact_arrival_date
@@ -331,17 +336,7 @@ class WaybillFormWrap extends FormWrap {
 
     newState.canSave
       = !filter(formErrors, (v, k) =>
-        [
-          'fact_arrival_date',
-          'fact_departure_date',
-          'fuel_end',
-          'distance',
-          'motohours_equip_end',
-          'motohours_end',
-          'odometr_end',
-        ].includes(k)
-          ? false
-          : v,
+        canSaveNotCheckField.includes(k) ? false : v,
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
@@ -374,17 +369,7 @@ class WaybillFormWrap extends FormWrap {
 
     newState.canSave
       = !filter(formErrors, (v, k) =>
-        [
-          'fact_arrival_date',
-          'fact_departure_date',
-          'fuel_end',
-          'distance',
-          'motohours_equip_end',
-          'motohours_end',
-          'odometr_end',
-        ].includes(k)
-          ? false
-          : v,
+        canSaveNotCheckField.includes(k) ? false : v,
       ).length
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
@@ -538,6 +523,35 @@ class WaybillFormWrap extends FormWrap {
   };
 
   /**
+   * Отправка формы активного ПЛ
+   * @param {boolean} closeForm - закрывать форму после обновления, false - если есть ошибка
+   * @param {object} state - содержимое формы
+   * @return {undefined}
+   */
+  submitActiveWaybill = async (closeForm, state = this.state.formState) => {
+    const formState = { ...state };
+    const { flux } = this.context;
+
+    if (closeForm) {
+      // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
+      try {
+        await flux.getActions('waybills').updateWaybill(formState);
+      } catch ({ error_text }) {
+        console.log(error_text); // eslint-disable-line
+        return;
+      }
+
+      this.props.onCallback({
+        showWaybillFormWrap: false,
+      });
+    } else {
+      this.props.onCallback({
+        showWaybillFormWrap: true,
+      });
+    }
+  };
+
+  /**
    * Отправка формы ПЛ
    * @param {object} state - содержимое формы
    * @param {function} callback - функция, вызываемая после отправки
@@ -610,13 +624,7 @@ class WaybillFormWrap extends FormWrap {
         this.props.onCallback();
       }
     } else if (waybillStatus === 'active') {
-      try {
-        await flux.getActions('waybills').updateWaybill(formState);
-      } catch ({ error_text }) {
-        console.log(error_text); // eslint-disable-line
-        return;
-      }
-      this.props.onCallback();
+      this.submitActiveWaybill();
     } else if (waybillStatus === 'closed') {
       try {
         await flux.getActions('waybills').updateWaybill(formState);
@@ -678,6 +686,7 @@ class WaybillFormWrap extends FormWrap {
       <WaybillForm
         formState={this.state.formState}
         onSubmit={this.handleFormSubmit}
+        onSubmitActiveWaybill={this.submitActiveWaybill}
         handlePrint={this.handlePrint}
         handleClose={this.handleClose}
         handleFormChange={this.handleFormStateChange}
@@ -688,7 +697,6 @@ class WaybillFormWrap extends FormWrap {
         handlePrintFromMiniButton={this.handlePrintFromMiniButton}
         clearSomeData={this.clearSomeData}
         isPermittedByKey={this.state.isPermittedByKey}
-        deepLvl={this.props.deepLvl || 1}
         {...this.state}
       />
     ) : (

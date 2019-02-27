@@ -60,12 +60,12 @@
   }
   & .custom-table-container {
     border: none !important;
-    overflow-x: auto;
     width: 100%;
     margin-bottom: 1pc;
-
+    height: calc(100vh - 270px);
+    overflow: auto;
+    margin-top: 10px;
     & .custom-data-table {
-      margin-top: 10px;
       table-layout: auto;
       word-break: normal;
       
@@ -102,7 +102,9 @@
         & tr>th {
           word-wrap: normal;
           width: 200px;
-
+          background-color: rgba(247, 247, 247, 1);
+          box-shadow: inset #c1c1c1 0px -2px; // бордер криво работает
+          vertical-align: middle;
           &[data-title="number"] {
             white-space: nowrap;
           }

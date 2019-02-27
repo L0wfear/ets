@@ -106,6 +106,9 @@ module.exports = {
       "error",
       "always",
     ],
+    "no-unexpected-multiline": [
+      1,
+    ],
     "react/prop-types": [1],
     "react/forbid-prop-types": [0],
     "react/display-name": [0],

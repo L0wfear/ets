@@ -23,42 +23,42 @@ import {
   PropsWaybillDraftInfo,
   StateWaybillDraftInfo,
 } from 'components/new/pages/dashboard/menu/cards/waybill-draft/info/WaybillDraftInfo.h';
-import {
-  WaybillDraftItemsSubItemsType,
-} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-draft.h';
-import {
-  TitleWaybillInfoContainer,
-} from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
+import { WaybillDraftItemsSubItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-draft.h';
+import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateWaybillDraftInfo> {
+class WaybillDraftInfo extends React.PureComponent<
+  PropsWaybillDraftInfo,
+  StateWaybillDraftInfo
+> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,
   };
 
-  filterInfoData = memoize(
-    (infoData) => {
-      if (infoData) {
-        return groupBy<WaybillDraftItemsSubItemsType>(
-          infoData.subItems,
-          (waybill) => (
-            makeDate(waybill.data.waybill_date_create)
-          ),
-        );
-      }
+  filterInfoData = memoize((infoData) => {
+    if (infoData) {
+      return groupBy<WaybillDraftItemsSubItemsType>(
+        infoData.subItems,
+        (waybill) => makeDate(waybill.data.waybill_date_create),
+      );
+    }
 
-      return {};
-    },
-  );
+    return {};
+  });
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
-  }
+  };
 
-  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
-    this.props.getWaybillById(Number.parseInt(path, 0))
+  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({
+    currentTarget: {
+      dataset: { path },
+    },
+  }) => {
+    this.props
+      .getWaybillById(Number.parseInt(path, 0))
       .then(({ payload: { waybill_data } }) => {
         if (waybill_data) {
           this.setState({
@@ -70,55 +70,53 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
           console.warn('not find waybill');
         }
       });
-  }
+  };
 
   handleWaybillFormWrapHide = () => {
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
     });
-  }
+  };
 
-  handleWaybillFormWrapHideAfterSubmit = () => {
+  handleWaybillFormWrapHideAfterSubmit = (newState) => {
     this.props.loadAllWaybillCard();
     this.setState({
       showWaybillFormWrap: false,
       elementWaybillFormWrap: null,
+      ...newState,
     });
-  }
+  };
 
   mapArrData = ({ data: { waybill_id }, title }) => (
     <li
       key={waybill_id}
       className="pointer"
       data-path={waybill_id}
-      onClick={this.openWaybillFormWrap}
-    >
+      onClick={this.openWaybillFormWrap}>
       {title}
     </li>
-  )
+  );
 
   mapInfoDataGroupByDate = ([key, arrData]) => (
     <div key={key}>
       <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
       <div>
-        <ul>
-          { arrData.map(this.mapArrData) }
-        </ul>
+        <ul>{arrData.map(this.mapArrData)}</ul>
       </div>
     </div>
-  )
+  );
 
   render() {
-    const {
-      infoData,
-    } = this.props;
+    const { infoData } = this.props;
 
     const infoDataGroupByDate = this.filterInfoData(infoData);
 
     return (
       <InfoCard title="Рег. номер ТС" handleClose={this.handleClose}>
-        { Object.entries(infoDataGroupByDate).sort().map(this.mapInfoDataGroupByDate) }
+        {Object.entries(infoDataGroupByDate)
+          .sort()
+          .map(this.mapInfoDataGroupByDate)}
         <WaybillFormWrap
           onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
           onCallback={this.handleWaybillFormWrapHideAfterSubmit}
@@ -142,28 +140,16 @@ export default compose<any, any>(
       infoDataRaw: getDashboardState(state).waybill_draft.data.items[0],
     }),
     (dispatch) => ({
-      handleClose: () => (
+      handleClose: () => dispatch(dashboardSetInfoDataInWaybillDraft(null)),
+      loadAllWaybillCard: () =>
+        dispatch(dashboardLoadDependentDataByWaybillDraft()),
+      getWaybillById: (id) =>
         dispatch(
-          dashboardSetInfoDataInWaybillDraft(null),
-        )
-      ),
-      loadAllWaybillCard: () => (
-        dispatch(
-          dashboardLoadDependentDataByWaybillDraft(),
-        )
-      ),
-      getWaybillById: (id) => (
-        dispatch(
-          loadWaybillById(
-            'none',
-            id,
-            {
-              promise: true,
-              page: 'dashboard',
-            },
-          ),
-        )
-      ),
+          loadWaybillById('none', id, {
+            promise: true,
+            page: 'dashboard',
+          }),
+        ),
     }),
   ),
 )(WaybillDraftInfo);

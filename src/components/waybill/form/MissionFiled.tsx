@@ -8,6 +8,9 @@ import * as Button from 'react-bootstrap/lib/Button';
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
+import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import { getWarningNotification } from 'utils/notifications';
 
 const ButtonCreateMission = withRequirePermissionsNew({
   permissions: permissionsMission.create,
@@ -17,6 +20,13 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
   state = {
     showMissionForm: false,
     selectedMission: null,
+    showMissionRejectForm: false,
+    status: '',
+    action_at: '',
+    mission_id_list: [],
+    tempMissionIdList: [], // Временный массив, пока открыта rejectForm
+    rejectMissionList: [], // Массив с заданиями, которые надо будет отменить
+    rejectedMission: {},
   };
 
   multiValueContainerReander({ innerProps, data, ...props }) {
@@ -30,8 +40,41 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
   }
 
   handleMissionsChange = (newFormData) => {
-    this.props.handleChange('mission_id_list', newFormData);
+    // Если удаляем миссию и статус ПЛ Активен
+    if (
+      newFormData.length < this.props.state.mission_id_list.length &&
+      this.props.state.status === 'active'
+    ) {
+      const { missionsList } = this.props;
+      const { mission_id_list } = this.props.state;
+
+      const deletedElementId = mission_id_list.filter((mission: any) => {
+        return newFormData.indexOf(mission) === -1;
+      })[0]; // ошибки не будет, выше проверка
+      const deletedElement = missionsList.find(
+        (mission) => mission.id === deletedElementId,
+      );
+
+      const car_gov_number = this.props.state.gov_number;
+      const rejectedMission = {
+        ...deletedElement,
+        car_gov_number,
+      };
+
+      if (rejectedMission.can_be_closed) {
+        this.rejectMission(rejectedMission);
+        this.setState({
+          tempMissionIdList: newFormData,
+          rejectedMission,
+        });
+      } else {
+        this.props.handleChange('mission_id_list', newFormData);
+      }
+    } else {
+      this.props.handleChange('mission_id_list', newFormData);
+    }
   };
+
   onMissionFormHide = (result) => {
     const id = result && result.result ? result.result.id : null;
     if (id) {
@@ -81,6 +124,49 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
     });
   };
 
+  rejectMission = (rejectedMission) => {
+    loadMoscowTime()
+      .then(({ time }) => {
+        const action_at = time.date;
+        this.setState({
+          showMissionRejectForm: true,
+          action_at,
+          rejectedMission,
+        });
+      })
+      .catch(({ errorIsShow }) => {
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(
+            getWarningNotification('Произошла непредвиденная ошибка отмены!'),
+          );
+        }
+      });
+  };
+
+  onReject = (waybillPayload) => {
+    const { tempMissionIdList, rejectMissionList } = this.state;
+    const newPropsState = {
+      showMissionRejectForm: false,
+      rejectMissionList,
+    };
+    // если НЕ!!! нажали на отмену или крестик в rejectForm
+    if (waybillPayload) {
+      this.props.handleChange('mission_id_list', tempMissionIdList);
+      const inList = rejectMissionList.find(
+        (mission) =>
+          mission.payload.mission_id === waybillPayload.payload.mission_id,
+      );
+      if (!inList) {
+        newPropsState.rejectMissionList = [
+          ...rejectMissionList,
+          waybillPayload,
+        ];
+        this.props.setRejectMissionList(newPropsState.rejectMissionList);
+      }
+    }
+    this.setState({ ...newPropsState });
+  };
+
   render() {
     const {
       state,
@@ -91,6 +177,8 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
       isPermittedByKey,
       origFormState,
     } = this.props;
+
+    const { rejectedMission } = this.state;
 
     const countMissionMoreOne = true; // state.mission_id_list.length > 1;
 
@@ -170,6 +258,16 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
           deepLvl={this.props.deepLvl + 1}
           {...this.props}
         />
+        {this.state.showMissionRejectForm && (
+          <MissionRejectForm
+            show={this.state.showMissionRejectForm}
+            onReject={this.onReject}
+            mission={rejectedMission}
+            // missions={missionsList}
+            action_at={this.state.action_at}
+            isWaybillForm
+          />
+        )}
       </>
     );
   }

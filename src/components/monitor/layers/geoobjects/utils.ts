@@ -3,22 +3,27 @@ import Feature from 'ol/Feature';
 import { get } from 'lodash';
 
 import { getCasheStyleForGeoobject } from 'components/monitor/layers/geoobjects/feature-style';
-import {
-  LayerGeoobjectsUtilsTypes,
-} from 'components/monitor/layers/geoobjects/LayerGeooobjects.h';
+import { LayerGeoobjectsUtilsTypes } from 'components/monitor/layers/geoobjects/LayerGeooobjects.h';
 
 /**
  * проверка на измнение show в serverName
  * @param serverName serverName геообъекте в стора
  * @param data знаенчие serverName
  * @param show новое значение отображения геообъекта
+ * @param oldShow старое значение отображения геообъекта
  * @param stateData значение serverName в стейте компонента
  */
-export const checkShowStatus: LayerGeoobjectsUtilsTypes.checkShowStatusFunc = (serverName, data, show, stateData) => {
+export const checkShowStatus: LayerGeoobjectsUtilsTypes.checkShowStatusFunc = (
+  serverName,
+  data,
+  show,
+  oldShow,
+  stateData,
+) => {
   let hasDiff = false;
   const changedGeoobjects = {};
 
-  if (show !== stateData.show) {
+  if (show !== stateData.show || show !== oldShow) {
     changedGeoobjects[serverName] = {
       show,
       data: data.data,
@@ -45,7 +50,12 @@ export const checkShowStatus: LayerGeoobjectsUtilsTypes.checkShowStatusFunc = (s
  * @param show новое значение отображения геообъекта
  * @param stateData значение serverName в стейте компонента
  */
-export const checkData: LayerGeoobjectsUtilsTypes.checkDataFunc = (serverName, data, show, stateData) => {
+export const checkData: LayerGeoobjectsUtilsTypes.checkDataFunc = (
+  serverName,
+  data,
+  show,
+  stateData,
+) => {
   let hasDiff = false;
   const changedGeoobjects = {};
 
@@ -69,10 +79,17 @@ export const checkData: LayerGeoobjectsUtilsTypes.checkDataFunc = (serverName, d
  * @param serverName serverName геообъекте в стора
  * @param data знаенчие serverName
  * @param show новое значение отображения геообъекта
+ * @param oldShow старое значение отображения геообъекта
  * @param stateData значение serverName в стейте компонента
  */
-const ansCheck: LayerGeoobjectsUtilsTypes.ansCheck = (serverName, data, show, stateData) => ({
-  checkShowStatus: checkShowStatus(serverName, data, show, stateData),
+const ansCheck: LayerGeoobjectsUtilsTypes.ansCheck = (
+  serverName,
+  data,
+  show,
+  oldShow,
+  stateData,
+) => ({
+  checkShowStatus: checkShowStatus(serverName, data, show, oldShow, stateData),
   checkData: checkData(serverName, data, show, stateData),
 });
 
@@ -81,16 +98,27 @@ const ansCheck: LayerGeoobjectsUtilsTypes.ansCheck = (serverName, data, show, st
  * @param serverName serverName геообъекте в стора
  * @param data знаенчие serverName
  * @param show новое значение отображения геообъекта
+ * @param oldShow старое значение отображения геообъекта
  * @param stateData значение serverName в стейте компонента
  */
-export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithCaclDataFunc = (retValue, serverName, data, show, stateData) => {
+export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithCaclDataFunc = (
+  retValue,
+  serverName,
+  data,
+  show,
+  oldShow,
+  stateData,
+) => {
   const {
     checkShowStatus: checkShowStatusInFunc,
     checkData: checkDataInFunck,
-  } = ansCheck(serverName, data, show, stateData);
+  } = ansCheck(serverName, data, show, oldShow, stateData);
 
   return {
-    hasDiff: retValue.hasDiff || checkShowStatusInFunc.hasDiff || checkDataInFunck.hasDiff,
+    hasDiff:
+      retValue.hasDiff ||
+      checkShowStatusInFunc.hasDiff ||
+      checkDataInFunck.hasDiff,
     diffGeoobjects: {
       ...retValue.diffGeoobjects,
       ...checkShowStatusInFunc.changedGeoobjects,
@@ -103,7 +131,10 @@ export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithC
  * @param thisProps текущие состояние пропсов
  * @param prevProps прошлое состояние пропсов
  */
-export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (thisProps, prevProps) => {
+export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
+  thisProps,
+  prevProps,
+) => {
   const { geoobjects, SHOW_GEOOBJECTS } = thisProps;
   let retValue = {
     hasDiff: false,
@@ -119,6 +150,7 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (thi
         serverName,
         data,
         SHOW_GEOOBJECTS && data.show,
+        prevProps.SHOW_GEOOBJECTS && data.show,
         prevProps.geoobjects[serverName],
       );
     }
@@ -133,7 +165,11 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (thi
  * @param geoobj_old старые данные геообъекта
  * @param oldFeature текущая фича геообъекта
  */
-const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldFeatureFunc = (geoobj, geoobj_old, oldFeature) => {
+const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldFeatureFunc = (
+  geoobj,
+  geoobj_old,
+  oldFeature,
+) => {
   const oldShape = get(geoobj_old, ['shape'], null);
   if (oldShape !== geoobj.shape && geoobj.shape) {
     oldFeature.setGeometry(geoJSON.readGeometry(geoobj.shape));
@@ -148,7 +184,14 @@ const checkShowTrueHasOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasOldF
  * @param thisProps пропсы для добавления фичи в слой
  * @param selected является ли фича выбранной
  */
-const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (serverName, id, geoobj, thisProps, selected, color) => {
+const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasNotOldFeatureFunc = (
+  serverName,
+  id,
+  geoobj,
+  thisProps,
+  selected,
+  color,
+) => {
   if (geoobj.shape) {
     const feature = new Feature({
       geometry: geoJSON.readGeometry(geoobj.shape),
@@ -176,7 +219,17 @@ const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasN
  * @param thisProps пропсы для добавления фичи в слой
  * @param selected является ли фича выбранной
  */
-export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serverName, id, show, geoobj, geoobj_old, oldFeature, thisProps, selected, isManyCompany) => {
+export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (
+  serverName,
+  id,
+  show,
+  geoobj,
+  geoobj_old,
+  oldFeature,
+  thisProps,
+  selected,
+  isManyCompany,
+) => {
   if (show) {
     if (oldFeature) {
       checkShowTrueHasOldFeature(geoobj, geoobj_old, oldFeature);
@@ -187,12 +240,9 @@ export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serve
         geoobj,
         thisProps,
         selected,
-        (
-          isManyCompany
-          && geoobj.front_key.includes('odh')
-        )
-        ? thisProps.companiesIndex[geoobj.company_id].rgb_color
-        : '',
+        isManyCompany && geoobj.front_key.includes('odh')
+          ? thisProps.companiesIndex[geoobj.company_id].rgb_color
+          : '',
       );
     }
   }
@@ -204,7 +254,11 @@ export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (serve
  * @param oldFeature текущая фича геообъекта
  * @param thisProps пропсы удаления фичи из source
  */
-export const checkShowFalse: LayerGeoobjectsUtilsTypes.checkShowFalseFunc = (show, oldFeature, thisProps) => {
+export const checkShowFalse: LayerGeoobjectsUtilsTypes.checkShowFalseFunc = (
+  show,
+  oldFeature,
+  thisProps,
+) => {
   if (!show && oldFeature) {
     thisProps.removeFeaturesFromSource(oldFeature);
   }
@@ -216,7 +270,11 @@ export const checkShowFalse: LayerGeoobjectsUtilsTypes.checkShowFalseFunc = (sho
  * @param diffGeoobjects изменённые геообъекты
  * @param thisProps пропсы для работы с ol
  */
-export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = (geoobjects, diffGeoobjects, thisProps) => {
+export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = (
+  geoobjects,
+  diffGeoobjects,
+  thisProps,
+) => {
   for (const serverName in diffGeoobjects) {
     if (serverName in diffGeoobjects) {
       const { show, data = {}, oldData = {} } = diffGeoobjects[serverName];
@@ -228,7 +286,17 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
         if (id in iterableData) {
           const oldFeature = thisProps.getFeatureById(id);
 
-          checkShowTrue(serverName, id, show, iterableData[id], geoobjects[serverName][id], oldFeature, thisProps, false, isManyCompany);
+          checkShowTrue(
+            serverName,
+            id,
+            show,
+            iterableData[id],
+            geoobjects[serverName][id],
+            oldFeature,
+            thisProps,
+            false,
+            isManyCompany,
+          );
           checkShowFalse(show, oldFeature, thisProps);
         }
       }

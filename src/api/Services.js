@@ -300,3 +300,11 @@ export const MissionSourceService = ETS_API_FACTORY.createApiServiceAdapter(
   'mission_source',
   {},
 );
+export const ChangeRole = ETS_API_FACTORY.createApiServiceAdapter(
+  'change_role',
+);
+
+// Список причин отмены задания
+export const MissionCancelReasonsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'mission_cancel_reasons',
+);

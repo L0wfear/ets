@@ -3,7 +3,11 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { get } from 'lodash';
 import { makeDateFromUnix } from 'utils/dates';
-import { carInfoTogglePlay, carInfoStopPlay, carInfoIncTrackPointIndex } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import {
+  carInfoTogglePlay,
+  carInfoStopPlay,
+  carInfoIncTrackPointIndex,
+} from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import { connect } from 'react-redux';
 
@@ -23,7 +27,10 @@ type StateActionTrackTab = {
   intervalId: any;
 };
 
-class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTrackTab> {
+class ActionTrackTab extends React.Component<
+  PropsActionTrackTab,
+  StateActionTrackTab
+> {
   state = {
     intervalId: null,
   };
@@ -45,20 +52,19 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
     this.props.togglePlay();
 
     if (status !== 'play') {
-      const intervalId = setInterval(this.movePlayPoint, 500);
+      const intervalId = setInterval(this.movePlayPoint, 1500);
       this.setState({ intervalId });
     } else {
       clearInterval(this.state.intervalId);
     }
-  }
+  };
 
   stopPlayTrack = () => {
     clearInterval(this.state.intervalId);
     this.props.stopPlay();
-  }
+  };
 
   movePlayPoint = () => {
-
     const { trackPointIndex } = this.props;
 
     if (this.props.track.length - 1 !== trackPointIndex) {
@@ -67,9 +73,14 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
       this.props.stopPlay();
       clearInterval(this.state.intervalId);
     }
-  }
+  };
   render() {
-    const { status, track, trackPointIndex, STATUS_TC_FOLLOW_ON_CAR } = this.props;
+    const {
+      status,
+      track,
+      trackPointIndex,
+      STATUS_TC_FOLLOW_ON_CAR,
+    } = this.props;
 
     return (
       <div className="car_info_block column tab-data">
@@ -77,26 +88,47 @@ class ActionTrackTab extends React.Component<PropsActionTrackTab, StateActionTra
           <div>Проигрывание трека</div>
         </div>
         <div className="car_info-track_player">
-          <Button disabled={STATUS_TC_FOLLOW_ON_CAR || track === -1 || Array.isArray(track) && track.length <= 1} onClick={this.togglePlayTrack} ><Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} /></Button>
-          <Button disabled={STATUS_TC_FOLLOW_ON_CAR || status === 'stop'} onClick={this.stopPlayTrack} ><Glyphicon glyph="stop" /></Button>
+          <Button
+            disabled={
+              STATUS_TC_FOLLOW_ON_CAR ||
+              track === -1 ||
+              (Array.isArray(track) && track.length <= 1)
+            }
+            onClick={this.togglePlayTrack}>
+            <Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />
+          </Button>
+          <Button
+            disabled={STATUS_TC_FOLLOW_ON_CAR || status === 'stop'}
+            onClick={this.stopPlayTrack}>
+            <Glyphicon glyph="stop" />
+          </Button>
         </div>
-        {
-          status !== 'stop' ?
-          (
-            <div>
-              <dl className="car-info-play-info">
+        {status !== 'stop' ? (
+          <div>
+            <dl className="car-info-play-info">
               <dt>Координаты:</dt>
-              <dd>{Number.parseFloat(get(track, [trackPointIndex, 'coords_msk'], [0, 0])[1]).toFixed(5)}, {Number.parseFloat(get(track, [trackPointIndex, 'coords_msk'], [0, 0])[0]).toFixed(5)}</dd>
+              <dd>
+                {Number.parseFloat(
+                  get(track, [trackPointIndex, 'coords_msk'], [0, 0])[1],
+                ).toFixed(5)}
+                ,{' '}
+                {Number.parseFloat(
+                  get(track, [trackPointIndex, 'coords_msk'], [0, 0])[0],
+                ).toFixed(5)}
+              </dd>
               <dt>Время:</dt>
-              <dd>{makeDateFromUnix(get(track, [trackPointIndex], { timestamp: 0 }).timestamp)}</dd>
+              <dd>
+                {makeDateFromUnix(
+                  get(track, [trackPointIndex], { timestamp: 0 }).timestamp,
+                )}
+              </dd>
               <dt>Скорость:</dt>
               <dd>{track[trackPointIndex].speed_avg}</dd>
-          </dl>
-            </div>
-          )
-          :
-          ( <div className="none" />)
-        }
+            </dl>
+          </div>
+        ) : (
+          <div className="none" />
+        )}
       </div>
     );
   }
@@ -113,9 +145,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   togglePlay: () => dispatch(carInfoTogglePlay()),
   stopPlay: () => dispatch(carInfoStopPlay()),
-  carInfoIncTrackPointIndex: () => dispatch(
-    carInfoIncTrackPointIndex(),
-  ),
+  carInfoIncTrackPointIndex: () => dispatch(carInfoIncTrackPointIndex()),
 });
 
 export default connect(

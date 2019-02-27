@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import { cloneDeep, each, find } from 'lodash';
+import { cloneDeep, find } from 'lodash';
 import ElementsList from 'components/ElementsList';
 import {
   ButtonCreateNew,
@@ -168,10 +168,21 @@ class CheckableElementsList extends ElementsList {
         return;
       }
 
-      const removeCallback = this.removeElementCallback || (() => {});
-      each(this.state.checkedElements, (element) => {
-        this.removeElementAction(element[this.selectField], removeCallback);
-      });
+      try {
+        await Promise.all(
+          Object.values(this.state.checkedElements).map((element) => {
+            return this.removeElementAction(
+              element[this.selectField],
+              () => {},
+            );
+          }),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+      if (this.removeElementCallback) {
+        this.removeElementCallback();
+      }
       this.setState({
         checkedElements: {},
         selectedElement: null,

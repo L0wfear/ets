@@ -873,7 +873,7 @@ class WaybillForm extends Form {
               this.props.handleMultipleChange({
                 mission_id_list: [
                   ...new Set([...newMission_id_list, ...mission_id_list]),
-                ], // <<< на прод
+                ],
               });
               this.setState({
                 missionsList: newMissionsList,
@@ -1086,7 +1086,7 @@ class WaybillForm extends Form {
           this.props.handleMultipleChange({
             mission_id_list: [
               ...new Set([...newMission_id_list, ...mission_id_list]),
-            ], // <<< на прод
+            ],
           });
 
           this.setState({

@@ -41,19 +41,18 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
 
   handleMissionsChange = (newFormData) => {
     // Если удаляем миссию и статус ПЛ Активен
-    if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
-      const {
-        missionsList,
-      } = this.props;
-      const {
-        mission_id_list,
-      } = this.props.state;
+    if (
+      newFormData.length < this.props.state.mission_id_list.length &&
+      this.props.state.status === 'active'
+    ) {
+      const { missionsList } = this.props;
+      const { mission_id_list } = this.props.state;
 
       const deletedElementId = mission_id_list.filter((mission: any) => {
         return newFormData.indexOf(mission) === -1;
       })[0]; // ошибки не будет, выше проверка
-      const deletedElement = missionsList.find((mission) =>
-        mission.id === deletedElementId,
+      const deletedElement = missionsList.find(
+        (mission) => mission.id === deletedElementId,
       );
 
       const car_gov_number = this.props.state.gov_number;
@@ -80,12 +79,14 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
     const id = result && result.result ? result.result.id : null;
     if (id) {
       const {
+        car_id,
         mission_id_list: [...mission_id_list],
       } = this.props.state;
       mission_id_list.push(id);
       this.props.handleChange('mission_id_list', mission_id_list);
       this.props.getMissionsByCarAndDates(
         { ...this.props.state, mission_id_list },
+        car_id,
         false,
       );
     }
@@ -137,7 +138,9 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
       })
       .catch(({ errorIsShow }) => {
         if (!errorIsShow) {
-          global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка отмены!'));
+          global.NOTIFICATION_SYSTEM.notify(
+            getWarningNotification('Произошла непредвиденная ошибка отмены!'),
+          );
         }
       });
   };

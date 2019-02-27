@@ -58,9 +58,6 @@ export const EmployeeOnCarService = ETS_API_FACTORY.createApiServiceAdapter(
   'employee_on_car',
 );
 
-export const CustomersService = ETS_API_FACTORY.createApiServiceAdapter(
-  'customers',
-);
 export const ForemanService = ETS_API_FACTORY.createApiServiceAdapter(
   'foreman/',
 );

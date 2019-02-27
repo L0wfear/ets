@@ -4,7 +4,10 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTableInputRenderer, TRendererFunction  } from 'components/ui/table/DataTableInput/DataTableInput.h';
+import {
+  IPropsDataTableInputRenderer,
+  TRendererFunction,
+} from 'components/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/ui/form/@types/validation.h';
 import { ITireAvailableCar } from 'api/@types/services/autobase.h';
 
@@ -52,66 +55,85 @@ interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
   vehicleList: ITireAvailableCar[];
 }
 
-const CarIdRenderer: React.FunctionComponent<IPropsCarIdRenderer> = ({ value, outputListErrors = [], vehicleList = [], onChange, index, isPermitted }) =>
+const CarIdRenderer: React.FunctionComponent<IPropsCarIdRenderer> = ({
+  value,
+  outputListErrors = [],
+  vehicleList = [],
+  onChange,
+  index,
+  isPermitted,
+}) => (
   <ExtField
     type="select"
-    label=""
+    label={false}
     options={vehicleList}
     value={value}
     error={get(outputListErrors[index], 'car_id', '')}
     onChange={onChange}
     boundKeys={[index, 'car_id']}
     disabled={!isPermitted}
-  />;
+  />
+);
 
-const InstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted }) =>
+const InstalledAtRenderer: React.FunctionComponent<
+  IPropsDataTableInputRenderer
+> = ({ value, onChange, index, outputListErrors, isPermitted }) => (
   <ExtField
     type="date"
-    label=""
+    label={false}
     date={value}
     time={false}
     error={get(outputListErrors[index], 'installed_at', '')}
     onChange={onChange}
     boundKeys={[index, 'installed_at']}
     disabled={!isPermitted}
-  />;
+  />
+);
 
-const UninstalledAtRenderer: React.FunctionComponent<IPropsDataTableInputRenderer> = ({ value, onChange, index, isPermitted }) =>
+const UninstalledAtRenderer: React.FunctionComponent<
+  IPropsDataTableInputRenderer
+> = ({ value, onChange, index, isPermitted }) => (
   <ExtField
     type="date"
-    label=""
+    label={false}
     date={value}
     time={false}
     onChange={onChange}
     boundKeys={[index, 'uninstalled_at']}
     disabled={!isPermitted}
-  />;
+  />
+);
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const vehicleList = props.tireAvailableCarList.map(({ car_id, gov_number }) => ({ label: gov_number, value: car_id }));
+  const vehicleList = props.tireAvailableCarList.map(
+    ({ car_id, gov_number }) => ({ label: gov_number, value: car_id }),
+  );
 
   return {
-    car_id: (rowMeta) =>
+    car_id: (rowMeta) => (
       <CarIdRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
         vehicleList={vehicleList}
-      />,
-    installed_at: (rowMeta) =>
+      />
+    ),
+    installed_at: (rowMeta) => (
       <InstalledAtRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
-      />,
-    uninstalled_at: (rowMeta) =>
+      />
+    ),
+    uninstalled_at: (rowMeta) => (
       <UninstalledAtRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
-      />,
-    };
+      />
+    ),
+  };
 };

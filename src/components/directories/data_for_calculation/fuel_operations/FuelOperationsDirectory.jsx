@@ -31,9 +31,23 @@ class FuelOperationsDirectory extends ElementsList {
 
   init() {
     const { flux } = this.context;
-    flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+    this.loadData();
     flux.getActions('odh').getMeasureUnits({ type: 'operation' });
   }
+
+  loadData() {
+    const { flux } = this.context;
+    flux.getActions('fuelRates').getFuelOperations({ is_active: true });
+  }
+
+  onFormHide = () => {
+    this.loadData();
+
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+    });
+  };
 }
 
 export default compose(

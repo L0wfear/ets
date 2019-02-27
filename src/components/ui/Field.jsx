@@ -30,7 +30,11 @@ function StringField(props) {
   if (isLoading) {
     return (
       <Div hidden={hidden}>
-        <label style={{ paddingTop: 5 }}>{label}</label>
+        {typeof label === 'string' && (
+          <label style={{ paddingTop: 5 }} id={id}>
+            {label}
+          </label>
+        )}
         )
         <br />
         <Preloader typePreloader="field" />
@@ -46,8 +50,8 @@ function StringField(props) {
   return !readOnly ? (
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
-        {label && (
-          <label className="control-label">
+        {typeof label === 'string' && (
+          <label className="control-label" id={id}>
             <span>{label}</span>
           </label>
         )}

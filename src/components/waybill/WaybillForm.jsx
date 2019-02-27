@@ -812,7 +812,7 @@ class WaybillForm extends Form {
       formState: { equipment_fuel },
     } = this.props;
 
-    if (!isBoolean(equipment_fuel) && equipment_fuel) {
+    if (!isBoolean(equipment_fuel)) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
           'Необходимо указать, установлено ли на ТС спецоборудование',

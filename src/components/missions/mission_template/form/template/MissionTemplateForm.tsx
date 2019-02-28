@@ -77,6 +77,7 @@ class MissionTemplateForm extends React.PureComponent<
       }
     });
   };
+
   render() {
     const {
       formState: state,
@@ -92,7 +93,6 @@ class MissionTemplateForm extends React.PureComponent<
       ? this.props.isPermittedToUpdate
       : this.props.isPermittedToCreate;
 
-    console.log(this.props.deepLvl);
     return (
       <EtsModal
         id="modal-mission-template"

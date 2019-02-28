@@ -15,6 +15,7 @@
     "array-type": false,
     "no-namespace": false,
     "no-empty-interface": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
     "trailing-comma": [
       true,
       {

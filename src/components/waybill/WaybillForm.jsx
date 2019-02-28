@@ -153,6 +153,7 @@ class WaybillForm extends Form {
       equipment_fuel_method: null,
       equipment_fuel_card_id: null,
       rejectMissionList: [], // Массив с заданиями, которые надо будет отменить, формируется в missionField
+      rejectMissionList: [],
     };
   }
 
@@ -1005,29 +1006,15 @@ class WaybillForm extends Form {
   };
   rejectMissionHandler = (rejectMissionList) => {
     let rejectMissionSubmitError = false;
-    const acceptedRejectMissionsIdList = rejectMissionList.map(
-      async (rejectMission) => {
-        try {
-          await this.context.flux
-            .getActions('missions')
-            [rejectMission.handlerName](rejectMission.payload);
-        } catch (errorData) {
-          console.warn('rejectMissionHandler:', errorData);
-          const missionId = get(rejectMission, 'id', '');
-          if (!errorData.errorIsShow) {
-            const errorText = get(
-              errorData,
-              'error_text',
-              `Произошла ошибка, при попытке отмены задания №${missionId}`,
-            );
-            global.NOTIFICATION_SYSTEM.notify(
-              getServerErrorNotification(
-                `${this.props.serviceUrl}: ${errorText}`,
-              ),
-            );
-          }
-          rejectMissionSubmitError = true;
-          return null;
+    const acceptedRejectMissionsIdList = rejectMissionList.map(async (rejectMission) => {
+      try {
+        await this.context.flux.getActions('missions')[rejectMission.handlerName](rejectMission.payload);
+      } catch (errorData) {
+        console.warn('rejectMissionHandler:', errorData);
+        const missionId = get(rejectMission, 'id', '');
+        if (!errorData.errorIsShow) {
+          const errorText = get(errorData.error_text, 'error_text', `Произошла ошибка, при попытке отмены задания №${missionId}`);
+          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorText}`));
         }
         return rejectMission.payload.mission_id;
       },
@@ -2143,6 +2130,7 @@ class WaybillForm extends Form {
                 origFormState={origFormState}
                 handleChange={this.handleChange}
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
+                rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
               />
             </Col>

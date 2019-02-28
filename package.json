@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.27.80",
+    "version": "2.0.27.81",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -109,7 +109,7 @@
         "styled-components": "^4.1.2",
         "thread-loader": "^2.1.2",
         "ts-jest": "^24.0.0",
-        "tslint": "=5.12.1",
+        "tslint": "=5.13.0",
         "typescript": "=3.3.3333",
         "typescript-styled-plugin": "=0.13.0",
         "url-loader": "^1.1.2",
@@ -132,7 +132,6 @@
         "build:ets_hotfix": "cross-env STAND=ets_hotfix NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
-        "lint:ts": "tslint --project tsconfig.json -c tslint.json 'src/**/*{.ts,.tsx}'",
         "bump": "node webpack/utils/updateVersion.js",
         "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",
         "test": "jest --collectCoverage",
@@ -151,6 +150,7 @@
         ],
         "src/**/*.{ts,tsx}": [
             "prettier --parser typescript --write",
+            "tslint --project tsconfig.json -c tslint.json",
             "git add"
         ]
     },

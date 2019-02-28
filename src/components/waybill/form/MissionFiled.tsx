@@ -26,9 +26,7 @@ class MissionField extends React.Component<any, any> {
     status: '',
     action_at: '',
     mission_id_list: [],
-    tempMissionIdList: [], // Временный массив, пока открыта rejectForm
-    rejectMissionList: [], // Массив с заданиями, которые надо будет отменить
-    rejectedMission: {},
+    rejectedMission: null,
   };
 
   multiValueContainerReander({ innerProps, data, ...props }) {
@@ -44,19 +42,20 @@ class MissionField extends React.Component<any, any> {
     if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
       const {
         missionsList,
+        state: {
+          mission_id_list,
+          gov_number: car_gov_number,
+        },
       } = this.props;
-      const {
-        mission_id_list,
-      } = this.props.state;
 
-      const deletedElementId = mission_id_list.filter((mission: any) => {
-        return newFormData.indexOf(mission) === -1;
-      })[0]; // ошибки не будет, выше проверка
+      const deletedElementId = mission_id_list.find((mission: any) =>
+        !newFormData.includes(mission),
+      );
+
       const deletedElement = missionsList.find((mission) =>
         mission.id === deletedElementId,
       );
 
-      const car_gov_number = this.props.state.gov_number;
       const rejectedMission = {
         ...deletedElement,
         car_gov_number,
@@ -64,16 +63,10 @@ class MissionField extends React.Component<any, any> {
 
       if (rejectedMission.can_be_closed) {
         this.rejectMission(rejectedMission);
-        this.setState({
-          tempMissionIdList: newFormData,
-          rejectedMission,
-        });
-      } else {
-        this.props.handleChange('mission_id_list', newFormData);
+        return;
       }
-    } else {
-      this.props.handleChange('mission_id_list', newFormData);
     }
+    this.props.handleChange('mission_id_list', newFormData);
   }
 
   onMissionFormHide = (result) => {
@@ -142,25 +135,34 @@ class MissionField extends React.Component<any, any> {
 
   onReject = (waybillPayload) => {
     const {
-      tempMissionIdList,
       rejectMissionList,
-    } = this.state;
-    const newPropsState = {
-      showMissionRejectForm: false,
-      rejectMissionList,
-    };
+    } = this.props;
+
     // если НЕ!!! нажали на отмену или крестик в rejectForm
     if (waybillPayload) {
-      this.props.handleChange('mission_id_list', tempMissionIdList);
-      const inList = rejectMissionList.find(
-        (mission) => mission.payload.mission_id === waybillPayload.payload.mission_id,
+      const {
+        state: { mission_id_list },
+      } = this.props;
+
+      this.props.handleChange(
+        'mission_id_list',
+        mission_id_list.filter((id) =>
+          id !== waybillPayload.payload.mission_id,
+        ),
       );
-      if (!inList) {
-        newPropsState.rejectMissionList = [ ...rejectMissionList, waybillPayload ];
-        this.props.setRejectMissionList(newPropsState.rejectMissionList);
-      }
+
+      this.props.setRejectMissionList(
+        [
+          ...rejectMissionList,
+          waybillPayload,
+        ],
+      );
     }
-    this.setState({ ...newPropsState });
+
+    this.setState({
+      showMissionRejectForm: false,
+      rejectedMission: null,
+    });
   }
 
   render() {

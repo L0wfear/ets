@@ -124,6 +124,17 @@ export function getYesterday9am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 9, 0);
 }
 
+export function getYesterdayYesterday0am() {
+  const now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 0, 0);
+}
+
+export function getYesterdayYesterday2359() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 23, 59);
+}
+
 export function getDate9am(date) {
   const now = new Date(date);
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);

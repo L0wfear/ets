@@ -15,6 +15,7 @@ import carDowntimeAndOvermileage from 'components/reports/operational/car_downti
 import carMovementTimeReport from 'components/reports/operational/car-movement-time-report/config-data';
 import cleaningVolume from 'components/reports/operational/cleaning_volume/config-data';
 import deviationFromNormOfCars from 'components/reports/operational/cars_count_deviation/config-data';
+import carsTravelTime from 'components/reports/operational/cars_travel_time/config-data';
 
 const children: any = {
   routeOdhCoverage,
@@ -32,6 +33,7 @@ const children: any = {
   carMovementTimeReport,
   cleaningVolume,
   deviationFromNormOfCars,
+  carsTravelTime,
 };
 
 export default {

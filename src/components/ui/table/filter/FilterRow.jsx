@@ -1,13 +1,12 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
-import _ from 'lodash';
-
-import FilterInput from 'components/ui/input/FilterInput/FilterInput';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
-import IntervalPicker from 'components/ui/input/IntervalPicker';
 import Div from 'components/ui/Div';
+import FilterInput from 'components/ui/input/FilterInput/FilterInput';
+import IntervalPicker from 'components/ui/input/IntervalPicker';
+import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import { ColFilter } from 'components/ui/tableNew/filter/styled';
+import _ from 'lodash';
+import * as PropTypes from 'prop-types';
+import * as React from 'react';
+import * as FormControl from 'react-bootstrap/lib/FormControl';
 
 class FilterRow extends React.Component {
   static get propTypes() {
@@ -83,6 +82,21 @@ class FilterRow extends React.Component {
             }))
             .filter((d) => d.label !== null)
             .value();
+
+        if (options.length && Array.isArray(options[0].value)) {
+          options = options.reduce((newOptions, option) => {
+            const arrOpt = option.value.map((element, index) => {
+              return {
+                value: element,
+                label: option.label[index],
+              };
+            });
+            newOptions.push(...arrOpt);
+            return newOptions;
+          }, []);
+          options = _.uniqBy(options, 'value');
+        }
+
         if (type === 'select' || type === 'advanced-select-like') {
           if (!!value && !_.find(options, (o) => o.value === value)) {
             value = null;

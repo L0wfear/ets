@@ -25,16 +25,16 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
           <Col md={8}>
             <Row>
               <Col md={4}>
-                <div>Наименование маршрута:</div>
-                <b>{route.name}</b>
+                <b>Наименование маршрута:</b>
+                <div>{route.name}</div>
               </Col>
               <Col md={4}>
-                <div>Технологическая операция:</div>
-                <b>{route.technical_operation_name}</b>
+                <b>Технологическая операция:</b>
+                <div>{route.technical_operation_name}</div>
               </Col>
               <Col md={4}>
-                <div>Элемент:</div>
-                <b>{route.municipal_facility_name}</b>
+                <b>Элемент:</b>
+                <div>{route.municipal_facility_name}</div>
               </Col>
             </Row>
           </Col>

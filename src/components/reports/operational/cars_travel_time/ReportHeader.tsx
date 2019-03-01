@@ -9,7 +9,13 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import { getYesterdayYesterday0am, createValidDate, diffDates, getToday0am, getYesterday2359 } from 'utils/dates';
+import {
+  getYesterdayYesterday0am,
+  createValidDate,
+  diffDates,
+  getToday0am,
+  getYesterday2359,
+} from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
@@ -18,7 +24,9 @@ import { ErrorDiv } from './styled';
 
 const DatePickerBindable: any = bindable(DatePicker);
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+interface IPropsReportHeader
+  extends IPropsReportHeaderCommon,
+    IPropsReportHeaderWrapper {
   date_from: string;
   date_to: string;
 }
@@ -46,7 +54,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     if (diffDateEnd >= 0 || diffDateStart >= 0) {
       return {
-        error: 'При выборе даты периода отчета нельзя выбирать текущие и будущие дни',
+        error:
+          'При выборе даты периода отчета нельзя выбирать текущие и будущие дни',
       };
     }
 
@@ -64,7 +73,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_from: createValidDate(date_from),
       date_to: createValidDate(date_to),
     });
-  }
+  };
   render() {
     const {
       readOnly,
@@ -77,7 +86,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     return (
       <Row className="report-page__header">
         <Col mdOffset={4} md={4}>
-          <Div><label htmlFor=" ">Период формирования</label></Div>
+          <Div>
+            <label htmlFor=" ">Период формирования</label>
+          </Div>
           <Div className="inline-block reports-date">
             <DatePickerBindable
               date={date_from}
@@ -101,8 +112,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
           <Button
             disabled={this.props.readOnly || Boolean(error)}
-            onClick={this.handleSubmit}
-          >Сформировать отчёт</Button>
+            onClick={this.handleSubmit}>
+            Сформировать отчёт
+          </Button>
         </Col>
       </Row>
     );

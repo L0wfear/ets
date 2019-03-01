@@ -1,26 +1,28 @@
 import * as moment from 'moment';
 import { isEqualOr } from 'utils/functions';
 
-export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) => (
-  moment(dateA).diff(moment(dateB), typeDiff as any, float)
-);
+export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
+  moment(dateA).diff(moment(dateB), typeDiff as any, float);
 
 export const getDateWithMoscowTz = () => {
   const newDate = new Date();
-  newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
+  newDate.setTime(
+    newDate.getTime() + (newDate.getTimezoneOffset() + 180) * 60 * 1000,
+  );
 
   return newDate;
 };
 
 export const getDateWithMoscowTzByTimestamp = (timestamp) => {
   const newDate = new Date(timestamp);
-  newDate.setTime(newDate.getTime() + ((newDate.getTimezoneOffset() + 180) * 60 * 1000));
+  newDate.setTime(
+    newDate.getTime() + (newDate.getTimezoneOffset() + 180) * 60 * 1000,
+  );
 
   return newDate;
 };
-export const addSecond = (date, seconds) => (
-  moment(date).add(seconds, 'seconds')
-);
+export const addSecond = (date, seconds) =>
+  moment(date).add(seconds, 'seconds');
 
 export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
@@ -35,7 +37,9 @@ export function makeUnixTime(time) {
 
 export function makeTime(date, withSeconds = false) {
   date = new Date(date);
-  return moment(date).format(`${global.APP_TIME_FORMAT}${withSeconds ? ':ss' : ''}`);
+  return moment(date).format(
+    `${global.APP_TIME_FORMAT}${withSeconds ? ':ss' : ''}`,
+  );
 }
 
 export function makeMinutes(date) {
@@ -59,7 +63,9 @@ export function createValidDateTime(date) {
   if (!date) {
     return null;
   }
-  return moment(date).seconds(0).format('YYYY-MM-DDTHH:mm:ss');
+  return moment(date)
+    .seconds(0)
+    .format('YYYY-MM-DDTHH:mm:ss');
 }
 
 export function formatDate(date, format) {
@@ -74,14 +80,18 @@ export function getFormattedDateTime(date) {
   if (!date) {
     return '';
   }
-  return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`);
+  return moment(date).format(
+    `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
+  );
 }
 
 export function getFormattedDateTimeWithSecond(date) {
   if (!date) {
     return '';
   }
-  return moment(date).format(`${global.APP_DATE_FORMAT} ${global.APP_TIME_WITH_SECOND_FORMAT}`);
+  return moment(date).format(
+    `${global.APP_DATE_FORMAT} ${global.APP_TIME_WITH_SECOND_FORMAT}`,
+  );
 }
 
 export function getFormattedTimeWithSecond(date) {
@@ -148,7 +158,14 @@ export function getNextDay859am(date) {
 export function getToday9am(seconds = 0) {
   const now = new Date();
 
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, seconds);
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    9,
+    0,
+    seconds,
+  );
 }
 
 export function getToday859am() {
@@ -170,7 +187,14 @@ export function getToday2359() {
 export function getTomorrow9am(seconds = 0) {
   const now = new Date();
 
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59, seconds);
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    8,
+    59,
+    seconds,
+  );
 }
 
 export function getTomorrow0am() {
@@ -193,7 +217,7 @@ export function getDatesByShift() {
 }
 
 function pad(num) {
-  return (`0${num}`).slice(-2);
+  return `0${num}`.slice(-2);
 }
 export function secondsToTime(secs) {
   let mMinutes = Math.floor(secs / 60);
@@ -213,10 +237,21 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
   const [summerStartMonth, summerStartDay] = summerStart;
   const [summerEndMonth, summerEndDay] = summerEnd;
 
-  const begDateForSummerSeason = new Date(2018, summerStartMonth - 1, summerStartDay);
-  const endDateForSummerSeason = new Date(2018, summerEndMonth - 1, summerEndDay);
+  const begDateForSummerSeason = new Date(
+    2018,
+    summerStartMonth - 1,
+    summerStartDay,
+  );
+  const endDateForSummerSeason = new Date(
+    2018,
+    summerEndMonth - 1,
+    summerEndDay,
+  );
 
-  if (diffDates(date, begDateForSummerSeason) >= 0 && diffDates(endDateForSummerSeason, date) >= 0) {
+  if (
+    diffDates(date, begDateForSummerSeason) >= 0 &&
+    diffDates(endDateForSummerSeason, date) >= 0
+  ) {
     return 'summer';
   }
 
@@ -230,18 +265,16 @@ export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
  */
 export const setZeroSecondsToDate = (date) => moment(date).seconds(0);
 
-export const addTime = (date, count, typeAdd) => moment(date).add(count, typeAdd).format();
+export const addTime = (date, count, typeAdd) =>
+  moment(date)
+    .add(count, typeAdd)
+    .format();
 
 export const diffDayOfDate = (dateA, dateB) =>
   diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');
 
 export const diffDatesByDays = (dateA, dateB) =>
-  diffDates(
-    createValidDate(dateA),
-    createValidDate(dateB),
-    'days',
-  );
+  diffDates(createValidDate(dateA), createValidDate(dateB), 'days');
 
-export const currentDateInInterval = ({ date_start, date_end }) => (
-  diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0
-);
+export const currentDateInInterval = ({ date_start, date_end }) =>
+  diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0;

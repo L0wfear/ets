@@ -20,9 +20,9 @@ import fuelCards from 'components/directories/autobase/fuel_cards/config-data';
 import carsList from 'components/directories/autobase/cars/config-data';
 
 const children = {
+  carsList,
   carFuncTypes,
   typesAttr,
-  carsList,
   batteryRegistry,
   batteryBrand,
   batteryManufacturer,

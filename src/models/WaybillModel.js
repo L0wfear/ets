@@ -354,7 +354,7 @@ export const waybillSchema = {
     fuel_start: [
       {
         validator: (value, { status }) => {
-          if ((status === 'draft' || !status) && !isNumber(value)) {
+          if ((status === 'draft' || !status) && (!value && value !== 0)) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
         },
@@ -366,7 +366,7 @@ export const waybillSchema = {
           if (
             equipment_fuel
             && (status === 'draft' || !status)
-            && !isNumber(value)
+            && (!value && value !== 0)
           ) {
             return 'Поле "Выезд, л" должно быть заполнено';
           }

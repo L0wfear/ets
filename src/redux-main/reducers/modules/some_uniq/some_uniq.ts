@@ -5,7 +5,7 @@ const SOME_UNIQ = createPath('SOME_UNIQ');
 
 export const SOME_UNIQ_SET_DATA = SOME_UNIQ`SET_DATA`;
 
-const initialState: IStateSomeUniq = {
+export const initialState: IStateSomeUniq = {
   specialModelList: [],
   modelsList: [],
   technicalOperationRegistryList: [],
@@ -20,6 +20,10 @@ const initialState: IStateSomeUniq = {
   },
   maintenanceWorkList: [],
   cleanCategoriesList: [],
+  geozoneMunicipalFacility: {
+    list: [],
+    byId: null,
+  },
 };
 
 export default (state = initialState, { type, payload }) => {

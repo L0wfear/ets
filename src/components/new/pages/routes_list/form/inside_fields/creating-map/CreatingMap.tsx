@@ -4,7 +4,6 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { connect } from 'react-redux';
 import { Flex, DivNone, FlexContainer } from 'global-styled/global-styled';
 import RouteCreatingMap from 'components/new/pages/routes_list/form/inside_fields/creating-map/map/RouteCreatingMap';
-import { loadGeozoneMunicipalFacility } from 'redux-main/trash-actions/geometry/geometry';
 import { ReduxState } from 'redux-main/@types/state';
 
 import {
@@ -41,6 +40,10 @@ import {
   getCacheDataForRoute,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
 import { ExtButton } from 'components/ui/new/button/ExtButton';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { get } from 'lodash';
+import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 
 class CreatingMap extends React.PureComponent<
   PropsCreatingMap,
@@ -170,7 +173,7 @@ class CreatingMap extends React.PureComponent<
     state: StateCreatingMap,
     needUpdateObjectData: boolean,
   ) {
-    const { type } = props;
+    const { type, page, path } = props;
 
     if (routesToLoadByKeySet.has(type)) {
       const typeData = state.technical_operations_object_list.find(
@@ -178,22 +181,27 @@ class CreatingMap extends React.PureComponent<
       );
 
       if (typeData) {
-        const {
-          payload: {
-            geozone_municipal_facility_by_id: geozone_municipal_facility_by_id_raw,
+        const resolve = await this.props.actionGetAndSetInStoreGeozoneMunicipalFacility(
+          {
+            // Убрать await?
+            municipal_facility_id: props.municipal_facility_id,
+            technical_operation_id: props.technical_operation_id,
+            object_type_id: typeData.id,
           },
-        } = await this.props.loadGeozoneMunicipalFacility(
-          props.municipal_facility_id,
-          props.technical_operation_id,
-          typeData.id,
+          { page, path },
+        );
+        const geozoneMunicipalFacility = get(
+          resolve,
+          'geozoneMunicipalFacility.geozoneMunicipalFacility',
+          someUniq.initialState.geozoneMunicipalFacility,
         );
 
         const {
           geozone_municipal_facility_by_id,
           objectList,
         } = mergeStateFromObjectList(
-          this.props.object_list,
-          geozone_municipal_facility_by_id_raw,
+          geozoneMunicipalFacility.list,
+          geozoneMunicipalFacility.byId,
         );
 
         this.setState({
@@ -265,6 +273,7 @@ class CreatingMap extends React.PureComponent<
 
       this.props.onChange({
         input_lines: newInputLines,
+        draw_object_list: [],
       });
     }
   };
@@ -371,16 +380,14 @@ class CreatingMap extends React.PureComponent<
                   id="manual"
                   active={hand}
                   onClick={this.setHandTrue}
-                  disabled={!isPermitted}
-                >
+                  disabled={!isPermitted}>
                   Вручную
                 </ButtonCheckTypeSelect>
                 <ButtonCheckTypeSelect
                   id="select-from-odh"
                   active={!hand}
                   onClick={this.setHandFalse}
-                  disabled={!isPermitted}
-                >
+                  disabled={!isPermitted}>
                   Выбор из ОДХ
                 </ButtonCheckTypeSelect>
               </ButtonOdhContainer>
@@ -421,8 +428,7 @@ class CreatingMap extends React.PureComponent<
                     !Boolean(
                       props.draw_object_list.length || props.input_lines.length,
                     )
-                  }
-                >
+                  }>
                   Проверить маршрут
                 </ButtonCheckRoute>
               ) : (
@@ -457,8 +463,7 @@ class CreatingMap extends React.PureComponent<
                   <ExtButton
                     disabled={!isPermitted}
                     boundKeys={index}
-                    onClick={this.handleRemovePoint}
-                  >
+                    onClick={this.handleRemovePoint}>
                     <Glyphicon glyph="remove" />
                   </ExtButton>
                 </FlexContainer>
@@ -481,26 +486,15 @@ export default connect<
   OwnPropsCreatingMap,
   ReduxState
 >(
-  null,
+  (state) => ({
+    geozone_municipal_facility_by_id: getSomeUniqState(state)
+      .geozoneMunicipalFacility.byId,
+    objectList: getSomeUniqState(state).geozoneMunicipalFacility.list,
+  }),
   (dispatch, { page, path }) => ({
-    loadGeozoneMunicipalFacility: (
-      municipal_facility_id,
-      technical_operation_id,
-      object_type_id,
-    ) =>
+    actionGetAndSetInStoreGeozoneMunicipalFacility: (...arg) =>
       dispatch(
-        loadGeozoneMunicipalFacility(
-          'none',
-          {
-            municipal_facility_id,
-            technical_operation_id,
-            object_type_id,
-          },
-          {
-            page,
-            path,
-          },
-        ),
+        someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility(...arg),
       ),
     getTechnicalOperationsObjects: () =>
       dispatch(

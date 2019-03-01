@@ -1,6 +1,15 @@
 import { TechnicalOperationObjectsList } from 'redux-main/trash-actions/technical-operation/promise/promise.d';
-import { GeozoneMunicipalFacilityById, GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
-import { StateRouteForm, ModifyBridgesForRoute } from 'components/new/pages/routes_list/form/RouteForm.h';
+import {
+  GeozoneMunicipalFacilityById,
+  GeozonesDataByIndex,
+} from 'redux-main/trash-actions/geometry/geometry.h';
+import {
+  StateRouteForm,
+  ModifyBridgesForRoute,
+} from 'components/new/pages/routes_list/form/RouteForm.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 
 export type StateCreatingMap = {
   technical_operations_object_list: TechnicalOperationObjectsList;
@@ -14,10 +23,14 @@ export type StateCreatingMap = {
 };
 
 export type StatePropsCreatingMap = {
+  geozone_municipal_facility_by_id: IStateSomeUniq['geozoneMunicipalFacility']['byId'];
+  objectList: IStateSomeUniq['geozoneMunicipalFacility']['list'];
 };
 
 export type DispatchPropsCreatingMap = {
-  loadGeozoneMunicipalFacility: (municipal_facility_id: number, technical_operation_id: number, object_type_id: number) => Promise<any>;
+  actionGetAndSetInStoreGeozoneMunicipalFacility: HandleThunkActionCreator<
+    typeof someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility
+  >;
   getTechnicalOperationsObjects: () => Promise<any>;
 };
 
@@ -39,8 +52,6 @@ export type OwnPropsCreatingMap = {
   onChange: (changeObj: { [key: string]: any }) => any;
 };
 
-export type PropsCreatingMap = (
-  StatePropsCreatingMap
-  & DispatchPropsCreatingMap
-  & OwnPropsCreatingMap
-);
+export type PropsCreatingMap = StatePropsCreatingMap &
+  DispatchPropsCreatingMap &
+  OwnPropsCreatingMap;

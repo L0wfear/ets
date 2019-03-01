@@ -1007,6 +1007,7 @@ body.application {
   top: 25px;
   left: calc(50% - 250px);
   max-width: 514px;
+  z-index: 10;
 
   .date-divider {
     margin-left: 10px;

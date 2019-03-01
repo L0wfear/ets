@@ -24,50 +24,53 @@ import { DivNone } from 'global-styled/global-styled';
 import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
-import {
-  FlexContainer,
-  Flex,
-} from 'global-styled/global-styled';
+import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-class FuelingWaterForm extends React.PureComponent<PropsFuelingWaterForm, StateFuelingWaterForm> {
+class FuelingWaterForm extends React.PureComponent<
+  PropsFuelingWaterForm,
+  StateFuelingWaterForm
+> {
   render() {
-    const {
-      formState: state,
-      page,
-      path,
-    } = this.props;
+    const { formState: state, page, path } = this.props;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-FuelingWater" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-FuelingWater"
+        show
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {
-                this.props.userData.isKgh || this.props.userData.isOkrug
-                  ? (
-                    <ExtField
-                      type="string"
-                      value={state.company_name || '-'}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
-                      readOnly
-                    />
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+                <ExtField
+                  type="string"
+                  value={state.company_name || '-'}
+                  label={
+                    this.props.userData.isKgh
+                      ? 'Наименование ГБУ:'
+                      : 'Учреждение:'
+                  }
+                  readOnly
+                />
+              ) : (
+                <DivNone />
+              )}
               <ExtField
                 type="string"
                 value={state.name}
@@ -82,23 +85,20 @@ class FuelingWaterForm extends React.PureComponent<PropsFuelingWaterForm, StateF
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
-              <MapGeoobjectWrap
-                geoobjectData={state}
-                entity="fuelingWater"
-              />
+              <MapGeoobjectWrap geoobjectData={state} entity="fuelingWater" />
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          !isPermitted && false // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted && false ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
       </Modal>
     );
@@ -106,11 +106,14 @@ class FuelingWaterForm extends React.PureComponent<PropsFuelingWaterForm, StateF
 }
 
 export default compose<PropsFuelingWaterForm, OwnPropsFuelingWaterForm>(
-  connect<StatePropsFuelingWaterForm, DispatchPropsFuelingWaterForm, OwnPropsFuelingWaterForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect<
+    StatePropsFuelingWaterForm,
+    DispatchPropsFuelingWaterForm,
+    OwnPropsFuelingWaterForm,
+    ReduxState
+  >((state) => ({
+    userData: getSessionState(state).userData,
+  })),
   withForm<PropsFuelingWaterFormWithForm, FuelingWater>({
     uniqField: 'id',
     createAction: geoobjectActions.actionCreateFuelingWater,

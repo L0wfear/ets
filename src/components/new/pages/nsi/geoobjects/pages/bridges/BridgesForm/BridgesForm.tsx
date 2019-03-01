@@ -24,50 +24,53 @@ import { DivNone } from 'global-styled/global-styled';
 import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
-import {
-  FlexContainer,
-  Flex,
-} from 'global-styled/global-styled';
+import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-class BridgesForm extends React.PureComponent<PropsBridgesForm, StateBridgesForm> {
+class BridgesForm extends React.PureComponent<
+  PropsBridgesForm,
+  StateBridgesForm
+> {
   render() {
-    const {
-      formState: state,
-      page,
-      path,
-    } = this.props;
+    const { formState: state, page, path } = this.props;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-bridges" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-bridges"
+        show
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {
-                this.props.userData.isKgh || this.props.userData.isOkrug
-                  ? (
-                    <ExtField
-                      type="string"
-                      value={state.company_name || '-'}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
-                      readOnly
-                    />
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+                <ExtField
+                  type="string"
+                  value={state.company_name || '-'}
+                  label={
+                    this.props.userData.isKgh
+                      ? 'Наименование ГБУ:'
+                      : 'Учреждение:'
+                  }
+                  readOnly
+                />
+              ) : (
+                <DivNone />
+              )}
               <ExtField
                 type="string"
                 value={state.name}
@@ -106,23 +109,20 @@ class BridgesForm extends React.PureComponent<PropsBridgesForm, StateBridgesForm
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
-              <MapGeoobjectWrap
-                geoobjectData={state}
-                entity="bridges"
-              />
+              <MapGeoobjectWrap geoobjectData={state} entity="bridges" />
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          !isPermitted && false // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted && false ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
       </Modal>
     );
@@ -130,11 +130,14 @@ class BridgesForm extends React.PureComponent<PropsBridgesForm, StateBridgesForm
 }
 
 export default compose<PropsBridgesForm, OwnPropsBridgesForm>(
-  connect<StatePropsBridgesForm, DispatchPropsBridgesForm, OwnPropsBridgesForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+  connect<
+    StatePropsBridgesForm,
+    DispatchPropsBridgesForm,
+    OwnPropsBridgesForm,
+    ReduxState
+  >((state) => ({
+    userData: getSessionState(state).userData,
+  })),
   withForm<PropsBridgesFormWithForm, Bridges>({
     uniqField: 'id',
     createAction: geoobjectActions.actionCreateBridges,

@@ -58,21 +58,31 @@ const withRequirePermissionsNew = <P extends {}, O = {}>(config: TypeConfig = {}
   )
   (
     class RequirePermissions extends React.Component<PropsRequirePermissions<P>, {}> {
+      state = {};
+      static getDerivedStateFromProps(nextProps, prevState) {
+        if (config.withIsPermittedProps) {
+          const { permissionsSet, dispatch, ...props } = nextProps;
+          const isPermitted = checkOnisPermitted(config, props, permissionsSet);
+
+          const name = get(config, 'permissionName', 'isPermitted');
+          return {
+            [name]: isPermitted,
+          };
+        }
+
+        return null;
+      }
+
       render() {
         const { permissionsSet, dispatch, ...props } = this.props;
 
         const isPermitted = checkOnisPermitted(config, props, permissionsSet);
         const newProps = { ...props };
 
-        if (config.withIsPermittedProps) {
-          const name = get(config, 'permissionName', 'isPermitted');
-          newProps[name] = isPermitted;
-        }
-
         return (
           config.withIsPermittedProps || isPermitted ?
             (
-              <Component { ...newProps } />
+              <Component { ...newProps } {...this.state} />
             )
           :
             (

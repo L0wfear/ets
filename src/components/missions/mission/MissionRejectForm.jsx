@@ -215,13 +215,14 @@ class MissionRejectForm extends React.Component {
     const { reason_id } = this.state;
     let handlerName = 'createMissionFromReassignation'; // имя хендлера для ПЛ
 
-    const status = get(
-      this.props.missionCancelReasonsList.find(
-        (reason) => reason.id === reason_id,
-      ),
-      'status',
-      null,
-    ) || this.state.status;
+    const status
+      = get(
+        this.props.missionCancelReasonsList.find(
+          (reason) => reason.id === reason_id,
+        ),
+        'status',
+        null,
+      ) || this.state.status;
 
     if (!this.state.data) {
       const response = await this.context.flux

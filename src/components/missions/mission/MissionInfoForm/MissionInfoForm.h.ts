@@ -34,7 +34,7 @@ export interface IRouteData {
   type: 'mixed' | 'simple_dt' | 'points';
   has_mkad: boolean;
   object_type_name: 'ОДХ' | 'ДТ' | 'ПН';
-  hasObjectList: boolean | null;
+  has_object_list: boolean | null;
 }
 
 export interface IReportData {

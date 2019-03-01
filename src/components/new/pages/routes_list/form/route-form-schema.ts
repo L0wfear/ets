@@ -7,7 +7,10 @@ import {
 import { isNumber } from 'util';
 import { routeTypesByKey } from 'constants/route';
 
-export const routeFormSchema: SchemaType<FormStateRouteForm, PropsRouteWithForm> = {
+export const routeFormSchema: SchemaType<
+  FormStateRouteForm,
+  PropsRouteWithForm
+> = {
   properties: [
     {
       key: 'name',
@@ -55,11 +58,10 @@ export const routeFormSchema: SchemaType<FormStateRouteForm, PropsRouteWithForm>
     ],
     type: [
       (value, formState) => {
-        const triggerOnError = (
-          isNumber(formState.technical_operation_id)
-          && isNumber(formState.municipal_facility_id)
-          && !value
-        );
+        const triggerOnError =
+          isNumber(formState.technical_operation_id) &&
+          isNumber(formState.municipal_facility_id) &&
+          !value;
 
         if (triggerOnError) {
           return 'Поле "Тип объекта" должно быть заполнено';
@@ -69,14 +71,17 @@ export const routeFormSchema: SchemaType<FormStateRouteForm, PropsRouteWithForm>
       },
     ],
     object_list: [
-      (value, formState) => {
-        const {
-          draw_object_list,
-          type,
-        } = formState;
-
-        if (type && !draw_object_list.length && !value.length) {
-          return `Поле "Список выбранных ${routeTypesByKey[type].title}" должно быть заполнено`;
+      (value, formState, props) => {
+        const { draw_object_list, type } = formState;
+        if (
+          type &&
+          !draw_object_list.length &&
+          !value.length &&
+          type !== 'mixed'
+        ) {
+          return `Поле "Список выбранных ${
+            routeTypesByKey[type].title
+          }" должно быть заполнено`;
         }
 
         return '';
@@ -84,13 +89,12 @@ export const routeFormSchema: SchemaType<FormStateRouteForm, PropsRouteWithForm>
     ],
     draw_object_list: [
       (value, formState) => {
-        const {
-          object_list,
-          type,
-        } = formState;
+        const { object_list, type } = formState;
 
         if (type && !object_list.length && !value.length) {
-          return `Поле "Список выбранных ${routeTypesByKey[type].title}" должно быть заполнено`;
+          return `Поле "Список выбранных ${
+            routeTypesByKey[type].title
+          }" должно быть заполнено, либо построен маршрут вручную`;
         }
 
         return '';

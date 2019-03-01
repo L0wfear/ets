@@ -42,10 +42,14 @@ import { resetCachedDataForRoute } from 'components/new/pages/routes_list/form/i
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getSomeUniqState,
+} from 'redux-main/reducers/selectors';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { getDefaultRouteElement } from './utils';
 import EtsModal from 'components/new/ui/modal/Modal';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const path = 'routeForm';
 
@@ -289,6 +293,8 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
     (state) => ({
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
+      geozoneMunicipalFacility: getSomeUniqState(state)
+        .geozoneMunicipalFacility,
     }),
     (dispatch: any, { page }) => ({
       actionValidateRoute: (...arg) =>
@@ -300,6 +306,14 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
             page,
             path,
           }),
+        ),
+      actionGetAndSetInStoreGeozoneMunicipalFacility: (
+        ...arg // проверить
+      ) =>
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility(
+            ...arg,
+          ),
         ),
     }),
   ),

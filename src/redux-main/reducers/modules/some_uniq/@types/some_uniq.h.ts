@@ -4,6 +4,8 @@ import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municip
 import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/@types';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
+import { GeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/@types';
+import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
 
 export type modelListElement = {
   body_capacity: number | null;
@@ -35,4 +37,8 @@ export type IStateSomeUniq = {
   maintenanceWorkList: MaintenanceWork[];
   cleanCategoriesList: CleanCategories[];
   missionCancelReasonsList: CancelReasons[];
+  geozoneMunicipalFacility: {
+    list: GeozoneMunicipalFacility[];
+    byId: GeozoneMunicipalFacilityById | null;
+  };
 };

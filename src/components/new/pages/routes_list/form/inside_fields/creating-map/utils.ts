@@ -4,19 +4,28 @@ import {
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/CreatingMap.d';
 import { routeTypesByKey } from 'constants/route';
 
-import { OneGeozoneMunicipalFacility, GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
-import { polyState } from 'constants/polygons';
 import {
-  keyBy,
-} from 'lodash';
+  OneGeozoneMunicipalFacility,
+  GeozoneMunicipalFacilityById,
+} from 'redux-main/trash-actions/geometry/geometry.h';
+import { polyState } from 'constants/polygons';
+import { keyBy } from 'lodash';
 
-export const routesToLoadByKeySet = new Set(Object.entries(routeTypesByKey).filter(([, { needLoad }]) => needLoad).map(([key]) => key));
+export const routesToLoadByKeySet = new Set(
+  Object.entries(routeTypesByKey)
+    .filter(([, { needLoad }]) => needLoad)
+    .map(([key]) => key),
+);
 
-export const mergeStateFromObjectList = (objectList: PropsCreatingMap['object_list'], geozoneMunicipalFacilityById: StateCreatingMap['geozone_municipal_facility_by_id']) => {
+export const mergeStateFromObjectList = (
+  objectList: PropsCreatingMap['object_list'],
+  geozoneMunicipalFacilityById: StateCreatingMap['geozone_municipal_facility_by_id'],
+) => {
   const objectIndex = keyBy(objectList, 'object_id');
   const newObjectList = [];
-
-  const geozone_municipal_facility_by_id = Object.entries(geozoneMunicipalFacilityById).reduce<GeozoneMunicipalFacilityById>((newObj, [id, geoData]) => {
+  const geozone_municipal_facility_by_id = Object.entries(
+    geozoneMunicipalFacilityById,
+  ).reduce<GeozoneMunicipalFacilityById>((newObj, [id, geoData]) => {
     newObj[id] = geoData;
     if (objectIndex[id]) {
       newObj[id] = {
@@ -41,11 +50,17 @@ export const mergeStateFromObjectList = (objectList: PropsCreatingMap['object_li
   };
 };
 
-export const changeStateInObjectList = (geo: OneGeozoneMunicipalFacility, objectList: PropsCreatingMap['object_list'], type: PropsCreatingMap['type']) => {
+export const changeStateInObjectList = (
+  geo: OneGeozoneMunicipalFacility,
+  objectList: PropsCreatingMap['object_list'],
+  type: PropsCreatingMap['type'],
+) => {
   let newObjectList = [];
 
   if (geo.state === polyState.ENABLE) {
-    newObjectList = objectList.filter(({ object_id }) => Number(object_id) !== Number(geo.id));
+    newObjectList = objectList.filter(
+      ({ object_id }) => Number(object_id) !== Number(geo.id),
+    );
   } else if (geo.state === polyState.SELECTED) {
     newObjectList = [...objectList];
     const newObjectData = makeObjByGeo(type, geo.id, geo);
@@ -70,18 +85,28 @@ export const changeStateInObjectList = (geo: OneGeozoneMunicipalFacility, object
   return newObjectList;
 };
 
-export const makeObjectListOptions = (geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id']) => {
-  return Object.values(geozone_municipal_facility_by_id).map(({ id, name }) => ({
-    value: id,
-    label: name,
-  }));
+export const makeObjectListOptions = (
+  geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id'],
+) => {
+  return Object.values(geozone_municipal_facility_by_id).map(
+    ({ id, name }) => ({
+      value: id,
+      label: name,
+    }),
+  );
 };
 
-export const makeObjectListIdArr = (object_list: PropsCreatingMap['object_list']) => {
+export const makeObjectListIdArr = (
+  object_list: PropsCreatingMap['object_list'],
+) => {
   return object_list.map(({ object_id }) => Number(object_id));
 };
 
-export const makeObjByGeo = (type: PropsCreatingMap['type'], object_id: number, geo: OneGeozoneMunicipalFacility) => {
+export const makeObjByGeo = (
+  type: PropsCreatingMap['type'],
+  object_id: number,
+  geo: OneGeozoneMunicipalFacility,
+) => {
   if (geo) {
     return {
       name: geo.name,
@@ -96,7 +121,12 @@ export const makeObjByGeo = (type: PropsCreatingMap['type'], object_id: number, 
   return null;
 };
 
-export const makeObjectListByObjectListIdArr = (ObjectListIdArr: number[], object_list: PropsCreatingMap['object_list'], type: PropsCreatingMap['type'], geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id']) => {
+export const makeObjectListByObjectListIdArr = (
+  ObjectListIdArr: number[],
+  object_list: PropsCreatingMap['object_list'],
+  type: PropsCreatingMap['type'],
+  geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id'],
+) => {
   const objectIndex = keyBy(object_list, 'object_id');
 
   return ObjectListIdArr.reduce((ObjectList, object_id) => {
@@ -120,7 +150,10 @@ export const makeObjectListByObjectListIdArr = (ObjectListIdArr: number[], objec
   }, []);
 };
 
-export const mergeLineIntoInputLines = (input_lines: PropsCreatingMap['input_lines'], line: any) => {
+export const mergeLineIntoInputLines = (
+  input_lines: PropsCreatingMap['input_lines'],
+  line: any,
+) => {
   return input_lines.map((lineData) => {
     if (lineData.object_id === line.object_id) {
       return line;
@@ -130,7 +163,11 @@ export const mergeLineIntoInputLines = (input_lines: PropsCreatingMap['input_lin
   });
 };
 
-export const setNameForPointByIndex = (objectList: PropsCreatingMap['object_list'], index: number, value: string) => {
+export const setNameForPointByIndex = (
+  objectList: PropsCreatingMap['object_list'],
+  index: number,
+  value: string,
+) => {
   return objectList.map((d, i) => {
     if (i === index) {
       return {
@@ -143,14 +180,17 @@ export const setNameForPointByIndex = (objectList: PropsCreatingMap['object_list
   });
 };
 
-export let cachedDataForRoute = Object.keys(routeTypesByKey).reduce((newObj, key) => {
-  newObj[key] = {
-    object_list: [],
-    input_lines: [],
-  };
+export let cachedDataForRoute = Object.keys(routeTypesByKey).reduce(
+  (newObj, key) => {
+    newObj[key] = {
+      object_list: [],
+      input_lines: [],
+    };
 
-  return newObj;
-}, {});
+    return newObj;
+  },
+  {},
+);
 
 export const setCacheDataForRoute = (type, objValue) => {
   cachedDataForRoute[type] = objValue;

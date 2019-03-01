@@ -15,9 +15,7 @@ class GibddTab extends React.Component<IPropsPassportInfoTab, {}> {
   render() {
     const {
       state,
-      state: {
-        pasport_gtn_disabled,
-      },
+      state: { pasport_gtn_disabled },
       errors,
       onChange,
       onOverlayLoading,
@@ -60,7 +58,9 @@ class GibddTab extends React.Component<IPropsPassportInfoTab, {}> {
             label="Год выпуска"
             value={state.passport_gtn_manufactured_at}
             error={errors.passport_gtn_manufactured_at}
-            options={Array((new Date()).getFullYear() - 1990 + 1).fill(0).map((_, i) => ({ value: i + 1990, label: i + 1990 }))}
+            options={Array(new Date().getFullYear() - 1990 + 1)
+              .fill(0)
+              .map((_, i) => ({ value: i + 1990, label: i + 1990 }))}
             onChange={onChange}
             boundKeys="passport_gtn_manufactured_at"
             disabled={!isPermitted || pasport_gtn_disabled}
@@ -164,7 +164,7 @@ class GibddTab extends React.Component<IPropsPassportInfoTab, {}> {
             value={state.passport_gtn_body_number}
             error={errors.passport_gtn_body_number}
             onChange={onChange}
-            boundKeys="v"
+            boundKeys="passport_gtn_body_number"
             disabled={!isPermitted || pasport_gtn_disabled}
           />
           <ExtField
@@ -187,16 +187,16 @@ class GibddTab extends React.Component<IPropsPassportInfoTab, {}> {
           />
         </Col>
         <Col md={12}>
-            <FileField
-              label="Файл"
-              multiple
-              value={state.passport_gtn_files}
-              onChange={onChange}
-              boundKeys="passport_gtn_files"
-              isLoading={onOverlayLoading}
-              disabled={!isPermitted || pasport_gtn_disabled}
-            />
-          </Col>
+          <FileField
+            label="Файл"
+            multiple
+            value={state.passport_gtn_files}
+            onChange={onChange}
+            boundKeys="passport_gtn_files"
+            isLoading={onOverlayLoading}
+            disabled={!isPermitted || pasport_gtn_disabled}
+          />
+        </Col>
       </Row>
     );
   }

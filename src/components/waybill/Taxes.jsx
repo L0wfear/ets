@@ -216,21 +216,27 @@ export default class Taxes extends React.Component {
   handleFactValueChange = (index, e) => {
     const { tableData } = this.state;
     const current = tableData[index];
+    const oldCurrVal = current.FACT_VALUE;
     current.FACT_VALUE = e.target.value === '' ? '' : Math.abs(e.target.value);
+    const threeSybolsAfterComma = /^([0-9]{1,})\.([0-9]{4,})$/.test(
+      current.FACT_VALUE,
+    ); // есть 3 знака после запятой
     if (
       current.is_excluding_mileage
       && current.measure_unit_name === 'л/подъем'
     ) {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }
-    if (current.measure_unit_name === 'л/час') {
-      current.FACT_VALUE = Math.ceil(current.FACT_VALUE * 1000) / 1000;
+    // если пользак уже ввел 3 знака после запятой, то он больше ничего не может ввести
+    if (current.measure_unit_name === 'л/час' && threeSybolsAfterComma) {
+      current.FACT_VALUE = oldCurrVal;
     }
+
     if (current.is_excluding_mileage) {
       current.iem_FACT_VALUE = current.FACT_VALUE;
     }
-    current.RESULT = Taxes.getResult(current);
 
+    current.RESULT = Taxes.getResult(current);
     this.setState({ tableData });
     this.props.onChange(tableData);
   };
@@ -359,7 +365,7 @@ export default class Taxes extends React.Component {
             }
           />
         </Div>
-        <Div className="taxes-result" hidden={!hasTaxes}>
+        <Div className="taxes-result">
           <div className="taxes-result-label">Итого</div>
           <div className="taxes-result-label">
             <span className={finalFactValueClassName}>{finalFactValue}</span>

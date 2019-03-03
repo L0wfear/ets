@@ -130,7 +130,7 @@ class TitleTrackTab extends React.Component<
   };
 
   render() {
-    const { forToday, track } = this.props;
+    const { forToday } = this.props;
     const disbledByTrackPlayStatys = this.props.status !== 'stop';
     const { errorDates } = this.state;
 
@@ -162,7 +162,7 @@ class TitleTrackTab extends React.Component<
               date={this.props.date_start}
               onChange={this.handleChangeDate}
               boundKeys="date_start"
-              disabled={forToday || track === -1}
+              disabled={forToday || this.props.disabledForToday}
             />
             <span className="carinfo-divider">–</span>
             <ExtField
@@ -171,7 +171,7 @@ class TitleTrackTab extends React.Component<
               date={this.props.date_end}
               onChange={this.handleChangeDate}
               boundKeys="date_end"
-              disabled={forToday || track === -1}
+              disabled={forToday || this.props.disabledForToday}
             />
             <Button
               title="Перезагрузить данные"
@@ -179,7 +179,7 @@ class TitleTrackTab extends React.Component<
               onClick={this.reloadTrackAndMissions}
               disabled={
                 forToday ||
-                track === -1 ||
+                this.props.disabledForToday ||
                 disbledByTrackPlayStatys ||
                 !!errorDates
               }>
@@ -226,8 +226,7 @@ const mergedProps = (stateProps, dispatchProps) => ({
   ...stateProps,
   ...dispatchProps,
   disabledForToday:
-    ((!stateProps.asuods_id || stateProps.track === -1) && !stateProps.error) ||
-    stateProps.error,
+    (!stateProps.asuods_id || stateProps.track === -1) && !stateProps.error,
   fetchTrack: (props) =>
     dispatchProps.dispatch(fetchTrack(props, stateProps.odh_mkad)),
 });

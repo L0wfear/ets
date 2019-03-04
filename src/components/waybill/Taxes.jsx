@@ -365,7 +365,7 @@ export default class Taxes extends React.Component {
             }
           />
         </Div>
-        <Div className="taxes-result">
+        <Div className="taxes-result" hidden={!hasTaxes}>
           <div className="taxes-result-label">Итого</div>
           <div className="taxes-result-label">
             <span className={finalFactValueClassName}>{finalFactValue}</span>

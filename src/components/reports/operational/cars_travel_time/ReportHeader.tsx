@@ -38,9 +38,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const diffDateEnd = diffDates(date_to, getToday0am(), 'days');
     const diffDateStart = diffDates(date_from, getToday0am(), 'days');
 
-    if (diffDate <= 0) {
+    if (diffDate < 0) {
       return {
-        error: 'Дата окончания периода должна быть позже даты начала',
+        error: 'Дата окончания не может быть меньше даты начала',
       };
     }
 

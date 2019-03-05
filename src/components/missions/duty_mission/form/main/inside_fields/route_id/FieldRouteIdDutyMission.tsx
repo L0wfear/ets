@@ -304,7 +304,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
     return (
       <>
         <Row>
-          <Col md={6}>
+          <Col md={12}>
             <ExtField
               type="select"
               id="route_id"
@@ -330,7 +330,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
               <DivNone />
             )}
           </Col>
-          <Col md={6}>
+          <Col md={12}>
             {selectedRoute && !showRouteForm ? (
               <RouteInfo
                 route={selectedRoute}

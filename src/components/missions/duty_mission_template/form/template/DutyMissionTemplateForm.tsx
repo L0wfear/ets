@@ -94,7 +94,7 @@ class DutyMissionTemplateForm extends React.PureComponent<
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
-            <Col md={6}>
+            <Col md={12}>
               <FieldTechnicalOperationDutyMission
                 value={state.technical_operation_id}
                 name={state.technical_operation_name}
@@ -106,19 +106,6 @@ class DutyMissionTemplateForm extends React.PureComponent<
                 DUTY_MISSION_IS_ORDER_SOURCE={false}
                 page={page}
                 path={path}
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="comment"
-                modalKey={page}
-                type="string"
-                label="Комментарий"
-                value={state.comment}
-                error={errors.comment}
-                disabled={!isPermitted}
-                onChange={this.props.handleChange}
-                boundKeys="comment"
               />
             </Col>
           </Row>
@@ -140,7 +127,7 @@ class DutyMissionTemplateForm extends React.PureComponent<
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
               <FieldForemanIdDutyMission
                 value={state.foreman_id}
                 foreman_fio={state.foreman_fio}
@@ -155,23 +142,8 @@ class DutyMissionTemplateForm extends React.PureComponent<
                 path={path}
               />
             </Col>
-            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
-              <FieldBrigadeEmployeeIdListDutyMission
-                brigade_employee_id_list={state.brigade_employee_id_list}
-                value={state.brigade_employee_id_list_id}
-                name={state.brigade_employee_id_list_fio}
-                error={errors.brigade_employee_id_list_id}
-                isPermitted={isPermitted}
-                disabled={!isPermitted}
-                onChange={this.props.handleChange}
-                foreman_id={state.foreman_id}
-                structure_id={state.structure_id}
-                page={page}
-                path={path}
-              />
-            </Col>
             {STRUCTURE_FIELD_VIEW ? (
-              <Col md={3}>
+              <Col md={6}>
                 <FieldStructureDutyMission
                   value={state.structure_id}
                   name={state.structure_name}
@@ -186,6 +158,21 @@ class DutyMissionTemplateForm extends React.PureComponent<
             ) : (
               <DivNone />
             )}
+            <Col md={12}>
+              <FieldBrigadeEmployeeIdListDutyMission
+                brigade_employee_id_list={state.brigade_employee_id_list}
+                value={state.brigade_employee_id_list_id}
+                name={state.brigade_employee_id_list_fio}
+                error={errors.brigade_employee_id_list_id}
+                isPermitted={isPermitted}
+                disabled={!isPermitted}
+                onChange={this.props.handleChange}
+                foreman_id={state.foreman_id}
+                structure_id={state.structure_id}
+                page={page}
+                path={path}
+              />
+            </Col>
           </Row>
           <Row>
             <Col md={12}>
@@ -206,6 +193,21 @@ class DutyMissionTemplateForm extends React.PureComponent<
                 deepLvl={this.props.deepLvl}
                 page={page}
                 path={path}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <ExtField
+                id="comment"
+                modalKey={page}
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                error={errors.comment}
+                disabled={!isPermitted}
+                onChange={this.props.handleChange}
+                boundKeys="comment"
               />
             </Col>
           </Row>

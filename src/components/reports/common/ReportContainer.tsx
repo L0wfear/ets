@@ -538,7 +538,6 @@ class ReportContainer extends React.Component<
         hint={mergedTableMetaInfo.description}
       />
     );
-    console.log(this.state.filterValues);
 
     return (
       <EtsPageWrap inheritDisplay>

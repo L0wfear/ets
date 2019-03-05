@@ -272,25 +272,46 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 path={path}
               />
             </Col>
-            <Col md={6}>
-              <FieldDatesDutyMission
-                isPermitted={isPermitted}
-                plan_date_start={state.plan_date_start}
-                error_plan_date_start={errors.plan_date_start}
-                plan_date_end={state.plan_date_end}
-                error_plan_date_end={errors.plan_date_end}
-                fact_date_start={state.fact_date_start}
-                error_fact_date_start={errors.fact_date_start}
-                fact_date_end={state.fact_date_end}
-                error_fact_date_end={errors.fact_date_end}
-                DUTY_MISSION_IS_DISPLAY={DUTY_MISSION_IS_DISPLAY}
-                DUTY_MISSION_IS_CLOSED={DUTY_MISSION_IS_CLOSED}
-                DUTY_MISSION_IS_ASSIGNED={DUTY_MISSION_IS_ASSIGNED}
-                DUTY_MISSION_IS_COMPLETED={DUTY_MISSION_IS_COMPLETED}
+            <Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 6}>
+              <FieldMissionSourceDutyMission
+                value={state.mission_source_id}
+                name={state.mission_source_name}
+                error={errors.mission_source_id}
+                disabled={
+                  !isPermitted ||
+                  DUTY_MISSION_IS_DISPLAY ||
+                  DUTY_MISSION_IS_ORDER_SOURCE
+                }
+                isPermitted={
+                  isPermitted &&
+                  !DUTY_MISSION_IS_DISPLAY &&
+                  !DUTY_MISSION_IS_ORDER_SOURCE
+                }
                 onChange={this.props.handleChange}
                 page={page}
                 path={path}
               />
+              {IS_CREATING && !DUTY_MISSION_IS_ORDER_SOURCE ? (
+                <span className="help-block-mission-source">
+                  Задания на основе централизованных заданий необходимо
+                  создавать во вкладке "НСИ"-"Реестр централизованных заданий".
+                </span>
+              ) : (
+                <DivNone />
+              )}
+            </Col>
+            <Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 0}>
+              {DUTY_MISSION_IS_ORDER_SOURCE ? (
+                <ExtField
+                  id="order-number"
+                  type="string"
+                  label="Номер централизованного задания"
+                  readOnly
+                  value={state.order_number}
+                />
+              ) : (
+                <DivNone />
+              )}
             </Col>
           </Row>
           <Row>
@@ -321,122 +342,73 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
           </Row>
           <Row>
             <Col md={6}>
-              <FieldForemanIdDutyMission
-                value={state.foreman_id}
-                foreman_fio={state.foreman_fio}
-                foreman_full_fio={state.foreman_full_fio}
-                name={state.foreman_fio}
-                error={errors.foreman_id}
-                isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
-                disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
-                onChange={this.props.handleChange}
-                structure_id={state.structure_id}
-                page={page}
-                path={path}
-              />
-            </Col>
-            <Col md={STRUCTURE_FIELD_VIEW ? 3 : 6}>
-              <FieldBrigadeEmployeeIdListDutyMission
-                brigade_employee_id_list={state.brigade_employee_id_list}
-                value={state.brigade_employee_id_list_id}
-                name={state.brigade_employee_id_list_fio}
-                error={errors.brigade_employee_id_list_id}
-                isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
-                disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
-                onChange={this.props.handleChange}
-                foreman_id={state.foreman_id}
-                structure_id={state.structure_id}
-                page={page}
-                path={path}
-              />
-            </Col>
-            {STRUCTURE_FIELD_VIEW ? (
-              <Col md={3}>
-                <FieldStructureDutyMission
-                  value={state.structure_id}
-                  name={state.structure_name}
-                  error={errors.structure_id}
-                  disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
-                  isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
-                  onChange={this.props.handleChange}
-                  page={page}
-                  path={path}
-                />
-              </Col>
-            ) : (
-              <DivNone />
-            )}
-          </Row>
-          <Row>
-            <Col md={6}>
-              <FieldMissionSourceDutyMission
-                value={state.mission_source_id}
-                name={state.mission_source_name}
-                error={errors.mission_source_id}
-                disabled={
-                  !isPermitted ||
-                  DUTY_MISSION_IS_DISPLAY ||
-                  DUTY_MISSION_IS_ORDER_SOURCE
-                }
-                isPermitted={
-                  isPermitted &&
-                  !DUTY_MISSION_IS_DISPLAY &&
-                  !DUTY_MISSION_IS_ORDER_SOURCE
-                }
-                onChange={this.props.handleChange}
-                page={page}
-                path={path}
-              />
-              {IS_CREATING && !DUTY_MISSION_IS_ORDER_SOURCE ? (
-                <span className="help-block-mission-source">
-                  Задания на основе централизованных заданий необходимо
-                  создавать во вкладке "НСИ"-"Реестр централизованных заданий".
-                </span>
-              ) : (
-                <DivNone />
-              )}
+              <Row>
+                <Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
+                  <FieldForemanIdDutyMission
+                    value={state.foreman_id}
+                    foreman_fio={state.foreman_fio}
+                    foreman_full_fio={state.foreman_full_fio}
+                    name={state.foreman_fio}
+                    error={errors.foreman_id}
+                    isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
+                    disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
+                    onChange={this.props.handleChange}
+                    structure_id={state.structure_id}
+                    page={page}
+                    path={path}
+                  />
+                </Col>
+                {STRUCTURE_FIELD_VIEW ? (
+                  <Col md={6}>
+                    <FieldStructureDutyMission
+                      value={state.structure_id}
+                      name={state.structure_name}
+                      error={errors.structure_id}
+                      disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
+                      isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
+                      onChange={this.props.handleChange}
+                      page={page}
+                      path={path}
+                    />
+                  </Col>
+                ) : (
+                  <DivNone />
+                )}
+                <Col md={12}>
+                  <FieldBrigadeEmployeeIdListDutyMission
+                    brigade_employee_id_list={state.brigade_employee_id_list}
+                    value={state.brigade_employee_id_list_id}
+                    name={state.brigade_employee_id_list_fio}
+                    error={errors.brigade_employee_id_list_id}
+                    isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
+                    disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
+                    onChange={this.props.handleChange}
+                    foreman_id={state.foreman_id}
+                    structure_id={state.structure_id}
+                    page={page}
+                    path={path}
+                  />
+                </Col>
+              </Row>
             </Col>
             <Col md={6}>
-              <ExtField
-                id="comment"
-                modalKey={page}
-                type="string"
-                label="Комментарий"
-                value={state.comment}
-                error={errors.comment}
-                disabled={!isPermitted}
-                onChange={this.props.handleChange}
-                boundKeys="comment"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              {DUTY_MISSION_IS_ORDER_SOURCE ? (
-                <ExtField
-                  id="order-number"
-                  type="string"
-                  label="Номер централизованного задания"
-                  readOnly
-                  value={state.order_number}
-                />
-              ) : (
-                <DivNone />
-              )}
-            </Col>
-            <Col md={6}>
-              <FieldCarMissionIdDutyMission
-                value={state.car_mission_id}
-                name={state.car_mission_name}
-                error={errors.car_mission_id}
+              <FieldDatesDutyMission
+                isPermitted={isPermitted}
                 plan_date_start={state.plan_date_start}
+                error_plan_date_start={errors.plan_date_start}
                 plan_date_end={state.plan_date_end}
-                technical_operation_id={state.technical_operation_id}
-                disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
-                isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
+                error_plan_date_end={errors.plan_date_end}
+                fact_date_start={state.fact_date_start}
+                error_fact_date_start={errors.fact_date_start}
+                fact_date_end={state.fact_date_end}
+                error_fact_date_end={errors.fact_date_end}
+                DUTY_MISSION_IS_DISPLAY={DUTY_MISSION_IS_DISPLAY}
+                DUTY_MISSION_IS_CLOSED={DUTY_MISSION_IS_CLOSED}
+                DUTY_MISSION_IS_ASSIGNED={DUTY_MISSION_IS_ASSIGNED}
+                DUTY_MISSION_IS_COMPLETED={DUTY_MISSION_IS_COMPLETED}
                 onChange={this.props.handleChange}
-                path={path}
                 page={page}
+                path={path}
               />
             </Col>
           </Row>
@@ -459,6 +431,36 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 deepLvl={this.props.deepLvl}
                 page={page}
                 path={path}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <ExtField
+                id="comment"
+                modalKey={page}
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                error={errors.comment}
+                disabled={!isPermitted}
+                onChange={this.props.handleChange}
+                boundKeys="comment"
+              />
+            </Col>
+            <Col md={6}>
+              <FieldCarMissionIdDutyMission
+                value={state.car_mission_id}
+                name={state.car_mission_name}
+                error={errors.car_mission_id}
+                plan_date_start={state.plan_date_start}
+                plan_date_end={state.plan_date_end}
+                technical_operation_id={state.technical_operation_id}
+                disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
+                isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
+                onChange={this.props.handleChange}
+                path={path}
+                page={page}
               />
             </Col>
           </Row>

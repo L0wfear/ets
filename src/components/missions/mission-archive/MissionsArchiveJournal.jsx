@@ -16,9 +16,13 @@ import MissionsTable, { getTableMeta } from 'components/missions/mission/Mission
 import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
+import {
+  getCompanyStructureState,
+  getSomeUniqState,
+} from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const is_archive = true;
 const loadingPageName = 'mission-archive';
@@ -37,7 +41,6 @@ const ButtonUpdateMission = enhanceWithPermissions({
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
 })
 class MissionsArchiveJournal extends CheckableElementsList {
-
   constructor(props) {
     super(props);
 
@@ -67,13 +70,14 @@ class MissionsArchiveJournal extends CheckableElementsList {
     flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.actionGetAndSetInStoreMissionCancelReasons();
   }
 
   componentDidUpdate(nextProps, prevState) {
     if (
-      prevState.page !== this.state.page ||
-      prevState.sortBy !== this.state.sortBy ||
-      prevState.filter !== this.state.filter
+      prevState.page !== this.state.page
+      || prevState.sortBy !== this.state.sortBy
+      || prevState.filter !== this.state.filter
     ) {
       this.refreshList(this.state);
     }
@@ -114,15 +118,12 @@ class MissionsArchiveJournal extends CheckableElementsList {
       title: 'Внимание',
       body: `Вы уверены, что хотите вернуть из архива ${moreOne ? 'выбранные задания' : 'выбранное задание'}?`,
     })
-    .then(() =>
-        Promise.all(
-          Object.entries(checkedElements).map(([id]) =>
-            this.context.flux.getActions('missions').changeArchiveMissionStatus(id, false),
-          )
-        ).then(() => {
-          this.refreshList();
-          global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены из' : 'Выбранное задание перенесено из'} архива`);
-        })
+      .then(() => Promise.all(
+        Object.entries(checkedElements).map(([id]) => this.context.flux.getActions('missions').changeArchiveMissionStatus(id, false)),
+      ).then(() => {
+        this.refreshList();
+        global.NOTIFICATION_SYSTEM.notify(`${moreOne ? 'Выбранные задания перенесены из' : 'Выбранное задание перенесено из'} архива`);
+      })
         .catch(() => {
           this.refreshList();
         })
@@ -131,9 +132,8 @@ class MissionsArchiveJournal extends CheckableElementsList {
             selectedElement: null,
             checkedElements: {},
           });
-        })
-    )
-    .catch(() => {});
+        }))
+      .catch(() => {});
   }
 
   mapView = async (id) => {
@@ -145,31 +145,29 @@ class MissionsArchiveJournal extends CheckableElementsList {
     }
   }
 
-  getForms = () => {
-    return [
-      <div key={'forms'}>
-        <MissionFormWrap
-          onFormHide={this.onFormHide}
-          showForm={this.state.showForm}
-          element={this.state.selectedElement}
-          refreshTableList={this.refreshList}
-          {...this.props}
-        />
-        <MissionInfoFormWrap
-          onFormHide={() => this.setState({ showMissionInfoForm: false })}
-          showForm={this.state.showMissionInfoForm}
-          element={this.state.mission}
-          flux={this.context.flux}
-        />
-        <PrintForm
-          onExport={this.processExport}
-          show={this.state.showPrintForm}
-          onHide={() => this.setState({ showPrintForm: false })}
-          title={'Печать журнала заданий'}
-        />
-      </div>,
-    ];
-  }
+  getForms = () => [
+    <div key="forms">
+      <MissionFormWrap
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        refreshTableList={this.refreshList}
+        {...this.props}
+      />
+      <MissionInfoFormWrap
+        onFormHide={() => this.setState({ showMissionInfoForm: false })}
+        showForm={this.state.showMissionInfoForm}
+        element={this.state.mission}
+        flux={this.context.flux}
+      />
+      <PrintForm
+        onExport={this.processExport}
+        show={this.state.showPrintForm}
+        onHide={() => this.setState({ showPrintForm: false })}
+        title="Печать журнала заданий"
+      />
+    </div>,
+  ]
 
   getButtons = () => {
     const buttons = super.getButtons();
@@ -189,19 +187,17 @@ class MissionsArchiveJournal extends CheckableElementsList {
     this.setState({ filter });
   }
 
-  getAdditionalProps = () => {
-    return {
-      mapView: this.mapView,
-      structures: this.props.companyStructureLinearList,
-      changeSort: this.changeSort,
-      changeFilter: this.changeFilter,
-      filterValues: this.state.filter,
-      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
-      useServerFilter: true,
-      useServerSort: true,
-      is_archive,
-    };
-  }
+  getAdditionalProps = () => ({
+    mapView: this.mapView,
+    structures: this.props.companyStructureLinearList,
+    changeSort: this.changeSort,
+    changeFilter: this.changeFilter,
+    filterValues: this.state.filter,
+    rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    useServerFilter: true,
+    useServerSort: true,
+    is_archive,
+  })
 
   getAdditionalFormProps() {
     return {
@@ -209,16 +205,14 @@ class MissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
-  additionalRender = () => {
-    return (
-      <Paginator
-        currentPage={this.state.page}
-        maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
-        setPage={page => this.setState({ page })}
-        firstLastButtons
-      />
-    );
-  }
+  additionalRender = () => (
+    <Paginator
+      currentPage={this.state.page}
+      maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
+      setPage={page => this.setState({ page })}
+      firstLastButtons
+    />
+  )
 }
 
 export default compose(
@@ -229,11 +223,28 @@ export default compose(
   connect(
     state => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
+      missionCancelReasonsList: getSomeUniqState(state).missionCancelReasonsList,
     }),
     dispatch => ({
       getAndSetInStoreCompanyStructureLinear: () => (
         dispatch(
           companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+      actionGetAndSetInStoreMissionCancelReasons: () => (
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMissionCancelReasons(
+            {},
+            { page: loadingPageName },
+          ),
+        )
+      ),
+      actionResetMissionCancelReasons: () => (
+        dispatch(
+          someUniqActions.actionResetMissionCancelReasons(
             {},
             { page: loadingPageName },
           ),

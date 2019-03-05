@@ -24,9 +24,11 @@ import { connect } from 'react-redux';
 import {
   getCompanyStructureState,
   getSessionState,
+  getSomeUniqState,
 } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const is_archive = true;
 const loadingPageName = 'mission-archive';
@@ -85,6 +87,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
       .getActions('missions')
       .getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.actionGetAndSetInStoreMissionCancelReasons();
   };
 
   componentDidUpdate(nextProps, prevState) {
@@ -283,12 +286,28 @@ export default compose(
     (state) => ({
       companyStructureLinearList: getCompanyStructureState(state)
         .companyStructureLinearList,
+      missionCancelReasonsList: getSomeUniqState(state)
+        .missionCancelReasonsList,
       userData: getSessionState(state).userData,
     }),
     (dispatch) => ({
       getAndSetInStoreCompanyStructureLinear: () =>
         dispatch(
           companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionGetAndSetInStoreMissionCancelReasons: () =>
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMissionCancelReasons(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionResetMissionCancelReasons: () =>
+        dispatch(
+          someUniqActions.actionResetMissionCancelReasons(
             {},
             { page: loadingPageName },
           ),

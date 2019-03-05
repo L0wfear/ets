@@ -216,6 +216,8 @@ export const checkToken: any = () => async (dispatch, getState) => {
     );
 
     return data;
+  } else {
+    dispatch(sessionResetData());
   }
 
   return null;

@@ -375,8 +375,12 @@ body.application {
     color: $colorGray;
   }
 
-  &:not(.disabled):not([disabled]):hover, &:focus, &.active {
-    background-color: $colorGreen;
+  &.active {
+    background-color: $colorGreen!important;
+    color: #fff!important;
+  }
+  &:not(.disabled):not([disabled]):hover, &:focus{
+    background-color: $colorGreenDarker;
     color: #fff;
   }
 }

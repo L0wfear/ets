@@ -3,6 +3,7 @@ import ApiServiceFactory from './ApiServiceFactory';
 import ETS_API_FACTORY from './EtsAPIServiceFactory';
 
 import * as reports from './reports';
+import ETS_API_FACTORY_ETS_TEST from './EtsAPIServiceFactory_temp';
 
 const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: config.tracksCaching,
@@ -104,6 +105,9 @@ export const TechnicalOperationRegistryService = ETS_API_FACTORY.createApiServic
   'technical_operation_registry',
 );
 export const AuthService = ETS_API_FACTORY.createApiServiceAdapter('auth');
+export const AuthServiceEtsTest = ETS_API_FACTORY_ETS_TEST.createApiServiceAdapter(
+  'auth',
+);
 export const AuthCheckService = ETS_API_FACTORY.createApiServiceAdapter(
   'auth_check',
 );
@@ -281,6 +285,9 @@ export { reports };
 
 /* Измнение роли */
 export const ChangeRoleService = ETS_API_FACTORY.createApiServiceAdapter(
+  'change_role',
+);
+export const ChangeRoleServiceEtsTest = ETS_API_FACTORY_ETS_TEST.createApiServiceAdapter(
   'change_role',
 );
 

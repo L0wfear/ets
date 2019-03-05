@@ -1,11 +1,7 @@
 {
   "extends": ["tslint:recommended"],
   "rules": {
-    "quotemark": [
-      true,
-      "single",
-      "jsx-double"
-    ],
+    "quotemark": [false],
     "no-var-requires": false,
     "member-ordering": false,
     "member-access": false,

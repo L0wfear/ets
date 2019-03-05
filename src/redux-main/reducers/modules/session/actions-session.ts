@@ -12,6 +12,8 @@ import {
   ChangeRoleService,
   ConfigTrackService,
   AuthCheckService,
+  AuthServiceEtsTest,
+  ChangeRoleServiceEtsTest,
 } from 'api/Services';
 
 import {
@@ -75,9 +77,21 @@ export const sessionCahngeCompanyOnAnother: any = (
     },
   });
 
+  const {
+    payload: { token: sessionEtsTest },
+  } = await dispatch({
+    type: 'none',
+    payload: ChangeRoleServiceEtsTest.post({ company_id }, false, 'json'),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  });
+
   const userData = makeUserData(userDataRaw);
 
-  dispatch(sessionSetData(userData, token));
+  dispatch(sessionSetData(userData, token, sessionEtsTest));
 
   return {
     userData,
@@ -98,10 +112,22 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
     },
   });
 
+  const {
+    payload: { token: sessionEtsTest },
+  } = await dispatch({
+    type: 'none',
+    payload: AuthServiceEtsTest.post(user, false, 'json'),
+    meta: {
+      promise: true,
+      page,
+      path,
+    },
+  });
+
   // calc stableRedirect
   const userData = makeUserData(userDataRaw);
 
-  await dispatch(sessionSetData(userData, token));
+  await dispatch(sessionSetData(userData, token, sessionEtsTest));
 
   return {
     userData,
@@ -109,8 +135,16 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
   };
 };
 
-export const sessionSetData: any = (userData, session) => async (dispatch) => {
+export const sessionSetData: any = (
+  userData,
+  session,
+  sessionEtsTest,
+) => async (dispatch) => {
   localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
+  localStorage.setItem(
+    global.SESSION_KEY_ETS_TEST_BY_DEV2,
+    JSON.stringify(sessionEtsTest),
+  );
 
   setUserContext(userData);
 
@@ -177,6 +211,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
       sessionSetData(
         makeUserData(data),
         JSON.parse(localStorage.getItem(global.SESSION_KEY2)),
+        JSON.parse(localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2)),
       ),
     );
 

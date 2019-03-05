@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.27.102",
+    "version": "2.0.27.103",
     "description": "",
     "main": "app.js",
     "private": true,
@@ -150,7 +150,7 @@
         ],
         "src/**/*.{ts,tsx}": [
             "prettier --parser typescript --write",
-            "tslint --project tsconfig.json -c tslint.json",
+            "tslint --project tsconfig.json -c tslint.json --fix",
             "git add"
         ]
     },

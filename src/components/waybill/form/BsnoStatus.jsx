@@ -29,10 +29,19 @@ class BsnoStaus extends React.Component {
 
   constructor(props) {
     super(props);
-    const { okStatus = false, userToken } = props;
+    const { okStatus = false } = props;
 
     if (okStatus) {
-      const wsUrl = `${config.ws}?token=${userToken}`;
+      const { userToken } = this.props;
+      let wsUrl = `${config.ws}?token=${userToken}`;
+
+      if (process.env.STAND === 'dev') {
+        const newToken = JSON.parse(
+          localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+        );
+        wsUrl = `wss://ets-test.mos.ru/services/stream?token=${newToken}`;
+      }
+
       const ws = new ReconnectingWebSocket(wsUrl, null);
 
       try {

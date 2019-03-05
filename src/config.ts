@@ -74,7 +74,7 @@ const notification_config = {
   },
 };
 
-const STANDS = {
+export const configApi = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/services',
     gost_stage: 'http://ets-stage.gost-group.com',
@@ -96,7 +96,7 @@ const configs = {
   images: config.develop.images,
   docs: config.develop.docs,
   admin: config.develop.admin,
-  backend: STANDS.develop.dev,
+  backend: configApi.develop.dev,
   notification_ws: notification_config.develop.dev,
   tracksCaching: `https://psd.mos.ru/tracks-caching${
     STAND !== 'prod' ? '-dev' : ''
@@ -109,7 +109,8 @@ try {
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;
   configs.admin = config[pathToConfig].admin;
-  configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
+  configs.backend =
+    configApi[pathToConfig][STAND] || configApi[pathToConfig].dev;
   configs.notification_ws =
     notification_config[pathToConfig][STAND] ||
     notification_config[pathToConfig].dev;

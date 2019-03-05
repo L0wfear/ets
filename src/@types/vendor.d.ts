@@ -2,14 +2,15 @@
  * No import/export is allowed because global scope will be turned off.
  */
 
-declare namespace NodeJS  {
+declare namespace NodeJS {
   interface Global {
     NODE_ENV: string;
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
-      removeNotification(uid: string | number),
+      removeNotification(uid: string | number);
     };
     SESSION_KEY2: string;
+    SESSION_KEY_ETS_TEST_BY_DEV2: string;
     API__KEY2: string;
     window: any;
     APP_DATE_FORMAT: string;

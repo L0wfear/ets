@@ -48,3 +48,5 @@ export const CarsCountDeviation = ETS_API_FACTORY.createApiServiceAdapter(
   'cars_count_deviation',
    {},
 );
+
+export const CarsTravelTimeReport = ETS_API_FACTORY.createApiServiceAdapter('cars_travel_time');

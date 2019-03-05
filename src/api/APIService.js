@@ -21,6 +21,7 @@ export default class APIService {
   constructor(_apiUrl, path, options = {}) {
     const { useMock = false } = options;
     this.useMock = useMock;
+    this.otherToken = options.otherToken;
 
     this._apiUrl = _apiUrl;
     this._path = path;
@@ -167,7 +168,9 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
 
-    return getJSON(url, payload).then((r) => this.processResponse(r, false));
+    return getJSON(url, payload, this.otherToken).then((r) =>
+      this.processResponse(r, false),
+    );
   }
 
   getBlob(payload = {}) {
@@ -188,7 +191,7 @@ export default class APIService {
     this.log('POST');
     const url = this.getUrl();
     this.resetPath();
-    return postJSON(url, payload, type, params).then((r) =>
+    return postJSON(url, payload, type, params, this.otherToken).then((r) =>
       this.processResponse(r, callback),
     );
   }

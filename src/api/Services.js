@@ -111,6 +111,10 @@ export const AuthServiceEtsTest = ETS_API_FACTORY_ETS_TEST.createApiServiceAdapt
 export const AuthCheckService = ETS_API_FACTORY.createApiServiceAdapter(
   'auth_check',
 );
+export const AuthCheckServiceEtsTest = ETS_API_FACTORY_ETS_TEST.createApiServiceAdapter(
+  'auth_check',
+);
+
 export const TechnicalOperationObjectsService = ETS_API_FACTORY.createApiServiceAdapter(
   'technical_operation_objects',
 );

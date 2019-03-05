@@ -4,6 +4,7 @@ import config, { configApi } from 'config';
 const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
   apiUrl:
     process.env.STAND === 'dev' ? configApi.develop.ets_test : config.backend,
+  otherToken: true,
   headers: () => {
     const token = JSON.parse(
       window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),

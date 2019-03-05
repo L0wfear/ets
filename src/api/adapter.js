@@ -81,12 +81,21 @@ function checkResponse(url, response, body, method) {
   }
 }
 
-function httpMethod(urlOwn, dataOwn = {}, method, type, params = {}) {
+function httpMethod(
+  urlOwn,
+  dataOwn = {},
+  method,
+  type,
+  params = {},
+  otherToken,
+) {
   let body;
   let url = urlOwn;
   const data = { ...dataOwn };
   const token = JSON.parse(
-    window.localStorage.getItem(global.SESSION_KEY2) || null,
+    window.localStorage.getItem(
+      otherToken ? global.SESSION_KEY_ETS_TEST_BY_DEV2 : global.SESSION_KEY2,
+    ) || null,
   );
 
   const options = {
@@ -163,12 +172,18 @@ function httpMethod(urlOwn, dataOwn = {}, method, type, params = {}) {
   });
 }
 
-export function getJSON(url, data = {}) {
-  return httpMethod(url, data, 'GET', undefined);
+export function getJSON(url, data = {}, otherToken) {
+  return httpMethod(url, data, 'GET', undefined, undefined, otherToken);
 }
 
-export function postJSON(url, data = {}, type = 'form', params = {}) {
-  return httpMethod(url, data, 'POST', type, params);
+export function postJSON(
+  url,
+  data = {},
+  type = 'form',
+  params = {},
+  otherToken,
+) {
+  return httpMethod(url, data, 'POST', type, params, otherToken);
 }
 
 export function putJSON(url, data, type = 'form') {

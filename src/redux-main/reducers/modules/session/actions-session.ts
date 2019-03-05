@@ -14,6 +14,7 @@ import {
   AuthCheckService,
   AuthServiceEtsTest,
   ChangeRoleServiceEtsTest,
+  AuthCheckServiceEtsTest,
 } from 'api/Services';
 
 import {
@@ -206,12 +207,31 @@ export const checkToken: any = () => async (dispatch, getState) => {
     },
   });
 
-  if (isObject(data) && Object.keys(data).length) {
+  const {
+    payload: { data: dataEtsTest },
+  } = await dispatch({
+    type: 'none',
+    payload: AuthCheckServiceEtsTest.get(),
+    meta: {
+      promise: true,
+    },
+  });
+  const sessionEtsTest = JSON.parse(
+    localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+  );
+
+  if (
+    sessionEtsTest &&
+    isObject(data) &&
+    Object.keys(data).length &&
+    isObject(dataEtsTest) &&
+    Object.keys(dataEtsTest).length
+  ) {
     dispatch(
       sessionSetData(
         makeUserData(data),
         JSON.parse(localStorage.getItem(global.SESSION_KEY2)),
-        JSON.parse(localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2)),
+        sessionEtsTest,
       ),
     );
 

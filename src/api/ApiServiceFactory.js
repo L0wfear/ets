@@ -8,14 +8,14 @@ export default class ApiServiceFactory {
     } else {
       this._providedHeaders = options.headers || null;
     }
+
+    this.otherToken = Boolean(options.otherToken);
   }
 
-  createApiServiceAdapter = (path, options) => new APIService(
-    this._apiUrl,
-    path,
-    {
+  createApiServiceAdapter = (path, options) =>
+    new APIService(this._apiUrl, path, {
       headers: this._providedHeaders,
+      otherToken: Boolean(this.otherToken),
       ...options,
-    },
-  );
+    });
 }

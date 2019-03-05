@@ -9,6 +9,9 @@
 }
 
 .date-table-input {
+  .griddle.simple-griddle {
+    margin: 0;
+  }
   .griddle-body {
     height: 350px;
     tbody {

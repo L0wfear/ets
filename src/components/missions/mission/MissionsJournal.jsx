@@ -105,7 +105,7 @@ class MissionsJournal extends CheckableElementsList {
   }
 
   componentWillUnmount() {
-    this.props.actionResetMissionCancelReasons();
+    // this.props.actionResetMissionCancelReasons(); на всякий
   }
 
   refreshList = async (state = this.state) => {

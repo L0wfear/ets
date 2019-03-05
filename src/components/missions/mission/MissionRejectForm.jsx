@@ -88,7 +88,7 @@ class MissionRejectForm extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.actionResetMissionCancelReasons();
+    // this.props.actionResetMissionCancelReasons();
   }
 
   getCarFuncTypesByNormId() {

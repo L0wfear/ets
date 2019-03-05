@@ -5,6 +5,7 @@ export const missionsCreationTemplateSchema = {
       title: 'Количество циклов',
       type: 'number',
       required: true,
+      integer: true,
       max: 10,
     },
     {

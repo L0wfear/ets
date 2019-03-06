@@ -16,6 +16,8 @@ import { IStateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_r
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
+import { IStateProgramm } from 'redux-main/reducers/modules/repair/state_programm/@types/state_programm';
+import { IRepairProgramm } from 'redux-main/reducers/modules/repair/@types/repair_programm';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -32,6 +34,7 @@ export interface ReduxState {
   geoobject: IStateGeoobject;
   missions: IStateMissions;
   company: IStateCompany;
+  repairProgramm: IRepairProgramm;
 
   order: IStateOrder; // partial
 

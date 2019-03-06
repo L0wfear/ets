@@ -24,6 +24,7 @@ import some_uniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import geoobject from 'redux-main/reducers/modules/geoobject/geoobject';
 import missions from 'redux-main/reducers/modules/missions';
 import company from 'redux-main/reducers/modules/company';
+import repairProgramm from 'redux-main/reducers/modules/repair/repair_programm_reducer';
 
 export default combineReducers({
   reports,
@@ -46,4 +47,5 @@ export default combineReducers({
   maintenanceRate,
   missions,
   company,
+  repairProgramm,
 });

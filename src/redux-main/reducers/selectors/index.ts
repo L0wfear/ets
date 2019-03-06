@@ -1,5 +1,10 @@
 import { ReduxState } from 'redux-main/@types/state';
 
+export {
+  getRepairProgramm,
+  getRepairProgrammstateProgramm,
+} from 'redux-main/reducers/modules/repair/repair_programm_selectors';
+
 export const getUserNotificationsState = (state: ReduxState) => (
   state.userNotifications
 );

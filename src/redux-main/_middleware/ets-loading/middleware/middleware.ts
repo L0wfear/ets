@@ -7,11 +7,19 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
   const { meta = { promise: false, page: '', path: '' } } = action;
 
   if (meta.promise && typeof action.payload.then === 'function') {
-    dispatch(incLoadingCount(meta));
+    let countLoad = false;
+    const interval = setTimeout(() => {
+      countLoad = true;
+      dispatch(incLoadingCount(meta));
+    }, 300);
 
     return action.payload
       .then((result) => {
-        dispatch(decLoadingCount(meta));
+        if (countLoad) {
+          dispatch(decLoadingCount(meta));
+        } else {
+          clearTimeout(interval);
+        }
         if (action.type && action.type !== 'none') {
           return dispatch({
             ...action,
@@ -25,7 +33,11 @@ const etsLoading = ({ dispatch }) => (next) => (action) => {
         };
       })
       .catch((error) => {
-        dispatch(decLoadingCount(meta));
+        if (countLoad) {
+          dispatch(decLoadingCount(meta));
+        } else {
+          clearTimeout(interval);
+        }
         throw error;
       });
   }

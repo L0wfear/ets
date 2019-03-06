@@ -83,6 +83,21 @@ class FilterRow extends React.Component {
             }))
             .filter((d) => d.label !== null)
             .value();
+
+        if (options.length && Array.isArray(options[0].value)) {
+          options = options.reduce((newOptions, option) => {
+            const arrOpt = option.value.map((element, index) => {
+              return {
+                value: element,
+                label: option.label[index],
+              };
+            });
+            newOptions.push(...arrOpt);
+            return newOptions;
+          }, []);
+          options = _.uniqBy(options, 'value');
+        }
+
         if (type === 'select' || type === 'advanced-select-like') {
           if (!!value && !_.find(options, (o) => o.value === value)) {
             value = null;

@@ -8,10 +8,7 @@ import { keyBy, get } from 'lodash';
 
 import { maskStatusPoint } from 'components/missions/mission/MissionInfoForm/utils/constants';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-import {
-  routeTypesBySlug,
-  routeTypesByKey,
-} from 'constants/route';
+import { routeTypesBySlug, routeTypesByKey } from 'constants/route';
 
 import { diffDates } from 'utils/dates';
 import { makeTitle } from 'components/missions/mission/MissionInfoForm/utils/format';
@@ -41,16 +38,16 @@ import { ReduxState } from 'redux-main/@types/state';
 /**
  * Карточка информации о задании
  */
-class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMissionInfoForm> {
+class MissionInfoForm extends React.Component<
+  PropsMissionInfoForm,
+  StateMissionInfoForm
+> {
   constructor(props) {
     super(props);
 
     const {
       element: {
-        report_data: {
-          entries,
-          check_unit,
-        },
+        report_data: { entries, check_unit },
         mission_data,
       },
     } = props;
@@ -63,16 +60,10 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
       inputLines: [],
       parkingCount: null,
       gps_code: null,
-      tooLongDates: (
-        diffDates(
-          mission_data.date_end,
-          mission_data.date_start,
-          'days',
-        ) > 10
-      ),
-      missionReport: (
-        entries ?
-          entries.map((report, index) => {
+      tooLongDates:
+        diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
+      missionReport: entries
+        ? entries.map((report, index) => {
             if (check_unit) {
               report.route_check_unit = check_unit;
             }
@@ -84,9 +75,7 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
 
             return report;
           })
-        :
-          null
-      ),
+        : null,
     };
   }
 
@@ -97,21 +86,25 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
    */
   componentDidMount() {
     if (!this.state.tooLongDates && this.state.missionReport) {
-      const {
-        element,
-      } = this.props;
+      const { element } = this.props;
 
-      this.props.actionLoadRouteById(
-        element.route_data.id,
-        { page: 'any', path: 'missionInfoForm' },
-      ).then((route_data) => {
-        switch (element.route_data.type) {
-          case routeTypesBySlug.dt.key: return this.loadPolys(route_data, 'dt');
-          case routeTypesBySlug.odh.key: return this.loadPolys(route_data, 'odh');
-          case routeTypesBySlug.points.key: return this.makePolysFromPoints(route_data);
-          default: return;
-        }
-      });
+      this.props
+        .actionLoadRouteById(element.route_data.id, {
+          page: 'any',
+          path: 'missionInfoForm',
+        })
+        .then((route_data) => {
+          switch (element.route_data.type) {
+            case routeTypesBySlug.dt.key:
+              return this.loadPolys(route_data, 'dt');
+            case routeTypesBySlug.odh.key:
+              return this.loadPolys(route_data, 'odh');
+            case routeTypesBySlug.points.key:
+              return this.makePolysFromPoints(route_data);
+            default:
+              return;
+          }
+        });
 
       this.loadGpsCode();
       this.loadTrack();
@@ -121,7 +114,9 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
   async loadGpsCode() {
     const { element } = this.props;
 
-    const { payload: { gps_code } } = await this.props.loadCarGpsCode({
+    const {
+      payload: { gps_code },
+    } = await this.props.loadCarGpsCode({
       asuods_id: element.car_data.asuods_id,
       date_start: element.mission_data.date_start,
     });
@@ -150,12 +145,16 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
       const type = 'odh_mkad';
       const { serverName } = GEOOBJECTS_OBJ[type];
 
-      const { odh_mkad } = await this.props.loadGeozones(serverName).then(({ payload: geozones }) => geozones);
+      const { odh_mkad } = await this.props
+        .loadGeozones(serverName)
+        .then(({ payload: geozones }) => geozones);
 
       payload.odh_mkad = odh_mkad;
     }
 
-    const calcTrackData = await this.props.loadTrackCaching(payload).then(({ payload: track }) => track);
+    const calcTrackData = await this.props
+      .loadTrackCaching(payload)
+      .then(({ payload: track }) => track);
 
     this.setState({
       track: calcTrackData.track,
@@ -193,36 +192,43 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
    * @param type тип маршрута (dt/ odh)
    */
   loadPolys(route_data: Route, type: string) {
-    const objectListIndex: any = route_data ? keyBy(route_data.object_list, 'object_id') : {};
+    const objectListIndex: any = route_data
+      ? keyBy(route_data.object_list, 'object_id')
+      : {};
     const inputLines = get(route_data, 'input_lines', []) || [];
     const { serverName } = GEOOBJECTS_OBJ[type];
 
-    this.props.loadGeozones(serverName, this.props.company_id).then(({ payload: { [serverName]: polysObj } }: any) => {
-      const { missionReport } = this.state;
-      const missionReportObjectIdIndex = new Set();
-      missionReport.forEach(({ object_id }) => {
-        missionReportObjectIdIndex.add(object_id);
+    this.props
+      .loadGeozones(serverName, this.props.company_id)
+      .then(({ payload: { [serverName]: polysObj } }: any) => {
+        const { missionReport } = this.state;
+        const missionReportObjectIdIndex = new Set();
+        missionReport.forEach(({ object_id }) => {
+          missionReportObjectIdIndex.add(object_id);
+        });
+
+        this.setState({
+          inputLines,
+          polys: {
+            [serverName]: Object.entries(polysObj).reduce(
+              (newObj, [geoId, geoData]: any) => {
+                const { front_id } = geoData;
+
+                if (missionReportObjectIdIndex.has(front_id)) {
+                  newObj[geoId] = {
+                    ...geoData,
+                    ...objectListIndex[front_id],
+                    frontIsSelected: false,
+                  };
+                }
+
+                return newObj;
+              },
+              {},
+            ),
+          },
+        });
       });
-
-      this.setState({
-        inputLines,
-        polys: {
-          [serverName]: Object.entries(polysObj).reduce((newObj, [geoId, geoData]: any) => {
-            const { front_id } = geoData;
-
-            if (missionReportObjectIdIndex.has(front_id)) {
-              newObj[geoId] = {
-                ...geoData,
-                ...objectListIndex[front_id],
-                frontIsSelected: false,
-              };
-            }
-
-            return newObj;
-          }, {}),
-        },
-      });
-    });
   }
 
   handleSelectedElementChange = (id) => {
@@ -232,16 +238,19 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
     if (Object.values(polys).length) {
       this.setState({
         polys: {
-          [slug]: Object.entries(polys[slug]).reduce((newObj, [geoId, geoData]) => {
-            newObj[geoId] = {...geoData};
-            newObj[geoId].frontIsSelected = geoId === `${slug}/${id}`;
+          [slug]: Object.entries(polys[slug]).reduce(
+            (newObj, [geoId, geoData]) => {
+              newObj[geoId] = { ...geoData };
+              newObj[geoId].frontIsSelected = geoId === `${slug}/${id}`;
 
-            return newObj;
-          }, {}),
+              return newObj;
+            },
+            {},
+          ),
         },
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -261,12 +270,21 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
     const title = makeTitle(element);
 
     return (
-      <Modal id="modal-mission-info" show onHide={onFormHide} bsSize="large" className="mission-info-modal" backdrop="static">
+      <Modal
+        id="modal-mission-info"
+        show
+        onHide={onFormHide}
+        bsSize="large"
+        className="mission-info-modal"
+        backdrop="static">
         <form onSubmit={onFormHide}>
           <Modal.Header closeButton>
             <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
-          <ModalBodyPreloader page="any" path="missionInfoForm" typePreloader="lazy">
+          <ModalBodyPreloader
+            page="any"
+            path="missionInfoForm"
+            typePreloader="lazy">
             <FormContainer>
               <SideContainerDiv>
                 <MapContainer
@@ -282,36 +300,35 @@ class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMission
                   has_mkad={route_data.has_mkad}
                   object_type_name={route_data.object_type_name}
                 />
-                {
-                  !this.state.tooLongDates ?
-                  (
-                    <InfoTableData
-                      mission_data={mission_data}
-                      report_data={report_data}
-                      parkingCount={this.state.parkingCount}
-                    />
-                  )
-                  :
-                  ( <DivNone /> )
-                }
+                {!this.state.tooLongDates ? (
+                  <InfoTableData
+                    mission_data={mission_data}
+                    report_data={report_data}
+                    parkingCount={this.state.parkingCount}
+                  />
+                ) : (
+                  <DivNone />
+                )}
               </SideContainerDiv>
               <SideContainerDiv>
-              {
-                this.state.tooLongDates ?
-                ( <span>Слишком большой период действия задания</span> )
-                :
-                ( !missionReport ?
-                  ( <h5>Нет данных о прохождении задания</h5> )
-                  :
-                  (
-                    <MissionInfoTableContainer
-                      type={route_data.type}
-                      missionReport={missionReport}
-                      handleSelectedElementChange={this.handleSelectedElementChange}
-                    />
-                  )
-                )
-              }
+                {this.state.tooLongDates ? (
+                  <span>Слишком большой период действия задания</span>
+                ) : !missionReport ? (
+                  <h5>Нет данных о прохождении задания</h5>
+                ) : (
+                  <MissionInfoTableContainer
+                    type={route_data.type}
+                    missionReport={missionReport}
+                    handleSelectedElementChange={
+                      this.handleSelectedElementChange
+                    }
+                  />
+                )}
+                {route_data.has_object_list ? (
+                  <h5>Объекты отсутствуют в маршруте</h5>
+                ) : (
+                  <DivNone />
+                )}
               </SideContainerDiv>
             </FormContainer>
           </ModalBodyPreloader>
@@ -329,7 +346,7 @@ export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
     company_id: state.session.userData.company_id,
   }),
   (dispatch: any) => ({
-    loadGeozones: (serverName, company_id) => (
+    loadGeozones: (serverName, company_id) =>
       dispatch(
         loadGeozones(
           'none',
@@ -341,14 +358,10 @@ export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
           },
           company_id,
         ),
-      )
-    ),
-    actionLoadRouteById: (...arg) => (
-      dispatch(
-        routesActions.actionLoadRouteById(...arg),
-      )
-    ),
-    loadTrackCaching: (props) => (
+      ),
+    actionLoadRouteById: (...arg) =>
+      dispatch(routesActions.actionLoadRouteById(...arg)),
+    loadTrackCaching: (props) =>
       dispatch({
         type: '',
         payload: loadTrackCaching(props),
@@ -356,9 +369,8 @@ export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
           page: 'any',
           path: 'missionInfoForm',
         },
-      })
-    ),
-    loadCarGpsCode: ({ asuods_id, date_start }) => (
+      }),
+    loadCarGpsCode: ({ asuods_id, date_start }) =>
       dispatch(
         loadCarGpsCode(
           'none',
@@ -371,7 +383,6 @@ export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
             path: 'missionInfoForm',
           },
         ),
-      )
-    ),
+      ),
   }),
 )(MissionInfoForm);

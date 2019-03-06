@@ -34,6 +34,7 @@ export interface IRouteData {
   type: 'mixed' | 'simple_dt' | 'points';
   has_mkad: boolean;
   object_type_name: 'ОДХ' | 'ДТ' | 'ПН';
+  has_object_list: boolean | null;
 }
 
 export interface IReportData {
@@ -84,17 +85,16 @@ export type DispatchPropsMissionInfoForm = {
   loadGeozones: any;
   loadCarGpsCode: any;
   loadTrackCaching: any;
-  actionLoadRouteById: HandleThunkActionCreator<typeof routesActions.actionLoadRouteById>;
+  actionLoadRouteById: HandleThunkActionCreator<
+    typeof routesActions.actionLoadRouteById
+  >;
 };
 
-export type PropsMissionInfoForm = (
-  DispatchPropsMissionInfoForm
-  & {
-    element: IMissionInfoFormState;
-    onFormHide: any;
-    company_id: number | null;
-  }
-);
+export type PropsMissionInfoForm = DispatchPropsMissionInfoForm & {
+  element: IMissionInfoFormState;
+  onFormHide: any;
+  company_id: number | null;
+};
 
 export type StateMissionInfoForm = {
   tooLongDates: boolean;

@@ -7,17 +7,22 @@ import {
   promiseDeleteRoute,
   promiseValidateRoute,
 } from 'redux-main/reducers/modules/routes/promise';
-import {
-  IStateRoutes,
-  Route,
-} from 'redux-main/reducers/modules/routes/@types';
+import { IStateRoutes, Route } from 'redux-main/reducers/modules/routes/@types';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { HandleThunkActionCreator } from 'react-redux';
 
-const actionSetRoutes = (routesList: IStateRoutes['routesList'], routesIndex: IStateRoutes['routesIndex']): ThunkAction<Pick<IStateRoutes, 'routesList' | 'routesIndex'>, ReduxState, {}, AnyAction> => (dispatch) => {
+const actionSetRoutes = (
+  routesList: IStateRoutes['routesList'],
+  routesIndex: IStateRoutes['routesIndex'],
+): ThunkAction<
+  Pick<IStateRoutes, 'routesList' | 'routesIndex'>,
+  ReduxState,
+  {},
+  AnyAction
+> => (dispatch) => {
   dispatch(
     actionSetNewData({
       routesList,
@@ -30,23 +35,31 @@ const actionSetRoutes = (routesList: IStateRoutes['routesList'], routesIndex: IS
     routesIndex,
   };
 };
-const actionResetSetRoutes = (): ThunkAction<Pick<IStateRoutes, 'routesList' | 'routesIndex'>, ReduxState, {}, AnyAction> => (dispatch) => {
+const actionResetSetRoutes = (): ThunkAction<
+  Pick<IStateRoutes, 'routesList' | 'routesIndex'>,
+  ReduxState,
+  {},
+  AnyAction
+> => (dispatch) => {
   const routesList = [];
   const routesIndex = {};
 
-  dispatch(
-    actionSetRoutes(
-      routesList,
-      routesIndex,
-    ),
-  );
+  dispatch(actionSetRoutes(routesList, routesIndex));
 
   return {
     routesList,
     routesIndex,
   };
 };
-const actionLoadRoutes = (ownPayload: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseLoadRoutes>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionLoadRoutes = (
+  ownPayload: object,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseLoadRoutes>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadRoutes(ownPayload),
@@ -58,21 +71,30 @@ const actionLoadRoutes = (ownPayload: object, meta: LoadingMeta): ThunkAction<Re
 
   return payload;
 };
-const actionLoadAndSetInStoreRoutes = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionLoadRoutes>>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const response = await dispatch(
-    actionLoadRoutes(payload, meta),
-  );
+const actionLoadAndSetInStoreRoutes = (
+  payload: object,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<HandleThunkActionCreator<typeof actionLoadRoutes>>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
+  const response = await dispatch(actionLoadRoutes(payload, meta));
 
-  dispatch(
-    actionSetRoutes(
-      response.data,
-      response.dataIndex,
-    ),
-  );
+  dispatch(actionSetRoutes(response.data, response.dataIndex));
 
   return response;
 };
-const actionLoadRouteById = (id: number, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseLoadRouteById>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionLoadRouteById = (
+  id: number,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseLoadRouteById>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadRouteById(id),
@@ -85,7 +107,16 @@ const actionLoadRouteById = (id: number, meta: LoadingMeta): ThunkAction<ReturnT
   return payload;
 };
 
-const actionCreateRoute = (routeRaw: Partial<Route>, isTemplate: boolean, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateRoute>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionCreateRoute = (
+  routeRaw: Partial<Route>,
+  isTemplate: boolean,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseCreateRoute>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateRoute(routeRaw, isTemplate),
@@ -97,7 +128,15 @@ const actionCreateRoute = (routeRaw: Partial<Route>, isTemplate: boolean, meta: 
 
   return payload;
 };
-const actionUpdateRoute = (routeOld: Partial<Route>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateRoute>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionUpdateRoute = (
+  routeOld: Partial<Route>,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseUpdateRoute>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateRoute(routeOld),
@@ -109,8 +148,16 @@ const actionUpdateRoute = (routeOld: Partial<Route>, meta: LoadingMeta): ThunkAc
 
   return payload;
 };
-const actionRemoveRoute = (id: Route['id'], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseDeleteRoute>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const { payload } = dispatch({
+const actionRemoveRoute = (
+  id: Route['id'],
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseDeleteRoute>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
     payload: promiseDeleteRoute(id),
     meta: {
@@ -121,7 +168,19 @@ const actionRemoveRoute = (id: Route['id'], meta: LoadingMeta): ThunkAction<Retu
 
   return payload;
 };
-const actionValidateRoute = (route: Partial<Route> & Pick<Route, 'technical_operation_id' | 'input_lines' | 'municipal_facility_id'>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseValidateRoute>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionValidateRoute = (
+  route: Partial<Route> &
+    Pick<
+      Route,
+      'technical_operation_id' | 'input_lines' | 'municipal_facility_id'
+    >,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<typeof promiseValidateRoute>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseValidateRoute(route),

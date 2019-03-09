@@ -153,6 +153,9 @@ module.exports = {
       '.tsx',
     ],
     modules: [__dirname, 'src', 'node_modules'],
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),

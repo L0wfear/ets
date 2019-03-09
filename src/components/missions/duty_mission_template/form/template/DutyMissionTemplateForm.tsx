@@ -174,28 +174,24 @@ class DutyMissionTemplateForm extends React.PureComponent<
               />
             </Col>
           </Row>
-          <Row>
-            <Col md={12}>
-              <FieldRouteIdDutyMission
-                error={errors.route_id}
-                value={state.route_id}
-                name={state.route_name}
-                municipal_facility_id={state.municipal_facility_id}
-                municipal_facility_name={state.municipal_facility_name}
-                technical_operation_id={state.technical_operation_id}
-                technical_operation_name={state.technical_operation_name}
-                DUTY_MISSION_IS_ORDER_SOURCE={false}
-                disabled={!isPermitted}
-                isPermitted={isPermitted}
-                structure_id={state.structure_id}
-                structure_name={state.structure_name}
-                onChange={this.props.handleChange}
-                deepLvl={this.props.deepLvl}
-                page={page}
-                path={path}
-              />
-            </Col>
-          </Row>
+          <FieldRouteIdDutyMission
+            error={errors.route_id}
+            value={state.route_id}
+            name={state.route_name}
+            municipal_facility_id={state.municipal_facility_id}
+            municipal_facility_name={state.municipal_facility_name}
+            technical_operation_id={state.technical_operation_id}
+            technical_operation_name={state.technical_operation_name}
+            DUTY_MISSION_IS_ORDER_SOURCE={false}
+            disabled={!isPermitted}
+            isPermitted={isPermitted}
+            structure_id={state.structure_id}
+            structure_name={state.structure_name}
+            onChange={this.props.handleChange}
+            deepLvl={this.props.deepLvl}
+            page={page}
+            path={path}
+          />
           <Row>
             <Col md={12}>
               <ExtField

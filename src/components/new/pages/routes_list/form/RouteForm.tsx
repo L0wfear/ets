@@ -182,7 +182,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
             <FieldTechnicalOperation
               value={technical_operation_id}
               name={formState.technical_operation_name}
-              disabled={!isPermitted || fromMission || !IS_CREATING}
+              disabled={!isPermitted || fromMission}
               error={formErrors.technical_operation_id}
               onChange={this.props.handleChange}
               page={page}
@@ -193,12 +193,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               value={municipal_facility_id}
               name={formState.municipal_facility_name}
               normatives={formState.normatives}
-              disabled={
-                !isPermitted ||
-                fromMission ||
-                !IS_CREATING ||
-                !technical_operation_id
-              }
+              disabled={!isPermitted || fromMission || !technical_operation_id}
               onChange={this.props.handleChange}
               clearable={false}
               missionAvailableRouteTypes={this.props.missionAvailableRouteTypes}
@@ -219,7 +214,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
             />
             <FieldType
               value={type}
-              disabled={!isPermitted || !IS_CREATING || !municipal_facility_id}
+              disabled={!isPermitted || !municipal_facility_id}
               error={formErrors.type}
               onChange={this.props.handleChange}
               available_route_types={formState.available_route_types}

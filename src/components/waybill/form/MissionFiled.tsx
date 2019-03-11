@@ -16,7 +16,7 @@ const ButtonCreateMission = withRequirePermissionsNew({
   permissions: permissionsMission.create,
 })(Button);
 
-class MissionField extends React.Component<any & { deepLvl: number }, any> {
+class MissionField extends React.Component<any, any> {
   state = {
     showMissionForm: false,
     selectedMission: null,
@@ -265,7 +265,6 @@ class MissionField extends React.Component<any & { deepLvl: number }, any> {
           withDefineCarId
           waybillStartDate={state.plan_departure_date}
           waybillEndDate={state.plan_arrival_date}
-          deepLvl={this.props.deepLvl + 1}
           {...this.props}
         />
         {this.state.showMissionRejectForm && (

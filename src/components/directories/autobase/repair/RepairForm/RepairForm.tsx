@@ -115,7 +115,6 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       <EtsModal
         id="modal-repair"
         show
-        deepLvl={this.props.deepLvl}
         onHide={this.props.hideWithoutChanges}
         backdrop="static">
         <Modal.Header closeButton>

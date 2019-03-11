@@ -12,7 +12,7 @@ export type PropsTechMaintFormWrap = {
   element: TechMaint | null;
   car_id: number;
   car_model_id: number;
-  deepLvl?: number;
+
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -33,7 +33,7 @@ export type OwnTechMaintProps = {
   handleHide: OnFormHideType;
   car_id: number;
   car_model_id: number;
-  deepLvl?: number;
+
   page: string;
   path?: string;
 };

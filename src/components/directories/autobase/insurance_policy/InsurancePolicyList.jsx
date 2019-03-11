@@ -86,7 +86,6 @@ class InsurancePolicyList extends ElementsList {
   getAdditionalFormProps() {
     return {
       loadingPageName,
-      deepLvl: this.props.deepLvl || 1,
     };
   }
 }

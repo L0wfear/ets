@@ -91,9 +91,9 @@ class InsurancePolicyForm extends React.PureComponent<
       <EtsModal
         id="modal-insurance-policy"
         show
-        deepLvl={this.props.deepLvl}
         onHide={this.props.hideWithoutChanges}
-        backdrop="static">
+        backdrop="static"
+      >
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

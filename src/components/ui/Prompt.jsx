@@ -63,7 +63,6 @@ class Prompt extends React.Component {
       <EtsModal
         show={this.state.isVisible}
         bsSize={this.state.bsSize}
-        deepLvl={65}
         id="delete-form">
         <Modal.Header>{this.state.title}</Modal.Header>
         <Modal.Body>

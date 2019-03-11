@@ -33,7 +33,6 @@ export type OwnPropsFieldRouteMissionTemplate = {
   structure_id: MissionTemplate['structure_id'];
   structure_name: MissionTemplate['structure_name'];
   for_column: MissionTemplate['for_column'];
-  deepLvl: number;
 
   disabled: boolean;
   isPermitted: boolean;

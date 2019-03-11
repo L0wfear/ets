@@ -103,7 +103,6 @@ class EmployeeOnCarList extends ElementsList {
         entity="car"
         permissions={[permissionsCar.read]}
         flux={this.context.flux}
-        deepLvl={1}
         {...this.props}
       />,
     ];

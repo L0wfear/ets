@@ -92,7 +92,6 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           onFormHide={this.hideMain}
           showForm={!!missionToShow && !!this.state.selectedMissionIdToShowMain}
           element={missionToShow}
-          deepLvl={1}
         />
         <MissionInfoFormWrap
           onFormHide={this.hideInfo}

@@ -18,7 +18,6 @@ export type PropsInsurancePolicyFormWrap = {
   showForm: boolean;
   element: InsurancePolicy | null;
   car_id: number;
-  deepLvl?: number;
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -37,7 +36,6 @@ export type OwnInsurancePolicyProps = {
   element: InsurancePolicy | null;
   handleHide: OnFormHideType;
   car_id: number;
-  deepLvl?: number;
 
   page: string;
   path?: string;

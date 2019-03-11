@@ -102,7 +102,6 @@ class TechInspectionForm extends React.PureComponent<
       <EtsModal
         id="modal-tech-inspection"
         show
-        deepLvl={this.props.deepLvl}
         onHide={this.props.hideWithoutChanges}
         backdrop="static">
         <Modal.Header closeButton>

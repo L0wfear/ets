@@ -357,7 +357,6 @@ class FieldRouteIdDutyMission extends React.PureComponent<
             ).toString()}
             fromMission
             fromMissionTemplate
-            deepLvl={this.props.deepLvl + 1}
             page={page}
           />
         ) : (

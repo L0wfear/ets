@@ -15,7 +15,7 @@ export type PropsTechInspectionFormWrap = {
   showForm: boolean;
   element: TechInspection | null;
   car_id: number;
-  deepLvl?: number;
+
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -35,7 +35,7 @@ export type OwnTechInspectionProps = {
   element: TechInspection | null;
   handleHide: OnFormHideType;
   car_id: number;
-  deepLvl?: number;
+
   page: string;
   path?: string;
 };

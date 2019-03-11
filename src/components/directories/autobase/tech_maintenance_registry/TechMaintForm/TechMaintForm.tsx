@@ -93,7 +93,7 @@ class TechMaintForm extends React.PureComponent<
       <EtsModal
         id="modal-tech-maint"
         show
-        deepLvl={this.props.deepLvl}
+
         onHide={this.props.hideWithoutChanges}
         backdrop="static">
         <Modal.Header closeButton>

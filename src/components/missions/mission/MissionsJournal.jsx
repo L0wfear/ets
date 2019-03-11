@@ -450,7 +450,6 @@ class MissionsJournal extends CheckableElementsList {
         showForm={this.state.showForm}
         element={this.state.selectedElement}
         refreshTableList={this.refreshList}
-        deepLvl={this.props.deepLvl || 1}
         {...this.props}
       />
       {this.state.showMissionRejectForm && (

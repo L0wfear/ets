@@ -100,7 +100,7 @@ class MissionTemplateForm extends React.PureComponent<
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static"
-        deepLvl={this.props.deepLvl}>
+>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -225,7 +225,7 @@ class MissionTemplateForm extends React.PureComponent<
                 isPermitted={isPermitted}
                 printMapKeyBig={printMapKeyBig}
                 printMapKeySmall={printMapKeySmall}
-                deepLvl={this.props.deepLvl}
+
                 page={page}
                 path={path}
               />

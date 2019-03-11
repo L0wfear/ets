@@ -27,7 +27,6 @@ const OrderMissionController: React.FunctionComponent<any> = (props) => {
         onFormHide={props.onHideCM}
         element={missionData.mElement}
         order={missionData.order}
-        deepLvl={1}
       />
       <DutyMissionFormLazy
         showForm={dutyMissionData.showForm}

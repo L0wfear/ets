@@ -54,7 +54,6 @@ const TechMaintTab: React.FunctionComponent<PropsTechMaintTab> = (props) => {
         car_id={props.car_id}
         car_model_id={props.car_model_id}
         gov_number={props.gov_number}
-        deepLvl={props.deepLvl}
       />
     </TechMaintTabWrap>
   );

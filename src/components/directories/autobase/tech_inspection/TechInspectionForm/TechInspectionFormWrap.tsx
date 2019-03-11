@@ -26,7 +26,7 @@ class TechInspectionFormWrap extends React.Component<
             element={props.element}
             handleHide={props.onFormHide}
             car_id={props.car_id}
-            deepLvl={this.props.deepLvl}
+
             page={page}
             path={path}
           />

@@ -21,7 +21,6 @@ export type PropsRepairFormWrap = {
   showForm: boolean;
   element: Repair | null;
   car_id: number;
-  deepLvl?: number;
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -43,7 +42,6 @@ export type OwnRepairProps = {
   element: Repair | null;
   handleHide: OnFormHideType;
   car_id: number;
-  deepLvl?: number;
   page: string;
   path?: string;
 };

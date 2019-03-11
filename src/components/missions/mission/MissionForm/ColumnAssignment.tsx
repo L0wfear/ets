@@ -20,7 +20,7 @@ type ColumnAssignmentProps = {
   handleSubmit: () => Promise<any>;
   carsList: Car[];
   show: boolean;
-  deepLvl: number;
+
 };
 type ColumnAssignmentState = {
   showBackButton: boolean;
@@ -64,7 +64,7 @@ class ColumnAssignment extends React.Component<
       <EtsModal
         id="modal-column-assignment"
         show
-        deepLvl={this.props.deepLvl}
+
         onHide={this.props.hideColumnAssignment}>
         <Modal.Header closeButton>
           <Modal.Title>Прикрепление заданий к ПЛ</Modal.Title>

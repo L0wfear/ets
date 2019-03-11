@@ -24,7 +24,7 @@ class MissionTemplateFormLazy extends React.Component<
           <MissionTemplateForm
             element={props.element}
             handleHide={props.onFormHide}
-            deepLvl={this.props.deepLvl || 1}
+
             page={page}
             path={path}
           />

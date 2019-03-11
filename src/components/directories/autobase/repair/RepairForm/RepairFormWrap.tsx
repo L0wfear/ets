@@ -23,7 +23,6 @@ class RepareFormWrap extends React.Component<PropsRepairFormWrap, {}> {
             element={props.element}
             handleHide={props.onFormHide}
             car_id={props.car_id}
-            deepLvl={this.props.deepLvl}
             page={page}
             path={path}
           />

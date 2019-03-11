@@ -735,15 +735,13 @@ export class MissionForm extends Form {
           carsList={carsList}
           handleSubmit={this.handleSubmitFromAssignmentModal}
           show={this.state.showColumnAssignment}
-          deepLvl={this.props.deepLvl + 1}
         />
         <EtsModal
           id="modal-mission"
           show={this.props.show}
           onHide={this.props.onHide}
           bsSize="large"
-          backdrop="static"
-          deepLvl={this.props.deepLvl}>
+          backdrop="static">
           <ExtDiv hidden={this.state.showColumnAssignment}>
             <Modal.Header closeButton>
               <Modal.Title>{title}</Modal.Title>
@@ -1106,7 +1104,6 @@ export class MissionForm extends Form {
                   : available_route_types
               }
               fromMission
-              deepLvl={this.props.deepLvl + 1}
             />
           </ExtDiv>
         </EtsModal>

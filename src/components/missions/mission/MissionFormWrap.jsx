@@ -356,7 +356,6 @@ class MissionFormWrap extends FormWrap {
             printMapKeySmall={printMapKeySmall}
             {...props}
             {...this.state}
-            deepLvl={this.props.deepLvl || 1}
             show
           />
         ) : (

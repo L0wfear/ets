@@ -26,7 +26,6 @@ class InsurancePolicyFormWrap extends React.Component<
             element={props.element}
             handleHide={props.onFormHide}
             car_id={props.car_id}
-            deepLvl={2}
             page={page}
             path={path}
           />

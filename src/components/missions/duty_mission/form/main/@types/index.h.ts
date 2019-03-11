@@ -14,8 +14,6 @@ export type PropsDutyMissionFormLazy = {
   element: Partial<DutyMission> | null;
   onFormHide: OnFormHideType;
   readOnly?: boolean;
-
-  deepLvl?: number;
   loadingPageName?: string;
   page?: string;
   path?: string;
@@ -56,8 +54,6 @@ export type OwnDutyMissionProps = {
   element: Partial<DutyMission> | null;
   handleHide: OnFormHideType;
   readOnly?: boolean;
-
-  deepLvl: number;
   page: string;
   path?: string;
 };

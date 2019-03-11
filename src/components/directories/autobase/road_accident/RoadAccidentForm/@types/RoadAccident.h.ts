@@ -18,7 +18,6 @@ export type PropsRoadAccidentFormWrap = {
   showForm: boolean;
   element: RoadAccident | null;
   car_id: number;
-  deepLvl?: number;
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -37,7 +36,6 @@ export type OwnRoadAccidentProps = {
   element: RoadAccident | null;
   handleHide: OnFormHideType;
   car_id: number;
-  deepLvl?: number;
   page: string;
   path?: string;
 };

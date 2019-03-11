@@ -37,7 +37,7 @@ export type InputRouteFormProps = {
   fromOrder?: boolean;
   missionAvailableRouteTypes?: string[];
   hasMissionStructureId?: boolean;
-  deepLvl?: number;
+
 };
 
 export type OwnRouteFormProps = InputRouteFormProps & {

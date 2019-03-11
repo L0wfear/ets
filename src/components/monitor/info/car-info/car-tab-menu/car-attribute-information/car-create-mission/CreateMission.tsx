@@ -94,7 +94,6 @@ class CreateMission extends React.Component<
           element={element}
           carsList={carActualGpsNumberArray}
           withDefineCarId
-          deepLvl={1}
         />
       </FlexCenterButton>
     );

@@ -33,7 +33,6 @@ class ChangeRouteForm extends React.Component {
       actionLoadRouteById: PropTypes.func.isRequired,
       page: PropTypes.string.isRequired,
       path: PropTypes.string.isRequired,
-      deepLvl: PropTypes.number.isRequired,
     };
   }
 
@@ -127,8 +126,7 @@ class ChangeRouteForm extends React.Component {
           show
           onHide={this.props.onFormHide}
           bsSize="large"
-          backdrop="static"
-          deepLvl={this.props.deepLvl}>
+          backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Маршруты</Modal.Title>
           </Modal.Header>
@@ -163,7 +161,6 @@ class ChangeRouteForm extends React.Component {
           element={this.state.routeElement}
           handleHide={this.onFormHide}
           showForm={this.state.showRouteForm}
-          deepLvl={this.props.deepLvl + 1}
         />
       </>
     ) : (

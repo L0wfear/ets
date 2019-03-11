@@ -24,7 +24,7 @@ class TechMaintFormWrap extends React.Component<PropsTechMaintFormWrap, {}> {
             handleHide={props.onFormHide}
             car_id={props.car_id}
             car_model_id={props.car_model_id}
-            deepLvl={this.props.deepLvl}
+
             page={page}
             path={path}
           />

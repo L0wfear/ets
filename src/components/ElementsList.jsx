@@ -453,7 +453,6 @@ class ElementsList extends React.Component {
         flux={this.context.flux}
         {...this.getAdditionalFormProps()}
         {...this.props}
-        deepLvl={this.props.deepLvl || 1}
       />,
     );
 

@@ -158,7 +158,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
       <EtsModal
         id="modal-route"
         show
-        deepLvl={this.props.deepLvl}
+
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static">

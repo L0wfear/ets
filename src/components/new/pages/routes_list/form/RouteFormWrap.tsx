@@ -24,7 +24,6 @@ class RouteFormWrap extends React.Component<PropsRouteFormWrap, {}> {
           fromOrder={props.fromOrder}
           missionAvailableRouteTypes={props.missionAvailableRouteTypes}
           hasMissionStructureId={props.hasMissionStructureId}
-          deepLvl={props.deepLvl}
         />
       </React.Suspense>
     ) : (

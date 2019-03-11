@@ -308,10 +308,7 @@ class CarForm extends Form {
 
           <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>
             {tabKey === CAR_TAB_INDEX.insurance_policy ? (
-              <InsurancePolicyList
-                car_id={state.asuods_id}
-                deepLvl={this.props.deepLvl + 1}
-              />
+              <InsurancePolicyList car_id={state.asuods_id} />
             ) : (
               <DivNone />
             )}
@@ -319,10 +316,7 @@ class CarForm extends Form {
 
           <TabContent eventKey={CAR_TAB_INDEX.road_accident} tabKey={tabKey}>
             {tabKey === CAR_TAB_INDEX.road_accident ? (
-              <RoadAccidentList
-                car_id={state.asuods_id}
-                deepLvl={this.props.deepLvl + 1}
-              />
+              <RoadAccidentList car_id={state.asuods_id} />
             ) : (
               <DivNone />
             )}
@@ -338,7 +332,6 @@ class CarForm extends Form {
                 car_id={state.asuods_id}
                 car_model_id={state.special_model_id}
                 gov_number={state.gov_number}
-                deepLvl={this.props.deepLvl + 1}
               />
             ) : (
               <DivNone />
@@ -346,10 +339,7 @@ class CarForm extends Form {
           </TabContent>
           <TabContent eventKey={CAR_TAB_INDEX.repair} tabKey={tabKey}>
             {tabKey === CAR_TAB_INDEX.repair ? (
-              <RepairList
-                car_id={state.asuods_id}
-                deepLvl={this.props.deepLvl + 1}
-              />
+              <RepairList car_id={state.asuods_id} />
             ) : (
               <DivNone />
             )}
@@ -357,10 +347,7 @@ class CarForm extends Form {
 
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             {tabKey === CAR_TAB_INDEX.tech_inspection ? (
-              <TechInspectionList
-                car_id={state.asuods_id}
-                deepLvl={this.props.deepLvl + 1}
-              />
+              <TechInspectionList car_id={state.asuods_id} />
             ) : (
               <DivNone />
             )}

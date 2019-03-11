@@ -118,7 +118,6 @@ class DashboardMenuButtons extends React.Component<
           showForm={this.state.showMissionFormWrap}
           fromDashboard
           element={null}
-          deepLvl={1}
         />
         <DutyMissionFormLazy
           onFormHide={this.handleFormHideDutyMissionFormWrap}

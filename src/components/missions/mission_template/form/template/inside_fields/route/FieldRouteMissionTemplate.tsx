@@ -389,7 +389,6 @@ class FieldRouteMissionTemplate extends React.PureComponent<
             )}
             fromMission
             fromMissionTemplate
-            deepLvl={this.props.deepLvl + 1}
             page={page}
           />
         ) : (

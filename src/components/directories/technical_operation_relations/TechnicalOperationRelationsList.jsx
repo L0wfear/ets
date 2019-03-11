@@ -180,7 +180,6 @@ class TechnicalOperationRelationsList extends ElementsList {
         flux={this.context.flux}
         refreshList={this.refreshList}
         {...this.props}
-        deepLvl={1}
         page={loadingPage}
         path="сarFormWrap"
       />,
@@ -194,7 +193,6 @@ class TechnicalOperationRelationsList extends ElementsList {
         refreshList={this.refreshList}
         page={loadingPage}
         path="changeRouteForm"
-        deepLvl={1}
       />,
     ];
   }

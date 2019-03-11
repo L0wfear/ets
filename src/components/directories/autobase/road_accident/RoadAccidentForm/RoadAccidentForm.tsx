@@ -82,13 +82,11 @@ class RoadAccidentForm extends React.PureComponent<
       ownIsPermitted &&
       (isNullOrUndefined(state.company_id) ||
         state.company_id === this.props.userCompanyId);
-    console.log(this.props);
 
     return (
       <EtsModal
         id="modal-insurance-policy"
         show
-        deepLvl={this.props.deepLvl}
         onHide={this.props.hideWithoutChanges}
         backdrop="static">
         <Modal.Header closeButton>

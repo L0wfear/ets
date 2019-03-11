@@ -41,15 +41,15 @@ export type OwnPropsFieldRouteIdDutyMission = {
   structure_name: DutyMission['structure_name'];
 
   onChange: (obj: Partial<DutyMission>) => void;
-
-  deepLvl: number;
   page: string;
   path: string;
 };
 
-export type PropsFieldRouteIdDutyMission = StatePropsFieldRouteIdDutyMission &
-  DispatchPropsFieldRouteIdDutyMission &
-  OwnPropsFieldRouteIdDutyMission;
+export type PropsFieldRouteIdDutyMission = (
+  StatePropsFieldRouteIdDutyMission
+  & DispatchPropsFieldRouteIdDutyMission
+  & OwnPropsFieldRouteIdDutyMission
+);
 
 export type StateFieldRouteIdDutyMission = {
   showRouteForm: boolean;

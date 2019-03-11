@@ -85,7 +85,7 @@ class DutyMissionTemplateForm extends React.PureComponent<
       <EtsModal
         id="modal-duty-mission-template"
         show
-        deepLvl={this.props.deepLvl}
+
         onHide={this.handleHide}
         bsSize="large"
         backdrop="static">
@@ -188,7 +188,7 @@ class DutyMissionTemplateForm extends React.PureComponent<
             structure_id={state.structure_id}
             structure_name={state.structure_name}
             onChange={this.props.handleChange}
-            deepLvl={this.props.deepLvl}
+
             page={page}
             path={path}
           />

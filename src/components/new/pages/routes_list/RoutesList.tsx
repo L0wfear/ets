@@ -515,7 +515,6 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                 handleHide={this.onFormHide}
                 element={selectedRoute}
                 routesMapNameId={this.state.routesMapNameId}
-                deepLvl={1}
               />
             </div>
           </Col>

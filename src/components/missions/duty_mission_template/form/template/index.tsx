@@ -26,7 +26,7 @@ class DutyMissionTemplateFormLazy extends React.Component<
           <DutyMissionTemplateForm
             element={props.element}
             handleHide={props.onFormHide}
-            deepLvl={this.props.deepLvl || 1}
+
             page={page}
             path={path}
           />

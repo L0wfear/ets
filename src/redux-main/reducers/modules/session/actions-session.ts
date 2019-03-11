@@ -78,17 +78,23 @@ export const sessionCahngeCompanyOnAnother: any = (
     },
   });
 
-  const {
-    payload: { token: sessionEtsTest },
-  } = await dispatch({
-    type: 'none',
-    payload: ChangeRoleServiceEtsTest.post({ company_id }, false, 'json'),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+  let sessionEtsTest = null;
+
+  if (process.env.STAND === 'dev') {
+    const {
+      payload: { token: sessionEtsTestToken },
+    } = await dispatch({
+      type: 'none',
+      payload: ChangeRoleServiceEtsTest.post({ company_id }, false, 'json'),
+      meta: {
+        promise: true,
+        page,
+        path,
+      },
+    });
+
+    sessionEtsTest = sessionEtsTestToken;
+  }
 
   const userData = makeUserData(userDataRaw);
 
@@ -113,17 +119,23 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
     },
   });
 
-  const {
-    payload: { token: sessionEtsTest },
-  } = await dispatch({
-    type: 'none',
-    payload: AuthServiceEtsTest.post(user, false, 'json'),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+  let sessionEtsTest = '';
+
+  if (process.env.STAND === 'dev') {
+    const {
+      payload: { token: sessionEtsTestToken },
+    } = await dispatch({
+      type: 'none',
+      payload: AuthServiceEtsTest.post(user, false, 'json'),
+      meta: {
+        promise: true,
+        page,
+        path,
+      },
+    });
+
+    sessionEtsTest = sessionEtsTestToken;
+  }
 
   // calc stableRedirect
   const userData = makeUserData(userDataRaw);
@@ -142,10 +154,13 @@ export const sessionSetData: any = (
   sessionEtsTest,
 ) => async (dispatch) => {
   localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
-  localStorage.setItem(
-    global.SESSION_KEY_ETS_TEST_BY_DEV2,
-    JSON.stringify(sessionEtsTest),
-  );
+
+  if (process.env.STAND === 'dev') {
+    localStorage.setItem(
+      global.SESSION_KEY_ETS_TEST_BY_DEV2,
+      JSON.stringify(sessionEtsTest),
+    );
+  }
 
   setUserContext(userData);
 
@@ -207,26 +222,37 @@ export const checkToken: any = () => async (dispatch, getState) => {
     },
   });
 
-  const {
-    payload: { data: dataEtsTest },
-  } = await dispatch({
-    type: 'none',
-    payload: AuthCheckServiceEtsTest.get(),
-    meta: {
-      promise: true,
-    },
-  });
-  const sessionEtsTest = JSON.parse(
-    localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+  let sessionEtsTest = '';
+
+  let triggreOnSave = (
+    isObject(data)
+    && Boolean(Object.keys(data).length)
   );
 
-  if (
-    sessionEtsTest &&
-    isObject(data) &&
-    Object.keys(data).length &&
-    isObject(dataEtsTest) &&
-    Object.keys(dataEtsTest).length
-  ) {
+  if (process.env.STAND === 'dev') {
+    sessionEtsTest = JSON.parse(
+      localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+    );
+
+    const {
+      payload: { data: dataEtsTest },
+    } = await dispatch({
+      type: 'none',
+      payload: AuthCheckServiceEtsTest.get(),
+      meta: {
+        promise: true,
+      },
+    });
+
+    triggreOnSave = (
+      triggreOnSave
+      && Boolean(sessionEtsTest)
+      && isObject(dataEtsTest)
+      && Boolean(Object.keys(dataEtsTest).length)
+    );
+  }
+
+  if (triggreOnSave) {
     dispatch(
       sessionSetData(
         makeUserData(data),

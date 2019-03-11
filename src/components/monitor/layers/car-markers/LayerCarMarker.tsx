@@ -320,15 +320,17 @@ class LayerCarMarker extends React.PureComponent<
   }
 
   openWs() {
-    const token = this.props.token;
-    let wsUrl = `${config.ws}?token=${token}`;
+    let token = null;
 
     if (process.env.STAND === 'dev') {
-      const newToken = JSON.parse(
+      token = JSON.parse(
         localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
       );
-      wsUrl = `wss://ets-test.mos.ru/services/stream?token=${newToken}`;
+    } else {
+      token = this.props.token;
     }
+
+    const wsUrl = `${config.ws}?token=${token}`;
 
     const ws = new ReconnectingWebSocket(wsUrl, null);
 

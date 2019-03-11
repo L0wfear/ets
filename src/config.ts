@@ -44,13 +44,13 @@ const DOC_URL = {
 
 const config = {
   develop: {
-    ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
+    ws: `${WS_PROTO}//ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
     images: 'https://ets.mos.ru/ets/data/images/',
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    ws: `${WS_PROTO}//psd.mos.ru/city-dashboard/stream`,
+    ws: `${WS_PROTO}//ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
     images: `${PROTO}//ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin[process.env.STAND],
     admin: ADMIN_URL.origin[process.env.STAND],

@@ -14,3 +14,4 @@ export const constantColor = {
 };
 
 export const mobiSize = 768;
+export const borderRadiusButton = '3px';

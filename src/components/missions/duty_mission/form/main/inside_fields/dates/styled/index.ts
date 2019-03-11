@@ -6,6 +6,7 @@ export const ColStartDatePicker = styled(Col)`
     @media (min-width: 992px) {
       width: 49%;
     }
+    margin-bottom: 15px;
   }
 `;
 export const ColDividerDatePicker = styled(Col)`

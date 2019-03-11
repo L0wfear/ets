@@ -5,6 +5,11 @@ const GlobalModalZIndexStyle = css`
     position: fixed;
     z-index: 1000000;
   }
+
+  div#notifications {
+    position: fixed;
+    z-index: 10000000;
+  }
 `;
 
 export default GlobalModalZIndexStyle;

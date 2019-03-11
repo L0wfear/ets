@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Row } from 'react-bootstrap';
 
 export const RouteInfoContainerDiv = styled(Row)`
-  margin: 10px 0px;
+  margin: 10px -15px;
 `;
 
 export const RouteName = styled.div<{ isDisplay?: boolean }>`

@@ -11,3 +11,8 @@ export const DUTY_MISSION_STATUS_LABELS = {
   [DUTY_MISSION_STATUS.complete]: 'Выполнено',
   [DUTY_MISSION_STATUS.fail]: 'Не выполнено',
 };
+
+export const DUTY_MISSION_STATUS_OPTIONS = Object.keys(DUTY_MISSION_STATUS_LABELS).map((key) => ({
+  label: DUTY_MISSION_STATUS_LABELS[key],
+  value: key,
+}));

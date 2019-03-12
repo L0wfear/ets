@@ -29,9 +29,30 @@ export default class Filter extends React.Component {
     super(props);
 
     this.state = {
+      alreadyShow: props.show,
       propsFilterValues: props.values,
       filterValues: props.values || {},
     };
+  }
+
+  componentDidMount() {
+    if (this.props.show) {
+      if (this.props.loadDependecyData) {
+        this.props.loadDependecyData();
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { alreadyShow } = this.state;
+    const { show } = this.props;
+
+    if (show && show !== prevProps.show && !alreadyShow) {
+      if (this.props.loadDependecyData) {
+        this.props.loadDependecyData();
+      }
+      this.setState({ alreadyShow: true });
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

@@ -891,6 +891,7 @@ export default class DataTable extends React.Component {
               options={tableMetaCols.filter((el) => el.filter !== false)}
               tableData={this.props.results}
               entity={this.props.entity}
+              loadDependecyData={this.props.loadDependecyData}
             />
           )}
         </Div>

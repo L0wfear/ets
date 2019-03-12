@@ -26,11 +26,9 @@ import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import {
-  getCompanyStructureState,
   getSessionState,
   getMissionsState,
 } from 'redux-main/reducers/selectors';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
@@ -84,24 +82,24 @@ class DutyMissionsJournal extends CheckableElementsList {
   }
 
   init() {
+    this.refreshList();
+  }
+
+  loadDependecyData = () => {
     const { flux } = this.context;
     const outerPayload = {
       start_date: new Date(),
       end_date: new Date(),
     };
 
-    this.props.getAndSetInStoreCompanyStructureLinear();
-
-    this.refreshList();
+    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getMissionSources();
     flux.getActions('missions').getCarDutyMissions();
     flux.getActions('employees').getForemans();
     flux
       .getActions('missions')
       .getCleaningMunicipalFacilityAllList(outerPayload);
-    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
-  }
+  };
 
   refreshList = async (state = this.state) => {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
@@ -445,13 +443,13 @@ class DutyMissionsJournal extends CheckableElementsList {
   };
 
   getAdditionalProps = () => ({
-    structures: this.props.companyStructureLinearList,
     changeSort: this.changeSort,
     changeFilter: this.changeFilter,
     filterValues: this.state.filter,
     rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
     useServerFilter: true,
     useServerSort: true,
+    loadDependecyData: this.loadDependecyData,
   });
 
   getAdditionalFormProps() {
@@ -482,20 +480,11 @@ export default compose(
   }),
   connect(
     (state) => ({
-      companyStructureLinearList: getCompanyStructureState(state)
-        .companyStructureLinearList,
       userData: getSessionState(state).userData,
       dutyMissionList: getMissionsState(state).dutyMissionData.dutyMissionList,
       total_count: getMissionsState(state).dutyMissionData.total_count,
     }),
     (dispatch) => ({
-      getAndSetInStoreCompanyStructureLinear: () =>
-        dispatch(
-          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
-            {},
-            { page: loadingPageName },
-          ),
-        ),
       actionRemoveDutyMission: (...arg) =>
         dispatch(missionsActions.actionRemoveDutyMission(...arg)),
       actionGetAndSetInStoreDutyMission: (...arg) =>

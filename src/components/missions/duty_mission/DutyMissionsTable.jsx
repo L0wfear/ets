@@ -1,9 +1,16 @@
 import React from 'react';
 
-import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import {
+  DUTY_MISSION_STATUS_OPTIONS,
+  DUTY_MISSION_STATUS_LABELS,
+} from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
 import { uniqBy } from 'lodash';
+import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { connect } from 'react-redux';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { selectorGetMissionSourceOptions } from 'redux-main/reducers/modules/some_uniq/mission_source/selectors';
 
 /**
  * подсветка строк таблицы "провальных" поручений
@@ -11,8 +18,8 @@ import { uniqBy } from 'lodash';
 const highlight = [{ is_valid_to_order_operation: false }];
 
 export const getTableMeta = ({
-  structures = [],
-  missionSourcesList = [],
+  STRUCTURES = [],
+  MISSION_SOURCE_OPTIONS = [],
   technicalOperationsList = [],
   foremanList = [],
   carDutyMissionList = [],
@@ -36,10 +43,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(DUTY_MISSION_STATUS_LABELS).map((key) => ({
-            label: DUTY_MISSION_STATUS_LABELS[key],
-            value: key,
-          })),
+          options: DUTY_MISSION_STATUS_OPTIONS,
         },
         cssClassName: 'width120',
       },
@@ -70,10 +74,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map((missionSource) => ({
-            value: missionSource.id,
-            label: missionSource.name,
-          })),
+          options: MISSION_SOURCE_OPTIONS,
         },
         cssClassName: 'width120',
       },
@@ -199,12 +200,9 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({
-            value: id,
-            label: name,
-          })),
+          options: STRUCTURES,
         },
-        display: structures.length,
+        display: STRUCTURES.length,
       },
       {
         name: 'is_valid_to_order_operation',
@@ -212,12 +210,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [
-            {
-              value: 0,
-              label: 'Да',
-            },
-          ],
+          options: YES_NO_SELECT_OPTIONS_INT,
         },
         display: false,
       },
@@ -227,21 +220,19 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export default (props) => {
-  const renderers = {
-    status: ({ data }) => <div>{DUTY_MISSION_STATUS_LABELS[data]}</div>,
-    plan_date_start: ({ data }) => <DateFormatter date={data} time />,
-    plan_date_end: ({ data }) => <DateFormatter date={data} time />,
-    structure_id: ({ rowData }) => <div>{rowData.structure_name}</div>,
-    mission_source_id: ({ rowData }) => (
-      <div>{rowData.mission_source_name}</div>
-    ),
-    technical_operation_id: ({ rowData }) => (
-      <div>{rowData.technical_operation_name}</div>
-    ),
-    object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
-  };
+const renderers = {
+  status: ({ data }) => <div>{DUTY_MISSION_STATUS_LABELS[data]}</div>,
+  plan_date_start: ({ data }) => <DateFormatter date={data} time />,
+  plan_date_end: ({ data }) => <DateFormatter date={data} time />,
+  structure_id: ({ rowData }) => <div>{rowData.structure_name}</div>,
+  mission_source_id: ({ rowData }) => <div>{rowData.mission_source_name}</div>,
+  technical_operation_id: ({ rowData }) => (
+    <div>{rowData.technical_operation_name}</div>
+  ),
+  object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
+};
 
+const DutyMissionTable = (props) => {
   return (
     <Table
       className="duty-mission-table"
@@ -260,3 +251,8 @@ export default (props) => {
     />
   );
 };
+
+export default connect((state) => ({
+  STRUCTURES: getSessionStructuresOptions(state),
+  MISSION_SOURCE_OPTIONS: selectorGetMissionSourceOptions(state),
+}))(DutyMissionTable);

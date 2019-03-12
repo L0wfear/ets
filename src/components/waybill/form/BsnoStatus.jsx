@@ -9,9 +9,7 @@ import {
 
 import Field from 'components/ui/Field';
 
-import config from 'config';
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
@@ -23,16 +21,17 @@ class BsnoStaus extends React.Component {
       gps_code: PropTypes.string,
       is_bnso_broken: PropTypes.bool,
       handleChange: PropTypes.func,
-      userToken: PropTypes.string.isRequired,
     };
   }
 
   constructor(props) {
     super(props);
-    const { okStatus = false, userToken } = props;
+    const { okStatus = false } = props;
 
     if (okStatus) {
-      const wsUrl = `${config.ws}?token=${userToken}`;
+      const { points_ws, token } = props;
+
+      const wsUrl = `${points_ws}?token=${token}`;
       const ws = new ReconnectingWebSocket(wsUrl, null);
 
       try {
@@ -192,8 +191,7 @@ class BsnoStaus extends React.Component {
   }
 }
 
-export default compose(
-  connect((state) => ({
-    userToken: getSessionState(state).token,
-  })),
-)(BsnoStaus);
+export default connect((state) => ({
+  token: getSessionState(state).token,
+  points_ws: getSessionState(state).appConfig.points_ws,
+}))(BsnoStaus);

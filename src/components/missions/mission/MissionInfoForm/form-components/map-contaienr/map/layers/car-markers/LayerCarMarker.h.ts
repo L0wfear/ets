@@ -1,12 +1,13 @@
 export type PropsLayerCarMarker = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
 
   token: string;
+  points_ws: string;
   gps_code: string | null;
 };
 
@@ -42,9 +43,11 @@ export type WsData = {
   [gps_code: string]: OneWsData;
 };
 
-export type OneCarPointDataWsType = OneWsData | {
-  front_status: string;
-};
+export type OneCarPointDataWsType =
+  | OneWsData
+  | {
+      front_status: string;
+    };
 
 export type CarPointsDataWsType = {
   [gps_code: string]: OneCarPointDataWsType;
@@ -52,8 +55,7 @@ export type CarPointsDataWsType = {
 
 export type StateLayerCarMarker = {
   carPointsDataWs: CarPointsDataWsType;
-  ws: any,
+  ws: any;
 };
 
-export namespace LayerCarMarkerUtils {
-}
+export namespace LayerCarMarkerUtils {}

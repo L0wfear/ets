@@ -9,19 +9,30 @@ interface Paginator {
 }
 
 class Paginator extends React.PureComponent<Paginator, any> {
-  setPageFromA: React.MouseEventHandler<HTMLAnchorElement> = ({ currentTarget: { dataset: { index } } }) => {
-    this.props.setPage(Number(index));
+  componentDidUpdate(prevProps) {
+    const { currentPage, maxPage } = this.props;
+
+    if (currentPage >= maxPage) {
+      this.props.setPage(maxPage - 1);
+    }
   }
+  setPageFromA: React.MouseEventHandler<HTMLAnchorElement> = ({
+    currentTarget: {
+      dataset: { index },
+    },
+  }) => {
+    this.props.setPage(Number(index));
+  };
 
   first = (e) => {
     e.preventDefault();
     this.props.setPage(0);
-  }
+  };
 
   previous = (e) => {
     e.preventDefault();
     this.props.setPage(this.props.currentPage - 1);
-  }
+  };
 
   next = (disabled, e) => {
     e.preventDefault();
@@ -29,12 +40,12 @@ class Paginator extends React.PureComponent<Paginator, any> {
       return;
     }
     this.props.setPage(this.props.currentPage + 1);
-  }
+  };
 
   last = (e) => {
     e.preventDefault();
     this.props.setPage(this.props.maxPage - 1);
-  }
+  };
 
   render() {
     const currentPage = this.props.currentPage;
@@ -47,7 +58,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
     let startIndex = Math.max(currentPage - 5, 0);
     const endIndex = Math.min(startIndex + 11, this.props.maxPage);
 
-    if (maxPage >= 11 && (endIndex - startIndex) <= 10) {
+    if (maxPage >= 11 && endIndex - startIndex <= 10) {
       startIndex = endIndex - 11;
     }
 
@@ -56,7 +67,9 @@ class Paginator extends React.PureComponent<Paginator, any> {
     if (currentPage && maxPage >= 3 && currentPage !== 0) {
       options.push(
         <li className="aui-nav-first" key="first">
-          <a className="pointer" onClick={this.first}>Первая</a>
+          <a className="pointer" onClick={this.first}>
+            Первая
+          </a>
         </li>,
       );
     }
@@ -83,17 +96,23 @@ class Paginator extends React.PureComponent<Paginator, any> {
       } else {
         options.push(
           <li key={i}>
-            <a className="pointer" data-index={i} onClick={this.setPageFromA}>{i + 1}</a>
+            <a className="pointer" data-index={i} onClick={this.setPageFromA}>
+              {i + 1}
+            </a>
           </li>,
         );
       }
     }
 
     if (currentPage < maxPage - 1) {
-      const nextClasses = cx('pointer pagination-control', { disabled: !(currentPage < maxPage - 1) });
+      const nextClasses = cx('pointer pagination-control', {
+        disabled: !(currentPage < maxPage - 1),
+      });
       options.push(
         <li className="aui-nav-previous" key="next">
-          <a className={nextClasses} onClick={this.next.bind(this, !(currentPage < maxPage - 1))}>
+          <a
+            className={nextClasses}
+            onClick={this.next.bind(this, !(currentPage < maxPage - 1))}>
             <Glyphicon glyph="chevron-right" />
           </a>
         </li>,
@@ -103,16 +122,14 @@ class Paginator extends React.PureComponent<Paginator, any> {
     if (maxPage >= 3 && currentPage !== maxPage - 1) {
       options.push(
         <li className="aui-nav-last" key="last">
-          <a className="pointer" onClick={this.last}>Последняя</a>
+          <a className="pointer" onClick={this.last}>
+            Последняя
+          </a>
         </li>,
       );
     }
 
-    return (
-      <ol className="pagination">
-        {options}
-      </ol>
-    );
+    return <ol className="pagination">{options}</ol>;
   }
 }
 

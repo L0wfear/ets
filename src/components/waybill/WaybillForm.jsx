@@ -915,9 +915,26 @@ class WaybillForm extends Form {
   );
 
   getFuelCardsListOptions = (fuelCardsList, fuelTypeFilter) => {
+    const { userStructureId, userCompanyId } = this.props;
+
     return fuelCardsList.reduce(
-      (newArr, { id, number, fuel_type, ...other }) => {
-        if (fuel_type === fuelTypeFilter || !fuelTypeFilter) {
+      (
+        newArr,
+        {
+          id,
+          number,
+          fuel_type,
+          company_id,
+          structure_id,
+          is_common,
+          ...other
+        },
+      ) => {
+        if (
+          (fuel_type === fuelTypeFilter || !fuelTypeFilter)
+          && ((company_id === userCompanyId && structure_id === userStructureId)
+            || is_common)
+        ) {
           newArr.push({
             value: id,
             label: number,
@@ -925,6 +942,9 @@ class WaybillForm extends Form {
               id,
               number,
               fuel_type,
+              company_id,
+              structure_id,
+              is_common,
               ...other,
             },
           });
@@ -2289,6 +2309,7 @@ export default compose(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
       userStructureId: getSessionState(state).userData.structure_id,
+      userCompanyId: getSessionState(state).userData.company_id,
       userStructures: getSessionState(state).userData.structures,
       userPermissionsSet: getSessionState(state).userData.permissionsSet,
       fuelCardsList: getAutobaseState(state).fuelCardsList,

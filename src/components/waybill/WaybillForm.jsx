@@ -1010,16 +1010,15 @@ class WaybillForm extends Form {
             title: 'Внимание',
             body: 'Очистить введенные данные по спецоборудованию?',
           });
-
           this.handleMultipleChange({
             ...setEmptyFieldByKey(fieldToCheckHasData),
             equipment_fuel_method: null,
           });
         } catch (e) {
+          console.error(e);
           return;
         }
       }
-
       this.handleChange('equipment_fuel', false);
     }
   };

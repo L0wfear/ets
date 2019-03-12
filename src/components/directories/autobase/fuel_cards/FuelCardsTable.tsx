@@ -7,15 +7,12 @@ import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
-import { connect } from 'react-redux';
-import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
-import { ReduxState } from 'redux-main/@types/state';
 
 const DataTable: React.ComponentClass<
   IPropsDataTable<any>
 > = DataTableComponent as any;
 
-export function tableMeta({ structures = [] } = {}): IDataTableSchema {
+export function tableMeta({ structure }): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
@@ -53,13 +50,9 @@ export function tableMeta({ structures = [] } = {}): IDataTableSchema {
         },
         filter: {
           type: 'multiselect',
-          // options: structures.map(({ id, name }) => ({
-          //   value: id,
-          //   label: name,
-          // })),
-          options: structures,
+          options: structure,
         },
-        // display: Boolean(structures.length),
+        display: Boolean(structure.length),
       },
       {
         name: 'company',
@@ -90,18 +83,4 @@ const Table: React.FunctionComponent<any> = (props) => (
   />
 );
 
-// Перенести типы в отдельную папку
-export type StatePropsFuelCardsTable = {
-  structure: any;
-};
-export type DispatchPropsFuelCardsTable = {};
-export type OwnFuelCardsTableProps = {};
-
-export default connect<
-  StatePropsFuelCardsTable,
-  DispatchPropsFuelCardsTable,
-  OwnFuelCardsTableProps,
-  ReduxState
->((state) => ({
-  structure: getSessionStructuresOptions(state), // не подрубается!!!!!
-}))(Table);
+export default Table;

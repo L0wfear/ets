@@ -487,52 +487,6 @@ class WaybillFormWrap extends FormWrap {
   handlePrint = async (printonly, print_form_type) => {
     const { flux } = this.context;
     const { formState } = this.state;
-    const { fuelCardsList } = this.props;
-    const fuelCardsElem = fuelCardsList.find((fuelCard) => {
-      return fuelCard.id === formState.fuel_card_id;
-    });
-    const equipmentFuelCardsElem = fuelCardsList.find((fuelCard) => {
-      return fuelCard.id === formState.equipment_fuel_card_id;
-    });
-
-    if (!printonly && (!formState.status || !formState.status === 'draft')) {
-      let hasErrNotification = false;
-      if (
-        formState.fuel_method !== 'naliv'
-        && fuelCardsElem.structure_id !== formState.structure_id
-      ) {
-        global.NOTIFICATION_SYSTEM.notify({
-          title: 'Ошибка',
-          message:
-            'В блоке "Транспортное средство". Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.',
-          level: 'error',
-          dismissible: true,
-          position: 'tr',
-          autoDismiss: 0,
-        });
-        hasErrNotification = true;
-      }
-      if (
-        formState.equipment_fuel_method !== 'naliv'
-        && formState.equipment_fuel
-        && equipmentFuelCardsElem.structure_id !== formState.structure_id
-      ) {
-        global.NOTIFICATION_SYSTEM.notify({
-          title: 'Ошибка',
-          message:
-            'В блоке "Спецоборудование". Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.',
-          level: 'error',
-          dismissible: true,
-          position: 'tr',
-          autoDismiss: 0,
-        });
-        hasErrNotification = true;
-      }
-
-      if (hasErrNotification) {
-        return;
-      }
-    }
 
     const currentWaybillId = formState.id;
 

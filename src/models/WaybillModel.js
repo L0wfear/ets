@@ -282,7 +282,7 @@ export const waybillSchema = {
     ],
     fuel_card_id: [
       {
-        validator: (value, formData) => {
+        validator: (value, formData, props) => {
           if (
             !value
             && formData.fuel_method === 'fuel_card'
@@ -290,6 +290,23 @@ export const waybillSchema = {
           ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
+          // проверка на соответствие подразделений в ПЛ и топливной карты
+          const { fuelCardsList } = props;
+          const fuelCardsElem = fuelCardsList.find((fuelCard) => {
+            return fuelCard.id === formData.fuel_card_id;
+          });
+          if (
+            fuelCardsElem
+            && (!formData.status || !formData.status === 'draft')
+          ) {
+            if (
+              formData.fuel_method !== 'naliv'
+              && fuelCardsElem.structure_id !== formData.structure_id
+            ) {
+              return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
+            }
+          }
+
           return false;
         },
       },
@@ -306,7 +323,7 @@ export const waybillSchema = {
     ],
     equipment_fuel_card_id: [
       {
-        validator: (value, formData) => {
+        validator: (value, formData, props) => {
           if (
             !value
             && formData.equipment_fuel
@@ -315,6 +332,26 @@ export const waybillSchema = {
           ) {
             return 'Поле "Топливная карта" должно быть заполнено';
           }
+
+          // проверка на соответствие подразделений в ПЛ и топливной карты
+          const { fuelCardsList } = props;
+          const equipmentFuelCardsElem = fuelCardsList.find((fuelCard) => {
+            return fuelCard.id === formData.equipment_fuel_card_id;
+          });
+
+          if (
+            equipmentFuelCardsElem
+            && (!formData.status || !formData.status === 'draft')
+          ) {
+            if (
+              formData.equipment_fuel_method !== 'naliv'
+              && formData.equipment_fuel
+              && equipmentFuelCardsElem.structure_id !== formData.structure_id
+            ) {
+              return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
+            }
+          }
+
           return false;
         },
       },

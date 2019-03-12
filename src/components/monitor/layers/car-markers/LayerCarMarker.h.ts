@@ -6,6 +6,7 @@ export type PropsLayerCarMarker = {
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   token: string;
+  points_ws: string;
   zoom: number,
   gps_code: string | void;
   forToday: boolean;

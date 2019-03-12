@@ -9,6 +9,7 @@ import Field from 'components/ui/Field';
 import config from 'config';
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @FluxContext
 class BsnoStaus extends React.Component {
@@ -21,15 +22,19 @@ class BsnoStaus extends React.Component {
     };
   }
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     const {
       okStatus = false,
     } = props;
 
     if (okStatus) {
-      const token = context.flux.getStore('session').getSession();
-      const wsUrl = `${config.ws}?token=${token}`;
+      const {
+        points_ws,
+        token,
+      } = props;
+
+      const wsUrl = `${points_ws}?token=${token}`;
       const ws = new ReconnectingWebSocket(wsUrl, null);
 
       try {
@@ -172,4 +177,9 @@ class BsnoStaus extends React.Component {
   }
 }
 
-export default BsnoStaus;
+export default connect(
+  (state) => ({
+    token: getSessionState(state).token,
+    points_ws: getSessionState(state).appConfig.points_ws,
+  })
+)(BsnoStaus);

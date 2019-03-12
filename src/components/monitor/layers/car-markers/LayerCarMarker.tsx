@@ -29,6 +29,8 @@ import {
   WsData,
 } from 'components/monitor/layers/car-markers/LayerCarMarker.h';
 import { isEmpty } from 'lodash';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 let updatePoints = true;
 const MIN_ZOOM_VAL = 3;
@@ -284,8 +286,11 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
   }
 
   openWs() {
-    const token = this.props.token;
-    const wsUrl = `${config.ws}?token=${token}`;
+    const {
+      points_ws,
+      token,
+    } = this.props;
+    const wsUrl = `${points_ws}?token=${token}`;
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
     ws.onmessage = ({ data }) => {
@@ -512,8 +517,9 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   token: state.session.token,
+  points_ws: getSessionState(state).appConfig.points_ws,
   gps_code: state.monitorPage.carInfo.gps_code,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   STATUS_SHOW_GOV_NUMBER: state.monitorPage.SHOW_GOV_NUMBER,

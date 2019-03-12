@@ -24,7 +24,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { compose } from 'recompose';
-import { getDashboardState } from 'redux-main/reducers/selectors';
+import { getDashboardState, getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import { FluxContext } from 'utils/decorators';
@@ -41,8 +41,12 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
 
   constructor(props, context) {
     super(props);
-    const token = context.flux.getStore('session').getSession();
-    const wsUrl = `${config.ws}?token=${token}`;
+    const {
+      token,
+      points_ws,
+    } = props;
+
+    const wsUrl = `${points_ws}?token=${token}`;
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
     try {
@@ -164,6 +168,8 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
   connect<StatePropsCarInOveral, DispatchPropsCarInOveral, OwnPropsCarInOveral, ReduxState>(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
+      token: getSessionState(state).token,
+      points_ws: getSessionState(state).appConfig.points_ws,
       carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
     }),
     (dispatch) => ({

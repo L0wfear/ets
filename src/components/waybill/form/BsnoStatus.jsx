@@ -9,9 +9,7 @@ import {
 
 import Field from 'components/ui/Field';
 
-import config from 'config';
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
@@ -23,7 +21,6 @@ class BsnoStaus extends React.Component {
       gps_code: PropTypes.string,
       is_bnso_broken: PropTypes.bool,
       handleChange: PropTypes.func,
-      userToken: PropTypes.string.isRequired,
     };
   }
 
@@ -32,6 +29,7 @@ class BsnoStaus extends React.Component {
     const { okStatus = false } = props;
 
     if (okStatus) {
+      const { points_ws } = props;
       let token = null;
 
       if (process.env.STAND === 'dev') {
@@ -39,10 +37,10 @@ class BsnoStaus extends React.Component {
           localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
         );
       } else {
-        token = this.props.userToken;
+        token = this.props.token;
       }
 
-      const wsUrl = `${config.ws}?token=${token}`;
+      const wsUrl = `${points_ws}?token=${token}`;
 
       const ws = new ReconnectingWebSocket(wsUrl, null);
 
@@ -203,8 +201,7 @@ class BsnoStaus extends React.Component {
   }
 }
 
-export default compose(
-  connect((state) => ({
-    userToken: getSessionState(state).token,
-  })),
-)(BsnoStaus);
+export default connect((state) => ({
+  token: getSessionState(state).token,
+  points_ws: getSessionState(state).appConfig.points_ws,
+}))(BsnoStaus);

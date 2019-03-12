@@ -11,7 +11,6 @@ import { compose } from 'recompose';
 import { getStyleForStatusDirectionType } from 'components/monitor/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
-import config from 'config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import {
   carInfoSetGpsNumber,
@@ -36,6 +35,8 @@ import {
   WsData,
 } from 'components/monitor/layers/car-markers/LayerCarMarker.h';
 import { isEmpty } from 'lodash';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 let updatePoints = true;
 const MIN_ZOOM_VAL = 3;
@@ -320,6 +321,8 @@ class LayerCarMarker extends React.PureComponent<
   }
 
   openWs() {
+    const { points_ws } = this.props;
+
     let token = null;
 
     if (process.env.STAND === 'dev') {
@@ -330,7 +333,7 @@ class LayerCarMarker extends React.PureComponent<
       token = this.props.token;
     }
 
-    const wsUrl = `${config.ws}?token=${token}`;
+    const wsUrl = `${points_ws}?token=${token}`;
 
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
@@ -569,8 +572,9 @@ class LayerCarMarker extends React.PureComponent<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   token: state.session.token,
+  points_ws: getSessionState(state).appConfig.points_ws,
   gps_code: state.monitorPage.carInfo.gps_code,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   STATUS_SHOW_GOV_NUMBER: state.monitorPage.SHOW_GOV_NUMBER,

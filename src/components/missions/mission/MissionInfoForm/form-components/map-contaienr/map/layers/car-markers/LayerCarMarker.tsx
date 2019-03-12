@@ -7,7 +7,6 @@ import { compose } from 'recompose';
 import { getStyleForStatusDirectionType } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
-import config from 'config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 
 import {
@@ -15,6 +14,8 @@ import {
   StateLayerCarMarker,
   WsData,
 } from 'components/missions/mission/MissionInfoForm/form-components/map-contaienr/map/layers/car-markers/LayerCarMarker.h';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 /**
  * Не использовать данные из сокета для фильтрации!!!
@@ -54,6 +55,8 @@ class LayerCarMarker extends React.Component<
   }
 
   openWs() {
+    const { points_ws } = this.props;
+
     let token = null;
 
     if (process.env.STAND === 'dev') {
@@ -64,7 +67,7 @@ class LayerCarMarker extends React.Component<
       token = this.props.token;
     }
 
-    const wsUrl = `${config.ws}?token=${token}`;
+    const wsUrl = `${points_ws}?token=${token}`;
 
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
@@ -187,7 +190,8 @@ class LayerCarMarker extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
+  points_ws: getSessionState(state).appConfig.points_ws,
   token: state.session.token,
 });
 

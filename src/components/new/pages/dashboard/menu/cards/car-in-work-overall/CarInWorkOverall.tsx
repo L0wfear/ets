@@ -22,13 +22,14 @@ import {
 } from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/CarInWorkOverall.h';
 import { DivNone } from 'global-styled/global-styled';
 import { compose } from 'recompose';
-import { getDashboardState } from 'redux-main/reducers/selectors';
+import {
+  getDashboardState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
-import config from 'config';
-import { getSessionState } from 'redux-main/reducers/selectors';
 
 import { loadCarActualIndex } from 'redux-main/trash-actions/car';
 import { MONITOR_PAGE_SET_CAR_ACTUAL_INDEX } from 'components/monitor/redux-main/models/monitor-page';
@@ -37,9 +38,10 @@ class CarInWorkOverall extends React.Component<
   PropsCarInWorkOverall,
   StateCarInWorkOverall
 > {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
+    const { points_ws } = props;
     let token = null;
 
     if (process.env.STAND === 'dev') {
@@ -47,10 +49,10 @@ class CarInWorkOverall extends React.Component<
         localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
       );
     } else {
-      token = this.props.userToken;
+      token = this.props.token;
     }
 
-    const wsUrl = `${config.ws}?token=${token}`;
+    const wsUrl = `${points_ws}?token=${token}`;
 
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
@@ -178,7 +180,8 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
   >(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
-      userToken: getSessionState(state).token,
+      token: getSessionState(state).token,
+      points_ws: getSessionState(state).appConfig.points_ws,
       carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
     }),
     (dispatch) => ({

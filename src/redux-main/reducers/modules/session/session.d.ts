@@ -25,6 +25,7 @@ export type InitialStateSession = {
       category_drivers_license: [];
       category_special_license: [];
     };
+    points_ws: string;
     enums: {
       FUEL_TYPE: any,
     },

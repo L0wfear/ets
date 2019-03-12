@@ -7,6 +7,7 @@ export type PropsLayerCarMarker = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
 
   token: string;
+  points_ws: string;
   gps_code: string | null;
 };
 

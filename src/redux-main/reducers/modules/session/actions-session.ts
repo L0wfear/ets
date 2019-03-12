@@ -41,9 +41,12 @@ export const sessionSetAppConfig = () => ({
 
       return CONFIG_INITIAL;
     })
-    .then((appConfig) => ({
-      appConfig,
-    })),
+    .then((appConfigRaw) => {
+      const appConfg = appConfigRaw;
+
+      // appConfg.points_ws = 'wss://ets-test.mos.ru/services/stream'; для теста
+      return appConfg;
+    }),
   meta: {
     loading: true,
   },

@@ -18,6 +18,7 @@ export const CONFIG_INITIAL: InitialStateSession['appConfig'] = { // дефол�
     category_drivers_license: [],
     category_special_license: [],
   },
+  points_ws: 'wss://ets-test.mos.ru/services/stream',
   enums: {
     FUEL_TYPE: {},
   },

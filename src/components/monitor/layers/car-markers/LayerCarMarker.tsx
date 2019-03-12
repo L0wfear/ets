@@ -11,7 +11,6 @@ import { compose } from 'recompose';
 import { getStyleForStatusDirectionType} from 'components/monitor/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
-import config from 'config';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { carInfoSetGpsNumber, carInfoSetStatus, carInfoPushPointIntoTrack } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import {

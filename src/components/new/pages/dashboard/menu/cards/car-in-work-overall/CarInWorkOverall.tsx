@@ -30,7 +30,6 @@ import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_d
 import { FluxContext } from 'utils/decorators';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
-import config from 'config';
 import { loadCarActualIndex } from 'redux-main/trash-actions/car';
 import {
   MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,

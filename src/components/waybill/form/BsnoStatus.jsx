@@ -6,10 +6,10 @@ import { diffDates, getDateWithMoscowTzByTimestamp, getDateWithMoscowTz } from '
 import { FluxContext } from 'utils/decorators';
 import Field from 'components/ui/Field';
 
-import config from 'config';
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
 
 @FluxContext
 class BsnoStaus extends React.Component {
@@ -178,8 +178,8 @@ class BsnoStaus extends React.Component {
 }
 
 export default connect(
-  (state) => ({
+  state => ({
     token: getSessionState(state).token,
     points_ws: getSessionState(state).appConfig.points_ws,
-  })
+  }),
 )(BsnoStaus);

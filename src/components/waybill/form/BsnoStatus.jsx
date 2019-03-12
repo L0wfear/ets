@@ -201,7 +201,9 @@ class BsnoStaus extends React.Component {
   }
 }
 
-export default connect((state) => ({
-  token: getSessionState(state).token,
-  points_ws: getSessionState(state).appConfig.points_ws,
-}))(BsnoStaus);
+export default connect(
+  (state) => ({
+    token: getSessionState(state).token,
+    points_ws: getSessionState(state).appConfig.points_ws,
+  }),
+)(BsnoStaus);

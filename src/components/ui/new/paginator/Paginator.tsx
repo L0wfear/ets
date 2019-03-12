@@ -12,7 +12,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
   componentDidUpdate(prevProps) {
     const { currentPage, maxPage } = this.props;
 
-    if (currentPage >= maxPage) {
+    if (maxPage && currentPage >= maxPage) {
       this.props.setPage(maxPage - 1);
     }
   }

@@ -261,7 +261,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         return result;
       }
 
-      defaultSubmit = async () => {
+      defaultSubmit: FormWithDefaultSubmit = async () => {
         const formatedFormState = { ...this.state.formState };
         config.schema.properties.forEach(({ key, type }) => {
           let value: any = formatedFormState[key];

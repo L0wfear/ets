@@ -148,7 +148,3 @@ export const dutyMissionIsComplete = (status) =>
 export const dutyMissionIsClosed = (status) =>
   status === DUTY_MISSION_STATUS.complete ||
   status === DUTY_MISSION_STATUS.fail;
-export const isOrderSource = (
-  mission_source_id: DutyMission['mission_source_id'],
-  order_mission_source_id: number,
-) => mission_source_id === order_mission_source_id;

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import connectToStores from 'flummox/connect';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Col from 'react-bootstrap/lib/Col';
@@ -11,23 +9,13 @@ import Field from 'components/ui/Field';
 import Div from 'components/ui/Div';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import Form from 'components/compositions/Form';
+import { connect } from 'react-redux';
+import { selectorGetMissionSourceOptionsWithoutOrder } from 'redux-main/reducers/modules/some_uniq/mission_source/selectors';
 
 class MissionsCreationForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
-
-    const { missionSourcesList = [] } = this.props;
-
-    const MISSION_SOURCES = missionSourcesList.reduce(
-      (newArr, { id, name, auto }) => {
-        if (!auto || state.mission_source_id === id) {
-          newArr.push({ value: id, label: name });
-        }
-        return newArr;
-      },
-      [],
-    );
 
     console.log('form state is ', state); // eslint-disable-line
 
@@ -73,7 +61,7 @@ class MissionsCreationForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                options={MISSION_SOURCES}
+                options={this.props.MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange.bind(this, 'mission_source_id')}
               />
@@ -88,7 +76,7 @@ class MissionsCreationForm extends Form {
 
         <Modal.Footer>
           <Div className="inline-block" hidden={state.status === 'closed'}>
-            <Button onClick={this.handleSubmit.bind(this)}>Сформировать</Button>
+            <Button onClick={this.handleSubmit}>Сформировать</Button>
           </Div>
         </Modal.Footer>
       </Modal>
@@ -96,8 +84,6 @@ class MissionsCreationForm extends Form {
   }
 }
 
-MissionsCreationForm.contextTypes = {
-  flux: PropTypes.object,
-};
-
-export default connectToStores(MissionsCreationForm, ['objects', 'missions']);
+export default connect((state) => ({
+  MISSION_SOURCES: selectorGetMissionSourceOptionsWithoutOrder(state),
+}))(MissionsCreationForm);

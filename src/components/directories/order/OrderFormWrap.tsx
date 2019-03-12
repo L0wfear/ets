@@ -8,25 +8,22 @@ import {
 
 import Div from 'components/ui/Div';
 
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import OrderMissionTemplate from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
 import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
+import MissionFormLazy from 'components/missions/mission/form/main';
 
 // todo
 // Описать интерфейсы форм
-const MissionFormWrapTSX: any = MissionFormWrap;
 
 const OrderMissionController: React.FunctionComponent<any> = (props) => {
   const { missionData, dutyMissionData, missionTemplateData } = props;
 
   return (
     <div>
-      <MissionFormWrapTSX
-        fromOrder={true}
+      <MissionFormLazy
         showForm={missionData.showForm}
         onFormHide={props.onHideCM}
         element={missionData.mElement}
-        order={missionData.order}
       />
       <DutyMissionFormLazy
         showForm={dutyMissionData.showForm}

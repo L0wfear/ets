@@ -45,7 +45,7 @@ import FieldStructureDutyMission from './inside_fields/structure/FieldStructureD
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import FieldMissionSourceDutyMission from './inside_fields/mission_source_id/FieldMissionSourceDutyMission';
-import { isOrderSource } from 'components/missions/duty_mission/form/main/utils';
+import { isOrderSource } from 'components/missions/utils/utils';
 import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
 import FieldRouteIdDutyMission from './inside_fields/route_id/FieldRouteIdDutyMission';
 import FieldCarMissionIdDutyMission from './inside_fields/car_mission_id/FieldCarMissionIdDutyMission';
@@ -106,7 +106,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       !DUTY_MISSION_IS_DISPLAY
     ) {
       if (!dependeceOrder) {
-        this.props.actionLoadOrderAndTechnicalOperationById(
+        this.props.actionLoadOrderAndTechnicalOperationByIdForDutyMission(
           state.faxogramm_id,
           state.order_operation_id,
           { page, path },
@@ -244,7 +244,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         onHide={this.handleHideFom}
         bsSize="large"
         backdrop="static"
->
+      >
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -524,9 +524,9 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
         dispatch(employeeActions.employeeEmployeeResetSetEmployee(...arg)),
       actionPrintFormDutyMission: (...arg) =>
         dispatch(missionsActions.actionPrintFormDutyMission(...arg)),
-      actionLoadOrderAndTechnicalOperationById: (...arg) =>
+      actionLoadOrderAndTechnicalOperationByIdForDutyMission: (...arg) =>
         dispatch(
-          missionsActions.actionLoadOrderAndTechnicalOperationById(...arg),
+          missionsActions.actionLoadOrderAndTechnicalOperationByIdForDutyMission(...arg),
         ),
       actionSetDependenceOrderDataForDutyMission: (...arg) =>
         dispatch(

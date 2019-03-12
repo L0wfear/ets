@@ -19,6 +19,8 @@ import ColumnAssignmentMissionTemplate from 'components/missions/mission_templat
 import { DivNone } from 'global-styled/global-styled';
 import { getDefaultMissionsCreationTemplate } from 'stores/MissionsStore';
 import { makePayloadFromState } from 'components/missions/mission/MissionForm/utils';
+import { connect } from 'react-redux';
+import { selectorGetMissionSourceOptionsWithoutOrder } from 'redux-main/reducers/modules/some_uniq/mission_source/selectors';
 
 const ASSIGN_OPTIONS = [
   { value: 'assign_to_active', label: 'Добавить в активный ПЛ' },
@@ -32,8 +34,6 @@ class MissionsCreationForm extends Form {
   };
 
   componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('missions').getMissionSources();
     this.updateNormIdForAllCarInAllMissions(this.props.formState);
   }
 
@@ -124,18 +124,6 @@ class MissionsCreationForm extends Form {
     }
     const errors = this.props.formErrors;
 
-    const { missionSourcesList = [] } = this.props;
-
-    const MISSION_SOURCES = missionSourcesList.reduce(
-      (newArr, { id, name, auto }) => {
-        if (!auto || state.mission_source_id === id) {
-          newArr.push({ value: id, label: name });
-        }
-        return newArr;
-      },
-      [],
-    );
-
     console.log('form state is ', state); // eslint-disable-line
 
     const title = 'Формирование заданий из шаблонов';
@@ -182,7 +170,7 @@ class MissionsCreationForm extends Form {
                 type="select"
                 label="Источник получения задания"
                 error={errors.mission_source_id}
-                options={MISSION_SOURCES}
+                options={this.props.MISSION_SOURCES}
                 value={state.mission_source_id}
                 onChange={this.handleChange}
                 boundKeys="mission_source_id"
@@ -242,4 +230,6 @@ MissionsCreationForm.contextTypes = {
   flux: PropTypes.object,
 };
 
-export default connectToStores(MissionsCreationForm, ['objects', 'missions']);
+export default connect((state) => ({
+  MISSION_SOURCES: selectorGetMissionSourceOptionsWithoutOrder(state),
+}))(connectToStores(MissionsCreationForm, ['objects']));

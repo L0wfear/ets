@@ -1,13 +1,11 @@
 import { Actions } from 'flummox';
 import { clone, cloneDeep } from 'lodash';
-import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionService,
   MissionArchiveService,
   MissionReassignationService,
-  MissionSourceService,
   MissionTemplateCarService,
   DutyMissionService,
   MissionPrintService,
@@ -34,31 +32,6 @@ const getMissionFilterStatus = (waybillStatus) =>
   waybillStatus ? undefined : 'not_assigned';
 export default class MissionsActions extends Actions {
   /* ---------- MISSION ---------- */
-
-  getMissions(
-    technical_operation_id,
-    limit = MAX_ITEMS_PER_PAGE,
-    offset = 0,
-    sort_by = ['number:desc'],
-    filter = {},
-    is_archive = false,
-  ) {
-    const filterValues = parseFilterObject(filter);
-
-    const payload = {
-      limit,
-      offset,
-      sort_by,
-      filter: JSON.stringify(filterValues),
-      is_archive,
-    };
-
-    if (!isEmpty(technical_operation_id)) {
-      payload.technical_operation_id = technical_operation_id;
-    }
-
-    return MissionService.get(payload);
-  }
 
   getMissionReassignationParameters(payload) {
     if (!payload.car_id) return Promise.reject(new Error('empty car_id'));
@@ -111,54 +84,10 @@ export default class MissionsActions extends Actions {
     return WaybillService.path('available_missions').get(payload);
   }
 
-  getMissionById(id) {
-    const payload = { id };
-
-    return MissionService.get(payload);
-  }
-
-  getMissionSources(payload) {
-    return MissionSourceService.get(payload).then(({ result }) => ({
-      result,
-      order_mission_source_id: result.rows.find(({ auto }) => auto).id,
-    }));
-  }
-
-  createMission(mission, defaultAssign) {
-    const payload = clone(mission);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    payload.hidden = false;
-
-    if (typeof payload.assign_to_waybill === 'undefined')
-      payload.assign_to_waybill = 'not_assign';
-    if (!defaultAssign) payload.assign_to_waybill = 'not_assign';
-
-    if (mission.is_column) {
-      return MissionService.path('column').post(
-        {
-          missions: payload.car_id.map((car_id, index) => ({
-            ...payload,
-            car_id,
-            norm_id: payload.norm_id[index],
-            type_id: payload.type_id[index],
-            assign_to_waybill: payload.assign_to_waybill[index],
-            is_cleaning_norm: payload.is_cleaning_norm[index],
-          })),
-        },
-        false,
-        'json',
-      );
-    }
-
-    return MissionService.post(payload, false, 'json');
-  }
-
-  removeMission(id) {
-    const payload = { id };
-    return MissionService.delete(payload, false, 'json');
-  }
-
+  /**
+   * рак
+   * @todo missionsActions.actionUpdateMission
+   */
   updateMission(mission) {
     const payload = cloneDeep(mission);
     payload.date_start = createValidDateTime(payload.date_start);

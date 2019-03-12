@@ -2,19 +2,30 @@ import React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { uniqBy } from 'lodash';
 
-import { MISSION_STATUS_LABELS } from 'constants/dictionary';
+import {
+  MISSION_STATUS_LABELS,
+  YES_NO_SELECT_OPTIONS_INT,
+} from 'constants/dictionary';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
+import { connect } from 'react-redux';
+import { selectorGetMissionSourceOptions } from 'redux-main/reducers/modules/some_uniq/mission_source/selectors';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 /**
  * подсветка строк таблицы "провальных" поручений
  */
 const highlight = [{ is_valid_to_order_operation: false }];
 
+const STATUS_OPTIONS = Object.keys(MISSION_STATUS_LABELS).map((key) => ({
+  label: MISSION_STATUS_LABELS[key],
+  value: key,
+}));
+
 export const getTableMeta = ({
-  missionSourcesList = [],
+  MISSION_SOURCE_OPTIONS = [],
   carsFilterList = [],
-  structures = [],
+  STRUCTURE_OPTIONS = [],
   technicalOperationsList = [],
   municipalFacilityList = [],
   technicalOperationsObjectsList = [],
@@ -28,10 +39,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(MISSION_STATUS_LABELS).map((key) => ({
-            label: MISSION_STATUS_LABELS[key],
-            value: key,
-          })),
+          options: STATUS_OPTIONS,
         },
         cssClassName: 'width120',
       },
@@ -89,10 +97,7 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map((missionSource) => ({
-            value: missionSource.id,
-            label: missionSource.name,
-          })),
+          options: MISSION_SOURCE_OPTIONS,
         },
         cssClassName: 'width150',
       },
@@ -251,12 +256,9 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({
-            value: id,
-            label: name,
-          })),
+          options: STRUCTURE_OPTIONS,
         },
-        display: structures.length,
+        display: STRUCTURE_OPTIONS.length,
       },
       {
         name: 'is_valid_to_order_operation',
@@ -264,12 +266,7 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [
-            {
-              value: 0,
-              label: 'Да',
-            },
-          ],
+          options: YES_NO_SELECT_OPTIONS_INT,
         },
         display: false,
       },
@@ -279,7 +276,7 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export default (props) => {
+const MissionTable = (props) => {
   const renderers = {
     current_percentage: ({ data }) => (
       <span>{data !== null ? Math.floor(data) : '-'}</span>
@@ -335,3 +332,8 @@ export default (props) => {
     />
   );
 };
+
+export default connect((state) => ({
+  MISSION_SOURCE_OPTIONS: selectorGetMissionSourceOptions(state),
+  STRUCTURE_OPTIONS: getSessionStructuresOptions(state),
+}))(MissionTable);

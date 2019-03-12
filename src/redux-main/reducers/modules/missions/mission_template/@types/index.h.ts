@@ -5,6 +5,8 @@ export type MissionTemplate = {
   car_type_ids: number[];
   car_type_names: string[];
   car_type_name_text: string;
+  car_model_names: string[];
+  car_special_model_names: string[];
   comment: string;
   company_id: number;
   date_create: string;

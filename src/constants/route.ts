@@ -47,3 +47,13 @@ export const routeTypesByKey: TypeRouteTypesByKey = Object.entries(routeTypesByS
 
     return newObj;
   }, {});
+
+export const routeTypesByTitle: Record<OneRouteDataBySlug['title'], OneRouteDataBySlug> = Object.values(routeTypesBySlug)
+  .reduce((newObj, { title, ...other }) => {
+    newObj[title] = {
+      title,
+      ...other,
+    };
+
+    return newObj;
+  }, {});

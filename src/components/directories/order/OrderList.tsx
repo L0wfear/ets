@@ -30,9 +30,6 @@ require('components/directories/order/Order.scss');
 @FluxContext
 class OrderList extends React.Component<any, any> {
   context: any;
-  state = {
-    order_mission_source_id: null,
-  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.configDateStart !== this.props.configDateStart ) {
@@ -41,7 +38,6 @@ class OrderList extends React.Component<any, any> {
   }
   componentDidMount() {
     const { flux } = this.context;
-    flux.getActions('missions').getMissionSources().then(({ order_mission_source_id }) => this.setState({ order_mission_source_id }));
     flux.getActions('employees').getEmployees({ active: true });
     flux.getActions('objects').getCars();
 
@@ -90,10 +86,10 @@ class OrderList extends React.Component<any, any> {
       <EtsPageWrap inheritDisplay>
         <OrdersDatepicker />
         <OrdersTable>
-          <OrderTableChildren order_mission_source_id={this.state.order_mission_source_id} />
+          <OrderTableChildren />
         </OrdersTable>
         <Paginator />
-        <OrderAssignmentsList order_mission_source_id={this.state.order_mission_source_id} />
+        <OrderAssignmentsList />
         <HistoryOrderList />
         <OrderFormWrap />
       </EtsPageWrap>

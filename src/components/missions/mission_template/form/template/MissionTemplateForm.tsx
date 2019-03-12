@@ -26,25 +26,45 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-import FieldTechnicalOperationMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/technical_operation/FieldTechnicalOperationMissionTemplate';
-import FieldStructureMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/structure/FieldStructureMissionTemplate';
-import FieldMunicipalFacilityMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/municipal_facility/FieldMunicipalFacilityMissionTemplate';
-import FieldCarIdsMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/car_ids/FieldCarIdsMissionTemplate';
-import FieldForColumnMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/for_column/FieldForColumnMissionTemplate';
-import FieldRouteMissionTemplate from 'components/missions/mission_template/form/template/inside_fields/route/FieldRouteMissionTemplate';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import { Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
 import EtsModal from 'components/new/ui/modal/Modal';
+import FieldForColumnMission from 'components/missions/mission/form/main/inside_fields/for_column/FieldForColumnMission';
+import FieldCarIdsMission from 'components/missions/mission/form/main/inside_fields/car_ids/FieldCarIdsMission';
+import FieldStructureMission from 'components/missions/mission/form/main/inside_fields/structure/FieldStructureMission';
+import FieldTechnicalOperationMission from 'components/missions/mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationMission';
+import FieldMunicipalFacilityIdMission from 'components/missions/mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdMission';
+import FieldRouteIdMission from 'components/missions/mission/form/main/inside_fields/route_id/FieldRouteIdMission';
+import { IPropsHiddenMapForPrint } from 'components/missions/mission/form/main/inside_fields/route_id/print/HiddenMapForPrint';
+import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 
 const printMapKeyBig = 'printMapKeyBig';
 const printMapKeySmall = 'printMapKeySmall';
 
+const hiddenMapConfig: IPropsHiddenMapForPrint['hiddenMapConfig'] = [
+  {
+    printMapKey: printMapKeyBig,
+    width: '1132px',
+    height: '1688px',
+    rotationAngle: Math.PI / 2,
+  },
+  {
+    printMapKey: printMapKeySmall,
+    width: '602px',
+    height: '912px',
+  },
+];
+
 class MissionTemplateForm extends React.PureComponent<
   PropsMissionTemplateForm,
-  {}
+  { date_start: string }
 > {
+  state = {
+    date_start: createValidDateTime(getDateWithMoscowTz()),
+  };
+
   async printMissionTemplate(payloadOwn) {
     const { page, path } = this.props;
 
@@ -100,141 +120,167 @@ class MissionTemplateForm extends React.PureComponent<
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static"
->
+      >
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
-            <Col md={STRUCTURE_FIELD_VIEW ? 9 : 12}>
-              <FieldTechnicalOperationMissionTemplate
-                value={state.technical_operation_id}
-                name={state.technical_operation_name}
-                disabled={!isPermitted}
-                isPermitted={isPermitted}
-                error={errors.technical_operation_id}
-                onChange={this.props.handleChange}
-                page={page}
-                path={path}
-              />
+            <Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
+              <Row>
+                <Col md={3}>
+                  <FieldForColumnMission
+                    value={state.for_column}
+                    error={errors.car_ids}
+                    onChange={this.props.handleChange}
+                    disabled={!isPermitted} // внутри ещё проверка
+                    page={page}
+                    path={path}
+                  />
+                </Col>
+                <Col md={9}>
+                  <FieldCarIdsMission
+                    value={state.car_ids}
+                    disabled={!isPermitted}
+                    isPermitted={isPermitted}
+                    error={errors.car_ids}
+                    onChange={this.props.handleChange}
+                    for_column={state.for_column}
+                    municipal_facility_id={state.municipal_facility_id}
+                    structure_id={state.structure_id}
+                    car_gov_numbers={state.car_gov_numbers}
+                    car_model_names={state.car_model_names}
+                    car_special_model_names={state.car_special_model_names}
+                    car_type_ids={state.car_type_ids}
+                    car_type_names={state.car_type_names}
+
+                    IS_TEMPLATE
+
+                    page={page}
+                    path={path}
+                  />
+                </Col>
+              </Row>
             </Col>
-            {STRUCTURE_FIELD_VIEW ? (
-              <Col md={3}>
-                <FieldStructureMissionTemplate
-                  value={state.structure_id}
-                  name={state.structure_name}
-                  disabled={!isPermitted}
-                  error={errors.structure_id}
-                  onChange={this.props.handleChange}
-                  car_ids={state.car_ids}
-                  page={page}
-                  path={path}
-                />
-              </Col>
+            {
+              STRUCTURE_FIELD_VIEW
+              ? (
+                <Col md={6}>
+                  <FieldStructureMission
+                    value={state.structure_id}
+                    name={state.structure_name}
+                    disabled={!isPermitted}
+                    error={errors.structure_id}
+                    onChange={this.props.handleChange}
+                    page={page}
+                    path={path}
+                  />
+                </Col>
             ) : (
               <DivNone />
-            )}
-          </Row>
-          <Row>
-            <Col md={12}>
-              <FieldMunicipalFacilityMissionTemplate
-                value={state.municipal_facility_id}
-                name={state.municipal_facility_name}
-                disabled={!state.technical_operation_id || !isPermitted}
-                isPermitted={isPermitted}
-                error={errors.municipal_facility_id}
-                onChange={this.props.handleChange}
-                technical_operation_id={state.technical_operation_id}
-                page={page}
-                path={path}
-              />
-            </Col>
-            <Col md={8}>
-              <FieldCarIdsMissionTemplate
-                value={state.car_ids}
-                disabled={!state.municipal_facility_id || !isPermitted}
-                isPermitted={isPermitted}
-                error={errors.car_ids}
-                onChange={this.props.handleChange}
-                for_column={state.for_column}
-                municipal_facility_id={state.municipal_facility_id}
-                structure_id={state.structure_id}
-                car_gov_numbers={state.car_gov_numbers}
-                car_type_ids={state.car_type_ids}
-                car_type_names={state.car_type_names}
-                page={page}
-                path={path}
-              />
-            </Col>
-            <Col md={4}>
-              <FieldForColumnMissionTemplate
-                value={state.for_column}
-                error={errors.car_ids}
-                onChange={this.props.handleChange}
-                disabled={!isPermitted}
-                municipal_facility_id={state.municipal_facility_id}
-                page={page}
-                path={path}
-              />
-            </Col>
+            )
+            }
           </Row>
           <Row>
             <Col md={6}>
+              <Row>
+                <Col md={12}>
+                  <FieldTechnicalOperationMission
+                    value={state.technical_operation_id}
+                    name={state.technical_operation_name}
+                    isPermitted={isPermitted}
+                    disabled={!isPermitted || !state.car_ids.length}
+                    error={errors.technical_operation_id}
+                    onChange={this.props.handleChange}
+
+                    car_ids={state.car_ids}
+
+                    IS_TEMPLATE
+                    MISSION_IS_ORDER_SOURCE={false}
+
+                    page={page}
+                    path={path}
+                  />
+                </Col>
+                <Col md={12}>
+                  <FieldMunicipalFacilityIdMission
+                    value={state.municipal_facility_id}
+                    name={state.municipal_facility_name}
+                    disabled={!isPermitted || !state.technical_operation_id}
+                    error={errors.municipal_facility_id}
+                    isPermitted={isPermitted}
+                    onChange={this.props.handleChange}
+                    technical_operation_id={state.technical_operation_id}
+                    IS_TEMPLATE
+                    MISSION_IS_ORDER_SOURCE={false}
+
+                    date_start={this.state.date_start}
+                    page={page}
+                    path={path}
+                  />
+                </Col>
+              </Row>
+            </Col>
+            <Col md={6}>
               <ExtField
-                type="number"
-                modalKey={page}
-                id="passes_count"
+                id="passes-count"
+                type="string"
                 label="Количество циклов"
                 error={errors.passes_count}
-                value={state.passes_count}
                 disabled={!isPermitted}
+                value={state.passes_count}
                 onChange={this.props.handleChange}
                 boundKeys="passes_count"
-                min="0"
-              />
-            </Col>
-            <Col md={6}>
-              <ExtField
-                id="comment"
-                type="string"
-                modalKey={page}
-                label="Комментарий"
-                value={state.comment}
-                disabled={!isPermitted}
-                onChange={this.props.handleChange}
-                error={errors.comment}
-                boundKeys="comment"
               />
             </Col>
           </Row>
           <Row>
             <Col md={12}>
-              <FieldRouteMissionTemplate
+              <FieldRouteIdMission
                 error={errors.route_id}
                 value={state.route_id}
                 name={state.route_name}
-                handleChange={this.props.handleChange}
                 municipal_facility_id={state.municipal_facility_id}
                 municipal_facility_name={state.municipal_facility_name}
-                structure_id={state.structure_id}
-                structure_name={state.structure_name}
                 technical_operation_id={state.technical_operation_id}
                 technical_operation_name={state.technical_operation_name}
                 for_column={state.for_column}
-                disabled={!isPermitted}
+                MISSION_IS_ORDER_SOURCE={false}
+                disabled={
+                  !isPermitted
+                  || !state.municipal_facility_id
+                }
                 isPermitted={isPermitted}
-                printMapKeyBig={printMapKeyBig}
-                printMapKeySmall={printMapKeySmall}
+                structure_id={state.structure_id}
+                structure_name={state.structure_name}
+                mission_id={state.id}
+                onChange={this.props.handleChange}
+
+                hiddenMapConfig={hiddenMapConfig}
 
                 page={page}
                 path={path}
               />
             </Col>
           </Row>
+          <Row>
+            <Col md={12}>
+              <ExtField
+                id="m-comment"
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                error={errors.comment}
+                disabled={!isPermitted}
+                onChange={this.props.handleChange}
+                boundKeys="comment"
+              />
+            </Col>
+          </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
-            <>
+            <div>
               {!IS_CREATING ? (
                 <Dropdown
                   id="mission_template-print-dropdown"
@@ -257,7 +303,7 @@ class MissionTemplateForm extends React.PureComponent<
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </Button>
-            </>
+            </div>
           ) : (
             <DivNone />
           )}

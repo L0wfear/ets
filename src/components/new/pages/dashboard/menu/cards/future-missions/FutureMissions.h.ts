@@ -2,18 +2,19 @@ import {
   FutureMissionsFormDataType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/future-mission.h';
 
-import { MissionType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
 import { OwnerPropsDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 export type StateFutureMissions = {
-  showMissionFormWrap: boolean;
-  elementMissionFormWrap: FutureMissionsFormDataType;
+  showMissionForm: boolean;
+  elementMissionForm: FutureMissionsFormDataType;
 };
 
 export interface StatePropsFutureMissions {}
 
 export interface DispatchPropsFutureMissions {
-  getMissionById: (id: number) => Promise<MissionType>;
+  actionGetMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetMissionById>;
 }
 
 export interface OwnPropsFutureMissions {}

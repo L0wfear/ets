@@ -75,7 +75,6 @@ export default class NotificationsStore extends Store {
       ),
     );
 
-    this.register(missionsActions.createMission, this.handleMissionCreate);
     this.register(missionsActions.createMissions, this.handleMissionsCreate);
 
     this.state = {

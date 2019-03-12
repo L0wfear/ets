@@ -17,6 +17,7 @@ import permissions_duty_mission_template from 'components/missions/duty_mission_
 import { TypeDownload } from 'components/directories/order/constant-order';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { getBlobOrder } from 'components/directories/order/utils-order';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 const marginLeft = { marginLeft: 10 };
 
@@ -55,6 +56,7 @@ const OrderTableChilrend: React.FunctionComponent<any> = (props) => (
 
 const mapStateToProps = (state) => ({
   selectedElementOrder: state.order.selectedElementOrder,
+  order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
 
   disabledTemplateMission: state.order.disabledOrderButton.templateMission,
   disabledTemplateDutyMission:
@@ -73,16 +75,15 @@ const mapDispatchToProps = (dispatch) => ({
 const mergeProps = (
   stateProps,
   dispatchProps,
-  { order_mission_source_id: mission_source_id },
 ) => ({
   disabledButtonsMenu: !stateProps.selectedElementOrder,
   disabledTemplateMission: stateProps.disabledTemplateMission,
   disabledTemplateDutyMission: stateProps.disabledTemplateDutyMission,
 
   handleClickOnCMTemplate: () =>
-    dispatchProps.setMInMissionTemplateData({ mission_source_id }),
+    dispatchProps.setMInMissionTemplateData({ mission_source_id: stateProps.mission_source_id }),
   handleClickOnCDMTemplate: () =>
-    dispatchProps.setDMInMissionTemplateData({ mission_source_id }),
+    dispatchProps.setDMInMissionTemplateData({ mission_source_id: stateProps.mission_source_id }),
   selectDownload: (eventName) =>
     getBlobOrder(stateProps.selectedElementOrder, eventName),
 });

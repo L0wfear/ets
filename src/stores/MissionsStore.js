@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import { get, find } from 'lodash';
+import { get } from 'lodash';
 import { getToday9am, getTomorrow9am, getDateWithMoscowTz } from 'utils/dates';
 
 class MissionsStore extends Store {
@@ -7,11 +7,6 @@ class MissionsStore extends Store {
     super();
 
     const missionsActons = flux.getActions('missions');
-    this.register(missionsActons.getMissions, this.handleGetMissions);
-    this.register(
-      missionsActons.getMissionSources,
-      this.handleGetMissionSources,
-    );
     this.register(
       missionsActons.getMissionTemplatesCars,
       this.handleGetMissionTemplatesCars,
@@ -26,11 +21,8 @@ class MissionsStore extends Store {
     );
 
     this.state = {
-      missionsList: [],
-      missionSourcesList: [],
       carDutyMissionList: [],
       municipalFacilityList: [],
-      missionsTotalCount: 0,
       govNumberFilter: [],
     };
   }
@@ -41,17 +33,6 @@ class MissionsStore extends Store {
     this.setState({ municipalFacilityList });
   }
 
-  handleGetMissions(missions) {
-    this.setState({
-      missionsList: get(missions, 'result.rows', []),
-      missionsTotalCount: get(missions, 'result.meta.total_count', 0),
-    });
-  }
-
-  handleGetMissionSources({ result: { rows: missionSourcesList } }) {
-    this.setState({ missionSourcesList });
-  }
-
   handleGetMissionTemplatesCars(govNumbers) {
     this.setState({ govNumberFilter: get(govNumbers, 'result.rows', []) });
   }
@@ -59,63 +40,15 @@ class MissionsStore extends Store {
   handleGetCarDutyMissions(carDutyMissions) {
     this.setState({ carDutyMissionList: carDutyMissions.result });
   }
-
-  getMissionSourceById(id) {
-    return find(this.state.missionSourcesList, (ms) => ms.id === id) || {};
-  }
 }
 
 export default MissionsStore;
-
-export function getDefaultMission(
-  date_start = getDateWithMoscowTz(),
-  date_end = getTomorrow9am(),
-) {
-  return {
-    // Если будете исправлять, проверте типизацию
-    description: '',
-    date_start,
-    date_end,
-    assign_to_waybill: 'assign_to_new_draft',
-    mission_source_id: 3,
-    passes_count: 1,
-    is_new: true,
-  };
-}
-
-export function getDefaultDutyMission() {
-  return {
-    status: 'not_assigned',
-    plan_date_start: getToday9am(),
-    plan_date_end: getTomorrow9am(),
-    fact_date_start: null,
-    fact_date_end: null,
-    brigade_employee_id_list: [],
-    comment: '',
-    car_mission_id: 0,
-    is_new: true,
-  };
-}
 
 export function getDefaultDutyMissionsCreationTemplate() {
   return {
     date_start: getToday9am(),
     date_end: getTomorrow9am(),
     mission_source_id: 3,
-  };
-}
-
-export function getDefaultMissionTemplate() {
-  return {
-    description: '',
-    passes_count: 1,
-    car_ids: [],
-    car_type_id: [],
-    norm_id: [],
-    is_cleaning_norm: [],
-    assign_to_waybill: [],
-    date_create: getDateWithMoscowTz(),
-    is_new: true,
   };
 }
 

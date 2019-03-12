@@ -62,7 +62,6 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
 
     await Promise.all([
       flux.getActions('technicalOperation').getTechnicalOperations(),
-      flux.getActions('missions').getMissionSources(),
       flux.getActions('employees').getEmployees(),
     ]);
 

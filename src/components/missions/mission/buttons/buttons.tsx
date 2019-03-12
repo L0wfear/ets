@@ -3,11 +3,11 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+import MissionFormLazy from 'components/missions/mission/form/main';
 
-export const PermittedMissionFormWrap = withRequirePermissionsNew({
+export const PermittedMissionFormLazy = withRequirePermissionsNew({
   permissions: 'mission.read',
-})(MissionFormWrap);
+})(MissionFormLazy);
 
 export const ButtonCreateMission = withRequirePermissionsNew({
   permissions: 'mission.create',

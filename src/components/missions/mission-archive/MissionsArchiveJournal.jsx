@@ -10,6 +10,7 @@ import { connectToStores, staticProps } from 'utils/decorators';
 import {
   extractTableMeta,
   getServerSortingField,
+  toServerFilteringObject,
 } from 'components/ui/table/utils';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import PrintForm from 'components/missions/common/PrintForm';
@@ -18,17 +19,17 @@ import Paginator from 'components/ui/new/paginator/Paginator';
 import MissionsTable, {
   getTableMeta,
 } from 'components/missions/mission/MissionsTable';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+import MissionFormLazy from 'components/missions/mission/form/main';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import {
-  getCompanyStructureState,
   getSessionState,
   getSomeUniqState,
+  getMissionsState,
 } from 'redux-main/reducers/selectors';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 const is_archive = true;
 const loadingPageName = 'mission-archive';
@@ -41,7 +42,7 @@ const ButtonUpdateMission = withRequirePermissionsNew({
 @staticProps({
   entity: 'mission',
   permissions,
-  listName: 'missionsList',
+  listName: 'missionList',
   tableComponent: MissionsTable,
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],
@@ -62,32 +63,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
   }
 
   init = async () => {
-    const { flux } = this.context;
-    const outerPayload = {
-      start_date: new Date(),
-      end_date: new Date(),
-    };
-
-    this.props.getAndSetInStoreCompanyStructureLinear();
-
-    flux
-      .getActions('missions')
-      .getMissions(
-        null,
-        MAX_ITEMS_PER_PAGE,
-        0,
-        this.state.sortBy,
-        this.state.filter,
-        is_archive,
-      );
-    flux.getActions('objects').getCars();
-    flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getMissionSources();
-    flux
-      .getActions('missions')
-      .getCleaningMunicipalFacilityAllList(outerPayload);
-    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
-    this.props.actionGetAndSetInStoreMissionCancelReasons();
+    this.refreshList();
   };
 
   componentDidUpdate(nextProps, prevState) {
@@ -100,22 +76,53 @@ class MissionsArchiveJournal extends CheckableElementsList {
     }
   }
 
-  refreshList = async (state = this.state) => {
-    const missions = await this.context.flux
+  componentWillUnmount() {
+    // this.props.actionResetMissionCancelReasons(); на всякий
+    this.props.actionResetMission();
+  }
+
+  loadDependecyData = () => {
+    const { flux } = this.context;
+    const outerPayload = {
+      start_date: new Date(),
+      end_date: new Date(),
+    };
+
+    this.props.actionGetAndSetInStoreMissionCancelReasons();
+    flux.getActions('objects').getCars();
+    flux.getActions('technicalOperation').getTechnicalOperations();
+    flux
       .getActions('missions')
-      .getMissions(
-        null,
-        MAX_ITEMS_PER_PAGE,
-        state.page * MAX_ITEMS_PER_PAGE,
-        state.sortBy,
-        state.filter,
+      .getCleaningMunicipalFacilityAllList(outerPayload);
+    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+  };
+
+  refreshList = async (state = this.state) => {
+    this.setState({
+      selectedElement: null,
+      checkedElements: {},
+      showPrintForm: false,
+      showMissionRejectForm: false,
+      showMissionInfoForm: false,
+    });
+
+    const filter = toServerFilteringObject(state.filter, this.tableMeta);
+
+    const {
+      data,
+      total_count,
+    } = await this.props.actionGetAndSetInStoreMission(
+      {
+        limit: MAX_ITEMS_PER_PAGE,
+        offset: state.page * MAX_ITEMS_PER_PAGE,
+        sort_by: state.sortBy,
+        filter,
         is_archive,
-      );
+      },
+      { page: loadingPageName },
+    );
 
-    const { total_count } = missions.result.meta;
-    const resultCount = missions.result.rows.length;
-
-    if (resultCount === 0 && total_count > 0) {
+    if (data.length === 0 && total_count > 0) {
       this.setState({ page: Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1 });
     }
   };
@@ -188,15 +195,31 @@ class MissionsArchiveJournal extends CheckableElementsList {
     }
   };
 
+  onFormHideMissionForm = (isSubmitted) => {
+    if (isSubmitted) {
+      this.refreshList();
+
+      this.setState({
+        showForm: false,
+        selectedElement: null,
+        formType: 'ViewForm',
+        checkedElements: {},
+      });
+    } else {
+      this.setState({
+        showForm: false,
+      });
+    }
+  };
+
   getForms = () => {
     return [
       <div key={'forms'}>
-        <MissionFormWrap
-          onFormHide={this.onFormHide}
+        <MissionFormLazy
+          onFormHide={this.onFormHideMissionForm}
           showForm={this.state.showForm}
           element={this.state.selectedElement}
-          refreshTableList={this.refreshList}
-          {...this.props}
+          page={loadingPageName}
         />
         <MissionInfoFormWrap
           onFormHide={() => this.setState({ showMissionInfoForm: false })}
@@ -247,7 +270,6 @@ class MissionsArchiveJournal extends CheckableElementsList {
   getAdditionalProps = () => {
     return {
       mapView: this.mapView,
-      structures: this.props.companyStructureLinearList,
       changeSort: this.changeSort,
       changeFilter: this.changeFilter,
       filterValues: this.state.filter,
@@ -255,6 +277,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
       useServerFilter: true,
       useServerSort: true,
       is_archive,
+      loadDependecyData: this.loadDependecyData,
     };
   };
 
@@ -268,7 +291,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
     return (
       <Paginator
         currentPage={this.state.page}
-        maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
+        maxPage={Math.ceil(this.props.total_count / MAX_ITEMS_PER_PAGE)}
         setPage={(page) => this.setState({ page })}
         firstLastButtons
       />
@@ -283,20 +306,13 @@ export default compose(
   }),
   connect(
     (state) => ({
-      companyStructureLinearList: getCompanyStructureState(state)
-        .companyStructureLinearList,
       missionCancelReasonsList: getSomeUniqState(state)
         .missionCancelReasonsList,
       userData: getSessionState(state).userData,
+      missionList: getMissionsState(state).missionData.list,
+      total_count: getMissionsState(state).missionData.total_count,
     }),
     (dispatch) => ({
-      getAndSetInStoreCompanyStructureLinear: () =>
-        dispatch(
-          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
-            {},
-            { page: loadingPageName },
-          ),
-        ),
       actionGetAndSetInStoreMissionCancelReasons: () =>
         dispatch(
           someUniqActions.actionGetAndSetInStoreMissionCancelReasons(
@@ -311,6 +327,10 @@ export default compose(
             { page: loadingPageName },
           ),
         ),
+      actionGetAndSetInStoreMission: (...arg) =>
+        dispatch(missionsActions.actionGetAndSetInStoreMission(...arg)),
+      actionResetMission: (...arg) =>
+        dispatch(missionsActions.actionResetMission(...arg)),
     }),
   ),
 )(MissionsArchiveJournal);

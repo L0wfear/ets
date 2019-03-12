@@ -3,9 +3,17 @@ export type Mission = {
   can_be_closed: boolean;
   can_edit_car_and_route: boolean;
   car_gov_number: string;
+  car_gov_numbers: string[];
   car_id: number | null;
+  car_ids: number[];
+  car_model_name: string,
+  car_model_names: string[],
+  car_special_model_name: string,
+  car_special_model_names: string[],
   car_type_id: number | null;
+  car_type_ids: number[];
   car_type_name: string;
+  car_type_names: string[];
   column_id: number | null;
   comment: string;
   current_percentage: null
@@ -15,7 +23,9 @@ export type Mission = {
   id: number | null;
   is_archive: boolean;
   is_new: boolean;
+  is_cleaning_norm?: boolean;
   is_valid_to_order_operation: boolean | null;
+  for_column: boolean;
   mission_source_id: number | null;
   mission_source_name: string;
   mission_source_text: string;
@@ -23,13 +33,14 @@ export type Mission = {
   municipal_facility_name: string;
   name: string;
   norm_id: number | null;
+  norm_ids: number[];
   norm_text: string;
   number: number | null;
   object_type_id: number | null;
   object_type_name: string;
   operation_num_execution: null
   order_id: number | null;
-  order_number: number | null;
+  order_number: string | null;
   order_operation_id: number | null;
   order_status: string;
   passes_count: number | null;

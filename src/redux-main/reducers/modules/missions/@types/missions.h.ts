@@ -7,6 +7,7 @@ import {
   Order,
   OrderTechnicalOperation,
 } from 'redux-main/reducers/modules/order/@types';
+import { Waybill } from '../../waybill/@types';
 
 export type IStateMissions = {
   missionTemplateList: MissionTemplate[];
@@ -23,8 +24,11 @@ export type IStateMissions = {
   };
   missionData: {
     list: Mission[];
+    waybillData: Waybill;
     dependeceOrder: Order;
     dependeceTechnicalOperation: OrderTechnicalOperation;
+    carsList: Car[];
+    carsIndex: Record<Car['asuods_id'], Car>;
     total_count: number;
   };
 };

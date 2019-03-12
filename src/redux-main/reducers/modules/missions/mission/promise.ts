@@ -1,4 +1,7 @@
-import { get } from 'lodash';
+import {
+  cloneDeep,
+  get,
+} from 'lodash';
 import { MissionPrintService, MissionService } from 'api/missions/index';
 import {
   Mission,
@@ -7,9 +10,44 @@ import {
 
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
+import { createValidDateTime } from 'utils/dates';
 
 const getFrontMission = (missionRaw: any) => {
-  const mission: Mission = { ...missionRaw };
+  if (missionRaw) {
+    const mission: Mission = cloneDeep(missionRaw);
+
+    mission.car_gov_numbers = [mission.car_gov_number];
+    mission.car_ids = [mission.car_id];
+    mission.car_type_ids = [mission.car_type_id];
+    mission.car_type_names = [mission.car_type_name];
+    mission.car_model_names = [mission.car_model_name];
+    mission.car_special_model_names = [mission.car_special_model_name];
+    mission.norm_ids = [mission.norm_id];
+
+    return mission;
+  }
+
+  return null;
+};
+
+const getBackMission = (missionRaw: any, index) => {
+  const mission: Mission = cloneDeep(missionRaw);
+
+  mission.car_gov_number = mission.car_gov_number[index];
+  mission.car_id = mission.car_ids[index];
+  mission.car_type_id = mission.car_type_ids[index];
+  mission.car_type_name = mission.car_type_names[index];
+  mission.car_model_name = mission.car_model_names[index];
+  mission.car_special_model_name = mission.car_special_model_names[index];
+  mission.norm_id = mission.norm_ids[index];
+
+  delete mission.car_gov_numbers;
+  delete mission.car_ids;
+  delete mission.car_type_ids;
+  delete mission.car_type_names;
+  delete mission.car_model_names;
+  delete mission.car_special_model_names;
+  delete mission.norm_ids;
 
   return mission;
 };
@@ -47,8 +85,8 @@ export const promiseGetMission = async (payloadOwn: GetMissionPayload) => {
   };
 };
 
-export const promiseGetPrintFormMission = async (id: Mission['id']) => {
-  return MissionPrintService.getBlob({ mission_id: id });
+export const promiseGetPrintFormMission = async (payloadOwn: any) => {
+  return MissionPrintService.postBlob(payloadOwn);
 };
 
 export const promiseGetMissionById = async (id: Mission['id']) => {
@@ -58,12 +96,58 @@ export const promiseGetMissionById = async (id: Mission['id']) => {
   return getFrontMission(mission);
 };
 
-export const promiseCreateMission = async (payloadOwn: Partial<Mission>) => {
-  throw new Error('non define promiseCreateMission');
+export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_waybill: string[], hidden: boolean) => {
+  const payload: Partial<Mission> | any = cloneDeep(mission);
+  payload.date_start = createValidDateTime(payload.date_start);
+  payload.date_end = createValidDateTime(payload.date_end);
+  payload.hidden = hidden;
+
+  if (payload.waybill_id === -1) {
+    delete payload.waybill_id;
+  }
+
+  if (mission.for_column) {
+    const responceColumn = await MissionService.path('column').post(
+      {
+        missions: payload.car_ids.map((car_id, index) => {
+
+          const newObj = {
+            ...payload,
+            assign_to_waybill: assign_to_waybill[index],
+          };
+
+          return getBackMission(newObj, index);
+        }),
+      },
+      false,
+      'json',
+    );
+
+    return responceColumn;
+  }
+
+  const responce = await MissionService.post(
+    {
+      ...getBackMission(payload, 0),
+      assign_to_waybill: assign_to_waybill[0],
+    },
+    false,
+    'json',
+  );
+
+  return get(responce, 'result', null) as Partial<Mission>;
 };
 
 export const promiseUpdateMission = async (payloadOwn: Partial<Mission>) => {
-  throw new Error('non define promiseUpdateMission');
+  const responce = await MissionService.put(
+    {
+      ...getBackMission(payloadOwn, 0),
+    },
+    false,
+    'json',
+  );
+
+  return get(responce, 'result', null) as Partial<Mission>;
 };
 
 export const promiseChangeArchiveMissionStatus = async (
@@ -76,7 +160,7 @@ export const promiseChangeArchiveMissionStatus = async (
     'json',
   );
 
-  return get(responce, 'result.rows.0', null);
+  return getFrontMission(get(responce, 'result.rows.0', null));
 };
 
 export const promiseRemoveMissions = async (ids: number[]) => {

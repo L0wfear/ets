@@ -1,4 +1,6 @@
 import createFio from 'utils/create-fio';
+import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 export function getPermittetEmployeeForBrigade(employeesList, structure_id) {
   return employeesList.reduce((opt, e) => {
@@ -29,3 +31,12 @@ export const getKindTaskIds = (id, fromOrder) => {
     }
   }
 };
+
+export const isOrderSource = (
+  (
+    mission_source_id: DutyMission['mission_source_id'] | Mission['mission_source_id'],
+    order_mission_source_id: number,
+  ) => (
+    mission_source_id === order_mission_source_id
+  )
+);

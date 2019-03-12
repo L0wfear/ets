@@ -24,10 +24,12 @@ import {
   OrderTechnicalOperation,
 } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
+import { autobaseGetSetCar } from '../../autobase/car/actions';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { get } from 'lodash';
 
-const actionSetMissionPartialData = (
-  partialMissionData: Partial<IStateMissions['missionData']>,
-): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (
+const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (
   dispatch,
   getState,
 ) => {
@@ -56,18 +58,99 @@ const actionResetMission = (): ThunkAction<
 
   return newMissionData;
 };
-const actionPrintFormMission = (
-  id: Mission['id'],
+
+type ThunkActionSetCarsMission = ThunkAction<
+  Pick<
+    IStateMissions['missionData'],
+    'carsIndex' | 'carsList'
+  >,
+  ReduxState,
+  {},
+  AnyAction
+>;
+const actionSetCarsMission = (
+  carsList: IStateMissions['missionData']['carsList'],
+  carsIndex: IStateMissions['missionData']['carsIndex'],
+): ThunkActionSetCarsMission => (dispatch) => {
+  dispatch(
+    actionSetMissionPartialData({
+      carsList,
+      carsIndex,
+    }),
+  );
+
+  return {
+    carsList,
+    carsIndex,
+  };
+};
+
+type ThunkActionResetCarsMissionTemplate = ThunkAction<
+  Pick<
+    IStateMissions['missionData'],
+    'carsIndex' | 'carsList'
+  >,
+  ReduxState,
+  {},
+  AnyAction
+>;
+
+const actionLoadCarsForMission = (
+  ownPayload: object,
   meta: LoadingMeta,
 ): ThunkAction<
-  ReturnType<typeof promiseGetPrintFormMission>,
+  ReturnType<HandleThunkActionCreator<typeof autobaseGetSetCar>>,
   ReduxState,
   {},
   AnyAction
 > => async (dispatch) => {
+  const response = await dispatch(autobaseGetSetCar(ownPayload, meta));
+
+  return response;
+};
+const actionGetAndSetInStoreCarForMission = (
+  payload: object,
+  meta: LoadingMeta,
+): ThunkAction<
+  ReturnType<HandleThunkActionCreator<typeof actionLoadCarsForMission>>,
+  ReduxState,
+  {},
+  AnyAction
+> => async (dispatch) => {
+  const { data, dataIndex } = await dispatch(
+    actionLoadCarsForMission(payload, meta),
+  );
+
+  dispatch(actionSetCarsMission(data, dataIndex));
+
+  return {
+    data,
+    dataIndex,
+  };
+};
+
+const actionResetCarsMission = (): ThunkActionResetCarsMissionTemplate => (
+  dispatch,
+) => {
+  const carsList = [];
+  const carsIndex = {};
+  dispatch(
+    actionSetCarsMission(
+      carsList,
+      carsIndex,
+    ),
+  );
+
+  return {
+    carsList,
+    carsIndex,
+  };
+};
+
+const actionPrintFormMission = (payloadOwn: any, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetPrintFormMission>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetPrintFormMission(id),
+    payload: promiseGetPrintFormMission(payloadOwn),
     meta: {
       promise: true,
       ...meta,
@@ -126,6 +209,8 @@ const actionGetAndSetInStoreMission = (
   {},
   AnyAction
 > => async (dispatch) => {
+  dispatch(actionResetMission());
+
   const response = await dispatch(actionGetMission(payloadOwn, meta));
 
   dispatch(
@@ -138,28 +223,51 @@ const actionGetAndSetInStoreMission = (
   return response;
 };
 
-type ActionSetDependenceOrderDataForMissionAction = ThunkAction<
-  ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>,
-  ReduxState,
-  {},
-  AnyAction
->;
-const actionSetDependenceOrderDataForMission = (
-  dependeceOrder: IStateMissions['missionData']['dependeceOrder'],
-  dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'],
-): ActionSetDependenceOrderDataForMissionAction => (dispatch, getState) => {
-  const missionData = dispatch(
-    actionSetMissionPartialData({
-      ...getMissionsState(getState()).missionData,
-      dependeceOrder,
-      dependeceTechnicalOperation,
-    }),
+type ActionSetDependenceOrderDataForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['missionData']['dependeceOrder'], dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation']): ActionSetDependenceOrderDataForMission => (
+  (dispatch, getState) => {
+    const missionData = dispatch(
+      actionSetMissionPartialData({
+        ...getMissionsState(getState()).missionData,
+        dependeceOrder,
+        dependeceTechnicalOperation,
+      }),
+    );
+
+    return missionData;
+  }
+);
+
+type ActionSetDependenceWaybillDataForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+const actionSetDependenceWaybillDataForMission = (waybillData: IStateMissions['missionData']['waybillData']): ActionSetDependenceWaybillDataForMission => (
+  (dispatch, getState) => {
+    const missionData = dispatch(
+      actionSetMissionPartialData({
+        ...getMissionsState(getState()).missionData,
+        waybillData,
+      }),
+    );
+
+    return missionData;
+  }
+);
+
+const actionLoadWaybillDataByIdForMission = (
+  waybill_id: number,
+  meta: LoadingMeta,
+) => async (dispatch) => {
+  const waybillData: Waybill = await dispatch(waybillActions.actionGetWaybillById(waybill_id, meta));
+
+  dispatch(
+    actionSetDependenceWaybillDataForMission(
+      waybillData,
+    ),
   );
 
-  return missionData;
+  return waybillData;
 };
 
-const actionLoadOrderAndTechnicalOperationById = (
+const actionLoadOrderAndTechnicalOperationByIdForMission = (
   id: Order['id'],
   operation_id: OrderTechnicalOperation['order_operation_id'],
   meta: LoadingMeta,
@@ -169,7 +277,7 @@ const actionLoadOrderAndTechnicalOperationById = (
   dispatch(
     actionSetDependenceOrderDataForMission(
       dependeceOrder,
-      dependeceOrder.technical_operations.find(
+      get(dependeceOrder, 'technical_operations', []).find(
         ({ order_operation_id }) => order_operation_id === operation_id,
       ),
     ),
@@ -180,6 +288,7 @@ const actionLoadOrderAndTechnicalOperationById = (
 
 const actionCreateMission = (
   missionRaw: Partial<Mission>,
+  assign_to_waybill: string[],
   meta: LoadingMeta,
 ): ThunkAction<
   ReturnType<typeof promiseCreateMission>,
@@ -189,7 +298,7 @@ const actionCreateMission = (
 > => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
-    payload: promiseCreateMission(missionRaw),
+    payload: promiseCreateMission(missionRaw, assign_to_waybill, false),
     meta: {
       promise: true,
       ...meta,
@@ -283,13 +392,19 @@ const actionRemoveMission: any = (
 
 export default {
   actionSetMissionPartialData,
+  actionSetCarsMission,
   actionResetMission,
+  actionResetCarsMission,
   actionPrintFormMission,
+  actionLoadCarsForMission,
+  actionGetAndSetInStoreCarForMission,
   actionGetMission,
   actionGetMissionById,
   actionGetAndSetInStoreMission,
   actionSetDependenceOrderDataForMission,
-  actionLoadOrderAndTechnicalOperationById,
+  actionLoadWaybillDataByIdForMission,
+  actionSetDependenceWaybillDataForMission,
+  actionLoadOrderAndTechnicalOperationByIdForMission,
   actionCreateMission,
   actionChangeArchiveMissionStatus,
   actionUpdateMission,

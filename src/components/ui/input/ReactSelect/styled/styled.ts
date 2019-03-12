@@ -58,8 +58,8 @@ export const Placeholder = styled(components.Placeholder)`
 export const Control = styled(components.Control)`
 `;
 
-export const Option = styled(components.Option).attrs({ className: 'option-container' })`
-  &.option-container {
+export const Option = styled(components.Option)`
+  &&& {
     cursor: pointer;
     color: black;
 

@@ -1,19 +1,27 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 
 import MissionsList from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/MissionsList';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
+import MissionFormLazy from 'components/missions/mission/form/main';
 
 import {
-  loadMissionById,
   loadMissionDataById,
 } from 'redux-main/trash-actions/mission';
+import { fetchCarInfo } from '../../../redux-main/modules/actions-car-info';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { ReduxState } from 'redux-main/@types/state';
+
+type CarMissionsDispatchProps = {
+  actionGetMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetMissionById>;
+} & Record<any, any>;
 
 type PropsCarMissions = {
-  loadMissionById: any;
+  asuods_id: number;
+  gps_code: string;
+  fetchMissionsData: any;
   loadMissionDataById: any;
-};
+} & CarMissionsDispatchProps;
 
 type StateCarMissions = {
   selectedMissionIdToShowMain: number | void;
@@ -48,29 +56,46 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
       }
     });
   };
-  showMissionForm = (id) => {
+  showMissionForm = async (id) => {
     this.setState({
       selectedMissionIdToShowMain: id,
       selectedMissionIdToShowInfo: null,
     });
-    this.props.loadMissionById(id).then(({ payload: { mission } }) => {
-      if (id === this.state.selectedMissionIdToShowMain) {
-        if (mission) {
-          this.setState({
-            missionToShow: mission,
-          });
-        } else {
-          console.log('not_find_mission'); // tslint:disable-line:no-console
-          this.setState({ selectedMissionIdToShowMain: null });
-        }
+    let mission = null;
+    try {
+      mission = await this.props.actionGetMissionById(
+        id,
+        {
+          page: 'dashboard',
+        },
+      );
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
+    if (id === this.state.selectedMissionIdToShowMain) {
+      if (mission) {
+        this.setState({
+          missionToShow: mission,
+        });
+      } else {
+        console.log('not_find_mission'); // tslint:disable-line:no-console
+        this.setState({ selectedMissionIdToShowMain: null });
       }
-    });
+    }
   };
-  hideMain = () =>
+  hideMain = (isSubmitted) => {
+    if (isSubmitted) {
+      this.props.fetchMissionsData({
+        gps_code: this.props.gps_code,
+        asuods_id: this.props.asuods_id,
+      });
+    }
     this.setState({
       selectedMissionIdToShowMain: null,
       missionToShow: null,
     });
+  }
+
   hideInfo = () =>
     this.setState({
       selectedMissionIdToShowInfo: null,
@@ -88,7 +113,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           showMissionInfoForm={this.showMissionInfoForm}
           showMissionForm={this.showMissionForm}
         />
-        <MissionFormWrap
+        <MissionFormLazy
           onFormHide={this.hideMain}
           showForm={!!missionToShow && !!this.state.selectedMissionIdToShowMain}
           element={missionToShow}
@@ -106,13 +131,29 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
   }
 }
 
-const mapStateToProps = null;
-const mapDispatchToProps = (dispatch) => ({
-  loadMissionById: (id) => dispatch(loadMissionById('NONE', id)),
-  loadMissionDataById: (id) => dispatch(loadMissionDataById('NONE', id)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default connect<any, CarMissionsDispatchProps, any, ReduxState>(
+  (state) => ({
+    gps_code: state.monitorPage.carInfo.gps_code,
+    asuods_id: (
+      state.monitorPage.carActualGpsNumberIndex[
+        state.monitorPage.carInfo.gps_code
+      ] || { asuods_id: null }
+    ).asuods_id,
+  }),
+  (dispatch: any) => ({
+    actionGetMissionById: (...arg) => (
+      dispatch(
+        missionsActions.actionGetMissionById(...arg),
+      )
+    ),
+    loadMissionDataById: (id) => dispatch(loadMissionDataById('NONE', id)),
+    fetchMissionsData: (props) => {
+      return dispatch(
+        fetchCarInfo({
+          asuods_id: props.asuods_id,
+          gps_code: props.gps_code,
+        }),
+      );
+    },
+  }),
 )(CarMissions);

@@ -16,6 +16,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 import dutyMissionActions from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import { promiseLoadOrderById } from './order_promise';
+import { Mission } from '../missions/mission/@types';
 
 const ORDER = createPath('ORDER');
 
@@ -69,12 +70,41 @@ export const setOrderHistory = (HistoryOrderDataList) => ({
   },
 });
 
-export const setMissionData = ({ mission_source_id }) => ({
-  type: SET_MISSION_DATA,
-  payload: {
-    mission_source_id,
-  },
-});
+export const setMissionData = () => (dispatch, getState) => {
+  const partialMission: Partial<Mission> = {};
+  partialMission.mission_source_id = getSomeUniqState(getState()).missionSource.order_mission_source_id;
+  const {
+    selectedElementOrder: selectedOrder,
+    selectedElementAssignment: selectedAssignment,
+  } = getOrderState(getState());
+
+  partialMission.order_id = selectedOrder.id;
+  partialMission.norm_id = selectedAssignment.norm_id;
+  partialMission.norm_ids = [selectedAssignment.norm_id];
+  partialMission.date_start = selectedAssignment.date_from || selectedOrder.order_date;
+  partialMission.date_end = selectedAssignment.date_to || selectedOrder.order_date_to;
+  partialMission.technical_operation_id = selectedAssignment.id;
+  partialMission.technical_operation_name = selectedAssignment.tk_operation_name;
+  partialMission.municipal_facility_id = selectedAssignment.municipal_facility_id;
+  partialMission.municipal_facility_name = selectedAssignment.elem;
+  partialMission.order_operation_id = selectedAssignment.order_operation_id;
+  partialMission.order_number = selectedOrder.order_number;
+  partialMission.order_status = selectedOrder.status;
+
+  dispatch(
+    dutyMissionActions.actionSetDependenceOrderDataForDutyMission(
+      selectedOrder,
+      selectedAssignment,
+    ),
+  );
+
+  dispatch({
+    type: SET_MISSION_DATA,
+    payload: {
+      partialMission,
+    },
+  });
+};
 
 export const setEmptyMissionData = () => ({
   type: SET_EMPTY_MISSION_DATA,
@@ -90,6 +120,7 @@ export const setDutyMissionData = (): ThunkAction<any, ReduxState, {}, AnyAction
   } = getOrderState(getState());
 
   partialDutyMission.faxogramm_id = selectedOrder.id;
+  partialDutyMission.norm_id = selectedAssignment.norm_id;
   partialDutyMission.plan_date_start = selectedAssignment.date_from || selectedOrder.order_date;
   partialDutyMission.plan_date_end = selectedAssignment.date_to || selectedOrder.order_date_to;
   partialDutyMission.technical_operation_id = selectedAssignment.id;

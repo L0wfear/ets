@@ -123,7 +123,7 @@ class DutyMissionsJournal extends CheckableElementsList {
       { page: loadingPageName },
     );
 
-    if (data === 0 && total_count > 0) {
+    if (data.length === 0 && total_count > 0) {
       this.setState({ page: Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1 });
     }
   };
@@ -462,12 +462,14 @@ class DutyMissionsJournal extends CheckableElementsList {
     this.setState({ showPrintForm: true });
   };
 
+  setNewPage = (page) => this.setState({ page });
+
   additionalRender = () => [
     <Paginator
       key="paginator"
       currentPage={this.state.page}
       maxPage={Math.ceil(this.props.total_count / MAX_ITEMS_PER_PAGE)}
-      setPage={(page) => this.setState({ page })}
+      setPage={this.setNewPage}
       firstLastButtons
     />,
   ];

@@ -34,21 +34,11 @@ export type StatePropsDutyMission = {
 };
 
 export type DispatchPropsDutyMission = {
-  employeeGetAndSetInStore: HandleThunkActionCreator<
-    typeof employeeActions.employeeGetAndSetInStore
-  >;
-  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<
-    typeof employeeActions.employeeEmployeeResetSetEmployee
-  >;
-  actionPrintFormDutyMission: HandleThunkActionCreator<
-    typeof missionsActions.actionPrintFormDutyMission
-  >;
-  actionLoadOrderAndTechnicalOperationById: HandleThunkActionCreator<
-    typeof missionsActions.actionLoadOrderAndTechnicalOperationById
-  >;
-  actionSetDependenceOrderDataForDutyMission: HandleThunkActionCreator<
-    typeof missionsActions.actionSetDependenceOrderDataForDutyMission
-  >;
+  employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
+  employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
+  actionPrintFormDutyMission: HandleThunkActionCreator<typeof missionsActions.actionPrintFormDutyMission>;
+  actionLoadOrderAndTechnicalOperationByIdForDutyMission: HandleThunkActionCreator<typeof missionsActions.actionLoadOrderAndTechnicalOperationByIdForDutyMission>;
+  actionSetDependenceOrderDataForDutyMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceOrderDataForDutyMission>;
 };
 export type OwnDutyMissionProps = {
   element: Partial<DutyMission> | null;

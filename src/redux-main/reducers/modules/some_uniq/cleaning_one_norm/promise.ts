@@ -3,6 +3,7 @@ import { get } from 'lodash';
 
 export const promiseGetCleaningOneNorm = async (payload) => {
   let response = null;
+
   try {
     response = await CleaningOneNormService.get(payload);
   } catch (error) {

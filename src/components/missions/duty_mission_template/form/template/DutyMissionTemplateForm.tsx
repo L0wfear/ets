@@ -76,7 +76,7 @@ class DutyMissionTemplateForm extends React.PureComponent<
     } = this.props;
 
     const IS_CREATING = !state.id;
-    const title = !IS_CREATING ? 'Шаблон задания' : 'Создание шаблона задания';
+    const title = !IS_CREATING ? 'Шаблон наряд-задания' : 'Создание шаблона наряд-задания';
     const isPermitted = !IS_CREATING
       ? this.props.isPermittedToUpdate
       : this.props.isPermittedToCreate;

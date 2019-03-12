@@ -1,5 +1,4 @@
 import { getKindTaskIds } from 'components/missions/utils/utils';
-import { AvailableRouteTypes } from 'components/missions/mission/MissionForm/types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 interface IFormState {
@@ -203,8 +202,6 @@ export const getDataByNormatives = (normatives, kind_task_ids, formState, withDe
         available_route_types,
       }));
   });
-
-export const isOdhRouteTypePermitted = (types: string[]) => types.includes(AvailableRouteTypes.Mixed);
 
 export const makeCarOptionLabel = (car: Car | null) => (
   car

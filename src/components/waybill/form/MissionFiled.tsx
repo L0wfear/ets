@@ -1,16 +1,21 @@
 import * as React from 'react';
-import { diffDates } from 'utils/dates';
-import { getDefaultMission } from 'stores/MissionsStore';
+import { get } from 'lodash';
 import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import permissionsMission from 'components/missions/mission/config-data/permissions';
 import * as Button from 'react-bootstrap/lib/Button';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
+import MissionFormLazy from 'components/missions/mission/form/main';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import { getWarningNotification } from 'utils/notifications';
+import { compose } from 'recompose';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const ButtonCreateMission = withRequirePermissionsNew({
   permissions: permissionsMission.create,
@@ -69,54 +74,60 @@ class MissionField extends React.Component<any, any> {
     this.props.handleChange('mission_id_list', newFormData);
   }
 
-  onMissionFormHide = (result) => {
-    const id = result && result.result ? result.result.id : null;
-    if (id) {
-      const {
-        car_id,
-        mission_id_list: [...mission_id_list],
-      } = this.props.state;
-      mission_id_list.push(id);
-      this.props.handleChange('mission_id_list', mission_id_list);
-      this.props.getMissionsByCarAndDates(
-        { ...this.props.state, mission_id_list },
-        car_id,
-        false,
-      );
+  onMissionFormHide = (isSubmitted, result) => {
+    if (isSubmitted) {
+      const id = get(result, 'id', null);
+
+      if (id) {
+        const {
+          car_id,
+          mission_id_list: [...mission_id_list],
+        } = this.props.state;
+        mission_id_list.push(id);
+        this.props.handleChange('mission_id_list', mission_id_list);
+        this.props.getMissionsByCarAndDates(
+          { ...this.props.state, mission_id_list },
+          car_id,
+          false,
+        );
+      }
     }
 
-    this.setState({ showMissionForm: false, selectedMission: null });
+    this.setState({
+      showMissionForm: false,
+      selectedMission: null,
+    });
   };
 
   createMission = () => {
     const {
       carsList = [],
       state,
-      state: { car_id, plan_departure_date, fact_departure_date, status },
+      state: { car_id },
     } = this.props;
 
-    const { type_id } = carsList.find(
+    const carData: Car = carsList.find(
       ({ asuods_id }) => asuods_id === car_id,
-    ) || { type_id: null };
+    );
 
-    const IS_ACTIVE = status === 'active';
-    const IS_DRAFT = status === 'draft';
-    let date_start;
+    this.props.actionSetDependenceWaybillDataForMission(this.props.state);
 
-    if (IS_DRAFT && diffDates(plan_departure_date, new Date()) > 0) {
-      date_start = plan_departure_date;
-    } else if (IS_ACTIVE && diffDates(fact_departure_date, new Date()) > 0) {
-      date_start = fact_departure_date;
-    }
+    const selectedMission: Partial<Mission> = {
+      car_gov_numbers: [get(carData, 'gov_number', null)],
+      car_ids: [car_id],
+      car_model_names: [get(carData, 'model_name', null)],
+      car_special_model_names: [get(carData, 'special_model_name', null)],
+      car_type_ids: [get(carData, 'type_id', null)],
+      car_type_names: [get(carData, 'type_name', null)],
+      structure_id: state.structure_id,
+      waybill_id: this.props.state.id || -1,
+      date_start: this.props.state.fact_departure_date || this.props.state.plan_departure_date,
+      date_end: this.props.state.fact_arrival_date || this.props.state.plan_arrival_date,
+    };
 
     this.setState({
       showMissionForm: true,
-      selectedMission: {
-        ...getDefaultMission(date_start, state.plan_arrival_date),
-        car_id,
-        type_id,
-        structure_id: state.structure_id,
-      },
+      selectedMission,
     });
   };
 
@@ -257,15 +268,11 @@ class MissionField extends React.Component<any, any> {
           }>
           Создать задание
         </ButtonCreateMission>
-        <MissionFormWrap
+        <MissionFormLazy
           onFormHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
-          fromWaybill
-          withDefineCarId
-          waybillStartDate={state.plan_departure_date}
-          waybillEndDate={state.plan_arrival_date}
-          {...this.props}
+          notChangeCar
         />
         {this.state.showMissionRejectForm && (
           <MissionRejectForm
@@ -282,6 +289,18 @@ class MissionField extends React.Component<any, any> {
   }
 }
 
-export default withRequirePermissionsNew({
-  permissions: permissionsMission.read,
-})(MissionField);
+export default compose<any, any>(
+  withRequirePermissionsNew({
+    permissions: permissionsMission.read,
+  }),
+  connect<null, { actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(
+    null,
+    (dispatch: any) => ({
+      actionSetDependenceWaybillDataForMission: (...arg) => (
+        dispatch(
+          missionsActions.actionSetDependenceWaybillDataForMission(...arg),
+        )
+      ),
+    }),
+  ),
+)(MissionField);

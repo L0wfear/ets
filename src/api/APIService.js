@@ -39,7 +39,7 @@ export default class APIService {
     this.processResponse = this.processResponse.bind(this);
 
     this.logFunction = (method) =>
-      console.info(`API SERVICE ${method} ${this.getUrl()}`); // eslint-disable-line
+      console.info(`API SERVICE ${method} ${this.getUrl()}`);
     this.warningNotificationFunction = (warning) =>
       global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
     this.errrorNotificationFunction = (errror) =>

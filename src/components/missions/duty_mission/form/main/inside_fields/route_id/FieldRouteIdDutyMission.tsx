@@ -171,7 +171,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
         technical_operation_id,
         municipal_facility_id,
         type: (DUTY_MISSION_IS_ORDER_SOURCE
-          ? dependeceTechnicalOperation.route_types
+          ? get(dependeceTechnicalOperation, 'route_types', [])
           : getAvailableRouteTypesMemo(
               this.props.municipalFacilityForDutyMissionList,
               municipal_facility_id,
@@ -349,12 +349,12 @@ class FieldRouteIdDutyMission extends React.PureComponent<
             handleHide={this.onRouteFormHide}
             hasMissionStructureId={hasSelectedStructureId}
             missionAvailableRouteTypes={(DUTY_MISSION_IS_ORDER_SOURCE
-              ? dependeceTechnicalOperation.route_types
+              ? get(dependeceTechnicalOperation, 'route_types', [])
               : getAvailableRouteTypesMemo(
                   this.props.municipalFacilityForDutyMissionList,
                   municipal_facility_id,
                 )
-            ).toString()}
+            )}
             fromMission
             fromMissionTemplate
             page={page}

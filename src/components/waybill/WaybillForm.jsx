@@ -54,6 +54,7 @@ import { isNullOrUndefined, isNumber, isBoolean } from 'util';
 import {
   getSessionState,
   getAutobaseState,
+  getSomeUniqState,
 } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -63,6 +64,7 @@ import { ButtonGroup } from 'react-bootstrap';
 import { isArray } from 'highcharts';
 import { WaybillEquipmentButton } from './styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -230,7 +232,6 @@ class WaybillForm extends Form {
       flux.getActions('objects').getCars(),
       flux.getActions('employees').getEmployees(),
       flux.getActions('objects').getWorkMode(),
-      flux.getActions('missions').getMissionSources(),
       getWaybillDrivers(
         this.context.flux.getActions('employees').getWaybillDrivers,
         this.props.formState,
@@ -403,7 +404,6 @@ class WaybillForm extends Form {
     }
     const { missionsList: oldMissionsList = [] } = this.state;
     const {
-      missionSourcesList = [],
       formState,
       formState: { mission_id_list = [] },
     } = this.props;
@@ -415,7 +415,7 @@ class WaybillForm extends Form {
 
     const missionsList = [...oldMissionsList];
 
-    const idOrder = (missionSourcesList.find(({ auto }) => auto) || {}).id;
+    const { order_mission_source_id } = this.props;
 
     const missionsFromOrder = uniqBy(
       missionsList.concat(...this.state.notAvailableMissions),
@@ -423,7 +423,7 @@ class WaybillForm extends Form {
     ).reduce((missions, mission) => {
       if (
         formState.mission_id_list.includes(mission.id)
-        && idOrder === mission.mission_source_id
+        && order_mission_source_id === mission.mission_source_id
       ) {
         missions.push(mission);
       }
@@ -833,7 +833,7 @@ class WaybillForm extends Form {
           [...this.state.missionsList, ...this.state.notAvailableMissions],
           'id',
         ),
-        this.props.missionSourcesList.find(({ auto }) => auto).id,
+        this.props.order_mission_source_id,
         this.context.flux.getActions('objects').getOrderById,
       )
         .then(async () => {
@@ -1272,7 +1272,7 @@ class WaybillForm extends Form {
     }
 
     return (
-      <Modal
+      <EtsModal
         id="modal-waybill"
         show={this.props.show}
         onHide={this.props.onHide}
@@ -2274,7 +2274,7 @@ class WaybillForm extends Form {
             isPermittedByKey={isPermittedByKey}
           />
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
@@ -2291,6 +2291,8 @@ export default compose(
       userStructures: getSessionState(state).userData.structures,
       userPermissionsSet: getSessionState(state).userData.permissionsSet,
       fuelCardsList: getAutobaseState(state).fuelCardsList,
+      order_mission_source_id: getSomeUniqState(state).missionSource
+        .order_mission_source_id,
     }),
     (dispatch) => ({
       fuelCardsGetAndSetInStore: () =>

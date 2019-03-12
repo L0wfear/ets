@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
-import MissionFormWrap from 'components/missions/mission/MissionFormWrap';
 import { connect } from 'react-redux';
-import { getDefaultMission } from 'stores/MissionsStore';
 import { FlexCenterButton } from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/styled/index';
 import memoizeOne from 'memoize-one';
 import { fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import MissionFormLazy from 'components/missions/mission/form/main';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 type PropsCarMissions = {
   gps_code: number;
@@ -13,18 +14,8 @@ type PropsCarMissions = {
   fetchMissionsData: any;
 };
 
-type defaultMissionI = {
-  description: string;
-  date_start: Date;
-  date_end: Date;
-  assign_to_waybill: string;
-  mission_source_id: number;
-  passes_count: number;
-  is_new: boolean;
-};
-
 type StateCarMissions = {
-  showMissionFormWrap: boolean;
+  showMissionForm: boolean;
   element: any;
 };
 
@@ -33,25 +24,32 @@ class CreateMission extends React.Component<
   StateCarMissions
 > {
   state = {
-    showMissionFormWrap: false,
+    showMissionForm: false,
     element: null,
   };
 
   handleClickCreateMission = () => {
     const { gps_code, carActualGpsNumberIndex } = this.props;
 
-    const carInfo = carActualGpsNumberIndex[gps_code];
+    const carInfo: Car = carActualGpsNumberIndex[gps_code];
 
-    const defaultMission: defaultMissionI = getDefaultMission();
-
-    const element = {
+    const element: Partial<Mission> = {
+      car_gov_number: carInfo.gov_number,
+      car_gov_numbers: [carInfo.gov_number],
       car_id: carInfo.asuods_id,
-      type_id: carInfo.type_id,
-      ...defaultMission,
+      car_ids: [carInfo.asuods_id],
+      car_model_name: carInfo.model_name,
+      car_model_names: [carInfo.model_name],
+      car_special_model_name: carInfo.special_model_name,
+      car_special_model_names: [carInfo.special_model_name],
+      car_type_id: carInfo.type_id,
+      car_type_ids: [carInfo.type_id],
+      car_type_name: carInfo.type_name,
+      car_type_names: [carInfo.type_name],
     };
 
     this.setState({
-      showMissionFormWrap: true,
+      showMissionForm: true,
       element,
     });
   };
@@ -65,7 +63,7 @@ class CreateMission extends React.Component<
     });
 
     this.setState({
-      showMissionFormWrap: false,
+      showMissionForm: false,
       element: null,
     });
   };
@@ -75,25 +73,18 @@ class CreateMission extends React.Component<
   );
 
   render() {
-    const { carActualGpsNumberIndex } = this.props;
-
-    const { element, showMissionFormWrap } = this.state;
-
-    const carActualGpsNumberArray = this.makeCarActualGpsNumberArray(
-      carActualGpsNumberIndex,
-    );
+    const { element, showMissionForm } = this.state;
 
     return (
       <FlexCenterButton>
         <ButtonCreateMission onClick={this.handleClickCreateMission}>
           Создать децентрализованное задание
         </ButtonCreateMission>
-        <MissionFormWrap
+        <MissionFormLazy
           onFormHide={this.handleHideMissionForm}
-          showForm={showMissionFormWrap}
+          showForm={showMissionForm}
           element={element}
-          carsList={carActualGpsNumberArray}
-          withDefineCarId
+          notChangeCar
         />
       </FlexCenterButton>
     );

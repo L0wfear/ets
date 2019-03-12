@@ -14,7 +14,7 @@ import {
 } from 'components/missions/duty_mission/form/main/inside_fields/mission_source_id/FieldMissionSourceDutyMission.d';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { makeOptionsByMissionSourceForDutyMission } from './makeOptions';
-import { isOrderSource } from 'components/missions/duty_mission/form/main/utils';
+import { isOrderSource } from 'components/missions/utils/utils';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types/index';
 
 class FieldMissionSourceDutyMission extends React.PureComponent<PropsFieldMissionSourceDutyMission, StateFieldMissionSourceDutyMission> {

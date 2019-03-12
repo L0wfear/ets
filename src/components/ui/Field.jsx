@@ -72,7 +72,9 @@ function StringField(props) {
     </Div>
   ) : (
     <Div hidden={hidden} className={className}>
-      <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
+      {typeof label === 'string' && (
+        <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
+      )}
       {!inline && <br />}
       <span id={id}>{value}</span>
     </Div>
@@ -131,7 +133,7 @@ export default class Field extends React.Component {
       type: PropTypes.string.isRequired,
       hidden: PropTypes.bool,
       onChange: PropTypes.func,
-      error: PropTypes.string,
+      error: PropTypes.any,
       readOnly: PropTypes.bool,
       className: PropTypes.string,
     };

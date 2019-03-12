@@ -22,6 +22,7 @@ import missionActions from 'redux-main/reducers/modules/missions/mission/actions
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
+import { get } from 'lodash';
 
 const actionSetDutyMissionPartialData = (partialDutyMissionData: Partial<IStateMissions['dutyMissionData']>): ThunkAction<IStateMissions['dutyMissionData'], ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const newDutyMissionData = {
@@ -82,6 +83,8 @@ const actionGetDutyMissionById = (id: DutyMission['id'], meta: LoadingMeta): Thu
   return payload;
 };
 const actionGetAndSetInStoreDutyMission = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMission>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  dispatch(actionResetDutyMission());
+
   const response = await dispatch(
     actionGetDutyMission(payloadOwn, meta),
   );
@@ -134,7 +137,7 @@ const actionSetDependenceOrderDataForDutyMission = (dependeceOrder: IStateMissio
   }
 );
 
-const actionLoadOrderAndTechnicalOperationById = (id: Order['id'], operation_id: OrderTechnicalOperation['order_operation_id'], meta: LoadingMeta) => async (dispatch) => {
+const actionLoadOrderAndTechnicalOperationByIdForDutyMission = (id: Order['id'], operation_id: OrderTechnicalOperation['order_operation_id'], meta: LoadingMeta) => async (dispatch) => {
   const dependeceOrder: Order = await dispatch(
     actionLoadOrderById(id, meta),
   );
@@ -142,7 +145,7 @@ const actionLoadOrderAndTechnicalOperationById = (id: Order['id'], operation_id:
   dispatch(
     actionSetDependenceOrderDataForDutyMission(
       dependeceOrder,
-      dependeceOrder.technical_operations.find(({ order_operation_id }) => order_operation_id === operation_id),
+      get(dependeceOrder, 'technical_operations', []).find(({ order_operation_id }) => order_operation_id === operation_id),
     ),
   );
 
@@ -221,7 +224,7 @@ export default {
   actionGetAvaliableMissionsToBind,
   actionGetAndSetInStoreAvalilableMissionsToBind,
   actionSetDependenceOrderDataForDutyMission,
-  actionLoadOrderAndTechnicalOperationById,
+  actionLoadOrderAndTechnicalOperationByIdForDutyMission,
   actionCreateDutyMission,
   actionChangeArchiveDutuMissionStatus,
   actionUpdateDutyMission,

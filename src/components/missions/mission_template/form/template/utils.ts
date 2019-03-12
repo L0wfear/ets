@@ -15,6 +15,8 @@ export const makeDefaultMissionTemplate = (...arg: any[]): MissionTemplate => ({
   car_type_ids: [],
   car_type_names: [],
   car_type_name_text: '',
+  car_model_names: [],
+  car_special_model_names: [],
   comment: '',
   company_id: null,
   date_create: (

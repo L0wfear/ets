@@ -19,6 +19,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import memoize from 'memoize-one';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 @connectToStores(['objects', 'missions'])
 @FluxContext
@@ -233,24 +234,28 @@ class MissionRejectForm extends React.Component {
       ) || this.state.status;
 
     if (!this.state.data) {
-      const response = await this.context.flux
-        .getActions('missions')
-        .getMissionById(this.state.mission_id);
-      const rows = get(response, ['result', 'rows'], []);
-      const mission = rows[0];
-      mission.comment = this.state.comment;
-      mission.mission_id = this.state.mission_id;
-      payload = {
-        ...mission,
-        action_at,
-        reason_id,
-        status,
-      };
-      handlerName = 'updateMission';
-      if (!isWaybillForm) {
-        resolve = await this.context.flux
-          .getActions('missions')
-          .updateMission(payload);
+      let mission = null;
+      try {
+        mission = await this.props.actionGetMissionById(
+          this.state.mission_id,
+          {},
+        );
+      } catch (error) {
+        console.error(error); // tslint:disable-line
+      }
+      if (mission) {
+        mission.comment = this.state.comment;
+        mission.mission_id = this.state.mission_id;
+        payload = {
+          ...mission,
+          action_at,
+          reason_id,
+          status,
+        };
+        handlerName = 'updateMission'; // рак
+        if (!isWaybillForm) {
+          resolve = await this.props.actionUpdateMission(payload, {});
+        }
       }
     } else {
       switch (this.state.data.mark) {
@@ -299,7 +304,7 @@ class MissionRejectForm extends React.Component {
               status,
             };
           }
-          handlerName = 'updateMissionFromReassignation';
+          handlerName = 'updateMissionFromReassignation'; // рак
           if (!isWaybillForm) {
             resolve = await this.context.flux
               .getActions('missions')
@@ -541,6 +546,12 @@ export default compose(
         .missionCancelReasonsList,
     }),
     (dispatch) => ({
+      actionGetMissionById: (...arg) =>
+        dispatch(
+          missionsActions.actionGetMissionById(...arg), // Добавить page, path после перехода на withForm и tsx (см где вызывается)
+        ),
+      actionUpdateMission: (...arg) =>
+        dispatch(missionsActions.actionUpdateMission(...arg)),
       actionGetAndSetInStoreMissionCancelReasons: () =>
         dispatch(
           someUniqActions.actionGetAndSetInStoreMissionCancelReasons(

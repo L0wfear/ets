@@ -302,6 +302,7 @@ export const waybillSchema = {
             if (
               formData.fuel_method !== 'naliv'
               && fuelCardsElem.structure_id !== formData.structure_id
+              && !fuelCardsElem.is_common
             ) {
               return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
             }
@@ -347,6 +348,7 @@ export const waybillSchema = {
               formData.equipment_fuel_method !== 'naliv'
               && formData.equipment_fuel
               && equipmentFuelCardsElem.structure_id !== formData.structure_id
+              && !equipmentFuelCardsElem.is_common
             ) {
               return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
             }

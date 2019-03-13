@@ -1704,6 +1704,8 @@ div.car-movement-time-report {
     margin: 0px;
     cursor: pointer;
     user-select: none;
+    display: flex;
+    align-items: center;
   }
   input {
     margin: 0px;

@@ -136,7 +136,7 @@ class FuelCardsForm extends React.PureComponent<
                   trigger={['hover', 'focus']}
                   overlay={popover}
                   placement="bottom">
-                  <Glyphicon glyph="info-sign" />
+                  <Glyphicon glyph="question-sign" />
                 </OverlayTrigger>
               </FuelCardsIsCommonWrapper>
             </Col>

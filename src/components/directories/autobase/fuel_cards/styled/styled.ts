@@ -5,16 +5,10 @@ export const FuelCardsIsCommonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 32px;
-  /* .default-boolean-input {
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
-    margin-right: 10px;
+  .default-boolean-input {
     label {
-      margin: 0px;
+      flex-direction: row-reverse;
+      margin-right: 5px;
     }
-    input {
-      margin: 0px;
-    }
-  } */
+  }
 `;

@@ -107,16 +107,6 @@ class CarForm extends Form {
     this.handleChange(key, value);
   };
 
-  handleSave = () => {
-    if (this.props.tabKey !== CAR_TAB_INDEX.main_info) {
-      this.props
-        .handleFormOnlySubmit()
-        .then(() => this.props.handleTabSelect(CAR_TAB_INDEX.main_info));
-    } else {
-      this.handleSubmit();
-    }
-  };
-
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
@@ -368,7 +358,7 @@ class CarForm extends Form {
         </ModalBody>
 
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSave}>
+          <Button disabled={!this.props.canSave} onClick={this.handleSubmit}>
             Сохранить
           </Button>
         </Modal.Footer>

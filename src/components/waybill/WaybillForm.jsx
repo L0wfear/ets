@@ -915,24 +915,45 @@ class WaybillForm extends Form {
   );
 
   getFuelCardsListOptions = (fuelCardsList, fuelTypeFilter) => {
-    return fuelCardsList.reduce(
-      (newArr, { id, number, fuel_type, ...other }) => {
-        if (fuel_type === fuelTypeFilter || !fuelTypeFilter) {
-          newArr.push({
-            value: id,
-            label: number,
-            rowData: {
-              id,
-              number,
-              fuel_type,
-              ...other,
-            },
-          });
-        }
+    const { userStructureId, userCompanyId } = this.props;
+    const fuel_card_id = get(this.state.origFormState, 'fuel_card_id', null);
+    const equipment_fuel_card_id = get(
+      this.state.origFormState,
+      'equipment_fuel_card_id',
+      null,
+    );
+    // Преобразуем лист в формат опций
+    const fuelCardsListOpt = fuelCardsList.reduce(
+      (newArr, { id, number, ...other }) => {
+        newArr.push({
+          value: id,
+          label: number,
+          rowData: {
+            id,
+            number,
+            ...other,
+          },
+        });
         return newArr;
       },
       [],
     );
+
+    // фильтруем, исключая ТЛ, которые не подходят для подразделения в ПЛ и Организации пользователя, есть общие ПЛ (is_common: true) они доступны всегда
+    // Бывает ситуация, когда в топливной карте сменили организацию, для этого случая, последнее условие, мы выводим топливную карту, но при этом валидация будет выдавать ошибку
+    const optionsList = fuelCardsListOpt.filter(
+      ({ rowData: { id, fuel_type, company_id, structure_id, is_common } }) => {
+        return (
+          ((fuel_type === fuelTypeFilter || !fuelTypeFilter)
+            && ((company_id === userCompanyId
+              && structure_id === userStructureId)
+              || is_common))
+          || id === fuel_card_id
+          || id === equipment_fuel_card_id
+        );
+      },
+    );
+    return optionsList;
   };
 
   handleFuelMethodChange = (value) => {
@@ -990,16 +1011,15 @@ class WaybillForm extends Form {
             title: 'Внимание',
             body: 'Очистить введенные данные по спецоборудованию?',
           });
-
           this.handleMultipleChange({
             ...setEmptyFieldByKey(fieldToCheckHasData),
             equipment_fuel_method: null,
           });
         } catch (e) {
+          console.error(e);
           return;
         }
       }
-
       this.handleChange('equipment_fuel', false);
     }
   };
@@ -1153,7 +1173,6 @@ class WaybillForm extends Form {
       value: k,
       label: v,
     }));
-    // для теста если отвалился бек [{label: 'FUEL_CARDS', value: 'FUEL_CARDS' }] ||
 
     const FUEL_CARDS = this.getFuelCardsListOptions(
       fuelCardsList,
@@ -2288,6 +2307,7 @@ export default compose(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
       userStructureId: getSessionState(state).userData.structure_id,
+      userCompanyId: getSessionState(state).userData.company_id,
       userStructures: getSessionState(state).userData.structures,
       userPermissionsSet: getSessionState(state).userData.permissionsSet,
       fuelCardsList: getAutobaseState(state).fuelCardsList,

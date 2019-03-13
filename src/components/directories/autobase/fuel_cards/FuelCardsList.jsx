@@ -11,6 +11,7 @@ import {
   getSessionState,
   getAutobaseState,
 } from 'redux-main/reducers/selectors';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 const loadingPageName = 'fuel_cards';
 
@@ -65,6 +66,7 @@ export default compose(
     (state) => ({
       fuelCardsList: getAutobaseState(state).fuelCardsList,
       userData: getSessionState(state).userData,
+      structure: getSessionStructuresOptions(state),
     }),
     (dispatch) => ({
       fuelCardsGetAndSetInStore: () =>

@@ -10,25 +10,27 @@ interface IDataTableSelectedRowProps<TRowData> {
   rowData: TRowData;
 }
 
-export interface IDataTableSelectedRow<TRowData = IDataTableSelectedRowPropsData> {
+export interface IDataTableSelectedRow<
+  TRowData = IDataTableSelectedRowPropsData
+> {
   props: IDataTableSelectedRowProps<TRowData>;
 }
 
 type FieldTypes =
-  'multiselect' |
-  'multiselect-boolean' |
-  'select' |
-  'string' |
-  'date' |
-  'datetime' |
-  'advanced-number'|
-  'advanced-string' |
-  'advanced-date' |
-  'advanced-datetime' |
-  'number' |
-  'customFilter';
+  | 'multiselect'
+  | 'multiselect-boolean'
+  | 'select'
+  | 'string'
+  | 'date'
+  | 'datetime'
+  | 'advanced-number'
+  | 'advanced-string'
+  | 'advanced-date'
+  | 'advanced-datetime'
+  | 'number'
+  | 'customFilter';
 
-export type ILabelFunction = (data: number|string) => string;
+export type ILabelFunction = (data: number | string) => string;
 
 type ITypeCustomFilterFunc = (value: any, lineData: any) => boolean;
 
@@ -79,6 +81,9 @@ export interface IDataTableColSchema {
   render?: any;
   orderNum?: any;
   sortByKey?: string;
+  sort?: {
+    serverFieldName: string;
+  };
 }
 
 export interface IDataTableSchema {
@@ -93,6 +98,9 @@ export interface ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> {
   [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => any;
 }
 
-export interface ISchemaMaker  {
-  [field: string]: (schemaMeta: IDataTableColSchema, someProps?: object) => IDataTableColSchema;
+export interface ISchemaMaker {
+  [field: string]: (
+    schemaMeta: IDataTableColSchema,
+    someProps?: object,
+  ) => IDataTableColSchema;
 }

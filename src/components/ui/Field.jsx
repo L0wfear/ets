@@ -156,15 +156,17 @@ export default class Field extends React.Component {
 
     return (
       <Div hidden={this.props.hidden} className={className}>
-        <label>{label}</label>
-        <input
-          id={id}
-          type="checkbox"
-          style={{ fontSize: '20px', margin: '5px' }}
-          checked={this.props.value}
-          onChange={this.props.onChange}
-          disabled={this.props.disabled}
-        />
+        <label>
+          {label}
+          <input
+            id={id}
+            type="checkbox"
+            style={{ fontSize: '20px', margin: '5px' }}
+            checked={this.props.value}
+            onChange={this.props.onChange}
+            disabled={this.props.disabled}
+          />
+        </label>
       </Div>
     );
   }

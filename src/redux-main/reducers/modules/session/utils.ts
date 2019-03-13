@@ -16,12 +16,10 @@ export const withSpecificPermissions = (user) => {
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
-      permissions.push(
-        permission.replace(/^pgm\./, 'pgm_store.'),
-      );
+      permissions.push(permission.replace(/^pgm\./, 'pgm_store.'));
     }
   });
-
+  permissions.push(...getFullAccess('fuel_cards')); // <<< Удалить перед выкатом
   return permissions;
 };
 
@@ -39,12 +37,17 @@ export const makeUserData = (userDataRaw) => {
   userData.permissionsSet = new Set(userData.permissions);
 
   userData.isOkrug = userData.okrug_id !== null;
-  userData.isKgh = userData.permissionsSet.has('common.nsi_company_column_show');
+  userData.isKgh = userData.permissionsSet.has(
+    'common.nsi_company_column_show',
+  );
   userData.isGlavControl = userData.permissionsSet.has('role.change');
 
   const default_path = userData.default_path;
 
-  userData.stableRedirect = requireAuth(userData.permissionsSet, `/${default_path}`);
+  userData.stableRedirect = requireAuth(
+    userData.permissionsSet,
+    `/${default_path}`,
+  );
 
   return userData;
 };

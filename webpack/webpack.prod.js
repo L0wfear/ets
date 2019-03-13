@@ -167,12 +167,11 @@ module.exports = {
       // both options are optional
       filename: "[name].css",
     }),
-    new CleanWebpackPlugin(
-      path.join(__dirname, '..', 'dist'),
-      {
-        root: path.join(__dirname, '..'),
-      },
-    ),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        path.join(__dirname, '..', 'dist'),
+      ],
+    }),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),

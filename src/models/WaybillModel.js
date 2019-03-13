@@ -4,6 +4,7 @@ import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
 import { isNumber } from 'util';
 import { isArray } from 'highcharts';
+import { get } from 'lodash';
 
 export const waybillSchema = {
   properties: [
@@ -295,9 +296,11 @@ export const waybillSchema = {
           const fuelCardsElem = fuelCardsList.find((fuelCard) => {
             return fuelCard.id === formData.fuel_card_id;
           });
+
+          const userCompanyId = get(props, 'userData.company_id');
           if (
             fuelCardsElem
-            && (!formData.status || !formData.status === 'draft')
+            && (!formData.status || formData.status === 'draft')
           ) {
             if (
               formData.fuel_method !== 'naliv'
@@ -305,6 +308,13 @@ export const waybillSchema = {
               && !fuelCardsElem.is_common
             ) {
               return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
+            }
+            if (
+              formData.fuel_method !== 'naliv'
+              && fuelCardsElem.company_id !== userCompanyId
+              && !fuelCardsElem.is_common
+            ) {
+              return 'Выбранная топливная карта не привязана к Вашей организации. Выберите другую топливную карту.';
             }
           }
 
@@ -340,9 +350,10 @@ export const waybillSchema = {
             return fuelCard.id === formData.equipment_fuel_card_id;
           });
 
+          const userCompanyId = get(props, 'userData.company_id');
           if (
             equipmentFuelCardsElem
-            && (!formData.status || !formData.status === 'draft')
+            && (!formData.status || formData.status === 'draft')
           ) {
             if (
               formData.equipment_fuel_method !== 'naliv'
@@ -351,6 +362,15 @@ export const waybillSchema = {
               && !equipmentFuelCardsElem.is_common
             ) {
               return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
+            }
+
+            if (
+              formData.equipment_fuel_method !== 'naliv'
+              && formData.equipment_fuel
+              && equipmentFuelCardsElem.company_id !== userCompanyId
+              && !equipmentFuelCardsElem.is_common
+            ) {
+              return 'Выбранная топливная карта не привязана к Вашей организации. Выберите другую топливную карту.';
             }
           }
 

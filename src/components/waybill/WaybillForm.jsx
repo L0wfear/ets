@@ -916,43 +916,44 @@ class WaybillForm extends Form {
 
   getFuelCardsListOptions = (fuelCardsList, fuelTypeFilter) => {
     const { userStructureId, userCompanyId } = this.props;
-
-    return fuelCardsList.reduce(
-      (
-        newArr,
-        {
-          id,
-          number,
-          fuel_type,
-          company_id,
-          structure_id,
-          is_common,
-          ...other
-        },
-      ) => {
-        if (
-          (fuel_type === fuelTypeFilter || !fuelTypeFilter)
-          && ((company_id === userCompanyId && structure_id === userStructureId)
-            || is_common)
-        ) {
-          newArr.push({
-            value: id,
-            label: number,
-            rowData: {
-              id,
-              number,
-              fuel_type,
-              company_id,
-              structure_id,
-              is_common,
-              ...other,
-            },
-          });
-        }
+    const fuel_card_id = get(this.state.origFormState, 'fuel_card_id', null);
+    const equipment_fuel_card_id = get(
+      this.state.origFormState,
+      'equipment_fuel_card_id',
+      null,
+    );
+    // Преобразуем лист в формат опций
+    const fuelCardsListOpt = fuelCardsList.reduce(
+      (newArr, { id, number, ...other }) => {
+        newArr.push({
+          value: id,
+          label: number,
+          rowData: {
+            id,
+            number,
+            ...other,
+          },
+        });
         return newArr;
       },
       [],
     );
+
+    // фильтруем, исключая ТЛ, которые не подходят для подразделения в ПЛ и Организации пользователя, есть общие ПЛ (is_common: true) они доступны всегда
+    // Бывает ситуация, когда в топливной карте сменили организацию, для этого случая, последнее условие, мы выводим топливную карту, но при этом валидация будет выдавать ошибку
+    const optionsList = fuelCardsListOpt.filter(
+      ({ rowData: { id, fuel_type, company_id, structure_id, is_common } }) => {
+        return (
+          ((fuel_type === fuelTypeFilter || !fuelTypeFilter)
+            && ((company_id === userCompanyId
+              && structure_id === userStructureId)
+              || is_common))
+          || id === fuel_card_id
+          || id === equipment_fuel_card_id
+        );
+      },
+    );
+    return optionsList;
   };
 
   handleFuelMethodChange = (value) => {
@@ -1174,7 +1175,6 @@ class WaybillForm extends Form {
       value: k,
       label: v,
     }));
-    // для теста если отвалился бек [{label: 'FUEL_CARDS', value: 'FUEL_CARDS' }] ||
 
     const FUEL_CARDS = this.getFuelCardsListOptions(
       fuelCardsList,

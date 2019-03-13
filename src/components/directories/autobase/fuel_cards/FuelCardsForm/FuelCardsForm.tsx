@@ -45,7 +45,11 @@ class FuelCardsForm extends React.PureComponent<
     const { is_common, structure_id } = this.props.formState;
     const newVal = get(newValEvent, ['target', 'checked'], false);
     const { userStructureId } = this.props;
-    if (is_common === true && structure_id !== userStructureId) {
+    if (
+      is_common === true &&
+      structure_id !== userStructureId &&
+      userStructureId
+    ) {
       try {
         await global.confirmDialog({
           title: 'Внимание',

@@ -39,7 +39,7 @@ const ButtonUpdateDutyMission = withRequirePermissionsNew({
 @staticProps({
   entity: 'duty_mission',
   permissions,
-  listName: 'dutyMissionsList',
+  listName: 'dutyMissionList',
   tableComponent: DutyMissionsTable,
   tableMeta: extractTableMeta(getTableMeta()),
   operations: ['LIST', 'READ', 'UPDATE', 'CHECK'],

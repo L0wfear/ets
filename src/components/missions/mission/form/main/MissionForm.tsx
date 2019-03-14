@@ -45,6 +45,11 @@ import ColumnAssignmentFormLazy from './column_assignment';
 import FieldNormIdMission from './inside_fields/norm_id/FieldNormIdMission';
 import { IPropsHiddenMapForPrint } from './inside_fields/route_id/print/HiddenMapForPrint';
 import { saveData, printData } from 'utils/functions';
+import {
+  BtnGroupWrapper,
+  DisplayFlexAlignCenter,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 const smallPrintMapKey = 'smallPrintMapKey';
 
@@ -670,7 +675,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
           </ModalBodyPreloader>
           <Modal.Footer>
             {isPermitted ? ( // либо обновление, либо создание
-              <>
+              <DisplayFlexAlignCenter>
                 {
                   !state.status && !state.waybill_id && !state.for_column || this.state.likeNewMission
                     ? (
@@ -686,38 +691,42 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       <DivNone />
                     )
                 }
-                <div>
+                <BtnGroupWrapper>
                 {
                   !state.for_column && state.status
                     ? (
-                      <Dropdown
-                        id="waybill-print-dropdown"
-                        dropup
-                        disabled={
-                          !this.props.canSave
-                        }
-                        onSelect={this.handlePrint}>
-                        <Dropdown.Toggle>
-                          <Glyphicon id="m-print" glyph="print" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                          <MenuItem eventKey={2}>Печать</MenuItem>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <BtnPart>
+                        <Dropdown
+                          id="waybill-print-dropdown"
+                          dropup
+                          disabled={
+                            !this.props.canSave
+                          }
+                          onSelect={this.handlePrint}>
+                          <Dropdown.Toggle>
+                            <Glyphicon id="m-print" glyph="print" />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
+                            <MenuItem eventKey={2}>Печать</MenuItem>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </BtnPart>
                     )
                     : (
-                      <DivNone />
+                      <BtnPart></BtnPart>
                     )
                   }
-                  <Button
-                    disabled={!this.props.canSave}
-                    onClick={this.handleSubmitWrap}
-                  >
-                    Сохранить
-                  </Button>
-                </div>
-              </>
+                  <BtnPart>
+                    <Button
+                      disabled={!this.props.canSave}
+                      onClick={this.handleSubmitWrap}
+                    >
+                      Сохранить
+                    </Button>
+                  </BtnPart>
+                </BtnGroupWrapper>
+              </DisplayFlexAlignCenter>
             ) : (
               <DivNone />
             )}

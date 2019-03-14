@@ -143,7 +143,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
               />
             </Col>
             <Col md={6}>
-              <Button
+              <Button style={{ marginTop: 3 }}
                 block
                 disabled={this.props.readOnly || !!errorMes || !company_id}
                 onClick={this.handleSubmit}

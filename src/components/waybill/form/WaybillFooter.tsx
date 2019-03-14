@@ -10,6 +10,11 @@ import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import DivForEnhance from 'components/ui/Div';
 import permissions from 'components/waybill/config-data/permissions';
+import {
+  BtnGroupWrapper,
+  DisplayFlexAlignCenter,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 const Div = withRequirePermissionsNew({})(DivForEnhance);
 
@@ -54,35 +59,41 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
     const { props } = this;
 
     return (
-      <div>
+      <DisplayFlexAlignCenter>
         <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
           <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
           <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
           </OverlayTrigger>
         </Div>
         <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
-          <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
-            <Dropdown.Toggle disabled={!props.canSave}>
-              <Glyphicon glyph="print" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
-              <MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
-              <MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
-              <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup pullRight disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
-            <Dropdown.Toggle disabled={!props.canSave}>
-              <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
-              <MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
-              <MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
-              <MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
-            </Dropdown.Menu>
-          </Dropdown>&nbsp;
+          <BtnGroupWrapper>
+            <BtnPart>
+              <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
+                <Dropdown.Toggle disabled={!props.canSave}>
+                  <Glyphicon glyph="print" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
+                  <MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
+                  <MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
+                  <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
+                </Dropdown.Menu>
+              </Dropdown>
+            </BtnPart>
+            <BtnPart>
+              <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup pullRight disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
+                <Dropdown.Toggle disabled={!props.canSave}>
+                  <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
+                  <MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
+                  <MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
+                  <MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
+                </Dropdown.Menu>
+              </Dropdown>&nbsp;
+            </BtnPart>
+          </BtnGroupWrapper>
         </Div>
         <Div
           permissions={savePermissions}
@@ -94,7 +105,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
         <Div permissions={permissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
           <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
         </Div>
-      </div>
+      </DisplayFlexAlignCenter>
     );
   }
 }

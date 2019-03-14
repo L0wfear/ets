@@ -39,6 +39,11 @@ import FieldMunicipalFacilityIdMission from 'components/missions/mission/form/ma
 import FieldRouteIdMission from 'components/missions/mission/form/main/inside_fields/route_id/FieldRouteIdMission';
 import { IPropsHiddenMapForPrint } from 'components/missions/mission/form/main/inside_fields/route_id/print/HiddenMapForPrint';
 import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
+import {
+  BtnGroupWrapper,
+  DisplayFlexAlignCenter,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 const printMapKeyBig = 'printMapKeyBig';
 const printMapKeySmall = 'printMapKeySmall';
@@ -280,30 +285,36 @@ class MissionTemplateForm extends React.PureComponent<
         </ModalBodyPreloader>
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
-            <div>
-              {!IS_CREATING ? (
-                <Dropdown
-                  id="mission_template-print-dropdown"
-                  dropup
-                  onSelect={this.handlePrint}
-                  disabled={!this.props.canSave}>
-                  <Dropdown.Toggle>
-                    <Glyphicon id="m-print" glyph="print" />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
-                    <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
-                  </Dropdown.Menu>
-                </Dropdown>
-              ) : (
-                <DivNone />
-              )}
-              <Button
-                disabled={!this.props.canSave}
-                onClick={this.props.defaultSubmit}>
-                Сохранить
-              </Button>
-            </div>
+            <DisplayFlexAlignCenter>
+              <BtnGroupWrapper>
+                {!IS_CREATING ? (
+                  <BtnPart>
+                    <Dropdown
+                      id="mission_template-print-dropdown"
+                      dropup
+                      onSelect={this.handlePrint}
+                      disabled={!this.props.canSave}>
+                      <Dropdown.Toggle>
+                        <Glyphicon id="m-print" glyph="print" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
+                        <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </BtnPart>
+                ) : (
+                  <BtnPart></BtnPart>
+                )}
+                <BtnPart>
+                  <Button
+                    disabled={!this.props.canSave}
+                    onClick={this.props.defaultSubmit}>
+                    Сохранить
+                  </Button>
+                </BtnPart>
+              </BtnGroupWrapper>
+            </DisplayFlexAlignCenter>
           ) : (
             <DivNone />
           )}

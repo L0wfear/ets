@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { borderRadiusButton } from './global-constants';
 export type EtsPageWrapProps = {
   inheritDisplay?: boolean;
   autoHeight?: boolean;
@@ -27,6 +27,9 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
     outline: 0px !important;
     -webkit-appearance: none;
   }
+  .datepicker-range {
+    margin-bottom: 5px;
+  }
 `;
 
 export const FlexContainer = styled.div<{ isWrap?: boolean }>`
@@ -51,9 +54,28 @@ export const BorderDash = styled.div<{
   color?: string;
 }>`
   border: ${(props) => {
-    props.width;
     const { width = 1, borderStyle = 'solid', color = 'black' } = props;
-
     return `${width}px ${borderStyle} ${color}`;
   }};
+`;
+
+export const BtnPart = styled.div`
+`;
+
+export const BtnGroupWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  ${BtnPart}:first-child button{
+    border-radius: ${borderRadiusButton} 0px 0px ${borderRadiusButton}!important;
+    margin-right: 0px!important;
+  }
+  ${BtnPart}:last-child button{
+    border-radius: 0px ${borderRadiusButton} ${borderRadiusButton} 0px!important;
+    margin-left: 0px!important;
+  }
+`;
+
+export const DisplayFlexAlignCenter = styled.div`
+  display: flex;
+  align-items: center;
 `;

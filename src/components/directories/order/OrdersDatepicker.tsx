@@ -13,7 +13,7 @@ const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfO
 
 const OrdersDatepicker: React.FunctionComponent<any> = (props) =>
     <Row>
-      <Col mdOffset={3} md={6} className="datepicker-range">
+      <Col mdOffset={6} md={6} className="datepicker-range">
         <div>
           <DatePickerTsx
             date={props.date_start}

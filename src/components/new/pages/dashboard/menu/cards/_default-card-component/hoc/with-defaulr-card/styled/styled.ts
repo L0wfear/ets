@@ -131,12 +131,15 @@ type RightButtonBlockContainerType = {
 
 export const RightButtonBlockContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-wrap: wrap;
 
   >button:nth-of-type(n + 1) {
     margin-left: 5px;
   }
+  >button:first-child {
+    margin-left: 0px;
+  }
 
-  margin-top: ${({ needMarginBottom }: RightButtonBlockContainerType) => needMarginBottom ? '25px' : 'initial'};
+  margin-top: ${({ needMarginBottom }: RightButtonBlockContainerType) => needMarginBottom ? '25px' : '10px'};
 `;

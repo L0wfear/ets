@@ -48,7 +48,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row>
-        <Col mdOffset={3} md={6} className="datepicker-range">
+        <Col mdOffset={6} md={6} className="datepicker-range">
           <Div className="inline-block faxogramms-date">
             <DatePickerBindable
               date={start_date}

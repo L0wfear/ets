@@ -8,7 +8,10 @@ export const DataTableHeadLineTitle = styled.div`
 export const DataTableHeadLine = styled.div`
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
+  &&& *{
+    margin-bottom: 0px!important;
+  }
   @media screen and (max-width: ${mobiSize}px) {
     flex-wrap: wrap;
     justify-content: center;

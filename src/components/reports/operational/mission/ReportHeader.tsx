@@ -14,6 +14,9 @@ import { getDatesByShift, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import {
+  ReportHeaderWrap,
+} from 'components/reports/styled';
 
 const DatePickerBindable: any = bindable(DatePicker);
 
@@ -45,31 +48,33 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row>
-        <Col mdOffset={3} md={6} className="datepicker-range">
-          <Div className="inline-block faxogramms-date">
-            <DatePickerBindable
-              date={mission_date_start_from}
-              onChange={this.props.handleChange}
-              bindOnChange={'mission_date_start_from'}
+        <Col md={12}>
+          <ReportHeaderWrap>
+            <Div className="datepicker-range">
+              <Div className="inline-block faxogramms-date">
+                <DatePickerBindable
+                  date={mission_date_start_from}
+                  onChange={this.props.handleChange}
+                  bindOnChange={'mission_date_start_from'}
+                  disabled={readOnly}
+                />
+              </Div>
+              <Div className="date-divider">—</Div>
+              <Div className="inline-block faxogramms-date">
+                <DatePickerBindable
+                  date={mission_date_end_to}
+                  onChange={this.props.handleChange}
+                  bindOnChange={'mission_date_end_to'}
+                  disabled={readOnly}
+                />
+              </Div>
+            </Div>
+            <Button
+              bsSize="small"
               disabled={readOnly}
-            />
-          </Div>
-          <Div className="date-divider">—</Div>
-          <Div className="inline-block faxogramms-date">
-            <DatePickerBindable
-              date={mission_date_end_to}
-              onChange={this.props.handleChange}
-              bindOnChange={'mission_date_end_to'}
-              disabled={readOnly}
-            />
-          </Div>
-        </Col>
-        <Col md={3}>
-          <Button
-            bsSize="small"
-            disabled={readOnly}
-            onClick={this.handleSubmit}
-          >Сформировать отчёт</Button>
+              onClick={this.handleSubmit}
+            >Сформировать отчёт</Button>
+          </ReportHeaderWrap>
         </Col>
       </Row>
     );

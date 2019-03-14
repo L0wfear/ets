@@ -60,11 +60,16 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { BorderDash, DivNone } from 'global-styled/global-styled';
-import { ButtonGroup } from 'react-bootstrap';
 import { isArray } from 'highcharts';
 import { WaybillEquipmentButton } from './styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import EtsModal from 'components/new/ui/modal/Modal';
+
+import {
+  BtnGroupWrapper,
+  DisplayFlexAlignCenter,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -1609,28 +1614,37 @@ class WaybillForm extends Form {
                     <Col md={12}>
                       <Col md={12}>
                         <h4>
-                          На ТС установлено спецоборудование:
-                          {'  '}
-                          <ButtonGroup>
-                            <WaybillEquipmentButton
-                              active={
-                                isBoolean(state.equipment_fuel)
-                                && state.equipment_fuel
-                              }
-                              disabled={!(IS_CREATING || IS_DRAFT)}
-                              onClick={this.handleChangeHasEquipmentOnTrue}>
-                              Да
-                            </WaybillEquipmentButton>
-                            <WaybillEquipmentButton
-                              active={
-                                isBoolean(state.equipment_fuel)
-                                && !state.equipment_fuel
-                              }
-                              disabled={!(IS_CREATING || IS_DRAFT)}
-                              onClick={this.handleChangeHasEquipmentOnFalse}>
-                              Нет
-                            </WaybillEquipmentButton>
-                          </ButtonGroup>
+                          <DisplayFlexAlignCenter>
+                            <span style={{ marginRight: 10 }}>
+                              На ТС установлено спецоборудование:
+                            </span>
+                            <BtnGroupWrapper>
+                              <BtnPart>
+                                <WaybillEquipmentButton
+                                  active={
+                                    isBoolean(state.equipment_fuel)
+                                    && state.equipment_fuel
+                                  }
+                                  disabled={!(IS_CREATING || IS_DRAFT)}
+                                  onClick={this.handleChangeHasEquipmentOnTrue}>
+                                  Да
+                                </WaybillEquipmentButton>
+                              </BtnPart>
+                              <BtnPart>
+                                <WaybillEquipmentButton
+                                  active={
+                                    isBoolean(state.equipment_fuel)
+                                    && !state.equipment_fuel
+                                  }
+                                  disabled={!(IS_CREATING || IS_DRAFT)}
+                                  onClick={
+                                    this.handleChangeHasEquipmentOnFalse
+                                  }>
+                                  Нет
+                                </WaybillEquipmentButton>
+                              </BtnPart>
+                            </BtnGroupWrapper>
+                          </DisplayFlexAlignCenter>
                         </h4>
                       </Col>
                       <Div hidden={!CAR_HAS_ODOMETER}>

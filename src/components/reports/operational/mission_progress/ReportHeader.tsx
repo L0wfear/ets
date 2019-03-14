@@ -12,6 +12,13 @@ import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
 import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import {
+  DisplayFlexAlignCenter,
+} from 'global-styled/global-styled';
+import {
+  ReportHeaderWrap,
+} from 'components/reports/styled';
+import Div from 'components/ui/Div';
 
 const DatePickerBindable: any = bindable(DatePicker);
 
@@ -54,34 +61,35 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     return (
       <Row className="report-page__header">
         <Col md={12}>
-          <label>Период формирования</label>
-        </Col>
-        <Col md={10}>
-          <Row>
-            <Col md={3}>
-              <DatePickerBindable
-                date={date_from}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_from'}
-                disabled={readOnly}
-              />
-            </Col>
-            <Col md={3}>
-              <DatePickerBindable
-                date={date_to}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_to'}
-                disabled={readOnly}
-              />
-            </Col>
-            <Col md={3}>
-              <Button block
-                disabled={this.props.readOnly}
-                onClick={this.handleSubmit}
-              >Сформировать отчёт</Button>
-            </Col>
-
-          </Row>
+          <ReportHeaderWrap>
+            <Div className="datepicker-range-period">
+              <Div>
+                <label htmlFor=" ">Период формирования</label>
+              </Div>
+              <DisplayFlexAlignCenter>
+                <Div className="inline-block reports-date">
+                  <DatePickerBindable
+                    date={date_from}
+                    onChange={this.props.handleChange}
+                    bindOnChange={'date_from'}
+                    disabled={readOnly}
+                  />
+                </Div>
+                <Div className="inline-block reports-date">
+                  <DatePickerBindable
+                    date={date_to}
+                    onChange={this.props.handleChange}
+                    bindOnChange={'date_to'}
+                    disabled={readOnly}
+                  />
+                </Div>
+                <Button
+                  disabled={this.props.readOnly}
+                  onClick={this.handleSubmit}
+                >Сформировать отчёт</Button>
+              </DisplayFlexAlignCenter>
+            </Div>
+          </ReportHeaderWrap>
         </Col>
       </Row>
     );

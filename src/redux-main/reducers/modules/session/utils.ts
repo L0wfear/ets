@@ -19,7 +19,6 @@ export const withSpecificPermissions = (user) => {
       permissions.push(permission.replace(/^pgm\./, 'pgm_store.'));
     }
   });
-  permissions.push(...getFullAccess('fuel_cards')); // <<< Удалить перед выкатом
   return permissions;
 };
 

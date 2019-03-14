@@ -857,7 +857,7 @@ body.application {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  align-items: baseline;
+  align-items: center;
 
   >* {
     margin-left: 10px;
@@ -1008,8 +1008,9 @@ body.application {
 .log-interval-picker {
   display: flex;
   position: absolute;
-  top: 25px;
-  left: calc(50% - 250px);
+  top: 17px;
+  left: 50%;
+  transform: translate(-50%, 0);
   max-width: 514px;
   z-index: 10;
 
@@ -1320,6 +1321,7 @@ div.none {
 .datepicker-range {
   display: flex;
   z-index: 10;
+  justify-content: flex-end;
   .date-divider {
     display: inline-block;
     margin-left: 10px;
@@ -1718,4 +1720,7 @@ div.car-movement-time-report {
   input {
     margin: 0px;
   }
+}
+.popover {
+  z-index: 1000001;
 }

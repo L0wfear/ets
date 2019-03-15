@@ -1,9 +1,6 @@
 import {
   FuelCards,
-  FuelType,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import {
@@ -29,7 +26,6 @@ export type StatePropsFuelCards = {
   fuelTypeOptions: InitialStateSession['appConfig']['enums']['FUEL_TYPE'];
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: number | null;
-  // userStructures: InitialStateSession['userData']['structures'];
   STRUCTURE_FIELD_VIEW: ReturnType<
     typeof getSessionStructuresParams
   >['STRUCTURE_FIELD_VIEW'];
@@ -53,7 +49,4 @@ export type PropsFuelCards = OutputWithFormProps<
   any
 >;
 export type StateFuelCards = {
-  fuelTypeOptions: DefaultSelectListMapper<FuelType>;
-  companyStructureOptions: any; // <<< Заменить
-  structure_id: any;
 };

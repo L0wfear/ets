@@ -66,5 +66,5 @@ export const getMaintenanceRateState = (state: ReduxState) => (
   state.maintenanceRate
 );
 export const getMaterialConsumptionRateState = (state: ReduxState) => (
-  state.MaterialConsumptionRate
+  state.materialConsumptionRate
 );

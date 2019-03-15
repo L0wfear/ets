@@ -10,6 +10,10 @@ import {
 
 import { DivNone } from 'global-styled/global-styled';
 import { CarInfoButtonsRow } from './styled/index';
+import {
+  BtnGroupWrapper,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 type PropsCarTabMenu = {
   fetchMissionsData: any;
@@ -67,15 +71,23 @@ const CarTabMenu: React.FC<PropsCarTabMenu> = (props) => {
   return (
     <div>
       <CarInfoButtonsRow>
-        <Button active={tabNum === 1} onClick={handleSelectInfo}>
-          Информация
-        </Button>
-        <Button active={tabNum === 2} onClick={handleSelectChart}>
-          Графики
-        </Button>
-        <Button active={tabNum === 3} onClick={handleSelectTrack}>
-          Трекинг
-        </Button>
+        <BtnGroupWrapper fullWidth={true}>
+          <BtnPart>
+            <Button active={tabNum === 1} onClick={handleSelectInfo}>
+              Информация
+            </Button>
+          </BtnPart>
+          <BtnPart>
+            <Button active={tabNum === 2} onClick={handleSelectChart}>
+              Графики
+            </Button>
+          </BtnPart>
+          <BtnPart>
+            <Button active={tabNum === 3} onClick={handleSelectTrack}>
+                Трекинг
+            </Button>
+          </BtnPart>
+        </BtnGroupWrapper>
       </CarInfoButtonsRow>
       <React.Suspense fallback={<LoadingComponent />}>
         {tabNum === 1 ? (

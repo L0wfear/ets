@@ -6,6 +6,10 @@ import config from 'config';
 import Preloader from 'components/ui/new/preloader/Preloader';
 import { getMaxSpeedToLegend } from 'components/monitor/info/car-info/car-main-data-block/utils';
 import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import {
+  BtnGroupWrapper,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;
@@ -48,14 +52,20 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
           }
           </div>
           <div>
-            <Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
-              <Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
-              {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
-            </Button>
-            <Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
-              <Glyphicon glyph="resize-full" className="car_info-main_block-button" />
-              Трек
-            </Button>
+            <BtnGroupWrapper vertical={true}>
+              <BtnPart>
+                <Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
+                  <Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
+                  {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
+                </Button>
+              </BtnPart>
+              <BtnPart>
+                <Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
+                  <Glyphicon glyph="resize-full" className="car_info-main_block-button" />
+                  Трек
+                </Button>
+              </BtnPart>
+            </BtnGroupWrapper>
           </div>
         </div>
       </div>

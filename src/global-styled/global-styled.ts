@@ -62,9 +62,15 @@ export const BorderDash = styled.div<{
 export const BtnPart = styled.div`
 `;
 
-export const BtnGroupWrapper = styled.div`
+export const BtnGroupWrapper = styled.div<{
+  fullWidth?: boolean;
+  vertical?: boolean;
+}>`
   display: flex;
   align-items: center;
+  ${BtnPart} button{
+    border-radius: 0px!important;
+  }
   ${BtnPart}:first-child button{
     border-radius: ${borderRadiusButton} 0px 0px ${borderRadiusButton}!important;
     margin-right: 0px!important;
@@ -73,6 +79,38 @@ export const BtnGroupWrapper = styled.div`
     border-radius: 0px ${borderRadiusButton} ${borderRadiusButton} 0px!important;
     margin-left: 0px!important;
   }
+  ${({fullWidth}) => {
+    if (fullWidth) {
+      return `
+        width: 100%;
+        ${BtnPart}{
+          flex: 1 1 auto;
+          button{
+            width: 100%;
+          }
+        }
+      `;
+    }
+  }}
+  ${({vertical}) => {
+    if (vertical) {
+      return `
+        flex-direction: column;
+        ${BtnPart} {
+          width: 100%;
+          flex: 1 1 auto;
+        }
+        ${BtnPart}:first-child button{
+          border-radius: ${borderRadiusButton} ${borderRadiusButton} 0px 0px!important;
+          margin-bottom: 0px!important;
+        }
+        ${BtnPart}:last-child button{
+          border-radius: 0px 0px ${borderRadiusButton} ${borderRadiusButton}!important;
+          margin-bottom: 0px!important;
+        }
+      `;
+    }
+  }}
 `;
 
 export const DisplayFlexAlignCenter = styled.div`

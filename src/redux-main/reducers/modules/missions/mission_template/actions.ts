@@ -178,6 +178,8 @@ export const actionGetAndSetInStoreMissionTemplate = (
   {},
   AnyAction
 > => async (dispatch) => {
+  dispatch(actionResetMissionTemplate());
+
   const response = await dispatch(actionGetMissionTemplate(payloadOwn, meta));
 
   dispatch(actionSetMissionTemplate(response.data));

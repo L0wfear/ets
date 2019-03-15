@@ -60,12 +60,7 @@ class WaybillJournal extends CheckableElementsList {
   }
 
   init() {
-    const { flux } = this.context;
     this.updateList();
-    flux.getActions('employees').getEmployees();
-    flux.getActions('employees').getDrivers();
-    flux.getActions('objects').getSomeCars('WaybillCarService');
-    flux.getActions('objects').getWorkMode();
 
     this.setState({
       readPermission: [
@@ -74,6 +69,14 @@ class WaybillJournal extends CheckableElementsList {
       ].some((pName) => this.props.userData.permissionsSet.has(pName)),
     });
   }
+
+  loadDependecyData = () => {
+    const { flux } = this.context;
+    flux.getActions('employees').getEmployees();
+    flux.getActions('employees').getDrivers();
+    flux.getActions('objects').getSomeCars('WaybillCarService');
+    flux.getActions('objects').getWorkMode();
+  };
 
   componentDidUpdate(nextProps, prevState) {
     if (
@@ -135,6 +138,7 @@ class WaybillJournal extends CheckableElementsList {
       rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
       useServerFilter: true,
       useServerSort: true,
+      loadDependecyData: this.loadDependecyData,
     };
   };
 
@@ -192,7 +196,7 @@ class WaybillJournal extends CheckableElementsList {
     }
 
     buttons.push(
-      <DropdownWrap id="dropdown-print" pullRight>
+      <DropdownWrap key="print" id="dropdown-print" pullRight>
         <Dropdown.Toggle noCaret bsSize="small">
           <Glyphicon glyph="download-alt" />
         </Dropdown.Toggle>

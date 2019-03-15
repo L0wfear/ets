@@ -45,6 +45,8 @@ export const actionGetDutyMissionTemplate = (payloadOwn: object, meta: LoadingMe
   return payload;
 };
 export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMissionTemplate>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  dispatch(actionResetDutyMissionTemplate());
+
   const response = await dispatch(
     actionGetDutyMissionTemplate(payloadOwn, meta),
   );

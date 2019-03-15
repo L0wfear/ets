@@ -1,4 +1,11 @@
-export const schema = {
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { ICreateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
+import { PropsMaterialConsumptionRate } from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm/@types/MaterialConsumptionRate.h';
+
+export const materialConsumptionRateSchema: SchemaType<
+  ICreateMaterialConsumptionRate,
+  PropsMaterialConsumptionRate
+> = {
   properties: [
     {
       key: 'technical_operation_id',
@@ -21,7 +28,7 @@ export const schema = {
     {
       key: 'clean_category_id',
       title: 'Категория',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
     {

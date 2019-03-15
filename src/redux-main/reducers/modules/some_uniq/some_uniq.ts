@@ -25,6 +25,7 @@ export const initialState: IStateSomeUniq = {
     list: [],
     byId: null,
   },
+  consumptionRateMaterialList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

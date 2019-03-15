@@ -18,6 +18,7 @@ import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
 import { IStateProgramm } from 'redux-main/reducers/modules/repair/state_programm/@types/state_programm';
 import { IRepairProgramm } from 'redux-main/reducers/modules/repair/@types/repair_programm';
+import { IStateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -43,5 +44,6 @@ export interface ReduxState {
   etsLoading: any;
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
+  materialConsumptionRate: IStateMaterialConsumptionRate;
   [key: string]: any;
 }

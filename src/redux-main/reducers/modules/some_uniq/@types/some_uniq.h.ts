@@ -6,6 +6,7 @@ import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenan
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
 import { GeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/@types';
 import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
+import { ConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/@types';
 
 export type modelListElement = {
   body_capacity: number | null;
@@ -41,4 +42,5 @@ export type IStateSomeUniq = {
     list: GeozoneMunicipalFacility[];
     byId: GeozoneMunicipalFacilityById | null;
   };
+  consumptionRateMaterialList: ConsumptionRateMaterial[];
 };

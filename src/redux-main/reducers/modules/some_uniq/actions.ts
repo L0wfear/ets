@@ -8,6 +8,7 @@ import maintenanceWorkListActions from 'redux-main/reducers/modules/some_uniq/ma
 import cleanCategoriesListActions from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 import * as mission_cancel_reasons from 'redux-main/reducers/modules/some_uniq/mission_cancel_reasons/actions';
 import geozoneMunicipalFacilityActions from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
+import actionGetAndSetInStoreConsumptionRateMaterial from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/actions';
 
 const someUniqActions = {
   ...special_model,
@@ -20,6 +21,7 @@ const someUniqActions = {
   ...cleanCategoriesListActions,
   ...mission_cancel_reasons,
   ...geozoneMunicipalFacilityActions,
+  ...actionGetAndSetInStoreConsumptionRateMaterial,
 };
 
 export default someUniqActions;

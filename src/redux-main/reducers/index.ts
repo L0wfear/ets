@@ -25,6 +25,7 @@ import geoobject from 'redux-main/reducers/modules/geoobject/geoobject';
 import missions from 'redux-main/reducers/modules/missions';
 import company from 'redux-main/reducers/modules/company';
 import repairProgramm from 'redux-main/reducers/modules/repair/repair_programm_reducer';
+import MaterialConsumptionRate from 'redux-main/reducers/modules/material_consumption_rate/materialConsumptionRate';
 
 export default combineReducers({
   reports,
@@ -48,4 +49,5 @@ export default combineReducers({
   missions,
   company,
   repairProgramm,
+  MaterialConsumptionRate,
 });

@@ -13,6 +13,11 @@ import Div from 'components/ui/Div';
 
 import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
+import {
+  HistoryOrderListPanelTitleCol,
+  HistoryOrderListPanelTitleH4,
+  HistoryOrderListPanelTitleColSelect,
+} from 'components/directories/order/order_history/styled/HistoryOrderList';
 
 class HistoryOrderList extends React.Component<any, any> {
   state: any = {
@@ -30,7 +35,12 @@ class HistoryOrderList extends React.Component<any, any> {
       haveData: !!activeData,
       activeList: !!activeData ? 1 : null,
       activeData: activeData || this.state.activeData,
-      VERSION_OPTIONS: data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`})),
+      VERSION_OPTIONS: data.map((d, i) => ({
+        value: i + 1,
+        label: `Версия ${moment(d.synced_timestamp).format(
+          `${global.APP_DATE_FORMAT} HH:mm`,
+        )}`,
+      })),
       historytableIsOpen: false,
     };
   }
@@ -45,7 +55,12 @@ class HistoryOrderList extends React.Component<any, any> {
       changedState.haveData = !!activeData;
       changedState.activeList = !!activeData ? 1 : null;
       changedState.activeData = activeData || prevState.activeData;
-      changedState.VERSION_OPTIONS = changedState.data.map((d, i) => ({ value: i + 1, label: `Версия ${moment(d.synced_timestamp).format(`${global.APP_DATE_FORMAT} HH:mm`)}`}));
+      changedState.VERSION_OPTIONS = changedState.data.map((d, i) => ({
+        value: i + 1,
+        label: `Версия ${moment(d.synced_timestamp).format(
+          `${global.APP_DATE_FORMAT} HH:mm`,
+        )}`,
+      }));
       changedState.historytableIsOpen = false;
 
       return changedState;
@@ -55,9 +70,7 @@ class HistoryOrderList extends React.Component<any, any> {
   }
 
   handleChangeVersion = (num) => {
-    const {
-      data,
-    } = this.props;
+    const { data } = this.props;
 
     this.setState({
       ...this.state,
@@ -65,6 +78,7 @@ class HistoryOrderList extends React.Component<any, any> {
       activeList: num,
     });
   }
+
   toggleHistoryTable = () => {
     const { historytableIsOpen } = this.state;
 
@@ -84,14 +98,18 @@ class HistoryOrderList extends React.Component<any, any> {
       <Div hidden={this.props.hidden}>
         <Row>
           <Panel>
-            <Col md={12} onClick={this.toggleHistoryTable} style={{ marginBottom: historytableIsOpen ? 20 : 0, cursor: 'pointer' }}>
-              <h4 style={{ display: 'flex', justifyContent: 'space-between', margin: 0 }}>
+            <HistoryOrderListPanelTitleCol
+              md={12}
+              onClick={this.toggleHistoryTable}>
+              <HistoryOrderListPanelTitleH4>
                 <span>Версионность централизованного задания</span>
-                <Glyphicon glyph={historytableIsOpen ? 'menu-up' : 'menu-down'} />
-              </h4>
-            </Col>
-            <Div hidden={!historytableIsOpen} >
-              <Col style={{ marginBottom: -15, display: 'flex' }} md={12}>
+                <Glyphicon
+                  glyph={historytableIsOpen ? 'menu-up' : 'menu-down'}
+                />
+              </HistoryOrderListPanelTitleH4>
+            </HistoryOrderListPanelTitleCol>
+            <Div hidden={!historytableIsOpen}>
+              <HistoryOrderListPanelTitleColSelect md={12}>
                 <div>Версия централизованного задания</div>
                 <Col md={3}>
                   <ReactSelect
@@ -102,9 +120,9 @@ class HistoryOrderList extends React.Component<any, any> {
                     onChange={this.handleChangeVersion}
                   />
                 </Col>
-              </Col>
+              </HistoryOrderListPanelTitleColSelect>
               <Div hidden={!haveData}>
-              < div>
+                <div>
                   <Col md={8}>
                     <OrdeHistoryTable
                       noHeader
@@ -126,7 +144,10 @@ class HistoryOrderList extends React.Component<any, any> {
               <Div hidden={haveData}>
                 <div>
                   <Col md={12} style={{ marginTop: 20 }}>
-                    <span>Для выбранного централизованного задания предыдущих версий нет.</span>
+                    <span>
+                      Для выбранного централизованного задания предыдущих версий
+                      нет.
+                    </span>
                   </Col>
                 </div>
               </Div>
@@ -139,10 +160,9 @@ class HistoryOrderList extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state) => ({
-  hidden: !state.order.showHistoryComponent || !state.order.selectedElementOrder,
+  hidden:
+    !state.order.showHistoryComponent || !state.order.selectedElementOrder,
   data: state.order.HistoryOrderDataList,
 });
 
-export default connect(
-  mapStateToProps,
-)(HistoryOrderList);
+export default connect(mapStateToProps)(HistoryOrderList);

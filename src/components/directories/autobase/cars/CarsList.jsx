@@ -61,7 +61,7 @@ class CarsList extends ElementsList {
         );
       }
     }
-    if (searchObject) {
+    if (Object.keys(searchObject).length) {
       this.props.history.replace(this.props.location.pathname, {});
     }
   }

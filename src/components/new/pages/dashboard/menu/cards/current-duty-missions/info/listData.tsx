@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { getFormattedDateTimeSeconds } from 'utils/dates';
 
-import {
-  ListDataType,
-} from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/@types/listData.h';
+import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/@types/listData.h';
 export const listData: ListDataType = [
   {
     path: ['duty_mission_data', 'duty_mission_number'],
@@ -19,7 +17,9 @@ export const listData: ListDataType = [
     RenderComponent: ({ infoData }) => (
       <li>
         <b>Начало задания(плановое): </b>
-        {getFormattedDateTimeSeconds(infoData.duty_mission_data.duty_mission_date_start)}
+        {getFormattedDateTimeSeconds(
+          infoData.duty_mission_data.duty_mission_date_start,
+        )}
       </li>
     ),
   },
@@ -29,11 +29,13 @@ export const listData: ListDataType = [
   },
   {
     path: ['duty_mission_data', 'duty_mission_date_end'],
-    title: 'Оконание задания(плановое)',
+    title: 'Окончание задания(плановое)',
     RenderComponent: ({ infoData }) => (
       <li>
-        <b>Оконание задания(плановое): </b>
-        {getFormattedDateTimeSeconds(infoData.duty_mission_data.duty_mission_date_end)}
+        <b>Окончание задания(плановое): </b>
+        {getFormattedDateTimeSeconds(
+          infoData.duty_mission_data.duty_mission_date_end,
+        )}
       </li>
     ),
   },

@@ -17,6 +17,10 @@ import { makeOptionsByMissionSourceForDutyMission } from './makeOptions';
 import { isOrderSource } from 'components/missions/utils/utils';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types/index';
 
+/**
+ * Поле "Источник получения задания" для формы наряд-задания
+ * Если создаётся по Ц. заданию, то выбор не доступен
+ */
 class FieldMissionSourceDutyMission extends React.PureComponent<PropsFieldMissionSourceDutyMission, StateFieldMissionSourceDutyMission> {
   state = {
     MISSION_SOURCE_OPTIONS: (

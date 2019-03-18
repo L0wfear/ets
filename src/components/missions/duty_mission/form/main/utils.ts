@@ -82,10 +82,12 @@ export const getAvailableRouteTypesForDutyMission = (
   );
 };
 
-export const isPermittedEmployeeForDutyMission = (
-  employee: Employee | null,
-  structure_id: number | null,
-) => {
+/**
+ * Проверка принадлежности сотрудника к подразделению
+ * @param employee данные из /employee? о сотрудника
+ * @param structure_id подразделение для валидации
+ */
+export const isPermittedEmployeeForDutyMission = (employee: Employee | null, structure_id: number | null) => {
   if (!employee) {
     return false;
   }
@@ -98,11 +100,16 @@ export const isPermittedEmployeeForDutyMission = (
     is_common,
   } = employee;
 
-  const trigrrerOnPermitted =
-    !!position_name &&
-    can_duty_mission &&
-    active &&
-    (is_common || !structure_id || company_structure_id === structure_id);
+  const trigrrerOnPermitted = (
+    !!position_name
+    && can_duty_mission
+    && active
+    && (
+      is_common
+      || !structure_id
+      || company_structure_id === structure_id
+    )
+  );
 
   return trigrrerOnPermitted;
 };

@@ -15,6 +15,10 @@ import {
   StateFieldStructureDutyMission,
 } from 'components/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission.d';
 
+/**
+ * Поле "Подразделение" для формы наряд-задания
+ * зависит от доступных для пользователя подразделений (session store)
+ */
 class FieldStructureDutyMission extends React.PureComponent<PropsFieldStructureDutyMission, StateFieldStructureDutyMission> {
   handleChange = (value, option) => {
     const { props } = this;

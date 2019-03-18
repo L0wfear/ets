@@ -17,6 +17,11 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
 import { makeOptionsByMunicipalFacilityIdRegistryForDutyMissionList } from './makeOptions';
 
+/**
+ * Поле "Элемент" для формы наряд-задания
+ * зависит от выбранной технической операции ("normatives")
+ * если !isPermitted, то не будет запроса за ТО
+ */
 class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsFieldMunicipalFacilityIdDutyMission, StateFieldMunicipalFacilityIdDutyMission> {
   state = {
     MUNICIPAL_FACILITY_OPTIONS: [],
@@ -81,6 +86,7 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
     if (isPermitted) {
       const isDiffTechnicalOperationId = (prevProps.technical_operation_id !== technical_operation_id);
 
+      // если изменилась ТО и есть данные, откуда брать normatives
       const triggerOnUpdate = (
         technical_operation_id
         && (
@@ -148,7 +154,7 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
   handleChange = (value, option) => {
     const { props } = this;
 
-    if (value && value !== props.value) {
+    if (value !== props.value) {
       props.onChange({
         municipal_facility_id: value,
         municipal_facility_name: get(option, 'label', null),

@@ -17,6 +17,11 @@ import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { componentsForSelect } from './styled';
 
+/**
+ * Поле "Бригадир" для формы наряд-задания
+ * зависит от выбранного подразделения
+ * если !isPermitted, то не будет запроса за ТО
+ */
 class FieldForemanIdDutyMission extends React.PureComponent<PropsFieldForemanIdDutyMission, StateFieldForemanIdDutyMission> {
   state = {
     FOREMANS: [],

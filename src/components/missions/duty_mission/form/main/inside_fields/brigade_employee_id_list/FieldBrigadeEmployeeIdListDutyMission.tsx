@@ -16,6 +16,11 @@ import employeeActions from 'redux-main/reducers/modules/employee/actions-employ
 import { componentsForSelect } from './styled';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
+/**
+ * Поле "Бригада" для формы наряд-задания
+ * зависит от выбранного подразделения и выбранного бригадира (берётся последняя бригада)
+ * если !isPermitted, то не будет запроса за ТО
+ */
 class FieldBrigadeEmployeeIdListDutyMission extends React.PureComponent<PropsFieldBrigadeEmployeeIdListDutyMission, StateFieldBrigadeEmployeeIdListDutyMission> {
   state = {
     BRIGADE: [],

@@ -10,6 +10,7 @@ import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import createFio from 'utils/create-fio';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types/index';
+import { isPermittedEmployeeForDutyMission } from 'components/missions/duty_mission/form/main/utils';
 
 export const makeDefaultDutyMissionTemplate = (): DutyMissionTemplate => ({
   brigade_employee_id_list: [],
@@ -65,33 +66,6 @@ export const getAvailableRouteTypesForDutyMission = (
     'route_types',
     [],
   );
-};
-
-export const isPermittedEmployeeForDutyMission = (employee: Employee | null, structure_id: number | null) => {
-  if (!employee) {
-    return false;
-  }
-
-  const {
-    active,
-    company_structure_id,
-    position_name,
-    can_duty_mission,
-    is_common,
-  } = employee;
-
-  const trigrrerOnPermitted = (
-    !!position_name
-    && can_duty_mission
-    && active
-    && (
-      is_common
-      || !structure_id
-      || company_structure_id === structure_id
-    )
-  );
-
-  return trigrrerOnPermitted;
 };
 
 export const makeOptionsByEmployee = (

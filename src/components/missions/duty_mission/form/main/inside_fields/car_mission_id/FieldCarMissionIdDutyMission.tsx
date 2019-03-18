@@ -18,6 +18,11 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { getMissionsState } from 'redux-main/reducers/selectors/index';
 
+/**
+ * Поле "Задание на ТС" для формы наряд-задания
+ * Зависит от ТО и плановых дат наряд-задания
+ * если !isPermitted, то не будет запроса за ТО
+ */
 class FieldCarMissionIdDutyMission extends React.PureComponent<PropsFieldCarMissionIdDutyMission, StateFieldCarMissionIdDutyMission> {
   state = {
     MISSION_OPTIONS: [],

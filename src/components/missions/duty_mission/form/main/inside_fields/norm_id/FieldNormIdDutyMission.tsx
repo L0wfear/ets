@@ -15,6 +15,10 @@ import { DivNone } from 'global-styled/global-styled';
 import { createValidDateTime } from 'utils/dates';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 
+/**
+ * Пустой рендер для вычисления норматива (norm_id)
+ * Зависит от ТО, Элемента, маршурта и даты начала
+ */
 class FieldNormIdDutyMission extends React.PureComponent<
   PropsFieldNormIdDutyMission,
   StateFieldNormIdDutyMission

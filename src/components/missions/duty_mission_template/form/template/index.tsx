@@ -9,6 +9,7 @@ const DutyMissionTemplateForm = React.lazy(() =>
   import(/* webpackChunkName: "duty_mission_template_form" */ 'components/missions/duty_mission_template/form/template/DutyMissionTemplateForm'),
 );
 
+// Ленивая загрузка шаблона наряд-задания
 class DutyMissionTemplateFormLazy extends React.Component<PropsDutyMissionTemplateFormLazy, {}> {
   render() {
     const { showForm, ...props } = this.props;

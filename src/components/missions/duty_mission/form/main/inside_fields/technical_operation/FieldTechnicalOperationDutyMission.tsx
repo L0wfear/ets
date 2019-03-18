@@ -16,6 +16,11 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { makeOptionsByTechnicalOperationRegistryForMissionList } from './makeOptions';
 
+/**
+ * Поле "Техническая операция" для формы наряд-задания
+ * не зависит от других полей
+ * если !isPermitted, то не будет запроса за ТО
+ */
 class FieldTechnicalOperationDutyMission extends React.PureComponent<PropsFieldTechnicalOperationDutyMission, StateFieldTechnicalOperationDutyMission> {
   state = {
     TECHNICAL_OPERATION_OPTIONS: [],
@@ -32,11 +37,11 @@ class FieldTechnicalOperationDutyMission extends React.PureComponent<PropsFieldT
       technicalOperationRegistryForDutyMissionList,
     );
 
-    const notAvtiveEmployee = value && !TECHNICAL_OPERATION_OPTIONS.some((toData) => (
+    const hasNotValueInOptions = value && !TECHNICAL_OPERATION_OPTIONS.some((toData) => (
       toData.value === value
     ));
 
-    if (notAvtiveEmployee) {
+    if (hasNotValueInOptions) {
       TECHNICAL_OPERATION_OPTIONS = [
         ...TECHNICAL_OPERATION_OPTIONS,
         {
@@ -88,7 +93,7 @@ class FieldTechnicalOperationDutyMission extends React.PureComponent<PropsFieldT
   handleChange = (value, option) => {
     const { props } = this;
 
-    if (value && value !== props.value) {
+    if (value !== props.value) {
       props.onChange({
         technical_operation_id: value,
         technical_operation_name: get(option, 'label', ''),

@@ -21,6 +21,9 @@ import {
   ColEndDatePicker,
 } from './styled';
 
+/**
+ * Поля дат наряд-задания (плановые и фактические)
+ */
 class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMission, StateFieldDatesDutyMission> {
   render() {
     const {

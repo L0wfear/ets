@@ -31,6 +31,12 @@ import { makeOptionFromRouteList } from 'components/missions/duty_mission/form/m
 
 const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
 
+/**
+ * Поле "Маршрут" для формы наряд-задания
+ * Зависит от ТО, Элемент и подразделения
+ * ТО/ Элемент или зависимое поручение дают возможность получения списка маршрутов по norm_id
+ * если !isPermitted, то не будет запроса за ТО
+ */
 class FieldRouteIdDutyMission extends React.PureComponent<
   PropsFieldRouteIdDutyMission,
   StateFieldRouteIdDutyMission

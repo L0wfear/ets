@@ -23,6 +23,8 @@ const canSaveNotCheckField = [
   'equipment_tax_data',
   'motohours_end',
   'odometr_end',
+  'equipment_fact_fuel_end',
+  'fact_fuel_end',
 ];
 
 function calculateWaybillMetersDiff(waybill, field, value) {

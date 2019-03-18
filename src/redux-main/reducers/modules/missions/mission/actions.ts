@@ -370,7 +370,7 @@ const actionRemoveMissions = (
   return payload;
 };
 const actionRemoveMission: any = (
-  missionOld: Pick<Mission, 'id'> & Partial<Mission>,
+  id: Mission['id'],
   meta: LoadingMeta,
 ): ThunkAction<
   ReturnType<typeof promiseRemoveMission>,
@@ -380,7 +380,7 @@ const actionRemoveMission: any = (
 > => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
-    payload: promiseRemoveMission(missionOld.id),
+    payload: promiseRemoveMission(id),
     meta: {
       promise: true,
       ...meta,

@@ -8,7 +8,10 @@ export const registryKey = 'Company';
 
 export const config: TypeConfigData<Company> = {
   Service: {
-    getActionPath: ['companyActions', 'actionLoadCompany'],
+    getRegistryData: {
+      entity: 'companies',
+      typeAns: 'result',
+    },
   },
   registryKey,
   header: {

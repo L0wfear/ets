@@ -11,6 +11,110 @@ import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter';
 import { getBlob, postBlob } from './adapterBlob';
 import { mocks } from './mocks';
 
+export const processResponse = (r, callback) => {
+  if (r.warnings && r.warnings.length) {
+    // Show warnings
+    if (Array.isArray(r.warnings)) {
+      let errorThrow = {};
+
+      r.warnings.forEach((w) => {
+        const errorIsShow = !w.hidden;
+
+        if (!r.hidden) {
+          global.NOTIFICATION_SYSTEM.notify(
+            getWarningNotification(w.message || w),
+          );
+        }
+
+        errorThrow = {
+          error: r,
+          error_text: new RequestWarningError(w),
+          errorIsShow,
+        };
+      });
+      throw errorThrow;
+    } else if (
+      (r.warnings && r.warnings.message)
+      || typeof r.warnings === 'string'
+    ) {
+      const errorIsShow = !r.warnings.hidden;
+
+      if (!r.warnings.hidden) {
+        global.NOTIFICATION_SYSTEM.notify(
+          getWarningNotification(r.warnings.message || r.warnings),
+        );
+      }
+
+      const errorThrow = {
+        error: r,
+        error_text: new RequestWarningError(r.warnings),
+        errorIsShow,
+      };
+      throw errorThrow;
+    }
+  }
+  if (r.info && r.info.length) {
+    // Show warnings
+    if (Array.isArray(r.info)) {
+      r.info.forEach((i) => {
+        if (!i.hidden) {
+          global.NOTIFICATION_SYSTEM.notify(
+            getInfoNotification(i.message || i),
+          );
+        }
+      });
+    } else if ((r.info && r.info.message) || typeof r.info === 'string') {
+      if (!r.info.hidden) {
+        global.NOTIFICATION_SYSTEM.notify(
+          getInfoNotification(r.info.message || r.info),
+        );
+      }
+    }
+  }
+  if (r.errors && r.errors.length) {
+    // Show errors
+    if (Array.isArray(r.errors)) {
+      let errorThrow = {};
+      r.errors.forEach((w) => {
+        const errorIsShow = !w.hidden;
+        if (!w.hidden) {
+          global.NOTIFICATION_SYSTEM.notify(
+            getErrorNotification(w.message || w),
+          );
+        }
+
+        errorThrow = {
+          error: r,
+          error_text: new RequestWarningError(w),
+          errorIsShow,
+        };
+      });
+      throw errorThrow;
+    } else if ((r.errors && r.errors.message) || typeof r.errors === 'string') {
+      const errorIsShow = !r.errors.hidden;
+
+      if (!r.errors.hidden) {
+        global.NOTIFICATION_SYSTEM.notify(
+          getErrorNotification(r.errors.message || r.errors),
+        );
+      }
+
+      const errorThrow = {
+        error: r,
+        error_text: new RequestWarningError(r.errors),
+        errorIsShow,
+      };
+      throw errorThrow;
+    }
+  }
+  if (typeof callback === 'function') {
+    // If callback is specified, call it
+    return callback();
+  }
+
+  return r;
+};
+
 export default class APIService {
   /**
    * Creates APIService handler for backend service via provided url
@@ -36,17 +140,9 @@ export default class APIService {
     this.addPath = [];
 
     this.get = this.get.bind(this);
-    this.processResponse = this.processResponse.bind(this);
 
     this.logFunction = (method) =>
       console.info(`API SERVICE ${method} ${this.getUrl()}`);
-    this.warningNotificationFunction = (warning) =>
-      global.NOTIFICATION_SYSTEM.notify(getWarningNotification(warning));
-    this.errrorNotificationFunction = (errror) =>
-      global.NOTIFICATION_SYSTEM.notify(getErrorNotification(errror));
-
-    this.infoNotificationFunction = (info) =>
-      global.NOTIFICATION_SYSTEM.notify(getInfoNotification(info));
   }
 
   getUrlData() {
@@ -64,96 +160,6 @@ export default class APIService {
     }
   }
 
-  processResponse(r, callback) {
-    if (r.warnings && r.warnings.length) {
-      // Show warnings
-      if (Array.isArray(r.warnings)) {
-        let errorThrow = {};
-
-        r.warnings.forEach((w) => {
-          const errorIsShow = !w.hidden;
-
-          !w.hidden && this.warningNotificationFunction(w.message || w);
-
-          errorThrow = {
-            error: r,
-            error_text: new RequestWarningError(w),
-            errorIsShow,
-          };
-        });
-        throw errorThrow;
-      } else if (
-        (r.warnings && r.warnings.message)
-        || typeof r.warnings === 'string'
-      ) {
-        const errorIsShow = !r.warnings.hidden;
-
-        !r.warnings.hidden
-          && this.warningNotificationFunction(r.warnings.message || r.warnings);
-
-        const errorThrow = {
-          error: r,
-          error_text: new RequestWarningError(r.warnings),
-          errorIsShow,
-        };
-        throw errorThrow;
-      }
-    }
-    if (r.info && r.info.length) {
-      // Show warnings
-      if (Array.isArray(r.info)) {
-        r.info.forEach((i) => {
-          !i.hidden && this.infoNotificationFunction(i.message || i);
-        });
-      } else if ((r.info && r.info.message) || typeof r.info === 'string') {
-        !r.info.hidden
-          && this.infoNotificationFunction(r.info.message || r.info);
-      }
-    }
-    if (r.errors && r.errors.length) {
-      // Show errors
-      if (Array.isArray(r.errors)) {
-        let errorThrow = {};
-        r.errors.forEach((w) => {
-          const errorIsShow = !w.hidden;
-          !w.hidden && this.errrorNotificationFunction(w.message || w);
-
-          errorThrow = {
-            error: r,
-            error_text: new RequestWarningError(w),
-            errorIsShow,
-          };
-        });
-        throw errorThrow;
-      } else if (
-        (r.errors && r.errors.message)
-        || typeof r.errors === 'string'
-      ) {
-        const errorIsShow = !r.errors.hidden;
-
-        !r.errors.hidden
-          && this.errrorNotificationFunction(r.errors.message || r.errors);
-
-        const errorThrow = {
-          error: r,
-          error_text: new RequestWarningError(r.errors),
-          errorIsShow,
-        };
-        throw errorThrow;
-      }
-    }
-    if (typeof callback === 'function') {
-      // If callback is specified, call it
-      return callback();
-    }
-    if (callback === false) {
-      // If forced to prevent callback we return just response
-      return r;
-    }
-    // By default response of any CRUD operation is response of GET request after that operation
-    return this.get();
-  }
-
   get(payload = {}) {
     if (this.useMock && mocks[this.serviceName]) {
       this.log('GET MOCK');
@@ -169,7 +175,7 @@ export default class APIService {
     this.resetPath();
 
     return getJSON(url, payload, this.otherToken).then((r) =>
-      this.processResponse(r, false),
+      processResponse(r),
     );
   }
 
@@ -177,14 +183,14 @@ export default class APIService {
     this.log('GET BLOB');
     const url = this.getUrl();
     this.resetPath();
-    return getBlob(url, payload).then((r) => this.processResponse(r, false));
+    return getBlob(url, payload).then((r) => processResponse(r));
   }
 
   postBlob(payload = {}) {
     this.log('GET (POST) BLOB');
     const url = this.getUrl();
     this.resetPath();
-    return postBlob(url, payload).then((r) => this.processResponse(r, false));
+    return postBlob(url, payload).then((r) => processResponse(r));
   }
 
   post(payload = {}, callback, type = 'form', params = {}) {
@@ -192,7 +198,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return postJSON(url, payload, type, params, this.otherToken).then((r) =>
-      this.processResponse(r, callback),
+      processResponse(r, callback || this.get),
     );
   }
 
@@ -201,7 +207,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return putJSON(url, payload, type).then((r) =>
-      this.processResponse(r, callback),
+      processResponse(r, callback || this.get),
     );
   }
 
@@ -210,7 +216,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return patchJSON(url, payload, type).then((r) =>
-      this.processResponse(r, callback),
+      processResponse(r, callback || this.get),
     );
   }
 
@@ -219,7 +225,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return deleteJSON(url, payload, type).then((r) =>
-      this.processResponse(r, callback),
+      processResponse(r, callback || this.get),
     );
   }
 

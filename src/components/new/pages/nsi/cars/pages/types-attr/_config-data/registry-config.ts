@@ -1,13 +1,15 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/cars/pages/types-attr/_config-data/permissions';
+import { TypesAttr } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const registryKey = 'TypesAttr';
 
-export const config: TypeConfigData<any> = {
+export const config: TypeConfigData<TypesAttr> = {
   Service: {
-    getActionPath: ['autobaseActions', 'autobaseGetSetTypesAttr'],
-    getBlobActionPath: ['autobaseActions', 'autobaseGetBlobTypesAttr'],
+    getRegistryData: {
+      entity: 'types_attr',
+    },
   },
   registryKey,
   header: {

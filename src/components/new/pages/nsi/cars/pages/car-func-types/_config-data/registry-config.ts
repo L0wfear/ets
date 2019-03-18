@@ -7,8 +7,9 @@ export const registryKey = 'CarFuncTypes';
 
 export const config: TypeConfigData<CarFuncTypes> = {
   Service: {
-    getActionPath: ['autobaseActions', 'autobaseGetSetCarFuncTypes'],
-    getBlobActionPath: ['autobaseActions', 'autobaseGetBlobCarFuncTypes'],
+    getRegistryData: {
+      entity: 'types',
+    },
   },
   registryKey,
   header: {

@@ -20,6 +20,11 @@ import {
   mergeHeader,
   mergeList,
 } from 'components/new/ui/registry/module/utils/merge';
+import { getJSON } from 'api/adapter';
+import configStand from 'config';
+import { getBlob } from 'api/adapterBlob';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { processResponse } from 'api/APIService';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -56,43 +61,64 @@ export const registryRemoveData = (registryKey) => ({
 });
 
 export const registryLoadDataByKey = (registryKey) => async (dispatch, getState) => {
-  const getPath = get(getState(), ['registry', registryKey, 'Service', 'getActionPath'], null);
+  const getRegistryData = get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null);
 
-  if (getPath) {
-    const action = get(allActions, getPath, null);
-    if (action) {
-      const { data: arrayRaw } = await dispatch(
-        action(
-          {},
-          { page: registryKey },
-        ),
-      );
+  let arrayRaw = null;
 
-      const list: any = get(getState(), ['registry', registryKey, 'list']);
+  if (getRegistryData) {
+    const result = await etsLoadingCounter(
+      dispatch,
+      getJSON(
+        `${configStand.backend}/${getRegistryData.entity}`,
+        {},
+      ),
+      { page: registryKey },
+    );
+    const typeAns =  get(getRegistryData, 'typeAns', 'result.rows');
 
-      if (list) {
-        const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+    processResponse(result);
+    arrayRaw = get(result, typeAns, []);
+  } else {
+    const getPath = get(getState(), ['registry', registryKey, 'Service', 'getActionPath'], null);
 
-        return dispatch(
-          registryChangeListData(
-            registryKey,
-            {
-              ...list,
-              data: {
-                ...list.data,
-                ...makeDataListAfterLoadInitialData({ ...list.data, array }),
-                array,
-              },
-              processed: {
-                ...list.processed,
-                processedArray: array,
-                total_count: array.length,
-              },
-            },
+    if (getPath) {
+      const action = get(allActions, getPath, null);
+      if (action) {
+        const { data } = await dispatch(
+          action(
+            {},
+            { page: registryKey },
           ),
         );
-          }
+
+        arrayRaw = data;
+      }
     }
+  }
+
+  const list: any = get(getState(), ['registry', registryKey, 'list']);
+
+  if (list) {
+    const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+
+    return dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            ...makeDataListAfterLoadInitialData({ ...list.data, array }),
+            array,
+          },
+          processed: {
+            ...list.processed,
+            processedArray: array,
+            total_count: array.length,
+          },
+        },
+      ),
+    );
   }
 };
 
@@ -264,25 +290,49 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
 };
 
 export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState) => {
+  const getBlobData = get(
+    getState(),
+    ['registry', registryKey, 'Service', 'getBlobData'],
+    get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null),
+  );
   const getBlobPath = get(getState(), ['registry', registryKey, 'Service', 'getBlobActionPath'], null);
+  let blob = null;
+  let fileName = '';
 
-  if (getBlobPath) {
-    const action = get(allActions, getBlobPath, null);
-
-    if (action) {
-      const { blob, fileName } = await dispatch(
-        action(
-          { format: 'xls'},
-          { page: registryKey },
-        ),
-      );
-
-      saveData(blob, fileName);
-
-      return true;
-    }
+  if (getBlobData) {
+    const result = await etsLoadingCounter(
+      dispatch,
+      getBlob(
+        `${configStand.backend}/${getBlobData.entity}`,
+        { format: 'xls'},
+      ),
+      { page: registryKey },
+    );
+    processResponse(result);
+    blob = get(result, 'blob', null);
+    fileName = get(result, 'fileName', '');
   } else {
-    console.warn('не определён путь до экшена для ПФ'); // tslint:disable-line:no-console
+    if (getBlobPath) {
+      const action = get(allActions, getBlobPath, null);
+
+      if (action) {
+        const result = await dispatch(
+          action(
+            { format: 'xls'},
+            { page: registryKey },
+          ),
+        );
+
+        blob = get(result, 'blob', null);
+        fileName = get(result, 'fileName', '');
+      }
+    } else {
+      console.warn('не определён путь до экшена для ПФ'); // tslint:disable-line:no-console
+    }
+  }
+
+  if (blob && fileName) {
+    saveData(blob, fileName);
   }
 };
 

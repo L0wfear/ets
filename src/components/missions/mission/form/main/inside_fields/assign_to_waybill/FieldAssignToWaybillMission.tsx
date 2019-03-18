@@ -17,6 +17,8 @@ const WrapExtField = styled(ExtField)`
   max-width: 300px;
   width: 100%;
   text-align: left;
+  min-width: 300px;
+  margin-right: 15px;
 `;
 
 const FieldAssignToWaybillMission: React.FC<PropsFieldAssignToWaybillMission> = (props) => {

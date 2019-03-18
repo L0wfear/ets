@@ -586,9 +586,10 @@ const closingDependencies = {
   ],
   equipment_tax_data: [
     {
-      validator: (value, { equipment_fuel }) => {
+      validator: (value, { equipment_fuel, hasEquipmentFuelRates }) => {
         if (
           equipment_fuel
+          && hasEquipmentFuelRates
           && (!isArray(value)
             || !value.filter(
               ({ FACT_VALUE, OPERATION }) =>

@@ -17,7 +17,7 @@ import {
   HistoryOrderListPanelTitleCol,
   HistoryOrderListPanelTitleH4,
   HistoryOrderListPanelTitleColSelect,
-} from './HistoryOrderList';
+} from './styled/HistoryOrderList';
 
 class HistoryOrderList extends React.Component<any, any> {
   state: any = {

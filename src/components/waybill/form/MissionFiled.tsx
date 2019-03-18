@@ -47,14 +47,11 @@ class MissionField extends React.Component<any, any> {
     if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {
       const {
         missionsList,
-        state: {
-          mission_id_list,
-          gov_number: car_gov_number,
-        },
+        state: { mission_id_list, gov_number: car_gov_number },
       } = this.props;
 
-      const deletedElementId = mission_id_list.find((mission: any) =>
-        !newFormData.includes(mission),
+      const deletedElementId = mission_id_list.find(
+        (mission: any) => !newFormData.includes(mission),
       );
 
       const deletedElement = missionsList.find((mission) =>
@@ -163,17 +160,12 @@ class MissionField extends React.Component<any, any> {
 
       this.props.handleChange(
         'mission_id_list',
-        mission_id_list.filter((id) =>
-          id !== waybillPayload.payload.mission_id,
+        mission_id_list.filter(
+          (id) => id !== waybillPayload.payload.mission_id,
         ),
       );
 
-      this.props.setRejectMissionList(
-        [
-          ...rejectMissionList,
-          waybillPayload,
-        ],
-      );
+      this.props.setRejectMissionList([...rejectMissionList, waybillPayload]);
     }
 
     this.setState({

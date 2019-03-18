@@ -283,13 +283,6 @@ export const waybillSchema = {
     fuel_card_id: [
       {
         validator: (value, formData, props) => {
-          if (
-            !value
-            && formData.fuel_method === 'fuel_card'
-            && (formData.status === 'draft' || !formData.status)
-          ) {
-            return 'Поле "Топливная карта" должно быть заполнено';
-          }
           // проверка на соответствие подразделений в ПЛ и топливной карты
           const { fuelCardsList } = props;
           const fuelCardsElem = fuelCardsList.find((fuelCard) => {
@@ -334,15 +327,6 @@ export const waybillSchema = {
     equipment_fuel_card_id: [
       {
         validator: (value, formData, props) => {
-          if (
-            !value
-            && formData.equipment_fuel
-            && formData.equipment_fuel_method === 'fuel_card'
-            && (formData.status === 'draft' || !formData.status)
-          ) {
-            return 'Поле "Топливная карта" должно быть заполнено';
-          }
-
           // проверка на соответствие подразделений в ПЛ и топливной карты
           const { fuelCardsList } = props;
           const equipmentFuelCardsElem = fuelCardsList.find((fuelCard) => {

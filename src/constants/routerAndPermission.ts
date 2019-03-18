@@ -9,6 +9,7 @@ import notificationRegistry from 'components/notifications/config-data';
 import changeCompany from 'components/new/ui/app_header/desktop/right/change_role/config-data';
 
 import dashboard from 'components/new/pages/dashboard/config-data';
+import inspection from 'components/new/pages/inspection/_config_data';
 import routeList from 'components/new/pages/routes_list/config-data';
 import config from 'config';
 
@@ -16,6 +17,7 @@ const routerAndPermission = {
   monitor,
   coverageReports,
   dashboard,
+  inspection,
   waybillJournal,
   missions,
   nsi,

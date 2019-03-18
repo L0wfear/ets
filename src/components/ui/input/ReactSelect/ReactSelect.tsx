@@ -74,7 +74,12 @@ export default class ReactSelect extends React.Component<any, any> {
     const {
       emptyValue = '',
       multi,
+      legacy,
     } = this.props;
+
+    if (!legacy) {
+      return this.props.onChange(objectValue);
+    }
 
     this.props.onChange(
       onChangeSelectLegacy(

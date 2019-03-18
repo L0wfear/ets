@@ -1,4 +1,6 @@
 import { isNullOrUndefined } from 'util';
+import { OneRegistryData } from '../registry';
+import { diffDates } from 'utils/dates';
 
 export const sortArray = (firstRowData, secondRowData, field) => {
   let [
@@ -49,35 +51,70 @@ export const sortArray = (firstRowData, secondRowData, field) => {
   return first.localeCompare(second);
 };
 
-export const filterArray = (array, filterValues) => {
+export const filterArray = (array, filterValues, fields: OneRegistryData['filter']['fields']) => {
   const filterValauesEntries = Object.entries<any>(filterValues);
+
   if (filterValauesEntries.length > 0) {
+    const fieldsAsObj = fields.reduce((newObj, fieldData) => {
+      newObj[fieldData.valueKey] = fieldData.type;
+
+      return newObj;
+    }, {});
+
     return array.filter((row) => {
       return !filterValauesEntries.some(([valueKeyType, value]) => {    //  если заваливается хотя бы на 1 фильтре
         // описываем проигрышные варианты
         if (valueKeyType.match(/__in$/)) {
           const valueKey = valueKeyType.replace(/__in$/, '');
-          return !value.includes(row[valueKey]);
+
+          switch (fieldsAsObj[valueKey]) {
+            case 'multiselect': return !value.includes(row[valueKey]);
+            default: throw new Error('non define filter by type');
+          }
         }
         if (valueKeyType.match(/__like$/)) {
           const valueKey = valueKeyType.replace(/__like$/, '');
-          return !row[valueKey].includes(value);
+
+          switch (fieldsAsObj[valueKey]) {
+            case 'multiselect': return !row[valueKey].includes(value);
+            default: throw new Error('non define filter by type');
+          }
         }
         if (valueKeyType.match(/__eq$/)) {
           const valueKey = valueKeyType.replace(/__eq$/, '');
-          return value !== row[valueKey];
+
+          switch (fieldsAsObj[valueKey]) {
+            case 'advanced-number': return value !== row[valueKey];
+            case 'advanced-date': return diffDates(value, row[valueKey]) !== 0;
+            default: throw new Error('non define filter by type');
+          }
         }
         if (valueKeyType.match(/__neq$/)) {
           const valueKey = valueKeyType.replace(/__neq$/, '');
-          return !(value !== row[valueKey]);
+
+          switch (fieldsAsObj[valueKey]) {
+            case 'advanced-number': return !(value !== row[valueKey]);
+            case 'advanced-date': return !(diffDates(value, row[valueKey]) !== 0);
+            default: throw new Error('non define filter by type');
+          }
         }
         if (valueKeyType.match(/__gt$/)) {
           const valueKey = valueKeyType.replace(/__gt$/, '');
-          return value >= row[valueKey];
+
+          switch (fieldsAsObj[valueKey]) {
+            case 'advanced-number': return value >= row[valueKey];
+            case 'advanced-date': return diffDates(value, row[valueKey]) >= 0;
+            default: throw new Error('non define filter by type');
+          }
         }
         if (valueKeyType.match(/__lt$/)) {
           const valueKey = valueKeyType.replace(/__lt$/, '');
-          return value <= row[valueKey];
+
+          switch (fieldsAsObj[valueKey]) {
+            case 'advanced-number': return value <= row[valueKey];
+            case 'advanced-date': return diffDates(value, row[valueKey]) <= 0;
+            default: throw new Error('non define filter by type');
+          }
         }
 
         console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType); // tslint:disable-line:no-console
@@ -89,16 +126,18 @@ export const filterArray = (array, filterValues) => {
   return [...array];
 };
 
-export const makeProcessedArray = (array, { sort, filterValues }) => {
-  const processedArray = filterArray(array, filterValues);
+export const makeProcessedArray = (array, { sort, filterValues, ...other }: Pick<OneRegistryData['list']['processed'], 'sort' | 'filterValues'>, fields: OneRegistryData['filter']['fields']) => {
+  const processedArray = filterArray(array, filterValues, fields);
 
   if (sort.field) {
     if (processedArray.some(({ [sort.field]: fieldValue }: any) => !isNullOrUndefined(fieldValue))) {
-      processedArray.sort((a, b) => sortArray(a, b, sort.field));
-
-      if (sort.reverse) {
-        processedArray.reverse();
-      }
+      processedArray.sort((a, b) =>
+        sortArray(
+          sort.reverse ? b : a,
+          sort.reverse ? a : b,
+          sort.field,
+        ),
+      );
     }
   }
 

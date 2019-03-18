@@ -68,31 +68,40 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
   }
 
   handleChangeType = (value) => {
-    this.state.activeTypeArr.forEach((type) => {
-      this.props.onChange(this.props.filterData.valueKey, type, '');
+    const {
+      activeTypeArr,
+    } = this.state;
+    activeTypeArr.forEach((type) => {
+      this.props.onChange(this.props.filterData.valueKey, type, null);
     });
+
+    const firstFilterValue = this.props.filterValuesObj[activeTypeArr[0]].value;
+
+    if (firstFilterValue) {
+      this.props.onChange(this.props.filterData.valueKey, value[0], firstFilterValue);
+    }
 
     this.setState({
       activeTypeArr: value,
     });
   }
 
-  handleChangeFirst = ({ currentTarget: { value }}) => {
+  handleChange = (value, index) => {
     const { props } = this;
     const { filterData } = props;
     const valueAsNumber = Number(value);
     const { activeTypeArr } = this.state;
 
-    this.props.onChange(filterData.valueKey, activeTypeArr[0], value !== '' ? valueAsNumber : '');
+    this.props.onChange(filterData.valueKey, activeTypeArr[index], value !== '' ? valueAsNumber : '');
+  }
+
+  handleChangeFirst = ({ currentTarget: { value }}) => {
+    this.handleChange(value, 0);
+
   }
 
   handleChangeSecond = ({ currentTarget: { value }}) => {
-    const { props } = this;
-    const { filterData } = props;
-    const valueAsNumber = Number(value);
-    const { activeTypeArr } = this.state;
-
-    this.props.onChange(filterData.valueKey, activeTypeArr[1], value !== '' ? valueAsNumber : '');
+    this.handleChange(value, 1);
   }
 
   render() {

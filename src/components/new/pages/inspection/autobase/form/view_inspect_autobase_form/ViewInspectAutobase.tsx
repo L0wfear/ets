@@ -1,0 +1,312 @@
+import * as React from 'react';
+import { TitleForm } from './styled/ViewInspectAutobaseStyled';
+import { Button, Row, Col, Glyphicon } from 'react-bootstrap';
+import { BoxContainer } from '../../components/data/styled/InspectionAutobaseData';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import IAVisibleWarning from './vsible_warning/IAVisibleWarning';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { FooterEnd, DivNone } from 'global-styled/global-styled';
+import { FileField } from 'components/ui/input/fields';
+import { ViewInspectAutobaseProps } from './@types/ViewInspectAutobase';
+import { INSPECT_AUTOBASE_TYPE_FORM } from '../../global_constants';
+import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';
+import { Reducer } from 'redux';
+import { inspectAutobaeSchema } from './inspect_autobase_schema';
+import { validate } from 'components/ui/form/new/validate';
+
+type InitialState = {
+  selectedInspectAutobase: InspectAutobase,
+  errors: Partial<Record<keyof InspectAutobase['data'], string>>;
+  canSave: boolean;
+  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+};
+
+const initialState: InitialState = {
+  selectedInspectAutobase: null,
+  errors: {},
+  canSave: false,
+  type: 'list',
+};
+
+const CHANGE_DATA = 'CHANGE_DATA';
+const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
+
+const actionChangeSelectedInspectAutobaseData = (data: InspectAutobase['data']) => ({
+  type: CHANGE_DATA,
+  payload: {
+    data,
+  },
+});
+
+const actionSetSelectedInspectAutobaseData = (selectedInspectAutobase: InitialState['selectedInspectAutobase'], type: InitialState['type']) => ({
+  type: SET_INITIAL_STATE,
+  payload: {
+    selectedInspectAutobase,
+    type,
+  },
+});
+
+const reducer = (state: InitialState, { type, payload }) => {
+  switch (type) {
+    case SET_INITIAL_STATE: {
+      const errors = validate(inspectAutobaeSchema, payload.selectedInspectAutobase.data, { type: payload.type });
+
+      return {
+        selectedInspectAutobase: payload.selectedInspectAutobase,
+        type: payload.type,
+        errors,
+        canSave: Object.values(errors).every((error) => !error),
+      };
+    }
+    case CHANGE_DATA: {
+      const selectedInspectAutobase = {
+        ...state.selectedInspectAutobase,
+        data: {
+          ...state.selectedInspectAutobase.data,
+          ...payload.data,
+        },
+      };
+      const errors = validate(inspectAutobaeSchema, selectedInspectAutobase.data, { type: state.type });
+
+      return {
+        ...state,
+        selectedInspectAutobase,
+        errors,
+        canSave: Object.values(errors).every((error) => !error),
+      };
+    }
+    default: return state;
+  }
+};
+
+const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
+  const [state, dispatch] = React.useReducer<Reducer<InitialState, any>>(
+    reducer,
+    initialState,
+  );
+
+  React.useEffect(
+    () => {
+      dispatch(
+        actionSetSelectedInspectAutobaseData(
+          props.selectedInspectAutobase,
+          props.type,
+        ),
+      );
+    },
+    [props.type, props.selectedInspectAutobase],
+  );
+
+  const isPermittedChangeListParams = (
+    props.isPermitted
+    && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
+  );
+  const isPermittedChangeCloseParams = (
+    props.isPermitted
+    && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+  );
+
+  const onChangeData = React.useCallback(
+    (data) => {
+      if (isPermittedChangeListParams) {
+        dispatch(
+          actionChangeSelectedInspectAutobaseData(data),
+        );
+      }
+    },
+    [state.selectedInspectAutobase, isPermittedChangeListParams],
+  );
+
+  const onChangeFile = React.useCallback(
+    (key, value) => {
+      if (isPermittedChangeListParams) {
+        dispatch(
+          actionChangeSelectedInspectAutobaseData({
+            ...state.selectedInspectAutobase.data,
+            [key]: value,
+          }),
+        );
+      }
+    },
+    [state.selectedInspectAutobase, isPermittedChangeListParams],
+  );
+
+  const closeWithoutChanges = React.useCallback(
+    () => props.handleHide(false),
+    [],
+  );
+
+  return state.selectedInspectAutobase
+    ? (
+      <Row>
+        <Col md={12} sm={12}>
+          <TitleForm>
+            <h4>Мониторинг обустройства автобаз</h4>
+          </TitleForm>
+        </Col>
+        <Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
+          <BoxContainer>
+            <ExtField
+              type="string"
+              label="Организация:"
+              value={state.selectedInspectAutobase.company_name}
+              readOnly
+              inline
+            />
+            <ExtField
+              type="string"
+              label="Адрес базы:"
+              value={state.selectedInspectAutobase.base_address}
+              readOnly
+              inline
+            />
+          </BoxContainer>
+          <BoxContainer>
+            <h4>
+              Выявленные нарушения:
+            </h4>
+            <IAVisibleWarning
+              onChange={onChangeData}
+              data={state.selectedInspectAutobase.data}
+              errors={state.errors}
+              isPermitted={isPermittedChangeListParams}
+            />
+          </BoxContainer>
+          <Row>
+            <Col md={6}>
+              <FileField
+                id="file"
+                label="Фотографии подтверждающих документов"
+                multiple
+                value={state.selectedInspectAutobase.data.photos_of_supporting_documents}
+                onChange={onChangeFile}
+                disabled={!isPermittedChangeListParams}
+                boundKeys="photos_of_supporting_documents"
+              />
+            </Col>
+            <Col md={6}>
+              <FileField
+                id="file"
+                label="Фотографии дефектов"
+                multiple
+                value={state.selectedInspectAutobase.data.photos_defect}
+                onChange={onChangeFile}
+                disabled={!isPermittedChangeListParams}
+                boundKeys="photos_defect"
+              />
+            </Col>
+          </Row>
+        </Col>
+        {
+          props.type !== INSPECT_AUTOBASE_TYPE_FORM.list
+            ? (
+              <Col md={6} sm={6}>
+                <Row>
+                  <Col md={12}>
+                    <ExtField
+                      type="date"
+                      label="Срок, до которого необходимо устранить недостатки"
+                      time={false}
+                      date={null}
+                      onChange={(date) => alert(date)}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <h4>Члены комиссии:</h4>
+                    {
+                      [
+                        { fio: 'Фамилия имя отчество', position: 'должность', clearable: false },
+                        { fio: 'Фамилия имя отчество можно удалить', position: 'должность', clearable: true },
+                      ].map((employeeData) => (
+                        <Col md={12}>
+                          <span>{employeeData.fio}, {employeeData.position}</span>
+                          {
+                            employeeData.clearable && isPermittedChangeCloseParams
+                              ? (
+                                <>
+                                  &nbsp;<Button onClick={() => { alert('удаление'); } }><Glyphicon glyph="remove"/></Button>
+                                </>
+                              )
+                              : (
+                                <DivNone />
+                              )
+                          }
+                        </Col>
+                      ))
+                    }
+                    {
+                      isPermittedChangeCloseParams
+                        ? (
+                          <Col md={12}>
+                            <Button onClick={() => { alert('добавить провещяющего'); } }><Glyphicon glyph="plus"/>&nbsp;Добавить провещяющего</Button>
+                          </Col>
+                        )
+                        : (
+                          <DivNone />
+                        )
+                    }
+                  </Col>
+                  <Col md={12}>
+                    <h4>{`От ГБУ "-":`}</h4>
+                    {
+                      [
+                        { fio: 'Фамилия имя отчество', position: 'должность', clearable: false },
+                        { fio: 'Фамилия имя отчество можно удалить', position: 'должность', clearable: true },
+                      ].map((employeeData) => (
+                        <Col md={12}>
+                          <span>{employeeData.fio}, {employeeData.position}</span>
+                          {
+                            employeeData.clearable && isPermittedChangeCloseParams
+                              ? (
+                                <>
+                                  &nbsp;<Button onClick={() => { alert('удаление'); } }><Glyphicon glyph="remove"/></Button>
+                                </>
+                              )
+                              : (
+                                <DivNone />
+                              )
+                          }
+                        </Col>
+                      ))
+                    }
+                    {
+                      isPermittedChangeCloseParams
+                        ? (
+                          <Col md={12}>
+                            <Button onClick={() => { alert('добавить провещяющего'); } }><Glyphicon glyph="plus"/>&nbsp;Добавить провещяющего</Button>
+                          </Col>
+                        )
+                        : (
+                          <DivNone />
+                        )
+                    }
+                  </Col>
+                </Row>
+              </Col>
+            )
+            : (
+              <DivNone />
+            )
+        }
+        <Col md={12} sm={12}>
+          <FooterEnd>
+            <ViewInspectAutobaseButtonSubmit
+              canSave={state.canSave}
+              type={props.type}
+              handleHide={props.handleHide}
+              selectedInspectAutobase={props.selectedInspectAutobase}
+              loadingPage={props.page}
+            />
+            <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
+          </FooterEnd>
+        </Col>
+      </Row>
+    )
+    : (
+      <DivNone />
+    );
+};
+
+export default ViewInspectAutobase;

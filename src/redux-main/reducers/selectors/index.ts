@@ -5,6 +5,11 @@ export {
   getRepairProgrammstateProgramm,
 } from 'redux-main/reducers/modules/repair/repair_programm_selectors';
 
+export {
+  getInspect,
+  getInspectAutobse,
+} from 'redux-main/reducers/modules/inspect/@selectors/inspect_selectors';
+
 export const getUserNotificationsState = (state: ReduxState) => (
   state.userNotifications
 );

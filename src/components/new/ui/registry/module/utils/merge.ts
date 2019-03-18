@@ -3,6 +3,7 @@ import { isArray, isBoolean, isObject, isString, isNumber } from 'util';
 import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/filter';
 import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { makeProcessedArray } from './processed';
 
 export const mergeFilter = (filter: OneRegistryData['filter']) => {
   const rawFilterValues = makeRawFilterValues(filter);
@@ -156,10 +157,12 @@ export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator
   )
 );
 
-export const mergeListProcessed = (processed: OneRegistryData['list']['processed']) => (
-  processed
-  ? (
-    Object.entries(registryDefaultObj.list.processed).reduce((newObj, [key, value]: any) => {
+export const mergeListProcessed = (processed: Partial<OneRegistryData['list']['processed']>) => {
+
+  let processedNew = registryDefaultObj.list.processed;
+
+  if (processed) {
+    processedNew = Object.entries(registryDefaultObj.list.processed).reduce((newObj, [key, value]: any) => {
       if (key === 'filterValues') {
         if (processed[key] && isObject(processed[key])) {
           newObj[key] = processed[key];
@@ -173,8 +176,8 @@ export const mergeListProcessed = (processed: OneRegistryData['list']['processed
       if (key === 'sort') {
         if (isObject(processed[key])) {
           newObj[key] = {
-            field: isString(processed[key].field) || value.field,
-            reverse: isBoolean(processed[key].reverse) || value.reverse,
+            field: isString(processed[key].field) ? processed[key].field : value.field,
+            reverse: isBoolean(processed[key].reverse) ? processed[key].reverse : value.reverse,
           };
         } else {
           newObj[key] = value;
@@ -190,17 +193,23 @@ export const mergeListProcessed = (processed: OneRegistryData['list']['processed
       }
 
       return newObj;
-    }, {})
-  )
-  : (
-    registryDefaultObj.list.processed
-  )
-);
+    }, {});
+  }
 
-export const mergeList = (list: OneRegistryData['list']) => ({
-  data: mergeListData(list.data),
-  permissions: mergeListPermissions(list.permissions),
-  meta: mergeListMeta(list.meta),
-  paginator: mergeListPaginator(list.paginator),
-  processed: mergeListProcessed(list.processed),
-});
+  return processedNew;
+};
+
+export const mergeList = (list: OneRegistryData['list'], fields: OneRegistryData['filter']['fields']) => {
+  const listNew: Partial<OneRegistryData['list']> = {};
+
+  listNew.data = mergeListData(list.data) as any;
+  listNew.permissions = mergeListPermissions(list.permissions);
+  listNew.meta = mergeListMeta(list.meta);
+  listNew.paginator = mergeListPaginator(list.paginator);
+  listNew.processed = mergeListProcessed(list.processed);
+
+  listNew.processed.processedArray = makeProcessedArray(listNew.data.array, listNew.processed, fields);
+  listNew.processed.total_count = listNew.processed.processedArray.length;
+
+  return listNew;
+};

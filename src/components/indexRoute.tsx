@@ -7,13 +7,19 @@ import routerAndPermission from 'constants/routerAndPermission';
 const renderRoutes = (newRoutesArr, data) => {
   if (!data.noRoute) {
     if (data.path) {
-      newRoutesArr.push(
-        <PublicRoute
-          key={data.path}
-          path={data.path}
-          component={data.component}
-        />,
-      );
+      if (data.children) {
+        newRoutesArr.push(
+          ...Object.values(data.children).reduce(renderRoutes, []),
+        );
+      } else {
+        newRoutesArr.push(
+          <PublicRoute
+            key={data.routePath || data.path}
+            path={data.routePath || data.path}
+            component={data.component}
+          />,
+        );
+      }
     } else if (!data.divider && !data.hiddenNav) {
       newRoutesArr.push(...Object.values(data.children).reduce(renderRoutes, []));
     }
@@ -25,7 +31,7 @@ const renderRoutes = (newRoutesArr, data) => {
 const getRouters = () => (
   <Switch>
     { Object.values(routerAndPermission).reduce(renderRoutes, []) }
-    <Redirect push from="*" to="/monitor" />
+    <Redirect to="/monitor" />
   </Switch>
 );
 

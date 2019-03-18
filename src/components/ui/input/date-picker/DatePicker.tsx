@@ -27,7 +27,7 @@ const DatePicker: React.FunctionComponent<DatePickerProps> = (props) => {
   let { date: value } = props;
   const format = `${calendar ? `${global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;
 
-  if (typeof value === 'string') {
+  if (typeof value === 'string' && value) {
     value = moment(value).toDate();
   }
 
@@ -35,7 +35,7 @@ const DatePicker: React.FunctionComponent<DatePickerProps> = (props) => {
     <DTPicker
       id={props.id}
       className={cx('chart-datepicker', props.className)}
-      value={value}
+      value={value ? value : null}
       format={format}
       timeFormat={global.APP_TIME_FORMAT}
       step={5}

@@ -97,7 +97,7 @@ export const actionRemoveCarpool = (id, { page, path }: { page: string; path?: s
   })
 );
 
-export default {
+const carpoolActions = {
   actionSetCarpool,
   geoobjectResetSetCarpool,
   actionGetBlobCarpool,
@@ -107,3 +107,5 @@ export default {
   actionUpdateCarpool,
   actionRemoveCarpool,
 };
+
+export default carpoolActions;

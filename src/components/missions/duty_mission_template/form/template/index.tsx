@@ -9,16 +9,11 @@ const DutyMissionTemplateForm = React.lazy(() =>
   import(/* webpackChunkName: "duty_mission_template_form" */ 'components/missions/duty_mission_template/form/template/DutyMissionTemplateForm'),
 );
 
-class DutyMissionTemplateFormLazy extends React.Component<
-  PropsDutyMissionTemplateFormLazy,
-  {}
-> {
+class DutyMissionTemplateFormLazy extends React.Component<PropsDutyMissionTemplateFormLazy, {}> {
   render() {
     const { showForm, ...props } = this.props;
     const page = props.loadingPageName || props.page;
-    const path = `${
-      props.path ? `${props.path}-` : ''
-    }duty_mission_template_form`;
+    const path = `${props.path ? `${props.path}-` : ''}duty_mission_template_form`;
 
     return showForm ? (
       <ErrorBoundaryForm>

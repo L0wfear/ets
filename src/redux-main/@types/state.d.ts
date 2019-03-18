@@ -19,6 +19,7 @@ import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
 import { IStateProgramm } from 'redux-main/reducers/modules/repair/state_programm/@types/state_programm';
 import { IRepairProgramm } from 'redux-main/reducers/modules/repair/@types/repair_programm';
 import { IStateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
+import { IStateInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -36,6 +37,7 @@ export interface ReduxState {
   missions: IStateMissions;
   company: IStateCompany;
   repairProgramm: IRepairProgramm;
+  inspect: IStateInspect;
 
   order: IStateOrder; // partial
 

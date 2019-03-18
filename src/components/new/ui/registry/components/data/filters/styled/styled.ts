@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import * as Panel from 'react-bootstrap/lib/Panel';
 
 export const EtsFilterCntainer = styled.form`
-  margin: 10px 25px;
+  margin: 10px 15px;
   display: flex;
   background-color: #eee;
   border: 1px solid #ddd;
   padding: 10px;
+
+  height: 100%;
 
   flex-direction: column;
 `;

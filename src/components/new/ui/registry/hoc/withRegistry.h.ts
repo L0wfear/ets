@@ -32,7 +32,8 @@ export type OneFilterType<F> = {
   labelKey?: string;
   title: string | DisplayIfTitle[];
   type: 'multiselect'
-    | 'advanced-number';
+  | 'advanced-number'
+  | 'advanced-date';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];
 };
@@ -41,9 +42,16 @@ export type TypeFields<F extends any> = {
   key: keyof F;
   title: string | DisplayIfTitle[];
   width?: number;
-  boolean?: boolean;
+  format?: (
+    'date'
+    | 'datetime'
+    | 'datetimesecond'
+    | 'boolean'
+    | 'toFixed1'
+    | 'toFixed2'
+    | 'toFixed3'
+  );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  toFixed?: number;
   childrenFields?: TypeFields<F>[];
 } | {
   key: 'enumerated';
@@ -53,6 +61,7 @@ export type TypeFields<F extends any> = {
 };
 
 export type TypeConfigData<F extends any> = {
+  noInitialLoad?: boolean;
   Service: any;
   actionHelpers?: {
     get?: object;

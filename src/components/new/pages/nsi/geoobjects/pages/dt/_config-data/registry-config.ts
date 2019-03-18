@@ -108,19 +108,19 @@ export const config: TypeConfigData<Dt> = {
         {
           key: 'total_area',
           title: 'Общая площадь (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
         {
           key: 'clean_area',
           title: 'Общая уборочная площадь (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
         {
           key: 'auto_area',
           title: 'Площадь механизированной уборки (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
         {

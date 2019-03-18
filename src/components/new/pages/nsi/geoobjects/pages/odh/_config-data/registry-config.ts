@@ -152,52 +152,52 @@ export const config: TypeConfigData<Odh> = {
         {
           key: 'total_area',
           title: 'Общая площадь (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'distance',
           title: 'Протяженность (п.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'roadway_area',
           title: 'Площадь проезжей части (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'footway_area',
           title: 'Площадь тротуаров (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'cleaning_area',
           title: 'Площадь уборки (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'footway_length',
           title: 'Длина тротуара (п.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'auto_footway_area',
           title: 'Площадь механизированной уборки тротуаров (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'manual_footway_area',
           title: 'Площадь ручной уборки тротуаров (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'snow_area',
           title: 'Площадь уборки снега (кв.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'gutters_length',
           title: 'Протяженность лотков (п.м.)',
-          toFixed: 2,
+          format: 'toFixed2',
         },
         {
           key: 'company_structure_name',

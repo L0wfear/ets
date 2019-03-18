@@ -1,0 +1,275 @@
+
+import { actionCompanySetNewData } from 'redux-main/reducers/modules/company/common';
+
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { ThunkAction } from 'redux-thunk';
+import { ReduxState } from 'redux-main/@types/state';
+import { AnyAction } from 'redux';
+import { HandleThunkActionCreator } from 'react-redux';
+import { IStateInspectAutobase, InspectAutobase } from './@types/inspect_autobase';
+import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { INSPECT_AUTOBASE, initialStateInspectAutobase } from './inspect_autobase';
+import { actionLoadCompany } from '../../company/actions';
+import {
+  promiseGetInspectAutobase,
+  promiseCreateInspectionAutobase,
+  promiseGetInspectAutobaseById,
+  makeFilesForBackend,
+} from './inspect_autobase_promise';
+import carpoolActions from '../../geoobject/actions_by_type/carpool/actions';
+import { STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT_AUTOBASE_COMPLETED } from './inspect_autobase_constants';
+import { actionCloseInspect, actionUpdateInspect } from '../inspect_actions';
+import { diffDatesByDays, getDateWithMoscowTz } from 'utils/dates';
+
+export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
+  const stateInspectAutobaseOld = getInspectAutobse(getState());
+
+  const stateInspectAutobase = {
+    ...stateInspectAutobaseOld,
+    ...partailState,
+  };
+
+  dispatch({
+    type: INSPECT_AUTOBASE.SET_DATA,
+    payload: stateInspectAutobase,
+  });
+
+  return stateInspectAutobase;
+};
+
+export const actionSetInspectAutobaseInspectAutobaseList = (inspectAutobaseList: IStateInspectAutobase['inspectAutobaseList']): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectAutobase>>, ReduxState, {}, AnyAction> => (dispatch) => {
+  const lastConductingInspect = getTodayConductingInspect(inspectAutobaseList);
+  const stateInspectAutobase = dispatch(
+    actionSetInspectAutobase({
+      inspectAutobaseList,
+      lastConductingInspect,
+      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspect(inspectAutobaseList),
+    }),
+  );
+
+  return stateInspectAutobase;
+};
+
+export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await dispatch(
+    actionLoadCompany(payload, meta),
+  );
+
+  dispatch(
+    actionSetInspectAutobase({
+      companyList: response.data,
+    }),
+  );
+
+  return response;
+};
+
+export const actionGetAndSetInStoreCarpool = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await dispatch(
+    carpoolActions.actionGetGetCarpool(payload, meta),
+  );
+
+  dispatch(
+    actionSetInspectAutobase({
+      carpoolList: response.data,
+    }),
+  );
+
+  return response;
+};
+
+export const actionGetGetInspectAutobase = (payloadOwn: Parameters<typeof promiseGetInspectAutobase>[0], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetInspectAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetInspectAutobase(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+
+export const actionGetAndSetInStoreInspectAutobase = (payload: Parameters<typeof actionGetGetInspectAutobase>[0], meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetGetInspectAutobase>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  dispatch(
+    actionResetInspectAutobaseList(),
+  );
+
+  const response = await dispatch(
+    actionGetGetInspectAutobase(payload, meta),
+  );
+
+  dispatch(
+    actionSetInspectAutobaseInspectAutobaseList(
+      response.data,
+    ),
+  );
+
+  return response;
+};
+
+const actionGetInspectAutobaseById = (id: Parameters<typeof promiseGetInspectAutobaseById>[0], meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof promiseGetInspectAutobaseById>>, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetInspectAutobaseById(id),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+
+export const actionPushDataInInspectAutobaseList = (inspectionAutobase: InspectAutobase): ThunkAction<InspectAutobase[], ReduxState, {}, AnyAction> => (dispatch, getState) => {
+  const { inspectAutobaseList } = getInspectAutobse(getState());
+
+  const indexInArrayItem = inspectAutobaseList.findIndex(({ id }) => id === inspectionAutobase.id);
+
+  const inspectAutobaseListNew = [...inspectAutobaseList];
+
+  if (indexInArrayItem) {
+    inspectAutobaseListNew[indexInArrayItem] = inspectionAutobase;
+  } else {
+    inspectAutobaseListNew.push(inspectionAutobase);
+  }
+
+  dispatch(
+    actionSetInspectAutobaseInspectAutobaseList(
+      inspectAutobaseListNew,
+    ),
+  );
+
+  return inspectAutobaseListNew;
+};
+
+export const actionResetInspectAutobase = (): ThunkAction<null, ReduxState, {}, AnyAction> => (dispatch) => {
+  dispatch(
+    actionSetInspectAutobase(initialStateInspectAutobase),
+  );
+
+  return null;
+};
+
+export const actionResetInspectAutobaseList = (): ThunkAction<null, ReduxState, {}, AnyAction> => (dispatch) => {
+  dispatch(
+    actionSetInspectAutobaseInspectAutobaseList(
+      initialStateInspectAutobase.inspectAutobaseList,
+    ),
+  );
+
+  return null;
+};
+
+export const actionResetCompanyAndCarpool = (): ThunkAction<null, ReduxState, {}, AnyAction> => (dispatch) => {
+  dispatch(
+    actionSetInspectAutobase({
+      companyList: initialStateInspectAutobase.companyList,
+      carpoolList: initialStateInspectAutobase.carpoolList,
+    }),
+  );
+
+  return null;
+};
+
+export const actionCreateInspectAutobase = (payloadOwn: Parameters<typeof promiseCreateInspectionAutobase>[0], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const { payload: inspectionAutobase } = await dispatch({
+    type: 'none',
+    payload: promiseCreateInspectionAutobase(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  const inspectionAutobaseFix = await inspectionAutobase;
+
+  dispatch(
+    actionPushDataInInspectAutobaseList(
+      inspectionAutobaseFix,
+    ),
+  );
+
+  return inspectionAutobase;
+};
+
+export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const inspectionAutobase = await dispatch(
+    actionUpdateInspect(
+      inspectAutobase.id,
+      inspectAutobase.data,
+      makeFilesForBackend(inspectAutobase.data),
+      'autobase',
+      meta,
+    ),
+  );
+
+  dispatch(
+    actionPushDataInInspectAutobaseList(
+      inspectionAutobase,
+    ),
+  );
+
+  return inspectionAutobase;
+};
+
+const actionCloseInspectAutobase = (
+  inspectAutobase: InspectAutobase,
+  meta: LoadingMeta,
+): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
+  const result = await dispatch(
+    actionCloseInspect(
+      inspectAutobase.id,
+      inspectAutobase.data,
+      'autobase',
+      meta,
+    ),
+  );
+
+  const inspectionAutobase = dispatch(
+    actionPushDataInInspectAutobaseList(result),
+  );
+
+  return inspectionAutobase;
+};
+
+const inspectionAutobaseActions = {
+  actionCompanySetNewData,
+  actionGetAndSetInStoreCompany,
+  actionGetAndSetInStoreCarpool,
+  actionGetGetInspectAutobase,
+  actionGetInspectAutobaseById,
+  actionGetAndSetInStoreInspectAutobase,
+  actionResetInspectAutobase,
+  actionResetInspectAutobaseList,
+  actionResetCompanyAndCarpool,
+  actionCreateInspectAutobase,
+  actionUpdateInspectAutobase,
+  actionCloseInspectAutobase,
+};
+
+export default inspectionAutobaseActions;
+
+const isInspectAutobaseIsCompleted = ({ status }: InspectAutobase) => (
+  status === STATUS_INSPECT_AUTOBASE_COMPLETED
+);
+/**
+ * Получаем последнюю за текущий день закрытую испекцию
+ */
+export const getTodayCompletedInspect = (data: InspectAutobase[]) => (
+  data.find((inspectAutobase) => (
+    isInspectAutobaseIsCompleted(inspectAutobase)
+    && diffDatesByDays(getDateWithMoscowTz(), inspectAutobase.date_end) === 0
+  ))
+);
+
+export const isInspectAutobaseIsConducting = ({ status }: InspectAutobase) => (
+  status === STATUS_INSPECT_AUTOBASE_CONDITING
+);
+/**
+ * Получаем последнюю открытую испекцию
+ */
+export const getTodayConductingInspect = (data: InspectAutobase[]) => (
+  data.find(isInspectAutobaseIsConducting)
+);

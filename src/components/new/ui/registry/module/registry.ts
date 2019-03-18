@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { TypeOneDisplayIf } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeOneDisplayIf, OneFilterType } from 'components/new/ui/registry/hoc/withRegistry.h';
 
 const REGISTRY = createPath('REGISTRY');
 
@@ -49,12 +49,12 @@ export interface OneRegistryData {
         field?: string,
         reverse?: boolean,
       },
-      total_count?: 0,
+      total_count?: number,
     },
   };
   filter: {
     isOpen?: boolean;
-    fields: any[],
+    fields: OneFilterType<any>[],
     rawFilterValues?: {},
     displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   };

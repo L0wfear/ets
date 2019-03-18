@@ -26,19 +26,20 @@ export const EtsFiltersLines = styled(Row)`
   }
 `;
 
-export const EtsFilter = styled.div`
+export const EtsFilter = styled.label`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
 
-export const EtsFilterTitle = styled.div`
+export const EtsFilterTitle = styled.span`
   text-align: center;
   font-weight: 700;
   margin: 5px 0;
 `;
 
 export const EtsFilterInputContainer = styled.div`
+  font-weight: initial;
 `;
 
 export const EtsFilterInputAdvacedContainer = styled(EtsFilterInputContainer)`

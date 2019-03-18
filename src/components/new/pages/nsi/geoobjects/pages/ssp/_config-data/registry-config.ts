@@ -107,13 +107,13 @@ export const config: TypeConfigData<Ssp> = {
         {
           key: 'productivity',
           title: 'Производительность (куб. м в сутки)',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
         {
           key: 'is_mobile',
           title: 'Мобильность',
-          boolean: true,
+          format: 'boolean',
           width: 150,
         },
       ],

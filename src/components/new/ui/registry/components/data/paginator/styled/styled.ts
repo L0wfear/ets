@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { constantColor } from 'global-styled/global-constants';
 
 export const EtsPaginatorContainer = styled.div`
-  padding: 10px 20px 20px 20px;
+  padding: 0px 10px 10px 10px;
   margin: 5px;
 
   >button.btn.btn-default {

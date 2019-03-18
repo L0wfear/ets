@@ -30,17 +30,20 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
     ), 100);
   }
 
+  const mergeConfig: any = {
+    Service: config.Service,
+    filter: mergeFilter(config.filter),
+    header: mergeHeader(config.header),
+    trash: config.trash,
+  };
+
+  mergeConfig.list = mergeList(config.list, mergeConfig.filter.fields);
+
   return dispatch({
     type: REGISTRY_ADD_INITIAL_DATA,
     payload: {
       registryKey,
-      config: {
-        Service: config.Service,
-        filter: mergeFilter(config.filter),
-        header: mergeHeader(config.header),
-        list: mergeList(config.list),
-        trash: config.trash,
-      },
+      config: mergeConfig,
     },
   });
 };
@@ -182,7 +185,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     ),
   );
 
-  const processedArray = makeProcessedArray(list.data.array, processed);
+  const processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
   const total_count = processedArray.length;
 
   dispatch(
@@ -228,7 +231,7 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
 
     console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
   }
-  const processedArray = makeProcessedArray(list.data.array, processed);
+  const processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
   const total_count = processedArray.length;
 
   dispatch(
@@ -284,7 +287,7 @@ export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState)
 };
 
 export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {
-  const { registry: { [registryKey]: { list } } } = getState();
+  const { registry: { [registryKey]: { list, filter } } } = getState();
 
   const {
     processed : {
@@ -320,7 +323,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
         ...list,
         processed: {
           ...processed,
-          processedArray: makeProcessedArray(list.data.array, processed),
+          processedArray: makeProcessedArray(list.data.array, processed, filter.fields),
         },
       },
     ),
@@ -373,19 +376,10 @@ export const registrySetSelectedRowToShowInForm: any = (registryKey, selectedRow
   );
 };
 
-export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
+export const actionUnselectSelectedRowToShow: any = (registryKey: string, allReset: boolean) => (dispatch, getState) => {
+  const list = get(getState(), `registry.${registryKey}.list`, null);
 
-  if (isSubmitted) {
-    dispatch(
-      registryLoadDataByKey(registryKey),
-    );
+  if (list) {
     dispatch(
       registryChangeListData(
         registryKey,
@@ -393,25 +387,27 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitt
           ...list,
           data: {
             ...list.data,
-            selectedRow: null,
-            checkedRows: {},
-            selectedRowToShow: null,
-          },
-        },
-      ),
-    );
-  } else {
-    dispatch(
-      registryChangeListData(
-        registryKey,
-        {
-          ...list,
-          data: {
-            ...list.data,
+            selectedRow: !allReset ? list.data.selectedRow : null,
+            checkedRows: !allReset ? list.data.checkedRows : {},
             selectedRowToShow: null,
           },
         },
       ),
     );
   }
+};
+
+export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
+  if (isSubmitted) {
+    dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+  }
+
+  dispatch(
+    actionUnselectSelectedRowToShow(
+      registryKey,
+      isSubmitted,
+    ),
+  );
 };

@@ -32,7 +32,7 @@ export const TempateDashboardCards = styled(Row)`
 `;
 
 export const TempateDashboardCardWrap = styled(Col).attrs({ md: 3 })`
-  padding: 15px;
+  padding: 10px;
   height: 300px;
 `;
 

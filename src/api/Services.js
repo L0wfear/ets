@@ -316,3 +316,11 @@ export const ChangeRole = ETS_API_FACTORY.createApiServiceAdapter(
 export const MissionCancelReasonsService = ETS_API_FACTORY.createApiServiceAdapter(
   'mission_cancel_reasons',
 );
+
+// Инспекции
+export const InspectionService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection',
+);
+export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspect/registry',
+);

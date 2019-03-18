@@ -14,6 +14,8 @@ export const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('fountains'));
   }
 
+  permissions.push(...getFullAccess('inspect.autobase'));
+
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
       permissions.push(permission.replace(/^pgm\./, 'pgm_store.'));

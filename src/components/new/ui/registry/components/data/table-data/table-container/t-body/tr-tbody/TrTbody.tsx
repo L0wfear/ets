@@ -22,9 +22,10 @@ import { compose } from 'recompose';
 import { registrySetSelectedRowToShowInForm, registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
 
 class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, title, boolean, toFixed }, index) => {
+  renderRow = ({ key, title, format }, index) => {
     const { props } = this;
 
     const {
@@ -71,11 +72,28 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 
     let value = rowData[key];
 
-    if (toFixed) {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
-    }
-    if (boolean) {
-      value = <input type="checkbox" disabled checked={!!value} />;
+    if (format) {
+      if (format === 'date') {
+        value = value ? makeDate(value) : '-';
+      }
+      if (format === 'datetime') {
+        value = value ? getFormattedDateTime(value) : '-';
+      }
+      if (format === 'datetimesecond') {
+        value = value ? getFormattedDateTimeWithSecond(value) : '-';
+      }
+      if (format === 'boolean') {
+        value = <input type="checkbox" disabled checked={!!value} />;
+      }
+      if (format === 'toFixed1') {
+        value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      }
+      if (format === 'toFixed2') {
+        value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      }
+      if (format === 'toFixed3') {
+        value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      }
     }
 
     return (

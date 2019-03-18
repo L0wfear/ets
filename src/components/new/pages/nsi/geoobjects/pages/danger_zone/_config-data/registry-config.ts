@@ -100,19 +100,19 @@ export const config: TypeConfigData<DangerZone> = {
         {
           key: 'roadway_area',
           title: 'Площадь на проезжей части, м²',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
         {
           key: 'sidewalk_area',
           title: 'Площадь на тротуаре, м²',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
         {
           key: 'sidelines_area',
           title: 'Площадь на обочинах, м²',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
       ],

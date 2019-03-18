@@ -21,7 +21,8 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   position: relative;
   height: 100%;
 
-  padding: 15px;
+  padding: 10px 20px;
+  overflow: auto;
 
   &:focus {
     outline: 0px !important;
@@ -116,4 +117,16 @@ export const BtnGroupWrapper = styled.div<{
 export const DisplayFlexAlignCenter = styled.div`
   display: flex;
   align-items: center;
+`;
+export const FooterEnd = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  &>* {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 `;

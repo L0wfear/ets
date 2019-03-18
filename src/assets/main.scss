@@ -1665,7 +1665,7 @@ div.car-movement-time-report {
   font-weight: bold;
 }
 
-.flex-reverse {
+.flex-reverse>label {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;

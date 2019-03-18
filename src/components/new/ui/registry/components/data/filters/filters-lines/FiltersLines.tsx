@@ -12,6 +12,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { isArray } from 'util';
+import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
 
 type PropsFiltersLines = {
   registryKey: string;
@@ -53,27 +54,42 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
     }
 
     switch (type) {
-      case 'multiselect': return (
-        <EtsFilterContainer key={otherFilterData.valueKey}>
-          <MultiselectRegestryFilter
-            formatedTitle={formatedTitle}
-            filterData={otherFilterData}
-            registryKey={registryKey}
-            onChange={this.handleChange}
-          />
-        </EtsFilterContainer>
-      );
-      case 'advanced-number': return (
-        <EtsFilterContainer key={otherFilterData.valueKey}>
-          <AdvancedNumberFilter
-            formatedTitle={formatedTitle}
-            filterData={otherFilterData}
-            registryKey={registryKey}
-            onChange={this.handleChange}
-          />
-        </EtsFilterContainer>
-
-      );
+      case 'multiselect': {
+        return (
+          <EtsFilterContainer key={otherFilterData.valueKey}>
+            <MultiselectRegestryFilter
+              formatedTitle={formatedTitle}
+              filterData={otherFilterData}
+              registryKey={registryKey}
+              onChange={this.handleChange}
+            />
+          </EtsFilterContainer>
+        );
+      }
+      case 'advanced-number': {
+        return (
+          <EtsFilterContainer key={otherFilterData.valueKey}>
+            <AdvancedNumberFilter
+              formatedTitle={formatedTitle}
+              filterData={otherFilterData}
+              registryKey={registryKey}
+              onChange={this.handleChange}
+            />
+          </EtsFilterContainer>
+        );
+      }
+      case 'advanced-date': {
+        return (
+          <EtsFilterContainer key={otherFilterData.valueKey}>
+            <AdvancedDateFilter
+              formatedTitle={formatedTitle}
+              filterData={otherFilterData}
+              registryKey={registryKey}
+              onChange={this.handleChange}
+            />
+          </EtsFilterContainer>
+        );
+      }
       default: return (
         <EtsFilterContainer key={otherFilterData.valueKey}>
           {`not found filter with type ${type}`}

@@ -100,7 +100,7 @@ export const config: TypeConfigData<Msp> = {
         {
           key: 'productivity',
           title: 'Производительность (куб. м в сутки)',
-          toFixed: 2,
+          format: 'toFixed2',
           width: 200,
         },
       ],

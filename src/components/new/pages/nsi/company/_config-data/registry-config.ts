@@ -52,7 +52,7 @@ export const config: TypeConfigData<Company> = {
           key: 'has_remote_checkup',
           title: 'Наличие дистанционного мед. осмотра',
           width: 300,
-          boolean: true,
+          format: 'boolean',
         },
       ],
     },

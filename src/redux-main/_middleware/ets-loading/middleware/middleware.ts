@@ -1,45 +1,30 @@
-import {
-  incLoadingCount,
-  decLoadingCount,
-} from 'redux-main/_middleware/ets-loading/module/actions-loading';
+import etsLoadingCounter from '../etsLoadingCounter';
+import { get } from 'lodash';
 
 const etsLoading = ({ dispatch }) => (next) => (action) => {
   const { meta = { promise: false, page: '', path: '' } } = action;
 
-  if (meta.promise && typeof action.payload.then === 'function') {
-    let countLoad = false;
-    const interval = setTimeout(() => {
-      countLoad = true;
-      dispatch(incLoadingCount(meta));
-    }, 300);
-
-    return action.payload
-      .then((result) => {
-        if (countLoad) {
-          dispatch(decLoadingCount(meta));
-        } else {
-          clearTimeout(interval);
-        }
-        if (action.type && action.type !== 'none') {
-          return dispatch({
-            ...action,
-            payload: result,
-          });
-        }
-
-        return {
+  if (meta.promise && typeof get(action, 'payload.then', null) === 'function') {
+    etsLoadingCounter(
+      dispatch,
+      action.payload,
+      {
+        page: meta.page,
+        path: meta.path,
+      },
+    ).then((result) => {
+      if (action.type && action.type !== 'none') {
+        return dispatch({
           ...action,
           payload: result,
-        };
-      })
-      .catch((error) => {
-        if (countLoad) {
-          dispatch(decLoadingCount(meta));
-        } else {
-          clearTimeout(interval);
-        }
-        throw error;
-      });
+        });
+      }
+
+      return {
+        ...action,
+        payload: result,
+      };
+    });
   }
 
   return next(action);

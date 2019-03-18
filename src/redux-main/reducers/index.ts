@@ -26,6 +26,7 @@ import missions from 'redux-main/reducers/modules/missions';
 import company from 'redux-main/reducers/modules/company';
 import repairProgramm from 'redux-main/reducers/modules/repair/repair_programm_reducer';
 import materialConsumptionRate from 'redux-main/reducers/modules/material_consumption_rate/materialConsumptionRate';
+import inspect from 'redux-main/reducers/modules/inspect/inspect_reducer';
 
 export default combineReducers({
   reports,
@@ -50,4 +51,5 @@ export default combineReducers({
   company,
   repairProgramm,
   materialConsumptionRate,
+  inspect,
 });

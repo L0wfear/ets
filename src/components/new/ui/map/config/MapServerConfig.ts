@@ -187,11 +187,11 @@ export default {
     rows:   256, // 512
     cols:   256, // 512
     dpi:   96,
-    format:   'PNG24',
+    format:   'PNG8',
     compressionQuality:   0,
     origin:   {
-      x:   -5622500,
-      y:   3830200,
+      x:   -5622500.0,
+      y:   3830200.0,
     },
     spatialReference:   {
       wkt: 'PROJCS["Moscow_bessel",GEOGCS["GCS_Bessel_Moscow",DATUM["D_Bessel_Moscow",SPHEROID["Bessel_Moscow",6377397.0,299.15]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",37.5],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",55.66666666666666],UNIT["Meter",1.0]]',

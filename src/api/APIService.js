@@ -10,6 +10,7 @@ import { get } from 'lodash';
 import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter';
 import { getBlob, postBlob } from './adapterBlob';
 import { mocks } from './mocks';
+import { isBoolean } from 'util';
 
 export const processResponse = (r, callback) => {
   if (r.warnings && r.warnings.length) {
@@ -198,7 +199,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return postJSON(url, payload, type, params, this.otherToken).then((r) =>
-      processResponse(r, callback || this.get),
+      processResponse(r, isBoolean(callback) ? callback : this.get),
     );
   }
 
@@ -207,7 +208,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return putJSON(url, payload, type).then((r) =>
-      processResponse(r, callback || this.get),
+      processResponse(r, isBoolean(callback) ? callback : this.get),
     );
   }
 
@@ -216,7 +217,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return patchJSON(url, payload, type).then((r) =>
-      processResponse(r, callback || this.get),
+      processResponse(r, isBoolean(callback) ? callback : this.get),
     );
   }
 
@@ -225,7 +226,7 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
     return deleteJSON(url, payload, type).then((r) =>
-      processResponse(r, callback || this.get),
+      processResponse(r, isBoolean(callback) ? callback : this.get),
     );
   }
 

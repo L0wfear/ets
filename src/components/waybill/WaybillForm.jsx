@@ -871,7 +871,7 @@ class WaybillForm extends Form {
               this.props.handleMultipleChange({
                 mission_id_list: [
                   ...new Set([...newMission_id_list, ...mission_id_list]),
-                ], // <<< на прод
+                ],
               });
               this.setState({
                 missionsList: newMissionsList,
@@ -1016,7 +1016,7 @@ class WaybillForm extends Form {
           const missionId = get(rejectMission, 'id', '');
           if (!errorData.errorIsShow) {
             const errorText = get(
-              errorData,
+              errorData.error_text,
               'error_text',
               `Произошла ошибка, при попытке отмены задания №${missionId}`,
             );
@@ -1026,10 +1026,8 @@ class WaybillForm extends Form {
               ),
             );
           }
-          rejectMissionSubmitError = true;
-          return null;
+          return rejectMission.payload.mission_id;
         }
-        return rejectMission.payload.mission_id;
       },
     );
 
@@ -1049,54 +1047,52 @@ class WaybillForm extends Form {
    */
 
   handleSubmit = async () => {
-    if (this.checkOnValidHasEquipment()) {
-      delete this.props.formState.is_bnso_broken;
-      // let rejectMissionSubmitError = false;
-      if (this.props.formState.status === 'active') {
-        const { rejectMissionList } = this.state;
-        await this.rejectMissionHandler(rejectMissionList).then((res) => {
-          const { origMissionsList } = this.state;
-          const { mission_id_list } = this.props.formState;
-          const origMissionsIdList = origMissionsList.map((mis) => mis.id);
-          // миссии, которые удалили из поля задание с бызовом rejectForm
-          const rejectMissionIdList = rejectMissionList.map(
-            (rejMission) => rejMission.payload.mission_id,
-          );
-          // задания, которые были удалены из формы без указания причины, т.к. они были отменены ранее
-          const rejCanceled = origMissionsIdList.filter(
-            (mission) =>
-              !this.props.formState.mission_id_list.includes(mission)
-              && !rejectMissionIdList.includes(mission),
-          );
-          // удаляем из старой mission_id_list миссии, которые удалось отменить
-          const newMissionsList = origMissionsList.filter(
-            // фильтруем исходные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
-            (mission) =>
-              !res.acceptedRejectMissionsIdList.includes(mission.number),
-          );
+    delete this.props.formState.is_bnso_broken;
+    const { formState } = this.props;
+    // let rejectMissionSubmitError = false;
 
-          const newMission_id_list = origMissionsIdList
-            .filter((origMis) => {
-              return !res.acceptedRejectMissionsIdList.includes(origMis);
-            })
-            .filter((origMis) => {
-              return !rejCanceled.includes(origMis);
-            });
+    if (this.props.formState.status === 'active') {
+      const { rejectMissionList } = this.state;
+      this.rejectMissionHandler(rejectMissionList).then((res) => {
+        const { origMissionsList } = this.state;
 
-          this.props.handleMultipleChange({
-            mission_id_list: [
-              ...new Set([...newMission_id_list, ...mission_id_list]),
-            ], // <<< на прод
+        const origMissionsIdList = origMissionsList.map((mis) => mis.id); // миссии, которые удалили из поля задание с бызовом rejectForm
+        const rejectMissionIdList = rejectMissionList.map(
+          (rejMission) => rejMission.payload.mission_id,
+        ); // задания, которые были удалены из формы без указания причины, т.к. они были отменены ранее
+        const rejCanceled = origMissionsIdList.filter(
+          (mission) =>
+            !formState.mission_id_list.includes(mission)
+            && !rejectMissionIdList.includes(mission),
+        );
+        // удаляем из старой mission_id_list миссии, которые удалось отменить
+        const newMissionsList = origMissionsList.filter(
+          // фильтруем исходные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
+          (mission) =>
+            !res.acceptedRejectMissionsIdList.includes(mission.number),
+        );
+
+        const newMission_id_list = origMissionsIdList
+          .filter((origMis) => {
+            return !res.acceptedRejectMissionsIdList.includes(origMis);
+          })
+          .filter((origMis) => {
+            return !rejCanceled.includes(origMis);
           });
 
-          this.setState({
-            missionsList: newMissionsList,
-          });
-          this.props.onSubmitActiveWaybill(!res.rejectMissionSubmitError);
-        }); // миссии, которые были успешно отменены, их удаляем из missionField
-      } else {
-        this.props.onSubmit();
-      }
+        this.props.handleMultipleChange({
+          mission_id_list: [
+            ...new Set([...newMission_id_list, ...formState.mission_id_list]),
+          ],
+        });
+
+        this.setState({
+          missionsList: newMissionsList,
+        });
+        this.props.onSubmitActiveWaybill(!res.rejectMissionSubmitError);
+      }); // миссии, которые были успешно отменены, их удаляем из missionField
+    } else {
+      this.props.onSubmit();
     }
   };
 
@@ -2143,6 +2139,7 @@ class WaybillForm extends Form {
                 origFormState={origFormState}
                 handleChange={this.handleChange}
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
+                rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
               />
             </Col>

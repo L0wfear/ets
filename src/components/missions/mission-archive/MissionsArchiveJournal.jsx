@@ -24,9 +24,11 @@ import { connect } from 'react-redux';
 import {
   getCompanyStructureState,
   getSessionState,
+  getSomeUniqState,
 } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const is_archive = true;
 const loadingPageName = 'mission-archive';
@@ -85,6 +87,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
       .getActions('missions')
       .getCleaningMunicipalFacilityAllList(outerPayload);
     flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.actionGetAndSetInStoreMissionCancelReasons();
   };
 
   componentDidUpdate(nextProps, prevState) {
@@ -185,32 +188,29 @@ class MissionsArchiveJournal extends CheckableElementsList {
     }
   };
 
-  getForms = () => {
-    return [
-      <div key={'forms'}>
-        <MissionFormWrap
-          onFormHide={this.onFormHide}
-          showForm={this.state.showForm}
-          element={this.state.selectedElement}
-          refreshTableList={this.refreshList}
-          deepLvl={this.props.deepLvl || 1}
-          {...this.props}
-        />
-        <MissionInfoFormWrap
-          onFormHide={() => this.setState({ showMissionInfoForm: false })}
-          showForm={this.state.showMissionInfoForm}
-          element={this.state.mission}
-          flux={this.context.flux}
-        />
-        <PrintForm
-          onExport={this.processExport}
-          show={this.state.showPrintForm}
-          onHide={() => this.setState({ showPrintForm: false })}
-          title={'Печать журнала заданий'}
-        />
-      </div>,
-    ];
-  };
+  getForms = () => [
+    <div key="forms">
+      <MissionFormWrap
+        onFormHide={this.onFormHide}
+        showForm={this.state.showForm}
+        element={this.state.selectedElement}
+        refreshTableList={this.refreshList}
+        {...this.props}
+      />
+      <MissionInfoFormWrap
+        onFormHide={() => this.setState({ showMissionInfoForm: false })}
+        showForm={this.state.showMissionInfoForm}
+        element={this.state.mission}
+        flux={this.context.flux}
+      />
+      <PrintForm
+        onExport={this.processExport}
+        show={this.state.showPrintForm}
+        onHide={() => this.setState({ showPrintForm: false })}
+        title="Печать журнала заданий"
+      />
+    </div>,
+  ];
 
   getButtons = () => {
     const buttons = super.getButtons();
@@ -242,19 +242,17 @@ class MissionsArchiveJournal extends CheckableElementsList {
     this.setState({ filter });
   };
 
-  getAdditionalProps = () => {
-    return {
-      mapView: this.mapView,
-      structures: this.props.companyStructureLinearList,
-      changeSort: this.changeSort,
-      changeFilter: this.changeFilter,
-      filterValues: this.state.filter,
-      rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
-      useServerFilter: true,
-      useServerSort: true,
-      is_archive,
-    };
-  };
+  getAdditionalProps = () => ({
+    mapView: this.mapView,
+    structures: this.props.companyStructureLinearList,
+    changeSort: this.changeSort,
+    changeFilter: this.changeFilter,
+    filterValues: this.state.filter,
+    rowNumberOffset: this.state.page * MAX_ITEMS_PER_PAGE,
+    useServerFilter: true,
+    useServerSort: true,
+    is_archive,
+  });
 
   getAdditionalFormProps() {
     return {
@@ -262,16 +260,14 @@ class MissionsArchiveJournal extends CheckableElementsList {
     };
   }
 
-  additionalRender = () => {
-    return (
-      <Paginator
-        currentPage={this.state.page}
-        maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
-        setPage={(page) => this.setState({ page })}
-        firstLastButtons
-      />
-    );
-  };
+  additionalRender = () => (
+    <Paginator
+      currentPage={this.state.page}
+      maxPage={Math.ceil(this.props.missionsTotalCount / MAX_ITEMS_PER_PAGE)}
+      setPage={(page) => this.setState({ page })}
+      firstLastButtons
+    />
+  );
 }
 
 export default compose(
@@ -283,12 +279,28 @@ export default compose(
     (state) => ({
       companyStructureLinearList: getCompanyStructureState(state)
         .companyStructureLinearList,
+      missionCancelReasonsList: getSomeUniqState(state)
+        .missionCancelReasonsList,
       userData: getSessionState(state).userData,
     }),
     (dispatch) => ({
       getAndSetInStoreCompanyStructureLinear: () =>
         dispatch(
           companyStructureActions.getAndSetInStoreCompanyStructureLinear(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionGetAndSetInStoreMissionCancelReasons: () =>
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMissionCancelReasons(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionResetMissionCancelReasons: () =>
+        dispatch(
+          someUniqActions.actionResetMissionCancelReasons(
             {},
             { page: loadingPageName },
           ),

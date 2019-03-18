@@ -2,7 +2,6 @@ import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
-import { isNumber } from 'util';
 import { isArray } from 'highcharts';
 
 export const waybillSchema = {
@@ -593,7 +592,7 @@ const closingDependencies = {
           && (!isArray(value)
             || !value.filter(
               ({ FACT_VALUE, OPERATION }) =>
-                isNumber(FACT_VALUE) && isNumber(OPERATION),
+                (FACT_VALUE || FACT_VALUE === 0) && OPERATION,
             ).length)
         ) {
           return 'В Поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';

@@ -279,40 +279,11 @@ export const waybillSchema = {
         },
       },
     ],
-    fuel_card_id: [
-      {
-        validator: (value, formData) => {
-          if (
-            !value
-            && formData.fuel_method === 'fuel_card'
-            && (formData.status === 'draft' || !formData.status)
-          ) {
-            return 'Поле "Топливная карта" должно быть заполнено';
-          }
-          return false;
-        },
-      },
-    ],
     fuel_method: [
       {
         validator: (value, formData) => {
           if (!value && (!formData.status || formData.status === 'draft')) {
             return 'Поле "Способ заправки" должно быть заполнено';
-          }
-          return false;
-        },
-      },
-    ],
-    equipment_fuel_card_id: [
-      {
-        validator: (value, formData) => {
-          if (
-            !value
-            && formData.equipment_fuel
-            && formData.equipment_fuel_method === 'fuel_card'
-            && (formData.status === 'draft' || !formData.status)
-          ) {
-            return 'Поле "Топливная карта" должно быть заполнено';
           }
           return false;
         },

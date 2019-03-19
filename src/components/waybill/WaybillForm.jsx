@@ -1713,24 +1713,6 @@ class WaybillForm extends Form {
                           value={state.fuel_method}
                           onChange={this.handleFuelMethodChange}
                         />
-                        <ExtField
-                          id="fuel-card-id"
-                          type="select"
-                          modalKey={modalKey}
-                          label="Топливная карта"
-                          error={errors.fuel_card_id}
-                          disabled={
-                            IS_ACTIVE
-                            || IS_CLOSED
-                            || !isPermittedByKey.update
-                            || fuelCardDisable
-                            || !(IS_CREATING || IS_DRAFT)
-                          }
-                          options={FUEL_CARDS}
-                          value={state.fuel_card_id}
-                          onChange={this.handleChange}
-                          boundKeys="fuel_card_id"
-                        />
                         <Row>
                           <Col md={6}>
                             <ExtField
@@ -1766,6 +1748,24 @@ class WaybillForm extends Form {
                             />
                           </Col>
                         </Row>
+                        <ExtField
+                          id="fuel-card-id"
+                          type="select"
+                          modalKey={modalKey}
+                          label="Топливная карта"
+                          error={errors.fuel_card_id}
+                          disabled={
+                            IS_ACTIVE
+                            || IS_CLOSED
+                            || !isPermittedByKey.update
+                            || fuelCardDisable
+                            || !(IS_CREATING || IS_DRAFT)
+                          }
+                          options={FUEL_CARDS}
+                          value={state.fuel_card_id}
+                          onChange={this.handleChange}
+                          boundKeys="fuel_card_id"
+                        />
                       </Col>
                       <Col md={4}>
                         <Row>
@@ -1952,24 +1952,6 @@ class WaybillForm extends Form {
                               value={state.equipment_fuel_method}
                               onChange={this.handleEquipmentFuelMethodChange}
                             />
-                            <ExtField
-                              id="equipment-fuel-card-id"
-                              type="select"
-                              modalKey={modalKey}
-                              label="Топливная карта"
-                              error={errors.equipment_fuel_card_id}
-                              disabled={
-                                IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
-                                || equipmentFuelCardDisable
-                                || !(IS_CREATING || IS_DRAFT)
-                              }
-                              options={EQUIPMENT_FUEL_CARDS}
-                              value={state.equipment_fuel_card_id}
-                              onChange={this.handleChange}
-                              boundKeys="equipment_fuel_card_id"
-                            />
                             <Row>
                               <Col md={6}>
                                 <ExtField
@@ -2004,6 +1986,24 @@ class WaybillForm extends Form {
                                 />
                               </Col>
                             </Row>
+                            <ExtField
+                              id="equipment-fuel-card-id"
+                              type="select"
+                              modalKey={modalKey}
+                              label="Топливная карта"
+                              error={errors.equipment_fuel_card_id}
+                              disabled={
+                                IS_ACTIVE
+                                || IS_CLOSED
+                                || !isPermittedByKey.update
+                                || equipmentFuelCardDisable
+                                || !(IS_CREATING || IS_DRAFT)
+                              }
+                              options={EQUIPMENT_FUEL_CARDS}
+                              value={state.equipment_fuel_card_id}
+                              onChange={this.handleChange}
+                              boundKeys="equipment_fuel_card_id"
+                            />
                           </Col>
                           <Col md={4}>
                             <Row>

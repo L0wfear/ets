@@ -6,7 +6,6 @@ import DtListFormWrap from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/
 import {
   registryKey,
   config,
-  components,
 } from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data/registry-config';
 
 import {
@@ -20,7 +19,6 @@ class DtList extends React.Component<PropsDtList, StateDtList> {
        <>
         <Registry
           registryKey={registryKey}
-          components={components}
         />
         <DtListFormWrap
           registryKey={registryKey}

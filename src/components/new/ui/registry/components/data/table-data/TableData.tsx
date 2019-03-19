@@ -18,12 +18,11 @@ class TableData extends React.Component<PropsTableData, StateTableData> {
     const { props } = this;
     const {
       registryKey,
-      components,
     } = props;
 
     return (
       <EtsTableDataContainer>
-        <TableContainer registryKey={registryKey} components={components} handleClickOnRow={props.handleClickOnRow} handleDoubleClickOnRow={props.handleDoubleClickOnRow} />
+        <TableContainer registryKey={registryKey} handleClickOnRow={props.handleClickOnRow} handleDoubleClickOnRow={props.handleDoubleClickOnRow} />
       </EtsTableDataContainer>
     );
   }

@@ -7,7 +7,6 @@ import { isNumber, isArray } from 'util';
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdEnumerated from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdEnumerated';
 import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
-import { isObject } from 'util';
 import { ReduxState } from 'redux-main/@types/state';
 
 import {
@@ -43,15 +42,9 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
     const { props } = this;
 
     const {
-      components,
       rowData,
       registryKey,
     } = props;
-    let StandartTrTd = TrTd;
-
-    if (isObject(components)) {
-      StandartTrTd = components.TrTd || StandartTrTd;
-    }
 
     if (key === 'enumerated') {
       return (
@@ -111,7 +104,7 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
     }
 
     return (
-      <StandartTrTd
+      <TrTd
         key={key}
         metaKey={key}
         value={value}

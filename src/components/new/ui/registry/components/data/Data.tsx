@@ -23,15 +23,14 @@ class Data extends React.Component<PropsData, StateData> {
     const { props } = this;
     const {
       registryKey,
-      components,
     } = props;
 
     return (
       <EtsDataContainer>
-        <Header registryKey={registryKey} components={components} />
-        <FiltersWrap registryKey={registryKey} components={components} />
-        <TableData registryKey={registryKey} components={components} handleClickOnRow={props.handleClickOnRow} handleDoubleClickOnRow={props.handleDoubleClickOnRow }/>
-        <Paginator registryKey={registryKey} components={components} />
+        <Header registryKey={registryKey} />
+        <FiltersWrap registryKey={registryKey} />
+        <TableData registryKey={registryKey} handleClickOnRow={props.handleClickOnRow} handleDoubleClickOnRow={props.handleDoubleClickOnRow }/>
+        <Paginator registryKey={registryKey} />
       </EtsDataContainer>
     );
   }

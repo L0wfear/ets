@@ -23,14 +23,12 @@ class Registry extends React.Component<PropsRegistry, StateRegistry> {
 
     const {
       registryKey,
-      components,
     } = props;
 
     return (
       <EtsRegistry>
         <Data
           registryKey={registryKey}
-          components={components}
           handleClickOnRow={props.handleClickOnRow}
           handleDoubleClickOnRow={props.handleDoubleClickOnRow}
         />

@@ -20,7 +20,6 @@ class Tbody extends React.Component<PropsTbody, StateTbody> {
         currentPage,
         perPage,
       },
-      components,
     } = props;
 
     return (
@@ -32,7 +31,6 @@ class Tbody extends React.Component<PropsTbody, StateTbody> {
               rowData={rowData}
               registryKey={props.registryKey}
               indexRow={indexRow}
-              components={components}
               handleClickOnRow={props.handleClickOnRow}
               handleDoubleClickOnRow={props.handleDoubleClickOnRow}
             />

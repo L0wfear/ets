@@ -6,7 +6,6 @@ import OdhListFormWrap from 'components/new/pages/nsi/geoobjects/pages/odh/OdhFo
 import {
   registryKey,
   config,
-  components,
 } from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/registry-config';
 
 import {
@@ -20,7 +19,6 @@ class OdhList extends React.Component<PropsOdhList, StateOdhList> {
        <>
         <Registry
           registryKey={registryKey}
-          components={components}
         />
         <OdhListFormWrap
           registryKey={registryKey}

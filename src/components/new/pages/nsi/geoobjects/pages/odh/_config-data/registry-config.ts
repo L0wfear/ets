@@ -1,5 +1,3 @@
-import TrTd from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/renderers/TrTd';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/permissions';
@@ -208,8 +206,4 @@ export const config: TypeConfigData<Odh> = {
       ],
     },
   },
-};
-
-export const components = {
-  TrTd,
 };

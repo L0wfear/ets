@@ -31,7 +31,7 @@ class TableContainer extends React.Component<
 
   render() {
     const { props } = this;
-    const { registryKey, components } = props;
+    const { registryKey } = props;
 
     return (
       <EtsTableWrap className="ets_table_wrap">
@@ -39,7 +39,6 @@ class TableContainer extends React.Component<
           <Thead registryKey={registryKey} />
           <Tbody
             registryKey={registryKey}
-            components={components}
             handleClickOnRow={props.handleClickOnRow}
             handleDoubleClickOnRow={props.handleDoubleClickOnRow}
           />

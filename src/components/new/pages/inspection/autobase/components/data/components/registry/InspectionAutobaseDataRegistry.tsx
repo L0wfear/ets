@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { BoxContainerRegistry } from '../../styled/InspectionAutobaseData';
-import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { getInspectAutobse } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { InspectionAutobaseDataRegistryProps, InspectionAutobaseDataRegistryOwnProps, InspectionAutobaseDataRegistryDispatchProps, InspectionAutobaseDataRegistryStateProps, InspectionAutobaseDataRegistryMergeProps } from './@types/InspectionAutobaseDataRegistry';
 import { ReduxState } from 'redux-main/@types/state';
 import Registry from 'components/new/ui/registry/components/Registry';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
+import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { getInspectionAutobaseDataRegistryConfig } from './config';
 import IADRegistryTriggerOnRead from './components/IADRegistryTriggerOnRead';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const registryKey = 'inspectAutobase';
 
@@ -20,18 +20,18 @@ const InspectionAutobaseDataRegistry: React.FC<InspectionAutobaseDataRegistryPro
         getInspectionAutobaseDataRegistryConfig(props),
       );
 
+      props.registryLoadDataByKey(registryKey);
+
       return () => {
         props.registryRemoveData(registryKey);
       };
     },
-    [props.inspectAutobaseList],
+    [props.searchState],
   );
 
   return (
     <BoxContainerRegistry>
-      <Registry
-        registryKey={registryKey}
-      />
+      <Registry registryKey={registryKey} />
       <IADRegistryTriggerOnRead registryKey={registryKey} />
     </BoxContainerRegistry>
   );
@@ -53,11 +53,16 @@ export default compose<InspectionAutobaseDataRegistryProps, InspectionAutobaseDa
           registryRemoveData(registryKeyTemp),
         )
       ),
+      registryLoadDataByKey: (registryKeyTemp: string) => (
+        dispatch(
+          registryLoadDataByKey(registryKeyTemp),
+        )
+      ),
     }),
     null,
     {
       pure: false,
     },
   ),
-  withRouter,
+  withSearch,
 )(InspectionAutobaseDataRegistry);

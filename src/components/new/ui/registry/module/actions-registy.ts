@@ -70,7 +70,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
       dispatch,
       getJSON(
         `${configStand.backend}/${getRegistryData.entity}`,
-        {},
+        getRegistryData.payload || {},
       ),
       { page: registryKey },
     );
@@ -304,7 +304,7 @@ export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState)
       dispatch,
       getBlob(
         `${configStand.backend}/${getBlobData.entity}`,
-        { format: 'xls'},
+        getBlobData.payload || { format: 'xls'},
       ),
       { page: registryKey },
     );

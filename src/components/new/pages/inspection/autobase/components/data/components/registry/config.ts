@@ -3,16 +3,29 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { InspectionAutobaseDataRegistryProps } from './@types/InspectionAutobaseDataRegistry';
-import { makeDataListAfterLoadInitialData } from 'components/new/ui/registry/module/utils/data';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 export const registryKey = 'inspectAutobase';
 
 export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobaseDataRegistryProps): TypeConfigData<InspectAutobase> => {
-  const array = props.inspectAutobaseList;
-
   return {
     noInitialLoad: true,
     Service: {
+      getRegistryData: {
+        entity: 'inspect/registry',
+        payload: {
+          base_id: getNumberValueFromSerch(props.searchState.carpoolId),
+          type: 'autobase',
+        },
+      },
+      getBlobData: {
+        entity: 'inspect/registry',
+        payload: {
+          base_id: getNumberValueFromSerch(props.searchState.carpoolId),
+          type: 'autobase',
+          format: 'xls',
+        },
+      },
     },
     registryKey,
     header: {
@@ -56,7 +69,6 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
       permissions,
       data: {
         uniqKey: 'id',
-        ...makeDataListAfterLoadInitialData({ array }),
       },
       processed: {
         filterValues: {},

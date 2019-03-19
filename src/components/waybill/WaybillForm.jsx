@@ -702,10 +702,10 @@ class WaybillForm extends Form {
         fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       }
       if (isNotNull(lastCarUsedWaybill.equipment_fact_fuel_end)) {
-        fieldsToChange.equipment_fuel_end
+        fieldsToChange.equipment_fuel_start
           = lastCarUsedWaybill.equipment_fact_fuel_end;
         fieldsToChange.equipment_fact_fuel_end
-          = fieldsToChange.equipment_fuel_end;
+          = fieldsToChange.equipment_fuel_start;
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
@@ -726,9 +726,20 @@ class WaybillForm extends Form {
       if (isNotNull(lastCarUsedWaybill.fuel_card_id)) {
         fieldsToChange.fuel_card_id = lastCarUsedWaybill.fuel_card_id;
       }
+      if (lastCarUsedWaybill.fuel_card_id) {
+        fieldsToChange.fuel_method = 'fuel_card';
+      } else {
+        fieldsToChange.fuel_method = 'naliv';
+      }
+
       if (isNotNull(lastCarUsedWaybill.equipment_fuel_card_id)) {
         fieldsToChange.equipment_fuel_card_id
           = lastCarUsedWaybill.equipment_fuel_card_id;
+      }
+      if (lastCarUsedWaybill.equipment_fuel_card_id) {
+        fieldsToChange.equipment_fuel_method = 'fuel_card';
+      } else {
+        fieldsToChange.equipment_fuel_method = 'naliv';
       }
 
       fieldsToChange.equipment_fuel_type
@@ -743,7 +754,7 @@ class WaybillForm extends Form {
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
-      fieldsToChange.equipment_fact_fuel_end = null;
+      fieldsToChange.equipment_fuel_end = null;
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = null;
     }

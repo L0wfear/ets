@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/bridges/_config
 
 export default {
   path: '/bridges',
+  routePath: '/bridges/:id?',
   title: 'Справочник мостов',
   entyity: 'bridges',
   noDotList: false,

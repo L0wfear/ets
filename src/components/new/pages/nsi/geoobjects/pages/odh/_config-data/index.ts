@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/odh/_config-dat
 
 export default {
   path: '/odh',
+  routePath: '/odh/:id?',
   title: 'Справочник ОДХ',
   entyity: 'type',
   noDotList: false,

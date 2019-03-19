@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_conf
 
 export default {
   path: '/pgm_store',
+  routePath: '/pgm_store/:id?',
   title: 'Справочник пунктов отпуска ПГМ',
   entyity: 'pgm',
   noDotList: false,

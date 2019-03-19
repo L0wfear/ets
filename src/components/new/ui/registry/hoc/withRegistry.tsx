@@ -21,9 +21,9 @@ const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Componen
       page: configData.registryKey,
       typePreloader: 'mainpage',
     }),
-    connect<any, any, any, ReduxState>(
+    connect<any, any, any, any, ReduxState>(
       null,
-      (dispatch) => ({
+      (dispatch: any) => ({
         registryAddInitialData: (config: TypeConfigData<F>) => (
           dispatch(
             registryAddInitialData(config),
@@ -35,6 +35,10 @@ const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Componen
           )
         ),
       }),
+      null,
+      {
+        pure: false,
+      },
     ),
   )(
     class RegistryWrap extends React.Component<PropsRegistryWrap, StateRegistryWrap> {

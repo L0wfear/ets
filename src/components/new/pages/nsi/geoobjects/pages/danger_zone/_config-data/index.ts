@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_co
 
 export default {
   path: '/danger_zone',
+  routePath: '/danger_zone/:id?',
   title: 'Справочник особо опасных мест',
   entyity: 'danger_zone',
   noDotList: false,

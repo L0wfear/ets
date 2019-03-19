@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_
 
 export default {
   path: '/fueling-water',
+  routePath: '/fueling-water/:id?',
   title: 'Справочник баз гидрантов',
   entyity: 'fueling_water',
   noDotList: false,

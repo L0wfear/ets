@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/cars/pages/car-func-types/_confi
 
 export default {
   path: '/car-func-types',
+  routePath: '/car-func-types/:asuods_id?',
   title: 'Типы техники',
   entyity: 'type',
   noDotList: false,

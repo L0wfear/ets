@@ -4,11 +4,8 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { PropsSspFormWrap } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/@types/SspForm.h';
+import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const SspFrom = React.lazy(() => (
   import(/* webpackChunkName: "ssp_form" */ 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/SspForm')
@@ -41,19 +38,4 @@ class SspFormWrap extends React.Component<PropsSspFormWrap, {}> {
   }
 }
 
-export default connect<any, any, any, ReduxState>(
-  (state, { registryKey }) => ({
-    element: getListData(state.registry, registryKey).data.selectedRowToShow,
-  }),
-  (dispatch, { registryKey }) => ({
-    onFormHide: (...arg) => (
-      dispatch(
-        registryResetSelectedRowToShowInForm(
-          registryKey,
-          ...arg,
-        ),
-      )
-    ),
-  }),
-)
-(SspFormWrap);
+export default withFormRegistrySearch(SspFormWrap);

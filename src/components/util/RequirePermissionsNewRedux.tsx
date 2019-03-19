@@ -51,10 +51,7 @@ const withRequirePermissionsNew = <P extends {}, O = {}>(
   connect<StateProps, {}, OwnerProps<P>, ReduxState>((state) => ({
     permissionsSet: state.session.userData.permissionsSet,
   }))(
-    class RequirePermissions extends React.Component<
-      PropsRequirePermissions<P>,
-      {}
-    > {
+    class RequirePermissions extends React.Component<PropsRequirePermissions<P>, {}> {
       state = {};
       static getDerivedStateFromProps(nextProps, prevState) {
         if (config.withIsPermittedProps) {

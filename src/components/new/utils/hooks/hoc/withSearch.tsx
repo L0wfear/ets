@@ -2,6 +2,7 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as queryString from 'query-string';
 import { useSearchMergeNewState } from 'components/new/utils/hooks/useSearchMergeNewState';
+import { isNumber } from 'util';
 
 export type WithSearchProps = {
   params: any;
@@ -75,7 +76,7 @@ const withSearch = (Component) => (
           let ans = partOfUrl.replace('?', '');
 
           Object.entries(objParams).forEach(([key, value]) => {
-            ans = ans.replace(`:${key}`, value ? value.toString() : '');
+            ans = ans.replace(`:${key}`, value || isNumber(value) ? value.toString() : '');
           });
 
           Object.entries(this.props.match.params).forEach(([key, value]: [string, string]) => {

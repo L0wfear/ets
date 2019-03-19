@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data
 
 export default {
   path: '/dt',
+  routePath: '/dt/:yard_id?',
   title: 'Справочник ДТ',
   entyity: 'type',
   noDotList: false,

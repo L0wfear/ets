@@ -12,6 +12,10 @@ export const listData: ListDataType = [
     title: 'Тех. операция',
   },
   {
+    path: ['duty_mission_data', 'element_name'],
+    title: 'Элемент',
+  },
+  {
     path: ['duty_mission_data', 'duty_mission_date_start'],
     title: 'Начало задания(плановое)',
     RenderComponent: ({ infoData }) => (

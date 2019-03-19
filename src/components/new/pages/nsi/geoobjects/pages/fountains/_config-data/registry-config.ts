@@ -3,13 +3,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
+import { gormost } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'FountainsList';
 
 export const config: TypeConfigData<Fountains> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetFountains'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobFountains'],
+    getRegistryData: {
+      entity: `geozones/${gormost.fountains}`,
+    },
   },
   registryKey,
   header: {

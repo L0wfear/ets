@@ -3,13 +3,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/@types';
+import { geoozones } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'SnowStorageList';
 
 export const config: TypeConfigData<SnowStorage> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetSnowStorage'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobSnowStorage'],
+    getRegistryData: {
+      entity: `geozones/${geoozones.snow_storage}`,
+    },
   },
   registryKey,
   header: {

@@ -3,13 +3,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
+import { geoozones } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'CarpoolList';
 
 export const config: TypeConfigData<Carpool> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetCarpool'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobCarpool'],
+    getRegistryData: {
+      entity: `geozones/${geoozones.carpool}`,
+    },
   },
   registryKey,
   header: {

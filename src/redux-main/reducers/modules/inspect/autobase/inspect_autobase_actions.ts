@@ -6,20 +6,20 @@ import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
-import { IStateInspectAutobase, InspectAutobase } from './@types/inspect_autobase';
+import { IStateInspectAutobase, InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { getInspectAutobse } from 'redux-main/reducers/selectors';
 import { cloneDeep } from 'lodash';
-import { INSPECT_AUTOBASE, initialStateInspectAutobase } from './inspect_autobase';
-import { actionLoadCompany } from '../../company/actions';
+import { INSPECT_AUTOBASE, initialStateInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase';
+import { actionLoadCompany } from 'redux-main/reducers/modules/company/actions';
 import {
   promiseGetInspectAutobase,
   promiseCreateInspectionAutobase,
   promiseGetInspectAutobaseById,
   makeFilesForBackend,
-} from './inspect_autobase_promise';
-import carpoolActions from '../../geoobject/actions_by_type/carpool/actions';
-import { STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT_AUTOBASE_COMPLETED } from './inspect_autobase_constants';
-import { actionCloseInspect, actionUpdateInspect } from '../inspect_actions';
+} from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
+import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
+import { STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT_AUTOBASE_COMPLETED } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_constants';
+import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { diffDatesByDays, getDateWithMoscowTz } from 'utils/dates';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {

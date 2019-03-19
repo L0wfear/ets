@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BoxContainerRegistry } from '../../styled/InspectionAutobaseData';
+import { BoxContainerRegistry } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { compose } from 'recompose';
 import { getInspectAutobse } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';

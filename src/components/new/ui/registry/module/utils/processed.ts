@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from 'util';
-import { OneRegistryData } from '../registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { diffDates } from 'utils/dates';
 
 export const sortArray = (firstRowData, secondRowData, field) => {

@@ -1,4 +1,4 @@
-import { Mission } from "../../missions/mission/@types";
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 export type Waybill = {
   accompanying_person_id: number;

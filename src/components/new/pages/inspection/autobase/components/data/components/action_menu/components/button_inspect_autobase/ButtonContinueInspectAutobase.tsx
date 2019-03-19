@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
+import { BigPaddingButton } from 'components/new/pages/inspection/autobase/components/data/components/action_menu/styled/InspectionAutobaseDataActionMenu';
 import { ButtonContinueInspectAutobaseProps, ButtonContinueInspectAutobaseStateProps, ButtonContinueInspectAutobaseDispatchProps, ButtonContinueInspectAutobaseOwnProps } from './@types/ButtonContinueInspectAutobase';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';

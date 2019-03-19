@@ -7,7 +7,7 @@ import {
   Order,
   OrderTechnicalOperation,
 } from 'redux-main/reducers/modules/order/@types';
-import { Waybill } from '../../waybill/@types';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 export type IStateMissions = {
   missionTemplateList: MissionTemplate[];

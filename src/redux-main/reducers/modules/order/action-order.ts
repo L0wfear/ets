@@ -16,7 +16,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 import dutyMissionActions from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import { promiseLoadOrderById } from './order_promise';
-import { Mission } from '../missions/mission/@types';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 const ORDER = createPath('ORDER');
 

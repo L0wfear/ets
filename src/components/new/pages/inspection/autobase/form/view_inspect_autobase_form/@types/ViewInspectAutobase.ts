@@ -1,6 +1,6 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 export type ViewInspectAutobaseWrapOwnProps = {
   loadingPage: string;

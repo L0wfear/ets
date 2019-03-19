@@ -5,7 +5,7 @@ import ButtonsLine from 'components/new/ui/registry/components/data/filters/butt
 import FiltersLines from 'components/new/ui/registry/components/data/filters/filters-lines/FiltersLines';
 
 import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/filters/styled/styled';
-import { registryApplyRawFilters } from '../../../module/actions-registy';
+import { registryApplyRawFilters } from 'components/new/ui/registry/module/actions-registy';
 
 type PropsFilters = {
   registryKey: string;

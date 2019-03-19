@@ -1,4 +1,4 @@
-import etsLoadingCounter from '../etsLoadingCounter';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { get } from 'lodash';
 
 const etsLoading = ({ dispatch }) => (next) => (action) => {

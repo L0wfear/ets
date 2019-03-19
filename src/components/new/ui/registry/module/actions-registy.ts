@@ -9,7 +9,6 @@ import { get } from 'lodash';
 
 import { makeDataListAfterLoadInitialData } from 'components/new/ui/registry/module/utils/data';
 import { makeProcessedArray } from 'components/new/ui/registry/module/utils/processed';
-import allActions from 'redux-main/reducers/actions';
 
 import {
   setEmptyRawFilters,
@@ -78,22 +77,6 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
 
     processResponse(result);
     arrayRaw = get(result, typeAns, []);
-  } else {
-    const getPath = get(getState(), ['registry', registryKey, 'Service', 'getActionPath'], null);
-
-    if (getPath) {
-      const action = get(allActions, getPath, null);
-      if (action) {
-        const { data } = await dispatch(
-          action(
-            {},
-            { page: registryKey },
-          ),
-        );
-
-        arrayRaw = data;
-      }
-    }
   }
 
   const list: any = get(getState(), ['registry', registryKey, 'list']);
@@ -295,7 +278,6 @@ export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState)
     ['registry', registryKey, 'Service', 'getBlobData'],
     get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null),
   );
-  const getBlobPath = get(getState(), ['registry', registryKey, 'Service', 'getBlobActionPath'], null);
   let blob = null;
   let fileName = '';
 
@@ -311,24 +293,6 @@ export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState)
     processResponse(result);
     blob = get(result, 'blob', null);
     fileName = get(result, 'fileName', '');
-  } else {
-    if (getBlobPath) {
-      const action = get(allActions, getBlobPath, null);
-
-      if (action) {
-        const result = await dispatch(
-          action(
-            { format: 'xls'},
-            { page: registryKey },
-          ),
-        );
-
-        blob = get(result, 'blob', null);
-        fileName = get(result, 'fileName', '');
-      }
-    } else {
-      console.warn('не определён путь до экшена для ПФ'); // tslint:disable-line:no-console
-    }
   }
 
   if (blob && fileName) {

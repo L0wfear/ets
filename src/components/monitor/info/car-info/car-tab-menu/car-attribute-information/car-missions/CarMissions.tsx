@@ -8,7 +8,7 @@ import MissionFormLazy from 'components/missions/mission/form/main';
 import {
   loadMissionDataById,
 } from 'redux-main/trash-actions/mission';
-import { fetchCarInfo } from '../../../redux-main/modules/actions-car-info';
+import { fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { ReduxState } from 'redux-main/@types/state';
 

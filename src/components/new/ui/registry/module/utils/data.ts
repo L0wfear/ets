@@ -1,4 +1,4 @@
-import { TypeConfigData } from "../../hoc/withRegistry.h";
+import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 
 export const makeDataListAfterLoadInitialData = (props: Pick<TypeConfigData<any>['list']['data'], 'array'>) => {
   const { array } = props;

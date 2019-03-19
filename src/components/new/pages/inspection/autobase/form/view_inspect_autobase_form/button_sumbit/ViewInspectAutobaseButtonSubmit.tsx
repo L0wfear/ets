@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectButtonSubmit from './ViewInspectButtonSubmit';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { connect, HandleThunkActionCreator } from 'react-redux';

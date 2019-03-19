@@ -5,13 +5,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Dt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/@types';
+import { geoozones } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'DtList';
 
 export const config: TypeConfigData<Dt> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetDt'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobDt'],
+    getRegistryData: {
+      entity: `geozones/${geoozones.dt}`,
+    },
   },
   registryKey,
   header: {

@@ -24,7 +24,7 @@ import {
   OrderTechnicalOperation,
 } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
-import { autobaseGetSetCar } from '../../autobase/car/actions';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { get } from 'lodash';
@@ -61,9 +61,7 @@ const actionResetMission = (): ThunkAction<
 
 type ThunkActionSetCarsMission = ThunkAction<
   Pick<
-    IStateMissions['missionData'],
-    'carsIndex' | 'carsList'
-  >,
+    IStateMissions['missionData'], 'carsIndex' | 'carsList'>,
   ReduxState,
   {},
   AnyAction

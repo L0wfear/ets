@@ -26,7 +26,7 @@ import { get } from 'lodash';
 import { setUserContext } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
-import someUniqActions from '../some_uniq/actions';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,

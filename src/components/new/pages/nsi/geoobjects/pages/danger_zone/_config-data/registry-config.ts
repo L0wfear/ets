@@ -3,13 +3,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
+import { geoozones } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'DangerZoneList';
 
 export const config: TypeConfigData<DangerZone> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetDangerZone'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobDangerZone'],
+    getRegistryData: {
+      entity: `geozones/${geoozones.danger_zone}`,
+    },
   },
   registryKey,
   header: {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BoxContainer } from '../../styled/InspectionAutobaseData';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { Row, Col } from 'react-bootstrap';
 import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled/InspectionAutobaseDataActionMenu';
 import { getDateWithMoscowTz, makeDate, makeTime } from 'utils/dates';

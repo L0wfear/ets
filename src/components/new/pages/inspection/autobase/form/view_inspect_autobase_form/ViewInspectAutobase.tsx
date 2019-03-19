@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { TitleForm } from './styled/ViewInspectAutobaseStyled';
 import { Button, Row, Col, Glyphicon } from 'react-bootstrap';
-import { BoxContainer } from '../../components/data/styled/InspectionAutobaseData';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import IAVisibleWarning from './vsible_warning/IAVisibleWarning';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import { ViewInspectAutobaseProps } from './@types/ViewInspectAutobase';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';
 import { Reducer } from 'redux';
 import { inspectAutobaeSchema } from './inspect_autobase_schema';

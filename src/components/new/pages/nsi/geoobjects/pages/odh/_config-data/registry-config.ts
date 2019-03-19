@@ -5,13 +5,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
+import { geoozones, odh } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'OdhList';
 
 export const config: TypeConfigData<Odh> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetOdh'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobOdh'],
+    getRegistryData: {
+      entity: `geozones/${geoozones[odh]}`,
+    },
   },
   registryKey,
   header: {

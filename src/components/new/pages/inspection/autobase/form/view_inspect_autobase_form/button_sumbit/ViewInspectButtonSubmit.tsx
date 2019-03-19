@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import { Button } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 

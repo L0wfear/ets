@@ -3,12 +3,12 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import {
   ViewInspectAutobaseWrapProps, ViewInspectAutobaseWrapOwnProps,
 } from './@types/ViewInspectAutobase';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import { isInspectAutobaseIsConducting } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 import { DivNone } from 'global-styled/global-styled';
 import ViewInspectAutobase from './ViewInspectAutobase';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import inspectAutobasePermissions from '../../_config_data/permissions';
+import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { compose } from 'recompose';
 
 const ViewInspectAutobaseWrap: React.FC<ViewInspectAutobaseWrapProps> = (props) => {

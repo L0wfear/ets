@@ -1,5 +1,9 @@
 import { InspectAutobase } from "./@types/inspect_autobase";
-import { promiseGetInspectRegistry, promiseCreateInspection, promiseGetInspectionByIdType } from "../inspect_promise";
+import {
+  promiseGetInspectRegistry,
+  promiseCreateInspection,
+  promiseGetInspectionByIdType,
+} from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { get, keyBy } from 'lodash';
 
 const defaultInspectAutobaseData: InspectAutobase['data'] = {

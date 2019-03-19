@@ -1,4 +1,4 @@
-import ETS_API_FACTORY from './../EtsAPIServiceFactory';
+import ETS_API_FACTORY from 'api/EtsAPIServiceFactory';
 
 export const MissionProgressReportService = ETS_API_FACTORY.createApiServiceAdapter(
   'mission_progress_report',

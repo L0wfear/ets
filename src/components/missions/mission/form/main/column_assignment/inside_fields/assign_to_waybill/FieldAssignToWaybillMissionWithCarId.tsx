@@ -5,13 +5,13 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import {
   PropsFieldAssignToWaybillMissionWithCarId, StatePropsFieldAssignToWaybillMissionWithCarId, DispatchPropsPropsFieldAssignToWaybillMissionWithCarId, OwnPropsPropsFieldAssignToWaybillMissionWithCarId,
 } from 'components/missions/mission/form/main/column_assignment/inside_fields/assign_to_waybill/FieldAssignToWaybillMissionWithCarId.d';
-import FieldAssignToWaybillMission from '../../../inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
+import FieldAssignToWaybillMission from 'components/missions/mission/form/main/inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 import { connect } from 'react-redux';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { makeLabelForMissionCarOption } from '../../../inside_fields/car_ids/makeOptions';
+import { makeLabelForMissionCarOption } from 'components/missions/mission/form/main/inside_fields/car_ids/makeOptions';
 
 const FieldAssignToWaybillMissionWithCarId: React.FC<PropsFieldAssignToWaybillMissionWithCarId> = (props) => {
   const handleChange = React.useCallback(

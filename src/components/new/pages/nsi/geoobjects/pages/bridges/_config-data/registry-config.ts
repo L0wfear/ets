@@ -3,13 +3,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
+import { gormost } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'BridgesList';
 
 export const config: TypeConfigData<Bridges> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetBridges'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobBridges'],
+    getRegistryData: {
+      entity: `geozones/${gormost.bridges}`,
+    },
   },
   registryKey,
   header: {

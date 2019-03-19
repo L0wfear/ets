@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { mobiSize } from 'global-styled/global-constants';
-import { EtsHeaderTitle } from '../title/styled/styled';
+import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 
 export const EtsHeaderContainer = styled.div`
   display: flex;

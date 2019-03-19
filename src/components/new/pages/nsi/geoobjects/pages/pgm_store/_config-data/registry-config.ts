@@ -3,13 +3,15 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
+import { geoozones } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'PgmStoreList';
 
 export const config: TypeConfigData<PgmStore> = {
   Service: {
-    getActionPath: ['geoobjectActions', 'actionGetGetPgmStore'],
-    getBlobActionPath: ['geoobjectActions', 'actionGetBlobPgmStore'],
+    getRegistryData: {
+      entity: `geozones/${geoozones.pgm_store}`,
+    },
   },
   registryKey,
   header: {

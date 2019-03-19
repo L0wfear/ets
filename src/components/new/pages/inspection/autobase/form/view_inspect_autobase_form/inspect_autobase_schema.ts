@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
 export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM }> = {

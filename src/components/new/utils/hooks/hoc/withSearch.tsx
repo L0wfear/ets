@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as queryString from 'query-string';
-import { useSearchMergeNewState } from '../useSearchMergeNewState';
+import { useSearchMergeNewState } from 'components/new/utils/hooks/useSearchMergeNewState';
 
 export type WithSearchProps = {
   params: any;

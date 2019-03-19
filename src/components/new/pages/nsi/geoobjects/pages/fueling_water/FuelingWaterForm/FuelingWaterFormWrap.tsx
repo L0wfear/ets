@@ -4,11 +4,8 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { PropsFuelingWaterFormWrap } from 'components/new/pages/nsi/geoobjects/pages/fueling_water/FuelingWaterForm/@types/FuelingWaterForm.h';
+import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const FuelingWaterFrom = React.lazy(() => (
   import(/* webpackChunkName: "FuelingWater_form" */ 'components/new/pages/nsi/geoobjects/pages/fueling_water/FuelingWaterForm/FuelingWaterForm')
@@ -41,19 +38,4 @@ class FuelingWaterFormWrap extends React.Component<PropsFuelingWaterFormWrap, {}
   }
 }
 
-export default connect<any, any, any, ReduxState>(
-  (state, { registryKey }) => ({
-    element: getListData(state.registry, registryKey).data.selectedRowToShow,
-  }),
-  (dispatch, { registryKey }) => ({
-    onFormHide: (...arg) => (
-      dispatch(
-        registryResetSelectedRowToShowInForm(
-          registryKey,
-          ...arg,
-        ),
-      )
-    ),
-  }),
-)
-(FuelingWaterFormWrap);
+export default withFormRegistrySearch(FuelingWaterFormWrap);

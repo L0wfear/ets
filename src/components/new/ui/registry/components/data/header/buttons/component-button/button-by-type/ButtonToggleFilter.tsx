@@ -9,49 +9,62 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { registryToggleIsOpenFilter } from 'components/new/ui/registry/module/actions-registy';
+import { ReduxState } from 'redux-main/@types/state';
+import { compose } from 'recompose';
 
-type PropsButtonToggleFilter = {
-  registryKey: string;
-  handleClick: React.MouseEventHandler<React.ClassicComponent<any, {}>>;
+type ButtonToggleFilterStateProps = {
   hasFilters: boolean;
 };
+type ButtonToggleFilterDispatchProps = {
+  handleClick: React.MouseEventHandler<React.ClassicComponent<any, {}>>;
+};
+type ButtonToggleFilterOwnProps = {
+  registryKey: string;
+};
+type ButtonToggleFilterMergeProps = {};
 
-class ButtonToggleFilter extends React.Component<PropsButtonToggleFilter, {}> {
-  render() {
-    return (
-      <Button
-        id="show-options-filter"
-        bsSize="small"
-        active={this.props.hasFilters}
-        onClick={this.props.handleClick}
-      >
-        <Glyphicon glyph="filter" />
-      </Button>
-    );
-  }
-}
+type ButtonToggleFilterProps = (
+  ButtonToggleFilterStateProps
+  & ButtonToggleFilterDispatchProps
+  & ButtonToggleFilterOwnProps
+  & ButtonToggleFilterMergeProps
+);
 
-const mapStateToProps = (state, { registryKey }) => ({
-  isOpen: getFilterData(state.registry, registryKey).isOpen,
-  hasFilters: (
-    Boolean(
-      Object.values(
-        getListData(state.registry, registryKey).processed.filterValues,
-      ).length,
-    )
+const ButtonToggleFilter: React.FC<ButtonToggleFilterProps> = (props) => {
+  return (
+    <Button
+      id="show-options-filter"
+      bsSize="small"
+      active={props.hasFilters}
+      onClick={props.handleClick}
+    >
+      <Glyphicon glyph="filter" />
+    </Button>
+  );
+};
+
+export default compose<ButtonToggleFilterProps, ButtonToggleFilterOwnProps>(
+  connect<ButtonToggleFilterStateProps, ButtonToggleFilterDispatchProps, ButtonToggleFilterOwnProps, ButtonToggleFilterMergeProps, ReduxState>(
+    (state, { registryKey }) => ({
+      isOpen: getFilterData(state.registry, registryKey).isOpen,
+      hasFilters: (
+        Boolean(
+          Object.values(
+            getListData(state.registry, registryKey).processed.filterValues,
+          ).length,
+        )
+      ),
+    }),
+    (dispatch: any, { registryKey }) => ({
+      handleClick: () => (
+        dispatch(
+          registryToggleIsOpenFilter(registryKey),
+        )
+      ),
+    }),
+    null,
+    {
+      pure: true,
+    },
   ),
-});
-
-const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  handleClick: () => (
-    dispatch(
-      registryToggleIsOpenFilter(registryKey),
-    )
-  ),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
-(ButtonToggleFilter);
+)(ButtonToggleFilter);

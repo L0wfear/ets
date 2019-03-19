@@ -43,10 +43,15 @@ class Tbody extends React.Component<PropsTbody, StateTbody> {
   }
 }
 
-export default connect<StatePropsTbody, DispatchPropsTbody, OwnPropsTbody, ReduxState>(
+export default connect<StatePropsTbody, DispatchPropsTbody, OwnPropsTbody, StatePropsTbody & DispatchPropsTbody, ReduxState>(
   (state, { registryKey }) => ({
     processedArray: getListData(state.registry, registryKey).processed.processedArray,
     paginator: getListData(state.registry, registryKey).paginator,
     uniqKey: getListData(state.registry, registryKey).data.uniqKey,
   }),
+  null,
+  null,
+  {
+    pure: false,
+  },
 )(Tbody);

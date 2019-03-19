@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_c
 
 export default {
   path: '/snow_storage',
+  routePath: '/snow_storage/:id?',
   title: 'Справочник пунктов временного складирования снега',
   entyity: 'snow_storage',
   noDotList: false,

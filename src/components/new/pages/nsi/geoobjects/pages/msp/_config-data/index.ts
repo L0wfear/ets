@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/msp/_config-dat
 
 export default {
   path: '/msp',
+  routePath: '/msp/:id?',
   title: 'Справочник МСП',
   entyity: 'type',
   noDotList: false,

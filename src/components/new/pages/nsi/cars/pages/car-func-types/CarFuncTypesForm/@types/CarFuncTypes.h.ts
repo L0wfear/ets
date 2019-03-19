@@ -7,7 +7,7 @@ export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 export type PropsCarFuncTypesFormWrap = {
   showForm: boolean;
   element: CarFuncTypes | null;
-  onFormHide: OnFormHideType
+  onFormHide: OnFormHideType;
 
   loadingPageName?: string;
   registryKey?: string;

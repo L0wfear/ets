@@ -5,10 +5,7 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsCompanyFormWrap } from 'components/new/pages/nsi/company/form/@types/CompanyList.h';
-import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
+import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const CompanyFrom = React.lazy(() => (
   import(/* webpackChunkName: "company_form" */ 'components/new/pages/nsi/company/form/CompanyForm')
@@ -41,19 +38,4 @@ class CompanyFormWrap extends React.Component<PropsCompanyFormWrap, {}> {
   }
 }
 
-export default connect<any, any, any, ReduxState>(
-  (state, { registryKey }) => ({
-    element: getListData(state.registry, registryKey).data.selectedRowToShow,
-  }),
-  (dispatch, { registryKey }) => ({
-    onFormHide: (...arg) => (
-      dispatch(
-        registryResetSelectedRowToShowInForm(
-          registryKey,
-          ...arg,
-        ),
-      )
-    ),
-  }),
-)
-(CompanyFormWrap);
+export default withFormRegistrySearch(CompanyFormWrap);

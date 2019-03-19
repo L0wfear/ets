@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-dat
 
 export default {
   path: '/ssp',
+  routePath: '/ssp/:id?',
   title: 'Справочник ССП',
   entyity: 'type',
   noDotList: false,

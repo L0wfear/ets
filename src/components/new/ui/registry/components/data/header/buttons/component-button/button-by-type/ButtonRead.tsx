@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import { compose } from 'redux';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -10,15 +9,47 @@ import {
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
+import { compose } from 'recompose';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { get } from 'lodash';
 
-type PropsButtonRead = {
-  registryKey: string;
+type ButtonReadStateProps = {
+  uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
+};
+type ButtonReadDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
+type ButtonReadOwnProps = {
+  registryKey: string;
+};
+type ButtonReadMergeProps = {};
 
-class ButtonRead extends React.Component<PropsButtonRead, {}> {
+type ButtonReadProps = (
+  ButtonReadStateProps
+  & ButtonReadDispatchProps
+  & ButtonReadOwnProps
+  & ButtonReadMergeProps
+) & WithSearchProps;
+
+let lasPermissions = {};
+let lastPermissionsArray = [];
+
+const getPermissionsReadUpdate = (permission) => {
+  if (lasPermissions !== permission) {
+    lasPermissions = permission;
+
+    lastPermissionsArray = [permission.read, permission.update];
+  }
+
+  return lastPermissionsArray;
+};
+
+class ButtonRead extends React.Component<ButtonReadProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
+    this.props.setParams({
+      [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
+    }),
     this.props.registrySetSelectedRowToShowInForm();
   }
 
@@ -33,23 +64,34 @@ class ButtonRead extends React.Component<PropsButtonRead, {}> {
   }
 }
 
-export default compose(
-  connect<any, any, any, ReduxState>(
+export default compose<ButtonReadProps, ButtonReadOwnProps>(
+  connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, {}, ReduxState>(
     (state, { registryKey }) => ({
-      permissions: getListData(state.registry, registryKey).permissions.read,
+      permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
     }),
+    null,
+    null,
+    {
+      pure: false,
+    },
   ),
   withRequirePermissionsNew(),
-  connect<any, any, any, ReduxState>(
+  connect<ButtonReadStateProps, ButtonReadDispatchProps, ButtonReadOwnProps, ButtonReadMergeProps, ReduxState>(
     (state, { registryKey }) => ({
+      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
-    (dispatch, { registryKey }) => ({
+    (dispatch: any, { registryKey }) => ({
       registrySetSelectedRowToShowInForm: () => (
         dispatch(
           registrySetSelectedRowToShowInForm(registryKey),
         )
       ),
     }),
+    null,
+    {
+      pure: false,
+    },
   ),
+  withSearch,
 )(ButtonRead);

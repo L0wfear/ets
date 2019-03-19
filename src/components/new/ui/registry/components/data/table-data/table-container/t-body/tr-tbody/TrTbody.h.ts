@@ -1,11 +1,12 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 export interface StatePropsTrTbody {
   selectedUniqKey: OneRegistryData['list']['data']['uniqKey'] | null;
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   rowFields: OneRegistryData['list']['meta']['rowFields'];
-  permissions: OneRegistryData['list']['permissions']['read'];
+  permissions: OneRegistryData['list']['permissions']['read'][];
   userData: InitialStateSession['userData'];
 }
 
@@ -30,7 +31,7 @@ export type PropsTrTbody = (
   & {
     isPermitted: boolean;
   }
-);
+) & WithSearchProps;
 
 export type StateTrTbody = {
 };

@@ -12,14 +12,10 @@ import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autoba
 
 import { getDefaultCarFuncTypesElement } from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnCarFuncTypesProps,
   PropsCarFuncTypes,
   StateCarFuncTypes,
-  StatePropsCarFuncTypes,
-  DispatchPropsCarFuncTypes,
   PropsCarFuncTypesWithForm,
 } from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/@types/CarFuncTypes.h';
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -87,9 +83,6 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
 }
 
 export default compose<PropsCarFuncTypes, OwnCarFuncTypesProps>(
-  connect<StatePropsCarFuncTypes, DispatchPropsCarFuncTypes, OwnCarFuncTypesProps, ReduxState>(
-    null,
-  ),
   withForm<PropsCarFuncTypesWithForm, CarFuncTypes>({
     uniqField: 'asuods_id',
     createAction: autobaseActions.autobaseCreateCarFuncTypes,

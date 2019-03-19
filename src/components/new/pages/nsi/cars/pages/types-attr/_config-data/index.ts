@@ -3,6 +3,7 @@ import component from 'components/new/pages/nsi/cars/pages/types-attr/_config-da
 
 export default {
   path: '/types-attr',
+  routePath: '/types-attr/:id?',
   title: 'Таблица нормативных скоростей и ширин',
   entyity: 'types_attr',
   noDotList: false,

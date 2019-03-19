@@ -23,6 +23,20 @@ import { registrySetSelectedRowToShowInForm, registrySelectRow } from 'component
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+
+let lasPermissions = {};
+let lastPermissionsArray = [];
+
+const getPermissionsReadUpdate = (permission) => {
+  if (lasPermissions !== permission) {
+    lasPermissions = permission;
+
+    lastPermissionsArray = [permission.read, permission.update];
+  }
+
+  return lastPermissionsArray;
+};
 
 class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
   renderRow = ({ key, title, format }, index) => {
@@ -123,15 +137,19 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
-
-    if (props.handleDoubleClickOnRow) {
-      props.handleDoubleClickOnRow(
-        props.rowData,
-      );
-    } else {
-      this.props.registryHandleDoubleClickOnRow(
-        props.rowData,
-      );
+    if (props.isPermitted) {
+      if (props.handleDoubleClickOnRow) {
+        props.handleDoubleClickOnRow(
+          props.rowData,
+        );
+      } else {
+        this.props.setParams({
+          [this.props.uniqKey]: get(props.rowData, this.props.uniqKey, null),
+        });
+        this.props.registryHandleDoubleClickOnRow(
+          props.rowData,
+        );
+      }
     }
   }
 
@@ -152,11 +170,11 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 }
 
 export default compose<PropsTrTbody, OwnPropsTrTbody>(
-  connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, ReduxState>(
+  connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, {}, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       rowFields: getListData(state.registry, registryKey).meta.rowFields,
-      permissions: getListData(state.registry, registryKey).permissions.read,
+      permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       userData: getSessionState(state).userData,
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
     }),
@@ -178,8 +196,13 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
         )
       ),
     }),
+    null,
+    {
+      pure: false,
+    },
   ),
   withRequirePermissionsNew({
     withIsPermittedProps: true,
   }),
+  withSearch,
 )(TrTbody);

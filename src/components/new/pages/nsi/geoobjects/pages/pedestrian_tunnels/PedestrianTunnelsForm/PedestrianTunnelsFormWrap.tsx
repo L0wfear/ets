@@ -4,11 +4,8 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { PropsPedestrianTunnelsFormWrap } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/@types/PedestrianTunnelsForm.h';
+import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const PedestrianTunnelsFrom = React.lazy(() => (
   import(/* webpackChunkName: "PedestrianTunnels_form" */ 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/PedestrianTunnelsForm')
@@ -41,19 +38,4 @@ class PedestrianTunnelsFormWrap extends React.Component<PropsPedestrianTunnelsFo
   }
 }
 
-export default connect<any, any, any, ReduxState>(
-  (state, { registryKey }) => ({
-    element: getListData(state.registry, registryKey).data.selectedRowToShow,
-  }),
-  (dispatch, { registryKey }) => ({
-    onFormHide: (...arg) => (
-      dispatch(
-        registryResetSelectedRowToShowInForm(
-          registryKey,
-          ...arg,
-        ),
-      )
-    ),
-  }),
-)
-(PedestrianTunnelsFormWrap);
+export default withFormRegistrySearch(PedestrianTunnelsFormWrap);

@@ -1,5 +1,5 @@
 import { InspectAutobase } from "./@types/inspect_autobase";
-import { promiseGetInspectRegistry, promiseCreateInspection, promiseGetInspectionByIdType, promiseUpdateInspection } from "../inspect_promise";
+import { promiseGetInspectRegistry, promiseCreateInspection, promiseGetInspectionByIdType } from "../inspect_promise";
 import { get, keyBy } from 'lodash';
 
 const defaultInspectAutobaseData: InspectAutobase['data'] = {
@@ -33,6 +33,7 @@ const defaultInspectAutobaseData: InspectAutobase['data'] = {
   lack_of_sanitation: false,
   lack_of_toilets: false,
   lack_shower_cabins: false,
+  files: [],
   photos_of_supporting_documents: [],
   photos_defect: [],
 };
@@ -73,6 +74,8 @@ export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) 
       ...makeFilesForFront(inspectAutobase),
     };
 
+    delete inspectAutobase.data.files;
+
     return inspectAutobase;
   }).sort((a, b) => a.id - b.id);
 
@@ -82,6 +85,9 @@ export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) 
   };
 };
 
+/**
+ * @todo вынести в inspect_promise
+ */
 export const promiseGetInspectAutobaseById = async (id: number) => {
   const inspectAutobase: InspectAutobase = await promiseGetInspectionByIdType(
     id,
@@ -93,6 +99,9 @@ export const promiseGetInspectAutobaseById = async (id: number) => {
       ...(inspectAutobase.data || defaultInspectAutobaseData),
       ...makeFilesForFront(inspectAutobase),
     };
+
+    delete inspectAutobase.data.files;
+
   }
 
   return inspectAutobase;
@@ -113,13 +122,4 @@ export const promiseCreateInspectionAutobase = async (payload: { carpoolId: numb
   }
 
   return inspectAutobase;
-};
-
-export const promiseUpdateInspectionAutobase = async (inspectAutobase: InspectAutobase) => {
-  return promiseUpdateInspection(
-    inspectAutobase.id,
-    inspectAutobase.data,
-    makeFilesForBackend(inspectAutobase.data),
-    'autobase',
-  );
 };

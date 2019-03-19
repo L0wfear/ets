@@ -8,6 +8,7 @@ import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateInspectAutobase, InspectAutobase } from './@types/inspect_autobase';
 import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { cloneDeep } from 'lodash';
 import { INSPECT_AUTOBASE, initialStateInspectAutobase } from './inspect_autobase';
 import { actionLoadCompany } from '../../company/actions';
 import {
@@ -195,10 +196,16 @@ export const actionCreateInspectAutobase = (payloadOwn: Parameters<typeof promis
 };
 
 export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const data = cloneDeep(inspectAutobase.data);
+
+  delete data.files;
+  delete data.photos_of_supporting_documents;
+  delete data.photos_of_supporting_documents;
+
   const inspectionAutobase = await dispatch(
     actionUpdateInspect(
       inspectAutobase.id,
-      inspectAutobase.data,
+      data,
       makeFilesForBackend(inspectAutobase.data),
       'autobase',
       meta,
@@ -214,14 +221,17 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   return inspectionAutobase;
 };
 
-const actionCloseInspectAutobase = (
-  inspectAutobase: InspectAutobase,
-  meta: LoadingMeta,
-): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
+const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
+  const data = cloneDeep(inspectAutobase.data);
+
+  delete data.files;
+  delete data.photos_of_supporting_documents;
+  delete data.photos_of_supporting_documents;
+
   const result = await dispatch(
     actionCloseInspect(
       inspectAutobase.id,
-      inspectAutobase.data,
+      data,
       'autobase',
       meta,
     ),

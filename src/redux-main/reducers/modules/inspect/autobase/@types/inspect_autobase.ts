@@ -34,6 +34,7 @@ type InspectAutobaseData = {
   lack_of_sanitation: boolean;
   lack_of_toilets: boolean;
   lack_shower_cabins: boolean;
+  files: any[];
   photos_of_supporting_documents: any[],
   photos_defect: any[],
 };

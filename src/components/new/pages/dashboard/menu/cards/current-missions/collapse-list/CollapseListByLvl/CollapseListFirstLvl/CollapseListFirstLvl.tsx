@@ -9,7 +9,7 @@ import {
 import CollapseText from 'components/ui/collapse/text/CollapseText';
 
 class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl, StateCollapseListFirstLvl> {
-  rednerMap = ({ subItems, ...item }, index) => {
+  renderMap = ({ subItems, ...item }, index) => {
     const { props } = this;
 
     return (
@@ -34,7 +34,7 @@ class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl
 
     return (
       <ul>
-        { props.collapsetItems.map(this.rednerMap) }
+        { props.collapsetItems.map(this.renderMap) }
       </ul>
     );
   }

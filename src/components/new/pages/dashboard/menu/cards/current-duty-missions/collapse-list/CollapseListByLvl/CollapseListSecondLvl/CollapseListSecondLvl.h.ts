@@ -1,15 +1,14 @@
 import {
   CurrentDutyMissionsItemsSubItemsType,
-  CurrentDutyMissionsItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
-export interface PropsCollapseListFirstLvl {
-  collapsetItems: CurrentDutyMissionsItemsType[];
+export interface PropsCollapseListSecondLvl {
+  collapsetItems: CurrentDutyMissionsItemsSubItemsType[];
   handleClick: (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => any;
   classNameContainer?: string;
   index: number;
 }
 
-export interface StateCollapseListFirstLvl {
+export interface StateCollapseListSecondLvl {
 
 }

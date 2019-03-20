@@ -28,7 +28,7 @@ class ListByTypeCurrentDutyMission extends React.PureComponent<PropsListByTypeCu
       >
         <CollapseListByLvl
           collapsetItems={items}
-          handleClick={this.props.handleClick}
+          handleClick={props.handleClick}
         />
       </DefaultDashboardCardList>
     );

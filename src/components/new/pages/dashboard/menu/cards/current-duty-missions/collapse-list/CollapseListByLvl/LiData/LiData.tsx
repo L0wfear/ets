@@ -8,7 +8,6 @@ import {
 class LiData extends React.PureComponent<PropsLiData, StateLiData> {
   handleClick: React.MouseEventHandler<HTMLLIElement> = () => {
     const { props } = this;
-
     props.handleClick(
       props.subItem,
     );
@@ -18,7 +17,9 @@ class LiData extends React.PureComponent<PropsLiData, StateLiData> {
     const { subItem } = this.props;
 
     return (
-      <li className="pointer" onClick={this.handleClick}>{subItem.title}</li>
+      <li className="pointer" onClick={this.handleClick}>
+        {subItem.title}
+      </li>
     );
   }
 }

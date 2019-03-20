@@ -4,9 +4,6 @@ import {
   PropsCollapseListByLvl,
   StateCollapseListByLvl,
 } from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/CollapseListByLvl/CollapseListByLvl.h';
-import {
-  CurrentDutyMissionsItemsType,
-} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
 import CollapseListFirstLvl from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/CollapseListByLvl/CollapseListFirstLvl/CollapseListFirstLvl';
 import CollapseText from 'components/ui/collapse/text/CollapseText';
@@ -18,7 +15,7 @@ const components = {
 };
 
 class CollapseListByLvl extends React.PureComponent<PropsCollapseListByLvl, StateCollapseListByLvl> {
-  rednerMap = ({ subItems, ...item }: CurrentDutyMissionsItemsType, index) => {
+  renderMap = ({ subItems, ...item }, index) => {
     const { props } = this;
 
     return (
@@ -44,7 +41,7 @@ class CollapseListByLvl extends React.PureComponent<PropsCollapseListByLvl, Stat
 
     return (
       <ul>
-        { props.collapsetItems.map(this.rednerMap) }
+        { props.collapsetItems.map(this.renderMap) }
       </ul>
     );
   }

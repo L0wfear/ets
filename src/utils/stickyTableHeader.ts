@@ -7,7 +7,8 @@ function tableFixHead(el, selector) {
       : 3
   );
   const sT = el.scrollTop - offsetTopIntoSelector;
-  [...el.querySelectorAll('thead th')].forEach((th) => {
+
+  Array.from(el.querySelectorAll('thead th')).forEach((th: any) => {
     th.style.transform = `translateY(${sT}px)`;
     th.style.transition = 'all .3s ease';
   });
@@ -20,13 +21,11 @@ function tableFixHead(el, selector) {
  * @example setStickyThead('.data-table .griddle', true); // в componentDidMount
  */
 export function setStickyThead(selector: string, addEventListener: boolean) {
-  const allTableContainer = document.querySelectorAll(selector);
-  const ie = detectIE(); // если ie
-  if (ie) {
-    [].forEach.call(allTableContainer, (el) => {
+  if (detectIE()) {
+    Array.from(document.querySelectorAll(selector)).forEach((el) => {
       addEventListener
-        ? el.addEventListener('scroll', (e) => tableFixHead(e, selector))
-        : el.removeEventListener('scroll', (e) => tableFixHead(e, selector));
+        ? el.addEventListener('scroll', (e) => tableFixHead(e.target, selector))
+        : el.removeEventListener('scroll', (e) => tableFixHead(e.target, selector));
     });
   }
 }

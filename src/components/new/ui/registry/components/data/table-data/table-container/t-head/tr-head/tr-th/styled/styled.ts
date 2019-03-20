@@ -14,7 +14,7 @@ export const EtsTheadTh = styled.th<{ canClick: boolean, width: number }>`
     cursor: ${({ canClick }) => canClick ? 'pointer' : 'default'};
     width: ${({ width }) => width ? `${width}px` : 'auto'};
     &:hover {
-      background-color: #efefef;
+      background-color: #f7f7f7;
     }
   }
 `;

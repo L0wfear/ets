@@ -3,6 +3,8 @@ import moment from 'moment';
 import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
 import { isArray } from 'highcharts';
+import { getTrailers } from 'components/waybill/utils';
+import { get } from 'lodash';
 
 export const waybillSchema = {
   properties: [
@@ -357,6 +359,27 @@ export const waybillSchema = {
         validator: (value, { status, equipment_fuel }) => {
           if (equipment_fuel && status === 'active' && !value) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    trailer_id: [
+      {
+        validator: (
+          value,
+          { structure_id, status },
+          { isPermittedByKey, carsList },
+        ) => {
+          const getTrailersByStructId = getTrailers(structure_id, null);
+          const TRAILERS = getTrailersByStructId(carsList);
+          const correctTrailer = TRAILERS.find((elem) => elem.value === value);
+          const fieldDisabled = get(isPermittedByKey, 'update', false);
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+
+          if (value && !fieldDisabled && !correctTrailer && fieldNotHidden) {
+            return 'В данный момент выбранный прицеп не подходят для заполнения';
           }
         },
       },

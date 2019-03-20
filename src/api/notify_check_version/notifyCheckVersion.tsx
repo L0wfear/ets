@@ -15,7 +15,7 @@ const getNotifyCheckVersion: React.FunctionComponent<IPropsNotifiVersionPopup> =
           <span style={{ color: 'red'}}>{props.currV}</span>
         </div>
         <div className="one-text-version">
-          <span>Новая версия:</span>
+          <span>Новая версия:&nbsp;</span>
           <span style={{ color: 'green'}}>{props.nextV}</span>
         </div>
       </div>

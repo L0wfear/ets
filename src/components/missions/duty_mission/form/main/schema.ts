@@ -75,33 +75,36 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
           if (plan_date_end && diffDates(value, plan_date_end) >= 0) {
             return 'Дата планируемого начала должна быть раньше даты планируемого окончания';
           }
-          const order_operation_date_from = get(
-            dependeceTechnicalOperation,
-            'date_from',
-            null,
-          );
-          const order_operation_date_to = get(
-            dependeceTechnicalOperation,
-            'date_to',
-            null,
-          );
 
-          const order_date = get(
-            dependeceOrder,
-            'order_date',
-            null,
-          );
-          const order_date_to = get(
-            dependeceOrder,
-            'order_date_to',
-            null,
-          );
+          if (dependeceOrder && dependeceTechnicalOperation) {
+            const order_operation_date_from = get(
+              dependeceTechnicalOperation,
+              'date_from',
+              null,
+            );
+            const order_operation_date_to = get(
+              dependeceTechnicalOperation,
+              'date_to',
+              null,
+            );
 
-          const checkDateFrom = order_operation_date_from || order_date;
-          const checkDateTo = order_operation_date_to || order_date_to;
+            const order_date = get(
+              dependeceOrder,
+              'order_date',
+              null,
+            );
+            const order_date_to = get(
+              dependeceOrder,
+              'order_date_to',
+              null,
+            );
 
-          if (diffDates(value, checkDateFrom) < 0 || diffDates(value, checkDateTo) > 0) {
-            return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
+            const checkDateFrom = order_operation_date_from || order_date;
+            const checkDateTo = order_operation_date_to || order_date_to;
+
+            if (diffDates(value, checkDateFrom) < 0 || diffDates(value, checkDateTo) > 0) {
+              return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
+            }
           }
         }
         return '';
@@ -109,7 +112,7 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
     ],
     plan_date_end: [
       (value, _, { dependeceOrder, dependeceTechnicalOperation }) => {
-        if (value) {
+        if (value && dependeceOrder && dependeceTechnicalOperation) {
           const order_operation_date_from = get(
             dependeceTechnicalOperation,
             'date_from',

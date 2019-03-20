@@ -65,7 +65,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
             />
           </ColStartDatePicker>
           <ColDividerDatePicker md={2}>
-            <div>—</div>
+            —
           </ColDividerDatePicker>
           <ColEndDatePicker md={5}>
             <ExtField

@@ -29,14 +29,14 @@ import {
 import {
   IStateOrderMissionTemplate,
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
-import { createMissionByOrder, createDutyMissionByOrder } from 'components/directories/order/forms/utils/createMissionsByOrder';
+import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
 import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
 import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
@@ -134,7 +134,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       checkedElements,
     } = this.state;
     const {
-      mission_source_id,
+      order_mission_source_id,
       orderDates: { faxogramm_id },
       technical_operations: [],
       typeClick,
@@ -177,13 +177,21 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           this.props.carsIndex,
           missionArr,
         );
-        goodResponse = await createMissionByOrder(this.context.flux, missionArr, mission_source_id, assign_to_waybill, faxogramm_id, norm_id);
+        goodResponse = await createMissionByOrder(this.context.flux, missionArr, order_mission_source_id, assign_to_waybill, faxogramm_id, norm_id);
       }
       if (typeClick === typeTemplate.missionDutyTemplate) {
-        goodResponse = await createDutyMissionByOrder(this.context.flux, missionArr, mission_source_id, faxogramm_id);
+        goodResponse = await Promise.all(
+          missionArr.map((dutyMission: any) => (
+            this.props.actionCreateDutyMission(
+              getValidDutyMissionFromOrderTemplate(dutyMission, order_mission_source_id, faxogramm_id),
+            )
+          )),
+        ).then((responseArr) => responseArr.every((ans) => ans));
       }
 
       if (goodResponse) {
+        global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены');
+
         this.setState({
           selectedElement: undefined,
           checkedElements: {},
@@ -245,7 +253,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       checkedElements,
     } = this.state;
     const {
-      mission_source_id,
+      order_mission_source_id,
       orderDates: { faxogramm_id },
       technical_operations: [],
       typeClick,
@@ -263,10 +271,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           this.props.carsIndex,
           missionArr,
         );
-        goodResponse = await createMissionByOrder(this.context.flux, missionArr, mission_source_id, assign_to_waybill_for_column, faxogramm_id, norm_id);
-      }
-      if (typeClick === typeTemplate.missionDutyTemplate) {
-        goodResponse = await createDutyMissionByOrder(this.context.flux, missionArr, mission_source_id, faxogramm_id);
+        goodResponse = await createMissionByOrder(this.context.flux, missionArr, order_mission_source_id, assign_to_waybill_for_column, faxogramm_id, norm_id);
       }
 
       if (goodResponse) {
@@ -396,12 +401,14 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 type DispatchPropsOrderMissionTemplate = {
   actionGetMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionGetMissionTemplate>;
   actionGetDutyMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionGetDutyMissionTemplate>;
+  actionCreateDutyMission: HandleThunkActionCreator<typeof missionsActions.actionCreateDutyMission>;
 };
 
 export default compose<any, any>(
   connect<any, DispatchPropsOrderMissionTemplate, any, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
+      order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
     }),
     (dispatch: any) => ({
       actionGetMissionTemplate: (...arg) => (
@@ -412,6 +419,11 @@ export default compose<any, any>(
       actionGetDutyMissionTemplate: (...arg) => (
         dispatch(
           missionsActions.actionGetDutyMissionTemplate(...arg),
+        )
+      ),
+      actionCreateDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.actionCreateDutyMission(...arg),
         )
       ),
     }),

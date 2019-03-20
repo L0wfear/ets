@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isFunction, isString } from 'util';
+import { isFunction, isString, isBoolean } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -13,7 +13,7 @@ type FormErrorType<F> = {
 };
 
 type ConfigWithForm<P, F, S> = {
-  uniqField: keyof F;
+  uniqField: keyof F | boolean;
   createAction?: any;
   updateAction?: any;
   mergeElement?: (props: P) => F;
@@ -212,11 +212,12 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         });
       }
       submitAction = async <T extends any[], A extends any>(...payload: T) => {
-        const {
-          formState: {
-            [config.uniqField]: uniqValue,
-          },
-        } = this.state;
+        const uniqValue = (
+          !isBoolean(config.uniqField)
+            ? get(this.state.formState, config.uniqField, null)
+            : null
+        );
+
         const {
           page,
           path,

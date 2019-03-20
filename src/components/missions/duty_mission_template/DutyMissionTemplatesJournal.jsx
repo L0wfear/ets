@@ -8,7 +8,6 @@ import permissions from 'components/missions/duty_mission_template/config-data/p
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import DutyMissionsCreationFormWrap from 'components/missions/duty_mission_template/DutyMissionsCreationFormWrap';
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -19,6 +18,7 @@ import {
 import DutyMissionTemplateFormLazy from 'components/missions/duty_mission_template/form/template';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import DutyMissionTemplateCreatingFormLazy from './form/creating';
 
 const loadingPageName = 'duty_mission_template';
 
@@ -119,9 +119,16 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     });
   };
 
-  getForms = () => {
-    const { employeesIndex = {} } = this.props;
+  onDutyMissionTemplateCreatingFormHide = () => {
+    this.setState({
+      showForm: false,
+      formType: 'ViewForm',
+      selectedElement: null,
+      checkedElements: {},
+    });
+  };
 
+  getForms = () => {
     return [
       <DutyMissionTemplateFormLazy
         key="form_create_duty_mission_template"
@@ -130,17 +137,14 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
         onFormHide={this.onDutyMissionTemplateFormHide}
         page={loadingPageName}
       />,
-      <DutyMissionsCreationFormWrap
+      <DutyMissionTemplateCreatingFormLazy
         key="form_create_duty_mission"
-        onFormHide={this.onFormHide}
+        onFormHide={this.onDutyMissionTemplateCreatingFormHide}
         showForm={
           this.state.showForm && this.state.formType === 'MissionsCreationForm'
         }
-        element={this.state.selectedElement}
-        formType={this.state.formType}
-        missions={this.state.checkedElements}
-        updateTable={this.updateTable}
-        _employeesIndex={employeesIndex}
+        element={null}
+        dutyMissionTemplates={this.state.checkedElements}
       />,
     ];
   };

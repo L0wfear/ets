@@ -13,6 +13,7 @@ export const ColStartDatePicker = styled(Col)`
 export const ColDividerDatePicker = styled(Col)`
   &&& {
     visibility: hidden;
+    text-align: center;
     @media (min-width: 992px) {
       visibility: initial;
       width: 2%;

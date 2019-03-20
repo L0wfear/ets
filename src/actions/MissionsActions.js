@@ -7,7 +7,6 @@ import {
   MissionArchiveService,
   MissionReassignationService,
   MissionTemplateCarService,
-  DutyMissionService,
   MissionPrintService,
   MissionTemplatePrintService,
   MissionDataService,
@@ -226,52 +225,6 @@ export default class MissionsActions extends Actions {
 
   getCarDutyMissions() {
     return CarDutyMissionService.get();
-  }
-
-  createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
-    const dutyMissionsCreationTemplateCopy = clone(
-      dutyMissionsCreationTemplate,
-    );
-    const date_start = createValidDateTime(
-      dutyMissionsCreationTemplateCopy.date_start,
-    );
-    const date_end = createValidDateTime(
-      dutyMissionsCreationTemplateCopy.date_end,
-    );
-    const queries = Object.keys(dutyMissionTemplates)
-      .map((key) => dutyMissionTemplates[key])
-      .map(({ brigadeEmployeeIdIndex, ...query }) => {
-        const payload = cloneDeep(query);
-
-        payload.status = 'not_assigned';
-        payload.plan_date_start = date_start;
-        payload.plan_date_end = date_end;
-        payload.fact_date_start = date_start;
-        payload.fact_date_end = date_end;
-        payload.mission_source_id
-          = dutyMissionsCreationTemplateCopy.mission_source_id;
-        payload.brigade_employee_id_list = [
-          ...payload.brigade_employee_id_list_id,
-        ];
-
-        if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
-          payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
-        }
-        payload.template_id = payload.id;
-
-        delete payload.company_id;
-        delete payload.id;
-        delete payload.number;
-        delete payload.technical_operation_name;
-        delete payload.route_name;
-
-        delete payload.brigadeEmployeeIdIndex;
-        delete payload.brigade_employee_id_list_fio;
-        delete payload.brigade_employee_id_list_id;
-
-        return DutyMissionService.post(payload, false, 'json');
-      });
-    return Promise.all(queries);
   }
 
   /* ---------- MISSION REPORTS ---------- */

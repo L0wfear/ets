@@ -36,10 +36,6 @@ export default class NotificationsStore extends Store {
         actions: flux.getActions('waybills'),
         actionNames: ['updateWaybill', 'createWaybill'],
       },
-      {
-        actions: missionsActions,
-        actionNames: ['createDutyMissions'],
-      },
     ];
 
     const removeNotificationQueue = [

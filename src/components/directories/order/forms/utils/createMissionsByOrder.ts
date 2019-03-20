@@ -1,6 +1,5 @@
 import { createMissions } from 'components/missions/mission_template/MissionsCreationFormWrap';
-import { createDutyMissions } from 'components/missions/duty_mission_template/DutyMissionsCreationFormWrap';
-import { groupBy } from 'lodash';
+import { groupBy, cloneDeep } from 'lodash';
 import { ASSING_BY_KEY } from './constant';
 
 export const createMissionPromise = async (flux, mission, mission_source_id, assign_to_waybill, faxogramm_id, norm_id) => {
@@ -64,34 +63,17 @@ export const createMissionByOrder = async (flux, missionsArr, mission_source_id,
   return !ansArr.some((ans) => !ans);
 };
 
-export const createDutyMissionByOrder = async (flux, missionsArr, mission_source_id, faxogramm_id) => {
-  const ansArr = await missionsArr.map(async (mission) => {
-    const { id } = mission;
+export const getValidDutyMissionFromOrderTemplate = (missionOwn, mission_source_id, faxogramm_id) => {
+  const mission = cloneDeep(missionOwn);
 
-    const {
-      date_from: date_start,
-      date_to: date_end,
-      num_exec: passes_count,
-    } = mission as any;
+  mission.mission_source_id = mission_source_id;
+  mission.faxogramm_id = faxogramm_id;
+  mission.plan_date_start = mission.date_from;
+  mission.plan_date_end = mission.date_to;
+  mission.status = 'not_assigned';
 
-    const externalPayload = {
-      mission_source_id,
-      passes_count,
-      date_start,
-      date_end,
-    };
-    const newElement = {
-      ...mission,
-      faxogramm_id,
-    };
+  delete mission.date_from;
+  delete mission.date_to;
 
-    try {
-      await createDutyMissions(flux, { [id]: newElement }, externalPayload);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  });
-
-  return !ansArr.some((ans: boolean) => !ans);
+  return mission;
 };

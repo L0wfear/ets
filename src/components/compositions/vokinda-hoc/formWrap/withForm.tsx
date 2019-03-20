@@ -88,6 +88,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       constructor(props) {
         super(props);
 
+        this.state = this.getInitState(props);
+      }
+
+      getInitState(props: WithFormProps<P>) {
         let formState: F = props.element;
 
         if (isFunction(config.mergeElement)) {
@@ -110,7 +114,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           canSave: false,
         };
 
-        this.state = {
+        return {
           ...newState,
           canSave: this.canSave({
             ...newState,
@@ -120,17 +124,21 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
       componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
-          this.setState((oldState) => {
-            const formErrors = this.validate(oldState.formState);
+          if (this.props.element !== prevProps.element) {
+            this.setState(this.getInitState(this.props));
+          } else {
+            this.setState((oldState) => {
+              const formErrors = this.validate(oldState.formState);
 
-            return {
-              formErrors,
-              canSave: this.canSave({
-                ...oldState,
+              return {
                 formErrors,
-              }),
-            };
-          });
+                canSave: this.canSave({
+                  ...oldState,
+                  formErrors,
+                }),
+              };
+            });
+          }
         }
       }
 

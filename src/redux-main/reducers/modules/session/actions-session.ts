@@ -1,13 +1,11 @@
 import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
-  SESSION_SET_CONFIG,
   SESSION_SET_TRACK_CONFIG,
 } from 'redux-main/reducers/modules/session/session';
 import User from 'models/User';
 
 import {
-  ConfigService,
   AuthService,
   ChangeRoleService,
   ConfigTrackService,
@@ -17,39 +15,14 @@ import {
   AuthCheckServiceEtsTest,
 } from 'api/Services';
 
-import {
-  CONFIG_INITIAL,
-  TRACK_CONFIG_INITIAL,
-} from 'redux-main/reducers/modules/session/session';
+import { TRACK_CONFIG_INITIAL } from 'redux-main/reducers/modules/session/session';
 import config from 'config';
 import { get } from 'lodash';
 import { setUserContext } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-
-export const sessionSetAppConfig = () => ({
-  type: SESSION_SET_CONFIG,
-  payload: ConfigService.get()
-    .catch((errorData) => {
-      // tslint:disable-next-line
-      console.warn(errorData);
-
-      return CONFIG_INITIAL;
-    })
-    .then((appConfigRaw) => {
-      const appConfig = appConfigRaw;
-
-      // appConfig.points_ws = 'wss://ets-test.mos.ru/services/stream'; для теста
-
-      return {
-        appConfig,
-      };
-    }),
-  meta: {
-    loading: true,
-  },
-});
+import { sessionSetAppConfig } from './action_get_config';
 
 export const sessionGetTracksCachingAppConfig = () => ({
   type: SESSION_SET_TRACK_CONFIG,
@@ -283,15 +256,4 @@ export const sessionResetData: any = () => (dispatch) => {
   dispatch({
     type: SESSION_RESET_DATA,
   });
-};
-
-export default {
-  sessionSetAppConfig,
-  sessionGetTracksCachingAppConfig,
-  sessionCahngeCompanyOnAnother,
-  sessionLogin,
-  sessionSetData,
-  sessionLoadTracksCachingConfig,
-  checkToken,
-  sessionResetData,
 };

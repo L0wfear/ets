@@ -10,7 +10,6 @@ import {
   MissionCarService,
   TypesService,
   ModelsService,
-  ConfigService,
   MaterialConsumptionRateService,
   CleanCategoriesService,
   MaintenanceWorkService,
@@ -80,10 +79,6 @@ export default class ObjectsActions extends Actions {
 
   getOrderById(id) {
     return OrderService.get({ id });
-  }
-
-  getConfig() {
-    return ConfigService.get();
   }
 
   getTrackConfig() {

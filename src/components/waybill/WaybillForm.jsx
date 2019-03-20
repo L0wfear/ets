@@ -106,6 +106,41 @@ const fieldToCheckHasData = {
   },
 };
 
+const getClosedEquipmentData = (lastCarUsedWaybill) => {
+  const fieldsToChange = {};
+  if (lastCarUsedWaybill) {
+    if (lastCarUsedWaybill.equipment_fact_fuel_end) {
+      fieldsToChange.equipment_fuel_start
+        = lastCarUsedWaybill.equipment_fact_fuel_end;
+      fieldsToChange.equipment_fact_fuel_end
+        = fieldsToChange.equipment_fuel_start;
+    }
+
+    if (lastCarUsedWaybill.equipment_fuel_card_id) {
+      fieldsToChange.equipment_fuel_card_id
+        = lastCarUsedWaybill.equipment_fuel_card_id;
+      fieldsToChange.equipment_fuel_method = 'fuel_card';
+    } else {
+      fieldsToChange.equipment_fuel_method = 'naliv';
+    }
+
+    fieldsToChange.equipment_fuel_type = lastCarUsedWaybill.equipment_fuel_type;
+
+    fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
+      fieldsToChange,
+      fieldToCheckHasData,
+    );
+  } else {
+    fieldsToChange.equipment_fuel_type = getDefaultBill({}).equipment_fuel_type;
+    fieldsToChange.equipment_fuel_method = getDefaultBill(
+      {},
+    ).equipment_fuel_method;
+    fieldsToChange.equipment_fuel_end = null;
+  }
+
+  return fieldsToChange;
+};
+
 const hasWaybillEquipmentData = (waybill, shema) => {
   let has = false;
   if (waybill) {
@@ -700,17 +735,11 @@ class WaybillForm extends Form {
     );
 
   getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
-    const fieldsToChange = {};
+    let fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
         fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end;
         fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
-      }
-      if (isNotNull(lastCarUsedWaybill.equipment_fact_fuel_end)) {
-        fieldsToChange.equipment_fuel_start
-          = lastCarUsedWaybill.equipment_fact_fuel_end;
-        fieldsToChange.equipment_fact_fuel_end
-          = fieldsToChange.equipment_fuel_start;
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
@@ -736,33 +765,17 @@ class WaybillForm extends Form {
       } else {
         fieldsToChange.fuel_method = 'naliv';
       }
-
-      if (isNotNull(lastCarUsedWaybill.equipment_fuel_card_id)) {
-        fieldsToChange.equipment_fuel_card_id
-          = lastCarUsedWaybill.equipment_fuel_card_id;
-      }
-      if (lastCarUsedWaybill.equipment_fuel_card_id) {
-        fieldsToChange.equipment_fuel_method = 'fuel_card';
-      } else {
-        fieldsToChange.equipment_fuel_method = 'naliv';
-      }
-
-      fieldsToChange.equipment_fuel_type
-        = lastCarUsedWaybill.equipment_fuel_type;
-
-      if (lastCarUsedWaybill) {
-        fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
-          fieldsToChange,
-          fieldToCheckHasData,
-        );
-      }
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
-      fieldsToChange.equipment_fuel_end = null;
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = null;
     }
+
+    fieldsToChange = {
+      ...fieldsToChange,
+      ...getClosedEquipmentData(lastCarUsedWaybill),
+    };
 
     return fieldsToChange;
   };
@@ -1010,11 +1023,25 @@ class WaybillForm extends Form {
     });
   };
 
-  handleChangeHasEquipmentOnTrue = () => {
+  handleChangeHasEquipmentOnTrue = async () => {
     this.handleMultipleChange({
       equipment_fuel: true,
+      motohours_equip_start: this.props.formState.motohours_equip_start || 0,
       equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
     });
+
+    const {
+      formState: { car_id },
+    } = this.props;
+
+    const {
+      result: [lastCarUsedWaybill],
+    } = await this.context.flux
+      .getActions('waybills')
+      .getLastClosedWaybill(car_id);
+
+    const closedEquipmentData = getClosedEquipmentData(lastCarUsedWaybill);
+    this.handleMultipleChange(closedEquipmentData);
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
@@ -1028,6 +1055,7 @@ class WaybillForm extends Form {
             body: 'Очистить введенные данные по спецоборудованию?',
           });
           this.handleMultipleChange({
+            motohours_equip_start: null,
             ...setEmptyFieldByKey(fieldToCheckHasData),
             equipment_fuel_method: null,
           });
@@ -1639,7 +1667,7 @@ class WaybillForm extends Form {
                                     isBoolean(state.equipment_fuel)
                                     && state.equipment_fuel
                                   }
-                                  disabled={!(IS_CREATING || IS_DRAFT)}
+                                  disabled={IS_CLOSED}
                                   onClick={this.handleChangeHasEquipmentOnTrue}>
                                   Да
                                 </WaybillEquipmentButton>
@@ -1650,7 +1678,7 @@ class WaybillForm extends Form {
                                     isBoolean(state.equipment_fuel)
                                     && !state.equipment_fuel
                                   }
-                                  disabled={!(IS_CREATING || IS_DRAFT)}
+                                  disabled={IS_CLOSED}
                                   onClick={
                                     this.handleChangeHasEquipmentOnFalse
                                   }>
@@ -1752,12 +1780,7 @@ class WaybillForm extends Form {
                           modalKey={modalKey}
                           label="Способ заправки"
                           error={errors.fuel_method}
-                          disabled={
-                            IS_ACTIVE
-                            || IS_CLOSED
-                            || !isPermittedByKey.update
-                            || !(IS_CREATING || IS_DRAFT)
-                          }
+                          disabled={IS_CLOSED || !isPermittedByKey.update}
                           options={FUEL_METHOD}
                           value={state.fuel_method}
                           onChange={this.handleFuelMethodChange}
@@ -1770,11 +1793,7 @@ class WaybillForm extends Form {
                               modalKey={modalKey}
                               label="Тип топлива"
                               error={errors.fuel_type}
-                              disabled={
-                                IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
-                              }
+                              disabled={IS_CLOSED || !isPermittedByKey.update}
                               options={FUEL_TYPES}
                               value={state.fuel_type}
                               onChange={this.handleFuelTypeChange}
@@ -1804,11 +1823,9 @@ class WaybillForm extends Form {
                           label="Топливная карта"
                           error={errors.fuel_card_id}
                           disabled={
-                            IS_ACTIVE
-                            || IS_CLOSED
+                            IS_CLOSED
                             || !isPermittedByKey.update
                             || fuelCardDisable
-                            || !(IS_CREATING || IS_DRAFT)
                           }
                           options={FUEL_CARDS}
                           value={state.fuel_card_id}
@@ -1991,12 +2008,7 @@ class WaybillForm extends Form {
                               modalKey={modalKey}
                               label="Способ заправки"
                               error={errors.equipment_fuel_method}
-                              disabled={
-                                IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
-                                || !(IS_CREATING || IS_DRAFT)
-                              }
+                              disabled={IS_CLOSED || !isPermittedByKey.update}
                               options={FUEL_METHOD}
                               value={state.equipment_fuel_method}
                               onChange={this.handleEquipmentFuelMethodChange}
@@ -2009,9 +2021,7 @@ class WaybillForm extends Form {
                                   label="Тип топлива"
                                   error={errors.equipment_fuel_type}
                                   disabled={
-                                    IS_ACTIVE
-                                    || IS_CLOSED
-                                    || !isPermittedByKey.update
+                                    IS_CLOSED || !isPermittedByKey.update
                                   }
                                   options={FUEL_TYPES}
                                   value={state.equipment_fuel_type}
@@ -2042,11 +2052,9 @@ class WaybillForm extends Form {
                               label="Топливная карта"
                               error={errors.equipment_fuel_card_id}
                               disabled={
-                                IS_ACTIVE
-                                || IS_CLOSED
+                                IS_CLOSED
                                 || !isPermittedByKey.update
                                 || equipmentFuelCardDisable
-                                || !(IS_CREATING || IS_DRAFT)
                               }
                               options={EQUIPMENT_FUEL_CARDS}
                               value={state.equipment_fuel_card_id}

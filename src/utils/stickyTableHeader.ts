@@ -1,21 +1,16 @@
 import { detectIE } from 'utils/functions';
 
-function tableFixHead(e, ie, selector) {
-  const el = e.target;
-  let offsetTopIntoSelector;
-
-  selector === '.custom-table-container'
-    ? (offsetTopIntoSelector = 0)
-    : (offsetTopIntoSelector = 3);
+function tableFixHead(el, selector) {
+  const offsetTopIntoSelector = (
+    selector === '.custom-table-container'
+      ? 0
+      : 3
+  );
   const sT = el.scrollTop - offsetTopIntoSelector;
-  ie
-    ? [...el.querySelectorAll('thead th')].forEach((th) => {
-        th.style.transform = `translateY(${sT}px)`;
-        th.style.transition = 'all .3s ease';
-      })
-    : [...el.querySelectorAll('thead th')].forEach((th) => {
-        th.style.transform = `translateY(${sT}px)`;
-      });
+  [...el.querySelectorAll('thead th')].forEach((th) => {
+    th.style.transform = `translateY(${sT}px)`;
+    th.style.transition = 'all .3s ease';
+  });
 }
 
 /**
@@ -27,10 +22,11 @@ function tableFixHead(e, ie, selector) {
 export function setStickyThead(selector: string, addEventListener: boolean) {
   const allTableContainer = document.querySelectorAll(selector);
   const ie = detectIE(); // если ie
-
-  [].forEach.call(allTableContainer, (el) => {
-    addEventListener
-      ? el.addEventListener('scroll', (e) => tableFixHead(e, ie, selector))
-      : el.removeEventListener('scroll', (e) => tableFixHead(e, ie, selector));
-  });
+  if (ie) {
+    [].forEach.call(allTableContainer, (el) => {
+      addEventListener
+        ? el.addEventListener('scroll', (e) => tableFixHead(e, selector))
+        : el.removeEventListener('scroll', (e) => tableFixHead(e, selector));
+    });
+  }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BigPaddingButton } from 'components/new/pages/inspection/autobase/components/data/components/action_menu/styled/InspectionAutobaseDataActionMenu';
-import { ButtonContinueInspectAutobaseProps, ButtonContinueInspectAutobaseStateProps, ButtonContinueInspectAutobaseDispatchProps, ButtonContinueInspectAutobaseOwnProps } from './@types/ButtonContinueInspectAutobase';
+import { ButtonContinueInspectAutobaseProps, ButtonContinueInspectAutobaseStateProps, ButtonContinueInspectAutobaseDispatchProps, ButtonContinueInspectAutobaseOwnProps, ButtonContinueInspectAutobaseMergedProps } from './@types/ButtonContinueInspectAutobase';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
@@ -38,7 +38,7 @@ export default compose<ButtonContinueInspectAutobaseProps, ButtonContinueInspect
   withRequirePermissionsNew({
     permissions: inspectAutobasePermissions.update,
   }),
-  connect<ButtonContinueInspectAutobaseStateProps, ButtonContinueInspectAutobaseDispatchProps, ButtonContinueInspectAutobaseOwnProps, any, ReduxState>(
+  connect<ButtonContinueInspectAutobaseStateProps, ButtonContinueInspectAutobaseDispatchProps, ButtonContinueInspectAutobaseOwnProps, ButtonContinueInspectAutobaseMergedProps, ReduxState>(
     (state) => ({
       lastConductingInspect: getInspectAutobse(state).lastConductingInspect,
     }),

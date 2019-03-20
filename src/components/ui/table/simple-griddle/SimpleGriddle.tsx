@@ -3,8 +3,11 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
 import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
 import { isNullOrUndefined } from 'util';
+import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
+
+const EtsTheadThL: any = EtsTheadTh;
 
 const emptyArr = [];
 
@@ -105,14 +108,14 @@ class SimpleGriddle extends React.Component<any, any> {
     if (columnName === 'isChecked') {
       const isCheckedAll = this.getGlobalCheckboxState(shortResult);
       return (
-        <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
+        <EtsTheadThL key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
           <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={isCheckedAll} />
-        </th>
+        </EtsTheadThL>
       );
     }
 
     return (
-      <th key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
+      <EtsTheadThL canClick key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
         {field.displayName}
         {
           this.state.initialSort === columnName ?
@@ -120,7 +123,7 @@ class SimpleGriddle extends React.Component<any, any> {
           :
             <span></span>
         }
-      </th>
+      </EtsTheadThL>
     );
   }
 

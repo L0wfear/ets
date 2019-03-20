@@ -18,7 +18,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
-    this.register(objectsActions.getConfig, this.handleGetConfig);
     this.register(
       objectsActions.getMaterialConsumptionRate,
       this.handleGetMaterialConsumptionRate,
@@ -135,7 +134,6 @@ export default class ObjectsStore extends Store {
       cleaningRateList: [],
       userActionLogList: [],
       medicalStatsList: [],
-      appConfig: {},
 
       carsIndex: {},
       modelsIndex: {},
@@ -238,10 +236,6 @@ export default class ObjectsStore extends Store {
   // Убрать второй вариант
   handleGetWorkKinds(workKinds) {
     this.setState({ workKindsList: workKinds.result.rows || workKinds.result });
-  }
-
-  handleGetConfig(appConfig) {
-    this.setState({ appConfig });
   }
 
   handleGetMaterialConsumptionRate(rates) {
